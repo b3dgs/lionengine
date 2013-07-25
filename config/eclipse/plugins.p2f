@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?p2f version='1.0.0'?>
+<p2f version='1.0.0'>
+  <ius size='3'>
+    <iu id='com.mountainminds.eclemma.feature.feature.group' name='EclEmma Java Code Coverage' version='2.2.0.201210261515'>
+      <repositories size='1'>
+        <repository location='http://update.eclemma.org'/>
+      </repositories>
+    </iu>
+    <iu id='net.sf.eclipsecs.feature.group' name='Eclipse Checkstyle Plug-in' version='5.6.0.201209221626'>
+      <repositories size='1'>
+        <repository location='http://eclipse-cs.sourceforge.net/update/'/>
+      </repositories>
+    </iu>
+    <iu id='edu.umd.cs.findbugs.plugin.eclipse.feature.group' name='FindBugs Feature' version='2.0.3.20130115'>
+      <repositories size='1'>
+        <repository location='http://findbugs.cs.umd.edu/eclipse-daily/'/>
+      </repositories>
+    </iu>
+  </ius>
+</p2f>
