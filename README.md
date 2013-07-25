@@ -35,7 +35,8 @@ Steps to include the LionEngine in your project:
 
 Once you installed the LionEngine in your project, you may would like to know how to prepare a quick sample as a first try.
 
-<pre>
+#### Main class
+```java
 /**
  * Program starts here. When you start the jvm, ensure that this main function is called.
  */
@@ -88,9 +89,10 @@ public final class AppFirstCode
         loader.start(new Scene(loader));
     }
 }
-</pre>
+```
 
-<pre>
+#### Minimal sequence
+```java
 /**
  * This is where the game loop is running. Any sequence represents a thread handled by the Loader. To link a sequence
  * with another one, a simple call to this.end(sequence) is necessary. This will terminate the current sequence, and
@@ -145,4 +147,4 @@ final class Scene
         UtilityMessageBox.information("Terminate !", "Closing app...");
     }
 }
-</pre>
+```
