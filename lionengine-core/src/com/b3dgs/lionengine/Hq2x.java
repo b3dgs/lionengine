@@ -1,0 +1,163 @@
+package com.b3dgs.lionengine;
+
+import java.awt.image.BufferedImage;
+
+/**
+ * HQ2X implementation.
+ */
+final class Hq2x
+{
+    /** Source data array. */
+    private final int[] srcData;
+    /** Width. */
+    private final int width;
+    /** Height. */
+    private final int height;
+
+    /**
+     * Create a new hq2x filter.
+     * 
+     * @param srcImage The buffer source.
+     */
+    Hq2x(BufferedImage srcImage)
+    {
+        width = srcImage.getWidth();
+        height = srcImage.getHeight();
+        srcData = new int[width * height];
+        srcImage.getRGB(0, 0, width, height, srcData, 0, width);
+    }
+
+    /**
+     * Filtered buffer.
+     * 
+     * @return The filtered buffer.
+     */
+    BufferedImage getScaledImage()
+    {
+        final RawScale2x scaler = new RawScale2x(srcData, width, height);
+        final BufferedImage image = new BufferedImage(width * 2, height * 2, BufferedImage.TYPE_INT_ARGB);
+        image.setRGB(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
+        return image;
+    }
+
+    /**
+     * The raw scale implementation.
+     */
+    private static class RawScale2x
+    {
+        /** Source data array. */
+        private final int[] srcImage;
+        /** Destination data array. */
+        private final int[] dstImage;
+        /** Width. */
+        private final int width;
+        /** Height. */
+        private final int height;
+
+        /**
+         * Constructor.
+         * 
+         * @param imageData The image data array.
+         * @param dataWidth The data width.
+         * @param dataHeight The data height.
+         */
+        RawScale2x(int[] imageData, int dataWidth, int dataHeight)
+        {
+            width = dataWidth;
+            height = dataHeight;
+            srcImage = imageData;
+            dstImage = new int[imageData.length * 4];
+        }
+
+        /**
+         * Check the difference.
+         * 
+         * @param a The color a.
+         * @param b The color b.
+         * @return <code>true</code> if different, <code>false</code> else.
+         */
+        private static boolean different(int a, int b)
+        {
+            return a != b;
+        }
+
+        /**
+         * Set destination pixel.
+         * 
+         * @param x The location x.
+         * @param y The location y.
+         * @param p The pixel destination value.
+         */
+        private void setDestPixel(int x, int y, int p)
+        {
+            dstImage[x + y * width * 2] = p;
+        }
+
+        /**
+         * Get pixel source.
+         * 
+         * @param x The location x.
+         * @param y The location y.
+         * @return The pixel value found.
+         */
+        private int getSourcePixel(int x, int y)
+        {
+            int x1 = Math.max(0, x);
+            x1 = Math.min(width - 1, x1);
+            int y1 = Math.max(0, y);
+            y1 = Math.min(height - 1, y1);
+
+            return srcImage[x1 + y1 * width];
+        }
+
+        /**
+         * Process filter.
+         * 
+         * @param x The location x.
+         * @param y The location y.
+         */
+        private void process(int x, int y)
+        {
+            final int b = getSourcePixel(x, y - 1);
+            final int d = getSourcePixel(x - 1, y);
+            final int e = getSourcePixel(x, y);
+            final int f = getSourcePixel(x + 1, y);
+            final int h = getSourcePixel(x, y + 1);
+            int e0 = e;
+            int e1 = e;
+            int e2 = e;
+            int e3 = e;
+
+            if (RawScale2x.different(b, h) && RawScale2x.different(d, f))
+            {
+                e0 = !RawScale2x.different(d, b) ? d : e;
+                e1 = !RawScale2x.different(b, f) ? f : e;
+                e2 = !RawScale2x.different(d, h) ? d : e;
+                e3 = !RawScale2x.different(h, f) ? f : e;
+            }
+
+            setDestPixel(x * 2, y * 2, e0);
+            setDestPixel(x * 2 + 1, y * 2, e1);
+            setDestPixel(x * 2, y * 2 + 1, e2);
+            setDestPixel(x * 2 + 1, y * 2 + 1, e3);
+        }
+
+        /**
+         * Get the scaled data.
+         * 
+         * @return The data array.
+         */
+        public int[] getScaledData()
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    process(x, y);
+                }
+            }
+
+            return dstImage;
+        }
+    }
+}

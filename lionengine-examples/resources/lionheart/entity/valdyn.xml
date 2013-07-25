@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity name="valdyn" surface="valdyn.png">
+	<frames horizontal="13" vertical="12"/>
+	<size width="80" height="80"/>
+	<data movementSpeed="5.0" jumpSpeed="8.0" mass="2.5"/>
+	<animation name="idle" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="walk" start="26" end="35" step="1" speed="0.25" reversed="false" repeat="true"/>
+	<animation name="jump" start="17" end="19" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="die" start="67" end="69" step="1" speed="0.125" reversed="false" repeat="false"/>
+</entity>

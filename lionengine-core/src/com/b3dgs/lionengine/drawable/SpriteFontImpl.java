@@ -1,0 +1,312 @@
+package com.b3dgs.lionengine.drawable;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.TreeMap;
+
+import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.file.File;
+import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.file.XmlParser;
+
+/**
+ * Font sprite implementation.
+ */
+final class SpriteFontImpl
+        implements SpriteFont
+{
+    /** New line separator character. */
+    private static final String NL_STR = "" + SpriteFont.NEW_LINE;
+
+    /**
+     * Character data.
+     */
+    private static class Data
+    {
+        /** Character id. */
+        private final int id;
+        /** Character width. */
+        private final int width;
+        /** Character height. */
+        private final int height;
+
+        /**
+         * Create a new data.
+         * 
+         * @param id The character id.
+         * @param width The character width.
+         * @param height The character height.
+         */
+        Data(int id, int width, int height)
+        {
+            this.id = id;
+            this.width = width;
+            this.height = height;
+        }
+
+        /**
+         * Get the character id.
+         * 
+         * @return The character id.
+         */
+        int getId()
+        {
+            return id;
+        }
+
+        /**
+         * Get the character width.
+         * 
+         * @return THe character width.
+         */
+        int getWidth()
+        {
+            return width;
+        }
+
+        /**
+         * Get the character height.
+         * 
+         * @return THe character height.
+         */
+        int getHeight()
+        {
+            return height;
+        }
+    }
+
+    /** Font surface. */
+    private final SpriteTiled surface;
+    /** Font data. */
+    private final TreeMap<Character, Data> fontData;
+    /** Line height value. */
+    private int lineHeight;
+
+    /**
+     * Create a new font sprite.
+     * 
+     * @param media The font image media.
+     * @param mediaData The font data media.
+     * @param tw The horizontal character number.
+     * @param th The vertical character number.
+     */
+    SpriteFontImpl(Media media, Media mediaData, int tw, int th)
+    {
+        surface = Drawable.loadSpriteTiled(media, tw, th);
+        fontData = new TreeMap<>();
+        lineHeight = surface.getTileHeight();
+
+        // Load data for each characters
+        final XmlParser xml = File.createXmlParser();
+        final XmlNode letters = xml.load(mediaData);
+        final List<XmlNode> children = letters.getChildren();
+        int id = 0;
+
+        for (final XmlNode node : children)
+        {
+            final Data data = new Data(id, node.readInteger("width"), node.readInteger("height"));
+            fontData.put(Character.valueOf(node.readString("char").charAt(0)), data);
+            id++;
+        }
+
+        children.clear();
+    }
+
+    /**
+     * Clone constructor.
+     * 
+     * @param surface The surface reference.
+     * @param fontData The data reference.
+     */
+    private SpriteFontImpl(SpriteTiled surface, TreeMap<Character, Data> fontData)
+    {
+        this.surface = surface;
+        this.fontData = fontData;
+    }
+
+    /*
+     * SpriteFont
+     */
+
+    @Override
+    public void load(boolean alpha)
+    {
+        surface.load(alpha);
+    }
+
+    @Override
+    public void draw(Graphic g, int x, int y, Align align, String... texts)
+    {
+        int lx = 0;
+        int ly = 0;
+        int width = 0;
+
+        // Render each character
+        for (final String text : texts)
+        {
+            // Get char width
+            if (align == Align.RIGHT)
+            {
+                width = getTextWidth(text);
+            }
+            if (align == Align.CENTER)
+            {
+                width = getTextWidth(text) / 2;
+            }
+
+            final int length = text.length();
+            for (int j = 0; j < length; j++)
+            {
+                final Data d = fontData.get(Character.valueOf(text.charAt(j)));
+                surface.render(g, d.getId(), x + lx - width, y + ly + d.getHeight());
+                lx += d.getWidth() + 1;
+            }
+
+            lx = 0;
+            ly += lineHeight;
+        }
+    }
+
+    @Override
+    public void draw(Graphic g, int x, int y, Align align, String text)
+    {
+        draw(g, x, y, align, text.split(SpriteFontImpl.NL_STR));
+    }
+
+    @Override
+    public int getTextWidth(String text)
+    {
+        final int length = text.length();
+        int lx = 0;
+
+        for (int i = 0; i < length; i++)
+        {
+            final Data d = fontData.get(Character.valueOf(text.charAt(i)));
+            lx += d.getWidth() + 1;
+        }
+
+        return lx;
+    }
+
+    @Override
+    public int getTextHeight(String text)
+    {
+        final int length = text.length();
+        int line = 1;
+
+        // Search next line
+        for (int i = 0; i < length; i++)
+        {
+            if (text.charAt(i) == SpriteFont.NEW_LINE)
+            {
+                line++;
+            }
+        }
+
+        return lineHeight * line;
+    }
+
+    @Override
+    public void setLineHeight(int height)
+    {
+        lineHeight = height;
+    }
+
+    @Override
+    public void scale(int percent)
+    {
+        surface.scale(percent);
+    }
+
+    @Override
+    public void stretch(int percentWidth, int percentHeight)
+    {
+        surface.stretch(percentWidth, percentHeight);
+    }
+
+    @Override
+    public void rotate(int angle)
+    {
+        surface.rotate(angle);
+    }
+
+    @Override
+    public void flipHorizontal()
+    {
+        surface.flipHorizontal();
+    }
+
+    @Override
+    public void flipVertical()
+    {
+        surface.flipVertical();
+    }
+
+    @Override
+    public void filter(Filter filter)
+    {
+        surface.filter(filter);
+    }
+
+    @Override
+    public void setTransparency(Color mask)
+    {
+        surface.setTransparency(mask);
+    }
+
+    @Override
+    public void setAlpha(byte alpha)
+    {
+        surface.setAlpha(alpha);
+    }
+
+    @Override
+    public int getWidthOriginal()
+    {
+        return surface.getWidthOriginal();
+    }
+
+    @Override
+    public int getHeightOriginal()
+    {
+        return surface.getHeightOriginal();
+    }
+
+    @Override
+    public BufferedImage getSurface()
+    {
+        return surface.getSurface();
+    }
+
+    @Override
+    public Sprite instanciate()
+    {
+        return new SpriteFontImpl(surface, fontData);
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g, int x, int y)
+    {
+        surface.render(g, x, y);
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return surface.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return surface.getHeight();
+    }
+}

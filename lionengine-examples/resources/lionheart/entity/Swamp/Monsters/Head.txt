@@ -1,0 +1,4 @@
+=STR= #NAME# 	= "Head"
+=RNG= #FRAMES# 	= {04-04}
+=ANM= #IDLE# 	= {01-01}
+=ANM= #TURN# 	= {01-16}

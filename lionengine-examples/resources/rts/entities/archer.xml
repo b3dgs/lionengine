@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity name="Archer" surface="archer.png" icon="archer_icon.png">
+	<frames horizontal="7" vertical="6"/>
+	<size widthInTile="1" heightInTile="1"/>
+	<offset x="8" y="8"/>
+	<offsetDeath x="8" y="8"/>
+	<attributes life="100" fov="6"/>
+	<animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="walk" start="6" end="8" speed="0.1875" reversed="true" repeat="true"/>
+	<animation name="attack" start="21" end="23" speed="0.1375" reversed="false" repeat="false"/>
+	<animation name="die" start="24" end="26" speed="0.1375" reversed="false" repeat="false"/>
+	<cost steps="5" gold="500" wood="100"/>
+</entity>

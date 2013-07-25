@@ -1,0 +1,83 @@
+package com.b3dgs.lionengine.game.rts.ability.skilled;
+
+import java.util.Collection;
+
+import com.b3dgs.lionengine.game.rts.skill.SkillRts;
+
+/**
+ * Define something that can used skills.
+ * 
+ * @param <T> Skill enum type used.
+ * @param <S> Skill type used.
+ */
+public interface SkilledServices<T extends Enum<T>, S extends SkillRts<T>>
+{
+    /**
+     * Main routine, has to be called in a game loop.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    void update(double extrp);
+
+    /**
+     * Link skill to the entity.
+     * 
+     * @param skill The skill to add.
+     * @param panel The panel id (>= 0).
+     */
+    void addSkill(S skill, int panel);
+
+    /**
+     * Get a skill from its id.
+     * 
+     * @param panel The panel (>= 0).
+     * @param id The skill id.
+     * @return The skill found.
+     */
+    S getSkill(int panel, T id);
+
+    /**
+     * Remove a skill.
+     * 
+     * @param panel The skill panel (>= 0).
+     * @param id The skill id.
+     */
+    void removeSkill(int panel, T id);
+
+    /**
+     * Get all skills as collection (iterable) from a panel.
+     * 
+     * @param panel The skill panel (>= 0).
+     * @return The all skills (empty collection if no skills for this panel).
+     */
+    Collection<S> getSkills(int panel);
+
+    /**
+     * Get all skills from all panels.
+     * 
+     * @return The list of all skills owned by the entity.
+     */
+    Collection<S> getSkills();
+
+    /**
+     * Set the current skill panel.
+     * 
+     * @param currentSkillPanel The current skill panel (>= 0).
+     */
+    void setSkillPanel(int currentSkillPanel);
+
+    /**
+     * Set the next skill panel (will be applied on the next update, so differed compared to {@link #setSkillPanel(int)}
+     * .
+     * 
+     * @param nextSkillPanel The next skill panel (>= 0).
+     */
+    void setSkillPanelNext(int nextSkillPanel);
+
+    /**
+     * Get the current skill panel.
+     * 
+     * @return The current skill panel.
+     */
+    int getSkillPanel();
+}

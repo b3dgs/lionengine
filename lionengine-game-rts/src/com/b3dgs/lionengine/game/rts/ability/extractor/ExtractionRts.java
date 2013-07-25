@@ -1,0 +1,58 @@
+package com.b3dgs.lionengine.game.rts.ability.extractor;
+
+import com.b3dgs.lionengine.game.Alterable;
+
+/**
+ * Extraction structure. It represents the extraction quantity and the time needed per extraction unit.
+ */
+public class ExtractionRts
+{
+    /** Current extracted quantity data. */
+    public final Alterable quantity;
+    /** Resource unit extracted in one second. */
+    private int extractionPerSecond;
+    /** Resource unit dropped off in one second. */
+    private int dropOffPerSecond;
+
+    /**
+     * Create a new extraction data.
+     */
+    public ExtractionRts()
+    {
+        quantity = new Alterable(0);
+    }
+
+    /**
+     * Setup extraction.
+     * 
+     * @param quantityMax The maximum extraction quantity.
+     * @param extractionPerSecond The time needed to extract one unit of quantity.
+     * @param dropOffPerSecond The time needed to extract one unit.
+     */
+    public void initExtraction(int quantityMax, int extractionPerSecond, int dropOffPerSecond)
+    {
+        this.extractionPerSecond = extractionPerSecond;
+        this.dropOffPerSecond = dropOffPerSecond;
+        quantity.setMax(quantityMax);
+    }
+
+    /**
+     * Get the amount of extracted resource unit per second.
+     * 
+     * @return The extracted resource unit per second.
+     */
+    public int getExtractionPerSecond()
+    {
+        return extractionPerSecond;
+    }
+
+    /**
+     * Get the number of resource unit dropped off per second.
+     * 
+     * @return The number of resource unit dropped off per second.
+     */
+    public int getDropOffPerSecond()
+    {
+        return dropOffPerSecond;
+    }
+}

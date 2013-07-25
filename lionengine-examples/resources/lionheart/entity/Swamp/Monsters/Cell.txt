@@ -1,0 +1,5 @@
+=STR= #NAME# 	= "Cell"
+=RNG= #FRAMES# 	= {03-02}
+=ANM= #IDLE# 	= {06-06}
+=ANM= #WALK# 	= {01-06}
+=BOL= #REVERSE# = [true]

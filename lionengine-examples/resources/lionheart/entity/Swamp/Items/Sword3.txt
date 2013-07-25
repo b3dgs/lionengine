@@ -1,0 +1,3 @@
+=STR= #NAME# 	= "Sword3"
+=RNG= #FRAMES# 	= {04-02}
+=ANM= #IDLE# 	= {01-08}

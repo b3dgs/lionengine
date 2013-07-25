@@ -1,0 +1,261 @@
+package com.b3dgs.lionengine.drawable;
+
+import java.awt.Color;
+
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.utility.UtilityMath;
+
+/**
+ * Surface representing a bar designed to display a kind of progress bar (life...).
+ */
+public class Bar
+{
+    /** Horizontal location. */
+    private int x;
+    /** Vertical location. */
+    private int y;
+    /** Maximum width. */
+    private int maxWidth;
+    /** Maximum height. */
+    private int maxHeight;
+    /** Current width percent. */
+    private int pWidth;
+    /** Current height percent. */
+    private int pHeight;
+    /** Horizontal border. */
+    private int hBorder;
+    /** Vertical border. */
+    private int vBorder;
+    /** Background color. */
+    private Color background;
+    /** Foreground color. */
+    private Color foreground;
+    /** Left-Right referential. */
+    private boolean leftRight;
+    /** Up-Down referential. */
+    private boolean upDown;
+
+    /**
+     * Constructor.
+     * 
+     * @param width The maximum width.
+     * @param height The maximum height.
+     */
+    public Bar(int width, int height)
+    {
+        x = 0;
+        y = 0;
+        maxWidth = width;
+        maxHeight = height;
+        pWidth = 100;
+        pHeight = 100;
+        vBorder = 0;
+        hBorder = 0;
+        leftRight = true;
+        upDown = false;
+        background = null;
+        foreground = null;
+    }
+
+    /**
+     * Render the bar.
+     * 
+     * @param g The graphic output.
+     */
+    public void render(Graphic g)
+    {
+        if (background != null)
+        {
+            g.setColor(background);
+            g.drawRect(x, y, maxWidth, maxHeight, true);
+        }
+
+        final int rx = maxWidth - hBorder * 2;
+        final int ry = maxHeight - vBorder * 2;
+        if (!(pWidth == 0 || pHeight == 0))
+        {
+            final int x1, y1, x2, y2;
+            if (leftRight)
+            {
+                x1 = x + hBorder;
+                x2 = (int) (rx * (pWidth / 100.0));
+            }
+            else
+            {
+                x1 = x + hBorder + (int) (rx - pWidth / 100.0 * rx);
+                x2 = (int) Math.ceil(rx * (pWidth / 100.0));
+            }
+            if (upDown)
+            {
+                y1 = y + vBorder;
+                y2 = (int) (ry * (pHeight / 100.0));
+            }
+            else
+            {
+                y1 = y + vBorder + (int) (ry - pHeight / 100.0 * ry);
+                y2 = (int) Math.ceil(ry * (pHeight / 100.0));
+            }
+            if (foreground != null)
+            {
+                g.setColor(foreground);
+                g.drawRect(x1, y1, x2, y2, true);
+            }
+        }
+    }
+
+    /**
+     * Set the horizontal rendering referential.
+     * 
+     * @param leftRight <code>true</code> if bar is from left to right, <code>false</code> else.
+     */
+    public void setHorizontalReferential(boolean leftRight)
+    {
+        this.leftRight = leftRight;
+    }
+
+    /**
+     * Set the vertical rendering referential.
+     * 
+     * @param upDown <code>true</code> will start from top to down, <code>false</code> else.
+     */
+    public void setVerticalReferential(boolean upDown)
+    {
+        this.upDown = upDown;
+    }
+
+    /**
+     * Set the bar border size.
+     * 
+     * @param hBorder The horizontal border size.
+     * @param vBorder The vertical border size.
+     */
+    public void setBorderSize(int hBorder, int vBorder)
+    {
+        this.hBorder = hBorder;
+        this.vBorder = vBorder;
+    }
+
+    /**
+     * Set the background color.
+     * 
+     * @param color The background color.
+     */
+    public void setColorBackground(Color color)
+    {
+        background = color;
+    }
+
+    /**
+     * Set the foreground color.
+     * 
+     * @param color The foreground color.
+     */
+    public void setColorForeground(Color color)
+    {
+        foreground = color;
+    }
+
+    /**
+     * Set the bar location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public void setLocation(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Set the maximum size.
+     * 
+     * @param width The maximum width.
+     * @param height The maximum height.
+     */
+    public void setMaximumSize(int width, int height)
+    {
+        maxWidth = width;
+        maxHeight = height;
+    }
+
+    /**
+     * Set the width percent.
+     * 
+     * @param widthPercent The width percent [0-100].
+     */
+    public void setWidthPercent(int widthPercent)
+    {
+        pWidth = UtilityMath.fixBetween(widthPercent, 0, 100);
+    }
+
+    /**
+     * Set the height percent.
+     * 
+     * @param heightPercent The height percent [0-100].
+     */
+    public void setHeightPercent(int heightPercent)
+    {
+        pHeight = UtilityMath.fixBetween(heightPercent, 0, 100);
+    }
+
+    /**
+     * Get the current width.
+     * 
+     * @return The current width.
+     */
+    public int getWidth()
+    {
+        return (int) (pWidth / 100.0) * maxWidth;
+    }
+
+    /**
+     * Get the current height.
+     * 
+     * @return The current height.
+     */
+    public int getHeight()
+    {
+        return (int) (pHeight / 100.0) * maxHeight;
+    }
+
+    /**
+     * Get the current width percent.
+     * 
+     * @return The current width percent.
+     */
+    public int getWidthPercent()
+    {
+        return pWidth;
+    }
+
+    /**
+     * Get the current height percent.
+     * 
+     * @return The current height percent.
+     */
+    public int getHeightPercent()
+    {
+        return pHeight;
+    }
+
+    /**
+     * Get the maximum width.
+     * 
+     * @return The maximum width.
+     */
+    public int getWidthMax()
+    {
+        return maxWidth;
+    }
+
+    /**
+     * Get the maximum height.
+     * 
+     * @return The maximum height.
+     */
+    public int getHeightMax()
+    {
+        return maxHeight;
+    }
+}

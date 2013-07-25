@@ -1,0 +1,4 @@
+=STR= #NAME# 	= "CarnivorousPlant"
+=RNG= #FRAMES# 	= {02-02}
+=ANM= #IDLE# 	= {01-01}
+=ANM= #WALK# 	= {01-04}

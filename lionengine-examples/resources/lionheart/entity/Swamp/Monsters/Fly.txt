@@ -1,0 +1,3 @@
+=STR= #NAME# 	= "Fly"
+=RNG= #FRAMES# 	= {02-01}
+=ANM= #IDLE# 	= {01-02}

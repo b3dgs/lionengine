@@ -1,0 +1,4 @@
+=STR= #NAME# 	= "Spike2"
+=RNG= #FRAMES# 	= {16-02}
+=ANM= #IDLE# 	= {32-32}
+=ANM= #WALK# 	= {01-32}

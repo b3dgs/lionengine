@@ -1,0 +1,4 @@
+=STR= #NAME# 	= "TurningHit"
+=RNG= #FRAMES# 	= {04-04}
+=ANM= #IDLE# 	= {01-01} 		[32*1,0;-12]
+=ANM= #TURN# 	= {02-16} (0.4) |true| 	[32*1,0;-12]

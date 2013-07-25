@@ -1,0 +1,3 @@
+=STR= #NAME# 	= "Flower"
+=RNG= #FRAMES# 	= {05-02}
+=ANM= #IDLE# 	= {01-01}
