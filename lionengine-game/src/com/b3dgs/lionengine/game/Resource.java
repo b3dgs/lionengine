@@ -3,9 +3,12 @@ package com.b3dgs.lionengine.game;
 /**
  * Represent a resource, such as gold, wood... It is possible to increase the resource amount, or spend it. It is also
  * possible to check if there are enough resource before spending it.
+ * <p>
+ * Example:
+ * </p>
  * 
  * <pre>
- * Resource gold = new Resource();
+ * final Resource gold = new Resource();
  * gold.add(100);
  * gold.get(); // returns 100
  * gold.canSpend(25); // returns true

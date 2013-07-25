@@ -9,6 +9,15 @@ package com.b3dgs.lionengine.anim;
  * <li>Call {@link #updateAnimation(double)} in your main loop</li>
  * </ul>
  * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Animator animator = Anim.createAnimator();
+ * final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+ * animator.play(animation);
+ * </pre>
  */
 public interface Animator
 {

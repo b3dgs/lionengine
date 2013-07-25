@@ -125,3 +125,6 @@ affine
 unselect
 ref
 milli
+img
+str
+foo

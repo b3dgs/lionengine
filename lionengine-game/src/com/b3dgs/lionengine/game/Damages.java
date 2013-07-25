@@ -4,13 +4,17 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
  * Represents a container designed to return a random value between a range.
+ * <p>
+ * Example:
+ * </p>
  * 
  * <pre>
- * Damages dmg = new Damages(1, 3);
+ * final Damages dmg = new Damages(1, 3);
  * dmg.getMax(); // returns 3
  * dmg.getRandom(); // returns a value between 1 and 3 included
  * dmg.getLast(); // returns the last value return by getRandom()
- * dmg.set(5, 10);
+ * dmg.setMin(5);
+ * dmg.setMax(10);
  * dmg.getMin(); // returns 5
  * dmg.getRandom(); // returns a value between 5 and 10 included
  * </pre>

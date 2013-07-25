@@ -19,38 +19,46 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * </p>
  * 
  * <pre>
- * public static void main(String args[])
+ * public final class AppFirstCode
  * {
- *     // Start engine (resources directory = &quot;resources&quot;)
- *     // The Engine is initialized with our parameters:
- *     // - The name of our program: &quot;First Code&quot;
- *     // - Our program version: &quot;1.0.0&quot;
- *     // - The main resources directory, relative to the execution directory: ./resources/
- *     // This mean that any resources loaded with Media.get(...) will have this directory as prefix
- *     // - The verbose level, in order to define the level of output filtering is screen is scaled
- *     // - The swing theme (general java appearance)
- *     Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
+ *     private AppFirstCode()
+ *     {
+ *         throw new RuntimeException();
+ *     }
  * 
- *     // Configuration reference (native size = 320*240*16 at 60fps)
- *     // This mean that our native resolution is in 320*240
- *     // These data are used in case of rendering scaling, if the desired output is different
- *     // The last value is used to perform the frame rate calculation, corresponding to the native frame rate
- *     Display internal = new Display(320, 240, 16, 60);
+ *     public static void main(String args[])
+ *     {
+ *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
+ *         // The Engine is initialized with our parameters:
+ *         // - The name of our program: &quot;First Code&quot;
+ *         // - Our program version: &quot;1.0.0&quot;
+ *         // - The main resources directory, relative to the execution directory: ./resources/
+ *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix
+ *         // - The verbose level
+ *         // - The swing theme (general java appearance)
+ *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;, Verbose.CRITICAL, Theme.SYSTEM);
  * 
- *     // Display configuration (desired = 640*480*16 at 60fps)
- *     // This is corresponding to the output configuration
- *     // As our native is in 320*240, the output will be scaled by 2
- *     // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
- *     Display external = new Display(640, 480, 16, 60);
+ *         // Configuration reference (native size = 320*240*16 at 60fps)
+ *         // This mean that our native resolution is in 320*240
+ *         // These data are used in case of rendering scaling, if the desired output is different
+ *         // The last value is used to perform the frame rate calculation, corresponding to the native frame rate
+ *         final Display internal = new Display(320, 240, 16, 60);
  * 
- *     // Final configuration (rendering will be scaled by 2 considering native and desired config)
- *     // This is the final configuration container, including window mode
- *     Config config = new Config(internal, external, true);
+ *         // Display configuration (desired = 640*480*16 at 60fps)
+ *         // This is corresponding to the output configuration
+ *         // As our native is in 320*240, the output will be scaled by 2
+ *         // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
+ *         final Display external = new Display(640, 480, 16, 60);
  * 
- *     // Program starter, the main thread, setup with our configuration
- *     // It just needs one sequence reference to start
- *     Loader loader = new Loader(config);
- *     loader.start(new Scene(loader));
+ *         // Final configuration (rendering will be scaled by 2 considering native and desired config)
+ *         // This is the final configuration container, including window mode
+ *         final Config config = new Config(internal, external, true);
+ * 
+ *         // Program starter, the main thread, setup with our configuration
+ *         // It just needs one sequence reference to start
+ *         final Loader loader = new Loader(config);
+ *         loader.start(new Scene(loader));
+ *     }
  * }
  * </pre>
  * 
@@ -65,7 +73,9 @@ public final class Engine
     /** Engine version. */
     public static final String VERSION = "6.0.0";
     /** Engine last release date. */
-    public static final String DATE = "13 June 2012";
+    public static final String BEGIN_DATE = "13 June 2010";
+    /** Engine last release date. */
+    public static final String LAST_RELEASE_DATE = "13 June 2012";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */

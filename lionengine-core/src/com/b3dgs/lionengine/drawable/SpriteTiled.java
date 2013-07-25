@@ -6,6 +6,19 @@ import com.b3dgs.lionengine.Graphic;
 
 /**
  * Tiled sprite are mainly used for tile based levels. It works by loading an image, and split it into different images.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * // Load
+ * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Media.get(&quot;tilesheet.png&quot;), 16, 16);
+ * tilesheet.load(false);
+ * 
+ * // Render
+ * tilesheet.render(g, 1, 300, 300);
+ * tilesheet.render(g, 350, 300);
+ * </pre>
  */
 public interface SpriteTiled
         extends Sprite

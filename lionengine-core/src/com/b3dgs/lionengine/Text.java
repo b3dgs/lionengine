@@ -44,17 +44,17 @@ import java.awt.geom.Rectangle2D;
  * </li>
  * </ul>
  * <p>
- * Example of text creation:
+ * Example:
  * </p>
  * 
  * <pre>
  * // Create the text
- * Text text = Drawable.createText(Font.SANS_SERIF, 12, Text.NORMAL);
+ * Text text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
  * 
  * // Rendering type 1
  * text.setText(&quot;Hello&quot;);
  * text.setLocation(0, 0);
- * text.setAlign(TextAlign.TEXT_CENTER);
+ * text.setAlign(Align.CENTER);
  * text.render(g);
  * 
  * // Rendering type 2

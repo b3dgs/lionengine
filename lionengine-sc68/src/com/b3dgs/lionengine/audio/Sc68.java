@@ -4,6 +4,26 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Allows to play SonicArranger musics (original Amiga player).
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Sc68 sc68 = AudioSc68.createSc68Player();
+ * sc68.setVolume(25);
+ * sc68.play(Media.get(&quot;music.sc68&quot;));
+ * 
+ * Thread.sleep(1000);
+ * sc68.pause();
+ * Thread.sleep(500);
+ * sc68.setVolume(75);
+ * sc68.resume();
+ * Thread.sleep(1000);
+ * Assert.assertTrue(sc68.seek() &gt;= 0);
+ * 
+ * sc68.stop();
+ * sc68.free();
+ * </pre>
  */
 public interface Sc68
 {

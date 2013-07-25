@@ -5,6 +5,16 @@ import java.io.InputStream;
 
 /**
  * Get quick information from an image without reading all bytes.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final ImageInfo info = ImageInfo.get(Media.get(&quot;dot.png&quot;));
+ * Assert.assertEquals(64, info.getWidth());
+ * Assert.assertEquals(32, info.getHeight());
+ * Assert.assertEquals(&quot;png&quot;, info.getFormat());
+ * </pre>
  */
 public final class ImageInfo
 {

@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.audio;
 
+
 /**
  * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a
  * separated thread. It supports the following main controls:
@@ -12,6 +13,21 @@ package com.b3dgs.lionengine.audio;
  * <p>
  * The <code>tick</code> represents the position in the sound data.
  * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Midi midi = AudioMidi.loadMidi(Media.get(&quot;music.mid&quot;));
+ * midi.play(false);
+ * 
+ * Thread.sleep(1000);
+ * midi.pause();
+ * Thread.sleep(1000);
+ * midi.resume();
+ * midi.pause();
+ * midi.stop();
+ * </pre>
  */
 public interface Midi
 {

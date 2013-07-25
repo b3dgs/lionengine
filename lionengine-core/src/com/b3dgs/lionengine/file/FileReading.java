@@ -5,6 +5,28 @@ import java.io.IOException;
 
 /**
  * Describe a file reader, which performs file exploration.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Media file = Media.get(&quot;test.txt&quot;);
+ * try (FileReading reading = File.createFileReading(file);)
+ * {
+ *     final boolean boolRead = reading.readBoolean();
+ *     final byte byteRead = reading.readByte();
+ *     final char charRead = reading.readChar();
+ *     final short shortRead = reading.readShort();
+ *     final int intRead = reading.readInteger();
+ *     final float floatRead = reading.readFloat();
+ *     final long longRead = reading.readLong();
+ *     final double doubleRead = reading.readDouble();
+ * }
+ * catch (final IOException exception)
+ * {
+ *     Assert.fail(exception.getMessage());
+ * }
+ * </pre>
  */
 public interface FileReading
         extends Closeable

@@ -2,6 +2,31 @@ package com.b3dgs.lionengine;
 
 /**
  * Handle timer operation, in milli seconds.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Timing timer = new Timing();
+ * Assert.assertFalse(timer.isStarted());
+ * timer.start();
+ * Assert.assertTrue(timer.isStarted());
+ * 
+ * Thread.sleep(100);
+ * 
+ * Assert.assertTrue(timer.isStarted());
+ * Assert.assertTrue(timer.elapsed(100));
+ * Assert.assertTrue(timer.elapsed() &gt;= 100);
+ * timer.pause();
+ * 
+ * Thread.sleep(100);
+ * 
+ * timer.unpause();
+ * Assert.assertFalse(timer.elapsed(200000000));
+ * timer.stop();
+ * Assert.assertFalse(timer.isStarted());
+ * Assert.assertTrue(timer.get() &gt;= 0);
+ * </pre>
  */
 public final class Timing
 {

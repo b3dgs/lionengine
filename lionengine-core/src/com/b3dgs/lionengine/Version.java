@@ -2,6 +2,13 @@ package com.b3dgs.lionengine;
 
 /**
  * Represents a program version.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Version version = Version.create(1, 0, 0);
+ * </pre>
  */
 public final class Version
 {

@@ -33,13 +33,13 @@ public final class AppFirstCode
      */
     public static void main(String args[])
     {
-        // Start engine (name = "First Code", version = "1.0", resources directory = "resources")
+        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
         // The Engine is initialized with our parameters:
         // - The name of our program: "First Code"
         // - Our program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix
-        // - The verbose level, in order to define the level of output filtering is screen is scaled
+        // - The verbose level
         // - The swing theme (general java appearance)
         Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
 

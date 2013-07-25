@@ -19,11 +19,19 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
  * </p>
  * 
  * <pre>
- * LevelRipConverter&lt;TypeCollision, Tile&gt; rip = new LevelRipConverter&lt;TypeCollision, Tile&gt;();
- * rip.start(Media.get(&quot;level.png&quot;), map, Media.get(&quot;tiles&quot;, &quot;mario&quot;), false);
- * FileWriting fileWriting = File.FILE.createFileWriting(Media.get(&quot;level.map&quot;));
- * map.save(fileWriting);
- * fileWriting.close();
+ * private void ripLevel(Media levelrip, Media tilesheet, Media output)
+ * {
+ *     final LevelRipConverter&lt;TypeCollision, Tile&gt; rip = new LevelRipConverter&lt;&gt;();
+ *     rip.start(levelrip, map, tilesheet, false);
+ *     try (FileWriting file = File.createFileWriting(output);)
+ *     {
+ *         map.save(file);
+ *     }
+ *     catch (final IOException exception)
+ *     {
+ *         Verbose.exception(World.class, &quot;constructor&quot;, exception, &quot;Error on saving map !&quot;);
+ *     }
+ * }
  * </pre>
  * 
  * @param <C> Collision type used.

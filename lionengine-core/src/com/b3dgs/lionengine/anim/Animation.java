@@ -15,6 +15,13 @@ package com.b3dgs.lionengine.anim;
  * <li><code>repeat</code>: repeat flag.</li>
  * </ul>
  * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+ * </pre>
  */
 public interface Animation
 {

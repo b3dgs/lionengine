@@ -7,6 +7,28 @@ import java.util.Map;
 /**
  * Used to keep a single reference of a string. This way, instead of using equals(), a simple "==" is enough as same
  * strings shares same reference.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final String str = &quot;test&quot;;
+ * final String str1 = Strings.getStringRef(str);
+ * final String str2 = Strings.getStringRef(str);
+ * 
+ * Assert.assertTrue(!Strings.getStringsRefs().isEmpty());
+ * Assert.assertTrue(str1 == str2);
+ * Assert.assertEquals(str1, str2);
+ * 
+ * for (final String string : Strings.getStringsRefs())
+ * {
+ *     Assert.assertTrue(string == str);
+ * }
+ * 
+ * Strings.removeStringRef(str);
+ * Strings.clearStringsRef();
+ * Assert.assertTrue(Strings.getStringsRefs().isEmpty());
+ * </pre>
  */
 public final class Strings
 {

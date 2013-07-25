@@ -10,6 +10,14 @@ import java.util.Map;
  * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link XmlNode#NULL}. When
  * read, the {@link XmlNode#NULL} string is return if the stored string was <code>null</code>.
  * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final XmlNode node = File.createXmlNode(&quot;node&quot;);
+ * node.writeBoolean(&quot;value&quot;, true);
+ * </pre>
  * 
  * @see XmlParser
  */

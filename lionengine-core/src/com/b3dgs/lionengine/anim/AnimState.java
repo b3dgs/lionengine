@@ -2,6 +2,14 @@ package com.b3dgs.lionengine.anim;
 
 /**
  * List of animation states.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Animator animator = Anim.createAnimator();
+ * final AnimState state = animator.getAnimState();
+ * </pre>
  * 
  * @see Animator
  */

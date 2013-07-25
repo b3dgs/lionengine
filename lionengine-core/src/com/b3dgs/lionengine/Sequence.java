@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  *     }
  * 
  *     &#064;Override
- *     protected void render(Graphics2D g)
+ *     protected void render(Graphics g)
  *     {
  *         // Render routine
  *     }

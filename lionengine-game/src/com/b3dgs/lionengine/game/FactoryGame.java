@@ -14,16 +14,16 @@ import java.util.Map;
  * public class Factory
  *         extends FactoryGame&lt;TypeEntity, SetupGame&gt;
  * {
- *     public FactoryEntity()
+ *     public Factory()
  *     {
- *         super();
+ *         super(TypeEntity.class);
  *         loadAll(TypeEntity.values());
  *     }
  * 
  *     &#064;Override
  *     protected SetupGame createSetup(TypeEntity id)
  *     {
- *         return new SetupGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;), false);
+ *         return new SetupGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;));
  *     }
  * }
  * </pre>

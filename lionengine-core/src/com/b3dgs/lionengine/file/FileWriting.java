@@ -5,6 +5,28 @@ import java.io.IOException;
 
 /**
  * Describe a file writer, which performs file exploration.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Media file = Media.get(&quot;test.txt&quot;);
+ * try (FileWriting writing = File.createFileWriting(file);)
+ * {
+ *     writing.writeBoolean(true);
+ *     writing.writeByte((byte) 1);
+ *     writing.writeChar('c');
+ *     writing.writeShort((short) 2);
+ *     writing.writeInteger(1);
+ *     writing.writeFloat(5.1f);
+ *     writing.writeLong(6L);
+ *     writing.writeDouble(7.1);
+ * }
+ * catch (final IOException exception)
+ * {
+ *     Assert.fail(exception.getMessage());
+ * }
+ * </pre>
  */
 public interface FileWriting
         extends Closeable

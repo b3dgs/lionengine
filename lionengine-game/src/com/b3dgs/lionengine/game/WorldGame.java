@@ -66,16 +66,16 @@ import com.b3dgs.lionengine.input.Mouse;
  *     }
  * 
  *     &#064;Override
- *     protected void render(Graphics2D g)
+ *     protected void render(Graphic g)
  *     {
  *         // Render routine
  *         world.render(g);
  *     }
  * 
  *     &#064;Override
- *     protected void terminate()
+ *     protected void onTerminate()
  *     {
- *         // Called when sequence is closing
+ *         // Called when sequence is closing, optional
  *     }
  * }
  * </pre>

@@ -13,6 +13,15 @@ import javax.swing.JApplet;
  * <li>filter : Used only in case of screen stretching, depending of the external display</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
  * </ul>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Display internal = new Display(320, 240, 16, 60);
+ * final Display external = new Display(640, 480, 16, 60);
+ * final Config config = new Config(internal, external, true);
+ * </pre>
  */
 public final class Config
 {

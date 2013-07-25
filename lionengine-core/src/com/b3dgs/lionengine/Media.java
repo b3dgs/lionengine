@@ -14,6 +14,15 @@ import com.b3dgs.lionengine.utility.UtilityFile;
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
  * location, such as <code>HDD</code>, <code>JAR</code>...
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
+ * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
+ * // Will get from execution directory: resources/img/image.png
+ * </pre>
  */
 public final class Media
 {

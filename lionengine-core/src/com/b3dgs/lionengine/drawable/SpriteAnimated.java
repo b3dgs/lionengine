@@ -19,6 +19,26 @@ import com.b3dgs.lionengine.anim.Animator;
  * <p>
  * The first frame number is 1.
  * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * // Load
+ * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Media.get(&quot;animation.png&quot;), 7, 1);
+ * animation.load(false);
+ * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
+ * animation.play(anim);
+ * 
+ * // Update
+ * animation.updateAnimation(extrp);
+ * 
+ * // Render
+ * animation.setMirror(false);
+ * animation.render(g, 160, 300);
+ * animation.setMirror(true);
+ * animation.render(g, 200, 300);
+ * </pre>
  * 
  * @see Animation
  * @see AnimState

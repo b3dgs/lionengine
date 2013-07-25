@@ -8,6 +8,23 @@ import java.util.logging.Logger;
 
 /**
  * Level of verbosity.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * Verbose.info(&quot;Code reached&quot;);
+ * try
+ * {
+ *     Thread.sleep(1000);
+ *     Verbose.warning(MyClass.class, &quot;function&quot;, &quot;Warning level here&quot;);
+ *     Verbose.critical(MyClass.class, &quot;function&quot;, &quot;Critical level here&quot;);
+ * }
+ * catch (final InterruptedException exception)
+ * {
+ *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
+ * }
+ * </pre>
  */
 public enum Verbose
 {

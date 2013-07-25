@@ -9,6 +9,22 @@ import com.b3dgs.lionengine.utility.UtilityConversion;
 
 /**
  * SHA-256 based checksum manipulation.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Checksum checksum = Checksum.create();
+ * final int integer = 489464795;
+ * final String value = &quot;keyToBeEncoded&quot;;
+ * final String other = &quot;anotherKey&quot;;
+ * final String signature = checksum.getSha256(value);
+ * final String test = checksum.getSha256(integer);
+ * 
+ * Assert.assertTrue(checksum.check(value, signature));
+ * Assert.assertFalse(checksum.check(other, signature));
+ * Assert.assertTrue(checksum.check(integer, test));
+ * </pre>
  */
 public final class Checksum
 {

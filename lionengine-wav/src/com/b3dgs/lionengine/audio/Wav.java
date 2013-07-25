@@ -10,6 +10,28 @@ import com.b3dgs.lionengine.Align;
  * <li>Volume</li>
  * <li>Channel</li>
  * </ul>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Wav sound = AudioWav.loadWav(Media.get(&quot;sound.wav&quot;));
+ * sound.setVolume(100);
+ * 
+ * sound.setAlignment(Align.LEFT);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.setAlignment(Align.CENTER);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.setAlignment(Align.RIGHT);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.stop();
+ * </pre>
  */
 public interface Wav
 {

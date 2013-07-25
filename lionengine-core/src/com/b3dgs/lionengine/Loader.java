@@ -8,6 +8,18 @@ import com.b3dgs.lionengine.input.Mouse;
  * Engine starter, need to be called for sequence selection and screen initializer. It already handles a screen using a
  * specified configuration. Any implemented sequence has to be added into the loader. It just needs a single instance, a
  * first sequence reference, and a call to start(), in the main.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
+ * final Display internal = new Display(320, 240, 16, 60);
+ * final Display external = new Display(640, 480, 16, 60);
+ * final Config config = new Config(internal, external, true);
+ * final Loader loader = new Loader(config);
+ * loader.start(new Scene(loader));
+ * </pre>
  */
 public final class Loader
 {

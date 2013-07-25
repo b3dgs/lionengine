@@ -2,6 +2,15 @@ package com.b3dgs.lionengine;
 
 /**
  * Utility class check.
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * Check.argument(value &gt; 0, &quot;Value was not positive:&quot;, String.valueOf(value));
+ * final Object object = null;
+ * Check.notNull(object, &quot;Object is null !&quot;);
+ * </pre>
  */
 public final class Check
 {

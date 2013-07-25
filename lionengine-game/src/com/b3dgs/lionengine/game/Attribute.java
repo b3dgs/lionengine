@@ -3,9 +3,12 @@ package com.b3dgs.lionengine.game;
 /**
  * Can describe an attribute (vitality, agility...). For fast and light development, it is recommended to make public
  * final instantiation, as it already purposes set & get functions.
+ * <p>
+ * Example:
+ * </p>
  * 
  * <pre>
- * Attribute vitality = new Attribute();
+ * final Attribute vitality = new Attribute();
  * vitality.set(1);
  * vitality.increase(2);
  * System.out.println(vitality.get()); // print 3

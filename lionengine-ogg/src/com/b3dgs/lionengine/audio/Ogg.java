@@ -1,7 +1,20 @@
 package com.b3dgs.lionengine.audio;
 
+
 /**
  * Handle music routine. A music is an heavy sound, designed to be played once (loop or not).
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Ogg ogg = AudioOgg.loadOgg(Media.get(&quot;music.ogg&quot;));
+ * ogg.setVolume(100);
+ * ogg.play(false);
+ * 
+ * Thread.sleep(2000);
+ * ogg.stop();
+ * </pre>
  */
 public interface Ogg
 {

@@ -22,6 +22,18 @@ import com.b3dgs.lionengine.Graphic;
  * <li>Create the sprite.</li>
  * <li>Call {@link #load(boolean)} (this function will load the surface)</li>
  * </ul>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * // Load
+ * final Sprite sprite = Drawable.loadSprite(Media.get(&quot;sprite.png&quot;));
+ * sprite.load(false);
+ * 
+ * // Render
+ * sprite.render(g, 64, 280);
+ * </pre>
  */
 public interface Sprite
         extends Image

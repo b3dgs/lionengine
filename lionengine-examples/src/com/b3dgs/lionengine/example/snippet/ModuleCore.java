@@ -1,6 +1,5 @@
 package com.b3dgs.lionengine.example.snippet;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 
@@ -19,7 +18,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Strings;
 import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.Theme;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
@@ -83,11 +81,6 @@ public class ModuleCore
         final Config config = new Config(internal, external, true);
     }
 
-    void engine()
-    {
-        Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
-    }
-
     void imageInfo()
     {
         final ImageInfo info = ImageInfo.get(Media.get("dot.png"));
@@ -98,7 +91,7 @@ public class ModuleCore
 
     void loader()
     {
-        Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
         final Display internal = new Display(320, 240, 16, 60);
         final Display external = new Display(640, 480, 16, 60);
         final Config config = new Config(internal, external, true);
@@ -157,9 +150,18 @@ public class ModuleCore
 
     void text()
     {
-        final Text text = new Text(Font.SANS_SERIF, 16, Text.NORMAL);
-        text.setColor(Color.BLUE);
-        text.draw(g, 0, 0, Align.CENTER, "Text");
+        // Create the text
+        Text text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+
+        // Rendering type 1
+        text.setText("Hello");
+        text.setLocation(0, 0);
+        text.setAlign(Align.CENTER);
+        text.render(g);
+
+        // Rendering type 2
+        text.draw(g, 0, 0, "World");
+
     }
 
     void timing() throws InterruptedException
