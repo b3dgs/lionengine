@@ -30,12 +30,11 @@ public abstract class ForegroundPlatform
 
     /**
      * Background updates.
-     * 
+     * @param extrp The extrapolation value.
      * @param speed The scrolling speed.
      * @param y The foreground y.
-     * @param extrp The extrapolation value.
      */
-    public void update(double speed, double y, double extrp)
+    public void update(double extrp, double speed, double y)
     {
         for (int i = 0; i < numberOfComponents; i++)
         {

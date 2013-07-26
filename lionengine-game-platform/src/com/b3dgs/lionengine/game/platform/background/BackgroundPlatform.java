@@ -92,7 +92,7 @@ public abstract class BackgroundPlatform
      */
 
     @Override
-    public final void update(double speed, double y, double extrp)
+    public final void update(double extrp, double speed, double y)
     {
         final int lowest = totalHeight;
         final double currentY = UtilityMath.fixBetween(y, minY, maxY);

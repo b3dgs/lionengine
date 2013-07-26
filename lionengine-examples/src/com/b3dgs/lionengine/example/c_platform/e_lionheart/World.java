@@ -56,8 +56,8 @@ public class World
         valdyn.updateControl(keyboard);
         valdyn.update(extrp);
         camera.follow(valdyn);
-        background.update(camera.getMovementHorizontal(), camera.getLocationY(), extrp);
-        foreground.update(camera.getMovementHorizontal(), camera.getLocationY(), extrp);
+        background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
+        foreground.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
     }
 
     @Override
@@ -76,6 +76,8 @@ public class World
         camera.setLimits(map);
         camera.setIntervals(32, 0);
         valdyn.setLocation(512, 128);
+        camera.follow(valdyn);
+        camera.resetInterval();
     }
 
     @Override

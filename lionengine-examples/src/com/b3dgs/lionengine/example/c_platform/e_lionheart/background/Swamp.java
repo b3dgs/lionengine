@@ -64,12 +64,12 @@ public class Swamp
         private final int w;
         /** Screen wide flag. */
         private final boolean wide;
-        /** Flickering timer value. */
-        private long background;
         /** Flickering flag. */
         private final boolean flickering;
+        /** Flickering counter. */
+        private int flickerCount;
         /** Flickering type. */
-        private boolean type;
+        private boolean flickerType;
 
         /**
          * Constructor.
@@ -89,6 +89,7 @@ public class Swamp
             {
                 backcolorA = createElement(path, "backcolor_a.png", 0, 22, false);
                 backcolorB = createElement(path, "backcolor_b.png", 0, 22, false);
+                flickerCount = 0;
             }
             else
             {
@@ -122,10 +123,12 @@ public class Swamp
                     mountainSprite.getWidth()));
             mountain.setOffsetY(y);
 
-            if (UtilityMath.time() - background > 16)
+            if (flickering)
             {
-                background = UtilityMath.time();
-                type = !type;
+                flickerCount = (flickerCount + 1) % 2;
+                if (flickerCount == 0) {
+                    flickerType = !flickerType;
+                }
             }
         }
 
@@ -133,8 +136,8 @@ public class Swamp
         public void render(Graphic g)
         {
             // Render back background first
-            Sprite sprite;
-            if (type || !flickering)
+            final Sprite sprite;
+            if (flickerType || !flickering)
             {
                 sprite = (Sprite) backcolorA.getSprite();
             }

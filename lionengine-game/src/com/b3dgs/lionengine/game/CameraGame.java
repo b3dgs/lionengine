@@ -112,6 +112,14 @@ public class CameraGame
     {
         setLocation(localizable.getLocationX(), localizable.getLocationY());
     }
+    
+    /**
+     * Reset the camera interval to 0 by adapting its position.
+     */
+    public void resetInterval()
+    {
+        moveLocation(1.0, -offset.getLocationX() / 2.0, -offset.getLocationY() / 2.0);
+    }
 
     /**
      * Get the horizontal viewpoint from the object location. This is the horizontal point considering the camera as
