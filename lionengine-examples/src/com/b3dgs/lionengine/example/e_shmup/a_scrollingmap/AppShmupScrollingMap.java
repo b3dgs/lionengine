@@ -20,7 +20,7 @@ public class AppShmupScrollingMap
      */
     private AppShmupScrollingMap()
     {
-        // Nothing to do
+        throw new RuntimeException();
     }
 
     /**

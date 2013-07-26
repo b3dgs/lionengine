@@ -19,7 +19,7 @@ public class AppPong
      */
     private AppPong()
     {
-        // Nothing to do
+        throw new RuntimeException();
     }
 
     /**

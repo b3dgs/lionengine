@@ -56,6 +56,7 @@ public class Racket
         increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         setLocation(x, y);
+        timerRandomMovement.start();
     }
 
     /**
