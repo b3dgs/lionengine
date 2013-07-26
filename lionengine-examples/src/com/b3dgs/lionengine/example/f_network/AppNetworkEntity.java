@@ -5,8 +5,6 @@ import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Theme;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 
 // Tutorial: Platform Entity Control
@@ -23,7 +21,7 @@ public class AppNetworkEntity
      */
     private AppNetworkEntity()
     {
-        // Nothing to do
+        throw new RuntimeException();
     }
 
     /**
@@ -34,8 +32,7 @@ public class AppNetworkEntity
     public static void main(String argv[])
     {
         // Start engine
-        Engine.start("Entity control", Version.create(1, 0, 0), Media.getPath("resources", "platform"),
-                Verbose.CRITICAL, Theme.SYSTEM);
+        Engine.start("Entity control", Version.create(1, 0, 0), Media.getPath("resources", "platform"));
 
         // Displays
         final Display internal = new Display(320, 240, 16, 60);

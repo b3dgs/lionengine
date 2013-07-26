@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
 /**
  * Factory network message description.
  */
-public class MessageFactory
+class MessageFactory
         extends NetworkMessageEntity<TypeEntity>
 {
     /**

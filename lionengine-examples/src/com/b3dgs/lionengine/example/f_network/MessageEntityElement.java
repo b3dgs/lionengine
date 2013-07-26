@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.f_network;
 /**
  * List of actions shared.
  */
-public enum MessageEntityElement
+enum MessageEntityElement
 {
     /** Up flag (boolean). */
     UP,

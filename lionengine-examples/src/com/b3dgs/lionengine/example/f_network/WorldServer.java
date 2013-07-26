@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.network.world.NetworkedWorldServer;
 /**
  * World implementation using AbstractWorld.
  */
-public class WorldServer
+class WorldServer
         extends World<NetworkedWorldModelServer>
         implements NetworkedWorldServer
 {
@@ -52,6 +52,7 @@ public class WorldServer
             handler.add(goomba);
             addNetworkable(goomba);
         }
+        map.adjustCollisions();
     }
 
     /*

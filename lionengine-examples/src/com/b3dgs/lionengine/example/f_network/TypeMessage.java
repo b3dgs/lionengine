@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.f_network;
 /**
  * Networked messages enum type.
  */
-public enum TypeMessage
+enum TypeMessage
 {
     /** Chat message. */
     MESSAGE_CHAT,

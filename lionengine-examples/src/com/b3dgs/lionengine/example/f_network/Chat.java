@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
 /**
  * Chat implementation.
  */
-public class Chat
+class Chat
         extends NetworkChat
         implements ConnectionListener
 {

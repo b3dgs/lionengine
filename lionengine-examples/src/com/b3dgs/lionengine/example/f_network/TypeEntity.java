@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.f_network;
 /**
  * List of entity types. Lower case is preferred, as the name has to be the same with its corresponding files.
  */
-public enum TypeEntity
+enum TypeEntity
 {
     /** Mario. */
     mario,

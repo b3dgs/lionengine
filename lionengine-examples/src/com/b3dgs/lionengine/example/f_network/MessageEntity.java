@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.utility.UtilityConversion;
 /**
  * Entity network message description.
  */
-public class MessageEntity
+class MessageEntity
         extends NetworkMessageEntity<MessageEntityElement>
 {
     /**

@@ -35,6 +35,8 @@ public abstract class Entity
     protected final Force jumpForce;
     /** Extra time for jump before fall. */
     protected final Timing timerExtraJump;
+    /** Map reference. */
+    private final Map map;
     /** Network model. */
     private final NetworkableModel networkableModel;
     /** Send correct location timer. */
@@ -79,6 +81,7 @@ public abstract class Entity
     {
         super(setup, map);
         this.type = type;
+        this.map = map;
         animIdle = getAnimation("idle");
         animWalk = getAnimation("walk");
         animDie = getAnimation("die");
@@ -92,9 +95,8 @@ public abstract class Entity
         networkLocation = new Timing();
         networkLocation.start();
         state = EntityState.IDLE;
-        setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
-        setMass(2.5);
-        setFrameOffsets(-getWidth() / 2, getHeight());
+        setMass(getDataDouble("mass", "data"));
+        setFrameOffsets(getWidth() / 2, 1);
     }
 
     /**
@@ -107,27 +109,46 @@ public abstract class Entity
         return type;
     }
 
-    @Override
-    protected void handleActions(double extrp)
+    /**
+     * Check the map limit and apply collision if necessary.
+     */
+    private void checkMapLimit()
     {
-        // Update movement key
-        movementForceDest.setForce(0.0, 0.0);
-        if (right)
+        final int limitLeft = 0;
+        if (getLocationX() < limitLeft)
         {
-            movementForceDest.setForce(movementSpeedValue, 0.0);
+            setLocationX(limitLeft);
+            resetMovementSpeed();
         }
-        if (left)
+        final int limitRight = map.getWidthInTile() * map.getTileWidth();
+        if (getLocationX() > limitRight)
         {
-            movementForceDest.setForce(-movementSpeedValue, 0.0);
+            setLocationX(limitRight);
+            resetMovementSpeed();
         }
+    }
 
-        // Check mirror
-        if (getDiffHorizontal() != 0.0)
+    /**
+     * Update the forces depending of the pressed key.
+     */
+    private void updateForces()
+    {
+        movementForceDest.setForce(Force.ZERO);
+        final double speed;
+        if (right && !left)
         {
-            mirror(getDiffHorizontal() < 0.0);
+            speed = movementSpeedValue;
         }
+        else if (left && !right)
+        {
+            speed = -movementSpeedValue;
+        }
+        else
+        {
+            speed = 0.0;
+        }
+        movementForceDest.setForce(speed, 0.0);
 
-        // Update jump key
         if (up && canJump())
         {
             jumpForce.setForce(0.0, jumpForceValue);
@@ -135,22 +156,35 @@ public abstract class Entity
             coll = EntityCollision.NONE;
             timerExtraJump.stop();
         }
+    }
 
-        // Update states
+    /**
+     * Update entity states.
+     */
+    private void updateStates()
+    {
+        final double diffHorizontal = getDiffHorizontal();
         stateOld = state;
+
+        if (diffHorizontal != 0.0)
+        {
+            mirror(diffHorizontal < 0.0);
+        }
+
+        final boolean mirror = getMirror();
         if (!isOnGround())
         {
             state = EntityState.JUMP;
         }
-        else if (getMirror() && right && getDiffHorizontal() < 0.0)
+        else if (mirror && right && diffHorizontal < 0.0)
         {
             state = EntityState.TURN;
         }
-        else if (!getMirror() && left && getDiffHorizontal() > 0.0)
+        else if (!mirror && left && diffHorizontal > 0.0)
         {
             state = EntityState.TURN;
         }
-        else if (getDiffHorizontal() != 0.0)
+        else if (diffHorizontal != 0.0)
         {
             state = EntityState.WALK;
         }
@@ -164,6 +198,58 @@ public abstract class Entity
         }
     }
 
+    /**
+     * Check the horizontal collision.
+     * 
+     * @param offsetX The horizontal offset (leg).
+     */
+    private void checkHorizontal(int offsetX)
+    {
+        final Tile tile = collisionCheck(offsetX, 1, TileCollision.COLLISION_HORIZONTAL);
+        if (tile != null)
+        {
+            final Double x = tile.getCollisionX(this);
+            if (applyHorizontalCollision(x))
+            {
+                resetMovementSpeed();
+                onHorizontalCollision();
+            }
+        }
+    }
+
+    /**
+     * Check the vertical collision.
+     * 
+     * @param offsetX The horizontal offset (leg).
+     */
+    private void checkVertical(int offsetX)
+    {
+        final Tile tile = collisionCheck(offsetX, 0, TileCollision.COLLISION_VERTICAL);
+        if (tile != null)
+        {
+            final Double y = tile.getCollisionY(this);
+            if (applyVerticalCollision(y))
+            {
+                jumpForce.setForce(Force.ZERO);
+                resetGravity();
+                coll = EntityCollision.GROUND;
+                // Start timer to allow entity to have an extra jump area before falling
+                timerExtraJump.start();
+            }
+            else
+            {
+                coll = EntityCollision.NONE;
+            }
+        }
+    }
+
+    @Override
+    protected void handleActions(double extrp)
+    {
+        updateForces();
+        updateStates();
+    }
+
     @Override
     protected void handleMovements(double extrp)
     {
@@ -174,66 +260,23 @@ public abstract class Entity
     @Override
     protected void handleCollisions(double extrp)
     {
-        // Vertical checks
-        checkCollisionVertical(collisionCheck(-6, 0, TileCollision.GROUND, TileCollision.BLOCK));
-        checkCollisionVertical(collisionCheck(0, 0, TileCollision.GROUND, TileCollision.BLOCK));
-        checkCollisionVertical(collisionCheck(6, 0, TileCollision.GROUND, TileCollision.BLOCK));
+        checkMapLimit();
 
-        // Horizontal checks
-        if (getDiffHorizontal() < 0.0)
+        // Horizontal collision
+        if (getDiffHorizontal() < 0)
         {
-            checkCollisionHorizontal(
-                    collisionCheck(-6, 0, TileCollision.WALL, TileCollision.GROUND, TileCollision.BLOCK), -6);
+            checkHorizontal(-5); // Left leg
         }
-        if (getDiffHorizontal() > 0.0)
+        else if (getDiffHorizontal() > 0)
         {
-            checkCollisionHorizontal(
-                    collisionCheck(6, 0, TileCollision.WALL, TileCollision.GROUND, TileCollision.BLOCK), 6);
+            checkHorizontal(5); // Right leg
         }
 
-        // Entity collide box
-        updateCollision(0, 0, getWidth(), getHeight());
-    }
-
-    /**
-     * Check vertical axis.
-     * 
-     * @param tile The tile to check.
-     */
-    private void checkCollisionVertical(Tile tile)
-    {
-        if (tile != null)
+        // Vertical collision
+        if (getDiffVertical() < 0)
         {
-            final Integer c = tile.getCollisionLocationY(getLocationOldY(), getLocationY(), getLocationX());
-            if (c != null)
-            {
-                resetGravity();
-                jumpForce.setForce(Entity.ZERO_FORCE);
-                applyVerticalCollision(c);
-                coll = EntityCollision.GROUND;
-                // Start timer to allow entity to have an extra jump area before falling
-                timerExtraJump.start();
-            }
-        }
-    }
-
-    /**
-     * Check horizontal axis.
-     * 
-     * @param tile The tile to check.
-     * @param offset The offset value.
-     */
-    private void checkCollisionHorizontal(Tile tile, int offset)
-    {
-        if (tile != null)
-        {
-            final Integer c = tile.getCollisionLocationX(getLocationOldX(), getLocationX(), getLocationY(), offset);
-            if (c != null)
-            {
-                stopMovement();
-                applyHorizontalCollision(c);
-                onHorizontalCollision();
-            }
+            checkVertical(-5); // Left leg
+            checkVertical(5); // Right leg
         }
     }
 
@@ -341,7 +384,7 @@ public abstract class Entity
     /**
      * Set to zero movement speed force.
      */
-    protected void stopMovement()
+    protected void resetMovementSpeed()
     {
         movementForce.setForce(Entity.ZERO_FORCE);
         movementForceDest.setForce(Entity.ZERO_FORCE);

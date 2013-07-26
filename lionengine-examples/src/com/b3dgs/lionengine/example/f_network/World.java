@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;
  * 
  * @param <N> The network type.
  */
-public abstract class World<N extends NetworkedWorldModel<?, ?>>
+abstract class World<N extends NetworkedWorldModel<?, ?>>
         extends WorldGame
         implements NetworkedWorld
 {

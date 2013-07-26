@@ -19,7 +19,7 @@ import com.b3dgs.lionengine.network.world.NetworkedWorldModelClient;
 /**
  * World implementation using AbstractWorld.
  */
-public class WorldClient
+class WorldClient
         extends World<NetworkedWorldModelClient>
         implements NetworkedWorldClient, Networkable
 {
@@ -113,6 +113,7 @@ public class WorldClient
         super.loaded();
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
+        map.adjustCollisions();
     }
 
     /*

@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.f_network;
 /**
  * List of entity states.
  */
-public enum EntityState
+enum EntityState
 {
     /** Idle state. */
     IDLE,

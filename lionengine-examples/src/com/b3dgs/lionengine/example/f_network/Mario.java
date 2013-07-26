@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Implementation of our controllable entity.
  */
-public class Mario
+class Mario
         extends Entity
 {
     /** Animation turn. */
@@ -182,7 +182,7 @@ public class Mario
     public void doKill()
     {
         dead = true;
-        stopMovement();
+        resetMovementSpeed();
         locationDie = getLocationY();
         stepDie = 0;
         timerDie.start();

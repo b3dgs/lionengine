@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.Sequence;
 /**
  * Game loop designed to handle our little world.
  */
-public class Scene
+class Scene
         extends Sequence
 {
     /** World server reference. */

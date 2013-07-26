@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 /**
  * The decoder implementation.
  */
-public class MessageDecoder
+class MessageDecoder
         implements NetworkMessageDecoder
 {
     @Override

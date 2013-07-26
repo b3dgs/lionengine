@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 /**
  * Handler implementation. All of our entity will be handled here.
  */
-public class HandlerEntity
+class HandlerEntity
         extends HandlerEntityPlatform<Entity>
 {
     /** The mario clients. */

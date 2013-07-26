@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Goomba implementation.
  */
-public class Goomba
+class Goomba
         extends Entity
 {
     /** Die timer. */
@@ -127,7 +127,7 @@ public class Goomba
         dead = true;
         right = false;
         left = false;
-        stopMovement();
+        resetMovementSpeed();
         timerDie.start();
     }
 

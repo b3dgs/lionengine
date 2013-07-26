@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
-public class FactoryEntity
+class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
     /** Main entity directory name. */

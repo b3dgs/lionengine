@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.network.purview.NetworkedInput;
 /**
  * Client input listener.
  */
-public class ClientInput
+class ClientInput
         extends NetworkedInput
 {
     /**
