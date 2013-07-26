@@ -1,8 +1,8 @@
 ## Presentation
 
-The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionheart_remake) for an easy Java use. The engine is as a library, in Jar format (including its javadoc), which can be included in any project; for utility class uses, or to directly implement and inherit a game skeleton (_including management of frame rate, extrapolation, input output..._).
+The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionheart_remake) for an easy Java use. The engine is as a library, in Jar format (including its javadoc), which can be included in any project; for utility class uses, or to directly implement and inherit a game skeleton ( _including management of frame rate, extrapolation, input output..._).
 
-Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management (_images, sprites, animations, tiles..._). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available (Wav, Midi, and more using plug-ins, such as Sc68 and Ogg). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
+Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management ( _images_, _sprites_, _animations_, _tiles_...). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available ( _Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Ogg_). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games.
 
