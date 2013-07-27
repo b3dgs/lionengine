@@ -73,18 +73,23 @@ public final class Tile
     @Override
     public TypeCollision getCollisionFrom(String collision, String type)
     {
-        color = TypeTileColor.valueOf(collision);
-
-        final TypeCollision tileCollision = TypeCollision.valueOf(type);
-        if (TypeCollision.TREE == tileCollision)
+        try
         {
-            if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
+            final TypeCollision tileCollision = TypeCollision.valueOf(type);
+            if (TypeCollision.TREE == tileCollision)
             {
-                tree = Tile.VALUES[getNumber() - (125 + offset)];
+                if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
+                {
+                    tree = Tile.VALUES[getNumber() - (125 + offset)];
+                }
             }
+            color = TypeTileColor.valueOf(collision);
+            return tileCollision;
         }
-
-        return tileCollision;
+        catch (NullPointerException exception)
+        {
+            return TypeCollision.NONE;
+        }
     }
 
     @Override
