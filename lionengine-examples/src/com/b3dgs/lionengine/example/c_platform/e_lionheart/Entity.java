@@ -18,15 +18,21 @@ public abstract class Entity
     /** Desired fps value. */
     protected final int desiredFps;
     /** Jump force. */
-    protected double jumpForceValue;
+    protected double jumpHeightMax;
     /** Movement max speed. */
-    protected double movementSpeedValue;
+    protected double movementSpeedMax;
     /** Movement force force. */
     protected final Force movementForce;
     /** Movement force destination force. */
     protected final Force movementForceDest;
     /** Movement jump force. */
     protected final Force jumpForce;
+    /** Smooth speed value. */
+    private final double smoothSpeed;
+    /** Sensibility increase value. */
+    private final double sensibilityIncrease;
+    /** Sensibility decrease value. */
+    private final double sensibilityDecrease;
     /** Map reference. */
     protected final Map map;
     /** Animation idle. */
@@ -53,6 +59,12 @@ public abstract class Entity
     protected EntityState stateOld;
     /** Collision state. */
     protected EntityCollision coll;
+    /** Dead timer. */
+    protected final Timing timerDie;
+    /** Dead step. */
+    protected int stepDie;
+    /** Die location. */
+    protected double locationDie;
     /** Dead flag. */
     protected boolean dead;
 
@@ -66,23 +78,44 @@ public abstract class Entity
     public Entity(SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map);
+        this.map = map;
+        this.desiredFps = desiredFps;
+        setFrameOffsets(getWidth() / 2, -8);
+        setMass(getDataDouble("mass", "data"));
+        movementSpeedMax = getDataDouble("speedMax", "data", "movement");
+        smoothSpeed = getDataDouble("smooth", "data", "movement");
+        sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
+        sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
+        jumpHeightMax = getDataDouble("heightMax", "data", "jump");
         animIdle = getAnimation("idle");
         animWalk = getAnimation("walk");
         animJump = getAnimation("jump");
         animDie = getAnimation("die");
-        jumpForceValue = getDataDouble("jumpSpeed", "data");
-        movementSpeedValue = getDataDouble("movementSpeed", "data");
-        this.map = map;
-        this.desiredFps = desiredFps;
         movementForce = new Force();
         movementForceDest = new Force();
         jumpForce = new Force();
         timerExtraJump = new Timing();
+        timerDie = new Timing();
         state = EntityState.IDLE;
         stateOld = state;
-        setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(getWidth() / 2, -8);
     }
+    
+    /**
+     * Kill entity.
+     */
+    public void kill()
+    {
+        dead = true;
+        resetMovementSpeed();
+        locationDie = getLocationY();
+        stepDie = 0;
+        timerDie.start();
+    }
+    
+    /**
+     * Update the entity in dead case.
+     */
+    protected abstract void updateDead();
 
     /**
      * Update the forces depending of the pressed key.
@@ -93,11 +126,11 @@ public abstract class Entity
         final double speed;
         if (right && !left)
         {
-            speed = movementSpeedValue;
+            speed = movementSpeedMax;
         }
         else if (left && !right)
         {
-            speed = -movementSpeedValue;
+            speed = -movementSpeedMax;
         }
         else
         {
@@ -107,10 +140,31 @@ public abstract class Entity
 
         if (up && canJump())
         {
-            jumpForce.setForce(0.0, jumpForceValue);
+            jumpForce.setForce(0.0, jumpHeightMax);
             coll = EntityCollision.NONE;
             timerExtraJump.stop();
         }
+    }
+
+    /**
+     * Update the movement by using the defined forces.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateMovement(double extrp)
+    {
+        // Smooth walking speed...
+        final double sensibility;
+        if (right || left)
+        {
+            sensibility = sensibilityIncrease;
+        }
+        // ...but quick stop
+        else
+        {
+            sensibility = sensibilityDecrease;
+        }
+        movementForce.reachForce(extrp, movementForceDest, smoothSpeed, sensibility);
     }
 
     /**
@@ -185,6 +239,14 @@ public abstract class Entity
     {
         updateGravity(extrp, desiredFps, movementForce, jumpForce);
         updateMirror();
+        if (!dead)
+        {
+            updateMovement(extrp);
+        }
+        else
+        {
+            updateDead();
+        }
     }
 
     @Override
