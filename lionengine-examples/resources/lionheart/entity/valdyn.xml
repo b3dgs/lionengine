@@ -2,12 +2,14 @@
 <entity name="valdyn" surface="valdyn.png">
 	<frames horizontal="13" vertical="12"/>
 	<size width="80" height="80"/>
-	<data mass="3.0">
-		<movement speedMax="3.0" smooth="0.2" sensibilityIncrease="0.5" sensibilityDecrease="0.1" />
-		<jump heightMax="9.0" />
+	<data mass="1.85" fallenDuration="150">
+		<movement speedMax="2.5" smooth="0.15" sensibilityIncrease="0.5" sensibilityDecrease="0.1" />
+		<jump heightMax="7.0" />
 	</data>
-	<animation name="idle" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
-	<animation name="walk" start="26" end="35" step="1" speed="0.25" reversed="false" repeat="true"/>
-	<animation name="jump" start="17" end="19" step="1" speed="0.125" reversed="false" repeat="false"/>
-	<animation name="die" start="67" end="69" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="fallen" start="21" end="21" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="walk" start="26" end="35" speed="0.25" reversed="false" repeat="true"/>
+	<animation name="jump" start="17" end="19" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="fall" start="20" end="20" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
 </entity>

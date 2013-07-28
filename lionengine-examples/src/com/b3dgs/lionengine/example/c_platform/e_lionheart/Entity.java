@@ -5,6 +5,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
@@ -15,58 +16,70 @@ import com.b3dgs.lionengine.game.platform.EntityPlatform;
 public abstract class Entity
         extends EntityPlatform<TileCollision, Tile>
 {
+    /** Map reference. */
+    protected final Map map;
     /** Desired fps value. */
     protected final int desiredFps;
-    /** Jump force. */
-    protected double jumpHeightMax;
-    /** Movement max speed. */
-    protected double movementSpeedMax;
-    /** Movement force force. */
-    protected final Force movementForce;
-    /** Movement force destination force. */
-    protected final Force movementForceDest;
     /** Movement jump force. */
     protected final Force jumpForce;
+    /** Extra time for jump before fall. */
+    protected final Timing timerExtraJump;
+    /** Dead timer. */
+    protected final Timing timerDie;
+    /** Fall timer (timer used to know when its the falling state). */
+    private final Timing timerFall;
+    /** Fallen timer. */
+    private final Timing timerFallen;
+    /** Movement force force. */
+    private final Force movementForce;
+    /** Movement force destination force. */
+    private final Force movementForceDest;
     /** Smooth speed value. */
     private final double smoothSpeed;
     /** Sensibility increase value. */
     private final double sensibilityIncrease;
     /** Sensibility decrease value. */
     private final double sensibilityDecrease;
-    /** Map reference. */
-    protected final Map map;
+    /** Fallen duration in milli. */
+    private final int fallenDuration;
     /** Animation idle. */
     private final Animation animIdle;
     /** Animation walk. */
     private final Animation animWalk;
     /** Animation jump. */
     private final Animation animJump;
+    /** Animation fall. */
+    private final Animation animFall;
+    /** Animation fallen. */
+    private final Animation animFallen;
     /** Animation die. */
     private final Animation animDie;
-    /** Extra time for jump before fall. */
-    protected final Timing timerExtraJump;
+    /** Jump force. */
+    protected double jumpHeightMax;
     /** Key right state. */
     protected boolean right;
     /** Key left state. */
     protected boolean left;
     /** Key up state. */
     protected boolean up;
-    /** Current animation. */
-    protected Animation animCur;
-    /** Entity state. */
-    protected EntityState state;
-    /** Entity old state. */
-    protected EntityState stateOld;
-    /** Collision state. */
-    protected EntityCollision coll;
-    /** Dead timer. */
-    protected final Timing timerDie;
     /** Dead step. */
     protected int stepDie;
-    /** Die location. */
-    protected double locationDie;
+    /** Current animation. */
+    private Animation animCur;
+    /** Entity state. */
+    private EntityState state;
+    /** Entity old state. */
+    private EntityState stateOld;
+    /** Collision state. */
+    private EntityCollision coll;
+    /** Collision old state. */
+    private EntityCollision collOld;
+    /** Movement max speed. */
+    private double movementSpeedMax;
     /** Dead flag. */
-    protected boolean dead;
+    private boolean dead;
+    /** Die location. */
+    private Coord dieLocation;
 
     /**
      * Standard constructor.
@@ -82,24 +95,52 @@ public abstract class Entity
         this.desiredFps = desiredFps;
         setFrameOffsets(getWidth() / 2, -8);
         setMass(getDataDouble("mass", "data"));
+        setGravityMax(16);
         movementSpeedMax = getDataDouble("speedMax", "data", "movement");
         smoothSpeed = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
         jumpHeightMax = getDataDouble("heightMax", "data", "jump");
+        fallenDuration = getDataInteger("fallenDuration", "data");
         animIdle = getAnimation("idle");
         animWalk = getAnimation("walk");
         animJump = getAnimation("jump");
+        animFall = getAnimation("fall");
+        animFallen = getAnimation("fallen");
         animDie = getAnimation("die");
+        dieLocation = new Coord();
         movementForce = new Force();
         movementForceDest = new Force();
         jumpForce = new Force();
         timerExtraJump = new Timing();
         timerDie = new Timing();
+        timerFall = new Timing();
+        timerFallen = new Timing();
         state = EntityState.IDLE;
         stateOld = state;
+        coll = EntityCollision.NONE;
+        collOld = coll;
     }
-    
+
+    /**
+     * Called when this is hit by another entity.
+     * 
+     * @param entity The entity hit.
+     */
+    public abstract void hitBy(Entity entity);
+
+    /**
+     * Called when this hit that.
+     * 
+     * @param entity The entity hit.
+     */
+    public abstract void hitThat(Entity entity);
+
+    /**
+     * Update the entity in dead case.
+     */
+    protected abstract void updateDead();
+
     /**
      * Kill entity.
      */
@@ -107,15 +148,97 @@ public abstract class Entity
     {
         dead = true;
         resetMovementSpeed();
-        locationDie = getLocationY();
+        dieLocation.set(getLocationX(), getLocationY());
         stepDie = 0;
         timerDie.start();
     }
-    
+
     /**
-     * Update the entity in dead case.
+     * Check if hero can jump.
+     * 
+     * @return <code>true</code> if can jump, <code>false</code> else.
      */
-    protected abstract void updateDead();
+    public boolean canJump()
+    {
+        return isOnGround() || timerExtraJump.isStarted() && !timerExtraJump.elapsed(50);
+    }
+
+    /**
+     * Check if hero is jumping.
+     * 
+     * @return <code>true</code> if jumping, <code>false</code> else.
+     */
+    public boolean isJumping()
+    {
+        return !isOnGround() && getLocationY() > getLocationOldY();
+    }
+
+    /**
+     * Check if hero is falling.
+     * 
+     * @return <code>true</code> if falling, <code>false</code> else.
+     */
+    public boolean isFalling()
+    {
+        return !isOnGround() && getLocationY() < getLocationOldY() && timerFall.elapsed(100);
+    }
+
+    /**
+     * Check if hero is on ground.
+     * 
+     * @return <code>true</code> if on ground, <code>false</code> else.
+     */
+    public boolean isOnGround()
+    {
+        return coll == EntityCollision.GROUND;
+    }
+
+    /**
+     * Check if entity is dead.
+     * 
+     * @return <code>true</code> if dead, <code>false</code> else.
+     */
+    public boolean isDead()
+    {
+        return dead;
+    }
+
+    /**
+     * Set the dead status.
+     * 
+     * @param state <code>true</code> if dead, <code>false</code> else.
+     */
+    protected void setDead(boolean state)
+    {
+        dead = state;
+    }
+
+    /**
+     * Get the die location. This is where the entity is dead.
+     * 
+     * @return The die location.
+     */
+    protected Coord getDieLocation()
+    {
+        return dieLocation;
+    }
+
+    /**
+     * Set to zero movement speed force.
+     */
+    protected void resetMovementSpeed()
+    {
+        movementForce.setForce(Force.ZERO);
+        movementForceDest.setForce(Force.ZERO);
+    }
+
+    /**
+     * Called when an horizontal collision occurred.
+     */
+    protected void onHorizontalCollision()
+    {
+        // Nothing to do
+    }
 
     /**
      * Update the forces depending of the pressed key.
@@ -168,6 +291,43 @@ public abstract class Entity
     }
 
     /**
+     * Update the fall calculation (timer used to know when the entity is truly falling).
+     */
+    private void updateFall()
+    {
+        final double diffVertical = getDiffVertical();
+        if (!timerFall.isStarted())
+        {
+            if (diffVertical < 0.0)
+            {
+                timerFall.start();
+            }
+        }
+        else if (diffVertical >= 0.0)
+        {
+            timerFall.stop();
+        }
+    }
+
+    /**
+     * Update the fallen calculation (timer used to know the fallen time duration).
+     */
+    private void updateFallen()
+    {
+        if (!timerFallen.isStarted())
+        {
+            if (collOld == EntityCollision.NONE && coll == EntityCollision.GROUND)
+            {
+                timerFallen.start();
+            }
+        }
+        else if (timerFallen.elapsed(fallenDuration))
+        {
+            timerFallen.stop();
+        }
+    }
+
+    /**
      * Update entity states.
      */
     private void updateStates()
@@ -175,31 +335,41 @@ public abstract class Entity
         final double diffHorizontal = getDiffHorizontal();
         stateOld = state;
 
-        if (diffHorizontal != 0.0)
+        if (!isDead() && diffHorizontal != 0.0)
         {
             mirror(diffHorizontal < 0.0);
         }
 
+        updateFall();
+        updateFallen();
+
         final boolean mirror = getMirror();
-        if (!isOnGround())
+        if (isFalling())
+        {
+            state = EntityState.FALL;
+        }
+        else if (isJumping())
         {
             state = EntityState.JUMP;
         }
-        else if (mirror && right && diffHorizontal < 0.0)
+        else if (timerFallen.isStarted())
         {
-            state = EntityState.TURN;
+            state = EntityState.FALLEN;
         }
-        else if (!mirror && left && diffHorizontal > 0.0)
+        else if (isOnGround())
         {
-            state = EntityState.TURN;
-        }
-        else if (diffHorizontal != 0.0)
-        {
-            state = EntityState.WALK;
-        }
-        else
-        {
-            state = EntityState.IDLE;
+            if ((mirror && right && diffHorizontal < 0.0 || !mirror && left && diffHorizontal > 0.0))
+            {
+                state = EntityState.TURN;
+            }
+            else if (diffHorizontal != 0.0)
+            {
+                state = EntityState.WALK;
+            }
+            else
+            {
+                state = EntityState.IDLE;
+            }
         }
         if (dead)
         {
@@ -223,41 +393,6 @@ public abstract class Entity
         {
             setLocationX(limitRight);
             resetMovementSpeed();
-        }
-    }
-
-    @Override
-    protected void handleActions(double extrp)
-    {
-        updateForces();
-        updateStates();
-
-    }
-
-    @Override
-    protected void handleMovements(double extrp)
-    {
-        updateGravity(extrp, desiredFps, movementForce, jumpForce);
-        updateMirror();
-        if (!dead)
-        {
-            updateMovement(extrp);
-        }
-        else
-        {
-            updateDead();
-        }
-    }
-
-    @Override
-    protected void handleCollisions(double extrp)
-    {
-        checkMapLimit();
-
-        // Vertical collision
-        if (getDiffVertical() < 0 || isOnGround())
-        {
-            checkCollisionVertical(0);
         }
     }
 
@@ -302,6 +437,49 @@ public abstract class Entity
         }
     }
 
+    /*
+     * Entity
+     */
+
+    @Override
+    protected void handleActions(double extrp)
+    {
+        updateForces();
+        updateStates();
+    }
+
+    @Override
+    protected void handleMovements(double extrp)
+    {
+        updateGravity(extrp, desiredFps, movementForce, jumpForce);
+        updateMirror();
+        if (!dead)
+        {
+            updateMovement(extrp);
+        }
+        else
+        {
+            updateDead();
+        }
+    }
+
+    @Override
+    protected void handleCollisions(double extrp)
+    {
+        collOld = coll;
+        if (getLocationY() < getLocationOldY() && timerFall.elapsed(100))
+        {
+            coll = EntityCollision.NONE;
+        }
+        checkMapLimit();
+
+        // Vertical collision
+        if (getDiffVertical() < 0 || isOnGround())
+        {
+            checkCollisionVertical(0);
+        }
+    }
+
     @Override
     protected void handleAnimations(double extrp)
     {
@@ -311,12 +489,19 @@ public abstract class Entity
             case IDLE:
                 animCur = animIdle;
                 break;
+            case FALLEN:
+                animCur = animFallen;
+                break;
             case WALK:
+            case TURN:
                 animCur = animWalk;
-                setAnimSpeed(Math.abs(movementForce.getForceHorizontal() / 9.0));
+                setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 9.0);
                 break;
             case JUMP:
                 animCur = animJump;
+                break;
+            case FALL:
+                animCur = animFall;
                 break;
             case DEAD:
                 animCur = animDie;
@@ -331,85 +516,4 @@ public abstract class Entity
         }
         updateAnimation(extrp);
     }
-
-    /**
-     * Check if hero can jump.
-     * 
-     * @return <code>true</code> if can jump, <code>false</code> else.
-     */
-    public boolean canJump()
-    {
-        return isOnGround() || timerExtraJump.isStarted() && !timerExtraJump.elapsed(50);
-    }
-
-    /**
-     * Check if hero is jumping.
-     * 
-     * @return <code>true</code> if jumping, <code>false</code> else.
-     */
-    public boolean isJumping()
-    {
-        return getLocationY() > getLocationOldY();
-    }
-
-    /**
-     * Check if hero is falling.
-     * 
-     * @return <code>true</code> if falling, <code>false</code> else.
-     */
-    public boolean isFalling()
-    {
-        return getLocationY() < getLocationOldY();
-    }
-
-    /**
-     * Check if hero is on ground.
-     * 
-     * @return <code>true</code> if on ground, <code>false</code> else.
-     */
-    public boolean isOnGround()
-    {
-        return coll == EntityCollision.GROUND;
-    }
-
-    /**
-     * Check if entity is dead.
-     * 
-     * @return <code>true</code> if dead, <code>false</code> else.
-     */
-    public boolean isDead()
-    {
-        return dead;
-    }
-
-    /**
-     * Set to zero movement speed force.
-     */
-    protected void resetMovementSpeed()
-    {
-        movementForce.setForce(Force.ZERO);
-        movementForceDest.setForce(Force.ZERO);
-    }
-
-    /**
-     * Called when an horizontal collision occurred.
-     */
-    protected void onHorizontalCollision()
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Called when this is hit by another entity.
-     * 
-     * @param entity The entity hit.
-     */
-    public abstract void hitBy(Entity entity);
-
-    /**
-     * Called when this hit that.
-     * 
-     * @param entity The entity hit.
-     */
-    public abstract void hitThat(Entity entity);
 }

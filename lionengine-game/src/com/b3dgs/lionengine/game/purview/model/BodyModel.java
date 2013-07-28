@@ -20,6 +20,8 @@ public class BodyModel
     private final Localizable location;
     /** Body mass. */
     private double mass;
+    /** Maximum gravity value. */
+    private Force gravityMax;
     /** Invert axis. */
     private int invertY;
 
@@ -48,6 +50,7 @@ public class BodyModel
             location = new LocalizableModel(body.getLocationX(), body.getLocationY());
             force = new Force(body.force);
         }
+        gravityMax = new Force();
     }
 
     /*
@@ -57,7 +60,7 @@ public class BodyModel
     @Override
     public void updateGravity(double extrp, int desiredFps, Force... forces)
     {
-        force.addForce(extrp, 0, getWeight() * invertY / desiredFps);
+        force.addForce(extrp, 0.0, getWeight() * invertY / desiredFps);
         location.moveLocation(extrp, force, forces);
     }
 
@@ -71,6 +74,14 @@ public class BodyModel
     public void invertAxisY(boolean state)
     {
         invertY = state ? -1 : 1;
+    }
+    
+    @Override
+    public void setGravityMax(double max)
+    {
+        gravityMax.setForce(0.0, -max);
+        force.setForceMaximum(Force.ZERO);
+        force.setForceMinimum(gravityMax);
     }
 
     @Override

@@ -7,12 +7,16 @@ public enum EntityState
 {
     /** Idle state. */
     IDLE,
+    /** Fallen state. */
+    FALLEN,
     /** Walk state. */
     WALK,
     /** Turning state. */
     TURN,
     /** Jumping state. */
     JUMP,
+    /** Falling state. */
+    FALL,
     /** Dead state. */
     DEAD;
 }

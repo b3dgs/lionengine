@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
+import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.SetupEntityGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
@@ -31,12 +31,21 @@ public class Valdyn
      */
     public void updateControl(Keyboard keyboard)
     {
-        if (!dead)
+        if (!isDead())
         {
             right = keyboard.isPressed(Keyboard.RIGHT);
             left = keyboard.isPressed(Keyboard.LEFT);
             up = keyboard.isPressed(Keyboard.UP);
         }
+    }
+
+    /**
+     * Respawn player.
+     */
+    public void respawn()
+    {
+        setLocation(512, 128);
+        setDead(false);
     }
 
     @Override
@@ -47,9 +56,10 @@ public class Valdyn
             // Die effect
             if (stepDie == 0)
             {
-                jumpForce.setForce(0.0, jumpHeightMax * 1.5);
+                jumpForce.setForce(-0.75, 1.5);
                 stepDie = 1;
             }
+            resetGravity();
             // Respawn
             if (stepDie == 1 && timerDie.elapsed(2000))
             {
@@ -60,7 +70,9 @@ public class Valdyn
         else
         {
             resetGravity();
-            setLocationY(locationDie);
+            final Coord dieLocation = getDieLocation();
+            setLocationX(dieLocation.getX());
+            setLocationY(dieLocation.getY());
         }
     }
 
@@ -73,7 +85,7 @@ public class Valdyn
     @Override
     protected void handleCollisions(double extrp)
     {
-        if (!dead)
+        if (!isDead())
         {
             super.handleCollisions(extrp);
 
@@ -89,7 +101,7 @@ public class Valdyn
     @Override
     public void hitBy(Entity entity)
     {
-        if (!dead)
+        if (!isDead())
         {
             kill();
         }
@@ -102,25 +114,5 @@ public class Valdyn
         {
             jumpForce.setForce(0.0, jumpHeightMax * 1.5);
         }
-    }
-
-    /**
-     * Respawn player.
-     */
-    public void respawn()
-    {
-        setLocation(80, 32);
-        dead = false;
-    }
-
-    /**
-     * Called when hurt.
-     * 
-     * @param source Hurt source.
-     * @param damages Damages value.
-     */
-    public void onHurtBy(EntityGame source, int damages)
-    {
-        // Nothing to do
     }
 }

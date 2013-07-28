@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.utility.UtilityMath;
+
 /**
  * Represents a 2d vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
  * (horizontal & vertical). For an entity, it can be used as a speed.
@@ -20,6 +22,10 @@ public final class Force
     private boolean arrivedH;
     /** Reached vertical force. */
     private boolean arrivedV;
+    /** Maximum force. */
+    private Force forceMax;
+    /** Minimum force. */
+    private Force forceMin;
 
     /**
      * Create a blank force vector.
@@ -49,6 +55,7 @@ public final class Force
     {
         this.fh = fh;
         this.fv = fv;
+        fixForce();
     }
 
     /**
@@ -59,7 +66,7 @@ public final class Force
      */
     public void addForce(double extrp, Force force)
     {
-        this.addForce(extrp, force.fh, force.fv);
+        addForce(extrp, force.fh, force.fv);
     }
 
     /**
@@ -73,6 +80,7 @@ public final class Force
     {
         this.fh += fh * extrp;
         this.fv += fv * extrp;
+        fixForce();
     }
 
     /**
@@ -82,8 +90,7 @@ public final class Force
      */
     public void setForce(Force force)
     {
-        fh = force.fh;
-        fv = force.fv;
+        setForce(force.getForceHorizontal(), force.getForceVertical());
     }
 
     /**
@@ -96,6 +103,27 @@ public final class Force
     {
         this.fh = fh;
         this.fv = fv;
+        fixForce();
+    }
+
+    /**
+     * Set the maximum reachable force.
+     * 
+     * @param max The force max.
+     */
+    public void setForceMaximum(Force max)
+    {
+        forceMax = max;
+    }
+
+    /**
+     * Set the minimum reachable force.
+     * 
+     * @param min The force min.
+     */
+    public void setForceMinimum(Force min)
+    {
+        forceMin = min;
     }
 
     /**
@@ -170,6 +198,7 @@ public final class Force
         {
             fv = force.fv;
         }
+        fixForce();
     }
 
     /**
@@ -190,5 +219,39 @@ public final class Force
     public double getForceVertical()
     {
         return fv;
+    }
+
+    /**
+     * Fix the force to its limited range.
+     */
+    private void fixForce()
+    {
+        final double minH;
+        final double minV;
+        final double maxH;
+        final double maxV;
+
+        if (forceMin == null)
+        {
+            minH = fh;
+            minV = fv;
+        }
+        else
+        {
+            minH = forceMin.getForceHorizontal();
+            minV = forceMin.getForceVertical();
+        }
+        if (forceMax == null)
+        {
+            maxH = fh;
+            maxV = fv;
+        }
+        else
+        {
+            maxH = forceMax.getForceHorizontal();
+            maxV = forceMax.getForceVertical();
+        }
+        fh = UtilityMath.fixBetween(fh, minH, maxH);
+        fv = UtilityMath.fixBetween(fv, minV, maxV);
     }
 }
