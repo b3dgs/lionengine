@@ -30,7 +30,7 @@ class Mario
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    public Mario(SetupEntityGame setup, Map map, int desiredFps)
+    Mario(SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         animTurn = getAnimation("turn");
@@ -51,6 +51,30 @@ class Mario
             left = keyboard.isPressed(Keyboard.LEFT);
             up = keyboard.isPressed(Keyboard.UP);
         }
+    }
+
+    /**
+     * Kill mario.
+     */
+    public void kill()
+    {
+        dead = true;
+        resetMovementSpeed();
+        locationDie = getLocationY();
+        stepDie = 0;
+        timerDie.start();
+    }
+
+    /**
+     * Respawn mario.
+     */
+    public void respawn()
+    {
+        mirror(false);
+        setLocation(80, 32);
+        timerDie.stop();
+        stepDie = 0;
+        dead = false;
     }
 
     @Override
@@ -154,29 +178,5 @@ class Mario
             jumpForce.setForce(0.0, jumpForceValue / 1.5);
             resetGravity();
         }
-    }
-
-    /**
-     * Kill mario.
-     */
-    public void kill()
-    {
-        dead = true;
-        resetMovementSpeed();
-        locationDie = getLocationY();
-        stepDie = 0;
-        timerDie.start();
-    }
-
-    /**
-     * Respawn mario.
-     */
-    public void respawn()
-    {
-        mirror(false);
-        setLocation(80, 32);
-        timerDie.stop();
-        stepDie = 0;
-        dead = false;
     }
 }

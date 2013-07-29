@@ -15,7 +15,7 @@ class Tile
      * @param width The tile width.
      * @param height The tile height.
      */
-    public Tile(int width, int height)
+    Tile(int width, int height)
     {
         super(width, height);
     }

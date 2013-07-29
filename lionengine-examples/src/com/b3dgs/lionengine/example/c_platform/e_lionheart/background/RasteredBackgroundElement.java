@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.platform.background.BackgroundElementRastered;
  * 
  * @author Pierre-Alexandre
  */
-public class RasteredBackgroundElement
+class RasteredBackgroundElement
         extends BackgroundElementRastered
 {
     /**
@@ -19,7 +19,7 @@ public class RasteredBackgroundElement
      * @param sprite The sprite reference.
      * @param rastersNumber The number of rasters.
      */
-    public RasteredBackgroundElement(int mainX, int mainY, Sprite sprite, int rastersNumber)
+    RasteredBackgroundElement(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {
         super(mainX, mainY, sprite, rastersNumber);
     }

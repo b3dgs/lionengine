@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
-import com.b3dgs.lionengine.game.platform.background.ForegroundPlatform;
+import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -18,10 +18,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
  * Water foreground implementation.
  */
 public class Water
-        extends ForegroundPlatform
+        extends BackgroundPlatform
 {
-    /** Number of water elements. */
-    private final int numberOfElements = 2;
     /** Screen width. */
     final int screenWidth;
     /** Screen height. */
@@ -43,24 +41,36 @@ public class Water
      */
     public Water(Sequence sequence, String theme)
     {
-        super(theme);
+        super(theme, 0, 0, sequence.wide);
         screenWidth = sequence.config.internal.getWidth();
         screenHeight = sequence.config.internal.getHeight();
-        setWide(sequence.wide);
-    }
-
-    @Override
-    protected void load()
-    {
-        final String path = Media.getPath("foregrounds", theme);
         nominal = 210;
         height = 0.0;
         depth = 8.0;
         speed = 0.02;
-        numberOfComponents = numberOfElements;
-        components = new BackgroundComponent[numberOfElements];
-        components[0] = new Primary(path, this);
-        components[1] = new Secondary(path, this);
+        final String path = Media.getPath("foregrounds", theme);
+        add(new Primary(path, this));
+        add(new Secondary(path, this));
+    }
+
+    /**
+     * Render the front part of the water.
+     * 
+     * @param g The graphic output.
+     */
+    public void renderBack(Graphic g)
+    {
+        renderComponent(0, g);
+    }
+
+    /**
+     * Render the back part of the water.
+     * 
+     * @param g The graphic output.
+     */
+    public void renderFront(Graphic g)
+    {
+        renderComponent(1, g);
     }
 
     /**
@@ -139,7 +149,7 @@ public class Water
         }
 
         @Override
-        public void update(int x, int y, double speed, double extrp)
+        public void update(double extrp, int x, int y, double speed)
         {
             data.setOffsetY(y);
         }
@@ -148,7 +158,7 @@ public class Water
         public void render(Graphic g)
         {
             int w = 1;
-            if (getWide())
+            if (isWide())
             {
                 w = 2;
             }
@@ -221,7 +231,7 @@ public class Water
         }
 
         @Override
-        public void update(int x, int y, double speed, double extrp)
+        public void update(double extrp, int x, int y, double speed)
         {
             anim.updateAnimation(extrp);
 
@@ -240,7 +250,7 @@ public class Water
         public void render(Graphic g)
         {
             int w = 1;
-            if (getWide())
+            if (isWide())
             {
                 w = 2;
             }
@@ -259,7 +269,7 @@ public class Water
 
             // animation rendering
             w = 6;
-            if (getWide())
+            if (isWide())
             {
                 w = 8;
             }

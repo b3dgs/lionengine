@@ -16,6 +16,8 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 class World
         extends WorldGame
 {
+    /** Background color. */
+    private static final Color BACKGROUND_COLOR = new Color(107, 136, 255);
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Mario reference. */
@@ -26,15 +28,13 @@ class World
     private final Map map;
     /** Camera reference. */
     private final CameraPlatform camera;
-    /** Background color. */
-    private final Color backgroundColor = new Color(107, 136, 255);
 
     /**
      * Default constructor.
      * 
      * @param sequence The sequence reference.
      */
-    public World(Sequence sequence)
+    World(Sequence sequence)
     {
         super(sequence);
         map = new Map();
@@ -56,7 +56,7 @@ class World
     @Override
     public void render(Graphic g)
     {
-        g.setColor(backgroundColor);
+        g.setColor(BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
         // Draw the map
         map.render(g, camera);
@@ -65,6 +65,18 @@ class World
         handler.render(g, camera);
     }
 
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
+    }
+    
     @Override
     protected void loaded()
     {
@@ -81,17 +93,5 @@ class World
             goomba.setLocation(532 + i * 24, 32);
             handler.add(goomba);
         }
-    }
-
-    @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    protected void loading(FileReading file) throws IOException
-    {
-        map.load(file);
     }
 }

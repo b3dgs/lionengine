@@ -21,14 +21,14 @@ public abstract class BackgroundPlatform
     protected final int maxY;
     /** Maximum background value. */
     protected final int minY;
-    /** Wide state. */
-    protected final boolean wide;
     /** Total background height. */
     protected int totalHeight;
     /** Number of background components. */
     protected int componentsNumber;
     /** Background theme name. */
     protected final String theme;
+    /** Wide state. */
+    private final boolean wide;
 
     /**
      * Create a new background.
@@ -48,6 +48,26 @@ public abstract class BackgroundPlatform
     }
 
     /**
+     * Get the wide state.
+     * 
+     * @return <code>true</code> if wide screen, <code>false</code> else.
+     */
+    public boolean isWide()
+    {
+        return wide;
+    }
+
+    /**
+     * Get the background theme.
+     * 
+     * @return The background theme.
+     */
+    public String getTheme()
+    {
+        return theme;
+    }
+
+    /**
      * Add a component to the background.
      * 
      * @param component The component reference.
@@ -56,6 +76,17 @@ public abstract class BackgroundPlatform
     {
         components.add(component);
         componentsNumber = components.size();
+    }
+
+    /**
+     * Render the specified component.
+     * 
+     * @param index The component index.
+     * @param g The graphic output.
+     */
+    protected void renderComponent(int index, Graphic g)
+    {
+        components.get(index).render(g);
     }
 
     /**
@@ -95,21 +126,29 @@ public abstract class BackgroundPlatform
     public final void update(double extrp, double speed, double y)
     {
         final int lowest = totalHeight;
-        final double currentY = UtilityMath.fixBetween(y, minY, maxY);
-        final int py = (int) (currentY / maxY * lowest) - lowest;
-
-        for (int i = 0; i < componentsNumber; i++)
+        final int py;
+        if (maxY == 0)
         {
-            components.get(i).update(0, py, speed, extrp);
+            py = (int) y;
+        }
+        else
+        {
+            final double currentY = UtilityMath.fixBetween(y, minY, maxY);
+            py = (int) (currentY / maxY * lowest) - lowest;
+        }
+
+        for (BackgroundComponent component : components)
+        {
+            component.update(extrp, 0, py, speed);
         }
     }
 
     @Override
     public final void render(Graphic g)
     {
-        for (int i = 0; i < componentsNumber; i++)
+        for (BackgroundComponent component : components)
         {
-            components.get(i).render(g);
+            component.render(g);
         }
     }
 }

@@ -16,7 +16,7 @@ class HandlerEntity
      * 
      * @param mario The mario reference.
      */
-    public HandlerEntity(Mario mario)
+    HandlerEntity(Mario mario)
     {
         super();
         this.mario = mario;

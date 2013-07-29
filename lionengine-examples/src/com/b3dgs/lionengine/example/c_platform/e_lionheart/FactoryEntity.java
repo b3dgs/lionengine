@@ -1,24 +1,24 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory entity implementation.
  */
-public class FactoryEntity
+class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entity";
-    /** Entity desired fps. */
-    private final int desiredFps;
     /** Map reference. */
     private final Map map;
+    /** Entity desired fps. */
+    private final int desiredFps;
 
     /**
      * Standard constructor.
@@ -26,19 +26,27 @@ public class FactoryEntity
      * @param desiredFps The desired fps.
      * @param map The map reference.
      */
-    public FactoryEntity(int desiredFps, Map map)
+    FactoryEntity(Map map, int desiredFps)
     {
         super(TypeEntity.class);
-        this.desiredFps = desiredFps;
         this.map = map;
+        this.desiredFps = desiredFps;
         loadAll(TypeEntity.values());
     }
-
-    @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    
+    /**
+     * Create a new valdyn.
+     * 
+     * @return The instance of valdyn.
+     */
+    Valdyn createValdyn()
     {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"), false);
+        return new Valdyn(getSetup(TypeEntity.valdyn), map, desiredFps);
     }
+    
+    /*
+     * FactoryEntityGame
+     */
 
     @Override
     public Entity createEntity(TypeEntity type)
@@ -48,17 +56,13 @@ public class FactoryEntity
             case valdyn:
                 return createValdyn();
             default:
-                return null;
+                throw new LionEngineException("Unknown entity: " + type);
         }
     }
-
-    /**
-     * Create a new valdyn.
-     * 
-     * @return The instance of valdyn.
-     */
-    public Valdyn createValdyn()
+    
+    @Override
+    protected SetupEntityGame createSetup(TypeEntity id)
     {
-        return new Valdyn(getSetup(TypeEntity.valdyn), map, desiredFps);
+        return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
     }
 }

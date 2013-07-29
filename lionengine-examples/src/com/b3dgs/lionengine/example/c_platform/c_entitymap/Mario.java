@@ -5,7 +5,6 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
@@ -57,9 +56,9 @@ class Mario
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    public Mario(Map map, int desiredFps)
+    Mario(Map map, int desiredFps)
     {
-        super(new SetupEntityGame(new ConfigurableModel(), Media.get("entity", "mario.xml"), false), map);
+        super(new SetupEntityGame(Media.get("entity", "mario.xml")), map);
         this.map = map;
         this.desiredFps = desiredFps;
         movementForce = new Force();

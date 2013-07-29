@@ -20,11 +20,34 @@ class Goomba
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    public Goomba(SetupEntityGame setup, Map map, int desiredFps)
+    Goomba(SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();
         right = true;
+    }
+    
+    /*
+     * Entity
+     */
+    
+    @Override
+    public void onHurtBy(EntityGame entity)
+    {
+        if (!dead)
+        {
+            dead = true;
+            right = false;
+            left = false;
+            resetMovementSpeed();
+            timerDie.start();
+        }
+    }
+    
+    @Override
+    public void onHitThat(Entity entity)
+    {
+        // Nothing to do
     }
 
     @Override
@@ -58,24 +81,5 @@ class Goomba
             left = false;
             right = true;
         }
-    }
-
-    @Override
-    public void onHurtBy(EntityGame entity)
-    {
-        if (!dead)
-        {
-            dead = true;
-            right = false;
-            left = false;
-            resetMovementSpeed();
-            timerDie.start();
-        }
-    }
-
-    @Override
-    public void onHitThat(Entity entity)
-    {
-        // Nothing to do
     }
 }

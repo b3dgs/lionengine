@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.snippet;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
@@ -15,8 +16,11 @@ import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.Resource;
+import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.maptile.MapTileGame;
 import com.b3dgs.lionengine.game.maptile.TileGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -137,6 +141,32 @@ public class ModuleGame
         protected SetupGame createSetup(TypeEntity id)
         {
             return new SetupGame(Media.get("directory", id + ".xml"));
+        }
+    }
+
+    public class FactoryEntity
+            extends FactoryEntityGame<TypeEntity, SetupEntityGame, EntityGame>
+    {
+        public FactoryEntity()
+        {
+            super(TypeEntity.class);
+            loadAll(TypeEntity.values());
+        }
+
+        @Override
+        public EntityGame createEntity(TypeEntity id)
+        {
+            switch (id)
+            {
+                default:
+                    throw new LionEngineException("Unknown entity: " + id);
+            }
+        }
+
+        @Override
+        protected SetupEntityGame createSetup(TypeEntity id)
+        {
+            return new SetupEntityGame(Media.get("directory", id + ".xml"));
         }
     }
 

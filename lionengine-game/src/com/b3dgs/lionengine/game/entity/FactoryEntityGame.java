@@ -12,28 +12,28 @@ import com.b3dgs.lionengine.game.SetupEntityGame;
  * 
  * <pre>
  * public class FactoryEntity
- *         extends FactoryEntityGame&lt;TypeEntity, SetupGame, Entity&gt;
+ *         extends FactoryEntityGame&lt;TypeEntity, SetupEntityGame, EntityGame&gt;
  * {
  *     public FactoryEntity()
  *     {
- *         super();
+ *         super(TypeEntity.class);
  *         loadAll(TypeEntity.values());
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(TypeEntity id)
+ *     public EntityGame createEntity(TypeEntity id)
  *     {
- *         return new SetupGame(new ConfigurableModel(), Media.get(&quot;directory&quot;, id + &quot;.xml&quot;), false);
+ *         switch (id)
+ *         {
+ *             default:
+ *                 throw new LionEngineException(&quot;Unknown entity: &quot; + id);
+ *         }
  *     }
  * 
  *     &#064;Override
- *     public Entity createEntity(TypeEntity type)
+ *     protected SetupEntityGame createSetup(TypeEntity id)
  *     {
- *         switch (type)
- *         {
- *             default:
- *                 throw new LionEngineException(&quot;Entity not found: &quot; + type.name());
- *         }
+ *         return new SetupEntityGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;));
  *     }
  * }
  * </pre>

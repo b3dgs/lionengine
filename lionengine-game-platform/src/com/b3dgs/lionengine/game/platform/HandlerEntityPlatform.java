@@ -20,6 +20,36 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
     }
 
     /**
+     * Check if entity can be updated.
+     * 
+     * @param entity The entity to check.
+     * @return <code>true</code> if can be updated, <code>false</code> else.
+     */
+    protected abstract boolean canUpdateEntity(E entity);
+
+    /**
+     * Check if entity can be rendered.
+     * 
+     * @param entity The entity to check.
+     * @return <code>true</code> if can be rendered, <code>false</code> else.
+     */
+    protected abstract boolean canRenderEntity(E entity);
+
+    /**
+     * Update this entity (entity.update(keyboard, mouse, extrp) is already called before).
+     * 
+     * @param entity The current updating entity.
+     */
+    protected abstract void updatingEntity(E entity);
+
+    /**
+     * Render this entity ({@link EntityPlatform#render(Graphic, CameraPlatform)} is already called before).
+     * 
+     * @param entity The current rendering entity.
+     */
+    protected abstract void renderingEntity(E entity);
+    
+    /**
      * Update all entities.
      * 
      * @param extrp The extrapolation value.
@@ -64,34 +94,4 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
             }
         }
     }
-
-    /**
-     * Check if entity can be updated.
-     * 
-     * @param entity The entity to check.
-     * @return <code>true</code> if can be updated, <code>false</code> else.
-     */
-    protected abstract boolean canUpdateEntity(E entity);
-
-    /**
-     * Check if entity can be rendered.
-     * 
-     * @param entity The entity to check.
-     * @return <code>true</code> if can be rendered, <code>false</code> else.
-     */
-    protected abstract boolean canRenderEntity(E entity);
-
-    /**
-     * Update this entity (entity.update(keyboard, mouse, extrp) is already called before).
-     * 
-     * @param entity The current updating entity.
-     */
-    protected abstract void updatingEntity(E entity);
-
-    /**
-     * Render this entity ({@link EntityPlatform#render(Graphic, CameraPlatform)} is already called before).
-     * 
-     * @param entity The current rendering entity.
-     */
-    protected abstract void renderingEntity(E entity);
 }

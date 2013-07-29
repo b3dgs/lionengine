@@ -9,13 +9,12 @@ public interface BackgroundComponent
 {
     /**
      * Update component.
-     * 
+     * @param extrp The extrapolation value.
      * @param x The horizontal offset.
      * @param y The vertical offset.
      * @param speed The scrolling speed.
-     * @param extrp The extrapolation value.
      */
-    void update(int x, int y, double speed, double extrp);
+    void update(double extrp, int x, int y, double speed);
 
     /**
      * Render component.

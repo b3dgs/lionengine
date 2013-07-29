@@ -13,12 +13,11 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.background.Background;
-import com.b3dgs.lionengine.game.platform.background.ForegroundPlatform;
 
 /**
  * World implementation using WorldGame.
  */
-public class World
+class World
         extends WorldGame
 {
     /** Map reference. */
@@ -32,22 +31,22 @@ public class World
     /** Background reference. */
     private final Background background;
     /** Foreground reference. */
-    private final ForegroundPlatform foreground;
+    private final Water water;
 
     /**
      * Standard constructor.
      * 
      * @param sequence The sequence reference.
      */
-    public World(Sequence sequence)
+    World(Sequence sequence)
     {
         super(sequence);
         map = new Map();
-        factory = new FactoryEntity(display.getRate(), map);
+        factory = new FactoryEntity(map, display.getRate());
         valdyn = factory.createValdyn();
         camera = new CameraPlatform(width, height);
-        background = new Swamp(sequence, "Stage1", false);
-        foreground = new Water(sequence, "Water");
+        water = new Water(sequence, "Water");
+        background = new Swamp(sequence, "Stage1", false, water);
     }
 
     @Override
@@ -57,17 +56,29 @@ public class World
         valdyn.update(extrp);
         camera.follow(valdyn);
         background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
-        foreground.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
+        water.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
     }
 
     @Override
     public void render(Graphic g)
     {
         background.render(g);
-        foreground.primaryRender(g);
+        water.renderBack(g);
         map.render(g, camera);
         valdyn.render(g, camera);
-        foreground.secondaryRender(g);
+        water.renderFront(g);
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
     }
 
     @Override
@@ -78,17 +89,5 @@ public class World
         valdyn.setLocation(512, 128);
         camera.follow(valdyn);
         camera.resetInterval();
-    }
-
-    @Override
-    public void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    public void loading(FileReading file) throws IOException
-    {
-        map.load(file);
     }
 }

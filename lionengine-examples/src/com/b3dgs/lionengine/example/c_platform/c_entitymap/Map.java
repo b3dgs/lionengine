@@ -11,7 +11,7 @@ class Map
     /**
      * Map constructor. Tiles are stored in 'tiles' directory, with a size of 16*16.
      */
-    public Map()
+    Map()
     {
         super(16, 16);
     }
@@ -19,7 +19,7 @@ class Map
     /**
      * Adjust the collision.
      */
-    public void adjustCollisions()
+    void adjustCollisions()
     {
         for (int tx = 0; tx < getWidthInTile(); tx++)
         {

@@ -26,7 +26,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     /** Animation surface. */
     protected final SpriteAnimated sprite;
     /** Map reference. */
-    MapTile<C, T> map;
+    final MapTile<C, T> map;
     /** Collisions special offsets x. */
     private int collOffX;
     /** Collisions special offsets y. */
@@ -68,6 +68,75 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         setSize(width, height);
         invertAxisY(true);
     }
+    
+    /**
+     * Update actions, such as movements and attacks.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    protected abstract void handleActions(final double extrp);
+
+    /**
+     * Update movement, depending of actions.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    protected abstract void handleMovements(final double extrp);
+
+    /**
+     * Update collisions, after movements. Should be used to call {@link #collisionCheck(int, int, List)} for each
+     * collision test.
+     * <p>
+     * Example:
+     * </p>
+     * 
+     * <pre>
+     * &#064;Override
+     * protected void handleCollisions(double extrp)
+     * {
+     *     // Check something here
+     *     // ...
+     * 
+     *     // Respawn when fall at the bottom of the map
+     *     if (getLocationY() &lt; 0)
+     *     {
+     *         // respawn
+     *     }
+     * 
+     *     // Horizontal collision
+     *     Tile tile = collisionCheck(0, 1, TileCollision.COLLISION_HORIZONTAL);
+     *     if (tile != null)
+     *     {
+     *         final Double x = tile.getCollisionX(this);
+     *         if (applyHorizontalCollision(x))
+     *         {
+     *             // collision occurred
+     *         }
+     *     }
+     * 
+     *     // Vertical collision
+     *     tile = collisionCheck(0, 0, TileCollision.COLLISION_VERTICAL);
+     *     if (tile != null)
+     *     {
+     *         final Double y = tile.getCollisionY(this);
+     *         if (applyVerticalCollision(y))
+     *         {
+     *             // collision occurred
+     *         }
+     *     }
+     * }
+     * </pre>
+     * 
+     * @param extrp The extrapolation value.
+     */
+    protected abstract void handleCollisions(final double extrp);
+
+    /**
+     * Update animations, corresponding to a movement.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    protected abstract void handleAnimations(final double extrp);
 
     /**
      * Main update routine. By default it calls theses functions in this order:
@@ -102,38 +171,6 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         final int x = camera.getViewpointX(getLocationIntX() - frameOffsetX);
         final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + getHeight());
         sprite.render(g, x, y);
-    }
-
-    /**
-     * Apply an horizontal collision using the specified blocking x value.
-     * 
-     * @param x The blocking x value.
-     * @return <code>true</code> if collision where applied.
-     */
-    public boolean applyHorizontalCollision(Double x)
-    {
-        if (x != null)
-        {
-            setLocationX(x.doubleValue());
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Apply a vertical collision using the specified blocking y value.
-     * 
-     * @param y The blocking y value.
-     * @return <code>true</code> if collision where applied.
-     */
-    public boolean applyVerticalCollision(Double y)
-    {
-        if (y != null)
-        {
-            setLocationY(y.doubleValue());
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -251,75 +288,38 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         return (int) getLocationOldY() - tile.getY();
     }
+    
+    /**
+     * Apply an horizontal collision using the specified blocking x value.
+     * 
+     * @param x The blocking x value.
+     * @return <code>true</code> if collision where applied.
+     */
+    protected boolean applyHorizontalCollision(Double x)
+    {
+        if (x != null)
+        {
+            setLocationX(x.doubleValue());
+            return true;
+        }
+        return false;
+    }
 
     /**
-     * Update actions, such as movements and attacks.
+     * Apply a vertical collision using the specified blocking y value.
      * 
-     * @param extrp The extrapolation value.
+     * @param y The blocking y value.
+     * @return <code>true</code> if collision where applied.
      */
-    protected abstract void handleActions(final double extrp);
-
-    /**
-     * Update movement, depending of actions.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    protected abstract void handleMovements(final double extrp);
-
-    /**
-     * Update collisions, after movements. Should be used to call {@link #collisionCheck(int, int, List)} for each
-     * collision test.
-     * <p>
-     * Example:
-     * </p>
-     * 
-     * <pre>
-     * &#064;Override
-     * protected void handleCollisions(double extrp)
-     * {
-     *     // Check something here
-     *     // ...
-     * 
-     *     // Respawn when fall at the bottom of the map
-     *     if (getLocationY() &lt; 0)
-     *     {
-     *         // respawn
-     *     }
-     * 
-     *     // Horizontal collision
-     *     Tile tile = collisionCheck(0, 1, TileCollision.COLLISION_HORIZONTAL);
-     *     if (tile != null)
-     *     {
-     *         final Double x = tile.getCollisionX(this);
-     *         if (applyHorizontalCollision(x))
-     *         {
-     *             // collision occurred
-     *         }
-     *     }
-     * 
-     *     // Vertical collision
-     *     tile = collisionCheck(0, 0, TileCollision.COLLISION_VERTICAL);
-     *     if (tile != null)
-     *     {
-     *         final Double y = tile.getCollisionY(this);
-     *         if (applyVerticalCollision(y))
-     *         {
-     *             // collision occurred
-     *         }
-     *     }
-     * }
-     * </pre>
-     * 
-     * @param extrp The extrapolation value.
-     */
-    protected abstract void handleCollisions(final double extrp);
-
-    /**
-     * Update animations, corresponding to a movement.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    protected abstract void handleAnimations(final double extrp);
+    protected boolean applyVerticalCollision(Double y)
+    {
+        if (y != null)
+        {
+            setLocationY(y.doubleValue());
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Render an animated sprite from the entity location, following camera view point.
@@ -488,6 +488,10 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         return dinf / (double) dsup;
     }
 
+    /*
+     * EntityGame
+     */
+    
     @Override
     public void updateMirror()
     {

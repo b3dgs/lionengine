@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.platform.background.CloudsPlatform;
 /**
  * Clouds implementation.
  */
-public final class Clouds
+final class Clouds
         extends CloudsPlatform
 {
     /**
@@ -17,7 +17,7 @@ public final class Clouds
      * @param screenWidth The screen width.
      * @param decY The vertical offset.
      */
-    public Clouds(Media path, boolean wide, int screenWidth, int decY)
+    Clouds(Media path, boolean wide, int screenWidth, int decY)
     {
         super(path, 160, 26, wide, screenWidth, decY, false);
 

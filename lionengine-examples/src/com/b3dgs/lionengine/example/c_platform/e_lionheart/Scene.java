@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Scene implementation.
  */
-public class Scene
+class Scene
         extends Sequence
 {
     /** World reference. */
@@ -25,7 +25,7 @@ public class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(final Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
         world = new World(this);
@@ -44,7 +44,7 @@ public class Scene
         world.update(extrp);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
-            this.end();
+            end();
         }
     }
 

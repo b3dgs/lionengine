@@ -59,16 +59,16 @@ abstract class Entity
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    public Entity(SetupEntityGame setup, Map map, int desiredFps)
+    Entity(SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map);
+        this.map = map;
+        this.desiredFps = desiredFps;
         animIdle = getAnimation("idle");
         animWalk = getAnimation("walk");
         animDie = getAnimation("die");
         jumpForceValue = getDataDouble("jumpSpeed", "data");
         movementSpeedValue = getDataDouble("movementSpeed", "data");
-        this.map = map;
-        this.desiredFps = desiredFps;
         movementForce = new Force();
         movementForceDest = new Force();
         jumpForce = new Force();
@@ -173,13 +173,13 @@ abstract class Entity
         movementForce.setForce(Force.ZERO);
         movementForceDest.setForce(Force.ZERO);
     }
-
+    
     /**
-     * Called when an horizontal collision occurred.
+     * Called when horizontal collision occurred.
      */
     protected void onHorizontalCollision()
     {
-        // Nothing to do by default
+        // Nothing by default
     }
 
     /**

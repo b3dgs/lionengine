@@ -23,7 +23,7 @@ class World
      * 
      * @param sequence The sequence reference.
      */
-    public World(Sequence sequence)
+    World(Sequence sequence)
     {
         super(sequence);
         mario = new Mario(config.internal.getRate());
@@ -48,12 +48,6 @@ class World
     }
 
     @Override
-    protected void loaded()
-    {
-        // Nothing here
-    }
-
-    @Override
     protected void saving(FileWriting file)
     {
         // Nothing to do
@@ -63,5 +57,11 @@ class World
     protected void loading(FileReading file)
     {
         // Nothing to do
+    }
+    
+    @Override
+    protected void loaded()
+    {
+        // Nothing here
     }
 }

@@ -1,9 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
@@ -24,18 +24,38 @@ class FactoryEntity
      * @param desiredFps The desired fps.
      * @param map The map reference.
      */
-    public FactoryEntity(int desiredFps, Map map)
+    FactoryEntity(int desiredFps, Map map)
     {
         super(TypeEntity.class);
         this.desiredFps = desiredFps;
         this.map = map;
         loadAll(TypeEntity.values());
     }
+    
+    /**
+     * Create a new mario.
+     * 
+     * @return The instance of mario.
+     */
+    Mario createMario()
+    {
+        return new Mario(getSetup(TypeEntity.mario), map, desiredFps);
+    }
+
+    /**
+     * Create a new goomba.
+     * 
+     * @return The instance of goomba.
+     */
+    Goomba createGoomba()
+    {
+        return new Goomba(getSetup(TypeEntity.goomba), map, desiredFps);
+    }
 
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"), false);
+        return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
     }
 
     @Override
@@ -48,27 +68,7 @@ class FactoryEntity
             case goomba:
                 return createGoomba();
             default:
-                return null;
+                throw new LionEngineException("Unknown entity type: " + type);
         }
-    }
-
-    /**
-     * Create a new mario.
-     * 
-     * @return The instance of mario.
-     */
-    public Mario createMario()
-    {
-        return new Mario(getSetup(TypeEntity.mario), map, desiredFps);
-    }
-
-    /**
-     * Create a new goomba.
-     * 
-     * @return The instance of goomba.
-     */
-    public Goomba createGoomba()
-    {
-        return new Goomba(getSetup(TypeEntity.goomba), map, desiredFps);
     }
 }

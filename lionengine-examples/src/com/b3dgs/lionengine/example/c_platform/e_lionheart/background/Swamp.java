@@ -22,6 +22,8 @@ public class Swamp
     private final int parallaxsNumber = 96;
     /** Flickering flag. */
     private final boolean flickering;
+    /** Screen height. */
+    final int screenHeight;
 
     /**
      * Constructor.
@@ -29,16 +31,20 @@ public class Swamp
      * @param sequence The sequence reference.
      * @param theme The theme name.
      * @param flickering The flickering flag.
+     * @param water The water reference.
      */
-    public Swamp(Sequence sequence, String theme, boolean flickering)
+    public Swamp(Sequence sequence, String theme, boolean flickering, Water water)
     {
         super(theme, 0, 512, sequence.wide);
         this.flickering = flickering;
+        screenHeight = sequence.config.internal.getHeight();
 
         final String path = Media.getPath("backgrounds", "Swamp", theme);
-        add(new Backdrop(path, this.flickering, wide, sequence.config.internal.getWidth()));
-        add(new Clouds(Media.get(path, "cloud.png"), wide, sequence.config.internal.getWidth(), 22));
-        add(new Parallax(sequence.config.internal, Media.get(path, "parallax.png"), parallaxsNumber, wide, 146));
+        final int width = sequence.config.internal.getWidth();
+        add(new Backdrop(path, this.flickering, isWide(), width));
+        add(new Clouds(Media.get(path, "cloud.png"), isWide(), width, 22));
+        add(new Parallax(sequence.config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 146));
+        
         totalHeight = 70;
     }
 
@@ -115,7 +121,7 @@ public class Swamp
         }
 
         @Override
-        public void update(int x, int y, double speed, double extrp)
+        public void update(double extrp, int x, int y, double speed)
         {
             backcolorA.setOffsetY(y);
             moon.setOffsetY(-55);

@@ -88,7 +88,7 @@ public class Parallax
      */
 
     @Override
-    public void update(int x, int y, double speed, double extrp)
+    public void update(double extrp, int x, int y, double speed)
     {
         data.setOffsetY(y);
 

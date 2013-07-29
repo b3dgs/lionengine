@@ -31,6 +31,14 @@ public abstract class BackgroundElementRastered
         rasters = new ArrayList<>(rastersNumber);
         initialize(sprite, rastersNumber);
     }
+    
+    /**
+     * Load rasters from original sprite.
+     * 
+     * @param sprite The original sprite.
+     * @param rastersNumber The number of rasters to use.
+     */
+    protected abstract void load(Sprite sprite, int rastersNumber);
 
     /**
      * Get raster surface from its id.
@@ -46,14 +54,6 @@ public abstract class BackgroundElementRastered
         }
         return rasters.get(id);
     }
-
-    /**
-     * Load rasters from original sprite.
-     * 
-     * @param sprite The original sprite.
-     * @param rastersNumber The number of rasters to use.
-     */
-    protected abstract void load(Sprite sprite, int rastersNumber);
 
     /**
      * Add a raster with specified colour code.

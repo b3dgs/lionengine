@@ -19,7 +19,7 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(final Loader loader)
+    Scene(final Loader loader)
     {
         super(loader);
         world = new World(this);

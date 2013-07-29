@@ -20,7 +20,7 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(final Loader loader)
+    Scene(final Loader loader)
     {
         super(loader);
         world = new World(this);
@@ -38,7 +38,7 @@ class Scene
         world.update(extrp);
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
-            this.end();
+            end();
         }
     }
 

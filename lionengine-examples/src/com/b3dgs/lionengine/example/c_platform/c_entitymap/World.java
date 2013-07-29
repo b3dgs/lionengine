@@ -30,7 +30,7 @@ class World
      * 
      * @param sequence The sequence reference.
      */
-    public World(Sequence sequence)
+    World(Sequence sequence)
     {
         super(sequence);
         map = new Map();
@@ -58,14 +58,6 @@ class World
     }
 
     @Override
-    protected void loaded()
-    {
-        camera.setLimits(map);
-        camera.setIntervals(16, 0);
-        map.adjustCollisions();
-    }
-
-    @Override
     protected void saving(FileWriting file) throws IOException
     {
         map.save(file);
@@ -75,5 +67,13 @@ class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
+    }
+    
+    @Override
+    protected void loaded()
+    {
+        camera.setLimits(map);
+        camera.setIntervals(16, 0);
+        map.adjustCollisions();
     }
 }

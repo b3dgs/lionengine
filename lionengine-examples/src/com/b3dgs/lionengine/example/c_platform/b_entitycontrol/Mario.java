@@ -5,7 +5,6 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
@@ -56,9 +55,9 @@ class Mario
      * 
      * @param desiredFps The desired fps.
      */
-    public Mario(int desiredFps)
+    Mario(int desiredFps)
     {
-        super(new SetupEntityGame(new ConfigurableModel(), Mario.MARIO_CONFIG, false), null);
+        super(new SetupEntityGame(Mario.MARIO_CONFIG), null);
         this.desiredFps = desiredFps;
         movementForce = new Force();
         movementForceDest = new Force();
@@ -71,7 +70,6 @@ class Mario
         stateOld = state;
         setLocation(100, 32);
         setMass(2.5);
-        setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 
     /**
@@ -84,6 +82,26 @@ class Mario
         right = keyboard.isPressed(Keyboard.RIGHT);
         left = keyboard.isPressed(Keyboard.LEFT);
         up = keyboard.isPressed(Keyboard.UP);
+    }
+    
+    /**
+     * Check if hero can jump.
+     * 
+     * @return true if can jump.
+     */
+    private boolean canJump()
+    {
+        return getLocationIntY() == Mario.GROUND;
+    }
+
+    /**
+     * Check if hero is on ground.
+     * 
+     * @return true if on ground.
+     */
+    private boolean isOnGround()
+    {
+        return getLocationIntY() == Mario.GROUND;
     }
 
     @Override
@@ -194,25 +212,5 @@ class Mario
             this.play(animCur);
         }
         updateAnimation(extrp);
-    }
-
-    /**
-     * Check if hero can jump.
-     * 
-     * @return true if can jump.
-     */
-    private boolean canJump()
-    {
-        return getLocationIntY() == Mario.GROUND;
-    }
-
-    /**
-     * Check if hero is on ground.
-     * 
-     * @return true if on ground.
-     */
-    private boolean isOnGround()
-    {
-        return getLocationIntY() == Mario.GROUND;
     }
 }
