@@ -107,7 +107,7 @@ public class ModuleCore
     class Scene
             extends Sequence
     {
-        Scene(final Loader loader)
+        Scene(Loader loader)
         {
             super(loader);
         }

@@ -1,5 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
+import java.util.EnumMap;
+
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
@@ -27,22 +30,16 @@ abstract class Entity
     protected final Force jumpForce;
     /** Map reference. */
     protected final Map map;
-    /** Animation idle. */
-    private final Animation animIdle;
-    /** Animation walk. */
-    private final Animation animWalk;
-    /** Animation jump. */
-    private final Animation animDie;
     /** Extra time for jump before fall. */
     protected final Timing timerExtraJump;
+    /** Animations list. */
+    private final EnumMap<EntityState, Animation> animations;
     /** Key right state. */
     protected boolean right;
     /** Key left state. */
     protected boolean left;
     /** Key up state. */
     protected boolean up;
-    /** Current animation. */
-    protected Animation animCur;
     /** Entity state. */
     protected EntityState state;
     /** Old state. */
@@ -64,9 +61,7 @@ abstract class Entity
         super(setup, map);
         this.map = map;
         this.desiredFps = desiredFps;
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
-        animDie = getAnimation("die");
+        animations = new EnumMap<>(EntityState.class);
         jumpForceValue = getDataDouble("jumpSpeed", "data");
         movementSpeedValue = getDataDouble("movementSpeed", "data");
         movementForce = new Force();
@@ -76,6 +71,7 @@ abstract class Entity
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
         setFrameOffsets(getWidth() / 2, 1);
+        loadAnimations();
     }
 
     /**
@@ -143,29 +139,6 @@ abstract class Entity
     }
 
     /**
-     * Select the animation from the state.
-     * 
-     * @param state The current state
-     */
-    protected void selectAnimCur(EntityState state)
-    {
-        switch (state)
-        {
-            case IDLE:
-                animCur = animIdle;
-                break;
-            case WALK:
-                animCur = animWalk;
-                break;
-            case DEAD:
-                animCur = animDie;
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
      * Set to zero movement speed force.
      */
     protected void resetMovementSpeed()
@@ -173,13 +146,31 @@ abstract class Entity
         movementForce.setForce(Force.ZERO);
         movementForceDest.setForce(Force.ZERO);
     }
-    
+
     /**
      * Called when horizontal collision occurred.
      */
     protected void onHorizontalCollision()
     {
         // Nothing by default
+    }
+
+    /**
+     * Load all existing animations defined in the xml file.
+     */
+    private void loadAnimations()
+    {
+        for (EntityState state : EntityState.values())
+        {
+            try
+            {
+                animations.put(state, getAnimation(state.getAnimationName()));
+            }
+            catch (LionEngineException exception)
+            {
+                continue;
+            }
+        }
     }
 
     /**
@@ -357,11 +348,14 @@ abstract class Entity
     protected void handleAnimations(double extrp)
     {
         // Assign an animation for each state
-        selectAnimCur(state);
-        // Play the assigned animation
-        if (animCur != null && stateOld != state)
+        if (state == EntityState.WALK)
         {
-            play(animCur);
+            setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 12.0);
+        }
+        // Play the assigned animation
+        if (stateOld != state)
+        {
+            play(animations.get(state));
         }
         updateAnimation(extrp);
     }

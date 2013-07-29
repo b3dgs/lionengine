@@ -22,7 +22,15 @@ final class Tile
     @Override
     public TileCollision getCollisionFrom(String collision, String type)
     {
-        return TileCollision.valueOf(type);
+        try
+        {
+            return TileCollision.valueOf(type);
+        }
+        catch (IllegalArgumentException
+               | NullPointerException exception)
+        {
+            return TileCollision.NONE;
+        }
     }
 
     @Override

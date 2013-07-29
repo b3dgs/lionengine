@@ -19,7 +19,7 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(final Loader loader)
+    public Scene(Loader loader)
     {
         super(loader);
         setExtrapolated(true);

@@ -9,9 +9,9 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
-import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -24,7 +24,7 @@ class World
     /** Map reference. */
     private final Map map;
     /** Camera reference. */
-    private final CameraGame camera;
+    private final CameraPlatform camera;
     /** Text drawer. */
     private final Text text;
     /** Camera force. */
@@ -41,7 +41,7 @@ class World
     {
         super(sequence);
         map = new Map();
-        camera = new CameraGame();
+        camera = new CameraPlatform(width, height);
         movement = new Force();
         force = new Force();
         text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);

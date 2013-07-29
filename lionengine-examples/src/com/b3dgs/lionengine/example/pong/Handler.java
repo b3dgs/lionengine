@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Handle the game, count score, and reset the ball in case of goal.
  */
-public class Handler
+class Handler
 {
     /** Screen width. */
     private final int screenWidth;
@@ -33,7 +33,7 @@ public class Handler
      * @param rackets The rackets reference.
      * @param ball The ball reference.
      */
-    public Handler(int screenWidth, int screenHeight, Set<Racket> rackets, Ball ball)
+    Handler(int screenWidth, int screenHeight, Set<Racket> rackets, Ball ball)
     {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;

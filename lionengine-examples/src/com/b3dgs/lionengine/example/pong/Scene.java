@@ -16,7 +16,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * This is where the game loop is running.
  */
-public class Scene
+class Scene
         extends Sequence
 {
     /** Number of lines in the middle. */
@@ -37,7 +37,7 @@ public class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(final Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
         text = new Text(Font.SANS_SERIF, 16, Text.NORMAL);
@@ -99,11 +99,5 @@ public class Scene
         text.setColor(Color.BLUE);
         text.draw(g, width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
         text.draw(g, width / 2 + width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
-    }
-
-    @Override
-    protected void onTerminate()
-    {
-        rackets.clear();
     }
 }

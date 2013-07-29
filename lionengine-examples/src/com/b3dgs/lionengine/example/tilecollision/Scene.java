@@ -27,7 +27,7 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(final Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
         map = new Map();

@@ -38,7 +38,7 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(final Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
         // As we defined our resources directory as this: Media.get("resources", "loaddraw")

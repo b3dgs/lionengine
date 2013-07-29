@@ -13,4 +13,25 @@ enum EntityState
     TURN,
     /** Jump state. */
     JUMP;
+    
+    /** Animation name. */
+    private final String animationName;
+
+    /**
+     * Constructor.
+     */
+    private EntityState()
+    {
+        animationName = name().toLowerCase();
+    }
+
+    /**
+     * Get the animation name.
+     * 
+     * @return The animation name.
+     */
+    public String getAnimationName()
+    {
+        return animationName;
+    }
 }

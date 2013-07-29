@@ -23,7 +23,7 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(final Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
         text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);

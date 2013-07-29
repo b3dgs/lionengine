@@ -4,6 +4,8 @@
 	<size width="16" height="16"/>
 	<data movementSpeed="0.75" jumpSpeed="9.0" mass="2.5"/>
 	<animation name="idle" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="turn" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="walk" start="1" end="2" step="1" speed="0.0625" reversed="false" repeat="true"/>
-	<animation name="die" start="3" end="3" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="jump" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="dead" start="3" end="3" step="1" speed="0.125" reversed="false" repeat="false"/>
 </entity>

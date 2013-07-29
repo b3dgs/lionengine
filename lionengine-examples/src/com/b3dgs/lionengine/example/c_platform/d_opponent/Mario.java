@@ -1,7 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -12,10 +11,6 @@ import com.b3dgs.lionengine.input.Keyboard;
 class Mario
         extends Entity
 {
-    /** Animation turn. */
-    private final Animation animTurn;
-    /** Animation jump. */
-    private final Animation animJump;
     /** Dead timer. */
     private final Timing timerDie;
     /** Dead step. */
@@ -33,8 +28,6 @@ class Mario
     Mario(SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
-        animTurn = getAnimation("turn");
-        animJump = getAnimation("jump");
         timerDie = new Timing();
     }
 
@@ -124,26 +117,6 @@ class Mario
             }
         }
         super.handleMovements(extrp);
-    }
-
-    @Override
-    protected void selectAnimCur(EntityState state)
-    {
-        super.selectAnimCur(state);
-        switch (state)
-        {
-            case TURN:
-                animCur = animTurn;
-                break;
-            case JUMP:
-                animCur = animJump;
-                break;
-            case WALK:
-                setAnimSpeed(Math.abs(getDiffHorizontal() / 12.0));
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

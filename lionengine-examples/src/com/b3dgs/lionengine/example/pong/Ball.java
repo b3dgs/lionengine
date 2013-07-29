@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 /**
  * Ball implementation using EntityGame base.
  */
-public class Ball
+class Ball
         extends EntityGame
 {
     /** Ball size. */
@@ -28,7 +28,7 @@ public class Ball
      * @param screenWidth The screen width.
      * @param screenHeight The screen height.
      */
-    public Ball(int screenWidth, int screenHeight)
+    Ball(int screenWidth, int screenHeight)
     {
         super();
         force = new Force();

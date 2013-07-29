@@ -1,5 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.b_entitycontrol;
 
+import java.util.EnumMap;
+
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
@@ -29,22 +32,14 @@ class Mario
     private final Force movementForceDest;
     /** Movement jump force. */
     private final Force jumpForce;
-    /** Animation idle. */
-    private final Animation animIdle;
-    /** Animation walk. */
-    private final Animation animWalk;
-    /** Animation turn. */
-    private final Animation animTurn;
-    /** Animation jump. */
-    private final Animation animJump;
+    /** Animations list. */
+    private final EnumMap<EntityState, Animation> animations;
     /** Key right state. */
     private boolean right;
     /** Key left state. */
     private boolean left;
     /** Key up state. */
     private boolean up;
-    /** Current animation. */
-    private Animation animCur;
     /** Mario state. */
     private EntityState state;
     /** Old state. */
@@ -62,14 +57,12 @@ class Mario
         movementForce = new Force();
         movementForceDest = new Force();
         jumpForce = new Force();
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
-        animTurn = getAnimation("turn");
-        animJump = getAnimation("jump");
+        animations = new EnumMap<>(EntityState.class);
         state = EntityState.IDLE;
         stateOld = state;
         setLocation(100, 32);
-        setMass(2.5);
+        setMass(getDataDouble("mass", "data"));
+        loadAnimations();
     }
 
     /**
@@ -83,7 +76,7 @@ class Mario
         left = keyboard.isPressed(Keyboard.LEFT);
         up = keyboard.isPressed(Keyboard.UP);
     }
-    
+
     /**
      * Check if hero can jump.
      * 
@@ -104,45 +97,78 @@ class Mario
         return getLocationIntY() == Mario.GROUND;
     }
 
-    @Override
-    protected void handleActions(double extrp)
+    /**
+     * Load all existing animations defined in the xml file.
+     */
+    private void loadAnimations()
     {
-        // Update movement key
-        if (right)
+        for (EntityState state : EntityState.values())
         {
-            movementForceDest.setForce(Mario.MOVEMENT_SPEED, 0.0);
-            mirror(getDiffHorizontal() < 0.0);
-        }
-        if (left)
-        {
-            movementForceDest.setForce(-Mario.MOVEMENT_SPEED, 0.0);
-            mirror(getDiffHorizontal() < 0.0);
-        }
-
-        // Update jump key
-        if (up)
-        {
-            if (canJump())
+            try
             {
-                jumpForce.setForce(0.0, Mario.JUMP_FORCE);
+                animations.put(state, getAnimation(state.getAnimationName()));
+            }
+            catch (LionEngineException exception)
+            {
+                continue;
             }
         }
+    }
 
-        // Update states
+    /**
+     * Update the forces depending of the pressed key.
+     */
+    private void updateForces()
+    {
+        movementForceDest.setForce(Force.ZERO);
+        final double speed;
+        if (right && !left)
+        {
+            speed = Mario.MOVEMENT_SPEED;
+        }
+        else if (left && !right)
+        {
+            speed = -Mario.MOVEMENT_SPEED;
+        }
+        else
+        {
+            speed = 0.0;
+        }
+        movementForceDest.setForce(speed, 0.0);
+
+        if (up && canJump())
+        {
+            jumpForce.setForce(0.0, Mario.JUMP_FORCE);
+        }
+    }
+
+    /**
+     * Update mario states.
+     */
+    private void updateStates()
+    {
+        final double diffHorizontal = getDiffHorizontal();
         stateOld = state;
+
+        if (diffHorizontal != 0.0)
+        {
+            mirror(diffHorizontal < 0.0);
+        }
+
+        final boolean mirror = getMirror();
         if (!isOnGround())
         {
             state = EntityState.JUMP;
         }
-        else if (getMirror() && right && getDiffHorizontal() < 0.0)
+        else if (mirror && right && diffHorizontal < 0.0)
         {
             state = EntityState.TURN;
         }
-        else if (!getMirror() && left && getDiffHorizontal() > 0.0)
+        else if (!mirror && left && diffHorizontal > 0.0)
         {
             state = EntityState.TURN;
         }
-        else if (getDiffHorizontal() != 0.0)
+        else if (diffHorizontal != 0.0)
         {
             state = EntityState.WALK;
         }
@@ -152,21 +178,37 @@ class Mario
         }
     }
 
+    /*
+     * EntityPlatform
+     */
+
+    @Override
+    protected void handleActions(double extrp)
+    {
+        updateForces();
+        updateStates();
+    }
+
     @Override
     protected void handleMovements(double extrp)
     {
         // Smooth walking speed...
+        final double speed;
+        final double sensibility;
         if (right || left)
         {
-            movementForce.reachForce(extrp, movementForceDest, 0.3, 0.1);
+            speed = 0.3;
+            sensibility = 0.01;
         }
         // ...but quick stop
         else
         {
-            movementForce.reachForce(extrp, Force.ZERO, 0.5, 0.1);
+            speed = 0.5;
+            sensibility = 0.1;
         }
 
         // Update final movement
+        movementForce.reachForce(extrp, movementForceDest, speed, sensibility);
         updateGravity(extrp, desiredFps, movementForce, jumpForce);
         updateMirror();
     }
@@ -187,29 +229,14 @@ class Mario
     protected void handleAnimations(double extrp)
     {
         // Assign an animation for each state
-        switch (state)
+        if (state == EntityState.WALK)
         {
-            case IDLE:
-                animCur = animIdle;
-                break;
-            case WALK:
-                animCur = animWalk;
-                setAnimSpeed(Math.abs(getDiffHorizontal() / 12.0));
-                break;
-            case TURN:
-                animCur = animTurn;
-                break;
-            case JUMP:
-                animCur = animJump;
-                break;
-            default:
-                animCur = animIdle;
-                break;
+            setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)
         {
-            this.play(animCur);
+            play(animations.get(state));
         }
         updateAnimation(extrp);
     }

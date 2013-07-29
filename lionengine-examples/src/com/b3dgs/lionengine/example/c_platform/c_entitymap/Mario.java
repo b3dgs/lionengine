@@ -1,5 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.c_entitymap;
 
+import java.util.EnumMap;
+
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
@@ -27,22 +30,14 @@ class Mario
     private final Force movementForceDest;
     /** Movement jump force. */
     private final Force jumpForce;
-    /** Animation idle. */
-    private final Animation animIdle;
-    /** Animation walk. */
-    private final Animation animWalk;
-    /** Animation turn. */
-    private final Animation animTurn;
-    /** Animation jump. */
-    private final Animation animJump;
+    /** Animations list. */
+    private final EnumMap<EntityState, Animation> animations;
     /** Key right state. */
     private boolean right;
     /** Key left state. */
     private boolean left;
     /** Key up state. */
     private boolean up;
-    /** Current animation. */
-    private Animation animCur;
     /** Mario state. */
     private EntityState state;
     /** Old state. */
@@ -66,15 +61,13 @@ class Mario
         jumpForce = new Force();
         jumpSpeed = getDataDouble("jumpSpeed", "data");
         movementSpeed = getDataDouble("movementSpeed", "data");
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
-        animTurn = getAnimation("turn");
-        animJump = getAnimation("jump");
+        animations = new EnumMap<>(EntityState.class);
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
         // Mario leg = ground referential
         setFrameOffsets(getWidth() / 2, 1);
         setLocation(80, 32);
+        loadAnimations();
     }
 
     /**
@@ -89,6 +82,24 @@ class Mario
         up = keyboard.isPressed(Keyboard.UP);
     }
 
+    /**
+     * Load all existing animations defined in the xml file.
+     */
+    private void loadAnimations()
+    {
+        for (EntityState state : EntityState.values())
+        {
+            try
+            {
+                animations.put(state, getAnimation(state.getAnimationName()));
+            }
+            catch (LionEngineException exception)
+            {
+                continue;
+            }
+        }
+    }
+    
     /**
      * Update the forces depending of the pressed key.
      */
@@ -314,29 +325,14 @@ class Mario
     protected void handleAnimations(double extrp)
     {
         // Assign an animation for each state
-        switch (state)
+        if (state == EntityState.WALK)
         {
-            case IDLE:
-                animCur = animIdle;
-                break;
-            case WALK:
-                animCur = animWalk;
-                setAnimSpeed(Math.abs(getDiffHorizontal() / 12.0));
-                break;
-            case TURN:
-                animCur = animTurn;
-                break;
-            case JUMP:
-                animCur = animJump;
-                break;
-            default:
-                animCur = animIdle;
-                break;
+            setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)
         {
-            play(animCur);
+            play(animations.get(state));
         }
         updateAnimation(extrp);
     }

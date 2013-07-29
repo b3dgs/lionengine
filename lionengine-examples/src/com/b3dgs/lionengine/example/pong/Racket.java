@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Racket implementation using EntityGame base.
  */
-public class Racket
+class Racket
         extends EntityGame
 {
     /** Racket width. */
@@ -45,7 +45,7 @@ public class Racket
      * @param y The vertical location.
      * @param automatic <code>true</code> for an automatic movement, <code>false</code> for a manual movement.
      */
-    public Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
+    Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
     {
         super();
         this.screenWidth = screenWidth;

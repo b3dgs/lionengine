@@ -7,5 +7,5 @@
 	<animation name="walk" start="4" end="6" step="1" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="turn" start="7" end="7" step="1" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="jump" start="3" end="3" step="1" speed="0.25" reversed="false" repeat="false"/>
-	<animation name="die" start="2" end="2" step="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="dead" start="2" end="2" step="1" speed="0.125" reversed="false" repeat="false"/>
 </entity>

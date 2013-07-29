@@ -86,7 +86,8 @@ public final class Tile
             color = TypeTileColor.valueOf(collision);
             return tileCollision;
         }
-        catch (NullPointerException exception)
+        catch (IllegalArgumentException
+               | NullPointerException exception)
         {
             return TypeCollision.NONE;
         }
