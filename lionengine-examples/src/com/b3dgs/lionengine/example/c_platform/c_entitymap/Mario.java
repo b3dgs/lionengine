@@ -87,19 +87,19 @@ class Mario
      */
     private void loadAnimations()
     {
-        for (EntityState state : EntityState.values())
+        for (final EntityState state : EntityState.values())
         {
             try
             {
                 animations.put(state, getAnimation(state.getAnimationName()));
             }
-            catch (LionEngineException exception)
+            catch (final LionEngineException exception)
             {
                 continue;
             }
         }
     }
-    
+
     /**
      * Update the forces depending of the pressed key.
      */

@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * Factory entity implementation.
@@ -17,23 +18,27 @@ class FactoryEntity
     private static final String ENTITY_DIR = "entity";
     /** Map reference. */
     private final Map map;
+    /** Camera reference. */
+    private final CameraPlatform camera;
     /** Entity desired fps. */
     private final int desiredFps;
 
     /**
      * Standard constructor.
      * 
-     * @param desiredFps The desired fps.
      * @param map The map reference.
+     * @param camera The camera reference.
+     * @param desiredFps The desired fps.
      */
-    FactoryEntity(Map map, int desiredFps)
+    FactoryEntity(Map map, CameraPlatform camera, int desiredFps)
     {
         super(TypeEntity.class);
         this.map = map;
+        this.camera = camera;
         this.desiredFps = desiredFps;
         loadAll(TypeEntity.values());
     }
-    
+
     /**
      * Create a new valdyn.
      * 
@@ -41,9 +46,9 @@ class FactoryEntity
      */
     Valdyn createValdyn()
     {
-        return new Valdyn(getSetup(TypeEntity.valdyn), map, desiredFps);
+        return new Valdyn(getSetup(TypeEntity.valdyn), map, camera, desiredFps);
     }
-    
+
     /*
      * FactoryEntityGame
      */
@@ -59,7 +64,7 @@ class FactoryEntity
                 throw new LionEngineException("Unknown entity: " + type);
         }
     }
-    
+
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {

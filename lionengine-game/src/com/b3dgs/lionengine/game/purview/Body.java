@@ -27,9 +27,10 @@ public interface Body
      * @param state The state.
      */
     void invertAxisY(boolean state);
-    
+
     /**
      * Set the maximum gravity value.
+     * 
      * @param max The maximum gravity value.
      */
     void setGravityMax(double max);

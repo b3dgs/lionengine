@@ -42,10 +42,10 @@ public class Swamp
         final String path = Media.getPath("backgrounds", "Swamp", theme);
         final int width = sequence.config.internal.getWidth();
         add(new Backdrop(path, this.flickering, isWide(), width));
-        add(new Clouds(Media.get(path, "cloud.png"), isWide(), width, 22));
-        add(new Parallax(sequence.config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 146));
-        
-        totalHeight = 70;
+        add(new Clouds(Media.get(path, "cloud.png"), isWide(), width, 4));
+        add(new Parallax(sequence.config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 124));
+
+        totalHeight = 48;
     }
 
     /**
@@ -93,17 +93,17 @@ public class Swamp
 
             if (flickering)
             {
-                backcolorA = createElement(path, "backcolor_a.png", 0, 22, false);
-                backcolorB = createElement(path, "backcolor_b.png", 0, 22, false);
+                backcolorA = createElement(path, "backcolor_a.png", 0, 0, false);
+                backcolorB = createElement(path, "backcolor_b.png", 0, 0, false);
                 flickerCount = 0;
             }
             else
             {
-                backcolorA = createElement(path, "backcolor.png", 0, 22, false);
+                backcolorA = createElement(path, "backcolor.png", 0, 0, false);
                 backcolorB = null;
             }
 
-            mountain = createElement(path, "mountain.png", 0, 146, false);
+            mountain = createElement(path, "mountain.png", 0, 124, false);
             int wi = (int) Math.ceil(this.screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
             if (this.wide)
             {
@@ -116,7 +116,7 @@ public class Swamp
             {
                 x = 276;
             }
-            moon = createRasteredElement(path, "moon.png", x, 96, 73);
+            moon = createRasteredElement(path, "moon.png", x, 105, 73);
             mountainSprite = (Sprite) mountain.getSprite();
         }
 
@@ -132,7 +132,8 @@ public class Swamp
             if (flickering)
             {
                 flickerCount = (flickerCount + 1) % 2;
-                if (flickerCount == 0) {
+                if (flickerCount == 0)
+                {
                     flickerType = !flickerType;
                 }
             }
@@ -159,7 +160,7 @@ public class Swamp
             }
 
             // Render moon
-            moon.getRaster((int) (mountain.getOffsetY() + 70)).render(g, moon.getMainX(),
+            moon.getRaster((int) (mountain.getOffsetY() + 48)).render(g, moon.getMainX(),
                     (int) (moon.getOffsetY() + moon.getMainY()));
 
             // Render mountains

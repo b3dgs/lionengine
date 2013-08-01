@@ -37,7 +37,7 @@ public abstract class TilePlatform<C extends Enum<C>>
      * @return The collision y (<code>null</code> if none).
      */
     public abstract Double getCollisionY(Localizable localizable);
-    
+
     /**
      * Check if there is a collision between the localizable and the tile.
      * 

@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.game.platform.map;
 
 import com.b3dgs.lionengine.game.maptile.MapTileGame;
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.platform.EntityPlatform;
 
 /**
  * Default platform map implementation.
@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
  * @param <C> Collision type used.
  * @param <T> Tile type used.
  */
-public abstract class MapTilePlatform<C extends Enum<C>, T extends TileGame<C>>
+public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<C>>
         extends MapTileGame<C, T>
 {
     /**
@@ -21,5 +21,20 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TileGame<C>>
     public MapTilePlatform(int tileWidth, int tileHeight)
     {
         super(tileWidth, tileHeight);
+    }
+
+    /**
+     * Get the tile at the entity location.
+     * 
+     * @param entity The entity.
+     * @param offsetX The horizontal offset search.
+     * @param offsetY The vertical offset search.
+     * @return The tile found at the entity.
+     */
+    public T getTile(EntityPlatform<C, T> entity, int offsetX, int offsetY)
+    {
+        final int tx = (entity.getLocationIntX() + offsetX) / getTileWidth();
+        final int ty = (entity.getLocationIntY() + offsetY) / getTileHeight();
+        return getTile(tx, ty);
     }
 }

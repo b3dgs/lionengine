@@ -151,7 +151,7 @@ public class ModuleCore
     void text()
     {
         // Create the text
-        Text text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+        final Text text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
 
         // Rendering type 1
         text.setText("Hello");

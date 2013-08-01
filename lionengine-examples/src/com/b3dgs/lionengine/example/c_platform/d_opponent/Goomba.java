@@ -26,11 +26,11 @@ class Goomba
         timerDie = new Timing();
         right = true;
     }
-    
+
     /*
      * Entity
      */
-    
+
     @Override
     public void onHurtBy(EntityGame entity)
     {
@@ -43,7 +43,7 @@ class Goomba
             timerDie.start();
         }
     }
-    
+
     @Override
     public void onHitThat(Entity entity)
     {

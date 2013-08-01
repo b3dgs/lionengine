@@ -48,7 +48,7 @@ public abstract class TileGame<C extends Enum<C>>
         y = 0;
         collision = null;
     }
-    
+
     /**
      * Get collision type from its name as string. The parameter value is read from the file describing the map
      * collisions. The best way to store map collisions name is to use an enum with the same names.

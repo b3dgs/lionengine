@@ -68,7 +68,7 @@ class World
     {
         map.load(file);
     }
-    
+
     @Override
     protected void loaded()
     {

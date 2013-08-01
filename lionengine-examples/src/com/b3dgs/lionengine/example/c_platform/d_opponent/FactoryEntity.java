@@ -31,7 +31,7 @@ class FactoryEntity
         this.map = map;
         loadAll(TypeEntity.values());
     }
-    
+
     /**
      * Create a new mario.
      * 

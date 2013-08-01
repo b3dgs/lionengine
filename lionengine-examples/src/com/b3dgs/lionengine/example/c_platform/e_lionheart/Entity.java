@@ -29,10 +29,10 @@ public abstract class Entity
     protected final Timing timerDie;
     /** Movement force force. */
     protected final Force movementForce;
+    /** Movement force destination force. */
+    protected final Force movementForceDest;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
-    /** Movement force destination force. */
-    private final Force movementForceDest;
     /** Smooth speed value. */
     private final double smoothSpeed;
     /** Sensibility increase value. */
@@ -60,7 +60,7 @@ public abstract class Entity
     /** Entity old state. */
     private EntityState stateOld;
     /** Movement max speed. */
-    private double movementSpeedMax;
+    private final double movementSpeedMax;
     /** Dead flag. */
     private boolean dead;
 
@@ -92,7 +92,7 @@ public abstract class Entity
         animations = new EnumMap<>(EntityState.class);
         state = EntityState.IDLE;
         stateOld = state;
-        coll = EntityCollision.NONE;
+        coll = EntityCollision.GROUND;
         collOld = coll;
         loadAnimations();
     }
@@ -265,13 +265,13 @@ public abstract class Entity
      */
     private void loadAnimations()
     {
-        for (EntityState state : EntityState.values())
+        for (final EntityState state : EntityState.values())
         {
             try
             {
                 animations.put(state, getAnimation(state.getAnimationName()));
             }
-            catch (LionEngineException exception)
+            catch (final LionEngineException exception)
             {
                 continue;
             }
@@ -352,31 +352,21 @@ public abstract class Entity
     @Override
     protected void handleActions(double extrp)
     {
-        updateForces();
-
+        if (!dead)
+        {
+            updateForces();
+        }
         stateOld = state;
-        final double diffHorizontal = getDiffHorizontal();
-        if (!isDead() && diffHorizontal != 0.0)
-        {
-            mirror(diffHorizontal < 0.0);
-        }
         updateStates();
-        if (dead)
-        {
-            state = EntityState.DEAD;
-        }
     }
 
     @Override
     protected void handleMovements(double extrp)
     {
+        updateMovement(extrp);
         updateGravity(extrp, desiredFps, movementForce, jumpForce);
         updateMirror();
-        if (!dead)
-        {
-            updateMovement(extrp);
-        }
-        else
+        if (dead)
         {
             updateDead();
         }

@@ -15,11 +15,11 @@ public enum TileCollision
     /** Ground with spike. */
     GROUND_SPIKE,
     /** Ground border right. */
-    BORDER_RIGHT,
+    BORDER_RIGHT(true),
     /** Ground border left. */
-    BORDER_LEFT,
+    BORDER_LEFT(true),
     /** Ground border center. */
-    BORDER_CENTER,
+    BORDER_CENTER(true),
     /** Slope right top \. */
     SLOPE_RIGHT_1,
     /** Slope right middle \. */
@@ -27,9 +27,9 @@ public enum TileCollision
     /** Slope right bottom \. */
     SLOPE_RIGHT_3,
     /** Slope right border down \. */
-    SLOPE_RIGHT_BORDER_DOWN,
+    SLOPE_RIGHT_BORDER_DOWN(true),
     /** Slope right border up \. */
-    SLOPE_RIGHT_BORDER_UP,
+    SLOPE_RIGHT_BORDER_UP(true),
     /** Slope left top /. */
     SLOPE_LEFT_1,
     /** Slope left middle /. */
@@ -37,9 +37,9 @@ public enum TileCollision
     /** Slope left bottom /. */
     SLOPE_LEFT_3,
     /** Slope left border down /. */
-    SLOPE_LEFT_BORDER_DOWN,
+    SLOPE_LEFT_BORDER_DOWN(true),
     /** Slope left border up /. */
-    SLOPE_LEFT_BORDER_UP,
+    SLOPE_LEFT_BORDER_UP(true),
     /** Slide right top. */
     SLIDE_RIGHT_1,
     /** Slide right middle. */
@@ -71,8 +71,43 @@ public enum TileCollision
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_LEFT_1);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_LEFT_2);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_LEFT_3);
+        TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_LEFT_BORDER_DOWN);
+        TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_LEFT_BORDER_UP);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_1);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_2);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_3);
+        TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_BORDER_DOWN);
+        TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_BORDER_UP);
+    }
+
+    /** Border state. */
+    private final boolean border;
+
+    /**
+     * Constructor.
+     */
+    private TileCollision()
+    {
+        this(false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param border <code>true</code> if border, <code>false</code> else.
+     */
+    private TileCollision(boolean border)
+    {
+        this.border = border;
+    }
+
+    /**
+     * Check if tile is a border.
+     * 
+     * @return <code>true</code> if border, <code>false</code> else.
+     */
+    public boolean isBorder()
+    {
+        return border;
     }
 }

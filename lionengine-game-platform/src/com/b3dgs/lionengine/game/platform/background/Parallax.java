@@ -7,6 +7,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Parallax is used for background depth effect (2.5D).
@@ -14,6 +15,8 @@ import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 public class Parallax
         implements BackgroundComponent
 {
+    /** Magic wrap speed. */
+    private static final double SPEED_WRAP = 2.56 / 0.0084;
     /** Parallax element. */
     private final BackgroundElement data;
     /** Parallax surface. */
@@ -91,12 +94,14 @@ public class Parallax
     public void update(double extrp, int x, int y, double speed)
     {
         data.setOffsetY(y);
+        // This will avoid bug on huge speed (lines out of screen)
+        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -SPEED_WRAP, SPEED_WRAP);
 
         // Move each line, depending of its id and size
         for (int i = 0; i < parallaxsNumber; i++)
         {
-            this.x[i] += 0.2 * i * speed * 0.042;
-            x2[i] += speed * 0.25;
+            this.x[i] += 0.2 * i * wrapedSpeed * 0.042;
+            x2[i] += wrapedSpeed * 0.25;
 
             // When line has arrived to its border
             if (this.x[1] >= 2.56 || this.x[1] <= -2.56)

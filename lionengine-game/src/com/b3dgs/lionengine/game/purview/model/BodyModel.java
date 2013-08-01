@@ -21,7 +21,7 @@ public class BodyModel
     /** Body mass. */
     private double mass;
     /** Maximum gravity value. */
-    private Force gravityMax;
+    private final Force gravityMax;
     /** Invert axis. */
     private int invertY;
 
@@ -75,7 +75,7 @@ public class BodyModel
     {
         invertY = state ? -1 : 1;
     }
-    
+
     @Override
     public void setGravityMax(double max)
     {

@@ -56,7 +56,7 @@ class World
     @Override
     public void render(Graphic g)
     {
-        g.setColor(BACKGROUND_COLOR);
+        g.setColor(World.BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
         // Draw the map
         map.render(g, camera);
@@ -76,7 +76,7 @@ class World
     {
         map.load(file);
     }
-    
+
     @Override
     protected void loaded()
     {

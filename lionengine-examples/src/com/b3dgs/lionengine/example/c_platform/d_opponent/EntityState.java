@@ -15,7 +15,7 @@ enum EntityState
     JUMP,
     /** Dead state. */
     DEAD;
-    
+
     /** Animation name. */
     private final String animationName;
 

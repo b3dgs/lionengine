@@ -9,6 +9,7 @@ public interface BackgroundComponent
 {
     /**
      * Update component.
+     * 
      * @param extrp The extrapolation value.
      * @param x The horizontal offset.
      * @param y The vertical offset.

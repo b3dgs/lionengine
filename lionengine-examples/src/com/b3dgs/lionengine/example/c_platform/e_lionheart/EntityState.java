@@ -7,8 +7,10 @@ public enum EntityState
 {
     /** Idle state. */
     IDLE("idle"),
-    /** Dead state. */
-    DEAD("die"),
+    /** Die state. */
+    DIE("die"),
+    /** Die state. */
+    DEAD("dead"),
     /** Fallen state. */
     FALLEN("fallen"),
     /** Walk state. */
@@ -18,7 +20,9 @@ public enum EntityState
     /** Jumping state. */
     JUMP("jump"),
     /** Falling state. */
-    FALL("fall");
+    FALL("fall"),
+    /** Border state. */
+    BORDER("border");
 
     /** Animation name. */
     private final String animationName;

@@ -9,6 +9,7 @@ public interface Background
 {
     /**
      * Background updates.
+     * 
      * @param extrp The extrapolation value.
      * @param speed The scrolling speed.
      * @param y The background y.

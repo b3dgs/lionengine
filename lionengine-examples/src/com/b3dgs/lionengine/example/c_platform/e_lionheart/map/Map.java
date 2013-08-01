@@ -19,6 +19,8 @@ public class Map
     public static final int TILE_WIDTH = 16;
     /** Tile height. */
     public static final int TILE_HEIGHT = 16;
+    /** The width of the tile extremity. */
+    public static final int TILE_EXTREMITY_WIDTH = 2;
 
     /**
      * Standard constructor.
@@ -26,8 +28,9 @@ public class Map
     public Map()
     {
         super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
+        //setRaster(Media.get("rasters", "raster1.xml"), false, false);
     }
-    
+
     /**
      * Convert int to byte value (working on if int is less than 256).
      * 
@@ -49,7 +52,7 @@ public class Map
     {
         return value - Byte.MIN_VALUE;
     }
-    
+
     /*
      * MapTilePlatformRastered
      */
@@ -63,19 +66,19 @@ public class Map
     @Override
     protected void saveTile(FileWriting file, Tile tile) throws IOException
     {
-        file.writeByte(toByte(tile.getPattern().intValue()));
-        file.writeByte(toByte(tile.getNumber()));
-        file.writeByte(toByte((tile.getX() / tileWidth) % MapTileGame.BLOC_SIZE));
-        file.writeByte(toByte(tile.getY() / tileHeight));
+        file.writeByte(Map.toByte(tile.getPattern().intValue()));
+        file.writeByte(Map.toByte(tile.getNumber()));
+        file.writeByte(Map.toByte(tile.getX() / tileWidth % MapTileGame.BLOC_SIZE));
+        file.writeByte(Map.toByte(tile.getY() / tileHeight));
     }
 
     @Override
     public Tile loadTile(FileReading file, int i) throws IOException
     {
-        final int pattern = fromByte(file.readByte());
-        final int number = fromByte(file.readByte());
-        final int x = fromByte(file.readByte());
-        final int y = fromByte(file.readByte());
+        final int pattern = Map.fromByte(file.readByte());
+        final int number = Map.fromByte(file.readByte());
+        final int x = Map.fromByte(file.readByte());
+        final int y = Map.fromByte(file.readByte());
         final Tile tile = createTile(tileWidth, tileHeight);
 
         tile.setCollision(tile.getCollisionFrom(null, null));

@@ -130,13 +130,13 @@ public class LocalizableModel
     @Override
     public int getLocationIntX()
     {
-        return (int) Math.round(current.getX());
+        return (int) Math.floor(current.getX());
     }
 
     @Override
     public int getLocationIntY()
     {
-        return (int) Math.round(current.getY());
+        return (int) Math.floor(current.getY());
     }
 
     @Override

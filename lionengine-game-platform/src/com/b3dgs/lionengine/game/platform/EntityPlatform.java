@@ -68,7 +68,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         setSize(width, height);
         invertAxisY(true);
     }
-    
+
     /**
      * Update actions, such as movements and attacks.
      * 
@@ -212,7 +212,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     public int getInTileX()
     {
-        return (int) Math.floor((getLocationX()) / map.getTileWidth());
+        return (int) Math.floor(getLocationX() / map.getTileWidth());
     }
 
     /**
@@ -222,7 +222,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     public int getInTileY()
     {
-        return (int) Math.floor((getLocationY()) / map.getTileHeight());
+        return (int) Math.floor(getLocationY() / map.getTileHeight());
     }
 
     /**
@@ -232,7 +232,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     public int getInTileOldX()
     {
-        return (int) Math.floor((getLocationOldX()) / map.getTileWidth());
+        return (int) Math.floor(getLocationOldX() / map.getTileWidth());
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     public int getInTileOldY()
     {
-        return (int) Math.floor((getLocationOldY()) / map.getTileHeight());
+        return (int) Math.floor(getLocationOldY() / map.getTileHeight());
     }
 
     /**
@@ -288,7 +288,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         return (int) getLocationOldY() - tile.getY();
     }
-    
+
     /**
      * Apply an horizontal collision using the specified blocking x value.
      * 
@@ -491,7 +491,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     /*
      * EntityGame
      */
-    
+
     @Override
     public void updateMirror()
     {
@@ -522,7 +522,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         return super.getLocationOldY() + collOffY;
     }
-    
+
     @Override
     public int getLocationIntX()
     {

@@ -5,7 +5,10 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.EntityCollision;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
@@ -14,26 +17,35 @@ import com.b3dgs.lionengine.input.Keyboard;
 public class Valdyn
         extends Entity
 {
+    /** Divisor for walk speed animation. */
+    private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
+    /** Camera reference. */
+    private final CameraPlatform camera;
     /** Fall timer (timer used to know when its the falling state). */
     private final Timing timerFall;
     /** Fallen timer. */
     private final Timing timerFallen;
     /** Fallen duration in milli. */
     private final int fallenDuration;
+    /** Extremity state. */
+    private boolean extremity;
 
     /**
      * Standard constructor.
      * 
      * @param setup The setup reference.
      * @param map The map reference.
+     * @param camera The camera reference.
      * @param desiredFps The desired fps.
      */
-    public Valdyn(SetupEntityGame setup, Map map, int desiredFps)
+    public Valdyn(SetupEntityGame setup, Map map, CameraPlatform camera, int desiredFps)
     {
         super(setup, map, desiredFps);
+        this.camera = camera;
         fallenDuration = getDataInteger("fallenDuration", "data");
         timerFall = new Timing();
         timerFallen = new Timing();
+        extremity = false;
     }
 
     /**
@@ -56,8 +68,16 @@ public class Valdyn
      */
     public void respawn()
     {
-        setLocation(512, 128);
         setDead(false);
+        resetGravity();
+        resetMovementSpeed();
+        mirror(false);
+        updateMirror();
+        state = EntityState.IDLE;
+        coll = EntityCollision.GROUND;
+        collOld = coll;
+        setLocation(512, 55);
+        camera.resetInterval(this);
     }
 
     /**
@@ -97,6 +117,44 @@ public class Valdyn
         }
     }
 
+    /**
+     * Check if the entity is over a left extremity.
+     * 
+     * @return <code>true</code> if over a left extremity, <code>false</code> else.
+     */
+    private boolean isOnLeftExtremity()
+    {
+        final Tile tile = map.getTile(this, 0, 0);
+        if (tile != null && tile.isBorder())
+        {
+            final int tx = getLocationIntX() - tile.getX() - Map.TILE_EXTREMITY_WIDTH;
+            final Tile left = map.getTile(tile.getX() / map.getTileWidth() - 1, tile.getY() / map.getTileHeight());
+            final boolean noLeft = left == null || TileCollision.NONE == left.getCollision();
+            final boolean extremity = noLeft && tx <= Map.TILE_EXTREMITY_WIDTH;
+            return extremity;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the entity is over a right extremity.
+     * 
+     * @return <code>true</code> if over a right extremity, <code>false</code> else.
+     */
+    private boolean isOnRightExtremity()
+    {
+        final Tile tile = map.getTile(this, 0, 0);
+        if (tile != null && tile.isBorder())
+        {
+            final int tx = getLocationIntX() - tile.getX() + Map.TILE_EXTREMITY_WIDTH;
+            final Tile right = map.getTile(tile.getX() / map.getTileWidth() + 1, tile.getY() / map.getTileHeight());
+            final boolean noRight = right == null || TileCollision.NONE == right.getCollision();
+            final boolean extremity = noRight && tx >= map.getTileWidth() - Map.TILE_EXTREMITY_WIDTH;
+            return extremity;
+        }
+        return false;
+    }
+
     /*
      * Entity
      */
@@ -128,8 +186,13 @@ public class Valdyn
     @Override
     protected void updateStates()
     {
-        final boolean mirror = getMirror();
         final double diffHorizontal = getDiffHorizontal();
+        if (!extremity && !isDead() && diffHorizontal != 0.0)
+        {
+            mirror(diffHorizontal < 0.0);
+        }
+        final boolean mirror = getMirror();
+
         if (isFalling())
         {
             state = EntityState.FALL;
@@ -144,7 +207,7 @@ public class Valdyn
         }
         else if (isOnGround())
         {
-            if ((mirror && right && diffHorizontal < 0.0 || !mirror && left && diffHorizontal > 0.0))
+            if (mirror && right && diffHorizontal < 0.0 || !mirror && left && diffHorizontal > 0.0)
             {
                 state = EntityState.TURN;
             }
@@ -152,9 +215,24 @@ public class Valdyn
             {
                 state = EntityState.WALK;
             }
+            else if (extremity)
+            {
+                state = EntityState.BORDER;
+            }
             else
             {
                 state = EntityState.IDLE;
+            }
+        }
+        if (isDead())
+        {
+            if (stepDie == 0 || getLocationY() < 0)
+            {
+                state = EntityState.DIE;
+            }
+            else
+            {
+                state = EntityState.DEAD;
             }
         }
         updateFall();
@@ -164,33 +242,31 @@ public class Valdyn
     @Override
     protected void updateDead()
     {
+        if (getLocationY() < 0)
+        {
+            resetMovementSpeed();
+            jumpForce.setForce(0.0, -0.3);
+            stepDie = 1;
+            resetGravity();
+        }
         if (timerDie.elapsed(500))
         {
-            // Die effect
-            if (stepDie == 0)
-            {
-                jumpForce.setForce(-0.75, 1.5);
-                stepDie = 1;
-            }
             resetGravity();
             // Respawn
-            if (stepDie == 1 && timerDie.elapsed(2000))
+            if (stepDie == 1)
             {
-                respawn();
+                if (timerDie.elapsed(1500))
+                {
+                    respawn();
+                }
             }
-        }
-        // Lock player
-        else
-        {
-            resetGravity();
-            setLocationX(dieLocation.getX());
-            setLocationY(dieLocation.getY());
         }
     }
 
     @Override
     protected void updateCollisions()
     {
+        extremity = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(100))
         {
             coll = EntityCollision.NONE;
@@ -200,6 +276,18 @@ public class Valdyn
         if (getDiffVertical() < 0 || isOnGround())
         {
             checkCollisionVertical(0);
+            checkCollisionVerticalBorder(Map.TILE_EXTREMITY_WIDTH); // Left leg;
+            if (isOnLeftExtremity())
+            {
+                mirror(true);
+                extremity = true;
+            }
+            checkCollisionVerticalBorder(-Map.TILE_EXTREMITY_WIDTH); // Right leg
+            if (isOnRightExtremity())
+            {
+                mirror(false);
+                extremity = true;
+            }
         }
 
         // Kill when fall down
@@ -210,12 +298,27 @@ public class Valdyn
         }
     }
 
+    /**
+     * Check the vertical collision in border case.
+     * 
+     * @param offsetX The horizontal offset.
+     */
+    private void checkCollisionVerticalBorder(int offsetX)
+    {
+        final Tile tile = map.getTile(this, offsetX, 0);
+        if (tile != null && tile.isBorder())
+        {
+            checkCollisionVertical(offsetX);
+        }
+    }
+
     @Override
     protected void updateAnimations()
     {
         if (state == EntityState.WALK || state == EntityState.TURN)
         {
-            setAnimSpeed(Math.abs(getHorizontalForce()) / 9.0);
+            final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
+            setAnimSpeed(speed);
         }
     }
 }

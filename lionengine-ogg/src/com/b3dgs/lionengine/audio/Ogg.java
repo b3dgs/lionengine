@@ -1,6 +1,5 @@
 package com.b3dgs.lionengine.audio;
 
-
 /**
  * Handle music routine. A music is an heavy sound, designed to be played once (loop or not).
  * <p>

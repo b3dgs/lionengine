@@ -1,6 +1,5 @@
 package com.b3dgs.lionengine.audio;
 
-
 /**
  * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a
  * separated thread. It supports the following main controls:

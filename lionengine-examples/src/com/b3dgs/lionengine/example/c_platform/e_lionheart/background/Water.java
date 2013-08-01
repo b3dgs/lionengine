@@ -25,13 +25,13 @@ public class Water
     /** Screen height. */
     final int screenHeight;
     /** Standard height. */
-    private int nominal;
+    private final int nominal;
     /** Water height. */
     private double height;
     /** Water depth. */
-    private double depth;
+    private final double depth;
     /** Water speed. */
-    private double speed;
+    private final double speed;
 
     /**
      * Create a new swamp background.
@@ -46,7 +46,7 @@ public class Water
         screenHeight = sequence.config.internal.getHeight();
         nominal = 210;
         height = 0.0;
-        depth = 8.0;
+        depth = 4.0;
         speed = 0.02;
         final String path = Media.getPath("foregrounds", theme);
         add(new Primary(path, this));
@@ -311,7 +311,7 @@ public class Water
         private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
         {
             final int oy = py + (int) water.getHeight();
-            for (int y = screenHeight - 32 + oy; y < screenHeight; y++)
+            for (int y = screenHeight - 32 + (getNominal() - 210) + oy; y < screenHeight; y++)
             {
                 final double inside = Math.cos(UtilityMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
                 final double outside = Math.cos(wx) * offsetForce;

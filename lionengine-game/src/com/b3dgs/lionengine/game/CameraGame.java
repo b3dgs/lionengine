@@ -115,10 +115,28 @@ public class CameraGame
     
     /**
      * Reset the camera interval to 0 by adapting its position.
+     * 
+     * @param localizable The localizable to center.
      */
-    public void resetInterval()
+    public void resetInterval(Localizable localizable)
     {
-        moveLocation(1.0, -offset.getLocationX() / 2.0, -offset.getLocationY() / 2.0);
+        final int intervalHorizontalOld = intervalHorizontal;
+        final int intervalVerticalOld = intervalVertical;
+        final double oldX = getLocationX();
+        final double oldY = getLocationY();
+        
+        setIntervals(0, 0);
+        offset.setLocation(0.0, 0.0);
+        follow(localizable);
+
+        final double newX = getLocationX();
+        final double newY = getLocationY();
+
+        moveLocation(1.0, oldX - newX, oldY - newY);
+        moveLocation(1.0, newX - oldX, newY - oldY);
+        
+        setIntervals(intervalHorizontalOld, intervalVerticalOld);
+        offset.setLocation(0.0, 0.0);
     }
 
     /**

@@ -137,7 +137,7 @@ public abstract class BackgroundPlatform
             py = (int) (currentY / maxY * lowest) - lowest;
         }
 
-        for (BackgroundComponent component : components)
+        for (final BackgroundComponent component : components)
         {
             component.update(extrp, 0, py, speed);
         }
@@ -146,7 +146,7 @@ public abstract class BackgroundPlatform
     @Override
     public final void render(Graphic g)
     {
-        for (BackgroundComponent component : components)
+        for (final BackgroundComponent component : components)
         {
             component.render(g);
         }

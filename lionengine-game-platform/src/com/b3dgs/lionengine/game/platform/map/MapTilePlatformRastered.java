@@ -13,7 +13,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.maptile.TileGame;
 import com.b3dgs.lionengine.game.platform.SetupEntityPlatformRastered;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityImage;
@@ -24,7 +23,7 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  * @param <C> Collision type.
  * @param <T> Tile type used.
  */
-public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileGame<C>>
+public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TilePlatform<C>>
         extends MapTilePlatform<C, T>
 {
     /** File describing the raster. */
@@ -74,7 +73,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileG
      */
     public int getRasterIndex(T tile)
     {
-        final int value = -tile.getY() / getTileHeight();
+        final int value = tile.getY() / getTileHeight();
         int index = value % SetupEntityPlatformRastered.MAX_RASTERS_R;
         if (!smooth && index > SetupEntityPlatformRastered.MAX_RASTERS_M)
         {
@@ -229,7 +228,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileG
             {
                 final Set<Integer> patterns = getPatterns();
                 final Iterator<Integer> itr = patterns.iterator();
-                final int[][] rasters = UtilityImage.loadRaster(this.rasterFile);
+                final int[][] rasters = UtilityImage.loadRaster(rasterFile);
 
                 while (itr.hasNext())
                 {

@@ -11,5 +11,7 @@
 	<animation name="walk" start="26" end="35" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="jump" start="17" end="19" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="fall" start="20" end="20" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="border" start="13" end="16" speed="0.1" reversed="true" repeat="true"/>
 	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="dead" start="70" end="71" speed="0.125" reversed="false" repeat="true"/>
 </entity>

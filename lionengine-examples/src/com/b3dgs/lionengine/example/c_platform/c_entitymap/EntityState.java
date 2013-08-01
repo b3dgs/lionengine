@@ -13,7 +13,7 @@ enum EntityState
     TURN,
     /** Jump state. */
     JUMP;
-    
+
     /** Animation name. */
     private final String animationName;
 

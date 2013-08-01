@@ -15,7 +15,7 @@ class Map
     {
         super(16, 16);
     }
-    
+
     /**
      * Adjust the collision.
      */

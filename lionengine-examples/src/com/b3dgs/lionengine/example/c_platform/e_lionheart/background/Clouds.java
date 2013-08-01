@@ -21,12 +21,12 @@ final class Clouds
     {
         super(path, 160, 26, wide, screenWidth, decY, false);
 
-        setY(0, 5);
-        setY(1, 35);
-        setY(2, 59);
-        setY(3, 78);
-        setY(4, 94);
-        setY(5, 105);
+        setY(0, 0);
+        setY(1, 30);
+        setY(2, 54);
+        setY(3, 73);
+        setY(4, 89);
+        setY(5, 100);
 
         setSpeed(0, -1.35);
         setSpeed(1, -1.2);

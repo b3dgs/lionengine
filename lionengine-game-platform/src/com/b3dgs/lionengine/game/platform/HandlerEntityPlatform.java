@@ -48,7 +48,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
      * @param entity The current rendering entity.
      */
     protected abstract void renderingEntity(E entity);
-    
+
     /**
      * Update all entities.
      * 

@@ -31,7 +31,7 @@ public abstract class BackgroundElementRastered
         rasters = new ArrayList<>(rastersNumber);
         initialize(sprite, rastersNumber);
     }
-    
+
     /**
      * Load rasters from original sprite.
      * 

@@ -42,9 +42,9 @@ class World
     {
         super(sequence);
         map = new Map();
-        factory = new FactoryEntity(map, display.getRate());
-        valdyn = factory.createValdyn();
         camera = new CameraPlatform(width, height);
+        factory = new FactoryEntity(map, camera, display.getRate());
+        valdyn = factory.createValdyn();
         water = new Water(sequence, "Water");
         background = new Swamp(sequence, "Stage1", false, water);
     }
@@ -54,8 +54,8 @@ class World
     {
         valdyn.updateControl(keyboard);
         valdyn.update(extrp);
-        camera.follow(valdyn);
         background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
+        camera.follow(valdyn);
         water.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
     }
 
@@ -86,8 +86,8 @@ class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
-        valdyn.setLocation(512, 128);
-        camera.follow(valdyn);
-        camera.resetInterval();
+        valdyn.setLocation(512, 55);
+        camera.resetInterval(valdyn);
+        background.update(1.0, 1.0, camera.getLocationY());
     }
 }
