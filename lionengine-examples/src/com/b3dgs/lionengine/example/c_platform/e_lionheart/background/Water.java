@@ -311,7 +311,7 @@ public class Water
         private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
         {
             final int oy = py + (int) water.getHeight();
-            for (int y = screenHeight - 32 + (getNominal() - 210) + oy; y < screenHeight; y++)
+            for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
             {
                 final double inside = Math.cos(UtilityMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
                 final double outside = Math.cos(wx) * offsetForce;

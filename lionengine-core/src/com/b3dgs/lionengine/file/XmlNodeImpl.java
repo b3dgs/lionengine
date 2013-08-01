@@ -65,6 +65,18 @@ class XmlNodeImpl
         return value;
     }
 
+    /**
+     * Write a data to the root.
+     * 
+     * @param attribute The attribute name.
+     * @param content The content value.
+     */
+    private void write(String attribute, String content)
+    {
+        Check.notNull(attribute, "The attribute must not be null !");
+        root.setAttribute(attribute, content);
+    }
+
     /*
      * XmlNode
      */
@@ -79,24 +91,46 @@ class XmlNodeImpl
     }
 
     @Override
-    public void writeInteger(String attribute, int content)
+    public void writeBoolean(String attribute, boolean content)
     {
         Check.notNull(attribute, "The attribute must not be null !");
         root.setAttribute(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeByte(String attribute, byte content)
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeShort(String attribute, short content)
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeInteger(String attribute, int content)
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeLong(String attribute, long content)
+    {
+        write(attribute, String.valueOf(content));
     }
 
     @Override
     public void writeFloat(String attribute, float content)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
-        root.setAttribute(attribute, String.valueOf(content));
+        write(attribute, String.valueOf(content));
     }
 
     @Override
     public void writeDouble(String attribute, double content)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
-        root.setAttribute(attribute, String.valueOf(content));
+        write(attribute, String.valueOf(content));
     }
 
     @Override
@@ -114,10 +148,24 @@ class XmlNodeImpl
     }
 
     @Override
-    public void writeBoolean(String attribute, boolean content)
+    public boolean readBoolean(String attribute)
     {
         Check.notNull(attribute, "The attribute must not be null !");
-        root.setAttribute(attribute, String.valueOf(content));
+        return Boolean.parseBoolean(getAttributeValue(attribute));
+    }
+
+    @Override
+    public byte readByte(String attribute)
+    {
+        Check.notNull(attribute, "The attribute must not be null !");
+        return Byte.parseByte(getAttributeValue(attribute));
+    }
+
+    @Override
+    public short readShort(String attribute)
+    {
+        Check.notNull(attribute, "The attribute must not be null !");
+        return Short.parseShort(getAttributeValue(attribute));
     }
 
     @Override
@@ -125,6 +173,13 @@ class XmlNodeImpl
     {
         Check.notNull(attribute, "The attribute must not be null !");
         return Integer.parseInt(getAttributeValue(attribute));
+    }
+
+    @Override
+    public long readLong(String attribute)
+    {
+        Check.notNull(attribute, "The attribute must not be null !");
+        return Long.parseLong(getAttributeValue(attribute));
     }
 
     @Override
@@ -151,13 +206,6 @@ class XmlNodeImpl
             return null;
         }
         return value;
-    }
-
-    @Override
-    public boolean readBoolean(String attribute)
-    {
-        Check.notNull(attribute, "The attribute must not be null !");
-        return Boolean.parseBoolean(getAttributeValue(attribute));
     }
 
     @Override

@@ -409,7 +409,6 @@ public class TestUtility
         final String[] files = UtilityFile.getFilesList(Media.get("").getPath());
         Assert.assertEquals(12, files.length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath()).length);
-        Assert.assertEquals(1, UtilityFile.getFilesList(Media.get("").getPath(), "txt").length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath(), "txt").length);
 
         final Media dir = Media.get("temp");

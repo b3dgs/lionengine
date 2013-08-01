@@ -6,12 +6,44 @@ package com.b3dgs.lionengine.file;
 public interface XmlNodeReader
 {
     /**
+     * Read a boolean.
+     * 
+     * @param attribute The boolean name.
+     * @return The boolean value.
+     */
+    boolean readBoolean(String attribute);
+
+    /**
+     * Read a byte.
+     * 
+     * @param attribute The integer name.
+     * @return The byte value.
+     */
+    byte readByte(String attribute);
+
+    /**
+     * Read a short.
+     * 
+     * @param attribute The integer name.
+     * @return The short value.
+     */
+    short readShort(String attribute);
+
+    /**
      * Read an integer.
      * 
      * @param attribute The integer name.
      * @return The integer value.
      */
     int readInteger(String attribute);
+
+    /**
+     * Read a long.
+     * 
+     * @param attribute The float name.
+     * @return The long value.
+     */
+    long readLong(String attribute);
 
     /**
      * Read a float.
@@ -36,12 +68,4 @@ public interface XmlNodeReader
      * @return The string value.
      */
     String readString(String attribute);
-
-    /**
-     * Read a boolean.
-     * 
-     * @param attribute The boolean name.
-     * @return The boolean value.
-     */
-    boolean readBoolean(String attribute);
 }

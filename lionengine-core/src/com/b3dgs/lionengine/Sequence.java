@@ -201,8 +201,7 @@ public abstract class Sequence
      */
     public final void end()
     {
-        nextSequence = null;
-        isRunning = false;
+        end(null);
     }
 
     /**

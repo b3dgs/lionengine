@@ -28,7 +28,7 @@ public class Map
     public Map()
     {
         super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
-        //setRaster(Media.get("rasters", "raster1.xml"), false, false);
+        // setRaster(Media.get("rasters", "raster1.xml"), false, false);
     }
 
     /**

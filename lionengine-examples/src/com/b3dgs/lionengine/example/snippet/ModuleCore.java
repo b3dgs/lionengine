@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -78,7 +77,7 @@ public class ModuleCore
     {
         final Display internal = new Display(320, 240, 16, 60);
         final Display external = new Display(640, 480, 16, 60);
-        final Config config = new Config(internal, external, true);
+        new Config(internal, external, true);
     }
 
     void imageInfo()
@@ -101,7 +100,7 @@ public class ModuleCore
 
     void media()
     {
-        final Media media = Media.get("image.png");
+        Media.get("image.png");
     }
 
     class Scene
@@ -204,12 +203,12 @@ public class ModuleCore
 
     void version()
     {
-        final Version version = Version.create(1, 0, 0);
+        Version.create(1, 0, 0);
     }
 
     void animation()
     {
-        final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+        Anim.createAnimation(4, 6, 0.125, false, true);
     }
 
     void animator()
@@ -222,7 +221,7 @@ public class ModuleCore
     void animState()
     {
         final Animator animator = Anim.createAnimator();
-        final AnimState state = animator.getAnimState();
+        animator.getAnimState();
     }
 
     void fileReading()
@@ -230,14 +229,14 @@ public class ModuleCore
         final Media file = Media.get("test.txt");
         try (FileReading reading = File.createFileReading(file);)
         {
-            final boolean boolRead = reading.readBoolean();
-            final byte byteRead = reading.readByte();
-            final char charRead = reading.readChar();
-            final short shortRead = reading.readShort();
-            final int intRead = reading.readInteger();
-            final float floatRead = reading.readFloat();
-            final long longRead = reading.readLong();
-            final double doubleRead = reading.readDouble();
+            reading.readBoolean();
+            reading.readByte();
+            reading.readChar();
+            reading.readShort();
+            reading.readInteger();
+            reading.readFloat();
+            reading.readLong();
+            reading.readDouble();
         }
         catch (final IOException exception)
         {

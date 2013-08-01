@@ -233,4 +233,20 @@ public final class UtilityFile
             }
         }
     }
+
+    /**
+     * Delete a file.
+     * 
+     * @param file The file to delete.
+     */
+    public static void deleteFile(File file)
+    {
+        if (file.isFile())
+        {
+            if (!file.delete())
+            {
+                Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
+            }
+        }
+    }
 }

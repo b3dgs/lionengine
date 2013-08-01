@@ -35,12 +35,36 @@ public interface XmlNode
     void add(XmlNode node);
 
     /**
+     * Write a byte.
+     * 
+     * @param attribute The attribute name.
+     * @param content The byte value.
+     */
+    void writeByte(String attribute, byte content);
+
+    /**
+     * Write a short.
+     * 
+     * @param attribute The attribute name.
+     * @param content The short value.
+     */
+    void writeShort(String attribute, short content);
+
+    /**
      * Write an integer.
      * 
-     * @param attribute The integer name.
+     * @param attribute The attribute name.
      * @param content The integer value.
      */
     void writeInteger(String attribute, int content);
+
+    /**
+     * Write a long.
+     * 
+     * @param attribute The attribute name.
+     * @param content The long value.
+     */
+    void writeLong(String attribute, long content);
 
     /**
      * Write a float.
@@ -53,7 +77,7 @@ public interface XmlNode
     /**
      * Write a double.
      * 
-     * @param attribute The double name.
+     * @param attribute The attribute name.
      * @param content The double value.
      */
     void writeDouble(String attribute, double content);
@@ -61,7 +85,7 @@ public interface XmlNode
     /**
      * Write a string. If the content is equal to <code>null</code>, {@link XmlNode#NULL} is wrote instead.
      * 
-     * @param attribute The string name.
+     * @param attribute The attribute name.
      * @param content The string value.
      */
     void writeString(String attribute, String content);
@@ -69,7 +93,7 @@ public interface XmlNode
     /**
      * Write a boolean.
      * 
-     * @param attribute The boolean name.
+     * @param attribute The attribute name.
      * @param content The boolean value.
      */
     void writeBoolean(String attribute, boolean content);

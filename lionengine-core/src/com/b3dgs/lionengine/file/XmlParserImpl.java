@@ -1,6 +1,5 @@
 package com.b3dgs.lionengine.file;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,6 +11,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
@@ -36,6 +36,7 @@ class XmlParserImpl
     @Override
     public XmlNode load(Media media)
     {
+        Check.notNull(media, "The media should not be null !");
         final Element root;
         final String file = media.getPath();
         try
@@ -60,16 +61,13 @@ class XmlParserImpl
     @Override
     public void save(XmlNode root, Media media)
     {
+        Check.notNull(media, "The media should not be null !");
         final String file = media.getPath();
         final XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 
         try (OutputStream outputStream = new FileOutputStream(file);)
         {
             outputter.output(new Document(((XmlNodeImpl) root).getElement()), outputStream);
-        }
-        catch (final FileNotFoundException exception)
-        {
-            throw new LionEngineException(exception, "The following file was not found: \"", file, "\"");
         }
         catch (final IOException exception)
         {

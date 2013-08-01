@@ -95,7 +95,7 @@ public class Parallax
     {
         data.setOffsetY(y);
         // This will avoid bug on huge speed (lines out of screen)
-        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -SPEED_WRAP, SPEED_WRAP);
+        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -Parallax.SPEED_WRAP, Parallax.SPEED_WRAP);
 
         // Move each line, depending of its id and size
         for (int i = 0; i < parallaxsNumber; i++)

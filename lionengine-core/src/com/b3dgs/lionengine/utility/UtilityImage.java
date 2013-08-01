@@ -584,7 +584,7 @@ public final class UtilityImage
     }
 
     /**
-     * Optimise graphic to performance mode.
+     * Optimize graphic to performance mode.
      * 
      * @param g The graphic context.
      */

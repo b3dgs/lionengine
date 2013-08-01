@@ -46,7 +46,7 @@ public class TestEngine
             // Success
         }
     }
-    
+
     /**
      * Test the loader.
      */
@@ -232,14 +232,14 @@ public class TestEngine
         Assert.assertFalse(timer.isStarted());
         timer.start();
         Assert.assertTrue(timer.isStarted());
-        Thread.sleep(1000);
+        Thread.sleep(100);
         Assert.assertTrue(timer.isStarted());
-        Assert.assertTrue(timer.elapsed(1000));
-        Assert.assertTrue(timer.elapsed() >= 1000);
+        Assert.assertTrue(timer.elapsed(50));
+        Assert.assertTrue(timer.elapsed() >= 50);
         timer.pause();
-        Thread.sleep(1000);
+        Thread.sleep(50);
         timer.unpause();
-        Assert.assertFalse(timer.elapsed(200000000));
+        Assert.assertFalse(timer.elapsed(2000));
         timer.stop();
         Assert.assertFalse(timer.isStarted());
         Assert.assertTrue(timer.get() >= 0);

@@ -34,7 +34,6 @@ class Scene
     protected void update(double extrp)
     {
         end();
-        end(null);
         final int fps = getFps();
         Assert.assertTrue(fps >= 0);
     }

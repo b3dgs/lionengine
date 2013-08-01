@@ -12,17 +12,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.drawable.Bar;
+import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -41,6 +46,246 @@ public class TestDrawable
     private Media media;
     /** Graphic test output. */
     private Graphic g;
+
+    /**
+     * Ensure that the image is conform to its informations.
+     * 
+     * @param media The image media file.
+     * @param image The image reference.
+     * @return The image info instance.
+     */
+    private static ImageInfo assertImageInfoCorrect(Media media, Image image)
+    {
+        final ImageInfo info = ImageInfo.get(media);
+        Assert.assertNotNull(info);
+        Assert.assertNotNull(image);
+        Assert.assertEquals(info.getWidth(), image.getWidth());
+        Assert.assertEquals(info.getHeight(), image.getHeight());
+        Assert.assertEquals("png", info.getFormat());
+        Assert.assertTrue(image.equals(image));
+        Assert.assertFalse(image.equals(info));
+        Assert.assertTrue(image.hashCode() != info.hashCode());
+        return info;
+    }
+
+    /**
+     * Test the image rendering.
+     * 
+     * @param g The graphic output.
+     * @param image The image to test.
+     */
+    private static void testImageRender(Graphic g, Image image)
+    {
+        try
+        {
+            image.render(null, 0, 0);
+        }
+        catch (final NullPointerException exception)
+        {
+            image.render(g, 0, 0);
+        }
+    }
+
+    /**
+     * Test the sprite modification functions (scale, stretch, rotate, flip).
+     * 
+     * @param scale The scale value.
+     * @param sprite The sprite to test.
+     */
+    private static void testSpriteModification(int scale, Sprite sprite)
+    {
+        final Sprite spriteOriginal = sprite.instanciate();
+        Assert.assertEquals(spriteOriginal, sprite);
+
+        BufferedImage surface = sprite.getSurface();
+
+        if (!(sprite instanceof SpriteFont))
+        {
+            sprite.scale(100 * scale);
+            Assert.assertNotEquals(spriteOriginal, sprite);
+            Assert.assertNotSame(surface, sprite.getSurface());
+            Assert.assertEquals(surface.getWidth(), sprite.getWidthOriginal());
+            Assert.assertEquals(surface.getWidth() * scale, sprite.getWidth());
+            Assert.assertEquals(surface.getHeight(), sprite.getHeightOriginal());
+            Assert.assertEquals(surface.getHeight() * scale, sprite.getHeight());
+        }
+
+        surface = sprite.getSurface();
+        sprite.stretch(50, 50);
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.filter(Filter.BILINEAR);
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.flipHorizontal();
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.flipVertical();
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.rotate(90);
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.rotate(-1);
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        surface = sprite.getSurface();
+        sprite.rotate(361);
+        Assert.assertNotSame(surface, sprite.getSurface());
+
+        try
+        {
+            sprite.scale(0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            sprite.stretch(1, -1);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        sprite.stretch(99, 101);
+        sprite.stretch(100, 101);
+        sprite.stretch(99, 100);
+        sprite.stretch(100, 100);
+
+        sprite.setTransparency(Color.BLACK);
+        sprite.setAlpha((byte) 128);
+        sprite.setAlpha((byte) 0);
+
+        if (!(sprite instanceof SpriteFont))
+        {
+            sprite.stretch(100, 100 * scale);
+            Assert.assertNotEquals(spriteOriginal, sprite);
+        }
+    }
+
+    /**
+     * Test the sprite loading function.
+     * 
+     * @param sprite The sprite reference.
+     */
+    private static void testSpriteLoading(Sprite sprite)
+    {
+        Assert.assertNull(sprite.getSurface());
+        sprite.load(false);
+        Assert.assertNotNull(sprite.getSurface());
+    }
+
+    /**
+     * Test sprite tiled loading error.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     */
+    private static void testSpriteTiledLoadError(int tw, int th)
+    {
+        final Media media = Media.get("dot.png");
+        try
+        {
+            final SpriteTiled sprite = Drawable.loadSpriteTiled(
+                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), tw, th);
+            Assert.assertNotNull(sprite);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tw, th);
+            Assert.assertNotNull(sprite);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test sprite animated loading error.
+     * 
+     * @param hf The tile width.
+     * @param vf The tile height.
+     */
+    private static void testSpriteAnimatedLoadError(int hf, int vf)
+    {
+        final Media media = Media.get("dot.png");
+        try
+        {
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
+                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), hf, vf);
+            Assert.assertNotNull(sprite);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(media, hf, vf);
+            Assert.assertNotNull(sprite);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test creation of animation.
+     * 
+     * @param first The first frame.
+     * @param last The last frame.
+     * @param speed The speed value.
+     */
+    private static void testCreateAnimation(int first, int last, double speed)
+    {
+        try
+        {
+            Anim.createAnimation(first, last, last, true, true);
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test play animation.
+     * 
+     * @param animator The animator to play.
+     * @param first The first frame.
+     * @param last The last frame.
+     * @param speed The speed value.
+     */
+    private static void testPlayAnimation(Animator animator, int first, int last, double speed)
+    {
+        try
+        {
+            animator.play(first, last, last, true, true);
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
 
     /**
      * Prepare test.
@@ -104,6 +349,25 @@ public class TestDrawable
     @Test
     public void testImage()
     {
+        try
+        {
+            UtilityImage.createBufferedImage(-16, 16, Transparency.OPAQUE);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            UtilityImage.createBufferedImage(16, -16, Transparency.OPAQUE);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+
         // Load unexisting image
         try
         {
@@ -318,30 +582,9 @@ public class TestDrawable
     @Test
     public void testAnimator()
     {
-        try
-        {
-            Anim.createAnimation(-1, 1, 1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            Anim.createAnimation(1, -1, 1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            Anim.createAnimation(1, 1, -1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
+        TestDrawable.testCreateAnimation(-1, 1, 1.0);
+        TestDrawable.testCreateAnimation(1, -1, 1.0);
+        TestDrawable.testCreateAnimation(1, 1, -1.0);
 
         final Animator animator = Anim.createAnimator();
         final Animation animation1 = Anim.createAnimation(1, 3, 1.0, true, true);
@@ -350,7 +593,7 @@ public class TestDrawable
         {
             animator.setFrame(0);
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -358,40 +601,21 @@ public class TestDrawable
         {
             animator.setAnimSpeed(-1.0);
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
-        try
-        {
-            animator.play(-1, 1, 1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            animator.play(1, -1, 1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            animator.play(1, 1, -1.0, true, true);
-        }
-        catch (LionEngineException exception)
-        {
-            // Success
-        }
+
+        TestDrawable.testPlayAnimation(animator, -1, 1, 1.0);
+        TestDrawable.testPlayAnimation(animator, 1, -1, 1.0);
+        TestDrawable.testPlayAnimation(animator, 1, 1, -1.0);
 
         animation1.setFirst(animation1.getFirst());
         animation1.setLast(animation1.getLast());
         animation1.setSpeed(animation1.getSpeed());
         animation1.setReverse(animation1.getReverse());
         animation1.setRepeat(animation1.getRepeat());
+        animator.stopAnimation();
 
         Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
         animator.play(animation1);
@@ -526,203 +750,108 @@ public class TestDrawable
     }
 
     /**
-     * Ensure that the image is conform to its informations.
-     * 
-     * @param media The image media file.
-     * @param image The image reference.
-     * @return The image info instance.
+     * Test the cursor class.
      */
-    private static ImageInfo assertImageInfoCorrect(Media media, Image image)
+    @Test
+    public void testCursor()
     {
-        final ImageInfo info = ImageInfo.get(media);
-        Assert.assertNotNull(info);
-        Assert.assertNotNull(image);
-        Assert.assertEquals(info.getWidth(), image.getWidth());
-        Assert.assertEquals(info.getHeight(), image.getHeight());
-        Assert.assertEquals("png", info.getFormat());
-        Assert.assertTrue(image.equals(image));
-        Assert.assertFalse(image.equals(info));
-        Assert.assertTrue(image.hashCode() != info.hashCode());
-        return info;
+        final Display display = new Display(320, 240, 16, 60);
+        try
+        {
+            final Cursor cursor = new Cursor(display);
+            Assert.assertNotNull(cursor);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+
+        final Cursor cursor = new Cursor(display, media);
+        cursor.setArea(0, 0, 320, 240);
+        cursor.setSensibility(1.0, 2.0);
+        cursor.setSurfaceId(0);
+
+        final Display internal = new Display(640, 480, 16, 60);
+        final Display external = new Display(1280, 720, 16, 60);
+        final Config config = new Config(internal, external, true);
+        final Loader loader = new Loader(config);
+        final Scene scene = new Scene(loader);
+
+        cursor.setLockMouse(false);
+        cursor.update(1.0, scene.mouse, false);
+        cursor.update(1.0, scene.mouse, true);
+        cursor.setLockMouse(true);
+        cursor.update(1.0, scene.mouse, false);
+        cursor.update(1.0, scene.mouse, true);
+
+        cursor.setLocation(10, 20);
+        Assert.assertEquals(10, cursor.getLocationX());
+        Assert.assertEquals(20, cursor.getLocationY());
+        Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), 0.000001);
+        Assert.assertEquals(2.0, cursor.getSensibilityVertical(), 0.000001);
+        cursor.setRenderingOffset(0, 0);
+        Assert.assertEquals(1, cursor.getWidth());
+        Assert.assertEquals(1, cursor.getHeight());
+        Assert.assertEquals(0, cursor.getSurfaceId());
+        Assert.assertEquals(0, cursor.getClick());
+        cursor.render(g);
+        cursor.render(g, 0, 0);
+        cursor.render(g, 0, 0, 0);
     }
 
     /**
-     * Test the image rendering.
-     * 
-     * @param g The graphic output.
-     * @param image The image to test.
+     * Test the bar class.
      */
-    private static void testImageRender(Graphic g, Image image)
+    @Test
+    public void testBar()
     {
-        try
-        {
-            image.render(null, 0, 0);
-        }
-        catch (final NullPointerException exception)
-        {
-            image.render(g, 0, 0);
-        }
-    }
+        final Bar bar = new Bar(10, 20);
+        bar.setBorderSize(1, 1);
+        bar.setColorBackground(Color.WHITE);
+        bar.setColorForeground(Color.BLACK);
+        bar.setLocation(0, 0);
+        bar.setMaximumSize(10, 20);
+        bar.setVerticalReferential(true);
+        bar.setHorizontalReferential(true);
+        bar.setWidthPercent(100);
+        bar.setHeightPercent(100);
+        Assert.assertEquals(10, bar.getWidthMax());
+        Assert.assertEquals(20, bar.getHeightMax());
+        Assert.assertEquals(100, bar.getWidthPercent());
+        Assert.assertEquals(100, bar.getHeightPercent());
+        Assert.assertEquals(10, bar.getWidth());
+        Assert.assertEquals(20, bar.getHeight());
 
-    /**
-     * Test the sprite modification functions (scale, stretch, rotate, flip).
-     * 
-     * @param scale The scale value.
-     * @param sprite The sprite to test.
-     */
-    private static void testSpriteModification(int scale, Sprite sprite)
-    {
-        final Sprite spriteOriginal = sprite.instanciate();
-        Assert.assertEquals(spriteOriginal, sprite);
+        bar.setWidthPercent(50);
+        bar.setHeightPercent(50);
+        Assert.assertEquals(50, bar.getWidthPercent());
+        Assert.assertEquals(50, bar.getHeightPercent());
+        Assert.assertEquals(5, bar.getWidth());
+        Assert.assertEquals(10, bar.getHeight());
 
-        BufferedImage surface = sprite.getSurface();
+        bar.render(g);
+        bar.setColorBackground(null);
+        bar.setVerticalReferential(false);
+        bar.setHorizontalReferential(true);
+        bar.render(g);
+        bar.setColorBackground(Color.WHITE);
+        bar.setColorForeground(null);
+        bar.setVerticalReferential(false);
+        bar.setHorizontalReferential(false);
+        bar.render(g);
+        bar.setColorBackground(null);
+        bar.setColorForeground(null);
+        bar.setVerticalReferential(true);
+        bar.setHorizontalReferential(false);
+        bar.render(g);
 
-        if (!(sprite instanceof SpriteFont))
-        {
-            sprite.scale(100 * scale);
-            Assert.assertNotEquals(spriteOriginal, sprite);
-            Assert.assertNotSame(surface, sprite.getSurface());
-            Assert.assertEquals(surface.getWidth(), sprite.getWidthOriginal());
-            Assert.assertEquals(surface.getWidth() * scale, sprite.getWidth());
-            Assert.assertEquals(surface.getHeight(), sprite.getHeightOriginal());
-            Assert.assertEquals(surface.getHeight() * scale, sprite.getHeight());
-        }
+        bar.setWidthPercent(100);
+        bar.setHeightPercent(0);
+        bar.render(g);
 
-        surface = sprite.getSurface();
-        sprite.stretch(50, 50);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.filter(Filter.BILINEAR);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipHorizontal();
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipVertical();
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.rotate(90);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.rotate(-1);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.rotate(361);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        try
-        {
-            sprite.scale(0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            sprite.stretch(1, -1);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        sprite.stretch(99, 101);
-        sprite.stretch(100, 101);
-        sprite.stretch(99, 100);
-        sprite.stretch(100, 100);
-
-        sprite.setTransparency(Color.BLACK);
-        sprite.setAlpha((byte) 128);
-        sprite.setAlpha((byte) 0);
-
-        if (!(sprite instanceof SpriteFont))
-        {
-            sprite.stretch(100, 100 * scale);
-            Assert.assertNotEquals(spriteOriginal, sprite);
-        }
-    }
-
-    /**
-     * Test the sprite loading function.
-     * 
-     * @param sprite The sprite reference.
-     */
-    private static void testSpriteLoading(Sprite sprite)
-    {
-        Assert.assertNull(sprite.getSurface());
-        sprite.load(false);
-        Assert.assertNotNull(sprite.getSurface());
-    }
-
-    /**
-     * Test sprite tiled loading error.
-     * 
-     * @param tw The tile width.
-     * @param th The tile height.
-     */
-    private static void testSpriteTiledLoadError(int tw, int th)
-    {
-        final Media media = Media.get("dot.png");
-        try
-        {
-            final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), tw, th);
-            Assert.assertNotNull(sprite);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tw, th);
-            Assert.assertNotNull(sprite);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-    }
-
-    /**
-     * Test sprite animated loading error.
-     * 
-     * @param hf The tile width.
-     * @param vf The tile height.
-     */
-    private static void testSpriteAnimatedLoadError(int hf, int vf)
-    {
-        final Media media = Media.get("dot.png");
-        try
-        {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), hf, vf);
-            Assert.assertNotNull(sprite);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            final SpriteAnimated sprite = Drawable.loadSpriteAnimated(media, hf, vf);
-            Assert.assertNotNull(sprite);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        bar.setWidthPercent(0);
+        bar.setHeightPercent(100);
+        bar.render(g);
     }
 }

@@ -206,7 +206,7 @@ public class Bar
      */
     public int getWidth()
     {
-        return (int) (pWidth / 100.0) * maxWidth;
+        return (int) Math.floor(pWidth / 100.0 * maxWidth);
     }
 
     /**
@@ -216,7 +216,7 @@ public class Bar
      */
     public int getHeight()
     {
-        return (int) (pHeight / 100.0) * maxHeight;
+        return (int) Math.floor(pHeight / 100.0 * maxHeight);
     }
 
     /**
