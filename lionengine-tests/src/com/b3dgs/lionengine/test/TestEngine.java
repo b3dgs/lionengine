@@ -232,12 +232,12 @@ public class TestEngine
         Assert.assertFalse(timer.isStarted());
         timer.start();
         Assert.assertTrue(timer.isStarted());
-        Thread.sleep(100);
+        Thread.sleep(1000);
         Assert.assertTrue(timer.isStarted());
-        Assert.assertTrue(timer.elapsed(100));
-        Assert.assertTrue(timer.elapsed() >= 100);
+        Assert.assertTrue(timer.elapsed(1000));
+        Assert.assertTrue(timer.elapsed() >= 1000);
         timer.pause();
-        Thread.sleep(100);
+        Thread.sleep(1000);
         timer.unpause();
         Assert.assertFalse(timer.elapsed(200000000));
         timer.stop();
