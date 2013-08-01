@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,6 +28,8 @@ import com.b3dgs.lionengine.utility.UtilityConversion;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
+import com.b3dgs.lionengine.utility.UtilityMessageBox;
+import com.b3dgs.lionengine.utility.UtilityProjectStats;
 import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
@@ -43,10 +47,110 @@ public class TestUtility
     }
 
     /**
-     * Test images functions.
+     * Test utility class by introspection.
+     * 
+     * @throws Exception If error.
      */
     @Test
-    public void testImage()
+    public void testIntrospection() throws Exception
+    {
+        final Constructor<UtilityImage> utilityImage = UtilityImage.class.getDeclaredConstructor();
+        utilityImage.setAccessible(true);
+        try
+        {
+            final UtilityImage clazz = utilityImage.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<Strings> strings = Strings.class.getDeclaredConstructor();
+        strings.setAccessible(true);
+        try
+        {
+            final Strings clazz = strings.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilityConversion> utilityConversion = UtilityConversion.class.getDeclaredConstructor();
+        utilityConversion.setAccessible(true);
+        try
+        {
+            final UtilityConversion clazz = utilityConversion.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilityMath> utilityMath = UtilityMath.class.getDeclaredConstructor();
+        utilityMath.setAccessible(true);
+        try
+        {
+            final UtilityMath clazz = utilityMath.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilityRandom> utilityRandom = UtilityRandom.class.getDeclaredConstructor();
+        utilityRandom.setAccessible(true);
+        try
+        {
+            final UtilityRandom clazz = utilityRandom.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilityProjectStats> utilityProjectStats = UtilityProjectStats.class.getDeclaredConstructor();
+        utilityProjectStats.setAccessible(true);
+        try
+        {
+            final UtilityProjectStats clazz = utilityProjectStats.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilityMessageBox> utilityMessageBox = UtilityMessageBox.class.getDeclaredConstructor();
+        utilityMessageBox.setAccessible(true);
+        try
+        {
+            final UtilityMessageBox clazz = utilityMessageBox.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test testUtilityImage functions.
+     */
+    @Test
+    public void testUtilityImage()
     {
         final BufferedImage bufferedImage = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
         try
@@ -303,7 +407,7 @@ public class TestUtility
         Assert.assertEquals(0, UtilityFile.getDirsList(Media.get("null").getPath()).length);
 
         final String[] files = UtilityFile.getFilesList(Media.get("").getPath());
-        Assert.assertEquals(11, files.length);
+        Assert.assertEquals(12, files.length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath()).length);
         Assert.assertEquals(1, UtilityFile.getFilesList(Media.get("").getPath(), "txt").length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath(), "txt").length);

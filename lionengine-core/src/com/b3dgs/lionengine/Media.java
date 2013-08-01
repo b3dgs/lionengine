@@ -227,11 +227,7 @@ public final class Media
         }
         catch (final FileNotFoundException exception)
         {
-            if (logger)
-            {
-                Verbose.critical(Media.class, "getStream from " + from, "Error on getting stream of: \"", path, "\"");
-            }
-            return null;
+            throw new LionEngineException("Error on getting stream of: \"", path, "\"");
         }
     }
 

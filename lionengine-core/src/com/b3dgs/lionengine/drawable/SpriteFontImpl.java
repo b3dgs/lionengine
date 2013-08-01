@@ -283,7 +283,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public Sprite instanciate()
+    public SpriteFont instanciate()
     {
         return new SpriteFontImpl(surface, fontData);
     }
@@ -308,5 +308,35 @@ final class SpriteFontImpl
     public int getHeight()
     {
         return surface.getHeight();
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object instanceof SpriteFont)
+        {
+            final SpriteFont sprite = (SpriteFont) object;
+
+            final boolean sameSurface = sprite.getSurface() == getSurface();
+            final boolean sameWidth = sprite.getWidth() == getWidth();
+            final boolean sameHeight = sprite.getHeight() == getHeight();
+
+            return sameSurface && sameWidth && sameHeight;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
     }
 }

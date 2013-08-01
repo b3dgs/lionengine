@@ -12,13 +12,12 @@ import com.b3dgs.lionengine.Sequence;
 class Scene
         extends Sequence
 {
-
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public Scene(Loader loader)
+    Scene(Loader loader)
     {
         super(loader);
     }
@@ -45,5 +44,4 @@ class Scene
     {
         clearScreen(g);
     }
-
 }

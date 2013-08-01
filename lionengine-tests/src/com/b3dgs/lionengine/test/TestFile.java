@@ -1,6 +1,8 @@
 package com.b3dgs.lionengine.test;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,6 +32,28 @@ public class TestFile
         Engine.start("UnitTest", Version.create(1, 0, 0), Media.getPath("resources"));
     }
 
+    /**
+     * Test File class.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testFile() throws Exception
+    {
+        final Constructor<File> constructor = File.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try
+        {
+            final File file = constructor.newInstance();
+            Assert.assertNotNull(file);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+    
     /**
      * Test files functions.
      */

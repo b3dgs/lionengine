@@ -12,7 +12,6 @@ import com.b3dgs.lionengine.game.Resource;
  */
 public class TestGame
 {
-
     /**
      * Test alterable functions.
      */

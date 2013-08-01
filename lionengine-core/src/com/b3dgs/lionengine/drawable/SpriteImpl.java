@@ -83,8 +83,8 @@ class SpriteImpl
     @Override
     public void stretch(int widthPercent, int heightPercent)
     {
-        Check.argument(widthPercent >= 0, "Width percent must be positive !");
-        Check.argument(heightPercent >= 0, "Height percent must be positive !");
+        Check.argument(widthPercent > 0, "Width percent must be strictly positive !");
+        Check.argument(heightPercent > 0, "Height percent must be strictly positive !");
 
         if (widthPercent != 100 || heightPercent != 100)
         {
@@ -186,5 +186,35 @@ class SpriteImpl
     public Sprite instanciate()
     {
         return new SpriteImpl(surface);
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object instanceof Sprite)
+        {
+            final Sprite sprite = (Sprite) object;
+
+            final boolean sameSurface = sprite.getSurface() == getSurface();
+            final boolean sameWidth = sprite.getWidth() == getWidth();
+            final boolean sameHeight = sprite.getHeight() == getHeight();
+
+            return sameSurface && sameWidth && sameHeight;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
     }
 }

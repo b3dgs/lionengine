@@ -232,4 +232,32 @@ final class SpriteAnimatedImpl
     {
         return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object instanceof SpriteAnimated)
+        {
+            final SpriteAnimated sprite = (SpriteAnimated) object;
+
+            final boolean sameSprite = super.equals(object);
+            final boolean sameFrameWidth = sprite.getFrameWidth() == getFrameWidth();
+            final boolean sameFrameHeight = sprite.getFrameHeight() == getFrameHeight();
+            final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
+            final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
+            final boolean sameFramesNumber = sprite.getFramesNumber() == getFramesNumber();
+
+            return sameSprite && sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames
+                    && sameFramesNumber;
+        }
+        return false;
+    }
 }

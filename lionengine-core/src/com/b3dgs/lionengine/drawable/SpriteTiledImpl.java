@@ -154,6 +154,33 @@ final class SpriteTiledImpl
     @Override
     public SpriteTiled instanciate()
     {
-        return new SpriteTiledImpl(surface, getWidthOriginal(), getHeightOriginal());
+        return new SpriteTiledImpl(surface, getTileWidth(), getTileHeight());
+    }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object instanceof SpriteTiled)
+        {
+            final SpriteTiled sprite = (SpriteTiled) object;
+
+            final boolean sameSurface = sprite.getSurface() == getSurface();
+            final boolean sameTileWidth = sprite.getTileWidth() == getTileWidth();
+            final boolean sameTileHeight = sprite.getTileHeight() == getTileHeight();
+            final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
+            final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
+            final boolean sameTilesNumber = sprite.getTilesNumber() == getTilesNumber();
+            return sameSurface && sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles
+                    && sameTilesNumber;
+        }
+        return false;
     }
 }

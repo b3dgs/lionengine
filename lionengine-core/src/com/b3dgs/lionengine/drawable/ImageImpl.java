@@ -70,4 +70,34 @@ class ImageImpl
     {
         return new ImageImpl(surface);
     }
+
+    /*
+     * Object
+     */
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object == this)
+        {
+            return true;
+        }
+        if (object instanceof Image)
+        {
+            final Image image = (Image) object;
+
+            final boolean sameSurface = image.getSurface() == getSurface();
+            final boolean sameWidth = image.getWidth() == getWidth();
+            final boolean sameHeight = image.getHeight() == getHeight();
+
+            return sameSurface && sameWidth && sameHeight;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
 }

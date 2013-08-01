@@ -56,4 +56,12 @@ public interface SpriteFont
      * @param height The line height.
      */
     void setLineHeight(int height);
+    
+    /**
+     * Get instanced version of current sprite font (shares the same surface).
+     * 
+     * @return The cloned sprite font.
+     */
+    @Override
+    SpriteFont instanciate();
 }

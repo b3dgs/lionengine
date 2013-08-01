@@ -83,7 +83,7 @@ final class SpriteParallaxedImpl
         }
 
         lineWidth = surface.getWidth();
-        lineHeight = surface.getHeight() / surface.getHeight();
+        lineHeight = surface.getHeight() / linesNumber;
         lines = UtilityImage.splitImage(surface, 1, linesNumber);
 
         for (int i = 0; i < linesNumber; i++)
@@ -103,13 +103,13 @@ final class SpriteParallaxedImpl
     @Override
     public int getWidthOriginal()
     {
-        return lineWidth;
+        return (int) (lineWidth / factor);
     }
 
     @Override
     public int getHeightOriginal()
     {
-        return lineHeight;
+        return (int) (lineHeight / factor);
     }
 
     @Override
@@ -135,12 +135,12 @@ final class SpriteParallaxedImpl
     @Override
     public int getWidth()
     {
-        return lineWidth * (int) factor;
+        return lineWidth;
     }
 
     @Override
     public int getHeight()
     {
-        return lineHeight * (int) factor;
+        return lineHeight;
     }
 }

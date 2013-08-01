@@ -1,5 +1,8 @@
 package com.b3dgs.lionengine.test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +27,72 @@ import com.b3dgs.lionengine.audio.Wav;
  */
 public class TestAudio
 {
+    /**
+     * Test AudioMidi class.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testAudioMidi() throws Exception
+    {
+        final Constructor<AudioMidi> constructor = AudioMidi.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try
+        {
+            final AudioMidi audioMidi = constructor.newInstance();
+            Assert.assertNotNull(audioMidi);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test AudioWav class.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testAudioWav() throws Exception
+    {
+        final Constructor<AudioWav> constructor = AudioWav.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try
+        {
+            final AudioWav audioWav = constructor.newInstance();
+            Assert.assertNotNull(audioWav);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test AudioSc68 class.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testAudioOgg() throws Exception
+    {
+        final Constructor<AudioOgg> constructor = AudioOgg.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try
+        {
+            final AudioOgg audioOgg = constructor.newInstance();
+            Assert.assertNotNull(audioOgg);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+
     /**
      * Prepare test.
      */

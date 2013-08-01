@@ -1,5 +1,8 @@
 package com.b3dgs.lionengine.test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,6 +25,28 @@ import com.b3dgs.lionengine.utility.UtilityProjectStats;
  */
 public class TestEngine
 {
+    /**
+     * Test engine class.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testDrawable() throws Exception
+    {
+        final Constructor<Engine> constructor = Engine.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try
+        {
+            final Engine engine = constructor.newInstance();
+            Assert.assertNotNull(engine);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
+    
     /**
      * Test the loader.
      */
