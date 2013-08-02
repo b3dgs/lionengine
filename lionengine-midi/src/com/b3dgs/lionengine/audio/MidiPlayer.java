@@ -186,8 +186,7 @@ final class MidiPlayer
     {
         Check.argument(first >= 0 && first <= last, "Wrong first value: ", String.valueOf(first), " (total = )",
                 String.valueOf(ticks));
-        Check.argument(last >= first && last <= ticks, "Wrong last value: ", String.valueOf(last), " (total = )",
-                String.valueOf(ticks));
+        Check.argument(last <= ticks, "Wrong last value: ", String.valueOf(last), " (total = )", String.valueOf(ticks));
 
         sequencer.setLoopStartPoint(first);
         sequencer.setLoopEndPoint(last);

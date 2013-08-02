@@ -104,22 +104,21 @@ public final class UtilityFile
         {
             return new String[0];
         }
-        final File[] files = file.listFiles();
-        String[] dirsList;
 
+        final File[] files = file.listFiles();
         int numberOfDirs = 0;
         for (final File file2 : files)
         {
-            if (file2.isDirectory() && !file2.getName().equals(".svn"))
+            if (file2.isDirectory())
             {
                 numberOfDirs++;
             }
         }
 
-        dirsList = new String[numberOfDirs];
+        final String[] dirsList = new String[numberOfDirs];
         for (int i = 0, id = 0; i < files.length; i++)
         {
-            if (files[i].isDirectory() && !files[i].getName().equals(".svn"))
+            if (files[i].isDirectory())
             {
                 dirsList[id] = files[i].getName();
                 id++;
@@ -181,9 +180,8 @@ public final class UtilityFile
         {
             return new String[0];
         }
-        final File[] files = file.listFiles();
-        String[] filesList;
 
+        final File[] files = file.listFiles();
         int numberOfFiles = 0;
         for (final File file2 : files)
         {
@@ -193,7 +191,7 @@ public final class UtilityFile
             }
         }
 
-        filesList = new String[numberOfFiles];
+        final String[] filesList = new String[numberOfFiles];
         for (int i = 0, id = 0; i < files.length; i++)
         {
             if (files[i].isFile() && UtilityFile.getExtension(files[i]).equals(extension))
@@ -220,17 +218,10 @@ public final class UtilityFile
             {
                 UtilityFile.deleteDirectory(new File(directory, element));
             }
-            if (!directory.delete())
-            {
-                Verbose.warning(UtilityFile.class, "deleteDir", "Directory not deleted: " + directory);
-            }
         }
-        else
+        if (!directory.delete())
         {
-            if (!directory.delete())
-            {
-                Verbose.warning(UtilityFile.class, "deleteDir", "Directory not deleted: " + directory);
-            }
+            Verbose.warning(UtilityFile.class, "deleteDir", "Directory not deleted: " + directory);
         }
     }
 
@@ -241,12 +232,9 @@ public final class UtilityFile
      */
     public static void deleteFile(File file)
     {
-        if (file.isFile())
+        if (file.isFile() && !file.delete())
         {
-            if (!file.delete())
-            {
-                Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
-            }
+            Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
         }
     }
 }

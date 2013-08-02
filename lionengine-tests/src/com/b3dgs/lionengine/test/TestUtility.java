@@ -31,12 +31,53 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
 import com.b3dgs.lionengine.utility.UtilityProjectStats;
 import com.b3dgs.lionengine.utility.UtilityRandom;
+import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
  * Test checksum package.
  */
 public class TestUtility
 {
+    /**
+     * Test creation of a wrong buffered image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     */
+    private static void testCreateBufferedImageFail(int width, int height)
+    {
+        try
+        {
+            final BufferedImage image = UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE);
+            image.flush();
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
+     * Test creation of a wrong volatile image.
+     * 
+     * @param width The image width.
+     * @param height The image height.
+     */
+    private static void testCreateVolatileImageFail(int width, int height)
+    {
+        try
+        {
+            final VolatileImage image = UtilityImage.createVolatileImage(width, height, Transparency.OPAQUE);
+            image.flush();
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
     /**
      * Prepare test.
      */
@@ -144,6 +185,32 @@ public class TestUtility
         {
             // Success
         }
+
+        final Constructor<UtilityFile> utilityFile = UtilityFile.class.getDeclaredConstructor();
+        utilityFile.setAccessible(true);
+        try
+        {
+            final UtilityFile clazz = utilityFile.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+
+        final Constructor<UtilitySwing> utilitySwing = UtilitySwing.class.getDeclaredConstructor();
+        utilitySwing.setAccessible(true);
+        try
+        {
+            final UtilitySwing clazz = utilitySwing.newInstance();
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
     }
 
     /**
@@ -152,29 +219,14 @@ public class TestUtility
     @Test
     public void testUtilityImage()
     {
-        final BufferedImage bufferedImage = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
-        try
-        {
-            final BufferedImage image = UtilityImage.createBufferedImage(-1, -1, Transparency.OPAQUE);
-            image.flush();
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        testCreateBufferedImageFail(0, 1);
+        testCreateBufferedImageFail(1, 0);
 
+        testCreateVolatileImageFail(0, 1);
+        testCreateVolatileImageFail(1, 0);
+
+        final BufferedImage bufferedImage = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
         final VolatileImage volatileImage = UtilityImage.createVolatileImage(16, 16, Transparency.OPAQUE);
-        try
-        {
-            final VolatileImage image = UtilityImage.createVolatileImage(-1, -1, Transparency.OPAQUE);
-            image.flush();
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
 
         Assert.assertEquals(bufferedImage.getWidth(), volatileImage.getWidth());
         Assert.assertEquals(bufferedImage.getHeight(), volatileImage.getHeight());
@@ -182,6 +234,24 @@ public class TestUtility
         final BufferedImage image0 = UtilityImage.getBufferedImage(Media.get("dot.png"), true);
         final BufferedImage image1 = UtilityImage.getBufferedImage(Media.get("dot.png"), false);
         final VolatileImage image2 = UtilityImage.getVolatileImage(Media.get("dot.png"), Transparency.OPAQUE);
+        try
+        {
+            UtilityImage.getBufferedImage(Media.get("null"), false);
+            Assert.fail();
+        }
+        catch (LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            UtilityImage.getVolatileImage(Media.get("null"), Transparency.OPAQUE);
+            Assert.fail();
+        }
+        catch (LionEngineException exception)
+        {
+            // Success
+        }
 
         Assert.assertEquals(image1.getWidth(), image0.getWidth());
         Assert.assertEquals(image1.getHeight(), image0.getHeight());
@@ -196,6 +266,19 @@ public class TestUtility
         final BufferedImage image4 = UtilityImage.applyMask(image1, Color.BLACK);
         Assert.assertEquals(image1.getWidth(), image4.getWidth());
         Assert.assertEquals(image1.getHeight(), image4.getHeight());
+
+        UtilityImage.rotate(image1, 90);
+        final BufferedImage resized = UtilityImage.resize(image1, 1, 2);
+        Assert.assertEquals(1, resized.getWidth());
+        Assert.assertEquals(2, resized.getHeight());
+
+        final BufferedImage flipH = UtilityImage.flipHorizontal(image1);
+        Assert.assertEquals(image1.getWidth(), flipH.getWidth());
+        Assert.assertEquals(image1.getHeight(), flipH.getHeight());
+
+        final BufferedImage flipV = UtilityImage.flipVertical(image1);
+        Assert.assertEquals(image1.getWidth(), flipV.getWidth());
+        Assert.assertEquals(image1.getHeight(), flipV.getHeight());
 
         final BufferedImage[] splitRef = UtilityImage.referenceSplit(image1, 2, 2);
         for (final BufferedImage img1 : splitRef)
@@ -260,6 +343,17 @@ public class TestUtility
 
         final BufferedImage raster = UtilityImage.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
         raster.flush();
+
+        Assert.assertNotNull(UtilityImage.loadRaster(Media.get("raster.xml")));
+        try
+        {
+            UtilityImage.loadRaster(Media.get("rasterError.xml"));
+            Assert.fail();
+        }
+        catch (LionEngineException exception)
+        {
+            // Success
+        }
     }
 
     /**
@@ -395,6 +489,8 @@ public class TestUtility
         Assert.assertFalse(UtilityFile.exists(null));
         Assert.assertEquals("png", UtilityFile.getExtension(path));
         Assert.assertEquals("png", UtilityFile.getExtension(descriptor));
+        Assert.assertEquals("", UtilityFile.getExtension("noextension"));
+        Assert.assertEquals("", UtilityFile.getExtension("noextension."));
         Assert.assertEquals(file, Media.getFilenameFromPath(path));
         Assert.assertTrue(UtilityFile.isFile(path));
         Assert.assertFalse(UtilityFile.isFile(null));
@@ -407,9 +503,10 @@ public class TestUtility
         Assert.assertEquals(0, UtilityFile.getDirsList(Media.get("null").getPath()).length);
 
         final String[] files = UtilityFile.getFilesList(Media.get("").getPath());
-        Assert.assertEquals(12, files.length);
+        Assert.assertEquals(14, files.length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath()).length);
         Assert.assertEquals(0, UtilityFile.getFilesList(Media.get("null").getPath(), "txt").length);
+        Assert.assertEquals(1, UtilityFile.getFilesList(Media.get("").getPath(), "wav").length);
 
         final Media dir = Media.get("temp");
         final Media test = Media.get("temp", "test");
@@ -455,10 +552,11 @@ public class TestUtility
     @Test
     public void testMath()
     {
+        final double precision = 0.000001;
         Assert.assertEquals(0, UtilityMath.fixBetween(-10, 0, 10));
         Assert.assertEquals(10, UtilityMath.fixBetween(50, 0, 10));
-        Assert.assertEquals(0.0, UtilityMath.fixBetween(-10.0, 0.0, 10.0), 0.000001);
-        Assert.assertEquals(10.0, UtilityMath.fixBetween(50.0, 0.0, 10.0), 0.000001);
+        Assert.assertEquals(0.0, UtilityMath.fixBetween(-10.0, 0.0, 10.0), precision);
+        Assert.assertEquals(10.0, UtilityMath.fixBetween(50.0, 0.0, 10.0), precision);
 
         Assert.assertTrue(UtilityMath.curveValue(0.0, 1.0, 0.5) > 0.0);
         Assert.assertTrue(UtilityMath.curveValue(0.0, -1.0, 0.5) < 0.0);
@@ -468,18 +566,29 @@ public class TestUtility
         final Point2D point = new Point2D.Double(1.0, 0.0);
         Assert.assertEquals(point, UtilityMath.intersection(line1, line2));
 
+        try
+        {
+            UtilityMath.intersection(line1, line1);
+        }
+        catch (IllegalStateException exception)
+        {
+            // Success
+        }
+
         Assert.assertEquals(2, UtilityMath.getDistance(4, 6, 6, 6));
-        Assert.assertEquals(2.0, UtilityMath.getDistance(4.0, 6.0, 6.0, 6.0), 0.000001);
+        Assert.assertEquals(2.0, UtilityMath.getDistance(4.0, 6.0, 6.0, 6.0), precision);
         Assert.assertEquals(2, UtilityMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2));
 
-        Assert.assertEquals(0.0, UtilityMath.wrapDouble(360.0, 0.0, 360.0), 0.000001);
-        Assert.assertEquals(359.0, UtilityMath.wrapDouble(-1, 0.0, 360.0), 0.000001);
+        Assert.assertEquals(0.0, UtilityMath.wrapDouble(360.0, 0.0, 360.0), precision);
+        Assert.assertEquals(359.0, UtilityMath.wrapDouble(-1.0, 0.0, 360.0), precision);
+        Assert.assertEquals(180.0, UtilityMath.wrapDouble(180.0, 0.0, 360.0), precision);
 
-        Assert.assertEquals(-1.0, UtilityMath.cos(180), 0.000001);
-        Assert.assertEquals(0.0, UtilityMath.sin(180), 0.000001);
+        Assert.assertEquals(-1.0, UtilityMath.cos(180), precision);
+        Assert.assertEquals(0.0, UtilityMath.sin(180), precision);
 
-        UtilityMath.time();
-        UtilityMath.nano();
+        Assert.assertTrue(UtilityMath.time() > 0);
+        Assert.assertTrue(UtilityMath.nano() > 0);
+
     }
 
     /**
@@ -494,5 +603,24 @@ public class TestUtility
         UtilityRandom.getRandomDouble();
         UtilityRandom.getRandomInteger(100);
         UtilityRandom.getRandomInteger(-100, 100);
+    }
+
+    /**
+     * Test project stats.
+     */
+    @Test
+    public void testProjectStats()
+    {
+        UtilityProjectStats.start("src");
+    }
+
+    /**
+     * Test swing utility.
+     */
+    @Test
+    public void testSwing()
+    {
+        Assert.assertNotNull(UtilitySwing.createBorderedPanel("test", 1));
+        Assert.assertNotNull(UtilitySwing.createDialog(null, "test", 1, 1));
     }
 }

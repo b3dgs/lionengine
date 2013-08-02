@@ -65,7 +65,7 @@ public final class UtilityImage
      */
     public static BufferedImage createBufferedImage(int width, int height, int transparency)
     {
-        Check.argument(width >= 0 && height >= 0, "Image size must be positive !");
+        Check.argument(width > 0 && height > 0, "Image size must be strictly positive !");
         return UtilityImage.CONFIG.createCompatibleImage(width, height, transparency);
     }
 
@@ -80,7 +80,7 @@ public final class UtilityImage
      */
     public static VolatileImage createVolatileImage(int width, int height, int transparency)
     {
-        Check.argument(width >= 0 && height >= 0, "Image size must be positive !");
+        Check.argument(width > 0 && height > 0, "Image size must be strictly positive !");
         final VolatileImage image = UtilityImage.CONFIG.createCompatibleVolatileImage(width, height, transparency);
         if (VolatileImage.IMAGE_INCOMPATIBLE == image.validate(UtilityImage.CONFIG))
         {
@@ -288,19 +288,19 @@ public final class UtilityImage
      * Resize input buffered image.
      * 
      * @param image The input buffered image.
-     * @param w The new width.
-     * @param h The new height.
+     * @param width The new width.
+     * @param height The new height.
      * @return The new buffered image with new size.
      */
-    public static BufferedImage resize(BufferedImage image, int w, int h)
+    public static BufferedImage resize(BufferedImage image, int width, int height)
     {
         Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage resized = UtilityImage.createBufferedImage(w, h, transparency);
+        final BufferedImage resized = UtilityImage.createBufferedImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
 
         UtilityImage.optimizeGraphics(g);
-        g.drawImage(image, 0, 0, w, h, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
 
         return resized;

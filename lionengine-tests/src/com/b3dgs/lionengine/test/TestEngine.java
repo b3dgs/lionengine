@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityProjectStats;
 
 /**
  * Test the engine package.
@@ -400,15 +399,6 @@ public class TestEngine
         timer.stop();
         Assert.assertFalse(timer.isStarted());
         Assert.assertTrue(timer.get() >= 0);
-    }
-
-    /**
-     * Test project stats.
-     */
-    @Test
-    public void testProjectStats()
-    {
-        UtilityProjectStats.start("src");
     }
 
     /**

@@ -112,6 +112,41 @@ public class TestFile
     }
 
     /**
+     * Test children in xml node.
+     */
+    private static void testChildXml()
+    {
+        final XmlNode root = File.createXmlNode("root");
+        final XmlNode child1 = File.createXmlNode("child1");
+        final XmlNode child2 = File.createXmlNode("child2");
+    
+        child1.writeString("str", "str");
+    
+        root.add(child1);
+        root.add(child2);
+    
+        try
+        {
+            Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
+        }
+        catch (final XmlNodeNotFoundException exception)
+        {
+            Assert.fail();
+        }
+    
+        for (final XmlNode child : root.getChildren())
+        {
+            Assert.assertNotNull(child);
+        }
+        for (final XmlNode child : root.getChildren("child1"))
+        {
+            Assert.assertNotNull(child);
+        }
+        Assert.assertEquals("str", child1.getAttributes().get("str"));
+        Assert.assertEquals("", child1.getText());
+    }
+
+    /**
      * Test write in data file.
      */
     private void testWriteFileData()
@@ -258,41 +293,6 @@ public class TestFile
         {
             // Success
         }
-    }
-
-    /**
-     * Test children in xml node.
-     */
-    private static void testChildXml()
-    {
-        final XmlNode root = File.createXmlNode("root");
-        final XmlNode child1 = File.createXmlNode("child1");
-        final XmlNode child2 = File.createXmlNode("child2");
-
-        child1.writeString("str", "str");
-
-        root.add(child1);
-        root.add(child2);
-
-        try
-        {
-            Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
-        }
-        catch (final XmlNodeNotFoundException exception)
-        {
-            Assert.fail();
-        }
-
-        for (final XmlNode child : root.getChildren())
-        {
-            Assert.assertNotNull(child);
-        }
-        for (final XmlNode child : root.getChildren("child1"))
-        {
-            Assert.assertNotNull(child);
-        }
-        Assert.assertEquals("str", child1.getAttributes().get("str"));
-        Assert.assertEquals("", child1.getText());
     }
 
     /**

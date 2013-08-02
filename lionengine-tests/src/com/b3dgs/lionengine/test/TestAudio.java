@@ -28,6 +28,26 @@ import com.b3dgs.lionengine.audio.Wav;
 public class TestAudio
 {
     /**
+     * Test the midi loop function.
+     * 
+     * @param midi The midi music.
+     * @param start The start tick.
+     * @param end The end tick.
+     */
+    private static void testMidiLoop(Midi midi, int start, int end)
+    {
+        try
+        {
+            midi.setLoop(start, end);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
      * Test AudioMidi class.
      * 
      * @throws Exception If error.
@@ -153,6 +173,8 @@ public class TestAudio
             midi.resume();
             midi.resume();
             midi.pause();
+            midi.pause();
+            midi.play(true);
             midi.stop();
         }
         catch (final LionEngineException exception)
@@ -160,6 +182,7 @@ public class TestAudio
             Assert.fail();
         }
 
+        midi.setStart(0);
         try
         {
             midi.setStart(-1);
@@ -172,13 +195,20 @@ public class TestAudio
 
         try
         {
-            midi.setLoop(1, 0);
+            midi.setStart(Integer.MAX_VALUE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
         {
             // Success
         }
+
+        testMidiLoop(midi, -1, 0);
+        testMidiLoop(midi, 1, 0);
+        testMidiLoop(midi, 0, Integer.MAX_VALUE);
+        testMidiLoop(midi, -1, -1);
+        testMidiLoop(midi, 0, -1);
+        midi.setLoop(1, 5);
 
         try
         {
