@@ -27,7 +27,6 @@ class Scene
     {
         setMouseVisible(true);
         setMouseVisible(false);
-        setExtrapolated(true);
     }
 
     @Override

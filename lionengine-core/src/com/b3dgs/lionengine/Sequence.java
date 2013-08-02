@@ -257,7 +257,7 @@ public abstract class Sequence
      * 
      * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
      */
-    protected final void setExtrapolated(boolean extrapolated)
+    public final void setExtrapolated(boolean extrapolated)
     {
         this.extrapolated = extrapolated;
     }

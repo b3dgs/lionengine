@@ -10,23 +10,16 @@ import java.util.List;
 public final class LionEngineException
         extends RuntimeException
 {
-    /**
-     * Constants list.
-     */
-    private static class Constants
+    /** The main ignored package. */
+    private static final String IGNORE = "com.b3dgs.lionengine.";
+    /** The number of ignored characters. */
+    private static final int IGNORE_SIZE = LionEngineException.IGNORE.length();
+    /** The list of ignored sub packages and main class. */
+    private static final String[] IGNORED =
     {
-        /** The main ignored package. */
-        static final String IGNORE = "com.b3dgs.lionengine.";
-        /** The number of ignored characters. */
-        static final int IGNORE_SIZE = Constants.IGNORE.length();
-        /** The list of ignored sub packages and main class. */
-        static final String[] IGNORED =
-        {
-                "Engine", "Drawable", "File", "Audio", "Input", "Network", "game", "audio", "drawable", "engine",
-                "file", "geometry", "input", "network", "utility", "window"
-        };
-    }
-
+            "Engine", "Drawable", "File", "Audio", "Input", "Network", "game", "audio", "drawable", "engine", "file",
+            "geometry", "input", "network", "utility", "window"
+    };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599463L;
     /** The message. */
@@ -124,10 +117,10 @@ public final class LionEngineException
 
                 // Ignored package
                 boolean add = true;
-                if (className.startsWith(Constants.IGNORE))
+                if (className.startsWith(LionEngineException.IGNORE))
                 {
-                    final String pack = className.substring(Constants.IGNORE_SIZE);
-                    for (final String ignore : Constants.IGNORED)
+                    final String pack = className.substring(LionEngineException.IGNORE_SIZE);
+                    for (final String ignore : LionEngineException.IGNORED)
                     {
                         // Ignored sub package
                         if (pack.startsWith(ignore))

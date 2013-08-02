@@ -35,7 +35,7 @@ public final class Display
      */
     public Display(int width, int height, int depth, int rate)
     {
-        Check.argument(width >= 0 && height >= 0 && depth >= 0 && rate >= 0, Display.MESSAGE_ERROR_DISPLAY);
+        Check.argument(width > 0 && height > 0 && depth > 0 && rate >= 0, Display.MESSAGE_ERROR_DISPLAY);
         this.width = width;
         this.height = height;
         this.depth = depth;

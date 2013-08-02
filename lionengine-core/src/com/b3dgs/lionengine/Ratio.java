@@ -12,7 +12,9 @@ public enum Ratio
     /** 16/9 wide ratio. */
     R16_9,
     /** 16/10 wide ratio. */
-    R16_10;
+    R16_10,
+    /** Unknown ratio. */
+    UNKNOWN;
 
     /** Constant representing the 4/3 screen ratio. */
     public static final double K4_3 = 4.0 / 3.0;
@@ -75,6 +77,9 @@ public enum Ratio
         {
             return Ratio.R5_4;
         }
-        throw new IllegalArgumentException("Invalid ratio value: " + ratio);
+        else
+        {
+            return Ratio.UNKNOWN;
+        }
     }
 }
