@@ -1,8 +1,8 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 /**
  * Factory entity implementation.
  */
-class FactoryEntity
+public final class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
     /** Main entity directory name. */
@@ -30,7 +30,7 @@ class FactoryEntity
      * @param camera The camera reference.
      * @param desiredFps The desired fps.
      */
-    FactoryEntity(Map map, CameraPlatform camera, int desiredFps)
+    public FactoryEntity(Map map, CameraPlatform camera, int desiredFps)
     {
         super(TypeEntity.class);
         this.map = map;
@@ -44,7 +44,7 @@ class FactoryEntity
      * 
      * @return The instance of valdyn.
      */
-    Valdyn createValdyn()
+    public Valdyn createValdyn()
     {
         return new Valdyn(getSetup(TypeEntity.valdyn), map, camera, desiredFps);
     }

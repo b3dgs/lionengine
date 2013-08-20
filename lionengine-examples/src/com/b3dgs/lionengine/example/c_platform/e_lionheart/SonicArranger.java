@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.audio.Sc68;
 /**
  * SonicArranger set of functions.
  */
-class SonicArranger
+final class SonicArranger
 {
     /** Swamp music. */
     public static final Media SWAMP = Media.get("musics", "Swamp.sc68");

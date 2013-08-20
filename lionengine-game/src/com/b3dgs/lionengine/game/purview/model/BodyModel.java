@@ -17,7 +17,7 @@ public class BodyModel
     /** Body force. */
     private final Force force;
     /** Body location. */
-    private final Localizable location;
+    protected final Localizable location;
     /** Body mass. */
     private double mass;
     /** Maximum gravity value. */

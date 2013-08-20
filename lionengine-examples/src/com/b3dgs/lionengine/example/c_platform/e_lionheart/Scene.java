@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Scene implementation.
  */
-class Scene
+final class Scene
         extends Sequence
 {
     /** World reference. */

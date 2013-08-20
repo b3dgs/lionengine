@@ -119,12 +119,12 @@ public class TestFile
         final XmlNode root = File.createXmlNode("root");
         final XmlNode child1 = File.createXmlNode("child1");
         final XmlNode child2 = File.createXmlNode("child2");
-    
+
         child1.writeString("str", "str");
-    
+
         root.add(child1);
         root.add(child2);
-    
+
         try
         {
             Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
@@ -133,7 +133,7 @@ public class TestFile
         {
             Assert.fail();
         }
-    
+
         for (final XmlNode child : root.getChildren())
         {
             Assert.assertNotNull(child);

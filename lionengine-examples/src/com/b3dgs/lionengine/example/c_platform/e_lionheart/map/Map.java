@@ -2,6 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.map;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.maptile.MapTileGame;
@@ -10,11 +12,13 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
 /**
  * Map implementation
  */
-public class Map
+public final class Map
         extends MapTilePlatformRastered<TileCollision, Tile>
 {
     /** Sheets directory. */
     public static final String TILES_DIR = "tiles";
+    /** Rasters directory. */
+    public static final String RASTERS_DIR = "rasters";
     /** Tile width. */
     public static final int TILE_WIDTH = 16;
     /** Tile height. */
@@ -24,11 +28,14 @@ public class Map
 
     /**
      * Standard constructor.
+     * 
+     * @param landscape The landscape type.
      */
-    public Map()
+    public Map(Landscape landscape)
     {
         super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
-        // setRaster(Media.get("rasters", "raster1.xml"), false, false);
+        setRaster(Media.get(Map.RASTERS_DIR, landscape.getType().getRaster()), false, false);
+        setRaster(null, false, false);
     }
 
     /**

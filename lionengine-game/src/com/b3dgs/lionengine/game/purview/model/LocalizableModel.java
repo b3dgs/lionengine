@@ -87,24 +87,24 @@ public class LocalizableModel
     @Override
     public void setLocation(double x, double y)
     {
+        backupLocation();
         current.set(x, y);
-        old.set(x, y);
         updateMovement();
     }
 
     @Override
     public void setLocationX(double x)
     {
+        old.setX(current.getX());
         current.setX(x);
-        old.setX(x);
         updateMovement();
     }
 
     @Override
     public void setLocationY(double y)
     {
+        old.setY(current.getY());
         current.setY(y);
-        old.setY(y);
         updateMovement();
     }
 

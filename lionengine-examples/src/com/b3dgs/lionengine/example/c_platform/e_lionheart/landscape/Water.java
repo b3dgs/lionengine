@@ -1,8 +1,8 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.background;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -17,7 +17,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 /**
  * Water foreground implementation.
  */
-public class Water
+final class Water
         extends BackgroundPlatform
 {
     /** Screen width. */
@@ -36,14 +36,15 @@ public class Water
     /**
      * Create a new swamp background.
      * 
-     * @param sequence The sequence reference.
+     * @param config The config reference.
+     * @param wide The wide state.
      * @param theme The theme name.
      */
-    public Water(Sequence sequence, String theme)
+    Water(Config config, boolean wide, String theme)
     {
-        super(theme, 0, 0, sequence.wide);
-        screenWidth = sequence.config.internal.getWidth();
-        screenHeight = sequence.config.internal.getHeight();
+        super(theme, 0, 0, wide);
+        screenWidth = config.internal.getWidth();
+        screenHeight = config.internal.getHeight();
         nominal = 210;
         height = 0.0;
         depth = 4.0;
@@ -126,7 +127,7 @@ public class Water
     /**
      * First front component, including water effect.
      */
-    private class Primary
+    private final class Primary
             implements BackgroundComponent
     {
         /** Water element. */
@@ -179,7 +180,7 @@ public class Water
     /**
      * Second front component, including water effect.
      */
-    private class Secondary
+    private final class Secondary
             implements BackgroundComponent
     {
         /** Water element. */

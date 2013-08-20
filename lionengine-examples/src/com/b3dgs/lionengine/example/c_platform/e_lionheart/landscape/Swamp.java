@@ -1,9 +1,9 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.background;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Ratio;
-import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 /**
  * Swamp full background implementation.
  */
-public class Swamp
+final class Swamp
         extends BackgroundPlatform
 {
     /** Number of parallax lines. */
@@ -28,30 +28,47 @@ public class Swamp
     /**
      * Constructor.
      * 
-     * @param sequence The sequence reference.
+     * @param config The config reference.
+     * @param wide The wide state.
      * @param theme The theme name.
      * @param flickering The flickering flag.
-     * @param water The water reference.
      */
-    public Swamp(Sequence sequence, String theme, boolean flickering, Water water)
+    Swamp(Config config, boolean wide, String theme, boolean flickering)
     {
-        super(theme, 0, 512, sequence.wide);
+        super(theme, 0, 512, wide);
         this.flickering = flickering;
-        screenHeight = sequence.config.internal.getHeight();
+        screenHeight = config.internal.getHeight();
 
         final String path = Media.getPath("backgrounds", "Swamp", theme);
-        final int width = sequence.config.internal.getWidth();
+        final int width = config.internal.getWidth();
         add(new Backdrop(path, this.flickering, isWide(), width));
         add(new Clouds(Media.get(path, "cloud.png"), isWide(), width, 4));
-        add(new Parallax(sequence.config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 124));
+        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 124));
 
         totalHeight = 48;
     }
 
     /**
+     * Create a rastered element.
+     * 
+     * @param path The surface path.
+     * @param name The element name.
+     * @param x The location x.
+     * @param y The location y.
+     * @param rastersNumber The number of rasters to use.
+     * @return The created element.
+     */
+    static RasteredBackgroundElement createRasteredElement(String path, String name, int x, int y, int rastersNumber)
+    {
+        final Sprite sprite = Drawable.loadSprite(Media.get(path, name));
+        sprite.load(false);
+        return new RasteredBackgroundElement(x, y, sprite, rastersNumber);
+    }
+
+    /**
      * Backdrop represents the back background plus top background elements.
      */
-    private class Backdrop
+    private final class Backdrop
             implements BackgroundComponent
     {
         /** Backdrop color A. */
@@ -116,7 +133,7 @@ public class Swamp
             {
                 x = 276;
             }
-            moon = createRasteredElement(path, "moon.png", x, 105, 73);
+            moon = Swamp.createRasteredElement(path, "moon.png", x, 105, 73);
             mountainSprite = (Sprite) mountain.getSprite();
         }
 
@@ -172,22 +189,5 @@ public class Swamp
                 mountainSprite.render(g, ox + sx * j, oy);
             }
         }
-    }
-
-    /**
-     * Create a rastered element.
-     * 
-     * @param path The surface path.
-     * @param name The element name.
-     * @param x The location x.
-     * @param y The location y.
-     * @param rastersNumber The number of rasters to use.
-     * @return The created element.
-     */
-    RasteredBackgroundElement createRasteredElement(String path, String name, int x, int y, int rastersNumber)
-    {
-        final Sprite sprite = Drawable.loadSprite(Media.get(path, name));
-        sprite.load(false);
-        return new RasteredBackgroundElement(x, y, sprite, rastersNumber);
     }
 }

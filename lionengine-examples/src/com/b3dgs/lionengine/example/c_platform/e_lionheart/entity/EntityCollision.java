@@ -1,9 +1,9 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 /**
  * List of entity collisions.
  */
-public enum EntityCollision
+enum EntityCollision
 {
     /** No collision. */
     NONE,

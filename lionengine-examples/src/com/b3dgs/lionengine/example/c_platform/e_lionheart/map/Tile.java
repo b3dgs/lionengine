@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Tile implementation.
  */
-public class Tile
+public final class Tile
         extends TilePlatform<TileCollision>
 {
     /** Half tile height, corresponding to the collision height location on tile. */
@@ -144,6 +144,7 @@ public class Tile
                 return getSlopeLeft(localizable, 0);
             case SLOPE_LEFT_3:
                 return getSlopeLeft(localizable, -Tile.HALF_TILE_HEIGHT);
+
             default:
                 return null;
         }

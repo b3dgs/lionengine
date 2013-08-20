@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import java.util.EnumMap;
 
@@ -10,6 +10,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 
@@ -23,44 +24,30 @@ public abstract class Entity
     protected final Map map;
     /** Desired fps value. */
     protected final int desiredFps;
+    /** Entity status. */
+    protected final EntityStatus status;
     /** Movement jump force. */
     protected final Force jumpForce;
     /** Dead timer. */
     protected final Timing timerDie;
-    /** Movement force force. */
-    protected final Force movementForce;
-    /** Movement force destination force. */
-    protected final Force movementForceDest;
+    /** Movement force. */
+    protected final Movement movement;
+    /** Entity actions. */
+    protected final EnumMap<EntityAction, Boolean> actions;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
-    /** Smooth speed value. */
-    private final double smoothSpeed;
     /** Sensibility increase value. */
     private final double sensibilityIncrease;
     /** Sensibility decrease value. */
     private final double sensibilityDecrease;
-    /** Jump force. */
-    protected double jumpHeightMax;
-    /** Key right state. */
-    protected boolean right;
-    /** Key left state. */
-    protected boolean left;
-    /** Key up state. */
-    protected boolean up;
-    /** Dead step. */
-    protected int stepDie;
-    /** Entity state. */
-    protected EntityState state;
-    /** Collision state. */
-    protected EntityCollision coll;
-    /** Collision old state. */
-    protected EntityCollision collOld;
-    /** Die location. */
-    protected Coord dieLocation;
-    /** Entity old state. */
-    private EntityState stateOld;
     /** Movement max speed. */
     private final double movementSpeedMax;
+    /** Jump force. */
+    protected double jumpHeightMax;
+    /** Dead step. */
+    protected int stepDie;
+    /** Die location. */
+    protected Coord dieLocation;
     /** Dead flag. */
     private boolean dead;
 
@@ -76,24 +63,21 @@ public abstract class Entity
         super(setup, map);
         this.map = map;
         this.desiredFps = desiredFps;
+        status = new EntityStatus();
+        movement = new Movement();
+        actions = new EnumMap<>(EntityAction.class);
+        animations = new EnumMap<>(EntityState.class);
         setFrameOffsets(getWidth() / 2, -8);
         setMass(getDataDouble("mass", "data"));
         setGravityMax(getDataDouble("gravityMax", "data"));
         movementSpeedMax = getDataDouble("speedMax", "data", "movement");
-        smoothSpeed = getDataDouble("smooth", "data", "movement");
+        movement.setVelocity(getDataDouble("smooth", "data", "movement"));
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
         jumpHeightMax = getDataDouble("heightMax", "data", "jump");
         dieLocation = new Coord();
-        movementForce = new Force();
-        movementForceDest = new Force();
         jumpForce = new Force();
         timerDie = new Timing();
-        animations = new EnumMap<>(EntityState.class);
-        state = EntityState.IDLE;
-        stateOld = state;
-        coll = EntityCollision.GROUND;
-        collOld = coll;
         loadAnimations();
     }
 
@@ -137,14 +121,28 @@ public abstract class Entity
     public void kill()
     {
         dead = true;
-        resetMovementSpeed();
+        movement.reset();
         dieLocation.set(getLocationX(), getLocationY());
         stepDie = 0;
         timerDie.start();
     }
 
     /**
-     * Check if hero can jump.
+     * Respawn entity.
+     */
+    public void respawn()
+    {
+        setDead(false);
+        resetGravity();
+        movement.reset();
+        mirror(false);
+        updateMirror();
+        status.setCollision(EntityCollision.GROUND);
+        status.backupCollision();
+    }
+
+    /**
+     * Check if entity can jump.
      * 
      * @return <code>true</code> if can jump, <code>false</code> else.
      */
@@ -154,7 +152,7 @@ public abstract class Entity
     }
 
     /**
-     * Check if hero is jumping.
+     * Check if entity is jumping.
      * 
      * @return <code>true</code> if jumping, <code>false</code> else.
      */
@@ -164,7 +162,7 @@ public abstract class Entity
     }
 
     /**
-     * Check if hero is falling.
+     * Check if entity is falling.
      * 
      * @return <code>true</code> if falling, <code>false</code> else.
      */
@@ -174,13 +172,13 @@ public abstract class Entity
     }
 
     /**
-     * Check if hero is on ground.
+     * Check if entity is on ground.
      * 
      * @return <code>true</code> if on ground, <code>false</code> else.
      */
     public boolean isOnGround()
     {
-        return coll == EntityCollision.GROUND;
+        return status.getCollision() == EntityCollision.GROUND;
     }
 
     /**
@@ -208,7 +206,7 @@ public abstract class Entity
             {
                 resetGravity();
                 jumpForce.setForce(Force.ZERO);
-                coll = EntityCollision.GROUND;
+                status.setCollision(EntityCollision.GROUND);
             }
         }
     }
@@ -226,7 +224,7 @@ public abstract class Entity
             final Double x = tile.getCollisionX(this);
             if (applyHorizontalCollision(x))
             {
-                resetMovementSpeed();
+                movement.reset();
             }
         }
     }
@@ -248,16 +246,18 @@ public abstract class Entity
      */
     protected double getHorizontalForce()
     {
-        return movementForce.getForceHorizontal();
+        return movement.getForce().getForceHorizontal();
     }
 
     /**
-     * Set to zero movement speed force.
+     * Check if the specified action is enabled.
+     * 
+     * @param action The action to check.
+     * @return <code>true</code> if enabled, <code>false</code> else.
      */
-    protected void resetMovementSpeed()
+    protected boolean isEnabled(EntityAction action)
     {
-        movementForce.setForce(Force.ZERO);
-        movementForceDest.setForce(Force.ZERO);
+        return actions.get(action).booleanValue();
     }
 
     /**
@@ -279,51 +279,35 @@ public abstract class Entity
     }
 
     /**
-     * Update the forces depending of the pressed key.
+     * Update the actions.
      */
-    private void updateForces()
+    private void updateActions()
     {
         final double speed;
-        if (right && !left)
+        final double sensibility;
+        if (isEnabled(EntityAction.MOVE_RIGHT) && !isEnabled(EntityAction.MOVE_LEFT))
         {
             speed = movementSpeedMax;
+            sensibility = sensibilityIncrease;
         }
-        else if (left && !right)
+        else if (isEnabled(EntityAction.MOVE_LEFT) && !isEnabled(EntityAction.MOVE_RIGHT))
         {
             speed = -movementSpeedMax;
+            sensibility = sensibilityIncrease;
         }
         else
         {
             speed = 0.0;
-        }
-        movementForceDest.setForce(speed, 0.0);
-
-        if (up && canJump())
-        {
-            jumpForce.setForce(0.0, jumpHeightMax);
-            coll = EntityCollision.NONE;
-        }
-    }
-
-    /**
-     * Update the movement by using the defined forces.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateMovement(double extrp)
-    {
-        // Smooth walking speed...
-        final double sensibility;
-        if (right || left)
-        {
-            sensibility = sensibilityIncrease;
-        }
-        // ...but quick stop
-        else
-        {
             sensibility = sensibilityDecrease;
         }
-        movementForce.reachForce(extrp, movementForceDest, smoothSpeed, sensibility);
+        movement.setSensibility(sensibility);
+        movement.setForceToReach(speed, 0.0);
+
+        if (isEnabled(EntityAction.JUMP) && canJump())
+        {
+            jumpForce.setForce(0.0, jumpHeightMax);
+            status.setCollision(EntityCollision.NONE);
+        }
     }
 
     /**
@@ -335,13 +319,13 @@ public abstract class Entity
         if (getLocationX() < limitLeft)
         {
             setLocationX(limitLeft);
-            resetMovementSpeed();
+            movement.reset();
         }
         final int limitRight = map.getWidthInTile() * map.getTileWidth();
         if (getLocationX() > limitRight)
         {
             setLocationX(limitRight);
-            resetMovementSpeed();
+            movement.reset();
         }
     }
 
@@ -352,19 +336,19 @@ public abstract class Entity
     @Override
     protected void handleActions(double extrp)
     {
-        if (!dead)
+        if (!isDead())
         {
-            updateForces();
+            updateActions();
         }
-        stateOld = state;
+        status.backupState();
         updateStates();
     }
 
     @Override
     protected void handleMovements(double extrp)
     {
-        updateMovement(extrp);
-        updateGravity(extrp, desiredFps, movementForce, jumpForce);
+        movement.update(extrp);
+        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
         updateMirror();
         if (dead)
         {
@@ -375,9 +359,9 @@ public abstract class Entity
     @Override
     protected void handleCollisions(double extrp)
     {
+        status.backupCollision();
         if (!isDead())
         {
-            collOld = coll;
             checkMapLimit();
             updateCollisions();
         }
@@ -387,9 +371,9 @@ public abstract class Entity
     protected void handleAnimations(double extrp)
     {
         updateAnimations();
-        if (state != stateOld)
+        if (status.stateChanged())
         {
-            play(animations.get(state));
+            play(animations.get(status.getState()));
         }
         updateAnimation(extrp);
     }

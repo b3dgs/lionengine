@@ -112,11 +112,11 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
             for (int i = 1; i <= SetupEntityPlatformRastered.MAX_RASTERS; i++)
             {
                 String rasFile = null;
-                if (this.cache)
+                if (cache)
                 {
                     rasFile = Media.getPath(Media.getTempDir(), directory, pattern + "_" + i + ".png");
                 }
-                if (this.cache && UtilityFile.exists(rasFile))
+                if (cache && UtilityFile.exists(rasFile))
                 {
                     final BufferedImage rasterBuf = UtilityImage.getBufferedImage(new Media(rasFile), false);
                     addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
@@ -125,7 +125,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
                 {
                     for (int c = 0; c < rasters.length; c++)
                     {
-                        if (this.smooth)
+                        if (smooth)
                         {
                             if (m == 0)
                             {
@@ -243,7 +243,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     @Override
     protected void renderingTile(Graphic g, T tile, int x, int y, int screenHeight)
     {
-        SpriteTiled ts;
+        final SpriteTiled ts;
         if (rasterFile != null)
         {
             ts = getRasterPattern(tile.getPattern(), this.getRasterIndex(tile));

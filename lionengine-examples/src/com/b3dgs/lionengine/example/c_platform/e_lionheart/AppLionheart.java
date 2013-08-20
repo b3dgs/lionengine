@@ -13,8 +13,17 @@ import com.b3dgs.lionengine.Version;
 /**
  * Program starts here.
  */
-public class AppLionheart
+public final class AppLionheart
 {
+    /** Application name. */
+    public static final String NAME = "Lionheart";
+    /** Application version. */
+    public static final Version VERSION = Version.create(1, 0, 0);
+    /** Resources directory. */
+    private static final String RESOURCES = Media.getPath("resources", "lionheart");
+    /** Native display. */
+    private static final Display NATIVE_DISPLAY = new Display(320, 240, 16, 60);
+
     /**
      * Private constructor.
      */
@@ -30,18 +39,12 @@ public class AppLionheart
      */
     public static void main(String args[])
     {
-        // Start engine
-        Engine.start("Lionheart", Version.create(1, 0, 0), Media.getPath("resources", "lionheart"));
+        Engine.start(AppLionheart.NAME, AppLionheart.VERSION, AppLionheart.RESOURCES);
 
-        // Displays
-        final Display internal = new Display(320, 240, 16, 60);
         final Display external = new Display(640, 480, 16, 60);
-
-        // Configuration
-        final Config config = new Config(internal, external, true);
-
-        // Loader
+        final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);
         final Loader loader = new Loader(config);
+
         loader.start(new Scene(loader));
     }
 }

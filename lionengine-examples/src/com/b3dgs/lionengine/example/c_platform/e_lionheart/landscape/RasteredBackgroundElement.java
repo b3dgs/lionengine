@@ -1,14 +1,12 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.background;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElementRastered;
 
 /**
  * Rastered background element implementation.
- * 
- * @author Pierre-Alexandre
  */
-class RasteredBackgroundElement
+final class RasteredBackgroundElement
         extends BackgroundElementRastered
 {
     /**
@@ -39,7 +37,7 @@ class RasteredBackgroundElement
      * @param sprite The sprite reference.
      * @param i The index value.
      */
-    private void swamp1(Sprite sprite, int i)
+    protected void swamp1(Sprite sprite, int i)
     {
         final int r = 0x280000 - 0x050000 * (int) (i / 1.0);
         final int g = 0x000600 - 0x000100 * (i / 6);
@@ -53,7 +51,7 @@ class RasteredBackgroundElement
      * @param sprite The sprite reference.
      * @param i The index value.
      */
-    private void swamp2(Sprite sprite, int i)
+    protected void swamp2(Sprite sprite, int i)
     {
         final int r = 0x300000 - 0x080000 * (int) (i / 1.5);
         final int g = 0x002000 - 0x000100 * (i / 5);
@@ -62,12 +60,12 @@ class RasteredBackgroundElement
     }
 
     /**
-     * Raster 2.
+     * Raster 3.
      * 
      * @param sprite The sprite reference.
      * @param i The index value.
      */
-    private void swamp3(Sprite sprite, int i)
+    protected void swamp3(Sprite sprite, int i)
     {
         final int r = 0x200000 - 0x010000 * (int) (i / 1.5);
         final int g = 0x002000 + 0x000100 * (int) (i / 1.5);
@@ -76,12 +74,12 @@ class RasteredBackgroundElement
     }
 
     /**
-     * Raster 2.
+     * Raster 4.
      * 
      * @param sprite The sprite reference.
      * @param i The index value.
      */
-    private void swamp4(Sprite sprite, int i)
+    protected void swamp4(Sprite sprite, int i)
     {
         final int r = 0x280000 - 0x030000 * i;
         final int g = 0x000600;
@@ -90,12 +88,12 @@ class RasteredBackgroundElement
     }
 
     /**
-     * Raster 2.
+     * Raster 5.
      * 
      * @param sprite The sprite reference.
      * @param i The index value.
      */
-    private void swamp5(Sprite sprite, int i)
+    protected void swamp5(Sprite sprite, int i)
     {
         final int r = 0x010000 - 0x040000 * (int) (i / 1.1);
         final int g = 0x000600 + 0x000100 * (int) (i / 2.0);

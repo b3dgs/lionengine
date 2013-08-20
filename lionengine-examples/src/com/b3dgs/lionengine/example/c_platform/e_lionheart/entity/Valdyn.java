@@ -1,9 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.EntityCollision;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
@@ -14,7 +11,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Valdyn entity implementation.
  */
-public class Valdyn
+public final class Valdyn
         extends Entity
 {
     /** Divisor for walk speed animation. */
@@ -38,7 +35,7 @@ public class Valdyn
      * @param camera The camera reference.
      * @param desiredFps The desired fps.
      */
-    public Valdyn(SetupEntityGame setup, Map map, CameraPlatform camera, int desiredFps)
+    Valdyn(SetupEntityGame setup, Map map, CameraPlatform camera, int desiredFps)
     {
         super(setup, map, desiredFps);
         this.camera = camera;
@@ -57,25 +54,17 @@ public class Valdyn
     {
         if (!isDead())
         {
-            right = keyboard.isPressed(Keyboard.RIGHT);
-            left = keyboard.isPressed(Keyboard.LEFT);
-            up = keyboard.isPressed(Keyboard.UP);
+            for (final EntityAction action : EntityAction.values())
+            {
+                actions.put(action, Boolean.valueOf(keyboard.isPressed(action.getKey())));
+            }
         }
     }
 
-    /**
-     * Respawn player.
-     */
+    @Override
     public void respawn()
     {
-        setDead(false);
-        resetGravity();
-        resetMovementSpeed();
-        mirror(false);
-        updateMirror();
-        state = EntityState.IDLE;
-        coll = EntityCollision.GROUND;
-        collOld = coll;
+        super.respawn();
         setLocation(512, 55);
         camera.resetInterval(this);
     }
@@ -106,7 +95,7 @@ public class Valdyn
     {
         if (!timerFallen.isStarted())
         {
-            if (collOld == EntityCollision.NONE && coll == EntityCollision.GROUND)
+            if (status.collisionChangedFromTo(EntityCollision.NONE, EntityCollision.GROUND))
             {
                 timerFallen.start();
             }
@@ -155,6 +144,20 @@ public class Valdyn
         return false;
     }
 
+    /**
+     * Check the vertical collision in border case.
+     * 
+     * @param offsetX The horizontal offset.
+     */
+    private void checkCollisionVerticalBorder(int offsetX)
+    {
+        final Tile tile = map.getTile(this, offsetX, 0);
+        if (tile != null && tile.isBorder())
+        {
+            checkCollisionVertical(offsetX);
+        }
+    }
+
     /*
      * Entity
      */
@@ -195,44 +198,45 @@ public class Valdyn
 
         if (isFalling())
         {
-            state = EntityState.FALL;
+            status.setState(EntityState.FALL);
         }
         else if (isJumping())
         {
-            state = EntityState.JUMP;
+            status.setState(EntityState.JUMP);
         }
         else if (timerFallen.isStarted())
         {
-            state = EntityState.FALLEN;
+            status.setState(EntityState.FALLEN);
         }
         else if (isOnGround())
         {
-            if (mirror && right && diffHorizontal < 0.0 || !mirror && left && diffHorizontal > 0.0)
+            if (mirror && isEnabled(EntityAction.MOVE_RIGHT) && diffHorizontal < 0.0 || !mirror
+                    && isEnabled(EntityAction.MOVE_LEFT) && diffHorizontal > 0.0)
             {
-                state = EntityState.TURN;
+                status.setState(EntityState.TURN);
             }
             else if (diffHorizontal != 0.0)
             {
-                state = EntityState.WALK;
+                status.setState(EntityState.WALK);
             }
             else if (extremity)
             {
-                state = EntityState.BORDER;
+                status.setState(EntityState.BORDER);
             }
             else
             {
-                state = EntityState.IDLE;
+                status.setState(EntityState.IDLE);
             }
         }
         if (isDead())
         {
             if (stepDie == 0 || getLocationY() < 0)
             {
-                state = EntityState.DIE;
+                status.setState(EntityState.DIE);
             }
             else
             {
-                state = EntityState.DEAD;
+                status.setState(EntityState.DEAD);
             }
         }
         updateFall();
@@ -244,7 +248,7 @@ public class Valdyn
     {
         if (getLocationY() < 0)
         {
-            resetMovementSpeed();
+            movement.reset();
             jumpForce.setForce(0.0, -0.3);
             stepDie = 1;
             resetGravity();
@@ -269,7 +273,7 @@ public class Valdyn
         extremity = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(100))
         {
-            coll = EntityCollision.NONE;
+            status.setCollision(EntityCollision.NONE);
         }
 
         // Vertical collision
@@ -298,23 +302,10 @@ public class Valdyn
         }
     }
 
-    /**
-     * Check the vertical collision in border case.
-     * 
-     * @param offsetX The horizontal offset.
-     */
-    private void checkCollisionVerticalBorder(int offsetX)
-    {
-        final Tile tile = map.getTile(this, offsetX, 0);
-        if (tile != null && tile.isBorder())
-        {
-            checkCollisionVertical(offsetX);
-        }
-    }
-
     @Override
     protected void updateAnimations()
     {
+        final EntityState state = status.getState();
         if (state == EntityState.WALK || state == EntityState.TURN)
         {
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;

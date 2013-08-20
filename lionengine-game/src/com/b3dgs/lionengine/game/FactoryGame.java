@@ -55,7 +55,7 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     {
         for (final T type : list)
         {
-            this.addSetup(type, createSetup(type));
+            addSetup(type, createSetup(type));
         }
     }
 

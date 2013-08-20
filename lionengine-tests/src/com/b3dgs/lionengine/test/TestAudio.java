@@ -203,11 +203,11 @@ public class TestAudio
             // Success
         }
 
-        testMidiLoop(midi, -1, 0);
-        testMidiLoop(midi, 1, 0);
-        testMidiLoop(midi, 0, Integer.MAX_VALUE);
-        testMidiLoop(midi, -1, -1);
-        testMidiLoop(midi, 0, -1);
+        TestAudio.testMidiLoop(midi, -1, 0);
+        TestAudio.testMidiLoop(midi, 1, 0);
+        TestAudio.testMidiLoop(midi, 0, Integer.MAX_VALUE);
+        TestAudio.testMidiLoop(midi, -1, -1);
+        TestAudio.testMidiLoop(midi, 0, -1);
         midi.setLoop(1, 5);
 
         try

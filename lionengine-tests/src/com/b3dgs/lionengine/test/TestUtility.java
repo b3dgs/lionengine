@@ -219,11 +219,11 @@ public class TestUtility
     @Test
     public void testUtilityImage()
     {
-        testCreateBufferedImageFail(0, 1);
-        testCreateBufferedImageFail(1, 0);
+        TestUtility.testCreateBufferedImageFail(0, 1);
+        TestUtility.testCreateBufferedImageFail(1, 0);
 
-        testCreateVolatileImageFail(0, 1);
-        testCreateVolatileImageFail(1, 0);
+        TestUtility.testCreateVolatileImageFail(0, 1);
+        TestUtility.testCreateVolatileImageFail(1, 0);
 
         final BufferedImage bufferedImage = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
         final VolatileImage volatileImage = UtilityImage.createVolatileImage(16, 16, Transparency.OPAQUE);
@@ -239,7 +239,7 @@ public class TestUtility
             UtilityImage.getBufferedImage(Media.get("null"), false);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -248,7 +248,7 @@ public class TestUtility
             UtilityImage.getVolatileImage(Media.get("null"), Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -350,7 +350,7 @@ public class TestUtility
             UtilityImage.loadRaster(Media.get("rasterError.xml"));
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -570,7 +570,7 @@ public class TestUtility
         {
             UtilityMath.intersection(line1, line1);
         }
-        catch (IllegalStateException exception)
+        catch (final IllegalStateException exception)
         {
             // Success
         }

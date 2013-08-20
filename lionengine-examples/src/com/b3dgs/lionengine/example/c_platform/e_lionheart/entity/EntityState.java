@@ -1,9 +1,9 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 /**
  * List of entity states.
  */
-public enum EntityState
+enum EntityState
 {
     /** Idle state. */
     IDLE("idle"),

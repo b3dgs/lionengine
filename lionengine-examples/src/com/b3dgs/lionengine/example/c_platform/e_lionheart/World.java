@@ -4,34 +4,34 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.background.Swamp;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.background.Water;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.background.Background;
 
 /**
  * World implementation using WorldGame.
  */
-class World
+final class World
         extends WorldGame
 {
     /** Map reference. */
     private final Map map;
+    /** Background factory. */
+    private final FactoryLandscape factoryLandscape;
     /** Entity factory. */
-    private final FactoryEntity factory;
+    private final FactoryEntity factoryEntity;
     /** Player reference. */
     private final Valdyn valdyn;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Background reference. */
-    private final Background background;
-    /** Foreground reference. */
-    private final Water water;
+    private final Landscape landscape;
 
     /**
      * Standard constructor.
@@ -41,12 +41,12 @@ class World
     World(Sequence sequence)
     {
         super(sequence);
-        map = new Map();
         camera = new CameraPlatform(width, height);
-        factory = new FactoryEntity(map, camera, display.getRate());
-        valdyn = factory.createValdyn();
-        water = new Water(sequence, "Water");
-        background = new Swamp(sequence, "Stage1", false, water);
+        factoryLandscape = new FactoryLandscape(config, wide, false);
+        landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
+        map = new Map(landscape);
+        factoryEntity = new FactoryEntity(map, camera, display.getRate());
+        valdyn = factoryEntity.createValdyn();
     }
 
     @Override
@@ -54,19 +54,17 @@ class World
     {
         valdyn.updateControl(keyboard);
         valdyn.update(extrp);
-        background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
         camera.follow(valdyn);
-        water.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
+        landscape.update(extrp, camera);
     }
 
     @Override
     public void render(Graphic g)
     {
-        background.render(g);
-        water.renderBack(g);
+        landscape.renderBackground(g);
         map.render(g, camera);
         valdyn.render(g, camera);
-        water.renderFront(g);
+        landscape.renderForeground(g);
     }
 
     @Override
@@ -86,8 +84,6 @@ class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
-        valdyn.setLocation(512, 55);
-        camera.resetInterval(valdyn);
-        background.update(1.0, 1.0, camera.getLocationY());
+        valdyn.respawn();
     }
 }
