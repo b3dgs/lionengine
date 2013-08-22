@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 
 /**
- * Menus list.
+ * List of menu types.
  */
 public enum TypeMenu
 {

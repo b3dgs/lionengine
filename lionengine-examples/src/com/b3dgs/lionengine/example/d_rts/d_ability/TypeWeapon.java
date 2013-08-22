@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
 /**
- * Weapons list.
+ * List of weapon types.
  */
 public enum TypeWeapon
 {

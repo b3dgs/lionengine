@@ -18,13 +18,6 @@ import java.io.InputStream;
  */
 public final class ImageInfo
 {
-    /** Image width. */
-    private int width;
-    /** Image height. */
-    private int height;
-    /** Image format. */
-    private String format;
-
     /**
      * Get the image info of the specified image media.
      * 
@@ -35,6 +28,35 @@ public final class ImageInfo
     {
         return new ImageInfo(media);
     }
+
+    /**
+     * Read integer in image data.
+     * 
+     * @param inputStream The stream.
+     * @param bytesNumber The number of bytes to read.
+     * @param bigEndian The big endian flag.
+     * @return The integer read.
+     * @throws IOException if error on reading.
+     */
+    private static int readInt(InputStream inputStream, int bytesNumber, boolean bigEndian) throws IOException
+    {
+        int ret = 0;
+        int sv = bigEndian ? (bytesNumber - 1) * 8 : 0;
+        final int cnt = bigEndian ? -8 : 8;
+        for (int i = 0; i < bytesNumber; i++)
+        {
+            ret |= inputStream.read() << sv;
+            sv += cnt;
+        }
+        return ret;
+    }
+
+    /** Image width. */
+    private int width;
+    /** Image height. */
+    private int height;
+    /** Image format. */
+    private String format;
 
     /**
      * Crate a new info reader.
@@ -279,27 +301,5 @@ public final class ImageInfo
                 break;
             }
         }
-    }
-
-    /**
-     * Read integer in image data.
-     * 
-     * @param inputStream The stream.
-     * @param bytesNumber The number of bytes to read.
-     * @param bigEndian The big endian flag.
-     * @return The integer read.
-     * @throws IOException if error on reading.
-     */
-    private static int readInt(InputStream inputStream, int bytesNumber, boolean bigEndian) throws IOException
-    {
-        int ret = 0;
-        int sv = bigEndian ? (bytesNumber - 1) * 8 : 0;
-        final int cnt = bigEndian ? -8 : 8;
-        for (int i = 0; i < bytesNumber; i++)
-        {
-            ret |= inputStream.read() << sv;
-            sv += cnt;
-        }
-        return ret;
     }
 }

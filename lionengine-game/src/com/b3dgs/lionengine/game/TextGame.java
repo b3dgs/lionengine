@@ -39,6 +39,18 @@ public final class TextGame
     }
 
     /**
+     * Update game text to store current location view.
+     * 
+     * @param camera The camera reference.
+     */
+    public void update(CameraGame camera)
+    {
+        x = camera.getLocationIntX();
+        y = camera.getLocationIntY();
+        height = camera.getViewHeight();
+    }
+
+    /**
      * Renders text on graphic output, to the specified location using the specified localizable referential.
      * 
      * @param g The graphic output.
@@ -67,18 +79,6 @@ public final class TextGame
     {
         g.setColor(color);
         g.drawRect(x - this.x, this.y - y - height + this.height, width, height, false);
-    }
-
-    /**
-     * Update game text to store current location view.
-     * 
-     * @param camera The camera reference.
-     */
-    public void update(CameraGame camera)
-    {
-        x = camera.getLocationIntX();
-        y = camera.getLocationIntY();
-        height = camera.getViewHeight();
     }
 
     /*

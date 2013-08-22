@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.c_entitymap;
 
 /**
- * List of entity collision.
+ * List of entity collisions.
  */
 enum EntityCollision
 {

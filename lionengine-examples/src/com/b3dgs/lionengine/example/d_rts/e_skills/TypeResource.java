@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills;
 
 /**
- * List of resources type.
+ * List of resource types.
  */
 public enum TypeResource
 {

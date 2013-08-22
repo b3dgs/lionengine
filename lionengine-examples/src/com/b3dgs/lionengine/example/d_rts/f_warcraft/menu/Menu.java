@@ -109,6 +109,88 @@ public final class Menu
         cursor = new Cursor(config.internal, Media.get("cursor.png"));
     }
 
+    /**
+     * Set the alpha.
+     * 
+     * @param g The graphics output.
+     * @param color The color.
+     */
+    private void applyAlpha(Graphic g, Color color)
+    {
+        g.setColor(color);
+        g.drawRect(0, 0, width, height, true);
+    }
+
+    /**
+     * Draw new menu.
+     * 
+     * @param g The graphics output.
+     */
+    private void drawNew(Graphic g)
+    {
+        background.render(g, 0, 0);
+        g.setColor(Menu.COLOR_BOX_BORDER);
+        g.drawRect(80, 84, 160, 82, false);
+        g.setColor(Menu.COLOR_BOX_IN);
+        g.drawRect(81, 85, 159, 81, true);
+        Menu.FONT.setColor(Menu.COLOR_HEAD);
+        Menu.FONT.draw(g, 160, 89, Align.CENTER, "Select game type");
+        Menu.FONT.setColor(Menu.COLOR);
+        Menu.FONT.draw(g, 136, 104, Align.RIGHT, "Race:");
+        Menu.FONT.draw(g, 188, 104, Align.CENTER, Menu.format(Menu.RACES[playerRace]));
+
+        Menu.FONT.draw(g, 136, 120, Align.RIGHT, "Opponent:");
+        Menu.FONT.draw(g, 188, 120, Align.CENTER, Menu.format(Menu.RACES[opponentRace]));
+
+        Menu.FONT.draw(g, 136, 136, Align.RIGHT, "Map:");
+        Menu.FONT.draw(g, 188, 136, Align.CENTER, Menu.format(Menu.MAPS[map], true));
+
+        Menu.FONT.draw(g, 136, 152, Align.RIGHT, "View:");
+        Menu.FONT.draw(g, 188, 152, Align.CENTER, Menu.FOGS[fog]);
+
+        for (int i = 4; i < 6; i++)
+        {
+            buttons[i].render(g);
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            choices[i].render(g);
+        }
+    }
+
+    /**
+     * Get the name of the race enum.
+     * 
+     * @param name The race enum.
+     * @return The race name.
+     */
+    private static String format(TypeRace name)
+    {
+        return Menu.format(name.name(), false);
+    }
+
+    /**
+     * Get the name of the race enum.
+     * 
+     * @param name The race enum.
+     * @param hasExtension <code>true</code> if has extension (remove the extension part).
+     * @return The race name.
+     */
+    private static String format(String name, boolean hasExtension)
+    {
+        String str = name.substring(0, 1).toUpperCase().concat(name.substring(1).toLowerCase());
+        if (hasExtension)
+        {
+            str = str.substring(0, str.length() - 4);
+            str = str.replace('_', ' ');
+        }
+        return str;
+    }
+
+    /*
+     * Sequence
+     */
+
     @Override
     protected void load()
     {
@@ -388,83 +470,5 @@ public final class Menu
         }
         buttons = null;
         choices = null;
-    }
-
-    /**
-     * Set the alpha.
-     * 
-     * @param g The graphics output.
-     * @param color The color.
-     */
-    private void applyAlpha(Graphic g, Color color)
-    {
-        g.setColor(color);
-        g.drawRect(0, 0, width, height, true);
-    }
-
-    /**
-     * Draw new menu.
-     * 
-     * @param g The graphics output.
-     */
-    private void drawNew(Graphic g)
-    {
-        background.render(g, 0, 0);
-        g.setColor(Menu.COLOR_BOX_BORDER);
-        g.drawRect(80, 84, 160, 82, false);
-        g.setColor(Menu.COLOR_BOX_IN);
-        g.drawRect(81, 85, 159, 81, true);
-        Menu.FONT.setColor(Menu.COLOR_HEAD);
-        Menu.FONT.draw(g, 160, 89, Align.CENTER, "Select game type");
-        Menu.FONT.setColor(Menu.COLOR);
-        Menu.FONT.draw(g, 136, 104, Align.RIGHT, "Race:");
-        Menu.FONT.draw(g, 188, 104, Align.CENTER, Menu.format(Menu.RACES[playerRace]));
-
-        Menu.FONT.draw(g, 136, 120, Align.RIGHT, "Opponent:");
-        Menu.FONT.draw(g, 188, 120, Align.CENTER, Menu.format(Menu.RACES[opponentRace]));
-
-        Menu.FONT.draw(g, 136, 136, Align.RIGHT, "Map:");
-        Menu.FONT.draw(g, 188, 136, Align.CENTER, Menu.format(Menu.MAPS[map], true));
-
-        Menu.FONT.draw(g, 136, 152, Align.RIGHT, "View:");
-        Menu.FONT.draw(g, 188, 152, Align.CENTER, Menu.FOGS[fog]);
-
-        for (int i = 4; i < 6; i++)
-        {
-            buttons[i].render(g);
-        }
-        for (int i = 0; i < 8; i++)
-        {
-            choices[i].render(g);
-        }
-    }
-
-    /**
-     * Get the name of the race enum.
-     * 
-     * @param name The race enum.
-     * @return The race name.
-     */
-    private static String format(TypeRace name)
-    {
-        return Menu.format(name.name(), false);
-    }
-
-    /**
-     * Get the name of the race enum.
-     * 
-     * @param name The race enum.
-     * @param hasExtension <code>true</code> if has extension (remove the extension part).
-     * @return The race name.
-     */
-    private static String format(String name, boolean hasExtension)
-    {
-        String str = name.substring(0, 1).toUpperCase().concat(name.substring(1).toLowerCase());
-        if (hasExtension)
-        {
-            str = str.substring(0, str.length() - 4);
-            str = str.replace('_', ' ');
-        }
-        return str;
     }
 }

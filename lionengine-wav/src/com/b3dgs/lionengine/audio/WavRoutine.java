@@ -138,6 +138,10 @@ final class WavRoutine
         return isPlaying;
     }
 
+    /*
+     * Thread
+     */
+
     @Override
     public void run()
     {

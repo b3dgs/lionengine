@@ -30,6 +30,10 @@ final class AttackAxe
         setOrder(true);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

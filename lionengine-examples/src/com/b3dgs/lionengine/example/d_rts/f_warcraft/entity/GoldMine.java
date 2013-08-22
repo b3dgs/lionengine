@@ -31,12 +31,20 @@ public final class GoldMine
         setFrame(1);
     }
 
+    /*
+     * Building
+     */
+
     @Override
     public void update(double extrp)
     {
         super.update(extrp);
         gold.update(extrp, 5.0);
     }
+
+    /*
+     * Extractible
+     */
 
     /**
      * Extract the specified amount of gold.

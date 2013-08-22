@@ -211,7 +211,7 @@ public class ExtractorModel<R extends Enum<R>>
     }
 
     /*
-     * Extractor listener
+     * ExtractorListener
      */
 
     @Override

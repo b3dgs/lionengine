@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 
 /**
- * List of skills.
+ * List of skill types.
  */
 public enum TypeSkill
 {

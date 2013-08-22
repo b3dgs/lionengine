@@ -38,6 +38,14 @@ public abstract class HandlerGame<K, E>
     }
 
     /**
+     * Get the object key.
+     * 
+     * @param object The object reference.
+     * @return The object key.
+     */
+    protected abstract K getKey(E object);
+
+    /**
      * Add an object to the handler list. Don't forget to call {@link #updateAdd()} at the begin of the update to add
      * them properly.
      * 
@@ -91,14 +99,6 @@ public abstract class HandlerGame<K, E>
     {
         return objects.values();
     }
-
-    /**
-     * Get the object key.
-     * 
-     * @param object The object reference.
-     * @return The object key.
-     */
-    protected abstract K getKey(E object);
 
     /**
      * Update the add list. Should be called before main update.

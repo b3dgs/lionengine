@@ -34,6 +34,10 @@ public abstract class UnitAttacker
         attacker = new AttackerModel<>(this);
     }
 
+    /*
+     * Unit
+     */
+
     @Override
     public void update(double extrp)
     {

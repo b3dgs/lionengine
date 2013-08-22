@@ -197,6 +197,25 @@ public abstract class Sequence
     }
 
     /**
+     * Loading sequence data.
+     */
+    protected abstract void load();
+
+    /**
+     * Update sequence.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    protected abstract void update(final double extrp);
+
+    /**
+     * Render sequence.
+     * 
+     * @param g The graphic output.
+     */
+    protected abstract void render(final Graphic g);
+
+    /**
      * Terminate sequence, close screen, and start launcher if exists.
      */
     public final void end()
@@ -216,13 +235,13 @@ public abstract class Sequence
     }
 
     /**
-     * Get current frame rate (number of image per second).
+     * Add a key listener.
      * 
-     * @return The current number of image per second.
+     * @param listener The listener to add.
      */
-    public final int getFps()
+    public final void addKeyListener(KeyListener listener)
     {
-        return (int) currentFrameRate;
+        screen.addKeyListener(listener);
     }
 
     /**
@@ -243,16 +262,6 @@ public abstract class Sequence
     }
 
     /**
-     * Add a key listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public final void addKeyListener(KeyListener listener)
-    {
-        screen.addKeyListener(listener);
-    }
-
-    /**
      * Set the extrapolation flag.
      * 
      * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
@@ -260,6 +269,16 @@ public abstract class Sequence
     public final void setExtrapolated(boolean extrapolated)
     {
         this.extrapolated = extrapolated;
+    }
+
+    /**
+     * Get current frame rate (number of image per second).
+     * 
+     * @return The current number of image per second.
+     */
+    public final int getFps()
+    {
+        return (int) currentFrameRate;
     }
 
     /**
@@ -271,25 +290,6 @@ public abstract class Sequence
     {
         g.clear(internal);
     }
-
-    /**
-     * Loading sequence data.
-     */
-    protected abstract void load();
-
-    /**
-     * Update sequence.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    protected abstract void update(final double extrp);
-
-    /**
-     * Render sequence.
-     * 
-     * @param g The graphic output.
-     */
-    protected abstract void render(final Graphic g);
 
     /**
      * Called when sequence is closing.

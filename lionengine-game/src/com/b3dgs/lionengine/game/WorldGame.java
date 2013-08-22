@@ -128,41 +128,6 @@ public abstract class WorldGame
     }
 
     /**
-     * Save world to the specified file.
-     * 
-     * @param media The output media.
-     */
-    public final void saveToFile(Media media)
-    {
-        try (FileWriting writing = File.createFileWriting(media);)
-        {
-            saving(writing);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media, "Error on saving to file !");
-        }
-    }
-
-    /**
-     * Load world from the specified file.
-     * 
-     * @param media The input media.
-     */
-    public final void loadFromFile(Media media)
-    {
-        try (FileReading reading = File.createFileReading(media);)
-        {
-            loading(reading);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media, "Error on loading from file !");
-        }
-        loaded();
-    }
-
-    /**
      * Internal world updates.
      * 
      * @param extrp The extrapolation value.
@@ -199,4 +164,39 @@ public abstract class WorldGame
      * Called when world is loaded.
      */
     protected abstract void loaded();
+
+    /**
+     * Save world to the specified file.
+     * 
+     * @param media The output media.
+     */
+    public final void saveToFile(Media media)
+    {
+        try (FileWriting writing = File.createFileWriting(media);)
+        {
+            saving(writing);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, media, "Error on saving to file !");
+        }
+    }
+
+    /**
+     * Load world from the specified file.
+     * 
+     * @param media The input media.
+     */
+    public final void loadFromFile(Media media)
+    {
+        try (FileReading reading = File.createFileReading(media);)
+        {
+            loading(reading);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, media, "Error on loading from file !");
+        }
+        loaded();
+    }
 }

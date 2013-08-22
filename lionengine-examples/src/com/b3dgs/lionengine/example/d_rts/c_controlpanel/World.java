@@ -17,7 +17,7 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.WorldRts;
 
 /**
- * World implementation using WorldRts.
+ * World implementation.
  */
 final class World
         extends WorldRts
@@ -40,7 +40,7 @@ final class World
     private final Context context;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -56,6 +56,10 @@ final class World
         handlerEntity = new HandlerEntity(controlPanel, map, text);
         context = new Context(map, factoryEntity);
     }
+
+    /*
+     * WorldRts
+     */
 
     @Override
     public void update(double extrp)
@@ -77,7 +81,19 @@ final class World
     }
 
     @Override
-    public void loaded()
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
+    }
+
+    @Override
+    protected void loaded()
     {
         camera.setView(0, 0, width, height);
         camera.setSensibility(30, 30);
@@ -99,17 +115,5 @@ final class World
         peon.setLocation(14, 8);
         peon.setOrientation(Orientation.NORTH_WEST);
         handlerEntity.add(peon);
-    }
-
-    @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    protected void loading(FileReading file) throws IOException
-    {
-        map.load(file);
     }
 }

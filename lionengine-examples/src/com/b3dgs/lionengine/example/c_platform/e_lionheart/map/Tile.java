@@ -10,7 +10,7 @@ public final class Tile
         extends TilePlatform<TileCollision>
 {
     /** Half tile height, corresponding to the collision height location on tile. */
-    public static final int HALF_TILE_HEIGHT = Map.TILE_HEIGHT / 2;
+    private final int halfTileHeight;
 
     /**
      * Standard blank constructor.
@@ -21,6 +21,7 @@ public final class Tile
     public Tile(int width, int height)
     {
         super(width, height);
+        halfTileHeight = height / 2;
     }
 
     /**
@@ -59,9 +60,9 @@ public final class Tile
      */
     private Double getSlopeRight(Localizable localizable, int offset)
     {
-        final double x = localizable.getLocationX() - getX() - Map.TILE_WIDTH;
+        final double x = localizable.getLocationX() - getX() - getWidth();
         final double y = getTop() - x / 2.0 + offset;
-        if (localizable.getLocationOldY() >= y - Tile.HALF_TILE_HEIGHT && localizable.getLocationY() <= y)
+        if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
         }
@@ -79,7 +80,7 @@ public final class Tile
     {
         final double x = localizable.getLocationIntX() - getX();
         final double y = getTop() + x / 2.0 + offset;
-        if (localizable.getLocationOldY() >= y - Tile.HALF_TILE_HEIGHT && localizable.getLocationY() <= y)
+        if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
         }
@@ -107,7 +108,7 @@ public final class Tile
     @Override
     public int getTop()
     {
-        return super.getTop() - Tile.HALF_TILE_HEIGHT;
+        return super.getTop() - halfTileHeight;
     }
 
     @Override
@@ -128,22 +129,22 @@ public final class Tile
                 return getGround(localizable);
 
             case SLOPE_RIGHT_1:
-                return getSlopeRight(localizable, Tile.HALF_TILE_HEIGHT);
+                return getSlopeRight(localizable, halfTileHeight);
             case SLOPE_RIGHT_BORDER_DOWN:
             case SLOPE_RIGHT_BORDER_UP:
             case SLOPE_RIGHT_2:
                 return getSlopeRight(localizable, 0);
             case SLOPE_RIGHT_3:
-                return getSlopeRight(localizable, -Tile.HALF_TILE_HEIGHT);
+                return getSlopeRight(localizable, -halfTileHeight);
 
             case SLOPE_LEFT_1:
-                return getSlopeLeft(localizable, Tile.HALF_TILE_HEIGHT);
+                return getSlopeLeft(localizable, halfTileHeight);
             case SLOPE_LEFT_BORDER_DOWN:
             case SLOPE_LEFT_BORDER_UP:
             case SLOPE_LEFT_2:
                 return getSlopeLeft(localizable, 0);
             case SLOPE_LEFT_3:
-                return getSlopeLeft(localizable, -Tile.HALF_TILE_HEIGHT);
+                return getSlopeLeft(localizable, -halfTileHeight);
 
             default:
                 return null;

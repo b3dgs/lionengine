@@ -24,12 +24,58 @@ class OggRoutine
 {
     /** Buffer size. */
     private static final int DEFAULT_EXTERNAL_BUFFER_SIZE = 128000;
+
+    /**
+     * Get the audio stream from a file.
+     * 
+     * @param mus The input file.
+     * @return The audio stream.
+     * @throws UnsupportedAudioFileException If error.
+     * @throws IOException If error on reading audio.
+     */
+    private static AudioInputStream getAudioStream(File mus) throws UnsupportedAudioFileException, IOException
+    {
+        final boolean bBigEndian = false;
+        final int nSampleSizeInBits = 16;
+        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mus);
+        final AudioFormat audioFormat = audioInputStream.getFormat();
+        final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
+        final boolean bIsSupportedDirectly = AudioSystem.isLineSupported(info);
+
+        if (!bIsSupportedDirectly)
+        {
+            final AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+                    audioFormat.getSampleRate(), nSampleSizeInBits, audioFormat.getChannels(),
+                    audioFormat.getChannels() * (nSampleSizeInBits / 8), audioFormat.getSampleRate(), bBigEndian);
+
+            return AudioSystem.getAudioInputStream(targetFormat, audioInputStream);
+        }
+        return audioInputStream;
+    }
+
+    /**
+     * Get data line.
+     * 
+     * @param audioFormat The input audio format.
+     * @param nBufferSize The buffer size.
+     * @return The source data line.
+     * @throws LineUnavailableException If error.
+     */
+    private static SourceDataLine getSourceDataLine(AudioFormat audioFormat, int nBufferSize)
+            throws LineUnavailableException
+    {
+        final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, nBufferSize);
+        final SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+        line.open(audioFormat, nBufferSize);
+        return line;
+    }
+
     /** Music filename. */
     private final Media media;
-    /** Sound volume. */
-    private int volume;
     /** Repeat flag. */
     private final boolean repeat;
+    /** Sound volume. */
+    private int volume;
     /** Stop flag. */
     private boolean stop;
 
@@ -64,6 +110,10 @@ class OggRoutine
     {
         stop = true;
     }
+
+    /*
+     * Thread
+     */
 
     @Override
     public void run()
@@ -114,50 +164,5 @@ class OggRoutine
             }
             stop = !repeat;
         }
-    }
-
-    /**
-     * Get the audio stream from a file.
-     * 
-     * @param mus The input file.
-     * @return The audio stream.
-     * @throws UnsupportedAudioFileException If error.
-     * @throws IOException If error on reading audio.
-     */
-    private static AudioInputStream getAudioStream(File mus) throws UnsupportedAudioFileException, IOException
-    {
-        final boolean bBigEndian = false;
-        final int nSampleSizeInBits = 16;
-        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mus);
-        final AudioFormat audioFormat = audioInputStream.getFormat();
-        final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
-        final boolean bIsSupportedDirectly = AudioSystem.isLineSupported(info);
-
-        if (!bIsSupportedDirectly)
-        {
-            final AudioFormat targetFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
-                    audioFormat.getSampleRate(), nSampleSizeInBits, audioFormat.getChannels(),
-                    audioFormat.getChannels() * (nSampleSizeInBits / 8), audioFormat.getSampleRate(), bBigEndian);
-
-            return AudioSystem.getAudioInputStream(targetFormat, audioInputStream);
-        }
-        return audioInputStream;
-    }
-
-    /**
-     * Get data line.
-     * 
-     * @param audioFormat The input audio format.
-     * @param nBufferSize The buffer size.
-     * @return The source data line.
-     * @throws LineUnavailableException If error.
-     */
-    private static SourceDataLine getSourceDataLine(AudioFormat audioFormat, int nBufferSize)
-            throws LineUnavailableException
-    {
-        final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, nBufferSize);
-        final SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-        line.open(audioFormat, nBufferSize);
-        return line;
     }
 }

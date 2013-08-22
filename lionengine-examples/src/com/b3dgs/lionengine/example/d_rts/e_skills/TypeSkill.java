@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.e_skills;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeRace;
 
 /**
- * List of skills.
+ * List of skill types.
  */
 public enum TypeSkill
 {

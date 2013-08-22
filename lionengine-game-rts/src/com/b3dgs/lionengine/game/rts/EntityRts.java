@@ -125,6 +125,11 @@ public abstract class EntityRts
     }
 
     /**
+     * Stop any action.
+     */
+    public abstract void stop();
+
+    /**
      * Main routine, has to be called in a game loop.
      * 
      * @param extrp The extrapolation value.
@@ -170,241 +175,6 @@ public abstract class EntityRts
     }
 
     /**
-     * Stop any action.
-     */
-    public abstract void stop();
-
-    /**
-     * Set the player owner id.
-     * 
-     * @param id The player owner id.
-     */
-    public void setPlayerId(int id)
-    {
-        ownerId = id;
-    }
-
-    /**
-     * Get the player owner id.
-     * 
-     * @return The player owner id.
-     */
-    public int getPlayerId()
-    {
-        return ownerId;
-    }
-
-    /**
-     * Get current orientation.
-     * 
-     * @return The current orientation.
-     */
-    public Orientation getOrientation()
-    {
-        return orientation;
-    }
-
-    /**
-     * Set specific orientation.
-     * 
-     * @param orientation The new orientation.
-     */
-    public void setOrientation(Orientation orientation)
-    {
-        this.orientation = orientation;
-    }
-
-    /**
-     * Set field of view value (in tile).
-     * 
-     * @param fov The field of view.
-     */
-    public void setFov(int fov)
-    {
-        this.fov = fov;
-    }
-
-    /**
-     * Get field of view value (in tile).
-     * 
-     * @return The field of view value.
-     */
-    public int getFov()
-    {
-        return fov;
-    }
-
-    @Override
-    public void destroy()
-    {
-        super.destroy();
-        removeRef();
-    }
-
-    /**
-     * Render a surface by using the camera referential.
-     * 
-     * @param g The graphic output.
-     * @param sprite The sprite reference.
-     * @param camera The camera reference.
-     * @param offsetX The horizontal offset.
-     * @param offsetY The vertical offset.
-     */
-    protected void render(Graphic g, Sprite sprite, CameraRts camera, int offsetX, int offsetY)
-    {
-        final int x = camera.getViewpointX(getLocationIntX() - offsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + offsetY + getHeight());
-        sprite.render(g, x, y);
-    }
-
-    /**
-     * Remove any map reference for this entity, around its size.
-     */
-    protected void removeRef()
-    {
-        for (int v = getLocationInTileY() - 1; v <= getLocationInTileY() + getHeightInTile() + 1; v++)
-        {
-            for (int h = getLocationInTileX() - 1; h <= getLocationInTileX() + getWidthInTile() + 1; h++)
-            {
-                try
-                {
-                    if (map.getRef(h, v).equals(getId()))
-                    {
-                        map.setRef(h, v, Integer.valueOf(0));
-                    }
-                }
-                catch (final ArrayIndexOutOfBoundsException exception)
-                {
-                    continue;
-                }
-            }
-        }
-    }
-
-    /*
-     * Layer
-     */
-
-    /**
-     * Define a layer number, used for rendering priority. Layer number has to be between 0 and
-     * {@link HandlerEntityRts#LAYERS}. 0 is rendered firstly, last is rendered lastly.
-     * 
-     * @param layer The layer number.
-     */
-    public void setLayer(int layer)
-    {
-        if (!layerChanged)
-        {
-            layerOld = layer;
-            this.layer = UtilityMath.fixBetween(layer, 0, HandlerEntityRts.LAYERS);
-            layerChanged = true;
-        }
-    }
-
-    /**
-     * Get current layer value.
-     * 
-     * @return The current layer value.
-     */
-    public int getLayer()
-    {
-        return layer;
-    }
-
-    /**
-     * Get last layer value, before changes.
-     * 
-     * @return The last layer value.
-     */
-    int getLayerOld()
-    {
-        return layerOld;
-    }
-
-    /**
-     * Set layer changes state. After a call to setLayer(), it is automatically set to true. It has to be set to false
-     * when changes are done.
-     * 
-     * @param state The changed flag.
-     */
-    void setLayerChanged(boolean state)
-    {
-        layerChanged = state;
-    }
-
-    /**
-     * Check if layer has be changed.
-     * 
-     * @return The changed state.
-     */
-    public boolean isLayerChanged()
-    {
-        return layerChanged;
-    }
-
-    /**
-     * Define a layer number, used for rendering priority. Layer number has to be between 0 and the number of vertical
-     * map tiles included. 0 is rendered firstly, last is rendered lastly. Changes can be done only one time, until a
-     * call to setLayerChanged(false).
-     * 
-     * @param layer The layer number.
-     */
-    void setMapLayer(int layer)
-    {
-        if (!mapLayerChanged)
-        {
-            mapLayerOld = layer;
-            mapLayer = UtilityMath.fixBetween(layer, 0, map.getHeightInTile());
-            mapLayerChanged = true;
-        }
-    }
-
-    /**
-     * Get current layer value.
-     * 
-     * @return The current layer value.
-     */
-    int getMapLayer()
-    {
-        return mapLayer;
-    }
-
-    /**
-     * Get last layer value, before changes.
-     * 
-     * @return The last layer value.
-     */
-    int getMapLayerOld()
-    {
-        return mapLayerOld;
-    }
-
-    /**
-     * Set layer changes state. After a call to setLayer(), it is automatically set to true. It has to be set to false
-     * when changes are done.
-     * 
-     * @param state The changed flag.
-     */
-    void setMapLayerChanged(boolean state)
-    {
-        mapLayerChanged = state;
-    }
-
-    /**
-     * Check if layer has be changed.
-     * 
-     * @return The changed state.
-     */
-    boolean isMapLayerChanged()
-    {
-        return mapLayerChanged;
-    }
-
-    /*
-     * Localizable
-     */
-
-    /**
      * Set location in tile.
      * 
      * @param tx The horizontal tile location.
@@ -432,169 +202,50 @@ public abstract class EntityRts
         }
     }
 
-    @Override
-    public int getLocationInTileX()
+    /**
+     * Set the player owner id.
+     * 
+     * @param id The player owner id.
+     */
+    public void setPlayerId(int id)
     {
-        return (int) Math.round(getLocationX() / map.getTileWidth());
-    }
-
-    @Override
-    public int getLocationInTileY()
-    {
-        return (int) Math.round(getLocationY() / map.getTileHeight());
+        ownerId = id;
     }
 
     /**
-     * Get horizontal offset (used in case of rendering).
+     * Define a layer number, used for rendering priority. Layer number has to be between 0 and
+     * {@link HandlerEntityRts#LAYERS}. 0 is rendered firstly, last is rendered lastly.
      * 
-     * @return The horizontal rendering offset.
+     * @param layer The layer number.
      */
-    public int getOffsetX()
+    public void setLayer(int layer)
     {
-        return offsetX;
-    }
-
-    /**
-     * Get vertical offset (used in case of rendering).
-     * 
-     * @return The vertical rendering offset.
-     */
-    public int getOffsetY()
-    {
-        return offsetY;
-    }
-
-    @Override
-    public int getWidthInTile()
-    {
-        return getWidth() / map.getTileWidth();
-    }
-
-    @Override
-    public int getHeightInTile()
-    {
-        return getHeight() / map.getTileHeight();
-    }
-
-    /**
-     * Get distance in tile between the area.
-     * 
-     * @param tx The tile x.
-     * @param ty The tile y.
-     * @param tw The width in tile.
-     * @param th The height in tile.
-     * @param fromCenter <code>true</code> to get distance from center only, <code>false</code> from the global area.
-     * @return The number of tiles between them.
-     */
-    public int getDistance(int tx, int ty, int tw, int th, boolean fromCenter)
-    {
-        if (fromCenter)
+        if (!layerChanged)
         {
-            return UtilityMath.getDistance(getLocationInTileX() + getWidthInTile() / 2, getLocationInTileY()
-                    + getHeightInTile() / 2, tx + tw / 2, ty + th / 2);
+            layerOld = layer;
+            this.layer = UtilityMath.fixBetween(layer, 0, HandlerEntityRts.LAYERS);
+            layerChanged = true;
         }
-        int min = Integer.MAX_VALUE;
-        for (int h = tx; h < tx + tw; h++)
-        {
-            for (int v = ty; v < ty + th; v++)
-            {
-                final int dist = UtilityMath.getDistance(getLocationInTileX(), getLocationInTileY(), h, v);
-                if (dist < min)
-                {
-                    min = dist;
-                }
-            }
-        }
-        return min;
     }
 
     /**
-     * Get distance in tile between the specified tiled.
+     * Set specific orientation.
      * 
-     * @param tiled The tiled to check.
-     * @param fromCenter <code>true</code> to get distance from center only, <code>false</code> from the global area.
-     * @return The number of tiles between them.
+     * @param orientation The new orientation.
      */
-    public int getDistanceInTile(Tiled tiled, boolean fromCenter)
+    public void setOrientation(Orientation orientation)
     {
-        return getDistance(tiled.getLocationInTileX(), tiled.getLocationInTileY(), tiled.getWidthInTile(),
-                tiled.getHeightInTile(), fromCenter);
+        this.orientation = orientation;
     }
 
     /**
-     * Get the current playing animation.
+     * Set field of view value (in tile).
      * 
-     * @return current playing animation.
+     * @param fov The field of view.
      */
-    public Animation getAnimationCurrent()
+    public void setFov(int fov)
     {
-        return animationCurrent;
-    }
-
-    /*
-     * Animator
-     */
-
-    @Override
-    public void play(Animation anim)
-    {
-        animationCurrent = anim;
-        sprite.play(anim);
-    }
-
-    @Override
-    public void play(int start, int end, double speed, boolean reverse, boolean repeat)
-    {
-        sprite.play(start, end, speed, reverse, repeat);
-    }
-
-    @Override
-    public void setAnimSpeed(double speed)
-    {
-        sprite.setAnimSpeed(speed);
-    }
-
-    @Override
-    public void setFrame(int frame)
-    {
-        sprite.setFrame(frame);
-    }
-
-    @Override
-    public int getFrame()
-    {
-        return sprite.getFrame();
-    }
-
-    @Override
-    public double getFrameReal()
-    {
-        return sprite.getFrameReal();
-    }
-
-    @Override
-    public AnimState getAnimState()
-    {
-        return sprite.getAnimState();
-    }
-
-    @Override
-    public void stopAnimation()
-    {
-        animationCurrent = null;
-        sprite.stopAnimation();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @deprecated already called in main loop. Has to be called only on specific cases.
-     */
-    @Deprecated
-    @Override
-    public void updateAnimation(double extrp)
-    {
-        sprite.updateAnimation(extrp);
+        this.fov = fov;
     }
 
     /*
@@ -662,6 +313,121 @@ public abstract class EntityRts
     }
 
     /**
+     * Get distance in tile between the area.
+     * 
+     * @param tx The tile x.
+     * @param ty The tile y.
+     * @param tw The width in tile.
+     * @param th The height in tile.
+     * @param fromCenter <code>true</code> to get distance from center only, <code>false</code> from the global area.
+     * @return The number of tiles between them.
+     */
+    public int getDistance(int tx, int ty, int tw, int th, boolean fromCenter)
+    {
+        if (fromCenter)
+        {
+            return UtilityMath.getDistance(getLocationInTileX() + getWidthInTile() / 2, getLocationInTileY()
+                    + getHeightInTile() / 2, tx + tw / 2, ty + th / 2);
+        }
+        int min = Integer.MAX_VALUE;
+        for (int h = tx; h < tx + tw; h++)
+        {
+            for (int v = ty; v < ty + th; v++)
+            {
+                final int dist = UtilityMath.getDistance(getLocationInTileX(), getLocationInTileY(), h, v);
+                if (dist < min)
+                {
+                    min = dist;
+                }
+            }
+        }
+        return min;
+    }
+
+    /**
+     * Get distance in tile between the specified tiled.
+     * 
+     * @param tiled The tiled to check.
+     * @param fromCenter <code>true</code> to get distance from center only, <code>false</code> from the global area.
+     * @return The number of tiles between them.
+     */
+    public int getDistanceInTile(Tiled tiled, boolean fromCenter)
+    {
+        return getDistance(tiled.getLocationInTileX(), tiled.getLocationInTileY(), tiled.getWidthInTile(),
+                tiled.getHeightInTile(), fromCenter);
+    }
+
+    /**
+     * Get field of view value (in tile).
+     * 
+     * @return The field of view value.
+     */
+    public int getFov()
+    {
+        return fov;
+    }
+
+    /**
+     * Get the player owner id.
+     * 
+     * @return The player owner id.
+     */
+    public int getPlayerId()
+    {
+        return ownerId;
+    }
+
+    /**
+     * Get current orientation.
+     * 
+     * @return The current orientation.
+     */
+    public Orientation getOrientation()
+    {
+        return orientation;
+    }
+
+    /**
+     * Get current layer value.
+     * 
+     * @return The current layer value.
+     */
+    public int getLayer()
+    {
+        return layer;
+    }
+
+    /**
+     * Get the current playing animation.
+     * 
+     * @return current playing animation.
+     */
+    public Animation getAnimationCurrent()
+    {
+        return animationCurrent;
+    }
+
+    /**
+     * Get horizontal offset (used in case of rendering).
+     * 
+     * @return The horizontal rendering offset.
+     */
+    public int getOffsetX()
+    {
+        return offsetX;
+    }
+
+    /**
+     * Get vertical offset (used in case of rendering).
+     * 
+     * @return The vertical rendering offset.
+     */
+    public int getOffsetY()
+    {
+        return offsetY;
+    }
+
+    /**
      * Check if entity is currently selected (hit by a cursor selection).
      * 
      * @return <code>true</code> if selected, <code>false</code> else.
@@ -719,5 +485,239 @@ public abstract class EntityRts
     public boolean isSelectable()
     {
         return selectable;
+    }
+
+    /**
+     * Check if layer has be changed.
+     * 
+     * @return The changed state.
+     */
+    public boolean isLayerChanged()
+    {
+        return layerChanged;
+    }
+
+    /**
+     * Render a surface by using the camera referential.
+     * 
+     * @param g The graphic output.
+     * @param sprite The sprite reference.
+     * @param camera The camera reference.
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
+     */
+    protected void render(Graphic g, Sprite sprite, CameraRts camera, int offsetX, int offsetY)
+    {
+        final int x = camera.getViewpointX(getLocationIntX() - offsetX);
+        final int y = camera.getViewpointY(getLocationIntY() + offsetY + getHeight());
+        sprite.render(g, x, y);
+    }
+
+    /**
+     * Remove any map reference for this entity, around its size.
+     */
+    protected void removeRef()
+    {
+        for (int v = getLocationInTileY() - 1; v <= getLocationInTileY() + getHeightInTile() + 1; v++)
+        {
+            for (int h = getLocationInTileX() - 1; h <= getLocationInTileX() + getWidthInTile() + 1; h++)
+            {
+                try
+                {
+                    if (map.getRef(h, v).equals(getId()))
+                    {
+                        map.setRef(h, v, Integer.valueOf(0));
+                    }
+                }
+                catch (final ArrayIndexOutOfBoundsException exception)
+                {
+                    continue;
+                }
+            }
+        }
+    }
+
+    /**
+     * Set layer changes state. After a call to setLayer(), it is automatically set to true. It has to be set to false
+     * when changes are done.
+     * 
+     * @param state The changed flag.
+     */
+    void setLayerChanged(boolean state)
+    {
+        layerChanged = state;
+    }
+
+    /**
+     * Define a layer number, used for rendering priority. Layer number has to be between 0 and the number of vertical
+     * map tiles included. 0 is rendered firstly, last is rendered lastly. Changes can be done only one time, until a
+     * call to setLayerChanged(false).
+     * 
+     * @param layer The layer number.
+     */
+    void setMapLayer(int layer)
+    {
+        if (!mapLayerChanged)
+        {
+            mapLayerOld = layer;
+            mapLayer = UtilityMath.fixBetween(layer, 0, map.getHeightInTile());
+            mapLayerChanged = true;
+        }
+    }
+
+    /**
+     * Set layer changes state. After a call to setLayer(), it is automatically set to true. It has to be set to false
+     * when changes are done.
+     * 
+     * @param state The changed flag.
+     */
+    void setMapLayerChanged(boolean state)
+    {
+        mapLayerChanged = state;
+    }
+
+    /**
+     * Get last layer value, before changes.
+     * 
+     * @return The last layer value.
+     */
+    int getLayerOld()
+    {
+        return layerOld;
+    }
+
+    /**
+     * Get current layer value.
+     * 
+     * @return The current layer value.
+     */
+    int getMapLayer()
+    {
+        return mapLayer;
+    }
+
+    /**
+     * Get last layer value, before changes.
+     * 
+     * @return The last layer value.
+     */
+    int getMapLayerOld()
+    {
+        return mapLayerOld;
+    }
+
+    /**
+     * Check if layer has be changed.
+     * 
+     * @return The changed state.
+     */
+    boolean isMapLayerChanged()
+    {
+        return mapLayerChanged;
+    }
+
+    /*
+     * EntityGame
+     */
+
+    @Override
+    public void destroy()
+    {
+        super.destroy();
+        removeRef();
+    }
+
+    /*
+     * Localizable
+     */
+
+    @Override
+    public int getLocationInTileX()
+    {
+        return (int) Math.round(getLocationX() / map.getTileWidth());
+    }
+
+    @Override
+    public int getLocationInTileY()
+    {
+        return (int) Math.round(getLocationY() / map.getTileHeight());
+    }
+
+    @Override
+    public int getWidthInTile()
+    {
+        return getWidth() / map.getTileWidth();
+    }
+
+    @Override
+    public int getHeightInTile()
+    {
+        return getHeight() / map.getTileHeight();
+    }
+
+    /*
+     * Animator
+     */
+
+    @Override
+    public void play(Animation anim)
+    {
+        animationCurrent = anim;
+        sprite.play(anim);
+    }
+
+    @Override
+    public void play(int start, int end, double speed, boolean reverse, boolean repeat)
+    {
+        sprite.play(start, end, speed, reverse, repeat);
+    }
+
+    @Override
+    public void setAnimSpeed(double speed)
+    {
+        sprite.setAnimSpeed(speed);
+    }
+
+    @Override
+    public void setFrame(int frame)
+    {
+        sprite.setFrame(frame);
+    }
+
+    @Override
+    public int getFrame()
+    {
+        return sprite.getFrame();
+    }
+
+    @Override
+    public double getFrameReal()
+    {
+        return sprite.getFrameReal();
+    }
+
+    @Override
+    public AnimState getAnimState()
+    {
+        return sprite.getAnimState();
+    }
+
+    @Override
+    public void stopAnimation()
+    {
+        animationCurrent = null;
+        sprite.stopAnimation();
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * @deprecated already called in main loop. Has to be called only on specific cases.
+     */
+    @Deprecated
+    @Override
+    public void updateAnimation(double extrp)
+    {
+        sprite.updateAnimation(extrp);
     }
 }

@@ -15,26 +15,26 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
- * World implementation using WorldGame.
+ * Represents the game layer, handling the landscape, the map, and the entities.
  */
 final class World
         extends WorldGame
 {
-    /** Map reference. */
-    private final Map map;
+    /** Camera reference. */
+    private final CameraPlatform camera;
     /** Background factory. */
     private final FactoryLandscape factoryLandscape;
+    /** Background reference. */
+    private final Landscape landscape;
+    /** Map reference. */
+    private final Map map;
     /** Entity factory. */
     private final FactoryEntity factoryEntity;
     /** Player reference. */
-    private final Valdyn valdyn;
-    /** Camera reference. */
-    private final CameraPlatform camera;
-    /** Background reference. */
-    private final Landscape landscape;
+    private final Valdyn player;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -45,16 +45,20 @@ final class World
         factoryLandscape = new FactoryLandscape(config, wide, false);
         landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
         map = new Map(landscape);
-        factoryEntity = new FactoryEntity(map, camera, display.getRate());
-        valdyn = factoryEntity.createValdyn();
+        factoryEntity = new FactoryEntity(camera, map, display.getRate());
+        player = factoryEntity.createValdyn();
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)
     {
-        valdyn.updateControl(keyboard);
-        valdyn.update(extrp);
-        camera.follow(valdyn);
+        player.updateControl(keyboard);
+        player.update(extrp);
+        camera.follow(player);
         landscape.update(extrp, camera);
     }
 
@@ -63,7 +67,7 @@ final class World
     {
         landscape.renderBackground(g);
         map.render(g, camera);
-        valdyn.render(g, camera);
+        player.render(g, camera);
         landscape.renderForeground(g);
     }
 
@@ -84,6 +88,6 @@ final class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
-        valdyn.respawn();
+        player.respawn();
     }
 }

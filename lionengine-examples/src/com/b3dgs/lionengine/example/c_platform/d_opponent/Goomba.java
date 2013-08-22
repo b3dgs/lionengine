@@ -7,14 +7,14 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 /**
  * Goomba implementation.
  */
-class Goomba
+final class Goomba
         extends Entity
 {
     /** Die timer. */
     private final Timing timerDie;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param setup setup reference.
      * @param map The map reference.
@@ -24,6 +24,8 @@ class Goomba
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();
+        movement.setVelocity(0.3);
+        movement.setSensibility(0.1);
         right = true;
     }
 
@@ -39,7 +41,7 @@ class Goomba
             dead = true;
             right = false;
             left = false;
-            resetMovementSpeed();
+            movement.reset();
             timerDie.start();
         }
     }
@@ -58,13 +60,6 @@ class Goomba
         {
             destroy();
         }
-    }
-
-    @Override
-    protected void handleMovements(double extrp)
-    {
-        super.handleMovements(extrp);
-        movementForce.reachForce(extrp, movementForceDest, 0.3, 0.1);
     }
 
     @Override

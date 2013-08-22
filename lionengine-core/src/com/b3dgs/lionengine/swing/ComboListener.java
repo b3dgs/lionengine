@@ -15,10 +15,10 @@ public final class ComboListener<E>
 {
     /** The combo reference. */
     private final JComboBox<E> combo;
-    /** Current combo item. */
-    private Object currentItem;
     /** Combo action on item. */
     private final ActionCombo action;
+    /** Current combo item. */
+    private Object currentItem;
 
     /**
      * Constructor.

@@ -76,12 +76,6 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
         }
     }
 
-    @Override
-    protected Integer getKey(P object)
-    {
-        return object.getId();
-    }
-
     /**
      * Delete all projectiles with this id.
      * 
@@ -99,5 +93,15 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
                 }
             }
         }
+    }
+
+    /*
+     * HandlerEntityGame
+     */
+
+    @Override
+    protected Integer getKey(P object)
+    {
+        return object.getId();
     }
 }

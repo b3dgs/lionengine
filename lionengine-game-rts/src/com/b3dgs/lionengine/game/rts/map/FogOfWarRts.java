@@ -130,53 +130,16 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     }
 
     /**
-     * Check if the entity is current hidden by the fog of war.
+     * Render fog map from camera viewpoint, showing a specified area.
      * 
-     * @param entity The entity to check.
-     * @return <code>true</code> if hidden, <code>false</code> else.
+     * @param g The graphic output.
+     * @param camera The camera viewpoint.
      */
-    public boolean isFogged(EntityRts entity)
+    public void render(Graphic g, CameraRts camera)
     {
-        final int tx = entity.getLocationInTileX();
-        final int ty = entity.getLocationInTileY();
-        final int tw = entity.getWidthInTile() - 1;
-        final int th = entity.getHeightInTile() - 1;
-
-        for (int x = tx; x <= tx + tw; x++)
-        {
-            for (int y = ty; y <= ty + th; y++)
-            {
-                if (isFogged(x, y) && isVisited(x, y))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Update entity field of view (fog of war).
-     * 
-     * @param entity The entity reference.
-     */
-    private void updateEntityFov(EntityRts entity)
-    {
-        final int tx = entity.getLocationInTileX();
-        final int ty = entity.getLocationInTileY();
-        final int tw = entity.getWidthInTile() - 1;
-        final int th = entity.getHeightInTile() - 1;
-        final int ray = entity.getFov();
-
-        if (hideMap)
-        {
-            border20Map.updateInclude(visited, tx, ty, tw, th, ray + 1);
-        }
-
-        if (fogMap)
-        {
-            border20Map.updateInclude(fog, tx, ty, tw, th, ray);
-        }
+        render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
+                (int) Math.floor(camera.getViewWidth() / (double) tileWidth),
+                (int) Math.floor(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }
 
     /**
@@ -214,6 +177,32 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     }
 
     /**
+     * Check if the entity is current hidden by the fog of war.
+     * 
+     * @param entity The entity to check.
+     * @return <code>true</code> if hidden, <code>false</code> else.
+     */
+    public boolean isFogged(EntityRts entity)
+    {
+        final int tx = entity.getLocationInTileX();
+        final int ty = entity.getLocationInTileY();
+        final int tw = entity.getWidthInTile() - 1;
+        final int th = entity.getHeightInTile() - 1;
+
+        for (int x = tx; x <= tx + tw; x++)
+        {
+            for (int y = ty; y <= ty + th; y++)
+            {
+                if (isFogged(x, y) && isVisited(x, y))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * In case of active fog of war, check if tile has been discovered.
      * 
      * @param tx The horizontal tile.
@@ -238,16 +227,27 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     }
 
     /**
-     * Render fog map from camera viewpoint, showing a specified area.
+     * Update entity field of view (fog of war).
      * 
-     * @param g The graphic output.
-     * @param camera The camera viewpoint.
+     * @param entity The entity reference.
      */
-    public void render(Graphic g, CameraRts camera)
+    private void updateEntityFov(EntityRts entity)
     {
-        render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
-                (int) Math.floor(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.floor(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+        final int tx = entity.getLocationInTileX();
+        final int ty = entity.getLocationInTileY();
+        final int tw = entity.getWidthInTile() - 1;
+        final int th = entity.getHeightInTile() - 1;
+        final int ray = entity.getFov();
+
+        if (hideMap)
+        {
+            border20Map.updateInclude(visited, tx, ty, tw, th, ray + 1);
+        }
+
+        if (fogMap)
+        {
+            border20Map.updateInclude(fog, tx, ty, tw, th, ray);
+        }
     }
 
     /**

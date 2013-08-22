@@ -14,6 +14,60 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 public abstract class BackgroundElementRastered
         extends BackgroundElement
 {
+    /**
+     * Get filtered rgb from data.
+     * 
+     * @param rgb The input rgb.
+     * @param fr The first red.
+     * @param fg The first green.
+     * @param fb The first blue.
+     * @return The filtered color.
+     */
+    private static int filterRGB(int rgb, int fr, int fg, int fb)
+    {
+        if (-16711423 == rgb || 0 == rgb || 16711935 == rgb)
+        {
+            return rgb;
+        }
+
+        int nr = (rgb & 0xFF0000) + fr;
+        if (nr < 0x000000)
+        {
+            nr = 0x000000;
+        }
+        if (nr > 0xFF0000)
+        {
+            nr = 0xFF0000;
+        }
+
+        int ng = (rgb & 0x00FF00) + fg;
+        if (ng < 0x000000)
+        {
+            ng = 0x000000;
+        }
+        if (ng > 0x00FF00)
+        {
+            ng = 0x00FF00;
+        }
+
+        int nb = (rgb & 0x0000FF) + fb;
+        if (nb < 0x000000)
+        {
+            nb = 0x000000;
+        }
+        if (nb > 0x0000FF)
+        {
+            nb = 0x0000FF;
+        }
+
+        final int a = rgb & 0xFF000000;
+        final int r = nr;
+        final int g = ng;
+        final int b = nb;
+
+        return a | r | g | b;
+    }
+
     /** Rasters list. */
     private final List<Sprite> rasters;
 
@@ -90,59 +144,5 @@ public abstract class BackgroundElementRastered
     private void initialize(Sprite sprite, int rastersNumber)
     {
         load(sprite, rastersNumber);
-    }
-
-    /**
-     * Get filtered rgb from data.
-     * 
-     * @param rgb The input rgb.
-     * @param fr The first red.
-     * @param fg The first green.
-     * @param fb The first blue.
-     * @return The filtered color.
-     */
-    private static int filterRGB(int rgb, int fr, int fg, int fb)
-    {
-        if (-16711423 == rgb || 0 == rgb || 16711935 == rgb)
-        {
-            return rgb;
-        }
-
-        int nr = (rgb & 0xFF0000) + fr;
-        if (nr < 0x000000)
-        {
-            nr = 0x000000;
-        }
-        if (nr > 0xFF0000)
-        {
-            nr = 0xFF0000;
-        }
-
-        int ng = (rgb & 0x00FF00) + fg;
-        if (ng < 0x000000)
-        {
-            ng = 0x000000;
-        }
-        if (ng > 0x00FF00)
-        {
-            ng = 0x00FF00;
-        }
-
-        int nb = (rgb & 0x0000FF) + fb;
-        if (nb < 0x000000)
-        {
-            nb = 0x000000;
-        }
-        if (nb > 0x0000FF)
-        {
-            nb = 0x0000FF;
-        }
-
-        final int a = rgb & 0xFF000000;
-        final int r = nr;
-        final int g = ng;
-        final int b = nb;
-
-        return a | r | g | b;
     }
 }

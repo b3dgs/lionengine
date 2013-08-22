@@ -42,6 +42,10 @@ public class SkillProduceEntity
         setOrder(false);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

@@ -43,7 +43,7 @@ final class World
     private final Context context;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -62,6 +62,10 @@ final class World
         factoryEntity = context.factoryEntity;
         context.assignContext();
     }
+
+    /*
+     * WorldRts
+     */
 
     @Override
     public void update(double extrp)
@@ -84,6 +88,18 @@ final class World
         controlPanel.renderCursorSelection(g, camera);
         controlPanel.render(g, cursor, camera);
         cursor.render(g);
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
     }
 
     @Override
@@ -115,17 +131,5 @@ final class World
         grunt.setPlayerId(0);
         grunt.setLocation(41, 8);
         handlerEntity.add(grunt);
-    }
-
-    @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    protected void loading(FileReading file) throws IOException
-    {
-        map.load(file);
     }
 }

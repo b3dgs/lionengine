@@ -20,6 +20,10 @@ final class Stop
         super(TypeSkill.stop_orc, setup);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

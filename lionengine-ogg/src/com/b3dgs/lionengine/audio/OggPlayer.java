@@ -28,6 +28,10 @@ class OggPlayer
         routine = null;
     }
 
+    /*
+     * Ogg
+     */
+
     @Override
     public void setVolume(int vol)
     {

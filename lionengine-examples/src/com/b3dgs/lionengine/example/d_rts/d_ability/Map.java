@@ -16,6 +16,10 @@ public final class Map
         super(16, 16);
     }
 
+    /*
+     * MapTileRts
+     */
+
     @Override
     public Tile createTile(int width, int height)
     {

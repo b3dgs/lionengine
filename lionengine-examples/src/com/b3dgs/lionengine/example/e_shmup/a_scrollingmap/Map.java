@@ -9,12 +9,16 @@ public class Map
         extends MapTileShmup<TileCollision, Tile>
 {
     /**
-     * Map constructor. Tiles are stored in 'tiles' directory, with a size of 16*16
+     * Constructor. Tiles are stored in 'tiles' directory, with a size of 16*16
      */
     public Map()
     {
         super(24, 28);
     }
+
+    /*
+     * MapTileShmup
+     */
 
     @Override
     public Tile createTile(int width, int height)

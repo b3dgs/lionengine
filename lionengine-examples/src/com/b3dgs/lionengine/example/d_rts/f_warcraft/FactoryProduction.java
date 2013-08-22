@@ -21,11 +21,9 @@ public final class FactoryProduction
         loadAll(TypeEntity.values());
     }
 
-    @Override
-    protected SetupGame createSetup(TypeEntity id)
-    {
-        return new SetupGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
-    }
+    /*
+     * FactoryProductionRts
+     */
 
     @Override
     public ProducibleEntity createProducible(TypeEntity id)
@@ -51,5 +49,11 @@ public final class FactoryProduction
         producible.setLocation(tx, ty);
 
         return producible;
+    }
+
+    @Override
+    protected SetupGame createSetup(TypeEntity id)
+    {
+        return new SetupGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
     }
 }

@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TilePlatform<C>>
         extends MapTilePlatform<C, T>
 {
-    /** File describing the raster. */
-    private Media rasterFile;
     /** List of rastered patterns. */
     private final TreeMap<Integer, List<SpriteTiled>> rasterPatterns;
+    /** File describing the raster. */
+    private Media rasterFile;
     /** Rasters smooth flag. */
     private boolean smooth;
     /** Rasters cache use flag. */
@@ -214,7 +214,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     }
 
     /*
-     * MapTile
+     * MapTilePlatform
      */
 
     @Override

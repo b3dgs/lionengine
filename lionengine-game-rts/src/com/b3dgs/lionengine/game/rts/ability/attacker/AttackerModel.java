@@ -49,7 +49,7 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
     }
 
     /*
-     * Attacker services
+     * AttackerServices
      */
 
     @Override
@@ -100,7 +100,7 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
     }
 
     /*
-     * Attacker listener
+     * AttackerListener
      */
 
     @Override

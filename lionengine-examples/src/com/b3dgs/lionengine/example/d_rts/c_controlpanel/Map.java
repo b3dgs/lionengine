@@ -9,12 +9,16 @@ final class Map
         extends MapTileRts<TileCollision, Tile>
 {
     /**
-     * Map constructor.
+     * Constructor.
      */
     Map()
     {
         super(16, 16);
     }
+
+    /*
+     * MapTileRts
+     */
 
     @Override
     public Tile createTile(int width, int height)

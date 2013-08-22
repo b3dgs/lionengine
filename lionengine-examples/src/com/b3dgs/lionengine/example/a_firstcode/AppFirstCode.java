@@ -19,14 +19,6 @@ import com.b3dgs.lionengine.Version;
 public final class AppFirstCode
 {
     /**
-     * Private constructor.
-     */
-    private AppFirstCode()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function called by the jvm.
      * 
      * @param args The arguments.
@@ -63,5 +55,13 @@ public final class AppFirstCode
         // It just needs one sequence reference to start
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppFirstCode()
+    {
+        throw new RuntimeException();
     }
 }

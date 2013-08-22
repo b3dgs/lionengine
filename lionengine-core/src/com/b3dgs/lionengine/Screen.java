@@ -61,6 +61,30 @@ final class Screen
     private static final Cursor CURSOR_HIDDEN = Screen.createHiddenCursor();
     /** Default cursor instance. */
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
+
+    /**
+     * Create instance for hidden cursor.
+     * 
+     * @return The hidden cursor.
+     */
+    private static Cursor createHiddenCursor()
+    {
+        try
+        {
+            final Toolkit toolkit = Toolkit.getDefaultToolkit();
+            final Dimension dim = toolkit.getBestCursorSize(1, 1);
+            final BufferedImage cursor = UtilityImage.createBufferedImage(dim.width, dim.height, Transparency.BITMASK);
+            return toolkit.createCustomCursor(UtilityImage.applyMask(cursor, Color.BLACK), new Point(0, 0),
+                    "hiddenCursor");
+        }
+        catch (final AWTError
+                     | HeadlessException
+                     | IndexOutOfBoundsException exception)
+        {
+            return Cursor.getDefaultCursor();
+        }
+    }
+
     /** Configuration reference. */
     public final Config config;
     /** Active sequence reference. */
@@ -140,16 +164,6 @@ final class Screen
     }
 
     /**
-     * Add a key listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public void addKeyListener(KeyListener listener)
-    {
-        componentForKeyboard.addKeyListener(listener);
-    }
-
-    /**
      * Show the screen.
      */
     public void show()
@@ -193,6 +207,49 @@ final class Screen
     }
 
     /**
+     * Give focus to screen.
+     */
+    public void requestFocus()
+    {
+        if (hasApplet)
+        {
+            applet.requestFocus();
+            applet.validate();
+        }
+        else
+        {
+            frame.requestFocus();
+        }
+        componentForMouse.requestFocus();
+    }
+
+    /**
+     * Hide window mouse pointer.
+     */
+    public void hideCursor()
+    {
+        componentForCursor.setCursor(Screen.CURSOR_HIDDEN);
+    }
+
+    /**
+     * Show window mouse pointer.
+     */
+    public void showCursor()
+    {
+        componentForCursor.setCursor(Screen.CURSOR_DEFAULT);
+    }
+
+    /**
+     * Add a key listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addKeyListener(KeyListener listener)
+    {
+        componentForKeyboard.addKeyListener(listener);
+    }
+
+    /**
      * Link keyboard to the screen (listening to).
      * 
      * @param keyboard The keyboard reference.
@@ -225,6 +282,27 @@ final class Screen
     }
 
     /**
+     * Set sequence reference.
+     * 
+     * @param sequence The sequence reference.
+     */
+    public void setSequence(Sequence sequence)
+    {
+        this.sequence = sequence;
+    }
+
+    /**
+     * Set window icon from file.
+     * 
+     * @param filename The icon file name.
+     */
+    public void setIcon(String filename)
+    {
+        final ImageIcon icon = new ImageIcon(filename);
+        frame.setIconImage(icon.getImage());
+    }
+
+    /**
      * Get current graphic.
      * 
      * @return The current graphic.
@@ -242,16 +320,6 @@ final class Screen
     public JFrame getFrame()
     {
         return frame;
-    }
-
-    /**
-     * Check wide screen state.
-     * 
-     * @return <code>true</code> if screen is wide (16/9, 16/10), <code>false</code> else (4/3, 5/4).
-     */
-    public boolean isWide()
-    {
-        return internal.getRatio() == Ratio.R16_9 || internal.getRatio() == Ratio.R16_10;
     }
 
     /**
@@ -297,57 +365,13 @@ final class Screen
     }
 
     /**
-     * Hide window mouse pointer.
-     */
-    public void hideCursor()
-    {
-        componentForCursor.setCursor(Screen.CURSOR_HIDDEN);
-    }
-
-    /**
-     * Show window mouse pointer.
-     */
-    public void showCursor()
-    {
-        componentForCursor.setCursor(Screen.CURSOR_DEFAULT);
-    }
-
-    /**
-     * Set window icon from file.
+     * Check wide screen state.
      * 
-     * @param filename The icon file name.
+     * @return <code>true</code> if screen is wide (16/9, 16/10), <code>false</code> else (4/3, 5/4).
      */
-    public void setIcon(String filename)
+    public boolean isWide()
     {
-        final ImageIcon icon = new ImageIcon(filename);
-        frame.setIconImage(icon.getImage());
-    }
-
-    /**
-     * Give focus to screen.
-     */
-    public void requestFocus()
-    {
-        if (hasApplet)
-        {
-            applet.requestFocus();
-            applet.validate();
-        }
-        else
-        {
-            frame.requestFocus();
-        }
-        componentForMouse.requestFocus();
-    }
-
-    /**
-     * Set sequence reference.
-     * 
-     * @param sequence The sequence reference.
-     */
-    public void setSequence(Sequence sequence)
-    {
-        this.sequence = sequence;
+        return internal.getRatio() == Ratio.R16_9 || internal.getRatio() == Ratio.R16_10;
     }
 
     /**
@@ -546,29 +570,6 @@ final class Screen
         frame.setIgnoreRepaint(true);
 
         return frame;
-    }
-
-    /**
-     * Create instance for hidden cursor.
-     * 
-     * @return The hidden cursor.
-     */
-    private static Cursor createHiddenCursor()
-    {
-        try
-        {
-            final Toolkit toolkit = Toolkit.getDefaultToolkit();
-            final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage cursor = UtilityImage.createBufferedImage(dim.width, dim.height, Transparency.BITMASK);
-            return toolkit.createCustomCursor(UtilityImage.applyMask(cursor, Color.BLACK), new Point(0, 0),
-                    "hiddenCursor");
-        }
-        catch (final AWTError
-                     | HeadlessException
-                     | IndexOutOfBoundsException exception)
-        {
-            return Cursor.getDefaultCursor();
-        }
     }
 
     /*

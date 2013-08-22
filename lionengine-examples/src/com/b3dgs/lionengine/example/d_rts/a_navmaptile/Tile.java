@@ -9,7 +9,7 @@ final class Tile
         extends TileRts<TypeCollision, TypeResource>
 {
     /**
-     * Standard complete constructor.
+     * Constructor.
      * 
      * @param width The tile width.
      * @param height The tile height.
@@ -18,6 +18,10 @@ final class Tile
     {
         super(width, height);
     }
+
+    /*
+     * TileRts
+     */
 
     @Override
     public TypeCollision getCollisionFrom(String collision, String type)

@@ -26,6 +26,10 @@ final class Scene
         setMouseVisible(false);
     }
 
+    /*
+     * Sequence
+     */
+
     @Override
     protected void load()
     {

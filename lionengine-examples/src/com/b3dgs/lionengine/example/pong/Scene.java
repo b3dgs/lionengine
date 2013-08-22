@@ -16,7 +16,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * This is where the game loop is running.
  */
-class Scene
+final class Scene
         extends Sequence
 {
     /** Number of lines in the middle. */
@@ -47,6 +47,10 @@ class Scene
         handler = new Handler(width, height, rackets, ball);
         setMouseVisible(false);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

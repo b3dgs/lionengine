@@ -48,6 +48,42 @@ public class CameraGame
     }
 
     /**
+     * Follow automatically the specified localizable. The camera location will be adjusted to the followed localizable.
+     * 
+     * @param localizable The localizable to follow.
+     */
+    public void follow(Localizable localizable)
+    {
+        setLocation(localizable.getLocationX(), localizable.getLocationY());
+    }
+
+    /**
+     * Reset the camera interval to 0 by adapting its position.
+     * 
+     * @param localizable The localizable to center.
+     */
+    public void resetInterval(Localizable localizable)
+    {
+        final int intervalHorizontalOld = intervalHorizontal;
+        final int intervalVerticalOld = intervalVertical;
+        final double oldX = getLocationX();
+        final double oldY = getLocationY();
+
+        setIntervals(0, 0);
+        offset.setLocation(0.0, 0.0);
+        follow(localizable);
+
+        final double newX = getLocationX();
+        final double newY = getLocationY();
+
+        moveLocation(1.0, oldX - newX, oldY - newY);
+        moveLocation(1.0, newX - oldX, newY - oldY);
+
+        setIntervals(intervalHorizontalOld, intervalVerticalOld);
+        offset.setLocation(0.0, 0.0);
+    }
+
+    /**
      * This represents the real position, between -interval and +interval. In other words, camera will move only when
      * the interval location is on its extremity.
      * <p>
@@ -101,42 +137,6 @@ public class CameraGame
         this.y = y;
         this.width = UtilityMath.fixBetween(width, 0, Integer.MAX_VALUE);
         this.height = UtilityMath.fixBetween(height, 0, Integer.MAX_VALUE);
-    }
-
-    /**
-     * Follow automatically the specified localizable. The camera location will be adjusted to the followed localizable.
-     * 
-     * @param localizable The localizable to follow.
-     */
-    public void follow(Localizable localizable)
-    {
-        setLocation(localizable.getLocationX(), localizable.getLocationY());
-    }
-
-    /**
-     * Reset the camera interval to 0 by adapting its position.
-     * 
-     * @param localizable The localizable to center.
-     */
-    public void resetInterval(Localizable localizable)
-    {
-        final int intervalHorizontalOld = intervalHorizontal;
-        final int intervalVerticalOld = intervalVertical;
-        final double oldX = getLocationX();
-        final double oldY = getLocationY();
-
-        setIntervals(0, 0);
-        offset.setLocation(0.0, 0.0);
-        follow(localizable);
-
-        final double newX = getLocationX();
-        final double newY = getLocationY();
-
-        moveLocation(1.0, oldX - newX, oldY - newY);
-        moveLocation(1.0, newX - oldX, newY - oldY);
-
-        setIntervals(intervalHorizontalOld, intervalVerticalOld);
-        offset.setLocation(0.0, 0.0);
     }
 
     /**
@@ -291,6 +291,24 @@ public class CameraGame
     /*
      * Localizable
      */
+
+    @Override
+    public void teleport(double x, double y)
+    {
+        location.teleport(x, y);
+    }
+
+    @Override
+    public void teleportX(double x)
+    {
+        location.teleportX(x);
+    }
+
+    @Override
+    public void teleportY(double y)
+    {
+        location.teleportY(y);
+    }
 
     @Override
     public void moveLocation(double extrp, Force force, Force... forces)

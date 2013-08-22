@@ -6,11 +6,11 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Tile implementation, using TileModel.
  */
-class Tile
+final class Tile
         extends TilePlatform<TileCollision>
 {
     /**
-     * Standard blank constructor.
+     * Constructor.
      * 
      * @param width The tile width.
      * @param height The tile height.
@@ -19,6 +19,10 @@ class Tile
     {
         super(width, height);
     }
+
+    /*
+     * TilePlatform
+     */
 
     @Override
     public TileCollision getCollisionFrom(String collision, String type)

@@ -32,6 +32,17 @@ public final class Timing
 {
     /** Nano millisecond. */
     private static final long NANO_TO_MILLI = 1000000L;
+
+    /**
+     * Get the system time.
+     * 
+     * @return The system time.
+     */
+    private static long systemTime()
+    {
+        return System.nanoTime() / Timing.NANO_TO_MILLI;
+    }
+
     /** Current time. */
     private long cur;
     /** Time when pause. */
@@ -130,15 +141,5 @@ public final class Timing
     public boolean isStarted()
     {
         return started;
-    }
-
-    /**
-     * Get the system time.
-     * 
-     * @return The system time.
-     */
-    private static long systemTime()
-    {
-        return System.nanoTime() / Timing.NANO_TO_MILLI;
     }
 }

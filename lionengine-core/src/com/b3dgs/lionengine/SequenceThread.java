@@ -19,6 +19,10 @@ final class SequenceThread
         this.sequence = sequence;
     }
 
+    /*
+     * Thread
+     */
+
     @Override
     public void run()
     {

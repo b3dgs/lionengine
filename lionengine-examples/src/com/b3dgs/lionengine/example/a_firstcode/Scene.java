@@ -31,6 +31,10 @@ final class Scene
         text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
     }
 
+    /*
+     * Sequence
+     */
+
     @Override
     protected void load()
     {

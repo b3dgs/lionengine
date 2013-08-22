@@ -6,10 +6,12 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeLandscape;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 
 /**
- * Background factory.
+ * Landscape factory.
  */
 public final class FactoryLandscape
 {
+    /** Unknown entity error message. */
+    private static final String UNKNOWN_LANDSCAPE_ERROR = "Unknown landscape: ";
     /** The config reference. */
     private final Config config;
     /** The wide flag. */
@@ -32,7 +34,7 @@ public final class FactoryLandscape
     }
 
     /**
-     * Create a background from its type.
+     * Create a landscape from its type.
      * 
      * @param landscape The landscape type.
      * @return The landscape instance.
@@ -50,7 +52,7 @@ public final class FactoryLandscape
                 return new Landscape(landscape, background, foreground);
             }
             default:
-                throw new LionEngineException("Unknown landscape: " + landscape);
+                throw new LionEngineException(FactoryLandscape.UNKNOWN_LANDSCAPE_ERROR + landscape);
         }
     }
 }

@@ -5,11 +5,11 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 /**
  * Map implementation.
  */
-class Map
+final class Map
         extends MapTilePlatform<TileCollision, Tile>
 {
     /**
-     * Map constructor. Tiles are stored in 'tiles' directory, with a size of 16*16.
+     * Constructor.
      */
     Map()
     {
@@ -35,6 +35,10 @@ class Map
             }
         }
     }
+
+    /*
+     * MapTilePlatform
+     */
 
     @Override
     public Tile createTile(int width, int height)

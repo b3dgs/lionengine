@@ -22,6 +22,10 @@ final class Spear
         setCollision(0, 0.2, 0, 0.2);
     }
 
+    /*
+     * Projectile
+     */
+
     @Override
     public void onHit(Entity entity, int damages)
     {

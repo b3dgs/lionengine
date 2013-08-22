@@ -22,6 +22,10 @@ public final class Move
         setOrder(true);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

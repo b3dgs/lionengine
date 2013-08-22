@@ -23,6 +23,41 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         extends EntityGame
         implements Animator
 {
+    /**
+     * Get the tile search speed value.
+     * 
+     * @param d The distance value.
+     * @return The speed value.
+     */
+    private static double getTileSearchSpeed(int d)
+    {
+        if (d < 0)
+        {
+            return -1.0;
+        }
+        else if (d > 0)
+        {
+            return 1.0;
+        }
+        return 0.0;
+    }
+
+    /**
+     * Get the tile search speed value.
+     * 
+     * @param dsup The distance superior value.
+     * @param dinf The distance inferior value.
+     * @return The speed value.
+     */
+    private static double getTileSearchSpeed(int dsup, int dinf)
+    {
+        if (0 == dsup)
+        {
+            return EntityPlatform.getTileSearchSpeed(dinf);
+        }
+        return dinf / (double) dsup;
+    }
+
     /** Animation surface. */
     protected final SpriteAnimated sprite;
     /** Map reference. */
@@ -35,6 +70,10 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     private int frameOffsetX;
     /** Frame offsets y. */
     private int frameOffsetY;
+    /** Old collision y. */
+    private double locationBeforeCollisionOldY;
+    /** Last collision y. */
+    private double locationBeforeCollisionY;
 
     /**
      * Create a new platform entity from an existing, sharing the same surface.
@@ -290,6 +329,26 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     }
 
     /**
+     * Check if entity is going up.
+     * 
+     * @return <code>true</code> if going up, <code>false</code> else.
+     */
+    public boolean isGoingUp()
+    {
+        return locationBeforeCollisionY > locationBeforeCollisionOldY;
+    }
+
+    /**
+     * Check if entity is going down.
+     * 
+     * @return <code>true</code> if going down, <code>false</code> else.
+     */
+    public boolean isGoingDown()
+    {
+        return locationBeforeCollisionY < locationBeforeCollisionOldY;
+    }
+
+    /**
      * Apply an horizontal collision using the specified blocking x value.
      * 
      * @param x The blocking x value.
@@ -299,7 +358,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         if (x != null)
         {
-            setLocationX(x.doubleValue());
+            teleportX(x.doubleValue());
             return true;
         }
         return false;
@@ -315,7 +374,9 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         if (y != null)
         {
-            setLocationY(y.doubleValue());
+            locationBeforeCollisionOldY = locationBeforeCollisionY;
+            locationBeforeCollisionY = getLocationY();
+            teleportY(y.doubleValue());
             return true;
         }
         return false;
@@ -451,41 +512,6 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
             }
         }
         return false;
-    }
-
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param d The distance value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int d)
-    {
-        if (d < 0)
-        {
-            return -1.0;
-        }
-        else if (d > 0)
-        {
-            return 1.0;
-        }
-        return 0.0;
-    }
-
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param dsup The distance superior value.
-     * @param dinf The distance inferior value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int dsup, int dinf)
-    {
-        if (0 == dsup)
-        {
-            return EntityPlatform.getTileSearchSpeed(dinf);
-        }
-        return dinf / (double) dsup;
     }
 
     /*

@@ -33,6 +33,13 @@ public abstract class TileRts<C extends Enum<C>, R extends Enum<R>>
     public abstract void checkResourceType(C collision);
 
     /**
+     * Check if tile has resources.
+     * 
+     * @return <code>true</code> if has resources, <code>false</code> else.
+     */
+    public abstract boolean hasResources();
+
+    /**
      * Set the resource type.
      * 
      * @param type The resource type.
@@ -51,11 +58,4 @@ public abstract class TileRts<C extends Enum<C>, R extends Enum<R>>
     {
         return resourceType;
     }
-
-    /**
-     * Check if tile has resources.
-     * 
-     * @return <code>true</code> if has resources, <code>false</code> else.
-     */
-    public abstract boolean hasResources();
 }

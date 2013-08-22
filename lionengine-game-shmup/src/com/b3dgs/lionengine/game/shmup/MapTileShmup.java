@@ -25,6 +25,10 @@ public abstract class MapTileShmup<C extends Enum<C>, T extends TileGame<C>>
         super(tileWidth, tileHeight);
     }
 
+    /*
+     * MapTileGame
+     */
+
     @Override
     public void render(Graphic g, CameraGame camera)
     {

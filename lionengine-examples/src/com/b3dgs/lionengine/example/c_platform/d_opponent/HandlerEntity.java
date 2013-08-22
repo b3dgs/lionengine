@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 /**
  * Handler implementation. All of our entity will be handled here.
  */
-class HandlerEntity
+final class HandlerEntity
         extends HandlerEntityPlatform<Entity>
 {
     /** Mario reference. */
@@ -21,6 +21,10 @@ class HandlerEntity
         super();
         this.mario = mario;
     }
+
+    /*
+     * HandlerEntityPlatform
+     */
 
     @Override
     protected boolean canUpdateEntity(Entity entity)

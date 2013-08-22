@@ -54,15 +54,6 @@ final class Minimap
         this.y = y;
     }
 
-    @Override
-    public void entityMoved(Entity entity)
-    {
-        final Graphic g = map.createMiniMapGraphics();
-        renderEntity(g);
-        renderFog(g);
-        g.dispose();
-    }
-
     /**
      * Update the minimap.
      * 
@@ -210,5 +201,18 @@ final class Minimap
                 }
             }
         }
+    }
+
+    /*
+     * EntityRtsListener
+     */
+
+    @Override
+    public void entityMoved(Entity entity)
+    {
+        final Graphic g = map.createMiniMapGraphics();
+        renderEntity(g);
+        renderFog(g);
+        g.dispose();
     }
 }

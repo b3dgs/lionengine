@@ -47,36 +47,6 @@ class Node
         return depth;
     }
 
-    @Override
-    public int compareTo(Node other)
-    {
-        final double f = getHeuristic() + getCost();
-        final double of = other.getHeuristic() + other.getCost();
-
-        if (f < of)
-        {
-            return -1;
-        }
-        else if (f > of)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    /**
-     * Get location x.
-     * 
-     * @return The location x.
-     */
-    public int getX()
-    {
-        return x;
-    }
-
     /**
      * Set location x.
      * 
@@ -85,16 +55,6 @@ class Node
     public void setX(int x)
     {
         this.x = x;
-    }
-
-    /**
-     * Get location y.
-     * 
-     * @return The location y.
-     */
-    public int getY()
-    {
-        return y;
     }
 
     /**
@@ -108,16 +68,6 @@ class Node
     }
 
     /**
-     * Get cost.
-     * 
-     * @return The cost.
-     */
-    public double getCost()
-    {
-        return cost;
-    }
-
-    /**
      * Set cost.
      * 
      * @param cost The node cost.
@@ -125,6 +75,56 @@ class Node
     public void setCost(double cost)
     {
         this.cost = cost;
+    }
+
+    /**
+     * Set heuristic value.
+     * 
+     * @param heuristic The heuristic value.
+     */
+    public void setHeuristic(double heuristic)
+    {
+        this.heuristic = heuristic;
+    }
+
+    /**
+     * Set node depth.
+     * 
+     * @param depth The node depth.
+     */
+    public void setDepth(int depth)
+    {
+        this.depth = depth;
+    }
+
+    /**
+     * Get location x.
+     * 
+     * @return The location x.
+     */
+    public int getX()
+    {
+        return x;
+    }
+
+    /**
+     * Get location y.
+     * 
+     * @return The location y.
+     */
+    public int getY()
+    {
+        return y;
+    }
+
+    /**
+     * Get cost.
+     * 
+     * @return The cost.
+     */
+    public double getCost()
+    {
+        return cost;
     }
 
     /**
@@ -148,16 +148,6 @@ class Node
     }
 
     /**
-     * Set heuristic value.
-     * 
-     * @param heuristic The heuristic value.
-     */
-    public void setHeuristic(double heuristic)
-    {
-        this.heuristic = heuristic;
-    }
-
-    /**
      * Get node depth.
      * 
      * @return The node depth.
@@ -167,14 +157,28 @@ class Node
         return depth;
     }
 
-    /**
-     * Set node depth.
-     * 
-     * @param depth The node depth.
+    /*
+     * Comparable
      */
-    public void setDepth(int depth)
+
+    @Override
+    public int compareTo(Node other)
     {
-        this.depth = depth;
+        final double f = getHeuristic() + getCost();
+        final double of = other.getHeuristic() + other.getCost();
+
+        if (f < of)
+        {
+            return -1;
+        }
+        else if (f > of)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     @Override

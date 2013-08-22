@@ -40,6 +40,10 @@ public abstract class Unit
         play(animIdle);
     }
 
+    /*
+     * Entity
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -55,7 +59,7 @@ public abstract class Unit
     }
 
     /*
-     * Mover model
+     * MoverServices
      */
 
     @Override
@@ -77,6 +81,12 @@ public abstract class Unit
     }
 
     @Override
+    public void setDestination(Tiled tiled)
+    {
+        mover.setDestination(tiled);
+    }
+
+    @Override
     public void setDestination(double extrp, double dx, double dy)
     {
         mover.setDestination(extrp, dx, dy);
@@ -86,12 +96,6 @@ public abstract class Unit
     public boolean setDestination(int tx, int ty)
     {
         return mover.setDestination(tx, ty);
-    }
-
-    @Override
-    public void setDestination(Tiled tiled)
-    {
-        mover.setDestination(tiled);
     }
 
     @Override

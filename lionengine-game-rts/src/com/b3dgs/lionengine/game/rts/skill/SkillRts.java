@@ -73,6 +73,52 @@ public abstract class SkillRts<T extends Enum<T>>
     public abstract void updateOnMap(double extrp, CameraRts camera, CursorRts cursor);
 
     /**
+     * Rendering routine on map.
+     * 
+     * @param g The graphic output.
+     * @param cursor The cursor reference.
+     * @param camera The camera reference.
+     */
+    public abstract void renderOnMap(Graphic g, CursorRts cursor, CameraRts camera);
+
+    /**
+     * Rendering routine on panel.
+     * 
+     * @param g The graphic output.
+     */
+    public abstract void renderOnPanel(Graphic g);
+
+    /**
+     * Action executed on cast. Effects has to be updated in update function.
+     * 
+     * @param panel The panel reference.
+     * @param cursor The cursor reference.
+     */
+    public abstract void action(ControlPanelModel<?> panel, CursorRts cursor);
+
+    /**
+     * Check if the cursor is over the skill button.
+     * 
+     * @param cursor The cursor reference.
+     * @return <code>true</code> if over, <code>false</code> else.
+     */
+    public abstract boolean isOver(CursorRts cursor);
+
+    /**
+     * Action called when clicked on skill from panel.
+     * 
+     * @param panel The panel reference.
+     */
+    public abstract void onClicked(ControlPanelModel<?> panel);
+
+    /**
+     * Get the id.
+     * 
+     * @return The id.
+     */
+    public abstract T getId();
+
+    /**
      * Update routine on panel.
      * 
      * @param cursor The cursor reference.
@@ -127,50 +173,86 @@ public abstract class SkillRts<T extends Enum<T>>
     }
 
     /**
-     * Rendering routine on map.
+     * Set skill level.
      * 
-     * @param g The graphic output.
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
+     * @param level The level to set.
      */
-    public abstract void renderOnMap(Graphic g, CursorRts cursor, CameraRts camera);
+    public void setLevel(int level)
+    {
+        this.level = level;
+    }
 
     /**
-     * Rendering routine on panel.
+     * Set skill selection state.
      * 
-     * @param g The graphic output.
+     * @param state The selection state.
      */
-    public abstract void renderOnPanel(Graphic g);
+    public void setSelected(boolean state)
+    {
+        selected = state;
+    }
 
     /**
-     * Action executed on cast. Effects has to be updated in update function.
+     * Set active state (true when using).
      * 
-     * @param panel The panel reference.
-     * @param cursor The cursor reference.
+     * @param state The active state.
      */
-    public abstract void action(ControlPanelModel<?> panel, CursorRts cursor);
+    public void setActive(boolean state)
+    {
+        active = state;
+    }
 
     /**
-     * Check if the cursor is over the skill button.
+     * Set order state (an order will require a left click on map to assign it). Setting it to false means that a single
+     * click on the icon will call action(). Setting it to true means that it will need another click to set the map
+     * destination.
      * 
-     * @param cursor The cursor reference.
-     * @return <code>true</code> if over, <code>false</code> else.
+     * @param state The order state.
      */
-    public abstract boolean isOver(CursorRts cursor);
+    public void setOrder(boolean state)
+    {
+        order = state;
+    }
 
     /**
-     * Action called when clicked on skill from panel.
+     * Set the priority.
      * 
-     * @param panel The panel reference.
+     * @param priority The priority number (0 = first rendered).
      */
-    public abstract void onClicked(ControlPanelModel<?> panel);
+    public void setPriority(int priority)
+    {
+        this.priority = priority;
+    }
 
     /**
-     * Get the id.
+     * Set ignorance state (it can be used to hide a certain part of skills).
      * 
-     * @return The id.
+     * @param state The ignorance state.
      */
-    public abstract T getId();
+    public void setIgnore(boolean state)
+    {
+        ignore = state;
+    }
+
+    /**
+     * Set priority level. It is used during skill rendering, to know which is rendered first.
+     * 
+     * @return The priority level.
+     */
+    public int getPriority()
+    {
+        return priority;
+    }
+
+    /**
+     * Get skill level.
+     * 
+     * @return The skill level.
+     */
+    public int getLevel()
+    {
+        return level;
+    }
 
     /**
      * Get skill name.
@@ -193,58 +275,6 @@ public abstract class SkillRts<T extends Enum<T>>
     }
 
     /**
-     * Get skill level.
-     * 
-     * @return The skill level.
-     */
-    public int getLevel()
-    {
-        return level;
-    }
-
-    /**
-     * Set skill level.
-     * 
-     * @param level The level to set.
-     */
-    public void setLevel(int level)
-    {
-        this.level = level;
-    }
-
-    /**
-     * Set priority level. It is used during skill rendering, to know which is rendered first.
-     * 
-     * @return The priority level.
-     */
-    public int getPriority()
-    {
-        return priority;
-    }
-
-    /**
-     * Set the priority.
-     * 
-     * @param priority The priority number (0 = first rendered).
-     */
-    public void setPriority(int priority)
-    {
-        this.priority = priority;
-    }
-
-    /**
-     * Set order state (an order will require a left click on map to assign it). Setting it to false means that a single
-     * click on the icon will call action(). Setting it to true means that it will need another click to set the map
-     * destination.
-     * 
-     * @param state The order state.
-     */
-    public void setOrder(boolean state)
-    {
-        order = state;
-    }
-
-    /**
      * Check if skill is an order or a simple button.
      * 
      * @return The order state.
@@ -252,16 +282,6 @@ public abstract class SkillRts<T extends Enum<T>>
     public boolean isOrder()
     {
         return order;
-    }
-
-    /**
-     * Set ignorance state (it can be used to hide a certain part of skills).
-     * 
-     * @param state The ignorance state.
-     */
-    public void setIgnore(boolean state)
-    {
-        ignore = state;
     }
 
     /**
@@ -275,16 +295,6 @@ public abstract class SkillRts<T extends Enum<T>>
     }
 
     /**
-     * Set active state (true when using).
-     * 
-     * @param state The active state.
-     */
-    public void setActive(boolean state)
-    {
-        active = state;
-    }
-
-    /**
      * Get active state.
      * 
      * @return <code>true</code> if currently in use, <code>false</code> else.
@@ -292,16 +302,6 @@ public abstract class SkillRts<T extends Enum<T>>
     public boolean isActive()
     {
         return active;
-    }
-
-    /**
-     * Set skill selection state.
-     * 
-     * @param state The selection state.
-     */
-    public void setSelected(boolean state)
-    {
-        selected = state;
     }
 
     /**

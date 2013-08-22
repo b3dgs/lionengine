@@ -72,6 +72,10 @@ public class Producible<T extends Enum<T>, C extends ProductionCostRts>
         return cost;
     }
 
+    /*
+     * Tiled
+     */
+
     @Override
     public int getLocationInTileX()
     {

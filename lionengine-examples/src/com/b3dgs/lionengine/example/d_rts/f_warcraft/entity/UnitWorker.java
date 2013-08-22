@@ -92,6 +92,19 @@ public abstract class UnitWorker
         construction = ResourcesLoader.CONSTRUCTION.instanciate();
     }
 
+    /**
+     * This function will search another tree, around the last cut.
+     */
+    private void searchNextTree()
+    {
+        final CoordTile tile = map.getClosestTile(this, getResourceLocation(), TypeCollision.TREE, 64);
+        setResource(TypeResource.WOOD, tile.getX(), tile.getY(), 1, 1);
+    }
+
+    /*
+     * Unit
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -130,7 +143,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer user
+     * ProducerUsedServices
      */
 
     @Override
@@ -170,7 +183,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor user
+     * ExtractorUsedServices
      */
 
     @Override
@@ -229,7 +242,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer services
+     * ProducerServices
      */
 
     @Override
@@ -293,7 +306,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor services
+     * ExtractorServices
      */
 
     @Override
@@ -345,7 +358,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer listener
+     * ProducerListener
      */
 
     @Override
@@ -424,7 +437,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor listener
+     * ExtractorListener
      */
 
     @Override
@@ -519,14 +532,5 @@ public abstract class UnitWorker
         }
         setVisible(true);
         setActive(true);
-    }
-
-    /**
-     * This function will search another tree, around the last cut.
-     */
-    private void searchNextTree()
-    {
-        final CoordTile tile = map.getClosestTile(this, getResourceLocation(), TypeCollision.TREE, 64);
-        setResource(TypeResource.WOOD, tile.getX(), tile.getY(), 1, 1);
     }
 }

@@ -10,17 +10,17 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * This is where the game loop is running.
  */
-class Scene
+final class Scene
         extends Sequence
 {
+    /** Camera. */
+    private final CameraPlatform camera;
     /** Map. */
     private final Map map;
     /** Entity. */
     private final Entity entityRef;
     /** Entity. */
     private final Entity entity;
-    /** Camera. */
-    private final CameraPlatform camera;
 
     /**
      * Create the scene and its vars.
@@ -30,11 +30,16 @@ class Scene
     Scene(Loader loader)
     {
         super(loader);
+        camera = new CameraPlatform(width, height);
         map = new Map();
         entityRef = new Entity(map);
         entity = new Entity(map);
-        camera = new CameraPlatform(width, height);
+
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

@@ -62,7 +62,7 @@ public final class ResourcesLoader
     private static boolean loaded = false;
 
     /**
-     * Initialize
+     * Initialize.
      */
     static
     {

@@ -9,14 +9,6 @@ import java.awt.geom.Point2D;
 public final class UtilityMath
 {
     /**
-     * Private constructor.
-     */
-    private UtilityMath()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Fix a value between an interval.
      * 
      * @param value The value to fix.
@@ -234,5 +226,13 @@ public final class UtilityMath
     public static long nano()
     {
         return System.nanoTime();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityMath()
+    {
+        throw new RuntimeException();
     }
 }

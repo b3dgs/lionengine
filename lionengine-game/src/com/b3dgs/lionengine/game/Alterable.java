@@ -97,6 +97,14 @@ public class Alterable
     }
 
     /**
+     * Fill until max value (set current value to max).
+     */
+    public void fill()
+    {
+        cur = max;
+    }
+
+    /**
      * Set current value. The current value will be fixed between 0 and the maximum.
      * 
      * @param value The current value.
@@ -129,14 +137,6 @@ public class Alterable
         {
             this.max = Alterable.MIN;
         }
-    }
-
-    /**
-     * Fill until max value (set current value to max).
-     */
-    public void fill()
-    {
-        cur = max;
     }
 
     /**

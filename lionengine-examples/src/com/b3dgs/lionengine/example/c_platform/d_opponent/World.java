@@ -11,23 +11,23 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
- * World implementation using WorldGame.
+ * World implementation.
  */
-class World
+final class World
         extends WorldGame
 {
     /** Background color. */
     private static final Color BACKGROUND_COLOR = new Color(107, 136, 255);
+    /** Camera reference. */
+    private final CameraPlatform camera;
+    /** Map reference. */
+    private final Map map;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Mario reference. */
     private final Mario mario;
     /** Handler reference. */
     private final HandlerEntity handler;
-    /** Map reference. */
-    private final Map map;
-    /** Camera reference. */
-    private final CameraPlatform camera;
 
     /**
      * Default constructor.
@@ -37,12 +37,16 @@ class World
     World(Sequence sequence)
     {
         super(sequence);
-        map = new Map();
         camera = new CameraPlatform(width, height);
-        factory = new FactoryEntity(display.getRate(), map);
+        map = new Map();
+        factory = new FactoryEntity(map, display.getRate());
         mario = factory.createMario();
         handler = new HandlerEntity(mario);
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

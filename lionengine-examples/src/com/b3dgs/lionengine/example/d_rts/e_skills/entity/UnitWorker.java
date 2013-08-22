@@ -74,6 +74,10 @@ public abstract class UnitWorker
         barProgress.setBorderSize(1, 1);
     }
 
+    /*
+     * Unit
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -106,7 +110,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer user
+     * ProducerUsedServices
      */
 
     @Override
@@ -146,7 +150,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor user
+     * ExtractorUsedServices
      */
 
     @Override
@@ -192,7 +196,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer services
+     * ProducerServices
      */
 
     @Override
@@ -256,7 +260,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor services
+     * ExtractorServices
      */
 
     @Override
@@ -308,7 +312,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Producer listener
+     * ProducerListener
      */
 
     @Override
@@ -348,7 +352,7 @@ public abstract class UnitWorker
     }
 
     /*
-     * Extractor listener
+     * ExtractorListener
      */
 
     @Override

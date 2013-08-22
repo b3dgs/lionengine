@@ -22,28 +22,22 @@ public abstract class Entity
 {
     /** Map reference. */
     protected final Map map;
-    /** Desired fps value. */
-    protected final int desiredFps;
     /** Entity status. */
     protected final EntityStatus status;
-    /** Movement jump force. */
-    protected final Force jumpForce;
-    /** Dead timer. */
-    protected final Timing timerDie;
-    /** Movement force. */
-    protected final Movement movement;
     /** Entity actions. */
     protected final EnumMap<EntityAction, Boolean> actions;
+    /** Movement force. */
+    protected final Movement movement;
+    /** Movement jump force. */
+    protected final Force jumpForce;
+    /** Jump max force. */
+    protected final double jumpHeightMax;
+    /** Dead timer. */
+    protected final Timing timerDie;
+    /** Desired fps value. */
+    private final int desiredFps;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
-    /** Sensibility increase value. */
-    private final double sensibilityIncrease;
-    /** Sensibility decrease value. */
-    private final double sensibilityDecrease;
-    /** Movement max speed. */
-    private final double movementSpeedMax;
-    /** Jump force. */
-    protected double jumpHeightMax;
     /** Dead step. */
     protected int stepDie;
     /** Die location. */
@@ -52,7 +46,7 @@ public abstract class Entity
     private boolean dead;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param setup The setup reference.
      * @param map The map reference.
@@ -67,17 +61,13 @@ public abstract class Entity
         movement = new Movement();
         actions = new EnumMap<>(EntityAction.class);
         animations = new EnumMap<>(EntityState.class);
+        timerDie = new Timing();
+        dieLocation = new Coord();
+        jumpForce = new Force();
+        jumpHeightMax = getDataDouble("heightMax", "data", "jump");
         setFrameOffsets(getWidth() / 2, -8);
         setMass(getDataDouble("mass", "data"));
         setGravityMax(getDataDouble("gravityMax", "data"));
-        movementSpeedMax = getDataDouble("speedMax", "data", "movement");
-        movement.setVelocity(getDataDouble("smooth", "data", "movement"));
-        sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
-        sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
-        jumpHeightMax = getDataDouble("heightMax", "data", "jump");
-        dieLocation = new Coord();
-        jumpForce = new Force();
-        timerDie = new Timing();
         loadAnimations();
     }
 
@@ -97,6 +87,8 @@ public abstract class Entity
 
     /**
      * Update entity states.
+     * 
+     * @see EntityState
      */
     protected abstract void updateStates();
 
@@ -107,6 +99,8 @@ public abstract class Entity
 
     /**
      * Update the collisions detection.
+     * 
+     * @see EntityCollision
      */
     protected abstract void updateCollisions();
 
@@ -261,11 +255,11 @@ public abstract class Entity
     }
 
     /**
-     * Load all existing animations defined in the xml file.
+     * Load all existing animations defined in the config file.
      */
     private void loadAnimations()
     {
-        for (final EntityState state : EntityState.values())
+        for (final EntityState state : EntityState.VALUES)
         {
             try
             {
@@ -280,35 +274,10 @@ public abstract class Entity
 
     /**
      * Update the actions.
+     * 
+     * @see EntityAction
      */
-    private void updateActions()
-    {
-        final double speed;
-        final double sensibility;
-        if (isEnabled(EntityAction.MOVE_RIGHT) && !isEnabled(EntityAction.MOVE_LEFT))
-        {
-            speed = movementSpeedMax;
-            sensibility = sensibilityIncrease;
-        }
-        else if (isEnabled(EntityAction.MOVE_LEFT) && !isEnabled(EntityAction.MOVE_RIGHT))
-        {
-            speed = -movementSpeedMax;
-            sensibility = sensibilityIncrease;
-        }
-        else
-        {
-            speed = 0.0;
-            sensibility = sensibilityDecrease;
-        }
-        movement.setSensibility(sensibility);
-        movement.setForceToReach(speed, 0.0);
-
-        if (isEnabled(EntityAction.JUMP) && canJump())
-        {
-            jumpForce.setForce(0.0, jumpHeightMax);
-            status.setCollision(EntityCollision.NONE);
-        }
-    }
+    protected abstract void updateActions();
 
     /**
      * Check the map limit and apply collision if necessary.
@@ -318,13 +287,13 @@ public abstract class Entity
         final int limitLeft = 0;
         if (getLocationX() < limitLeft)
         {
-            setLocationX(limitLeft);
+            teleportX(limitLeft);
             movement.reset();
         }
         final int limitRight = map.getWidthInTile() * map.getTileWidth();
         if (getLocationX() > limitRight)
         {
-            setLocationX(limitRight);
+            teleportX(limitRight);
             movement.reset();
         }
     }

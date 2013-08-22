@@ -48,6 +48,10 @@ public abstract class BuildingProducer
         barProgress.setBorderSize(1, 1);
     }
 
+    /*
+     * Building
+     */
+
     @Override
     public void update(double extrp)
     {

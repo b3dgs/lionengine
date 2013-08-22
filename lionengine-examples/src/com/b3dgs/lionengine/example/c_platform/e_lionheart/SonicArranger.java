@@ -1,26 +1,26 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.audio.AudioSc68;
 import com.b3dgs.lionengine.audio.Sc68;
 
 /**
- * SonicArranger set of functions.
+ * Sc68 module binding.
  */
 final class SonicArranger
 {
-    /** Swamp music. */
-    public static final Media SWAMP = Media.get("musics", "Swamp.sc68");
+    /** Musics directory. */
+    public static final String MUSICS_DIR = "musics";
     /** Player instance. */
-    private static final Sc68 SC68 = AudioSc68.createSc68Player();
+    private static final Sc68 SC68;
 
     /**
-     * Private constructor.
+     * Static init.
      */
-    private SonicArranger()
+    static
     {
-        throw new RuntimeException();
+        SC68 = AudioSc68.createSc68Player();
+        SonicArranger.SC68.setVolume(40);
     }
 
     /**
@@ -48,15 +48,13 @@ final class SonicArranger
     }
 
     /**
-     * Play track from its name.
+     * Play a music.
      * 
-     * @param track The track to play.
+     * @param music The music to play.
      */
-    public static void play(Media track)
+    public static void play(Music music)
     {
-        Verbose.info("Initiating SonicArranger music: ", track.getPath());
-        SonicArranger.SC68.setVolume(40);
-        SonicArranger.SC68.play(track);
+        SonicArranger.SC68.play(Media.get(SonicArranger.MUSICS_DIR, music.getFilename()));
     }
 
     /**
@@ -75,5 +73,13 @@ final class SonicArranger
     public static int seek()
     {
         return SonicArranger.SC68.seek();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private SonicArranger()
+    {
+        throw new RuntimeException();
     }
 }

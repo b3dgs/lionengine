@@ -23,6 +23,10 @@ public abstract class Projectile
         super(setup, id, frame);
     }
 
+    /*
+     * ProjectileGame
+     */
+
     @Override
     protected void updateMovement(double vecX, double vecY, double extrp)
     {

@@ -11,14 +11,6 @@ import com.b3dgs.lionengine.Verbose;
 public final class UtilityFile
 {
     /**
-     * Private constructor.
-     */
-    private UtilityFile()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Check if the path is a directory.
      * 
      * @param path The path to check.
@@ -236,5 +228,13 @@ public final class UtilityFile
         {
             Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityFile()
+    {
+        throw new RuntimeException();
     }
 }

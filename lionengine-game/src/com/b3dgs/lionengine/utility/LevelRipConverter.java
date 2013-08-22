@@ -138,38 +138,6 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
         }
     }
 
-    @Override
-    public void run()
-    {
-        // Check all image tiles
-        final BufferedImage tileRef = this.imageMap.getSurface();
-        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < this.imageMapTilesInY; imageMapCurrentTileY++)
-        {
-            for (int imageMapCurrentTileX = this.startX; imageMapCurrentTileX < this.endX; imageMapCurrentTileX++)
-            {
-                // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * this.map.getTileWidth() + 1,
-                        imageMapCurrentTileY * this.map.getTileHeight() + 1);
-                if (LevelRipConverter.IGNORED_COLOR != imageColor)
-                {
-                    // Search if tile is on sheet and get it
-                    final T tile = this.searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
-
-                    // A tile has been found
-                    if (tile != null)
-                    {
-                        this.map.setTile(this.map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX,
-                                tile);
-                    }
-                    else
-                    {
-                        this.errors++;
-                    }
-                }
-            }
-        }
-    }
-
     /**
      * Search current tile of image map by checking all surfaces.
      * 
@@ -249,5 +217,41 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
         }
         // Tiles are equal
         return true;
+    }
+
+    /*
+     * Thread
+     */
+
+    @Override
+    public void run()
+    {
+        // Check all image tiles
+        final BufferedImage tileRef = this.imageMap.getSurface();
+        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < this.imageMapTilesInY; imageMapCurrentTileY++)
+        {
+            for (int imageMapCurrentTileX = this.startX; imageMapCurrentTileX < this.endX; imageMapCurrentTileX++)
+            {
+                // Skip blank tile of image map (0, 128, 128)
+                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * this.map.getTileWidth() + 1,
+                        imageMapCurrentTileY * this.map.getTileHeight() + 1);
+                if (LevelRipConverter.IGNORED_COLOR != imageColor)
+                {
+                    // Search if tile is on sheet and get it
+                    final T tile = this.searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
+
+                    // A tile has been found
+                    if (tile != null)
+                    {
+                        this.map.setTile(this.map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX,
+                                tile);
+                    }
+                    else
+                    {
+                        this.errors++;
+                    }
+                }
+            }
+        }
     }
 }

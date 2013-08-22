@@ -15,14 +15,6 @@ import com.b3dgs.lionengine.Version;
 public class AppPong
 {
     /**
-     * Private constructor.
-     */
-    private AppPong()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function called by the jvm.
      * 
      * @param argv The arguments.
@@ -42,5 +34,13 @@ public class AppPong
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppPong()
+    {
+        throw new RuntimeException();
     }
 }

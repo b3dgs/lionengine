@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
 /**
- * Collision type
+ * List of collision types.
  */
 enum TileCollision
 {

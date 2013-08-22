@@ -43,8 +43,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     static final int LAYERS = 4;
     /** Control panel reference. */
     protected final C panel;
-    /** Player (main owner) reference. */
-    protected int playerId;
     /** Entity listener. */
     private final List<EntityRtsListener<E>> listeners;
     /** Current entity selection set. */
@@ -55,6 +53,8 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     private final Rectangle2D entityArea;
     /** List of entities id that shared the same path. */
     private final Set<Integer> sharedPathIds;
+    /** Player (main owner) reference. */
+    protected int playerId;
     /** List of rendering layers. */
     private List<List<List<E>>> layers;
     /** Mouse click assignment. */
@@ -83,6 +83,40 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         layers = null;
         panel.addListener(this);
     }
+
+    /**
+     * Update the entity.
+     * 
+     * @param entity The entity reference.
+     * @param cursor The cursor reference.
+     * @param camera The camera reference.
+     */
+    protected abstract void updatingEntity(E entity, CursorRts cursor, CameraRts camera);
+
+    /**
+     * Get the corresponding color when the mouse is over this entity.
+     * 
+     * @param entity The current entity.
+     * @return color The representing mouse over an entity.
+     */
+    protected abstract Color getEntityColorOver(E entity);
+
+    /**
+     * Get the corresponding color when the entity is selected.
+     * 
+     * @param entity The current entity.
+     * @return color The representing selected entity.
+     */
+    protected abstract Color getEntityColorSelection(E entity);
+
+    /**
+     * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
+     * recommended to unselect the entity with {@link EntityRts#setSelection(boolean)} and remove the entity from the
+     * selection which is given as a parameter. Example: Ignore a certain type of entity.
+     * 
+     * @param selection The selected entities.
+     */
+    protected abstract void notifyUpdatedSelection(Set<E> selection);
 
     /**
      * Add an entity listener.
@@ -180,6 +214,26 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
+     * Set the mouse click assignment ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
+     * 
+     * @param click The mouse click value.
+     */
+    public void setClickAssignment(int click)
+    {
+        mouseClickAssign = click;
+    }
+
+    /**
+     * Set player id (player id owning this panel).
+     * 
+     * @param playerId The player id.
+     */
+    public void setPlayerId(int playerId)
+    {
+        this.playerId = playerId;
+    }
+
+    /**
      * Get the entity at the specified location in tile.
      * 
      * @param location The location.
@@ -245,26 +299,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
-     * Set the mouse click assignment ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
-     * 
-     * @param click The mouse click value.
-     */
-    public void setClickAssignment(int click)
-    {
-        mouseClickAssign = click;
-    }
-
-    /**
-     * Set player id (player id owning this panel).
-     * 
-     * @param playerId The player id.
-     */
-    public void setPlayerId(int playerId)
-    {
-        this.playerId = playerId;
-    }
-
-    /**
      * Get list of selected entries during cursor selection.
      * 
      * @return The list of selected entity.
@@ -273,15 +307,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     {
         return selectedEntity;
     }
-
-    /**
-     * Update the entity.
-     * 
-     * @param entity The entity reference.
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
-     */
-    protected abstract void updatingEntity(E entity, CursorRts cursor, CameraRts camera);
 
     /**
      * Update the entity click assignment.
@@ -365,58 +390,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
-     * Get the corresponding color when the mouse is over this entity.
-     * 
-     * @param entity The current entity.
-     * @return color The representing mouse over an entity.
-     */
-    protected abstract Color getEntityColorOver(E entity);
-
-    /**
-     * Get the corresponding color when the entity is selected.
-     * 
-     * @param entity The current entity.
-     * @return color The representing selected entity.
-     */
-    protected abstract Color getEntityColorSelection(E entity);
-
-    /**
-     * Get the positioning offset in case of multiple entity destination assignment.
-     * 
-     * @param dtx The original horizontal tile destination.
-     * @param dty The original vertical tile destination.
-     * @param i The entity number in local group.
-     * @return The modified destination.
-     */
-    protected CoordTile getPositioning(int dtx, int dty, int i)
-    {
-        final int factor = i / 4;
-        final int x;
-        final int y;
-        if (i % 4 == 0)
-        {
-            x = factor;
-            y = factor;
-        }
-        else if (i % 4 == 1)
-        {
-            x = factor + 1;
-            y = factor;
-        }
-        else if (i % 4 == 2)
-        {
-            x = factor;
-            y = factor - 1;
-        }
-        else
-        {
-            x = factor + 1;
-            y = factor - 1;
-        }
-        return new CoordTile(dtx + x, dty + y);
-    }
-
-    /**
      * Rendering function for an entity. Here are handled the entity rendering, such as sprite, border selection...
      * 
      * @param g The graphic output.
@@ -484,13 +457,40 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
-     * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
-     * recommended to unselect the entity with {@link EntityRts#setSelection(boolean)} and remove the entity from the
-     * selection which is given as a parameter. Example: Ignore a certain type of entity.
+     * Get the positioning offset in case of multiple entity destination assignment.
      * 
-     * @param selection The selected entities.
+     * @param dtx The original horizontal tile destination.
+     * @param dty The original vertical tile destination.
+     * @param i The entity number in local group.
+     * @return The modified destination.
      */
-    protected abstract void notifyUpdatedSelection(Set<E> selection);
+    protected CoordTile getPositioning(int dtx, int dty, int i)
+    {
+        final int factor = i / 4;
+        final int x;
+        final int y;
+        if (i % 4 == 0)
+        {
+            x = factor;
+            y = factor;
+        }
+        else if (i % 4 == 1)
+        {
+            x = factor + 1;
+            y = factor;
+        }
+        else if (i % 4 == 2)
+        {
+            x = factor;
+            y = factor - 1;
+        }
+        else
+        {
+            x = factor + 1;
+            y = factor - 1;
+        }
+        return new CoordTile(dtx + x, dty + y);
+    }
 
     /**
      * Main routine, which has to be called in main game loop.
@@ -541,82 +541,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         }
 
         checkEntitySkills(extrp, entity, camera, cursor);
-    }
-
-    /**
-     * Check and update if the cursor is over the entity.
-     * 
-     * @param entity The entity to check.
-     * @param camera The camera reference.
-     * @param cursor The cursor reference.
-     */
-    private void checkCursorOverEntity(E entity, CameraRts camera, CursorRts cursor)
-    {
-        if (entity.isActive())
-        {
-            entityArea.setRect(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(),
-                    entity.getHeight());
-            if (entity.isSelectable() && camera.canSee(entity)
-                    && entityArea.contains(cursor.getLocationX(), cursor.getLocationY()))
-            {
-                entity.setOver(true);
-            }
-            else
-            {
-                entity.setOver(false);
-            }
-        }
-    }
-
-    /**
-     * Update the entity layer depending of its vertical position.
-     * 
-     * @param entity The entity reference.
-     * @param oldY The old vertical location.
-     */
-    private void checkEntityLayer(E entity, int oldY)
-    {
-        if (oldY != entity.getLocationInTileY())
-        {
-            entity.setMapLayer(entity.getLocationInTileY());
-            entity.setMapLayerChanged(true);
-        }
-        if (entity.isLayerChanged() || entity.isMapLayerChanged())
-        {
-            entity.setMapLayerChanged(false);
-            final List<List<E>> layer = layers.get(entity.getLayer());
-            layer.get(entity.getMapLayerOld()).remove(entity);
-            layer.get(entity.getMapLayer()).add(entity);
-        }
-    }
-
-    /**
-     * Update the entity skills.
-     * 
-     * @param extrp The extrapolation value.
-     * @param entity The entity reference.
-     * @param camera The camera reference.
-     * @param cursor The cursor reference.
-     */
-    private void checkEntitySkills(double extrp, E entity, CameraRts camera, CursorRts cursor)
-    {
-        if (entity instanceof SkilledServices)
-        {
-            final SkilledServices<?, ?> skilled = (SkilledServices<?, ?>) entity;
-            final Collection<?> skills = skilled.getSkills();
-            for (final Object skill : skills)
-            {
-                if (skill instanceof SkillRts)
-                {
-                    final SkillRts<?> skillRts = (SkillRts<?>) skill;
-                    if (skillRts.isIgnored())
-                    {
-                        continue;
-                    }
-                    skillRts.updateOnMap(extrp, camera, cursor);
-                }
-            }
-        }
     }
 
     /**
@@ -732,6 +656,82 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
+     * Check and update if the cursor is over the entity.
+     * 
+     * @param entity The entity to check.
+     * @param camera The camera reference.
+     * @param cursor The cursor reference.
+     */
+    private void checkCursorOverEntity(E entity, CameraRts camera, CursorRts cursor)
+    {
+        if (entity.isActive())
+        {
+            entityArea.setRect(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(),
+                    entity.getHeight());
+            if (entity.isSelectable() && camera.canSee(entity)
+                    && entityArea.contains(cursor.getLocationX(), cursor.getLocationY()))
+            {
+                entity.setOver(true);
+            }
+            else
+            {
+                entity.setOver(false);
+            }
+        }
+    }
+
+    /**
+     * Update the entity layer depending of its vertical position.
+     * 
+     * @param entity The entity reference.
+     * @param oldY The old vertical location.
+     */
+    private void checkEntityLayer(E entity, int oldY)
+    {
+        if (oldY != entity.getLocationInTileY())
+        {
+            entity.setMapLayer(entity.getLocationInTileY());
+            entity.setMapLayerChanged(true);
+        }
+        if (entity.isLayerChanged() || entity.isMapLayerChanged())
+        {
+            entity.setMapLayerChanged(false);
+            final List<List<E>> layer = layers.get(entity.getLayer());
+            layer.get(entity.getMapLayerOld()).remove(entity);
+            layer.get(entity.getMapLayer()).add(entity);
+        }
+    }
+
+    /**
+     * Update the entity skills.
+     * 
+     * @param extrp The extrapolation value.
+     * @param entity The entity reference.
+     * @param camera The camera reference.
+     * @param cursor The cursor reference.
+     */
+    private void checkEntitySkills(double extrp, E entity, CameraRts camera, CursorRts cursor)
+    {
+        if (entity instanceof SkilledServices)
+        {
+            final SkilledServices<?, ?> skilled = (SkilledServices<?, ?>) entity;
+            final Collection<?> skills = skilled.getSkills();
+            for (final Object skill : skills)
+            {
+                if (skill instanceof SkillRts)
+                {
+                    final SkillRts<?> skillRts = (SkillRts<?>) skill;
+                    if (skillRts.isIgnored())
+                    {
+                        continue;
+                    }
+                    skillRts.updateOnMap(extrp, camera, cursor);
+                }
+            }
+        }
+    }
+
+    /**
      * Draw a rectangle around the entity.
      * 
      * @param g The graphic output.
@@ -748,7 +748,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /*
-     * Control panel listener
+     * ControlPanelListener
      */
 
     @Override

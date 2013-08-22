@@ -30,6 +30,10 @@ final class Spear
         launcher.setCanHitTargetOnly(true);
     }
 
+    /*
+     * Weapon
+     */
+
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {

@@ -43,6 +43,30 @@ public class Graphic
     }
 
     /**
+     * Dispose the graphic and release associated resources.
+     */
+    public void dispose()
+    {
+        g.dispose();
+    }
+
+    /**
+     * Copies an area of the component by a distance specified by <code>dx</code> and <code>dy</code>. From the point
+     * specified by <code>x</code> and <code>y</code>, this method copies downwards and to the right.
+     * 
+     * @param x the <i>x</i> coordinate of the source rectangle.
+     * @param y the <i>y</i> coordinate of the source rectangle.
+     * @param width the width of the source rectangle.
+     * @param height the height of the source rectangle.
+     * @param dx the horizontal distance to copy the pixels.
+     * @param dy the vertical distance to copy the pixels.
+     */
+    public void copyArea(int x, int y, int width, int height, int dx, int dy)
+    {
+        g.copyArea(x, y, width, height, dx, dy);
+    }
+
+    /**
      * Draw an image to the graphic.
      * 
      * @param image The image to draw.
@@ -157,22 +181,6 @@ public class Graphic
     }
 
     /**
-     * Copies an area of the component by a distance specified by <code>dx</code> and <code>dy</code>. From the point
-     * specified by <code>x</code> and <code>y</code>, this method copies downwards and to the right.
-     * 
-     * @param x the <i>x</i> coordinate of the source rectangle.
-     * @param y the <i>y</i> coordinate of the source rectangle.
-     * @param width the width of the source rectangle.
-     * @param height the height of the source rectangle.
-     * @param dx the horizontal distance to copy the pixels.
-     * @param dy the vertical distance to copy the pixels.
-     */
-    public void copyArea(int x, int y, int width, int height, int dx, int dy)
-    {
-        g.copyArea(x, y, width, height, dx, dy);
-    }
-
-    /**
      * Set the current graphic color.
      * 
      * @param color The color.
@@ -183,24 +191,6 @@ public class Graphic
     }
 
     /**
-     * Get the current color.
-     * 
-     * @return The current graphic color.
-     */
-    public Color getColor()
-    {
-        return g.getColor();
-    }
-
-    /**
-     * Dispose the graphic and release associated resources.
-     */
-    public void dispose()
-    {
-        g.dispose();
-    }
-
-    /**
      * Set the graphics output.
      * 
      * @param g The graphics output.
@@ -208,6 +198,16 @@ public class Graphic
     public void setGraphics(Graphics2D g)
     {
         this.g = g;
+    }
+
+    /**
+     * Get the current color.
+     * 
+     * @return The current graphic color.
+     */
+    public Color getColor()
+    {
+        return g.getColor();
     }
 
     /**

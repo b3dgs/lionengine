@@ -21,6 +21,10 @@ public abstract class SkillBuild
         super(id, setup);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

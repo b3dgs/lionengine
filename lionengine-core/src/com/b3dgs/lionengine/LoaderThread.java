@@ -20,6 +20,10 @@ final class LoaderThread
         this.loader = loader;
     }
 
+    /*
+     * Thread
+     */
+
     @Override
     public void run()
     {

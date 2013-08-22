@@ -64,6 +64,10 @@ public abstract class SkillProduceBuilding
         setOrder(true);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void updateOnMap(double extrp, CameraRts camera, CursorRts cursor)
     {

@@ -16,17 +16,17 @@ import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
- * World implementation using WorldGame.
+ * World implementation.
  */
-class World
+final class World
         extends WorldGame
 {
-    /** Map reference. */
-    private final Map map;
-    /** Camera reference. */
-    private final CameraPlatform camera;
     /** Text drawer. */
     private final Text text;
+    /** Camera reference. */
+    private final CameraPlatform camera;
+    /** Map reference. */
+    private final Map map;
     /** Camera force. */
     private final Force force;
     /** Camera movement. */
@@ -40,16 +40,20 @@ class World
     World(Sequence sequence)
     {
         super(sequence);
-        map = new Map();
-        camera = new CameraPlatform(width, height);
-        movement = new Force();
-        force = new Force();
         text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);
+        camera = new CameraPlatform(width, height);
+        map = new Map();
+        force = new Force();
+        movement = new Force();
 
         // Rip a level and store data in the map
         final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
         rip.start(Media.get("level_mario.png"), map, Media.get("tiles", "mario"), false);
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

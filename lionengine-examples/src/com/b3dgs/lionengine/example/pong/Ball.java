@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 /**
  * Ball implementation using EntityGame base.
  */
-class Ball
+final class Ball
         extends EntityGame
 {
     /** Ball size. */

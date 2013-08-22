@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.a_navmaptile;
 
 /**
- * List of tile collision.
+ * List of tile collisions.
  */
 enum TileCollision
 {

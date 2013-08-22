@@ -177,7 +177,7 @@ public class CameraPlatform
     }
 
     /*
-     * Camera
+     * CameraGame
      */
 
     @Override

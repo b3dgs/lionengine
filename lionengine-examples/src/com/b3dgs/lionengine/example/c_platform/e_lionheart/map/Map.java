@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.map;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -15,28 +16,10 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
 public final class Map
         extends MapTilePlatformRastered<TileCollision, Tile>
 {
-    /** Sheets directory. */
-    public static final String TILES_DIR = "tiles";
-    /** Rasters directory. */
-    public static final String RASTERS_DIR = "rasters";
     /** Tile width. */
-    public static final int TILE_WIDTH = 16;
+    private static final int TILE_WIDTH = 16;
     /** Tile height. */
-    public static final int TILE_HEIGHT = 16;
-    /** The width of the tile extremity. */
-    public static final int TILE_EXTREMITY_WIDTH = 2;
-
-    /**
-     * Standard constructor.
-     * 
-     * @param landscape The landscape type.
-     */
-    public Map(Landscape landscape)
-    {
-        super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
-        setRaster(Media.get(Map.RASTERS_DIR, landscape.getType().getRaster()), false, false);
-        setRaster(null, false, false);
-    }
+    private static final int TILE_HEIGHT = 16;
 
     /**
      * Convert int to byte value (working on if int is less than 256).
@@ -63,6 +46,18 @@ public final class Map
     /*
      * MapTilePlatformRastered
      */
+
+    /**
+     * Standard constructor.
+     * 
+     * @param landscape The landscape type.
+     */
+    public Map(Landscape landscape)
+    {
+        super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
+        setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getType().getRaster()), false, false);
+        setRaster(null, false, false);
+    }
 
     @Override
     public Tile createTile(int width, int height)

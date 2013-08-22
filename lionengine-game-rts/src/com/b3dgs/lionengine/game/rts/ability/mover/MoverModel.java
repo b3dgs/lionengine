@@ -35,7 +35,7 @@ public class MoverModel
     }
 
     /*
-     * Mover services
+     * MoverServices
      */
 
     @Override
@@ -271,7 +271,7 @@ public class MoverModel
     }
 
     /*
-     * Mover listener
+     * MoverListener
      */
 
     @Override

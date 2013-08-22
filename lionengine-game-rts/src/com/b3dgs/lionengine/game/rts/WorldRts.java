@@ -4,7 +4,7 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.game.WorldGame;
 
 /**
- * Default RTS world model, designed to contain game elements (map, player, entities...).
+ * Default Rts world model, designed to contain game elements (map, player, entities...).
  */
 public abstract class WorldRts
         extends WorldGame

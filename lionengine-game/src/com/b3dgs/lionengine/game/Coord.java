@@ -31,18 +31,6 @@ public final class Coord
     }
 
     /**
-     * Set the new coordinate.
-     * 
-     * @param x The new horizontal location.
-     * @param y The new vertical location.
-     */
-    public void set(double x, double y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
      * Translate coordinate using specified values.
      * 
      * @param vx The horizontal force.
@@ -52,6 +40,18 @@ public final class Coord
     {
         x += vx;
         y += vy;
+    }
+
+    /**
+     * Set the new coordinate.
+     * 
+     * @param x The new horizontal location.
+     * @param y The new vertical location.
+     */
+    public void set(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     /**

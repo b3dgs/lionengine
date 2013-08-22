@@ -47,6 +47,14 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     }
 
     /**
+     * Get setup instance.
+     * 
+     * @param id The entity id (as enumeration).
+     * @return The setup instance.
+     */
+    protected abstract S createSetup(T id);
+
+    /**
      * Load all setup from their list, considering an additional list of arguments for specific cases.
      * 
      * @param list The entities list from enumeration.
@@ -58,14 +66,6 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
             addSetup(type, createSetup(type));
         }
     }
-
-    /**
-     * Get setup instance.
-     * 
-     * @param id The entity id (as enumeration).
-     * @return The setup instance.
-     */
-    protected abstract S createSetup(T id);
 
     /**
      * Add a setup reference at the specified id.

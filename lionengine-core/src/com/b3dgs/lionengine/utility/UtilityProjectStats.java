@@ -20,14 +20,6 @@ public final class UtilityProjectStats
     private static int numberOfLines;
 
     /**
-     * Private constructor.
-     */
-    private UtilityProjectStats()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Start statistics analysis from input directory.
      * 
      * @param sourcesDir The specified directory to analyse.
@@ -107,5 +99,13 @@ public final class UtilityProjectStats
     private static String getExtension(String file)
     {
         return file.substring(file.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityProjectStats()
+    {
+        throw new RuntimeException();
     }
 }

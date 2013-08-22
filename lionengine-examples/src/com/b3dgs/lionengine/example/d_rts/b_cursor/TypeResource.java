@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.b_cursor;
 
 /**
- * List of resources type.
+ * List of resource type.
  */
 enum TypeResource
 {

@@ -70,6 +70,10 @@ public final class Tile
         return tree;
     }
 
+    /*
+     * TileRts
+     */
+
     @Override
     public TypeCollision getCollisionFrom(String collision, String type)
     {

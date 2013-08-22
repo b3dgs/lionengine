@@ -85,6 +85,10 @@ public final class LionEngineException
         stack = throwable != null ? throwable.getStackTrace() : new StackTraceElement[] {};
     }
 
+    /*
+     * RuntimeException
+     */
+
     @Override
     public void printStackTrace(PrintStream stream)
     {

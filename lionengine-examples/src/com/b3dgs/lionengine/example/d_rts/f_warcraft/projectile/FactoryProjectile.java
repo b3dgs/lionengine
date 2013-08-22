@@ -23,12 +23,9 @@ public final class FactoryProjectile
         loadAll(TypeProjectile.values());
     }
 
-    @Override
-    protected SetupEntityGame createSetup(TypeProjectile id)
-    {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
-                false);
-    }
+    /*
+     * FactoryProjectileGame
+     */
 
     @Override
     public Projectile createProjectile(TypeProjectile type, int id, int frame)
@@ -42,5 +39,12 @@ public final class FactoryProjectile
             default:
                 throw new LionEngineException("Projectile not found: " + type.name());
         }
+    }
+
+    @Override
+    protected SetupEntityGame createSetup(TypeProjectile id)
+    {
+        return new SetupEntityGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
+                false);
     }
 }

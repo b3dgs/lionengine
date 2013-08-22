@@ -59,12 +59,9 @@ public final class FactorySkill
         loadAll(TypeSkill.values());
     }
 
-    @Override
-    protected SetupSkill createSetup(TypeSkill id)
-    {
-        return new SetupSkill(Media.get(ResourcesLoader.SKILLS_DIR, id.name() + ".xml"), background, factoryProduction,
-                message);
-    }
+    /*
+     * FactorySkillRts
+     */
 
     @Override
     public Skill createSkill(TypeSkill id)
@@ -78,5 +75,12 @@ public final class FactorySkill
             default:
                 throw new LionEngineException("Skill not found: ", id.name());
         }
+    }
+
+    @Override
+    protected SetupSkill createSetup(TypeSkill id)
+    {
+        return new SetupSkill(Media.get(ResourcesLoader.SKILLS_DIR, id.name() + ".xml"), background, factoryProduction,
+                message);
     }
 }

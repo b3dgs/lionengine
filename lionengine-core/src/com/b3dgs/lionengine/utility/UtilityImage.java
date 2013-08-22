@@ -47,14 +47,6 @@ public final class UtilityImage
     };
 
     /**
-     * Private constructor.
-     */
-    private UtilityImage()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Create a compatible buffered image.
      * 
      * @param width The image width (must be positive).
@@ -591,5 +583,13 @@ public final class UtilityImage
     public static void optimizeGraphics(Graphics2D g)
     {
         UtilityImage.optimizeGraphicsSpeed(g);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityImage()
+    {
+        throw new RuntimeException();
     }
 }

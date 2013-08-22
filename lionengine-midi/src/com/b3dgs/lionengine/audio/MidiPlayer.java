@@ -25,6 +25,44 @@ import com.b3dgs.lionengine.Media;
 final class MidiPlayer
         implements Midi
 {
+    /**
+     * Open and return the sequencer instance opened.
+     * 
+     * @return The opened sequencer.
+     */
+    private static Sequencer openSequencer()
+    {
+        try
+        {
+            final Sequencer sequencer = MidiSystem.getSequencer(false);
+            sequencer.open();
+            return sequencer;
+        }
+        catch (final MidiUnavailableException exception)
+        {
+            throw new LionEngineException(exception, "No sequencer available !");
+        }
+    }
+
+    /**
+     * Open and return the synthesizer instance opened.
+     * 
+     * @return The opened synthesizer.
+     */
+    private static Synthesizer openSynthesizer()
+    {
+        try
+        {
+            final Synthesizer synthesizer = MidiSystem.getSynthesizer();
+            synthesizer.open();
+            return synthesizer;
+        }
+        catch (final MidiUnavailableException exception)
+        {
+            throw new LionEngineException(exception, "No synthesizer available !");
+        }
+    }
+
     /** Current sequencer reference. */
     private final Sequencer sequencer;
     /** Current synthesizer reference. */
@@ -88,44 +126,6 @@ final class MidiPlayer
     {
         sequencer.close();
         synthesizer.close();
-    }
-
-    /**
-     * Open and return the sequencer instance opened.
-     * 
-     * @return The opened sequencer.
-     */
-    private static Sequencer openSequencer()
-    {
-        try
-        {
-            final Sequencer sequencer = MidiSystem.getSequencer(false);
-            sequencer.open();
-            return sequencer;
-        }
-        catch (final MidiUnavailableException exception)
-        {
-            throw new LionEngineException(exception, "No sequencer available !");
-        }
-    }
-
-    /**
-     * Open and return the synthesizer instance opened.
-     * 
-     * @return The opened synthesizer.
-     */
-    private static Synthesizer openSynthesizer()
-    {
-        try
-        {
-            final Synthesizer synthesizer = MidiSystem.getSynthesizer();
-            synthesizer.open();
-            return synthesizer;
-        }
-        catch (final MidiUnavailableException exception)
-        {
-            throw new LionEngineException(exception, "No synthesizer available !");
-        }
     }
 
     /**

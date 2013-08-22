@@ -24,6 +24,23 @@ public final class UtilityTileExtractor
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
+
+    /**
+     * Start tiles extraction.
+     * 
+     * @param levelrip The input media, containing level rip as an image.
+     * @param out The output media, which will contain unique tiles.
+     * @param tilew The level tile width.
+     * @param tileh The level tile height.
+     * @param destW The output image width.
+     * @param destH The output image height.
+     */
+    public static void start(Media levelrip, Media out, int tilew, int tileh, int destW, int destH)
+    {
+        final UtilityTileExtractor extractor = new UtilityTileExtractor(levelrip, tilew, tileh, destW, destH);
+        extractor.start(out);
+    }
+
     /** Image map reference. */
     private SpriteTiled imageMap;
     /** Built pattern from map. */
@@ -53,22 +70,6 @@ public final class UtilityTileExtractor
     private UtilityTileExtractor()
     {
         throw new RuntimeException();
-    }
-
-    /**
-     * Start tiles extraction.
-     * 
-     * @param levelrip The input media, containing level rip as an image.
-     * @param out The output media, which will contain unique tiles.
-     * @param tilew The level tile width.
-     * @param tileh The level tile height.
-     * @param destW The output image width.
-     * @param destH The output image height.
-     */
-    public static void start(Media levelrip, Media out, int tilew, int tileh, int destW, int destH)
-    {
-        final UtilityTileExtractor extractor = new UtilityTileExtractor(levelrip, tilew, tileh, destW, destH);
-        extractor.start(out);
     }
 
     /**

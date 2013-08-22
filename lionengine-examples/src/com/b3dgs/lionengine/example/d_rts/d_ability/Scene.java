@@ -20,7 +20,7 @@ final class Scene
     private final World world;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
@@ -31,6 +31,10 @@ final class Scene
         world = new World(this);
         setMouseVisible(false);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

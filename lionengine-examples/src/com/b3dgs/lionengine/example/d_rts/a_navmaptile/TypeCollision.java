@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.a_navmaptile;
 
 /**
- * Collision type.
+ * List of collision types.
  */
 enum TypeCollision
 {

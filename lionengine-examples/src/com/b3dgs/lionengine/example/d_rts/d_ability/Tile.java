@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.d_ability;
 import com.b3dgs.lionengine.game.rts.map.TileRts;
 
 /**
- * Tile implementation, using TileModel. Nothing special here, just to show the default inheritance.
+ * Tile implementation. Nothing special here, just to show the default inheritance.
  */
 final class Tile
         extends TileRts<TileCollision, TypeResource>
@@ -18,6 +18,10 @@ final class Tile
     {
         super(width, height);
     }
+
+    /*
+     * TileRts
+     */
 
     @Override
     public TileCollision getCollisionFrom(String collision, String type)

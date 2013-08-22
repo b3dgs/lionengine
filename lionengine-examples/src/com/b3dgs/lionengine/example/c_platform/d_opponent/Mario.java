@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Implementation of our controllable entity.
  */
-class Mario
+final class Mario
         extends Entity
 {
     /** Dead timer. */
@@ -19,7 +19,7 @@ class Mario
     private double locationDie;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param setup setup reference.
      * @param map The map reference.
@@ -52,7 +52,7 @@ class Mario
     public void kill()
     {
         dead = true;
-        resetMovementSpeed();
+        movement.reset();
         locationDie = getLocationY();
         stepDie = 0;
         timerDie.start();
@@ -68,6 +68,29 @@ class Mario
         timerDie.stop();
         stepDie = 0;
         dead = false;
+    }
+
+    /*
+     * Entity
+     */
+
+    @Override
+    public void onHurtBy(EntityGame entity)
+    {
+        if (!dead)
+        {
+            kill();
+        }
+    }
+
+    @Override
+    public void onHitThat(Entity entity)
+    {
+        if (!isJumping())
+        {
+            jumpForce.setForce(0.0, jumpForceValue / 1.5);
+            resetGravity();
+        }
     }
 
     @Override
@@ -89,7 +112,8 @@ class Mario
                 speed = 0.5;
                 sensibility = 0.1;
             }
-            movementForce.reachForce(extrp, movementForceDest, speed, sensibility);
+            movement.setVelocity(speed);
+            movement.setSensibility(sensibility);
         }
 
         // Die
@@ -131,25 +155,6 @@ class Mario
             {
                 kill();
             }
-        }
-    }
-
-    @Override
-    public void onHurtBy(EntityGame entity)
-    {
-        if (!dead)
-        {
-            kill();
-        }
-    }
-
-    @Override
-    public void onHitThat(Entity entity)
-    {
-        if (!isJumping())
-        {
-            jumpForce.setForce(0.0, jumpForceValue / 1.5);
-            resetGravity();
         }
     }
 }

@@ -39,6 +39,10 @@ public final class LauncherProjectile
         this.frame = frame;
     }
 
+    /*
+     * LauncherProjectileGame
+     */
+
     @Override
     protected void launchProjectile(Weapon owner)
     {

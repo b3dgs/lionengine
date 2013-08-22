@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 
 /**
- * Collision type
+ * List of collision types.
  */
 public enum TypeCollision
 {

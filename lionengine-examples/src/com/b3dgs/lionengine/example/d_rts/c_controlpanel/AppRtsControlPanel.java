@@ -33,14 +33,6 @@ public final class AppRtsControlPanel
     public static final String PATH = Media.getPath("resources", "rts");
 
     /**
-     * Private constructor.
-     */
-    private AppRtsControlPanel()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -60,5 +52,13 @@ public final class AppRtsControlPanel
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppRtsControlPanel()
+    {
+        throw new RuntimeException();
     }
 }

@@ -20,6 +20,10 @@ abstract class Building
         super(id, context);
     }
 
+    /*
+     * Entity
+     */
+
     @Override
     public void stop()
     {

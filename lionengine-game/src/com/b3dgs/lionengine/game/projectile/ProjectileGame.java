@@ -35,6 +35,8 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     private final int offsetX;
     /** Vertical offset. */
     private final int offsetY;
+    /** Delay before being added in the handler. */
+    private final Timing delay;
     /** Horizontal vector. */
     private double vecX;
     /** Vertical vector. */
@@ -53,8 +55,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     private double collTop;
     /** Bottom collision. */
     private double collBottom;
-    /** Delay before being added in the handler. */
-    private final Timing delay;
     /** Elapsed time. */
     private long time;
 
@@ -102,65 +102,21 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     }
 
     /**
-     * Set the projectile target.
+     * Action called when projectile hit an entity.
      * 
-     * @param target The entity target.
+     * @param entity The entity hit.
+     * @param damages The damages.
      */
-    public void setTarget(E target)
-    {
-        this.target = target;
-    }
+    public abstract void onHit(E entity, int damages);
 
     /**
-     * Get the target.
+     * Define the projectile movement.
      * 
-     * @return The target.
+     * @param vecX The horizontal vector.
+     * @param vecY The vertical vector.
+     * @param extrp The extrapolation value.
      */
-    public E getTarget()
-    {
-        return target;
-    }
-
-    /**
-     * Set the projectile owner.
-     * 
-     * @param owner The entity owner.
-     */
-    public void setOwner(E2 owner)
-    {
-        this.owner = owner;
-    }
-
-    /**
-     * Get the owner.
-     * 
-     * @return The owner.
-     */
-    public E2 getOwner()
-    {
-        return owner;
-    }
-
-    /**
-     * Set the hit target properties.
-     * 
-     * @param hitTargetOnly <code>true</code> to make the projectile hit only the target, <code>false</code> to allows
-     *            other hits.
-     */
-    public void setCanHitTargetOnly(boolean hitTargetOnly)
-    {
-        this.hitTargetOnly = hitTargetOnly;
-    }
-
-    /**
-     * Get the hit target only state.
-     * 
-     * @return <code>true</code> if can hit only the target, <code>false</code> else.
-     */
-    public boolean canHitOnlyTarget()
-    {
-        return hitTargetOnly;
-    }
+    protected abstract void updateMovement(double vecX, double vecY, double extrp);
 
     /**
      * Start projectile handling.
@@ -175,23 +131,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
         setLocation(x + getWidth() / 2, y + getHeight() / 2);
         this.vecX = vecX;
         this.vecY = vecY;
-    }
-
-    /**
-     * Set projectile collision (already based on its tile size from the surface). Theses values allows to adjust the
-     * projectile collision area.
-     * 
-     * @param left left offset.
-     * @param right right offset.
-     * @param top top offset.
-     * @param bottom bottom offset.
-     */
-    public void setCollision(double left, double right, double top, double bottom)
-    {
-        collLeft = left;
-        collRight = right;
-        collTop = top;
-        collBottom = bottom;
     }
 
     /**
@@ -219,12 +158,52 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     }
 
     /**
-     * Action called when projectile hit an entity.
+     * Set the projectile target.
      * 
-     * @param entity The entity hit.
-     * @param damages The damages.
+     * @param target The entity target.
      */
-    public abstract void onHit(E entity, int damages);
+    public void setTarget(E target)
+    {
+        this.target = target;
+    }
+
+    /**
+     * Set the hit target properties.
+     * 
+     * @param hitTargetOnly <code>true</code> to make the projectile hit only the target, <code>false</code> to allows
+     *            other hits.
+     */
+    public void setCanHitTargetOnly(boolean hitTargetOnly)
+    {
+        this.hitTargetOnly = hitTargetOnly;
+    }
+
+    /**
+     * Set projectile collision (already based on its tile size from the surface). Theses values allows to adjust the
+     * projectile collision area.
+     * 
+     * @param left left offset.
+     * @param right right offset.
+     * @param top top offset.
+     * @param bottom bottom offset.
+     */
+    public void setCollision(double left, double right, double top, double bottom)
+    {
+        collLeft = left;
+        collRight = right;
+        collTop = top;
+        collBottom = bottom;
+    }
+
+    /**
+     * Set the projectile owner.
+     * 
+     * @param owner The entity owner.
+     */
+    public void setOwner(E2 owner)
+    {
+        this.owner = owner;
+    }
 
     /**
      * Set projectile delay (time before being added in the handler).
@@ -238,6 +217,36 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     }
 
     /**
+     * Get the owner.
+     * 
+     * @return The owner.
+     */
+    public E2 getOwner()
+    {
+        return owner;
+    }
+
+    /**
+     * Get the target.
+     * 
+     * @return The target.
+     */
+    public E getTarget()
+    {
+        return target;
+    }
+
+    /**
+     * Get the hit target only state.
+     * 
+     * @return <code>true</code> if can hit only the target, <code>false</code> else.
+     */
+    public boolean canHitOnlyTarget()
+    {
+        return hitTargetOnly;
+    }
+
+    /**
      * Check if projectile can be added in the handler (related to delay).
      * 
      * @return <code>true</code> if can be added, <code>false</code> else.
@@ -246,15 +255,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     {
         return delay.elapsed(time);
     }
-
-    /**
-     * Define the projectile movement.
-     * 
-     * @param vecX The horizontal vector.
-     * @param vecY The vertical vector.
-     * @param extrp The extrapolation value.
-     */
-    protected abstract void updateMovement(double vecX, double vecY, double extrp);
 
     /**
      * Update projectile collision. Increase value will increase its collision area from the center.

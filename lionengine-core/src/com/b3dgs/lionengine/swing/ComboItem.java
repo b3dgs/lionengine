@@ -33,6 +33,16 @@ public final class ComboItem
         this(obj, true);
     }
 
+    /**
+     * Get the object.
+     * 
+     * @return The object.
+     */
+    public Object getObject()
+    {
+        return obj;
+    }
+
     @Override
     public boolean isEnabled()
     {
@@ -43,16 +53,6 @@ public final class ComboItem
     public void setEnabled(boolean isEnable)
     {
         this.isEnable = isEnable;
-    }
-
-    /**
-     * Get the object.
-     * 
-     * @return The object.
-     */
-    public Object getObject()
-    {
-        return obj;
     }
 
     @Override

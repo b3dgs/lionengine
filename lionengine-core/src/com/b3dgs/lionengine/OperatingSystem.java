@@ -27,7 +27,9 @@ public enum OperatingSystem
     /** The architecture used. */
     private static final Architecture ARCHI;
 
-    // Initialize values
+    /**
+     * Static init.
+     */
     static
     {
         String system;

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.rts.WorldRts;
 import com.b3dgs.lionengine.input.Mouse;
 
 /**
- * World implementation using WorldRts.
+ * World implementation.
  */
 final class World
         extends WorldRts
@@ -50,7 +50,7 @@ final class World
     private final Context context;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -88,7 +88,7 @@ final class World
     }
 
     /*
-     * World
+     * WorldRts
      */
 
     @Override
@@ -110,6 +110,18 @@ final class World
         handlerProjectile.render(g, camera);
         controlPanel.renderCursorSelection(g, camera);
         cursor.render(g);
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
     }
 
     @Override
@@ -145,17 +157,5 @@ final class World
         final BuildingProducer townHall = (BuildingProducer) createEntity(TypeEntity.townhall_orc, 35, 7);
         townHall.setFrame(2);
         townHall.addToProductionQueue(factoryProduction.createProducible(TypeEntity.peon));
-    }
-
-    @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    protected void loading(FileReading file) throws IOException
-    {
-        map.load(file);
     }
 }

@@ -45,6 +45,10 @@ public abstract class BuildingProducer
         stepsPerSecond = getDataInteger("steps_per_second", "production");
     }
 
+    /*
+     * Building
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -60,7 +64,7 @@ public abstract class BuildingProducer
     }
 
     /*
-     * Producer user
+     * ProducerUsedServices
      */
 
     @Override
@@ -91,7 +95,7 @@ public abstract class BuildingProducer
     }
 
     /*
-     * Producer services
+     * ProducerServices
      */
 
     @Override
@@ -155,7 +159,7 @@ public abstract class BuildingProducer
     }
 
     /*
-     * Producer listener
+     * ProducerListener
      */
 
     @Override

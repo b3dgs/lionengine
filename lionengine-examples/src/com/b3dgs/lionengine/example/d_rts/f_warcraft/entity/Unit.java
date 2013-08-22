@@ -72,6 +72,39 @@ public abstract class Unit
         play(animIdle);
     }
 
+    /**
+     * Update the entity death.
+     */
+    private void updateDeath()
+    {
+        switch (die)
+        {
+            case NONE:
+                play(animDead);
+                die = Die.CURRENT;
+                break;
+            case CURRENT:
+                if (AnimState.FINISHED == getAnimState())
+                {
+                    die = Die.DONE;
+                    corpse.setFrame(5);
+                }
+                break;
+            case DONE:
+                if (AnimState.FINISHED == corpse.getAnimState())
+                {
+                    destroy();
+                }
+                break;
+            default:
+                throw new RuntimeException();
+        }
+    }
+
+    /*
+     * Entity
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -107,7 +140,7 @@ public abstract class Unit
     }
 
     /*
-     * Mover model
+     * MoverServices
      */
 
     @Override
@@ -129,6 +162,16 @@ public abstract class Unit
     }
 
     @Override
+    public void setDestination(Tiled entity)
+    {
+        mover.setDestination(entity);
+    }
+
+    /*
+     * MoverUsedServices
+     */
+
+    @Override
     public void setDestination(double extrp, double dx, double dy)
     {
         mover.setDestination(extrp, dx, dy);
@@ -138,12 +181,6 @@ public abstract class Unit
     public boolean setDestination(int tx, int ty)
     {
         return mover.setDestination(tx, ty);
-    }
-
-    @Override
-    public void setDestination(Tiled entity)
-    {
-        mover.setDestination(entity);
     }
 
     @Override
@@ -244,7 +281,7 @@ public abstract class Unit
     }
 
     /*
-     * Mover listener
+     * MoverListener
      */
 
     @Override
@@ -263,34 +300,5 @@ public abstract class Unit
     public void notifyArrived()
     {
         play(animIdle);
-    }
-
-    /**
-     * Update the entity death.
-     */
-    private void updateDeath()
-    {
-        switch (die)
-        {
-            case NONE:
-                play(animDead);
-                die = Die.CURRENT;
-                break;
-            case CURRENT:
-                if (AnimState.FINISHED == getAnimState())
-                {
-                    die = Die.DONE;
-                    corpse.setFrame(5);
-                }
-                break;
-            case DONE:
-                if (AnimState.FINISHED == corpse.getAnimState())
-                {
-                    destroy();
-                }
-                break;
-            default:
-                throw new RuntimeException();
-        }
     }
 }

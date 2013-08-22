@@ -10,7 +10,7 @@ final class Clouds
         extends CloudsPlatform
 {
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param path The resources path.
      * @param wide <code>true</code> for widescreen, <code>false</code> for normal.

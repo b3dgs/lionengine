@@ -16,7 +16,7 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.WorldRts;
 
 /**
- * World implementation using WorldRts.
+ * World implementation.
  */
 final class World
         extends WorldRts
@@ -31,7 +31,7 @@ final class World
     private final CursorRts cursor;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -68,7 +68,7 @@ final class World
     }
 
     /*
-     * World
+     * WorldRts
      */
 
     @Override
@@ -88,14 +88,6 @@ final class World
     }
 
     @Override
-    protected void loaded()
-    {
-        camera.setView(0, 0, width, height);
-        camera.setSensibility(30, 30);
-        camera.setBorders(map);
-    }
-
-    @Override
     protected void saving(FileWriting file) throws IOException
     {
         map.save(file);
@@ -105,5 +97,13 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
+    }
+
+    @Override
+    protected void loaded()
+    {
+        camera.setView(0, 0, width, height);
+        camera.setSensibility(30, 30);
+        camera.setBorders(map);
     }
 }

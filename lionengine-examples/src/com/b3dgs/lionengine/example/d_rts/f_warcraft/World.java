@@ -98,7 +98,7 @@ final class World
     }
 
     /*
-     * World
+     * WorldRts
      */
 
     @Override
@@ -131,6 +131,19 @@ final class World
         message.render(g);
         minimap.render(g, camera);
         cursor.render(g);
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        map.save(file);
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        map.load(file);
+        map.createMiniMap();
     }
 
     @Override
@@ -179,18 +192,5 @@ final class World
         handlerEntity.update(1.0f, camera, cursor);
         handlerEntity.updatePopulation();
         minimap.entityMoved(peon);
-    }
-
-    @Override
-    protected void saving(FileWriting file) throws IOException
-    {
-        map.save(file);
-    }
-
-    @Override
-    protected void loading(FileReading file) throws IOException
-    {
-        map.load(file);
-        map.createMiniMap();
     }
 }

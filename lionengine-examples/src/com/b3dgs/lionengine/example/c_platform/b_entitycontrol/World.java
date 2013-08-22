@@ -10,25 +10,29 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 /**
  * World implementation using AbstractWorld.
  */
-class World
+final class World
         extends WorldGame
 {
-    /** Mario reference. */
-    private final Mario mario;
     /** Camera reference. */
     private final CameraPlatform camera;
+    /** Mario reference. */
+    private final Mario mario;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
     World(Sequence sequence)
     {
         super(sequence);
-        mario = new Mario(config.internal.getRate());
         camera = new CameraPlatform(width, height);
+        mario = new Mario(config.internal.getRate());
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

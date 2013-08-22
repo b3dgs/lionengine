@@ -16,14 +16,6 @@ import com.b3dgs.lionengine.Version;
 public class AppTileCollision
 {
     /**
-     * Private constructor.
-     */
-    private AppTileCollision()
-    {
-        // Nothing to do
-    }
-
-    /**
      * Main function called by the jvm.
      * 
      * @param argv The arguments.
@@ -43,5 +35,13 @@ public class AppTileCollision
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppTileCollision()
+    {
+        // Nothing to do
     }
 }

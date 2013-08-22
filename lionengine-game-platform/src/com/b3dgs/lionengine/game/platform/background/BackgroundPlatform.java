@@ -21,12 +21,12 @@ public abstract class BackgroundPlatform
     protected final int maxY;
     /** Maximum background value. */
     protected final int minY;
+    /** Background theme name. */
+    protected final String theme;
     /** Total background height. */
     protected int totalHeight;
     /** Number of background components. */
     protected int componentsNumber;
-    /** Background theme name. */
-    protected final String theme;
     /** Wide state. */
     private final boolean wide;
 
@@ -48,13 +48,18 @@ public abstract class BackgroundPlatform
     }
 
     /**
-     * Get the wide state.
+     * Create an element from a path and its name, plus its coordinates.
      * 
-     * @return <code>true</code> if wide screen, <code>false</code> else.
+     * @param path The element path.
+     * @param name The element name.
+     * @param x The location x.
+     * @param y The location y.
+     * @param alpha The alpha use flag.
+     * @return The created element.
      */
-    public boolean isWide()
+    public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
     {
-        return wide;
+        return new BackgroundElement(x, y, createSprite(Media.get(path, name), alpha));
     }
 
     /**
@@ -65,6 +70,16 @@ public abstract class BackgroundPlatform
     public String getTheme()
     {
         return theme;
+    }
+
+    /**
+     * Get the wide state.
+     * 
+     * @return <code>true</code> if wide screen, <code>false</code> else.
+     */
+    public boolean isWide()
+    {
+        return wide;
     }
 
     /**
@@ -101,21 +116,6 @@ public abstract class BackgroundPlatform
         final Sprite sprite = Drawable.loadSprite(media);
         sprite.load(alpha);
         return sprite;
-    }
-
-    /**
-     * Create an element from a path and its name, plus its coordinates.
-     * 
-     * @param path The element path.
-     * @param name The element name.
-     * @param x The location x.
-     * @param y The location y.
-     * @param alpha The alpha use flag.
-     * @return The created element.
-     */
-    public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
-    {
-        return new BackgroundElement(x, y, createSprite(Media.get(path, name), alpha));
     }
 
     /*

@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 /**
- * List of foreground type.
+ * Types of foregrounds.
  */
 public enum TypeForeground
 {

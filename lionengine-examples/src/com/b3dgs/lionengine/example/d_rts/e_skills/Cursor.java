@@ -111,6 +111,10 @@ public final class Cursor
         }
     }
 
+    /*
+     * CursorRts
+     */
+
     @Override
     public void render(Graphic g)
     {

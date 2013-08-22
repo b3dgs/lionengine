@@ -74,6 +74,10 @@ public abstract class UnitWorker
         barProgress.setBorderSize(1, 1);
     }
 
+    /*
+     * Unit
+     */
+
     @Override
     public void update(double extrp)
     {

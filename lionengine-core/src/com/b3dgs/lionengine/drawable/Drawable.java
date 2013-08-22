@@ -10,14 +10,6 @@ import com.b3dgs.lionengine.Media;
 public final class Drawable
 {
     /**
-     * Private constructor.
-     */
-    private Drawable()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Load an image from a file.
      * 
      * @param media The image media.
@@ -141,5 +133,13 @@ public final class Drawable
     public static SpriteFont createSpriteFont(Media media, Media data, int lw, int lh)
     {
         return new SpriteFontImpl(media, data, lw, lh);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Drawable()
+    {
+        throw new RuntimeException();
     }
 }

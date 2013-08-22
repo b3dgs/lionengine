@@ -24,14 +24,6 @@ public final class AppWarcraft
     public static final String PATH = Media.getPath("resources", "rts");
 
     /**
-     * Private constructor.
-     */
-    private AppWarcraft()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -49,5 +41,13 @@ public final class AppWarcraft
         final Loader loader = new Loader(config);
         ResourcesLoader.load();
         loader.start(new Scene(loader, new GameConfig(TypeRace.ORC, TypeRace.HUMAN, "forest.map", false, false)));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppWarcraft()
+    {
+        throw new RuntimeException();
     }
 }

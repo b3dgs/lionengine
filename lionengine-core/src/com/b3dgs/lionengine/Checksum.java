@@ -34,8 +34,6 @@ public final class Checksum
     private static final Charset UTF8 = Charset.forName("UTF-8");
     /** SHA Mode. */
     private static final String SHA = "SHA-256";
-    /** Message digest instance. */
-    private final MessageDigest sha;
 
     /**
      * Create a new checksum.
@@ -46,6 +44,9 @@ public final class Checksum
     {
         return new Checksum();
     }
+
+    /** Message digest instance. */
+    private final MessageDigest sha;
 
     /**
      * Create a new checksum.

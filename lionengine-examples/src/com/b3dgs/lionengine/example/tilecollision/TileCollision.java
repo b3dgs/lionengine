@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * List of tile collision.
+ * List of tile collisions.
  */
 enum TileCollision
 {
@@ -16,6 +16,9 @@ enum TileCollision
     /** Horizontal collisions list. */
     static final List<TileCollision> COLLISION = new ArrayList<>(1);
 
+    /**
+     * Static init.
+     */
     static
     {
         TileCollision.COLLISION.add(TileCollision.GROUND);

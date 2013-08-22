@@ -8,14 +8,14 @@ import com.b3dgs.lionengine.Sequence;
 /**
  * Game loop designed to handle our little world.
  */
-class Scene
+final class Scene
         extends Sequence
 {
     /** World reference. */
     private final World world;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
@@ -24,6 +24,10 @@ class Scene
         super(loader);
         world = new World(this);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

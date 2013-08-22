@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 /**
  * Map implementation.
  */
-class Map
+final class Map
         extends MapTilePlatform<TileCollision, Tile>
 {
     /**
@@ -30,6 +30,10 @@ class Map
         tile.setNumber(0);
         setTile(v, h, tile);
     }
+
+    /*
+     * MapTilePlatform
+     */
 
     @Override
     public Tile createTile(int width, int height)

@@ -39,11 +39,9 @@ public class FactoryEntity
         this.context = context;
     }
 
-    @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
-    {
-        return new SetupEntityGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
-    }
+    /*
+     * FactoryEntityGame
+     */
 
     @Override
     public Entity createEntity(TypeEntity type)
@@ -66,5 +64,11 @@ public class FactoryEntity
             default:
                 throw new LionEngineException("Entity not found: ", type.name());
         }
+    }
+
+    @Override
+    protected SetupEntityGame createSetup(TypeEntity id)
+    {
+        return new SetupEntityGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
     }
 }

@@ -27,14 +27,6 @@ public final class AppRtsNavMapTile
     public static final String PATH = Media.getPath("resources", "rts");
 
     /**
-     * Private constructor.
-     */
-    private AppRtsNavMapTile()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -54,5 +46,13 @@ public final class AppRtsNavMapTile
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppRtsNavMapTile()
+    {
+        throw new RuntimeException();
     }
 }

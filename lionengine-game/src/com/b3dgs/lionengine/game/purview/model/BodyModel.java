@@ -14,14 +14,14 @@ public class BodyModel
 {
     /** Gravity of earth (in m/s). */
     private static final double GRAVITY = 9.80665;
-    /** Body force. */
-    private final Force force;
     /** Body location. */
     protected final Localizable location;
-    /** Body mass. */
-    private double mass;
+    /** Body force. */
+    private final Force force;
     /** Maximum gravity value. */
     private final Force gravityMax;
+    /** Body mass. */
+    private double mass;
     /** Invert axis. */
     private int invertY;
 
@@ -105,6 +105,24 @@ public class BodyModel
     /*
      * Localizable model
      */
+
+    @Override
+    public void teleport(double x, double y)
+    {
+        location.teleport(x, y);
+    }
+    
+    @Override
+    public void teleportX(double x)
+    {
+        location.teleportX(x);
+    }
+    
+    @Override
+    public void teleportY(double y)
+    {
+        location.teleportY(y);
+    }
 
     @Override
     public void moveLocation(double extrp, Force force, Force... forces)

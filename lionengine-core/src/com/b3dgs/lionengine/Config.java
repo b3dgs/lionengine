@@ -92,16 +92,6 @@ public final class Config
     }
 
     /**
-     * Get the windowed mode.
-     * 
-     * @return <code>true</code> if is windowed, <code>false</code> else.
-     */
-    public boolean isWindowed()
-    {
-        return windowed;
-    }
-
-    /**
      * Set applet reference, and enable applet mode.
      * 
      * @param applet The applet reference.
@@ -119,5 +109,15 @@ public final class Config
     public JApplet getApplet()
     {
         return applet;
+    }
+
+    /**
+     * Get the windowed mode.
+     * 
+     * @return <code>true</code> if is windowed, <code>false</code> else.
+     */
+    public boolean isWindowed()
+    {
+        return windowed;
     }
 }

@@ -19,7 +19,7 @@ final class Scene
     private final World world;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
@@ -29,6 +29,10 @@ final class Scene
         text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
         world = new World(this);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -22,31 +23,6 @@ final class Swamp
     private final int parallaxsNumber = 96;
     /** Flickering flag. */
     private final boolean flickering;
-    /** Screen height. */
-    final int screenHeight;
-
-    /**
-     * Constructor.
-     * 
-     * @param config The config reference.
-     * @param wide The wide state.
-     * @param theme The theme name.
-     * @param flickering The flickering flag.
-     */
-    Swamp(Config config, boolean wide, String theme, boolean flickering)
-    {
-        super(theme, 0, 512, wide);
-        this.flickering = flickering;
-        screenHeight = config.internal.getHeight();
-
-        final String path = Media.getPath("backgrounds", "Swamp", theme);
-        final int width = config.internal.getWidth();
-        add(new Backdrop(path, this.flickering, isWide(), width));
-        add(new Clouds(Media.get(path, "cloud.png"), isWide(), width, 4));
-        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, isWide(), 124));
-
-        totalHeight = 48;
-    }
 
     /**
      * Create a rastered element.
@@ -63,6 +39,27 @@ final class Swamp
         final Sprite sprite = Drawable.loadSprite(Media.get(path, name));
         sprite.load(false);
         return new RasteredBackgroundElement(x, y, sprite, rastersNumber);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param config The config reference.
+     * @param wide The wide state.
+     * @param theme The theme name.
+     * @param flickering The flickering flag.
+     */
+    Swamp(Config config, boolean wide, String theme, boolean flickering)
+    {
+        super(theme, 0, 512, wide);
+        this.flickering = flickering;
+        final String path = Media.getPath(AppLionheart.BACKGROUNDS_DIR, "Swamp", theme);
+        final int width = config.internal.getWidth();
+        add(new Backdrop(path, this.flickering, wide, width));
+        add(new Clouds(Media.get(path, "cloud.png"), wide, width, 4));
+        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, wide, 124));
+
+        totalHeight = 48;
     }
 
     /**

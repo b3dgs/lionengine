@@ -10,14 +10,6 @@ package com.b3dgs.lionengine.anim;
 public final class Anim
 {
     /**
-     * Private constructor.
-     */
-    private Anim()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Create an animation, which can be played by an {@link Animator}.
      * 
      * @param firstFrame The first frame index to play (>= {@link Animation#MINIMUM_FRAME}).
@@ -40,5 +32,13 @@ public final class Anim
     public static Animator createAnimator()
     {
         return new AnimatorImpl();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Anim()
+    {
+        throw new RuntimeException();
     }
 }

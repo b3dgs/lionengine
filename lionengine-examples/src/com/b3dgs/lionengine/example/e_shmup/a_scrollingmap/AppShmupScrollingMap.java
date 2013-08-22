@@ -16,14 +16,6 @@ import com.b3dgs.lionengine.Version;
 public class AppShmupScrollingMap
 {
     /**
-     * Private constructor.
-     */
-    private AppShmupScrollingMap()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param argv The arguments.
@@ -43,5 +35,13 @@ public class AppShmupScrollingMap
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppShmupScrollingMap()
+    {
+        throw new RuntimeException();
     }
 }

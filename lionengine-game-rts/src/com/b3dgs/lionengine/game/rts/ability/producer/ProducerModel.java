@@ -162,7 +162,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostRts, P ext
     }
 
     /*
-     * Producer services
+     * ProducerServices
      */
 
     @Override
@@ -271,7 +271,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostRts, P ext
     }
 
     /*
-     * Producer listener
+     * ProducerListener
      */
 
     @Override

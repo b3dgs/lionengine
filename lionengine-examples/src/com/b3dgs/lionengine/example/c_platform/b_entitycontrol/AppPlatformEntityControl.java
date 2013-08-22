@@ -17,14 +17,6 @@ import com.b3dgs.lionengine.Version;
 public final class AppPlatformEntityControl
 {
     /**
-     * Private constructor.
-     */
-    private AppPlatformEntityControl()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -44,5 +36,13 @@ public final class AppPlatformEntityControl
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppPlatformEntityControl()
+    {
+        throw new RuntimeException();
     }
 }

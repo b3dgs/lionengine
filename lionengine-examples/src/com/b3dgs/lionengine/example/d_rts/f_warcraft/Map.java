@@ -110,6 +110,10 @@ public final class Map
         treeMap.set(trees, tile.getX() / getTileWidth(), -tile.getY() / getTileHeight(), id);
     }
 
+    /*
+     * MapTileRts
+     */
+
     @Override
     public void create(int widthInTile, int heightInTile)
     {

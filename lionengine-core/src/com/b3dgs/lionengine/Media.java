@@ -42,80 +42,6 @@ public final class Media
     private static Class<?> loader = null;
     /** Engine temporary directory. */
     private static String tmpDir;
-    /** Media path. */
-    private final String path;
-
-    /**
-     * Constructor.
-     * 
-     * @param path The media path (must not be null).
-     */
-    public Media(String path)
-    {
-        Check.notNull(path);
-        this.path = path;
-    }
-
-    /**
-     * Get the media path.
-     * 
-     * @return The media path.
-     */
-    public String getPath()
-    {
-        return path;
-    }
-
-    /**
-     * Activate or no the resources loading from *.jar.
-     * 
-     * @param clazz The class loader reference (resources entry point).
-     * @param enabled The activation state (<code>true</code> to enable, <code>false</code> to disable).
-     */
-    static void setLoadFromJar(Class<?> clazz, boolean enabled)
-    {
-        Media.fromJar = enabled;
-        if (enabled)
-        {
-            Media.loader = clazz;
-            Media.separator = "/";
-        }
-        else
-        {
-            Media.loader = null;
-            Media.separator = File.separator;
-        }
-    }
-
-    /**
-     * Define resources directory. Root for all game medias.
-     * 
-     * @param dir The main root directory.
-     */
-    static void setResourcesDirectory(String dir)
-    {
-        Media.resourcesDir = dir + Media.separator;
-    }
-
-    /**
-     * Get current resource directory.
-     * 
-     * @return The resource directory.
-     */
-    public static String getRessourcesDir()
-    {
-        return Media.resourcesDir;
-    }
-
-    /**
-     * Get current separator character (equals / in case of applet, else OS dependent).
-     * 
-     * @return The path separator representation.
-     */
-    public static String getSeparator()
-    {
-        return Media.separator;
-    }
 
     /**
      * Check if the media exists. Throw a {@link LionEngineException} if not.
@@ -338,6 +264,68 @@ public final class Media
     }
 
     /**
+     * Get current resource directory.
+     * 
+     * @return The resource directory.
+     */
+    public static String getRessourcesDir()
+    {
+        return Media.resourcesDir;
+    }
+
+    /**
+     * Get current separator character (equals / in case of applet, else OS dependent).
+     * 
+     * @return The path separator representation.
+     */
+    public static String getSeparator()
+    {
+        return Media.separator;
+    }
+
+    /**
+     * Activate or no the resources loading from *.jar.
+     * 
+     * @param clazz The class loader reference (resources entry point).
+     * @param enabled The activation state (<code>true</code> to enable, <code>false</code> to disable).
+     */
+    static void setLoadFromJar(Class<?> clazz, boolean enabled)
+    {
+        Media.fromJar = enabled;
+        if (enabled)
+        {
+            Media.loader = clazz;
+            Media.separator = "/";
+        }
+        else
+        {
+            Media.loader = null;
+            Media.separator = File.separator;
+        }
+    }
+
+    /**
+     * Define resources directory. Root for all game medias.
+     * 
+     * @param dir The main root directory.
+     */
+    static void setResourcesDirectory(String dir)
+    {
+        Media.resourcesDir = dir + Media.separator;
+    }
+
+    /**
+     * Set the temporary directory name from the program name.
+     * 
+     * @param programName The program name.
+     */
+    static void setTempDirectory(String programName)
+    {
+        final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
+        Media.tmpDir = Media.getPath(Media.SYSTEM_TEMP_DIR, dir);
+    }
+
+    /**
      * Get the working directory.
      * 
      * @return The working directory.
@@ -371,14 +359,27 @@ public final class Media
         }
     }
 
+    /** Media path. */
+    private final String path;
+
     /**
-     * Set the temporary directory name from the program name.
+     * Constructor.
      * 
-     * @param programName The program name.
+     * @param path The media path (must not be null).
      */
-    static void setTempDirectory(String programName)
+    public Media(String path)
     {
-        final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-        Media.tmpDir = Media.getPath(Media.SYSTEM_TEMP_DIR, dir);
+        Check.notNull(path);
+        this.path = path;
+    }
+
+    /**
+     * Get the media path.
+     * 
+     * @return The media path.
+     */
+    public String getPath()
+    {
+        return path;
     }
 }

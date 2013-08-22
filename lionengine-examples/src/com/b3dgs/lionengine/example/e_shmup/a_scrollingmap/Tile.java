@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
 /**
  * Tile implementation, using TileModel. Nothing special here, just to show the default inheritance.
  */
-public class Tile
+final class Tile
         extends TileGame<TileCollision>
 {
     /**
@@ -14,10 +14,14 @@ public class Tile
      * @param width The tile width.
      * @param height The tile height.
      */
-    public Tile(int width, int height)
+    Tile(int width, int height)
     {
         super(width, height);
     }
+
+    /*
+     * TileGame
+     */
 
     @Override
     public TileCollision getCollisionFrom(String collision, String type)

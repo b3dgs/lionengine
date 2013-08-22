@@ -10,57 +10,14 @@ import java.util.List;
 public class Path
 {
     /** List of steps. */
-    private final List<Step> steps = new ArrayList<>(8);
+    private final List<Step> steps;
 
     /**
      * Constructor.
      */
     public Path()
     {
-        // Nothing to do
-    }
-
-    /**
-     * Get the length of the path, i.e. the number of steps.
-     * 
-     * @return The number of steps in this path.
-     */
-    public int getLength()
-    {
-        return steps.size();
-    }
-
-    /**
-     * Get the step at a given index in the path.
-     * 
-     * @param index The index of the step to retrieve. Note this should be &lt;= 0 and &gt; getLength();
-     * @return The step information, the position on the map.
-     */
-    private Step getStep(int index)
-    {
-        return steps.get(index);
-    }
-
-    /**
-     * Get the x coordinate for the step at the given index.
-     * 
-     * @param index The index of the step whose x coordinate should be retrieved.
-     * @return The x coordinate at the step.
-     */
-    public int getX(int index)
-    {
-        return getStep(index).getX();
-    }
-
-    /**
-     * Get the y coordinate for the step at the given index.
-     * 
-     * @param index The index of the step whose y coordinate should be retrieved.
-     * @return The y coordinate at the step.
-     */
-    public int getY(int index)
-    {
-        return getStep(index).getY();
+        steps = new ArrayList<>(8);
     }
 
     /**
@@ -86,6 +43,38 @@ public class Path
     }
 
     /**
+     * Get the length of the path, i.e. the number of steps.
+     * 
+     * @return The number of steps in this path.
+     */
+    public int getLength()
+    {
+        return steps.size();
+    }
+
+    /**
+     * Get the x coordinate for the step at the given index.
+     * 
+     * @param index The index of the step whose x coordinate should be retrieved.
+     * @return The x coordinate at the step.
+     */
+    public int getX(int index)
+    {
+        return getStep(index).getX();
+    }
+
+    /**
+     * Get the y coordinate for the step at the given index.
+     * 
+     * @param index The index of the step whose y coordinate should be retrieved.
+     * @return The y coordinate at the step.
+     */
+    public int getY(int index)
+    {
+        return getStep(index).getY();
+    }
+
+    /**
      * Check if this path contains the given step.
      * 
      * @param x The x coordinate of the step to check for.
@@ -95,5 +84,16 @@ public class Path
     public boolean contains(int x, int y)
     {
         return steps.contains(new Step(x, y));
+    }
+
+    /**
+     * Get the step at a given index in the path.
+     * 
+     * @param index The index of the step to retrieve. Note this should be &lt;= 0 and &gt; getLength();
+     * @return The step information, the position on the map.
+     */
+    private Step getStep(int index)
+    {
+        return steps.get(index);
     }
 }

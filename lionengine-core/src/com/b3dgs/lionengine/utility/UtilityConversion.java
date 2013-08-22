@@ -8,14 +8,6 @@ import java.nio.ByteBuffer;
 public final class UtilityConversion
 {
     /**
-     * Private constructor.
-     */
-    private UtilityConversion()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Convert an integer to an array of byte.
      * 
      * @param value The integer value.
@@ -107,5 +99,13 @@ public final class UtilityConversion
     public static int toUnsignedShort(short value)
     {
         return value - Short.MIN_VALUE;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityConversion()
+    {
+        throw new RuntimeException();
     }
 }

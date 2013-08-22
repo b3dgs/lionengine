@@ -59,74 +59,6 @@ public final class Force
     }
 
     /**
-     * Increase force with input value.
-     * 
-     * @param extrp The extrapolation value.
-     * @param force The force to add.
-     */
-    public void addForce(double extrp, Force force)
-    {
-        addForce(extrp, force.fh, force.fv);
-    }
-
-    /**
-     * Increase forces with input value.
-     * 
-     * @param extrp The extrapolation value.
-     * @param fh The added horizontal force.
-     * @param fv The added vertical force.
-     */
-    public void addForce(double extrp, double fh, double fv)
-    {
-        this.fh += fh * extrp;
-        this.fv += fv * extrp;
-        fixForce();
-    }
-
-    /**
-     * Set force.
-     * 
-     * @param force The force.
-     */
-    public void setForce(Force force)
-    {
-        setForce(force.getForceHorizontal(), force.getForceVertical());
-    }
-
-    /**
-     * Set forces.
-     * 
-     * @param fh The horizontal force.
-     * @param fv The vertical force.
-     */
-    public void setForce(double fh, double fv)
-    {
-        this.fh = fh;
-        this.fv = fv;
-        fixForce();
-    }
-
-    /**
-     * Set the maximum reachable force.
-     * 
-     * @param max The force max.
-     */
-    public void setForceMaximum(Force max)
-    {
-        forceMax = max;
-    }
-
-    /**
-     * Set the minimum reachable force.
-     * 
-     * @param min The force min.
-     */
-    public void setForceMinimum(Force min)
-    {
-        forceMin = min;
-    }
-
-    /**
      * Reach specified force at the specified speed. Has to be called in an <code>update(extrp)</code> function.
      * 
      * @param extrp The extrapolation value.
@@ -199,6 +131,74 @@ public final class Force
             fv = force.fv;
         }
         fixForce();
+    }
+
+    /**
+     * Increase force with input value.
+     * 
+     * @param extrp The extrapolation value.
+     * @param force The force to add.
+     */
+    public void addForce(double extrp, Force force)
+    {
+        addForce(extrp, force.fh, force.fv);
+    }
+
+    /**
+     * Increase forces with input value.
+     * 
+     * @param extrp The extrapolation value.
+     * @param fh The added horizontal force.
+     * @param fv The added vertical force.
+     */
+    public void addForce(double extrp, double fh, double fv)
+    {
+        this.fh += fh * extrp;
+        this.fv += fv * extrp;
+        fixForce();
+    }
+
+    /**
+     * Set force.
+     * 
+     * @param force The force.
+     */
+    public void setForce(Force force)
+    {
+        setForce(force.getForceHorizontal(), force.getForceVertical());
+    }
+
+    /**
+     * Set forces.
+     * 
+     * @param fh The horizontal force.
+     * @param fv The vertical force.
+     */
+    public void setForce(double fh, double fv)
+    {
+        this.fh = fh;
+        this.fv = fv;
+        fixForce();
+    }
+
+    /**
+     * Set the maximum reachable force.
+     * 
+     * @param max The force max.
+     */
+    public void setForceMaximum(Force max)
+    {
+        forceMax = max;
+    }
+
+    /**
+     * Set the minimum reachable force.
+     * 
+     * @param min The force min.
+     */
+    public void setForceMinimum(Force min)
+    {
+        forceMin = min;
     }
 
     /**

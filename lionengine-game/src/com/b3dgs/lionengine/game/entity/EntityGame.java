@@ -31,16 +31,6 @@ public abstract class EntityGame
     private static final Set<Integer> IDS = new HashSet<>(16);
     /** Last id used. */
     private static int lastId = 1;
-    /** Entity id. */
-    private final Integer id;
-    /** Configurable object reference. */
-    private final Configurable configurable;
-    /** Collidable object reference. */
-    private final Collidable collidable;
-    /** Mirrorable object reference. */
-    private final Mirrorable mirrorable;
-    /** Destroyed flag; true will remove it from the handler. */
-    private boolean destroy;
 
     /**
      * Get the next unused id.
@@ -55,6 +45,17 @@ public abstract class EntityGame
         }
         return Integer.valueOf(EntityGame.lastId);
     }
+
+    /** Entity id. */
+    private final Integer id;
+    /** Configurable object reference. */
+    private final Configurable configurable;
+    /** Collidable object reference. */
+    private final Collidable collidable;
+    /** Mirrorable object reference. */
+    private final Mirrorable mirrorable;
+    /** Destroyed flag; true will remove it from the handler. */
+    private boolean destroy;
 
     /**
      * Create a new entity.
@@ -89,27 +90,6 @@ public abstract class EntityGame
     }
 
     /**
-     * Create configurable.
-     * 
-     * @return The configurable instance.
-     */
-    protected Configurable createConfigurable()
-    {
-        return new ConfigurableModel();
-    }
-
-    /**
-     * Get the distance between the entity and the specified other entity.
-     * 
-     * @param entity The entity to compare to.
-     * @return The distance value.
-     */
-    public double getDistance(EntityGame entity)
-    {
-        return UtilityMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
-    }
-
-    /**
      * Get the entity id (unique).
      * 
      * @return The entity id.
@@ -129,6 +109,17 @@ public abstract class EntityGame
     }
 
     /**
+     * Get the distance between the entity and the specified other entity.
+     * 
+     * @param entity The entity to compare to.
+     * @return The distance value.
+     */
+    public double getDistance(EntityGame entity)
+    {
+        return UtilityMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
+    }
+
+    /**
      * Check if entity is going to be removed.
      * 
      * @return <code>true</code> if going to be removed, <code>false</code> else.
@@ -136,6 +127,16 @@ public abstract class EntityGame
     public boolean isDestroyed()
     {
         return destroy;
+    }
+
+    /**
+     * Create configurable.
+     * 
+     * @return The configurable instance.
+     */
+    protected Configurable createConfigurable()
+    {
+        return new ConfigurableModel();
     }
 
     /*

@@ -43,16 +43,6 @@ public interface Animator
     void play(int first, int last, double speed, boolean reverse, boolean repeat);
 
     /**
-     * Set the current animation speed. This function allows to change the current playing animation speed.
-     * <p>
-     * Example: it can be used to synchronize the player movement speed to the walking animation speed.
-     * </p>
-     * 
-     * @param speed The new animation speed.
-     */
-    void setAnimSpeed(double speed);
-
-    /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
      */
     void stopAnimation();
@@ -66,11 +56,14 @@ public interface Animator
     void updateAnimation(double extrp);
 
     /**
-     * Get current animation state.
+     * Set the current animation speed. This function allows to change the current playing animation speed.
+     * <p>
+     * Example: it can be used to synchronize the player movement speed to the walking animation speed.
+     * </p>
      * 
-     * @return animation The current animation state.
+     * @param speed The new animation speed.
      */
-    AnimState getAnimState();
+    void setAnimSpeed(double speed);
 
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
@@ -78,6 +71,13 @@ public interface Animator
      * @param frame The frame to set.
      */
     void setFrame(int frame);
+
+    /**
+     * Get current animation state.
+     * 
+     * @return animation The current animation state.
+     */
+    AnimState getAnimState();
 
     /**
      * Get the current playing frame number. The returned value is the same as calling

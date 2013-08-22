@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 /**
- * List of landscape types.
+ * Types of landscapes.
  */
 public enum TypeLandscape
 {

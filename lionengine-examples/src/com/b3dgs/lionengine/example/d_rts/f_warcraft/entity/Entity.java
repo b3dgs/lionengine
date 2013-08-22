@@ -218,7 +218,7 @@ public abstract class Entity
     }
 
     /*
-     * Skill
+     * SkilledServices
      */
 
     @Override

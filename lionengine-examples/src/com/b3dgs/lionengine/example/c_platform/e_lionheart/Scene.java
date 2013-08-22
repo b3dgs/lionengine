@@ -7,18 +7,33 @@ import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.GameLevel;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
- * Scene implementation.
+ * Represents the scene where the player can control his hero over the map, fighting enemies.
  */
 final class Scene
         extends Sequence
 {
-    /** World reference. */
-    private final World world;
+    /** Last level index played. */
+    private static int lastLevelIndex = -1;
+
+    /**
+     * Get the next level.
+     * 
+     * @return The next level.
+     */
+    private static GameLevel getNextLevel()
+    {
+        Scene.lastLevelIndex++;
+        return GameLevel.LEVELS[Scene.lastLevelIndex];
+    }
+
     /** Text reference. */
     private final Text text;
+    /** World reference. */
+    private final World world;
 
     /**
      * Standard constructor.
@@ -28,14 +43,28 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader);
-        world = new World(this);
         text = new Text(Font.SANS_SERIF, 8, Text.NORMAL);
+        world = new World(this);
     }
+
+    /**
+     * Load a level.
+     * 
+     * @param level The level to load.
+     */
+    private void loadLevel(GameLevel level)
+    {
+        world.loadFromFile(Media.get(AppLionheart.LEVELS_DIR, level.getFilename()));
+    }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get("levels", "level1.lrm"));
+        loadLevel(Scene.getNextLevel());
     }
 
     @Override

@@ -63,6 +63,42 @@ public abstract class Building
         destroy = Destroy.NONE;
     }
 
+    /**
+     * Start burning low effect.
+     * 
+     * @param current The current destroy status.
+     * @param anim The animation to play.
+     */
+    private void burning(Destroy current, Animation anim)
+    {
+        if (Destroy.NONE == destroy)
+        {
+            final int x = getLocationIntX() + getWidth() / 2 - 6;
+            final int y = getLocationIntY() + getHeight() / 2 - 4;
+            handlerEffect.add(x, y, burning);
+        }
+        burning.play(anim);
+        destroy = current;
+    }
+
+    /**
+     * Start explode effect.
+     */
+    private void explode()
+    {
+        final int x = getLocationIntX() + getWidth() / 2 - explode.getFrameWidth() / 2;
+        final int y = getLocationIntY();
+
+        handlerEffect.remove(burning);
+        handlerEffect.add(x, y, explode);
+        explode.play(animExplode);
+        destroy = Destroy.EXPLODING;
+    }
+
+    /*
+     * Entity
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -104,37 +140,5 @@ public abstract class Building
         {
             burning(Destroy.BURNING_HIGH, animBurningHigh);
         }
-    }
-
-    /**
-     * Start burning low effect.
-     * 
-     * @param current The current destroy status.
-     * @param anim The animation to play.
-     */
-    private void burning(Destroy current, Animation anim)
-    {
-        if (Destroy.NONE == destroy)
-        {
-            final int x = getLocationIntX() + getWidth() / 2 - 6;
-            final int y = getLocationIntY() + getHeight() / 2 - 4;
-            handlerEffect.add(x, y, burning);
-        }
-        burning.play(anim);
-        destroy = current;
-    }
-
-    /**
-     * Start explode effect.
-     */
-    private void explode()
-    {
-        final int x = getLocationIntX() + getWidth() / 2 - explode.getFrameWidth() / 2;
-        final int y = getLocationIntY();
-
-        handlerEffect.remove(burning);
-        handlerEffect.add(x, y, explode);
-        explode.play(animExplode);
-        destroy = Destroy.EXPLODING;
     }
 }

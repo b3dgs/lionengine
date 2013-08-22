@@ -18,6 +18,10 @@ final class ControlPanel
         super();
     }
 
+    /*
+     * ControlPanelModel
+     */
+
     @Override
     public void notifyUpdatedSelection(Set<Entity> selection)
     {

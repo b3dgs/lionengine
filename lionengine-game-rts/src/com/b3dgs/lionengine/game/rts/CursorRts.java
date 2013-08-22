@@ -85,23 +85,6 @@ public class CursorRts
     }
 
     /**
-     * Check if the cursor can be over the entity, depending of the camera view.
-     * 
-     * @param tiled The tiled reference.
-     * @param camera The camera reference.
-     * @return <code>true</code> if can click over, <code>false</code> else.
-     */
-    public boolean isOver(Tiled tiled, CameraRts camera)
-    {
-        return getScreenX() >= camera.getViewX() && getScreenX() < camera.getViewX() + camera.getViewWidth()
-                && getScreenY() >= camera.getViewY() && getScreenY() < camera.getViewY() + camera.getViewHeight()
-                && getLocationInTileX() >= tiled.getLocationInTileX()
-                && getLocationInTileX() < tiled.getLocationInTileX() + tiled.getWidthInTile()
-                && getLocationInTileY() >= tiled.getLocationInTileY()
-                && getLocationInTileY() < tiled.getLocationInTileY() + tiled.getHeightInTile();
-    }
-
-    /**
      * Get a rectangle describing a grid (placed on the cursor, depending of map tile size).
      * 
      * @param size The size (in tile square).
@@ -193,6 +176,23 @@ public class CursorRts
     public int getGridHeight()
     {
         return gridHeight;
+    }
+
+    /**
+     * Check if the cursor can be over the entity, depending of the camera view.
+     * 
+     * @param tiled The tiled reference.
+     * @param camera The camera reference.
+     * @return <code>true</code> if can click over, <code>false</code> else.
+     */
+    public boolean isOver(Tiled tiled, CameraRts camera)
+    {
+        return getScreenX() >= camera.getViewX() && getScreenX() < camera.getViewX() + camera.getViewWidth()
+                && getScreenY() >= camera.getViewY() && getScreenY() < camera.getViewY() + camera.getViewHeight()
+                && getLocationInTileX() >= tiled.getLocationInTileX()
+                && getLocationInTileX() < tiled.getLocationInTileX() + tiled.getWidthInTile()
+                && getLocationInTileY() >= tiled.getLocationInTileY()
+                && getLocationInTileY() < tiled.getLocationInTileY() + tiled.getHeightInTile();
     }
 
     /*

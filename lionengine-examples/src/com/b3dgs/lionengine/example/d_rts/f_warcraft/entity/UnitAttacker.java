@@ -65,6 +65,10 @@ public abstract class UnitAttacker
         addWeapon(weapon, id);
     }
 
+    /*
+     * Unit
+     */
+
     @Override
     public void update(double extrp)
     {
@@ -94,7 +98,7 @@ public abstract class UnitAttacker
     }
 
     /*
-     * Attacker user
+     * Attacker
      */
 
     @Override
@@ -104,7 +108,7 @@ public abstract class UnitAttacker
     }
 
     /*
-     * Attacker model
+     * AttackerServices
      */
 
     @Override
@@ -158,7 +162,7 @@ public abstract class UnitAttacker
     }
 
     /*
-     * Attacker listener
+     * AttackerListener
      */
 
     @Override

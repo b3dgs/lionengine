@@ -13,30 +13,34 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 /**
  * World implementation using AbstractWorld.
  */
-class World
+final class World
         extends WorldGame
 {
     /** Background color. */
     private static final Color BACKGROUND_COLOR = new Color(107, 136, 255);
-    /** Mario reference. */
-    private final Mario hero;
-    /** Map reference. */
-    private final Map map;
     /** Camera reference. */
     private final CameraPlatform camera;
+    /** Map reference. */
+    private final Map map;
+    /** Mario reference. */
+    private final Mario hero;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
     World(Sequence sequence)
     {
         super(sequence);
+        camera = new CameraPlatform(width, height);
         map = new Map();
         hero = new Mario(map, sequence.config.internal.getRate());
-        camera = new CameraPlatform(width, height);
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

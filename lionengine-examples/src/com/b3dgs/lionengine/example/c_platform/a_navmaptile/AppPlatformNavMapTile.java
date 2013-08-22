@@ -17,14 +17,6 @@ import com.b3dgs.lionengine.Version;
 public final class AppPlatformNavMapTile
 {
     /**
-     * Private constructor.
-     */
-    private AppPlatformNavMapTile()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -44,5 +36,13 @@ public final class AppPlatformNavMapTile
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppPlatformNavMapTile()
+    {
+        throw new RuntimeException();
     }
 }

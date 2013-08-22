@@ -15,14 +15,6 @@ package com.b3dgs.lionengine;
 public final class Check
 {
     /**
-     * Private constructor.
-     */
-    private Check()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Check if the condition if <code>true</code>. Throws a {@link LionEngineException} if <code>false</code>.
      * 
      * @param condition The condition to check.
@@ -48,5 +40,13 @@ public final class Check
         {
             throw new LionEngineException(messages);
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Check()
+    {
+        throw new RuntimeException();
     }
 }

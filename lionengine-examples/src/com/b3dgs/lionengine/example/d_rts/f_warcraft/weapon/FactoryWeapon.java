@@ -38,11 +38,9 @@ public final class FactoryWeapon
         this.context = context;
     }
 
-    @Override
-    protected SetupGame createSetup(TypeWeapon id)
-    {
-        return new SetupGame(Media.get(ResourcesLoader.WEAPONS_DIR, id + ".xml"));
-    }
+    /*
+     * FactoryWeaponRts
+     */
 
     @Override
     public Weapon createWeapon(TypeWeapon id, Attacker user)
@@ -60,5 +58,11 @@ public final class FactoryWeapon
             default:
                 throw new LionEngineException("Weapon not found: " + id.name());
         }
+    }
+
+    @Override
+    protected SetupGame createSetup(TypeWeapon id)
+    {
+        return new SetupGame(Media.get(ResourcesLoader.WEAPONS_DIR, id + ".xml"));
     }
 }

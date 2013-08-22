@@ -55,25 +55,27 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     }
 
     /**
-     * Set the projectile owner.
+     * Perform an attack from the owner (called when the launcher fired its projectile(s).
+     * <p>
+     * Use theses functions to add projectiles:
+     * </p>
+     * <ul>
+     * <li>{@link #addProjectile(Enum, int, int, double, double, double, double)}</li>
+     * <li>{@link #addProjectile(Enum, int, int, int, double, double, double, double)}</li>
+     * <li>{@link #addProjectile(Enum, long, int, int, double, double, double, double)}</li>
+     * </ul>
      * 
-     * @param owner The entity owner.
+     * @param owner The owner reference.
      */
-    public void setOwner(E2 owner)
-    {
-        this.owner = owner;
-    }
+    protected abstract void launchProjectile(E2 owner);
 
     /**
-     * Set the hit target properties.
+     * Perform an attack from the owner to target (called when the launcher fired its projectile(s).
      * 
-     * @param hitTargetOnly <code>true</code> to make the projectile hit only the target, <code>false</code> to allows
-     *            other hits.
+     * @param owner The owner reference.
+     * @param target The target reference.
      */
-    public void setCanHitTargetOnly(boolean hitTargetOnly)
-    {
-        this.hitTargetOnly = hitTargetOnly;
-    }
+    protected abstract void launchProjectile(E2 owner, E target);
 
     /**
      * Start shoot.
@@ -109,14 +111,24 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     }
 
     /**
-     * Get rate shoot percent.
+     * Set the projectile owner.
      * 
-     * @return rate percent value.
+     * @param owner The entity owner.
      */
-    public int getRatePercent()
+    public void setOwner(E2 owner)
     {
-        final int percent = (int) (timer.elapsed() * 100.0 / rate);
-        return UtilityMath.fixBetween(percent, 0, 100);
+        this.owner = owner;
+    }
+
+    /**
+     * Set the hit target properties.
+     * 
+     * @param hitTargetOnly <code>true</code> to make the projectile hit only the target, <code>false</code> to allows
+     *            other hits.
+     */
+    public void setCanHitTargetOnly(boolean hitTargetOnly)
+    {
+        this.hitTargetOnly = hitTargetOnly;
     }
 
     /**
@@ -150,6 +162,17 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     }
 
     /**
+     * Get rate shoot percent.
+     * 
+     * @return rate percent value.
+     */
+    public int getRatePercent()
+    {
+        final int percent = (int) (timer.elapsed() * 100.0 / rate);
+        return UtilityMath.fixBetween(percent, 0, 100);
+    }
+
+    /**
      * Get the hit target only state.
      * 
      * @return <code>true</code> if can hit only the target, <code>false</code> else.
@@ -158,29 +181,6 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     {
         return hitTargetOnly;
     }
-
-    /**
-     * Perform an attack from the owner (called when the launcher fired its projectile(s).
-     * <p>
-     * Use theses functions to add projectiles:
-     * </p>
-     * <ul>
-     * <li>{@link #addProjectile(Enum, int, int, double, double, double, double)}</li>
-     * <li>{@link #addProjectile(Enum, int, int, int, double, double, double, double)}</li>
-     * <li>{@link #addProjectile(Enum, long, int, int, double, double, double, double)}</li>
-     * </ul>
-     * 
-     * @param owner The owner reference.
-     */
-    protected abstract void launchProjectile(E2 owner);
-
-    /**
-     * Perform an attack from the owner to target (called when the launcher fired its projectile(s).
-     * 
-     * @param owner The owner reference.
-     * @param target The target reference.
-     */
-    protected abstract void launchProjectile(E2 owner, E target);
 
     /**
      * Add a projectile for the shoot.

@@ -17,14 +17,6 @@ import com.b3dgs.lionengine.Version;
 public class AppNetworkEntity
 {
     /**
-     * Private constructor.
-     */
-    private AppNetworkEntity()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param argv The arguments.
@@ -44,5 +36,13 @@ public class AppNetworkEntity
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppNetworkEntity()
+    {
+        throw new RuntimeException();
     }
 }

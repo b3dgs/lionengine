@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Background implementation.
  */
-public class Background
+final class Background
 {
     /** Alpha start. */
     private final int normal = 200;
@@ -38,7 +38,7 @@ public class Background
     /**
      * Constructor.
      */
-    public Background()
+    Background()
     {
         colors = new Color[normal + 1];
         for (int i = 0; i < colors.length; i++)
@@ -105,16 +105,6 @@ public class Background
     }
 
     /**
-     * Start the lightning effect.
-     */
-    private void effect()
-    {
-        alphaReal = 25;
-        alphaDest = normal;
-        effect = true;
-    }
-
-    /**
      * Set the alpha value.
      * 
      * @param c alpha value.
@@ -122,5 +112,15 @@ public class Background
     public void setAlpha(int c)
     {
         alpha = c;
+    }
+
+    /**
+     * Start the lightning effect.
+     */
+    private void effect()
+    {
+        alphaReal = 25;
+        alphaDest = normal;
+        effect = true;
     }
 }

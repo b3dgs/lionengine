@@ -6,14 +6,6 @@ package com.b3dgs.lionengine.input;
 public final class Input
 {
     /**
-     * Private constructor.
-     */
-    private Input()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Create a keyboard input.
      * 
      * @return The created keyboard listener.
@@ -33,5 +25,13 @@ public final class Input
     public static Mouse createMouse(double xRatio, double yRatio)
     {
         return new MouseImpl(xRatio, yRatio);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Input()
+    {
+        throw new RuntimeException();
     }
 }

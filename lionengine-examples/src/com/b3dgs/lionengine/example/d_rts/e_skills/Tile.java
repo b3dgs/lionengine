@@ -19,6 +19,10 @@ public final class Tile
         super(width, height);
     }
 
+    /*
+     * TileRts
+     */
+
     @Override
     public TileCollision getCollisionFrom(String collision, String type)
     {

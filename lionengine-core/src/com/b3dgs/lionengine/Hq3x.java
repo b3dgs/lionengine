@@ -7,39 +7,6 @@ import java.awt.image.BufferedImage;
  */
 final class Hq3x
 {
-    /** Source data array. */
-    private final int[] srcData;
-    /** Width. */
-    private final int width;
-    /** Height. */
-    private final int height;
-
-    /**
-     * Create a new hq3x filter.
-     * 
-     * @param srcImage The buffer source.
-     */
-    Hq3x(BufferedImage srcImage)
-    {
-        width = srcImage.getWidth();
-        height = srcImage.getHeight();
-        srcData = new int[width * height];
-        srcImage.getRGB(0, 0, width, height, srcData, 0, width);
-    }
-
-    /**
-     * Filtered buffer.
-     * 
-     * @return The filtered buffer.
-     */
-    BufferedImage getScaledImage()
-    {
-        final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final BufferedImage image = new BufferedImage(width * 3, height * 3, BufferedImage.TYPE_INT_ARGB);
-        image.setRGB(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
-        return image;
-    }
-
     /**
      * The raw scale implementation.
      */
@@ -182,5 +149,38 @@ final class Hq3x
 
             return dstImage;
         }
+    }
+
+    /** Source data array. */
+    private final int[] srcData;
+    /** Width. */
+    private final int width;
+    /** Height. */
+    private final int height;
+
+    /**
+     * Create a new hq3x filter.
+     * 
+     * @param srcImage The buffer source.
+     */
+    Hq3x(BufferedImage srcImage)
+    {
+        width = srcImage.getWidth();
+        height = srcImage.getHeight();
+        srcData = new int[width * height];
+        srcImage.getRGB(0, 0, width, height, srcData, 0, width);
+    }
+
+    /**
+     * Filtered buffer.
+     * 
+     * @return The filtered buffer.
+     */
+    BufferedImage getScaledImage()
+    {
+        final RawScale3x scaler = new RawScale3x(srcData, width, height);
+        final BufferedImage image = new BufferedImage(width * 3, height * 3, BufferedImage.TYPE_INT_ARGB);
+        image.setRGB(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
+        return image;
     }
 }

@@ -29,6 +29,10 @@ final class ProduceGrunt
         setOrder(false);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

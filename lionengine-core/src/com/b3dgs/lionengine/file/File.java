@@ -10,14 +10,6 @@ import com.b3dgs.lionengine.Media;
 public final class File
 {
     /**
-     * Private constructor.
-     */
-    private File()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Open a file as read only.
      * 
      * @param media The media file.
@@ -60,5 +52,13 @@ public final class File
     public static XmlNode createXmlNode(String name)
     {
         return new XmlNodeImpl(name);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private File()
+    {
+        throw new RuntimeException();
     }
 }

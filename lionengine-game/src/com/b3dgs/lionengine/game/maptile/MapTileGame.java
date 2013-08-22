@@ -92,87 +92,35 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     public abstract T createTile(int width, int height);
 
     /**
-     * Render map from starting position, showing a specified area, including a specific offset.
-     * 
-     * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
-     * @param inTileWidth The number of rendered tiles in width.
-     * @param inTileHeight The number of rendered tiles in height.
-     * @param offsetX The horizontal map offset.
-     * @param offsetY The vertical map offset.
+     * Generate the minimap from the current map.
      */
-    protected void render(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int inTileHeight, int offsetX,
-            int offsetY)
+    public void createMiniMap()
     {
-        // Each vertical tiles
-        for (int v = 0; v <= inTileHeight; v++)
+        if (minimap == null)
         {
-            final int ty = v + (sy - offsetY) / tileHeight;
-            if (!(ty < 0 || ty >= heightInTile))
+            minimap = UtilityImage.createBufferedImage(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
+        }
+        final Graphics g = minimap.getGraphics();
+        final int vert = getHeightInTile();
+        final int hori = getWidthInTile();
+
+        for (int v = 0; v < vert; v++)
+        {
+            for (int h = 0; h < hori; h++)
             {
-                // Each horizontal tiles
-                for (int h = 0; h <= inTileWidth; h++)
+                final T tile = getTile(h, v);
+                if (tile != null)
                 {
-                    final int tx = h + (sx - offsetX) / tileWidth;
-                    if (!(tx < 0 || tx >= widthInTile))
-                    {
-                        // Get the tile and render it
-                        final T tile = getTile(tx, ty);
-                        if (tile != null)
-                        {
-                            renderTile(g, screenHeight, sx, sy, tile);
-                        }
-                    }
+                    g.setColor(getTilePixelColor(tile));
                 }
+                else
+                {
+                    g.setColor(Color.BLACK);
+                }
+                g.fillRect(h, vert - v - 1, 1, 1);
             }
         }
-    }
-
-    /**
-     * Set a tile at specified map indexes.
-     * 
-     * @param v The vertical index.
-     * @param h The horizontal index.
-     * @param tile The tile reference.
-     */
-    public void setTile(int v, int h, T tile)
-    {
-        tile.setX(h * tileWidth);
-        tile.setY(v * tileHeight);
-        tiles.get(v).set(h, tile);
-    }
-
-    /**
-     * Get pattern (tilesheet) from its id.
-     * 
-     * @param pattern The pattern id.
-     * @return The pattern found.
-     */
-    public SpriteTiled getPattern(Integer pattern)
-    {
-        return patterns.get(pattern);
-    }
-
-    /**
-     * Get list of patterns id.
-     * 
-     * @return The set of patterns id.
-     */
-    public Set<Integer> getPatterns()
-    {
-        return patterns.keySet();
-    }
-
-    /**
-     * Get map theme.
-     * 
-     * @return The map tiles directory.
-     */
-    public Media getPatternsDirectory()
-    {
-        return patternsDirectory;
+        g.dispose();
     }
 
     /**
@@ -292,6 +240,105 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     }
 
     /**
+     * Load tile. Data are loaded this way:
+     * 
+     * <pre>
+     * (integer) pattern number
+     * (integer) index number inside pattern
+     * (integer) tile location x
+     * (integer tile location y
+     * </pre>
+     * 
+     * @param file The file reader reference.
+     * @param i The last loaded tile number.
+     * @return The loaded tile.
+     * @throws IOException If error on reading.
+     */
+    public T loadTile(FileReading file, int i) throws IOException
+    {
+        final int pattern = file.readInteger();
+        final int number = file.readInteger();
+        final int x = file.readInteger() * tileWidth + i * MapTileGame.BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * tileHeight;
+        final T tile = createTile(tileWidth, tileHeight);
+
+        tile.setCollision(tile.getCollisionFrom(null, null));
+        tile.setPattern(Integer.valueOf(pattern));
+        tile.setNumber(number);
+        tile.setX(x);
+        tile.setY(y);
+
+        return tile;
+    }
+
+    /**
+     * Render minimap on graphic output at specified location.
+     * 
+     * @param g The graphic output.
+     * @param x The location x.
+     * @param y The location y.
+     */
+    public void renderMiniMap(Graphic g, int x, int y)
+    {
+        g.drawImage(minimap, x, y);
+    }
+
+    /**
+     * Set a tile at specified map indexes.
+     * 
+     * @param v The vertical index.
+     * @param h The horizontal index.
+     * @param tile The tile reference.
+     */
+    public void setTile(int v, int h, T tile)
+    {
+        tile.setX(h * tileWidth);
+        tile.setY(v * tileHeight);
+        tiles.get(v).set(h, tile);
+    }
+
+    /**
+     * Get pattern (tilesheet) from its id.
+     * 
+     * @param pattern The pattern id.
+     * @return The pattern found.
+     */
+    public SpriteTiled getPattern(Integer pattern)
+    {
+        return patterns.get(pattern);
+    }
+
+    /**
+     * Get list of patterns id.
+     * 
+     * @return The set of patterns id.
+     */
+    public Set<Integer> getPatterns()
+    {
+        return patterns.keySet();
+    }
+
+    /**
+     * Get map theme.
+     * 
+     * @return The map tiles directory.
+     */
+    public Media getPatternsDirectory()
+    {
+        return patternsDirectory;
+    }
+
+    /**
+     * Get minimap surface reference.
+     * 
+     * @return The minimap surface reference.
+     */
+    public BufferedImage getMiniMap()
+    {
+        return minimap;
+    }
+
+    /**
      * Read collisions from external file.
      * 
      * @param media The file containing collisions.
@@ -330,13 +377,42 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     }
 
     /**
-     * Called when the collision has been assigned to the tile on loading.
+     * Render map from starting position, showing a specified area, including a specific offset.
      * 
-     * @param tile The tile.
+     * @param g The graphic output.
+     * @param screenHeight The view height (rendering start from bottom).
+     * @param sx The starting x (view real location x).
+     * @param sy The starting y (view real location y).
+     * @param inTileWidth The number of rendered tiles in width.
+     * @param inTileHeight The number of rendered tiles in height.
+     * @param offsetX The horizontal map offset.
+     * @param offsetY The vertical map offset.
      */
-    protected void onCollisionAssigned(T tile)
+    protected void render(Graphic g, int screenHeight, int sx, int sy, int inTileWidth, int inTileHeight, int offsetX,
+            int offsetY)
     {
-        // Nothing by default
+        // Each vertical tiles
+        for (int v = 0; v <= inTileHeight; v++)
+        {
+            final int ty = v + (sy - offsetY) / tileHeight;
+            if (!(ty < 0 || ty >= heightInTile))
+            {
+                // Each horizontal tiles
+                for (int h = 0; h <= inTileWidth; h++)
+                {
+                    final int tx = h + (sx - offsetX) / tileWidth;
+                    if (!(tx < 0 || tx >= widthInTile))
+                    {
+                        // Get the tile and render it
+                        final T tile = getTile(tx, ty);
+                        if (tile != null)
+                        {
+                            renderTile(g, screenHeight, sx, sy, tile);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -393,35 +469,25 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     }
 
     /**
-     * Load tile. Data are loaded this way:
+     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile. This
+     * function is used when generating the minimap.
      * 
-     * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
-     * (integer) tile location x
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param file The file reader reference.
-     * @param i The last loaded tile number.
-     * @return The loaded tile.
-     * @throws IOException If error on reading.
+     * @param tile The input tile.
+     * @return The color representing the tile on minimap.
      */
-    public T loadTile(FileReading file, int i) throws IOException
+    protected Color getTilePixelColor(T tile)
     {
-        final int pattern = file.readInteger();
-        final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTileGame.BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final T tile = createTile(tileWidth, tileHeight);
+        return Color.WHITE;
+    }
 
-        tile.setCollision(tile.getCollisionFrom(null, null));
-        tile.setPattern(Integer.valueOf(pattern));
-        tile.setNumber(number);
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
+    /**
+     * Called when the collision has been assigned to the tile on loading.
+     * 
+     * @param tile The tile.
+     */
+    protected void onCollisionAssigned(T tile)
+    {
+        // Nothing by default
     }
 
     /*
@@ -576,75 +642,5 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     public int getHeightInTile()
     {
         return heightInTile;
-    }
-
-    /*
-     * Minimap
-     */
-
-    /**
-     * Generate the minimap from the current map.
-     */
-    public void createMiniMap()
-    {
-        if (minimap == null)
-        {
-            minimap = UtilityImage.createBufferedImage(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
-        }
-        final Graphics g = minimap.getGraphics();
-        final int vert = getHeightInTile();
-        final int hori = getWidthInTile();
-
-        for (int v = 0; v < vert; v++)
-        {
-            for (int h = 0; h < hori; h++)
-            {
-                final T tile = getTile(h, v);
-                if (tile != null)
-                {
-                    g.setColor(getTilePixelColor(tile));
-                }
-                else
-                {
-                    g.setColor(Color.BLACK);
-                }
-                g.fillRect(h, vert - v - 1, 1, 1);
-            }
-        }
-        g.dispose();
-    }
-
-    /**
-     * Render minimap on graphic output at specified location.
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    public void renderMiniMap(Graphic g, int x, int y)
-    {
-        g.drawImage(minimap, x, y);
-    }
-
-    /**
-     * Get minimap surface reference.
-     * 
-     * @return The minimap surface reference.
-     */
-    public BufferedImage getMiniMap()
-    {
-        return minimap;
-    }
-
-    /**
-     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile. This
-     * function is used when generating the minimap.
-     * 
-     * @param tile The input tile.
-     * @return The color representing the tile on minimap.
-     */
-    protected Color getTilePixelColor(T tile)
-    {
-        return Color.WHITE;
     }
 }

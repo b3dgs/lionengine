@@ -8,6 +8,18 @@ public abstract class PlayerRts
 {
     /** Last player id. */
     private static int lastId = 0;
+
+    /**
+     * Get the next ID.
+     * 
+     * @return The next ID.
+     */
+    private static int getNextId()
+    {
+        PlayerRts.lastId++;
+        return PlayerRts.lastId;
+    }
+
     /** Player id. */
     public final int id;
     /** Player name. */
@@ -23,14 +35,13 @@ public abstract class PlayerRts
     }
 
     /**
-     * Get the next ID.
+     * Set player name.
      * 
-     * @return The next ID.
+     * @param name The player name.
      */
-    private static int getNextId()
+    public void setName(String name)
     {
-        PlayerRts.lastId++;
-        return PlayerRts.lastId;
+        this.name = name;
     }
 
     /**
@@ -41,15 +52,5 @@ public abstract class PlayerRts
     public String getName()
     {
         return name;
-    }
-
-    /**
-     * Set player name.
-     * 
-     * @param name The player name.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
     }
 }

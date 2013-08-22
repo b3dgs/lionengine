@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.input.Mouse;
 /**
  * Entity implementation.
  */
-class Entity
+final class Entity
         extends EntityPlatform<TileCollision, Tile>
 {
     /** Mouse click x. */
@@ -45,6 +45,10 @@ class Entity
             mouseY = mouse.getOnWindowY();
         }
     }
+
+    /*
+     * EntityPlatform
+     */
 
     @Override
     public void render(Graphic g, CameraPlatform camera)

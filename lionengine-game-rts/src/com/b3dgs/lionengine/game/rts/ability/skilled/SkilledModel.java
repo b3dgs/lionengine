@@ -34,6 +34,10 @@ public class SkilledModel<T extends Enum<T>, S extends SkillRts<T>>
         nextSkillPanel = -1;
     }
 
+    /*
+     * SkilledServices
+     */
+
     @Override
     public void update(double extrp)
     {

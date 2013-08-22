@@ -9,14 +9,6 @@ public final class UtilityRandom
     private static final java.util.Random RANDOM = new java.util.Random();
 
     /**
-     * Private constructor.
-     */
-    private UtilityRandom()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Set the seed.
      * 
      * @param seed The seed value.
@@ -77,5 +69,13 @@ public final class UtilityRandom
     public static double getRandomDouble()
     {
         return UtilityRandom.RANDOM.nextDouble();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityRandom()
+    {
+        throw new RuntimeException();
     }
 }

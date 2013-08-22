@@ -17,14 +17,6 @@ import com.b3dgs.lionengine.Version;
 public class AppPlatformOpponent
 {
     /**
-     * Private constructor.
-     */
-    private AppPlatformOpponent()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param argv The arguments.
@@ -44,5 +36,13 @@ public class AppPlatformOpponent
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppPlatformOpponent()
+    {
+        throw new RuntimeException();
     }
 }

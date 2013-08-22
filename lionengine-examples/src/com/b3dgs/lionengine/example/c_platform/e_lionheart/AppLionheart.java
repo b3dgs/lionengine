@@ -19,23 +19,25 @@ public final class AppLionheart
     public static final String NAME = "Lionheart";
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
+    /** Levels directory. */
+    public static final String LEVELS_DIR = "levels";
+    /** Sheets directory. */
+    public static final String TILES_DIR = "tiles";
+    /** Rasters directory. */
+    public static final String RASTERS_DIR = "rasters";
+    /** Main entity directory name. */
+    public static final String ENTITIES_DIR = "entity";
+    /** Main entity directory name. */
+    public static final String BACKGROUNDS_DIR = "backgrounds";
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "lionheart");
     /** Native display. */
     private static final Display NATIVE_DISPLAY = new Display(320, 240, 16, 60);
 
     /**
-     * Private constructor.
-     */
-    private AppLionheart()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
-     * @param args The arguments.
+     * @param args The arguments (none).
      */
     public static void main(String args[])
     {
@@ -46,5 +48,13 @@ public final class AppLionheart
         final Loader loader = new Loader(config);
 
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppLionheart()
+    {
+        throw new RuntimeException();
     }
 }

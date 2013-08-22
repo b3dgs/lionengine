@@ -8,14 +8,6 @@ import com.b3dgs.lionengine.Media;
 public final class AudioWav
 {
     /**
-     * Private constructor.
-     */
-    private AudioWav()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Load a sound file <code>(.wav)</code>.
      * 
      * @param media The audio sound media.
@@ -36,5 +28,13 @@ public final class AudioWav
     public static Wav loadWav(Media media, int maxSimultaneous)
     {
         return new WavPlayer(media, maxSimultaneous);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AudioWav()
+    {
+        throw new RuntimeException();
     }
 }

@@ -13,6 +13,28 @@ public interface Localizable
         extends Surface
 {
     /**
+     * Teleport to a new location. Old location is not stored. Movement is equal to 0.
+     * 
+     * @param x The new horizontal location.
+     * @param y The new vertical location.
+     */
+    void teleport(double x, double y);
+
+    /**
+     * Teleport to a new horizontal location. Old location is not stored.
+     * 
+     * @param x The new horizontal location.
+     */
+    void teleportX(double x);
+
+    /**
+     * Teleport to a new vertical location. Old location is not stored.
+     * 
+     * @param y The new vertical location.
+     */
+    void teleportY(double y);
+
+    /**
      * Move location using different forces. Old location is stored before moving and the movement is updated after
      * calculation.
      * 
@@ -33,8 +55,7 @@ public interface Localizable
     void moveLocation(double extrp, double vx, double vy);
 
     /**
-     * Set location instantly. Old location is not stored, and takes theses new values directly. So the movement is
-     * equal to 0.
+     * Set location instantly. Old location is stored before moving and the movement is updated after calculation.
      * 
      * @param x The new horizontal location.
      * @param y The new vertical location.
@@ -42,14 +63,14 @@ public interface Localizable
     void setLocation(double x, double y);
 
     /**
-     * Set horizontal location.
+     * Set horizontal location. Old location is stored before moving and the movement is updated after calculation.
      * 
      * @param x The new horizontal location.
      */
     void setLocationX(double x);
 
     /**
-     * Set vertical location.
+     * Set vertical location. Old location is stored before moving and the movement is updated after calculation.
      * 
      * @param y The new vertical location.
      */

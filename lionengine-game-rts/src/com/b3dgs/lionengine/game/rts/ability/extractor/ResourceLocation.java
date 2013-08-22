@@ -52,6 +52,10 @@ class ResourceLocation
         this.th = th;
     }
 
+    /*
+     * Tiled
+     */
+
     @Override
     public int getLocationInTileX()
     {

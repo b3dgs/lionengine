@@ -22,6 +22,10 @@ final class Sword
         super(TypeWeapon.sword, user, context);
     }
 
+    /*
+     * Weapon
+     */
+
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {

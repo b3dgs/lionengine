@@ -31,14 +31,6 @@ import com.b3dgs.lionengine.swing.ComboRenderer;
 public final class UtilitySwing
 {
     /**
-     * Private constructor.
-     */
-    private UtilitySwing()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Create a bordered panel.
      * 
      * @param title The panel title.
@@ -271,5 +263,13 @@ public final class UtilitySwing
     {
         dialog.getParent().setEnabled(true);
         dialog.dispose();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilitySwing()
+    {
+        throw new RuntimeException();
     }
 }

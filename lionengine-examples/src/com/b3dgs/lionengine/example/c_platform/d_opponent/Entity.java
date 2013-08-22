@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
@@ -16,24 +17,22 @@ import com.b3dgs.lionengine.game.platform.EntityPlatform;
 abstract class Entity
         extends EntityPlatform<TileCollision, Tile>
 {
-    /** Desired fps value. */
-    protected final int desiredFps;
-    /** Jump force. */
-    protected double jumpForceValue;
-    /** Movement max speed. */
-    protected double movementSpeedValue;
-    /** Movement force force. */
-    protected final Force movementForce;
-    /** Movement force destination force. */
-    protected final Force movementForceDest;
-    /** Movement jump force. */
-    protected final Force jumpForce;
     /** Map reference. */
     protected final Map map;
+    /** Desired fps value. */
+    protected final int desiredFps;
+    /** Movement force. */
+    protected final Movement movement;
+    /** Movement jump force. */
+    protected final Force jumpForce;
     /** Extra time for jump before fall. */
     protected final Timing timerExtraJump;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
+    /** Jump force. */
+    protected double jumpForceValue;
+    /** Movement max speed. */
+    protected double movementSpeedValue;
     /** Key right state. */
     protected boolean right;
     /** Key left state. */
@@ -50,7 +49,7 @@ abstract class Entity
     protected boolean dead;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param setup The setup reference.
      * @param map The map reference.
@@ -64,8 +63,7 @@ abstract class Entity
         animations = new EnumMap<>(EntityState.class);
         jumpForceValue = getDataDouble("jumpSpeed", "data");
         movementSpeedValue = getDataDouble("movementSpeed", "data");
-        movementForce = new Force();
-        movementForceDest = new Force();
+        movement = new Movement();
         jumpForce = new Force();
         timerExtraJump = new Timing();
         state = EntityState.IDLE;
@@ -139,15 +137,6 @@ abstract class Entity
     }
 
     /**
-     * Set to zero movement speed force.
-     */
-    protected void resetMovementSpeed()
-    {
-        movementForce.setForce(Force.ZERO);
-        movementForceDest.setForce(Force.ZERO);
-    }
-
-    /**
      * Called when horizontal collision occurred.
      */
     protected void onHorizontalCollision()
@@ -182,13 +171,13 @@ abstract class Entity
         if (getLocationX() < limitLeft)
         {
             setLocationX(limitLeft);
-            resetMovementSpeed();
+            movement.reset();
         }
         final int limitRight = map.getWidthInTile() * map.getTileWidth();
         if (getLocationX() > limitRight)
         {
             setLocationX(limitRight);
-            resetMovementSpeed();
+            movement.reset();
         }
     }
 
@@ -197,7 +186,7 @@ abstract class Entity
      */
     private void updateForces()
     {
-        movementForceDest.setForce(Force.ZERO);
+        movement.setForceToReach(Force.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -211,7 +200,7 @@ abstract class Entity
         {
             speed = 0.0;
         }
-        movementForceDest.setForce(speed, 0.0);
+        movement.setForceToReach(speed, 0.0);
 
         if (up && canJump())
         {
@@ -275,7 +264,7 @@ abstract class Entity
             final Double x = tile.getCollisionX(this);
             if (applyHorizontalCollision(x))
             {
-                resetMovementSpeed();
+                movement.reset();
                 onHorizontalCollision();
             }
         }
@@ -307,6 +296,10 @@ abstract class Entity
         }
     }
 
+    /*
+     * EntityPlatform
+     */
+
     @Override
     protected void handleActions(double extrp)
     {
@@ -317,7 +310,8 @@ abstract class Entity
     @Override
     protected void handleMovements(double extrp)
     {
-        updateGravity(extrp, desiredFps, movementForce, jumpForce);
+        movement.update(extrp);
+        updateGravity(extrp, desiredFps, movement.getForce(), jumpForce);
         updateMirror();
     }
 
@@ -350,7 +344,7 @@ abstract class Entity
         // Assign an animation for each state
         if (state == EntityState.WALK)
         {
-            setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 12.0);
+            setAnimSpeed(Math.abs(movement.getForce().getForceHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)

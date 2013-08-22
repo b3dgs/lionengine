@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 import java.awt.Color;
 
 /**
- * List of minimap tile color.
+ * List of minimap tile colors.
  */
 public enum TypeTileColor
 {

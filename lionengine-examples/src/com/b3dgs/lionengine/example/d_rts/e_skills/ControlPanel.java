@@ -54,25 +54,6 @@ final class ControlPanel
         lastSingleSelection = null;
     }
 
-    @Override
-    public void update(double extrp, CameraRts camera, CursorRts cursor, Keyboard keyboard)
-    {
-        super.update(extrp, camera, cursor, keyboard);
-
-        // Update the single selection if has
-        if (lastSingleSelection != null)
-        {
-            if (!lastSingleSelection.isSelected())
-            {
-                lastSingleSelection = null;
-            }
-            else
-            {
-                updateSingleEntity(lastSingleSelection, cursor, extrp);
-            }
-        }
-    }
-
     /**
      * Render panel.
      * 
@@ -149,6 +130,29 @@ final class ControlPanel
                 continue;
             }
             skill.renderOnPanel(g);
+        }
+    }
+
+    /*
+     * ControlPanelModel
+     */
+
+    @Override
+    public void update(double extrp, CameraRts camera, CursorRts cursor, Keyboard keyboard)
+    {
+        super.update(extrp, camera, cursor, keyboard);
+
+        // Update the single selection if has
+        if (lastSingleSelection != null)
+        {
+            if (!lastSingleSelection.isSelected())
+            {
+                lastSingleSelection = null;
+            }
+            else
+            {
+                updateSingleEntity(lastSingleSelection, cursor, extrp);
+            }
         }
     }
 

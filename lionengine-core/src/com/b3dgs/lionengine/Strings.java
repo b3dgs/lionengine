@@ -36,14 +36,6 @@ public final class Strings
     private static final Map<String, String> strings = new HashMap<>(8);
 
     /**
-     * Private constructor.
-     */
-    private Strings()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Get string reference from its name.
      * 
      * @param string The input string.
@@ -84,5 +76,13 @@ public final class Strings
     public static void clearStringsRef()
     {
         Strings.strings.clear();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Strings()
+    {
+        throw new RuntimeException();
     }
 }

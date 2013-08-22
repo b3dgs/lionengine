@@ -28,14 +28,6 @@ public final class AppRtsCursor
     public static final String PATH = Media.getPath("resources", "rts");
 
     /**
-     * Private constructor.
-     */
-    private AppRtsCursor()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Main function.
      * 
      * @param args The arguments.
@@ -55,5 +47,13 @@ public final class AppRtsCursor
         // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AppRtsCursor()
+    {
+        throw new RuntimeException();
     }
 }

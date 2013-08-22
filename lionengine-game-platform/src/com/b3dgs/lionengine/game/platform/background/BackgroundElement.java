@@ -35,6 +35,26 @@ public class BackgroundElement
     }
 
     /**
+     * Set horizontal offset value.
+     * 
+     * @param offsetX The horizontal offset value.
+     */
+    public void setOffsetX(double offsetX)
+    {
+        this.offsetX = offsetX;
+    }
+
+    /**
+     * Set vertical offset value.
+     * 
+     * @param offsetY The vertical offset value.
+     */
+    public void setOffsetY(double offsetY)
+    {
+        this.offsetY = offsetY;
+    }
+
+    /**
      * Get sprite reference.
      * 
      * @return The sprite reference.
@@ -82,25 +102,5 @@ public class BackgroundElement
     public double getOffsetY()
     {
         return offsetY;
-    }
-
-    /**
-     * Set horizontal offset value.
-     * 
-     * @param offsetX The horizontal offset value.
-     */
-    public void setOffsetX(double offsetX)
-    {
-        this.offsetX = offsetX;
-    }
-
-    /**
-     * Set vertical offset value.
-     * 
-     * @param offsetY The vertical offset value.
-     */
-    public void setOffsetY(double offsetY)
-    {
-        this.offsetY = offsetY;
     }
 }

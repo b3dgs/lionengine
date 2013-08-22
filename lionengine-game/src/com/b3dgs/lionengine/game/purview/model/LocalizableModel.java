@@ -65,6 +65,30 @@ public class LocalizableModel
      */
 
     @Override
+    public void teleport(double x, double y)
+    {
+        current.set(x, y);
+        old.set(x, y);
+        updateMovement();
+    }
+
+    @Override
+    public void teleportX(double x)
+    {
+        current.setX(x);
+        old.setX(x);
+        updateMovement();
+    }
+
+    @Override
+    public void teleportY(double y)
+    {
+        current.setY(y);
+        old.setY(y);
+        updateMovement();
+    }
+
+    @Override
     public void moveLocation(double extrp, Force force, Force... forces)
     {
         backupLocation();

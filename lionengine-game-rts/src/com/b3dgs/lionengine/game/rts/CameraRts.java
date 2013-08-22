@@ -115,33 +115,6 @@ public class CameraRts
     }
 
     /**
-     * Check if camera can see the entity.
-     * 
-     * @param entity The entity to check.
-     * @return <code>true</code> if can see the entity, <code>false</code> else.
-     */
-    public boolean canSee(EntityRts entity)
-    {
-        final double border = 0.1;
-        return entity.getLocationX() + entity.getWidth() >= getLocationRealX() + border
-                && entity.getLocationX() <= getLocationRealX() + getViewWidth() - border
-                && entity.getLocationY() + entity.getHeight() >= getLocationRealY() + border
-                && entity.getLocationY() <= getLocationRealY() + getViewHeight() - border;
-    }
-
-    /**
-     * Check if cursor in inside camera view (outside panel).
-     * 
-     * @param cursor The cursor reference.
-     * @return <code>true</code> if cursor in inside camera view, <code>false</code> else.
-     */
-    public boolean isInside(CursorRts cursor)
-    {
-        return cursor.getScreenX() >= getViewX() && cursor.getScreenX() <= getViewX() + getViewWidth()
-                && cursor.getScreenY() >= getViewY() && cursor.getScreenY() <= getViewY() + getViewHeight();
-    }
-
-    /**
      * Set camera sensibility (the lower it is, the faster is the camera movement).
      * 
      * @param hSens The horizontal sensibility value (positive value).
@@ -219,8 +192,35 @@ public class CameraRts
     }
 
     /*
-     * Localizable
+     * CameraGame
      */
+
+    /**
+     * Check if cursor in inside camera view (outside panel).
+     * 
+     * @param cursor The cursor reference.
+     * @return <code>true</code> if cursor in inside camera view, <code>false</code> else.
+     */
+    public boolean isInside(CursorRts cursor)
+    {
+        return cursor.getScreenX() >= getViewX() && cursor.getScreenX() <= getViewX() + getViewWidth()
+                && cursor.getScreenY() >= getViewY() && cursor.getScreenY() <= getViewY() + getViewHeight();
+    }
+
+    /**
+     * Check if camera can see the entity.
+     * 
+     * @param entity The entity to check.
+     * @return <code>true</code> if can see the entity, <code>false</code> else.
+     */
+    public boolean canSee(EntityRts entity)
+    {
+        final double border = 0.1;
+        return entity.getLocationX() + entity.getWidth() >= getLocationRealX() + border
+                && entity.getLocationX() <= getLocationRealX() + getViewWidth() - border
+                && entity.getLocationY() + entity.getHeight() >= getLocationRealY() + border
+                && entity.getLocationY() <= getLocationRealY() + getViewHeight() - border;
+    }
 
     @Override
     public void moveLocation(double extrp, double vx, double vy)

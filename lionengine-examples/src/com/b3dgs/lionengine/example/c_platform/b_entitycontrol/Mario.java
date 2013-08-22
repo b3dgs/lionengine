@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -13,7 +14,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Implementation of our controllable entity.
  */
-class Mario
+final class Mario
         extends EntityPlatform<TileCollision, Tile>
 {
     /** Mario configuration full path. */
@@ -26,10 +27,8 @@ class Mario
     private static final double MOVEMENT_SPEED = 3.0;
     /** Desired fps value. */
     private final int desiredFps;
-    /** Movement force force. */
-    private final Force movementForce;
-    /** Movement force destination force. */
-    private final Force movementForceDest;
+    /** Movement force. */
+    private final Movement movement;
     /** Movement jump force. */
     private final Force jumpForce;
     /** Animations list. */
@@ -46,7 +45,7 @@ class Mario
     private EntityState stateOld;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param desiredFps The desired fps.
      */
@@ -54,8 +53,7 @@ class Mario
     {
         super(new SetupEntityGame(Mario.MARIO_CONFIG), null);
         this.desiredFps = desiredFps;
-        movementForce = new Force();
-        movementForceDest = new Force();
+        movement = new Movement();
         jumpForce = new Force();
         animations = new EnumMap<>(EntityState.class);
         state = EntityState.IDLE;
@@ -120,7 +118,7 @@ class Mario
      */
     private void updateForces()
     {
-        movementForceDest.setForce(Force.ZERO);
+        movement.setForceToReach(Force.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -134,7 +132,7 @@ class Mario
         {
             speed = 0.0;
         }
-        movementForceDest.setForce(speed, 0.0);
+        movement.setForceToReach(speed, 0.0);
 
         if (up && canJump())
         {
@@ -208,8 +206,10 @@ class Mario
         }
 
         // Update final movement
-        movementForce.reachForce(extrp, movementForceDest, speed, sensibility);
-        updateGravity(extrp, desiredFps, movementForce, jumpForce);
+        movement.setVelocity(speed);
+        movement.setSensibility(sensibility);
+        movement.update(extrp);
+        updateGravity(extrp, desiredFps, movement.getForce(), jumpForce);
         updateMirror();
     }
 
@@ -231,7 +231,7 @@ class Mario
         // Assign an animation for each state
         if (state == EntityState.WALK)
         {
-            setAnimSpeed(Math.abs(movementForce.getForceHorizontal()) / 12.0);
+            setAnimSpeed(Math.abs(movement.getForce().getForceHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)

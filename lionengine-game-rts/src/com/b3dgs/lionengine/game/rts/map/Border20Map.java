@@ -193,6 +193,84 @@ public class Border20Map
     }
 
     /**
+     * Usually called in case of matching error. This function will perform some last checks.
+     * 
+     * @param map The axis20 map reference (map which will contain axis data).
+     * @param tx The tile x to check.
+     * @param ty The tile y to check.
+     */
+    public void finalCheck(Border20[][] map, int tx, int ty)
+    {
+        Border20 l, r, t, d;
+        for (int y = ty - 1; y <= ty + 1; y++)
+        {
+            for (int x = tx - 1; x <= tx + 1; x++)
+            {
+                l = left(map, x, y);
+                r = right(map, x, y);
+                t = top(map, x, y);
+                d = down(map, x, y);
+
+                if (get(map, x, y) == Border20.CORNER_DOWN_LEFT || get(map, x, y) == Border20.CORNER_DOWN_RIGHT)
+                {
+                    if (l == Border20.NONE && r == Border20.NONE && t == Border20.NONE && d != Border20.NONE)
+                    {
+                        set(map, x, y, Border20.DOWN_MIDDLE);
+                    }
+                }
+                if (get(map, x, y) == Border20.CORNER_TOP_LEFT || get(map, x, y) == Border20.CORNER_TOP_RIGHT)
+                {
+                    if (l == Border20.NONE && r == Border20.NONE && t != Border20.NONE && d == Border20.NONE)
+                    {
+                        set(map, x, y, Border20.TOP_MIDDLE);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Set an axis value.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @param axis The axis value.
+     */
+    public void set(Border20[][] map, int tx, int ty, Border20 axis)
+    {
+        try
+        {
+            map[ty][tx] = axis;
+            safe[ty][tx] = true;
+        }
+        catch (final ArrayIndexOutOfBoundsException ex)
+        {
+            // Ignore
+        }
+    }
+
+    /**
+     * Get axis value of the specified location.
+     * 
+     * @param map The map reference.
+     * @param tx The horizontal tile.
+     * @param ty The vertical tile.
+     * @return The axis value.
+     */
+    public Border20 get(Border20[][] map, int tx, int ty)
+    {
+        try
+        {
+            return map[ty][tx];
+        }
+        catch (final ArrayIndexOutOfBoundsException ex)
+        {
+            return Border20.UNKNOWN;
+        }
+    }
+
+    /**
      * Check the fog around this tile.
      * 
      * @param map The fog map.
@@ -403,64 +481,6 @@ public class Border20Map
     }
 
     /**
-     * Usually called in case of matching error. This function will perform some last checks.
-     * 
-     * @param map The axis20 map reference (map which will contain axis data).
-     * @param tx The tile x to check.
-     * @param ty The tile y to check.
-     */
-    public void finalCheck(Border20[][] map, int tx, int ty)
-    {
-        Border20 l, r, t, d;
-        for (int y = ty - 1; y <= ty + 1; y++)
-        {
-            for (int x = tx - 1; x <= tx + 1; x++)
-            {
-                l = left(map, x, y);
-                r = right(map, x, y);
-                t = top(map, x, y);
-                d = down(map, x, y);
-
-                if (get(map, x, y) == Border20.CORNER_DOWN_LEFT || get(map, x, y) == Border20.CORNER_DOWN_RIGHT)
-                {
-                    if (l == Border20.NONE && r == Border20.NONE && t == Border20.NONE && d != Border20.NONE)
-                    {
-                        set(map, x, y, Border20.DOWN_MIDDLE);
-                    }
-                }
-                if (get(map, x, y) == Border20.CORNER_TOP_LEFT || get(map, x, y) == Border20.CORNER_TOP_RIGHT)
-                {
-                    if (l == Border20.NONE && r == Border20.NONE && t != Border20.NONE && d == Border20.NONE)
-                    {
-                        set(map, x, y, Border20.TOP_MIDDLE);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Set an axis value.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @param axis The axis value.
-     */
-    public void set(Border20[][] map, int tx, int ty, Border20 axis)
-    {
-        try
-        {
-            map[ty][tx] = axis;
-            safe[ty][tx] = true;
-        }
-        catch (final ArrayIndexOutOfBoundsException ex)
-        {
-            // Ignore
-        }
-    }
-
-    /**
      * Set the main fog.
      * 
      * @param map The map reference.
@@ -504,26 +524,6 @@ public class Border20Map
         catch (final ArrayIndexOutOfBoundsException ex)
         {
             // Ignore
-        }
-    }
-
-    /**
-     * Get axis value of the specified location.
-     * 
-     * @param map The map reference.
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @return The axis value.
-     */
-    public Border20 get(Border20[][] map, int tx, int ty)
-    {
-        try
-        {
-            return map[ty][tx];
-        }
-        catch (final ArrayIndexOutOfBoundsException ex)
-        {
-            return Border20.UNKNOWN;
         }
     }
 

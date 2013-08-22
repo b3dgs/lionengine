@@ -15,6 +15,17 @@ import com.sun.jna.Native;
  */
 public final class AudioSc68
 {
+    /**
+     * Create a sc68 player.
+     * 
+     * @return The sc68 player instance.
+     */
+    public static Sc68 createSc68Player()
+    {
+        final AudioSc68 sc68 = new AudioSc68();
+        return new Sc68Player(sc68.getBinding());
+    }
+
     /** Sc68 binding. */
     private final Sc68Binding bind;
 
@@ -59,16 +70,5 @@ public final class AudioSc68
     private Sc68Binding getBinding()
     {
         return bind;
-    }
-
-    /**
-     * Create a sc68 player.
-     * 
-     * @return The sc68 player instance.
-     */
-    public static Sc68 createSc68Player()
-    {
-        final AudioSc68 sc68 = new AudioSc68();
-        return new Sc68Player(sc68.getBinding());
     }
 }

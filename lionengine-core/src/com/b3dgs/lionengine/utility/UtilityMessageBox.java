@@ -8,14 +8,6 @@ import javax.swing.JOptionPane;
 public final class UtilityMessageBox
 {
     /**
-     * Private constructor.
-     */
-    private UtilityMessageBox()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Displays an information message.
      * 
      * @param title The information title.
@@ -46,5 +38,13 @@ public final class UtilityMessageBox
     public static void error(String title, String message)
     {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private UtilityMessageBox()
+    {
+        throw new RuntimeException();
     }
 }

@@ -14,9 +14,9 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
- * World implementation using WorldGame.
+ * World implementation.
  */
-public class World
+final class World
         extends WorldGame
 {
     /** Map reference. */
@@ -33,7 +33,7 @@ public class World
      * 
      * @param sequence The sequence reference.
      */
-    public World(Sequence sequence)
+    World(Sequence sequence)
     {
         super(sequence);
         map = new Map();
@@ -66,6 +66,10 @@ public class World
             Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
         }
     }
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

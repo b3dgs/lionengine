@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 
 /**
- * List of different races.
+ * List of race types.
  */
 public enum TypeRace
 {

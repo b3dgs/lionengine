@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Handle the game, count score, and reset the ball in case of goal.
  */
-class Handler
+final class Handler
 {
     /** Screen width. */
     private final int screenWidth;

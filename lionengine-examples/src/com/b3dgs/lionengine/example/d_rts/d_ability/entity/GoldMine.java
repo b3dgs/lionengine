@@ -31,11 +31,19 @@ public final class GoldMine
         setFrame(1);
     }
 
+    /*
+     * Building
+     */
+
     @Override
     public void stop()
     {
         // Nothing to do
     }
+
+    /*
+     * Extractible
+     */
 
     @Override
     public int extractResource(int amount)

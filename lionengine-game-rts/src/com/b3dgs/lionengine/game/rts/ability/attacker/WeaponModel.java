@@ -71,7 +71,7 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     }
 
     /*
-     * Attacker services
+     * AttackerServices
      */
 
     @Override
@@ -247,7 +247,7 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     }
 
     /*
-     * Attacker listener
+     * AttackerListener
      */
 
     @Override

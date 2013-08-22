@@ -9,12 +9,16 @@ public final class Map
         extends MapTileRts<TileCollision, Tile>
 {
     /**
-     * Map constructor. Tiles are stored in 'tiles' directory, with a size of 16*16.
+     * Constructor. Tiles are stored in 'tiles' directory, with a size of 16*16.
      */
     Map()
     {
         super(16, 16);
     }
+
+    /*
+     * MapTileRts
+     */
 
     @Override
     public Tile createTile(int width, int height)

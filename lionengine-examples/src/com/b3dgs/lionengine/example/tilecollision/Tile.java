@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Tile implementation.
  */
-class Tile
+final class Tile
         extends TilePlatform<TileCollision>
 {
     /**
@@ -34,6 +34,10 @@ class Tile
         final int y = camera.getViewpointY(getY() + getHeight());
         g.drawRect(x, y, getWidth(), getHeight(), false);
     }
+
+    /*
+     * TilePlatform
+     */
 
     @Override
     public TileCollision getCollisionFrom(String collision, String type)

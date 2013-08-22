@@ -61,8 +61,45 @@ final class WavPlayer
         volume = 100;
     }
 
+    /**
+     * Decrease the routine counter value.
+     */
+    void decreaseCount()
+    {
+        count = Integer.valueOf(count.intValue() - 1);
+    }
+
+    /**
+     * Add a sound routine to the free list and remove it from the busy list.
+     * 
+     * @param routine Sound routine.
+     * @throws InterruptedException If errors.
+     */
+    void addFree(WavRoutine routine) throws InterruptedException
+    {
+        busySounds.remove(routine);
+        freeSounds.put(routine);
+    }
+
+    /**
+     * Add a sound routine to the busy list.
+     * 
+     * @param routine Sound routine.
+     */
+    void addBusy(WavRoutine routine)
+    {
+        try
+        {
+            busySounds.put(routine);
+        }
+        catch (final InterruptedException exception)
+        {
+            Verbose.exception(WavPlayer.class, "play", exception);
+        }
+    }
+
     /*
-     * SoundPlayer
+     * Wav
      */
 
     @Override
@@ -122,43 +159,6 @@ final class WavPlayer
         if (routine != null)
         {
             routine.stopSound();
-        }
-    }
-
-    /**
-     * Decrease the routine counter value.
-     */
-    void decreaseCount()
-    {
-        count = Integer.valueOf(count.intValue() - 1);
-    }
-
-    /**
-     * Add a sound routine to the free list and remove it from the busy list.
-     * 
-     * @param routine Sound routine.
-     * @throws InterruptedException If errors.
-     */
-    void addFree(WavRoutine routine) throws InterruptedException
-    {
-        busySounds.remove(routine);
-        freeSounds.put(routine);
-    }
-
-    /**
-     * Add a sound routine to the busy list.
-     * 
-     * @param routine Sound routine.
-     */
-    void addBusy(WavRoutine routine)
-    {
-        try
-        {
-            busySounds.put(routine);
-        }
-        catch (final InterruptedException exception)
-        {
-            Verbose.exception(WavPlayer.class, "play", exception);
         }
     }
 }

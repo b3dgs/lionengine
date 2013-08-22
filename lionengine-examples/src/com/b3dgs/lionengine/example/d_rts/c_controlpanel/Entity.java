@@ -33,13 +33,6 @@ abstract class Entity
         play(animIdle);
     }
 
-    @Override
-    public void update(double extrp)
-    {
-        mirror(getOrientation().ordinal() > Orientation.MID_LENGTH);
-        super.update(extrp);
-    }
-
     /**
      * Get the current life.
      * 
@@ -48,6 +41,17 @@ abstract class Entity
     int getLife()
     {
         return life.getCurrent();
+    }
+
+    /*
+     * EntityRts
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        mirror(getOrientation().ordinal() > Orientation.MID_LENGTH);
+        super.update(extrp);
     }
 
     @Override

@@ -24,6 +24,38 @@ import com.b3dgs.lionengine.utility.UtilityTileExtractor;
  */
 public class TileExtractorApp
 {
+    /**
+     * Main function.
+     * 
+     * @param args arguments.
+     */
+    public static void main(String[] args)
+    {
+        final TileExtractorApp frame = new TileExtractorApp();
+        frame.start();
+    }
+
+    /**
+     * Get integer from dialog result.
+     * 
+     * @param string Input string.
+     * @return Integer result.
+     */
+    private static int getInteger(String string)
+    {
+        try
+        {
+            final Pattern intsOnly = Pattern.compile("\\d*");
+            final Matcher makeMatch = intsOnly.matcher(string);
+            makeMatch.find();
+            return UtilityMath.fixBetween(Integer.parseInt(makeMatch.group()), 0, Integer.MAX_VALUE);
+        }
+        catch (final PatternSyntaxException exception)
+        {
+            return 0;
+        }
+    }
+
     /** Main frame. */
     private final JFrame frame;
 
@@ -144,37 +176,5 @@ public class TileExtractorApp
         dialog.dispose();
         frame.setVisible(true);
         frame.requestFocus();
-    }
-
-    /**
-     * Main function.
-     * 
-     * @param args arguments.
-     */
-    public static void main(String[] args)
-    {
-        final TileExtractorApp frame = new TileExtractorApp();
-        frame.start();
-    }
-
-    /**
-     * Get integer from dialog result.
-     * 
-     * @param string Input string.
-     * @return Integer result.
-     */
-    private static int getInteger(String string)
-    {
-        try
-        {
-            final Pattern intsOnly = Pattern.compile("\\d*");
-            final Matcher makeMatch = intsOnly.matcher(string);
-            makeMatch.find();
-            return UtilityMath.fixBetween(Integer.parseInt(makeMatch.group()), 0, Integer.MAX_VALUE);
-        }
-        catch (final PatternSyntaxException exception)
-        {
-            return 0;
-        }
     }
 }

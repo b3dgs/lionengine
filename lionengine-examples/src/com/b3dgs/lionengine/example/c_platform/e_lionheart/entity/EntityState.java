@@ -24,6 +24,8 @@ enum EntityState
     /** Border state. */
     BORDER("border");
 
+    /** Values. */
+    public static final EntityState[] VALUES = EntityState.values();
     /** Animation name. */
     private final String animationName;
 

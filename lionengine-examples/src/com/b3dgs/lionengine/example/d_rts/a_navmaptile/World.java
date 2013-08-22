@@ -29,7 +29,7 @@ final class World
     private final CameraRts camera;
 
     /**
-     * Default constructor.
+     * Constructor.
      * 
      * @param sequence The sequence reference.
      */
@@ -71,7 +71,7 @@ final class World
     }
 
     /*
-     * World
+     * WorldRts
      */
 
     @Override
@@ -89,12 +89,6 @@ final class World
     }
 
     @Override
-    protected void loaded()
-    {
-        // Nothing here for the moment
-    }
-
-    @Override
     protected void saving(FileWriting file) throws IOException
     {
         map.save(file);
@@ -104,5 +98,11 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
+    }
+
+    @Override
+    protected void loaded()
+    {
+        // Nothing here for the moment
     }
 }

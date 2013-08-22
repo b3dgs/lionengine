@@ -31,6 +31,10 @@ final class HandlerEntity
         this.text = text;
     }
 
+    /*
+     * HandlerEntityRts
+     */
+
     @Override
     protected void updatingEntity(Entity entity, CursorRts cursor, CameraRts camera)
     {

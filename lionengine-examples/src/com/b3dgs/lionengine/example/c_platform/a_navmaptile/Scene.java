@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.Text;
 /**
  * Game loop designed to handle our little world.
  */
-class Scene
+final class Scene
         extends Sequence
 {
     /** Text drawer. */
@@ -19,7 +19,7 @@ class Scene
     private final World world;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
@@ -29,6 +29,10 @@ class Scene
         text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);
         world = new World(this);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

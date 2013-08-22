@@ -31,6 +31,10 @@ public abstract class Attack
         setOrder(true);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

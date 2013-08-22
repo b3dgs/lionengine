@@ -191,16 +191,6 @@ public class Cursor
     }
 
     /**
-     * Get the current surface id used for rendering.
-     * 
-     * @return The current surface id.
-     */
-    public int getSurfaceId()
-    {
-        return surfaceId;
-    }
-
-    /**
      * Set the rendering offsets value (allows to apply an offset depending of the cursor surface).
      * 
      * @param ox The horizontal offset.
@@ -236,6 +226,16 @@ public class Cursor
     public int getClick()
     {
         return click;
+    }
+
+    /**
+     * Get the current surface id used for rendering.
+     * 
+     * @return The current surface id.
+     */
+    public int getSurfaceId()
+    {
+        return surfaceId;
     }
 
     /**

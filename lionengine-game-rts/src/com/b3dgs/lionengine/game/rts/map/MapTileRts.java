@@ -43,8 +43,133 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
     }
 
     /*
-     * MapTile
+     * MapTileGame
      */
+
+    /**
+     * Get minimap graphics reference.
+     * 
+     * @return The minimap graphics reference.
+     */
+    public Graphic createMiniMapGraphics()
+    {
+        final Graphic g = new Graphic();
+        g.setGraphics(minimap.createGraphics());
+        g.drawImage(getMiniMap(), 0, 0);
+        return g;
+    }
+
+    /**
+     * Search a free area from this area.
+     * 
+     * @param entity The entity to search around.
+     * @param radius The search size.
+     * @return The free place found.
+     */
+    public CoordTile getFreeTileAround(EntityRts entity, int radius)
+    {
+        return getFreeTileAround(entity.getLocationInTileX(), entity.getLocationInTileY(), radius);
+    }
+
+    /**
+     * Get the closest tile location around the area. The returned tile is corresponding to the required collision.
+     * 
+     * @param from The tiled reference.
+     * @param to The tiled reference.
+     * @param collision The collision to search
+     * @param radius The search size.
+     * @return The closest location found.
+     */
+    public CoordTile getClosestTile(Tiled from, Tiled to, C collision, int radius)
+    {
+        final int sx = to.getLocationInTileX();
+        final int sy = to.getLocationInTileY();
+
+        final int fx = to.getLocationInTileX();
+        final int fy = to.getLocationInTileY();
+        final int fw = from.getWidthInTile();
+        final int fh = from.getHeightInTile();
+        int closestX = 0;
+        int closestY = 0;
+        int dist = Integer.MAX_VALUE;
+        int size = 1;
+        boolean found = false;
+        while (!found)
+        {
+            for (int x = sx - size; x <= sx + size; x++)
+            {
+                for (int y = sy - size; y <= sy + size; y++)
+                {
+                    if (collision == getTile(x, y).getCollision())
+                    {
+                        final int d = UtilityMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
+                        if (d < dist)
+                        {
+                            dist = d;
+                            closestX = x;
+                            closestY = y;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            size++;
+            if (size >= radius)
+            {
+                return null;
+            }
+        }
+        return new CoordTile(closestX, closestY);
+    }
+
+    /**
+     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.
+     * 
+     * @param sx The horizontal location.
+     * @param sy The vertical location.
+     * @param sw The source location width.
+     * @param sh The source location height.
+     * @param radius The search size.
+     * @param dx The horizontal destination location.
+     * @param dy The vertical destination location.
+     * @param dw The destination location width.
+     * @param dh The destination location height.
+     * @return The closest location found.
+     */
+    private CoordTile getClosestAvailableTile(int sx, int sy, int sw, int sh, int radius, int dx, int dy, int dw, int dh)
+    {
+        int closestX = 0;
+        int closestY = 0;
+        int dist = Integer.MAX_VALUE;
+        int size = 1;
+        boolean found = false;
+        while (!found)
+        {
+            for (int x = sx - size; x <= sx + size; x++)
+            {
+                for (int y = sy - size; y <= sy + size; y++)
+                {
+                    if (isAreaAvailable(x, y, sw, sh, 0))
+                    {
+                        final int d = UtilityMath.getDistance(x, y, sw, sh, dx, dy, dw, dh);
+                        if (d < dist)
+                        {
+                            dist = d;
+                            closestX = x;
+                            closestY = y;
+                            found = true;
+                        }
+                    }
+                }
+            }
+            size++;
+            if (size >= radius)
+            {
+                return null;
+            }
+        }
+        return new CoordTile(closestX, closestY);
+    }
 
     @Override
     public void create(int widthInTile, int heightInTile)
@@ -116,18 +241,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
         return ref[ty][tx];
     }
 
-    /**
-     * Search a free area from this area.
-     * 
-     * @param entity The entity to search around.
-     * @param radius The search size.
-     * @return The free place found.
-     */
-    public CoordTile getFreeTileAround(EntityRts entity, int radius)
-    {
-        return getFreeTileAround(entity.getLocationInTileX(), entity.getLocationInTileY(), radius);
-    }
-
     @Override
     public CoordTile getFreeTileAround(int tx, int ty, int radius)
     {
@@ -166,106 +279,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
     public CoordTile getClosestAvailableTile(int sx, int sy, int radius, int dx, int dy)
     {
         return getClosestAvailableTile(sx, sy, 1, 1, radius, dx, dy, 1, 1);
-    }
-
-    /**
-     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.
-     * 
-     * @param sx The horizontal location.
-     * @param sy The vertical location.
-     * @param sw The source location width.
-     * @param sh The source location height.
-     * @param radius The search size.
-     * @param dx The horizontal destination location.
-     * @param dy The vertical destination location.
-     * @param dw The destination location width.
-     * @param dh The destination location height.
-     * @return The closest location found.
-     */
-    private CoordTile getClosestAvailableTile(int sx, int sy, int sw, int sh, int radius, int dx, int dy, int dw, int dh)
-    {
-        int closestX = 0;
-        int closestY = 0;
-        int dist = Integer.MAX_VALUE;
-        int size = 1;
-        boolean found = false;
-        while (!found)
-        {
-            for (int x = sx - size; x <= sx + size; x++)
-            {
-                for (int y = sy - size; y <= sy + size; y++)
-                {
-                    if (isAreaAvailable(x, y, sw, sh, 0))
-                    {
-                        final int d = UtilityMath.getDistance(x, y, sw, sh, dx, dy, dw, dh);
-                        if (d < dist)
-                        {
-                            dist = d;
-                            closestX = x;
-                            closestY = y;
-                            found = true;
-                        }
-                    }
-                }
-            }
-            size++;
-            if (size >= radius)
-            {
-                return null;
-            }
-        }
-        return new CoordTile(closestX, closestY);
-    }
-
-    /**
-     * Get the closest tile location around the area. The returned tile is corresponding to the required collision.
-     * 
-     * @param from The tiled reference.
-     * @param to The tiled reference.
-     * @param collision The collision to search
-     * @param radius The search size.
-     * @return The closest location found.
-     */
-    public CoordTile getClosestTile(Tiled from, Tiled to, C collision, int radius)
-    {
-        final int sx = to.getLocationInTileX();
-        final int sy = to.getLocationInTileY();
-
-        final int fx = to.getLocationInTileX();
-        final int fy = to.getLocationInTileY();
-        final int fw = from.getWidthInTile();
-        final int fh = from.getHeightInTile();
-        int closestX = 0;
-        int closestY = 0;
-        int dist = Integer.MAX_VALUE;
-        int size = 1;
-        boolean found = false;
-        while (!found)
-        {
-            for (int x = sx - size; x <= sx + size; x++)
-            {
-                for (int y = sy - size; y <= sy + size; y++)
-                {
-                    if (collision == getTile(x, y).getCollision())
-                    {
-                        final int d = UtilityMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
-                        if (d < dist)
-                        {
-                            dist = d;
-                            closestX = x;
-                            closestY = y;
-                            found = true;
-                        }
-                    }
-                }
-            }
-            size++;
-            if (size >= radius)
-            {
-                return null;
-            }
-        }
-        return new CoordTile(closestX, closestY);
     }
 
     @Override
@@ -313,18 +326,5 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
     public void renderMiniMap(Graphic g, int x, int y)
     {
         g.drawImage(minimap, x, y);
-    }
-
-    /**
-     * Get minimap graphics reference.
-     * 
-     * @return The minimap graphics reference.
-     */
-    public Graphic createMiniMapGraphics()
-    {
-        final Graphic g = new Graphic();
-        g.setGraphics(minimap.createGraphics());
-        g.drawImage(getMiniMap(), 0, 0);
-        return g;
     }
 }

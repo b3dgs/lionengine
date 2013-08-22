@@ -80,13 +80,40 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Set the mouse click selection value ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
+     * Called when the selection has been updated by the handler.
      * 
-     * @param click The click id.
+     * @param selection The selected entities.
      */
-    public void setClickSelection(int click)
+    public abstract void notifyUpdatedSelection(Set<E> selection);
+
+    /**
+     * Called when an order started.
+     */
+    protected abstract void onStartOrder();
+
+    /**
+     * Called when an order terminated.
+     */
+    protected abstract void onTerminateOrder();
+
+    /**
+     * Add a control panel listener.
+     * 
+     * @param listener The listener.
+     */
+    public void addListener(ControlPanelListener listener)
     {
-        clickSelection = click;
+        listeners.add(listener);
+    }
+
+    /**
+     * Add a control panel listener.
+     * 
+     * @param listener The listener.
+     */
+    public void removeListener(ControlPanelListener listener)
+    {
+        listeners.add(listener);
     }
 
     /**
@@ -157,16 +184,6 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Set the ordered state (when an action skill is chosen).
-     */
-    public void ordered()
-    {
-        ordered = true;
-        clicked = true;
-        onStartOrder();
-    }
-
-    /**
      * Reset order state (order failed).
      */
     public void resetOrder()
@@ -176,23 +193,13 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Check if panel is in ordered mode (waiting for a second click).
+     * Set the mouse click selection value ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
      * 
-     * @return <code>true</code> if ordering, <code>false</code> else.
+     * @param click The click id.
      */
-    public boolean isOrdered()
+    public void setClickSelection(int click)
     {
-        return ordered;
-    }
-
-    /**
-     * Check if panel is in selection mode.
-     * 
-     * @return <code>true</code> if selecting, <code>false</code> else.
-     */
-    public boolean isSelecting()
-    {
-        return selecting;
+        clickSelection = click;
     }
 
     /**
@@ -217,16 +224,6 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Get clickable area on map (out panel).
-     * 
-     * @return The clickable map area from panel.
-     */
-    public Shape getArea()
-    {
-        return outsidePanel;
-    }
-
-    /**
      * Set player (player owning this panel).
      * 
      * @param player The player reference.
@@ -234,6 +231,26 @@ public abstract class ControlPanelModel<E extends EntityRts>
     public void setPlayer(PlayerRts player)
     {
         this.player = player;
+    }
+
+    /**
+     * Set the selection color.
+     * 
+     * @param color The selection color.
+     */
+    public void setSelectionColor(Color color)
+    {
+        colorSelection = color;
+    }
+
+    /**
+     * Get clickable area on map (out panel).
+     * 
+     * @return The clickable map area from panel.
+     */
+    public Shape getArea()
+    {
+        return outsidePanel;
     }
 
     /**
@@ -245,6 +262,36 @@ public abstract class ControlPanelModel<E extends EntityRts>
     public boolean canClick(CursorRts cursor)
     {
         return !outsidePanel.contains(cursor.getScreenX(), cursor.getScreenY());
+    }
+
+    /**
+     * Set the ordered state (when an action skill is chosen).
+     */
+    public void ordered()
+    {
+        ordered = true;
+        clicked = true;
+        onStartOrder();
+    }
+
+    /**
+     * Check if panel is in ordered mode (waiting for a second click).
+     * 
+     * @return <code>true</code> if ordering, <code>false</code> else.
+     */
+    public boolean isOrdered()
+    {
+        return ordered;
+    }
+
+    /**
+     * Check if panel is in selection mode.
+     * 
+     * @return <code>true</code> if selecting, <code>false</code> else.
+     */
+    public boolean isSelecting()
+    {
+        return selecting;
     }
 
     /**
@@ -286,14 +333,34 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Called when an order started.
+     * Perform the width selection by considering the click point and current location.
+     * 
+     * @param cursor The cursor reference.
+     * @param camera The camera reference.
+     * @param sx The starting horizontal click.
+     * @param sy The starting vertical click.
+     * @return The selection width.
      */
-    protected abstract void onStartOrder();
+    protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
+    {
+        return UtilityMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
+                camera.getViewX() + camera.getLocationIntX() - sx + camera.getViewWidth());
+    }
 
     /**
-     * Called when an order terminated.
+     * Perform the height selection by considering the click point and current location.
+     * 
+     * @param cursor The cursor reference.
+     * @param camera The camera reference.
+     * @param sx The starting horizontal click.
+     * @param sy The starting vertical click.
+     * @return The selection height.
      */
-    protected abstract void onTerminateOrder();
+    protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
+    {
+        return UtilityMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
+                camera.getViewY() + camera.getLocationIntY() + camera.getViewHeight() + sy);
+    }
 
     /**
      * Compute the selection from cursor location.
@@ -331,69 +398,9 @@ public abstract class ControlPanelModel<E extends EntityRts>
         selectionArea.setRect(selectX, selectY, selectW, selectH);
     }
 
-    /**
-     * Perform the width selection by considering the click point and current location.
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
-     * @param sx The starting horizontal click.
-     * @param sy The starting vertical click.
-     * @return The selection width.
-     */
-    protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
-    {
-        return UtilityMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
-                camera.getViewX() + camera.getLocationIntX() - sx + camera.getViewWidth());
-    }
-
-    /**
-     * Perform the height selection by considering the click point and current location.
-     * 
-     * @param cursor The cursor reference.
-     * @param camera The camera reference.
-     * @param sx The starting horizontal click.
-     * @param sy The starting vertical click.
-     * @return The selection height.
-     */
-    protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
-    {
-        return UtilityMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
-                camera.getViewY() + camera.getLocationIntY() + camera.getViewHeight() + sy);
-    }
-
-    /**
-     * Set the selection color.
-     * 
-     * @param color The selection color.
-     */
-    public void setSelectionColor(Color color)
-    {
-        colorSelection = color;
-    }
-
     /*
      * Control panel listener
      */
-
-    /**
-     * Add a control panel listener.
-     * 
-     * @param listener The listener.
-     */
-    public void addListener(ControlPanelListener listener)
-    {
-        listeners.add(listener);
-    }
-
-    /**
-     * Add a control panel listener.
-     * 
-     * @param listener The listener.
-     */
-    public void removeListener(ControlPanelListener listener)
-    {
-        listeners.add(listener);
-    }
 
     @Override
     public void notifySelectionStarted(Rectangle2D selection)
@@ -412,11 +419,4 @@ public abstract class ControlPanelModel<E extends EntityRts>
             listener.notifySelectionDone(selection);
         }
     }
-
-    /**
-     * Called when the selection has been updated by the handler.
-     * 
-     * @param selection The selected entities.
-     */
-    public abstract void notifyUpdatedSelection(Set<E> selection);
 }

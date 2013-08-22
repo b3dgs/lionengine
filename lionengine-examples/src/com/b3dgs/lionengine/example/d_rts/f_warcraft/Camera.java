@@ -25,6 +25,10 @@ public class Camera
         this.panel = panel;
     }
 
+    /*
+     * CameraRts
+     */
+
     @Override
     public void update(Keyboard keyboard)
     {

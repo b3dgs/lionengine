@@ -13,22 +13,22 @@ class FactoryEntity
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entity";
-    /** Entity desired fps. */
-    private final int desiredFps;
     /** Map reference. */
     private final Map map;
+    /** Entity desired fps. */
+    private final int desiredFps;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param desiredFps The desired fps.
      * @param map The map reference.
      */
-    FactoryEntity(int desiredFps, Map map)
+    FactoryEntity(Map map, int desiredFps)
     {
         super(TypeEntity.class);
-        this.desiredFps = desiredFps;
         this.map = map;
+        this.desiredFps = desiredFps;
         loadAll(TypeEntity.values());
     }
 
@@ -51,6 +51,10 @@ class FactoryEntity
     {
         return new Goomba(getSetup(TypeEntity.goomba), map, desiredFps);
     }
+
+    /*
+     * FactoryEntityGame
+     */
 
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)

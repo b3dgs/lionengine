@@ -45,6 +45,10 @@ final class BuildBarracks
         setOrder(true);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

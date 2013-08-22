@@ -34,7 +34,7 @@ final class Water
     private final double speed;
 
     /**
-     * Create a new swamp background.
+     * Constructor.
      * 
      * @param config The config reference.
      * @param wide The wide state.

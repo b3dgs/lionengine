@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Racket implementation using EntityGame base.
  */
-class Racket
+final class Racket
         extends EntityGame
 {
     /** Racket width. */

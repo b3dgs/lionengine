@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
 /**
  * Star implementation.
  */
-public class Star
+final class Star
 {
     /** Horizontal vector. */
     private final double vx;
@@ -27,7 +27,7 @@ public class Star
      * @param vy The vertical vector.
      * @param id The id.
      */
-    public Star(double x, double y, double vx, double vy, int id)
+    Star(double x, double y, double vx, double vy, int id)
     {
         this.x = x;
         this.y = y;

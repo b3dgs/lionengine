@@ -20,6 +20,10 @@ final class Build
         super(TypeSkill.building_standard_orc, setup);
     }
 
+    /*
+     * Skill
+     */
+
     @Override
     public void action(ControlPanelModel<?> panel, CursorRts cursor)
     {

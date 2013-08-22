@@ -56,6 +56,10 @@ final class Scene
         anim = Anim.createAnimation(4, 6, 0.125, false, true);
     }
 
+    /*
+     * Sequence
+     */
+
     @Override
     protected void load()
     {

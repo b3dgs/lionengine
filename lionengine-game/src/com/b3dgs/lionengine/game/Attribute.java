@@ -28,16 +28,6 @@ public final class Attribute
     }
 
     /**
-     * Set value.
-     * 
-     * @param value The value.
-     */
-    public void set(int value)
-    {
-        this.value = value;
-    }
-
-    /**
      * Increase attribute with the specified step.
      * 
      * @param step The increase value.
@@ -45,6 +35,16 @@ public final class Attribute
     public void increase(int step)
     {
         value += step;
+    }
+
+    /**
+     * Set value.
+     * 
+     * @param value The value.
+     */
+    public void set(int value)
+    {
+        this.value = value;
     }
 
     /**

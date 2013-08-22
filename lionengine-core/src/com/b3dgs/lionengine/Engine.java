@@ -100,14 +100,6 @@ public final class Engine
     private static String programVersion;
 
     /**
-     * Private constructor.
-     */
-    private Engine()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Start engine; has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
@@ -263,5 +255,13 @@ public final class Engine
                 throw new LionEngineException(exception);
             }
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Engine()
+    {
+        throw new RuntimeException();
     }
 }

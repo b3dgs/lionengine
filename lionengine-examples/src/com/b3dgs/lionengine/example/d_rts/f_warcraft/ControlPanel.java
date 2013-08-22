@@ -69,53 +69,6 @@ final class ControlPanel
     }
 
     /**
-     * Set the player reference for the panel information.
-     * 
-     * @param player The player reference.
-     */
-    public void setPlayer(Player player)
-    {
-        this.player = player;
-    }
-
-    /**
-     * Get the player in control.
-     * 
-     * @return The player in control.
-     */
-    public Player getPlayer()
-    {
-        return player;
-    }
-
-    @Override
-    public void update(double extrp, CameraRts camera, CursorRts cursor, Keyboard keyboard)
-    {
-        super.update(extrp, camera, cursor, keyboard);
-
-        // Update the selection if has
-        if (lastSelection != null)
-        {
-            if (lastSelection.size() == 1)
-            {
-                final Entity single = lastSelection.iterator().next();
-                if (!single.isSelected())
-                {
-                    lastSelection = null;
-                }
-                else
-                {
-                    updateSingleEntity(single, cursor, extrp);
-                }
-            }
-            else if (lastSelection.size() > 1)
-            {
-                updateMultipleEntity(lastSelection, cursor, extrp);
-            }
-        }
-    }
-
-    /**
      * Render panel.
      * 
      * @param g The graphics output.
@@ -144,43 +97,24 @@ final class ControlPanel
         text.draw(g, 235, 1, String.valueOf(player.getGold()));
     }
 
-    @Override
-    protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
+    /**
+     * Set the player reference for the panel information.
+     * 
+     * @param player The player reference.
+     */
+    public void setPlayer(Player player)
     {
-        final Rectangle2D area = getArea().getBounds2D();
-        final int widthMin = camera.getLocationIntX() - sx + (int) area.getX();
-        final int widthMax = camera.getLocationIntX() - sx + (int) (area.getX() + area.getWidth()) - 1;
-        return UtilityMath.fixBetween(super.computeSelectionWidth(cursor, camera, sx, sy), widthMin, widthMax);
+        this.player = player;
     }
 
-    @Override
-    protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
+    /**
+     * Get the player in control.
+     * 
+     * @return The player in control.
+     */
+    public Player getPlayer()
     {
-        final Rectangle2D area = getArea().getBounds2D();
-        final int heightMin = camera.getLocationIntY() - sy + (int) -area.getY() + 1;
-        final int heightMax = camera.getLocationIntY() - sy + (int) (-area.getY() + area.getHeight());
-        return UtilityMath.fixBetween(super.computeSelectionHeight(cursor, camera, sx, sy), heightMin, heightMax);
-    }
-
-    @Override
-    public void notifyUpdatedSelection(Set<Entity> selection)
-    {
-        lastSelection = selection;
-    }
-
-    @Override
-    protected void onStartOrder()
-    {
-        if (cursor.getType() != TypeCursor.BOX)
-        {
-            cursor.setType(TypeCursor.CROSS);
-        }
-    }
-
-    @Override
-    protected void onTerminateOrder()
-    {
-        cursor.setType(TypeCursor.POINTER);
+        return player;
     }
 
     /**
@@ -385,5 +319,75 @@ final class ControlPanel
             }
         }
         return size == count;
+    }
+
+    /*
+     * ControlPanelModel
+     */
+
+    @Override
+    public void update(double extrp, CameraRts camera, CursorRts cursor, Keyboard keyboard)
+    {
+        super.update(extrp, camera, cursor, keyboard);
+
+        // Update the selection if has
+        if (lastSelection != null)
+        {
+            if (lastSelection.size() == 1)
+            {
+                final Entity single = lastSelection.iterator().next();
+                if (!single.isSelected())
+                {
+                    lastSelection = null;
+                }
+                else
+                {
+                    updateSingleEntity(single, cursor, extrp);
+                }
+            }
+            else if (lastSelection.size() > 1)
+            {
+                updateMultipleEntity(lastSelection, cursor, extrp);
+            }
+        }
+    }
+
+    @Override
+    public void notifyUpdatedSelection(Set<Entity> selection)
+    {
+        lastSelection = selection;
+    }
+
+    @Override
+    protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
+    {
+        final Rectangle2D area = getArea().getBounds2D();
+        final int widthMin = camera.getLocationIntX() - sx + (int) area.getX();
+        final int widthMax = camera.getLocationIntX() - sx + (int) (area.getX() + area.getWidth()) - 1;
+        return UtilityMath.fixBetween(super.computeSelectionWidth(cursor, camera, sx, sy), widthMin, widthMax);
+    }
+
+    @Override
+    protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
+    {
+        final Rectangle2D area = getArea().getBounds2D();
+        final int heightMin = camera.getLocationIntY() - sy + (int) -area.getY() + 1;
+        final int heightMax = camera.getLocationIntY() - sy + (int) (-area.getY() + area.getHeight());
+        return UtilityMath.fixBetween(super.computeSelectionHeight(cursor, camera, sx, sy), heightMin, heightMax);
+    }
+
+    @Override
+    protected void onStartOrder()
+    {
+        if (cursor.getType() != TypeCursor.BOX)
+        {
+            cursor.setType(TypeCursor.CROSS);
+        }
+    }
+
+    @Override
+    protected void onTerminateOrder()
+    {
+        cursor.setType(TypeCursor.POINTER);
     }
 }

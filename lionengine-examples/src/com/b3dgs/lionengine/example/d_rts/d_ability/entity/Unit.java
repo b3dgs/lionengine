@@ -18,12 +18,12 @@ abstract class Unit
         extends Entity
         implements MoverUsedServices, MoverServices
 {
-    /** Mover model. */
-    private final MoverModel mover;
     /** Idle animation. */
     protected final Animation animIdle;
     /** Walk animation. */
     protected final Animation animWalk;
+    /** Mover model. */
+    private final MoverModel mover;
 
     /**
      * Constructor.
@@ -40,6 +40,10 @@ abstract class Unit
         setLayer(1);
         play(animIdle);
     }
+
+    /*
+     * Entity
+     */
 
     @Override
     public void update(double extrp)
