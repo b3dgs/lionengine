@@ -4,9 +4,11 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Valdyn implementation (player).
@@ -20,8 +22,14 @@ public final class Valdyn
     private static final int TILE_EXTREMITY_WIDTH = 2;
     /** The fall time margin (in milli). */
     private static final int FALL_TIME_MARGIN = 100;
+    /** Minimum jump time (in milli). */
+    private static final int JUMP_TIME_MIN = 100;
+    /** Maximum jump time (in milli). */
+    private static final int JUMP_TIME_MAX = 200;
     /** Camera reference. */
     private final CameraPlatform camera;
+    /** Jump timer (accurate precision of jump force). */
+    private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
     private final Timing timerFall;
     /** Fallen timer (duration of fallen state, when hit the ground after fall). */
@@ -38,6 +46,8 @@ public final class Valdyn
     private final double movementSmooth;
     /** Extremity state (used for border state). */
     private boolean extremity;
+    /** Jumped state. */
+    private boolean jumped;
 
     /**
      * Constructor.
@@ -51,6 +61,7 @@ public final class Valdyn
     {
         super(setup, map, desiredFps);
         this.camera = camera;
+        timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
         fallenDuration = getDataInteger("fallenDuration", "data");
@@ -58,7 +69,6 @@ public final class Valdyn
         movementSmooth = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
-        movement.setVelocity(movementSmooth);
         extremity = false;
     }
 
@@ -116,6 +126,91 @@ public final class Valdyn
     }
 
     /**
+     * Update the movement speed on a slope.
+     * 
+     * @param speed The current movement speed.
+     * @param sensibility The current movement sensibility.
+     * @return The new movement speed.
+     */
+    private double updateMovementSlope(double speed, double sensibility)
+    {
+        double newSpeed = speed;
+        if (isOnGround())
+        {
+            if (isGoingDown())
+            {
+                newSpeed *= 1.3;
+            }
+            else if (isGoingUp())
+            {
+                newSpeed *= 0.75;
+            }
+        }
+
+        final double forceH = movement.getForce().getForceHorizontal();
+        if (!isGoingUp()
+                && (forceH > movementSpeedMax && isEnabled(EntityAction.MOVE_RIGHT) || forceH < -movementSpeedMax
+                        && isEnabled(EntityAction.MOVE_LEFT)))
+        {
+            movement.setVelocity(0.02);
+            movement.setSensibility(sensibility / 4);
+        }
+        else
+        {
+            movement.setSensibility(sensibility);
+            movement.setVelocity(movementSmooth);
+        }
+        return newSpeed;
+    }
+
+    /**
+     * Update the jump with a sufficient accuracy.
+     */
+    private void updateJump()
+    {
+        if (isEnabled(EntityAction.JUMP) && !jumped)
+        {
+            if (!timerJump.isStarted())
+            {
+                timerJump.start();
+            }
+            if (canJump())
+            {
+                jumpForce.setForce(0.0, jumpHeightMax);
+                status.setCollision(EntityCollision.NONE);
+            }
+        }
+        else
+        {
+            jumped = true;
+            if (timerJump.elapsed(Valdyn.JUMP_TIME_MIN))
+            {
+                final double factor = (timerJump.elapsed() / (double) Valdyn.JUMP_TIME_MAX);
+                jumpForce.setForce(0.0, UtilityMath.fixBetween(jumpHeightMax * factor, 0.0, jumpHeightMax));
+                timerJump.stop();
+            }
+        }
+        if (isOnGround())
+        {
+            jumped = false;
+        }
+    }
+
+    /**
+     * Check the vertical collision in border case.
+     * 
+     * @param offsetX The horizontal offset.
+     */
+    private void checkCollisionVerticalBorder(int offsetX)
+    {
+        final Tile tile = map.getTile(this, offsetX, 0);
+        if (tile != null && tile.isBorder())
+        {
+            checkCollisionVertical(offsetX);
+        }
+    }
+
+    /**
      * Check if the entity is over a left extremity.
      * 
      * @return <code>true</code> if over a left extremity, <code>false</code> else.
@@ -153,20 +248,6 @@ public final class Valdyn
         return false;
     }
 
-    /**
-     * Check the vertical collision in border case.
-     * 
-     * @param offsetX The horizontal offset.
-     */
-    private void checkCollisionVerticalBorder(int offsetX)
-    {
-        final Tile tile = map.getTile(this, offsetX, 0);
-        if (tile != null && tile.isBorder())
-        {
-            checkCollisionVertical(offsetX);
-        }
-    }
-
     /*
      * Entity
      */
@@ -175,6 +256,8 @@ public final class Valdyn
     public void respawn()
     {
         super.respawn();
+        timerJump.stop();
+        jumpForce.setForce(Force.ZERO);
         teleport(512, 55);
         camera.resetInterval(this);
     }
@@ -195,6 +278,12 @@ public final class Valdyn
         {
             jumpForce.setForce(0.0, jumpHeightMax * 1.5);
         }
+    }
+
+    @Override
+    public boolean canJump()
+    {
+        return super.canJump() || timerJump.isStarted() && !timerJump.elapsed(Valdyn.JUMP_TIME_MAX);
     }
 
     @Override
@@ -225,26 +314,10 @@ public final class Valdyn
         }
         movement.setSensibility(sensibility);
 
-        // Slope adjuster
-        if (isOnGround())
-        {
-            if (isGoingDown())
-            {
-                speed *= 1.3;
-            }
-            else if (isGoingUp())
-            {
-                speed *= 0.8;
-            }
-        }
-
+        speed = updateMovementSlope(speed, sensibility);
         movement.setForceToReach(speed, 0.0);
 
-        if (isEnabled(EntityAction.JUMP) && canJump())
-        {
-            jumpForce.setForce(0.0, jumpHeightMax);
-            status.setCollision(EntityCollision.NONE);
-        }
+        updateJump();
     }
 
     @Override
@@ -331,7 +404,7 @@ public final class Valdyn
     protected void updateCollisions()
     {
         extremity = false;
-        if (getLocationY() < getLocationOldY() && timerFall.elapsed(100))
+        if (getLocationY() < getLocationOldY() && timerFall.elapsed(50))
         {
             status.setCollision(EntityCollision.NONE);
         }

@@ -8,6 +8,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
@@ -38,6 +39,8 @@ public abstract class Entity
     private final int desiredFps;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
+    /** Extra gravity force. */
+    private final Force extraGravityForce;
     /** Dead step. */
     protected int stepDie;
     /** Die location. */
@@ -61,13 +64,14 @@ public abstract class Entity
         movement = new Movement();
         actions = new EnumMap<>(EntityAction.class);
         animations = new EnumMap<>(EntityState.class);
+        extraGravityForce = new Force();
         timerDie = new Timing();
         dieLocation = new Coord();
         jumpForce = new Force();
         jumpHeightMax = getDataDouble("heightMax", "data", "jump");
-        setFrameOffsets(getWidth() / 2, -8);
         setMass(getDataDouble("mass", "data"));
         setGravityMax(getDataDouble("gravityMax", "data"));
+        setFrameOffsets(getWidth() / 2, -8);
         loadAnimations();
     }
 
@@ -84,6 +88,13 @@ public abstract class Entity
      * @param entity The entity hit.
      */
     public abstract void hitThat(Entity entity);
+
+    /**
+     * Update the actions.
+     * 
+     * @see EntityAction
+     */
+    protected abstract void updateActions();
 
     /**
      * Update entity states.
@@ -273,13 +284,6 @@ public abstract class Entity
     }
 
     /**
-     * Update the actions.
-     * 
-     * @see EntityAction
-     */
-    protected abstract void updateActions();
-
-    /**
      * Check the map limit and apply collision if necessary.
      */
     private void checkMapLimit()
@@ -296,6 +300,25 @@ public abstract class Entity
             teleportX(limitRight);
             movement.reset();
         }
+    }
+
+    /**
+     * Adjust gravity in case of slope (to stay on collision).
+     */
+    private void gravitySlopeAdjuster()
+    {
+        final int h = (int) Math.ceil(getHorizontalForce());
+        final Tile nextTile = map.getTile(this, h, 0);
+        final double v;
+        if (isOnGround() && nextTile != null && nextTile.isGroup(TileCollisionGroup.SLOPE))
+        {
+            v = -Math.abs(h) * 1.5;
+        }
+        else
+        {
+            v = 0.0;
+        }
+        extraGravityForce.setForce(0.0, v);
     }
 
     /*
@@ -317,7 +340,8 @@ public abstract class Entity
     protected void handleMovements(double extrp)
     {
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
+        gravitySlopeAdjuster();
+        updateGravity(extrp, desiredFps, jumpForce, extraGravityForce, movement.getForce());
         updateMirror();
         if (dead)
         {
@@ -334,6 +358,7 @@ public abstract class Entity
             checkMapLimit();
             updateCollisions();
         }
+
     }
 
     @Override

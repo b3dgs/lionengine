@@ -13,6 +13,8 @@ public class Movement
     private double velocity;
     /** The sensibility. */
     private double sensibility;
+    /** Old horizontal force. */
+    private double forceOldH;
 
     /**
      * Constructor.
@@ -30,6 +32,7 @@ public class Movement
      */
     public void update(double extrp)
     {
+        forceOldH = current.getForceHorizontal();
         current.reachForce(extrp, destination, velocity, sensibility);
     }
 
@@ -91,5 +94,25 @@ public class Movement
     public Force getForce()
     {
         return current;
+    }
+
+    /**
+     * Check if movement is horizontally decreasing.
+     * 
+     * @return <code>true</code> if horizontally decreasing, <code>false</code> else;
+     */
+    public boolean isDecreasingHorizontal()
+    {
+        return Math.abs(forceOldH) > Math.abs(current.getForceHorizontal());
+    }
+
+    /**
+     * Check if movement is horizontally decreasing.
+     * 
+     * @return <code>true</code> if horizontally decreasing, <code>false</code> else;
+     */
+    public boolean isIncreasingHorizontal()
+    {
+        return Math.abs(forceOldH) < Math.abs(current.getForceHorizontal());
     }
 }

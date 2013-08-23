@@ -35,6 +35,17 @@ public final class Tile
     }
 
     /**
+     * Check if tile is from this group.
+     * 
+     * @param group The group to check to.
+     * @return <code>true</code> if from this group, <code>false</code> else.
+     */
+    public boolean isGroup(TileCollisionGroup group)
+    {
+        return getCollision().getGroup() == group;
+    }
+
+    /**
      * Get ground collision.
      * 
      * @param localizable The localizable.
@@ -61,7 +72,7 @@ public final class Tile
     private Double getSlopeRight(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationX() - getX() - getWidth();
-        final double y = getTop() - x / 2.0 + offset;
+        final double y = getTop() - x / TileCollisionGroup.SLOPE.getFactor() + offset;
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
@@ -79,7 +90,7 @@ public final class Tile
     private Double getSlopeLeft(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationIntX() - getX();
-        final double y = getTop() + x / 2.0 + offset;
+        final double y = getTop() + x / TileCollisionGroup.SLOPE.getFactor() + offset;
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
