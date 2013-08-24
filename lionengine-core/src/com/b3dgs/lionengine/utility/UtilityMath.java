@@ -3,6 +3,8 @@ package com.b3dgs.lionengine.utility;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
+import com.b3dgs.lionengine.Check;
+
 /**
  * Static functions around math manipulation.
  */
@@ -206,6 +208,18 @@ public final class UtilityMath
     public static double sin(int degree)
     {
         return StrictMath.sin(StrictMath.toRadians(degree));
+    }
+
+    /**
+     * Get the sign of a value.
+     * 
+     * @param value The value to check (must be != 0).
+     * @return -1 if negative, 1 if positive.
+     */
+    public static int getSign(int value)
+    {
+        Check.argument(value != 0, "Argument must not be equal to 0 !");
+        return Math.abs(value) / value;
     }
 
     /**

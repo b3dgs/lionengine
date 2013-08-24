@@ -7,6 +7,7 @@
 		<jump heightMax="7.0" />
 	</data>
 	<animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="crouch" start="3" end="3" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="fallen" start="21" end="21" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="walk" start="26" end="35" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="jump" start="17" end="19" speed="0.125" reversed="false" repeat="false"/>
@@ -14,4 +15,13 @@
 	<animation name="border" start="13" end="16" speed="0.1" reversed="true" repeat="true"/>
 	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="dead" start="70" end="71" speed="0.125" reversed="false" repeat="true"/>
+	<animation name="attack_preparing" start="83" end="84" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="attack_preparing_down" start="85" end="86" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="attack_prepared" start="84" end="84" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="attack_prepared_down" start="86" end="86" speed="0.125" reversed="false" repeat="false"/>
+	<animation name="attack_up" start="93" end="95" speed="0.25" reversed="true" repeat="false"/>
+	<animation name="attack_horizontal" start="107" end="111" speed="0.35" reversed="true" repeat="false"/>
+	<animation name="attack_turning" start="130" end="139" speed="0.30" reversed="false" repeat="false"/>
+	<animation name="attack_down_leg" start="88" end="92" speed="0.30" reversed="true" repeat="false"/>
+	<animation name="attack_jump" start="140" end="145" speed="0.30" reversed="false" repeat="false"/>
 </entity>

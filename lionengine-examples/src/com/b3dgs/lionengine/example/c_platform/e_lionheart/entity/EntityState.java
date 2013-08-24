@@ -7,6 +7,8 @@ enum EntityState
 {
     /** Idle state. */
     IDLE("idle"),
+    /** Crouch state. */
+    CROUCH("crouch"),
     /** Die state. */
     DIE("die"),
     /** Die state. */
@@ -22,7 +24,25 @@ enum EntityState
     /** Falling state. */
     FALL("fall"),
     /** Border state. */
-    BORDER("border");
+    BORDER("border"),
+    /** Preparing attack. */
+    ATTACK_PREPARING("attack_preparing"),
+    /** Preparing attack down. */
+    ATTACK_PREPARING_DOWN("attack_preparing_down"),
+    /** Preparing attack. */
+    ATTACK_PREPARED("attack_prepared"),
+    /** Preparing attack down. */
+    ATTACK_PREPARED_DOWN("attack_prepared_down"),
+    /** Attack up. */
+    ATTACK_UP("attack_up"),
+    /** Attack horizontal. */
+    ATTACK_HORIZONTAL("attack_horizontal"),
+    /** Attack turning. */
+    ATTACK_TURNING("attack_turning"),
+    /** Attack down leg. */
+    ATTACK_DOWN_LEG("attack_down_leg"),
+    /** Attack while jumping. */
+    ATTACK_JUMP("attack_jump");
 
     /** Values. */
     public static final EntityState[] VALUES = EntityState.values();

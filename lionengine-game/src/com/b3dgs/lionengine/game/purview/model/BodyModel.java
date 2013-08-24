@@ -111,13 +111,13 @@ public class BodyModel
     {
         location.teleport(x, y);
     }
-    
+
     @Override
     public void teleportX(double x)
     {
         location.teleportX(x);
     }
-    
+
     @Override
     public void teleportY(double y)
     {
