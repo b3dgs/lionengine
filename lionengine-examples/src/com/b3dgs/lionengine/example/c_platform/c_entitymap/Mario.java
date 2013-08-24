@@ -52,7 +52,7 @@ final class Mario
      */
     Mario(Map map, int desiredFps)
     {
-        super(new SetupEntityGame(Media.get("entity", "mario.xml")), map);
+        super(new SetupEntityGame(Media.get("entities", "mario.xml")), map);
         this.map = map;
         this.desiredFps = desiredFps;
         animations = new EnumMap<>(EntityState.class);

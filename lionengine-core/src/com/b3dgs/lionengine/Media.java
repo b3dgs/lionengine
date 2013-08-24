@@ -51,7 +51,7 @@ public final class Media
     public static void exist(Media media)
     {
         Check.notNull(media);
-        if (!UtilityFile.exists(media.getPath()) || !UtilityFile.isFile(media.getPath()))
+        if (!UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath()))
         {
             throw new LionEngineException(media, Media.MESSAGE_ERROR_MEDIA);
         }

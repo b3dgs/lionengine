@@ -6,11 +6,11 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 public enum TypeLandscape
 {
     /** Swamp dusk. */
-    SWAMP_DUSK("Stage1", "raster1.xml", TypeForeground.WATER),
+    SWAMP_DUSK("dusk", "raster1.xml", TypeForeground.WATER),
     /** Swamp dawn. */
-    SWAMP_DAWN("Stage2", "raster2.xml", TypeForeground.WATER),
+    SWAMP_DAWN("dawn", "raster2.xml", TypeForeground.WATER),
     /** Swamp day. */
-    SWAMP_DAY("Stage3", "raster3.xml", TypeForeground.WATER);
+    SWAMP_DAY("day", "raster3.xml", TypeForeground.WATER);
 
     /** Theme name. */
     private final String theme;

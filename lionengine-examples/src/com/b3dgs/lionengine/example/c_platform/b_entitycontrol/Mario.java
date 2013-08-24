@@ -18,7 +18,7 @@ final class Mario
         extends EntityPlatform<TileCollision, Tile>
 {
     /** Mario configuration full path. */
-    private static final Media MARIO_CONFIG = Media.get("entity", "mario.xml");
+    private static final Media MARIO_CONFIG = Media.get("entities", "mario.xml");
     /** Jump force. */
     private static final double JUMP_FORCE = 8.0;
     /** Ground location y. */

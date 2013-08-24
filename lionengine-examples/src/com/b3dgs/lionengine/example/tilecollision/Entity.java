@@ -27,7 +27,7 @@ final class Entity
      */
     Entity(Map map)
     {
-        super(new SetupEntityGame(Media.get("entity", "mario.xml")), map);
+        super(new SetupEntityGame(Media.get("entities", "mario.xml")), map);
         mouseX = 64;
         mouseY = 180;
     }

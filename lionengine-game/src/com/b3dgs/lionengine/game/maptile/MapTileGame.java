@@ -526,6 +526,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     {
         if (!surfacesLoaded)
         {
+            Media.exist(directory);
             surfacesLoaded = true;
             patternsDirectory = directory;
             final String path = directory.getPath();
@@ -534,11 +535,10 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
 
             // Retrieve patterns list
             final String index = Media.getPath(path, "patterns.xml");
-            if (UtilityFile.exists(path))
+            if (UtilityFile.exists(Media.WORKING_DIR + Media.getSeparator() + index))
             {
                 final XmlParser xml = File.createXmlParser();
                 final Media media = new Media(index);
-                Media.exist(media);
                 final XmlNode root = xml.load(media);
                 final List<XmlNode> children = root.getChildren();
                 files = new String[children.size()];
@@ -551,7 +551,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
             }
             else
             {
-                files = UtilityFile.getFilesList(path, "png");
+                files = UtilityFile.getFilesList(Media.WORKING_DIR + Media.getSeparator() + path, "png");
             }
 
             // Load patterns from list

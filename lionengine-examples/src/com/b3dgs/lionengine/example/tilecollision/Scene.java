@@ -45,7 +45,7 @@ final class Scene
     protected void load()
     {
         map.create(20, 15);
-        map.loadPatterns(Media.get("tiles", "mario"));
+        map.loadPatterns(Media.get("tiles"));
         map.createBlock(5, 7);
         map.createBlock(5, 8);
         map.createBlock(5, 9);

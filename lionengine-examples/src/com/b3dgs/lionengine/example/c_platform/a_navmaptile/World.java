@@ -48,7 +48,7 @@ final class World
 
         // Rip a level and store data in the map
         final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
-        rip.start(Media.get("level_mario.png"), map, Media.get("tiles", "mario"), false);
+        rip.start(Media.get("level_mario.png"), map, Media.get("tiles"), false);
     }
 
     /*

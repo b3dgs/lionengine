@@ -26,11 +26,11 @@ public final class AppLionheart
     /** Rasters directory. */
     public static final String RASTERS_DIR = "rasters";
     /** Main entity directory name. */
-    public static final String ENTITIES_DIR = "entity";
+    public static final String ENTITIES_DIR = "entities";
     /** Main entity directory name. */
     public static final String BACKGROUNDS_DIR = "backgrounds";
     /** Resources directory. */
-    private static final String RESOURCES = Media.getPath("resources", "lionheart");
+    private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */
     private static final Display NATIVE_DISPLAY = new Display(320, 240, 16, 60);
 

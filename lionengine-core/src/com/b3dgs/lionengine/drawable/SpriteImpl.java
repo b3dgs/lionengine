@@ -38,7 +38,6 @@ class SpriteImpl
      */
     SpriteImpl(Media media)
     {
-        Media.exist(media);
         this.media = media;
         final ImageInfo info = ImageInfo.get(media);
         widthOriginal = info.getWidth();

@@ -23,7 +23,7 @@ public class AppTileCollision
     public static void main(String argv[])
     {
         // Start engine
-        Engine.start("Tile Collision", Version.create(1, 0, 0), Media.getPath("resources", "platform"));
+        Engine.start("Tile Collision", Version.create(1, 0, 0), Media.getPath("resources", "platform", "mario"));
 
         // Displays
         final Display internal = new Display(320, 240, 16, 60);

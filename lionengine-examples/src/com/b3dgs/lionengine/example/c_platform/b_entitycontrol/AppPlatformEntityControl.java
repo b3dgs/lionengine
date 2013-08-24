@@ -16,6 +16,13 @@ import com.b3dgs.lionengine.Version;
  */
 public final class AppPlatformEntityControl
 {
+    /** Application name. */
+    public static final String NAME = "Entity Control";
+    /** Application version. */
+    public static final Version VERSION = Version.create(1, 0, 0);
+    /** Resources directory. */
+    private static final String RESOURCES = Media.getPath("resources", "platform", "mario");
+
     /**
      * Main function.
      * 
@@ -24,7 +31,8 @@ public final class AppPlatformEntityControl
     public static void main(String args[])
     {
         // Start engine
-        Engine.start("Entity control", Version.create(1, 0, 0), Media.getPath("resources", "platform"));
+        Engine.start(AppPlatformEntityControl.NAME, AppPlatformEntityControl.VERSION,
+                AppPlatformEntityControl.RESOURCES);
 
         // Displays
         final Display internal = new Display(320, 240, 16, 60);
