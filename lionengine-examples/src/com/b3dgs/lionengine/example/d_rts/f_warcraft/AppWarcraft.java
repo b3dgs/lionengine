@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeRace;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.menu.Menu;
 
 // Tutorial: Warcraft
 // This last rts tutorial shows a prototype of a Warcraft, using as much things as possible.
@@ -40,7 +40,7 @@ public final class AppWarcraft
         // Starter
         final Loader loader = new Loader(config);
         ResourcesLoader.load();
-        loader.start(new Scene(loader, new GameConfig(TypeRace.ORC, TypeRace.HUMAN, "forest.map", false, false)));
+        loader.start(new Menu(loader));
     }
 
     /**

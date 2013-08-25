@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.c_entitymap;
 
+import java.util.Locale;
+
 /**
  * List of entity states.
  */
@@ -22,7 +24,7 @@ enum EntityState
      */
     private EntityState()
     {
-        animationName = name().toLowerCase();
+        animationName = name().toLowerCase(Locale.ENGLISH);
     }
 
     /**

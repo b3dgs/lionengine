@@ -50,7 +50,7 @@ abstract class Entity
     @Override
     public void update(double extrp)
     {
-        mirror(getOrientation().ordinal() > Orientation.MID_LENGTH);
+        mirror(getOrientation().ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF);
         super.update(extrp);
     }
 

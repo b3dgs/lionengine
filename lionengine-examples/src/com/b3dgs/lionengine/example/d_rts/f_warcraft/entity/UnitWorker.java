@@ -128,7 +128,7 @@ public abstract class UnitWorker
         if (attacker != null)
         {
             final Orientation opposite = attacker.getOrientation();
-            setOrientation(Orientation.next(opposite, Orientation.ORIENTATIONS.length));
+            setOrientation(Orientation.next(opposite, Orientation.ORIENTATIONS_NUMBER));
         }
     }
 

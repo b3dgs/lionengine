@@ -260,4 +260,19 @@ final class SpriteAnimatedImpl
         }
         return false;
     }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + (animator == null ? 0 : animator.hashCode());
+        result = prime * result + frameOriginalHeight;
+        result = prime * result + frameOriginalWidth;
+        result = prime * result + framesNumber;
+        result = prime * result + horizontalFrames;
+        result = prime * result + (mirror ? 1231 : 1237);
+        result = prime * result + verticalFrames;
+        return result;
+    }
 }

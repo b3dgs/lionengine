@@ -49,7 +49,7 @@ abstract class Unit
     public void update(double extrp)
     {
         mover.updateMoves(extrp);
-        mirror(getOrientation().ordinal() > Orientation.MID_LENGTH);
+        mirror(getOrientation().ordinal() > Orientation.ORIENTATIONS_NUMBER_HALF);
         super.update(extrp);
     }
 

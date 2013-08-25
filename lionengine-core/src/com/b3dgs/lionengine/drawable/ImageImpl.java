@@ -98,6 +98,9 @@ class ImageImpl
     @Override
     public int hashCode()
     {
-        return super.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (surface == null ? 0 : surface.hashCode());
+        return result;
     }
 }

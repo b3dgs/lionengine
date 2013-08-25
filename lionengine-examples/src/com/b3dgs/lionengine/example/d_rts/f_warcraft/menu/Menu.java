@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.menu;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
@@ -178,7 +179,8 @@ public final class Menu
      */
     private static String format(String name, boolean hasExtension)
     {
-        String str = name.substring(0, 1).toUpperCase().concat(name.substring(1).toLowerCase());
+        String str = name.substring(0, 1).toUpperCase(Locale.ENGLISH)
+                .concat(name.substring(1).toLowerCase(Locale.ENGLISH));
         if (hasExtension)
         {
             str = str.substring(0, str.length() - 4);
@@ -306,7 +308,7 @@ public final class Menu
                 {
                     if (choices[i].update(cursor))
                     {
-                        if (Math.floor(i / 2) == 0)
+                        if (Math.floor(i / 2.0) == 0)
                         {
                             playerRace = UtilityMath.fixBetween(playerRace + choices[i].getSide(), 0,
                                     Menu.RACES.length - 1);
@@ -319,7 +321,7 @@ public final class Menu
                                 opponentRace = 0;
                             }
                         }
-                        else if (Math.floor(i / 2) == 1)
+                        else if (Math.floor(i / 2.0) == 1)
                         {
                             opponentRace = UtilityMath.fixBetween(opponentRace + choices[i].getSide(), 0,
                                     Menu.RACES.length - 1);
@@ -332,11 +334,11 @@ public final class Menu
                                 playerRace = 0;
                             }
                         }
-                        else if (Math.floor(i / 2) == 2)
+                        else if (Math.floor(i / 2.0) == 2)
                         {
                             map = UtilityMath.fixBetween(map + choices[i].getSide(), 0, Menu.MAPS.length - 1);
                         }
-                        else if (Math.floor(i / 2) == 3)
+                        else if (Math.floor(i / 2.0) == 3)
                         {
                             fog = UtilityMath.fixBetween(fog + choices[i].getSide(), 0, Menu.FOGS.length - 1);
                         }
@@ -400,10 +402,6 @@ public final class Menu
         switch (Menu.MENU)
         {
             case INTRO_UP:
-                logo.render(g, 0, 0);
-                applyAlpha(g, alphas[255 - alpha]);
-
-                break;
             case INTRO_DOWN:
                 logo.render(g, 0, 0);
                 applyAlpha(g, alphas[255 - alpha]);

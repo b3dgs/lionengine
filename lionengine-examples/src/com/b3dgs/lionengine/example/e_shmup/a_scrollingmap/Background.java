@@ -56,7 +56,7 @@ final class Background
         {
             final int id = UtilityRandom.getRandomInteger(0, 5);
             stars[i] = new Star(UtilityRandom.getRandomInteger(-20, 340), UtilityRandom.getRandomInteger(-10, 200),
-                    0.0, UtilityRandom.getRandomInteger(20, 50) / 15.f * 1.0, id);
+                    0.0, UtilityRandom.getRandomInteger(20, 50) / 15.0 * 1.0, id);
         }
         effectTime.start();
     }

@@ -23,9 +23,9 @@ public final class FactorySkill
     /** Production factory. */
     public final FactoryProduction factoryProduction;
     /** Entity handler. */
-    protected final HandlerEntity handler;
+    final HandlerEntity handler;
     /** Cursor reference. */
-    protected final Cursor cursor;
+    final Cursor cursor;
     /** Background set. */
     private final SpriteTiled background;
     /** The timed message reference. */

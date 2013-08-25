@@ -8,8 +8,6 @@ public enum GameLevel
     /** Stage 1. */
     SWAMP_1("level1.lrm");
 
-    /** Levels list. */
-    public static final GameLevel[] LEVELS = GameLevel.values();
     /** Level filename. */
     private final String filename;
 

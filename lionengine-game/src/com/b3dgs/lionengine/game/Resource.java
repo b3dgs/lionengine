@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 public class Resource
 {
     /** Resource value. */
-    private Alterable ressource;
+    private final Alterable ressource;
 
     /**
      * Create a new blank resource.
@@ -36,7 +36,7 @@ public class Resource
      */
     public Resource(int amount)
     {
-        ressource.setMax(amount);
+        ressource = new Alterable(amount);
     }
 
     /**

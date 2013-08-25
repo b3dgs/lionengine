@@ -19,7 +19,7 @@ final class SetupSkill
     /** Skill background. */
     public final SpriteTiled background;
     /** Production factory. */
-    protected final FactoryProduction factoryProduction;
+    final FactoryProduction factoryProduction;
 
     /**
      * Constructor.

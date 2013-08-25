@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.drawable;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
@@ -214,6 +215,15 @@ class SpriteImpl
     @Override
     public int hashCode()
     {
-        return super.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + height;
+        result = prime * result + heightOriginal;
+        result = prime * result + (media == null ? 0 : media.hashCode());
+        result = prime * result + Arrays.hashCode(rgb);
+        result = prime * result + (surface == null ? 0 : surface.hashCode());
+        result = prime * result + width;
+        result = prime * result + widthOriginal;
+        return result;
     }
 }

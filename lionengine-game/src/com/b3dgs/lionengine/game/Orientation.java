@@ -22,11 +22,10 @@ public enum Orientation
     /** Looking north west. */
     NORTH_WEST;
 
-    /** Orientation values. */
-    public static final Orientation[] ORIENTATIONS = Orientation.values();
-
+    /** Orientations number. */
+    public static final int ORIENTATIONS_NUMBER = Orientation.values().length;
     /** Number of elements on one side. */
-    public static final int MID_LENGTH = Orientation.ORIENTATIONS.length / 2;
+    public static final int ORIENTATIONS_NUMBER_HALF = Orientation.ORIENTATIONS_NUMBER / 2;
 
     /**
      * Get the next orientation from the source plus an offset.
@@ -37,6 +36,6 @@ public enum Orientation
      */
     public static Orientation next(Orientation from, int offset)
     {
-        return Orientation.ORIENTATIONS[(from.ordinal() + offset) % Orientation.ORIENTATIONS.length];
+        return Orientation.values()[(from.ordinal() + offset) % Orientation.ORIENTATIONS_NUMBER];
     }
 }

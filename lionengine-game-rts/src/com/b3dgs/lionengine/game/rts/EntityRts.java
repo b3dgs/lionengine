@@ -158,7 +158,7 @@ public abstract class EntityRts
             {
                 if (getMirror())
                 {
-                    offset = getOrientation().ordinal() - Orientation.MID_LENGTH;
+                    offset = getOrientation().ordinal() - Orientation.ORIENTATIONS_NUMBER_HALF;
                 }
                 frame = getFrame() + (getOrientation().ordinal() - offset * 2)
                         * (animationCurrent.getLast() - animationCurrent.getFirst() + 1);

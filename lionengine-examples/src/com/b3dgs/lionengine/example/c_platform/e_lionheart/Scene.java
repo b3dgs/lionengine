@@ -27,7 +27,7 @@ final class Scene
     private static GameLevel getNextLevel()
     {
         Scene.lastLevelIndex++;
-        return GameLevel.LEVELS[Scene.lastLevelIndex];
+        return GameLevel.values()[Scene.lastLevelIndex];
     }
 
     /** Text reference. */
