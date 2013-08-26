@@ -162,8 +162,8 @@ public class TestDrawable
         sprite.stretch(100, 100);
 
         sprite.setTransparency(Color.BLACK);
-        sprite.setAlpha((byte) 128);
-        sprite.setAlpha((byte) 0);
+        sprite.setAlpha(128);
+        sprite.setAlpha(0);
 
         if (!(sprite instanceof SpriteFont))
         {

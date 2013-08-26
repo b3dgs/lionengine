@@ -16,7 +16,7 @@ class KeyboardImpl
     /** Pressed states. */
     private final Set<Integer> pressed;
     /** Last key code. */
-    private int lastCode;
+    private Integer lastCode;
     /** Last key name. */
     private char lastKeyName;
 
@@ -28,7 +28,7 @@ class KeyboardImpl
         keys = new HashSet<>();
         pressed = new HashSet<>();
         lastKeyName = ' ';
-        lastCode = -1;
+        lastCode = Integer.valueOf(-1);
     }
 
     /*
@@ -56,7 +56,7 @@ class KeyboardImpl
     }
 
     @Override
-    public int getKeyCode()
+    public Integer getKeyCode()
     {
         return lastCode;
     }
@@ -80,7 +80,7 @@ class KeyboardImpl
     @Override
     public void keyPressed(KeyEvent event)
     {
-        lastCode = event.getKeyCode();
+        lastCode = Integer.valueOf(event.getKeyCode());
         lastKeyName = event.getKeyChar();
         keys.add(Integer.valueOf(event.getKeyCode()));
     }
@@ -88,7 +88,7 @@ class KeyboardImpl
     @Override
     public void keyReleased(KeyEvent event)
     {
-        lastCode = -1;
+        lastCode = Integer.valueOf(-1);
         lastKeyName = ' ';
         keys.remove(Integer.valueOf(event.getKeyCode()));
         pressed.remove(Integer.valueOf(event.getKeyCode()));

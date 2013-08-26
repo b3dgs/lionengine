@@ -31,6 +31,8 @@ class SpriteImpl
     private final Media media;
     /** Sprite raw data (used for alpha). */
     private int[][] rgb;
+    /** First alpha. */
+    private boolean firstAlpha;
 
     /**
      * Create a new sprite.
@@ -127,23 +129,29 @@ class SpriteImpl
     }
 
     @Override
-    public void setAlpha(byte alpha)
+    public void setAlpha(int alpha)
     {
+        Check.argument(alpha >= 0 && alpha <= 255, "Alpha must be >= 0 and <= 255 !");
         if (rgb == null)
         {
             rgb = new int[width][height];
+            firstAlpha = true;
         }
         for (int cx = 0; cx < surface.getWidth(); cx++)
         {
             for (int cy = 0; cy < surface.getHeight(); cy++)
             {
-                rgb[cx][cy] = surface.getRGB(cx, cy);
+                if (firstAlpha)
+                {
+                    rgb[cx][cy] = surface.getRGB(cx, cy);
+                }
                 final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
                 final int mc = alpha << alphaDec | alphaKey;
                 surface.setRGB(cx, cy, rgb[cx][cy] & mc);
             }
         }
+        firstAlpha = false;
     }
 
     @Override

@@ -259,7 +259,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void setAlpha(byte alpha)
+    public void setAlpha(int alpha)
     {
         surface.setAlpha(alpha);
     }

@@ -99,7 +99,7 @@ public interface Sprite
      * 
      * @param alpha The alpha value <code>[0 - 255]</code>.
      */
-    void setAlpha(byte alpha);
+    void setAlpha(int alpha);
 
     /**
      * Get the current sprite width (its current size, after scaling operation).

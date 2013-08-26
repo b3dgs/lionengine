@@ -52,7 +52,7 @@ public interface Keyboard
      * @return The pressed key code.
      * @see KeyEvent
      */
-    int getKeyCode();
+    Integer getKeyCode();
 
     /**
      * Get the current pressed key name.

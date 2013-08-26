@@ -8,12 +8,13 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.GameLevel;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
  * Represents the scene where the player can control his hero over the map, fighting enemies.
  */
-final class Scene
+public final class Scene
         extends Sequence
 {
     /** Last level index played. */
@@ -27,7 +28,7 @@ final class Scene
     private static GameLevel getNextLevel()
     {
         Scene.lastLevelIndex++;
-        return GameLevel.values()[Scene.lastLevelIndex];
+        return GameLevel.values()[Scene.lastLevelIndex % GameLevel.NUMBER];
     }
 
     /** Text reference. */
@@ -40,7 +41,7 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader);
         text = new Text(Font.SANS_SERIF, 8, Text.NORMAL);
@@ -73,7 +74,7 @@ final class Scene
         world.update(extrp);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
-            end();
+            end(new Menu(loader));
         }
     }
 
