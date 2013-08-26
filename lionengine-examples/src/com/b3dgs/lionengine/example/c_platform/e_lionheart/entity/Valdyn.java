@@ -1,7 +1,15 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.util.EnumMap;
+
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
@@ -27,8 +35,14 @@ public final class Valdyn
     private static final int JUMP_TIME_MIN = 100;
     /** Maximum jump time (in milli). */
     private static final int JUMP_TIME_MAX = 200;
+    /** Shade surface. */
+    private final SpriteAnimated shade;
     /** Camera reference. */
     private final CameraPlatform camera;
+    /** Animations shade list. */
+    private final EnumMap<EntityState, Animation> shades;
+    /** List of starting frames when shades are enabled. */
+    private final EnumMap<EntityState, Integer> shadesEnabled;
     /** Jump timer (accurate precision of jump force). */
     private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
@@ -59,6 +73,8 @@ public final class Valdyn
     private boolean attacking;
     /** Attacked state. */
     private boolean attacked;
+    /** Shade can be played. */
+    private boolean shadeCanBePlayed;
     /** Left key state. */
     private boolean keyLeft;
     /** Right key state. */
@@ -82,6 +98,10 @@ public final class Valdyn
     {
         super(setup, map, desiredFps);
         this.camera = camera;
+        shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "shade.png"), 7, 7);
+        shade.load(false);
+        shades = new EnumMap<>(EntityState.class);
+        shadesEnabled = new EnumMap<>(EntityState.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -90,6 +110,10 @@ public final class Valdyn
         movementSmooth = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
+        addShadeAnimation(EntityState.ATTACK_UP, 1);
+        addShadeAnimation(EntityState.ATTACK_HORIZONTAL, 1);
+        addShadeAnimation(EntityState.ATTACK_TURNING, 2);
+        addShadeAnimation(EntityState.ATTACK_JUMP, 1);
     }
 
     /**
@@ -237,30 +261,20 @@ public final class Valdyn
     {
         // Attack ended
         final boolean attackFinished = getAnimState() == AnimState.FINISHED;
-        if (attacking && attackFinished || !attacking && !keyAttack)
+        final boolean fallAttack = status.getState() == EntityState.ATTACK_FALL;
+        // Stop if attack finished and if no longer attacking, or fall attack (special case)
+        if (attacking && attackFinished && !fallAttack || (!attacking || fallAttack) && !keyAttack)
         {
             updateActionAttackFinished();
         }
-        final boolean mirror = getMirror();
         if (keyAttack)
         {
-            if (isOnGround())
+            // Prepare attack
+            if (!attacking && isOnGround())
             {
-                // Prepare attack
-                if (!attacking)
-                {
-                    updateActionAttackPrepare(attackFinished);
-                }
-                // Ready for attack
-                if (attackPrepared)
-                {
-                    updateActionAttackList(mirror);
-                }
+                updateActionAttackPrepare(attackFinished);
             }
-            else
-            {
-                setAttack(EntityState.ATTACK_JUMP);
-            }
+            updateActionAttackSelect(attackPrepared);
         }
         if (attack != null && isOnGround())
         {
@@ -294,23 +308,35 @@ public final class Valdyn
     /**
      * List of implemented attacks
      * 
-     * @param mirror The mirror state.
+     * @param attackPrepared <code>true</code> if attack need to be prepared, <code>false</code> else.
      */
-    private void updateActionAttackList(boolean mirror)
+    private void updateActionAttackSelect(boolean attackPrepared)
     {
-        if (keyDown && (mirror && keyLeft || !mirror && keyRight))
+        final boolean mirror = getMirror();
+        final boolean goodWay = !mirror && keyLeft || mirror && keyRight;
+        final boolean wrongWay = mirror && keyLeft || !mirror && keyRight;
+        if (!isOnGround() && keyDown)
+        {
+            setAttack(EntityState.ATTACK_FALL);
+            attacked = false;
+        }
+        else if (!isOnGround())
+        {
+            setAttack(EntityState.ATTACK_JUMP);
+        }
+        else if (attackPrepared && isOnGround() && keyDown && wrongWay)
         {
             setAttack(EntityState.ATTACK_DOWN_LEG);
         }
-        else if (!keyDown && keyUp)
+        else if (attackPrepared && isOnGround() && !keyDown && keyUp)
         {
             setAttack(EntityState.ATTACK_UP);
         }
-        else if (!keyDown && (mirror && keyLeft || !mirror && keyRight))
+        else if (attackPrepared && isOnGround() && !keyDown && wrongWay)
         {
             setAttack(EntityState.ATTACK_HORIZONTAL);
         }
-        else if (!keyDown && (!mirror && keyLeft || mirror && keyRight))
+        else if (attackPrepared && isOnGround() && !keyDown && goodWay)
         {
             setAttack(EntityState.ATTACK_TURNING);
         }
@@ -373,6 +399,7 @@ public final class Valdyn
                 mirror(true);
             }
         }
+        shade.setMirror(getMirror());
     }
 
     /**
@@ -421,6 +448,37 @@ public final class Valdyn
     }
 
     /**
+     * Update the shade animation.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    private void updateAnimationShade(double extrp)
+    {
+        final EntityState state = status.getState();
+        if (status.stateChanged())
+        {
+            if (shades.containsKey(state))
+            {
+                shadeCanBePlayed = true;
+            }
+            else
+            {
+                shade.stopAnimation();
+            }
+        }
+        if (shadeCanBePlayed && shadesEnabled.containsKey(state))
+        {
+            final int index = getFrame() - getAnimation(state.getAnimationName()).getFirst();
+            if (index >= shadesEnabled.get(state).intValue())
+            {
+                shade.play(shades.get(state));
+                shadeCanBePlayed = false;
+            }
+        }
+        shade.updateAnimation(extrp);
+    }
+
+    /**
      * Update the fall calculation (timer used to know when the entity is truly falling).
      */
     private void updateFall()
@@ -455,6 +513,18 @@ public final class Valdyn
         {
             timerFallen.stop();
         }
+    }
+
+    /**
+     * Add a shade animation for the sword attack effect.
+     * 
+     * @param state The state enum.
+     * @param startAtFrame The frame index (relative to current animation) where it should start.
+     */
+    private void addShadeAnimation(EntityState state, int startAtFrame)
+    {
+        shades.put(state, getAnimation("shade_" + state.getAnimationName()));
+        shadesEnabled.put(state, Integer.valueOf(startAtFrame));
     }
 
     /**
@@ -545,6 +615,16 @@ public final class Valdyn
      */
 
     @Override
+    public void render(Graphic g, CameraPlatform camera)
+    {
+        super.render(g, camera);
+        if (shade.getAnimState() == AnimState.PLAYING)
+        {
+            renderAnim(g, shade, camera);
+        }
+    }
+
+    @Override
     public void respawn()
     {
         super.respawn();
@@ -599,7 +679,7 @@ public final class Valdyn
     protected void updateStates()
     {
         final double diffHorizontal = getDiffHorizontal();
-        if (!attacking)
+        if (!attacking || status.getState() == EntityState.ATTACK_FALL)
         {
             updateStateMirror(diffHorizontal);
         }
@@ -691,7 +771,7 @@ public final class Valdyn
     }
 
     @Override
-    protected void updateAnimations()
+    protected void updateAnimations(double extrp)
     {
         final EntityState state = status.getState();
         if (state == EntityState.WALK || state == EntityState.TURN)
@@ -699,5 +779,6 @@ public final class Valdyn
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
             setAnimSpeed(speed);
         }
+        updateAnimationShade(extrp);
     }
 }

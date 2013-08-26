@@ -405,8 +405,9 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     protected void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
     {
-        sprite.render(g, getLocationIntX() - camera.getLocationIntX() + rx,
-                -getLocationIntY() + camera.getLocationIntY() + ry);
+        final int x = camera.getViewpointX(getLocationIntX() - frameOffsetX);
+        final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + getHeight());
+        sprite.render(g, x + rx, y + ry);
     }
 
     /**

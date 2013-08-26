@@ -48,7 +48,7 @@ final class AnimatorImpl
         if (current >= last + 1.0)
         {
             // If not reversed, done, else, reverse
-            current = last;
+            current = last + 0.5;
             if (!reverse)
             {
                 if (repeat)

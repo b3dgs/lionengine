@@ -42,7 +42,9 @@ enum EntityState
     /** Attack down leg. */
     ATTACK_DOWN_LEG("attack_down_leg"),
     /** Attack while jumping. */
-    ATTACK_JUMP("attack_jump");
+    ATTACK_JUMP("attack_jump"),
+    /** Attack while falling. */
+    ATTACK_FALL("attack_fall");
 
     /** Values. */
     public static final EntityState[] VALUES = EntityState.values();

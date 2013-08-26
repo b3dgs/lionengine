@@ -117,8 +117,10 @@ public abstract class Entity
 
     /**
      * Update the animations handling.
+     * 
+     * @param extrp The Extrapolation value.
      */
-    protected abstract void updateAnimations();
+    protected abstract void updateAnimations(double extrp);
 
     /**
      * Kill entity.
@@ -364,7 +366,7 @@ public abstract class Entity
     @Override
     protected void handleAnimations(double extrp)
     {
-        updateAnimations();
+        updateAnimations(extrp);
         if (status.stateChanged())
         {
             play(animations.get(status.getState()));
