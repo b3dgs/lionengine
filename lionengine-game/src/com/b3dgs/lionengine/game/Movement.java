@@ -87,7 +87,7 @@ public class Movement
     }
 
     /**
-     * Get the current force.
+     * Get the current force (active reference, not a copy).
      * 
      * @return The current force.
      */

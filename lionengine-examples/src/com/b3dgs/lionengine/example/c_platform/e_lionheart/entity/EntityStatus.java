@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 /**
  * Handle the status of an entity.
  */
-final class EntityStatus
+public final class EntityStatus
 {
     /** Entity state. */
     private EntityState state;

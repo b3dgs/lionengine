@@ -5,9 +5,12 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -30,6 +33,8 @@ final class World
     private final Map map;
     /** Entity factory. */
     private final FactoryEntity factoryEntity;
+    /** Handler entity. */
+    private final HandlerEntity handlerEntity;
     /** Player reference. */
     private final Valdyn player;
 
@@ -47,6 +52,7 @@ final class World
         map = new Map(landscape);
         factoryEntity = new FactoryEntity(camera, map, display.getRate());
         player = factoryEntity.createValdyn();
+        handlerEntity = new HandlerEntity(camera, player);
     }
 
     /*
@@ -59,6 +65,7 @@ final class World
         player.updateControl(keyboard);
         player.update(extrp);
         camera.follow(player);
+        handlerEntity.update(extrp);
         landscape.update(extrp, camera);
     }
 
@@ -67,6 +74,7 @@ final class World
     {
         landscape.renderBackground(g);
         map.render(g, camera);
+        handlerEntity.render(g, camera);
         player.render(g, camera);
         landscape.renderForeground(g);
     }
@@ -88,6 +96,11 @@ final class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
+
+        final Talisment talisment = factoryEntity.createTalisment();
+        talisment.teleport(640, 80);
+        handlerEntity.add(talisment);
+
         player.respawn();
     }
 }

@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
@@ -16,9 +16,9 @@ public final class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
     /** Entity configuration file extension. */
-    private static final String CONFIG_FILE_EXTENSION = ".xml";
+    public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Unknown entity error message. */
-    private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
+    public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
     /** Map reference. */
     private final Map map;
     /** Camera reference. */
@@ -43,6 +43,16 @@ public final class FactoryEntity
     }
 
     /**
+     * Create a talisment.
+     * 
+     * @return The instance of talisment.
+     */
+    public Talisment createTalisment()
+    {
+        return new Talisment(getSetup(TypeEntity.talisment), map, desiredFps);
+    }
+
+    /**
      * Create a new valdyn.
      * 
      * @return The instance of valdyn.
@@ -61,6 +71,8 @@ public final class FactoryEntity
     {
         switch (type)
         {
+            case talisment:
+                return createTalisment();
             case valdyn:
                 return createValdyn();
             default:
@@ -71,6 +83,8 @@ public final class FactoryEntity
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {
-        return new SetupEntityGame(Media.get(AppLionheart.ENTITIES_DIR, id + FactoryEntity.CONFIG_FILE_EXTENSION));
+        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(), id
+                + FactoryEntity.CONFIG_FILE_EXTENSION);
+        return new SetupEntityGame(media);
     }
 }

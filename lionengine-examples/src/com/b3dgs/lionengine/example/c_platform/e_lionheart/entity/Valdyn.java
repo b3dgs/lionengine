@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
  * Valdyn implementation (player).
  */
 public final class Valdyn
-        extends Entity
+        extends EntityMover
 {
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
@@ -98,7 +98,7 @@ public final class Valdyn
     {
         super(setup, map, desiredFps);
         this.camera = camera;
-        shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "shade.png"), 7, 7);
+        shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "players", "shade.png"), 7, 7);
         shade.load(false);
         shades = new EnumMap<>(EntityState.class);
         shadesEnabled = new EnumMap<>(EntityState.class);

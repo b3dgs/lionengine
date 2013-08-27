@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 /**
  * List of entity states.
  */
-enum EntityState
+public enum EntityState
 {
     /** Idle state. */
     IDLE("idle"),
@@ -46,8 +46,6 @@ enum EntityState
     /** Attack while falling. */
     ATTACK_FALL("attack_fall");
 
-    /** Values. */
-    public static final EntityState[] VALUES = EntityState.values();
     /** Animation name. */
     private final String animationName;
 

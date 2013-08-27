@@ -1,7 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeLandscape;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 

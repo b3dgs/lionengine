@@ -6,7 +6,6 @@ import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 
 // Tutorial: Lionheart
 // This last platform tutorial will show a quick game example to show as much things as possible.
@@ -48,7 +47,7 @@ public final class AppLionheart
         final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);
         final Loader loader = new Loader(config);
 
-        loader.start(new Menu(loader));
+        loader.start(new Scene(loader));
     }
 
     /**

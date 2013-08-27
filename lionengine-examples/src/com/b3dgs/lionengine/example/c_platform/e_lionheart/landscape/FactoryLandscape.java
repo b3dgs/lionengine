@@ -2,7 +2,6 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeLandscape;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 
 /**

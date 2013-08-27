@@ -243,6 +243,35 @@ public class CameraGame
     }
 
     /**
+     * Check if the localizable is inside the camera view.
+     * 
+     * @param localizable The localizable to check.
+     * @return <code>true</code> if visible, <code>false</code> else.
+     */
+    public boolean isVisible(Localizable localizable)
+    {
+        return isVisible(localizable, 0, 0, 0, 0);
+    }
+
+    /**
+     * Check if the localizable is inside the camera view.
+     * 
+     * @param localizable The localizable to check.
+     * @param left The left offset.
+     * @param right The right offset.
+     * @param top The top offset.
+     * @param bottom The bottom offset.
+     * @return <code>true</code> if visible, <code>false</code> else.
+     */
+    public boolean isVisible(Localizable localizable, int left, int right, int top, int bottom)
+    {
+        return localizable.getLocationX() + localizable.getWidth() >= getLocationX() + left
+                && localizable.getLocationX() - localizable.getWidth() <= getLocationX() + getViewWidth() + right
+                && localizable.getLocationY() + localizable.getHeight() >= getLocationY() + bottom
+                && localizable.getLocationY() - localizable.getHeight() <= getLocationY() + getViewHeight() + top;
+    }
+
+    /**
      * Move camera using specified vector.
      * 
      * @param extrp The extrapolation value.

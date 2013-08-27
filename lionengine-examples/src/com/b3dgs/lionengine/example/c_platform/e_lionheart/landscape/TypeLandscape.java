@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
 /**
  * Types of landscapes.

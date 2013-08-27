@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity name="talisment" surface="talisment.png">
+	<frames horizontal="4" vertical="2"/>
+	<size width="16" height="16"/>
+	<animation name="idle" start="1" end="8" speed="0.25" reversed="false" repeat="true"/>
+</entity>
