@@ -20,6 +20,10 @@ public final class AppWarcraft
     public static final String PROGRAM = "Warcraft Remake";
     /** Program version. */
     public static final Version VERSION = Version.create(1, 0, 0);
+    /** Effects directory. */
+    public static final String EFFECTS_DIR = "effects";
+    /** Configuration file extension. */
+    public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Program path. */
     public static final String PATH = Media.getPath("resources", "rts");
 

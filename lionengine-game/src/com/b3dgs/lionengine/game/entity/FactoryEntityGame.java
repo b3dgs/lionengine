@@ -1,7 +1,6 @@
 package com.b3dgs.lionengine.game.entity;
 
 import com.b3dgs.lionengine.game.FactoryGame;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 
 /**
  * Abstract entity factory. It performs a list of available entities from a directory considering an input enumeration.

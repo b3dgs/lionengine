@@ -135,9 +135,9 @@ public final class Engine
             // LionEngine started
             Verbose.info("Starting \"LionEngine ", Engine.VERSION, "\" for \"", Engine.programName, " ",
                     Engine.programVersion, "\"");
-            Verbose.info("Execution directory = ", Media.WORKING_DIR);
-            Verbose.info("Resources directory = ", Media.getRessourcesDir());
-            Verbose.info("Temporary directory = ", Media.getTempDir());
+            Verbose.info("Execution directory = ", Media.WORKING_DIR + Media.getSeparator());
+            Verbose.info("Resources directory = ", Media.getPath(Media.WORKING_DIR, Media.getRessourcesDir()));
+            Verbose.info("Temporary directory = ", Media.getTempDir() + Media.getSeparator());
 
             // Check version (clear temporary directory if version is different)
             final String versionFilename = Media.getPath(Media.getTempDir(), "version");

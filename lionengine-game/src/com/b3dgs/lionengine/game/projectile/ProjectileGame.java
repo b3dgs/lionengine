@@ -9,9 +9,9 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**

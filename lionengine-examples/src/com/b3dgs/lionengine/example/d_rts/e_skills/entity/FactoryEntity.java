@@ -4,8 +4,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
 import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**

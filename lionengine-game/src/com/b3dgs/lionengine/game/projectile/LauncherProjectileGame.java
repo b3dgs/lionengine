@@ -2,9 +2,9 @@ package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**

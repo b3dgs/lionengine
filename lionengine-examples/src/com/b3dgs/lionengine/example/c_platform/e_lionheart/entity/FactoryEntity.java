@@ -1,12 +1,16 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.util.Locale;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
@@ -15,8 +19,6 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 public final class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
-    /** Entity configuration file extension. */
-    public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Unknown entity error message. */
     public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
     /** Map reference. */
@@ -25,6 +27,10 @@ public final class FactoryEntity
     private final CameraPlatform camera;
     /** Desired fps. */
     private final int desiredFps;
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
 
     /**
      * Standard constructor.
@@ -32,13 +38,16 @@ public final class FactoryEntity
      * @param camera The camera reference.
      * @param map The map reference.
      * @param desiredFps The desired fps.
+     * @param handlerEffect The handler effect.
      */
-    public FactoryEntity(CameraPlatform camera, Map map, int desiredFps)
+    public FactoryEntity(CameraPlatform camera, Map map, int desiredFps, HandlerEffect handlerEffect)
     {
         super(TypeEntity.class);
         this.camera = camera;
         this.map = map;
         this.desiredFps = desiredFps;
+        this.factoryEffect = new FactoryEffect();
+        this.handlerEffect = handlerEffect;
         loadAll(TypeEntity.values());
     }
 
@@ -49,7 +58,7 @@ public final class FactoryEntity
      */
     public Talisment createTalisment()
     {
-        return new Talisment(getSetup(TypeEntity.talisment), map, desiredFps);
+        return new Talisment(getSetup(TypeEntity.TALISMENT), map, desiredFps, factoryEffect, handlerEffect);
     }
 
     /**
@@ -59,7 +68,7 @@ public final class FactoryEntity
      */
     public Valdyn createValdyn()
     {
-        return new Valdyn(getSetup(TypeEntity.valdyn), camera, map, desiredFps);
+        return new Valdyn(getSetup(TypeEntity.VALDYN), camera, map, desiredFps);
     }
 
     /*
@@ -71,9 +80,9 @@ public final class FactoryEntity
     {
         switch (type)
         {
-            case talisment:
+            case TALISMENT:
                 return createTalisment();
-            case valdyn:
+            case VALDYN:
                 return createValdyn();
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
@@ -83,8 +92,8 @@ public final class FactoryEntity
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {
-        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(), id
-                + FactoryEntity.CONFIG_FILE_EXTENSION);
+        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(),
+                id.name().toLowerCase(Locale.ENGLISH) + AppLionheart.CONFIG_FILE_EXTENSION);
         return new SetupEntityGame(media);
     }
 }

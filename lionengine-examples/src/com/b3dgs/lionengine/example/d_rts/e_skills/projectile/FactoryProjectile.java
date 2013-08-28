@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.e_skills.projectile;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.e_skills.TypeProjectile;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 

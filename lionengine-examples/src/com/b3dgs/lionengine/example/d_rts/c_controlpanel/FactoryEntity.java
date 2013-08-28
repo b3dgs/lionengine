@@ -3,8 +3,8 @@ package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Factory entity implementation, creating entity from simple function. This allows to set correctly the new instance,

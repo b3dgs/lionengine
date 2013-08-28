@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.game.FactoryGame;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Handle projectile factory. Projectiles are instantiated from a list. This way it is easy to define different kind of

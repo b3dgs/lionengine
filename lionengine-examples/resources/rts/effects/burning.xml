@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect name="burning" surface="burning.png">
+	<frames horizontal="4" vertical="2"/>
+</effect>

@@ -1,10 +1,10 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.skill.FactorySkill;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.weapon.FactoryWeapon;
-import com.b3dgs.lionengine.game.HandlerEffect;
 import com.b3dgs.lionengine.game.TimedMessage;
 
 /**
@@ -24,6 +24,8 @@ public final class Context
     public final FactoryProduction factoryProduction;
     /** The factory weapon. */
     public final FactoryWeapon factoryWeapon;
+    /** The factory effect. */
+    public final FactoryEffect factoryEffect;
     /** The handler entity reference. */
     public final HandlerEntity handlerEntity;
     /** The handler projectile reference. */
@@ -61,6 +63,7 @@ public final class Context
         factoryProjectile = new FactoryProjectile();
         factoryWeapon = new FactoryWeapon();
         factorySkill = new FactorySkill(handlerEntity, factoryProduction, cursor, map, message);
+        factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect();
     }
 

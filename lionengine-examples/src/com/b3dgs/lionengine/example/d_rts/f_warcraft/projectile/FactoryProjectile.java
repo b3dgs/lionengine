@@ -4,7 +4,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeProjectile;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 

@@ -1,14 +1,14 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 /**
- * Types of entities. Lower case is preferred, as the name has to be the same with its corresponding files.
+ * Types of entities.
  */
 public enum TypeEntity
 {
     /** Talisment (item). */
-    talisment(TypeEntityCategory.ITEM),
+    TALISMENT(TypeEntityCategory.ITEM),
     /** Valdyn (player). */
-    valdyn(TypeEntityCategory.PLAYER);
+    VALDYN(TypeEntityCategory.PLAYER);
 
     /** Type category. */
     private final TypeEntityCategory category;

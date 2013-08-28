@@ -8,8 +8,8 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.human.FactoryEntityHuman;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.orc.FactoryEntityOrc;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Factory entity implementation.

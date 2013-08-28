@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.projectile;
 
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect name="explode" surface="explode.png">
+	<frames horizontal="6" vertical="3"/>
+</effect>

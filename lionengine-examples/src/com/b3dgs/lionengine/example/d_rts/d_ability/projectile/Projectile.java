@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.d_rts.d_ability.projectile;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**

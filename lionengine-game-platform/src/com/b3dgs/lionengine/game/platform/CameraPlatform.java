@@ -26,7 +26,7 @@ public class CameraPlatform
     private int mapDownLimit;
 
     /**
-     * Create a new platform camera.
+     * Constructor.
      * 
      * @param screenWidth The screen width.
      * @param screenHeight The screen height.
@@ -34,13 +34,14 @@ public class CameraPlatform
     public CameraPlatform(int screenWidth, int screenHeight)
     {
         super();
+        this.width = screenWidth;
+        this.height = screenHeight;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         mapLeftLimit = -1;
         mapRightLimit = -1;
         mapUpLimit = -1;
         mapDownLimit = -1;
-        setView(0, 0, screenWidth, screenHeight);
     }
 
     /**

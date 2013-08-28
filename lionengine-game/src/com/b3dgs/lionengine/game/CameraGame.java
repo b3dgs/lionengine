@@ -24,16 +24,16 @@ public class CameraGame
     /** Intervals vertical value. */
     protected int intervalVertical;
     /** Camera view location x. */
-    private int x;
+    protected int x;
     /** Camera view location y. */
-    private int y;
+    protected int y;
     /** Camera view width. */
-    private int width;
+    protected int width;
     /** Camera view height. */
-    private int height;
+    protected int height;
 
     /**
-     * Create a new camera.
+     * Constructor.
      */
     public CameraGame()
     {
@@ -43,8 +43,8 @@ public class CameraGame
         intervalVertical = 0;
         x = 0;
         y = 0;
-        width = -1;
-        height = -1;
+        width = 0;
+        height = 0;
     }
 
     /**

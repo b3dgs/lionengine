@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
@@ -35,6 +36,8 @@ final class World
     private final FactoryEntity factoryEntity;
     /** Handler entity. */
     private final HandlerEntity handlerEntity;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
     /** Player reference. */
     private final Valdyn player;
 
@@ -46,11 +49,12 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
+        handlerEffect = new HandlerEffect();
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(config, wide, false);
         landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
         map = new Map(landscape);
-        factoryEntity = new FactoryEntity(camera, map, display.getRate());
+        factoryEntity = new FactoryEntity(camera, map, display.getRate(), handlerEffect);
         player = factoryEntity.createValdyn();
         handlerEntity = new HandlerEntity(camera, player);
     }
@@ -66,6 +70,7 @@ final class World
         player.update(extrp);
         camera.follow(player);
         handlerEntity.update(extrp);
+        handlerEffect.update(extrp);
         landscape.update(extrp, camera);
     }
 
@@ -76,6 +81,7 @@ final class World
         map.render(g, camera);
         handlerEntity.render(g, camera);
         player.render(g, camera);
+        handlerEffect.render(g, camera);
         landscape.renderForeground(g);
     }
 

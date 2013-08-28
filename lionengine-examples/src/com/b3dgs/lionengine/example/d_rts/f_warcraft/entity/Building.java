@@ -1,13 +1,12 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.entity;
 
 import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Context;
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.HandlerEffect;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.Effect;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.TypeEffect;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.game.HandlerEffect;
 
 /**
  * Abstract building entity implementation.
@@ -31,9 +30,9 @@ public abstract class Building
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
     /** Burning animation. */
-    private final SpriteAnimated burning;
+    private final Effect burning;
     /** Explode animation surface. */
-    private final SpriteAnimated explode;
+    private final Effect explode;
     /** Burning low animation. */
     private final Animation animBurningLow;
     /** Burning high animation. */
@@ -55,8 +54,8 @@ public abstract class Building
         setLayer(0);
         setFrame(2);
         handlerEffect = context.handlerEffect;
-        burning = ResourcesLoader.BURNING.instanciate();
-        explode = ResourcesLoader.EXPLODE.instanciate();
+        burning = context.factoryEffect.createEffect(TypeEffect.BURNING);
+        explode = context.factoryEffect.createEffect(TypeEffect.EXPLODE);
         animBurningLow = Anim.createAnimation(1, 4, 0.125, false, true);
         animBurningHigh = Anim.createAnimation(5, 8, 0.125, false, true);
         animExplode = Anim.createAnimation(1, 18, 0.125, false, false);
@@ -75,7 +74,8 @@ public abstract class Building
         {
             final int x = getLocationIntX() + getWidth() / 2 - 6;
             final int y = getLocationIntY() + getHeight() / 2 - 4;
-            handlerEffect.add(x, y, burning);
+            burning.start(x, y);
+            handlerEffect.add(burning);
         }
         burning.play(anim);
         destroy = current;
@@ -86,12 +86,13 @@ public abstract class Building
      */
     private void explode()
     {
-        final int x = getLocationIntX() + getWidth() / 2 - explode.getFrameWidth() / 2;
+        final int x = getLocationIntX() + getWidth() / 2 - explode.getWidth() / 2;
         final int y = getLocationIntY();
 
         handlerEffect.remove(burning);
-        handlerEffect.add(x, y, explode);
+        explode.start(x, y);
         explode.play(animExplode);
+        handlerEffect.add(explode);
         destroy = Destroy.EXPLODING;
     }
 
@@ -105,11 +106,6 @@ public abstract class Building
         super.update(extrp);
         if (isDead())
         {
-            if (AnimState.FINISHED == explode.getAnimState())
-            {
-                handlerEffect.remove(explode);
-                destroy();
-            }
             if (explode.getFrame() > 7)
             {
                 setVisible(false);

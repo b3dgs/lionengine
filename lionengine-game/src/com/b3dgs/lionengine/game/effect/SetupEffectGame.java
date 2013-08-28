@@ -1,16 +1,17 @@
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.effect;
 
 import java.awt.image.BufferedImage;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
- * Define a structure used to create multiple entity, sharing the same data.
+ * Define a structure used to create multiple effect, sharing the same data.
  */
-public class SetupEntityGame
+public class SetupEffectGame
         extends SetupGame
 {
     /** Surface reference. */
@@ -19,34 +20,34 @@ public class SetupEntityGame
     public final Media surfaceFile;
 
     /**
-     * Create a new entity setup.
+     * Create a new effect setup.
      * 
      * @param config The config media.
      */
-    public SetupEntityGame(Media config)
+    public SetupEffectGame(Media config)
     {
         this(new ConfigurableModel(), config, false);
     }
 
     /**
-     * Create a new entity setup.
+     * Create a new effect setup.
      * 
      * @param config The config media.
      * @param alpha The alpha use flag.
      */
-    public SetupEntityGame(Media config, boolean alpha)
+    public SetupEffectGame(Media config, boolean alpha)
     {
         this(new ConfigurableModel(), config, alpha);
     }
 
     /**
-     * Create a new entity setup.
+     * Create a new effect setup.
      * 
      * @param configurable The configurable reference.
      * @param config The config media.
      * @param alpha The alpha use flag.
      */
-    public SetupEntityGame(Configurable configurable, Media config, boolean alpha)
+    public SetupEffectGame(Configurable configurable, Media config, boolean alpha)
     {
         super(configurable, config);
         final String conf = config.getPath();

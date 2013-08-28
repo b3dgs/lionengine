@@ -29,6 +29,10 @@ public final class AppLionheart
     public static final String ENTITIES_DIR = "entities";
     /** Main entity directory name. */
     public static final String BACKGROUNDS_DIR = "backgrounds";
+    /** Effects directory. */
+    public static final String EFFECTS_DIR = "effects";
+    /** Entity configuration file extension. */
+    public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */

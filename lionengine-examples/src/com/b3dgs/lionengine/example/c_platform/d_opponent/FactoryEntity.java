@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.

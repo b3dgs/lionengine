@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Abstract entity base implementation designed to move around the map.

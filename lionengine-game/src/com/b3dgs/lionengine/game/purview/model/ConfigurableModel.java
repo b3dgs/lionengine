@@ -26,7 +26,7 @@ public class ConfigurableModel
     private XmlNode root;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public ConfigurableModel()
     {
@@ -38,9 +38,17 @@ public class ConfigurableModel
      * 
      * @param configurable The configurable reference.
      */
-    public ConfigurableModel(ConfigurableModel configurable)
+    public ConfigurableModel(Configurable configurable)
     {
-        animations = new HashMap<>(1);
+        if (configurable instanceof ConfigurableModel)
+        {
+            animations = ((ConfigurableModel) configurable).animations;
+            root = ((ConfigurableModel) configurable).root;
+        }
+        else
+        {
+            animations = new HashMap<>(1);
+        }
     }
 
     /**

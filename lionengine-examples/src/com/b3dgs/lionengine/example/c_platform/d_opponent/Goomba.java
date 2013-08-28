@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.game.SetupEntityGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Goomba implementation.

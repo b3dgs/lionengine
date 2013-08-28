@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<effect name="taken" surface="taken.png">
+	<frames horizontal="4" vertical="2"/>
+	<animation name="start" start="1" end="8" speed="0.25" reversed="false" repeat="false"/>
+</effect>

@@ -3,18 +3,18 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.entity;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Context;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.HandlerEffect;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.HandlerEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ProducibleEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ProductionCost;
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Tile;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.Effect;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.TypeEffect;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollision;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.HandlerEffect;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.TimedMessage;
@@ -41,7 +41,7 @@ public abstract class UnitWorker
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Handler reference. */
-    private final HandlerEntity handler;
+    private final HandlerEntity handlerEntity;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
     /** Extractor model. */
@@ -61,7 +61,7 @@ public abstract class UnitWorker
     /** Carry wood animation. */
     private final Animation animCarryWood;
     /** Construction surface. */
-    private final SpriteAnimated construction;
+    private final Effect construction;
     /** Timed message. */
     private final TimedMessage message;
     /** Last town hall. */
@@ -77,7 +77,7 @@ public abstract class UnitWorker
     {
         super(id, context);
         factory = context.factoryEntity;
-        handler = context.handlerEntity;
+        handlerEntity = context.handlerEntity;
         handlerEffect = context.handlerEffect;
         message = context.timedMessage;
         producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
@@ -89,7 +89,7 @@ public abstract class UnitWorker
         animWork = getAnimation("work");
         animCarryGold = getAnimation("carry_gold");
         animCarryWood = getAnimation("carry_wood");
-        construction = ResourcesLoader.CONSTRUCTION.instanciate();
+        construction = context.factoryEffect.createEffect(TypeEffect.CONSTRUCTION);
     }
 
     /**
@@ -192,7 +192,7 @@ public abstract class UnitWorker
         final Tiled resource = getResourceLocation();
         try
         {
-            final Entity entity = handler.getEntityAt(resource);
+            final Entity entity = handlerEntity.getEntityAt(resource);
             // Allow worker to enter inside the gold mine
             setIgnoreId(entity.getId(), true);
             return getDistanceInTile(entity, true) <= 1;
@@ -387,10 +387,11 @@ public abstract class UnitWorker
         setActive(false);
         setVisible(false);
         setSelection(false);
-        final int x = getLocationIntX() + entity.getWidth() / 2 - construction.getFrameWidth() / 2 - 16;
-        final int y = getLocationIntY() + entity.getHeight() / 2 - construction.getFrameHeight() / 2 - 16;
-        handlerEffect.add(x, y, construction);
+        final int x = getLocationIntX() + entity.getWidth() / 2 - construction.getWidth() / 2 - 16;
+        final int y = getLocationIntY() + entity.getHeight() / 2 - construction.getHeight() / 2 - 16;
         construction.setFrame(1);
+        construction.start(x, y);
+        handlerEffect.add(construction);
         getPlayer().spend(element.getCost());
         entity.setPlayer(getPlayer());
     }
@@ -452,7 +453,7 @@ public abstract class UnitWorker
         // Search gold mine
         try
         {
-            final Entity entity = handler.getEntityAt(resourceLocation);
+            final Entity entity = handlerEntity.getEntityAt(resourceLocation);
             if (entity instanceof Extractible)
             {
                 final Extractible<?> extractible = (Extractible<?>) entity;
@@ -485,7 +486,7 @@ public abstract class UnitWorker
     {
         try
         {
-            townHall = handler.getClosestEntity(this, Warehouse.class, true);
+            townHall = handlerEntity.getClosestEntity(this, Warehouse.class, true);
             if (TypeResource.GOLD == type)
             {
                 setVisible(true);

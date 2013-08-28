@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.projectile;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
-import com.b3dgs.lionengine.game.SetupEntityGame;
+import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Spear projectile implementation.
