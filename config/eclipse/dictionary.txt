@@ -131,3 +131,4 @@ foo
 diff
 refactoring
 talisment
+lowercase

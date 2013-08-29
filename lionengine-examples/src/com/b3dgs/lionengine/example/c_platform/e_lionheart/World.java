@@ -7,6 +7,7 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
@@ -103,6 +104,8 @@ final class World
         camera.setLimits(map);
         camera.setIntervals(32, 0);
 
+        factoryEntity.setWorld(TypeWorld.SWAMP);
+        factoryEntity.loadAll(TypeEntity.values());
         final Talisment talisment = factoryEntity.createTalisment();
         talisment.teleport(640, 80);
         handlerEntity.add(talisment);

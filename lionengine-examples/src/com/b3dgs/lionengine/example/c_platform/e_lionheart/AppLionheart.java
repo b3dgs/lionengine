@@ -50,8 +50,9 @@ public final class AppLionheart
         final Display external = new Display(640, 480, 16, 60);
         final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);
         final Loader loader = new Loader(config);
-
-        loader.start(new Scene(loader));
+        Editor editor = new Editor(config);
+        editor.start();
+        // loader.start(new Scene(loader));
     }
 
     /**

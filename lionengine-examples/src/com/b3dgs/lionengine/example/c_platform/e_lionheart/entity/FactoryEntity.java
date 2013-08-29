@@ -1,10 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
-import java.util.Locale;
-
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
@@ -31,6 +30,8 @@ public final class FactoryEntity
     private final FactoryEffect factoryEffect;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
+    /** World used. */
+    private TypeWorld world;
 
     /**
      * Standard constructor.
@@ -46,9 +47,28 @@ public final class FactoryEntity
         this.camera = camera;
         this.map = map;
         this.desiredFps = desiredFps;
-        this.factoryEffect = new FactoryEffect();
+        factoryEffect = new FactoryEffect();
         this.handlerEffect = handlerEffect;
-        loadAll(TypeEntity.values());
+    }
+
+    /**
+     * Set the world type used.
+     * 
+     * @param world The world used.
+     */
+    public void setWorld(TypeWorld world)
+    {
+        this.world = world;
+    }
+
+    /**
+     * Create a new valdyn.
+     * 
+     * @return The instance of valdyn.
+     */
+    public Valdyn createValdyn()
+    {
+        return new Valdyn(camera, map, desiredFps);
     }
 
     /**
@@ -59,16 +79,6 @@ public final class FactoryEntity
     public Talisment createTalisment()
     {
         return new Talisment(getSetup(TypeEntity.TALISMENT), map, desiredFps, factoryEffect, handlerEffect);
-    }
-
-    /**
-     * Create a new valdyn.
-     * 
-     * @return The instance of valdyn.
-     */
-    public Valdyn createValdyn()
-    {
-        return new Valdyn(getSetup(TypeEntity.VALDYN), camera, map, desiredFps);
     }
 
     /*
@@ -82,8 +92,6 @@ public final class FactoryEntity
         {
             case TALISMENT:
                 return createTalisment();
-            case VALDYN:
-                return createValdyn();
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }
@@ -92,8 +100,8 @@ public final class FactoryEntity
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {
-        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(),
-                id.name().toLowerCase(Locale.ENGLISH) + AppLionheart.CONFIG_FILE_EXTENSION);
+        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(), world.asPathName(),
+                id.asPathName() + AppLionheart.CONFIG_FILE_EXTENSION);
         return new SetupEntityGame(media);
     }
 }

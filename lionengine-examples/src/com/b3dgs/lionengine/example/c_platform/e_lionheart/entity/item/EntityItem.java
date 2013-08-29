@@ -5,6 +5,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
@@ -22,6 +23,7 @@ public abstract class EntityItem
     /**
      * Constructor.
      * 
+     * @param type The entity type.
      * @param setup The setup reference.
      * @param map The map reference.
      * @param desiredFps The desired fps.
@@ -29,10 +31,10 @@ public abstract class EntityItem
      * @param handlerEffect The effect handler.
      * @param effect The effect type.
      */
-    EntityItem(SetupEntityGame setup, Map map, int desiredFps, FactoryEffect factoryEffect,
+    EntityItem(TypeEntity type, SetupEntityGame setup, Map map, int desiredFps, FactoryEffect factoryEffect,
             HandlerEffect handlerEffect, TypeEffect effect)
     {
-        super(setup, map, desiredFps);
+        super(type, setup, map, desiredFps);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         play(getAnimation(status.getState().getAnimationName()));

@@ -1,7 +1,5 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.effect;
 
-import java.util.Locale;
-
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -42,7 +40,7 @@ public class FactoryEffect
     @Override
     protected SetupEffectGame createSetup(TypeEffect id)
     {
-        return new SetupEffectGame(Media.get(AppLionheart.EFFECTS_DIR, id.name().toLowerCase(Locale.ENGLISH)
+        return new SetupEffectGame(Media.get(AppLionheart.EFFECTS_DIR, id.toString()
                 + AppLionheart.CONFIG_FILE_EXTENSION));
     }
 }

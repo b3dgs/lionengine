@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
@@ -24,6 +25,6 @@ public class Talisment
     public Talisment(SetupEntityGame setup, Map map, int desiredFps, FactoryEffect factoryEffect,
             HandlerEffect handlerEffect)
     {
-        super(setup, map, desiredFps, factoryEffect, handlerEffect, TypeEffect.TAKEN);
+        super(TypeEntity.TALISMENT, setup, map, desiredFps, factoryEffect, handlerEffect, TypeEffect.TAKEN);
     }
 }

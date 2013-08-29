@@ -32,13 +32,14 @@ public abstract class EntityMover
     /**
      * Constructor.
      * 
+     * @param type The entity type.
      * @param setup The setup reference.
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    public EntityMover(SetupEntityGame setup, Map map, int desiredFps)
+    public EntityMover(TypeEntity type, SetupEntityGame setup, Map map, int desiredFps)
     {
-        super(setup, map, desiredFps);
+        super(type, setup, map, desiredFps);
         movement = new Movement();
         actions = new EnumMap<>(EntityAction.class);
         extraGravityForce = new Force();

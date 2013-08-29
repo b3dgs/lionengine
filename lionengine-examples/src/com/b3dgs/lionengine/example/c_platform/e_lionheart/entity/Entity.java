@@ -1,13 +1,18 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.io.IOException;
 import java.util.EnumMap;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.EntryData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
@@ -19,6 +24,10 @@ import com.b3dgs.lionengine.game.platform.EntityPlatform;
 public abstract class Entity
         extends EntityPlatform<TileCollision, Tile>
 {
+    /** Entity type. */
+    public final TypeEntity type;
+    /** Entity data. */
+    public final EntryData data;
     /** Map reference. */
     protected final Map map;
     /** Entity status. */
@@ -38,16 +47,23 @@ public abstract class Entity
     /** Dead flag. */
     private boolean dead;
 
+    private TypeWorld world;
+    protected boolean hasPatrol, enablePatrol, enableMovement[];
+    protected int side, posMin, posMax;
+
     /**
      * Constructor.
      * 
+     * @param type The entity type.
      * @param setup The setup reference.
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    public Entity(SetupEntityGame setup, Map map, int desiredFps)
+    public Entity(TypeEntity type, SetupEntityGame setup, Map map, int desiredFps)
     {
         super(setup, map);
+        this.type = type;
+        data = new EntryData();
         this.map = map;
         this.desiredFps = desiredFps;
         status = new EntityStatus();
@@ -55,6 +71,12 @@ public abstract class Entity
         timerDie = new Timing();
         dieLocation = new Coord();
         forces = new Force[0];
+        enablePatrol = false;
+        enableMovement = new boolean[4];
+        enableMovement[0] = true;
+        enableMovement[1] = false;
+        enableMovement[2] = false;
+        enableMovement[3] = false;
         loadAnimations();
     }
 
@@ -122,6 +144,46 @@ public abstract class Entity
         status.backupCollision();
     }
 
+    public void save(FileWriting file) throws IOException
+    {
+        file.writeByte((byte) world.ordinal());
+        file.writeByte((byte) type.ordinal());
+        file.writeShort((short) Math.floor(getInTileX()));
+        file.writeShort((short) Math.floor(getInTileY()));
+        data.save(file);
+    }
+
+    public void load(FileReading file, boolean fromEditor) throws IOException
+    {
+        teleport(file.readShort() * map.getTileWidth(), file.readShort() * map.getTileHeight());
+        data.load(file);
+        if (data.getMovement() != EntryData.NONE_MOV)
+        {
+            play(getAnimation("walk"));
+            if (data.getMovement() == EntryData.HORI_MOV)
+            {
+                posMin = getLocationIntX() - data.getPatrolLeft() * Map.TILE_WIDTH;
+                posMax = getLocationIntX() + (data.getPatrolRight() - 1) * Map.TILE_WIDTH;
+            }
+            else if (data.getMovement() == EntryData.VERT_MOV)
+            {
+                posMin = getLocationIntY() - data.getPatrolLeft() * Map.TILE_WIDTH;
+                posMax = getLocationIntY() + data.getPatrolRight() * Map.TILE_WIDTH;
+            }
+            hasPatrol = data.getPatrolLeft() != 0 || data.getPatrolRight() != 0;
+        }
+    }
+
+    /**
+     * Get the entity world (used as theme).
+     * 
+     * @return The entity world.
+     */
+    public TypeWorld getWorld()
+    {
+        return world;
+    }
+
     /**
      * Check if entity is dead.
      * 
@@ -130,6 +192,27 @@ public abstract class Entity
     public boolean isDead()
     {
         return dead;
+    }
+
+    /**
+     * Check if patrol is enabled.
+     * 
+     * @return <code>true</code> if patrol enabled, <code>false</code> else.
+     */
+    public boolean patrolEnabled()
+    {
+        return enablePatrol;
+    }
+
+    /**
+     * Check if movement is enabled.
+     * 
+     * @param m The movement index.
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean movementEnabled(int m)
+    {
+        return enableMovement[m];
     }
 
     /**

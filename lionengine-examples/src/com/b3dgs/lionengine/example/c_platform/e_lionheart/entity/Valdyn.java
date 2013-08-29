@@ -89,14 +89,13 @@ public final class Valdyn
     /**
      * Constructor.
      * 
-     * @param setup The setup reference.
      * @param camera The camera reference.
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    Valdyn(SetupEntityGame setup, CameraPlatform camera, Map map, int desiredFps)
+    Valdyn(CameraPlatform camera, Map map, int desiredFps)
     {
-        super(setup, map, desiredFps);
+        super(null, new SetupEntityGame(Media.get(AppLionheart.ENTITIES_DIR, "valdyn.xml")), map, desiredFps);
         this.camera = camera;
         shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "players", "shade.png"), 7, 7);
         shade.load(false);

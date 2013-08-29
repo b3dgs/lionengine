@@ -1,14 +1,14 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.effect;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import java.util.Locale;
 
 /**
- * List of effect types.
+ * List of world types.
  */
-public enum TypeEffect
+public enum TypeWorld
 {
-    /** Taken effect (item taken). */
-    TAKEN;
+    /** Swamp world. */
+    SWAMP;
 
     /**
      * Get the name as a path (lower case).

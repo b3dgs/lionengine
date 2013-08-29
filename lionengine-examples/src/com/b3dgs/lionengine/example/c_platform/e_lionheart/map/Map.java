@@ -13,13 +13,13 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
 /**
  * Map implementation
  */
-public final class Map
+public class Map
         extends MapTilePlatformRastered<TileCollision, Tile>
 {
     /** Tile width. */
-    private static final int TILE_WIDTH = 16;
+    public static final int TILE_WIDTH = 16;
     /** Tile height. */
-    private static final int TILE_HEIGHT = 16;
+    public static final int TILE_HEIGHT = 16;
 
     /**
      * Convert int to byte value (working on if int is less than 256).
@@ -43,12 +43,16 @@ public final class Map
         return value - Byte.MIN_VALUE;
     }
 
-    /*
-     * MapTilePlatformRastered
+    /**
+     * Constructor.
      */
+    public Map()
+    {
+        super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
+    }
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param landscape The landscape type.
      */
@@ -58,6 +62,10 @@ public final class Map
         setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getType().getRaster()), false, false);
         setRaster(null, false, false);
     }
+
+    /*
+     * MapTilePlatformRastered
+     */
 
     @Override
     public Tile createTile(int width, int height)
