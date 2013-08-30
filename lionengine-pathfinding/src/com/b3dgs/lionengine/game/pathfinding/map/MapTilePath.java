@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
 /**
  * Describe a tile based map which supports pathfinding. The setRef/getRef functions allows to store special id. Theses
- * id can represent an entry which is over the map. This way, it is really easy and fast to search an entity at
+ * id can represent an entity which is over the map. This way, it is really easy and fast to search an entity at
  * specified location.
  * 
  * @param <C> The tile collision type.

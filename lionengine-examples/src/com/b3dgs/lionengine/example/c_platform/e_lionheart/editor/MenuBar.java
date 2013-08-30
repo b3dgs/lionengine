@@ -29,13 +29,24 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
+/**
+ * Menu bar implementation.
+ */
 public class MenuBar
         extends JMenuBar
 {
-    private static final long serialVersionUID = 1L;
+    /** Uid. */
+    private static final long serialVersionUID = 1199844863419699405L;
+    /** Editor reference. */
     private final Editor editor;
+    /** Items list. */
     private final TreeMap<String, JMenuItem> items;
 
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
     public MenuBar(final Editor editor)
     {
         super();
@@ -98,6 +109,9 @@ public class MenuBar
         });
     }
 
+    /**
+     * New action.
+     */
     void fileNew()
     {
         final JDialog dialog = UtilitySwing.createDialog(editor, "New", 320, 240);
@@ -116,7 +130,7 @@ public class MenuBar
         panel = UtilitySwing.createBorderedPanel("Map", 2);
         centerPanel.add(panel);
 
-        panel = UtilitySwing.createBorderedPanel("Entrys", 2);
+        panel = UtilitySwing.createBorderedPanel("Entities", 2);
         centerPanel.add(panel);
 
         // South panel
@@ -127,6 +141,7 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                // Nothing for the moment
             }
         });
 
@@ -142,6 +157,9 @@ public class MenuBar
         UtilitySwing.startDialog(dialog);
     }
 
+    /**
+     * Load action.
+     */
     void fileLoad()
     {
         final JFileChooser fc = new JFileChooser(Media.getRessourcesDir());
@@ -157,7 +175,7 @@ public class MenuBar
             {
                 file.readString();
                 editor.world.map.load(file);
-                editor.world.loadEntrys(file);
+                editor.world.loadEntities(file);
                 file.close();
             }
             catch (final IOException ex)
@@ -167,6 +185,9 @@ public class MenuBar
         }
     }
 
+    /**
+     * Save action.
+     */
     void fileSave()
     {
         final String name = "test1.lrm";
@@ -174,7 +195,7 @@ public class MenuBar
         {
             file.writeString("LRM");
             editor.world.map.save(file);
-            editor.world.saveEntrys(file);
+            editor.world.saveEntities(file);
             file.close();
         }
         catch (final IOException ex)
@@ -183,11 +204,17 @@ public class MenuBar
         }
     }
 
+    /**
+     * Exit action.
+     */
     void fileExit()
     {
         editor.terminate();
     }
 
+    /**
+     * Import map action.
+     */
     void toolsImportMap()
     {
         final JFileChooser fc = new JFileChooser(Media.getRessourcesDir());
@@ -209,7 +236,7 @@ public class MenuBar
             ImageInfo.get(filename);
 
             final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
-            rip.start(filename, map, Media.get("tiles", editor.toolBar.entrySelector.themeSelected.asPathName()), true);
+            rip.start(filename, map, Media.get("tiles", editor.toolBar.entitySelector.themeSelected.asPathName()), true);
             editor.world.camera.setLimits(map);
 
             final DecimalFormat df = new DecimalFormat();
@@ -218,6 +245,9 @@ public class MenuBar
         }
     }
 
+    /**
+     * About action.
+     */
     void helpAbout()
     {
         final JDialog dialog = UtilitySwing.createDialog(editor, "About", 212, 96);
@@ -227,11 +257,12 @@ public class MenuBar
         UtilitySwing.startDialog(dialog);
     }
 
-    public JMenuItem getItem(String name)
-    {
-        return items.get(name);
-    }
-
+    /**
+     * Add a menu to the menu bar.
+     * 
+     * @param name The menu name.
+     * @return The menu added instance.
+     */
     private JMenu addMenu(String name)
     {
         final JMenu menu = new JMenu(name);
@@ -239,10 +270,18 @@ public class MenuBar
         return menu;
     }
 
-    private JMenuItem addItem(JMenu menu, String name, ActionListener a)
+    /**
+     * Add an item to a menu.
+     * 
+     * @param menu The menu which will receive the item.
+     * @param name The item name.
+     * @param action The action listener.
+     * @return The item added instance.
+     */
+    private JMenuItem addItem(JMenu menu, String name, ActionListener action)
     {
         final JMenuItem item = new JMenuItem(name);
-        item.addActionListener(a);
+        item.addActionListener(action);
         menu.add(item);
         items.put(name, item);
         return item;

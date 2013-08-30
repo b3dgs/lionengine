@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 
-public class EntryData
+public class EntityData
 {
     public static final int NONE_MOV = 0;
     public static final int HORI_MOV = 1;
@@ -19,9 +19,9 @@ public class EntryData
     private int patrolLeft;
     private int patrolRight;
 
-    public EntryData()
+    public EntityData()
     {
-        movement = EntryData.NONE_MOV;
+        movement = EntityData.NONE_MOV;
         moveSpeed = 10;
         patrolLeft = 0;
         patrolRight = 0;
@@ -100,7 +100,7 @@ public class EntryData
     public void save(FileWriting file) throws IOException
     {
         file.writeByte((byte) getMovement());
-        if (movement != EntryData.NONE_MOV)
+        if (movement != EntityData.NONE_MOV)
         {
             file.writeByte((byte) getMoveSpeed());
             file.writeByte((byte) getFirstMove());
@@ -112,7 +112,7 @@ public class EntryData
     public void load(FileReading file) throws IOException
     {
         setMovement(file.readByte());
-        if (movement != EntryData.NONE_MOV)
+        if (movement != EntityData.NONE_MOV)
         {
             setMoveSpeed(file.readByte());
             setFirstMove(file.readByte());

@@ -157,7 +157,7 @@ public class PathfindableModel
         if (arrivedX && arrivedY)
         {
             // When entity arrived on next step, we place it on step location, in order to avoid bug
-            // (to be sure entry location is correct)
+            // (to be sure entity location is correct)
             setLocation(path.getX(lastStep), path.getY(lastStep));
 
             // Go to next step
@@ -172,7 +172,7 @@ public class PathfindableModel
                 lastStep = next;
             }
 
-            // Check if a new path has been assigned (this allow the entry to change its path before finishing it)
+            // Check if a new path has been assigned (this allow the entity to change its path before finishing it)
             if (lastStep > 0 && !skip)
             {
                 checkPathfinderChanges();

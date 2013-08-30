@@ -13,30 +13,31 @@ import javax.swing.JToolBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
+/**
+ * Tool bar implementation.
+ */
 public class ToolBar
         extends JToolBar
 {
-    private static final long serialVersionUID = 1L;
-    public static final int SELECT = 0;
-    public static final int PLACE = 1;
-    public static final int DELETE = 2;
-    public static final int PLAYER = 3;
-    public static final int PLAYER_PLACE_START = 0;
-    public static final int PLAYER_PLACE_END = 1;
-    public static final int PLAYER_PLACE_ADD_CHK = 2;
-    public static final int PLAYER_PLACE_DEL_CHK = 3;
-    private final Editor editor;
-    public final EntrySelector entrySelector;
-    public final EntryEditor entryEditor;
+    /** Uid. */
+    private static final long serialVersionUID = -3884748128028563357L;
+    /** Entity selector reference. */
+    public final EntitySelector entitySelector;
+    /** Entity editor reference. */
+    public final EntityEditor entityEditor;
 
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
     public ToolBar(final Editor editor)
     {
         super();
-        this.editor = editor;
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        final JPanel entrysPanel = new JPanel();
-        entrysPanel.setLayout(new BorderLayout());
+        final JPanel entityPanel = new JPanel();
+        entityPanel.setLayout(new BorderLayout());
         final JPanel palettePanel = UtilitySwing.createBorderedPanel("Pointer", 1);
         palettePanel.setLayout(new GridLayout(2, 2));
         UtilitySwing.addButton("Select", palettePanel, new ActionListener()
@@ -44,7 +45,7 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                editor.setSelectionState(ToolBar.SELECT);
+                editor.setSelectionState(TypeSelection.SELECT);
             }
         });
         UtilitySwing.addButton("Place", palettePanel, new ActionListener()
@@ -52,7 +53,7 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                editor.setSelectionState(ToolBar.PLACE);
+                editor.setSelectionState(TypeSelection.PLACE);
             }
         });
         UtilitySwing.addButton("Delete", palettePanel, new ActionListener()
@@ -60,24 +61,24 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                editor.setSelectionState(ToolBar.DELETE);
+                editor.setSelectionState(TypeSelection.DELETE);
             }
         });
-        entrysPanel.add(palettePanel, BorderLayout.NORTH);
-        entrySelector = new EntrySelector(editor);
-        entrysPanel.add(entrySelector, BorderLayout.CENTER);
+        entityPanel.add(palettePanel, BorderLayout.NORTH);
+        entitySelector = new EntitySelector(editor);
+        entityPanel.add(entitySelector, BorderLayout.CENTER);
 
         final JPanel editPanel = new JPanel();
         editPanel.setLayout(new BorderLayout());
-        entryEditor = new EntryEditor(editor);
-        editPanel.add(entryEditor, BorderLayout.CENTER);
+        entityEditor = new EntityEditor(editor);
+        editPanel.add(entityEditor, BorderLayout.CENTER);
 
-        add(entrysPanel);
+        add(entityPanel);
         add(editPanel);
 
-        editPanel.setMinimumSize(new Dimension(entryEditor.getPreferredSize()));
-        editPanel.setMaximumSize(new Dimension(entryEditor.getPreferredSize()));
-        entrysPanel.setMinimumSize(new Dimension(entrySelector.getPreferredSize()));
+        editPanel.setMinimumSize(new Dimension(entityEditor.getPreferredSize()));
+        editPanel.setMaximumSize(new Dimension(entityEditor.getPreferredSize()));
+        entityPanel.setMinimumSize(new Dimension(entitySelector.getPreferredSize()));
 
         setPreferredSize(new Dimension(204, 480));
         setMinimumSize(new Dimension(204, 480));

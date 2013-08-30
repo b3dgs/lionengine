@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.EntryData;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.EntityData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
@@ -27,7 +27,7 @@ public abstract class Entity
     /** Entity type. */
     public final TypeEntity type;
     /** Entity data. */
-    public final EntryData data;
+    public final EntityData data;
     /** Map reference. */
     protected final Map map;
     /** Entity status. */
@@ -63,7 +63,7 @@ public abstract class Entity
     {
         super(setup, map);
         this.type = type;
-        data = new EntryData();
+        data = new EntityData();
         this.map = map;
         this.desiredFps = desiredFps;
         status = new EntityStatus();
@@ -157,15 +157,15 @@ public abstract class Entity
     {
         teleport(file.readShort() * map.getTileWidth(), file.readShort() * map.getTileHeight());
         data.load(file);
-        if (data.getMovement() != EntryData.NONE_MOV)
+        if (data.getMovement() != EntityData.NONE_MOV)
         {
             play(getAnimation("walk"));
-            if (data.getMovement() == EntryData.HORI_MOV)
+            if (data.getMovement() == EntityData.HORI_MOV)
             {
                 posMin = getLocationIntX() - data.getPatrolLeft() * Map.TILE_WIDTH;
                 posMax = getLocationIntX() + (data.getPatrolRight() - 1) * Map.TILE_WIDTH;
             }
-            else if (data.getMovement() == EntryData.VERT_MOV)
+            else if (data.getMovement() == EntityData.VERT_MOV)
             {
                 posMin = getLocationIntY() - data.getPatrolLeft() * Map.TILE_WIDTH;
                 posMax = getLocationIntY() + data.getPatrolRight() * Map.TILE_WIDTH;

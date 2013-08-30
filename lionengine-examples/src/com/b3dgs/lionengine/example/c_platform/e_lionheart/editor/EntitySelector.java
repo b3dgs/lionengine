@@ -29,7 +29,10 @@ import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
-public class EntrySelector
+/**
+ * Entity selection implementation.
+ */
+public class EntitySelector
         extends JPanel
 {
     private static final long serialVersionUID = 1L;
@@ -39,10 +42,15 @@ public class EntrySelector
     final Editor editor;
     final JTabbedPane tabbedPane;
     TypeWorld themeSelected;
-
+    /** Entity category icons list. */
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
 
-    public EntrySelector(Editor editor)
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
+    public EntitySelector(Editor editor)
     {
         super();
         this.editor = editor;
@@ -70,19 +78,19 @@ public class EntrySelector
                 if (item != null)
                 {
                     themeSelected = (TypeWorld) item;
-                    loadEntrys((TypeWorld) item);
+                    loadEntity((TypeWorld) item);
                 }
             }
         });
         themeSelected = worlds[0];
-        loadEntrys(themeSelected);
+        loadEntity(themeSelected);
         add(tabbedPane, BorderLayout.CENTER);
     }
 
-    void loadEntrys(TypeWorld theme)
+    void loadEntity(TypeWorld theme)
     {
         tabbedPane.removeAll();
-        editor.selection.theme = theme;
+        editor.selection.world = theme;
         editor.world.factory.setWorld(theme);
         editor.world.factory.loadAll(TypeEntity.values());
         int max = 0;
@@ -110,14 +118,14 @@ public class EntrySelector
             {
             }
 
-            final JPanel panel = new Entrys(ico, names);
-            panel.setLayout(new GridLayout(0, EntrySelector.COL));
-            panel.setPreferredSize(new Dimension(EntrySelector.COL * EntrySelector.ICON_SIZE + 14,
-                    EntrySelector.ICON_SIZE * ((length - 1) / EntrySelector.COL) + EntrySelector.ICON_SIZE + 1));
-            panel.setMaximumSize(new Dimension(EntrySelector.COL * EntrySelector.ICON_SIZE + 14,
-                    EntrySelector.ICON_SIZE * ((length - 1) / EntrySelector.COL) + EntrySelector.ICON_SIZE + 1));
-            panel.setMinimumSize(new Dimension(EntrySelector.COL * EntrySelector.ICON_SIZE + 14,
-                    EntrySelector.ICON_SIZE * ((length - 1) / EntrySelector.COL) + EntrySelector.ICON_SIZE + 1));
+            final JPanel panel = new Entity(ico, names);
+            panel.setLayout(new GridLayout(0, EntitySelector.COL));
+            panel.setPreferredSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
+                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
+            panel.setMaximumSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
+                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
+            panel.setMinimumSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
+                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
             tabbedPane.add(category.toString(), new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                     ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
             if (max < length)
@@ -133,7 +141,7 @@ public class EntrySelector
         return themeSelected;
     }
 
-    private class Entrys
+    private class Entity
             extends JPanel
             implements MouseListener, MouseMotionListener
     {
@@ -144,7 +152,7 @@ public class EntrySelector
         private int my;
         private boolean click;
 
-        Entrys(List<Image> ico, List<String> names)
+        Entity(List<Image> ico, List<String> names)
         {
             addMouseListener(this);
             addMouseMotionListener(this);
@@ -164,36 +172,36 @@ public class EntrySelector
             for (int i = 0; i < icons.size(); i++)
             {
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * EntrySelector.ICON_SIZE, y * EntrySelector.ICON_SIZE, EntrySelector.ICON_SIZE,
-                        EntrySelector.ICON_SIZE);
+                g.fillRect(x * EntitySelector.ICON_SIZE, y * EntitySelector.ICON_SIZE, EntitySelector.ICON_SIZE,
+                        EntitySelector.ICON_SIZE);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * EntrySelector.ICON_SIZE, y * EntrySelector.ICON_SIZE, EntrySelector.ICON_SIZE,
-                        EntrySelector.ICON_SIZE);
-                g.drawImage(icons.get(i).getSurface(), x * EntrySelector.ICON_SIZE + 1,
-                        y * EntrySelector.ICON_SIZE + 1, null);
+                g.drawRect(x * EntitySelector.ICON_SIZE, y * EntitySelector.ICON_SIZE, EntitySelector.ICON_SIZE,
+                        EntitySelector.ICON_SIZE);
+                g.drawImage(icons.get(i).getSurface(), x * EntitySelector.ICON_SIZE + 1, y * EntitySelector.ICON_SIZE
+                        + 1, null);
                 x++;
-                if (x >= EntrySelector.COL)
+                if (x >= EntitySelector.COL)
                 {
                     x = 0;
                     y++;
                 }
             }
 
-            x = mx / EntrySelector.ICON_SIZE * EntrySelector.ICON_SIZE;
-            y = my / EntrySelector.ICON_SIZE * EntrySelector.ICON_SIZE;
+            x = mx / EntitySelector.ICON_SIZE * EntitySelector.ICON_SIZE;
+            y = my / EntitySelector.ICON_SIZE * EntitySelector.ICON_SIZE;
             final int size = icons.size();
-            final int num = mx / EntrySelector.ICON_SIZE + 1 + my / EntrySelector.ICON_SIZE * EntrySelector.COL;
+            final int num = mx / EntitySelector.ICON_SIZE + 1 + my / EntitySelector.ICON_SIZE * EntitySelector.COL;
             final TypeEntityCategory[] categories = TypeEntityCategory.values();
-            if (num <= size && x < EntrySelector.COL * EntrySelector.ICON_SIZE && mx > 0)
+            if (num <= size && x < EntitySelector.COL * EntitySelector.ICON_SIZE && mx > 0)
             {
-                g.setColor(EntrySelector.SELECT);
-                g.fillRect(x + 1, y + 1, EntrySelector.ICON_SIZE - 1, EntrySelector.ICON_SIZE - 1);
+                g.setColor(EntitySelector.SELECT);
+                g.fillRect(x + 1, y + 1, EntitySelector.ICON_SIZE - 1, EntitySelector.ICON_SIZE - 1);
                 if (click)
                 {
                     click = false;
                     editor.selection.category = categories[tabbedPane.getSelectedIndex()];
-                    editor.selection.id = TypeEntity.values()[num - 1];
-                    editor.setSelectionState(ToolBar.PLACE);
+                    editor.selection.type = TypeEntity.values()[num - 1];
+                    editor.setSelectionState(TypeSelection.PLACE);
                     editor.repaint();
                 }
             }

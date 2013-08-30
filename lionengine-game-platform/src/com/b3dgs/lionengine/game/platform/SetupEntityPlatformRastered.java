@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
- * Define a structure used to create multiple rastered platform entry, sharing the same data.
+ * Define a structure used to create multiple rastered platform entity, sharing the same data.
  */
 public class SetupEntityPlatformRastered
         extends SetupEntityGame
@@ -37,7 +37,7 @@ public class SetupEntityPlatformRastered
     private final int frameHeight;
 
     /**
-     * Create a new rastered platform entry setup.
+     * Create a new rastered platform entity setup.
      * 
      * @param configurable The configurable reference.
      * @param config The config media.

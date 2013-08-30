@@ -21,160 +21,17 @@ import com.b3dgs.lionengine.swing.ComboListener;
 import com.b3dgs.lionengine.swing.ComboRenderer;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
-public class EntryEditor
+/**
+ * Entity editor.
+ */
+public class EntityEditor
         extends JPanel
 {
-    private static final long serialVersionUID = 1L;
+    /** Uid. */
+    private static final long serialVersionUID = 103208218026146712L;
     private static final int PATROL_MIN = 0;
     private static final int PATROL_MAX = 1;
     private static final int SPEED = 2;
-    private final Editor editor;
-    private final JTabbedPane tabs;
-    private final JPanel playerPanel, patrolPanel;
-    private final JLabel patrolMin = new JLabel();
-    private final JLabel patrolMax = new JLabel();
-    private final JLabel speedValue = new JLabel();
-    final JComboBox<ComboItem> comboMovement;
-    final JComboBox<ComboItem> comboDirection;
-    Entity selectedEntry;
-
-    public EntryEditor(final Editor editor)
-    {
-        super();
-        this.editor = editor;
-        setLayout(new BorderLayout());
-        tabs = new JTabbedPane();
-        add(tabs);
-
-        playerPanel = new JPanel();
-        playerPanel.setLayout(new BorderLayout());
-        tabs.addTab("Player", playerPanel);
-        final JPanel playerValues = new JPanel();
-        playerValues.setLayout(new GridLayout(2, 1));
-        final JPanel startEnd = UtilitySwing.createBorderedPanel("Starting/Ending Location", 1);
-        UtilitySwing.addButton("Start", startEnd, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                editor.setSelectionState(ToolBar.PLAYER);
-                editor.world.setPlayerSelection(ToolBar.PLAYER_PLACE_START);
-            }
-        });
-        UtilitySwing.addButton("End", startEnd, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                editor.setSelectionState(ToolBar.PLAYER);
-                editor.world.setPlayerSelection(ToolBar.PLAYER_PLACE_END);
-            }
-        });
-        playerValues.add(startEnd, BorderLayout.CENTER);
-        final JPanel checkpoint = UtilitySwing.createBorderedPanel("Checkpoint", 1);
-        UtilitySwing.addButton("Add", checkpoint, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                editor.setSelectionState(ToolBar.PLAYER);
-                editor.world.setPlayerSelection(ToolBar.PLAYER_PLACE_ADD_CHK);
-            }
-        });
-        UtilitySwing.addButton("Remove", checkpoint, new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                editor.setSelectionState(ToolBar.PLAYER);
-                editor.world.setPlayerSelection(ToolBar.PLAYER_PLACE_DEL_CHK);
-            }
-        });
-        playerValues.add(checkpoint, BorderLayout.CENTER);
-        playerPanel.add(playerValues, BorderLayout.CENTER);
-
-        patrolPanel = new JPanel();
-        patrolPanel.setLayout(new BorderLayout());
-        tabs.addTab("Patrol", patrolPanel);
-        final JPanel patrolValues = new JPanel();
-        patrolValues.setLayout(new GridLayout(1, 3));
-        addIncDec(patrolValues, "Left", patrolMin, 1, EntryEditor.PATROL_MIN);
-        addIncDec(patrolValues, "Right", patrolMax, 1, EntryEditor.PATROL_MAX);
-        addIncDec(patrolValues, "Speed", speedValue, 1, EntryEditor.SPEED);
-        patrolPanel.add(patrolValues, BorderLayout.CENTER);
-
-        final JPanel combos = new JPanel();
-        combos.setLayout(new GridLayout(2, 1));
-        patrolPanel.add(combos, BorderLayout.SOUTH);
-
-        final String directions[] =
-        {
-                "None", "Horizontal", "Vertical", "Turning"
-        };
-        final ComboItem dirs[] = new ComboItem[directions.length];
-        for (int i = 0; i < directions.length; i++)
-        {
-            dirs[i] = new ComboItem(directions[i]);
-        }
-
-        comboMovement = EntryEditor.addMenuCombo("Movement:", combos, dirs, new ActionCombo()
-        {
-            @Override
-            public void action(Object item)
-            {
-                if (selectedEntry != null)
-                {
-                    selectedEntry.data.setMovement(comboMovement.getSelectedIndex());
-                }
-            }
-        });
-
-        final String firstMove[] =
-        {
-                "Left/Top", "Right/Down", "Random"
-        };
-        final ComboItem fm[] = new ComboItem[firstMove.length];
-        for (int i = 0; i < firstMove.length; i++)
-        {
-            fm[i] = new ComboItem(firstMove[i]);
-        }
-
-        comboDirection = EntryEditor.addMenuCombo("Starting direction:", combos, fm, new ActionCombo()
-        {
-
-            @Override
-            public void action(Object item)
-            {
-                if (selectedEntry != null)
-                {
-                    selectedEntry.data.setFirstMove(comboDirection.getSelectedIndex());
-                }
-            }
-        });
-
-        setEnabled(patrolPanel.getComponents(), false);
-        tabs.setPreferredSize(new Dimension(204, 180));
-        tabs.setMinimumSize(new Dimension(204, 180));
-        tabs.setMaximumSize(new Dimension(204, 180));
-    }
-
-    private void setEnabled(Component c[], boolean enabled)
-    {
-        for (final Component element : c)
-        {
-            element.setEnabled(enabled);
-            if (element instanceof JPanel)
-            {
-                final JPanel comp = (JPanel) element;
-                setEnabled(comp.getComponents(), enabled);
-            }
-        }
-    }
-
-    private static void setEnabled(JComboBox<ComboItem> combo, int item, boolean enabled)
-    {
-        combo.getItemAt(item).setEnabled(enabled);
-    }
 
     public static JComboBox<ComboItem> addMenuCombo(String name, JPanel panel, ComboItem[] tab, ActionCombo a)
     {
@@ -197,19 +54,159 @@ public class EntryEditor
         return combo;
     }
 
-    public void setEntry(Entity entry)
+    private static void setEnabled(JComboBox<ComboItem> combo, int item, boolean enabled)
     {
-        selectedEntry = entry;
-        if (entry != null && entry.patrolEnabled())
+        combo.getItemAt(item).setEnabled(enabled);
+    }
+
+    private final Editor editor;
+    private final JTabbedPane tabs;
+    private final JPanel playerPanel, patrolPanel;
+    private final JLabel patrolMin = new JLabel();
+    private final JLabel patrolMax = new JLabel();
+    private final JLabel speedValue = new JLabel();
+    final JComboBox<ComboItem> comboMovement;
+    final JComboBox<ComboItem> comboDirection;
+    Entity selectedEntity;
+
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
+    public EntityEditor(final Editor editor)
+    {
+        super();
+        this.editor = editor;
+        setLayout(new BorderLayout());
+        tabs = new JTabbedPane();
+        add(tabs);
+
+        playerPanel = new JPanel();
+        playerPanel.setLayout(new BorderLayout());
+        tabs.addTab("Player", playerPanel);
+        final JPanel playerValues = new JPanel();
+        playerValues.setLayout(new GridLayout(2, 1));
+        final JPanel startEnd = UtilitySwing.createBorderedPanel("Starting/Ending Location", 1);
+        UtilitySwing.addButton("Start", startEnd, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                editor.setSelectionState(TypeSelection.PLAYER);
+                editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_START);
+            }
+        });
+        UtilitySwing.addButton("End", startEnd, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                editor.setSelectionState(TypeSelection.PLAYER);
+                editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_END);
+            }
+        });
+        playerValues.add(startEnd, BorderLayout.CENTER);
+        final JPanel checkpoint = UtilitySwing.createBorderedPanel("Checkpoint", 1);
+        UtilitySwing.addButton("Add", checkpoint, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                editor.setSelectionState(TypeSelection.PLAYER);
+                editor.world.setPlayerSelection(TypeSelectionPlayer.ADD_CHECKPOINT);
+            }
+        });
+        UtilitySwing.addButton("Remove", checkpoint, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                editor.setSelectionState(TypeSelection.PLAYER);
+                editor.world.setPlayerSelection(TypeSelectionPlayer.REMOVE_CHECKPOINT);
+            }
+        });
+        playerValues.add(checkpoint, BorderLayout.CENTER);
+        playerPanel.add(playerValues, BorderLayout.CENTER);
+
+        patrolPanel = new JPanel();
+        patrolPanel.setLayout(new BorderLayout());
+        tabs.addTab("Patrol", patrolPanel);
+        final JPanel patrolValues = new JPanel();
+        patrolValues.setLayout(new GridLayout(1, 3));
+        addIncDec(patrolValues, "Left", patrolMin, 1, EntityEditor.PATROL_MIN);
+        addIncDec(patrolValues, "Right", patrolMax, 1, EntityEditor.PATROL_MAX);
+        addIncDec(patrolValues, "Speed", speedValue, 1, EntityEditor.SPEED);
+        patrolPanel.add(patrolValues, BorderLayout.CENTER);
+
+        final JPanel combos = new JPanel();
+        combos.setLayout(new GridLayout(2, 2));
+        patrolPanel.add(combos, BorderLayout.SOUTH);
+
+        final String directions[] =
+        {
+                "None", "Horizontal", "Vertical", "Turning"
+        };
+        final ComboItem dirs[] = new ComboItem[directions.length];
+        for (int i = 0; i < directions.length; i++)
+        {
+            dirs[i] = new ComboItem(directions[i]);
+        }
+
+        comboMovement = EntityEditor.addMenuCombo("Movement:", combos, dirs, new ActionCombo()
+        {
+            @Override
+            public void action(Object item)
+            {
+                if (selectedEntity != null)
+                {
+                    selectedEntity.data.setMovement(comboMovement.getSelectedIndex());
+                }
+            }
+        });
+
+        final String firstMove[] =
+        {
+                "Go Left / Go Up", "Go Right / Go Down", "Random"
+        };
+        final ComboItem fm[] = new ComboItem[firstMove.length];
+        for (int i = 0; i < firstMove.length; i++)
+        {
+            fm[i] = new ComboItem(firstMove[i]);
+        }
+
+        comboDirection = EntityEditor.addMenuCombo("Direction:", combos, fm, new ActionCombo()
+        {
+
+            @Override
+            public void action(Object item)
+            {
+                if (selectedEntity != null)
+                {
+                    selectedEntity.data.setFirstMove(comboDirection.getSelectedIndex());
+                }
+            }
+        });
+
+        setEnabled(patrolPanel.getComponents(), false);
+        tabs.setPreferredSize(new Dimension(204, 200));
+        tabs.setMinimumSize(new Dimension(204, 200));
+        tabs.setMaximumSize(new Dimension(204, 200));
+    }
+
+    public void setEntity(Entity entity)
+    {
+        selectedEntity = entity;
+        if (entity != null && entity.patrolEnabled())
         {
             boolean done = false;
             for (int i = 0; i < 4; i++)
             {
-                final boolean enabled = entry.movementEnabled(i);
-                EntryEditor.setEnabled(comboMovement, i, enabled);
+                final boolean enabled = entity.movementEnabled(i);
+                EntityEditor.setEnabled(comboMovement, i, enabled);
                 if (enabled && !done)
                 {
-                    if (entry.data.getMovement() == i)
+                    if (entity.data.getMovement() == i)
                     {
                         comboMovement.setSelectedIndex(i);
                         done = true;
@@ -217,11 +214,11 @@ public class EntryEditor
                 }
             }
             setEnabled(patrolPanel.getComponents(), true);
-            setValue(patrolMin, entry.data.getPatrolLeft());
-            setValue(patrolMax, entry.data.getPatrolRight());
-            setValue(speedValue, entry.data.getMoveSpeed());
-            comboMovement.setSelectedIndex(entry.data.getMovement());
-            comboDirection.setSelectedIndex(entry.data.getFirstMove());
+            setValue(patrolMin, entity.data.getPatrolLeft());
+            setValue(patrolMax, entity.data.getPatrolRight());
+            setValue(speedValue, entity.data.getMoveSpeed());
+            comboMovement.setSelectedIndex(entity.data.getMovement());
+            comboDirection.setSelectedIndex(entity.data.getFirstMove());
         }
         else
         {
@@ -233,58 +230,18 @@ public class EntryEditor
         editor.repaint();
     }
 
-    private JPanel addIncDec(JPanel parent, String name, final JLabel label, final int step, final int order)
-    {
-        final JPanel incdec = UtilitySwing.createBorderedPanel(name, 1);
-        incdec.setLayout(new GridLayout(3, 1));
-        if (parent != null)
-        {
-            parent.add(incdec);
-        }
-        UtilitySwing.addButton("+", incdec, new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (selectedEntry != null)
-                {
-                    setValue(label, getValue(label) + step);
-                    changeOrderValue(label, order);
-                }
-            }
-        });
-        UtilitySwing.addButton("-", incdec, new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (selectedEntry != null)
-                {
-                    setValue(label, getValue(label) - step);
-                    changeOrderValue(label, order);
-                }
-            }
-        });
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        incdec.add(label);
-
-        return incdec;
-    }
-
     void changeOrderValue(JLabel label, int order)
     {
         switch (order)
         {
             case PATROL_MIN:
-                selectedEntry.data.setPatrolLeft(getValue(label));
+                selectedEntity.data.setPatrolLeft(getValue(label));
                 break;
             case PATROL_MAX:
-                selectedEntry.data.setPatrolRight(getValue(label));
+                selectedEntity.data.setPatrolRight(getValue(label));
                 break;
             case SPEED:
-                selectedEntry.data.setMoveSpeed(getValue(label));
+                selectedEntity.data.setMoveSpeed(getValue(label));
                 break;
         }
     }
@@ -302,5 +259,58 @@ public class EntryEditor
             v = 0;
         }
         label.setText(String.valueOf(v));
+    }
+
+    private JPanel addIncDec(JPanel parent, String name, final JLabel label, final int step, final int order)
+    {
+        final JPanel incdec = UtilitySwing.createBorderedPanel(name, 1);
+        incdec.setLayout(new GridLayout(3, 1));
+        if (parent != null)
+        {
+            parent.add(incdec);
+        }
+        UtilitySwing.addButton("+", incdec, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (selectedEntity != null)
+                {
+                    setValue(label, getValue(label) + step);
+                    changeOrderValue(label, order);
+                }
+            }
+        });
+        UtilitySwing.addButton("-", incdec, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if (selectedEntity != null)
+                {
+                    setValue(label, getValue(label) - step);
+                    changeOrderValue(label, order);
+                }
+            }
+        });
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        incdec.add(label);
+
+        return incdec;
+    }
+
+    private void setEnabled(Component c[], boolean enabled)
+    {
+        for (final Component element : c)
+        {
+            element.setEnabled(enabled);
+            if (element instanceof JPanel)
+            {
+                final JPanel comp = (JPanel) element;
+                setEnabled(comp.getComponents(), enabled);
+            }
+        }
     }
 }

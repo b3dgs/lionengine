@@ -29,129 +29,284 @@ import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Mouse;
 
+/**
+ * Represents the world scene, containing the map and the entities.
+ */
 public class WorldPanel
         extends JPanel
         implements MouseListener, MouseMotionListener
 {
-    private static final long serialVersionUID = 1L;
+    /** Uid. */
+    private static final long serialVersionUID = -3609110757656654125L;
+    /** Color of the selection area. */
     private static final Color COLOR_MOUSE_SELECTION = new Color(128, 128, 192, 192);
-    private static final Color COLOR_ENTRY_SELECTION = new Color(128, 240, 128, 192);
-    private static final Color COLOR_ENTRY_PATROL = new Color(240, 240, 128, 192);
-    private static final Color COLOR_ENTRY_PATROL_AREA = new Color(128, 128, 128, 192);
-    private final Editor editor;
-    public final Map map;
-    public final CameraPlatform camera;
-    public final Handler entrys;
-    public final FactoryEntity factory;
-    private int mouseX;
-    private int mouseY;
-    private boolean selecting;
-    private boolean selected;
-    private boolean clicking;
-    private int selectStartX;
-    private int selectStartY;
-    private int selectEndX;
-    private int selectEndY;
-    private int playerSelection;
-    private final Coord playerStart;
-    private final Coord playerEnd;
-    private final TreeMap<Integer, CoordTile> checkpoints;
+    /** Color of the box around the selected entity. */
+    private static final Color COLOR_ENTITY_SELECTION = new Color(128, 240, 128, 192);
+    /** Color of the entity patrol. */
+    private static final Color COLOR_ENTITY_PATROL = new Color(240, 240, 128, 192);
+    /** Color if the entity patrol area. */
+    private static final Color COLOR_ENTITY_PATROL_AREA = new Color(128, 128, 128, 192);
 
+    /**
+     * Draw the grid.
+     * 
+     * @param g The graphic output.
+     * @param tw Horizontal grid spacing (width).
+     * @param th Vertical grid spacing (height).
+     * @param areaX Horizontal global grid size.
+     * @param areaY Vertical global grid size.
+     * @param color Grid color.
+     */
+    private static void drawGrid(Graphics2D g, int tw, int th, int areaX, int areaY, Color color)
+    {
+        g.setColor(color);
+        for (int v = 0; v <= areaY; v += tw)
+        {
+            g.drawLine(0, v, areaX, v);
+        }
+        for (int h = 0; h <= areaX; h += th)
+        {
+            g.drawLine(h, 0, h, areaY);
+        }
+    }
+
+    /**
+     * Get the rounded value.
+     * 
+     * @param value The value.
+     * @param round The round factor.
+     * @return The rounded value.
+     */
+    private static int getRounded(int value, int round)
+    {
+        return value / round * round;
+    }
+
+    /** The map reference. */
+    public final Map map;
+    /** The camera reference. */
+    public final CameraPlatform camera;
+    /** The entity handler reference. */
+    public final Handler handlerEntity;
+    /** The factory reference. */
+    public final FactoryEntity factory;
+    /** The editor reference. */
+    private final Editor editor;
+    /** Player starting location. */
+    private final Coord playerStart;
+    /** Player ending location. */
+    private final Coord playerEnd;
+    /** Checkpoints list. */
+    private final TreeMap<Integer, CoordTile> checkpoints;
+    /** Current horizontal mouse location. */
+    private int mouseX;
+    /** Current vertical mouse location. */
+    private int mouseY;
+    /** Selecting flag. */
+    private boolean selecting;
+    /** Selected flag. */
+    private boolean selected;
+    /** Clicking flag. */
+    private boolean clicking;
+    /** Selection starting horizontal location. */
+    private int selectStartX;
+    /** Selection starting vertical location. */
+    private int selectStartY;
+    /** Selection ending horizontal location. */
+    private int selectEndX;
+    /** Selection ending vertical location. */
+    private int selectEndY;
+    /** Current player selection state. */
+    private TypeSelectionPlayer playerSelection;
+
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
     public WorldPanel(final Editor editor)
     {
         super();
         this.editor = editor;
         map = new Map();
         camera = new CameraPlatform(640, 480);
-        entrys = new Handler();
+        handlerEntity = new Handler();
         factory = new FactoryEntity(camera, map, 60, null);
-        playerStart = new Coord();
-        playerEnd = new Coord();
+        playerStart = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
+        playerEnd = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
         checkpoints = new TreeMap<>();
         setPreferredSize(new Dimension(640, 480));
         addMouseListener(this);
         addMouseMotionListener(this);
     }
 
-    @Override
-    public void paintComponent(Graphics gd)
+    /**
+     * Save all entities.
+     * 
+     * @param file The file writing.
+     * @throws IOException If error.
+     */
+    public void saveEntities(FileWriting file) throws IOException
     {
-        final Graphics2D g = (Graphics2D) gd;
-        final int width = getWidth();
-        final int height = getHeight();
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int hOff = editor.getHRealOffset();
-        final int vOff = editor.getVRealOffset();
-        final int areaX = WorldPanel.getRounded(width, tw);
-        final int areaY = WorldPanel.getRounded(height, th);
-        camera.setView(0, 0, areaX, areaY);
-
-        // Background
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, width, height);
-
-        // Map area
-        g.setColor(Color.BLUE);
-        g.fillRect(0, 0, areaX, areaY);
-
-        // Renders
-        if (!map.getPatterns().isEmpty())
-        {
-            map.render(new Graphic(g), camera);
-        }
-        drawEntrys(g, hOff, vOff, height);
-        g.setColor(Color.GREEN);
-        g.fillRect((int) playerStart.getX() - hOff,
-                (int) -playerStart.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT, Map.TILE_WIDTH,
-                Map.TILE_HEIGHT);
-        g.setColor(Color.RED);
-        g.fillRect((int) playerEnd.getX() - hOff, (int) -playerEnd.getY() + vOff + WorldPanel.getRounded(height, th)
-                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
-
+        file.writeShort((short) (playerStart.getX() / Map.TILE_WIDTH));
+        file.writeShort((short) (playerStart.getY() / Map.TILE_HEIGHT));
+        file.writeShort((short) (playerEnd.getX() / Map.TILE_WIDTH));
+        file.writeShort((short) (playerEnd.getY() / Map.TILE_HEIGHT));
+        file.writeShort((short) checkpoints.size());
         for (final CoordTile p : checkpoints.values())
         {
-            g.setColor(Color.YELLOW);
-            g.fillRect(p.getX() - hOff, -p.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT,
-                    Map.TILE_WIDTH, Map.TILE_HEIGHT);
+            file.writeShort((short) (p.getX() / Map.TILE_WIDTH));
+            file.writeShort((short) (p.getY() / Map.TILE_HEIGHT));
         }
-
-        drawCursor(g, tw, th, areaX, areaY);
-        WorldPanel.drawGrid(g, tw, th, areaX, areaY, Color.GRAY);
-        drawSelection(g);
+        file.writeShort((short) handlerEntity.size());
+        for (final Entity entity : handlerEntity.list())
+        {
+            entity.save(file);
+        }
     }
 
-    private void drawEntrys(Graphics2D g, int hOff, int vOff, int height)
+    /**
+     * Load all entities.
+     * 
+     * @param file The file reading.
+     * @throws IOException If error.
+     */
+    public void loadEntities(FileReading file) throws IOException
+    {
+        playerStart.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        playerEnd.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        final int size = file.readShort();
+        for (int i = 0; i < size; i++)
+        {
+            addCheckpoint(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        }
+        final int n = file.readShort();
+        final TypeEntity[] entities = TypeEntity.values();
+        for (int i = 0; i < n; i++)
+        {
+            final byte id = file.readByte();
+            final Entity entity = factory.createEntity(entities[id]);
+            entity.load(file, true);
+            handlerEntity.add(entity);
+        }
+    }
+
+    /**
+     * Add a checkpoint at the specified location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location
+     */
+    public void addCheckpoint(int x, int y)
+    {
+        checkpoints.put(getHash(x, y), new CoordTile(x, y));
+    }
+
+    /**
+     * Remove a checkpoint.
+     * 
+     * @param checkpoint The checkpoint to remove.
+     */
+    public void removeCheckpoint(CoordTile checkpoint)
+    {
+        if (checkpoint != null)
+        {
+            checkpoints.remove(getHash(checkpoint.getX(), checkpoint.getY()));
+        }
+    }
+
+    /**
+     * Set the current player selection type.
+     * 
+     * @param selection The current selection.
+     */
+    public void setPlayerSelection(TypeSelectionPlayer selection)
+    {
+        playerSelection = selection;
+    }
+
+    /**
+     * Check if mouse is clicking.
+     * 
+     * @return <code>true</code> if clicking, <code>false</code> else.
+     */
+    public boolean isClicking()
+    {
+        return clicking;
+    }
+
+    /**
+     * Get the checkpoint at the specified location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location
+     * @return The checkpoint reference.
+     */
+    public CoordTile getCheckpointAt(int x, int y)
+    {
+        return checkpoints.get(getHash(x, y));
+    }
+
+    /**
+     * Get the hash value of a location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location
+     * @return The hash value.
+     */
+    public Integer getHash(int x, int y)
+    {
+        return Integer.valueOf(x / Map.TILE_WIDTH + map.getWidthInTile() * (y / Map.TILE_HEIGHT));
+    }
+
+    /**
+     * Draw all entities.
+     * 
+     * @param g The graphic output.
+     * @param hOff The horizontal offset.
+     * @param vOff The vertical offset.
+     * @param height The rendering height (render from bottom).
+     */
+    private void drawEntities(Graphics2D g, int hOff, int vOff, int height)
     {
         final int th = map.getTileHeight();
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            final int sx = entry.getLocationIntX();
-            final int sy = entry.getLocationIntY();
+            final int sx = entity.getLocationIntX();
+            final int sy = entity.getLocationIntY();
 
             // Patrol
-            final int left = Map.TILE_WIDTH * entry.data.getPatrolLeft();
-            final int right = Map.TILE_WIDTH * (entry.data.getPatrolLeft() + entry.data.getPatrolRight());
-            g.setColor(WorldPanel.COLOR_ENTRY_PATROL_AREA);
-            g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - entry.getHeight(),
-                    entry.getWidth() + right, entry.getHeight());
-            g.setColor(WorldPanel.COLOR_ENTRY_PATROL);
-            if (entry.data.getMovement() == EntryData.HORI_MOV)
+            final int left = Map.TILE_WIDTH * entity.data.getPatrolLeft();
+            final int right = Map.TILE_WIDTH * (entity.data.getPatrolLeft() + entity.data.getPatrolRight());
+            g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
+            g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - entity.getHeight(),
+                    entity.getWidth() + right, entity.getHeight());
+            g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
+            if (entity.data.getMovement() == EntityData.HORI_MOV)
             {
-                g.fillRect(sx - hOff - left + entry.getWidth() / 2, -sy + vOff + WorldPanel.getRounded(height, th),
+                g.fillRect(sx - hOff - left + entity.getWidth() / 2, -sy + vOff + WorldPanel.getRounded(height, th),
                         right, Map.TILE_HEIGHT);
             }
 
-            if (entry.data.isSelected() || entry.data.isOver())
+            if (entity.data.isSelected() || entity.data.isOver())
             {
-                g.setColor(WorldPanel.COLOR_ENTRY_SELECTION);
-                g.fillRect(sx - hOff, -sy + vOff - entry.getHeight() + WorldPanel.getRounded(height, th),
-                        entry.getWidth(), entry.getHeight());
+                g.setColor(WorldPanel.COLOR_ENTITY_SELECTION);
+                g.fillRect(sx - hOff, -sy + vOff - entity.getHeight() + WorldPanel.getRounded(height, th),
+                        entity.getWidth(), entity.getHeight());
             }
-            entry.render(new Graphic(g), camera);
+            entity.render(new Graphic(g), camera);
         }
     }
 
+    /**
+     * Draw the cursor.
+     * 
+     * @param g The graphic output.
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param areaX Maximum width.
+     * @param areaY Maximum height.
+     */
     private void drawCursor(Graphics2D g, int tw, int th, int areaX, int areaY)
     {
         if (!selecting)
@@ -167,19 +322,11 @@ public class WorldPanel
         }
     }
 
-    private static void drawGrid(Graphics2D g, int tw, int th, int areaX, int areaY, Color color)
-    {
-        g.setColor(color);
-        for (int v = 0; v <= areaY; v += tw)
-        {
-            g.drawLine(0, v, areaX, v);
-        }
-        for (int h = 0; h <= areaX; h += th)
-        {
-            g.drawLine(h, 0, h, areaY);
-        }
-    }
-
+    /**
+     * Draw the current selection.
+     * 
+     * @param g The graphic output.
+     */
     private void drawSelection(Graphics2D g)
     {
         if (selecting)
@@ -193,11 +340,12 @@ public class WorldPanel
         }
     }
 
-    private static int getRounded(int value, int round)
-    {
-        return value / round * round;
-    }
-
+    /**
+     * Start the selection.
+     * 
+     * @param mx The mouse x.
+     * @param my The mouse y.
+     */
     private void beginSelection(int mx, int my)
     {
         if (!selecting)
@@ -213,6 +361,12 @@ public class WorldPanel
         }
     }
 
+    /**
+     * Update the active selection.
+     * 
+     * @param mx The mouse x.
+     * @param my The mouse y.
+     */
     private void updateSelection(int mx, int my)
     {
         if (selecting)
@@ -224,6 +378,12 @@ public class WorldPanel
         }
     }
 
+    /**
+     * Terminate current selection.
+     * 
+     * @param mx The mouse x.
+     * @param my The mouse y.
+     */
     private void endSelection(int mx, int my)
     {
         if (selecting)
@@ -254,6 +414,22 @@ public class WorldPanel
         }
     }
 
+    /**
+     * Update the mouse.
+     * 
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    private void updateMouse(int mx, int my)
+    {
+        mouseX = mx;
+        mouseY = my;
+        repaint();
+    }
+
+    /**
+     * Reset the selection.
+     */
     private void resetSelection()
     {
         selectStartX = -1;
@@ -263,29 +439,46 @@ public class WorldPanel
         selecting = false;
     }
 
-    private Entity hitEntrys(int x, int y)
+    /**
+     * Check if entity is hit.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return <code>true</code> if hit, <code>false</code> else.
+     */
+    private Entity hitEntities(int x, int y)
     {
         final int mx = WorldPanel.getRounded(x, map.getTileWidth());
         final int my = WorldPanel.getRounded(getHeight() - y, map.getTileHeight());
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            if (hitEntry(entry, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
+            if (hitEntities(entity, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
             {
-                return entry;
+                return entity;
             }
         }
         return null;
     }
 
-    private boolean hitEntry(Entity entry, int x1, int y1, int x2, int y2)
+    /**
+     * Check if entity is hit.
+     * 
+     * @param entity The entity to check.
+     * @param x1 First point x.
+     * @param y1 First point y.
+     * @param x2 Second point x.
+     * @param y2 Second point y.
+     * @return <code>true</code> if hit, <code>false</code> else.
+     */
+    private boolean hitEntities(Entity entity, int x1, int y1, int x2, int y2)
     {
-        if (entry != null)
+        if (entity != null)
         {
-            final int sx = WorldPanel.getRounded(entry.getLocationIntX(), map.getTileWidth()) - editor.getHRealOffset();
-            final int sy = WorldPanel.getRounded(entry.getLocationIntY(), map.getTileHeight())
-                    - editor.getVRealOffset();
+            final int sx = WorldPanel.getRounded(entity.getLocationIntX(), map.getTileWidth()) - editor.getOffsetViewH();
+            final int sy = WorldPanel.getRounded(entity.getLocationIntY(), map.getTileHeight())
+                    - editor.getOffserViewV();
             final Rectangle2D r1 = new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle2D r2 = new Rectangle2D.Float(sx, sy, entry.getWidth(), entry.getHeight());
+            final Rectangle2D r2 = new Rectangle2D.Float(sx, sy, entity.getWidth(), entity.getHeight());
             if (r1.intersects(r2))
             {
                 return true;
@@ -294,39 +487,51 @@ public class WorldPanel
         return false;
     }
 
-    private void selectEntrys()
+    /**
+     * Select all entities.
+     */
+    private void selectEntities()
     {
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            entry.data.setSelection(false);
+            entity.data.setSelection(false);
             final int offy = getHeight() - WorldPanel.getRounded(getHeight(), map.getTileHeight());
             final int sx = WorldPanel.getRounded(selectStartX, map.getTileWidth());
             final int sy = WorldPanel.getRounded(getHeight() - selectStartY - offy, map.getTileHeight());
             final int ex = WorldPanel.getRounded(selectEndX, map.getTileWidth());
             final int ey = WorldPanel.getRounded(getHeight() - selectEndY - offy, map.getTileHeight());
-            if (hitEntry(entry, sx, sy, ex, ey))
+            if (hitEntities(entity, sx, sy, ex, ey))
             {
-                entry.data.setSelection(true);
+                entity.data.setSelection(true);
             }
         }
     }
 
-    private void unSelectEntrys()
+    /**
+     * Unselect entities.
+     */
+    private void unSelectEntities()
     {
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            entry.data.setSelection(false);
+            entity.data.setSelection(false);
         }
     }
 
-    private List<Entity> getSelectedEntrys(boolean first)
+    /**
+     * Get the list of selected entities.
+     * 
+     * @param first Get only the first element.
+     * @return The selected entities.
+     */
+    private List<Entity> getSelectedEnties(boolean first)
     {
         final List<Entity> list = new ArrayList<>(0);
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            if (entry.data.isSelected())
+            if (entity.data.isSelected())
             {
-                list.add(entry);
+                list.add(entity);
                 if (first)
                 {
                     return list;
@@ -336,53 +541,78 @@ public class WorldPanel
         return list;
     }
 
-    public void setPlayerSelection(int sel)
-    {
-        playerSelection = sel;
-    }
+    /*
+     * JPanel
+     */
 
-    public void saveEntrys(FileWriting file) throws IOException
+    @Override
+    public void paintComponent(Graphics gd)
     {
-        file.writeShort((short) (playerStart.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerStart.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) (playerEnd.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerEnd.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) checkpoints.size());
+        final Graphics2D g = (Graphics2D) gd;
+        final int width = getWidth();
+        final int height = getHeight();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final int hOff = editor.getOffsetViewH();
+        final int vOff = editor.getOffserViewV();
+        final int areaX = WorldPanel.getRounded(width, tw);
+        final int areaY = WorldPanel.getRounded(height, th);
+        camera.setView(0, 0, areaX, areaY);
+
+        // Background
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(0, 0, width, height);
+
+        // Map area
+        g.setColor(Color.BLUE);
+        g.fillRect(0, 0, areaX, areaY);
+
+        // Renders
+        if (!map.getPatterns().isEmpty())
+        {
+            map.render(new Graphic(g), camera);
+        }
+        drawEntities(g, hOff, vOff, height);
+        g.setColor(Color.GREEN);
+        g.fillRect((int) playerStart.getX() - hOff,
+                (int) -playerStart.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT, Map.TILE_WIDTH,
+                Map.TILE_HEIGHT);
+        g.setColor(Color.RED);
+        g.fillRect((int) playerEnd.getX() - hOff, (int) -playerEnd.getY() + vOff + WorldPanel.getRounded(height, th)
+                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
+
         for (final CoordTile p : checkpoints.values())
         {
-            file.writeShort((short) (p.getX() / Map.TILE_WIDTH));
-            file.writeShort((short) (p.getY() / Map.TILE_HEIGHT));
+            g.setColor(Color.YELLOW);
+            g.fillRect(p.getX() - hOff, -p.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT,
+                    Map.TILE_WIDTH, Map.TILE_HEIGHT);
         }
-        file.writeShort((short) entrys.size());
-        for (final Entity entry : entrys.list())
-        {
-            entry.save(file);
-        }
+
+        drawCursor(g, tw, th, areaX, areaY);
+        WorldPanel.drawGrid(g, tw, th, areaX, areaY, Color.GRAY);
+        drawSelection(g);
     }
 
-    public void loadEntrys(FileReading file) throws IOException
+    /*
+     * MouseListener
+     */
+
+    @Override
+    public void mouseEntered(MouseEvent e)
     {
-        playerStart.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        playerEnd.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        final int size = file.readShort();
-        for (int i = 0; i < size; i++)
-        {
-            addCheckpoint(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        }
-        final int n = file.readShort();
-        final TypeEntity[] entities = TypeEntity.values();
-        for (int i = 0; i < n; i++)
-        {
-            final byte id = file.readByte();
-            final Entity entry = factory.createEntity(entities[id]);
-            entry.load(file, true);
-            entrys.add(entry);
-        }
+        // Nothing to do
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        // Nothing to do
     }
 
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        // Nothing to do
     }
 
     @Override
@@ -390,76 +620,78 @@ public class WorldPanel
     {
         final int mx = e.getX();
         final int my = e.getY();
-        clicking = true;
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         final int h = WorldPanel.getRounded(getHeight(), th) - map.getTileHeight();
-        final int x = editor.getHRealOffset() + WorldPanel.getRounded(mx, tw);
-        final int y = editor.getVRealOffset() - WorldPanel.getRounded(my, th) + h;
+        final int x = editor.getOffsetViewH() + WorldPanel.getRounded(mx, tw);
+        final int y = editor.getOffserViewV() - WorldPanel.getRounded(my, th) + h;
+        clicking = true;
 
         switch (editor.getSelectionState())
         {
-            case ToolBar.SELECT:
+            case SELECT:
                 if (e.getButton() == Mouse.LEFT)
                 {
-                    final Entity entry = hitEntrys(mx, my);
-                    editor.toolBar.entryEditor.setEntry(entry);
-                    if (entry != null)
+                    final Entity entity = hitEntities(mx, my);
+                    editor.toolBar.entityEditor.setEntity(entity);
+                    if (entity != null)
                     {
                         selected = false;
-                        if (!entry.data.isSelected())
+                        if (!entity.data.isSelected())
                         {
-                            unSelectEntrys();
-                            entry.data.setSelection(true);
+                            unSelectEntities();
+                            entity.data.setSelection(true);
                         }
                     }
                     else
                     {
-                        unSelectEntrys();
+                        unSelectEntities();
                         beginSelection(mx, my);
                     }
                 }
                 break;
-            case ToolBar.PLACE:
-                if (hitEntrys(mx, my) == null)
+            case PLACE:
+                if (hitEntities(mx, my) == null)
                 {
-                    unSelectEntrys();
-                    final int id = editor.selection.id.ordinal();
-                    final Entity entry = factory.createEntity(TypeEntity.values()[id]);
-                    entry.teleport(WorldPanel.getRounded(x, tw), WorldPanel.getRounded(y, th));
-                    entrys.add(entry);
-                    entrys.update();
+                    unSelectEntities();
+                    final int id = editor.selection.type.ordinal();
+                    final Entity entity = factory.createEntity(TypeEntity.values()[id]);
+                    entity.teleport(WorldPanel.getRounded(x, tw), WorldPanel.getRounded(y, th));
+                    handlerEntity.add(entity);
+                    handlerEntity.update();
                 }
                 break;
-            case ToolBar.DELETE:
-                final Entity entry = hitEntrys(mx, my);
-                if (entry != null)
+            case DELETE:
+                final Entity entity = hitEntities(mx, my);
+                if (entity != null)
                 {
-                    entrys.remove(entry);
-                    entrys.update();
+                    handlerEntity.remove(entity);
+                    handlerEntity.update();
                 }
                 break;
-            case ToolBar.PLAYER:
+            case PLAYER:
                 switch (playerSelection)
                 {
-                    case ToolBar.PLAYER_PLACE_START:
+                    case PLACE_START:
                         playerStart.set(x, y);
                         break;
-                    case ToolBar.PLAYER_PLACE_END:
+                    case PLACE_END:
                         playerEnd.set(x, y);
                         break;
-                    case ToolBar.PLAYER_PLACE_ADD_CHK:
+                    case ADD_CHECKPOINT:
                         addCheckpoint(x, y);
                         break;
-                    case ToolBar.PLAYER_PLACE_DEL_CHK:
+                    case REMOVE_CHECKPOINT:
                         removeCheckpoint(getCheckpointAt(x, y));
                         break;
                     default:
                         throw new LionEngineException("Unknown selection: " + playerSelection);
                 }
                 break;
+            default:
+                throw new LionEngineException("Unknown selection: " + editor.getSelectionState());
         }
-        update(mx, my);
+        updateMouse(mx, my);
     }
 
     @Override
@@ -472,15 +704,15 @@ public class WorldPanel
         endSelection(mx, my);
         if (selected)
         {
-            selectEntrys();
+            selectEntities();
         }
-        for (final Entity ent : getSelectedEntrys(false))
+        for (final Entity ent : getSelectedEnties(false))
         {
             ent.teleport(WorldPanel.getRounded(ent.getLocationIntX(), map.getTileWidth()),
                     WorldPanel.getRounded(ent.getLocationIntY(), map.getTileHeight()));
         }
         resetSelection();
-        update(mx, my);
+        updateMouse(mx, my);
     }
 
     @Override
@@ -490,15 +722,15 @@ public class WorldPanel
         final int my = e.getY();
         updateSelection(mx, my);
 
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            if (entry.data.isSelected())
+            if (entity.data.isSelected())
             {
-                entry.moveLocation(1.0, mx - mouseX, mouseY - my);
+                entity.moveLocation(1.0, mx - mouseX, mouseY - my);
             }
         }
 
-        update(mx, my);
+        updateMouse(mx, my);
     }
 
     @Override
@@ -510,60 +742,15 @@ public class WorldPanel
         final int x = WorldPanel.getRounded(mx, map.getTileWidth());
         final int y = WorldPanel.getRounded(getHeight() - my - offy, map.getTileHeight());
 
-        for (final Entity entry : entrys.list())
+        for (final Entity entity : handlerEntity.list())
         {
-            entry.data.setOver(false);
-            if (hitEntry(entry, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
+            entity.data.setOver(false);
+            if (hitEntities(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
-                entry.data.setOver(true);
+                entity.data.setOver(true);
             }
         }
 
-        update(mx, my);
-    }
-
-    private void update(int mx, int my)
-    {
-        mouseX = mx;
-        mouseY = my;
-        repaint();
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e)
-    {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-    }
-
-    public boolean isClicking()
-    {
-        return clicking;
-    }
-
-    public void addCheckpoint(int x, int y)
-    {
-        checkpoints.put(getHash(x, y), new CoordTile(x, y));
-    }
-
-    public CoordTile getCheckpointAt(int x, int y)
-    {
-        return checkpoints.get(getHash(x, y));
-    }
-
-    public int getHash(int x, int y)
-    {
-        return x / Map.TILE_WIDTH + map.getWidthInTile() * (y / Map.TILE_HEIGHT);
-    }
-
-    public void removeCheckpoint(CoordTile p)
-    {
-        if (p != null)
-        {
-            checkpoints.remove(getHash(p.getX(), p.getY()));
-        }
+        updateMouse(mx, my);
     }
 }

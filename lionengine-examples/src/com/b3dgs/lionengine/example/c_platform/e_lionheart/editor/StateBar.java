@@ -8,12 +8,22 @@ import javax.swing.JPanel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 
+/**
+ * State bar implementation (giving information on the current editor states.
+ */
 public class StateBar
         extends JPanel
 {
-    private static final long serialVersionUID = 1L;
+    /** Uid. */
+    private static final long serialVersionUID = -1306034890537499369L;
+    /** Editor reference. */
     private final Editor editor;
 
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
     public StateBar(final Editor editor)
     {
         this.editor = editor;
@@ -26,32 +36,20 @@ public class StateBar
     public void paintComponent(Graphics gd)
     {
         StringBuilder state = new StringBuilder("Location: [");
-        state.append(editor.getVOffset());
+        state.append(editor.getOffsetViewInTileV());
         state.append(" | ");
-        state.append(editor.getHOffset());
+        state.append(editor.getOffsetViewInTileH());
         state.append("]");
         gd.drawString(state.toString(), 16, 12);
 
         state = new StringBuilder("Pointer: ");
-        final int sel = editor.getSelectionState();
-        if (sel == ToolBar.SELECT)
-        {
-            state.append("Selecting");
-        }
-        else if (sel == ToolBar.PLACE)
-        {
-            state.append("Placing");
-        }
-        else if (sel == ToolBar.DELETE)
-        {
-            state.append("Deleting");
-        }
+        state.append(editor.getSelectionState().getDescription());
         gd.drawString(state.toString(), 128, 12);
 
         state = new StringBuilder("Selection: ");
-        if (editor.selection.id != null)
+        if (editor.selection.type != null)
         {
-            state.append(editor.selection.id.toString());
+            state.append(editor.selection.type.toString());
         }
         else
         {

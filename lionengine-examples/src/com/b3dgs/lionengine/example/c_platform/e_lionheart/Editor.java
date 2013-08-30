@@ -11,41 +11,61 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.MenuBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.StateBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.ToolBar;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.TypeSelection;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.WorldPanel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCategory;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
+/**
+ * Main editor frame.
+ */
 public class Editor
         extends JFrame
 {
-    public class SelectedEntry
+    /**
+     * Structure representing the main field for a selected entity.
+     */
+    public final class SelectedEntity
     {
-        public TypeWorld theme;
+        /** World type. */
+        public TypeWorld world;
+        /** Entity category. */
         public TypeEntityCategory category;
-        public Enum<?> id;
+        /** Entity type. */
+        public TypeEntity type;
     }
 
-    private static final long serialVersionUID = 1L;
-    private static final int V_TILE_STEP = 6;
-    private static final int H_TILE_STEP = 6;
-    public final Config config;
+    /** Uid. */
+    private static final long serialVersionUID = -1248793737263689450L;
+    /** Horizontal moving speed in tile. */
+    private static final int STEP_TILE_H = 8;
+    /** Vertical moving speed in tile. */
+    private static final int STEP_TILE_V = 8;
+    /** World panel reference. */
     public final WorldPanel world;
+    /** Tool bar reference. */
     public final ToolBar toolBar;
-    public final SelectedEntry selection;
-    private int vOffset;
+    /** Current selected entity data. */
+    public final SelectedEntity selection;
+    /** Current horizontal view offset in tile. */
     private int hOffset;
-    private int state;
+    /** Current vertical view offset in tile. */
+    private int vOffset;
+    /** Current state selection. */
+    private TypeSelection selectionState;
 
-    public Editor(Config config)
+    /**
+     * Constructor.
+     */
+    Editor()
     {
         super("Editor");
-        this.config = config;
-        selection = new SelectedEntry();
+        selection = new SelectedEntity();
         world = new WorldPanel(this);
         toolBar = new ToolBar(this);
         hOffset = 0;
@@ -53,6 +73,117 @@ public class Editor
         init();
     }
 
+    /**
+     * Start the editor and display it.
+     */
+    public void start()
+    {
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    /**
+     * Close the editor.
+     */
+    public void terminate()
+    {
+        dispose();
+    }
+
+    /**
+     * Get the horizontal view offset in tile.
+     * 
+     * @return The horizontal view offset in tile.
+     */
+    public int getOffsetViewInTileH()
+    {
+        return hOffset;
+    }
+
+    /**
+     * Get the vertical view offset in tile.
+     * 
+     * @return The vertical view offset in tile.
+     */
+    public int getOffsetViewInTileV()
+    {
+        return vOffset;
+    }
+
+    /**
+     * Get the horizontal view offset.
+     * 
+     * @return The horizontal view offset.
+     */
+    public int getOffsetViewH()
+    {
+        return hOffset * world.map.getTileWidth();
+    }
+
+    /**
+     * Get the vertical view offset.
+     * 
+     * @return The vertical view offset.
+     */
+    public int getOffserViewV()
+    {
+        return vOffset * world.map.getTileHeight();
+    }
+
+    /**
+     * Get the current selection state.
+     * 
+     * @return The current selection state.
+     */
+    public TypeSelection getSelectionState()
+    {
+        return selectionState;
+    }
+
+    /**
+     * Set the current selection state.
+     * 
+     * @param selection The new selection state.
+     */
+    public void setSelectionState(TypeSelection selection)
+    {
+        selectionState = selection;
+        repaint();
+    }
+
+    /**
+     * Called when a key is pressed in the editor.
+     * 
+     * @param event The related event.
+     */
+    void keyPressed(KeyEvent event)
+    {
+        final int hOffsetOld = hOffset;
+        final int vOffsetOld = vOffset;
+        switch (event.getKeyCode())
+        {
+            case KeyEvent.VK_LEFT:
+                hOffset -= Editor.STEP_TILE_H;
+                break;
+            case KeyEvent.VK_RIGHT:
+                hOffset += Editor.STEP_TILE_H;
+                break;
+            case KeyEvent.VK_UP:
+                vOffset += Editor.STEP_TILE_V;
+                break;
+            case KeyEvent.VK_DOWN:
+                vOffset -= Editor.STEP_TILE_V;
+                break;
+            default:
+                break;
+        }
+        updateWorldLocation(hOffsetOld, vOffsetOld);
+    }
+
+    /**
+     * Initialize the editor content.
+     */
     private void init()
     {
         addWindowListener(new WindowAdapter()
@@ -69,7 +200,7 @@ public class Editor
         add(toolBar, BorderLayout.WEST);
         add(world, BorderLayout.CENTER);
         add(new StateBar(this), BorderLayout.SOUTH);
-        state = ToolBar.SELECT;
+        selectionState = TypeSelection.SELECT;
         validate();
         repaint();
         setMinimumSize(new Dimension(640, 480));
@@ -89,75 +220,21 @@ public class Editor
         }, AWTEvent.KEY_EVENT_MASK);
     }
 
-    public void start()
+    /**
+     * Update and apply the world offset location.
+     * 
+     * @param hOffsetOld The old horizontal offset.
+     * @param vOffsetOld The old vertical offset.
+     */
+    private void updateWorldLocation(int hOffsetOld, int vOffsetOld)
     {
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
-    }
-
-    public void terminate()
-    {
-        dispose();
-    }
-
-    public int getVOffset()
-    {
-        return vOffset;
-    }
-
-    public int getHOffset()
-    {
-        return hOffset;
-    }
-
-    public int getHRealOffset()
-    {
-        return hOffset * world.map.getTileWidth();
-    }
-
-    public int getVRealOffset()
-    {
-        return vOffset * world.map.getTileHeight();
-    }
-
-    public int getSelectionState()
-    {
-        return state;
-    }
-
-    public void setSelectionState(int state)
-    {
-        this.state = state;
-        repaint();
-    }
-
-    public void keyPressed(KeyEvent e)
-    {
-        final int oh = hOffset;
-        final int ov = vOffset;
-        switch (e.getKeyCode())
-        {
-            case KeyEvent.VK_LEFT:
-                hOffset -= Editor.H_TILE_STEP;
-                break;
-            case KeyEvent.VK_RIGHT:
-                hOffset += Editor.H_TILE_STEP;
-                break;
-            case KeyEvent.VK_UP:
-                vOffset += Editor.V_TILE_STEP;
-                break;
-            case KeyEvent.VK_DOWN:
-                vOffset -= Editor.V_TILE_STEP;
-                break;
-        }
         vOffset = UtilityMath.fixBetween(vOffset, 0, world.map.getHeightInTile());
         hOffset = UtilityMath.fixBetween(hOffset, 0, world.map.getWidthInTile());
-        final int mh = hOffset - oh;
-        final int mv = vOffset - ov;
+        final int mh = hOffset - hOffsetOld;
+        final int mv = vOffset - vOffsetOld;
         if (mh != 0 || mv != 0)
         {
-            for (final Entity ent : world.entrys.list())
+            for (final Entity ent : world.handlerEntity.list())
             {
                 if (ent.data.isSelected() && world.isClicking())
                 {

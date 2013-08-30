@@ -6,17 +6,32 @@ import javax.swing.filechooser.FileFilter;
 
 import com.b3dgs.lionengine.utility.UtilityFile;
 
+/**
+ * Filter the map file format.
+ */
 public class MapFilter
         extends FileFilter
 {
+    /** Map file extension. */
     private final String extension;
+    /** Map file description. */
     private final String description;
 
+    /**
+     * Constructor.
+     * 
+     * @param extension The map file extension.
+     * @param description The map file description.
+     */
     public MapFilter(String extension, String description)
     {
         this.extension = extension;
         this.description = description;
     }
+
+    /*
+     * FileFilter
+     */
 
     @Override
     public boolean accept(File f)
@@ -44,7 +59,6 @@ public class MapFilter
     {
         StringBuilder buf = new StringBuilder(description);
         buf = buf.append(" (*.").append(extension).append(")");
-
         return buf.toString();
     }
 }
