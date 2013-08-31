@@ -13,8 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.swing.ComboListener;
@@ -29,15 +32,21 @@ public class EntityEditor
 {
     /** Uid. */
     private static final long serialVersionUID = 103208218026146712L;
-    private static final int PATROL_MIN = 0;
-    private static final int PATROL_MAX = 1;
-    private static final int SPEED = 2;
 
-    public static JComboBox<ComboItem> addMenuCombo(String name, JPanel panel, ComboItem[] tab, ActionCombo a)
+    /**
+     * Add a combo menu.
+     * 
+     * @param name The combo name.
+     * @param panel The panel owner.
+     * @param tab The combo list.
+     * @param action The action reference.
+     * @return The combo instance.
+     */
+    public static JComboBox<ComboItem> addMenuCombo(String name, JPanel panel, ComboItem[] tab, ActionCombo action)
     {
         final JComboBox<ComboItem> combo = new JComboBox<>(tab);
         combo.setRenderer(new ComboRenderer<>());
-        combo.addActionListener(new ComboListener<>(combo, a));
+        combo.addActionListener(new ComboListener<>(combo, action));
         if (name != null)
         {
             final JLabel label = new JLabel(name);
@@ -54,19 +63,37 @@ public class EntityEditor
         return combo;
     }
 
+    /**
+     * Set the combo enabled state.
+     * 
+     * @param combo The combo reference.
+     * @param item The item index.
+     * @param enabled The enabled state.
+     */
     private static void setEnabled(JComboBox<ComboItem> combo, int item, boolean enabled)
     {
         combo.getItemAt(item).setEnabled(enabled);
     }
 
-    private final Editor editor;
-    private final JTabbedPane tabs;
-    private final JPanel playerPanel, patrolPanel;
-    private final JLabel patrolMin = new JLabel();
-    private final JLabel patrolMax = new JLabel();
-    private final JLabel speedValue = new JLabel();
+    /** Combo for movement type selection. */
     final JComboBox<ComboItem> comboMovement;
+    /** Combo for direction type selection. */
     final JComboBox<ComboItem> comboDirection;
+    /** Editor reference. */
+    private final Editor editor;
+    /** Tabs. */
+    private final JTabbedPane tabs;
+    /** Player panel. */
+    private final JPanel playerPanel;
+    /** Patrol panel. */
+    private final JPanel patrolPanel;
+    /** Minimum patrol label. */
+    private final JLabel patrolMin;
+    /** Maximum patrol label. */
+    private final JLabel patrolMax;
+    /** Speed label. */
+    private final JLabel speedValue;
+    /** Selected entity. */
     Entity selectedEntity;
 
     /**
@@ -84,6 +111,7 @@ public class EntityEditor
 
         playerPanel = new JPanel();
         playerPanel.setLayout(new BorderLayout());
+
         tabs.addTab("Player", playerPanel);
         final JPanel playerValues = new JPanel();
         playerValues.setLayout(new GridLayout(2, 1));
@@ -134,10 +162,16 @@ public class EntityEditor
         tabs.addTab("Patrol", patrolPanel);
         final JPanel patrolValues = new JPanel();
         patrolValues.setLayout(new GridLayout(1, 3));
-        addIncDec(patrolValues, "Left", patrolMin, 1, EntityEditor.PATROL_MIN);
-        addIncDec(patrolValues, "Right", patrolMax, 1, EntityEditor.PATROL_MAX);
-        addIncDec(patrolValues, "Speed", speedValue, 1, EntityEditor.SPEED);
         patrolPanel.add(patrolValues, BorderLayout.CENTER);
+
+        patrolMin = new JLabel();
+        addIncDec(patrolValues, "Left", patrolMin, 1, TypeEditorEntity.PATROL_MIN);
+
+        patrolMax = new JLabel();
+        addIncDec(patrolValues, "Right", patrolMax, 1, TypeEditorEntity.PATROL_MAX);
+
+        speedValue = new JLabel();
+        addIncDec(patrolValues, "Speed", speedValue, 1, TypeEditorEntity.SPEED);
 
         final JPanel combos = new JPanel();
         combos.setLayout(new GridLayout(2, 2));
@@ -158,9 +192,10 @@ public class EntityEditor
             @Override
             public void action(Object item)
             {
-                if (selectedEntity != null)
+                if (selectedEntity instanceof EntityMover)
                 {
-                    selectedEntity.data.setMovement(comboMovement.getSelectedIndex());
+                    ((EntityMover) selectedEntity).setMovementType(TypeEntityMovement.get(comboMovement
+                            .getSelectedIndex()));
                 }
             }
         });
@@ -177,13 +212,12 @@ public class EntityEditor
 
         comboDirection = EntityEditor.addMenuCombo("Direction:", combos, fm, new ActionCombo()
         {
-
             @Override
             public void action(Object item)
             {
-                if (selectedEntity != null)
+                if (selectedEntity instanceof EntityMover)
                 {
-                    selectedEntity.data.setFirstMove(comboDirection.getSelectedIndex());
+                    ((EntityMover) selectedEntity).setFirstMove(comboDirection.getSelectedIndex());
                 }
             }
         });
@@ -194,31 +228,37 @@ public class EntityEditor
         tabs.setMaximumSize(new Dimension(204, 200));
     }
 
-    public void setEntity(Entity entity)
+    /**
+     * Set the selected entity.
+     * 
+     * @param entity The selected entity.
+     */
+    public void setSelectedEntity(Entity entity)
     {
         selectedEntity = entity;
-        if (entity != null && entity.patrolEnabled())
+        if (entity instanceof EntityMover && ((EntityMover) entity).isPatrolEnabled())
         {
+            final EntityMover mover = (EntityMover) entity;
             boolean done = false;
-            for (int i = 0; i < 4; i++)
+            for (final TypeEntityMovement movement : TypeEntityMovement.values())
             {
-                final boolean enabled = entity.movementEnabled(i);
-                EntityEditor.setEnabled(comboMovement, i, enabled);
-                if (enabled && !done)
+                final boolean enabled = mover.isMovementEnabled(movement);
+                EntityEditor.setEnabled(comboMovement, movement.getIndex(), enabled);
+                if (enabled && !done && entity instanceof EntityMover)
                 {
-                    if (entity.data.getMovement() == i)
+                    if (mover.getMovementType() == movement)
                     {
-                        comboMovement.setSelectedIndex(i);
+                        comboMovement.setSelectedItem(movement);
                         done = true;
                     }
                 }
             }
             setEnabled(patrolPanel.getComponents(), true);
-            setValue(patrolMin, entity.data.getPatrolLeft());
-            setValue(patrolMax, entity.data.getPatrolRight());
-            setValue(speedValue, entity.data.getMoveSpeed());
-            comboMovement.setSelectedIndex(entity.data.getMovement());
-            comboDirection.setSelectedIndex(entity.data.getFirstMove());
+            setValue(patrolMin, mover.getPatrolLeft());
+            setValue(patrolMax, mover.getPatrolRight());
+            setValue(speedValue, mover.getMoveSpeed());
+            comboMovement.setSelectedItem(mover.getMovementType());
+            comboDirection.setSelectedIndex(mover.getFirstMove());
         }
         else
         {
@@ -230,27 +270,48 @@ public class EntityEditor
         editor.repaint();
     }
 
-    void changeOrderValue(JLabel label, int order)
+    /**
+     * Change the combo value.
+     * 
+     * @param label The label reference.
+     * @param type The type.
+     */
+    void changeMoverValue(JLabel label, TypeEditorEntity type)
     {
-        switch (order)
+        final EntityMover mover = (EntityMover) selectedEntity;
+        switch (type)
         {
             case PATROL_MIN:
-                selectedEntity.data.setPatrolLeft(getValue(label));
+                mover.setPatrolLeft(getValue(label));
                 break;
             case PATROL_MAX:
-                selectedEntity.data.setPatrolRight(getValue(label));
+                mover.setPatrolRight(getValue(label));
                 break;
             case SPEED:
-                selectedEntity.data.setMoveSpeed(getValue(label));
+                mover.setMoveSpeed(getValue(label));
                 break;
+            default:
+                throw new LionEngineException("Unknown type: " + type);
         }
     }
 
+    /**
+     * Get the value of the label.
+     * 
+     * @param label The label reference.
+     * @return The value.
+     */
     int getValue(JLabel label)
     {
         return Integer.parseInt(label.getText());
     }
 
+    /**
+     * Set the label value.
+     * 
+     * @param label The label reference.
+     * @param value The value.
+     */
     void setValue(JLabel label, int value)
     {
         int v = value;
@@ -261,7 +322,17 @@ public class EntityEditor
         label.setText(String.valueOf(v));
     }
 
-    private JPanel addIncDec(JPanel parent, String name, final JLabel label, final int step, final int order)
+    /**
+     * Add a JPanel designed to increase/decrease a value.
+     * 
+     * @param parent The panel owner.
+     * @param name The panel name.
+     * @param label The label reference.
+     * @param step The step value.
+     * @param type The type.
+     * @return The panel instance.
+     */
+    private JPanel addIncDec(JPanel parent, String name, final JLabel label, final int step, final TypeEditorEntity type)
     {
         final JPanel incdec = UtilitySwing.createBorderedPanel(name, 1);
         incdec.setLayout(new GridLayout(3, 1));
@@ -271,27 +342,25 @@ public class EntityEditor
         }
         UtilitySwing.addButton("+", incdec, new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (selectedEntity != null)
+                if (selectedEntity instanceof EntityMover)
                 {
                     setValue(label, getValue(label) + step);
-                    changeOrderValue(label, order);
+                    changeMoverValue(label, type);
                 }
             }
         });
         UtilitySwing.addButton("-", incdec, new ActionListener()
         {
-
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (selectedEntity != null)
+                if (selectedEntity instanceof EntityMover)
                 {
                     setValue(label, getValue(label) - step);
-                    changeOrderValue(label, order);
+                    changeMoverValue(label, type);
                 }
             }
         });
@@ -301,14 +370,20 @@ public class EntityEditor
         return incdec;
     }
 
-    private void setEnabled(Component c[], boolean enabled)
+    /**
+     * Set the enabled state of a components set.
+     * 
+     * @param components The components.
+     * @param enabled The enabled state.
+     */
+    private void setEnabled(Component components[], boolean enabled)
     {
-        for (final Component element : c)
+        for (final Component component : components)
         {
-            element.setEnabled(enabled);
-            if (element instanceof JPanel)
+            component.setEnabled(enabled);
+            if (component instanceof JPanel)
             {
-                final JPanel comp = (JPanel) element;
+                final JPanel comp = (JPanel) component;
                 setEnabled(comp.getComponents(), enabled);
             }
         }

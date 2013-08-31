@@ -18,7 +18,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.TypeSelection;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.WorldPanel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCategory;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -34,8 +33,6 @@ public class Editor
     {
         /** World type. */
         public TypeWorld world;
-        /** Entity category. */
-        public TypeEntityCategory category;
         /** Entity type. */
         public TypeEntity type;
     }
@@ -234,11 +231,11 @@ public class Editor
         final int mv = vOffset - vOffsetOld;
         if (mh != 0 || mv != 0)
         {
-            for (final Entity ent : world.handlerEntity.list())
+            for (final Entity entity : world.handlerEntity.list())
             {
-                if (ent.data.isSelected() && world.isClicking())
+                if (entity.isSelected() && world.isClicking())
                 {
-                    ent.moveLocation(1.0, mh * world.map.getTileWidth(), mv * world.map.getTileHeight());
+                    entity.moveLocation(1.0, mh * world.map.getTileWidth(), mv * world.map.getTileHeight());
                 }
             }
         }

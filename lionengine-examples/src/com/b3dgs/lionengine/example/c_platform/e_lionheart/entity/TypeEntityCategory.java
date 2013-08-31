@@ -7,15 +7,19 @@ import java.util.Locale;
  */
 public enum TypeEntityCategory
 {
-    /** Item. */
+    /** Item (can be taken). */
     ITEM("items"),
-    /** Monster. */
+    /** Monster (can be destroyed and attack the player). */
     MONSTER("monsters"),
-    /** Neutral. */
-    NEUTRAL("neutrals");
+    /** Scenery (other objects that are required to complete a level). */
+    SCENERY("sceneries"),
+    /** Valdyn (player). */
+    PLAYER("players");
 
     /** Folder name. */
     private final String folder;
+    /** Count number. */
+    private int count;
 
     /**
      * Constructor.
@@ -45,6 +49,24 @@ public enum TypeEntityCategory
     public String asPathName()
     {
         return name().toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Get the count number.
+     * 
+     * @return The count number.
+     */
+    public int getCount()
+    {
+        return count;
+    }
+
+    /**
+     * Increase the count number.
+     */
+    void increase()
+    {
+        count++;
     }
 
     /**

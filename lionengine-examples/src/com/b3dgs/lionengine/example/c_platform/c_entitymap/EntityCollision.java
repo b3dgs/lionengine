@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.c_entitymap;
 /**
  * List of entity collisions.
  */
-enum EntityCollision
+public enum EntityCollision
 {
     /** No collision. */
     NONE,

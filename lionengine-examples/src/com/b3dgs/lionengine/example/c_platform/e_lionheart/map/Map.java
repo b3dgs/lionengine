@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
  * Map implementation
  */
 public class Map
-        extends MapTilePlatformRastered<TileCollision, Tile>
+        extends MapTilePlatformRastered<TypeTileCollision, Tile>
 {
     /** Tile width. */
     public static final int TILE_WIDTH = 16;

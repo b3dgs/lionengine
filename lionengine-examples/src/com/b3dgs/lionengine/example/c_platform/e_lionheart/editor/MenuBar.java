@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -235,8 +235,8 @@ public class MenuBar
             final Map map = editor.world.map;
             ImageInfo.get(filename);
 
-            final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
-            rip.start(filename, map, Media.get("tiles", editor.toolBar.entitySelector.themeSelected.asPathName()), true);
+            final LevelRipConverter<TypeTileCollision, Tile> rip = new LevelRipConverter<>();
+            rip.start(filename, map, Media.get("tiles", editor.toolBar.entitySelector.selectedWorld.asPathName()), true);
             editor.world.camera.setLimits(map);
 
             final DecimalFormat df = new DecimalFormat();

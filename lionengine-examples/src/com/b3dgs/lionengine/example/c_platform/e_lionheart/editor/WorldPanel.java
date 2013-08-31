@@ -17,10 +17,13 @@ import javax.swing.JPanel;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -86,6 +89,8 @@ public class WorldPanel
     public final Map map;
     /** The camera reference. */
     public final CameraPlatform camera;
+    /** Context. */
+    public final Context context;
     /** The entity handler reference. */
     public final Handler handlerEntity;
     /** The factory reference. */
@@ -130,8 +135,9 @@ public class WorldPanel
         this.editor = editor;
         map = new Map();
         camera = new CameraPlatform(640, 480);
+        context = new Context(camera, map, 60);
         handlerEntity = new Handler();
-        factory = new FactoryEntity(camera, map, 60, null);
+        factory = context.factoryEntity;
         playerStart = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
         playerEnd = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
         checkpoints = new TreeMap<>();
@@ -186,7 +192,7 @@ public class WorldPanel
         {
             final byte id = file.readByte();
             final Entity entity = factory.createEntity(entities[id]);
-            entity.load(file, true);
+            entity.load(file);
             handlerEntity.add(entity);
         }
     }
@@ -276,19 +282,23 @@ public class WorldPanel
             final int sy = entity.getLocationIntY();
 
             // Patrol
-            final int left = Map.TILE_WIDTH * entity.data.getPatrolLeft();
-            final int right = Map.TILE_WIDTH * (entity.data.getPatrolLeft() + entity.data.getPatrolRight());
-            g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
-            g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - entity.getHeight(),
-                    entity.getWidth() + right, entity.getHeight());
-            g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
-            if (entity.data.getMovement() == EntityData.HORI_MOV)
+            if (entity instanceof EntityMover)
             {
-                g.fillRect(sx - hOff - left + entity.getWidth() / 2, -sy + vOff + WorldPanel.getRounded(height, th),
-                        right, Map.TILE_HEIGHT);
+                final EntityMover mover = (EntityMover) entity;
+                final int left = Map.TILE_WIDTH * mover.getPatrolLeft();
+                final int right = Map.TILE_WIDTH * (mover.getPatrolLeft() + mover.getPatrolRight());
+                g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
+                g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - entity.getHeight(),
+                        entity.getWidth() + right, entity.getHeight());
+                g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
+                if (mover.getMovementType() == TypeEntityMovement.HORIZONTAL)
+                {
+                    g.fillRect(sx - hOff - left + entity.getWidth() / 2,
+                            -sy + vOff + WorldPanel.getRounded(height, th), right, Map.TILE_HEIGHT);
+                }
             }
 
-            if (entity.data.isSelected() || entity.data.isOver())
+            if (entity.isSelected() || entity.isOver())
             {
                 g.setColor(WorldPanel.COLOR_ENTITY_SELECTION);
                 g.fillRect(sx - hOff, -sy + vOff - entity.getHeight() + WorldPanel.getRounded(height, th),
@@ -474,7 +484,8 @@ public class WorldPanel
     {
         if (entity != null)
         {
-            final int sx = WorldPanel.getRounded(entity.getLocationIntX(), map.getTileWidth()) - editor.getOffsetViewH();
+            final int sx = WorldPanel.getRounded(entity.getLocationIntX(), map.getTileWidth())
+                    - editor.getOffsetViewH();
             final int sy = WorldPanel.getRounded(entity.getLocationIntY(), map.getTileHeight())
                     - editor.getOffserViewV();
             final Rectangle2D r1 = new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1);
@@ -494,7 +505,7 @@ public class WorldPanel
     {
         for (final Entity entity : handlerEntity.list())
         {
-            entity.data.setSelection(false);
+            entity.setSelection(false);
             final int offy = getHeight() - WorldPanel.getRounded(getHeight(), map.getTileHeight());
             final int sx = WorldPanel.getRounded(selectStartX, map.getTileWidth());
             final int sy = WorldPanel.getRounded(getHeight() - selectStartY - offy, map.getTileHeight());
@@ -502,7 +513,7 @@ public class WorldPanel
             final int ey = WorldPanel.getRounded(getHeight() - selectEndY - offy, map.getTileHeight());
             if (hitEntities(entity, sx, sy, ex, ey))
             {
-                entity.data.setSelection(true);
+                entity.setSelection(true);
             }
         }
     }
@@ -514,7 +525,7 @@ public class WorldPanel
     {
         for (final Entity entity : handlerEntity.list())
         {
-            entity.data.setSelection(false);
+            entity.setSelection(false);
         }
     }
 
@@ -529,7 +540,7 @@ public class WorldPanel
         final List<Entity> list = new ArrayList<>(0);
         for (final Entity entity : handlerEntity.list())
         {
-            if (entity.data.isSelected())
+            if (entity.isSelected())
             {
                 list.add(entity);
                 if (first)
@@ -633,14 +644,14 @@ public class WorldPanel
                 if (e.getButton() == Mouse.LEFT)
                 {
                     final Entity entity = hitEntities(mx, my);
-                    editor.toolBar.entityEditor.setEntity(entity);
+                    editor.toolBar.entityEditor.setSelectedEntity(entity);
                     if (entity != null)
                     {
                         selected = false;
-                        if (!entity.data.isSelected())
+                        if (!entity.isSelected())
                         {
                             unSelectEntities();
-                            entity.data.setSelection(true);
+                            entity.setSelection(true);
                         }
                     }
                     else
@@ -724,7 +735,7 @@ public class WorldPanel
 
         for (final Entity entity : handlerEntity.list())
         {
-            if (entity.data.isSelected())
+            if (entity.isSelected())
             {
                 entity.moveLocation(1.0, mx - mouseX, mouseY - my);
             }
@@ -744,10 +755,10 @@ public class WorldPanel
 
         for (final Entity entity : handlerEntity.list())
         {
-            entity.data.setOver(false);
+            entity.setOver(false);
             if (hitEntities(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
-                entity.data.setOver(true);
+                entity.setOver(true);
             }
         }
 

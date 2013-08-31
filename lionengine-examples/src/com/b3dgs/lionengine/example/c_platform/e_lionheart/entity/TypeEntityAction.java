@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * List of entity actions.
  */
-enum EntityAction
+public enum TypeEntityAction
 {
     /** Move left. */
     MOVE_LEFT(Keyboard.LEFT),
@@ -19,7 +19,7 @@ enum EntityAction
     ATTACK(Keyboard.CONTROL);
 
     /** Values. */
-    public static final EntityAction[] VALUES = EntityAction.values();
+    public static final TypeEntityAction[] VALUES = TypeEntityAction.values();
     /** The key binding (used in case of control with keyboard). */
     private final Integer key;
 
@@ -28,7 +28,7 @@ enum EntityAction
      * 
      * @param key The key binding.
      */
-    private EntityAction(Integer key)
+    private TypeEntityAction(Integer key)
     {
         this.key = key;
     }

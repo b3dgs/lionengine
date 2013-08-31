@@ -6,28 +6,25 @@ import java.util.EnumMap;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.EntityData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 
 /**
  * Abstract entity base implementation.
  */
 public abstract class Entity
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform<TypeTileCollision, Tile>
 {
     /** Entity type. */
     public final TypeEntity type;
-    /** Entity data. */
-    public final EntityData data;
     /** Map reference. */
     protected final Map map;
     /** Entity status. */
@@ -37,46 +34,39 @@ public abstract class Entity
     /** Desired fps value. */
     private final int desiredFps;
     /** Animations list. */
-    private final EnumMap<EntityState, Animation> animations;
+    private final EnumMap<TypeEntityState, Animation> animations;
     /** Forces used. */
     private final Force[] forces;
+    /** Mouse over state. */
+    protected boolean over;
+    /** Selected state. */
+    protected boolean selected;
     /** Dead step. */
     protected int stepDie;
     /** Die location. */
     protected Coord dieLocation;
     /** Dead flag. */
     private boolean dead;
-
+    /** World type used as theme. */
     private TypeWorld world;
-    protected boolean hasPatrol, enablePatrol, enableMovement[];
-    protected int side, posMin, posMax;
 
     /**
      * Constructor.
      * 
+     * @param context The context reference.
      * @param type The entity type.
-     * @param setup The setup reference.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
      */
-    public Entity(TypeEntity type, SetupEntityGame setup, Map map, int desiredFps)
+    protected Entity(Context context, TypeEntity type)
     {
-        super(setup, map);
+        super(context.factoryEntity.getSetup(type), context.map);
         this.type = type;
-        data = new EntityData();
-        this.map = map;
-        this.desiredFps = desiredFps;
+        this.map = context.map;
+        this.desiredFps = context.desiredFps;
         status = new EntityStatus();
-        animations = new EnumMap<>(EntityState.class);
+        animations = new EnumMap<>(TypeEntityState.class);
         timerDie = new Timing();
         dieLocation = new Coord();
         forces = new Force[0];
-        enablePatrol = false;
-        enableMovement = new boolean[4];
-        enableMovement[0] = true;
-        enableMovement[1] = false;
-        enableMovement[2] = false;
-        enableMovement[3] = false;
         loadAnimations();
     }
 
@@ -97,7 +87,7 @@ public abstract class Entity
     /**
      * Update entity states.
      * 
-     * @see EntityState
+     * @see TypeEntityState
      */
     protected abstract void updateStates();
 
@@ -109,7 +99,7 @@ public abstract class Entity
     /**
      * Update the collisions detection.
      * 
-     * @see EntityCollision
+     * @see TypeEntityCollision
      */
     protected abstract void updateCollisions();
 
@@ -140,38 +130,55 @@ public abstract class Entity
         resetGravity();
         mirror(false);
         updateMirror();
-        status.setCollision(EntityCollision.GROUND);
+        status.setCollision(TypeEntityCollision.GROUND);
         status.backupCollision();
     }
 
+    /**
+     * Save entity.
+     * 
+     * @param file The file output.
+     * @throws IOException If error.
+     */
     public void save(FileWriting file) throws IOException
     {
         file.writeByte((byte) world.ordinal());
         file.writeByte((byte) type.ordinal());
         file.writeShort((short) Math.floor(getInTileX()));
         file.writeShort((short) Math.floor(getInTileY()));
-        data.save(file);
     }
 
-    public void load(FileReading file, boolean fromEditor) throws IOException
+    /**
+     * Load entity.
+     * 
+     * @param file The file input.
+     * @throws IOException If error.
+     */
+    public void load(FileReading file) throws IOException
     {
-        teleport(file.readShort() * map.getTileWidth(), file.readShort() * map.getTileHeight());
-        data.load(file);
-        if (data.getMovement() != EntityData.NONE_MOV)
-        {
-            play(getAnimation("walk"));
-            if (data.getMovement() == EntityData.HORI_MOV)
-            {
-                posMin = getLocationIntX() - data.getPatrolLeft() * Map.TILE_WIDTH;
-                posMax = getLocationIntX() + (data.getPatrolRight() - 1) * Map.TILE_WIDTH;
-            }
-            else if (data.getMovement() == EntityData.VERT_MOV)
-            {
-                posMin = getLocationIntY() - data.getPatrolLeft() * Map.TILE_WIDTH;
-                posMax = getLocationIntY() + data.getPatrolRight() * Map.TILE_WIDTH;
-            }
-            hasPatrol = data.getPatrolLeft() != 0 || data.getPatrolRight() != 0;
-        }
+        final int tx = file.readShort() * map.getTileWidth();
+        final int ty = file.readShort() * map.getTileHeight();
+        teleport(tx, ty);
+    }
+
+    /**
+     * Set selection state.
+     * 
+     * @param selected The selected state.
+     */
+    public void setSelection(boolean selected)
+    {
+        this.selected = selected;
+    }
+
+    /**
+     * Set over flag.
+     * 
+     * @param over The over flag.
+     */
+    public void setOver(boolean over)
+    {
+        this.over = over;
     }
 
     /**
@@ -185,6 +192,26 @@ public abstract class Entity
     }
 
     /**
+     * Check if is over.
+     * 
+     * @return <code>true</code> if over, <code>false</code> else.
+     */
+    public boolean isOver()
+    {
+        return over;
+    }
+
+    /**
+     * Check if is selected.
+     * 
+     * @return <code>true</code> if selected, <code>false</code> else.
+     */
+    public boolean isSelected()
+    {
+        return selected;
+    }
+
+    /**
      * Check if entity is dead.
      * 
      * @return <code>true</code> if dead, <code>false</code> else.
@@ -192,27 +219,6 @@ public abstract class Entity
     public boolean isDead()
     {
         return dead;
-    }
-
-    /**
-     * Check if patrol is enabled.
-     * 
-     * @return <code>true</code> if patrol enabled, <code>false</code> else.
-     */
-    public boolean patrolEnabled()
-    {
-        return enablePatrol;
-    }
-
-    /**
-     * Check if movement is enabled.
-     * 
-     * @param m The movement index.
-     * @return <code>true</code> if enabled, <code>false</code> else.
-     */
-    public boolean movementEnabled(int m)
-    {
-        return enableMovement[m];
     }
 
     /**
@@ -230,7 +236,7 @@ public abstract class Entity
      */
     private void loadAnimations()
     {
-        for (final EntityState state : EntityState.values())
+        for (final TypeEntityState state : TypeEntityState.values())
         {
             try
             {

@@ -3,14 +3,14 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.Crawling;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.Sheet;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * Handle the entity creation by containing all necessary object for their instantiation.
@@ -20,35 +20,28 @@ public final class FactoryEntity
 {
     /** Unknown entity error message. */
     public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
-    /** Map reference. */
-    private final Map map;
-    /** Camera reference. */
-    private final CameraPlatform camera;
-    /** Desired fps. */
-    private final int desiredFps;
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
+    /** Context used. */
+    private Context context;
     /** World used. */
     private TypeWorld world;
 
     /**
      * Standard constructor.
-     * 
-     * @param camera The camera reference.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
-     * @param handlerEffect The handler effect.
      */
-    public FactoryEntity(CameraPlatform camera, Map map, int desiredFps, HandlerEffect handlerEffect)
+    public FactoryEntity()
     {
         super(TypeEntity.class);
-        this.camera = camera;
-        this.map = map;
-        this.desiredFps = desiredFps;
-        factoryEffect = new FactoryEffect();
-        this.handlerEffect = handlerEffect;
+
+    }
+
+    /**
+     * Set the context.
+     * 
+     * @param context The context reference.
+     */
+    public void setContext(Context context)
+    {
+        this.context = context;
     }
 
     /**
@@ -68,17 +61,7 @@ public final class FactoryEntity
      */
     public Valdyn createValdyn()
     {
-        return new Valdyn(camera, map, desiredFps);
-    }
-
-    /**
-     * Create a talisment.
-     * 
-     * @return The instance of talisment.
-     */
-    public Talisment createTalisment()
-    {
-        return new Talisment(getSetup(TypeEntity.TALISMENT), map, desiredFps, factoryEffect, handlerEffect);
+        return new Valdyn(context);
     }
 
     /*
@@ -91,7 +74,17 @@ public final class FactoryEntity
         switch (type)
         {
             case TALISMENT:
-                return createTalisment();
+                return new Talisment(context);
+
+            case CRAWLING:
+                return new Crawling(context);
+
+            case SHEET:
+                return new Sheet(context);
+
+            case VALDYN:
+                return new Valdyn(context);
+
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }
@@ -100,8 +93,17 @@ public final class FactoryEntity
     @Override
     protected SetupEntityGame createSetup(TypeEntity id)
     {
-        final Media media = Media.get(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder(), world.asPathName(),
-                id.asPathName() + AppLionheart.CONFIG_FILE_EXTENSION);
-        return new SetupEntityGame(media);
+        final String pathBase = Media.getPath(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder());
+        final String configExtension = AppLionheart.CONFIG_FILE_EXTENSION;
+        final String path;
+        if (id == TypeEntity.VALDYN)
+        {
+            path = Media.getPath(pathBase, id.asPathName() + configExtension);
+        }
+        else
+        {
+            path = Media.getPath(pathBase, world.asPathName(), id.asPathName() + configExtension);
+        }
+        return new SetupEntityGame(Media.get(path));
     }
 }

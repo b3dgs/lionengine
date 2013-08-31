@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.map;
 /**
  * List of collisions group types.
  */
-public enum TileCollisionGroup
+public enum TypeTileCollisionGroup
 {
     /** No group. */
     NONE(0.0),
@@ -22,7 +22,7 @@ public enum TileCollisionGroup
      * 
      * @param factor The factor value.
      */
-    private TileCollisionGroup(double factor)
+    private TypeTileCollisionGroup(double factor)
     {
         this.factor = factor;
     }

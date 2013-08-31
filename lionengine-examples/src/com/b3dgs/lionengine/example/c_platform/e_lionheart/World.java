@@ -5,11 +5,11 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Valdyn;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
@@ -39,6 +39,8 @@ final class World
     private final HandlerEntity handlerEntity;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
+    /** Context. */
+    private final Context context;
     /** Player reference. */
     private final Valdyn player;
 
@@ -50,14 +52,16 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        handlerEffect = new HandlerEffect();
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(config, wide, false);
         landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
         map = new Map(landscape);
-        factoryEntity = new FactoryEntity(camera, map, display.getRate(), handlerEffect);
+        context = new Context(camera, map, display.getRate());
+        factoryEntity = context.factoryEntity;
+        handlerEntity = context.handlerEntity;
+        handlerEffect = context.handlerEffect;
         player = factoryEntity.createValdyn();
-        handlerEntity = new HandlerEntity(camera, player);
+        handlerEntity.setPlayer(player);
     }
 
     /*
@@ -106,7 +110,7 @@ final class World
 
         factoryEntity.setWorld(TypeWorld.SWAMP);
         factoryEntity.loadAll(TypeEntity.values());
-        final Talisment talisment = factoryEntity.createTalisment();
+        final Entity talisment = factoryEntity.createEntity(TypeEntity.TALISMENT);
         talisment.teleport(640, 80);
         handlerEntity.add(talisment);
 

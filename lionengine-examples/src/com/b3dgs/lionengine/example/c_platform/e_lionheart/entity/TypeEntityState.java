@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 /**
  * List of entity states.
  */
-public enum EntityState
+public enum TypeEntityState
 {
     /** Idle state. */
     IDLE("idle"),
@@ -54,7 +54,7 @@ public enum EntityState
      * 
      * @param name The animation name.
      */
-    private EntityState(String name)
+    private TypeEntityState(String name)
     {
         animationName = name;
     }

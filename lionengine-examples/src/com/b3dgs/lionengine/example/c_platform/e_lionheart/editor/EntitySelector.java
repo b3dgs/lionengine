@@ -35,15 +35,22 @@ import com.b3dgs.lionengine.utility.UtilitySwing;
 public class EntitySelector
         extends JPanel
 {
-    private static final long serialVersionUID = 1L;
+    /** Uid. */
+    private static final long serialVersionUID = 216176800083898793L;
+    /** Icons size. */
     private static final int ICON_SIZE = 33;
-    private static final int COL = 5;
+    /** Number of columns. */
+    private static final int COLUMNS = 5;
+    /** Selection color. */
     static final Color SELECT = new Color(128, 192, 128, 128);
+    /** Editor reference. */
     final Editor editor;
+    /** Tabs. */
     final JTabbedPane tabbedPane;
-    TypeWorld themeSelected;
     /** Entity category icons list. */
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
+    /** Current selected world. */
+    TypeWorld selectedWorld;
 
     /**
      * Constructor.
@@ -77,55 +84,55 @@ public class EntitySelector
             {
                 if (item != null)
                 {
-                    themeSelected = (TypeWorld) item;
-                    loadEntity((TypeWorld) item);
+                    selectedWorld = (TypeWorld) item;
+                    loadEntities((TypeWorld) item);
                 }
             }
         });
-        themeSelected = worlds[0];
-        loadEntity(themeSelected);
+        selectedWorld = worlds[0];
+        loadEntities(selectedWorld);
         add(tabbedPane, BorderLayout.CENTER);
     }
 
-    void loadEntity(TypeWorld theme)
+    /**
+     * Load all entities.
+     * 
+     * @param world World type.
+     */
+    void loadEntities(TypeWorld world)
     {
         tabbedPane.removeAll();
-        editor.selection.world = theme;
-        editor.world.factory.setWorld(theme);
+        editor.selection.world = world;
+        editor.world.factory.setWorld(world);
         editor.world.factory.loadAll(TypeEntity.values());
         int max = 0;
         for (final TypeEntityCategory category : TypeEntityCategory.values())
         {
+            if (category == TypeEntityCategory.PLAYER)
+            {
+                continue;
+            }
             final List<Image> ico = icons.get(category);
             ico.clear();
             int length = 0;
-            final List<String> names = new ArrayList<>(1);
-            try
+            for (final TypeEntity entity : TypeEntity.values())
             {
-                for (final TypeEntity entity : TypeEntity.values())
+                if (entity.getCategory() == category)
                 {
-                    if (entity.getCategory() == category)
-                    {
-                        final Media media = Media.get(AppLionheart.ENTITIES_DIR, category.getFolder(),
-                                theme.toString(), entity.asPathName() + "_ico.png");
-                        ico.add(Drawable.loadImage(media));
-                        names.add(entity.toString());
-                        length++;
-                    }
+                    final Media media = Media.get(AppLionheart.ENTITIES_DIR, category.getFolder(), world.toString(),
+                            entity.asPathName() + "_ico.png");
+                    ico.add(Drawable.loadImage(media));
+                    length++;
                 }
             }
-            catch (final Exception ex)
-            {
-            }
 
-            final JPanel panel = new Entity(ico, names);
-            panel.setLayout(new GridLayout(0, EntitySelector.COL));
-            panel.setPreferredSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
-                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
-            panel.setMaximumSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
-                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
-            panel.setMinimumSize(new Dimension(EntitySelector.COL * EntitySelector.ICON_SIZE + 14,
-                    EntitySelector.ICON_SIZE * ((length - 1) / EntitySelector.COL) + EntitySelector.ICON_SIZE + 1));
+            final JPanel panel = new Entity(ico);
+            final int iconSize = EntitySelector.ICON_SIZE;
+            final int cols = EntitySelector.COLUMNS;
+            panel.setLayout(new GridLayout(0, cols));
+            panel.setPreferredSize(new Dimension(cols * iconSize + 14, iconSize * ((length - 1) / cols) + iconSize + 1));
+            panel.setMaximumSize(new Dimension(cols * iconSize + 14, iconSize * ((length - 1) / cols) + iconSize + 1));
+            panel.setMinimumSize(new Dimension(cols * iconSize + 14, iconSize * ((length - 1) / cols) + iconSize + 1));
             tabbedPane.add(category.toString(), new JScrollPane(panel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                     ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
             if (max < length)
@@ -136,30 +143,62 @@ public class EntitySelector
         repaint();
     }
 
-    public TypeWorld getTheme()
+    /**
+     * Get the current selected world.
+     * 
+     * @return The current world.
+     */
+    public TypeWorld getWorld()
     {
-        return themeSelected;
+        return selectedWorld;
     }
 
+    /**
+     * Entity with icon rendering.
+     */
     private class Entity
             extends JPanel
             implements MouseListener, MouseMotionListener
     {
-        private static final long serialVersionUID = 1L;
+        /** Uid. */
+        private static final long serialVersionUID = -3661526690034735481L;
+        /** Icons list. */
         private final List<Image> icons;
-        private final List<String> names;
+        /** Mouse x. */
         private int mx;
+        /** Mouse y. */
         private int my;
+        /** Current mouse click. */
         private boolean click;
 
-        Entity(List<Image> ico, List<String> names)
+        /**
+         * Constructor.
+         * 
+         * @param icons The icons list.
+         */
+        Entity(List<Image> icons)
         {
             addMouseListener(this);
             addMouseMotionListener(this);
-            icons = ico;
-            this.names = names;
+            this.icons = icons;
             click = false;
         }
+
+        /**
+         * Update the mouse.
+         * 
+         * @param event The mouse event.
+         */
+        private void update(MouseEvent event)
+        {
+            mx = event.getX();
+            my = event.getY();
+            repaint();
+        }
+
+        /*
+         * JPanel
+         */
 
         @Override
         public void paintComponent(Graphics g)
@@ -168,44 +207,51 @@ public class EntitySelector
             final int height = getHeight();
             g.clearRect(0, 0, width, height);
 
+            final int iconSize = EntitySelector.ICON_SIZE;
             int x = 0, y = 0;
             for (int i = 0; i < icons.size(); i++)
             {
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * EntitySelector.ICON_SIZE, y * EntitySelector.ICON_SIZE, EntitySelector.ICON_SIZE,
-                        EntitySelector.ICON_SIZE);
+                g.fillRect(x * iconSize, y * iconSize, iconSize, iconSize);
                 g.setColor(Color.BLACK);
-                g.drawRect(x * EntitySelector.ICON_SIZE, y * EntitySelector.ICON_SIZE, EntitySelector.ICON_SIZE,
-                        EntitySelector.ICON_SIZE);
-                g.drawImage(icons.get(i).getSurface(), x * EntitySelector.ICON_SIZE + 1, y * EntitySelector.ICON_SIZE
-                        + 1, null);
+                g.drawRect(x * iconSize, y * iconSize, iconSize, iconSize);
+                g.drawImage(icons.get(i).getSurface(), x * iconSize + 1, y * iconSize + 1, null);
                 x++;
-                if (x >= EntitySelector.COL)
+                if (x >= EntitySelector.COLUMNS)
                 {
                     x = 0;
                     y++;
                 }
             }
 
-            x = mx / EntitySelector.ICON_SIZE * EntitySelector.ICON_SIZE;
-            y = my / EntitySelector.ICON_SIZE * EntitySelector.ICON_SIZE;
+            x = mx / iconSize * iconSize;
+            y = my / iconSize * iconSize;
             final int size = icons.size();
-            final int num = mx / EntitySelector.ICON_SIZE + 1 + my / EntitySelector.ICON_SIZE * EntitySelector.COL;
+            final int num = mx / iconSize + 1 + my / iconSize * iconSize;
             final TypeEntityCategory[] categories = TypeEntityCategory.values();
-            if (num <= size && x < EntitySelector.COL * EntitySelector.ICON_SIZE && mx > 0)
+            if (num <= size && x < EntitySelector.COLUMNS * iconSize && mx > 0)
             {
                 g.setColor(EntitySelector.SELECT);
-                g.fillRect(x + 1, y + 1, EntitySelector.ICON_SIZE - 1, EntitySelector.ICON_SIZE - 1);
+                g.fillRect(x + 1, y + 1, iconSize - 1, iconSize - 1);
                 if (click)
                 {
                     click = false;
-                    editor.selection.category = categories[tabbedPane.getSelectedIndex()];
-                    editor.selection.type = TypeEntity.values()[num - 1];
+                    final int index = tabbedPane.getSelectedIndex();
+                    int total = 0;
+                    for (int i = 0; i < index; i++)
+                    {
+                        total += categories[i].getCount();
+                    }
+                    editor.selection.type = TypeEntity.values()[total + num - 1];
                     editor.setSelectionState(TypeSelection.PLACE);
                     editor.repaint();
                 }
             }
         }
+
+        /*
+         * MouseListener
+         */
 
         @Override
         public void mouseClicked(MouseEvent e)
@@ -248,13 +294,6 @@ public class EntitySelector
         public void mouseMoved(MouseEvent e)
         {
             update(e);
-        }
-
-        private void update(MouseEvent e)
-        {
-            mx = e.getX();
-            my = e.getY();
-            repaint();
         }
     }
 }

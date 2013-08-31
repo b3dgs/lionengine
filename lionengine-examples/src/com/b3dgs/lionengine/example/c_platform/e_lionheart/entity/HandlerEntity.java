@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 
@@ -12,17 +13,25 @@ public class HandlerEntity
     /** The camera reference. */
     private final CameraPlatform camera;
     /** The player reference. */
-    private final Valdyn player;
+    private Valdyn player;
 
     /**
      * Constructor.
      * 
      * @param camera The camera reference.
-     * @param player The player reference.
      */
-    public HandlerEntity(CameraPlatform camera, Valdyn player)
+    public HandlerEntity(CameraPlatform camera)
     {
         this.camera = camera;
+    }
+
+    /**
+     * Set the player reference.
+     * 
+     * @param player The player reference.
+     */
+    public void setPlayer(Valdyn player)
+    {
         this.player = player;
     }
 

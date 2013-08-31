@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * Tile implementation.
  */
 public final class Tile
-        extends TilePlatform<TileCollision>
+        extends TilePlatform<TypeTileCollision>
 {
     /** Half tile height, corresponding to the collision height location on tile. */
     private final int halfTileHeight;
@@ -40,7 +40,7 @@ public final class Tile
      * @param group The group to check to.
      * @return <code>true</code> if from this group, <code>false</code> else.
      */
-    public boolean isGroup(TileCollisionGroup group)
+    public boolean isGroup(TypeTileCollisionGroup group)
     {
         return getCollision().getGroup() == group;
     }
@@ -72,7 +72,7 @@ public final class Tile
     private Double getSlopeRight(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationX() - getX() - getWidth();
-        final double y = getTop() - x / TileCollisionGroup.SLOPE.getFactor() + offset;
+        final double y = getTop() - x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
@@ -90,7 +90,7 @@ public final class Tile
     private Double getSlopeLeft(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationIntX() - getX();
-        final double y = getTop() + x / TileCollisionGroup.SLOPE.getFactor() + offset;
+        final double y = getTop() + x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
@@ -103,16 +103,16 @@ public final class Tile
      */
 
     @Override
-    public TileCollision getCollisionFrom(String collision, String type)
+    public TypeTileCollision getCollisionFrom(String collision, String type)
     {
         try
         {
-            return TileCollision.valueOf(collision);
+            return TypeTileCollision.valueOf(collision);
         }
         catch (final IllegalArgumentException
                      | NullPointerException exception)
         {
-            return TileCollision.NONE;
+            return TypeTileCollision.NONE;
         }
     }
 

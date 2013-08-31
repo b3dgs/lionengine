@@ -3,12 +3,37 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 import java.util.Locale;
 
 /**
- * Types of entities.
+ * List of entity types.
  */
 public enum TypeEntity
 {
+    /*
+     * Items
+     */
+
     /** Talisment (item). */
-    TALISMENT(TypeEntityCategory.ITEM);
+    TALISMENT(TypeEntityCategory.ITEM),
+
+    /*
+     * Monsters
+     */
+
+    /** Crawling (monster). */
+    CRAWLING(TypeEntityCategory.MONSTER),
+
+    /*
+     * Sceneries
+     */
+
+    /** Sheet (scenery). */
+    SHEET(TypeEntityCategory.SCENERY),
+
+    /*
+     * Valdyn
+     */
+
+    /** Valdyn (player). */
+    VALDYN(TypeEntityCategory.PLAYER);
 
     /** Type category. */
     private final TypeEntityCategory category;
@@ -21,6 +46,7 @@ public enum TypeEntity
     private TypeEntity(TypeEntityCategory category)
     {
         this.category = category;
+        category.increase();
     }
 
     /**

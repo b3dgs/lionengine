@@ -1,13 +1,13 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.Effect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
  * Abstract implementation of an item.
@@ -23,20 +23,15 @@ public abstract class EntityItem
     /**
      * Constructor.
      * 
+     * @param context The context reference.
      * @param type The entity type.
-     * @param setup The setup reference.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
-     * @param factoryEffect The effect factory.
-     * @param handlerEffect The effect handler.
      * @param effect The effect type.
      */
-    EntityItem(TypeEntity type, SetupEntityGame setup, Map map, int desiredFps, FactoryEffect factoryEffect,
-            HandlerEffect handlerEffect, TypeEffect effect)
+    public EntityItem(Context context, TypeEntity type, TypeEffect effect)
     {
-        super(type, setup, map, desiredFps);
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(context, type);
+        factoryEffect = context.factoryEffect;
+        handlerEffect = context.handlerEffect;
         play(getAnimation(status.getState().getAnimationName()));
     }
 
@@ -45,12 +40,7 @@ public abstract class EntityItem
      * 
      * @param entity The entity.
      */
-    private void onTaken(Entity entity)
-    {
-        final Effect effect = factoryEffect.createEffect(TypeEffect.TAKEN);
-        effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
-        handlerEffect.add(effect);
-    }
+    protected abstract void onTaken(Valdyn entity);
 
     /*
      * Entity
@@ -66,8 +56,10 @@ public abstract class EntityItem
     public void hitThat(Entity entity)
     {
         kill();
-        onTaken(entity);
-        destroy();
+        final Effect effect = factoryEffect.createEffect(TypeEffect.TAKEN);
+        effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
+        handlerEffect.add(effect);
+        onTaken((Valdyn) entity);
     }
 
     @Override
@@ -79,7 +71,7 @@ public abstract class EntityItem
     @Override
     protected void updateDead()
     {
-        // Nothing to do
+        destroy();
     }
 
     @Override
