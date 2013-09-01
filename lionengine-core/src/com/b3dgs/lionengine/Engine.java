@@ -108,7 +108,7 @@ public final class Engine
      */
     public static void start(String name, Version version, String ressourcesDir)
     {
-        Engine.start(name, version, ressourcesDir, Verbose.INFORMATION, Theme.SYSTEM);
+        Engine.start(name, version, ressourcesDir, Verbose.CRITICAL, Theme.SYSTEM);
     }
 
     /**

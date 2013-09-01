@@ -12,21 +12,21 @@ import com.b3dgs.lionengine.utility.UtilityFile;
 public class MapFilter
         extends FileFilter
 {
-    /** Map file extension. */
-    private final String extension;
     /** Map file description. */
     private final String description;
+    /** Map file extension. */
+    private final String[] extensions;
 
     /**
      * Constructor.
      * 
-     * @param extension The map file extension.
      * @param description The map file description.
+     * @param extensions The map file extensions.
      */
-    public MapFilter(String extension, String description)
+    public MapFilter(String description, String... extensions)
     {
-        this.extension = extension;
         this.description = description;
+        this.extensions = extensions;
     }
 
     /*
@@ -44,9 +44,12 @@ public class MapFilter
         final String ext = UtilityFile.getExtension(f);
         if (ext != null)
         {
-            if (extension.equals(ext))
+            for (String extension : extensions)
             {
-                return true;
+                if (extension.equals(ext))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -58,7 +61,10 @@ public class MapFilter
     public String getDescription()
     {
         StringBuilder buf = new StringBuilder(description);
-        buf = buf.append(" (*.").append(extension).append(")");
+        for (String extension : extensions)
+        {
+            buf = buf.append(" (*.").append(extension).append(")");
+        }
         return buf.toString();
     }
 }

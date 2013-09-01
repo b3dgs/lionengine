@@ -4,28 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.TreeMap;
 
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
@@ -47,7 +39,7 @@ public class MenuBar
      * 
      * @param editor The editor reference.
      */
-    public MenuBar(final Editor editor)
+    public MenuBar(Editor editor)
     {
         super();
         this.editor = editor;
@@ -56,7 +48,7 @@ public class MenuBar
         addItem(menu, "New", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 fileNew();
             }
@@ -64,7 +56,7 @@ public class MenuBar
         addItem(menu, "Load", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 fileLoad();
             }
@@ -72,7 +64,7 @@ public class MenuBar
         addItem(menu, "Save", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 fileSave();
             }
@@ -80,7 +72,7 @@ public class MenuBar
         addItem(menu, "Exit", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 fileExit();
             }
@@ -92,7 +84,7 @@ public class MenuBar
         addItem(menu, "Import Map", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 toolsImportMap();
             }
@@ -102,7 +94,7 @@ public class MenuBar
         addItem(menu, "About", new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 helpAbout();
             }
@@ -139,7 +131,7 @@ public class MenuBar
         UtilitySwing.addButton("Accept", southPanel, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 // Nothing for the moment
             }
@@ -148,7 +140,7 @@ public class MenuBar
         UtilitySwing.addButton("Cancel", southPanel, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 UtilitySwing.terminateDialog(dialog);
             }
@@ -162,26 +154,11 @@ public class MenuBar
      */
     void fileLoad()
     {
-        final JFileChooser fc = new JFileChooser(Media.getRessourcesDir());
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
-        fc.setMultiSelectionEnabled(false);
-        fc.addChoosableFileFilter(new MapFilter("lrm", "Lionheart Remake Map"));
-        final int approve = fc.showOpenDialog(editor.getContentPane());
-        if (approve == JFileChooser.APPROVE_OPTION)
+        final MapFilter filter = new MapFilter("Lionheart Remake Map", "lrm");
+        final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
+        if (media != null)
         {
-            final String filename = fc.getSelectedFile().getPath();
-            try (final FileReading file = File.createFileReading(Media.get(filename));)
-            {
-                file.readString();
-                editor.world.map.load(file);
-                editor.world.loadEntities(file);
-                file.close();
-            }
-            catch (final IOException ex)
-            {
-                Verbose.critical(MenuBar.class, "fileLoad", "An error occured while loading map:", filename);
-            }
+            editor.world.loadLevel(media);
         }
     }
 
@@ -191,17 +168,7 @@ public class MenuBar
     void fileSave()
     {
         final String name = "test1.lrm";
-        try (final FileWriting file = File.createFileWriting(Media.get(name));)
-        {
-            file.writeString("LRM");
-            editor.world.map.save(file);
-            editor.world.saveEntities(file);
-            file.close();
-        }
-        catch (final IOException ex)
-        {
-            Verbose.critical(MenuBar.class, "Map save", "An error occured while saving map:", name);
-        }
+        editor.world.saveLevel(Media.get(name));
     }
 
     /**
@@ -210,6 +177,7 @@ public class MenuBar
     void fileExit()
     {
         editor.terminate();
+        System.exit(0);
     }
 
     /**
@@ -217,31 +185,16 @@ public class MenuBar
      */
     void toolsImportMap()
     {
-        final JFileChooser fc = new JFileChooser(Media.getRessourcesDir());
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
-        fc.setMultiSelectionEnabled(false);
-        fc.addChoosableFileFilter(new MapFilter("bmp", "Map Image Rip"));
-        fc.addChoosableFileFilter(new MapFilter("png", "Map Image Rip"));
-        final int approve = fc.showOpenDialog(editor.getContentPane());
-        if (approve == JFileChooser.APPROVE_OPTION)
+        final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
+        final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
+        if (media != null)
         {
-            final String file = fc.getSelectedFile().getPath();
-            final String localFile = file.substring(Media.getRessourcesDir().length()
-                    + file.lastIndexOf(Media.getRessourcesDir()));
-            final Media filename = Media.get(localFile);
-
-            // Cut image in tiles
             final Map map = editor.world.map;
-            ImageInfo.get(filename);
-
             final LevelRipConverter<TypeTileCollision, Tile> rip = new LevelRipConverter<>();
-            rip.start(filename, map, Media.get("tiles", editor.toolBar.entitySelector.selectedWorld.asPathName()), true);
+            rip.start(media, map, Media.get("tiles", editor.toolBar.entitySelector.selectedWorld.asPathName()));
             editor.world.camera.setLimits(map);
-
-            final DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
             editor.repaint();
+            rip.showResults();
         }
     }
 

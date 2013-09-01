@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
  * private void ripLevel(Media levelrip, Media tilesheet, Media output)
  * {
  *     final LevelRipConverter&lt;TypeCollision, Tile&gt; rip = new LevelRipConverter&lt;&gt;();
- *     rip.start(levelrip, map, tilesheet, false);
+ *     rip.start(levelrip, map, tilesheet);
  *     try (FileWriting file = File.createFileWriting(output);)
  *     {
  *         map.save(file);
@@ -95,9 +95,8 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
      * @param levelrip The file containing the levelrip as an image.
      * @param map The destination map reference.
      * @param patternsDirectory The directory containing tiles themes.
-     * @param display <code>true</code> to show display box at the end, <code>false</code> else.
      */
-    public void start(Media levelrip, MapTileGame<?, ?> map, Media patternsDirectory, boolean display)
+    public void start(Media levelrip, MapTileGame<?, ?> map, Media patternsDirectory)
     {
         final int threadsNum = Runtime.getRuntime().availableProcessors();
         final Sprite levelRip = Drawable.loadSprite(levelrip);
@@ -124,17 +123,20 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
         {
             Verbose.critical(LevelRipConverter.class, "An error occured: ", levelrip.getPath());
         }
-        if (display)
+    }
+
+    /**
+     * Show the conversion results.
+     */
+    public void showResults()
+    {
+        if (errors > 0)
         {
-            if (errors > 0)
-            {
-                UtilityMessageBox.error("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
-            }
-            else
-            {
-                UtilityMessageBox
-                        .information("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
-            }
+            UtilityMessageBox.error("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
+        }
+        else
+        {
+            UtilityMessageBox.information("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
         }
     }
 

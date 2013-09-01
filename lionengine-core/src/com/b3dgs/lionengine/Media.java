@@ -72,6 +72,20 @@ public final class Media
     }
 
     /**
+     * Get a media from an existing file descriptor.
+     * 
+     * @param file The file descriptor.
+     * @return The media instance.
+     */
+    public static Media get(File file)
+    {
+        final String filename = file.getPath();
+        final String localFile = filename.substring(Media.getRessourcesDir().length()
+                + filename.lastIndexOf(Media.getRessourcesDir()));
+        return Media.get(localFile);
+    }
+
+    /**
      * Construct a usable path using a list of string, automatically separated by the portable separator. The
      * constructed path will use local system file separator.
      * 

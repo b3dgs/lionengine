@@ -17,14 +17,18 @@ import javax.swing.JPanel;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
+import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Coord;
@@ -147,54 +151,45 @@ public class WorldPanel
     }
 
     /**
-     * Save all entities.
+     * Save a level to a file.
      * 
-     * @param file The file writing.
-     * @throws IOException If error.
+     * @param media The file to save level to.
      */
-    public void saveEntities(FileWriting file) throws IOException
+    public void saveLevel(Media media)
     {
-        file.writeShort((short) (playerStart.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerStart.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) (playerEnd.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerEnd.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) checkpoints.size());
-        for (final CoordTile p : checkpoints.values())
+        try (final FileWriting file = File.createFileWriting(media);)
         {
-            file.writeShort((short) (p.getX() / Map.TILE_WIDTH));
-            file.writeShort((short) (p.getY() / Map.TILE_HEIGHT));
+            file.writeString("LRM");
+            map.save(file);
+            saveEntities(file);
         }
-        file.writeShort((short) handlerEntity.size());
-        for (final Entity entity : handlerEntity.list())
+        catch (final IOException
+                     | NullPointerException exception)
         {
-            entity.save(file);
+            Verbose.exception(MenuBar.class, "saveLevel", exception, "An error occured while saving map:",
+                    media.getPath());
         }
     }
 
     /**
-     * Load all entities.
+     * Load a level from a file.
      * 
-     * @param file The file reading.
-     * @throws IOException If error.
+     * @param media The level file.
      */
-    public void loadEntities(FileReading file) throws IOException
+    public void loadLevel(Media media)
     {
-        playerStart.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        playerEnd.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        final int size = file.readShort();
-        for (int i = 0; i < size; i++)
+        try (final FileReading file = File.createFileReading(media);)
         {
-            addCheckpoint(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+            file.readString();
+            map.load(file);
+            loadEntities(file);
         }
-        final int n = file.readShort();
-        final TypeEntity[] entities = TypeEntity.values();
-        for (int i = 0; i < n; i++)
+        catch (final IOException exception)
         {
-            final byte id = file.readByte();
-            final Entity entity = factory.createEntity(entities[id]);
-            entity.load(file);
-            handlerEntity.add(entity);
+            Verbose.exception(Editor.class, "loadLevel", exception, "An error occured while loading map:",
+                    media.getPath());
         }
+        camera.setLimits(map);
     }
 
     /**
@@ -263,6 +258,57 @@ public class WorldPanel
     public Integer getHash(int x, int y)
     {
         return Integer.valueOf(x / Map.TILE_WIDTH + map.getWidthInTile() * (y / Map.TILE_HEIGHT));
+    }
+
+    /**
+     * Save all entities.
+     * 
+     * @param file The file writing.
+     * @throws IOException If error.
+     */
+    private void saveEntities(FileWriting file) throws IOException
+    {
+        file.writeShort((short) (playerStart.getX() / Map.TILE_WIDTH));
+        file.writeShort((short) (playerStart.getY() / Map.TILE_HEIGHT));
+        file.writeShort((short) (playerEnd.getX() / Map.TILE_WIDTH));
+        file.writeShort((short) (playerEnd.getY() / Map.TILE_HEIGHT));
+        file.writeShort((short) checkpoints.size());
+        for (final CoordTile p : checkpoints.values())
+        {
+            file.writeShort((short) (p.getX() / Map.TILE_WIDTH));
+            file.writeShort((short) (p.getY() / Map.TILE_HEIGHT));
+        }
+        file.writeShort((short) handlerEntity.size());
+        for (final Entity entity : handlerEntity.list())
+        {
+            entity.save(file);
+        }
+    }
+
+    /**
+     * Load all entities.
+     * 
+     * @param file The file reading.
+     * @throws IOException If error.
+     */
+    private void loadEntities(FileReading file) throws IOException
+    {
+        playerStart.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        playerEnd.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        final int size = file.readShort();
+        for (int i = 0; i < size; i++)
+        {
+            addCheckpoint(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
+        }
+        final int n = file.readShort();
+        for (int i = 0; i < n; i++)
+        {
+            context.factoryEntity.setWorld(TypeWorld.get(file.readByte()));
+            final Entity entity = factory.createEntity(TypeEntity.get(file.readByte()));
+            entity.load(file);
+            handlerEntity.add(entity);
+        }
+        handlerEntity.update();
     }
 
     /**

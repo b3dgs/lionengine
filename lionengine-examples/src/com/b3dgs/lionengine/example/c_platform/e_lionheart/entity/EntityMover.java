@@ -49,8 +49,6 @@ public abstract class EntityMover
     private int patrolRight;
     /** Patrol existence flag. */
     private boolean hasPatrol;
-    /** Patrol activation flag. */
-    private boolean patrolEnabled;
     /** Patrol current movement side. */
     private int side;
     /** Patrol minimum position. */
@@ -82,6 +80,7 @@ public abstract class EntityMover
         setGravityMax(getDataDouble("gravityMax", "data"));
         setFrameOffsets(0, getHeight() / 2);
         enableMovement(TypeEntityMovement.NONE);
+        enableMovement(TypeEntityMovement.HORIZONTAL);
     }
 
     /**
@@ -119,16 +118,6 @@ public abstract class EntityMover
     public void setMoveSpeed(int speed)
     {
         moveSpeed = speed;
-    }
-
-    /**
-     * Set the patrol enabled flag.
-     * 
-     * @param enabled <code>true</code> to enable to patrol, <code>false</code> else.
-     */
-    public void setPatrolEnabled(boolean enabled)
-    {
-        patrolEnabled = enabled;
     }
 
     /**
@@ -229,7 +218,7 @@ public abstract class EntityMover
      */
     public boolean isPatrolEnabled()
     {
-        return patrolEnabled;
+        return movementType != TypeEntityMovement.NONE;
     }
 
     /**
@@ -404,6 +393,7 @@ public abstract class EntityMover
     @Override
     public void load(FileReading file) throws IOException
     {
+        super.load(file);
         setMovementType(TypeEntityMovement.get(file.readByte()));
         if (getMovementType() != TypeEntityMovement.NONE)
         {

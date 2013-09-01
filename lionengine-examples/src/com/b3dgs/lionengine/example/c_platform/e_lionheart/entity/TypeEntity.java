@@ -35,6 +35,20 @@ public enum TypeEntity
     /** Valdyn (player). */
     VALDYN(TypeEntityCategory.PLAYER);
 
+    /** Values. */
+    private static final TypeEntity[] VALUES = TypeEntity.values();
+
+    /**
+     * Get the type from its index.
+     * 
+     * @param index The index.
+     * @return The type.
+     */
+    public static TypeEntity get(int index)
+    {
+        return TypeEntity.VALUES[index];
+    }
+
     /** Type category. */
     private final TypeEntityCategory category;
 

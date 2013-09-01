@@ -75,12 +75,12 @@ public class EntityEditor
         combo.getItemAt(item).setEnabled(enabled);
     }
 
+    /** Editor reference. */
+    final Editor editor;
     /** Combo for movement type selection. */
     final JComboBox<ComboItem> comboMovement;
     /** Combo for direction type selection. */
     final JComboBox<ComboItem> comboDirection;
-    /** Editor reference. */
-    private final Editor editor;
     /** Tabs. */
     private final JTabbedPane tabs;
     /** Player panel. */
@@ -119,7 +119,7 @@ public class EntityEditor
         UtilitySwing.addButton("Start", startEnd, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.PLAYER);
                 editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_START);
@@ -128,7 +128,7 @@ public class EntityEditor
         UtilitySwing.addButton("End", startEnd, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.PLAYER);
                 editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_END);
@@ -139,7 +139,7 @@ public class EntityEditor
         UtilitySwing.addButton("Add", checkpoint, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.PLAYER);
                 editor.world.setPlayerSelection(TypeSelectionPlayer.ADD_CHECKPOINT);
@@ -148,7 +148,7 @@ public class EntityEditor
         UtilitySwing.addButton("Remove", checkpoint, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.PLAYER);
                 editor.world.setPlayerSelection(TypeSelectionPlayer.REMOVE_CHECKPOINT);
@@ -239,25 +239,16 @@ public class EntityEditor
         if (entity instanceof EntityMover && ((EntityMover) entity).isPatrolEnabled())
         {
             final EntityMover mover = (EntityMover) entity;
-            boolean done = false;
             for (final TypeEntityMovement movement : TypeEntityMovement.values())
             {
                 final boolean enabled = mover.isMovementEnabled(movement);
                 EntityEditor.setEnabled(comboMovement, movement.getIndex(), enabled);
-                if (enabled && !done && entity instanceof EntityMover)
-                {
-                    if (mover.getMovementType() == movement)
-                    {
-                        comboMovement.setSelectedItem(movement);
-                        done = true;
-                    }
-                }
             }
             setEnabled(patrolPanel.getComponents(), true);
             setValue(patrolMin, mover.getPatrolLeft());
             setValue(patrolMax, mover.getPatrolRight());
             setValue(speedValue, mover.getMoveSpeed());
-            comboMovement.setSelectedItem(mover.getMovementType());
+            comboMovement.setSelectedIndex(mover.getMovementType().getIndex());
             comboDirection.setSelectedIndex(mover.getFirstMove());
         }
         else
@@ -343,24 +334,26 @@ public class EntityEditor
         UtilitySwing.addButton("+", incdec, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 if (selectedEntity instanceof EntityMover)
                 {
                     setValue(label, getValue(label) + step);
                     changeMoverValue(label, type);
+                    editor.world.repaint();
                 }
             }
         });
         UtilitySwing.addButton("-", incdec, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 if (selectedEntity instanceof EntityMover)
                 {
                     setValue(label, getValue(label) - step);
                     changeMoverValue(label, type);
+                    editor.world.repaint();
                 }
             }
         });

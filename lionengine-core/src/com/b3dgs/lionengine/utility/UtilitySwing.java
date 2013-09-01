@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.utility;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -20,7 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.filechooser.FileFilter;
 
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboListener;
 import com.b3dgs.lionengine.swing.ComboRenderer;
@@ -30,6 +34,28 @@ import com.b3dgs.lionengine.swing.ComboRenderer;
  */
 public final class UtilitySwing
 {
+    /**
+     * Create and open a single file chooser.
+     * 
+     * @param parent The parent reference.
+     * @param filter The file filter to use.
+     * @return The selected media if accepted, <code>null</code> if not.
+     */
+    public static Media createOpenFileChooser(Component parent, FileFilter filter)
+    {
+        final JFileChooser fileChooser = new JFileChooser(Media.getRessourcesDir());
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(filter);
+        final int approve = fileChooser.showOpenDialog(parent);
+        if (approve == JFileChooser.APPROVE_OPTION)
+        {
+            return Media.get(fileChooser.getSelectedFile());
+        }
+        return null;
+    }
+
     /**
      * Create a bordered panel.
      * 

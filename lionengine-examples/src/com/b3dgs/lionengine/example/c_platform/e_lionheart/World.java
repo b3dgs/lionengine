@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
@@ -99,6 +98,7 @@ final class World
     @Override
     protected void loading(FileReading file) throws IOException
     {
+        file.readString();
         map.load(file);
     }
 
@@ -108,11 +108,7 @@ final class World
         camera.setLimits(map);
         camera.setIntervals(32, 0);
 
-        factoryEntity.setWorld(TypeWorld.SWAMP);
         factoryEntity.loadAll(TypeEntity.values());
-        final Entity talisment = factoryEntity.createEntity(TypeEntity.TALISMENT);
-        talisment.teleport(640, 80);
-        handlerEntity.add(talisment);
 
         player.respawn();
     }

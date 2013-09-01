@@ -10,6 +10,20 @@ public enum TypeWorld
     /** Swamp world. */
     SWAMP;
 
+    /** Values. */
+    private static final TypeWorld[] VALUES = TypeWorld.values();
+
+    /**
+     * Get the type from its index.
+     * 
+     * @param index The index.
+     * @return The type.
+     */
+    public static TypeWorld get(int index)
+    {
+        return TypeWorld.VALUES[index];
+    }
+    
     /**
      * Get the name as a path (lower case).
      * 

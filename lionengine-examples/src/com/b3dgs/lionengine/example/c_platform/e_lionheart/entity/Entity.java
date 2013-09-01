@@ -59,6 +59,7 @@ public abstract class Entity
     protected Entity(Context context, TypeEntity type)
     {
         super(context.factoryEntity.getSetup(type), context.map);
+        this.world = context.factoryEntity.getWorld();
         this.type = type;
         this.map = context.map;
         this.desiredFps = context.desiredFps;

@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -128,6 +130,7 @@ public enum Verbose
                     {
                         final String clazz = event.getSourceClassName();
                         final String function = event.getSourceMethodName();
+                        final Throwable thrown = event.getThrown();
                         final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(": ");
 
                         if (clazz != null)
@@ -138,8 +141,15 @@ public enum Verbose
                         {
                             message.append(" at ").append(function).append(": ");
                         }
+                        message.append(event.getMessage()).append("\n");
+                        if (thrown != null)
+                        {
+                            final StringWriter sw = new StringWriter();
+                            thrown.printStackTrace(new PrintWriter(sw));
+                            message.append(sw.toString());
+                        }
 
-                        return message.append(event.getMessage()).append("\n").toString();
+                        return message.toString();
                     }
                 });
             }
