@@ -115,6 +115,7 @@ public class EntityEditor
         final JPanel playerValues = new JPanel();
         playerValues.setLayout(new GridLayout(2, 1));
         final JPanel startEnd = UtilitySwing.createBorderedPanel("Starting/Ending Location", 1);
+        startEnd.setLayout(new GridLayout(0, 2));
         UtilitySwing.addButton("Start", startEnd, new ActionListener()
         {
             @Override
@@ -135,6 +136,7 @@ public class EntityEditor
         });
         playerValues.add(startEnd, BorderLayout.CENTER);
         final JPanel checkpoint = UtilitySwing.createBorderedPanel("Checkpoint", 1);
+        checkpoint.setLayout(new GridLayout(0, 2));
         UtilitySwing.addButton("Add", checkpoint, new ActionListener()
         {
             @Override
@@ -255,12 +257,25 @@ public class EntityEditor
         }
         else
         {
+            setPatrolPanelEnabled(false);
+        }
+        editor.repaint();
+    }
+
+    /**
+     * Set the patrol panel enabled state.
+     * 
+     * @param state <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setPatrolPanelEnabled(boolean state)
+    {
+        if (!state)
+        {
             patrolMin.setText(null);
             patrolMax.setText(null);
             speedValue.setText(null);
-            UtilitySwing.setEnabled(patrolPanel.getComponents(), false);
         }
-        editor.repaint();
+        UtilitySwing.setEnabled(patrolPanel.getComponents(), state);
     }
 
     /**

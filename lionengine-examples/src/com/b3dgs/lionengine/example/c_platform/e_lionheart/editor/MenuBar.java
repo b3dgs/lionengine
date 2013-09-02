@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
@@ -71,7 +71,7 @@ public class MenuBar
             {
                 fileSave();
             }
-        });
+        }).setEnabled(false);
         addItem(menu, "Exit", new ActionListener()
         {
             @Override
@@ -111,34 +111,37 @@ public class MenuBar
      */
     void fileNew(final Editor editor)
     {
-        final JDialog dialog = UtilitySwing.createDialog(editor, "New", 160, 100);
+        final JDialog dialog = UtilitySwing.createDialog(editor, "New", 200, 120);
         dialog.setLayout(new BorderLayout());
 
         // Center panel
         final JPanel centerPanel = new JPanel(new GridLayout(0, 1));
         dialog.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel panel = UtilitySwing.createBorderedPanel("Landscape", 2);
+        JPanel panel = UtilitySwing.createBorderedPanel("World", 2);
         centerPanel.add(panel);
         final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel,
-                ComboItem.get(TypeLandscape.values()), null);
+                ComboItem.get(TypeWorld.values()), null);
 
         // South panel
         final JPanel southPanel = new JPanel(new GridLayout());
         dialog.add(southPanel, BorderLayout.SOUTH);
-        UtilitySwing.addButton("Accept", southPanel, new ActionListener()
+        UtilitySwing.addButton("Import Map", southPanel, new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent event)
             {
+                UtilitySwing.terminateDialog(dialog);
+                final TypeWorld world = (TypeWorld) ((ComboItem) combo.getSelectedItem()).getObject();
+                editor.world.level.setWorld(world);
+                toolsImportMap();
+                editor.toolBar.entitySelector.loadEntities(world);
                 editor.toolBar.setPaletteEnabled(true);
                 editor.toolBar.setSelectorEnabled(true);
                 editor.toolBar.setEditorEnabled(true);
-                final TypeLandscape item = (TypeLandscape) ((ComboItem) combo.getSelectedItem()).getObject();
-                editor.world.level.setLandscape(item);
-                editor.toolBar.entitySelector.loadEntities(item.getWorld());
+                editor.toolBar.entityEditor.setPatrolPanelEnabled(false);
+                items.get("Save").setEnabled(true);
                 items.get("Import Map").setEnabled(true);
-                UtilitySwing.terminateDialog(dialog);
             }
         });
 
@@ -167,6 +170,7 @@ public class MenuBar
             editor.toolBar.setPaletteEnabled(true);
             editor.toolBar.setSelectorEnabled(true);
             editor.toolBar.setEditorEnabled(true);
+            items.get("Save").setEnabled(true);
             items.get("Import Map").setEnabled(false);
             editor.world.camera.setLimits(editor.world.map);
         }
@@ -187,7 +191,6 @@ public class MenuBar
     void fileExit()
     {
         editor.terminate();
-        System.exit(0);
     }
 
     /**
@@ -201,10 +204,11 @@ public class MenuBar
         {
             final Map map = editor.world.map;
             final LevelRipConverter<TypeTileCollision, Tile> rip = new LevelRipConverter<>();
-            rip.start(media, map, Media.get("tiles", editor.toolBar.entitySelector.selectedWorld.asPathName()));
+            rip.start(media, map, Media.get("tiles", editor.world.factoryEntity.getWorld().asPathName()));
             editor.world.camera.setLimits(map);
             editor.repaint();
             rip.showResults();
+            items.get("Import Map").setEnabled(false);
         }
     }
 

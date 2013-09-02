@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
@@ -28,6 +30,25 @@ public enum TypeLandscape
     public static TypeLandscape get(int index)
     {
         return TypeLandscape.VALUES[index];
+    }
+
+    /**
+     * Get all landscapes related to the world.
+     * 
+     * @param world The world used as reference.
+     * @return The landscapes of this world.
+     */
+    public static TypeLandscape[] getWorldLandscape(TypeWorld world)
+    {
+        final List<TypeLandscape> landscapes = new ArrayList<>(3);
+        for (TypeLandscape landscape : VALUES)
+        {
+            if (landscape.getWorld() == world)
+            {
+                landscapes.add(landscape);
+            }
+        }
+        return landscapes.toArray(new TypeLandscape[landscapes.size()]);
     }
 
     /** Index. */

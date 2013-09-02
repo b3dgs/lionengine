@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import javax.swing.JLabel;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -26,6 +26,9 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCategory;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.swing.ActionCombo;
+import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
@@ -46,19 +49,17 @@ public class EntitySelector
     final Editor editor;
     /** Tabs. */
     final JTabbedPane tabbedPane;
-    /** World label. */
-    final JLabel worldLabel;
     /** Entity category icons list. */
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
-    /** Current selected world. */
-    TypeWorld selectedWorld;
+    /** Entity selector panel. */
+    private final JPanel panel;
 
     /**
      * Constructor.
      * 
      * @param editor The editor reference.
      */
-    public EntitySelector(Editor editor)
+    public EntitySelector(final Editor editor)
     {
         super();
         this.editor = editor;
@@ -69,15 +70,10 @@ public class EntitySelector
             icons.put(category, new ArrayList<Image>(8));
         }
         setLayout(new BorderLayout());
-        final JPanel panel = new JPanel();
-        add(panel, BorderLayout.NORTH);
-
-        final JPanel world = UtilitySwing.createBorderedPanel("World", 2);
-        world.setLayout(new GridLayout(0, 2));
-        worldLabel = new JLabel();
-        world.add(worldLabel);
-        selectedWorld = null;
+        panel = new JPanel();
+        add(panel, BorderLayout.SOUTH);
         add(tabbedPane, BorderLayout.CENTER);
+        setVisible(false);
     }
 
     /**
@@ -87,10 +83,21 @@ public class EntitySelector
      */
     void loadEntities(TypeWorld world)
     {
+        final JPanel landscape = UtilitySwing.createBorderedPanel("Landscape", 2);
+        landscape.setLayout(new GridLayout(0, 1));
+        JComboBox<ComboItem> landscapeCombo = UtilitySwing.addMenuCombo("Landscape", panel,
+                ComboItem.get(ComboItem.get(TypeLandscape.getWorldLandscape(world))), new ActionCombo()
+                {
+                    @Override
+                    public void action(Object item)
+                    {
+                        final TypeLandscape landscape = (TypeLandscape) ((ComboItem) item).getObject();
+                        editor.world.level.setLandscape(landscape);
+                    }
+                });
+        landscape.add(landscapeCombo);
+        add(landscape, BorderLayout.NORTH);
         tabbedPane.removeAll();
-        selectedWorld = world;
-        worldLabel.setText(selectedWorld.toString());
-        editor.world.level.setWorld(world);
         editor.world.factoryEntity.loadAll(TypeEntity.values());
         int max = 0;
         for (final TypeEntityCategory category : TypeEntityCategory.values())
@@ -127,17 +134,8 @@ public class EntitySelector
                 max = length;
             }
         }
+        setVisible(true);
         repaint();
-    }
-
-    /**
-     * Get the current selected world.
-     * 
-     * @return The current world.
-     */
-    public TypeWorld getWorld()
-    {
-        return selectedWorld;
     }
 
     /**
@@ -165,10 +163,10 @@ public class EntitySelector
          */
         Entity(List<Image> icons)
         {
-            addMouseListener(this);
-            addMouseMotionListener(this);
             this.icons = icons;
             click = false;
+            addMouseListener(this);
+            addMouseMotionListener(this);
         }
 
         /**

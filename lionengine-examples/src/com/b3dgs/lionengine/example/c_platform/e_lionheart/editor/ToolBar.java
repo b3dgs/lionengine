@@ -35,7 +35,7 @@ public class ToolBar
         UtilitySwing.addButton("Select", palettePanel, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.SELECT);
             }
@@ -43,7 +43,7 @@ public class ToolBar
         UtilitySwing.addButton("Place", palettePanel, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.PLACE);
             }
@@ -51,7 +51,7 @@ public class ToolBar
         UtilitySwing.addButton("Delete", palettePanel, new ActionListener()
         {
             @Override
-            public void actionPerformed(ActionEvent e)
+            public void actionPerformed(ActionEvent event)
             {
                 editor.setSelectionState(TypeSelection.DELETE);
             }

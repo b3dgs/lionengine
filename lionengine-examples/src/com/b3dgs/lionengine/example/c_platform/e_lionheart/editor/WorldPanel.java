@@ -155,7 +155,6 @@ public class WorldPanel
     {
         try (final FileWriting file = File.createFileWriting(media);)
         {
-            level.setWorld(editor.toolBar.entitySelector.getWorld());
             level.save(file);
         }
         catch (final IOException
@@ -415,7 +414,7 @@ public class WorldPanel
      * @param y The vertical location.
      * @return <code>true</code> if hit, <code>false</code> else.
      */
-    private Entity hitEntities(int x, int y)
+    private Entity hitEntity(int x, int y)
     {
         final int mx = WorldPanel.getRounded(x, map.getTileWidth());
         final int my = WorldPanel.getRounded(getHeight() - y, map.getTileHeight());
@@ -601,7 +600,7 @@ public class WorldPanel
             case SELECT:
                 if (e.getButton() == Mouse.LEFT)
                 {
-                    final Entity entity = hitEntities(mx, my);
+                    final Entity entity = hitEntity(mx, my);
                     editor.toolBar.entityEditor.setSelectedEntity(entity);
                     if (entity != null)
                     {
@@ -620,7 +619,7 @@ public class WorldPanel
                 }
                 break;
             case PLACE:
-                if (hitEntities(mx, my) == null)
+                if (hitEntity(mx, my) == null)
                 {
                     unSelectEntities();
                     final int id = editor.getSelectedEntity().getIndex();
@@ -631,7 +630,7 @@ public class WorldPanel
                 }
                 break;
             case DELETE:
-                final Entity entity = hitEntities(mx, my);
+                final Entity entity = hitEntity(mx, my);
                 if (entity != null)
                 {
                     handlerEntity.remove(entity);

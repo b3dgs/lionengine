@@ -80,6 +80,7 @@ public class Editor
     public void terminate()
     {
         dispose();
+        System.exit(0);
     }
 
     /**
@@ -200,7 +201,7 @@ public class Editor
         addWindowListener(new WindowAdapter()
         {
             @Override
-            public void windowClosing(WindowEvent e)
+            public void windowClosing(WindowEvent event)
             {
                 terminate();
             }
@@ -218,10 +219,10 @@ public class Editor
             @Override
             public void eventDispatched(AWTEvent event)
             {
-                final KeyEvent ke = (KeyEvent) event;
-                if (ke.getID() == KeyEvent.KEY_PRESSED)
+                final KeyEvent key = (KeyEvent) event;
+                if (key.getID() == KeyEvent.KEY_PRESSED)
                 {
-                    keyPressed(ke);
+                    keyPressed(key);
                 }
             }
         }, AWTEvent.KEY_EVENT_MASK);
