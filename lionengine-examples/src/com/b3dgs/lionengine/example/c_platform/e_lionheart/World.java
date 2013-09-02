@@ -7,7 +7,6 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
@@ -30,6 +29,8 @@ final class World
     private final FactoryLandscape factoryLandscape;
     /** Background reference. */
     private final Landscape landscape;
+    /** Level reference. */
+    private final Level level;
     /** Map reference. */
     private final Map map;
     /** Entity factory. */
@@ -54,10 +55,11 @@ final class World
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(config, wide, false);
         landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
-        map = new Map(landscape);
-        context = new Context(camera, map, display.getRate());
-        factoryEntity = context.factoryEntity;
-        handlerEntity = context.handlerEntity;
+        factoryEntity = new FactoryEntity();
+        handlerEntity = new HandlerEntity(camera, factoryEntity);
+        level = new Level(factoryEntity, handlerEntity);
+        map = level.map;
+        context = new Context(level, display.getRate());
         handlerEffect = context.handlerEffect;
         player = factoryEntity.createValdyn();
         handlerEntity.setPlayer(player);
@@ -92,14 +94,14 @@ final class World
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.save(file);
+        level.save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        file.readString();
-        map.load(file);
+        map.setLandscape(landscape.getType());
+        level.load(file);
     }
 
     @Override
@@ -107,8 +109,6 @@ final class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
-
-        factoryEntity.loadAll(TypeEntity.values());
 
         player.respawn();
     }

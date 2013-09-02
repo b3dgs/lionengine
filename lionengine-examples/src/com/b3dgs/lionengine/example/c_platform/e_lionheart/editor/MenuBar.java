@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.TreeMap;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -15,9 +16,11 @@ import javax.swing.JTextArea;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
+import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
@@ -32,14 +35,14 @@ public class MenuBar
     /** Editor reference. */
     private final Editor editor;
     /** Items list. */
-    private final TreeMap<String, JMenuItem> items;
+    final TreeMap<String, JMenuItem> items;
 
     /**
      * Constructor.
      * 
      * @param editor The editor reference.
      */
-    public MenuBar(Editor editor)
+    public MenuBar(final Editor editor)
     {
         super();
         this.editor = editor;
@@ -50,7 +53,7 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                fileNew();
+                fileNew(editor);
             }
         });
         addItem(menu, "Load", new ActionListener()
@@ -88,7 +91,7 @@ public class MenuBar
             {
                 toolsImportMap();
             }
-        });
+        }).setEnabled(false);
 
         menu = addMenu("Help");
         addItem(menu, "About", new ActionListener()
@@ -103,27 +106,22 @@ public class MenuBar
 
     /**
      * New action.
+     * 
+     * @param editor The editor reference.
      */
-    void fileNew()
+    void fileNew(final Editor editor)
     {
-        final JDialog dialog = UtilitySwing.createDialog(editor, "New", 320, 240);
+        final JDialog dialog = UtilitySwing.createDialog(editor, "New", 160, 100);
         dialog.setLayout(new BorderLayout());
 
         // Center panel
-        final JPanel centerPanel = new JPanel(new GridLayout(0, 2));
+        final JPanel centerPanel = new JPanel(new GridLayout(0, 1));
         dialog.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel panel = UtilitySwing.createBorderedPanel("Background", 2);
+        JPanel panel = UtilitySwing.createBorderedPanel("Landscape", 2);
         centerPanel.add(panel);
-
-        panel = UtilitySwing.createBorderedPanel("Foreground", 2);
-        centerPanel.add(panel);
-
-        panel = UtilitySwing.createBorderedPanel("Map", 2);
-        centerPanel.add(panel);
-
-        panel = UtilitySwing.createBorderedPanel("Entities", 2);
-        centerPanel.add(panel);
+        final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel,
+                ComboItem.get(TypeLandscape.values()), null);
 
         // South panel
         final JPanel southPanel = new JPanel(new GridLayout());
@@ -133,7 +131,14 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                // Nothing for the moment
+                editor.toolBar.setPaletteEnabled(true);
+                editor.toolBar.setSelectorEnabled(true);
+                editor.toolBar.setEditorEnabled(true);
+                final TypeLandscape item = (TypeLandscape) ((ComboItem) combo.getSelectedItem()).getObject();
+                editor.world.level.setLandscape(item);
+                editor.toolBar.entitySelector.loadEntities(item.getWorld());
+                items.get("Import Map").setEnabled(true);
+                UtilitySwing.terminateDialog(dialog);
             }
         });
 
@@ -158,7 +163,12 @@ public class MenuBar
         final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
         if (media != null)
         {
-            editor.world.loadLevel(media);
+            editor.world.load(media);
+            editor.toolBar.setPaletteEnabled(true);
+            editor.toolBar.setSelectorEnabled(true);
+            editor.toolBar.setEditorEnabled(true);
+            items.get("Import Map").setEnabled(false);
+            editor.world.camera.setLimits(editor.world.map);
         }
     }
 
@@ -168,7 +178,7 @@ public class MenuBar
     void fileSave()
     {
         final String name = "test1.lrm";
-        editor.world.saveLevel(Media.get(name));
+        editor.world.save(Media.get(name));
     }
 
     /**

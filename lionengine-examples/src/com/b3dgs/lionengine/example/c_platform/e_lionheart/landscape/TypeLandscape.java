@@ -1,17 +1,39 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import java.util.Locale;
+
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
+
 /**
  * Types of landscapes.
  */
 public enum TypeLandscape
 {
     /** Swamp dusk. */
-    SWAMP_DUSK("dusk", "raster1.xml", TypeForeground.WATER),
+    SWAMP_DUSK(0, TypeWorld.SWAMP, "dusk", "raster1.xml", TypeForeground.WATER),
     /** Swamp dawn. */
-    SWAMP_DAWN("dawn", "raster2.xml", TypeForeground.WATER),
+    SWAMP_DAWN(1, TypeWorld.SWAMP, "dawn", "raster2.xml", TypeForeground.WATER),
     /** Swamp day. */
-    SWAMP_DAY("day", "raster3.xml", TypeForeground.WATER);
+    SWAMP_DAY(2, TypeWorld.SWAMP, "day", "raster3.xml", TypeForeground.WATER);
 
+    /** Values. */
+    private static final TypeLandscape[] VALUES = TypeLandscape.values();
+
+    /**
+     * Get the type from its index.
+     * 
+     * @param index The index.
+     * @return The type.
+     */
+    public static TypeLandscape get(int index)
+    {
+        return TypeLandscape.VALUES[index];
+    }
+
+    /** Index. */
+    private final int index;
+    /** World type. */
+    private final TypeWorld world;
     /** Theme name. */
     private final String theme;
     /** Raster name. */
@@ -22,15 +44,39 @@ public enum TypeLandscape
     /**
      * Constructor.
      * 
+     * @param index The index number.
+     * @param world The world type.
      * @param theme The theme name.
      * @param raster The raster name.
      * @param water The water type.
      */
-    private TypeLandscape(String theme, String raster, TypeForeground water)
+    private TypeLandscape(int index, TypeWorld world, String theme, String raster, TypeForeground water)
     {
+        this.index = index;
+        this.world = world;
         this.theme = theme;
         this.raster = raster;
         foreground = water;
+    }
+
+    /**
+     * Get the index value.
+     * 
+     * @return The index value.
+     */
+    public int getIndex()
+    {
+        return index;
+    }
+
+    /**
+     * Get the world type.
+     * 
+     * @return The world type.
+     */
+    public TypeWorld getWorld()
+    {
+        return world;
     }
 
     /**
@@ -61,5 +107,12 @@ public enum TypeLandscape
     public TypeForeground getForeground()
     {
         return foreground;
+    }
+
+    @Override
+    public String toString()
+    {
+        final String string = name().toLowerCase(Locale.ENGLISH).replace('_', ' ');
+        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
     }
 }

@@ -1,0 +1,104 @@
+package com.b3dgs.lionengine.example.c_platform.e_lionheart;
+
+import java.io.IOException;
+
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
+
+/**
+ * Represents a level and its data (world data, map, entities).
+ */
+public class Level
+{
+    /** Level file format. */
+    public static final String FILE_FORMAT = "lrm";
+    /** Map reference. */
+    public final Map map;
+    /** World data reference. */
+    public final WorldData worldData;
+    /** Entity factory reference. */
+    public final FactoryEntity factoryEntity;
+    /** Entity handler reference. */
+    public final HandlerEntity handlerEntity;
+    /** World type. */
+    private TypeWorld world;
+    /** Landscape type. */
+    private TypeLandscape landscape;
+
+    /**
+     * Constructor.
+     * 
+     * @param factoryEntity The entity factory reference.
+     * @param handlerEntity The entity handler reference.
+     */
+    public Level(FactoryEntity factoryEntity, HandlerEntity handlerEntity)
+    {
+        this.factoryEntity = factoryEntity;
+        this.handlerEntity = handlerEntity;
+        map = new Map();
+        worldData = new WorldData(map);
+    }
+
+    /**
+     * Save a level to a file.
+     * 
+     * @param file The file to save level to.
+     * @throws IOException If error.
+     */
+    public void save(FileWriting file) throws IOException
+    {
+        file.writeString(Level.FILE_FORMAT);
+        file.writeByte((byte) world.getIndex());
+        file.writeByte((byte) landscape.getIndex());
+        map.save(file);
+        worldData.save(file);
+        handlerEntity.save(file);
+    }
+
+    /**
+     * Load a level from a file.
+     * 
+     * @param file The level file.
+     * @throws IOException If error.
+     */
+    public void load(FileReading file) throws IOException
+    {
+        final String format = file.readString();
+        if (!Level.FILE_FORMAT.equals(format))
+        {
+            throw new IOException("Invalid level format !");
+        }
+        setWorld(TypeWorld.get(file.readByte()));
+        factoryEntity.loadAll(TypeEntity.values());
+        final TypeLandscape landscape = TypeLandscape.get(file.readByte());
+        map.load(file);
+        worldData.load(file);
+        handlerEntity.load(file);
+    }
+
+    /**
+     * Set the world type.
+     * 
+     * @param world The world type.
+     */
+    public void setWorld(TypeWorld world)
+    {
+        this.world = world;
+        factoryEntity.setWorld(world);
+    }
+
+    /**
+     * Set the landscape type.
+     * 
+     * @param landscape The landscape type.
+     */
+    public void setLandscape(TypeLandscape landscape)
+    {
+        this.landscape = landscape;
+    }
+}

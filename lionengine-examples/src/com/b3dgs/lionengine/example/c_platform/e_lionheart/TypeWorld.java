@@ -8,7 +8,7 @@ import java.util.Locale;
 public enum TypeWorld
 {
     /** Swamp world. */
-    SWAMP;
+    SWAMP(0);
 
     /** Values. */
     private static final TypeWorld[] VALUES = TypeWorld.values();
@@ -23,7 +23,30 @@ public enum TypeWorld
     {
         return TypeWorld.VALUES[index];
     }
-    
+
+    /** Index. */
+    private final int index;
+
+    /**
+     * Constructor.
+     * 
+     * @param index The index number.
+     */
+    private TypeWorld(int index)
+    {
+        this.index = index;
+    }
+
+    /**
+     * Get the index value.
+     * 
+     * @return The index value.
+     */
+    public int getIndex()
+    {
+        return index;
+    }
+
     /**
      * Get the name as a path (lower case).
      * 

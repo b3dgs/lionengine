@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.utility;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -83,7 +84,10 @@ public final class UtilitySwing
     public static JButton addButton(String name, JPanel panel, ActionListener action)
     {
         final JButton button = new JButton(name);
-        button.addActionListener(action);
+        if (action != null)
+        {
+            button.addActionListener(action);
+        }
         panel.add(button);
         return button;
     }
@@ -102,7 +106,10 @@ public final class UtilitySwing
     {
         final JComboBox<T> combo = new JComboBox<>(tab);
         combo.setRenderer(new ComboRenderer<>());
-        combo.addActionListener(new ComboListener<>(combo, actionCombo));
+        if (actionCombo != null)
+        {
+            combo.addActionListener(new ComboListener<>(combo, actionCombo));
+        }
         if (name != null)
         {
             final JLabel label = new JLabel(name);
@@ -155,7 +162,10 @@ public final class UtilitySwing
     public static JMenuItem addMenuItem(JMenu menu, String name, String ico, ActionListener action)
     {
         final JMenuItem item = new JMenuItem(name);
-        item.addActionListener(action);
+        if (action != null)
+        {
+            item.addActionListener(action);
+        }
         menu.add(item);
         if (ico != null)
         {
@@ -175,7 +185,10 @@ public final class UtilitySwing
     public static JCheckBox addCheckBox(String name, JPanel panel, ActionListener action)
     {
         final JCheckBox checkBox = new JCheckBox(name);
-        checkBox.addActionListener(action);
+        if (action != null)
+        {
+            checkBox.addActionListener(action);
+        }
         panel.add(checkBox);
         return checkBox;
     }
@@ -206,7 +219,10 @@ public final class UtilitySwing
     {
         final JRadioButton radio = new JRadioButton(name);
         radio.setToolTipText(tip);
-        radio.addActionListener(action);
+        if (action != null)
+        {
+            radio.addActionListener(action);
+        }
         panel.add(radio);
         return radio;
     }
@@ -289,6 +305,25 @@ public final class UtilitySwing
     {
         dialog.getParent().setEnabled(true);
         dialog.dispose();
+    }
+
+    /**
+     * Set the enabled state of a components set.
+     * 
+     * @param components The components.
+     * @param enabled The enabled state.
+     */
+    public static void setEnabled(Component components[], boolean enabled)
+    {
+        for (final Component component : components)
+        {
+            component.setEnabled(enabled);
+            if (component instanceof Container)
+            {
+                final Container container = (Container) component;
+                setEnabled(container.getComponents(), enabled);
+            }
+        }
     }
 
     /**

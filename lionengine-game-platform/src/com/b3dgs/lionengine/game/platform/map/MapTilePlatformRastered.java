@@ -178,16 +178,16 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         final String rasFile = Media.getPath(Media.getTempDir(), directory, pattern + "_" + rasterID + ".png");
         final File file = new File(Media.getPath(Media.getTempDir(), directory));
 
-        if (!file.exists())
-        {
-            if (!file.mkdir())
-            {
-                Verbose.warning(MapTilePlatformRastered.class, "addRasterPattern", "Directory has not been created: "
-                        + file.getPath());
-            }
-        }
         if (cache)
         {
+            if (!file.exists())
+            {
+                if (!file.mkdir())
+                {
+                    Verbose.warning(MapTilePlatformRastered.class, "addRasterPattern",
+                            "Directory has not been created: " + file.getPath());
+                }
+            }
             UtilityImage.saveImage(rasterBuf, new Media(rasFile));
         }
         addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());

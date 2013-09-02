@@ -6,6 +6,22 @@ package com.b3dgs.lionengine.swing;
 public final class ComboItem
         implements CanEnable
 {
+    /**
+     * Convert an array of objects to an array of combo item.
+     * 
+     * @param objects The objects array.
+     * @return The items.
+     */
+    public static ComboItem[] get(Object[] objects)
+    {
+        ComboItem[] items = new ComboItem[objects.length];
+        for (int i = 0; i < items.length; i++)
+        {
+            items[i] = new ComboItem(objects[i]);
+        }
+        return items;
+    }
+
     /** Object reference. */
     private final Object obj;
     /** Enabled flag. */

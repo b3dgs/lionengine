@@ -47,9 +47,9 @@ public class StateBar
         gd.drawString(state.toString(), 128, 12);
 
         state = new StringBuilder("Selection: ");
-        if (editor.selection.type != null)
+        if (editor.getSelectedEntity() != null)
         {
-            state.append(editor.selection.type.toString());
+            state.append(editor.getSelectedEntity().toString());
         }
         else
         {

@@ -35,7 +35,7 @@ public final class ComboListener<E>
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
+    public void actionPerformed(ActionEvent event)
     {
         final Object tempItem = combo.getSelectedItem();
         if (!((CanEnable) tempItem).isEnabled())

@@ -21,23 +21,15 @@ public class ToolBar
 {
     /** Uid. */
     private static final long serialVersionUID = -3884748128028563357L;
-    /** Entity selector reference. */
-    public final EntitySelector entitySelector;
-    /** Entity editor reference. */
-    public final EntityEditor entityEditor;
 
     /**
-     * Constructor.
+     * Create the palette panel.
      * 
      * @param editor The editor reference.
+     * @return The panel instance.
      */
-    public ToolBar(final Editor editor)
+    private static JPanel createPalettePanel(final Editor editor)
     {
-        super();
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        final JPanel entityPanel = new JPanel();
-        entityPanel.setLayout(new BorderLayout());
         final JPanel palettePanel = UtilitySwing.createBorderedPanel("Pointer", 1);
         palettePanel.setLayout(new GridLayout(2, 2));
         UtilitySwing.addButton("Select", palettePanel, new ActionListener()
@@ -64,14 +56,75 @@ public class ToolBar
                 editor.setSelectionState(TypeSelection.DELETE);
             }
         });
-        entityPanel.add(palettePanel, BorderLayout.NORTH);
+        return palettePanel;
+    }
+
+    /** Entity selector reference. */
+    public final EntitySelector entitySelector;
+    /** Entity editor reference. */
+    public final EntityEditor entityEditor;
+    /** Palette panel. */
+    private final JPanel palettePanel;
+
+    /**
+     * Constructor.
+     * 
+     * @param editor The editor reference.
+     */
+    public ToolBar(Editor editor)
+    {
+        super();
+        palettePanel = createPalettePanel(editor);
         entitySelector = new EntitySelector(editor);
-        entityPanel.add(entitySelector, BorderLayout.CENTER);
+        entityEditor = new EntityEditor(editor);
+        setPaletteEnabled(false);
+        setSelectorEnabled(false);
+        setEditorEnabled(false);
+        init();
+    }
+
+    /**
+     * Set the palette panel enabled state.
+     * 
+     * @param enabled <code>true</code> to enable, <code>false</code> else.
+     */
+    public void setPaletteEnabled(boolean enabled)
+    {
+        UtilitySwing.setEnabled(palettePanel.getComponents(), enabled);
+    }
+
+    /**
+     * Set the entity selector enabled state.
+     * 
+     * @param enabled <code>true</code> to enable, <code>false</code> else.
+     */
+    public void setSelectorEnabled(boolean enabled)
+    {
+        UtilitySwing.setEnabled(entitySelector.getComponents(), enabled);
+    }
+
+    /**
+     * Set the entity editor enabled state.
+     * 
+     * @param enabled <code>true</code> to enable, <code>false</code> else.
+     */
+    public void setEditorEnabled(boolean enabled)
+    {
+        UtilitySwing.setEnabled(entityEditor.getComponents(), enabled);
+    }
+
+    /**
+     * Initialize the tool bar content.
+     */
+    private void init()
+    {
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+        final JPanel entityPanel = new JPanel();
+        entityPanel.setLayout(new BorderLayout());
 
         final JPanel editPanel = new JPanel();
         editPanel.setLayout(new BorderLayout());
-        entityEditor = new EntityEditor(editor);
-        editPanel.add(entityEditor, BorderLayout.CENTER);
 
         add(entityPanel);
         add(editPanel);
@@ -79,6 +132,10 @@ public class ToolBar
         editPanel.setMinimumSize(new Dimension(entityEditor.getPreferredSize()));
         editPanel.setMaximumSize(new Dimension(entityEditor.getPreferredSize()));
         entityPanel.setMinimumSize(new Dimension(entitySelector.getPreferredSize()));
+
+        entityPanel.add(palettePanel, BorderLayout.NORTH);
+        entityPanel.add(entitySelector, BorderLayout.CENTER);
+        editPanel.add(entityEditor, BorderLayout.CENTER);
 
         setPreferredSize(new Dimension(204, 480));
         setMinimumSize(new Dimension(204, 480));

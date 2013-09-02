@@ -11,7 +11,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
@@ -21,7 +20,8 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
-import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Mouse;
@@ -89,24 +88,22 @@ public class WorldPanel
         return value / round * round;
     }
 
+    /** Level reference. */
+    public final Level level;
     /** The map reference. */
     public final Map map;
     /** The camera reference. */
     public final CameraPlatform camera;
     /** Context. */
     public final Context context;
+    /** World data. */
+    public final WorldData worldData;
     /** The entity handler reference. */
     public final Handler handlerEntity;
     /** The factory reference. */
-    public final FactoryEntity factory;
+    public final FactoryEntity factoryEntity;
     /** The editor reference. */
     private final Editor editor;
-    /** Player starting location. */
-    private final Coord playerStart;
-    /** Player ending location. */
-    private final Coord playerEnd;
-    /** Checkpoints list. */
-    private final TreeMap<Integer, CoordTile> checkpoints;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -137,14 +134,13 @@ public class WorldPanel
     {
         super();
         this.editor = editor;
-        map = new Map();
         camera = new CameraPlatform(640, 480);
-        context = new Context(camera, map, 60);
-        handlerEntity = new Handler();
-        factory = context.factoryEntity;
-        playerStart = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
-        playerEnd = new Coord(-Map.TILE_WIDTH, -Map.TILE_HEIGHT);
-        checkpoints = new TreeMap<>();
+        factoryEntity = new FactoryEntity();
+        handlerEntity = new Handler(factoryEntity);
+        level = new Level(factoryEntity, handlerEntity);
+        worldData = level.worldData;
+        map = level.map;
+        context = new Context(level, 60);
         setPreferredSize(new Dimension(640, 480));
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -155,13 +151,12 @@ public class WorldPanel
      * 
      * @param media The file to save level to.
      */
-    public void saveLevel(Media media)
+    public void save(Media media)
     {
         try (final FileWriting file = File.createFileWriting(media);)
         {
-            file.writeString("LRM");
-            map.save(file);
-            saveEntities(file);
+            level.setWorld(editor.toolBar.entitySelector.getWorld());
+            level.save(file);
         }
         catch (final IOException
                      | NullPointerException exception)
@@ -176,43 +171,16 @@ public class WorldPanel
      * 
      * @param media The level file.
      */
-    public void loadLevel(Media media)
+    public void load(Media media)
     {
         try (final FileReading file = File.createFileReading(media);)
         {
-            file.readString();
-            map.load(file);
-            loadEntities(file);
+            level.load(file);
         }
         catch (final IOException exception)
         {
             Verbose.exception(Editor.class, "loadLevel", exception, "An error occured while loading map:",
                     media.getPath());
-        }
-        camera.setLimits(map);
-    }
-
-    /**
-     * Add a checkpoint at the specified location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location
-     */
-    public void addCheckpoint(int x, int y)
-    {
-        checkpoints.put(getHash(x, y), new CoordTile(x, y));
-    }
-
-    /**
-     * Remove a checkpoint.
-     * 
-     * @param checkpoint The checkpoint to remove.
-     */
-    public void removeCheckpoint(CoordTile checkpoint)
-    {
-        if (checkpoint != null)
-        {
-            checkpoints.remove(getHash(checkpoint.getX(), checkpoint.getY()));
         }
     }
 
@@ -237,81 +205,6 @@ public class WorldPanel
     }
 
     /**
-     * Get the checkpoint at the specified location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location
-     * @return The checkpoint reference.
-     */
-    public CoordTile getCheckpointAt(int x, int y)
-    {
-        return checkpoints.get(getHash(x, y));
-    }
-
-    /**
-     * Get the hash value of a location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location
-     * @return The hash value.
-     */
-    public Integer getHash(int x, int y)
-    {
-        return Integer.valueOf(x / Map.TILE_WIDTH + map.getWidthInTile() * (y / Map.TILE_HEIGHT));
-    }
-
-    /**
-     * Save all entities.
-     * 
-     * @param file The file writing.
-     * @throws IOException If error.
-     */
-    private void saveEntities(FileWriting file) throws IOException
-    {
-        file.writeShort((short) (playerStart.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerStart.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) (playerEnd.getX() / Map.TILE_WIDTH));
-        file.writeShort((short) (playerEnd.getY() / Map.TILE_HEIGHT));
-        file.writeShort((short) checkpoints.size());
-        for (final CoordTile p : checkpoints.values())
-        {
-            file.writeShort((short) (p.getX() / Map.TILE_WIDTH));
-            file.writeShort((short) (p.getY() / Map.TILE_HEIGHT));
-        }
-        file.writeShort((short) handlerEntity.size());
-        for (final Entity entity : handlerEntity.list())
-        {
-            entity.save(file);
-        }
-    }
-
-    /**
-     * Load all entities.
-     * 
-     * @param file The file reading.
-     * @throws IOException If error.
-     */
-    private void loadEntities(FileReading file) throws IOException
-    {
-        playerStart.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        playerEnd.set(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        final int size = file.readShort();
-        for (int i = 0; i < size; i++)
-        {
-            addCheckpoint(file.readShort() * Map.TILE_WIDTH, file.readShort() * Map.TILE_HEIGHT);
-        }
-        final int n = file.readShort();
-        for (int i = 0; i < n; i++)
-        {
-            context.factoryEntity.setWorld(TypeWorld.get(file.readByte()));
-            final Entity entity = factory.createEntity(TypeEntity.get(file.readByte()));
-            entity.load(file);
-            handlerEntity.add(entity);
-        }
-        handlerEntity.update();
-    }
-
-    /**
      * Draw all entities.
      * 
      * @param g The graphic output.
@@ -331,17 +224,7 @@ public class WorldPanel
             if (entity instanceof EntityMover)
             {
                 final EntityMover mover = (EntityMover) entity;
-                final int left = Map.TILE_WIDTH * mover.getPatrolLeft();
-                final int right = Map.TILE_WIDTH * (mover.getPatrolLeft() + mover.getPatrolRight());
-                g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
-                g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - entity.getHeight(),
-                        entity.getWidth() + right, entity.getHeight());
-                g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
-                if (mover.getMovementType() == TypeEntityMovement.HORIZONTAL)
-                {
-                    g.fillRect(sx - hOff - left + entity.getWidth() / 2,
-                            -sy + vOff + WorldPanel.getRounded(height, th), right, Map.TILE_HEIGHT);
-                }
+                drawEntityMovement(g, mover, hOff, vOff, height);
             }
 
             if (entity.isSelected() || entity.isOver())
@@ -351,6 +234,36 @@ public class WorldPanel
                         entity.getWidth(), entity.getHeight());
             }
             entity.render(new Graphic(g), camera);
+        }
+    }
+
+    /**
+     * Draw entity movement
+     * 
+     * @param g The graphic output.
+     * @param mover The entity reference.
+     * @param hOff The horizontal offset.
+     * @param vOff The vertical offset.
+     * @param height The rendering height (render from bottom).
+     */
+    private void drawEntityMovement(Graphics2D g, EntityMover mover, int hOff, int vOff, int height)
+    {
+        if (mover.getMovementType() != TypeEntityMovement.NONE)
+        {
+            final int sx = mover.getLocationIntX();
+            final int sy = mover.getLocationIntY();
+            final int th = map.getTileHeight();
+            final int left = Map.TILE_WIDTH * mover.getPatrolLeft();
+            final int right = Map.TILE_WIDTH * (mover.getPatrolLeft() + mover.getPatrolRight());
+            g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
+            g.fillRect(sx - hOff - left, -sy + vOff + WorldPanel.getRounded(height, th) - mover.getHeight(),
+                    mover.getWidth() + right, mover.getHeight());
+            g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
+            if (mover.getMovementType() == TypeEntityMovement.HORIZONTAL)
+            {
+                g.fillRect(sx - hOff - left + mover.getWidth() / 2, -sy + vOff + WorldPanel.getRounded(height, th),
+                        right, Map.TILE_HEIGHT);
+            }
         }
     }
 
@@ -631,14 +544,13 @@ public class WorldPanel
         }
         drawEntities(g, hOff, vOff, height);
         g.setColor(Color.GREEN);
-        g.fillRect((int) playerStart.getX() - hOff,
-                (int) -playerStart.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT, Map.TILE_WIDTH,
-                Map.TILE_HEIGHT);
+        g.fillRect(worldData.getStartX() - hOff, -worldData.getStartY() + vOff + WorldPanel.getRounded(height, th)
+                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
         g.setColor(Color.RED);
-        g.fillRect((int) playerEnd.getX() - hOff, (int) -playerEnd.getY() + vOff + WorldPanel.getRounded(height, th)
+        g.fillRect(worldData.getEndX() - hOff, -worldData.getEndY() + vOff + WorldPanel.getRounded(height, th)
                 - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
 
-        for (final CoordTile p : checkpoints.values())
+        for (final CoordTile p : worldData.getCheckpoints())
         {
             g.setColor(Color.YELLOW);
             g.fillRect(p.getX() - hOff, -p.getY() + vOff + WorldPanel.getRounded(height, th) - Map.TILE_HEIGHT,
@@ -711,8 +623,8 @@ public class WorldPanel
                 if (hitEntities(mx, my) == null)
                 {
                     unSelectEntities();
-                    final int id = editor.selection.type.ordinal();
-                    final Entity entity = factory.createEntity(TypeEntity.values()[id]);
+                    final int id = editor.getSelectedEntity().getIndex();
+                    final Entity entity = factoryEntity.createEntity(TypeEntity.get(id));
                     entity.teleport(WorldPanel.getRounded(x, tw), WorldPanel.getRounded(y, th));
                     handlerEntity.add(entity);
                     handlerEntity.update();
@@ -730,16 +642,16 @@ public class WorldPanel
                 switch (playerSelection)
                 {
                     case PLACE_START:
-                        playerStart.set(x, y);
+                        worldData.setStarting(x, y);
                         break;
                     case PLACE_END:
-                        playerEnd.set(x, y);
+                        worldData.setEnding(x, y);
                         break;
                     case ADD_CHECKPOINT:
-                        addCheckpoint(x, y);
+                        worldData.addCheckpoint(x, y);
                         break;
                     case REMOVE_CHECKPOINT:
-                        removeCheckpoint(getCheckpointAt(x, y));
+                        worldData.removeCheckpoint(worldData.getCheckpointAt(x, y));
                         break;
                     default:
                         throw new LionEngineException("Unknown selection: " + playerSelection);

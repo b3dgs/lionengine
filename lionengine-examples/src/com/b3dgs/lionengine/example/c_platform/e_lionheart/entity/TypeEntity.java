@@ -62,6 +62,16 @@ public enum TypeEntity
         this.category = category;
         category.increase();
     }
+    
+    /**
+     * Get the index value.
+     * 
+     * @return The index value.
+     */
+    public int getIndex()
+    {
+        return ordinal();
+    }
 
     /**
      * Get the entity category type.

@@ -315,7 +315,7 @@ public abstract class EntityMover
      * 
      * @param type The movement to enable.
      */
-    private void enableMovement(TypeEntityMovement type)
+    protected void enableMovement(TypeEntityMovement type)
     {
         enableMovement.add(type);
     }

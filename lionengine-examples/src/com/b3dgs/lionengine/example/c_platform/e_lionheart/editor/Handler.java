@@ -1,26 +1,38 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.editor;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 
 /**
  * Entity editor handler.
  */
 public class Handler
-        extends HandlerEntityGame<Entity>
+        extends HandlerEntity
 {
     /**
      * Constructor.
+     * 
+     * @param factoryEntity The factory entity reference.
      */
-    public Handler()
+    public Handler(FactoryEntity factoryEntity)
     {
-        super();
+        super(null, factoryEntity);
     }
 
     /**
-     * Update the entity list.
+     * Update the entities.
      */
     public void update()
+    {
+        update(1.0);
+    }
+
+    /*
+     * HandlerEntity
+     */
+
+    @Override
+    public void update(double extrp)
     {
         updateAdd();
         updateRemove();

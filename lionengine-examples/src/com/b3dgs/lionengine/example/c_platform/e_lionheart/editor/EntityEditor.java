@@ -1,7 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -194,8 +193,11 @@ public class EntityEditor
             {
                 if (selectedEntity instanceof EntityMover)
                 {
-                    ((EntityMover) selectedEntity).setMovementType(TypeEntityMovement.get(comboMovement
-                            .getSelectedIndex()));
+                    final TypeEntityMovement type = TypeEntityMovement.get(comboMovement.getSelectedIndex());
+                    ((EntityMover) selectedEntity).setMovementType(type);
+                    comboDirection.setEnabled(type != TypeEntityMovement.NONE);
+                    UtilitySwing.setEnabled(patrolValues.getComponents(), type != TypeEntityMovement.NONE);
+                    editor.world.repaint();
                 }
             }
         });
@@ -222,7 +224,7 @@ public class EntityEditor
             }
         });
 
-        setEnabled(patrolPanel.getComponents(), false);
+        UtilitySwing.setEnabled(patrolPanel.getComponents(), false);
         tabs.setPreferredSize(new Dimension(204, 200));
         tabs.setMinimumSize(new Dimension(204, 200));
         tabs.setMaximumSize(new Dimension(204, 200));
@@ -236,7 +238,7 @@ public class EntityEditor
     public void setSelectedEntity(Entity entity)
     {
         selectedEntity = entity;
-        if (entity instanceof EntityMover && ((EntityMover) entity).isPatrolEnabled())
+        if (entity instanceof EntityMover)
         {
             final EntityMover mover = (EntityMover) entity;
             for (final TypeEntityMovement movement : TypeEntityMovement.values())
@@ -244,7 +246,7 @@ public class EntityEditor
                 final boolean enabled = mover.isMovementEnabled(movement);
                 EntityEditor.setEnabled(comboMovement, movement.getIndex(), enabled);
             }
-            setEnabled(patrolPanel.getComponents(), true);
+            UtilitySwing.setEnabled(patrolPanel.getComponents(), true);
             setValue(patrolMin, mover.getPatrolLeft());
             setValue(patrolMax, mover.getPatrolRight());
             setValue(speedValue, mover.getMoveSpeed());
@@ -256,7 +258,7 @@ public class EntityEditor
             patrolMin.setText(null);
             patrolMax.setText(null);
             speedValue.setText(null);
-            setEnabled(patrolPanel.getComponents(), false);
+            UtilitySwing.setEnabled(patrolPanel.getComponents(), false);
         }
         editor.repaint();
     }
@@ -361,24 +363,5 @@ public class EntityEditor
         incdec.add(label);
 
         return incdec;
-    }
-
-    /**
-     * Set the enabled state of a components set.
-     * 
-     * @param components The components.
-     * @param enabled The enabled state.
-     */
-    private void setEnabled(Component components[], boolean enabled)
-    {
-        for (final Component component : components)
-        {
-            component.setEnabled(enabled);
-            if (component instanceof JPanel)
-            {
-                final JPanel comp = (JPanel) component;
-                setEnabled(comp.getComponents(), enabled);
-            }
-        }
     }
 }

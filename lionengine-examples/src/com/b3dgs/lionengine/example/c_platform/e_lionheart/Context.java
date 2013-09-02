@@ -30,18 +30,17 @@ public class Context
     /**
      * Constructor.
      * 
-     * @param camera The camera reference.
-     * @param map The map reference.
+     * @param level The level reference.
      * @param desiredFps The desired fps value.
      */
-    public Context(CameraPlatform camera, Map map, int desiredFps)
+    public Context(Level level, int desiredFps)
     {
-        this.camera = camera;
-        this.map = map;
         this.desiredFps = desiredFps;
-        factoryEntity = new FactoryEntity();
+        this.camera = level.handlerEntity.camera;
+        this.map = level.map;
+        this.factoryEntity = level.factoryEntity;
+        this.handlerEntity = level.handlerEntity;
         factoryEffect = new FactoryEffect();
-        handlerEntity = new HandlerEntity(camera);
         handlerEffect = new HandlerEffect();
         factoryEntity.setContext(this);
     }

@@ -7,7 +7,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
@@ -47,8 +46,6 @@ public abstract class Entity
     protected Coord dieLocation;
     /** Dead flag. */
     private boolean dead;
-    /** World type used as theme. */
-    private TypeWorld world;
 
     /**
      * Constructor.
@@ -59,7 +56,6 @@ public abstract class Entity
     protected Entity(Context context, TypeEntity type)
     {
         super(context.factoryEntity.getSetup(type), context.map);
-        this.world = context.factoryEntity.getWorld();
         this.type = type;
         this.map = context.map;
         this.desiredFps = context.desiredFps;
@@ -143,8 +139,6 @@ public abstract class Entity
      */
     public void save(FileWriting file) throws IOException
     {
-        file.writeByte((byte) world.ordinal());
-        file.writeByte((byte) type.ordinal());
         file.writeShort((short) Math.floor(getInTileX()));
         file.writeShort((short) Math.floor(getInTileY()));
     }
@@ -180,16 +174,6 @@ public abstract class Entity
     public void setOver(boolean over)
     {
         this.over = over;
-    }
-
-    /**
-     * Get the entity world (used as theme).
-     * 
-     * @return The entity world.
-     */
-    public TypeWorld getWorld()
-    {
-        return world;
     }
 
     /**

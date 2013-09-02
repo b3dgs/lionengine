@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.maptile.MapTileGame;
@@ -52,15 +52,13 @@ public class Map
     }
 
     /**
-     * Constructor.
+     * Set the map landscape (must be called before loading).
      * 
      * @param landscape The landscape type.
      */
-    public Map(Landscape landscape)
+    public void setLandscape(TypeLandscape landscape)
     {
-        super(Map.TILE_WIDTH, Map.TILE_HEIGHT);
-        setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getType().getRaster()), false, false);
-        setRaster(null, false, false);
+        setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster()), false, false);
     }
 
     /*

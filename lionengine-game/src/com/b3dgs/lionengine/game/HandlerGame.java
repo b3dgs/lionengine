@@ -81,6 +81,16 @@ public abstract class HandlerGame<K, E>
     }
 
     /**
+     * Remove all objects from the list. Don't forget to call {@link #updateRemove()} at the end of the update to clear
+     * them properly.
+     */
+    public void removeAll()
+    {
+        toDelete.addAll(list());
+        willDelete = true;
+    }
+
+    /**
      * Get the number of objects handled.
      * 
      * @return The number of objects handled.

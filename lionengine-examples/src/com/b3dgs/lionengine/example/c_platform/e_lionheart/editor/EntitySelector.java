@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -25,8 +26,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCategory;
-import com.b3dgs.lionengine.swing.ActionCombo;
-import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
@@ -47,6 +46,8 @@ public class EntitySelector
     final Editor editor;
     /** Tabs. */
     final JTabbedPane tabbedPane;
+    /** World label. */
+    final JLabel worldLabel;
     /** Entity category icons list. */
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
     /** Current selected world. */
@@ -71,26 +72,11 @@ public class EntitySelector
         final JPanel panel = new JPanel();
         add(panel, BorderLayout.NORTH);
 
-        final TypeWorld[] worlds = TypeWorld.values();
-        final ComboItem[] items = new ComboItem[worlds.length];
-        for (int i = 0; i < worlds.length; i++)
-        {
-            items[i] = new ComboItem(worlds[i]);
-        }
-        UtilitySwing.addMenuCombo("Theme:", panel, items, new ActionCombo()
-        {
-            @Override
-            public void action(Object item)
-            {
-                if (item != null)
-                {
-                    selectedWorld = (TypeWorld) item;
-                    loadEntities((TypeWorld) item);
-                }
-            }
-        });
-        selectedWorld = worlds[0];
-        loadEntities(selectedWorld);
+        final JPanel world = UtilitySwing.createBorderedPanel("World", 2);
+        world.setLayout(new GridLayout(0, 2));
+        worldLabel = new JLabel();
+        world.add(worldLabel);
+        selectedWorld = null;
         add(tabbedPane, BorderLayout.CENTER);
     }
 
@@ -102,9 +88,10 @@ public class EntitySelector
     void loadEntities(TypeWorld world)
     {
         tabbedPane.removeAll();
-        editor.selection.world = world;
-        editor.world.factory.setWorld(world);
-        editor.world.factory.loadAll(TypeEntity.values());
+        selectedWorld = world;
+        worldLabel.setText(selectedWorld.toString());
+        editor.world.level.setWorld(world);
+        editor.world.factoryEntity.loadAll(TypeEntity.values());
         int max = 0;
         for (final TypeEntityCategory category : TypeEntityCategory.values())
         {
@@ -191,17 +178,20 @@ public class EntitySelector
          */
         private void update(MouseEvent event)
         {
-            mx = event.getX();
-            my = event.getY();
-            repaint();
+            if (isEnabled())
+            {
+                mx = event.getX();
+                my = event.getY();
+                repaint();
+            }
         }
 
-        /*
-         * JPanel
+        /**
+         * Render the panel.
+         * 
+         * @param g The graphic output.
          */
-
-        @Override
-        public void paintComponent(Graphics g)
+        private void render(Graphics g)
         {
             final int width = getWidth();
             final int height = getHeight();
@@ -242,10 +232,23 @@ public class EntitySelector
                     {
                         total += categories[i].getCount();
                     }
-                    editor.selection.type = TypeEntity.values()[total + num - 1];
+                    editor.setSelectedEntity(TypeEntity.values()[total + num - 1]);
                     editor.setSelectionState(TypeSelection.PLACE);
                     editor.repaint();
                 }
+            }
+        }
+
+        /*
+         * JPanel
+         */
+
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            if (isEnabled())
+            {
+                render(g);
             }
         }
 
@@ -254,46 +257,46 @@ public class EntitySelector
          */
 
         @Override
-        public void mouseClicked(MouseEvent e)
+        public void mouseClicked(MouseEvent event)
         {
             // Nothing to do
         }
 
         @Override
-        public void mousePressed(MouseEvent e)
+        public void mousePressed(MouseEvent event)
         {
-            update(e);
+            update(event);
             click = true;
         }
 
         @Override
-        public void mouseReleased(MouseEvent e)
+        public void mouseReleased(MouseEvent event)
         {
             // Nothing to do
         }
 
         @Override
-        public void mouseEntered(MouseEvent e)
+        public void mouseEntered(MouseEvent event)
         {
             // Nothing to do
         }
 
         @Override
-        public void mouseExited(MouseEvent e)
+        public void mouseExited(MouseEvent event)
         {
             // Nothing to do
         }
 
         @Override
-        public void mouseDragged(MouseEvent e)
+        public void mouseDragged(MouseEvent event)
         {
-            update(e);
+            update(event);
         }
 
         @Override
-        public void mouseMoved(MouseEvent e)
+        public void mouseMoved(MouseEvent event)
         {
-            update(e);
+            update(event);
         }
     }
 }

@@ -26,17 +26,6 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public class Editor
         extends JFrame
 {
-    /**
-     * Structure representing the main field for a selected entity.
-     */
-    public final class SelectedEntity
-    {
-        /** World type. */
-        public TypeWorld world;
-        /** Entity type. */
-        public TypeEntity type;
-    }
-
     /** Uid. */
     private static final long serialVersionUID = -1248793737263689450L;
     /** Horizontal moving speed in tile. */
@@ -47,14 +36,18 @@ public class Editor
     public final WorldPanel world;
     /** Tool bar reference. */
     public final ToolBar toolBar;
+    /** Menu bar reference. */
+    private final MenuBar menuBar;
+    /** State bar reference. */
+    private final StateBar stateBar;
     /** Current selected entity data. */
-    public final SelectedEntity selection;
+    private TypeEntity selectedEntity;
+    /** Current state selection. */
+    private TypeSelection selectionState;
     /** Current horizontal view offset in tile. */
     private int hOffset;
     /** Current vertical view offset in tile. */
     private int vOffset;
-    /** Current state selection. */
-    private TypeSelection selectionState;
 
     /**
      * Constructor.
@@ -62,11 +55,12 @@ public class Editor
     Editor()
     {
         super("Editor");
-        selection = new SelectedEntity();
         world = new WorldPanel(this);
+        menuBar = new MenuBar(this);
         toolBar = new ToolBar(this);
-        hOffset = 0;
-        vOffset = 0;
+        stateBar = new StateBar(this);
+        selectedEntity = null;
+        selectionState = TypeSelection.SELECT;
         init();
     }
 
@@ -86,6 +80,16 @@ public class Editor
     public void terminate()
     {
         dispose();
+    }
+
+    /**
+     * Set the selected entity type.
+     * 
+     * @param type The selected entity type.
+     */
+    public void setSelectedEntity(TypeEntity type)
+    {
+        selectedEntity = type;
     }
 
     /**
@@ -126,6 +130,16 @@ public class Editor
     public int getOffserViewV()
     {
         return vOffset * world.map.getTileHeight();
+    }
+
+    /**
+     * Get the selected entity type.
+     * 
+     * @return The selected entity type.
+     */
+    public TypeEntity getSelectedEntity()
+    {
+        return selectedEntity;
     }
 
     /**
@@ -185,7 +199,6 @@ public class Editor
     {
         addWindowListener(new WindowAdapter()
         {
-
             @Override
             public void windowClosing(WindowEvent e)
             {
@@ -193,18 +206,15 @@ public class Editor
             }
         });
         setLayout(new BorderLayout());
-        add(new MenuBar(this), BorderLayout.NORTH);
+        add(menuBar, BorderLayout.NORTH);
         add(toolBar, BorderLayout.WEST);
         add(world, BorderLayout.CENTER);
-        add(new StateBar(this), BorderLayout.SOUTH);
-        selectionState = TypeSelection.SELECT;
+        add(stateBar, BorderLayout.SOUTH);
         validate();
         repaint();
         setMinimumSize(new Dimension(640, 480));
-
         Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener()
         {
-
             @Override
             public void eventDispatched(AWTEvent event)
             {

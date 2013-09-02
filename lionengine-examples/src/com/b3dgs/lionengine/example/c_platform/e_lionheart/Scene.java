@@ -7,7 +7,6 @@ import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.GameLevel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 import com.b3dgs.lionengine.input.Keyboard;
 
@@ -25,10 +24,10 @@ public final class Scene
      * 
      * @return The next level.
      */
-    private static GameLevel getNextLevel()
+    private static TypeLevel getNextLevel()
     {
         Scene.lastLevelIndex++;
-        return GameLevel.values()[Scene.lastLevelIndex % GameLevel.NUMBER];
+        return TypeLevel.values()[Scene.lastLevelIndex % TypeLevel.NUMBER];
     }
 
     /** Text reference. */
@@ -53,7 +52,7 @@ public final class Scene
      * 
      * @param level The level to load.
      */
-    private void loadLevel(GameLevel level)
+    private void loadLevel(TypeLevel level)
     {
         world.loadFromFile(Media.get(AppLionheart.LEVELS_DIR, level.getFilename()));
     }
