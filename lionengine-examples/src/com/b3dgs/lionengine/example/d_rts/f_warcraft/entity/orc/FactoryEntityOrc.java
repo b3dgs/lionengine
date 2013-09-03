@@ -39,4 +39,12 @@ public final class FactoryEntityOrc
                 throw new LionEngineException("Entity not found: ", type.name());
         }
     }
+
+    /**
+     * Constructor.
+     */
+    private FactoryEntityOrc()
+    {
+        throw new RuntimeException();
+    }
 }

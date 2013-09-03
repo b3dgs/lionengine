@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
- * Build skill implementation
+ * Build skill implementation.
  */
 final class BuildBarracks
         extends Skill
@@ -54,9 +54,8 @@ final class BuildBarracks
     {
         if (owner instanceof UnitWorker)
         {
-            final ProducibleEntity producible = factoryProduction.createProducible(TypeEntity.barracks_orc, destX,
-                    destY);
-            ((UnitWorker) owner).addToProductionQueue(producible);
+            final ProducibleEntity produce = factoryProduction.createProducible(TypeEntity.barracks_orc, destX, destY);
+            ((UnitWorker) owner).addToProductionQueue(produce);
         }
     }
 

@@ -8,6 +8,10 @@ import com.b3dgs.lionengine.Check;
 final class AnimatorImpl
         implements Animator
 {
+    /** Frame. */
+    private static final double FRAME = 1.0;
+    /** Half frame. */
+    private static final double HALF_FRAME = 0.5;
     /** Current playing frame. */
     private double current;
     /** Animation speed. */
@@ -45,10 +49,10 @@ final class AnimatorImpl
         current += speed * extrp;
 
         // Last frame reached
-        if (current >= last + 1.0)
+        if (current >= last + AnimatorImpl.FRAME)
         {
             // If not reversed, done, else, reverse
-            current = last + 0.5;
+            current = last + AnimatorImpl.HALF_FRAME;
             if (!reverse)
             {
                 if (repeat)

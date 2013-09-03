@@ -17,7 +17,7 @@ import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
 
 /**
- * Abstract entity implementation
+ * Abstract entity implementation.
  */
 public abstract class Entity
         extends EntityRts

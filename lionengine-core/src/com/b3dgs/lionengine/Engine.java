@@ -28,7 +28,8 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * 
  *     public static void main(String args[])
  *     {
- *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
+ *         // Start engine
+ *         // (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
  *         // The Engine is initialized with our parameters:
  *         // - The name of our program: &quot;First Code&quot;
  *         // - Our program version: &quot;1.0.0&quot;
@@ -36,7 +37,7 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix
  *         // - The verbose level
  *         // - The swing theme (general java appearance)
- *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;, Verbose.CRITICAL, Theme.SYSTEM);
+ *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * 
  *         // Configuration reference (native size = 320*240*16 at 60fps)
  *         // This mean that our native resolution is in 320*240
@@ -181,7 +182,7 @@ public final class Engine
     }
 
     /**
-     * Initialize engine
+     * Initialize engine.
      * 
      * @param name The program name.
      * @param version The program version.

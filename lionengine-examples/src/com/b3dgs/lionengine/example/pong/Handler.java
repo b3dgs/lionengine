@@ -117,8 +117,7 @@ final class Handler
                     ball.setSpeed(ball.getSpeed() + 0.3);
                 }
 
-                force.setForce(ball.getSpeed() * UtilityMath.cos(angle) * side,
-                        ball.getSpeed() * UtilityMath.sin(angle));
+                force.setForce(ball.getSpeed() * UtilityMath.cos(angle) * side, ball.getSpeed() * UtilityMath.sin(angle));
             }
         }
 

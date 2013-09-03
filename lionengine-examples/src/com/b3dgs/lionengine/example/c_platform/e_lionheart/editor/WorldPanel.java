@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
@@ -114,6 +113,14 @@ public class WorldPanel
     private boolean selected;
     /** Clicking flag. */
     private boolean clicking;
+    /** Moving entity flag. */
+    private boolean moving;
+    /** Moving offset x. */
+    private int movingOffsetX;
+    /** Moving offset y. */
+    private int movingOffsetY;
+    /** Current player selection state. */
+    private TypeSelectionPlayer playerSelection;
     /** Selection starting horizontal location. */
     private int selectStartX;
     /** Selection starting vertical location. */
@@ -122,8 +129,6 @@ public class WorldPanel
     private int selectEndX;
     /** Selection ending vertical location. */
     private int selectEndY;
-    /** Current player selection state. */
-    private TypeSelectionPlayer playerSelection;
 
     /**
      * Constructor.
@@ -150,18 +155,13 @@ public class WorldPanel
      * Save a level to a file.
      * 
      * @param media The file to save level to.
+     * @throws IOException If error.
      */
-    public void save(Media media)
+    public void save(Media media) throws IOException
     {
         try (final FileWriting file = File.createFileWriting(media);)
         {
             level.save(file);
-        }
-        catch (final IOException
-                     | NullPointerException exception)
-        {
-            Verbose.exception(MenuBar.class, "saveLevel", exception, "An error occured while saving map:",
-                    media.getPath());
         }
     }
 
@@ -169,17 +169,13 @@ public class WorldPanel
      * Load a level from a file.
      * 
      * @param media The level file.
+     * @throws IOException If error.
      */
-    public void load(Media media)
+    public void load(Media media) throws IOException
     {
         try (final FileReading file = File.createFileReading(media);)
         {
             level.load(file);
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(Editor.class, "loadLevel", exception, "An error occured while loading map:",
-                    media.getPath());
         }
     }
 
@@ -237,7 +233,7 @@ public class WorldPanel
     }
 
     /**
-     * Draw entity movement
+     * Draw entity movement.
      * 
      * @param g The graphic output.
      * @param mover The entity reference.
@@ -277,7 +273,7 @@ public class WorldPanel
      */
     private void drawCursor(Graphics2D g, int tw, int th, int areaX, int areaY)
     {
-        if (!selecting)
+        if (!selecting && !moving)
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
@@ -339,8 +335,8 @@ public class WorldPanel
     {
         if (selecting)
         {
-            selectEndX = WorldPanel.getRounded(mx, map.getTileWidth());
-            selectEndY = WorldPanel.getRounded(my, map.getTileHeight());
+            selectEndX = WorldPanel.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
+            selectEndY = WorldPanel.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
             selecting = true;
             selected = true;
         }
@@ -417,10 +413,10 @@ public class WorldPanel
     private Entity hitEntity(int x, int y)
     {
         final int mx = WorldPanel.getRounded(x, map.getTileWidth());
-        final int my = WorldPanel.getRounded(getHeight() - y, map.getTileHeight());
+        final int my = WorldPanel.getRounded(getHeight() - y - 1, map.getTileHeight());
         for (final Entity entity : handlerEntity.list())
         {
-            if (hitEntities(entity, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
+            if (hitEntity(entity, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
             {
                 return entity;
             }
@@ -438,16 +434,14 @@ public class WorldPanel
      * @param y2 Second point y.
      * @return <code>true</code> if hit, <code>false</code> else.
      */
-    private boolean hitEntities(Entity entity, int x1, int y1, int x2, int y2)
+    private boolean hitEntity(Entity entity, int x1, int y1, int x2, int y2)
     {
         if (entity != null)
         {
-            final int sx = WorldPanel.getRounded(entity.getLocationIntX(), map.getTileWidth())
-                    - editor.getOffsetViewH();
-            final int sy = WorldPanel.getRounded(entity.getLocationIntY(), map.getTileHeight())
-                    - editor.getOffserViewV();
+            final int x = WorldPanel.getRounded(entity.getLocationIntX(), map.getTileWidth()) - editor.getOffsetViewH();
+            final int y = WorldPanel.getRounded(entity.getLocationIntY(), map.getTileHeight()) - editor.getOffserViewV();
             final Rectangle2D r1 = new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle2D r2 = new Rectangle2D.Float(sx, sy, entity.getWidth(), entity.getHeight());
+            final Rectangle2D r2 = new Rectangle2D.Float(x, y, entity.getWidth(), entity.getHeight());
             if (r1.intersects(r2))
             {
                 return true;
@@ -469,7 +463,7 @@ public class WorldPanel
             final int sy = WorldPanel.getRounded(getHeight() - selectStartY - offy, map.getTileHeight());
             final int ex = WorldPanel.getRounded(selectEndX, map.getTileWidth());
             final int ey = WorldPanel.getRounded(getHeight() - selectEndY - offy, map.getTileHeight());
-            if (hitEntities(entity, sx, sy, ex, ey))
+            if (hitEntity(entity, sx, sy, ex, ey))
             {
                 entity.setSelection(true);
             }
@@ -566,28 +560,28 @@ public class WorldPanel
      */
 
     @Override
-    public void mouseEntered(MouseEvent e)
+    public void mouseEntered(MouseEvent event)
     {
         // Nothing to do
     }
 
     @Override
-    public void mouseExited(MouseEvent e)
+    public void mouseExited(MouseEvent event)
     {
         // Nothing to do
     }
 
     @Override
-    public void mouseClicked(MouseEvent e)
+    public void mouseClicked(MouseEvent event)
     {
         // Nothing to do
     }
 
     @Override
-    public void mousePressed(MouseEvent e)
+    public void mousePressed(MouseEvent event)
     {
-        final int mx = e.getX();
-        final int my = e.getY();
+        final int mx = event.getX();
+        final int my = event.getY();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         final int h = WorldPanel.getRounded(getHeight(), th) - map.getTileHeight();
@@ -598,7 +592,7 @@ public class WorldPanel
         switch (editor.getSelectionState())
         {
             case SELECT:
-                if (e.getButton() == Mouse.LEFT)
+                if (event.getButton() == Mouse.LEFT)
                 {
                     final Entity entity = hitEntity(mx, my);
                     editor.toolBar.entityEditor.setSelectedEntity(entity);
@@ -622,11 +616,15 @@ public class WorldPanel
                 if (hitEntity(mx, my) == null)
                 {
                     unSelectEntities();
-                    final int id = editor.getSelectedEntity().getIndex();
-                    final Entity entity = factoryEntity.createEntity(TypeEntity.get(id));
-                    entity.teleport(WorldPanel.getRounded(x, tw), WorldPanel.getRounded(y, th));
-                    handlerEntity.add(entity);
-                    handlerEntity.update();
+                    final TypeEntity selection = editor.getSelectedEntity();
+                    if (selection != null)
+                    {
+                        final int id = selection.getIndex();
+                        final Entity entity = factoryEntity.createEntity(TypeEntity.get(id));
+                        entity.teleport(WorldPanel.getRounded(x, tw), WorldPanel.getRounded(y, th));
+                        handlerEntity.add(entity);
+                        handlerEntity.update();
+                    }
                 }
                 break;
             case DELETE:
@@ -663,10 +661,10 @@ public class WorldPanel
     }
 
     @Override
-    public void mouseReleased(MouseEvent e)
+    public void mouseReleased(MouseEvent event)
     {
-        final int mx = e.getX();
-        final int my = e.getY();
+        final int mx = event.getX();
+        final int my = event.getY();
         clicking = false;
 
         endSelection(mx, my);
@@ -674,27 +672,42 @@ public class WorldPanel
         {
             selectEntities();
         }
-        for (final Entity ent : getSelectedEnties(false))
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        for (final Entity entity : getSelectedEnties(false))
         {
-            ent.teleport(WorldPanel.getRounded(ent.getLocationIntX(), map.getTileWidth()),
-                    WorldPanel.getRounded(ent.getLocationIntY(), map.getTileHeight()));
+            entity.teleport(WorldPanel.getRounded(entity.getLocationIntX() + tw / 2, tw),
+                    WorldPanel.getRounded(entity.getLocationIntY() + th / 2, th));
         }
+        moving = false;
         resetSelection();
         updateMouse(mx, my);
     }
 
     @Override
-    public void mouseDragged(MouseEvent e)
+    public void mouseDragged(MouseEvent event)
     {
-        final int mx = e.getX();
-        final int my = e.getY();
+        final int th = map.getTileHeight();
+        final int mx = event.getX();
+        final int my = event.getY();
+        final int areaY = WorldPanel.getRounded(getHeight(), th);
+        if (!moving)
+        {
+            movingOffsetX = WorldPanel.getRounded(mouseX, map.getTileWidth()) - mx;
+            movingOffsetY = my - WorldPanel.getRounded(mouseY, th) - th;
+            moving = true;
+        }
+        final int ox = mouseX + editor.getOffsetViewH() + movingOffsetX;
+        final int oy = areaY - mouseY + editor.getOffserViewV() - 1 + movingOffsetY;
+        final int x = mx + editor.getOffsetViewH() + movingOffsetX;
+        final int y = areaY - my + editor.getOffserViewV() - 1 + movingOffsetY;
         updateSelection(mx, my);
 
         for (final Entity entity : handlerEntity.list())
         {
             if (entity.isSelected())
             {
-                entity.moveLocation(1.0, mx - mouseX, mouseY - my);
+                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y - oy);
             }
         }
 
@@ -702,18 +715,19 @@ public class WorldPanel
     }
 
     @Override
-    public void mouseMoved(MouseEvent e)
+    public void mouseMoved(MouseEvent event)
     {
-        final int mx = e.getX();
-        final int my = e.getY();
-        final int offy = getHeight() - WorldPanel.getRounded(getHeight(), map.getTileHeight());
+        final int th = map.getTileHeight();
+        final int mx = event.getX();
+        final int my = event.getY();
+        final int areaY = WorldPanel.getRounded(getHeight(), th);
         final int x = WorldPanel.getRounded(mx, map.getTileWidth());
-        final int y = WorldPanel.getRounded(getHeight() - my - offy, map.getTileHeight());
+        final int y = WorldPanel.getRounded(areaY - my - 1, th);
 
         for (final Entity entity : handlerEntity.list())
         {
             entity.setOver(false);
-            if (hitEntities(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
+            if (hitEntity(entity, x, y, x + map.getTileWidth(), y + th))
             {
                 entity.setOver(true);
             }

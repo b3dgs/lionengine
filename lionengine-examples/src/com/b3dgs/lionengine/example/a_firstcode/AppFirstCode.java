@@ -23,7 +23,7 @@ public final class AppFirstCode
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
         // The Engine is initialized with our parameters:

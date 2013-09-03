@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.game.maptile.MapTileGame;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
 
 /**
- * Map implementation
+ * Map implementation.
  */
 public class Map
         extends MapTilePlatformRastered<TypeTileCollision, Tile>

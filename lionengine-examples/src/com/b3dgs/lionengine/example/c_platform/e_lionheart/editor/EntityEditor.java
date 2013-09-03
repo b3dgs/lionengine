@@ -178,11 +178,11 @@ public class EntityEditor
         combos.setLayout(new GridLayout(2, 2));
         patrolPanel.add(combos, BorderLayout.SOUTH);
 
-        final String directions[] =
+        final String[] directions =
         {
                 "None", "Horizontal", "Vertical", "Turning"
         };
-        final ComboItem dirs[] = new ComboItem[directions.length];
+        final ComboItem[] dirs = new ComboItem[directions.length];
         for (int i = 0; i < directions.length; i++)
         {
             dirs[i] = new ComboItem(directions[i]);
@@ -204,11 +204,11 @@ public class EntityEditor
             }
         });
 
-        final String firstMove[] =
+        final String[] firstMove =
         {
                 "Go Left / Go Up", "Go Right / Go Down", "Random"
         };
-        final ComboItem fm[] = new ComboItem[firstMove.length];
+        final ComboItem[] fm = new ComboItem[firstMove.length];
         for (int i = 0; i < firstMove.length; i++)
         {
             fm[i] = new ComboItem(firstMove[i]);
@@ -274,6 +274,7 @@ public class EntityEditor
             patrolMin.setText(null);
             patrolMax.setText(null);
             speedValue.setText(null);
+            comboMovement.setSelectedIndex(0);
         }
         UtilitySwing.setEnabled(patrolPanel.getComponents(), state);
     }

@@ -23,7 +23,7 @@ enum MessageEntityElement
     DIE;
 
     /** Values. */
-    private static final MessageEntityElement[] values = MessageEntityElement.values();
+    private static final MessageEntityElement[] VALUES = MessageEntityElement.values();
 
     /**
      * Get the message type from its ordinal.
@@ -33,6 +33,6 @@ enum MessageEntityElement
      */
     public static MessageEntityElement fromOrdinal(int ordinal)
     {
-        return MessageEntityElement.values[ordinal];
+        return MessageEntityElement.VALUES[ordinal];
     }
 }

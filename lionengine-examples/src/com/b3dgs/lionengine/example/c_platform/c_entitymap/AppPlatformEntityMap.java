@@ -28,7 +28,7 @@ public final class AppPlatformEntityMap
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppPlatformEntityMap.NAME, AppPlatformEntityMap.VERSION, AppPlatformEntityMap.RESOURCES);

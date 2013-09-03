@@ -244,7 +244,7 @@ public class Border20Map
             map[ty][tx] = axis;
             safe[ty][tx] = true;
         }
-        catch (final ArrayIndexOutOfBoundsException ex)
+        catch (final ArrayIndexOutOfBoundsException exception)
         {
             // Ignore
         }

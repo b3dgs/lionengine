@@ -14,7 +14,7 @@ public final class ComboItem
      */
     public static ComboItem[] get(Object[] objects)
     {
-        ComboItem[] items = new ComboItem[objects.length];
+        final ComboItem[] items = new ComboItem[objects.length];
         for (int i = 0; i < items.length; i++)
         {
             items[i] = new ComboItem(objects[i]);

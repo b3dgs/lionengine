@@ -37,7 +37,7 @@ public final class AppRtsControlPanel
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppRtsControlPanel.PROGRAM, AppRtsControlPanel.VERSION, AppRtsControlPanel.PATH);

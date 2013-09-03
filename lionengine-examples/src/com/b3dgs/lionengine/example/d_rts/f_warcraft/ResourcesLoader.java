@@ -120,4 +120,12 @@ public final class ResourcesLoader
             ResourcesLoader.loaded = true;
         }
     }
+
+    /**
+     * Constructor.
+     */
+    private ResourcesLoader()
+    {
+        throw new RuntimeException();
+    }
 }

@@ -35,7 +35,7 @@ public abstract class UnitAttacker
     }
 
     /**
-     * Attack the specified entity, even if it is the same faction
+     * Attack the specified entity, even if it is the same faction.
      * 
      * @param target The enemy to attack.
      */

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.TreeMap;
 
 import javax.swing.JComboBox;
@@ -14,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
@@ -22,6 +24,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
+import com.b3dgs.lionengine.utility.UtilityMessageBox;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
@@ -89,7 +92,7 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                toolsImportMap();
+                toolsImportMap(null);
             }
         }).setEnabled(false);
 
@@ -118,10 +121,10 @@ public class MenuBar
         final JPanel centerPanel = new JPanel(new GridLayout(0, 1));
         dialog.add(centerPanel, BorderLayout.CENTER);
 
-        JPanel panel = UtilitySwing.createBorderedPanel("World", 2);
+        final JPanel panel = UtilitySwing.createBorderedPanel("World", 2);
         centerPanel.add(panel);
-        final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel,
-                ComboItem.get(TypeWorld.values()), null);
+        final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel, ComboItem.get(TypeWorld.values()),
+                null);
 
         // South panel
         final JPanel southPanel = new JPanel(new GridLayout());
@@ -131,17 +134,25 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                UtilitySwing.terminateDialog(dialog);
                 final TypeWorld world = (TypeWorld) ((ComboItem) combo.getSelectedItem()).getObject();
                 editor.world.level.setWorld(world);
-                toolsImportMap();
-                editor.toolBar.entitySelector.loadEntities(world);
-                editor.toolBar.setPaletteEnabled(true);
-                editor.toolBar.setSelectorEnabled(true);
-                editor.toolBar.setEditorEnabled(true);
-                editor.toolBar.entityEditor.setPatrolPanelEnabled(false);
-                items.get("Save").setEnabled(true);
-                items.get("Import Map").setEnabled(true);
+                UtilitySwing.setEnabled(dialog.getComponents(), false);
+                if (toolsImportMap(dialog))
+                {
+                    editor.world.handlerEntity.removeAll();
+                    editor.world.handlerEntity.update();
+                    editor.toolBar.entitySelector.loadEntities(world);
+                    editor.toolBar.setPaletteEnabled(true);
+                    editor.toolBar.setSelectorEnabled(true);
+                    editor.toolBar.setEditorEnabled(true);
+                    editor.toolBar.entityEditor.setPatrolPanelEnabled(false);
+                    items.get("Save").setEnabled(true);
+                    items.get("Import Map").setEnabled(true);
+                }
+                else
+                {
+                    UtilitySwing.setEnabled(dialog.getComponents(), true);
+                }
             }
         });
 
@@ -166,13 +177,22 @@ public class MenuBar
         final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
         if (media != null)
         {
-            editor.world.load(media);
-            editor.toolBar.setPaletteEnabled(true);
-            editor.toolBar.setSelectorEnabled(true);
-            editor.toolBar.setEditorEnabled(true);
-            items.get("Save").setEnabled(true);
-            items.get("Import Map").setEnabled(false);
-            editor.world.camera.setLimits(editor.world.map);
+            try
+            {
+                editor.world.load(media);
+                editor.toolBar.entitySelector.loadEntities(editor.world.level.getWorld());
+                editor.toolBar.setPaletteEnabled(true);
+                editor.toolBar.setSelectorEnabled(true);
+                editor.toolBar.setEditorEnabled(true);
+                editor.toolBar.entityEditor.setSelectedEntity(null);
+                items.get("Save").setEnabled(true);
+                items.get("Import Map").setEnabled(false);
+                editor.world.camera.setLimits(editor.world.map);
+            }
+            catch (final IOException exception)
+            {
+                UtilityMessageBox.error("Load map", "Invalid level file !\nMap file: " + media.getPath());
+            }
         }
     }
 
@@ -181,8 +201,15 @@ public class MenuBar
      */
     void fileSave()
     {
-        final String name = "test1.lrm";
-        editor.world.save(Media.get(name));
+        final Media media = Media.get("test1.lrm");
+        try
+        {
+            editor.world.save(media);
+        }
+        catch (final IOException exception)
+        {
+            UtilityMessageBox.error("Save map", exception.getMessage() + "\nMap file: " + media.getPath());
+        }
     }
 
     /**
@@ -195,8 +222,11 @@ public class MenuBar
 
     /**
      * Import map action.
+     * 
+     * @param dialog The dialog reference (<code>null</code> else).
+     * @return <code>true</code> if imported, <code>false</code> else.
      */
-    void toolsImportMap()
+    boolean toolsImportMap(JDialog dialog)
     {
         final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
         final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
@@ -204,12 +234,30 @@ public class MenuBar
         {
             final Map map = editor.world.map;
             final LevelRipConverter<TypeTileCollision, Tile> rip = new LevelRipConverter<>();
-            rip.start(media, map, Media.get("tiles", editor.world.factoryEntity.getWorld().asPathName()));
-            editor.world.camera.setLimits(map);
-            editor.repaint();
-            rip.showResults();
-            items.get("Import Map").setEnabled(false);
+            try
+            {
+                rip.start(media, map, Media.get("tiles", editor.world.level.getWorld().asPathName()));
+                final int errors = rip.getErrors();
+                if (errors == 0)
+                {
+                    if (dialog != null)
+                    {
+                        UtilitySwing.terminateDialog(dialog);
+                    }
+                    editor.world.camera.setLimits(map);
+                    editor.repaint();
+                    items.get("Import Map").setEnabled(false);
+                    return true;
+                }
+                UtilityMessageBox.error("Import Map", errors + " tiles were not found.\nLevelrip: " + media.getPath()
+                        + "\nImport interrupted !");
+            }
+            catch (final LionEngineException exception)
+            {
+                UtilityMessageBox.error("Import Map", exception.getMessage() + "\nImport interrupted !");
+            }
         }
+        return false;
     }
 
     /**

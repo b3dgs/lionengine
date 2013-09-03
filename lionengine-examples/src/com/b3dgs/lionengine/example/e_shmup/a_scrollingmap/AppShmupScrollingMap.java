@@ -13,14 +13,14 @@ import com.b3dgs.lionengine.Version;
 /**
  * Program starts here.
  */
-public class AppShmupScrollingMap
+public final class AppShmupScrollingMap
 {
     /**
      * Main function.
      * 
      * @param argv The arguments.
      */
-    public static void main(String argv[])
+    public static void main(String[] argv)
     {
         // Start engine
         Engine.start("Shmup Scrolling Map", Version.create(1, 0, 0), Media.getPath("resources", "shmup"));

@@ -61,9 +61,52 @@ public final class Menu
             "Revealed", "Hidden"
     };
     /** Current menu. */
-    static TypeMenu MENU = TypeMenu.INTRO_UP;
+    static TypeMenu menu = TypeMenu.INTRO_UP;
     /** Clicked state. */
     static boolean clicked;
+
+    /**
+     * Get the name of the race enum.
+     * 
+     * @param name The race enum.
+     * @return The race name.
+     */
+    private static String format(TypeRace name)
+    {
+        return Menu.format(name.name(), false);
+    }
+
+    /**
+     * Get the name of the race enum.
+     * 
+     * @param name The race enum.
+     * @param hasExtension <code>true</code> if has extension (remove the extension part).
+     * @return The race name.
+     */
+    private static String format(String name, boolean hasExtension)
+    {
+        String str = name.substring(0, 1).toUpperCase(Locale.ENGLISH)
+                .concat(name.substring(1).toLowerCase(Locale.ENGLISH));
+        if (hasExtension)
+        {
+            str = str.substring(0, str.length() - 4);
+            str = str.replace('_', ' ');
+        }
+        return str;
+    }
+
+    /**
+     * Get a button from its name.
+     * 
+     * @param filename The button filename.
+     * @param width The button width.
+     * @param height The button height.
+     * @return The button instance.
+     */
+    private static SpriteTiled getButton(String filename, int width, int height)
+    {
+        return Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, filename), width, height);
+    }
 
     /** Menu music. */
     private final Midi music;
@@ -159,36 +202,6 @@ public final class Menu
         }
     }
 
-    /**
-     * Get the name of the race enum.
-     * 
-     * @param name The race enum.
-     * @return The race name.
-     */
-    private static String format(TypeRace name)
-    {
-        return Menu.format(name.name(), false);
-    }
-
-    /**
-     * Get the name of the race enum.
-     * 
-     * @param name The race enum.
-     * @param hasExtension <code>true</code> if has extension (remove the extension part).
-     * @return The race name.
-     */
-    private static String format(String name, boolean hasExtension)
-    {
-        String str = name.substring(0, 1).toUpperCase(Locale.ENGLISH)
-                .concat(name.substring(1).toLowerCase(Locale.ENGLISH));
-        if (hasExtension)
-        {
-            str = str.substring(0, str.length() - 4);
-            str = str.replace('_', ' ');
-        }
-        return str;
-    }
-
     /*
      * Sequence
      */
@@ -207,14 +220,11 @@ public final class Menu
         cursor.setLocation(width / 2, height / 2);
         buttons = new Button[7];
 
-        final SpriteTiled bigButton = Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, "case1.png"), 112,
-                16);
+        final SpriteTiled bigButton = Menu.getButton("case1.png", 112, 16);
         bigButton.load(false);
-        final SpriteTiled smallButton = Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, "case2.png"), 54,
-                16);
+        final SpriteTiled smallButton = Menu.getButton("case2.png", 54, 16);
         smallButton.load(false);
-        final SpriteTiled arrowButton = Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, "case3.png"), 15,
-                15);
+        final SpriteTiled arrowButton = Menu.getButton("case3.png", 15, 15);
         arrowButton.load(false);
 
         buttons[0] = new Button(bigButton, "Start a new game", 104, 93, TypeMenu.NEW);
@@ -244,7 +254,7 @@ public final class Menu
         end = false;
         fog = 0;
         Menu.clicked = false;
-        if (Menu.MENU == TypeMenu.INTRO_UP)
+        if (Menu.menu == TypeMenu.INTRO_UP)
         {
             final Wav sound = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "blizzard.wav"));
             sound.play();
@@ -269,14 +279,14 @@ public final class Menu
         {
             pressed = false;
         }
-        switch (Menu.MENU)
+        switch (Menu.menu)
         {
             case INTRO_UP:
                 alpha += 3;
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (UtilityMath.time() - introTimer > 3000)
                 {
-                    Menu.MENU = TypeMenu.INTRO_DOWN;
+                    Menu.menu = TypeMenu.INTRO_DOWN;
                 }
                 break;
             case INTRO_DOWN:
@@ -284,7 +294,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
-                    Menu.MENU = TypeMenu.MAIN_UP;
+                    Menu.menu = TypeMenu.MAIN_UP;
                 }
                 break;
             case MAIN_UP:
@@ -294,7 +304,7 @@ public final class Menu
                 {
                     music.setLoop(6300, music.getTicks() - 3680);
                     music.play(true);
-                    Menu.MENU = TypeMenu.MAIN;
+                    Menu.menu = TypeMenu.MAIN;
                 }
                 break;
             case MAIN:
@@ -357,7 +367,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
-                    Menu.MENU = TypeMenu.PLAY;
+                    Menu.menu = TypeMenu.PLAY;
                 }
                 break;
             case PLAY:
@@ -372,7 +382,7 @@ public final class Menu
                     ffog = true;
                 }
                 music.stop();
-                Menu.MENU = TypeMenu.MAIN_UP;
+                Menu.menu = TypeMenu.MAIN_UP;
                 alpha = 0;
                 final GameConfig config = new GameConfig(Menu.RACES[playerRace], Menu.RACES[opponentRace],
                         Menu.MAPS[map], hide, ffog);
@@ -399,7 +409,7 @@ public final class Menu
         {
             return;
         }
-        switch (Menu.MENU)
+        switch (Menu.menu)
         {
             case INTRO_UP:
             case INTRO_DOWN:

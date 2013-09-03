@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.Version;
 /**
  * Program starts here.
  */
-public class AppPlatformOpponent
+public final class AppPlatformOpponent
 {
     /** Application name. */
     public static final String NAME = "Opponent";
@@ -28,7 +28,7 @@ public class AppPlatformOpponent
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppPlatformOpponent.NAME, AppPlatformOpponent.VERSION, AppPlatformOpponent.RESOURCES);

@@ -14,5 +14,5 @@ public interface Attacker
      * 
      * @return The current orientation.
      */
-    public Orientation getOrientation();
+    Orientation getOrientation();
 }

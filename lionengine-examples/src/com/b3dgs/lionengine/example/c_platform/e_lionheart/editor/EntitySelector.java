@@ -53,6 +53,10 @@ public class EntitySelector
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
     /** Entity selector panel. */
     private final JPanel panel;
+    /** Landscape panel. */
+    final JPanel landscape;
+    /** Landscape combo. */
+    private JComboBox<ComboItem> landscapeCombo;
 
     /**
      * Constructor.
@@ -73,6 +77,9 @@ public class EntitySelector
         panel = new JPanel();
         add(panel, BorderLayout.SOUTH);
         add(tabbedPane, BorderLayout.CENTER);
+        landscape = new JPanel();
+        landscape.setLayout(new GridLayout(0, 1));
+        add(landscape, BorderLayout.NORTH);
         setVisible(false);
     }
 
@@ -83,9 +90,8 @@ public class EntitySelector
      */
     void loadEntities(TypeWorld world)
     {
-        final JPanel landscape = UtilitySwing.createBorderedPanel("Landscape", 2);
-        landscape.setLayout(new GridLayout(0, 1));
-        JComboBox<ComboItem> landscapeCombo = UtilitySwing.addMenuCombo("Landscape", panel,
+        landscape.removeAll();
+        landscapeCombo = UtilitySwing.addMenuCombo("Landscape", landscape,
                 ComboItem.get(ComboItem.get(TypeLandscape.getWorldLandscape(world))), new ActionCombo()
                 {
                     @Override
@@ -96,9 +102,14 @@ public class EntitySelector
                     }
                 });
         landscape.add(landscapeCombo);
-        add(landscape, BorderLayout.NORTH);
         tabbedPane.removeAll();
         editor.world.factoryEntity.loadAll(TypeEntity.values());
+        TypeLandscape landscape = editor.world.level.getLandscape();
+        if (landscape == null)
+        {
+            landscape = TypeLandscape.get(0);
+        }
+        landscapeCombo.setSelectedIndex(landscape.getIndex());
         int max = 0;
         for (final TypeEntityCategory category : TypeEntityCategory.values())
         {

@@ -55,16 +55,6 @@ public final class FactoryEntity
     }
 
     /**
-     * Get the world type used.
-     * 
-     * @return The world type used.
-     */
-    public TypeWorld getWorld()
-    {
-        return world;
-    }
-
-    /**
      * Create a new valdyn.
      * 
      * @return The instance of valdyn.

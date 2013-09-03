@@ -5,7 +5,8 @@ import com.b3dgs.lionengine.game.effect.SetupEffectGame;
 /**
  * Explode effect.
  */
-public class Explode extends Effect
+public class Explode
+        extends Effect
 {
     /**
      * Constructor.

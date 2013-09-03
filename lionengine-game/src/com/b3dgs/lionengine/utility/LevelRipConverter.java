@@ -126,18 +126,13 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
     }
 
     /**
-     * Show the conversion results.
+     * Get the error counter (number of not found tiles).
+     * 
+     * @return The total number of not found tiles.
      */
-    public void showResults()
+    public int getErrors()
     {
-        if (errors > 0)
-        {
-            UtilityMessageBox.error("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
-        }
-        else
-        {
-            UtilityMessageBox.information("LevelRipConverter", "Convertion finished with " + errors + " error(s) !");
-        }
+        return errors;
     }
 
     /**

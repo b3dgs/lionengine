@@ -4,7 +4,7 @@ import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
 import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
 
 /**
- * Abstract building entity implementation
+ * Abstract building entity implementation.
  */
 abstract class Building
         extends Entity

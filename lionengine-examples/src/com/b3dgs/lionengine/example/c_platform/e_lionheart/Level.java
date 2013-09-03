@@ -75,7 +75,7 @@ public class Level
         }
         setWorld(TypeWorld.get(file.readByte()));
         factoryEntity.loadAll(TypeEntity.values());
-        final TypeLandscape landscape = TypeLandscape.get(file.readByte());
+        setLandscape(TypeLandscape.get(file.readByte()));
         map.load(file);
         worldData.load(file);
         handlerEntity.load(file);
@@ -100,5 +100,25 @@ public class Level
     public void setLandscape(TypeLandscape landscape)
     {
         this.landscape = landscape;
+    }
+
+    /**
+     * Get the current world used.
+     * 
+     * @return The world type used.
+     */
+    public TypeWorld getWorld()
+    {
+        return world;
+    }
+
+    /**
+     * Get the current landscape type used.
+     * 
+     * @return The landscape type used.
+     */
+    public TypeLandscape getLandscape()
+    {
+        return landscape;
     }
 }

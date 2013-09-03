@@ -217,6 +217,287 @@ public class Menu
         return value;
     }
 
+    /*
+     * Sequence
+     */
+
+    /**
+     * Update the navigation against the menu.
+     * 
+     * @param menuId The menu id.
+     */
+    private void updateMenuNavigation(int menuId)
+    {
+        final int choiceOld = choice;
+        if (menu == TypeMenu.KEYS)
+        {
+            if (!waitKey && !choicePressed)
+            {
+                if (choice != 0 && choice != 3 && isPressed(Menu.KEYS[0]))
+                {
+                    choice--;
+                }
+                if (isPressed(Menu.KEYS[1]))
+                {
+                    choice++;
+                    if (choice == 3)
+                    {
+                        choice += 3;
+                    }
+                }
+                if ((choice == 3 || choice == 4 || choice == 5) && isPressed(Menu.KEYS[3]))
+                {
+                    choice -= 3;
+                }
+                if (choice < 3 && isPressed(Menu.KEYS[4]))
+                {
+                    choice += 3;
+                }
+            }
+        }
+        else
+        {
+            if (isPressed(Menu.KEYS[0]))
+            {
+                choice--;
+            }
+            if (isPressed(Menu.KEYS[1]))
+            {
+                choice++;
+            }
+        }
+        final Data data = menusData[menuId];
+        choice = UtilityMath.fixBetween(choice, 0, data.choiceMax);
+        if (choiceOld != choice)
+        {
+            // Play sound select
+        }
+        TypeMenu next = data.choices[choice].next;
+        // Go to menu key
+        if (menu == TypeMenu.OPTIONS)
+        {
+            if (choice == 2)
+            {
+                next = TypeMenu.KEYS;
+            }
+        }
+        // Save keys
+        if (menu == TypeMenu.KEYS)
+        {
+            if (choice == 6)
+            {
+                // save keys
+            }
+        }
+        // Accept choice
+        if (next != null && isPressed(Menu.KEYS[2], Keyboard.SPACE, Keyboard.ENTER, Keyboard.CONTROL))
+        {
+            menuNext = next;
+            transition = TypeTransition.OUT;
+            txtAlpha = 0.0;
+        }
+    }
+
+    /**
+     * Handle the menu new sub menu.
+     */
+    private void handleMenuNew()
+    {
+        if (alpha == 0.0)
+        {
+            txtAlpha += Menu.ALPHA_STEP;
+            if (txtAlpha > 255.0)
+            {
+                txtAlpha = 255.0;
+            }
+            // Wait for loading
+            if (!firstLoaded)
+            {
+                firstLoaded = true;
+                timerPressStart.start();
+            }
+            if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
+            {
+                timerPressStart.start();
+                pressStart = !pressStart;
+            }
+        }
+
+        // Entering game
+        if (keyboard.used())
+        {
+            transition = TypeTransition.OUT;
+            menuNext = TypeMenu.GAME;
+        }
+    }
+
+    /**
+     * Handle the menu options sub menu.
+     */
+    private void handleMenuOptions()
+    {
+        if (choice == 0)
+        {
+            difficulty = changeOption(difficulty, 0, Menu.OPTIONS_DIFFICULTY.length - 1, true);
+        }
+        else if (choice == 1)
+        {
+            volume = changeOption(volume, 0, 100, false);
+        }
+        else if (choice == 2)
+        {
+            control = changeOption(control, 0, Menu.OPTIONS_CONTROL.length - 1, true);
+        }
+    }
+
+    /**
+     * Handle the menu keys chooser sub menu.
+     */
+    private void handleMenuKeys()
+    {
+        if (choice < 5)
+        {
+            if (!keyboard.used())
+            {
+                choicePressed = false;
+            }
+            final boolean changeKey = !choicePressed && !waitKey
+                    && (isPressed(Menu.KEYS[2]) || isPressed(Keyboard.SPACE) || keyboard.isPressedOnce(Keyboard.ENTER));
+            final boolean acceptKey = !choicePressed && waitKey && keyboard.used();
+            if (changeKey)
+            {
+                waitKey = true;
+                choicePressed = true;
+            }
+            if (acceptKey)
+            {
+                waitKey = false;
+                choicePressed = true;
+                Menu.KEYS[choice] = keyboard.getKeyCode();
+            }
+        }
+    }
+
+    /**
+     * Handle the menu states.
+     */
+    private void handleMenu()
+    {
+        switch (menu)
+        {
+            case MAIN:
+                break;
+            case NEW:
+                handleMenuNew();
+                break;
+            case GAME:
+                end(new Scene(loader));
+                break;
+            case OPTIONS:
+                handleMenuOptions();
+                break;
+            case KEYS:
+                handleMenuKeys();
+                break;
+            case INTRO:
+                break;
+            case EXIT:
+                end();
+                break;
+            default:
+                throw new LionEngineException(Menu.ERROR_MESSAGE + menu);
+        }
+    }
+
+    /**
+     * Handle the menu transitions.
+     */
+    private void handleMenuTransition()
+    {
+        switch (transition)
+        {
+        // Fading in to new menu
+            case IN:
+                alpha -= Menu.ALPHA_STEP;
+                if (alpha < 0.0 - Menu.ALPHA_STEP)
+                {
+                    alpha = 0.0;
+                    transition = TypeTransition.NONE;
+                }
+                break;
+            // Ready to navigate inside the current menu
+            case NONE:
+                final int menuId = getMenuID();
+                if (menuId > -1)
+                {
+                    updateMenuNavigation(menuId);
+                }
+                break;
+            // Fading out from current menu
+            case OUT:
+                alpha += Menu.ALPHA_STEP;
+                if (alpha >= 255.0 + Menu.ALPHA_STEP)
+                {
+                    alpha = 255.0;
+                    menu = menuNext;
+                    transition = TypeTransition.IN;
+                    choice = 0;
+                }
+                break;
+            default:
+                throw new LionEngineException(Menu.ERROR_MESSAGE + transition);
+        }
+    }
+
+    /**
+     * Render the menus.
+     * 
+     * @param g The graphic output.
+     * @param id The menu id.
+     */
+    private void renderMenus(Graphic g, int id)
+    {
+        switch (menu)
+        {
+            case MAIN:
+                break;
+            case NEW:
+                menus[1].render(g, 160 * wideFactor - 160, 0);
+                pics[pic].render(g, 160 * wideFactor - 76, 56);
+                font.setAlpha((int) txtAlpha);
+                font.draw(g, 160 * wideFactor, 186, Align.CENTER, Menu.SWAMP_TEXT);
+                if (pressStart)
+                {
+                    font.draw(g, 160 * wideFactor, 225, Align.CENTER, Menu.PUSH_BUTTON);
+                }
+                break;
+            case GAME:
+                break;
+            case OPTIONS:
+                text.setColor(Menu.COLOR_OPTION);
+                text.draw(g, 172 * wideFactor, menusData[id].choices[0].y, Align.LEFT,
+                        Menu.OPTIONS_DIFFICULTY[difficulty]);
+                text.draw(g, 172 * wideFactor, menusData[id].choices[1].y, Align.LEFT, String.valueOf(volume));
+                text.draw(g, 172 * wideFactor, menusData[id].choices[2].y, Align.LEFT, Menu.OPTIONS_CONTROL[control]);
+                break;
+            case KEYS:
+                text.setColor(Menu.COLOR_OPTION);
+                for (int i = 0; i < 6; i++)
+                {
+                    text.draw(g, menusData[id].choices[i].x + 40 * wideFactor, menusData[id].choices[i].y, Align.LEFT,
+                            KeyEvent.getKeyText(Menu.KEYS[i].intValue()));
+                }
+                break;
+            case INTRO:
+                break;
+            case EXIT:
+                end();
+                break;
+            default:
+                throw new LionEngineException(Menu.ERROR_MESSAGE + menu);
+        }
+    }
+
     /**
      * Get the menu id.
      * 
@@ -265,7 +546,7 @@ public class Menu
      */
 
     @Override
-    public void load()
+    protected void load()
     {
         font.load(true);
         for (int i = 0; i < 1; i++)
@@ -281,189 +562,8 @@ public class Menu
     @Override
     protected void update(double extrp)
     {
-        switch (transition)
-        {
-        // Fading in to new menu
-            case IN:
-                alpha -= Menu.ALPHA_STEP;
-                if (alpha < 0.0 - Menu.ALPHA_STEP)
-                {
-                    alpha = 0.0;
-                    transition = TypeTransition.NONE;
-                }
-                break;
-            // Ready to navigate inside the current menu
-            case NONE:
-                final int menuId = getMenuID();
-                if (menuId > -1)
-                {
-                    final int choiceOld = choice;
-                    if (menu == TypeMenu.KEYS)
-                    {
-                        if (!waitKey && !choicePressed)
-                        {
-                            if (choice != 0 && choice != 3 && isPressed(Menu.KEYS[0]))
-                            {
-                                choice--;
-                            }
-                            if (isPressed(Menu.KEYS[1]))
-                            {
-                                choice++;
-                                if (choice == 3)
-                                {
-                                    choice += 3;
-                                }
-                            }
-                            if ((choice == 3 || choice == 4 || choice == 5) && isPressed(Menu.KEYS[3]))
-                            {
-                                choice -= 3;
-                            }
-                            if (choice < 3 && isPressed(Menu.KEYS[4]))
-                            {
-                                choice += 3;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (isPressed(Menu.KEYS[0]))
-                        {
-                            choice--;
-                        }
-                        if (isPressed(Menu.KEYS[1]))
-                        {
-                            choice++;
-                        }
-                    }
-                    final Data data = menusData[menuId];
-                    choice = UtilityMath.fixBetween(choice, 0, data.choiceMax);
-                    if (choiceOld != choice)
-                    {
-                        // Play sound select
-                    }
-                    TypeMenu next = data.choices[choice].next;
-                    // Go to menu key
-                    if (menu == TypeMenu.OPTIONS)
-                    {
-                        if (choice == 2)
-                        {
-                            next = TypeMenu.KEYS;
-                        }
-                    }
-                    // Save keys
-                    if (menu == TypeMenu.KEYS)
-                    {
-                        if (choice == 6)
-                        {
-                            // save keys
-                        }
-                    }
-                    // Accept choice
-                    if (next != null && isPressed(Menu.KEYS[2], Keyboard.SPACE, Keyboard.ENTER, Keyboard.CONTROL))
-                    {
-                        menuNext = next;
-                        transition = TypeTransition.OUT;
-                        txtAlpha = 0.0;
-                    }
-                }
-                break;
-            // Fading out from current menu
-            case OUT:
-                alpha += Menu.ALPHA_STEP;
-                if (alpha >= 255.0 + Menu.ALPHA_STEP)
-                {
-                    alpha = 255.0;
-                    menu = menuNext;
-                    transition = TypeTransition.IN;
-                    choice = 0;
-                }
-                break;
-            default:
-                throw new LionEngineException(Menu.ERROR_MESSAGE + transition);
-        }
-        // Handle menu
-        switch (menu)
-        {
-            case MAIN:
-                break;
-            case NEW:
-                if (alpha == 0.0)
-                {
-                    txtAlpha += Menu.ALPHA_STEP;
-                    if (txtAlpha > 255.0)
-                    {
-                        txtAlpha = 255.0;
-                    }
-                    // Wait for loading
-                    if (!firstLoaded)
-                    {
-                        firstLoaded = true;
-                        timerPressStart.start();
-                    }
-                    if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
-                    {
-                        timerPressStart.start();
-                        pressStart = !pressStart;
-                    }
-                }
-
-                // Entering game
-                if (keyboard.used())
-                {
-                    transition = TypeTransition.OUT;
-                    menuNext = TypeMenu.GAME;
-                }
-                break;
-            case GAME:
-                end(new Scene(loader));
-                break;
-            case OPTIONS:
-                if (choice == 0)
-                {
-                    difficulty = changeOption(difficulty, 0, Menu.OPTIONS_DIFFICULTY.length - 1, true);
-                }
-                else if (choice == 1)
-                {
-                    volume = changeOption(volume, 0, 100, false);
-                }
-                else if (choice == 2)
-                {
-                    control = changeOption(control, 0, Menu.OPTIONS_CONTROL.length - 1, true);
-                }
-                break;
-            case KEYS:
-                if (choice < 5)
-                {
-                    if (!keyboard.used())
-                    {
-                        choicePressed = false;
-                    }
-                    final boolean changeKey = !choicePressed
-                            && !waitKey
-                            && (isPressed(Menu.KEYS[2]) || isPressed(Keyboard.SPACE) || keyboard
-                                    .isPressedOnce(Keyboard.ENTER));
-                    final boolean acceptKey = !choicePressed && waitKey && keyboard.used();
-                    if (changeKey)
-                    {
-                        waitKey = true;
-                        choicePressed = true;
-                    }
-                    if (acceptKey)
-                    {
-                        waitKey = false;
-                        choicePressed = true;
-                        Menu.KEYS[choice] = keyboard.getKeyCode();
-                    }
-                }
-                break;
-            case INTRO:
-                break;
-            case EXIT:
-                end();
-                break;
-            default:
-                throw new LionEngineException(Menu.ERROR_MESSAGE + menu);
-        }
+        handleMenuTransition();
+        handleMenu();
         if (isPressed(Keyboard.ESCAPE))
         {
             end();
@@ -480,45 +580,7 @@ public class Menu
             menus[id].render(g, 160 * wideFactor - 160, 0);
             menusData[id].render(g, choice);
         }
-        switch (menu)
-        {
-            case MAIN:
-                break;
-            case NEW:
-                menus[1].render(g, 160 * wideFactor - 160, 0);
-                pics[pic].render(g, 160 * wideFactor - 76, 56);
-                font.setAlpha((int) txtAlpha);
-                font.draw(g, 160 * wideFactor, 186, Align.CENTER, Menu.SWAMP_TEXT);
-                if (pressStart)
-                {
-                    font.draw(g, 160 * wideFactor, 225, Align.CENTER, Menu.PUSH_BUTTON);
-                }
-                break;
-            case GAME:
-                break;
-            case OPTIONS:
-                text.setColor(Menu.COLOR_OPTION);
-                text.draw(g, 172 * wideFactor, menusData[id].choices[0].y, Align.LEFT,
-                        Menu.OPTIONS_DIFFICULTY[difficulty]);
-                text.draw(g, 172 * wideFactor, menusData[id].choices[1].y, Align.LEFT, String.valueOf(volume));
-                text.draw(g, 172 * wideFactor, menusData[id].choices[2].y, Align.LEFT, Menu.OPTIONS_CONTROL[control]);
-                break;
-            case KEYS:
-                text.setColor(Menu.COLOR_OPTION);
-                for (int i = 0; i < 6; i++)
-                {
-                    text.draw(g, menusData[id].choices[i].x + 40 * wideFactor, menusData[id].choices[i].y, Align.LEFT,
-                            KeyEvent.getKeyText(Menu.KEYS[i].intValue()));
-                }
-                break;
-            case INTRO:
-                break;
-            case EXIT:
-                end();
-                break;
-            default:
-                throw new LionEngineException(Menu.ERROR_MESSAGE + menu);
-        }
+        renderMenus(g, id);
         if (transition != TypeTransition.NONE)
         {
             final int a = UtilityMath.fixBetween((int) alpha, 0, 255);

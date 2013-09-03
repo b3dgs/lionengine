@@ -39,4 +39,12 @@ public final class FactoryEntityHuman
                 throw new LionEngineException("Entity not found: ", type.name());
         }
     }
+
+    /**
+     * Constructor.
+     */
+    private FactoryEntityHuman()
+    {
+        throw new RuntimeException();
+    }
 }

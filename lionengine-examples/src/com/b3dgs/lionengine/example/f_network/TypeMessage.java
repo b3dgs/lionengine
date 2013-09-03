@@ -13,7 +13,7 @@ enum TypeMessage
     MESSAGE_FACTORY;
 
     /** Values. */
-    private static final TypeMessage[] values = TypeMessage.values();
+    private static final TypeMessage[] VALUES = TypeMessage.values();
 
     /**
      * Get the message type from its ordinal.
@@ -23,6 +23,6 @@ enum TypeMessage
      */
     public static TypeMessage fromOrdinal(int ordinal)
     {
-        return TypeMessage.values[ordinal];
+        return TypeMessage.VALUES[ordinal];
     }
 }

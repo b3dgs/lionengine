@@ -44,7 +44,7 @@ public class MapFilter
         final String ext = UtilityFile.getExtension(f);
         if (ext != null)
         {
-            for (String extension : extensions)
+            for (final String extension : extensions)
             {
                 if (extension.equals(ext))
                 {
@@ -61,7 +61,7 @@ public class MapFilter
     public String getDescription()
     {
         StringBuilder buf = new StringBuilder(description);
-        for (String extension : extensions)
+        for (final String extension : extensions)
         {
             buf = buf.append(" (*.").append(extension).append(")");
         }

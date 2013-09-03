@@ -31,7 +31,7 @@ public final class AppRtsNavMapTile
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppRtsNavMapTile.PROGRAM, AppRtsNavMapTile.VERSION, AppRtsNavMapTile.PATH);

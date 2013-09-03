@@ -33,7 +33,7 @@ public final class AppRtsAbility
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppRtsAbility.PROGRAM, AppRtsAbility.VERSION, AppRtsAbility.PATH);

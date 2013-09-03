@@ -12,14 +12,14 @@ import com.b3dgs.lionengine.Version;
 /**
  * Program starts here.
  */
-public class AppPong
+public final class AppPong
 {
     /**
      * Main function called by the jvm.
      * 
-     * @param argv The arguments.
+     * @param args The arguments.
      */
-    public static void main(String argv[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start("Pong", Version.create(1, 0, 0), "resources");

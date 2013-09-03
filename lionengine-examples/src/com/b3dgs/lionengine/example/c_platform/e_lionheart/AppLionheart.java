@@ -18,7 +18,7 @@ public final class AppLionheart
     /** Application name. */
     public static final String NAME = "Lionheart";
     /** Application version. */
-    public static final Version VERSION = Version.create(1, 0, 0);
+    public static final Version VERSION = Version.create(0, 1, 0);
     /** Levels directory. */
     public static final String LEVELS_DIR = "levels";
     /** Sheets directory. */
@@ -43,7 +43,7 @@ public final class AppLionheart
      * 
      * @param args The arguments (none).
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         Engine.start(AppLionheart.NAME, AppLionheart.VERSION, AppLionheart.RESOURCES);
 

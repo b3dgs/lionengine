@@ -9,7 +9,7 @@ public final class ProducibleEntity
         extends Producible<TypeEntity, ProductionCost>
 {
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param id The entity id.
      * @param cost The production cost.

@@ -69,7 +69,7 @@ final class Button
         {
             click.play();
             Menu.clicked = true;
-            Menu.MENU = menu;
+            Menu.menu = menu;
             over = false;
         }
     }

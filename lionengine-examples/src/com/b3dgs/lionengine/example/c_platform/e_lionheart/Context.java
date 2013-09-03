@@ -36,10 +36,10 @@ public class Context
     public Context(Level level, int desiredFps)
     {
         this.desiredFps = desiredFps;
-        this.camera = level.handlerEntity.camera;
-        this.map = level.map;
-        this.factoryEntity = level.factoryEntity;
-        this.handlerEntity = level.handlerEntity;
+        camera = level.handlerEntity.camera;
+        map = level.map;
+        factoryEntity = level.factoryEntity;
+        handlerEntity = level.handlerEntity;
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect();
         factoryEntity.setContext(this);

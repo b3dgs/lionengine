@@ -313,7 +313,7 @@ public final class UtilitySwing
      * @param components The components.
      * @param enabled The enabled state.
      */
-    public static void setEnabled(Component components[], boolean enabled)
+    public static void setEnabled(Component[] components, boolean enabled)
     {
         for (final Component component : components)
         {
@@ -321,7 +321,7 @@ public final class UtilitySwing
             if (component instanceof Container)
             {
                 final Container container = (Container) component;
-                setEnabled(container.getComponents(), enabled);
+                UtilitySwing.setEnabled(container.getComponents(), enabled);
             }
         }
     }

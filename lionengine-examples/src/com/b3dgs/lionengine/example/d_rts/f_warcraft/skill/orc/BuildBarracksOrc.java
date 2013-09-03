@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeSkill;
 
 /**
- * Build skill implementation
+ * Build skill implementation.
  */
 final class BuildBarracksOrc
         extends SkillProduceBuilding

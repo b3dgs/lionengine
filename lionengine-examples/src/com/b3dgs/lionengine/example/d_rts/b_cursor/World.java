@@ -45,7 +45,7 @@ final class World
     }
 
     /**
-     * Draw info about the specified tile
+     * Draw info about the specified tile.
      * 
      * @param g The graphics output.
      * @param tx The tile location x.

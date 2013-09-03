@@ -12,11 +12,11 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollision;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.game.Force;
@@ -291,7 +291,8 @@ public final class Valdyn
      */
     private void updateActionAttackPrepare(boolean attackFinished)
     {
-        if (attackFinished && (attack == TypeEntityState.ATTACK_PREPARING_DOWN || attack == TypeEntityState.ATTACK_PREPARING))
+        if (attackFinished
+                && (attack == TypeEntityState.ATTACK_PREPARING_DOWN || attack == TypeEntityState.ATTACK_PREPARING))
         {
             attackPrepared = true;
         }
@@ -307,7 +308,7 @@ public final class Valdyn
     }
 
     /**
-     * List of implemented attacks
+     * List of implemented attacks.
      * 
      * @param attackPrepared <code>true</code> if attack need to be prepared, <code>false</code> else.
      */

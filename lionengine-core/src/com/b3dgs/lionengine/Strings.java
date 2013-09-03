@@ -33,7 +33,7 @@ import java.util.Map;
 public final class Strings
 {
     /** Strings list. */
-    private static final Map<String, String> strings = new HashMap<>(8);
+    private static final Map<String, String> STRINGS = new HashMap<>(8);
 
     /**
      * Get string reference from its name.
@@ -43,11 +43,11 @@ public final class Strings
      */
     public static String getStringRef(String string)
     {
-        if (!Strings.strings.containsKey(string))
+        if (!Strings.STRINGS.containsKey(string))
         {
-            Strings.strings.put(string, string);
+            Strings.STRINGS.put(string, string);
         }
-        return Strings.strings.get(string);
+        return Strings.STRINGS.get(string);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class Strings
      */
     public static void removeStringRef(String string)
     {
-        Strings.strings.remove(string);
+        Strings.STRINGS.remove(string);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class Strings
      */
     public static Collection<String> getStringsRefs()
     {
-        return Strings.strings.values();
+        return Strings.STRINGS.values();
     }
 
     /**
@@ -75,7 +75,7 @@ public final class Strings
      */
     public static void clearStringsRef()
     {
-        Strings.strings.clear();
+        Strings.STRINGS.clear();
     }
 
     /**

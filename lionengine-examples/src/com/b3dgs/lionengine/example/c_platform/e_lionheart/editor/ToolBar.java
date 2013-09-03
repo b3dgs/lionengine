@@ -39,7 +39,7 @@ public class ToolBar
             {
                 editor.setSelectionState(TypeSelection.SELECT);
             }
-        });
+        }).setToolTipText("Enable the selection mode. Allow to select entities on map.");
         UtilitySwing.addButton("Place", palettePanel, new ActionListener()
         {
             @Override
@@ -47,7 +47,7 @@ public class ToolBar
             {
                 editor.setSelectionState(TypeSelection.PLACE);
             }
-        });
+        }).setToolTipText("Enable the place mode. Allow to place new entities.");
         UtilitySwing.addButton("Delete", palettePanel, new ActionListener()
         {
             @Override
@@ -55,7 +55,7 @@ public class ToolBar
             {
                 editor.setSelectionState(TypeSelection.DELETE);
             }
-        });
+        }).setToolTipText("Enable the delete mode. Allow to delete entities by clicking on them");
         return palettePanel;
     }
 
@@ -74,7 +74,7 @@ public class ToolBar
     public ToolBar(Editor editor)
     {
         super();
-        palettePanel = createPalettePanel(editor);
+        palettePanel = ToolBar.createPalettePanel(editor);
         entitySelector = new EntitySelector(editor);
         entityEditor = new EntityEditor(editor);
         setPaletteEnabled(false);
@@ -110,7 +110,7 @@ public class ToolBar
      */
     public void setEditorEnabled(boolean enabled)
     {
-        UtilitySwing.setEnabled(entityEditor.getComponents(), enabled);
+        entityEditor.setEnabled(enabled);
     }
 
     /**

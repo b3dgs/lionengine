@@ -55,7 +55,7 @@ public interface MapTilePath<C extends Enum<C>, T extends TilePath<C>>
      * @param radius The search size.
      * @return The free place found.
      */
-    public CoordTile getFreeTileAround(int tx, int ty, int radius);
+    CoordTile getFreeTileAround(int tx, int ty, int radius);
 
     /**
      * Check if area if unused.

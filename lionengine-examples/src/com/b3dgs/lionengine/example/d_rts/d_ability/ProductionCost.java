@@ -14,7 +14,7 @@ public final class ProductionCost
     private final int wood;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param steps The steps number.
      * @param gold The gold number.

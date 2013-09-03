@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.CoordTile;
 
 /**
- * Represents the data of a world (starting & ending location, checkpoints...)
+ * Represents the data of a world (starting & ending location, checkpoints...).
  */
 public class WorldData
 {

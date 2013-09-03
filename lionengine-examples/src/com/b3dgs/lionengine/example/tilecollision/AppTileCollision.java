@@ -13,14 +13,14 @@ import com.b3dgs.lionengine.Version;
 /**
  * Program starts here.
  */
-public class AppTileCollision
+public final class AppTileCollision
 {
     /**
      * Main function called by the jvm.
      * 
      * @param argv The arguments.
      */
-    public static void main(String argv[])
+    public static void main(String[] argv)
     {
         // Start engine
         Engine.start("Tile Collision", Version.create(1, 0, 0), Media.getPath("resources", "platform", "mario"));

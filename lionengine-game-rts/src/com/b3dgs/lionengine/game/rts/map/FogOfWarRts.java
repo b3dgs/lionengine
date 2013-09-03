@@ -109,6 +109,7 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
      * Update entities field of view (fog of war).
      * 
      * @param entities The entities reference.
+     * @param <E> The entity type.
      */
     public <E extends EntityRts> void update(Collection<E> entities)
     {

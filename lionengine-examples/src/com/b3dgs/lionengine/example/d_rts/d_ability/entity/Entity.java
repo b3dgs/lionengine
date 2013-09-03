@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.EntityRts;
 
 /**
- * Abstract entity implementation
+ * Abstract entity implementation.
  */
 public abstract class Entity
         extends EntityRts

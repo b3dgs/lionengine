@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.MenuBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.StateBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.ToolBar;
@@ -26,6 +27,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public class Editor
         extends JFrame
 {
+    /** Editor version. */
+    public static final Version VERSION = Version.create(0, 1, 0);
     /** Uid. */
     private static final long serialVersionUID = -1248793737263689450L;
     /** Horizontal moving speed in tile. */

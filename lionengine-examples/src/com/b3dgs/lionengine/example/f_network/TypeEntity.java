@@ -11,7 +11,7 @@ enum TypeEntity
     goomba;
 
     /** Values. */
-    private static final TypeEntity[] values = TypeEntity.values();
+    private static final TypeEntity[] VALUES = TypeEntity.values();
 
     /**
      * Get the message type from its ordinal.
@@ -21,6 +21,6 @@ enum TypeEntity
      */
     public static TypeEntity fromOrdinal(int ordinal)
     {
-        return TypeEntity.values[ordinal];
+        return TypeEntity.VALUES[ordinal];
     }
 }

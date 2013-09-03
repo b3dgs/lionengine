@@ -5,7 +5,6 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 
 /**
@@ -56,6 +55,6 @@ public class StateBar
             state.append("none");
         }
         gd.drawString(state.toString(), 240, 12);
-        gd.drawString(AppLionheart.VERSION.toString(), editor.getWidth() - 45, 12);
+        gd.drawString(Editor.VERSION.toString(), editor.getWidth() - 45, 12);
     }
 }

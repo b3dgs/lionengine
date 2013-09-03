@@ -57,8 +57,8 @@ public abstract class Entity
     {
         super(context.factoryEntity.getSetup(type), context.map);
         this.type = type;
-        this.map = context.map;
-        this.desiredFps = context.desiredFps;
+        map = context.map;
+        desiredFps = context.desiredFps;
         status = new EntityStatus();
         animations = new EnumMap<>(TypeEntityState.class);
         timerDie = new Timing();

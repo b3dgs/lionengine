@@ -34,8 +34,8 @@ public class CameraPlatform
     public CameraPlatform(int screenWidth, int screenHeight)
     {
         super();
-        this.width = screenWidth;
-        this.height = screenHeight;
+        width = screenWidth;
+        height = screenHeight;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         mapLeftLimit = -1;

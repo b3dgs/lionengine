@@ -62,7 +62,7 @@ public enum TypeEntity
         this.category = category;
         category.increase();
     }
-    
+
     /**
      * Get the index value.
      * 

@@ -32,7 +32,7 @@ public final class AppRtsCursor
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppRtsCursor.PROGRAM, AppRtsCursor.VERSION, AppRtsCursor.PATH);

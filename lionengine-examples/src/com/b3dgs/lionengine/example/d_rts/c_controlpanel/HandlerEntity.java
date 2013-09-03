@@ -47,8 +47,7 @@ final class HandlerEntity
         if (cursor.getClick() == 0 && entity.isOver() || entity.isSelected())
         {
             super.renderingEntity(g, entity, camera, cursor);
-            text.draw(g, entity.getLocationIntX() + 18, entity.getLocationIntY() + 16, entity.getClass()
-                    .getSimpleName());
+            text.draw(g, entity.getLocationIntX() + 18, entity.getLocationIntY() + 16, entity.getClass().getSimpleName());
         }
         if (entity.isSelected())
         {

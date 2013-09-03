@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
- * Cancel skill implementation
+ * Cancel skill implementation.
  */
 public final class Cancel
         extends Skill

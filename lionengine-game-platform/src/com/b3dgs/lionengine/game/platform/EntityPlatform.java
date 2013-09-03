@@ -493,7 +493,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     }
 
     /**
-     * Check if tile fill condition
+     * Check if tile fill condition.
      * 
      * @param tile The tile to check.
      * @param collisions The collisions list.

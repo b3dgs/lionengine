@@ -21,7 +21,7 @@ public final class AppLoadDraw
      * 
      * @param args The arguments.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start("Load Draw", Version.create(1, 0, 0), Media.getPath("resources", "loaddraw"));

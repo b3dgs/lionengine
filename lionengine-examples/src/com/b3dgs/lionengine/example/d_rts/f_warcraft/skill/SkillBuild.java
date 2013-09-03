@@ -5,7 +5,7 @@ import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
- * Build skill implementation
+ * Build skill implementation.
  */
 public abstract class SkillBuild
         extends Skill
