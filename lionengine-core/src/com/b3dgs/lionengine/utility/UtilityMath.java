@@ -20,16 +20,15 @@ public final class UtilityMath
      */
     public static int fixBetween(int value, int min, int max)
     {
-        int newValue = value;
-        if (newValue < min)
+        if (value < min)
         {
-            newValue = min;
+            return min;
         }
-        if (newValue > max)
+        else if (value > max)
         {
-            newValue = max;
+            return max;
         }
-        return newValue;
+        return value;
     }
 
     /**
@@ -42,16 +41,15 @@ public final class UtilityMath
      */
     public static double fixBetween(double value, double min, double max)
     {
-        double newValue = value;
-        if (newValue < min)
+        if (value < min)
         {
-            newValue = min;
+            return min;
         }
-        if (newValue > max)
+        else if (value > max)
         {
-            newValue = max;
+            return max;
         }
-        return newValue;
+        return value;
     }
 
     /**
@@ -186,6 +184,18 @@ public final class UtilityMath
             }
         }
         return newValue;
+    }
+
+    /**
+     * Get the rounded value.
+     * 
+     * @param value The value.
+     * @param round The round factor.
+     * @return The rounded value.
+     */
+    public static int getRounded(int value, int round)
+    {
+        return ((int) Math.floor(value / (double) round)) * round;
     }
 
     /**

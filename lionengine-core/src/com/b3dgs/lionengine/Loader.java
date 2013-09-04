@@ -90,23 +90,28 @@ public final class Loader
         {
             // Select next sequence
             final Sequence sequence = nextSequence;
-            sequence.setTitle(sequence.getClass().getName());
             screen.setSequence(sequence);
             Verbose.info("Starting sequence ", sequence.getClass().getName());
-            sequence.start();
+            if (!sequence.isStarted())
+            {
+                sequence.setTitle(sequence.getClass().getName());
+                sequence.start();
+            }
 
             // Wait for sequence end
             try
             {
-                sequence.join();
+                synchronized (sequence)
+                {
+                    sequence.wait();
+                }
             }
             catch (final InterruptedException exception)
             {
                 throw new LionEngineException(exception, Loader.MESSAGE_ERROR_SEQUENCE);
             }
-            Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");
             nextSequence = sequence.getNextSequence();
-
+            Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");
         }
         screen.dispose();
         Verbose.info("LionEngine terminated");

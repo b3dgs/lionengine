@@ -49,12 +49,12 @@ public class EntitySelector
     final Editor editor;
     /** Tabs. */
     final JTabbedPane tabbedPane;
+    /** Landscape panel. */
+    final JPanel landscape;
     /** Entity category icons list. */
     private final EnumMap<TypeEntityCategory, List<Image>> icons;
     /** Entity selector panel. */
     private final JPanel panel;
-    /** Landscape panel. */
-    final JPanel landscape;
     /** Landscape combo. */
     private JComboBox<ComboItem> landscapeCombo;
 
@@ -226,7 +226,7 @@ public class EntitySelector
             x = mx / iconSize * iconSize;
             y = my / iconSize * iconSize;
             final int size = icons.size();
-            final int num = mx / iconSize + 1 + my / iconSize * iconSize;
+            final int num = x / iconSize + 1 + (y / iconSize) * EntitySelector.COLUMNS;
             final TypeEntityCategory[] categories = TypeEntityCategory.values();
             if (num <= size && x < EntitySelector.COLUMNS * iconSize && mx > 0)
             {

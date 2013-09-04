@@ -134,6 +134,7 @@ public class ToolBar
         entityPanel.setMinimumSize(new Dimension(entitySelector.getPreferredSize()));
 
         entityPanel.add(palettePanel, BorderLayout.NORTH);
+        palettePanel.getComponent(0).setEnabled(true);
         entityPanel.add(entitySelector, BorderLayout.CENTER);
         editPanel.add(entityEditor, BorderLayout.CENTER);
 

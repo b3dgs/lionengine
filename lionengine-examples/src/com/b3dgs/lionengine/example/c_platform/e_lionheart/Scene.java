@@ -16,24 +16,12 @@ import com.b3dgs.lionengine.input.Keyboard;
 public final class Scene
         extends Sequence
 {
-    /** Last level index played. */
-    private static int lastLevelIndex = -1;
-
-    /**
-     * Get the next level.
-     * 
-     * @return The next level.
-     */
-    private static TypeLevel getNextLevel()
-    {
-        Scene.lastLevelIndex++;
-        return TypeLevel.values()[Scene.lastLevelIndex % TypeLevel.NUMBER];
-    }
-
     /** Text reference. */
     private final Text text;
     /** World reference. */
     private final World world;
+    /** Last level index played. */
+    private int lastLevelIndex;
 
     /**
      * Standard constructor.
@@ -45,6 +33,7 @@ public final class Scene
         super(loader);
         text = new Text(Font.SANS_SERIF, 8, Text.NORMAL);
         world = new World(this);
+        lastLevelIndex = -1;
     }
 
     /**
@@ -57,6 +46,17 @@ public final class Scene
         world.loadFromFile(Media.get(AppLionheart.LEVELS_DIR, level.getFilename()));
     }
 
+    /**
+     * Get the next level.
+     * 
+     * @return The next level.
+     */
+    private TypeLevel getNextLevel()
+    {
+        lastLevelIndex++;
+        return TypeLevel.values()[lastLevelIndex % TypeLevel.LEVELS_NUMBER];
+    }
+
     /*
      * Sequence
      */
@@ -64,7 +64,7 @@ public final class Scene
     @Override
     protected void load()
     {
-        loadLevel(Scene.getNextLevel());
+        loadLevel(getNextLevel());
     }
 
     @Override

@@ -73,6 +73,7 @@ public class CameraPlatform
         mapLeftLimit = 0;
         mapRightLimit = right;
         mapDownLimit = 0;
+        moveLocation(1.0, 0.0, 0.0);
     }
 
     /**

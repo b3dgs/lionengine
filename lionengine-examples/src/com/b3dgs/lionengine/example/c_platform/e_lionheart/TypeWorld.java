@@ -8,7 +8,7 @@ import java.util.Locale;
 public enum TypeWorld
 {
     /** Swamp world. */
-    SWAMP(0);
+    SWAMP(0, Music.SWAMP);
 
     /** Values. */
     private static final TypeWorld[] VALUES = TypeWorld.values();
@@ -26,15 +26,19 @@ public enum TypeWorld
 
     /** Index. */
     private final int index;
+    /** World music. */
+    private Music music;
 
     /**
      * Constructor.
      * 
      * @param index The index number.
+     * @param music The music type.
      */
-    private TypeWorld(int index)
+    private TypeWorld(int index, Music music)
     {
         this.index = index;
+        this.music = music;
     }
 
     /**
@@ -45,6 +49,16 @@ public enum TypeWorld
     public int getIndex()
     {
         return index;
+    }
+
+    /**
+     * Get the music type.
+     * 
+     * @return The music type.
+     */
+    public Music getMusic()
+    {
+        return music;
     }
 
     /**

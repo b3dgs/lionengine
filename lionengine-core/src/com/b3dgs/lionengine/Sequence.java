@@ -103,6 +103,8 @@ public abstract class Sequence
     private final AffineTransformOp op;
     /** Direct rendering. */
     private final boolean directRendering;
+    /** Previous sequence pointer. */
+    private Sequence previousSequence;
     /** Next sequence pointer. */
     private Sequence nextSequence;
     /** Extrapolation flag. */
@@ -220,7 +222,7 @@ public abstract class Sequence
      */
     public final void end()
     {
-        end(null);
+        end(nextSequence);
     }
 
     /**
@@ -232,6 +234,20 @@ public abstract class Sequence
     {
         this.nextSequence = nextSequence;
         isRunning = false;
+    }
+
+    /**
+     * Start the next sequence, call the {@link #load()} function, and wait for current sequence to end before
+     * continuing.
+     * 
+     * @param nextSequence The next sequence reference.
+     */
+    public final void start(final Sequence nextSequence)
+    {
+        this.nextSequence = nextSequence;
+        nextSequence.previousSequence = this;
+        nextSequence.setTitle(nextSequence.getClass().getName());
+        nextSequence.start();
     }
 
     /**
@@ -340,6 +356,25 @@ public abstract class Sequence
     {
         load();
 
+        if (previousSequence != null)
+        {
+            synchronized (this)
+            {
+                notify();
+            }
+            synchronized (previousSequence)
+            {
+                try
+                {
+                    previousSequence.wait();
+                }
+                catch (InterruptedException exception)
+                {
+                    Verbose.exception(Sequence.class, "run", exception);
+                }
+            }
+        }
+
         double extrp = Sequence.EXTRP;
         long updateFpsTimer = 0L;
         currentFrameRate = external.getRate();
@@ -376,6 +411,10 @@ public abstract class Sequence
             }
         }
         onTerminate();
+        synchronized (this)
+        {
+            notifyAll();
+        }
     }
 
     /**
@@ -396,6 +435,16 @@ public abstract class Sequence
     final Sequence getNextSequence()
     {
         return nextSequence;
+    }
+
+    /**
+     * Get the started state.
+     * 
+     * @return <code>true</code> if started, <code>false</code> else.
+     */
+    final boolean isStarted()
+    {
+        return thread.isAlive();
     }
 
     /**

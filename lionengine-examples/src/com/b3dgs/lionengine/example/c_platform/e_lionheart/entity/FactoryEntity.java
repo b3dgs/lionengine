@@ -5,10 +5,10 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.Talisment;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.Crawling;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.FactoryEntityItem;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.FactoryEntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.Sheet;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
@@ -71,20 +71,14 @@ public final class FactoryEntity
     @Override
     public Entity createEntity(TypeEntity type)
     {
-        switch (type)
+        switch (type.getCategory())
         {
-            case TALISMENT:
-                return new Talisment(context);
-
-            case CRAWLING:
-                return new Crawling(context);
-
-            case SHEET:
-                return new Sheet(context);
-
-            case VALDYN:
-                return new Valdyn(context);
-
+            case ITEM:
+                return FactoryEntityItem.createItem(context, type);
+            case MONSTER:
+                return FactoryEntityMonster.createMonster(context, type);
+            case SCENERY:
+                return FactoryEntityScenery.createScenery(context, type);
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }

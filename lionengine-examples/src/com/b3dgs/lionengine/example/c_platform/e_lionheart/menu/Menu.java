@@ -12,6 +12,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteFont;
@@ -303,18 +304,33 @@ public class Menu
      */
     private void handleMenuNew()
     {
+        boolean canStart = false;
         if (alpha == 0.0)
         {
             txtAlpha += Menu.ALPHA_STEP;
             if (txtAlpha > 255.0)
             {
                 txtAlpha = 255.0;
+                canStart = true;
             }
             // Wait for loading
-            if (!firstLoaded)
+            if (!firstLoaded && txtAlpha == 255.0)
             {
                 firstLoaded = true;
                 timerPressStart.start();
+                final Sequence sequence = new Scene(loader);
+                start(sequence);
+                synchronized (sequence)
+                {
+                    try
+                    {
+                        sequence.wait();
+                    }
+                    catch (InterruptedException exception)
+                    {
+                        Verbose.exception(Menu.class, "handleMenuNew", exception);
+                    }
+                }
             }
             if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
             {
@@ -324,10 +340,11 @@ public class Menu
         }
 
         // Entering game
-        if (keyboard.used())
+        if (canStart && keyboard.used())
         {
             transition = TypeTransition.OUT;
             menuNext = TypeMenu.GAME;
+            firstLoaded = false;
         }
     }
 
@@ -391,7 +408,7 @@ public class Menu
                 handleMenuNew();
                 break;
             case GAME:
-                end(new Scene(loader));
+                end();
                 break;
             case OPTIONS:
                 handleMenuOptions();

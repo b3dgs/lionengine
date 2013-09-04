@@ -13,6 +13,18 @@ public enum TypeEntity
 
     /** Talisment (item). */
     TALISMENT(TypeEntityCategory.ITEM),
+    /** Potion little (item). */
+    POTION_LITTLE(TypeEntityCategory.ITEM),
+    /** Potion big (item). */
+    POTION_BIG(TypeEntityCategory.ITEM),
+    /** Life (item). */
+    LIFE(TypeEntityCategory.ITEM),
+    /** Sword1 (item). */
+    SWORD1(TypeEntityCategory.ITEM),
+    /** Sword2 (item). */
+    SWORD2(TypeEntityCategory.ITEM),
+    /** Sword3 (item). */
+    SWORD3(TypeEntityCategory.ITEM),
 
     /*
      * Monsters

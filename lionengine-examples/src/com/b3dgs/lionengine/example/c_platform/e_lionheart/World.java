@@ -42,7 +42,7 @@ final class World
     /** Context. */
     private final Context context;
     /** Player reference. */
-    private final Valdyn player;
+    private Valdyn player;
 
     /**
      * Constructor.
@@ -61,8 +61,6 @@ final class World
         map = level.map;
         context = new Context(level, display.getRate());
         handlerEffect = context.handlerEffect;
-        player = factoryEntity.createValdyn();
-        handlerEntity.setPlayer(player);
     }
 
     /*
@@ -102,6 +100,8 @@ final class World
     {
         map.setLandscape(landscape.getType());
         level.load(file);
+        player = factoryEntity.createValdyn();
+        handlerEntity.setPlayer(player);
     }
 
     @Override
@@ -109,7 +109,7 @@ final class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
-
         player.respawn();
+        // SonicArranger.play(level.getWorld().getMusic());
     }
 }

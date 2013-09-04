@@ -79,7 +79,7 @@ public class CollidableModel
     @Override
     public void renderCollision(Graphic g, CameraGame camera)
     {
-        final int x = camera.getViewpointX((int) box.getX());
+        final int x = camera.getViewpointX((int) box.getX() - (int) box.getWidth() / 2);
         final int y = camera.getViewpointY((int) (box.getY() + box.getHeight()));
         g.drawRect(x, y, (int) box.getWidth(), (int) box.getHeight(), false);
 

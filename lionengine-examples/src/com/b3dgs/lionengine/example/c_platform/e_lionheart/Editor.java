@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -39,6 +41,10 @@ public class Editor
     public final WorldPanel world;
     /** Tool bar reference. */
     public final ToolBar toolBar;
+    /** Current horizontal view offset in tile. */
+    private int hOffset;
+    /** Current vertical view offset in tile. */
+    private int vOffset;
     /** Menu bar reference. */
     private final MenuBar menuBar;
     /** State bar reference. */
@@ -47,10 +53,6 @@ public class Editor
     private TypeEntity selectedEntity;
     /** Current state selection. */
     private TypeSelection selectionState;
-    /** Current horizontal view offset in tile. */
-    private int hOffset;
-    /** Current vertical view offset in tile. */
-    private int vOffset;
 
     /**
      * Constructor.
@@ -131,7 +133,7 @@ public class Editor
      * 
      * @return The vertical view offset.
      */
-    public int getOffserViewV()
+    public int getOffsetViewV()
     {
         return vOffset * world.map.getTileHeight();
     }
@@ -197,6 +199,36 @@ public class Editor
     }
 
     /**
+     * Update and apply the world offset location.
+     * 
+     * @param hOffsetOld The old horizontal offset.
+     * @param vOffsetOld The old vertical offset.
+     */
+    void updateWorldLocation(int hOffsetOld, int vOffsetOld)
+    {
+        final int tw = world.map.getTileWidth();
+        final int th = world.map.getTileHeight();
+        final int hOffsetMax = Math.max(world.map.getWidthInTile() - world.camera.getViewWidth() / tw, 0);
+        final int vOffsetMax = Math.max(world.map.getHeightInTile() - world.camera.getViewHeight() / th, 0);
+        hOffset = UtilityMath.fixBetween(hOffset, 0, hOffsetMax);
+        vOffset = UtilityMath.fixBetween(vOffset, 0, vOffsetMax);
+        final int mh = hOffset - hOffsetOld;
+        final int mv = vOffset - vOffsetOld;
+        if (mh != 0 || mv != 0)
+        {
+            for (final Entity entity : world.handlerEntity.list())
+            {
+                if (entity.isSelected() && world.isClicking())
+                {
+                    entity.moveLocation(1.0, mh * tw, mv * th);
+                }
+            }
+        }
+        world.camera.moveLocation(1.0, mh * tw, mv * th);
+        repaint();
+    }
+
+    /**
      * Initialize the editor content.
      */
     private void init()
@@ -207,6 +239,17 @@ public class Editor
             public void windowClosing(WindowEvent event)
             {
                 terminate();
+            }
+        });
+        addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentResized(ComponentEvent event)
+            {
+                final int areaX = UtilityMath.getRounded(world.getWidth(), world.map.getTileWidth());
+                final int areaY = UtilityMath.getRounded(world.getHeight(), world.map.getTileHeight());
+                world.camera.setView(0, 0, areaX, areaY);
+                updateWorldLocation(getOffsetViewInTileH(), getOffsetViewInTileV());
             }
         });
         setLayout(new BorderLayout());
@@ -229,31 +272,5 @@ public class Editor
                 }
             }
         }, AWTEvent.KEY_EVENT_MASK);
-    }
-
-    /**
-     * Update and apply the world offset location.
-     * 
-     * @param hOffsetOld The old horizontal offset.
-     * @param vOffsetOld The old vertical offset.
-     */
-    private void updateWorldLocation(int hOffsetOld, int vOffsetOld)
-    {
-        vOffset = UtilityMath.fixBetween(vOffset, 0, world.map.getHeightInTile());
-        hOffset = UtilityMath.fixBetween(hOffset, 0, world.map.getWidthInTile());
-        final int mh = hOffset - hOffsetOld;
-        final int mv = vOffset - vOffsetOld;
-        if (mh != 0 || mv != 0)
-        {
-            for (final Entity entity : world.handlerEntity.list())
-            {
-                if (entity.isSelected() && world.isClicking())
-                {
-                    entity.moveLocation(1.0, mh * world.map.getTileWidth(), mv * world.map.getTileHeight());
-                }
-            }
-        }
-        world.camera.moveLocation(1.0, mh * world.map.getTileWidth(), mv * world.map.getTileHeight());
-        repaint();
     }
 }

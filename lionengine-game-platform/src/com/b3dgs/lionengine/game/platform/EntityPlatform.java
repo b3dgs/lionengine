@@ -195,7 +195,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         handleCollisions(extrp);
         collOffX = 0;
         collOffY = 0;
-        updateCollision(-frameOffsetX, frameOffsetY, getWidth(), getHeight());
+        updateCollision(sprite.getFrameWidth() / 2 - frameOffsetX, frameOffsetY, getWidth(), getHeight());
         handleAnimations(extrp);
     }
 
@@ -207,9 +207,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     public void render(Graphic g, CameraPlatform camera)
     {
-        final int x = camera.getViewpointX(getLocationIntX() - frameOffsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + getHeight());
-        sprite.render(g, x, y);
+        renderAnim(g, sprite, camera);
     }
 
     /**
@@ -406,7 +404,7 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     protected void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
     {
         final int x = camera.getViewpointX(getLocationIntX() - frameOffsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + getHeight());
+        final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + sprite.getFrameHeight());
         sprite.render(g, x + rx, y + ry);
     }
 

@@ -9,7 +9,7 @@ public enum TypeLevel
     SWAMP_1("level1.lrm");
 
     /** Total number of levels. */
-    public static final int NUMBER = TypeLevel.values().length;
+    public static final int LEVELS_NUMBER = TypeLevel.values().length;
     /** Level filename. */
     private final String filename;
 

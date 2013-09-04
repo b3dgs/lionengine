@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public final class Valdyn
         extends EntityMover
 {
+    /** Collision offset. */
+    private static final int COLLISION_OFFSET = 3;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
     /** The width of the tile extremity. */
@@ -110,7 +112,7 @@ public final class Valdyn
         movementSmooth = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
-        setFrameOffsets(getWidth() / 2, -8);
+        setFrameOffsets(40, -8);
         addShadeAnimation(TypeEntityState.ATTACK_UP, 1);
         addShadeAnimation(TypeEntityState.ATTACK_HORIZONTAL, 1);
         addShadeAnimation(TypeEntityState.ATTACK_TURNING, 2);
@@ -615,6 +617,12 @@ public final class Valdyn
     /*
      * Entity
      */
+
+    @Override
+    public void updateCollision(int x, int y, int width, int height)
+    {
+        super.updateCollision(x - Valdyn.COLLISION_OFFSET, y, width, height);
+    }
 
     @Override
     public void render(Graphic g, CameraPlatform camera)
