@@ -226,7 +226,7 @@ public class EntitySelector
             x = mx / iconSize * iconSize;
             y = my / iconSize * iconSize;
             final int size = icons.size();
-            final int num = x / iconSize + 1 + (y / iconSize) * EntitySelector.COLUMNS;
+            final int num = x / iconSize + 1 + y / iconSize * EntitySelector.COLUMNS;
             final TypeEntityCategory[] categories = TypeEntityCategory.values();
             if (num <= size && x < EntitySelector.COLUMNS * iconSize && mx > 0)
             {

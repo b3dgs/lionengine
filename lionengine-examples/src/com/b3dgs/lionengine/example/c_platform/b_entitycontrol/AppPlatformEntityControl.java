@@ -31,7 +31,8 @@ public final class AppPlatformEntityControl
     public static void main(String[] args)
     {
         // Start engine
-        Engine.start(AppPlatformEntityControl.NAME, AppPlatformEntityControl.VERSION, AppPlatformEntityControl.RESOURCES);
+        Engine.start(AppPlatformEntityControl.NAME, AppPlatformEntityControl.VERSION,
+                AppPlatformEntityControl.RESOURCES);
 
         // Displays
         final Display internal = new Display(320, 240, 16, 60);

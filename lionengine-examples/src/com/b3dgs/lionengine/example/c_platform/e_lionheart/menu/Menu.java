@@ -12,7 +12,6 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteFont;
@@ -318,19 +317,7 @@ public class Menu
             {
                 firstLoaded = true;
                 timerPressStart.start();
-                final Sequence sequence = new Scene(loader);
-                start(sequence);
-                synchronized (sequence)
-                {
-                    try
-                    {
-                        sequence.wait();
-                    }
-                    catch (InterruptedException exception)
-                    {
-                        Verbose.exception(Menu.class, "handleMenuNew", exception);
-                    }
-                }
+                start(new Scene(loader), true);
             }
             if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
             {

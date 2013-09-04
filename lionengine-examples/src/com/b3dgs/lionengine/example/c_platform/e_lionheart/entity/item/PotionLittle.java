@@ -28,6 +28,6 @@ public final class PotionLittle
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // Nothing for the moment
+        // TODO: Increase one heart
     }
 }

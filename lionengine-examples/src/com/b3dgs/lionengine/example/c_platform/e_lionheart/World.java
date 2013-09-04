@@ -10,7 +10,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -27,8 +26,6 @@ final class World
     private final CameraPlatform camera;
     /** Background factory. */
     private final FactoryLandscape factoryLandscape;
-    /** Background reference. */
-    private final Landscape landscape;
     /** Level reference. */
     private final Level level;
     /** Map reference. */
@@ -41,6 +38,8 @@ final class World
     private final HandlerEffect handlerEffect;
     /** Context. */
     private final Context context;
+    /** Background reference. */
+    private Landscape landscape;
     /** Player reference. */
     private Valdyn player;
 
@@ -54,7 +53,6 @@ final class World
         super(sequence);
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(config, wide, false);
-        landscape = factoryLandscape.createLandscape(TypeLandscape.SWAMP_DUSK);
         factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
         level = new Level(factoryEntity, handlerEntity);
@@ -84,8 +82,8 @@ final class World
         landscape.renderBackground(g);
         map.render(g, camera);
         handlerEntity.render(g, camera);
-        player.render(g, camera);
         handlerEffect.render(g, camera);
+        player.render(g, camera);
         landscape.renderForeground(g);
     }
 
@@ -98,10 +96,10 @@ final class World
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.setLandscape(landscape.getType());
         level.load(file);
         player = factoryEntity.createValdyn();
         handlerEntity.setPlayer(player);
+        landscape = factoryLandscape.createLandscape(level.getLandscape());
     }
 
     @Override
@@ -110,6 +108,6 @@ final class World
         camera.setLimits(map);
         camera.setIntervals(32, 0);
         player.respawn();
-        // SonicArranger.play(level.getWorld().getMusic());
+        // TODO: SonicArranger.play(level.getWorld().getMusic());
     }
 }

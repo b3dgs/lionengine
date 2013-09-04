@@ -51,7 +51,7 @@ public class CameraPlatform
      */
     public void follow(EntityPlatform<?, ?> entity)
     {
-        setLocation(entity.getLocationX(), entity.getLocationY() + entity.getHeight() / 2.0);
+        setLocation(entity.getLocationX(), entity.getLocationY() + entity.getHeight() / 2);
     }
 
     /**

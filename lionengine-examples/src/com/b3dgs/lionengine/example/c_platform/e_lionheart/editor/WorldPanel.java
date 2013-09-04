@@ -432,7 +432,8 @@ public class WorldPanel
     {
         if (entity != null)
         {
-            final int x = UtilityMath.getRounded(entity.getLocationIntX(), map.getTileWidth()) - editor.getOffsetViewH();
+            final int x = UtilityMath.getRounded(entity.getLocationIntX(), map.getTileWidth())
+                    - editor.getOffsetViewH();
             final int y = UtilityMath.getRounded(entity.getLocationIntY(), map.getTileHeight())
                     - editor.getOffsetViewV();
             final Rectangle2D r1 = new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1);

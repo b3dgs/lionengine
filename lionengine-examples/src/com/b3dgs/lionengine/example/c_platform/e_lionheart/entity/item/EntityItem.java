@@ -60,6 +60,7 @@ public abstract class EntityItem
         effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
         handlerEffect.add(effect);
         onTaken((Valdyn) entity);
+        // TODO: Play taken sound
     }
 
     @Override

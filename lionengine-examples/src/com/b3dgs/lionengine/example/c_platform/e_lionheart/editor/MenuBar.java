@@ -123,8 +123,8 @@ public class MenuBar
 
         final JPanel panel = UtilitySwing.createBorderedPanel("World", 2);
         centerPanel.add(panel);
-        final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel, ComboItem.get(TypeWorld.values()),
-                null);
+        final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel,
+                ComboItem.get(TypeWorld.values()), null);
 
         // South panel
         final JPanel southPanel = new JPanel(new GridLayout());

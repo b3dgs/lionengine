@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.lang.Thread.State;
 
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
@@ -113,6 +114,8 @@ public abstract class Sequence
     private double currentFrameRate;
     /** Thread running flag. */
     private boolean isRunning;
+    /** Will stop flag. */
+    private boolean willStop;
 
     /**
      * Create a new sequence.
@@ -234,20 +237,37 @@ public abstract class Sequence
     {
         this.nextSequence = nextSequence;
         isRunning = false;
+        willStop = true;
     }
 
     /**
-     * Start the next sequence, call the {@link #load()} function, and wait for current sequence to end before
-     * continuing.
+     * Start the next sequence, call the {@link #load()} function, and wait for current sequence to end before next
+     * sequence continues. This function should be used to synchronize two sequences (eg: load a next sequence while
+     * being in a menu). Do not forget to call {@link #end()} in order to give control to the next sequence.
      * 
      * @param nextSequence The next sequence reference.
+     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
      */
-    public final void start(final Sequence nextSequence)
+    public final void start(final Sequence nextSequence, boolean wait)
     {
         this.nextSequence = nextSequence;
         nextSequence.previousSequence = this;
         nextSequence.setTitle(nextSequence.getClass().getName());
         nextSequence.start();
+        if (wait)
+        {
+            synchronized (nextSequence)
+            {
+                try
+                {
+                    nextSequence.wait();
+                }
+                catch (final InterruptedException exception)
+                {
+                    Verbose.exception(Sequence.class, "start", exception);
+                }
+            }
+        }
     }
 
     /**
@@ -354,40 +374,29 @@ public abstract class Sequence
      */
     final void run()
     {
+        // Load sequence
         load();
 
+        // Check previous sequence
         if (previousSequence != null)
         {
-            synchronized (this)
-            {
-                notify();
-            }
-            synchronized (previousSequence)
-            {
-                try
-                {
-                    previousSequence.wait();
-                }
-                catch (InterruptedException exception)
-                {
-                    Verbose.exception(Sequence.class, "run", exception);
-                }
-            }
+            notifyPreviousSequenceAndWait();
         }
 
+        // Prepare sequence to be started
         double extrp = Sequence.EXTRP;
         long updateFpsTimer = 0L;
         currentFrameRate = external.getRate();
         screen.requestFocus();
-        mouse.setCenter(screen.getLocationX() + external.getWidth() / 2, screen.getLocationY() + external.getHeight()
-                / 2);
+        final int mcx = screen.getLocationX() + external.getWidth() / 2;
+        final int mcy = screen.getLocationY() + external.getHeight() / 2;
+        mouse.setCenter(mcx, mcy);
 
         // Main loop
         isRunning = true;
         while (isRunning)
         {
             final long lastTime = System.nanoTime();
-
             mouse.update();
             update(extrp);
             preRender(screen.getGraphic());
@@ -408,6 +417,10 @@ public abstract class Sequence
             {
                 currentFrameRate = Sequence.TIME_DOUBLE / (currentTime - lastTime);
                 updateFpsTimer = currentTime;
+            }
+            if (willStop && nextSequence != null)
+            {
+                waitForNextSequenceWaiting();
             }
         }
         onTerminate();
@@ -445,6 +458,43 @@ public abstract class Sequence
     final boolean isStarted()
     {
         return thread.isAlive();
+    }
+
+    /**
+     * Notify the previous sequence and wait for its termination.
+     */
+    private void notifyPreviousSequenceAndWait()
+    {
+        synchronized (this)
+        {
+            notify();
+        }
+        synchronized (previousSequence)
+        {
+            try
+            {
+                previousSequence.wait();
+            }
+            catch (final InterruptedException exception)
+            {
+                Verbose.exception(Sequence.class, "run", exception);
+            }
+        }
+    }
+
+    /**
+     * Active wait for the next sequence to wait for this sequence before allow ending.
+     */
+    private void waitForNextSequenceWaiting()
+    {
+        if (!isRunning && nextSequence.isStarted())
+        {
+            isRunning = true;
+        }
+        if (nextSequence.thread.getState() == State.WAITING)
+        {
+            isRunning = false;
+        }
     }
 
     /**
@@ -501,7 +551,7 @@ public abstract class Sequence
             }
             catch (final InterruptedException exception)
             {
-                Verbose.warning(Sequence.class, "sync", exception.getMessage());
+                Verbose.exception(Sequence.class, "sync", exception);
             }
         }
     }

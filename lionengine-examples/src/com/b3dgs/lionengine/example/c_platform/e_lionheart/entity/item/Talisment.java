@@ -28,6 +28,6 @@ public final class Talisment
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // Nothing for the moment
+        // TODO: Increase talisment counter
     }
 }

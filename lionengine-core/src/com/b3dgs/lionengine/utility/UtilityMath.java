@@ -195,7 +195,7 @@ public final class UtilityMath
      */
     public static int getRounded(int value, int round)
     {
-        return ((int) Math.floor(value / (double) round)) * round;
+        return (int) Math.floor(value / (double) round) * round;
     }
 
     /**

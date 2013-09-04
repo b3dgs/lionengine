@@ -91,10 +91,11 @@ public final class Loader
             // Select next sequence
             final Sequence sequence = nextSequence;
             screen.setSequence(sequence);
-            Verbose.info("Starting sequence ", sequence.getClass().getName());
+            final String sequenceName = sequence.getClass().getName();
+            Verbose.info("Starting sequence ", sequenceName);
             if (!sequence.isStarted())
             {
-                sequence.setTitle(sequence.getClass().getName());
+                sequence.setTitle(sequenceName);
                 sequence.start();
             }
 

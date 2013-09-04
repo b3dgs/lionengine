@@ -28,6 +28,6 @@ public final class Life
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // Nothing for the moment
+        // TODO: Increase one life
     }
 }

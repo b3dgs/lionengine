@@ -28,6 +28,6 @@ public final class Sword1
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // Nothing for the moment
+        // TODO: Set sword level to 1
     }
 }

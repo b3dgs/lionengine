@@ -60,7 +60,7 @@ public class Map
      */
     public void setLandscape(TypeLandscape landscape)
     {
-        if (RASTER_ENABLED)
+        if (Map.RASTER_ENABLED)
         {
             setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster()), false, false);
         }

@@ -31,6 +31,10 @@ public abstract class HandlerEffectGame<E extends EffectGame>
         for (final E effect : list())
         {
             effect.update(extrp);
+            if (effect.isDestroyed())
+            {
+                remove(effect);
+            }
         }
         updateRemove();
     }

@@ -76,6 +76,7 @@ public class Level
         setWorld(TypeWorld.get(file.readByte()));
         factoryEntity.loadAll(TypeEntity.values());
         setLandscape(TypeLandscape.get(file.readByte()));
+        map.setLandscape(getLandscape());
         map.load(file);
         worldData.load(file);
         handlerEntity.load(file);
