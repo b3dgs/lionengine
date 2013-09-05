@@ -71,7 +71,7 @@ public final class Scene
     protected void update(double extrp)
     {
         world.update(extrp);
-        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE) || world.isGameOver())
         {
             end(new Menu(loader));
         }

@@ -19,6 +19,8 @@ public final class AppLionheart
     public static final String NAME = "Lionheart";
     /** Application version. */
     public static final Version VERSION = Version.create(0, 1, 0);
+    /** Sprites directory. */
+    public static final String SPRITES_DIR = "sprites";
     /** Levels directory. */
     public static final String LEVELS_DIR = "levels";
     /** Sheets directory. */

@@ -72,7 +72,11 @@ public final class Tile
     private Double getSlopeRight(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationX() - getX() - getWidth();
-        final double y = getTop() - x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        double y = getTop() - x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        if (getCollision() == TypeTileCollision.SLOPE_RIGHT_BORDER_UP && y > super.getTop())
+        {
+            y = super.getTop();
+        }
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
@@ -90,7 +94,11 @@ public final class Tile
     private Double getSlopeLeft(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationIntX() - getX();
-        final double y = getTop() + x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        double y = getTop() + x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        if (getCollision() == TypeTileCollision.SLOPE_LEFT_BORDER_UP && y > super.getTop())
+        {
+            y = super.getTop();
+        }
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
@@ -119,7 +127,7 @@ public final class Tile
     @Override
     public int getTop()
     {
-        return super.getTop() - halfTileHeight;
+        return super.getBottom() + 2;
     }
 
     @Override
@@ -140,18 +148,18 @@ public final class Tile
                 return getGround(localizable);
 
             case SLOPE_RIGHT_1:
+            case SLOPE_RIGHT_BORDER_UP:
                 return getSlopeRight(localizable, halfTileHeight);
             case SLOPE_RIGHT_BORDER_DOWN:
-            case SLOPE_RIGHT_BORDER_UP:
             case SLOPE_RIGHT_2:
                 return getSlopeRight(localizable, 0);
             case SLOPE_RIGHT_3:
                 return getSlopeRight(localizable, -halfTileHeight);
 
             case SLOPE_LEFT_1:
+            case SLOPE_LEFT_BORDER_UP:
                 return getSlopeLeft(localizable, halfTileHeight);
             case SLOPE_LEFT_BORDER_DOWN:
-            case SLOPE_LEFT_BORDER_UP:
             case SLOPE_LEFT_2:
                 return getSlopeLeft(localizable, 0);
             case SLOPE_LEFT_3:

@@ -13,6 +13,7 @@
 	<animation name="crouch" start="3" end="3" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="fallen" start="21" end="21" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="walk" start="26" end="35" speed="0.25" reversed="false" repeat="true"/>
+	<animation name="turn" start="26" end="35" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="jump" start="17" end="19" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="fall" start="20" end="20" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="border" start="13" end="16" speed="0.1" reversed="true" repeat="true"/>

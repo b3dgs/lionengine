@@ -46,8 +46,9 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
      * Render this entity ({@link EntityPlatform#render(Graphic, CameraPlatform)} is already called before).
      * 
      * @param entity The current rendering entity.
+     * @param camera The camera reference.
      */
-    protected abstract void renderingEntity(E entity);
+    protected abstract void renderingEntity(E entity, CameraPlatform camera);
 
     /**
      * Update all entities.
@@ -90,7 +91,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
             if (canRenderEntity(entity))
             {
                 entity.render(g, camera);
-                renderingEntity(entity);
+                renderingEntity(entity, camera);
             }
         }
     }

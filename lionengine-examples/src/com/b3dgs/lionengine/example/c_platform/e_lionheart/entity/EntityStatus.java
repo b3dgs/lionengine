@@ -20,7 +20,7 @@ public final class EntityStatus
     EntityStatus()
     {
         state = TypeEntityState.IDLE;
-        stateOld = state;
+        stateOld = null;
         collision = TypeEntityCollision.NONE;
         collisionOld = collision;
     }

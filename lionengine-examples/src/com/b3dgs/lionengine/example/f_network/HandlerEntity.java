@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.f_network;
 
 import java.util.HashMap;
 
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 
 /**
@@ -59,7 +60,7 @@ class HandlerEntity
     }
 
     @Override
-    protected void renderingEntity(Entity entity)
+    protected void renderingEntity(Entity entity, CameraPlatform camera)
     {
         // Nothing to do
     }

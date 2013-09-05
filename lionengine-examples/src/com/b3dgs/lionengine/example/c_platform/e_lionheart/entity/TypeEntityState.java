@@ -18,7 +18,7 @@ public enum TypeEntityState
     /** Walk state. */
     WALK("walk"),
     /** Turning state. */
-    TURN("walk"),
+    TURN("turn"),
     /** Jumping state. */
     JUMP("jump"),
     /** Falling state. */

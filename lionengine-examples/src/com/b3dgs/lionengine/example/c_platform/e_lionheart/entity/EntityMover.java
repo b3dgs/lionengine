@@ -37,6 +37,14 @@ public abstract class EntityMover
     private final Set<TypeEntityMovement> enableMovement;
     /** Movement max speed. */
     protected double movementSpeedMax;
+    /** Patrol current movement side. */
+    protected int side;
+    /** Patrol minimum position. */
+    protected int posMin;
+    /** Patrol maximum position. */
+    protected int posMax;
+    /** Patrol existence flag. */
+    protected boolean hasPatrol;
     /** Movement type. */
     private TypeEntityMovement movementType;
     /** First move flag. */
@@ -47,14 +55,6 @@ public abstract class EntityMover
     private int patrolLeft;
     /** Patrol right value. */
     private int patrolRight;
-    /** Patrol existence flag. */
-    private boolean hasPatrol;
-    /** Patrol current movement side. */
-    private int side;
-    /** Patrol minimum position. */
-    private int posMin;
-    /** Patrol maximum position. */
-    private int posMax;
 
     /**
      * Constructor.
@@ -78,7 +78,6 @@ public abstract class EntityMover
         };
         setMass(getDataDouble("mass", "data"));
         setGravityMax(getDataDouble("gravityMax", "data"));
-        setFrameOffsets(0, getHeight() / 2);
         enableMovement(TypeEntityMovement.NONE);
         enableMovement(TypeEntityMovement.HORIZONTAL);
     }
@@ -395,28 +394,36 @@ public abstract class EntityMover
     {
         super.load(file);
         setMovementType(TypeEntityMovement.get(file.readByte()));
-        if (getMovementType() != TypeEntityMovement.NONE)
+        final TypeEntityMovement movementType = getMovementType();
+        if (movementType != TypeEntityMovement.NONE)
         {
             setMoveSpeed(file.readByte());
             setFirstMove(file.readByte());
             setPatrolLeft(file.readByte());
             setPatrolRight(file.readByte());
 
-            if (getMovementType() == TypeEntityMovement.HORIZONTAL)
+            hasPatrol = getPatrolLeft() != 0 || getPatrolRight() != 0;
+            movementSpeedMax = getMoveSpeed() / 5.0;
+            if (firstMove == 0)
+            {
+                side = -1;
+            }
+            if (movementType == TypeEntityMovement.HORIZONTAL)
             {
                 posMin = getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
                 posMax = getLocationIntX() + (getPatrolRight() - 1) * Map.TILE_WIDTH;
+                movement.getForce().setForce(movementSpeedMax * side, 0.0);
             }
-            else if (getMovementType() == TypeEntityMovement.VERTICAL)
+            else if (movementType == TypeEntityMovement.VERTICAL)
             {
                 posMin = getLocationIntY() - getPatrolLeft() * Map.TILE_WIDTH;
                 posMax = getLocationIntY() + getPatrolRight() * Map.TILE_WIDTH;
+                movement.getForce().setForce(0.0, movementSpeedMax * side);
             }
-            hasPatrol = getPatrolLeft() != 0 || getPatrolRight() != 0;
-            movementSpeedMax = getMoveSpeed() / 20.0f;
 
             if (side == -1)
             {
+                mirror(true);
                 teleport((int) (posMax + movement.getForce().getForceHorizontal()), getLocationIntY());
             }
             else if (side == 1)
@@ -430,6 +437,11 @@ public abstract class EntityMover
     protected void updateCollisions()
     {
         checkMapLimit();
+        // Vertical collision
+        if (getDiffVertical() < 0 || isOnGround())
+        {
+            checkCollisionVertical(0);
+        }
     }
 
     @Override

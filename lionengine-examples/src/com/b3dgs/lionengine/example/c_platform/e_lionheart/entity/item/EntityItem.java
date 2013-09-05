@@ -55,12 +55,15 @@ public abstract class EntityItem
     @Override
     public void hitThat(Entity entity)
     {
-        kill();
-        final Effect effect = factoryEffect.createEffect(TypeEffect.TAKEN);
-        effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
-        handlerEffect.add(effect);
-        onTaken((Valdyn) entity);
-        // TODO: Play taken sound
+        if (!isDead())
+        {
+            kill();
+            final Effect effect = factoryEffect.createEffect(TypeEffect.TAKEN);
+            effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
+            handlerEffect.add(effect);
+            onTaken((Valdyn) entity);
+            // TODO: Play taken sound
+        }
     }
 
     @Override

@@ -28,6 +28,6 @@ public final class PotionBig
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // TODO: Restore all hearts
+        entity.stats.fillHeart();
     }
 }

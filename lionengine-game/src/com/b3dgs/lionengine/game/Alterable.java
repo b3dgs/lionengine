@@ -105,6 +105,14 @@ public class Alterable
     }
 
     /**
+     * Reset value to minimum.
+     */
+    public void reset()
+    {
+        cur = Alterable.MIN;
+    }
+
+    /**
      * Set current value. The current value will be fixed between 0 and the maximum.
      * 
      * @param value The current value.

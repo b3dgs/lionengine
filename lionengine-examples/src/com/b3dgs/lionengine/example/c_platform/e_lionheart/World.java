@@ -7,6 +7,7 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.StatsRenderer;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
@@ -38,10 +39,14 @@ final class World
     private final HandlerEffect handlerEffect;
     /** Context. */
     private final Context context;
+    /** Stats renderer. */
+    private final StatsRenderer statsRenderer;
     /** Background reference. */
     private Landscape landscape;
     /** Player reference. */
     private Valdyn player;
+    /** Game over. */
+    private boolean gameOver;
 
     /**
      * Constructor.
@@ -58,7 +63,18 @@ final class World
         level = new Level(factoryEntity, handlerEntity);
         map = level.map;
         context = new Context(level, display.getRate());
+        statsRenderer = new StatsRenderer(wide);
         handlerEffect = context.handlerEffect;
+    }
+
+    /**
+     * Get the game over state.
+     * 
+     * @return <code>true</code> if game is over, <code>false</code> else.
+     */
+    public boolean isGameOver()
+    {
+        return gameOver;
     }
 
     /*
@@ -74,6 +90,10 @@ final class World
         handlerEntity.update(extrp);
         handlerEffect.update(extrp);
         landscape.update(extrp, camera);
+        if (player.isDestroyed())
+        {
+            gameOver = true;
+        }
     }
 
     @Override
@@ -85,6 +105,7 @@ final class World
         handlerEffect.render(g, camera);
         player.render(g, camera);
         landscape.renderForeground(g);
+        statsRenderer.render(g, player.stats);
     }
 
     @Override
@@ -100,6 +121,7 @@ final class World
         player = factoryEntity.createValdyn();
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());
+        statsRenderer.load();
     }
 
     @Override

@@ -100,12 +100,21 @@ public class HandlerEntity
     {
         if (entity.collide(player))
         {
-            entity.hitThat(player);
+            if (player.isAttacking())
+            {
+                player.hitThat(entity);
+                entity.hitBy(player);
+            }
+            else
+            {
+                entity.hitThat(player);
+                player.hitBy(entity);
+            }
         }
     }
 
     @Override
-    protected void renderingEntity(Entity entity)
+    protected void renderingEntity(Entity entity, CameraPlatform camera)
     {
         // Nothing to do
     }

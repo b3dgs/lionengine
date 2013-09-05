@@ -17,6 +17,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollision;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.game.Force;
@@ -42,6 +43,8 @@ public final class Valdyn
     private static final int JUMP_TIME_MIN = 100;
     /** Maximum jump time (in milli). */
     private static final int JUMP_TIME_MAX = 200;
+    /** Valdyn stats. */
+    public final Stats stats;
     /** Shade surface. */
     private final SpriteAnimated shade;
     /** Camera reference. */
@@ -56,6 +59,8 @@ public final class Valdyn
     private final Timing timerFall;
     /** Fallen timer (duration of fallen state, when hit the ground after fall). */
     private final Timing timerFallen;
+    /** Hurt timer. */
+    private final Timing timerHurt;
     /** Fallen duration in milli. */
     private final int fallenDuration;
     /** Sensibility increase value. */
@@ -107,16 +112,18 @@ public final class Valdyn
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
+        timerHurt = new Timing();
         fallenDuration = getDataInteger("fallenDuration", "data");
         movementSpeedMax = getDataDouble("speedMax", "data", "movement");
         movementSmooth = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
-        setFrameOffsets(40, -8);
+        setFrameOffsets(40, -2);
         addShadeAnimation(TypeEntityState.ATTACK_UP, 1);
         addShadeAnimation(TypeEntityState.ATTACK_HORIZONTAL, 1);
         addShadeAnimation(TypeEntityState.ATTACK_TURNING, 2);
         addShadeAnimation(TypeEntityState.ATTACK_JUMP, 1);
+        stats = new Stats(this);
     }
 
     /**
@@ -149,6 +156,16 @@ public final class Valdyn
     }
 
     /**
+     * Get the attacking flag.
+     * 
+     * @return <code>true</code> if attacking, <code>false</code> else.
+     */
+    public boolean isAttacking()
+    {
+        return attacking;
+    }
+
+    /**
      * Update the movement speed on a slope.
      * 
      * @param speed The current movement speed.
@@ -157,6 +174,13 @@ public final class Valdyn
      */
     private double updateMovementSlope(double speed, double sensibility)
     {
+        final double forceH = movement.getForce().getForceHorizontal();
+        if (movement.isDecreasingHorizontal()
+                && (forceH > movementSpeedMax && keyRight || forceH < -movementSpeedMax && keyLeft))
+        {
+            movement.setVelocity(0.01);
+            movement.setSensibility(sensibility / 4);
+        }
         double newSpeed = speed;
         if (isOnGround())
         {
@@ -167,19 +191,9 @@ public final class Valdyn
             else if (isGoingUp())
             {
                 newSpeed *= 0.75;
+                movement.setVelocity(movementSmooth);
+                movement.setSensibility(sensibility);
             }
-        }
-
-        final double forceH = movement.getForce().getForceHorizontal();
-        if (!isGoingUp() && (forceH > movementSpeedMax && keyRight || forceH < -movementSpeedMax && keyLeft))
-        {
-            movement.setVelocity(0.02);
-            movement.setSensibility(sensibility / 4);
-        }
-        else
-        {
-            movement.setSensibility(sensibility);
-            movement.setVelocity(movementSmooth);
         }
         return newSpeed;
     }
@@ -195,19 +209,25 @@ public final class Valdyn
         if (keyRight && !keyLeft)
         {
             speed = movementSpeedMax;
-            sensibility = sensibilityIncrease;
         }
         else if (keyLeft && !keyRight)
         {
             speed = -movementSpeedMax;
-            sensibility = sensibilityIncrease;
         }
         else
         {
             speed = 0.0;
+        }
+        if (isOnGround() && (keyRight || keyLeft))
+        {
+            sensibility = sensibilityIncrease;
+        }
+        else
+        {
             sensibility = sensibilityDecrease;
         }
         movement.setSensibility(sensibility);
+        movement.setVelocity(movementSmooth);
         speed = updateMovementSlope(speed, sensibility);
         movement.setForceToReach(speed, 0.0);
 
@@ -621,7 +641,57 @@ public final class Valdyn
     @Override
     public void updateCollision(int x, int y, int width, int height)
     {
-        super.updateCollision(x - Valdyn.COLLISION_OFFSET, y, width, height);
+        int cx = x - Valdyn.COLLISION_OFFSET;
+        int cy = y;
+        int cWidth = width;
+        int cHeight = height;
+        final AnimState state = getAnimState();
+        switch (status.getState())
+        {
+            case ATTACK_UP:
+                if (state == AnimState.REVERSING)
+                {
+                    cx = cx + (getMirror() ? -25 : 25);
+                    cy = y + 50;
+                    cWidth = 20;
+                    cHeight = 10;
+                }
+                break;
+            case ATTACK_HORIZONTAL:
+                if (state == AnimState.REVERSING)
+                {
+                    cx = cx + (getMirror() ? -25 : 25);
+                    cy = y + 25;
+                    cWidth = 20;
+                    cHeight = 10;
+                }
+                break;
+            case ATTACK_DOWN_LEG:
+                if (state == AnimState.REVERSING)
+                {
+                    cx = cx + (getMirror() ? -25 : 25);
+                    cWidth = 20;
+                    cHeight = 5;
+                }
+                break;
+            case ATTACK_TURNING:
+                if (getFrame() > 137)
+                {
+                    cx = cx + (getMirror() ? 25 : -25);
+                    cy = y + 40;
+                    cWidth = 20;
+                    cHeight = 5;
+                }
+                break;
+            case ATTACK_FALL:
+                cy = y + 10;
+                cWidth = 20;
+                cHeight = 10;
+                break;
+            default:
+                break;
+        }
+        super.updateCollision(cx, cy, cWidth, cHeight);
     }
 
     @Override
@@ -643,26 +713,25 @@ public final class Valdyn
         attack = null;
         attacking = false;
         attackPrepared = false;
-        teleport(512, 55);
+        teleport(900, 200);
         camera.resetInterval(this);
     }
 
     @Override
     public void hitBy(Entity entity)
     {
-        if (!isDead())
+        if (!timerHurt.isStarted() && entity instanceof EntityMonster)
         {
-            kill();
+            jumpForce.setForce(0.0, jumpHeightMax);
+            stats.decreaseHeart();
+            timerHurt.start();
         }
     }
 
     @Override
     public void hitThat(Entity entity)
     {
-        if (!isJumping())
-        {
-            jumpForce.setForce(0.0, jumpHeightMax * 1.5);
-        }
+        // Nothing to do
     }
 
     @Override
@@ -683,6 +752,10 @@ public final class Valdyn
         updateActionMovement();
         updateActionAttack();
         updateActionJump();
+        if (timerHurt.elapsed(2000))
+        {
+            timerHurt.stop();
+        }
     }
 
     @Override
@@ -741,7 +814,15 @@ public final class Valdyn
             {
                 if (timerDie.elapsed(1500))
                 {
-                    respawn();
+                    stats.decreaseLife();
+                    if (stats.getLife() > 0)
+                    {
+                        respawn();
+                    }
+                    else
+                    {
+                        destroy();
+                    }
                 }
             }
         }
