@@ -134,3 +134,4 @@ talisment
 lowercase
 palette
 potion
+dino

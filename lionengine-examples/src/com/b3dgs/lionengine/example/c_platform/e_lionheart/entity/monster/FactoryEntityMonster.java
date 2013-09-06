@@ -24,6 +24,8 @@ public final class FactoryEntityMonster
         {
             case CRAWLING:
                 return new Crawling(context);
+            case DINO:
+                return new Dino(context);
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }

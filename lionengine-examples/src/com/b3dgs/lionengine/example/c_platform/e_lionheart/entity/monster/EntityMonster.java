@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
@@ -15,17 +16,20 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityStat
 public class EntityMonster
         extends EntityMover
 {
+    /** Effect factory. */
+    private final FactoryEffect factoryEffect;
+
     /**
      * Constructor.
      * 
      * @param context The context reference.
      * @param type The entity type.
-     * @param effect The effect type.
      */
-    public EntityMonster(Context context, TypeEntity type, TypeEffect effect)
+    public EntityMonster(Context context, TypeEntity type)
     {
         super(context, type);
-        setFrameOffsets(0, -4);
+        factoryEffect = context.factoryEffect;
+        setFrameOffsets(sprite.getFrameWidth() / 2, -4);
     }
 
     @Override
@@ -70,7 +74,7 @@ public class EntityMonster
     @Override
     public void hitBy(Entity entity)
     {
-        destroy();
+        kill();
     }
 
     @Override
@@ -101,6 +105,8 @@ public class EntityMonster
     @Override
     protected void updateDead()
     {
+        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() + 10, (int) dieLocation.getY() - 5);
+        // TODO: Play explode sound
         destroy();
     }
 

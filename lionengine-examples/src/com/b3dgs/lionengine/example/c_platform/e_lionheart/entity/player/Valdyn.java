@@ -731,7 +731,10 @@ public final class Valdyn
     @Override
     public void hitThat(Entity entity)
     {
-        // Nothing to do
+        if (entity instanceof EntityMonster)
+        {
+            // TODO: Force jump
+        }
     }
 
     @Override

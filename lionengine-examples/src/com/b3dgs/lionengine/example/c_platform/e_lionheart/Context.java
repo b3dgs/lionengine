@@ -40,8 +40,8 @@ public class Context
         map = level.map;
         factoryEntity = level.factoryEntity;
         handlerEntity = level.handlerEntity;
-        factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect();
+        factoryEffect = new FactoryEffect(handlerEffect);
         factoryEntity.setContext(this);
     }
 }

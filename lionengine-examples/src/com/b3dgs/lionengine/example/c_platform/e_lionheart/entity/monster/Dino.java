@@ -4,9 +4,9 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 
 /**
- * Crawling monster implementation.
+ * Dino monster implementation.
  */
-public final class Crawling
+public final class Dino
         extends EntityMonster
 {
     /**
@@ -14,8 +14,8 @@ public final class Crawling
      * 
      * @param context The context reference.
      */
-    public Crawling(Context context)
+    public Dino(Context context)
     {
-        super(context, TypeEntity.CRAWLING);
+        super(context, TypeEntity.DINO);
     }
 }

@@ -8,7 +8,9 @@ import java.util.Locale;
 public enum TypeEffect
 {
     /** Taken effect (item taken). */
-    TAKEN;
+    TAKEN,
+    /** Explode big effect (monster killed). */
+    EXPLODE;
 
     /**
      * Get the name as a path (lower case).

@@ -32,6 +32,8 @@ public enum TypeEntity
 
     /** Crawling (monster). */
     CRAWLING(TypeEntityCategory.MONSTER),
+    /** Dino (monster). */
+    DINO(TypeEntityCategory.MONSTER),
 
     /*
      * Sceneries

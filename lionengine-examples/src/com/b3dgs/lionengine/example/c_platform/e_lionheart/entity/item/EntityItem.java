@@ -1,9 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.Effect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
@@ -17,8 +15,6 @@ public abstract class EntityItem
 {
     /** Effect factory. */
     private final FactoryEffect factoryEffect;
-    /** Effect handler. */
-    private final HandlerEffect handlerEffect;
 
     /**
      * Constructor.
@@ -31,7 +27,6 @@ public abstract class EntityItem
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
-        handlerEffect = context.handlerEffect;
         play(getAnimation(status.getState().getAnimationName()));
     }
 
@@ -58,9 +53,6 @@ public abstract class EntityItem
         if (!isDead())
         {
             kill();
-            final Effect effect = factoryEffect.createEffect(TypeEffect.TAKEN);
-            effect.start((int) dieLocation.getX(), (int) dieLocation.getY());
-            handlerEffect.add(effect);
             onTaken((Valdyn) entity);
             // TODO: Play taken sound
         }
@@ -75,6 +67,7 @@ public abstract class EntityItem
     @Override
     protected void updateDead()
     {
+        factoryEffect.startEffect(TypeEffect.TAKEN, (int) dieLocation.getX(), (int) dieLocation.getY());
         destroy();
     }
 

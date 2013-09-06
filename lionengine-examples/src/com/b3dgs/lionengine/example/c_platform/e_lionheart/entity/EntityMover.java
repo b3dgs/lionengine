@@ -430,6 +430,13 @@ public abstract class EntityMover
             {
                 teleport((int) (posMin - movement.getForce().getForceHorizontal()), getLocationIntY());
             }
+
+            posMin = posMax;
+            if (posMin == posMax)
+            {
+                posMin = -1;
+                posMax = Integer.MAX_VALUE;
+            }
         }
     }
 
