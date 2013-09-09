@@ -593,6 +593,12 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         return sprite.getFrame();
     }
+    
+    @Override
+    public int getFrameAnim()
+    {
+        return sprite.getFrameAnim();
+    }
 
     @Override
     public double getFrameReal()

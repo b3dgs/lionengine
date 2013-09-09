@@ -44,10 +44,12 @@ public class CollidableModel
     @Override
     public void updateCollision(int x, int y, int width, int height)
     {
-        final int xCur = entity.getLocationIntX();
-        final int yCur = entity.getLocationIntY() - entity.getHeight();
-        final int xOld = (int) entity.getLocationOldX();
-        final int yOld = (int) entity.getLocationOldY() - entity.getHeight();
+        final int w = entity.getWidth() / 2;
+        final int h = entity.getHeight();
+        final int xCur = entity.getLocationIntX() - w;
+        final int yCur = entity.getLocationIntY() - h;
+        final int xOld = (int) entity.getLocationOldX() - w;
+        final int yOld = (int) entity.getLocationOldY() - h;
 
         coll.reset();
         coll.addPoint(xCur + x, yCur + y);
@@ -79,7 +81,7 @@ public class CollidableModel
     @Override
     public void renderCollision(Graphic g, CameraGame camera)
     {
-        final int x = camera.getViewpointX((int) box.getX() - (int) box.getWidth() / 2);
+        final int x = camera.getViewpointX((int) box.getX());
         final int y = camera.getViewpointY((int) (box.getY() + box.getHeight()));
         g.drawRect(x, y, (int) box.getWidth(), (int) box.getHeight(), false);
 

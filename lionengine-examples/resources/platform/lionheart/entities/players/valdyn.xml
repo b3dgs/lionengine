@@ -19,16 +19,39 @@
 	<animation name="border" start="13" end="16" speed="0.1" reversed="true" repeat="true"/>
 	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="dead" start="70" end="71" speed="0.125" reversed="false" repeat="true"/>
+	
 	<animation name="attack_preparing" start="83" end="84" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="attack_preparing_down" start="85" end="86" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="attack_prepared" start="84" end="84" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="attack_prepared_down" start="86" end="86" speed="0.125" reversed="false" repeat="false"/>
-	<animation name="attack_up" start="93" end="95" speed="0.35" reversed="true" repeat="false"/>
-	<animation name="attack_horizontal" start="107" end="111" speed="0.4" reversed="true" repeat="false"/>
-	<animation name="attack_turning" start="130" end="139" speed="0.35" reversed="false" repeat="false"/>
-	<animation name="attack_down_leg" start="88" end="92" speed="0.40" reversed="true" repeat="false"/>
-	<animation name="attack_jump" start="140" end="145" speed="0.3" reversed="false" repeat="false"/>
-	<animation name="attack_fall" start="87" end="87" speed="0.125" reversed="false" repeat="false"/>
+	
+	<animation name="attack_up" start="93" end="95" speed="0.35" reversed="true" repeat="false">
+		<attack frame="2" x="0" y="52" width="30" height="20"/>
+		<attack frame="3" x="25" y="50" width="15" height="10"/>
+	</animation>
+	
+	<animation name="attack_horizontal" start="107" end="111" speed="0.4" reversed="true" repeat="false">
+		<attack frame="5" x="22" y="26" width="22" height="12"/>
+	</animation>
+	
+	<animation name="attack_turning" start="130" end="139" speed="0.35" reversed="false" repeat="false">
+		<attack frame="8" x="-25" y="36" width="20" height="12"/>
+	</animation>
+	
+	<animation name="attack_down_leg" start="88" end="92" speed="0.40" reversed="true" repeat="false">
+		<attack frame="5" x="22" y="0" width="20" height="8"/>
+	</animation>
+	
+	<animation name="attack_jump" start="140" end="145" speed="0.3" reversed="false" repeat="false">
+		<attack frame="2" x="0" y="55" width="26" height="25"/>
+		<attack frame="3" x="10" y="55" width="26" height="25"/>
+		<attack frame="4" x="15" y="25" width="26" height="25"/>
+		<attack frame="5" x="15" y="5" width="26" height="15"/>
+	</animation>
+	
+	<animation name="attack_fall" start="87" end="87" speed="0.125" reversed="false" repeat="true">
+		<attack frame="1" x="0" y="10" width="20" height="10"/>
+	</animation>
 	
 	<animation name="shade_attack_up" start="1" end="2" speed="0.35" reversed="true" repeat="false"/>
 	<animation name="shade_attack_horizontal" start="9" end="12" speed="0.4" reversed="true" repeat="false"/>

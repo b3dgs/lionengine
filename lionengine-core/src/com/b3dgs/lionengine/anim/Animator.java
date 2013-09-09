@@ -88,6 +88,15 @@ public interface Animator
     int getFrame();
 
     /**
+     * Get the current playing animation frame number (value between first and last). The returned value is the same as
+     * calling <code>(int) {@link Math#floor(double)}</code> with {@link #getFrameReal()} - {@link Animation#getFirst()}
+     * .
+     * 
+     * @return The current playing frame number.
+     */
+    int getFrameAnim();
+
+    /**
      * Get the current playing frame with accurate precision. The integer part represents the current frame, while the
      * other part represents its progress.
      * <p>

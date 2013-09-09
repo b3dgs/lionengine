@@ -105,7 +105,8 @@ public class EntityMonster
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() + 10, (int) dieLocation.getY() - 5);
+        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() - sprite.getFrameWidth() / 2,
+                (int) dieLocation.getY() - 5);
         // TODO: Play explode sound
         destroy();
     }

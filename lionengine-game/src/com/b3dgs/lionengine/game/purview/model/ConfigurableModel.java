@@ -93,6 +93,12 @@ public class ConfigurableModel
         }
     }
 
+    @Override
+    public XmlNode getDataRoot()
+    {
+        return root;
+    }
+
     /**
      * {@inheritDoc} A LionEngineException is thrown if there is a path error.
      */

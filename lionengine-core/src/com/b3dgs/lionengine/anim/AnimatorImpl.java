@@ -169,6 +169,12 @@ final class AnimatorImpl
     {
         return (int) Math.floor(current);
     }
+    
+    @Override
+    public int getFrameAnim()
+    {
+        return getFrame() - first + 1;
+    }
 
     @Override
     public double getFrameReal()

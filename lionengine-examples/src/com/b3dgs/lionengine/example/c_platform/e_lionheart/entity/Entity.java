@@ -26,14 +26,14 @@ public abstract class Entity
     public final TypeEntity type;
     /** Map reference. */
     protected final Map map;
+    /** Animations list. */
+    protected final EnumMap<TypeEntityState, Animation> animations;
     /** Entity status. */
     protected final EntityStatus status;
     /** Dead timer. */
     protected final Timing timerDie;
     /** Desired fps value. */
     private final int desiredFps;
-    /** Animations list. */
-    private final EnumMap<TypeEntityState, Animation> animations;
     /** Forces used. */
     private final Force[] forces;
     /** Mouse over state. */

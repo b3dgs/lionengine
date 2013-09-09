@@ -1,6 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
@@ -20,6 +23,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityStat
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
+import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -31,8 +35,6 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public final class Valdyn
         extends EntityMover
 {
-    /** Collision offset. */
-    private static final int COLLISION_OFFSET = 3;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
     /** The width of the tile extremity. */
@@ -53,6 +55,8 @@ public final class Valdyn
     private final EnumMap<TypeEntityState, Animation> shades;
     /** List of starting frames when shades are enabled. */
     private final EnumMap<TypeEntityState, Integer> shadesEnabled;
+    /** Attack data. */
+    private final EnumMap<TypeEntityState, Set<Attack>> attacks;
     /** Jump timer (accurate precision of jump force). */
     private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
@@ -83,6 +87,8 @@ public final class Valdyn
     private boolean attacking;
     /** Attacked state. */
     private boolean attacked;
+    /** Can hurt monster. */
+    private boolean canHurtMonster;
     /** Shade can be played. */
     private boolean shadeCanBePlayed;
     /** Left key state. */
@@ -109,6 +115,7 @@ public final class Valdyn
         shade.load(false);
         shades = new EnumMap<>(TypeEntityState.class);
         shadesEnabled = new EnumMap<>(TypeEntityState.class);
+        attacks = new EnumMap<>(TypeEntityState.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -124,6 +131,7 @@ public final class Valdyn
         addShadeAnimation(TypeEntityState.ATTACK_TURNING, 2);
         addShadeAnimation(TypeEntityState.ATTACK_JUMP, 1);
         stats = new Stats(this);
+        loadAttacks();
     }
 
     /**
@@ -160,9 +168,28 @@ public final class Valdyn
      * 
      * @return <code>true</code> if attacking, <code>false</code> else.
      */
-    public boolean isAttacking()
+    public boolean canHurtMonster()
     {
-        return attacking;
+        return canHurtMonster;
+    }
+
+    /**
+     * Load all attacks data.
+     */
+    private void loadAttacks()
+    {
+        for (XmlNode animation : getDataRoot().getChildren("animation"))
+        {
+            final Set<Attack> set = new HashSet<>(1);
+            for (XmlNode attack : animation.getChildren("attack"))
+            {
+                set.add(new Attack(attack));
+            }
+            if (!set.isEmpty())
+            {
+                attacks.put(TypeEntityState.valueOf(animation.readString("name").toUpperCase(Locale.ENGLISH)), set);
+            }
+        }
     }
 
     /**
@@ -540,6 +567,34 @@ public final class Valdyn
     }
 
     /**
+     * Update the collision during attack.
+     * 
+     * @param x The horizontal offset from entity.
+     * @param y The vertical offset from entity.
+     * @param width The entity collision width.
+     * @param height The entity collision height.
+     * @param frame The current frame index.
+     * @return <code>true</code> if attacking, <code>false</code> else.
+     */
+    private boolean updateAttackCollision(int x, int y, int width, int height, int frame)
+    {
+        final Set<Attack> set = attacks.get(status.getState());
+        if (set != null)
+        {
+            for (Attack attack : set)
+            {
+                if (frame == attack.frame)
+                {
+                    final int attackX = (getMirror() ? -attack.x : attack.x);
+                    super.updateCollision(x + attackX, y + attack.y, attack.width, attack.height);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Add a shade animation for the sword attack effect.
      * 
      * @param state The state enum.
@@ -641,57 +696,19 @@ public final class Valdyn
     @Override
     public void updateCollision(int x, int y, int width, int height)
     {
-        int cx = x - Valdyn.COLLISION_OFFSET;
-        int cy = y;
-        int cWidth = width;
-        int cHeight = height;
-        final AnimState state = getAnimState();
-        switch (status.getState())
+        final int frame = getFrameAnim();
+        if (crouch)
         {
-            case ATTACK_UP:
-                if (state == AnimState.REVERSING)
-                {
-                    cx = cx + (getMirror() ? -25 : 25);
-                    cy = y + 50;
-                    cWidth = 20;
-                    cHeight = 10;
-                }
-                break;
-            case ATTACK_HORIZONTAL:
-                if (state == AnimState.REVERSING)
-                {
-                    cx = cx + (getMirror() ? -25 : 25);
-                    cy = y + 25;
-                    cWidth = 20;
-                    cHeight = 10;
-                }
-                break;
-            case ATTACK_DOWN_LEG:
-                if (state == AnimState.REVERSING)
-                {
-                    cx = cx + (getMirror() ? -25 : 25);
-                    cWidth = 20;
-                    cHeight = 5;
-                }
-                break;
-            case ATTACK_TURNING:
-                if (getFrame() > 137)
-                {
-                    cx = cx + (getMirror() ? 25 : -25);
-                    cy = y + 40;
-                    cWidth = 20;
-                    cHeight = 5;
-                }
-                break;
-            case ATTACK_FALL:
-                cy = y + 10;
-                cWidth = 20;
-                cHeight = 10;
-                break;
-            default:
-                break;
+            super.updateCollision(x, y, width, height - 18);
         }
-        super.updateCollision(cx, cy, cWidth, cHeight);
+        else
+        {
+            super.updateCollision(x, y, width, height);
+        }
+        if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
+        {
+            canHurtMonster = updateAttackCollision(x, y, width, height, frame);
+        }
     }
 
     @Override
@@ -713,7 +730,7 @@ public final class Valdyn
         attack = null;
         attacking = false;
         attackPrepared = false;
-        teleport(900, 200);
+        teleport(900, 100);
         camera.resetInterval(this);
     }
 

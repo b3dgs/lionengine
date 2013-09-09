@@ -100,7 +100,7 @@ public class HandlerEntity
     {
         if (entity.collide(player))
         {
-            if (player.isAttacking())
+            if (player.canHurtMonster())
             {
                 player.hitThat(entity);
                 entity.hitBy(player);

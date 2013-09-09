@@ -8,6 +8,7 @@ import java.util.Set;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Configurable;
@@ -147,6 +148,12 @@ public abstract class EntityGame
     public void loadData(Media media)
     {
         configurable.loadData(media);
+    }
+
+    @Override
+    public XmlNode getDataRoot()
+    {
+        return configurable.getDataRoot();
     }
 
     @Override

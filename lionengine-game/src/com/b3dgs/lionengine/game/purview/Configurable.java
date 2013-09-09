@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.game.purview;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.file.XmlNode;
 
 /**
  * Purview representing an object which can be externally configured. When data are loaded, the object can used
@@ -15,6 +16,13 @@ public interface Configurable
      * @param media The xml media.
      */
     void loadData(Media media);
+
+    /**
+     * Get the data root container for raw access.
+     * 
+     * @return The root node.
+     */
+    XmlNode getDataRoot();
 
     /**
      * Get a string in the xml tree.

@@ -689,6 +689,12 @@ public abstract class EntityRts
     {
         return sprite.getFrame();
     }
+    
+    @Override
+    public int getFrameAnim()
+    {
+        return sprite.getFrameAnim();
+    }
 
     @Override
     public double getFrameReal()
