@@ -253,11 +253,10 @@ public abstract class EntityMover
     /**
      * Check vertical axis.
      * 
-     * @param offset The offset value.
+     * @param tile The tile collision.
      */
-    protected void checkCollisionVertical(int offset)
+    protected void checkCollisionVertical(Tile tile)
     {
-        final Tile tile = collisionCheck(offset, 0, TypeTileCollision.COLLISION_VERTICAL);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
@@ -447,7 +446,7 @@ public abstract class EntityMover
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(0);
+            checkCollisionVertical(collisionCheck(0, 0, TypeTileCollision.COLLISION_VERTICAL));
         }
     }
 

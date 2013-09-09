@@ -436,8 +436,8 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         final int sh = (int) Math.floor(getLocationOldX());
 
         // Ending location
-        final int ev = (int) Math.ceil(getLocationY());
-        final int eh = (int) Math.ceil(getLocationX());
+        final int ev = (int) Math.floor(getLocationY());
+        final int eh = (int) Math.floor(getLocationX());
 
         // Distance calculation
         final int dv = sv - ev;

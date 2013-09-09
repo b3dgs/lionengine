@@ -106,7 +106,6 @@ final class World
         player.render(g, camera);
         landscape.renderForeground(g);
         statsRenderer.render(g, player.stats);
-        player.renderCollision(g, camera);
     }
 
     @Override

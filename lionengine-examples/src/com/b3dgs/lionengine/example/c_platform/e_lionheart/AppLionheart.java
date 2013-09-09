@@ -35,6 +35,8 @@ public final class AppLionheart
     public static final String EFFECTS_DIR = "effects";
     /** Entity configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
+    /** Show collision bounds. */
+    public static final boolean SHOW_COLLISIONS = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */

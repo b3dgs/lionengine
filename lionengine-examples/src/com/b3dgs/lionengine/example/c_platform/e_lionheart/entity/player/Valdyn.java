@@ -38,7 +38,7 @@ public final class Valdyn
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
     /** The width of the tile extremity. */
-    private static final int TILE_EXTREMITY_WIDTH = 2;
+    private static final int TILE_EXTREMITY_WIDTH = 3;
     /** The fall time margin (in milli). */
     private static final int FALL_TIME_MARGIN = 100;
     /** Minimum jump time (in milli). */
@@ -402,10 +402,12 @@ public final class Valdyn
      */
     private void updateActionAttackFinished()
     {
+        boolean attackTurned = false;
         if (attack == TypeEntityState.ATTACK_TURNING)
         {
             mirror(!getMirror());
             updateMirror();
+            attackTurned = true;
         }
         if (keyAttack)
         {
@@ -417,7 +419,10 @@ public final class Valdyn
             {
                 attack = null;
             }
-            attackPrepared = true;
+            if (!attackTurned)
+            {
+                attackPrepared = true;
+            }
         }
         else
         {
@@ -648,14 +653,14 @@ public final class Valdyn
      */
     private void checkCollisionExtremity(int offsetX, boolean mirror)
     {
-        final Tile tile = map.getTile(this, offsetX, 0);
+        final Tile tile = collisionCheck(offsetX, 0, TypeTileCollision.COLLISION_VERTICAL);
         if (tile != null && tile.isBorder())
         {
-            checkCollisionVertical(offsetX);
+            checkCollisionVertical(tile);
         }
         if (isOnExtremity(-UtilityMath.getSign(offsetX)))
         {
-            if (!crouch)
+            if (!crouch && status.getState() == TypeEntityState.BORDER)
             {
                 mirror(mirror);
             }
@@ -730,7 +735,7 @@ public final class Valdyn
         attack = null;
         attacking = false;
         attackPrepared = false;
-        teleport(900, 100);
+        teleport(1010, 162);
         camera.resetInterval(this);
     }
 
@@ -860,7 +865,7 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(0);
+            checkCollisionVertical(collisionCheck(0, 0, TypeTileCollision.COLLISION_VERTICAL));
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
         }
