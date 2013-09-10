@@ -4,17 +4,12 @@ import java.util.List;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.maptile.MapTile;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Rastered version of an abstractPlatformEntity.
- * 
- * @param <C> Collision type used.
- * @param <T> Tile type used.
  */
-public abstract class EntityPlatformRastered<C extends Enum<C>, T extends TilePlatform<C>>
-        extends EntityPlatform<C, T>
+public abstract class EntityPlatformRastered
+        extends EntityPlatform
 {
     /** List of rastered frames. */
     protected final List<SpriteAnimated> rastersAnim;
@@ -22,19 +17,22 @@ public abstract class EntityPlatformRastered<C extends Enum<C>, T extends TilePl
     protected final boolean rastered;
     /** Smooth raster flag. */
     protected final boolean smooth;
+    /** Tile height. */
+    private final int tileHeight;
 
     /**
      * Create a new rastered platform entity from an existing, sharing the same surface.
      * 
      * @param setup The setup reference.
-     * @param map The map reference.
+     * @param tileHeight The tile height value.
      */
-    public EntityPlatformRastered(SetupEntityPlatformRastered setup, MapTile<C, T> map)
+    public EntityPlatformRastered(SetupEntityPlatformRastered setup, int tileHeight)
     {
-        super(setup, map);
+        super(setup);
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
         smooth = setup.smoothRaster;
+        this.tileHeight = tileHeight;
     }
 
     /**
@@ -54,11 +52,11 @@ public abstract class EntityPlatformRastered<C extends Enum<C>, T extends TilePl
      */
     private int getRasterIndex()
     {
-        final double value = (getLocationY() + getRasterOffset()) / map.getTileHeight();
+        final double value = (getLocationY() + getRasterOffset()) / tileHeight;
         final int i = (int) value % SetupEntityPlatformRastered.MAX_RASTERS_R;
         int index = i;
 
-        if (!this.smooth && index > SetupEntityPlatformRastered.MAX_RASTERS_M)
+        if (!smooth && index > SetupEntityPlatformRastered.MAX_RASTERS_M)
         {
             index = SetupEntityPlatformRastered.MAX_RASTERS_M - (index - SetupEntityPlatformRastered.MAX_RASTERS);
         }

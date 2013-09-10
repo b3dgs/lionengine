@@ -11,8 +11,10 @@ import com.b3dgs.lionengine.input.Mouse;
  * Entity implementation.
  */
 final class Entity
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform
 {
+    /** Map reference. */
+    private final Map map;
     /** Mouse click x. */
     private int mouseX;
     /** Mouse click y. */
@@ -27,7 +29,8 @@ final class Entity
      */
     Entity(Map map)
     {
-        super(new SetupEntityGame(Media.get("entities", "mario.xml")), map);
+        super(new SetupEntityGame(Media.get("entities", "mario.xml")));
+        this.map = map;
         mouseX = 64;
         mouseY = 180;
     }
@@ -77,7 +80,8 @@ final class Entity
     protected void handleCollisions(double extrp)
     {
         updateCollision(0, 0, 16, 16);
-        tile = collisionCheck(0, 0, TileCollision.COLLISION);
+        collisionCheck(0, 0);
+        tile = map.getFirstTileHit(this, TileCollision.COLLISION);
     }
 
     @Override

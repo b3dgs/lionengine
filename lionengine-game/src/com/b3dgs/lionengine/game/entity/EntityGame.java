@@ -10,6 +10,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
@@ -88,6 +89,16 @@ public abstract class EntityGame
         destroy = false;
         id = EntityGame.getFreeId();
         EntityGame.IDS.add(id);
+    }
+
+    /**
+     * Update the collision with the collision data.
+     * 
+     * @param collision The collision to use.
+     */
+    public void updateCollision(CollisionData collision)
+    {
+        updateCollision(collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(), collision.getHeight());
     }
 
     /**
@@ -181,9 +192,15 @@ public abstract class EntityGame
     }
 
     @Override
-    public Animation getAnimation(String name)
+    public Animation getDataAnimation(String name)
     {
-        return configurable.getAnimation(name);
+        return configurable.getDataAnimation(name);
+    }
+
+    @Override
+    public CollisionData getDataCollision(String name)
+    {
+        return configurable.getDataCollision(name);
     }
 
     /*
@@ -193,7 +210,7 @@ public abstract class EntityGame
     @Override
     public void updateCollision(int x, int y, int width, int height)
     {
-        collidable.updateCollision(x, y + getHeight(), width, height);
+        collidable.updateCollision(getMirror() ? -x : x, y, width, height);
     }
 
     @Override

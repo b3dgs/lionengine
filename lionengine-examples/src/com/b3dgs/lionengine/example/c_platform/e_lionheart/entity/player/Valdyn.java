@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.Entity
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -35,10 +36,10 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public final class Valdyn
         extends EntityMover
 {
+    /** The width of the tile extremity. */
+    public static final int TILE_EXTREMITY_WIDTH = 3;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
-    /** The width of the tile extremity. */
-    private static final int TILE_EXTREMITY_WIDTH = 3;
     /** The fall time margin (in milli). */
     private static final int FALL_TIME_MARGIN = 100;
     /** Minimum jump time (in milli). */
@@ -55,6 +56,8 @@ public final class Valdyn
     private final EnumMap<TypeEntityState, Animation> shades;
     /** List of starting frames when shades are enabled. */
     private final EnumMap<TypeEntityState, Integer> shadesEnabled;
+    /** Collisions data. */
+    private final EnumMap<TypeValdynCollision, CollisionData> collisions;
     /** Attack data. */
     private final EnumMap<TypeEntityState, Set<Attack>> attacks;
     /** Jump timer (accurate precision of jump force). */
@@ -116,6 +119,7 @@ public final class Valdyn
         shades = new EnumMap<>(TypeEntityState.class);
         shadesEnabled = new EnumMap<>(TypeEntityState.class);
         attacks = new EnumMap<>(TypeEntityState.class);
+        collisions = new EnumMap<>(TypeValdynCollision.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -125,13 +129,14 @@ public final class Valdyn
         movementSmooth = getDataDouble("smooth", "data", "movement");
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
-        setFrameOffsets(40, -2);
+        setFrameOffsets(0, -2);
         addShadeAnimation(TypeEntityState.ATTACK_UP, 1);
         addShadeAnimation(TypeEntityState.ATTACK_HORIZONTAL, 1);
         addShadeAnimation(TypeEntityState.ATTACK_TURNING, 2);
         addShadeAnimation(TypeEntityState.ATTACK_JUMP, 1);
-        stats = new Stats(this);
+        loadCollisions();
         loadAttacks();
+        stats = new Stats(this);
     }
 
     /**
@@ -164,6 +169,20 @@ public final class Valdyn
     }
 
     /**
+     * Update the extremity state.
+     * 
+     * @param mirror The mirror to apply.
+     */
+    public void updateExtremity(boolean mirror)
+    {
+        if (!crouch && status.getState() == TypeEntityState.BORDER)
+        {
+            mirror(mirror);
+        }
+        extremity = true;
+    }
+
+    /**
      * Get the attacking flag.
      * 
      * @return <code>true</code> if attacking, <code>false</code> else.
@@ -174,20 +193,33 @@ public final class Valdyn
     }
 
     /**
+     * Load all collisions data.
+     */
+    private void loadCollisions()
+    {
+        for (final TypeValdynCollision collision : TypeValdynCollision.values())
+        {
+            collisions.put(collision, getDataCollision(collision.toString()));
+        }
+    }
+
+    /**
      * Load all attacks data.
      */
     private void loadAttacks()
     {
-        for (XmlNode animation : getDataRoot().getChildren("animation"))
+        for (final XmlNode animation : getDataRoot().getChildren("animation"))
         {
             final Set<Attack> set = new HashSet<>(1);
-            for (XmlNode attack : animation.getChildren("attack"))
+            for (final XmlNode attackNode : animation.getChildren("attack"))
             {
-                set.add(new Attack(attack));
+                final Attack attack = new Attack(attackNode);
+                set.add(attack);
             }
             if (!set.isEmpty())
             {
-                attacks.put(TypeEntityState.valueOf(animation.readString("name").toUpperCase(Locale.ENGLISH)), set);
+                final String attackName = animation.readString("name").toUpperCase(Locale.ENGLISH);
+                attacks.put(TypeEntityState.valueOf(attackName), set);
             }
         }
     }
@@ -524,7 +556,7 @@ public final class Valdyn
         }
         if (shadeCanBePlayed && shadesEnabled.containsKey(state))
         {
-            final int index = getFrame() - getAnimation(state.getAnimationName()).getFirst();
+            final int index = getFrame() - getDataAnimation(state.getAnimationName()).getFirst();
             if (index >= shadesEnabled.get(state).intValue())
             {
                 shade.play(shades.get(state));
@@ -574,24 +606,18 @@ public final class Valdyn
     /**
      * Update the collision during attack.
      * 
-     * @param x The horizontal offset from entity.
-     * @param y The vertical offset from entity.
-     * @param width The entity collision width.
-     * @param height The entity collision height.
-     * @param frame The current frame index.
      * @return <code>true</code> if attacking, <code>false</code> else.
      */
-    private boolean updateAttackCollision(int x, int y, int width, int height, int frame)
+    private boolean updateAttackCollision()
     {
         final Set<Attack> set = attacks.get(status.getState());
         if (set != null)
         {
-            for (Attack attack : set)
+            for (final Attack attack : set)
             {
-                if (frame == attack.frame)
+                if (getFrameAnim() == attack.frame)
                 {
-                    final int attackX = (getMirror() ? -attack.x : attack.x);
-                    super.updateCollision(x + attackX, y + attack.y, attack.width, attack.height);
+                    setCollision(attack.collision);
                     return true;
                 }
             }
@@ -607,7 +633,7 @@ public final class Valdyn
      */
     private void addShadeAnimation(TypeEntityState state, int startAtFrame)
     {
-        shades.put(state, getAnimation("shade_" + state.getAnimationName()));
+        shades.put(state, getDataAnimation("shade_" + state.getAnimationName()));
         shadesEnabled.put(state, Integer.valueOf(startAtFrame));
     }
 
@@ -653,18 +679,15 @@ public final class Valdyn
      */
     private void checkCollisionExtremity(int offsetX, boolean mirror)
     {
-        final Tile tile = collisionCheck(offsetX, 0, TypeTileCollision.COLLISION_VERTICAL);
+        collisionCheck(offsetX, 0);
+        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
         if (tile != null && tile.isBorder())
         {
             checkCollisionVertical(tile);
         }
         if (isOnExtremity(-UtilityMath.getSign(offsetX)))
         {
-            if (!crouch && status.getState() == TypeEntityState.BORDER)
-            {
-                mirror(mirror);
-            }
-            extremity = true;
+            updateExtremity(mirror);
         }
     }
 
@@ -697,24 +720,6 @@ public final class Valdyn
     /*
      * Entity
      */
-
-    @Override
-    public void updateCollision(int x, int y, int width, int height)
-    {
-        final int frame = getFrameAnim();
-        if (crouch)
-        {
-            super.updateCollision(x, y, width, height - 18);
-        }
-        else
-        {
-            super.updateCollision(x, y, width, height);
-        }
-        if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
-        {
-            canHurtMonster = updateAttackCollision(x, y, width, height, frame);
-        }
-    }
 
     @Override
     public void render(Graphic g, CameraPlatform camera)
@@ -865,7 +870,8 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(collisionCheck(0, 0, TypeTileCollision.COLLISION_VERTICAL));
+            collisionCheck(0, 0);
+            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
         }
@@ -876,6 +882,19 @@ public final class Valdyn
             attack = null;
             attacking = false;
             attackPrepared = false;
+        }
+
+        if (status.getState() == TypeEntityState.CROUCH)
+        {
+            setCollision(collisions.get(TypeValdynCollision.CROUCH));
+        }
+        else
+        {
+            setCollision(collisions.get(TypeValdynCollision.STAND));
+        }
+        if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
+        {
+            canHurtMonster = updateAttackCollision();
         }
 
         // Kill when fall down

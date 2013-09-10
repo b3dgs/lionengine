@@ -16,7 +16,7 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
  * Abstract entity base implementation.
  */
 public abstract class Entity
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform
         implements Networkable
 {
     /** Zero force instance. */
@@ -79,12 +79,12 @@ public abstract class Entity
      */
     public Entity(SetupEntityGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
     {
-        super(setup, map);
+        super(setup);
         this.type = type;
         this.map = map;
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
-        animDie = getAnimation("die");
+        animIdle = getDataAnimation("idle");
+        animWalk = getDataAnimation("walk");
+        animDie = getDataAnimation("die");
         this.desiredFps = desiredFps;
         this.server = server;
         networkableModel = new NetworkableModel();
@@ -205,7 +205,8 @@ public abstract class Entity
      */
     private void checkHorizontal(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 1, TileCollision.COLLISION_HORIZONTAL);
+        collisionCheck(offsetX, 1);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -224,7 +225,8 @@ public abstract class Entity
      */
     private void checkVertical(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 0, TileCollision.COLLISION_VERTICAL);
+        collisionCheck(offsetX, 0);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);

@@ -27,7 +27,7 @@ public abstract class EntityItem
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
-        play(getAnimation(status.getState().getAnimationName()));
+        play(getDataAnimation(status.getState().getAnimationName()));
     }
 
     /**

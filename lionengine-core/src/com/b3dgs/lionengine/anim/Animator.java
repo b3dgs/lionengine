@@ -80,30 +80,16 @@ public interface Animator
     AnimState getAnimState();
 
     /**
-     * Get the current playing frame number. The returned value is the same as calling
-     * <code>(int) {@link Math#floor(double)}</code> with {@link #getFrameReal()}.
+     * Get the current playing frame number.
      * 
      * @return The current playing frame number.
      */
     int getFrame();
 
     /**
-     * Get the current playing animation frame number (value between first and last). The returned value is the same as
-     * calling <code>(int) {@link Math#floor(double)}</code> with {@link #getFrameReal()} - {@link Animation#getFirst()}
-     * .
+     * Get the current playing animation frame number (value between first and last of the current animation).
      * 
      * @return The current playing frame number.
      */
     int getFrameAnim();
-
-    /**
-     * Get the current playing frame with accurate precision. The integer part represents the current frame, while the
-     * other part represents its progress.
-     * <p>
-     * Example: <code>1.75</code> means that the current frame is <code>1</code>, played at <code>75%</code>.
-     * </p>
-     * 
-     * @return The real frame with double precision.
-     */
-    double getFrameReal();
 }

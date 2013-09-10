@@ -44,12 +44,10 @@ public class CollidableModel
     @Override
     public void updateCollision(int x, int y, int width, int height)
     {
-        final int w = entity.getWidth() / 2;
-        final int h = entity.getHeight();
-        final int xCur = entity.getLocationIntX() - w;
-        final int yCur = entity.getLocationIntY() - h;
-        final int xOld = (int) entity.getLocationOldX() - w;
-        final int yOld = (int) entity.getLocationOldY() - h;
+        final int xCur = entity.getLocationIntX() - entity.getWidth() / 2;
+        final int yCur = entity.getLocationIntY();
+        final int xOld = (int) entity.getLocationOldX() - entity.getWidth() / 2;
+        final int yOld = (int) entity.getLocationOldY();
 
         coll.reset();
         coll.addPoint(xCur + x, yCur + y);

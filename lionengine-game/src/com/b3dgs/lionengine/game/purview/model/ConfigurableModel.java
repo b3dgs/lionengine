@@ -12,6 +12,7 @@ import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
 import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
@@ -22,6 +23,8 @@ public class ConfigurableModel
 {
     /** Animations map. */
     private final Map<String, Animation> animations;
+    /** Collisions map. */
+    private final Map<String, CollisionData> collisions;
     /** Root node. */
     private XmlNode root;
 
@@ -30,7 +33,7 @@ public class ConfigurableModel
      */
     public ConfigurableModel()
     {
-        animations = new HashMap<>(1);
+        this(null);
     }
 
     /**
@@ -43,11 +46,13 @@ public class ConfigurableModel
         if (configurable instanceof ConfigurableModel)
         {
             animations = ((ConfigurableModel) configurable).animations;
+            collisions = ((ConfigurableModel) configurable).collisions;
             root = ((ConfigurableModel) configurable).root;
         }
         else
         {
             animations = new HashMap<>(1);
+            collisions = new HashMap<>(1);
         }
     }
 
@@ -91,6 +96,13 @@ public class ConfigurableModel
                     node.readDouble("speed"), node.readBoolean("reversed"), node.readBoolean("repeat"));
             animations.put(anim, animation);
         }
+        for (final XmlNode node : root.getChildren("collision"))
+        {
+            final String coll = node.readString("name");
+            final CollisionData collision = new CollisionData(node.readInteger("offsetX"), node.readInteger("offsetY"),
+                    node.readInteger("width"), node.readInteger("height"));
+            collisions.put(coll, collision);
+        }
     }
 
     @Override
@@ -127,10 +139,18 @@ public class ConfigurableModel
     }
 
     @Override
-    public Animation getAnimation(String name)
+    public Animation getDataAnimation(String name)
     {
         final Animation animation = animations.get(name);
         Check.notNull(animation, "Animation does not exist: ", name);
         return animation;
+    }
+
+    @Override
+    public CollisionData getDataCollision(String name)
+    {
+        final CollisionData collision = collisions.get(name);
+        Check.notNull(collision, "Collision does not exist: ", name);
+        return collision;
     }
 }

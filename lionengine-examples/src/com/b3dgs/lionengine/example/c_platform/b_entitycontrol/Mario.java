@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.input.Keyboard;
  * Implementation of our controllable entity.
  */
 final class Mario
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform
 {
     /** Mario configuration full path. */
     private static final Media MARIO_CONFIG = Media.get("entities", "mario.xml");
@@ -51,7 +51,7 @@ final class Mario
      */
     Mario(int desiredFps)
     {
-        super(new SetupEntityGame(Mario.MARIO_CONFIG), null);
+        super(new SetupEntityGame(Mario.MARIO_CONFIG));
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();
@@ -104,7 +104,7 @@ final class Mario
         {
             try
             {
-                animations.put(state, getAnimation(state.getAnimationName()));
+                animations.put(state, getDataAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

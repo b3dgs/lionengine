@@ -564,7 +564,6 @@ public class TestDrawable
         spriteA.play(1, 5, 1.0, false, false);
         spriteA.setAnimSpeed(1.0);
         spriteA.updateAnimation(1.0);
-        Assert.assertTrue(spriteA.getFrameReal() > 1.0);
         spriteA.stopAnimation();
         spriteA.setFrame(1);
         Assert.assertEquals(1, spriteA.getFrame());

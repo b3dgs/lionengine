@@ -49,7 +49,7 @@ public class CameraPlatform
      * 
      * @param entity The entity to follow.
      */
-    public void follow(EntityPlatform<?, ?> entity)
+    public void follow(EntityPlatform entity)
     {
         setLocation(entity.getLocationX(), entity.getLocationY() + entity.getHeight() / 2);
     }

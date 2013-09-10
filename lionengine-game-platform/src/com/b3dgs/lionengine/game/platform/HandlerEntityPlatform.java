@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
  * 
  * @param <E> Entity type used.
  */
-public abstract class HandlerEntityPlatform<E extends EntityPlatform<?, ?>>
+public abstract class HandlerEntityPlatform<E extends EntityPlatform>
         extends HandlerEntityGame<E>
 {
     /**

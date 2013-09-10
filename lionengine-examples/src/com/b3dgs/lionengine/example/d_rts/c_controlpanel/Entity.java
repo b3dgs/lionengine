@@ -28,7 +28,7 @@ abstract class Entity
     {
         super(context.factory.getSetup(id), context.map);
         map = context.map;
-        animIdle = getAnimation("idle");
+        animIdle = getDataAnimation("idle");
         life = new Alterable(1);
         play(animIdle);
     }

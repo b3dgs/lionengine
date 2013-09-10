@@ -34,8 +34,8 @@ public abstract class Unit
     protected Unit(TypeEntity id, Context context)
     {
         super(id, context);
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
+        animIdle = getDataAnimation("idle");
+        animWalk = getDataAnimation("walk");
         mover = new MoverModel(this, context.map);
         play(animIdle);
     }

@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.game.maptile;
 
+import java.util.List;
+
 /**
  * Default class tile; containing following data:
  * <ul>
@@ -58,6 +60,28 @@ public abstract class TileGame<C extends Enum<C>>
      * @return The collision type.
      */
     public abstract C getCollisionFrom(String collision, String type);
+
+    /**
+     * Check if tile fill condition.
+     * 
+     * @param collisions The collisions list.
+     * @return <code>true</code> if collision is allowed, <code>false</code> else.
+     */
+    public boolean collisionTest(List<C> collisions)
+    {
+        if (collisions.isEmpty())
+        {
+            return true;
+        }
+        for (final C collision : collisions)
+        {
+            if (collision == getCollision())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Get the left position of the tile.

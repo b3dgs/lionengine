@@ -62,9 +62,9 @@ public abstract class Unit
         super(id, context);
         deathOffsetX = getDataInteger("x", "offsetDeath");
         deathOffsetY = getDataInteger("y", "offsetDeath");
-        animIdle = getAnimation("idle");
-        animWalk = getAnimation("walk");
-        animDead = getAnimation("die");
+        animIdle = getDataAnimation("idle");
+        animWalk = getDataAnimation("walk");
+        animDead = getDataAnimation("die");
         mover = new MoverModel(this, context.map);
         corpse = ResourcesLoader.getCorpse(type.race);
         die = Die.NONE;

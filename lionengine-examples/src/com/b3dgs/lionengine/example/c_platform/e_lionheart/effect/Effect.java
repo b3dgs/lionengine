@@ -44,7 +44,7 @@ public class Effect
     {
         this.x = x;
         this.y = y;
-        sprite.play(getAnimation("start"));
+        sprite.play(getDataAnimation("start"));
     }
 
     /*

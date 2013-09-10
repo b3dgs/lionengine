@@ -29,7 +29,7 @@ public class EntityMonster
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
-        setFrameOffsets(sprite.getFrameWidth() / 2, -4);
+        setFrameOffsets(0, -4);
     }
 
     @Override

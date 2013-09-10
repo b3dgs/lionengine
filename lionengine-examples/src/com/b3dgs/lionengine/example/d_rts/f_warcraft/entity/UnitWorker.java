@@ -86,9 +86,9 @@ public abstract class UnitWorker
         extractionSpeed = getDataInteger("extraction_speed", "extraction");
         extractionCapacity = getDataInteger("extraction_capacity", "extraction");
         dropOffSpeed = getDataInteger("drop_off_speed", "extraction");
-        animWork = getAnimation("work");
-        animCarryGold = getAnimation("carry_gold");
-        animCarryWood = getAnimation("carry_wood");
+        animWork = getDataAnimation("work");
+        animCarryGold = getDataAnimation("carry_gold");
+        animCarryWood = getDataAnimation("carry_wood");
         construction = context.factoryEffect.createEffect(TypeEffect.CONSTRUCTION);
     }
 

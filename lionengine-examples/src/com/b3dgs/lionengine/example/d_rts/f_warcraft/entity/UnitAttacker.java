@@ -30,7 +30,7 @@ public abstract class UnitAttacker
     protected UnitAttacker(TypeEntity id, Context context)
     {
         super(id, context);
-        animAttack = getAnimation("attack");
+        animAttack = getDataAnimation("attack");
         attacker = new AttackerModel<>(this);
     }
 

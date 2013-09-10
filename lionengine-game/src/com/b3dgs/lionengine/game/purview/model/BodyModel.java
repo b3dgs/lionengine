@@ -51,6 +51,7 @@ public class BodyModel
             force = new Force(body.force);
         }
         gravityMax = new Force();
+        invertY = -1;
     }
 
     /*

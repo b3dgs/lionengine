@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.input.Keyboard;
  * Implementation of our controllable entity.
  */
 final class Mario
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform
 {
     /** Map reference. */
     private final Map map;
@@ -52,7 +52,7 @@ final class Mario
      */
     Mario(Map map, int desiredFps)
     {
-        super(new SetupEntityGame(Media.get("entities", "mario.xml")), map);
+        super(new SetupEntityGame(Media.get("entities", "mario.xml")));
         this.map = map;
         this.desiredFps = desiredFps;
         animations = new EnumMap<>(EntityState.class);
@@ -89,7 +89,7 @@ final class Mario
         {
             try
             {
-                animations.put(state, getAnimation(state.getAnimationName()));
+                animations.put(state, getDataAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {
@@ -208,7 +208,8 @@ final class Mario
      */
     private void checkHorizontal(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 1, TileCollision.COLLISION_HORIZONTAL);
+        collisionCheck(offsetX, 1);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -226,7 +227,8 @@ final class Mario
      */
     private void checkVertical(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 0, TileCollision.COLLISION_VERTICAL);
+        collisionCheck(offsetX, 0);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);

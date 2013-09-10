@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.game.platform.EntityPlatform;
  * Abstract entity base implementation.
  */
 abstract class Entity
-        extends EntityPlatform<TileCollision, Tile>
+        extends EntityPlatform
 {
     /** Map reference. */
     protected final Map map;
@@ -57,7 +57,7 @@ abstract class Entity
      */
     Entity(SetupEntityGame setup, Map map, int desiredFps)
     {
-        super(setup, map);
+        super(setup);
         this.map = map;
         this.desiredFps = desiredFps;
         animations = new EnumMap<>(EntityState.class);
@@ -153,7 +153,7 @@ abstract class Entity
         {
             try
             {
-                animations.put(state, getAnimation(state.getAnimationName()));
+                animations.put(state, getDataAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {
@@ -258,7 +258,8 @@ abstract class Entity
      */
     private void checkHorizontal(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 1, TileCollision.COLLISION_HORIZONTAL);
+        collisionCheck(offsetX, 1);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -277,7 +278,8 @@ abstract class Entity
      */
     private void checkVertical(int offsetX)
     {
-        final Tile tile = collisionCheck(offsetX, 0, TileCollision.COLLISION_VERTICAL);
+        collisionCheck(offsetX, 0);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);

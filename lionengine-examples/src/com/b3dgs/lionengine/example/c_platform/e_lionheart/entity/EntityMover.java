@@ -21,6 +21,10 @@ import com.b3dgs.lionengine.game.Movement;
 public abstract class EntityMover
         extends Entity
 {
+    /** Move left side. */
+    private static final int MOVE_LEFT = -1;
+    /** Move right side. */
+    private static final int MOVE_RIGHT = 1;
     /** Entity actions. */
     protected final EnumMap<TypeEntityAction, Boolean> actions;
     /** Movement force. */
@@ -88,6 +92,21 @@ public abstract class EntityMover
      * @see TypeEntityAction
      */
     protected abstract void updateActions();
+
+    /**
+     * Check vertical axis.
+     * 
+     * @param y The y location.
+     */
+    public void checkCollisionVertical(Double y)
+    {
+        if (applyVerticalCollision(y))
+        {
+            resetGravity();
+            jumpForce.setForce(Force.ZERO);
+            status.setCollision(TypeEntityCollision.GROUND);
+        }
+    }
 
     /**
      * Set the movement type.
@@ -260,12 +279,7 @@ public abstract class EntityMover
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
-            if (applyVerticalCollision(y))
-            {
-                resetGravity();
-                jumpForce.setForce(Force.ZERO);
-                status.setCollision(TypeEntityCollision.GROUND);
-            }
+            checkCollisionVertical(y);
         }
     }
 
@@ -276,7 +290,8 @@ public abstract class EntityMover
      */
     protected void checkCollisionHorizontal(int offset)
     {
-        final Tile tile = collisionCheck(offset, 1, TypeTileCollision.COLLISION_HORIZONTAL);
+        collisionCheck(offset, 1);
+        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -403,10 +418,18 @@ public abstract class EntityMover
 
             hasPatrol = getPatrolLeft() != 0 || getPatrolRight() != 0;
             movementSpeedMax = getMoveSpeed() / 5.0;
+
+            // Set side
             if (firstMove == 0)
             {
-                side = -1;
+                side = EntityMover.MOVE_LEFT;
             }
+            else if (firstMove == 1)
+            {
+                side = EntityMover.MOVE_RIGHT;
+            }
+
+            // Set position interval
             if (movementType == TypeEntityMovement.HORIZONTAL)
             {
                 posMin = getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
@@ -420,17 +443,19 @@ public abstract class EntityMover
                 movement.getForce().setForce(0.0, movementSpeedMax * side);
             }
 
-            if (side == -1)
+            // Locate at the opposite of the direction
+            final int offsetX = (int) Math.ceil(movement.getForce().getForceHorizontal());
+            if (side == EntityMover.MOVE_LEFT)
             {
                 mirror(true);
-                teleport((int) (posMax + movement.getForce().getForceHorizontal()), getLocationIntY());
+                teleport(posMax - offsetX - 1, getLocationIntY());
             }
-            else if (side == 1)
+            else if (side == EntityMover.MOVE_RIGHT)
             {
-                teleport((int) (posMin - movement.getForce().getForceHorizontal()), getLocationIntY());
+                teleport(posMin + offsetX, getLocationIntY());
             }
 
-            posMin = posMax;
+            // Move straight on
             if (posMin == posMax)
             {
                 posMin = -1;
@@ -446,7 +471,7 @@ public abstract class EntityMover
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(collisionCheck(0, 0, TypeTileCollision.COLLISION_VERTICAL));
+            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
         }
     }
 

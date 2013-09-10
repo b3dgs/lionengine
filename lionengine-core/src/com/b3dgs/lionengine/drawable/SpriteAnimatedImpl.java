@@ -127,17 +127,11 @@ final class SpriteAnimatedImpl
     {
         return animator.getFrame();
     }
-    
+
     @Override
     public int getFrameAnim()
     {
         return animator.getFrameAnim();
-    }
-
-    @Override
-    public double getFrameReal()
-    {
-        return animator.getFrameReal();
     }
 
     /*

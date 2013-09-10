@@ -36,8 +36,8 @@ class Mario
     public Mario(SetupEntityGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, TypeEntity.mario, map, desiredFps, server);
-        animTurn = getAnimation("turn");
-        animJump = getAnimation("jump");
+        animTurn = getDataAnimation("turn");
+        animJump = getDataAnimation("jump");
         timerDie = new Timing();
         jumpForceValue = 8.0;
         movementSpeedValue = 3.0;

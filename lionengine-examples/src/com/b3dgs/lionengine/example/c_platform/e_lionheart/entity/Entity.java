@@ -10,8 +10,6 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Coord;
@@ -23,7 +21,7 @@ import com.b3dgs.lionengine.game.platform.EntityPlatform;
  * Abstract entity base implementation.
  */
 public abstract class Entity
-        extends EntityPlatform<TypeTileCollision, Tile>
+        extends EntityPlatform
 {
     /** Entity type. */
     public final TypeEntity type;
@@ -58,7 +56,7 @@ public abstract class Entity
      */
     protected Entity(Context context, TypeEntity type)
     {
-        super(context.factoryEntity.getSetup(type), context.map);
+        super(context.factoryEntity.getSetup(type));
         this.type = type;
         map = context.map;
         desiredFps = context.desiredFps;
@@ -142,8 +140,8 @@ public abstract class Entity
      */
     public void save(FileWriting file) throws IOException
     {
-        file.writeShort((short) Math.floor(getInTileX()));
-        file.writeShort((short) Math.floor(getInTileY()));
+        file.writeShort((short) Math.floor(map.getInTileX(this)));
+        file.writeShort((short) Math.floor(map.getInTileY(this)));
     }
 
     /**
@@ -228,7 +226,7 @@ public abstract class Entity
         {
             try
             {
-                animations.put(state, getAnimation(state.getAnimationName()));
+                animations.put(state, getDataAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {
@@ -250,7 +248,7 @@ public abstract class Entity
             renderCollision(g, camera);
         }
     }
-    
+
     @Override
     protected void handleActions(double extrp)
     {

@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.game.purview;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.game.CollisionData;
 
 /**
  * Purview representing an object which can be externally configured. When data are loaded, the object can used
@@ -61,10 +62,18 @@ public interface Configurable
     double getDataDouble(String attribute, String... path);
 
     /**
-     * Get an animation from its name.
+     * Get an animation data from its name.
      * 
      * @param name The animation name.
      * @return The animation reference.
      */
-    Animation getAnimation(String name);
+    Animation getDataAnimation(String name);
+
+    /**
+     * Get a collision data from its name.
+     * 
+     * @param name The collision name.
+     * @return The collision reference.
+     */
+    CollisionData getDataCollision(String name);
 }

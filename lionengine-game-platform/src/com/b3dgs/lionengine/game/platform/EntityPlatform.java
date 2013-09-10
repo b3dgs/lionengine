@@ -1,67 +1,24 @@
 package com.b3dgs.lionengine.game.platform;
 
-import java.util.List;
-
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
-import com.b3dgs.lionengine.game.maptile.MapTile;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
- * 
- * @param <C> Tile collision type used.
- * @param <T> Tile type used.
  */
-public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C>>
+public abstract class EntityPlatform
         extends EntityGame
         implements Animator
 {
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param d The distance value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int d)
-    {
-        if (d < 0)
-        {
-            return -1.0;
-        }
-        else if (d > 0)
-        {
-            return 1.0;
-        }
-        return 0.0;
-    }
-
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param dsup The distance superior value.
-     * @param dinf The distance inferior value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int dsup, int dinf)
-    {
-        if (0 == dsup)
-        {
-            return EntityPlatform.getTileSearchSpeed(dinf);
-        }
-        return dinf / (double) dsup;
-    }
-
     /** Animation surface. */
     protected final SpriteAnimated sprite;
-    /** Map reference. */
-    final MapTile<C, T> map;
     /** Collisions special offsets x. */
     private int collOffX;
     /** Collisions special offsets y. */
@@ -70,6 +27,8 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     private int frameOffsetX;
     /** Frame offsets y. */
     private int frameOffsetY;
+    /** Current collision (<code>null</code> if none). */
+    private CollisionData collision;
     /** Old collision y. */
     private double locationBeforeCollisionOldY;
     /** Last collision y. */
@@ -91,12 +50,10 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      * </pre>
      * 
      * @param setup The entity setup.
-     * @param map The map reference.
      */
-    public EntityPlatform(SetupEntityGame setup, MapTile<C, T> map)
+    public EntityPlatform(SetupEntityGame setup)
     {
         super(setup.configurable);
-        this.map = map;
         final int hf = setup.configurable.getDataInteger("horizontal", "frames");
         final int vf = setup.configurable.getDataInteger("vertical", "frames");
         final int width = setup.configurable.getDataInteger("width", "size");
@@ -105,7 +62,6 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         frameOffsetX = 0;
         frameOffsetY = 0;
         setSize(width, height);
-        invertAxisY(true);
     }
 
     /**
@@ -123,8 +79,8 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     protected abstract void handleMovements(final double extrp);
 
     /**
-     * Update collisions, after movements. Should be used to call {@link #collisionCheck(int, int, List)} for each
-     * collision test.
+     * Update collisions, after movements. Should be used to call {@link #collisionCheck(int, int)} for each collision
+     * test.
      * <p>
      * Example:
      * </p>
@@ -195,7 +151,10 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
         handleCollisions(extrp);
         collOffX = 0;
         collOffY = 0;
-        updateCollision(sprite.getFrameWidth() / 2 - frameOffsetX, frameOffsetY, getWidth(), getHeight());
+        if (collision != null)
+        {
+            updateCollision(collision);
+        }
         handleAnimations(extrp);
     }
 
@@ -223,6 +182,16 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     }
 
     /**
+     * Set the collision to use.
+     * 
+     * @param collision The collision to use (<code>null</code> if none).
+     */
+    public void setCollision(CollisionData collision)
+    {
+        this.collision = collision;
+    }
+
+    /**
      * Get real horizontal speed (calculated on differential location x).
      * 
      * @return The real speed.
@@ -240,90 +209,6 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     public double getDiffVertical()
     {
         return getLocationY() - getLocationOldY();
-    }
-
-    /**
-     * Get location x relative to map referential as tile.
-     * 
-     * @return The location x relative to map referential as tile.
-     */
-    public int getInTileX()
-    {
-        return (int) Math.floor(getLocationX() / map.getTileWidth());
-    }
-
-    /**
-     * Get location y relative to map referential as tile.
-     * 
-     * @return The location y relative to map referential as tile.
-     */
-    public int getInTileY()
-    {
-        return (int) Math.floor(getLocationY() / map.getTileHeight());
-    }
-
-    /**
-     * Get old location x relative to map referential as tile.
-     * 
-     * @return The old location x relative to map referential as tile.
-     */
-    public int getInTileOldX()
-    {
-        return (int) Math.floor(getLocationOldX() / map.getTileWidth());
-    }
-
-    /**
-     * Get old location y relative to map referential as tile.
-     * 
-     * @return The old location y relative to map referential as tile.
-     */
-    public int getInTileOldY()
-    {
-        return (int) Math.floor(getLocationOldY() / map.getTileHeight());
-    }
-
-    /**
-     * Get x value on tile referential (between 0 and tile width).
-     * 
-     * @param tile The tile referential.
-     * @return The x value.
-     */
-    public int getOnTileX(T tile)
-    {
-        return getLocationIntX() - tile.getX();
-    }
-
-    /**
-     * Get y value on tile referential (between 0 and tile height).
-     * 
-     * @param tile The tile referential.
-     * @return The y value.
-     */
-    public int getOnTileY(T tile)
-    {
-        return getLocationIntY() - tile.getY();
-    }
-
-    /**
-     * Get old x value on tile referential (between 0 and tile width).
-     * 
-     * @param tile The tile referential.
-     * @return The old x value.
-     */
-    public int getOnTileOldX(T tile)
-    {
-        return (int) getLocationOldX() - tile.getX();
-    }
-
-    /**
-     * Get old y value on tile referential (between 0 and tile height).
-     * 
-     * @param tile The tile referential.
-     * @return The old y value.
-     */
-    public int getOnTileOldY(T tile)
-    {
-        return (int) getLocationOldY() - tile.getY();
     }
 
     /**
@@ -403,8 +288,8 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      */
     protected void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
     {
-        final int x = camera.getViewpointX(getLocationIntX() - frameOffsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + frameOffsetY + sprite.getFrameHeight());
+        final int x = camera.getViewpointX(getLocationIntX() - sprite.getFrameWidth() / 2 - frameOffsetX);
+        final int y = camera.getViewpointY(getLocationIntY() + sprite.getFrameHeight() + frameOffsetY);
         sprite.render(g, x + rx, y + ry);
     }
 
@@ -422,95 +307,12 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
      * 
      * @param offsetX The offset value.
      * @param offsetY The offset value.
-     * @param collisions The accepted collisions.
-     * @return The first hit tile (ray cast).
      */
-    protected T collisionCheck(int offsetX, int offsetY, List<C> collisions)
+    protected void collisionCheck(int offsetX, int offsetY)
     {
-        // Collision offset storage
-        this.collOffX = offsetX;
-        this.collOffY = offsetY;
-
-        // Starting location
-        final int sv = (int) Math.floor(getLocationOldY());
-        final int sh = (int) Math.floor(getLocationOldX());
-
-        // Ending location
-        final int ev = (int) Math.floor(getLocationY());
-        final int eh = (int) Math.floor(getLocationX());
-
-        // Distance calculation
-        final int dv = sv - ev;
-        final int dh = eh - sh;
-
-        // Search vector and number of search steps
-        final double sx, sy;
-        final int stepMax;
-        if (Math.abs(dv) >= Math.abs(dh))
-        {
-            sy = EntityPlatform.getTileSearchSpeed(dv);
-            sx = EntityPlatform.getTileSearchSpeed(dv, dh);
-            stepMax = Math.abs(dv);
-        }
-        else
-        {
-            sx = EntityPlatform.getTileSearchSpeed(dh);
-            sy = EntityPlatform.getTileSearchSpeed(dh, dv);
-            stepMax = Math.abs(dh);
-        }
-
-        // Check each potential tile from first to last and search first collision
-        return getFirstTileHit(sv, sh, sy, sx, stepMax, collisions);
-    }
-
-    /**
-     * Get the first tile hit on the search area.
-     * 
-     * @param sv Starting vertical location.
-     * @param sh Starting horizontal location.
-     * @param sy Search vertical speed.
-     * @param sx Search horizontal speed.
-     * @param stepMax Maximum number of search steps.
-     * @param collisions Collisions list to search for.
-     * @return The first tile hit, <code>null</code> if none found.
-     */
-    private T getFirstTileHit(int sv, int sh, double sy, double sx, int stepMax, List<C> collisions)
-    {
-        int step = 0;
-        for (double v = sv, h = sh; step <= stepMax; v -= sy, h += sx)
-        {
-            final T tile = map.getTile((int) Math.floor(h / map.getTileWidth()),
-                    (int) Math.floor(v / map.getTileHeight()));
-            if (tile != null && collisionTest(tile, collisions) && tile.hasCollision(this))
-            {
-                return tile;
-            }
-            step++;
-        }
-        return null;
-    }
-
-    /**
-     * Check if tile fill condition.
-     * 
-     * @param tile The tile to check.
-     * @param collisions The collisions list.
-     * @return <code>true</code> if collision is allowed, <code>false</code> else.
-     */
-    private boolean collisionTest(T tile, List<C> collisions)
-    {
-        if (collisions.isEmpty())
-        {
-            return true;
-        }
-        for (final C collision : collisions)
-        {
-            if (collision == tile.getCollision())
-            {
-                return true;
-            }
-        }
-        return false;
+        collOffX = offsetX;
+        collOffY = offsetY;
+        // TODO: find a better solution
     }
 
     /*
@@ -593,17 +395,11 @@ public abstract class EntityPlatform<C extends Enum<C>, T extends TilePlatform<C
     {
         return sprite.getFrame();
     }
-    
+
     @Override
     public int getFrameAnim()
     {
         return sprite.getFrameAnim();
-    }
-
-    @Override
-    public double getFrameReal()
-    {
-        return sprite.getFrameReal();
     }
 
     @Override
