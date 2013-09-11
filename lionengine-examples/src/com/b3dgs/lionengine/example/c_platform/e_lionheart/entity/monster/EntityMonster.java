@@ -9,6 +9,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 
 /**
  * Monster base implementation.
@@ -35,7 +36,7 @@ public class EntityMonster
     @Override
     protected void updateActions()
     {
-        final TypeEntityState state = status.getState();
+        final TypeState state = status.getState();
         if (state == TypeEntityState.TURN)
         {
             if (getAnimState() == AnimState.FINISHED)

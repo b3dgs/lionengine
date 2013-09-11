@@ -41,6 +41,10 @@ public enum TypeEntity
 
     /** Sheet (scenery). */
     SHEET(TypeEntityCategory.SCENERY),
+    /** Turning auto (scenery). */
+    TURNING_AUTO(TypeEntityCategory.SCENERY),
+    /** Turning hit (scenery). */
+    TURNING_HIT(TypeEntityCategory.SCENERY),
 
     /*
      * Valdyn

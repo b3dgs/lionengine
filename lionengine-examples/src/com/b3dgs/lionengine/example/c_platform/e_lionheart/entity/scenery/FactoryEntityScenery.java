@@ -24,6 +24,10 @@ public final class FactoryEntityScenery
         {
             case SHEET:
                 return new Sheet(context);
+            case TURNING_AUTO:
+                return new TurningAuto(context);
+            case TURNING_HIT:
+                return new TurningHit(context);
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }

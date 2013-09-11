@@ -111,6 +111,7 @@ public class HandlerEntity
                 player.hitBy(entity);
             }
         }
+        entity.onUpdated();
     }
 
     @Override

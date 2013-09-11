@@ -1,12 +1,18 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.util.Locale;
+
 /**
- * List of entity collisions.
+ * List of entity collision types.
  */
 public enum TypeEntityCollision
 {
-    /** No collision. */
-    NONE,
-    /** On ground. */
-    GROUND;
+    /** Default collision. */
+    DEFAULT;
+
+    @Override
+    public String toString()
+    {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
 }

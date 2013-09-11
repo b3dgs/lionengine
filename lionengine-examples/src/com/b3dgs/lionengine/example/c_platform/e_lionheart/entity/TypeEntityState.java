@@ -1,69 +1,41 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.util.Locale;
+
 /**
  * List of entity states.
  */
-public enum TypeEntityState
+public enum TypeEntityState implements TypeState
 {
     /** Idle state. */
-    IDLE("idle"),
-    /** Crouch state. */
-    CROUCH("crouch"),
+    IDLE,
     /** Die state. */
-    DIE("die"),
+    DIE,
     /** Die state. */
-    DEAD("dead"),
+    DEAD,
     /** Fallen state. */
-    FALLEN("fallen"),
+    FALLEN,
     /** Walk state. */
-    WALK("walk"),
+    WALK,
     /** Turning state. */
-    TURN("turn"),
+    TURN,
     /** Jumping state. */
-    JUMP("jump"),
+    JUMP,
     /** Falling state. */
-    FALL("fall"),
-    /** Border state. */
-    BORDER("border"),
-    /** Preparing attack. */
-    ATTACK_PREPARING("attack_preparing"),
-    /** Preparing attack down. */
-    ATTACK_PREPARING_DOWN("attack_preparing_down"),
-    /** Preparing attack. */
-    ATTACK_PREPARED("attack_prepared"),
-    /** Preparing attack down. */
-    ATTACK_PREPARED_DOWN("attack_prepared_down"),
-    /** Attack up. */
-    ATTACK_UP("attack_up"),
-    /** Attack horizontal. */
-    ATTACK_HORIZONTAL("attack_horizontal"),
-    /** Attack turning. */
-    ATTACK_TURNING("attack_turning"),
-    /** Attack down leg. */
-    ATTACK_DOWN_LEG("attack_down_leg"),
-    /** Attack while jumping. */
-    ATTACK_JUMP("attack_jump"),
-    /** Attack while falling. */
-    ATTACK_FALL("attack_fall");
+    FALL;
 
     /** Animation name. */
     private final String animationName;
 
     /**
      * Constructor.
-     * 
-     * @param name The animation name.
      */
-    private TypeEntityState(String name)
+    private TypeEntityState()
     {
-        animationName = name;
+        animationName = name().toLowerCase(Locale.ENGLISH);
     }
 
-    /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
-     */
+    @Override
     public String getAnimationName()
     {
         return animationName;

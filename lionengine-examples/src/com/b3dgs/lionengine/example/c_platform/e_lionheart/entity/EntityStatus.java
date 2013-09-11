@@ -6,13 +6,13 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 public final class EntityStatus
 {
     /** Entity state. */
-    private TypeEntityState state;
+    private TypeState state;
     /** Entity old state. */
-    private TypeEntityState stateOld;
+    private TypeState stateOld;
     /** Collision state. */
-    private TypeEntityCollision collision;
+    private TypeEntityCollisionTile collision;
     /** Collision old state. */
-    private TypeEntityCollision collisionOld;
+    private TypeEntityCollisionTile collisionOld;
 
     /**
      * Constructor.
@@ -21,7 +21,7 @@ public final class EntityStatus
     {
         state = TypeEntityState.IDLE;
         stateOld = null;
-        collision = TypeEntityCollision.NONE;
+        collision = TypeEntityCollisionTile.NONE;
         collisionOld = collision;
     }
 
@@ -58,7 +58,7 @@ public final class EntityStatus
      * @param to The expected collision value.
      * @return <code>true</code> if changed as expected, <code>false</code> else.
      */
-    public boolean collisionChangedFromTo(TypeEntityCollision from, TypeEntityCollision to)
+    public boolean collisionChangedFromTo(TypeEntityCollisionTile from, TypeEntityCollisionTile to)
     {
         return collisionOld == from && collision == to;
     }
@@ -68,7 +68,7 @@ public final class EntityStatus
      * 
      * @param state The entity state.
      */
-    public void setState(TypeEntityState state)
+    public void setState(TypeState state)
     {
         this.state = state;
     }
@@ -78,7 +78,7 @@ public final class EntityStatus
      * 
      * @param collision The entity state.
      */
-    public void setCollision(TypeEntityCollision collision)
+    public void setCollision(TypeEntityCollisionTile collision)
     {
         this.collision = collision;
     }
@@ -88,7 +88,7 @@ public final class EntityStatus
      * 
      * @return The entity state.
      */
-    public TypeEntityState getState()
+    public TypeState getState()
     {
         return state;
     }
@@ -98,7 +98,7 @@ public final class EntityStatus
      * 
      * @return The entity collision.
      */
-    public TypeEntityCollision getCollision()
+    public TypeEntityCollisionTile getCollision()
     {
         return collision;
     }

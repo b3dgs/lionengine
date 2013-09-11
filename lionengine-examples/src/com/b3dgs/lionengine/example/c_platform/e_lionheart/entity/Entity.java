@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import java.io.IOException;
-import java.util.EnumMap;
+import java.util.HashMap;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
@@ -12,6 +12,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -28,7 +29,9 @@ public abstract class Entity
     /** Map reference. */
     protected final Map map;
     /** Animations list. */
-    protected final EnumMap<TypeEntityState, Animation> animations;
+    protected final HashMap<TypeState, Animation> animations;
+    /** Collisions data. */
+    protected final HashMap<Enum<?>, CollisionData> collisions;
     /** Entity status. */
     protected final EntityStatus status;
     /** Dead timer. */
@@ -61,13 +64,15 @@ public abstract class Entity
         map = context.map;
         desiredFps = context.desiredFps;
         status = new EntityStatus();
-        animations = new EnumMap<>(TypeEntityState.class);
+        animations = new HashMap<>(4);
+        collisions = new HashMap<>(4);
         timerDie = new Timing();
         dieLocation = new Coord();
         forces = new Force[0];
-        loadAnimations();
+        loadCollisions(TypeEntityCollision.values());
+        loadAnimations(TypeEntityState.values());
     }
-
+    
     /**
      * Called when this is hit by another entity.
      * 
@@ -97,7 +102,7 @@ public abstract class Entity
     /**
      * Update the collisions detection.
      * 
-     * @see TypeEntityCollision
+     * @see TypeEntityCollisionTile
      */
     protected abstract void updateCollisions();
 
@@ -107,7 +112,7 @@ public abstract class Entity
      * @param extrp The Extrapolation value.
      */
     protected abstract void updateAnimations(double extrp);
-
+    
     /**
      * Kill entity.
      */
@@ -128,7 +133,7 @@ public abstract class Entity
         resetGravity();
         mirror(false);
         updateMirror();
-        status.setCollision(TypeEntityCollision.GROUND);
+        status.setCollision(TypeEntityCollisionTile.GROUND);
         status.backupCollision();
     }
 
@@ -206,23 +211,23 @@ public abstract class Entity
     {
         return dead;
     }
-
+    
     /**
-     * Get forces involved in gravity and movement. Return empty array by default.
-     * 
-     * @return The forces list.
+     * Called when entity has been updated.
      */
-    protected Force[] getForces()
+    public void onUpdated()
     {
-        return forces;
+        // Nothing by default
     }
 
     /**
      * Load all existing animations defined in the config file.
+     * 
+     * @param states The states to load.
      */
-    private void loadAnimations()
+    protected final void loadAnimations(TypeState[] states)
     {
-        for (final TypeEntityState state : TypeEntityState.values())
+        for (final TypeState state : states)
         {
             try
             {
@@ -233,6 +238,37 @@ public abstract class Entity
                 continue;
             }
         }
+    }
+
+    /**
+     * Load all collisions data.
+     * 
+     * @param values The collisions list.
+     */
+    protected final void loadCollisions(Enum<?>[] values)
+    {
+        for (final Enum<?> collision : values)
+        {
+            try
+            {
+                collisions.put(collision, getDataCollision(collision.toString()));
+            }
+            catch (final LionEngineException exception)
+            {
+                continue;
+            }
+        }
+        setCollision(collisions.get(TypeEntityCollision.DEFAULT));
+    }
+
+    /**
+     * Get forces involved in gravity and movement. Return empty array by default.
+     * 
+     * @return The forces list.
+     */
+    protected Force[] getForces()
+    {
+        return forces;
     }
 
     /*

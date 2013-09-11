@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
+import java.awt.geom.Rectangle2D;
+
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
@@ -9,9 +11,14 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 /**
  * Entity scenery base implementation.
  */
-public class EntityScenery
+public abstract class EntityScenery
         extends Entity
 {
+    /** Collide state. */
+    private boolean collide;
+    /** Collide old state. */
+    private boolean collideOld;
+    
     /**
      * Constructor.
      * 
@@ -23,15 +30,21 @@ public class EntityScenery
         super(context, type);
     }
 
+    /**
+     * Called when collision occurred.
+     * 
+     * @param entity The entity reference.
+     */
+    protected abstract void onCollide(Entity entity);
+    
+    /**
+     * Called when lost collision.
+     */
+    protected abstract void onLostCollision();
+
     /*
      * Entity
      */
-
-    @Override
-    public void updateCollision(int x, int y, int width, int height)
-    {
-        super.updateCollision(x, y + sprite.getFrameHeight() - height - 6, width, height);
-    }
 
     @Override
     public void hitBy(Entity entity)
@@ -45,30 +58,44 @@ public class EntityScenery
         if (entity instanceof EntityMover)
         {
             final EntityMover mover = (EntityMover) entity;
-            if (!mover.isJumping())
+            if (!mover.isJumping() && mover.getLocationY() > getLocationY())
             {
-                mover.checkCollisionVertical(Double.valueOf(getLocationY() + sprite.getFrameHeight() + getHeight() - 8));
+                onCollide(entity);
+                mover.checkCollisionVertical(Double.valueOf(getLocationY() + getHeight() - 4));
+                collide = true;
             }
         }
         if (entity instanceof Valdyn)
         {
             final Valdyn valdyn = (Valdyn) entity;
-            if (valdyn.getLocationIntX() < getLocationIntX() + Valdyn.TILE_EXTREMITY_WIDTH)
+            final Rectangle2D collision = getCollision();
+            if (valdyn.getLocationX() < collision.getMinX() - valdyn.getWidth() / 2 + Valdyn.TILE_EXTREMITY_WIDTH * 2)
             {
                 valdyn.updateExtremity(true);
             }
-            else if (valdyn.getLocationIntX() - getWidth() / 2 > getLocationIntX() + getWidth()
-                    - Valdyn.TILE_EXTREMITY_WIDTH)
+            else if (valdyn.getLocationX() > collision.getMaxX() + valdyn.getWidth() / 2 - Valdyn.TILE_EXTREMITY_WIDTH
+                    * 2)
             {
                 valdyn.updateExtremity(false);
             }
+        }
+    }
+    
+    @Override
+    public void onUpdated()
+    {
+        if (!collide && collideOld)
+        {
+            onLostCollision();
+            collideOld = false;
         }
     }
 
     @Override
     protected void updateStates()
     {
-        // Nothing to do
+        collideOld = collide;
+        collide = false;
     }
 
     @Override

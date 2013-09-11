@@ -9,9 +9,9 @@ import com.b3dgs.lionengine.game.CollisionData;
 public class Attack
 {
     /** The frame index. */
-    public final int frame;
+    private final int frame;
     /** The collision data. */
-    public final CollisionData collision;
+    private final CollisionData collision;
 
     /**
      * Constructor.
@@ -23,5 +23,25 @@ public class Attack
         frame = attack.readInteger("frame");
         collision = new CollisionData(attack.readInteger("x"), attack.readInteger("y"), attack.readInteger("width"),
                 attack.readInteger("height"));
+    }
+
+    /**
+     * Get the frame that contain a collision.
+     * 
+     * @return The frame containing a collision.
+     */
+    public int getFrame()
+    {
+        return frame;
+    }
+
+    /**
+     * Get the collision data.
+     * 
+     * @return The collision data.
+     */
+    public CollisionData getCollision()
+    {
+        return collision;
     }
 }

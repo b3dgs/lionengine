@@ -14,7 +14,7 @@ public enum TypeTileCollisionGroup
     /** Slide. */
     SLIDE(3.0);
 
-    /** Factor (vertical reducer compared to horizontal). */
+    /** Factor (vertical factor compared to horizontal). */
     private double factor;
 
     /**

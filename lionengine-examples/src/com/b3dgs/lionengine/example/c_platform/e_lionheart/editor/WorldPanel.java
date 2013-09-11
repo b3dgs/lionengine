@@ -219,8 +219,9 @@ public class WorldPanel
             if (entity.isSelected() || entity.isOver())
             {
                 g.setColor(WorldPanel.COLOR_ENTITY_SELECTION);
-                g.fillRect(sx - hOff, -sy + vOff - entity.getHeight() + UtilityMath.getRounded(height, th),
-                        entity.getWidth(), entity.getHeight());
+                g.fillRect(sx - hOff - entity.getWidth() / 2,
+                        -sy + vOff - entity.getHeight() + UtilityMath.getRounded(height, th), entity.getWidth(),
+                        entity.getHeight());
             }
             entity.render(new Graphic(g), camera);
         }
@@ -432,7 +433,7 @@ public class WorldPanel
     {
         if (entity != null)
         {
-            final int x = UtilityMath.getRounded(entity.getLocationIntX(), map.getTileWidth())
+            final int x = UtilityMath.getRounded(entity.getLocationIntX() - entity.getWidth() / 2, map.getTileWidth())
                     - editor.getOffsetViewH();
             final int y = UtilityMath.getRounded(entity.getLocationIntY(), map.getTileHeight())
                     - editor.getOffsetViewV();
@@ -454,11 +455,12 @@ public class WorldPanel
         for (final Entity entity : handlerEntity.list())
         {
             entity.setSelection(false);
-            final int offy = getHeight() - UtilityMath.getRounded(getHeight(), map.getTileHeight());
+            final int th = map.getTileHeight();
+            final int offy = getHeight() - UtilityMath.getRounded(getHeight(), th);
             final int sx = UtilityMath.getRounded(selectStartX, map.getTileWidth());
-            final int sy = UtilityMath.getRounded(getHeight() - selectStartY - offy, map.getTileHeight());
+            final int sy = UtilityMath.getRounded(getHeight() - selectStartY - offy, th);
             final int ex = UtilityMath.getRounded(selectEndX, map.getTileWidth());
-            final int ey = UtilityMath.getRounded(getHeight() - selectEndY - offy, map.getTileHeight());
+            final int ey = UtilityMath.getRounded(getHeight() - selectEndY - offy, th);
             if (hitEntity(entity, sx, sy, ex, ey))
             {
                 entity.setSelection(true);
@@ -475,6 +477,22 @@ public class WorldPanel
         {
             entity.setSelection(false);
         }
+    }
+    
+    /**
+     * Set the entity location.
+     * 
+     * @param entity The entity reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param side 1 for place, -1 for move.
+     */
+    private void setEntityLocation(Entity entity, int x, int y, int side)
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        entity.teleport(UtilityMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side * entity.getWidth() / 2,
+                UtilityMath.getRounded(y + th / 2, th));
     }
 
     /**
@@ -617,7 +635,7 @@ public class WorldPanel
                     {
                         final int id = selection.getIndex();
                         final Entity entity = factoryEntity.createEntity(TypeEntity.get(id));
-                        entity.teleport(UtilityMath.getRounded(x, tw), UtilityMath.getRounded(y, th));
+                        setEntityLocation(entity, x, y, 1);
                         handlerEntity.add(entity);
                         handlerEntity.update();
                     }
@@ -668,12 +686,9 @@ public class WorldPanel
         {
             selectEntities();
         }
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
         for (final Entity entity : getSelectedEnties(false))
         {
-            entity.teleport(UtilityMath.getRounded(entity.getLocationIntX() + tw / 2, tw),
-                    UtilityMath.getRounded(entity.getLocationIntY() + th / 2, th));
+            setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
         }
         moving = false;
         resetSelection();
@@ -703,7 +718,8 @@ public class WorldPanel
         {
             if (entity.isSelected())
             {
-                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y - oy);
+                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y
+                        - oy);
             }
         }
 

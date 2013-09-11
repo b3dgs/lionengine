@@ -2,5 +2,6 @@
 <entity name="sword1" surface="sword1.png">
 	<frames horizontal="4" vertical="2"/>
 	<size width="16" height="16"/>
+	<collision name="default" offsetX="0" offsetY="0" width="16" height="16" />
 	<animation name="idle" start="1" end="8" speed="0.25" reversed="false" repeat="true"/>
 </entity>

@@ -4,9 +4,9 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 
 /**
- * Sheet scenery implementation.
+ * Turning hit scenery implementation.
  */
-public final class Sheet
+public final class TurningHit
         extends EntityScenerySheet
 {
     /**
@@ -14,8 +14,8 @@ public final class Sheet
      * 
      * @param context The context reference.
      */
-    public Sheet(Context context)
+    public TurningHit(Context context)
     {
-        super(context, TypeEntity.SHEET);
+        super(context, TypeEntity.TURNING_HIT);
     }
 }

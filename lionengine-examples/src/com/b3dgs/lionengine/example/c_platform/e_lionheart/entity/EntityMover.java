@@ -104,7 +104,7 @@ public abstract class EntityMover
         {
             resetGravity();
             jumpForce.setForce(Force.ZERO);
-            status.setCollision(TypeEntityCollision.GROUND);
+            status.setCollision(TypeEntityCollisionTile.GROUND);
         }
     }
 
@@ -266,7 +266,7 @@ public abstract class EntityMover
      */
     public boolean isOnGround()
     {
-        return status.getCollision() == TypeEntityCollision.GROUND;
+        return status.getCollision() == TypeEntityCollisionTile.GROUND;
     }
 
     /**

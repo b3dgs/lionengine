@@ -18,13 +18,13 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -53,13 +53,11 @@ public final class Valdyn
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Animations shade list. */
-    private final EnumMap<TypeEntityState, Animation> shades;
+    private final EnumMap<TypeValdynState, Animation> shades;
     /** List of starting frames when shades are enabled. */
-    private final EnumMap<TypeEntityState, Integer> shadesEnabled;
-    /** Collisions data. */
-    private final EnumMap<TypeValdynCollision, CollisionData> collisions;
+    private final EnumMap<TypeValdynState, Integer> shadesEnabled;
     /** Attack data. */
-    private final EnumMap<TypeEntityState, Set<Attack>> attacks;
+    private final EnumMap<TypeValdynState, Set<Attack>> attacks;
     /** Jump timer (accurate precision of jump force). */
     private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
@@ -83,7 +81,7 @@ public final class Valdyn
     /** Crouch state. */
     private boolean crouch;
     /** Attack state. */
-    private TypeEntityState attack;
+    private TypeValdynState attack;
     /** Attack prepared. */
     private boolean attackPrepared;
     /** Attacking state. */
@@ -116,10 +114,9 @@ public final class Valdyn
         camera = context.camera;
         shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "players", "shade.png"), 7, 7);
         shade.load(false);
-        shades = new EnumMap<>(TypeEntityState.class);
-        shadesEnabled = new EnumMap<>(TypeEntityState.class);
-        attacks = new EnumMap<>(TypeEntityState.class);
-        collisions = new EnumMap<>(TypeValdynCollision.class);
+        shades = new EnumMap<>(TypeValdynState.class);
+        shadesEnabled = new EnumMap<>(TypeValdynState.class);
+        attacks = new EnumMap<>(TypeValdynState.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -130,11 +127,12 @@ public final class Valdyn
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
         setFrameOffsets(0, -2);
-        addShadeAnimation(TypeEntityState.ATTACK_UP, 1);
-        addShadeAnimation(TypeEntityState.ATTACK_HORIZONTAL, 1);
-        addShadeAnimation(TypeEntityState.ATTACK_TURNING, 2);
-        addShadeAnimation(TypeEntityState.ATTACK_JUMP, 1);
-        loadCollisions();
+        addShadeAnimation(TypeValdynState.ATTACK_UP, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_HORIZONTAL, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_TURNING, 2);
+        addShadeAnimation(TypeValdynState.ATTACK_JUMP, 1);
+        loadCollisions(TypeValdynCollision.values());
+        loadAnimations(TypeValdynState.values());
         loadAttacks();
         stats = new Stats(this);
     }
@@ -175,7 +173,7 @@ public final class Valdyn
      */
     public void updateExtremity(boolean mirror)
     {
-        if (!crouch && status.getState() == TypeEntityState.BORDER)
+        if (!crouch && status.getState() == TypeValdynState.BORDER)
         {
             mirror(mirror);
         }
@@ -190,17 +188,6 @@ public final class Valdyn
     public boolean canHurtMonster()
     {
         return canHurtMonster;
-    }
-
-    /**
-     * Load all collisions data.
-     */
-    private void loadCollisions()
-    {
-        for (final TypeValdynCollision collision : TypeValdynCollision.values())
-        {
-            collisions.put(collision, getDataCollision(collision.toString()));
-        }
     }
 
     /**
@@ -219,7 +206,7 @@ public final class Valdyn
             if (!set.isEmpty())
             {
                 final String attackName = animation.readString("name").toUpperCase(Locale.ENGLISH);
-                attacks.put(TypeEntityState.valueOf(attackName), set);
+                attacks.put(TypeValdynState.valueOf(attackName), set);
             }
         }
     }
@@ -317,7 +304,7 @@ public final class Valdyn
             if (canJump())
             {
                 jumpForce.setForce(0.0, jumpHeightMax);
-                status.setCollision(TypeEntityCollision.NONE);
+                status.setCollision(TypeEntityCollisionTile.NONE);
             }
         }
         else
@@ -343,7 +330,7 @@ public final class Valdyn
     {
         // Attack ended
         final boolean attackFinished = getAnimState() == AnimState.FINISHED;
-        final boolean fallAttack = status.getState() == TypeEntityState.ATTACK_FALL;
+        final boolean fallAttack = status.getState() == TypeValdynState.ATTACK_FALL;
         // Stop if attack finished and if no longer attacking, or fall attack (special case)
         if (attacking && attackFinished && !fallAttack || (!attacking || fallAttack) && !keyAttack)
         {
@@ -373,17 +360,17 @@ public final class Valdyn
     private void updateActionAttackPrepare(boolean attackFinished)
     {
         if (attackFinished
-                && (attack == TypeEntityState.ATTACK_PREPARING_DOWN || attack == TypeEntityState.ATTACK_PREPARING))
+                && (attack == TypeValdynState.ATTACK_PREPARING_DOWN || attack == TypeValdynState.ATTACK_PREPARING))
         {
             attackPrepared = true;
         }
         if (attackPrepared)
         {
-            computeAttackPrepare(TypeEntityState.ATTACK_PREPARED, TypeEntityState.ATTACK_PREPARED_DOWN);
+            computeAttackPrepare(TypeValdynState.ATTACK_PREPARED, TypeValdynState.ATTACK_PREPARED_DOWN);
         }
         else
         {
-            computeAttackPrepare(TypeEntityState.ATTACK_PREPARING, TypeEntityState.ATTACK_PREPARING_DOWN);
+            computeAttackPrepare(TypeValdynState.ATTACK_PREPARING, TypeValdynState.ATTACK_PREPARING_DOWN);
         }
         attacking = false;
     }
@@ -400,28 +387,28 @@ public final class Valdyn
         final boolean wrongWay = mirror && keyLeft || !mirror && keyRight;
         if (!isOnGround() && keyDown)
         {
-            setAttack(TypeEntityState.ATTACK_FALL);
+            setAttack(TypeValdynState.ATTACK_FALL);
             attacked = false;
         }
         else if (!isOnGround())
         {
-            setAttack(TypeEntityState.ATTACK_JUMP);
+            setAttack(TypeValdynState.ATTACK_JUMP);
         }
         else if (attackPrepared && isOnGround() && keyDown && wrongWay)
         {
-            setAttack(TypeEntityState.ATTACK_DOWN_LEG);
+            setAttack(TypeValdynState.ATTACK_DOWN_LEG);
         }
         else if (attackPrepared && isOnGround() && !keyDown && keyUp)
         {
-            setAttack(TypeEntityState.ATTACK_UP);
+            setAttack(TypeValdynState.ATTACK_UP);
         }
         else if (attackPrepared && isOnGround() && !keyDown && wrongWay)
         {
-            setAttack(TypeEntityState.ATTACK_HORIZONTAL);
+            setAttack(TypeValdynState.ATTACK_HORIZONTAL);
         }
         else if (attackPrepared && isOnGround() && !keyDown && goodWay)
         {
-            setAttack(TypeEntityState.ATTACK_TURNING);
+            setAttack(TypeValdynState.ATTACK_TURNING);
         }
         else
         {
@@ -435,7 +422,7 @@ public final class Valdyn
     private void updateActionAttackFinished()
     {
         boolean attackTurned = false;
-        if (attack == TypeEntityState.ATTACK_TURNING)
+        if (attack == TypeValdynState.ATTACK_TURNING)
         {
             mirror(!getMirror());
             updateMirror();
@@ -445,7 +432,7 @@ public final class Valdyn
         {
             if (isOnGround())
             {
-                attack = TypeEntityState.ATTACK_PREPARED;
+                attack = TypeValdynState.ATTACK_PREPARED;
             }
             else
             {
@@ -500,7 +487,7 @@ public final class Valdyn
     {
         if (crouch)
         {
-            status.setState(TypeEntityState.CROUCH);
+            status.setState(TypeValdynState.CROUCH);
         }
         else if (mirror && keyRight && diffHorizontal < 0.0 || !mirror && keyLeft && diffHorizontal > 0.0)
         {
@@ -512,7 +499,7 @@ public final class Valdyn
         }
         else if (extremity)
         {
-            status.setState(TypeEntityState.BORDER);
+            status.setState(TypeValdynState.BORDER);
         }
         else
         {
@@ -542,7 +529,7 @@ public final class Valdyn
      */
     private void updateAnimationShade(double extrp)
     {
-        final TypeEntityState state = status.getState();
+        final TypeState state = status.getState();
         if (status.stateChanged())
         {
             if (shades.containsKey(state))
@@ -592,7 +579,7 @@ public final class Valdyn
     {
         if (!timerFallen.isStarted())
         {
-            if (status.collisionChangedFromTo(TypeEntityCollision.NONE, TypeEntityCollision.GROUND))
+            if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND))
             {
                 timerFallen.start();
             }
@@ -615,9 +602,9 @@ public final class Valdyn
         {
             for (final Attack attack : set)
             {
-                if (getFrameAnim() == attack.frame)
+                if (getFrameAnim() == attack.getFrame())
                 {
-                    setCollision(attack.collision);
+                    setCollision(attack.getCollision());
                     return true;
                 }
             }
@@ -631,7 +618,7 @@ public final class Valdyn
      * @param state The state enum.
      * @param startAtFrame The frame index (relative to current animation) where it should start.
      */
-    private void addShadeAnimation(TypeEntityState state, int startAtFrame)
+    private void addShadeAnimation(TypeValdynState state, int startAtFrame)
     {
         shades.put(state, getDataAnimation("shade_" + state.getAnimationName()));
         shadesEnabled.put(state, Integer.valueOf(startAtFrame));
@@ -643,7 +630,7 @@ public final class Valdyn
      * @param prepare Prepare state.
      * @param prepareDown Prepare down state.
      */
-    private void computeAttackPrepare(TypeEntityState prepare, TypeEntityState prepareDown)
+    private void computeAttackPrepare(TypeValdynState prepare, TypeValdynState prepareDown)
     {
         if (keyDown)
         {
@@ -660,7 +647,7 @@ public final class Valdyn
      * 
      * @param nextAttack The next attack type.
      */
-    private void setAttack(TypeEntityState nextAttack)
+    private void setAttack(TypeValdynState nextAttack)
     {
         if (!attacked)
         {
@@ -792,7 +779,7 @@ public final class Valdyn
     protected void updateStates()
     {
         final double diffHorizontal = getDiffHorizontal();
-        if (!attacking || status.getState() == TypeEntityState.ATTACK_FALL)
+        if (!attacking || status.getState() == TypeValdynState.ATTACK_FALL)
         {
             updateStateMirror(diffHorizontal);
         }
@@ -864,7 +851,7 @@ public final class Valdyn
         extremity = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(50))
         {
-            status.setCollision(TypeEntityCollision.NONE);
+            status.setCollision(TypeEntityCollisionTile.NONE);
         }
 
         // Vertical collision
@@ -877,14 +864,14 @@ public final class Valdyn
         }
 
         // Stop attack if collide
-        if (status.collisionChangedFromTo(TypeEntityCollision.NONE, TypeEntityCollision.GROUND))
+        if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND))
         {
             attack = null;
             attacking = false;
             attackPrepared = false;
         }
 
-        if (status.getState() == TypeEntityState.CROUCH)
+        if (status.getState() == TypeValdynState.CROUCH)
         {
             setCollision(collisions.get(TypeValdynCollision.CROUCH));
         }
@@ -908,7 +895,7 @@ public final class Valdyn
     @Override
     protected void updateAnimations(double extrp)
     {
-        final TypeEntityState state = status.getState();
+        final TypeState state = status.getState();
         if (state == TypeEntityState.WALK || state == TypeEntityState.TURN)
         {
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
