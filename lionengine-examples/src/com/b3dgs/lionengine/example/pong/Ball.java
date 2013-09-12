@@ -35,7 +35,7 @@ final class Ball
         force = new Force();
         speedInit = 2.5;
         setSize(Ball.SIZE, Ball.SIZE);
-        setCollision(new CollisionData(-getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2));
+        setCollision(new CollisionData(0, -getHeight() / 2, getWidth() / 2, getHeight() / 2));
     }
 
     /**

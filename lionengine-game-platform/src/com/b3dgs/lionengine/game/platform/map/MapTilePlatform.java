@@ -95,7 +95,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         final int eh = (int) Math.floor(localizable.getLocationX());
 
         // Distance calculation
-        final int dv = sv - ev;
+        final int dv = ev - sv;
         final int dh = eh - sh;
 
         // Search vector and number of search steps

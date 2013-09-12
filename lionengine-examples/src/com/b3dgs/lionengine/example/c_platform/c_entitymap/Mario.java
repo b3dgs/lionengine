@@ -62,8 +62,7 @@ final class Mario
         movementSpeed = getDataDouble("movementSpeed", "data");
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        // Mario leg = ground referential
-        setFrameOffsets(getWidth() / 2, 1);
+        setFrameOffsets(0, 1);
         setLocation(80, 32);
         loadAnimations();
     }

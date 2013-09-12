@@ -68,7 +68,8 @@ abstract class Entity
         timerExtraJump = new Timing();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(getWidth() / 2, 1);
+        setFrameOffsets(0, 1);
+        setCollision(getDataCollision("default"));
         loadAnimations();
     }
 
@@ -305,7 +306,10 @@ abstract class Entity
     @Override
     protected void handleActions(double extrp)
     {
-        updateForces();
+        if (!dead)
+        {
+            updateForces();
+        }
         updateStates();
     }
 

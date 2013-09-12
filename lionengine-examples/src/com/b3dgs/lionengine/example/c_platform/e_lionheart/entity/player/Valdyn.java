@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollisionGroup;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
@@ -258,17 +259,18 @@ public final class Valdyn
             movement.setSensibility(sensibility / 4);
         }
         double newSpeed = speed;
-        if (isOnGround())
+        final Tile tile = map.getTile(this, 0, 0);
+        if (isOnGround() && tile != null && tile.isGroup(TypeTileCollisionGroup.SLOPE))
         {
-            if (isGoingDown())
+            if (isGoingDown() && (keyLeft && tile.isSlopeLeft() || keyRight && tile.isSlopeRight()))
             {
                 newSpeed *= 1.3;
             }
             else if (isGoingUp())
             {
                 newSpeed *= 0.75;
-                movement.setVelocity(movementSmooth);
-                movement.setSensibility(sensibility);
+                movement.setVelocity(movementSmooth / 2);
+                movement.setSensibility(sensibility / 2);
             }
         }
         return newSpeed;

@@ -46,6 +46,32 @@ public final class Tile
     }
 
     /**
+     * Check if tile is a left slope.
+     * 
+     * @return <code>true</code> if left slope, <code>false</code> else.
+     */
+    public boolean isSlopeLeft()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.SLOPE_LEFT_1 || c == TypeTileCollision.SLOPE_LEFT_2
+                || c == TypeTileCollision.SLOPE_LEFT_3 || c == TypeTileCollision.SLOPE_LEFT_BORDER_DOWN
+                || c == TypeTileCollision.SLOPE_LEFT_BORDER_UP;
+    }
+
+    /**
+     * Check if tile is a right slope.
+     * 
+     * @return <code>true</code> if right slope, <code>false</code> else.
+     */
+    public boolean isSlopeRight()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.SLOPE_RIGHT_1 || c == TypeTileCollision.SLOPE_RIGHT_2
+                || c == TypeTileCollision.SLOPE_RIGHT_3 || c == TypeTileCollision.SLOPE_RIGHT_BORDER_DOWN
+                || c == TypeTileCollision.SLOPE_RIGHT_BORDER_UP;
+    }
+
+    /**
      * Get ground collision.
      * 
      * @param localizable The localizable.

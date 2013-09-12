@@ -3,6 +3,7 @@
 	<frames horizontal="7" vertical="1"/>
 	<size width="16" height="16"/>
 	<data movementSpeed="3.0" jumpSpeed="8.0" mass="2.5"/>
+	<collision name="default" offsetX="0" offsetY="0" width="12" height="15"/>
 	<animation name="idle" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="walk" start="4" end="6" step="1" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="turn" start="7" end="7" step="1" speed="0.125" reversed="false" repeat="false"/>

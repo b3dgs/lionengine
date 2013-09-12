@@ -101,11 +101,11 @@ final class Handler
 
                 if (ball.getLocationX() < ball.getLocationOldX())
                 {
-                    ball.setLocationX(racket.getLocationX() + racket.getWidth() + 1);
+                    ball.teleportX(racket.getLocationX() + racket.getWidth() + 1);
                 }
                 if (ball.getLocationX() > ball.getLocationOldX())
                 {
-                    ball.setLocationX(racket.getLocationX() - racket.getWidth() - 1);
+                    ball.teleportX(racket.getLocationX() - racket.getWidth() - 1);
                     side = -1;
                 }
 
