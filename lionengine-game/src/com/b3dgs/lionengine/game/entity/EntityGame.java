@@ -92,16 +92,6 @@ public abstract class EntityGame
     }
 
     /**
-     * Update the collision with the collision data.
-     * 
-     * @param collision The collision to use.
-     */
-    public void updateCollision(CollisionData collision)
-    {
-        updateCollision(collision.getOffsetX(), collision.getOffsetY(), collision.getWidth(), collision.getHeight());
-    }
-
-    /**
      * Get the entity id (unique).
      * 
      * @return The entity id.
@@ -208,9 +198,15 @@ public abstract class EntityGame
      */
 
     @Override
-    public void updateCollision(int x, int y, int width, int height)
+    public void updateCollision(boolean mirror)
     {
-        collidable.updateCollision(getMirror() ? -x : x, y, width, height);
+        collidable.updateCollision(mirror);
+    }
+    
+    @Override
+    public void setCollision(CollisionData collision)
+    {
+        collidable.setCollision(collision);
     }
 
     @Override
@@ -230,11 +226,17 @@ public abstract class EntityGame
     {
         collidable.renderCollision(g, camera);
     }
+    
+    @Override
+    public CollisionData getCollisionData()
+    {
+        return collidable.getCollisionData();
+    }
 
     @Override
-    public Rectangle2D getCollision()
+    public Rectangle2D getCollisionBounds()
     {
-        return collidable.getCollision();
+        return collidable.getCollisionBounds();
     }
 
     @Override

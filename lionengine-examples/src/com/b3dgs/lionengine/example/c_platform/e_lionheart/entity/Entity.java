@@ -145,8 +145,8 @@ public abstract class Entity
      */
     public void save(FileWriting file) throws IOException
     {
-        file.writeShort((short) Math.floor(map.getInTileX(this)));
-        file.writeShort((short) Math.floor(map.getInTileY(this)));
+        file.writeShort((short) getLocationIntX());
+        file.writeShort((short) getLocationIntY());
     }
 
     /**
@@ -157,8 +157,8 @@ public abstract class Entity
      */
     public void load(FileReading file) throws IOException
     {
-        final int tx = file.readShort() * map.getTileWidth();
-        final int ty = file.readShort() * map.getTileHeight();
+        final int tx = file.readShort();
+        final int ty = file.readShort();
         teleport(tx, ty);
     }
 

@@ -5,6 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 
 /**
  * Purview representing something which can enter in collision with another. Based on a ray casting collision from a
@@ -15,13 +16,24 @@ public interface Collidable
     /**
      * Update collision with specified area.
      * 
-     * @param x The horizontal offset from entity.
-     * @param y The vertical offset from entity.
-     * @param width The entity collision width.
-     * @param height The entity collision height.
+     * @param mirror The mirror flag.
      */
-    void updateCollision(int x, int y, int width, int height);
+    void updateCollision(boolean mirror);
 
+    /**
+     * Set the collision to use.
+     * 
+     * @param collision The collision to use (<code>null</code> if none).
+     */
+    void setCollision(CollisionData collision);
+    
+    /**
+     * Get the current collision used.
+     * 
+     * @return The collision data.
+     */
+    CollisionData getCollisionData();
+    
     /**
      * Check if the entity entered in collision with another one.
      * 
@@ -51,7 +63,7 @@ public interface Collidable
      * 
      * @return The collision representation.
      */
-    Rectangle2D getCollision();
+    Rectangle2D getCollisionBounds();
 
     /**
      * Get collision ray cast.

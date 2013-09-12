@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
@@ -34,6 +35,7 @@ final class Ball
         force = new Force();
         speedInit = 2.5;
         setSize(Ball.SIZE, Ball.SIZE);
+        setCollision(new CollisionData(-getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2));
     }
 
     /**
@@ -44,7 +46,7 @@ final class Ball
     public void update(double extrp)
     {
         moveLocation(extrp, force);
-        updateCollision(-getWidth() / 2, getHeight() / 2, getWidth() / 2, getHeight() / 2);
+        updateCollision(getMirror());
     }
 
     /**

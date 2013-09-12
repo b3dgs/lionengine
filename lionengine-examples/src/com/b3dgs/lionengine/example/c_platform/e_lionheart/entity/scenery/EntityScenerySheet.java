@@ -11,23 +11,23 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public class EntityScenerySheet
         extends EntityScenery
 {
+    /** Half circle. */
+    protected static final int HALF_CIRCLE = 180;
     /** Effect speed. */
     private static final int EFFECT_SPEED = 9;
     /** Effect amplitude. */
-    private static final int AMPLITUDE = 12;
-    /** Half circle. */
-    private static final int HALF_CIRCLE = 180;
+    private static final int AMPLITUDE = 6;
     /** Initial vertical location, default sheet location y. */
-    private int initialY = Integer.MIN_VALUE;
-    /** Effect side, -1 to decrease, 1 to increase. */
-    private int effectSide;
+    protected int initialY = Integer.MIN_VALUE;
     /** Effect start flag, <code>true</code> when effect is occurring, <code>false</code> else. */
-    private boolean effectStart;
+    protected boolean effectStart;
     /** Effect counter, represent the value used to calculate the effect. */
-    private int effectCounter;
+    protected int effectCounter;
+    /** Effect side, -1 to decrease, 1 to increase. */
+    protected int effectSide;
     /** First hit flag, when sheet is hit for the first time. */
-    private boolean firstHit;
-    
+    protected boolean firstHit;
+
     /**
      * Constructor.
      * 
@@ -42,10 +42,15 @@ public class EntityScenerySheet
     /*
      * EntityScenery
      */
-    
+
     @Override
     public void update(double extrp)
     {
+        // Keep original location y
+        if (initialY == Integer.MIN_VALUE)
+        {
+            initialY = getLocationIntY();
+        }
         super.update(extrp);
         if (effectStart)
         {
@@ -64,18 +69,12 @@ public class EntityScenerySheet
             setLocationY(initialY - UtilityMath.sin(effectCounter) * EntityScenerySheet.AMPLITUDE);
         }
     }
-    
+
     @Override
     protected void onCollide(Entity entity)
     {
-        // Keep original location y
-        if (initialY == Integer.MIN_VALUE)
-        {
-            initialY = getLocationIntY();
-        }
         if (!effectStart)
         {
-            effectCounter = 0;
             effectSide = 1;
             effectStart = true;
         }

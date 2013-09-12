@@ -205,7 +205,7 @@ public abstract class Entity
      */
     private void checkHorizontal(int offsetX)
     {
-        collisionCheck(offsetX, 1);
+        setCollisionOffset(offsetX, 1);
         final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
@@ -225,7 +225,7 @@ public abstract class Entity
      */
     private void checkVertical(int offsetX)
     {
-        collisionCheck(offsetX, 0);
+        setCollisionOffset(offsetX, 0);
         final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         if (tile != null)
         {

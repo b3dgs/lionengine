@@ -290,7 +290,7 @@ public abstract class EntityMover
      */
     protected void checkCollisionHorizontal(int offset)
     {
-        collisionCheck(offset, 1);
+        setCollisionOffset(offset, 1);
         final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {

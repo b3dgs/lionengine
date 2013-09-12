@@ -1,14 +1,17 @@
 package com.b3dgs.lionengine.game.platform;
 
+import java.util.List;
+
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
+import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -27,8 +30,6 @@ public abstract class EntityPlatform
     private int frameOffsetX;
     /** Frame offsets y. */
     private int frameOffsetY;
-    /** Current collision (<code>null</code> if none). */
-    private CollisionData collision;
     /** Old collision y. */
     private double locationBeforeCollisionOldY;
     /** Last collision y. */
@@ -79,7 +80,7 @@ public abstract class EntityPlatform
     protected abstract void handleMovements(final double extrp);
 
     /**
-     * Update collisions, after movements. Should be used to call {@link #collisionCheck(int, int)} for each collision
+     * Update collisions, after movements. Should be used to call {@link #setCollisionOffset(int, int)} for each collision
      * test.
      * <p>
      * Example:
@@ -151,10 +152,7 @@ public abstract class EntityPlatform
         handleCollisions(extrp);
         collOffX = 0;
         collOffY = 0;
-        if (collision != null)
-        {
-            updateCollision(collision);
-        }
+        updateCollision(getMirror());
         handleAnimations(extrp);
     }
 
@@ -179,16 +177,6 @@ public abstract class EntityPlatform
     {
         this.frameOffsetX = frameOffsetX;
         this.frameOffsetY = frameOffsetY;
-    }
-
-    /**
-     * Set the collision to use.
-     * 
-     * @param collision The collision to use (<code>null</code> if none).
-     */
-    public void setCollision(CollisionData collision)
-    {
-        this.collision = collision;
     }
 
     /**
@@ -294,21 +282,33 @@ public abstract class EntityPlatform
     }
 
     /**
-     * Return the first hit tile. Any call to this function should be done last in {@link #handleCollisions(double)}.
-     * Multiple call can be done consecutively. Any other code should be done before the first call to this function.
+     * Set the collision offset. Should be called only for special collision, such as leg left & right, and more
+     * generally for any collision that are not at the center. Thus
+     * {@link MapTilePlatform#getFirstTileHit(Localizable, List)} can be called just after.
+     * <p>
+     * Example:
+     * </p>
      * 
      * <pre>
-     * do something...
-     * //...
-     * collisionCheck(...)
-     * // last
+     * setCollisionOffset(-10, 0); // Left leg
+     * final Tile tile = map.getFirstTileHit(this, List);
+     * if (tile != null)
+     * {
+     *     // Apply collision
+     * }
      * 
+     * setCollisionOffset(10, 0); // Right leg
+     * final Tile tile = map.getFirstTileHit(this, List);
+     * if (tile != null)
+     * {
+     *     // Apply collision
+     * }
      * </pre>
      * 
-     * @param offsetX The offset value.
-     * @param offsetY The offset value.
+     * @param offsetX The horizontal offset value.
+     * @param offsetY The vertical offset value.
      */
-    protected void collisionCheck(int offsetX, int offsetY)
+    protected void setCollisionOffset(int offsetX, int offsetY)
     {
         collOffX = offsetX;
         collOffY = offsetY;

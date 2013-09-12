@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.projectile;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
@@ -19,7 +20,7 @@ final class Spear
     Spear(SetupEntityGame setup, int id, int frame)
     {
         super(setup, id, frame);
-        setCollision(0, 1, 0, 1);
+        setCollision(new CollisionData(0, 1, 0, 1));
     }
 
     /*

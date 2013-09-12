@@ -8,6 +8,7 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityGame;
@@ -112,6 +113,7 @@ public abstract class EntityRts
         setSize(width, height);
         sprite.setFrame(1);
         orientation = Orientation.SOUTH;
+        setCollision(new CollisionData(0, 0, getWidth(), getHeight()));
         animationCurrent = null;
         active = true;
         visible = true;
@@ -138,7 +140,7 @@ public abstract class EntityRts
     {
         updateMirror();
         sprite.setMirror(getMirror());
-        updateCollision(0, 0, getWidth(), getHeight());
+        updateCollision(getMirror());
         sprite.updateAnimation(extrp);
     }
 

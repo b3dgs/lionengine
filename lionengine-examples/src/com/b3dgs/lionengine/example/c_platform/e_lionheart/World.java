@@ -5,10 +5,8 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.StatsRenderer;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.FactoryLandscape;
@@ -124,10 +122,6 @@ final class World
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());
         statsRenderer.load();
-
-        final Entity sheet = factoryEntity.createEntity(TypeEntity.SHEET);
-        sheet.teleport(1030, 170);
-        handlerEntity.add(sheet);
     }
 
     @Override

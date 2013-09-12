@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityRandom;
@@ -56,6 +57,7 @@ final class Racket
         increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         setLocation(x, y);
+        setCollision(new CollisionData(-getWidth() / 2, -getHeight() / 2, getWidth(), getHeight()));
         timerRandomMovement.start();
     }
 
@@ -89,7 +91,7 @@ final class Racket
         }
 
         // Update collisions
-        updateCollision(-getWidth() / 2, -getHeight() / 2, getWidth(), getHeight());
+        updateCollision(getMirror());
     }
 
     /**

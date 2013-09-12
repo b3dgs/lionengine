@@ -25,8 +25,11 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.Entity
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.purview.Collidable;
+import com.b3dgs.lionengine.game.purview.model.CollidableModel;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -48,6 +51,10 @@ public final class Valdyn
     private static final int JUMP_TIME_MAX = 200;
     /** Valdyn stats. */
     public final Stats stats;
+    /** Leg collision with scenery. */
+    private final Collidable legCollision;
+    /** Attack collision with monster. */
+    private final Collidable attackCollision;
     /** Shade surface. */
     private final SpriteAnimated shade;
     /** Camera reference. */
@@ -134,6 +141,9 @@ public final class Valdyn
         loadCollisions(TypeValdynCollision.values());
         loadAnimations(TypeValdynState.values());
         loadAttacks();
+        legCollision = new CollidableModel(this);
+        attackCollision = new CollidableModel(this);
+        legCollision.setCollision(getDataCollision("leg"));
         stats = new Stats(this);
     }
 
@@ -178,6 +188,25 @@ public final class Valdyn
             mirror(mirror);
         }
         extremity = true;
+    }
+
+    /**
+     * Get the collision on leg level.
+     * 
+     * @return The leg collision.
+     */
+    public Collidable getCollisionLeg()
+    {
+        return legCollision;
+    }
+    
+    /**
+     * Get the attack collision.
+     * @return The attack collision.
+     */
+    public Collidable getCollisionAttack()
+    {
+        return attackCollision;
     }
 
     /**
@@ -604,7 +633,7 @@ public final class Valdyn
             {
                 if (getFrameAnim() == attack.getFrame())
                 {
-                    setCollision(attack.getCollision());
+                    attackCollision.setCollision(attack.getCollision());
                     return true;
                 }
             }
@@ -666,7 +695,7 @@ public final class Valdyn
      */
     private void checkCollisionExtremity(int offsetX, boolean mirror)
     {
-        collisionCheck(offsetX, 0);
+        setCollisionOffset(offsetX, 0);
         final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
         if (tile != null && tile.isBorder())
         {
@@ -709,16 +738,6 @@ public final class Valdyn
      */
 
     @Override
-    public void render(Graphic g, CameraPlatform camera)
-    {
-        super.render(g, camera);
-        if (shade.getAnimState() == AnimState.PLAYING)
-        {
-            renderAnim(g, shade, camera);
-        }
-    }
-
-    @Override
     public void respawn()
     {
         super.respawn();
@@ -729,6 +748,24 @@ public final class Valdyn
         attackPrepared = false;
         teleport(1010, 162);
         camera.resetInterval(this);
+    }
+
+    @Override
+    public void render(Graphic g, CameraPlatform camera)
+    {
+        super.render(g, camera);
+        if (shade.getAnimState() == AnimState.PLAYING)
+        {
+            renderAnim(g, shade, camera);
+        }
+    }
+
+    @Override
+    public void renderCollision(Graphic g, CameraGame camera)
+    {
+        super.renderCollision(g, camera);
+        legCollision.renderCollision(g, camera);
+        attackCollision.renderCollision(g, camera);
     }
 
     @Override
@@ -857,7 +894,7 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            collisionCheck(0, 0);
+            setCollisionOffset(0, 0);
             checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
@@ -871,17 +908,30 @@ public final class Valdyn
             attackPrepared = false;
         }
 
-        if (status.getState() == TypeValdynState.CROUCH)
+        if (status.isState(TypeValdynState.CROUCH, TypeValdynState.ATTACK_DOWN_LEG,
+                TypeValdynState.ATTACK_PREPARING_DOWN, TypeValdynState.ATTACK_PREPARED_DOWN))
         {
             setCollision(collisions.get(TypeValdynCollision.CROUCH));
+        }
+        else if (status.getState() == TypeValdynState.ATTACK_FALL)
+        {
+            setCollision(collisions.get(TypeValdynCollision.ATTACK_FALL));
         }
         else
         {
             setCollision(collisions.get(TypeValdynCollision.STAND));
         }
+        attackCollision.setCollision(null);
         if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
         {
             canHurtMonster = updateAttackCollision();
+        }
+        attackCollision.updateCollision(getMirror());
+        legCollision.updateCollision(false);
+        
+        if (status.getCollision() == TypeEntityCollisionTile.GROUND && attack == TypeValdynState.ATTACK_FALL)
+        {
+            attacking = false;
         }
 
         // Kill when fall down

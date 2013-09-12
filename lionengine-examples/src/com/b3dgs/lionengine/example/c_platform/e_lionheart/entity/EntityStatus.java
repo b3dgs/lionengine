@@ -102,4 +102,22 @@ public final class EntityStatus
     {
         return collision;
     }
+    
+    /**
+     * Check if the state is one of them.
+     * 
+     * @param states The states.
+     * @return <code>true</code> if one of them.
+     */
+    public boolean isState(TypeState... states)
+    {
+        for (TypeState state : states)
+        {
+            if (getState() == state)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

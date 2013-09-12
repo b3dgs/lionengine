@@ -44,18 +44,18 @@ public abstract class EntityItem
     @Override
     public void hitBy(Entity entity)
     {
-        // Nothing to do
-    }
-
-    @Override
-    public void hitThat(Entity entity)
-    {
         if (!isDead())
         {
             kill();
             onTaken((Valdyn) entity);
             // TODO: Play taken sound
         }
+    }
+
+    @Override
+    public void hitThat(Entity entity)
+    {
+        // Nothing to do
     }
 
     @Override
@@ -67,7 +67,7 @@ public abstract class EntityItem
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(TypeEffect.TAKEN, (int) dieLocation.getX(), (int) dieLocation.getY());
+        factoryEffect.startEffect(TypeEffect.TAKEN, (int) dieLocation.getX() - getWidth() / 2, (int) dieLocation.getY());
         destroy();
     }
 

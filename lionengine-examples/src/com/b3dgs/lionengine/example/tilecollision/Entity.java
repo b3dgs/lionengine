@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.tilecollision;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
@@ -33,6 +34,7 @@ final class Entity
         this.map = map;
         mouseX = 64;
         mouseY = 180;
+        setCollision(new CollisionData(0, 0, 16, 16));
     }
 
     /**
@@ -79,8 +81,8 @@ final class Entity
     @Override
     protected void handleCollisions(double extrp)
     {
-        updateCollision(0, 0, 16, 16);
-        collisionCheck(0, 0);
+        updateCollision(getMirror());
+        setCollisionOffset(0, 0);
         tile = map.getFirstTileHit(this, TileCollision.COLLISION);
     }
 

@@ -10,7 +10,9 @@ public enum TypeValdynCollision
     /** Stand collision. */
     STAND,
     /** Crouch collision. */
-    CROUCH;
+    CROUCH,
+    /** Fall attack collision. */
+    ATTACK_FALL;
 
     @Override
     public String toString()

@@ -49,26 +49,20 @@ public abstract class EntityScenery
     @Override
     public void hitBy(Entity entity)
     {
-        // Nothing to do
-    }
-
-    @Override
-    public void hitThat(Entity entity)
-    {
         if (entity instanceof EntityMover)
         {
             final EntityMover mover = (EntityMover) entity;
             if (!mover.isJumping() && mover.getLocationY() > getLocationY())
             {
                 onCollide(entity);
-                mover.checkCollisionVertical(Double.valueOf(getLocationY() + getHeight() - 4));
+                mover.checkCollisionVertical(Double.valueOf(getLocationY() + getCollisionData().getOffsetY()));
                 collide = true;
             }
         }
         if (entity instanceof Valdyn)
         {
             final Valdyn valdyn = (Valdyn) entity;
-            final Rectangle2D collision = getCollision();
+            final Rectangle2D collision = getCollisionBounds();
             if (valdyn.getLocationX() < collision.getMinX() - valdyn.getWidth() / 2 + Valdyn.TILE_EXTREMITY_WIDTH * 2)
             {
                 valdyn.updateExtremity(true);
@@ -79,6 +73,12 @@ public abstract class EntityScenery
                 valdyn.updateExtremity(false);
             }
         }
+    }
+
+    @Override
+    public void hitThat(Entity entity)
+    {
+        // Nothing to do
     }
     
     @Override

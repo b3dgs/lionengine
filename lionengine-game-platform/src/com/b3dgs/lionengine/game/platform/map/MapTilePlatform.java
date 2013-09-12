@@ -77,7 +77,8 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     }
 
     /**
-     * Get the first tile hit on the search area.
+     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
+     * to its current. This way, the localizable can not pass through a collidable tile.
      * 
      * @param localizable The localizable reference.
      * @param collisions Collisions list to search for.

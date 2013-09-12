@@ -2,7 +2,7 @@
 <entity name="turning_hit" surface="turning_hit.png">
 	<frames horizontal="4" vertical="4"/>
 	<size width="32" height="32"/>
-	<collision name="default" offsetX="8" offsetY="10" width="17" height="1" />
+	<collision name="default" offsetX="8" offsetY="20" width="17" height="1" />
 	<animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
-	<animation name="idle" start="2" end="16" speed="0.25" reversed="false" repeat="false"/>
+	<animation name="turn" start="2" end="16" speed="0.50" reversed="false" repeat="false"/>
 </entity>

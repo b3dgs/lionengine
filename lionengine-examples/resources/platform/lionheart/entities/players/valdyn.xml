@@ -11,6 +11,8 @@
 	
 	<collision name="stand" offsetX="0" offsetY="-2" width="20" height="53" />
 	<collision name="crouch" offsetX="0" offsetY="-2" width="20" height="35" />
+	<collision name="attack_fall" offsetX="0" offsetY="20" width="20" height="25" />
+	<collision name="leg" offsetX="2" offsetY="-2" width="22" height="3" />
 	
 	<animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="crouch" start="3" end="3" speed="0.125" reversed="false" repeat="false"/>

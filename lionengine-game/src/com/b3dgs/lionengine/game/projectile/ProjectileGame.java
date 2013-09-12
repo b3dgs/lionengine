@@ -47,14 +47,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     private E2 owner;
     /** Hit only target. */
     private boolean hitTargetOnly;
-    /** Left collision. */
-    private double collLeft;
-    /** Right collision. */
-    private double collRight;
-    /** Top collision. */
-    private double collTop;
-    /** Bottom collision. */
-    private double collBottom;
     /** Elapsed time. */
     private long time;
 
@@ -141,7 +133,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public void update(double extrp)
     {
         updateMovement(vecX, vecY, extrp);
-        updateCollision(0, 0);
+        updateCollision(getMirror());
     }
 
     /**
@@ -176,23 +168,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public void setCanHitTargetOnly(boolean hitTargetOnly)
     {
         this.hitTargetOnly = hitTargetOnly;
-    }
-
-    /**
-     * Set projectile collision (already based on its tile size from the surface). Theses values allows to adjust the
-     * projectile collision area.
-     * 
-     * @param left left offset.
-     * @param right right offset.
-     * @param top top offset.
-     * @param bottom bottom offset.
-     */
-    public void setCollision(double left, double right, double top, double bottom)
-    {
-        collLeft = left;
-        collRight = right;
-        collTop = top;
-        collBottom = bottom;
     }
 
     /**
@@ -254,18 +229,5 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public boolean canBeAdded()
     {
         return delay.elapsed(time);
-    }
-
-    /**
-     * Update projectile collision. Increase value will increase its collision area from the center.
-     * 
-     * @param offsetX horizontal margin.
-     * @param offsetY vertical margin.
-     */
-    protected void updateCollision(int offsetX, int offsetY)
-    {
-        updateCollision((int) (-collLeft * getWidth()) + offsetX, (int) (-collTop * getHeight() + offsetY),
-                (int) ((collLeft * 2 + collRight) * getWidth()) - offsetX,
-                (int) ((collBottom + collTop) * getHeight() - offsetY));
     }
 }

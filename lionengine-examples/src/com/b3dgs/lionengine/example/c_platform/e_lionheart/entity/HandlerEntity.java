@@ -2,7 +2,10 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.EntityItem;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.EntityScenery;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -98,17 +101,37 @@ public class HandlerEntity
     @Override
     protected void updatingEntity(Entity entity)
     {
-        if (entity.collide(player))
+        // Scenery interaction (leg)
+        if (entity instanceof EntityScenery)
         {
-            if (player.canHurtMonster())
+            if (player.getCollisionLeg().collide(entity))
             {
-                player.hitThat(entity);
                 entity.hitBy(player);
             }
-            else
+        }
+        // Item interaction (player)
+        else if (entity instanceof EntityItem)
+        {
+            if (player.collide(entity))
             {
-                entity.hitThat(player);
-                player.hitBy(entity);
+                entity.hitBy(player);
+            }
+        }
+        // Monster interaction (player)
+        else if (entity instanceof EntityMonster)
+        {
+            if (player.collide(entity))
+            {
+                if (player.canHurtMonster())
+                {
+                    player.hitThat(entity);
+                    entity.hitBy(player);
+                }
+                else
+                {
+                    entity.hitThat(player);
+                    player.hitBy(entity);
+                }
             }
         }
         entity.onUpdated();
