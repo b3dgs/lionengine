@@ -202,7 +202,7 @@ public abstract class EntityGame
     {
         collidable.updateCollision(mirror);
     }
-    
+
     @Override
     public void setCollision(CollisionData collision)
     {
@@ -226,7 +226,7 @@ public abstract class EntityGame
     {
         collidable.renderCollision(g, camera);
     }
-    
+
     @Override
     public CollisionData getCollisionData()
     {

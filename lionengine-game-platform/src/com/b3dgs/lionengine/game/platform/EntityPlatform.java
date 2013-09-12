@@ -80,8 +80,8 @@ public abstract class EntityPlatform
     protected abstract void handleMovements(final double extrp);
 
     /**
-     * Update collisions, after movements. Should be used to call {@link #setCollisionOffset(int, int)} for each collision
-     * test.
+     * Update collisions, after movements. Should be used to call {@link #setCollisionOffset(int, int)} for each
+     * collision test.
      * <p>
      * Example:
      * </p>

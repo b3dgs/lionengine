@@ -72,7 +72,7 @@ public abstract class Entity
         loadCollisions(TypeEntityCollision.values());
         loadAnimations(TypeEntityState.values());
     }
-    
+
     /**
      * Called when this is hit by another entity.
      * 
@@ -112,7 +112,7 @@ public abstract class Entity
      * @param extrp The Extrapolation value.
      */
     protected abstract void updateAnimations(double extrp);
-    
+
     /**
      * Kill entity.
      */
@@ -211,7 +211,7 @@ public abstract class Entity
     {
         return dead;
     }
-    
+
     /**
      * Called when entity has been updated.
      */

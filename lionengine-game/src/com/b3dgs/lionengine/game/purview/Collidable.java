@@ -26,14 +26,14 @@ public interface Collidable
      * @param collision The collision to use (<code>null</code> if none).
      */
     void setCollision(CollisionData collision);
-    
+
     /**
      * Get the current collision used.
      * 
      * @return The collision data.
      */
     CollisionData getCollisionData();
-    
+
     /**
      * Check if the entity entered in collision with another one.
      * 

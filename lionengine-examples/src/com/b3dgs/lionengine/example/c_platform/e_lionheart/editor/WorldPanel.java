@@ -478,7 +478,7 @@ public class WorldPanel
             entity.setSelection(false);
         }
     }
-    
+
     /**
      * Set the entity location.
      * 
@@ -491,8 +491,8 @@ public class WorldPanel
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        entity.teleport(UtilityMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side * entity.getWidth() / 2,
-                UtilityMath.getRounded(y + th / 2, th));
+        entity.teleport(UtilityMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
+                * entity.getWidth() / 2, UtilityMath.getRounded(y + th / 2, th));
     }
 
     /**
@@ -718,8 +718,7 @@ public class WorldPanel
         {
             if (entity.isSelected())
             {
-                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y
-                        - oy);
+                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y - oy);
             }
         }
 

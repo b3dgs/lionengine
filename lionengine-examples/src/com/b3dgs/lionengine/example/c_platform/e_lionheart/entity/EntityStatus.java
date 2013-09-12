@@ -102,7 +102,7 @@ public final class EntityStatus
     {
         return collision;
     }
-    
+
     /**
      * Check if the state is one of them.
      * 
@@ -111,7 +111,7 @@ public final class EntityStatus
      */
     public boolean isState(TypeState... states)
     {
-        for (TypeState state : states)
+        for (final TypeState state : states)
         {
             if (getState() == state)
             {

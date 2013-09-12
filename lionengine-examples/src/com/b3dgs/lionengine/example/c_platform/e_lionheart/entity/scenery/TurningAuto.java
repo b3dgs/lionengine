@@ -77,7 +77,7 @@ public final class TurningAuto
             setLocationY(initialY - UtilityMath.sin(effectCounter) * TurningAuto.SHAKE_AMPLITUDE);
         }
     }
-    
+
     @Override
     public void hitBy(Entity entity)
     {

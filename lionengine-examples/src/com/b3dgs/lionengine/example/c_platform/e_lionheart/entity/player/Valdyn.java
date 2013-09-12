@@ -199,9 +199,10 @@ public final class Valdyn
     {
         return legCollision;
     }
-    
+
     /**
      * Get the attack collision.
+     * 
      * @return The attack collision.
      */
     public Collidable getCollisionAttack()
@@ -928,7 +929,7 @@ public final class Valdyn
         }
         attackCollision.updateCollision(getMirror());
         legCollision.updateCollision(false);
-        
+
         if (status.getCollision() == TypeEntityCollisionTile.GROUND && attack == TypeValdynState.ATTACK_FALL)
         {
             attacking = false;

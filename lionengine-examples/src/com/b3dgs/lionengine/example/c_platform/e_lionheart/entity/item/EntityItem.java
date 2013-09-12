@@ -67,7 +67,8 @@ public abstract class EntityItem
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(TypeEffect.TAKEN, (int) dieLocation.getX() - getWidth() / 2, (int) dieLocation.getY());
+        factoryEffect
+                .startEffect(TypeEffect.TAKEN, (int) dieLocation.getX() - getWidth() / 2, (int) dieLocation.getY());
         destroy();
     }
 

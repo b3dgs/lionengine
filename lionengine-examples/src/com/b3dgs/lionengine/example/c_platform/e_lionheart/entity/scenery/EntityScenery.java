@@ -18,7 +18,7 @@ public abstract class EntityScenery
     private boolean collide;
     /** Collide old state. */
     private boolean collideOld;
-    
+
     /**
      * Constructor.
      * 
@@ -36,7 +36,7 @@ public abstract class EntityScenery
      * @param entity The entity reference.
      */
     protected abstract void onCollide(Entity entity);
-    
+
     /**
      * Called when lost collision.
      */
@@ -80,7 +80,7 @@ public abstract class EntityScenery
     {
         // Nothing to do
     }
-    
+
     @Override
     public void onUpdated()
     {

@@ -59,7 +59,7 @@ public class CollidableModel
         final int offsetY = collision.getOffsetY();
         final int width = collision.getWidth();
         final int height = collision.getHeight();
-        
+
         coll.reset();
         coll.addPoint(xCur + offsetX, yCur + offsetY);
         coll.addPoint(xCur + offsetX, yCur + offsetY + height);
@@ -72,14 +72,14 @@ public class CollidableModel
         coll.addPoint(xOld + offsetX + width, yOld + offsetY);
 
         box = coll.getBounds2D();
-        
+
         final int sx = xOld + offsetX + width / 2;
         final int sy = yOld + offsetY + height / 2;
         final int ex = xCur + offsetX + width / 2;
         final int ey = yCur + offsetY + height / 2;
         ray.setLine(sx, sy, ex, ey);
     }
-    
+
     @Override
     public void setCollision(CollisionData collision)
     {
@@ -89,7 +89,7 @@ public class CollidableModel
         }
         else
         {
-        this.collision = collision;
+            this.collision = collision;
         }
     }
 
@@ -118,7 +118,7 @@ public class CollidableModel
         final int y2 = camera.getViewpointY((int) ray.getY2());
         g.drawLine(x1, y1, x2, y2);
     }
-    
+
     @Override
     public CollisionData getCollisionData()
     {
