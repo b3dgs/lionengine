@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -210,9 +210,9 @@ public class WorldPanel
             final int sy = entity.getLocationIntY();
 
             // Patrol
-            if (entity instanceof EntityMover)
+            if (entity instanceof Patrollable)
             {
-                final EntityMover mover = (EntityMover) entity;
+                final Patrollable mover = (Patrollable) entity;
                 drawEntityMovement(g, mover, hOff, vOff, height);
             }
 
@@ -236,9 +236,9 @@ public class WorldPanel
      * @param vOff The vertical offset.
      * @param height The rendering height (render from bottom).
      */
-    private void drawEntityMovement(Graphics2D g, EntityMover mover, int hOff, int vOff, int height)
+    private void drawEntityMovement(Graphics2D g, Patrollable mover, int hOff, int vOff, int height)
     {
-        if (mover.getMovementType() != TypeEntityMovement.NONE)
+        if (mover.getPatrolType() != TypePatrol.NONE)
         {
             final int sx = mover.getLocationIntX();
             final int sy = mover.getLocationIntY();
@@ -249,7 +249,7 @@ public class WorldPanel
             g.fillRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th) - mover.getHeight(),
                     mover.getWidth() + right, mover.getHeight());
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
-            if (mover.getMovementType() == TypeEntityMovement.HORIZONTAL)
+            if (mover.getPatrolType() == TypePatrol.HORIZONTAL)
             {
                 g.fillRect(sx - hOff - left + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th),
                         right, Map.TILE_HEIGHT);

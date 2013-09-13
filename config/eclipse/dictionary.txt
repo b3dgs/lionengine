@@ -135,3 +135,5 @@ lowercase
 palette
 potion
 dino
+patroller
+patrollable

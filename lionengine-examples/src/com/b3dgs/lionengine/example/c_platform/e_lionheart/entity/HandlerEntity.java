@@ -106,6 +106,10 @@ public class HandlerEntity
         {
             if (player.getCollisionLeg().collide(entity))
             {
+                entity.hitThat(player);
+            }
+            if (player.getCollisionAttack().collide(entity))
+            {
                 entity.hitBy(player);
             }
         }

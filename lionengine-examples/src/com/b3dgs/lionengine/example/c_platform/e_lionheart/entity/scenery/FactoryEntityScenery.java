@@ -28,6 +28,10 @@ public final class FactoryEntityScenery
                 return new TurningAuto(context);
             case TURNING_HIT:
                 return new TurningHit(context);
+            case BEETLE_HORIZONTAL:
+                return new BeetleHorizontal(context);
+            case BEETLE_VERTICAL:
+                return new BeetleVertical(context);
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }

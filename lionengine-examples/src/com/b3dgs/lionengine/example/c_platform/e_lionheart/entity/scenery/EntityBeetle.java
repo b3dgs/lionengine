@@ -1,13 +1,10 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import java.io.IOException;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
@@ -17,17 +14,24 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patroll
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
+import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Movement;
 
 /**
- * Monster base implementation.
+ * Beetle base implementation.
  */
-public class EntityMonster
-        extends EntityMover implements Patrollable
+public class EntityBeetle
+        extends EntityScenery
+        implements Patrollable
 {
-    /** Effect factory. */
-    private final FactoryEffect factoryEffect;
-    /** Patrol model. */
+    /** Forces list used. */
+    private final Force[] forces;
+    /** Patrollable model. */
     private final Patroller patroller;
+    /** Movement force. */
+    private final Movement movement;
+    /** Movement max speed. */
+    private double movementSpeedMax;
 
     /**
      * Constructor.
@@ -35,34 +39,37 @@ public class EntityMonster
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityMonster(Context context, TypeEntity type)
+    EntityBeetle(Context context, TypeEntity type)
     {
         super(context, type);
-        factoryEffect = context.factoryEffect;
-        setFrameOffsets(0, -4);
+        movement = new Movement();
+        forces = new Force[]
+        {
+            movement.getForce()
+        };
         patroller = new PatrollerModel(this);
     }
 
     /*
-     * EntityMover
+     * EntityScenery
      */
-    
+
     @Override
     public void save(FileWriting file) throws IOException
     {
         super.save(file);
         patroller.save(file);
     }
-    
+
     @Override
     public void load(FileReading file) throws IOException
     {
         super.load(file);
         patroller.load(file);
     }
-    
+
     @Override
-    protected void updateActions()
+    protected void handleActions(double extrp)
     {
         final TypeState state = status.getState();
         if (state == TypeEntityState.TURN)
@@ -99,23 +106,20 @@ public class EntityMonster
                 teleportX(patroller.getPositionMin());
             }
         }
+        super.handleActions(extrp);
     }
 
     @Override
-    public void hitBy(Entity entity)
+    protected void handleMovements(double extrp)
     {
-        kill();
-    }
-
-    @Override
-    public void hitThat(Entity entity)
-    {
-        // Nothing to do
+        movement.update(extrp);
+        super.handleMovements(extrp);
     }
 
     @Override
     protected void updateStates()
     {
+        super.updateStates();
         final double diffHorizontal = getDiffHorizontal();
         final int x = getLocationIntX();
         if (patroller.hasPatrol() && (x == patroller.getPositionMin() || x == patroller.getPositionMax()))
@@ -133,16 +137,19 @@ public class EntityMonster
     }
 
     @Override
-    protected void updateDead()
+    protected Force[] getForces()
     {
-        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() - sprite.getFrameWidth() / 2,
-                (int) dieLocation.getY() - 5);
-        // TODO: Play explode sound
-        destroy();
+        return forces;
     }
 
     @Override
-    protected void updateAnimations(double extrp)
+    protected void onCollide(Entity entity)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    protected void onLostCollision()
     {
         // Nothing to do
     }
@@ -155,8 +162,9 @@ public class EntityMonster
     public void setMovementForce(double fh, double fv)
     {
         movement.getForce().setForce(fh, fv);
+        movement.setForceToReach(fh, fv);
     }
-    
+
     @Override
     public void setMovementSpeedMax(double speed)
     {
@@ -178,7 +186,7 @@ public class EntityMonster
     /*
      * Patroller
      */
-    
+
     @Override
     public void enableMovement(TypePatrol type)
     {

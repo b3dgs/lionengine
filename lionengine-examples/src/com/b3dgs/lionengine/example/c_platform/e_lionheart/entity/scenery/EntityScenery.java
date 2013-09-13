@@ -49,6 +49,12 @@ public abstract class EntityScenery
     @Override
     public void hitBy(Entity entity)
     {
+        // Nothing to do
+    }
+    
+    @Override
+    public void hitThat(Entity entity)
+    {
         if (entity instanceof EntityMover)
         {
             final EntityMover mover = (EntityMover) entity;
@@ -73,12 +79,6 @@ public abstract class EntityScenery
                 valdyn.updateExtremity(false);
             }
         }
-    }
-
-    @Override
-    public void hitThat(Entity entity)
-    {
-        // Nothing to do
     }
 
     @Override

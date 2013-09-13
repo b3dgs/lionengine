@@ -1,9 +1,9 @@
-package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol;
 
 /**
  * List of entity movements.
  */
-public enum TypeEntityMovement
+public enum TypePatrol
 {
     /** No movement. */
     NONE(0),
@@ -15,7 +15,7 @@ public enum TypeEntityMovement
     ROTATING(3);
 
     /** Values. */
-    private static final TypeEntityMovement[] VALUES = TypeEntityMovement.values();
+    private static final TypePatrol[] VALUES = TypePatrol.values();
 
     /**
      * Get the type from its index.
@@ -23,9 +23,9 @@ public enum TypeEntityMovement
      * @param index The index.
      * @return The type.
      */
-    public static TypeEntityMovement get(int index)
+    public static TypePatrol get(int index)
     {
-        return TypeEntityMovement.VALUES[index];
+        return TypePatrol.VALUES[index];
     }
 
     /** Index value. */
@@ -36,7 +36,7 @@ public enum TypeEntityMovement
      * 
      * @param index The index value.
      */
-    private TypeEntityMovement(int index)
+    private TypePatrol(int index)
     {
         this.index = index;
     }

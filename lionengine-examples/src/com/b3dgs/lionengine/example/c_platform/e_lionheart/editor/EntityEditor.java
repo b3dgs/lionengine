@@ -15,8 +15,8 @@ import javax.swing.SwingConstants;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityMovement;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.swing.ComboListener;
@@ -193,12 +193,12 @@ public class EntityEditor
             @Override
             public void action(Object item)
             {
-                if (selectedEntity instanceof EntityMover)
+                if (selectedEntity instanceof Patrollable)
                 {
-                    final TypeEntityMovement type = TypeEntityMovement.get(comboMovement.getSelectedIndex());
-                    ((EntityMover) selectedEntity).setMovementType(type);
-                    comboDirection.setEnabled(type != TypeEntityMovement.NONE);
-                    UtilitySwing.setEnabled(patrolValues.getComponents(), type != TypeEntityMovement.NONE);
+                    final TypePatrol type = TypePatrol.get(comboMovement.getSelectedIndex());
+                    ((Patrollable) selectedEntity).setPatrolType(type);
+                    comboDirection.setEnabled(type != TypePatrol.NONE);
+                    UtilitySwing.setEnabled(patrolValues.getComponents(), type != TypePatrol.NONE);
                     editor.world.repaint();
                 }
             }
@@ -219,9 +219,9 @@ public class EntityEditor
             @Override
             public void action(Object item)
             {
-                if (selectedEntity instanceof EntityMover)
+                if (selectedEntity instanceof Patrollable)
                 {
-                    ((EntityMover) selectedEntity).setFirstMove(comboDirection.getSelectedIndex());
+                    ((Patrollable) selectedEntity).setFirstMove(comboDirection.getSelectedIndex());
                 }
             }
         });
@@ -240,19 +240,19 @@ public class EntityEditor
     public void setSelectedEntity(Entity entity)
     {
         selectedEntity = entity;
-        if (entity instanceof EntityMover)
+        if (entity instanceof Patrollable)
         {
-            final EntityMover mover = (EntityMover) entity;
-            for (final TypeEntityMovement movement : TypeEntityMovement.values())
+            final Patrollable mover = (Patrollable) entity;
+            for (final TypePatrol movement : TypePatrol.values())
             {
-                final boolean enabled = mover.isMovementEnabled(movement);
+                final boolean enabled = mover.isPatrolEnabled(movement);
                 EntityEditor.setEnabled(comboMovement, movement.getIndex(), enabled);
             }
             UtilitySwing.setEnabled(patrolPanel.getComponents(), true);
             setValue(patrolMin, mover.getPatrolLeft());
             setValue(patrolMax, mover.getPatrolRight());
             setValue(speedValue, mover.getMoveSpeed());
-            comboMovement.setSelectedIndex(mover.getMovementType().getIndex());
+            comboMovement.setSelectedIndex(mover.getPatrolType().getIndex());
             comboDirection.setSelectedIndex(mover.getFirstMove());
         }
         else
@@ -284,10 +284,10 @@ public class EntityEditor
      * 
      * @param label The label reference.
      * @param type The type.
+     * @param mover The patroller.
      */
-    void changeMoverValue(JLabel label, TypeEditorEntity type)
+    void changeMoverValue(JLabel label, TypeEditorEntity type, Patrollable mover)
     {
-        final EntityMover mover = (EntityMover) selectedEntity;
         switch (type)
         {
             case PATROL_MIN:
@@ -354,10 +354,10 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                if (selectedEntity instanceof EntityMover)
+                if (selectedEntity instanceof Patrollable)
                 {
                     setValue(label, getValue(label) + step);
-                    changeMoverValue(label, type);
+                    changeMoverValue(label, type, (Patrollable) selectedEntity);
                     editor.world.repaint();
                 }
             }
@@ -367,10 +367,10 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                if (selectedEntity instanceof EntityMover)
+                if (selectedEntity instanceof Patrollable)
                 {
                     setValue(label, getValue(label) - step);
-                    changeMoverValue(label, type);
+                    changeMoverValue(label, type, (Patrollable) selectedEntity);
                     editor.world.repaint();
                 }
             }

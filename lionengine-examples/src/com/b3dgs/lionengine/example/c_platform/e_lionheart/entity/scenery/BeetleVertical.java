@@ -2,21 +2,22 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 
 /**
- * Turning auto scenery implementation.
+ * Beetle vertical implementation.
  */
-public final class TurningAuto
-        extends EntityTurning
+public final class BeetleVertical
+        extends EntityBeetle
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public TurningAuto(Context context)
+    BeetleVertical(Context context)
     {
-        super(context, TypeEntity.TURNING_AUTO);
-        timerShake.start();
+        super(context, TypeEntity.BEETLE_VERTICAL);
+        enableMovement(TypePatrol.VERTICAL);
     }
 }

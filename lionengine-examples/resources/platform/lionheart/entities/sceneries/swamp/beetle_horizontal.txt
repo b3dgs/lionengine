@@ -1,5 +1,0 @@
-=STR= #NAME# 	= "BeetleHorizontal"
-=RNG= #FRAMES# 	= {05-02}
-=ANM= #IDLE# 	= {01-01} (0.1) 	[32*1,8;-20]
-=ANM= #WALK# 	= {01-07} (0.2) |true|	[32*1,8;-20]
-=ANM= #TURN# 	= {08-10} (0.2) 	[32*1,8;-20]

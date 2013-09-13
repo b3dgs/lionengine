@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity name="beetle_horizontal" surface="beetle_horizontal.png">
+	<frames horizontal="5" vertical="2"/>
+	<size width="32" height="32"/>
+	<collision name="default" offsetX="10" offsetY="30" width="17" height="1" />
+	<animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
+	<animation name="walk" start="1" end="7" speed="0.25" reversed="false" repeat="true"/>
+	<animation name="turn" start="8" end="10" speed="0.25" reversed="false" repeat="false"/>
+</entity>

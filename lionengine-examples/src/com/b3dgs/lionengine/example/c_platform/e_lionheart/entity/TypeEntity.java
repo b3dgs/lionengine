@@ -45,6 +45,10 @@ public enum TypeEntity
     TURNING_AUTO(TypeEntityCategory.SCENERY),
     /** Turning hit (scenery). */
     TURNING_HIT(TypeEntityCategory.SCENERY),
+    /** Beetle horizontal (scenery). */
+    BEETLE_HORIZONTAL(TypeEntityCategory.SCENERY),
+    /** Beetle vertical (scenery). */
+    BEETLE_VERTICAL(TypeEntityCategory.SCENERY),
 
     /*
      * Valdyn
