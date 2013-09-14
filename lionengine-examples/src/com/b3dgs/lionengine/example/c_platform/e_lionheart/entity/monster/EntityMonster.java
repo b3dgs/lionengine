@@ -12,7 +12,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patroller;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.PatrollerModel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.file.FileReading;
@@ -27,7 +26,7 @@ public class EntityMonster
     /** Effect factory. */
     private final FactoryEffect factoryEffect;
     /** Patrol model. */
-    private final Patroller patroller;
+    private final PatrollerModel patroller;
 
     /**
      * Constructor.
@@ -46,6 +45,13 @@ public class EntityMonster
     /*
      * EntityMover
      */
+    
+    @Override
+    public void prepare()
+    {
+        super.prepare();
+        patroller.prepare();
+    }
     
     @Override
     public void save(FileWriting file) throws IOException
@@ -84,7 +90,7 @@ public class EntityMonster
             }
             else
             {
-                movement.getForce().setForce(0.0, 0.0);
+                movement.reset();
             }
         }
         else if (state == TypeEntityState.WALK)

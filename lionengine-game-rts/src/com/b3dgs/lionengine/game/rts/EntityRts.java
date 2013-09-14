@@ -113,7 +113,7 @@ public abstract class EntityRts
         setSize(width, height);
         sprite.setFrame(1);
         orientation = Orientation.SOUTH;
-        setCollision(new CollisionData(0, 0, getWidth(), getHeight()));
+        setCollision(new CollisionData(0, 0, getWidth(), getHeight(), false));
         animationCurrent = null;
         active = true;
         visible = true;
@@ -140,7 +140,7 @@ public abstract class EntityRts
     {
         updateMirror();
         sprite.setMirror(getMirror());
-        updateCollision(getMirror());
+        updateCollision();
         sprite.updateAnimation(extrp);
     }
 

@@ -57,7 +57,7 @@ final class Racket
         increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         setLocation(x, y);
-        setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight()));
+        setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight(), false));
         timerRandomMovement.start();
     }
 
@@ -91,7 +91,7 @@ final class Racket
         }
 
         // Update collisions
-        updateCollision(getMirror());
+        updateCollision();
     }
 
     /**

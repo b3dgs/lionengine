@@ -100,7 +100,7 @@ public class ConfigurableModel
         {
             final String coll = node.readString("name");
             final CollisionData collision = new CollisionData(node.readInteger("offsetX"), node.readInteger("offsetY"),
-                    node.readInteger("width"), node.readInteger("height"));
+                    node.readInteger("width"), node.readInteger("height"), node.readBoolean("mirror"));
             collisions.put(coll, collision);
         }
     }

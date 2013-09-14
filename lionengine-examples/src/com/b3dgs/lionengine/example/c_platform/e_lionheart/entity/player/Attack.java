@@ -22,7 +22,7 @@ public class Attack
     {
         frame = attack.readInteger("frame");
         collision = new CollisionData(attack.readInteger("x"), attack.readInteger("y"), attack.readInteger("width"),
-                attack.readInteger("height"));
+                attack.readInteger("height"), true);
     }
 
     /**

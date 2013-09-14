@@ -9,7 +9,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patroller;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.PatrollerModel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.file.FileReading;
@@ -24,10 +23,10 @@ public class EntityBeetle
         extends EntityScenery
         implements Patrollable
 {
+    /** Patrollable model. */
+    protected final PatrollerModel patroller;
     /** Forces list used. */
     private final Force[] forces;
-    /** Patrollable model. */
-    private final Patroller patroller;
     /** Movement force. */
     private final Movement movement;
     /** Movement max speed. */
@@ -55,6 +54,22 @@ public class EntityBeetle
      */
 
     @Override
+    public void prepare()
+    {
+        super.prepare();
+        patroller.prepare();
+    }
+    
+    @Override
+    public void hitThat(Entity entity)
+    {
+        if (!status.isState(TypeEntityState.TURN))
+        {
+            super.hitThat(entity);
+        }
+    }
+
+    @Override
     public void save(FileWriting file) throws IOException
     {
         super.save(file);
@@ -74,6 +89,7 @@ public class EntityBeetle
         final TypeState state = status.getState();
         if (state == TypeEntityState.TURN)
         {
+            movement.reset();
             if (getAnimState() == AnimState.FINISHED)
             {
                 final int side = patroller.getSide();
@@ -81,29 +97,14 @@ public class EntityBeetle
                 mirror(side < 0);
                 if (patroller.getPatrolType() == TypePatrol.HORIZONTAL)
                 {
-                    movement.getForce().setForce(movementSpeedMax * side, 0.0);
+                    setMovementForce(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
                 else if (patroller.getPatrolType() == TypePatrol.VERTICAL)
                 {
-                    movement.getForce().setForce(0.0, movementSpeedMax * side);
+                    setMovementForce(0.0, movementSpeedMax * side);
+                    teleportY(getLocationIntY() + side);
                 }
-            }
-            else
-            {
-                movement.getForce().setForce(0.0, 0.0);
-            }
-        }
-        else if (state == TypeEntityState.WALK)
-        {
-            final int x = getLocationIntX();
-            if (x > patroller.getPositionMax())
-            {
-                teleportX(patroller.getPositionMax());
-            }
-            if (x < patroller.getPositionMin())
-            {
-                teleportX(patroller.getPositionMin());
             }
         }
         super.handleActions(extrp);
@@ -114,26 +115,6 @@ public class EntityBeetle
     {
         movement.update(extrp);
         super.handleMovements(extrp);
-    }
-
-    @Override
-    protected void updateStates()
-    {
-        super.updateStates();
-        final double diffHorizontal = getDiffHorizontal();
-        final int x = getLocationIntX();
-        if (patroller.hasPatrol() && (x == patroller.getPositionMin() || x == patroller.getPositionMax()))
-        {
-            status.setState(TypeEntityState.TURN);
-        }
-        else if (diffHorizontal != 0.0)
-        {
-            status.setState(TypeEntityState.WALK);
-        }
-        else
-        {
-            status.setState(TypeEntityState.IDLE);
-        }
     }
 
     @Override

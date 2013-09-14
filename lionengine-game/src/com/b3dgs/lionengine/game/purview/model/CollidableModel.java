@@ -9,6 +9,7 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.purview.Mirrorable;
 
 /**
  * Default collidable model implementation.
@@ -17,7 +18,7 @@ public class CollidableModel
         implements Collidable
 {
     /** No collision. */
-    private static final CollisionData NO_COLLISION = new CollisionData(0, 0, 0, 0);
+    private static final CollisionData NO_COLLISION = new CollisionData(0, 0, 0, 0, false);
     /** Entity owning this model. */
     private final Localizable entity;
     /** Entity collision representation. */
@@ -48,13 +49,18 @@ public class CollidableModel
      */
 
     @Override
-    public void updateCollision(boolean mirror)
+    public void updateCollision()
     {
         final int xCur = entity.getLocationIntX() - entity.getWidth() / 2;
         final int yCur = entity.getLocationIntY();
         final int xOld = (int) entity.getLocationOldX() - entity.getWidth() / 2;
         final int yOld = (int) entity.getLocationOldY();
 
+        boolean mirror = false;
+        if (collision.getMirror() && entity instanceof Mirrorable)
+        {
+            mirror = ((Mirrorable) entity).getMirror();
+        }
         final int offsetX = mirror ? -collision.getOffsetX() : collision.getOffsetX();
         final int offsetY = collision.getOffsetY();
         final int width = collision.getWidth();

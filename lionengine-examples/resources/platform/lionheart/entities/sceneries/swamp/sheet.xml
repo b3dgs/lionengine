@@ -2,6 +2,6 @@
 <entity name="sheet" surface="sheet.png">
 	<frames horizontal="1" vertical="1"/>
 	<size width="32" height="16"/>
-	<collision name="default" offsetX="8" offsetY="13" width="17" height="1" />
+	<collision name="default" offsetX="8" offsetY="13" width="17" height="1" mirror="false" />
 	<animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
 </entity>

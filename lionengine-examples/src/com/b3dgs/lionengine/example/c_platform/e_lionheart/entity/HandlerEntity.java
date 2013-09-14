@@ -71,6 +71,17 @@ public class HandlerEntity
         }
         updateAdd();
     }
+    
+    /**
+     * Prepare entities.
+     */
+    public void prepare()
+    {
+        for (Entity entity : list())
+        {
+            entity.prepare();
+        }
+    }
 
     /**
      * Set the player reference.

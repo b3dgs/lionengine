@@ -72,7 +72,7 @@ public abstract class Entity
         loadCollisions(TypeEntityCollision.values());
         loadAnimations(TypeEntityState.values());
     }
-
+    
     /**
      * Called when this is hit by another entity.
      * 
@@ -113,6 +113,14 @@ public abstract class Entity
      */
     protected abstract void updateAnimations(double extrp);
 
+    /**
+     * Called when all entities are loaded.
+     */
+    public void prepare()
+    {
+        // Nothing by default
+    }
+    
     /**
      * Kill entity.
      */

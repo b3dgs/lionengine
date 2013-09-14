@@ -34,7 +34,7 @@ final class Entity
         this.map = map;
         mouseX = 64;
         mouseY = 180;
-        setCollision(new CollisionData(0, 0, 16, 16));
+        setCollision(new CollisionData(0, 0, 16, 16, false));
     }
 
     /**
@@ -81,7 +81,7 @@ final class Entity
     @Override
     protected void handleCollisions(double extrp)
     {
-        updateCollision(getMirror());
+        updateCollision();
         setCollisionOffset(0, 0);
         tile = map.getFirstTileHit(this, TileCollision.COLLISION);
     }

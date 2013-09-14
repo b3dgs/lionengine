@@ -152,7 +152,7 @@ public abstract class EntityPlatform
         handleCollisions(extrp);
         collOffX = 0;
         collOffY = 0;
-        updateCollision(getMirror());
+        updateCollision();
         handleAnimations(extrp);
     }
 

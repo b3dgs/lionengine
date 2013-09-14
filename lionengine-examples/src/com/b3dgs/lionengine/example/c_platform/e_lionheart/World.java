@@ -129,6 +129,7 @@ final class World
     {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
+        handlerEntity.prepare();
         player.respawn();
         // TODO: SonicArranger.play(level.getWorld().getMusic());
     }

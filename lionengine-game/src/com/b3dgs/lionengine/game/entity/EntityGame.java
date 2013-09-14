@@ -198,9 +198,9 @@ public abstract class EntityGame
      */
 
     @Override
-    public void updateCollision(boolean mirror)
+    public void updateCollision()
     {
-        collidable.updateCollision(mirror);
+        collidable.updateCollision();
     }
 
     @Override

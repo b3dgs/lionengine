@@ -5,14 +5,14 @@
 	<size width="20" height="55"/>
 	
 	<data mass="1.85" gravityMax="16.0" fallenDuration="150">
-		<movement speedMax="2.5" smooth="0.1" sensibilityIncrease="0.4" sensibilityDecrease="0.1" />
+		<movement speedMax="2.5" smooth="0.15" sensibilityIncrease="0.4" sensibilityDecrease="0.15" />
 		<jump heightMax="7.0" />
 	</data>
 	
-	<collision name="stand" offsetX="0" offsetY="-2" width="20" height="53" />
-	<collision name="crouch" offsetX="0" offsetY="-2" width="20" height="35" />
-	<collision name="attack_fall" offsetX="0" offsetY="20" width="20" height="25" />
-	<collision name="leg" offsetX="2" offsetY="-2" width="22" height="3" />
+	<collision name="stand" offsetX="0" offsetY="-2" width="20" height="53" mirror="false" />
+	<collision name="crouch" offsetX="0" offsetY="-2" width="20" height="35" mirror="false" />
+	<collision name="attack_fall" offsetX="0" offsetY="20" width="20" height="25" mirror="false" />
+	<collision name="leg" offsetX="2" offsetY="-2" width="22" height="3" mirror="false" />
 	
 	<animation name="idle" start="1" end="1" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="crouch" start="3" end="3" speed="0.125" reversed="false" repeat="false"/>

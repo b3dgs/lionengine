@@ -1,7 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 
 /**
@@ -19,5 +21,54 @@ public final class BeetleHorizontal
     {
         super(context, TypeEntity.BEETLE_HORIZONTAL);
         enableMovement(TypePatrol.HORIZONTAL);
+    }
+
+    /*
+     * EntityBeetle
+     */
+
+    @Override
+    protected void handleActions(double extrp)
+    {
+        if (status.getState() == TypeEntityState.WALK)
+        {
+            final int x = getLocationIntX();
+            if (x > patroller.getPositionMax())
+            {
+                teleportX(patroller.getPositionMax());
+            }
+            if (x < patroller.getPositionMin())
+            {
+                teleportX(patroller.getPositionMin());
+            }
+        }
+        super.handleActions(extrp);
+    }
+    
+    @Override
+    protected void updateStates()
+    {
+        super.updateStates();
+        final double diffHorizontal = getDiffHorizontal();
+        final int x = getLocationIntX();
+        if (patroller.hasPatrol() && (x == patroller.getPositionMin() || x == patroller.getPositionMax()))
+        {
+            status.setState(TypeEntityState.TURN);
+        }
+        else if (diffHorizontal != 0.0)
+        {
+            status.setState(TypeEntityState.WALK);
+        }
+        else
+        {
+            status.setState(TypeEntityState.IDLE);
+        }
+    }
+    
+    @Override
+    protected void onCollide(Entity entity)
+    {
+        super.onCollide(entity);
+        entity.teleportX(entity.getLocationX() + getDiffHorizontal());
     }
 }

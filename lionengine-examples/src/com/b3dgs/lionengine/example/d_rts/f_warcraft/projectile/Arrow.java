@@ -20,7 +20,7 @@ final class Arrow
     Arrow(SetupEntityGame setup, int id, int frame)
     {
         super(setup, id, frame);
-        setCollision(new CollisionData(0, 1, 0, 1));
+        setCollision(new CollisionData(0, 1, 0, 1, false));
     }
 
     /*

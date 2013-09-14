@@ -133,7 +133,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public void update(double extrp)
     {
         updateMovement(vecX, vecY, extrp);
-        updateCollision(getMirror());
+        updateCollision();
     }
 
     /**

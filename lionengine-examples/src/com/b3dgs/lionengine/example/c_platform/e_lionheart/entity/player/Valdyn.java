@@ -818,7 +818,7 @@ public final class Valdyn
     @Override
     protected void updateStates()
     {
-        final double diffHorizontal = getDiffHorizontal();
+        final double diffHorizontal = getHorizontalForce();
         if (!attacking || status.getState() == TypeValdynState.ATTACK_FALL)
         {
             updateStateMirror(diffHorizontal);
@@ -929,8 +929,8 @@ public final class Valdyn
         {
             canHurtMonster = updateAttackCollision();
         }
-        attackCollision.updateCollision(getMirror());
-        legCollision.updateCollision(false);
+        attackCollision.updateCollision();
+        legCollision.updateCollision();
 
         if (status.getCollision() == TypeEntityCollisionTile.GROUND && attack == TypeValdynState.ATTACK_FALL)
         {

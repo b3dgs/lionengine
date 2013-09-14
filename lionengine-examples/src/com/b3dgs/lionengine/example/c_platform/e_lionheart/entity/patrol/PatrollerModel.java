@@ -49,6 +49,65 @@ public class PatrollerModel
         movementType = TypePatrol.NONE;
         enableMovement(TypePatrol.NONE);
     }
+    
+    /**
+     * Prepare the patrol.
+     */
+    public void prepare()
+    {
+        hasPatrol = getPatrolLeft() != 0 || getPatrolRight() != 0;
+        owner.setMovementSpeedMax(getMoveSpeed() / 5.0);
+
+        // Set side
+        if (firstMove == 0)
+        {
+            side = Patroller.MOVE_LEFT;
+        }
+        else if (firstMove == 1)
+        {
+            side = Patroller.MOVE_RIGHT;
+        }
+
+        // Set position interval
+        if (movementType == TypePatrol.HORIZONTAL)
+        {
+            posMin = owner.getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
+            posMax = owner.getLocationIntX() + (getPatrolRight() - 1) * Map.TILE_WIDTH;
+            owner.setMovementForce(owner.getMovementSpeedMax() * side, 0.0);
+            if (side == Patroller.MOVE_LEFT)
+            {
+                owner.mirror(true);
+                owner.teleport(posMax - 1, owner.getLocationIntY());
+            }
+            else if (side == Patroller.MOVE_RIGHT)
+            {
+                owner.teleport(posMin + 1, owner.getLocationIntY());
+            }
+        }
+        else if (movementType == TypePatrol.VERTICAL)
+        {
+            posMin = owner.getLocationIntY() - getPatrolLeft() * Map.TILE_WIDTH;
+            posMax = owner.getLocationIntY() + getPatrolRight() * Map.TILE_WIDTH;
+            owner.setMovementForce(0.0, owner.getMovementSpeedMax() * side);
+            if (side == Patroller.MOVE_LEFT)
+            {
+                owner.mirror(true);
+                owner.teleport(owner.getLocationIntX(), posMax - 1);
+            }
+            else if (side == Patroller.MOVE_RIGHT)
+            {
+                owner.teleport(owner.getLocationIntX(), posMin + 1);
+            }
+        }
+        side = -side;
+
+        // Move straight on
+        if (posMin == posMax)
+        {
+            posMin = -1;
+            posMax = Integer.MAX_VALUE;
+        }
+    }
 
     @Override
     public void save(FileWriting file) throws IOException
@@ -74,52 +133,6 @@ public class PatrollerModel
             setFirstMove(file.readByte());
             setPatrolLeft(file.readByte());
             setPatrolRight(file.readByte());
-
-            hasPatrol = getPatrolLeft() != 0 || getPatrolRight() != 0;
-            owner.setMovementSpeedMax(getMoveSpeed() / 5.0);
-
-            // Set side
-            if (firstMove == 0)
-            {
-                side = Patroller.MOVE_LEFT;
-            }
-            else if (firstMove == 1)
-            {
-                side = Patroller.MOVE_RIGHT;
-            }
-
-            // Set position interval
-            if (movementType == TypePatrol.HORIZONTAL)
-            {
-                posMin = owner.getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
-                posMax = owner.getLocationIntX() + (getPatrolRight() - 1) * Map.TILE_WIDTH;
-                owner.setMovementForce(owner.getMovementSpeedMax() * side, 0.0);
-            }
-            else if (movementType == TypePatrol.VERTICAL)
-            {
-                posMin = owner.getLocationIntY() - getPatrolLeft() * Map.TILE_WIDTH;
-                posMax = owner.getLocationIntY() + getPatrolRight() * Map.TILE_WIDTH;
-                owner.setMovementForce(0.0, owner.getMovementSpeedMax() * side);
-            }
-
-            // Locate at the opposite of the direction
-            final int offsetX = (int) Math.ceil(owner.getForceHorizontal());
-            if (side == Patroller.MOVE_LEFT)
-            {
-                owner.mirror(true);
-                owner.teleport(posMax - offsetX - 1, owner.getLocationIntY());
-            }
-            else if (side == Patroller.MOVE_RIGHT)
-            {
-                owner.teleport(posMin + offsetX, owner.getLocationIntY());
-            }
-
-            // Move straight on
-            if (posMin == posMax)
-            {
-                posMin = -1;
-                posMax = Integer.MAX_VALUE;
-            }
         }
     }
     

@@ -15,10 +15,8 @@ public interface Collidable
 {
     /**
      * Update collision with specified area.
-     * 
-     * @param mirror The mirror flag.
      */
-    void updateCollision(boolean mirror);
+    void updateCollision();
 
     /**
      * Set the collision to use.

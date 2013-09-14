@@ -13,6 +13,8 @@ public class CollisionData
     private final int width;
     /** Height. */
     private final int height;
+    /** Has mirror. */
+    private final boolean mirror;
 
     /**
      * Constructor.
@@ -21,13 +23,15 @@ public class CollisionData
      * @param offsetY The collision vertical offset.
      * @param width The collision width.
      * @param height The collision height.
+     * @param mirror The mirror flag.
      */
-    public CollisionData(int offsetX, int offsetY, int width, int height)
+    public CollisionData(int offsetX, int offsetY, int width, int height, boolean mirror)
     {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
         this.height = height;
+        this.mirror = mirror;
     }
 
     /**
@@ -68,5 +72,14 @@ public class CollisionData
     public int getHeight()
     {
         return height;
+    }
+    
+    /**
+     * Get the mirror flag.
+     * @return <code>true</code> if has mirror, <code>false</code> else.
+     */
+    public boolean getMirror()
+    {
+        return mirror;
     }
 }
