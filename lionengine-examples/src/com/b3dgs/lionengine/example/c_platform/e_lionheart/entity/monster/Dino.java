@@ -17,5 +17,6 @@ public final class Dino
     public Dino(Context context)
     {
         super(context, TypeEntity.DINO);
+        setFrameOffsets(0, -4);
     }
 }

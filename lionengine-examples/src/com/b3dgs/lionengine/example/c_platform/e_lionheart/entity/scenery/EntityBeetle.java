@@ -93,14 +93,14 @@ public class EntityBeetle
             if (getAnimState() == AnimState.FINISHED)
             {
                 final int side = patroller.getSide();
-                patroller.setSide(-side);
+                setSide(-side);
                 mirror(side < 0);
-                if (patroller.getPatrolType() == TypePatrol.HORIZONTAL)
+                if (getPatrolType() == TypePatrol.HORIZONTAL)
                 {
                     setMovementForce(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
-                else if (patroller.getPatrolType() == TypePatrol.VERTICAL)
+                else if (getPatrolType() == TypePatrol.VERTICAL)
                 {
                     setMovementForce(0.0, movementSpeedMax * side);
                     teleportY(getLocationIntY() + side);

@@ -6,9 +6,9 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
- * Sword1 item. First level of the sword.
+ * Sword4 item. Fourth level of the sword.
  */
-public final class Sword1
+public final class Sword4
         extends EntityItem
 {
     /**
@@ -16,9 +16,9 @@ public final class Sword1
      * 
      * @param context The context reference.
      */
-    public Sword1(Context context)
+    public Sword4(Context context)
     {
-        super(context, TypeEntity.SWORD1, TypeEffect.TAKEN);
+        super(context, TypeEntity.SWORD4, TypeEffect.TAKEN);
     }
 
     /*
@@ -28,6 +28,6 @@ public final class Sword1
     @Override
     protected void onTaken(Valdyn entity)
     {
-        // TODO: Set sword level to 1
+        entity.stats.setSwordLevel(4);
     }
 }

@@ -1,5 +1,0 @@
-=STR= #NAME# 	= "Bumblebee"
-=RNG= #FRAMES# 	= {02-01}
-=ANM= #IDLE# 	= {01-01}		[48*48,0;0]
-=ANM= #WALK# 	= {01-02} (0.18) |true|	[48*48,0;0]
-=BOL= #MIRROR# 	= [true]

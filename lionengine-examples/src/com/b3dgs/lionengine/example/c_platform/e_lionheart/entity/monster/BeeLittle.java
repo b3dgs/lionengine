@@ -2,23 +2,20 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 
 /**
- * Crawling monster implementation.
+ * BeeLittle monster implementation.
  */
-public final class Crawling
-        extends EntityMonster
+public final class BeeLittle
+        extends EntityMonsterBee
 {
     /**
      * Constructor.
      * 
      * @param context The context reference.
      */
-    public Crawling(Context context)
+    public BeeLittle(Context context)
     {
-        super(context, TypeEntity.CRAWLING);
-        setFrameOffsets(0, -4);
-        enableMovement(TypePatrol.HORIZONTAL);
+        super(context, TypeEntity.BEE_LITTLE);
     }
 }

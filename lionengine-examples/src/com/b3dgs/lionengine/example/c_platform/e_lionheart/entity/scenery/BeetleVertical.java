@@ -32,13 +32,13 @@ public final class BeetleVertical
         if (status.getState() == TypeEntityState.WALK)
         {
             final int y = getLocationIntY();
-            if (y > patroller.getPositionMax())
+            if (y > getPositionMax())
             {
-                teleportY(patroller.getPositionMax());
+                teleportY(getPositionMax());
             }
-            if (y < patroller.getPositionMin())
+            if (y < getPositionMin())
             {
-                teleportY(patroller.getPositionMin());
+                teleportY(getPositionMin());
             }
         }
         super.handleActions(extrp);
@@ -50,7 +50,7 @@ public final class BeetleVertical
         super.updateStates();
         final double diffVertical = getDiffVertical();
         final int y = getLocationIntY();
-        if (patroller.hasPatrol() && (y == patroller.getPositionMin() || y == patroller.getPositionMax()))
+        if (hasPatrol() && (y == getPositionMin() || y == getPositionMax()))
         {
             status.setState(TypeEntityState.TURN);
         }

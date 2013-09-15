@@ -1,5 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -19,7 +21,37 @@ public final class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
 {
     /** Unknown entity error message. */
-    public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
+    private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
+    
+    /**
+     * Create an item from its type.
+     * 
+     * @param context The context reference.
+     * @param type The item type.
+     * @param factory The factory class.
+     * @return The item instance.
+     */
+    public static Entity createEntity(Context context, TypeEntity type, Class<?> factory)
+    {
+        try
+        {
+            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
+            clazz.append('.').append(type.asClassName());
+            return (Entity) Class.forName(clazz.toString()).getConstructor(Context.class).newInstance(context);
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException
+               | ClassCastException
+               | ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, FactoryEntity.UNKNOWN_ENTITY_ERROR + type.asClassName());
+        }
+    }
+    
     /** Context used. */
     private Context context;
     /** World used. */
@@ -31,7 +63,6 @@ public final class FactoryEntity
     public FactoryEntity()
     {
         super(TypeEntity.class);
-
     }
 
     /**

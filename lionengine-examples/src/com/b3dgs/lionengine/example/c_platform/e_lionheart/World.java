@@ -104,6 +104,10 @@ final class World
         handlerEntity.render(g, camera);
         handlerEffect.render(g, camera);
         player.render(g, camera);
+        if (AppLionheart.SHOW_COLLISIONS)
+        {
+            player.renderCollision(g, camera);
+        }
         landscape.renderForeground(g);
         statsRenderer.render(g, player.stats);
     }

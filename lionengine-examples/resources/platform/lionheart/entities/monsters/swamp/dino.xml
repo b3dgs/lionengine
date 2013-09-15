@@ -6,6 +6,7 @@
 		<movement speedMax="1.5" />
 		<jump heightMax="7.0" />
 	</data>
+	<collision name="default" offsetX="4" offsetY="-4" width="38" height="48" mirror="false" />
 	<animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
 	<animation name="walk" start="1" end="10" speed="0.25" reversed="false" repeat="true"/>
 	<animation name="turn" start="13" end="15" speed="0.25" reversed="false" repeat="false"/>

@@ -40,11 +40,9 @@ public final class FactoryLandscape
      */
     public Landscape createLandscape(TypeLandscape landscape)
     {
-        switch (landscape)
+        switch (landscape.getWorld())
         {
-            case SWAMP_DUSK:
-            case SWAMP_DAWN:
-            case SWAMP_DAY:
+            case SWAMP:
             {
                 final BackgroundPlatform background = new Swamp(config, wide, landscape.getTheme(), flicker);
                 final Water foreground = new Water(config, wide, landscape.getForeground().getTheme());

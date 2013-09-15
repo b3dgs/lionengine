@@ -19,12 +19,12 @@ public enum TypeEntity
     POTION_BIG(TypeEntityCategory.ITEM),
     /** Life (item). */
     LIFE(TypeEntityCategory.ITEM),
-    /** Sword1 (item). */
-    SWORD1(TypeEntityCategory.ITEM),
     /** Sword2 (item). */
     SWORD2(TypeEntityCategory.ITEM),
     /** Sword3 (item). */
     SWORD3(TypeEntityCategory.ITEM),
+    /** Sword4 (item). */
+    SWORD4(TypeEntityCategory.ITEM),
 
     /*
      * Monsters
@@ -34,6 +34,12 @@ public enum TypeEntity
     CRAWLING(TypeEntityCategory.MONSTER),
     /** Dino (monster). */
     DINO(TypeEntityCategory.MONSTER),
+    /** Bee (monster). */
+    BEE(TypeEntityCategory.MONSTER),
+    /** BeeLittle (monster). */
+    BEE_LITTLE(TypeEntityCategory.MONSTER),
+    /** BumbleBee (monster). */
+    BUMBLE_BEE(TypeEntityCategory.MONSTER),
 
     /*
      * Sceneries
@@ -113,6 +119,23 @@ public enum TypeEntity
     public String asPathName()
     {
         return name().toLowerCase(Locale.ENGLISH);
+    }
+    
+    /**
+     * Get the class name equivalence.
+     * @return The class name equivalence.
+     */
+    public String asClassName()
+    {
+        final char[] name = toString().toCharArray();
+        for (int i = 0; i < name.length; i++)
+        {
+            if (name[i] == '_')
+            {
+                name[i + 1] = Character.toUpperCase(name[i + 1]);
+            }
+        }
+        return String.valueOf(name).replace("_", "");
     }
 
     /**

@@ -32,9 +32,10 @@ public final class Stats
         life = new Alterable(99);
         heart = new Alterable(4);
         talisment = new Alterable(100);
-        sword = new Alterable(3);
+        sword = new Alterable(4);
         life.increase(4);
         heart.fill();
+        sword.set(1);
     }
 
     /**
@@ -98,11 +99,13 @@ public final class Stats
     }
 
     /**
-     * Increase the sword level.
+     * Increase the sword level if needed.
+     * 
+     * @param toLevel The level destination.
      */
-    public void increaseSwordLevel()
+    public void setSwordLevel(int toLevel)
     {
-        sword.increase(1);
+        sword.set(toLevel);
     }
 
     /**

@@ -1,4 +1,0 @@
-=STR= #NAME# 	= "BeeLittle"
-=RNG= #FRAMES# 	= {03-01}
-=ANM= #IDLE# 	= {01-02}
-=ANM= #TURN# 	= {03-03}

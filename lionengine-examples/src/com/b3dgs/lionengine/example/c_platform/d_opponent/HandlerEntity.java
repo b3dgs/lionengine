@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 
@@ -40,7 +41,7 @@ final class HandlerEntity
     }
 
     @Override
-    protected void updatingEntity(Entity entity)
+    protected void updatingEntity(Entity entity, double extrp)
     {
         if (!(mario.isDead() || entity.isDead()) && entity.collide(mario))
         {
@@ -59,7 +60,7 @@ final class HandlerEntity
     }
 
     @Override
-    protected void renderingEntity(Entity entity, CameraPlatform camera)
+    protected void renderingEntity(Entity entity, Graphic g, CameraPlatform camera)
     {
         // Nothing to do
     }

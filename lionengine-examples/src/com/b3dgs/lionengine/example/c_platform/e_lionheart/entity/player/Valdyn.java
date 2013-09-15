@@ -42,6 +42,12 @@ public final class Valdyn
 {
     /** The width of the tile extremity. */
     public static final int TILE_EXTREMITY_WIDTH = 3;
+    /** Hurt effect value (lower is faster). */
+    private static final int HURT_EFFECT_FREQ = 6;
+    /** Hurt time before effect. */
+    private static final int HURT_TIME_BEFORE_EFFECT = 500;
+    /** Hurt time max. */
+    private static final int HURT_TIME_MAX = 2000;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
     /** The fall time margin (in milli). */
@@ -96,10 +102,10 @@ public final class Valdyn
     private boolean attacking;
     /** Attacked state. */
     private boolean attacked;
-    /** Can hurt monster. */
-    private boolean canHurtMonster;
     /** Shade can be played. */
     private boolean shadeCanBePlayed;
+    /** Hurt effect counter. */
+    private int hurtEffectCounter;
     /** Left key state. */
     private boolean keyLeft;
     /** Right key state. */
@@ -209,16 +215,6 @@ public final class Valdyn
     public Collidable getCollisionAttack()
     {
         return attackCollision;
-    }
-
-    /**
-     * Get the attacking flag.
-     * 
-     * @return <code>true</code> if attacking, <code>false</code> else.
-     */
-    public boolean canHurtMonster()
-    {
-        return canHurtMonster;
     }
 
     /**
@@ -624,10 +620,8 @@ public final class Valdyn
 
     /**
      * Update the collision during attack.
-     * 
-     * @return <code>true</code> if attacking, <code>false</code> else.
      */
-    private boolean updateAttackCollision()
+    private void updateAttackCollision()
     {
         final Set<Attack> set = attacks.get(status.getState());
         if (set != null)
@@ -637,11 +631,10 @@ public final class Valdyn
                 if (getFrameAnim() == attack.getFrame())
                 {
                     attackCollision.setCollision(attack.getCollision());
-                    return true;
+                    break;
                 }
             }
         }
-        return false;
     }
 
     /**
@@ -749,17 +742,21 @@ public final class Valdyn
         attack = null;
         attacking = false;
         attackPrepared = false;
-        teleport(1010, 162);
+        teleport(1200, 700);
         camera.resetInterval(this);
     }
 
     @Override
     public void render(Graphic g, CameraPlatform camera)
     {
-        super.render(g, camera);
-        if (shade.getAnimState() == AnimState.PLAYING)
+        final boolean render = timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT) && hurtEffectCounter % Valdyn.HURT_EFFECT_FREQ == 0;
+        if (render || hurtEffectCounter == 0)
         {
-            renderAnim(g, shade, camera);
+            super.render(g, camera);
+            if (shade.getAnimState() == AnimState.PLAYING)
+            {
+                renderAnim(g, shade, camera);
+            }
         }
     }
 
@@ -776,7 +773,8 @@ public final class Valdyn
     {
         if (!timerHurt.isStarted() && entity instanceof EntityMonster)
         {
-            jumpForce.setForce(0.0, jumpHeightMax);
+            resetGravity();
+            jumpForce.setForce(0.0, jumpHeightMax * 0.8);
             stats.decreaseHeart();
             timerHurt.start();
         }
@@ -785,9 +783,10 @@ public final class Valdyn
     @Override
     public void hitThat(Entity entity)
     {
-        if (entity instanceof EntityMonster)
+        if (entity instanceof EntityMonster && status.getState() == TypeValdynState.ATTACK_FALL)
         {
-            // TODO: Force jump
+            resetGravity();
+            jumpForce.setForce(0.0, jumpHeightMax * 0.8);
         }
     }
 
@@ -809,9 +808,14 @@ public final class Valdyn
         updateActionMovement();
         updateActionAttack();
         updateActionJump();
-        if (timerHurt.elapsed(2000))
+        if (timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT))
+        {
+            hurtEffectCounter++;
+        }
+        if (timerHurt.elapsed(Valdyn.HURT_TIME_MAX))
         {
             timerHurt.stop();
+            hurtEffectCounter = 0;
         }
     }
 
@@ -826,7 +830,11 @@ public final class Valdyn
 
         // Update the states
         final boolean mirror = getMirror();
-        if (attack != null)
+        if (timerHurt.isStarted() && !timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT))
+        {
+            status.setState(TypeEntityState.HURT);
+        }
+        else if (attack != null)
         {
             status.setState(attack);
         }
@@ -897,10 +905,12 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            setCollisionOffset(0, 0);
-            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
+            setCollisionOffset(0, 53);
+            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_LIANA));
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
+            setCollisionOffset(0, 0);
+            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
         }
 
         // Stop attack if collide
@@ -927,7 +937,7 @@ public final class Valdyn
         attackCollision.setCollision(null);
         if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
         {
-            canHurtMonster = updateAttackCollision();
+            updateAttackCollision();
         }
         attackCollision.updateCollision();
         legCollision.updateCollision();

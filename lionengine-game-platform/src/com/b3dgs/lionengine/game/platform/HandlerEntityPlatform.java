@@ -36,19 +36,21 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     protected abstract boolean canRenderEntity(E entity);
 
     /**
-     * Update this entity (entity.update(keyboard, mouse, extrp) is already called before).
+     * Update this entity ({@link EntityPlatform#update(double)}  is already called before).
      * 
      * @param entity The current updating entity.
+     * @param extrp The extrapolation value.
      */
-    protected abstract void updatingEntity(E entity);
+    protected abstract void updatingEntity(E entity, double extrp);
 
     /**
      * Render this entity ({@link EntityPlatform#render(Graphic, CameraPlatform)} is already called before).
      * 
      * @param entity The current rendering entity.
+     * @param g The graphic output.
      * @param camera The camera reference.
      */
-    protected abstract void renderingEntity(E entity, CameraPlatform camera);
+    protected abstract void renderingEntity(E entity, Graphic g, CameraPlatform camera);
 
     /**
      * Update all entities.
@@ -66,7 +68,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
             if (canUpdateEntity(entity))
             {
                 entity.update(extrp);
-                updatingEntity(entity);
+                updatingEntity(entity, extrp);
             }
             if (entity.isDestroyed())
             {
@@ -91,7 +93,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
             if (canRenderEntity(entity))
             {
                 entity.render(g, camera);
-                renderingEntity(entity, camera);
+                renderingEntity(entity, g, camera);
             }
         }
     }

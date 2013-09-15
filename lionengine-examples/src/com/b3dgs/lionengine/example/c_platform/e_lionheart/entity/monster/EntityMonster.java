@@ -38,7 +38,6 @@ public class EntityMonster
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
-        setFrameOffsets(0, -4);
         patroller = new PatrollerModel(this);
     }
 
@@ -75,17 +74,18 @@ public class EntityMonster
         {
             if (getAnimState() == AnimState.FINISHED)
             {
-                final int side = patroller.getSide();
-                patroller.setSide(-side);
+                final int side = getSide();
+                setSide(-side);
                 mirror(side < 0);
-                if (patroller.getPatrolType() == TypePatrol.HORIZONTAL)
+                if (getPatrolType() == TypePatrol.HORIZONTAL)
                 {
-                    movement.getForce().setForce(movementSpeedMax * side, 0.0);
+                    setMovementForce(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
-                else if (patroller.getPatrolType() == TypePatrol.VERTICAL)
+                else if (getPatrolType() == TypePatrol.VERTICAL)
                 {
-                    movement.getForce().setForce(0.0, movementSpeedMax * side);
+                    setMovementForce(0.0, movementSpeedMax * side);
+                    teleportY(getLocationIntY() + side);
                 }
             }
             else
@@ -95,14 +95,29 @@ public class EntityMonster
         }
         else if (state == TypeEntityState.WALK)
         {
-            final int x = getLocationIntX();
-            if (x > patroller.getPositionMax())
+            if (getPatrolType() == TypePatrol.HORIZONTAL)
             {
-                teleportX(patroller.getPositionMax());
+                final int x = getLocationIntX();
+                if (x > getPositionMax())
+                {
+                    teleportX(getPositionMax());
+                }
+                if (x < getPositionMin())
+                {
+                    teleportX(getPositionMin());
+                }
             }
-            if (x < patroller.getPositionMin())
+            else if (getPatrolType() == TypePatrol.VERTICAL)
             {
-                teleportX(patroller.getPositionMin());
+                final int y = getLocationIntY();
+                if (y > getPositionMax())
+                {
+                    teleportY(getPositionMax());
+                }
+                if (y < getPositionMin())
+                {
+                    teleportY(getPositionMin());
+                }
             }
         }
     }
@@ -122,13 +137,25 @@ public class EntityMonster
     @Override
     protected void updateStates()
     {
+        boolean willTurn = false;
+        if (getPatrolType() == TypePatrol.HORIZONTAL)
+        {
+            final int x = getLocationIntX();
+            willTurn = x == getPositionMin() || x == getPositionMax();
+        }
+        else if (getPatrolType() == TypePatrol.VERTICAL)
+        {
+            final int y = getLocationIntY();
+            willTurn = y == getPositionMin() || y == getPositionMax();
+        }
+        
         final double diffHorizontal = getDiffHorizontal();
-        final int x = getLocationIntX();
-        if (patroller.hasPatrol() && (x == patroller.getPositionMin() || x == patroller.getPositionMax()))
+        final double diffVertical = getDiffVertical();
+        if (hasPatrol() && willTurn)
         {
             status.setState(TypeEntityState.TURN);
         }
-        else if (diffHorizontal != 0.0)
+        else if (diffHorizontal != 0.0 || diffVertical != 0.0)
         {
             status.setState(TypeEntityState.WALK);
         }
@@ -141,7 +168,7 @@ public class EntityMonster
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() - sprite.getFrameWidth() / 2,
+        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() - getCollisionData().getWidth() / 2 - 5,
                 (int) dieLocation.getY() - 5);
         // TODO: Play explode sound
         destroy();

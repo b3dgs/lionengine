@@ -98,7 +98,7 @@ public final class Tile
     private Double getSlopeRight(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationX() - getX() - getWidth();
-        double y = getTop() - x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        double y = getTop() - x * TypeTileCollisionGroup.SLOPE.getFactor() + offset;
         if (getCollision() == TypeTileCollision.SLOPE_RIGHT_BORDER_UP && y > super.getTop())
         {
             y = super.getTop();
@@ -120,7 +120,7 @@ public final class Tile
     private Double getSlopeLeft(Localizable localizable, int offset)
     {
         final double x = localizable.getLocationIntX() - getX();
-        double y = getTop() + x / TypeTileCollisionGroup.SLOPE.getFactor() + offset;
+        double y = getTop() + x * TypeTileCollisionGroup.SLOPE.getFactor() + offset;
         if (getCollision() == TypeTileCollision.SLOPE_LEFT_BORDER_UP && y > super.getTop())
         {
             y = super.getTop();
@@ -128,6 +128,24 @@ public final class Tile
         if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
         {
             return Double.valueOf(y);
+        }
+        return null;
+    }
+    
+    /**
+     * Get the liana steep left collision.
+     * 
+     * @param localizable The localizable.
+     * @param offset The offset.
+     * @return The collision.
+     */
+    private Double getLianaSteepLeft(Localizable localizable, int offset)
+    {
+        final double x = localizable.getLocationIntX() - getX();
+        double y = getBottom() + x * TypeTileCollisionGroup.LIANA_STEEP.getFactor() + offset;
+        if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
+        {
+            return Double.valueOf(y - 53);
         }
         return null;
     }
@@ -191,6 +209,10 @@ public final class Tile
             case SLOPE_LEFT_3:
                 return getSlopeLeft(localizable, -halfTileHeight);
 
+            case LIANA_STEEP_LEFT_1:
+                return getLianaSteepLeft(localizable, 0);
+            case LIANA_STEEP_LEFT_2:
+                return getLianaSteepLeft(localizable, 0);
             default:
                 return null;
         }

@@ -57,7 +57,7 @@ public class StatsRenderer
 
         // Sword level
         int x = (int) (160 * wide);
-        hud.render(g, stats.getSwordLevel() + 2, x, 2);
+        hud.render(g, stats.getSwordLevel() + 1, x, 2);
 
         // Amulet
         x = (int) (230 * wide);

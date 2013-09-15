@@ -33,13 +33,13 @@ public final class BeetleHorizontal
         if (status.getState() == TypeEntityState.WALK)
         {
             final int x = getLocationIntX();
-            if (x > patroller.getPositionMax())
+            if (x > getPositionMax())
             {
-                teleportX(patroller.getPositionMax());
+                teleportX(getPositionMax());
             }
-            if (x < patroller.getPositionMin())
+            if (x < getPositionMin())
             {
-                teleportX(patroller.getPositionMin());
+                teleportX(getPositionMin());
             }
         }
         super.handleActions(extrp);
@@ -51,7 +51,7 @@ public final class BeetleHorizontal
         super.updateStates();
         final double diffHorizontal = getDiffHorizontal();
         final int x = getLocationIntX();
-        if (patroller.hasPatrol() && (x == patroller.getPositionMin() || x == patroller.getPositionMax()))
+        if (hasPatrol() && (x == getPositionMin() || x == getPositionMax()))
         {
             status.setState(TypeEntityState.TURN);
         }

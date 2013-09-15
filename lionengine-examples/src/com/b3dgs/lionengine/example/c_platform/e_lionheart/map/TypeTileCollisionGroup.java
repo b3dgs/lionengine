@@ -8,11 +8,17 @@ public enum TypeTileCollisionGroup
     /** No group. */
     NONE(0.0),
     /** Flat. */
-    FLAT(1.0),
+    FLAT(0.0),
     /** Slope. */
-    SLOPE(2.0),
+    SLOPE(0.5),
     /** Slide. */
-    SLIDE(3.0);
+    SLIDE(1.0),
+    /** Liana. */
+    LIANA_HORIZONTAL(1.0),
+    /** Liana leaning. */
+    LIANA_LEANING(0.5),
+    /** Liana steep. */
+    LIANA_STEEP(1.0);
 
     /** Factor (vertical factor compared to horizontal). */
     private double factor;

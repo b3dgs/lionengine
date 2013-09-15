@@ -3,11 +3,9 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 import java.io.IOException;
 import java.util.HashMap;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
@@ -15,7 +13,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 
 /**
@@ -282,16 +279,6 @@ public abstract class Entity
     /*
      * EntityPlatform
      */
-
-    @Override
-    public void render(Graphic g, CameraPlatform camera)
-    {
-        super.render(g, camera);
-        if (AppLionheart.SHOW_COLLISIONS)
-        {
-            renderCollision(g, camera);
-        }
-    }
 
     @Override
     protected void handleActions(double extrp)

@@ -55,12 +55,24 @@ public enum TypeTileCollision
     /** Slide bottom top. */
     SLIDE_LEFT_3(TypeTileCollisionGroup.SLIDE),
     /** Slide left ground. */
-    SLIDE_LEFT_GROUND(TypeTileCollisionGroup.FLAT);
+    SLIDE_LEFT_GROUND(TypeTileCollisionGroup.FLAT),
+    /** Liana horizontal. */
+    LIANA_HORIZONTAL(TypeTileCollisionGroup.LIANA_HORIZONTAL),
+    /** Liana steep right top. */
+    LIANA_STEEP_RIGHT_1(TypeTileCollisionGroup.LIANA_STEEP),
+    /** Liana steep right bottom. */
+    LIANA_STEEP_RIGHT_2(TypeTileCollisionGroup.LIANA_STEEP),
+    /** Liana steep left top. */
+    LIANA_STEEP_LEFT_1(TypeTileCollisionGroup.LIANA_STEEP),
+    /** Liana steep left bottom. */
+    LIANA_STEEP_LEFT_2(TypeTileCollisionGroup.LIANA_STEEP);
 
     /** Vertical collisions list. */
     public static final List<TypeTileCollision> COLLISION_VERTICAL = new ArrayList<>(2);
     /** Horizontal collisions list. */
     public static final List<TypeTileCollision> COLLISION_HORIZONTAL = new ArrayList<>(3);
+    /** Vertical collisions list. */
+    public static final List<TypeTileCollision> COLLISION_LIANA = new ArrayList<>(2);
 
     /**
      * Static init.
@@ -81,6 +93,12 @@ public enum TypeTileCollision
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_3);
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_BORDER_DOWN);
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_BORDER_UP);
+        
+        TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_HORIZONTAL);
+        TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_RIGHT_1);
+        TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_RIGHT_2);
+        TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_LEFT_1);
+        TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_LEFT_2);
     }
 
     /** Group. */

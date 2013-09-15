@@ -17,8 +17,6 @@ import com.b3dgs.lionengine.game.purview.Mirrorable;
 public class CollidableModel
         implements Collidable
 {
-    /** No collision. */
-    private static final CollisionData NO_COLLISION = new CollisionData(0, 0, 0, 0, false);
     /** Entity owning this model. */
     private final Localizable entity;
     /** Entity collision representation. */
@@ -41,7 +39,6 @@ public class CollidableModel
         coll = new Polygon();
         ray = new Line2D.Double();
         box = coll.getBounds2D();
-        collision = CollidableModel.NO_COLLISION;
     }
 
     /*
@@ -51,39 +48,42 @@ public class CollidableModel
     @Override
     public void updateCollision()
     {
-        final int xCur = entity.getLocationIntX() - entity.getWidth() / 2;
-        final int yCur = entity.getLocationIntY();
-        final int xOld = (int) entity.getLocationOldX() - entity.getWidth() / 2;
-        final int yOld = (int) entity.getLocationOldY();
-
-        boolean mirror = false;
-        if (collision.getMirror() && entity instanceof Mirrorable)
+        if (collision != null)
         {
-            mirror = ((Mirrorable) entity).getMirror();
+            final int xCur = entity.getLocationIntX() - entity.getWidth() / 2;
+            final int yCur = entity.getLocationIntY();
+            final int xOld = (int) entity.getLocationOldX() - entity.getWidth() / 2;
+            final int yOld = (int) entity.getLocationOldY();
+
+            boolean mirror = false;
+            if (collision.getMirror() && entity instanceof Mirrorable)
+            {
+                mirror = ((Mirrorable) entity).getMirror();
+            }
+            final int offsetX = mirror ? -collision.getOffsetX() : collision.getOffsetX();
+            final int offsetY = collision.getOffsetY();
+            final int width = collision.getWidth();
+            final int height = collision.getHeight();
+
+            coll.reset();
+            coll.addPoint(xCur + offsetX, yCur + offsetY);
+            coll.addPoint(xCur + offsetX, yCur + offsetY + height);
+            coll.addPoint(xCur + offsetX + width, yCur + offsetY + height);
+            coll.addPoint(xCur + offsetX + width, yCur + offsetY);
+
+            coll.addPoint(xOld + offsetX, yOld + offsetY);
+            coll.addPoint(xOld + offsetX, yOld + offsetY + height);
+            coll.addPoint(xOld + offsetX + width, yOld + offsetY + height);
+            coll.addPoint(xOld + offsetX + width, yOld + offsetY);
+
+            box = coll.getBounds2D();
+
+            final int sx = xOld + offsetX + width / 2;
+            final int sy = yOld + offsetY + height / 2;
+            final int ex = xCur + offsetX + width / 2;
+            final int ey = yCur + offsetY + height / 2;
+            ray.setLine(sx, sy, ex, ey);
         }
-        final int offsetX = mirror ? -collision.getOffsetX() : collision.getOffsetX();
-        final int offsetY = collision.getOffsetY();
-        final int width = collision.getWidth();
-        final int height = collision.getHeight();
-
-        coll.reset();
-        coll.addPoint(xCur + offsetX, yCur + offsetY);
-        coll.addPoint(xCur + offsetX, yCur + offsetY + height);
-        coll.addPoint(xCur + offsetX + width, yCur + offsetY + height);
-        coll.addPoint(xCur + offsetX + width, yCur + offsetY);
-
-        coll.addPoint(xOld + offsetX, yOld + offsetY);
-        coll.addPoint(xOld + offsetX, yOld + offsetY + height);
-        coll.addPoint(xOld + offsetX + width, yOld + offsetY + height);
-        coll.addPoint(xOld + offsetX + width, yOld + offsetY);
-
-        box = coll.getBounds2D();
-
-        final int sx = xOld + offsetX + width / 2;
-        final int sy = yOld + offsetY + height / 2;
-        final int ex = xCur + offsetX + width / 2;
-        final int ey = yCur + offsetY + height / 2;
-        ray.setLine(sx, sy, ex, ey);
     }
 
     @Override
@@ -91,12 +91,11 @@ public class CollidableModel
     {
         if (collision == null)
         {
-            this.collision = CollidableModel.NO_COLLISION;
+            coll.reset();
+            box = coll.getBounds2D();
+            ray.setLine(0, 0, 0, 0);
         }
-        else
-        {
-            this.collision = collision;
-        }
+        this.collision = collision;
     }
 
     @Override

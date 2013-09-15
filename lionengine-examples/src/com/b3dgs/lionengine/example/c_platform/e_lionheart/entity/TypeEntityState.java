@@ -22,7 +22,9 @@ public enum TypeEntityState implements TypeState
     /** Jumping state. */
     JUMP,
     /** Falling state. */
-    FALL;
+    FALL,
+    /** Hurt state. */
+    HURT;
 
     /** Animation name. */
     private final String animationName;

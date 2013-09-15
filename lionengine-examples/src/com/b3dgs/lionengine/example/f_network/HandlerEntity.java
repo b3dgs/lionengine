@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.f_network;
 
 import java.util.HashMap;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
 
@@ -38,7 +39,7 @@ class HandlerEntity
     }
 
     @Override
-    protected void updatingEntity(Entity entity)
+    protected void updatingEntity(Entity entity, double extrp)
     {
         for (final Mario mario : marioClients.values())
         {
@@ -60,7 +61,7 @@ class HandlerEntity
     }
 
     @Override
-    protected void renderingEntity(Entity entity, CameraPlatform camera)
+    protected void renderingEntity(Entity entity, Graphic g, CameraPlatform camera)
     {
         // Nothing to do
     }
