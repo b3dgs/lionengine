@@ -16,9 +16,10 @@ public interface Patrollable
      * @param fv The vertical force.
      */
     void setMovementForce(double fh, double fv);
-    
+
     /**
      * Set the maximum movement speed.
+     * 
      * @param speed The maximum movement speed.
      */
     void setMovementSpeedMax(double speed);

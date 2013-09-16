@@ -80,6 +80,8 @@ public final class Valdyn
     private final Timing timerFallen;
     /** Hurt timer. */
     private final Timing timerHurt;
+    /** Liana grip timer. */
+    private final Timing timerLianaGrip;
     /** Fallen duration in milli. */
     private final int fallenDuration;
     /** Sensibility increase value. */
@@ -106,6 +108,12 @@ public final class Valdyn
     private boolean shadeCanBePlayed;
     /** Hurt effect counter. */
     private int hurtEffectCounter;
+    /** Liana slide flag. */
+    private boolean liana;
+    /** Liana slide left flag. */
+    private boolean lianaSlideRight;
+    /** Liana slide right flag. */
+    private boolean lianaSlideLeft;
     /** Left key state. */
     private boolean keyLeft;
     /** Right key state. */
@@ -135,6 +143,7 @@ public final class Valdyn
         timerFall = new Timing();
         timerFallen = new Timing();
         timerHurt = new Timing();
+        timerLianaGrip = new Timing();
         fallenDuration = getDataInteger("fallenDuration", "data");
         movementSpeedMax = getDataDouble("speedMax", "data", "movement");
         movementSmooth = getDataDouble("smooth", "data", "movement");
@@ -300,10 +309,31 @@ public final class Valdyn
         {
             sensibility = sensibilityDecrease;
         }
+        if (liana)
+        {
+            speed = speed * 0.5;
+        }
+        if (lianaSlideLeft)
+        {
+            speed = speed * 0.5 - 1.5;
+        }
+        if (lianaSlideRight)
+        {
+            speed = speed * 0.5 + 1.5;
+        }
         movement.setSensibility(sensibility);
         movement.setVelocity(movementSmooth);
         speed = updateMovementSlope(speed, sensibility);
         movement.setForceToReach(speed, 0.0);
+
+        // Exit liana
+        if (liana && keyDown && !timerLianaGrip.isStarted())
+        {
+            timerLianaGrip.start();
+            liana = false;
+            lianaSlideLeft = false;
+            lianaSlideRight = false;
+        }
 
         // Crouch
         if (isOnGround() && keyDown)
@@ -323,26 +353,29 @@ public final class Valdyn
      */
     private void updateActionJump()
     {
-        if (keyUp && !jumped && attack == null)
+        if (!liana)
         {
-            if (!timerJump.isStarted())
+            if (keyUp && !jumped && attack == null)
             {
-                timerJump.start();
+                if (!timerJump.isStarted())
+                {
+                    timerJump.start();
+                }
+                if (canJump())
+                {
+                    jumpForce.setForce(0.0, jumpHeightMax);
+                    status.setCollision(TypeEntityCollisionTile.NONE);
+                }
             }
-            if (canJump())
+            else
             {
-                jumpForce.setForce(0.0, jumpHeightMax);
-                status.setCollision(TypeEntityCollisionTile.NONE);
-            }
-        }
-        else
-        {
-            jumped = true;
-            if (timerJump.elapsed(Valdyn.JUMP_TIME_MIN))
-            {
-                final double factor = timerJump.elapsed() / (double) Valdyn.JUMP_TIME_MAX;
-                jumpForce.setForce(0.0, UtilityMath.fixBetween(jumpHeightMax * factor, 0.0, jumpHeightMax));
-                timerJump.stop();
+                jumped = true;
+                if (timerJump.elapsed(Valdyn.JUMP_TIME_MIN))
+                {
+                    final double factor = timerJump.elapsed() / (double) Valdyn.JUMP_TIME_MAX;
+                    jumpForce.setForce(0.0, UtilityMath.fixBetween(jumpHeightMax * factor, 0.0, jumpHeightMax));
+                    timerJump.stop();
+                }
             }
         }
         if (isOnGround())
@@ -704,6 +737,33 @@ public final class Valdyn
     }
 
     /**
+     * Check vertical axis on liana.
+     * 
+     * @param tile The tile collision.
+     */
+    private void checkCollisionLiana(Tile tile)
+    {
+        liana = false;
+        lianaSlideLeft = false;
+        lianaSlideRight = false;
+        if (tile != null)
+        {
+            final Double y = tile.getCollisionY(this);
+            if (applyVerticalCollision(y))
+            {
+                resetGravity();
+                status.setCollision(TypeEntityCollisionTile.LIANA);
+                jumpForce.setForce(Force.ZERO);
+                liana = true;
+                lianaSlideLeft = tile.isLianaSteepLeft();
+                lianaSlideRight = tile.isLianaSteepRight();
+                jumped = true;
+                timerJump.stop();
+            }
+        }
+    }
+
+    /**
      * Check if there is a tile with a collision next to the player.
      * 
      * @param side -1 to check left, 1 to check right.
@@ -749,7 +809,8 @@ public final class Valdyn
     @Override
     public void render(Graphic g, CameraPlatform camera)
     {
-        final boolean render = timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT) && hurtEffectCounter % Valdyn.HURT_EFFECT_FREQ == 0;
+        final boolean render = timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT)
+                && hurtEffectCounter % Valdyn.HURT_EFFECT_FREQ == 0;
         if (render || hurtEffectCounter == 0)
         {
             super.render(g, camera);
@@ -838,6 +899,18 @@ public final class Valdyn
         {
             status.setState(attack);
         }
+        else if (lianaSlideLeft || lianaSlideRight)
+        {
+            status.setState(TypeValdynState.LIANA_SLIDE);
+        }
+        else if (liana && diffHorizontal != 0.0)
+        {
+            status.setState(TypeValdynState.LIANA_WALK);
+        }
+        else if (liana && diffHorizontal == 0.0)
+        {
+            status.setState(TypeValdynState.LIANA_IDLE);
+        }
         else if (isFalling())
         {
             status.setState(TypeEntityState.FALL);
@@ -905,8 +978,12 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            setCollisionOffset(0, 53);
-            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_LIANA));
+            if (!keyDown && (timerLianaGrip.elapsed(500) || !timerLianaGrip.isStarted()))
+            {
+                timerLianaGrip.stop();
+                setCollisionOffset(0, 46);
+                checkCollisionLiana(map.getFirstTileHit(this, TypeTileCollision.COLLISION_LIANA));
+            }
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
             setCollisionOffset(0, 0);
@@ -919,6 +996,10 @@ public final class Valdyn
             attack = null;
             attacking = false;
             attackPrepared = false;
+        }
+        if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.LIANA))
+        {
+            movement.reset();
         }
 
         if (status.isState(TypeValdynState.CROUCH, TypeValdynState.ATTACK_DOWN_LEG,
@@ -959,7 +1040,7 @@ public final class Valdyn
     protected void updateAnimations(double extrp)
     {
         final TypeState state = status.getState();
-        if (state == TypeEntityState.WALK || state == TypeEntityState.TURN)
+        if (state == TypeEntityState.WALK || state == TypeEntityState.TURN || state == TypeValdynState.LIANA_SLIDE)
         {
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
             setAnimSpeed(speed);

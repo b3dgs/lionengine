@@ -21,11 +21,11 @@ public final class BeetleVertical
         super(context, TypeEntity.BEETLE_VERTICAL);
         enableMovement(TypePatrol.VERTICAL);
     }
-    
+
     /*
      * EntityBeetle
      */
-    
+
     @Override
     protected void handleActions(double extrp)
     {
@@ -43,7 +43,7 @@ public final class BeetleVertical
         }
         super.handleActions(extrp);
     }
-    
+
     @Override
     protected void updateStates()
     {

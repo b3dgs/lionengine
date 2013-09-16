@@ -14,8 +14,10 @@ public interface Patroller
     static final int MOVE_LEFT = -1;
     /** Move right side. */
     static final int MOVE_RIGHT = 1;
+
     /**
      * Save the patrol.
+     * 
      * @param file The file output.
      * @throws IOException If error.
      */
@@ -23,24 +25,26 @@ public interface Patroller
 
     /**
      * Load the patrol.
+     * 
      * @param file The file input.
      * @throws IOException If error.
      */
     void load(FileReading file) throws IOException;
-    
+
     /**
      * Enable a movement.
      * 
      * @param type The movement to enable.
      */
     void enableMovement(TypePatrol type);
-    
+
     /**
      * Set the movement side.
+     * 
      * @param side The movement side.
      */
     void setSide(int side);
-    
+
     /**
      * Set the movement type.
      * 
@@ -78,10 +82,11 @@ public interface Patroller
 
     /**
      * Get the movement side.
+     * 
      * @return The movement side.
      */
     int getSide();
-    
+
     /**
      * Get the movement type.
      * 
@@ -116,32 +121,35 @@ public interface Patroller
      * @return The right patrol.
      */
     int getPatrolRight();
-    
+
     /**
      * Get the minimum reachable position.
+     * 
      * @return The minimum reachable position.
      */
     int getPositionMin();
-    
+
     /**
      * Get the maximum reachable position.
+     * 
      * @return The maximum reachable position.
      */
     int getPositionMax();
-    
+
     /**
      * Check if entity have patrol
+     * 
      * @return <code>true</code> if have patrol, <code>false</code> else.
      */
     boolean hasPatrol();
-    
+
     /**
      * Check if patrol is enabled.
      * 
      * @return <code>true</code> if patrol enabled, <code>false</code> else.
      */
     boolean isPatrolEnabled();
-    
+
     /**
      * Check if patrol type is enabled.
      * 

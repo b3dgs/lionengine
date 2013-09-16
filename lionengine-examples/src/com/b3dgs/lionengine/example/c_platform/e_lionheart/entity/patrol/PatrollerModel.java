@@ -49,7 +49,7 @@ public class PatrollerModel
         movementType = TypePatrol.NONE;
         enableMovement(TypePatrol.NONE);
     }
-    
+
     /**
      * Prepare the patrol.
      */
@@ -135,7 +135,7 @@ public class PatrollerModel
             setPatrolRight(file.readByte());
         }
     }
-    
+
     @Override
     public void setSide(int side)
     {
@@ -177,7 +177,7 @@ public class PatrollerModel
     {
         patrolRight = right;
     }
-    
+
     @Override
     public int getSide()
     {
@@ -213,7 +213,7 @@ public class PatrollerModel
     {
         return patrolRight;
     }
-    
+
     @Override
     public int getPositionMin()
     {
