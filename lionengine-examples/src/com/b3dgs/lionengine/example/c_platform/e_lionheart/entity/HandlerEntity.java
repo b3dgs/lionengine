@@ -73,13 +73,13 @@ public class HandlerEntity
         }
         updateAdd();
     }
-
+    
     /**
      * Prepare entities.
      */
     public void prepare()
     {
-        for (final Entity entity : list())
+        for (Entity entity : list())
         {
             entity.prepare();
         }

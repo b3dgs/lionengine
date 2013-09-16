@@ -63,19 +63,15 @@ public abstract class EntityMover
      * Check vertical axis.
      * 
      * @param y The y location.
-     * @param collision The collision type.
-     * @return <code>true</code> if collision applied, <code>false</code> else.
      */
-    public boolean checkCollisionVertical(Double y, TypeEntityCollisionTile collision)
+    public void checkCollisionVertical(Double y)
     {
         if (applyVerticalCollision(y))
         {
             resetGravity();
             jumpForce.setForce(Force.ZERO);
-            status.setCollision(collision);
-            return true;
+            status.setCollision(TypeEntityCollisionTile.GROUND);
         }
-        return false;
     }
 
     /**
@@ -128,7 +124,7 @@ public abstract class EntityMover
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
-            checkCollisionVertical(y, TypeEntityCollisionTile.GROUND);
+            checkCollisionVertical(y);
         }
     }
 

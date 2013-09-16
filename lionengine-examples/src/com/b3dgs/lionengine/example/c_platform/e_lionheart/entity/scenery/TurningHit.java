@@ -21,7 +21,7 @@ public final class TurningHit
         super(context, TypeEntity.TURNING_HIT);
         shakeCounter = 5;
     }
-
+    
     /*
      * EntityTurning
      */

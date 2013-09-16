@@ -36,7 +36,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     protected abstract boolean canRenderEntity(E entity);
 
     /**
-     * Update this entity ({@link EntityPlatform#update(double)} is already called before).
+     * Update this entity ({@link EntityPlatform#update(double)}  is already called before).
      * 
      * @param entity The current updating entity.
      * @param extrp The extrapolation value.

@@ -22,7 +22,7 @@ public final class FactoryEntity
 {
     /** Unknown entity error message. */
     private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
-
+    
     /**
      * Create an item from its type.
      * 
@@ -51,7 +51,7 @@ public final class FactoryEntity
             throw new LionEngineException(exception, FactoryEntity.UNKNOWN_ENTITY_ERROR + type.asClassName());
         }
     }
-
+    
     /** Context used. */
     private Context context;
     /** World used. */

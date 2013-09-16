@@ -44,7 +44,7 @@ public final class BeetleHorizontal
         }
         super.handleActions(extrp);
     }
-
+    
     @Override
     protected void updateStates()
     {
@@ -64,7 +64,7 @@ public final class BeetleHorizontal
             status.setState(TypeEntityState.IDLE);
         }
     }
-
+    
     @Override
     protected void onCollide(Entity entity)
     {

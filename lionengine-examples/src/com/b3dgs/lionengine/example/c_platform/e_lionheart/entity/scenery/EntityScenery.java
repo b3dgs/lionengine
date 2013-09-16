@@ -6,7 +6,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
@@ -52,7 +51,7 @@ public abstract class EntityScenery
     {
         // Nothing to do
     }
-
+    
     @Override
     public void hitThat(Entity entity)
     {
@@ -62,8 +61,7 @@ public abstract class EntityScenery
             if (!mover.isJumping() && mover.getLocationY() > getLocationY())
             {
                 onCollide(entity);
-                mover.checkCollisionVertical(Double.valueOf(getLocationY() + getCollisionData().getOffsetY()),
-                        TypeEntityCollisionTile.GROUND);
+                mover.checkCollisionVertical(Double.valueOf(getLocationY() + getCollisionData().getOffsetY()));
                 collide = true;
             }
         }

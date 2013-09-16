@@ -8,7 +8,5 @@ public enum TypeEntityCollisionTile
     /** No collision. */
     NONE,
     /** On ground. */
-    GROUND,
-    /** On liana. */
-    LIANA;
+    GROUND;
 }

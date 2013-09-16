@@ -120,10 +120,9 @@ public enum TypeEntity
     {
         return name().toLowerCase(Locale.ENGLISH);
     }
-
+    
     /**
      * Get the class name equivalence.
-     * 
      * @return The class name equivalence.
      */
     public String asClassName()

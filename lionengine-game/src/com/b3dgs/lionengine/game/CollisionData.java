@@ -73,10 +73,9 @@ public class CollisionData
     {
         return height;
     }
-
+    
     /**
      * Get the mirror flag.
-     * 
      * @return <code>true</code> if has mirror, <code>false</code> else.
      */
     public boolean getMirror()
