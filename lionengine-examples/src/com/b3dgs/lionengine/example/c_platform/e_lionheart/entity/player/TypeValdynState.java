@@ -13,6 +13,14 @@ public enum TypeValdynState implements TypeState
     CROUCH,
     /** Border state. */
     BORDER,
+    /** Slide state. */
+    SLIDE,
+    /** Liana idle. */
+    LIANA_IDLE,
+    /** Liana walk. */
+    LIANA_WALK,
+    /** Liana slide. */
+    LIANA_SLIDE,
     /** Preparing attack. */
     ATTACK_PREPARING,
     /** Preparing attack down. */

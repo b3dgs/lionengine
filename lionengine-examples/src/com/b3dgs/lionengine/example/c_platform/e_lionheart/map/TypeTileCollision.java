@@ -93,7 +93,13 @@ public enum TypeTileCollision
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_3);
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_BORDER_DOWN);
         TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLOPE_RIGHT_BORDER_UP);
-        
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_LEFT_1);
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_LEFT_2);
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_LEFT_3);
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_RIGHT_1);
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_RIGHT_2);
+        TypeTileCollision.COLLISION_VERTICAL.add(TypeTileCollision.SLIDE_RIGHT_3);
+
         TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_HORIZONTAL);
         TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_RIGHT_1);
         TypeTileCollision.COLLISION_LIANA.add(TypeTileCollision.LIANA_STEEP_RIGHT_2);

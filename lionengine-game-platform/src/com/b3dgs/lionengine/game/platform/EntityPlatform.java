@@ -362,6 +362,24 @@ public abstract class EntityPlatform
         return super.getLocationIntY() + collOffY;
     }
 
+    @Override
+    public void teleport(double x, double y)
+    {
+        location.teleport(x - collOffX, y - collOffY);
+    }
+
+    @Override
+    public void teleportX(double x)
+    {
+        location.teleportX(x - collOffX);
+    }
+
+    @Override
+    public void teleportY(double y)
+    {
+        location.teleportY(y - collOffY);
+    }
+
     /*
      * Animator
      */

@@ -59,7 +59,7 @@ public class EntityBeetle
         super.prepare();
         patroller.prepare();
     }
-    
+
     @Override
     public void hitThat(Entity entity)
     {

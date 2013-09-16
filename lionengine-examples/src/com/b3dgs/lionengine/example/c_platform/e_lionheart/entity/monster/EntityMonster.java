@@ -21,7 +21,8 @@ import com.b3dgs.lionengine.file.FileWriting;
  * Monster base implementation.
  */
 public class EntityMonster
-        extends EntityMover implements Patrollable
+        extends EntityMover
+        implements Patrollable
 {
     /** Effect factory. */
     private final FactoryEffect factoryEffect;
@@ -44,28 +45,28 @@ public class EntityMonster
     /*
      * EntityMover
      */
-    
+
     @Override
     public void prepare()
     {
         super.prepare();
         patroller.prepare();
     }
-    
+
     @Override
     public void save(FileWriting file) throws IOException
     {
         super.save(file);
         patroller.save(file);
     }
-    
+
     @Override
     public void load(FileReading file) throws IOException
     {
         super.load(file);
         patroller.load(file);
     }
-    
+
     @Override
     protected void updateActions()
     {
@@ -148,7 +149,7 @@ public class EntityMonster
             final int y = getLocationIntY();
             willTurn = y == getPositionMin() || y == getPositionMax();
         }
-        
+
         final double diffHorizontal = getDiffHorizontal();
         final double diffVertical = getDiffVertical();
         if (hasPatrol() && willTurn)
@@ -189,7 +190,7 @@ public class EntityMonster
     {
         movement.getForce().setForce(fh, fv);
     }
-    
+
     @Override
     public void setMovementSpeedMax(double speed)
     {
@@ -211,7 +212,7 @@ public class EntityMonster
     /*
      * Patroller
      */
-    
+
     @Override
     public void enableMovement(TypePatrol type)
     {

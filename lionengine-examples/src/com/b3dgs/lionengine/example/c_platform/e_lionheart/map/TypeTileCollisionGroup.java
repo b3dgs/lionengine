@@ -12,7 +12,7 @@ public enum TypeTileCollisionGroup
     /** Slope. */
     SLOPE(0.5),
     /** Slide. */
-    SLIDE(1.0),
+    SLIDE(2.0),
     /** Liana. */
     LIANA_HORIZONTAL(1.0),
     /** Liana leaning. */

@@ -23,11 +23,11 @@ public abstract class EntityMonsterBee
         enableMovement(TypePatrol.HORIZONTAL);
         enableMovement(TypePatrol.VERTICAL);
     }
-    
+
     /*
      * EntityMonster
      */
-    
+
     @Override
     protected void updateStates()
     {
@@ -38,7 +38,7 @@ public abstract class EntityMonsterBee
             status.setState(TypeEntityState.WALK);
         }
     }
-    
+
     @Override
     protected void updateCollisions()
     {
