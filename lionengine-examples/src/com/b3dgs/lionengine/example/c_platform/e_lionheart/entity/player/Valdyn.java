@@ -1,9 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
@@ -24,9 +21,8 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollisionGroup;
-import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.purview.Collidable;
@@ -48,8 +44,6 @@ public final class Valdyn
     private static final int HURT_TIME_BEFORE_EFFECT = 500;
     /** Hurt time max. */
     private static final int HURT_TIME_MAX = 2000;
-    /** Ungrip time max. */
-    private static final int LIANA_UNGRIP_TIME = 400;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
     /** The fall time margin (in milli). */
@@ -60,10 +54,12 @@ public final class Valdyn
     private static final int JUMP_TIME_MAX = 200;
     /** Valdyn stats. */
     public final Stats stats;
+    /** Valdyn tilt. */
+    private final ValdynTilt tilt;
+    /** Valdyn attack. */
+    private final ValdynAttack attack;
     /** Leg collision with scenery. */
     private final Collidable legCollision;
-    /** Attack collision with monster. */
-    private final Collidable attackCollision;
     /** Shade surface. */
     private final SpriteAnimated shade;
     /** Camera reference. */
@@ -72,8 +68,6 @@ public final class Valdyn
     private final EnumMap<TypeValdynState, Animation> shades;
     /** List of starting frames when shades are enabled. */
     private final EnumMap<TypeValdynState, Integer> shadesEnabled;
-    /** Attack data. */
-    private final EnumMap<TypeValdynState, Set<Attack>> attacks;
     /** Jump timer (accurate precision of jump force). */
     private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
@@ -82,8 +76,6 @@ public final class Valdyn
     private final Timing timerFallen;
     /** Hurt timer. */
     private final Timing timerHurt;
-    /** Liana ungrip timer. */
-    private final Timing timerLianaUnGrip;
     /** Fallen duration in milli. */
     private final int fallenDuration;
     /** Sensibility increase value. */
@@ -98,26 +90,10 @@ public final class Valdyn
     private boolean jumped;
     /** Crouch state. */
     private boolean crouch;
-    /** Attack state. */
-    private TypeValdynState attack;
-    /** Attack prepared. */
-    private boolean attackPrepared;
-    /** Attacking state. */
-    private boolean attacking;
-    /** Attacked state. */
-    private boolean attacked;
     /** Shade can be played. */
     private boolean shadeCanBePlayed;
     /** Hurt effect counter. */
     private int hurtEffectCounter;
-    /** Slide state. */
-    private boolean slide;
-    /** Liana slide flag. */
-    private boolean liana;
-    /** Liana slide left flag. */
-    private boolean lianaSlideRight;
-    /** Liana slide right flag. */
-    private boolean lianaSlideLeft;
     /** Left key state. */
     private boolean keyLeft;
     /** Right key state. */
@@ -126,8 +102,6 @@ public final class Valdyn
     private boolean keyUp;
     /** Down key state. */
     private boolean keyDown;
-    /** Attack key state. */
-    private boolean keyAttack;
 
     /**
      * Constructor.
@@ -142,12 +116,10 @@ public final class Valdyn
         shade.load(false);
         shades = new EnumMap<>(TypeValdynState.class);
         shadesEnabled = new EnumMap<>(TypeValdynState.class);
-        attacks = new EnumMap<>(TypeValdynState.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
         timerHurt = new Timing();
-        timerLianaUnGrip = new Timing();
         fallenDuration = getDataInteger("fallenDuration", "data");
         movementSpeedMax = getDataDouble("speedMax", "data", "movement");
         movementSmooth = getDataDouble("smooth", "data", "movement");
@@ -160,11 +132,11 @@ public final class Valdyn
         addShadeAnimation(TypeValdynState.ATTACK_JUMP, 1);
         loadCollisions(TypeValdynCollision.values());
         loadAnimations(TypeValdynState.values());
-        loadAttacks();
         legCollision = new CollidableModel(this);
-        attackCollision = new CollidableModel(this);
         legCollision.setCollision(getDataCollision("leg"));
         stats = new Stats(this);
+        tilt = new ValdynTilt(this, movement, context.map);
+        attack = new ValdynAttack(this, movement);
     }
 
     /**
@@ -184,7 +156,6 @@ public final class Valdyn
             keyRight = isEnabled(TypeEntityAction.MOVE_RIGHT);
             keyUp = isEnabled(TypeEntityAction.JUMP);
             keyDown = isEnabled(TypeEntityAction.MOVE_DOWN);
-            keyAttack = isEnabled(TypeEntityAction.ATTACK);
         }
         else
         {
@@ -192,8 +163,8 @@ public final class Valdyn
             keyRight = false;
             keyUp = false;
             keyDown = false;
-            keyAttack = false;
         }
+        attack.updateControl(keyboard);
     }
 
     /**
@@ -227,62 +198,36 @@ public final class Valdyn
      */
     public Collidable getCollisionAttack()
     {
-        return attackCollision;
+        return attack.getCollisionAttack();
     }
 
     /**
-     * Load all attacks data.
+     * Reset the timer fallen.
      */
-    private void loadAttacks()
+    void stopTimerFallen()
     {
-        for (final XmlNode animation : getDataRoot().getChildren("animation"))
-        {
-            final Set<Attack> set = new HashSet<>(1);
-            for (final XmlNode attackNode : animation.getChildren("attack"))
-            {
-                final Attack attack = new Attack(attackNode);
-                set.add(attack);
-            }
-            if (!set.isEmpty())
-            {
-                final String attackName = animation.readString("name").toUpperCase(Locale.ENGLISH);
-                attacks.put(TypeValdynState.valueOf(attackName), set);
-            }
-        }
+        timerFallen.stop();
     }
 
     /**
-     * Update the movement speed on a slope.
+     * Reset the jump.
+     */
+    void resetJump()
+    {
+        jumpForce.setForce(Force.ZERO);
+        jumped = true;
+        timerJump.stop();
+    }
+
+    /**
+     * Get a collision data from its key.
      * 
-     * @param speed The current movement speed.
-     * @param sensibility The current movement sensibility.
-     * @return The new movement speed.
+     * @param key The collision key.
+     * @return The collision data.
      */
-    private double updateMovementSlope(double speed, double sensibility)
+    CollisionData getCollisionData(Enum<?> key)
     {
-        final double forceH = movement.getForce().getForceHorizontal();
-        if (movement.isDecreasingHorizontal()
-                && (forceH > movementSpeedMax && keyRight || forceH < -movementSpeedMax && keyLeft))
-        {
-            movement.setVelocity(0.01);
-            movement.setSensibility(sensibility / 4);
-        }
-        double newSpeed = speed;
-        final Tile tile = map.getTile(this, 0, 0);
-        if (isOnGround() && tile != null && tile.isGroup(TypeTileCollisionGroup.SLOPE))
-        {
-            if (isGoingDown() && (keyLeft && tile.isSlopeLeft() || keyRight && tile.isSlopeRight()))
-            {
-                newSpeed *= 1.3;
-            }
-            else if (isGoingUp())
-            {
-                newSpeed *= 0.75;
-                movement.setVelocity(movementSmooth / 2);
-                movement.setSensibility(sensibility / 2);
-            }
-        }
-        return newSpeed;
+        return collisions.get(key);
     }
 
     /**
@@ -313,31 +258,12 @@ public final class Valdyn
         {
             sensibility = sensibilityDecrease;
         }
-        if (liana)
-        {
-            speed = speed * 0.5;
-        }
-        if (lianaSlideLeft)
-        {
-            speed = speed * 0.5 - 1.5;
-        }
-        if (lianaSlideRight)
-        {
-            speed = speed * 0.5 + 1.5;
-        }
+        speed = tilt.updateActionMovementSlide(speed);
+        speed = tilt.updateActionMovementLiana(speed);
         movement.setSensibility(sensibility);
         movement.setVelocity(movementSmooth);
-        speed = updateMovementSlope(speed, sensibility);
+        speed = tilt.updateMovementSlope(speed, sensibility, movementSpeedMax, movementSmooth);
         movement.setForceToReach(speed, 0.0);
-
-        // Exit liana
-        if (liana && keyDown && !timerLianaUnGrip.isStarted())
-        {
-            timerLianaUnGrip.start();
-            liana = false;
-            lianaSlideLeft = false;
-            lianaSlideRight = false;
-        }
 
         // Crouch
         if (isOnGround() && keyDown)
@@ -357,9 +283,9 @@ public final class Valdyn
      */
     private void updateActionJump()
     {
-        if (!liana)
+        if (tilt.getLiana() == null)
         {
-            if (keyUp && !jumped && attack == null)
+            if (keyUp && !jumped && attack.getState() == null)
             {
                 if (!timerJump.isStarted())
                 {
@@ -367,7 +293,15 @@ public final class Valdyn
                 }
                 if (canJump())
                 {
-                    jumpForce.setForce(0.0, jumpHeightMax);
+                    if (tilt.getSlide() == null)
+                    {
+                        jumpForce.setForce(0.0, jumpHeightMax);
+                    }
+                    else
+                    {
+                        tilt.updateActionJumpSlide(jumpForce, jumpHeightMax);
+                        jumped = true;
+                    }
                     status.setCollision(TypeEntityCollisionTile.NONE);
                 }
             }
@@ -386,135 +320,6 @@ public final class Valdyn
         {
             jumped = false;
         }
-    }
-
-    /**
-     * Update the attack action.
-     */
-    private void updateActionAttack()
-    {
-        // Attack ended
-        final boolean attackFinished = getAnimState() == AnimState.FINISHED;
-        final boolean fallAttack = status.getState() == TypeValdynState.ATTACK_FALL;
-        // Stop if attack finished and if no longer attacking, or fall attack (special case)
-        if (attacking && attackFinished && !fallAttack || (!attacking || fallAttack) && !keyAttack)
-        {
-            updateActionAttackFinished();
-        }
-        if (keyAttack)
-        {
-            // Prepare attack
-            if (!attacking && isOnGround())
-            {
-                updateActionAttackPrepare(attackFinished);
-            }
-            updateActionAttackSelect(attackPrepared);
-        }
-        if (attack != null && isOnGround())
-        {
-            movement.reset();
-            timerFallen.stop();
-        }
-    }
-
-    /**
-     * Update the prepare attack action.
-     * 
-     * @param attackFinished The attack finished state.
-     */
-    private void updateActionAttackPrepare(boolean attackFinished)
-    {
-        if (attackFinished
-                && (attack == TypeValdynState.ATTACK_PREPARING_DOWN || attack == TypeValdynState.ATTACK_PREPARING))
-        {
-            attackPrepared = true;
-        }
-        if (attackPrepared)
-        {
-            computeAttackPrepare(TypeValdynState.ATTACK_PREPARED, TypeValdynState.ATTACK_PREPARED_DOWN);
-        }
-        else
-        {
-            computeAttackPrepare(TypeValdynState.ATTACK_PREPARING, TypeValdynState.ATTACK_PREPARING_DOWN);
-        }
-        attacking = false;
-    }
-
-    /**
-     * List of implemented attacks.
-     * 
-     * @param attackPrepared <code>true</code> if attack need to be prepared, <code>false</code> else.
-     */
-    private void updateActionAttackSelect(boolean attackPrepared)
-    {
-        final boolean mirror = getMirror();
-        final boolean goodWay = !mirror && keyLeft || mirror && keyRight;
-        final boolean wrongWay = mirror && keyLeft || !mirror && keyRight;
-        if (!isOnGround() && keyDown)
-        {
-            setAttack(TypeValdynState.ATTACK_FALL);
-            attacked = false;
-        }
-        else if (!isOnGround())
-        {
-            setAttack(TypeValdynState.ATTACK_JUMP);
-        }
-        else if (attackPrepared && isOnGround() && keyDown && wrongWay)
-        {
-            setAttack(TypeValdynState.ATTACK_DOWN_LEG);
-        }
-        else if (attackPrepared && isOnGround() && !keyDown && keyUp)
-        {
-            setAttack(TypeValdynState.ATTACK_UP);
-        }
-        else if (attackPrepared && isOnGround() && !keyDown && wrongWay)
-        {
-            setAttack(TypeValdynState.ATTACK_HORIZONTAL);
-        }
-        else if (attackPrepared && isOnGround() && !keyDown && goodWay)
-        {
-            setAttack(TypeValdynState.ATTACK_TURNING);
-        }
-        else
-        {
-            attacked = false;
-        }
-    }
-
-    /**
-     * Update the attack finished state.
-     */
-    private void updateActionAttackFinished()
-    {
-        boolean attackTurned = false;
-        if (attack == TypeValdynState.ATTACK_TURNING)
-        {
-            mirror(!getMirror());
-            updateMirror();
-            attackTurned = true;
-        }
-        if (keyAttack)
-        {
-            if (isOnGround())
-            {
-                attack = TypeValdynState.ATTACK_PREPARED;
-            }
-            else
-            {
-                attack = null;
-            }
-            if (!attackTurned)
-            {
-                attackPrepared = true;
-            }
-        }
-        else
-        {
-            attack = null;
-            attackPrepared = false;
-            attacked = false;
-        }
-        attacking = false;
     }
 
     /**
@@ -588,37 +393,6 @@ public final class Valdyn
     }
 
     /**
-     * Update the shade animation.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateAnimationShade(double extrp)
-    {
-        final TypeState state = status.getState();
-        if (status.stateChanged())
-        {
-            if (shades.containsKey(state))
-            {
-                shadeCanBePlayed = true;
-            }
-            else
-            {
-                shade.stopAnimation();
-            }
-        }
-        if (shadeCanBePlayed && shadesEnabled.containsKey(state))
-        {
-            final int index = getFrame() - getDataAnimation(state.getAnimationName()).getFirst();
-            if (index >= shadesEnabled.get(state).intValue())
-            {
-                shade.play(shades.get(state));
-                shadeCanBePlayed = false;
-            }
-        }
-        shade.updateAnimation(extrp);
-    }
-
-    /**
      * Update the fall calculation (timer used to know when the entity is truly falling).
      */
     private void updateFall()
@@ -656,22 +430,34 @@ public final class Valdyn
     }
 
     /**
-     * Update the collision during attack.
+     * Update the shade animation.
+     * 
+     * @param extrp The extrapolation value.
      */
-    private void updateAttackCollision()
+    private void updateAnimationShade(double extrp)
     {
-        final Set<Attack> set = attacks.get(status.getState());
-        if (set != null)
+        final TypeState state = status.getState();
+        if (status.stateChanged())
         {
-            for (final Attack attack : set)
+            if (shades.containsKey(state))
             {
-                if (getFrameAnim() == attack.getFrame())
-                {
-                    attackCollision.setCollision(attack.getCollision());
-                    break;
-                }
+                shadeCanBePlayed = true;
+            }
+            else
+            {
+                shade.stopAnimation();
             }
         }
+        if (shadeCanBePlayed && shadesEnabled.containsKey(state))
+        {
+            final int index = getFrame() - getDataAnimation(state.getAnimationName()).getFirst();
+            if (index >= shadesEnabled.get(state).intValue())
+            {
+                shade.play(shades.get(state));
+                shadeCanBePlayed = false;
+            }
+        }
+        shade.updateAnimation(extrp);
     }
 
     /**
@@ -684,40 +470,6 @@ public final class Valdyn
     {
         shades.put(state, getDataAnimation("shade_" + state.getAnimationName()));
         shadesEnabled.put(state, Integer.valueOf(startAtFrame));
-    }
-
-    /**
-     * Compute the prepare attack state (function used for refactoring).
-     * 
-     * @param prepare Prepare state.
-     * @param prepareDown Prepare down state.
-     */
-    private void computeAttackPrepare(TypeValdynState prepare, TypeValdynState prepareDown)
-    {
-        if (keyDown)
-        {
-            attack = prepareDown;
-        }
-        else
-        {
-            attack = prepare;
-        }
-    }
-
-    /**
-     * Set the next attack. To be called only by {@link #updateActionAttack()}
-     * 
-     * @param nextAttack The next attack type.
-     */
-    private void setAttack(TypeValdynState nextAttack)
-    {
-        if (!attacked)
-        {
-            attack = nextAttack;
-            attacking = true;
-            attacked = true;
-            attackPrepared = false;
-        }
     }
 
     /**
@@ -737,33 +489,6 @@ public final class Valdyn
         if (isOnExtremity(-UtilityMath.getSign(offsetX)))
         {
             updateExtremity(mirror);
-        }
-    }
-
-    /**
-     * Check vertical axis on liana.
-     * 
-     * @param tile The tile collision.
-     */
-    private void checkCollisionLiana(Tile tile)
-    {
-        liana = false;
-        lianaSlideLeft = false;
-        lianaSlideRight = false;
-        if (tile != null)
-        {
-            final Double y = tile.getCollisionY(this);
-            if (applyVerticalCollision(y))
-            {
-                resetGravity();
-                status.setCollision(TypeEntityCollisionTile.LIANA);
-                jumpForce.setForce(Force.ZERO);
-                liana = true;
-                lianaSlideLeft = tile.isLianaSteepLeft();
-                lianaSlideRight = tile.isLianaSteepRight();
-                jumped = true;
-                timerJump.stop();
-            }
         }
     }
 
@@ -803,10 +528,8 @@ public final class Valdyn
         super.respawn();
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
-        attack = null;
-        attacking = false;
-        attackPrepared = false;
-        teleport(2200, 300);
+        attack.respawn();
+        teleport(1200, 700);
         camera.resetInterval(this);
     }
 
@@ -830,7 +553,7 @@ public final class Valdyn
     {
         super.renderCollision(g, camera);
         legCollision.renderCollision(g, camera);
-        attackCollision.renderCollision(g, camera);
+        attack.renderCollision(g, camera);
     }
 
     @Override
@@ -871,7 +594,7 @@ public final class Valdyn
     protected void updateActions()
     {
         updateActionMovement();
-        updateActionAttack();
+        attack.updateActionAttack();
         updateActionJump();
         if (timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT))
         {
@@ -888,7 +611,7 @@ public final class Valdyn
     protected void updateStates()
     {
         final double diffHorizontal = getHorizontalForce();
-        if (!attacking || status.getState() == TypeValdynState.ATTACK_FALL)
+        if (!attack.isAttacking() || status.getState() == TypeValdynState.ATTACK_FALL)
         {
             updateStateMirror(diffHorizontal);
         }
@@ -899,25 +622,13 @@ public final class Valdyn
         {
             status.setState(TypeEntityState.HURT);
         }
-        else if (attack != null)
+        else if (attack.updateStates())
         {
-            status.setState(attack);
+            // Attack updated
         }
-        else if (slide)
+        else if (tilt.updateStates())
         {
-            status.setState(TypeValdynState.SLIDE);
-        }
-        else if (lianaSlideLeft || lianaSlideRight)
-        {
-            status.setState(TypeValdynState.LIANA_SLIDE);
-        }
-        else if (liana && diffHorizontal != 0.0)
-        {
-            status.setState(TypeValdynState.LIANA_WALK);
-        }
-        else if (liana && diffHorizontal == 0.0)
-        {
-            status.setState(TypeValdynState.LIANA_IDLE);
+            // Tilt updated
         }
         else if (isFalling())
         {
@@ -978,7 +689,6 @@ public final class Valdyn
     protected void updateCollisions()
     {
         extremity = false;
-        slide = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(50))
         {
             status.setCollision(TypeEntityCollisionTile.NONE);
@@ -987,62 +697,16 @@ public final class Valdyn
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            if (!keyDown && (timerLianaUnGrip.elapsed(Valdyn.LIANA_UNGRIP_TIME) || !timerLianaUnGrip.isStarted()))
-            {
-                timerLianaUnGrip.stop();
-                setCollisionOffset(0, 45);
-                checkCollisionLiana(map.getFirstTileHit(this, TypeTileCollision.COLLISION_LIANA));
-            }
             checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
             checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
             setCollisionOffset(0, 0);
             final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
-            if (checkCollisionVertical(tile))
-            {
-                if (tile.getCollision().getGroup() == TypeTileCollisionGroup.SLIDE)
-                {
-                    slide = true;
-                }
-            }
+            final boolean found = checkCollisionVertical(tile);
+            tilt.updateCollisions(found, tile);
         }
 
-        // Stop attack if collide
-        if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND))
-        {
-            attack = null;
-            attacking = false;
-            attackPrepared = false;
-        }
-        if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.LIANA))
-        {
-            movement.reset();
-        }
-
-        if (status.isState(TypeValdynState.CROUCH, TypeValdynState.ATTACK_DOWN_LEG,
-                TypeValdynState.ATTACK_PREPARING_DOWN, TypeValdynState.ATTACK_PREPARED_DOWN))
-        {
-            setCollision(collisions.get(TypeValdynCollision.CROUCH));
-        }
-        else if (status.getState() == TypeValdynState.ATTACK_FALL)
-        {
-            setCollision(collisions.get(TypeValdynCollision.ATTACK_FALL));
-        }
-        else
-        {
-            setCollision(collisions.get(TypeValdynCollision.STAND));
-        }
-        attackCollision.setCollision(null);
-        if (!status.stateChanged() && getAnimState() == AnimState.PLAYING)
-        {
-            updateAttackCollision();
-        }
-        attackCollision.updateCollision();
+        attack.updateCollisions();
         legCollision.updateCollision();
-
-        if (status.getCollision() == TypeEntityCollisionTile.GROUND && attack == TypeValdynState.ATTACK_FALL)
-        {
-            attacking = false;
-        }
 
         // Kill when fall down
         if (getLocationY() < 0)

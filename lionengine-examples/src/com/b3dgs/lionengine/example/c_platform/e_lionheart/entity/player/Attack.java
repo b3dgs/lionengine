@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.CollisionData;
 /**
  * Attacks data.
  */
-public class Attack
+class Attack
 {
     /** The frame index. */
     private final int frame;
@@ -18,7 +18,7 @@ public class Attack
      * 
      * @param attack The attack node.
      */
-    public Attack(XmlNode attack)
+    Attack(XmlNode attack)
     {
         frame = attack.readInteger("frame");
         collision = new CollisionData(attack.readInteger("x"), attack.readInteger("y"), attack.readInteger("width"),

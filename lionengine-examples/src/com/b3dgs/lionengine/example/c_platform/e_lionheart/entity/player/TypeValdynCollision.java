@@ -5,7 +5,7 @@ import java.util.Locale;
 /**
  * List of valdyn collision types.
  */
-public enum TypeValdynCollision
+enum TypeValdynCollision
 {
     /** Stand collision. */
     STAND,

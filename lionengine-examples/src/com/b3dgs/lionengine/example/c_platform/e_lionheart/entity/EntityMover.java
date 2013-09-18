@@ -119,6 +119,17 @@ public abstract class EntityMover
     }
 
     /**
+     * Check if the specified action is enabled.
+     * 
+     * @param action The action to check.
+     * @return <code>true</code> if enabled, <code>false</code> else.
+     */
+    public boolean isEnabled(TypeEntityAction action)
+    {
+        return actions.get(action).booleanValue();
+    }
+
+    /**
      * Check vertical axis.
      * 
      * @param tile The tile collision.
@@ -162,17 +173,6 @@ public abstract class EntityMover
     protected double getHorizontalForce()
     {
         return movement.getForce().getForceHorizontal();
-    }
-
-    /**
-     * Check if the specified action is enabled.
-     * 
-     * @param action The action to check.
-     * @return <code>true</code> if enabled, <code>false</code> else.
-     */
-    protected boolean isEnabled(TypeEntityAction action)
-    {
-        return actions.get(action).booleanValue();
     }
 
     /**

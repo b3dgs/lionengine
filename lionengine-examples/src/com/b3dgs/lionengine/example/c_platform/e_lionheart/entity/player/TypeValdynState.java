@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 /**
  * List of entity states.
  */
-public enum TypeValdynState implements TypeState
+enum TypeValdynState implements TypeState
 {
     /** Crouch state. */
     CROUCH,
@@ -15,6 +15,10 @@ public enum TypeValdynState implements TypeState
     BORDER,
     /** Slide state. */
     SLIDE,
+    /** Slide fast state. */
+    SLIDE_FAST,
+    /** Slide slow state. */
+    SLIDE_SLOW,
     /** Liana idle. */
     LIANA_IDLE,
     /** Liana walk. */

@@ -94,6 +94,30 @@ public final class Tile
     }
 
     /**
+     * Check if tile is a left slide.
+     * 
+     * @return <code>true</code> if a left slide, <code>false</code> else.
+     */
+    public boolean isSlideLeft()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.SLIDE_LEFT_1 || c == TypeTileCollision.SLIDE_LEFT_2
+                || c == TypeTileCollision.SLIDE_LEFT_3;
+    }
+
+    /**
+     * Check if tile is a right slide.
+     * 
+     * @return <code>true</code> if a left slide, <code>false</code> else.
+     */
+    public boolean isSlideRight()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.SLIDE_RIGHT_1 || c == TypeTileCollision.SLIDE_RIGHT_2
+                || c == TypeTileCollision.SLIDE_RIGHT_3;
+    }
+
+    /**
      * Get ground collision.
      * 
      * @param localizable The localizable.

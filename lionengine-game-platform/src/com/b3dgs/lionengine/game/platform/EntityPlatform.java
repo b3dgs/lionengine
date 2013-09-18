@@ -225,7 +225,7 @@ public abstract class EntityPlatform
      * @param x The blocking x value.
      * @return <code>true</code> if collision where applied.
      */
-    protected boolean applyHorizontalCollision(Double x)
+    public boolean applyHorizontalCollision(Double x)
     {
         if (x != null)
         {
@@ -241,7 +241,7 @@ public abstract class EntityPlatform
      * @param y The blocking y value.
      * @return <code>true</code> if collision where applied.
      */
-    protected boolean applyVerticalCollision(Double y)
+    public boolean applyVerticalCollision(Double y)
     {
         if (y != null)
         {
@@ -308,7 +308,7 @@ public abstract class EntityPlatform
      * @param offsetX The horizontal offset value.
      * @param offsetY The vertical offset value.
      */
-    protected void setCollisionOffset(int offsetX, int offsetY)
+    public void setCollisionOffset(int offsetX, int offsetY)
     {
         collOffX = offsetX;
         collOffY = offsetY;

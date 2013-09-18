@@ -30,7 +30,7 @@ public abstract class Entity
     /** Collisions data. */
     protected final HashMap<Enum<?>, CollisionData> collisions;
     /** Entity status. */
-    protected final EntityStatus status;
+    public final EntityStatus status;
     /** Dead timer. */
     protected final Timing timerDie;
     /** Desired fps value. */
