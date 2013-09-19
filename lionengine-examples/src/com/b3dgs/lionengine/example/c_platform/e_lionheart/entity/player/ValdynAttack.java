@@ -76,6 +76,8 @@ final class ValdynAttack
         addShadeAnimation(TypeValdynState.ATTACK_HORIZONTAL, 1);
         addShadeAnimation(TypeValdynState.ATTACK_TURNING, 2);
         addShadeAnimation(TypeValdynState.ATTACK_JUMP, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_SLIDE, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_LIANA, 1);
     }
 
     /**
@@ -174,13 +176,13 @@ final class ValdynAttack
         if (keyAttack)
         {
             // Prepare attack
-            if (!attacking && valdyn.isOnGround())
+            if (!attacking && valdyn.isOnGround() && !valdyn.isSliding())
             {
                 updateActionAttackPrepare(attackFinished);
             }
             updateActionAttackSelect(attackPrepared);
         }
-        if (attack != null && valdyn.isOnGround())
+        if (attack != null && valdyn.isOnGround() && !valdyn.isSliding())
         {
             movement.reset();
             valdyn.stopTimerFallen();
@@ -213,7 +215,8 @@ final class ValdynAttack
     void updateCollisions()
     {
         // Stop attack if collide
-        if (valdyn.status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND))
+        if (valdyn.status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND)
+                || valdyn.status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.LIANA))
         {
             attack = null;
             attacking = false;
@@ -338,7 +341,15 @@ final class ValdynAttack
         final boolean mirror = valdyn.getMirror();
         final boolean goodWay = !mirror && keyLeft || mirror && keyRight;
         final boolean wrongWay = mirror && keyLeft || !mirror && keyRight;
-        if (!valdyn.isOnGround() && keyDown)
+        if (valdyn.isSliding())
+        {
+            setAttack(TypeValdynState.ATTACK_SLIDE);
+        }
+        else if (valdyn.isLiana())
+        {
+            setAttack(TypeValdynState.ATTACK_LIANA);
+        }
+        else if (!valdyn.isOnGround() && keyDown)
         {
             setAttack(TypeValdynState.ATTACK_FALL);
             attacked = false;
@@ -383,7 +394,7 @@ final class ValdynAttack
         }
         if (keyAttack)
         {
-            if (valdyn.isOnGround())
+            if (valdyn.isOnGround() && !valdyn.isSliding())
             {
                 attack = TypeValdynState.ATTACK_PREPARED;
             }

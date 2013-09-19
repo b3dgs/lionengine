@@ -50,7 +50,7 @@
 		<attack frame="8" x="-25" y="36" width="20" height="12"/>
 	</animation>
 	
-	<animation name="attack_down_leg" start="88" end="92" speed="0.40" reversed="true" repeat="false">
+	<animation name="attack_down_leg" start="88" end="92" speed="0.4" reversed="true" repeat="false">
 		<attack frame="5" x="22" y="0" width="20" height="8"/>
 	</animation>
 	
@@ -65,8 +65,24 @@
 		<attack frame="1" x="0" y="0" width="20" height="10"/>
 	</animation>
 	
+	<animation name="attack_slide" start="121" end="125" speed="0.3" reversed="false" repeat="false">
+		<attack frame="2" x="0" y="55" width="26" height="25"/>
+		<attack frame="3" x="10" y="55" width="26" height="25"/>
+		<attack frame="4" x="15" y="25" width="26" height="25"/>
+		<attack frame="5" x="15" y="5" width="26" height="15"/>
+	</animation>
+	
+	<animation name="attack_liana" start="146" end="150" speed="0.3" reversed="false" repeat="false">
+		<attack frame="2" x="0" y="55" width="26" height="25"/>
+		<attack frame="3" x="10" y="55" width="26" height="25"/>
+		<attack frame="4" x="15" y="25" width="26" height="25"/>
+		<attack frame="5" x="15" y="5" width="26" height="15"/>
+	</animation>
+	
 	<animation name="shade_attack_up" start="1" end="2" speed="0.35" reversed="true" repeat="false"/>
 	<animation name="shade_attack_horizontal" start="9" end="12" speed="0.4" reversed="true" repeat="false"/>
 	<animation name="shade_attack_turning" start="24" end="30" speed="0.3" reversed="false" repeat="false"/>
 	<animation name="shade_attack_jump" start="31" end="35" speed="0.3" reversed="false" repeat="false"/>
+	<animation name="shade_attack_slide" start="40" end="43" speed="0.3" reversed="false" repeat="false"/>
+	<animation name="shade_attack_liana" start="32" end="35" speed="0.3" reversed="false" repeat="false"/>
 </entity>

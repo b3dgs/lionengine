@@ -220,6 +220,26 @@ public final class Valdyn
     }
 
     /**
+     * Check if valdyn is sliding.
+     * 
+     * @return <code>true</code> if sliding, <code>false</code> else.
+     */
+    boolean isSliding()
+    {
+        return tilt.getSlide() != null;
+    }
+
+    /**
+     * Check if valdyn is on liana.
+     * 
+     * @return <code>true</code> if liana, <code>false</code> else.
+     */
+    boolean isLiana()
+    {
+        return tilt.getLiana() != null;
+    }
+
+    /**
      * Update the action movement.
      */
     private void updateActionMovement()
@@ -255,7 +275,7 @@ public final class Valdyn
         movement.setForceToReach(speed, 0.0);
 
         // Crouch
-        if (isOnGround() && keyDown)
+        if (isOnGround() && !isSliding() && keyDown)
         {
             movement.reset();
             timerFallen.stop();
@@ -477,7 +497,7 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
-        teleport(2100, 300);
+        teleport(1200, 700);
         camera.resetInterval(this);
     }
 
@@ -556,7 +576,7 @@ public final class Valdyn
     protected void updateStates()
     {
         final double diffHorizontal = getHorizontalForce();
-        if (!attack.isAttacking() || status.getState() == TypeValdynState.ATTACK_FALL)
+        if (!attack.isAttacking() || status.getState() == TypeValdynState.ATTACK_FALL || isSliding() || isLiana())
         {
             updateStateMirror(diffHorizontal);
         }

@@ -44,7 +44,11 @@ enum TypeValdynState implements TypeState
     /** Attack while jumping. */
     ATTACK_JUMP,
     /** Attack while falling. */
-    ATTACK_FALL;
+    ATTACK_FALL,
+    /** Attack on liana. */
+    ATTACK_LIANA,
+    /** Attack while sliding. */
+    ATTACK_SLIDE;
 
     /** Animation name. */
     private final String animationName;

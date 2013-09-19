@@ -129,11 +129,11 @@ final class ValdynTilt
         }
         else if (liana == Align.LEFT)
         {
-            newSpeed = newSpeed * 0.5 - 1.5;
+            newSpeed = newSpeed * 0.2 - 1.5;
         }
         else if (liana == Align.RIGHT)
         {
-            newSpeed = newSpeed * 0.5 + 1.5;
+            newSpeed = newSpeed * 0.2 + 1.5;
         }
         // Exit liana
         if (liana != null && valdyn.isEnabled(TypeEntityAction.MOVE_DOWN) && !timerLianaUnGrip.isStarted())
