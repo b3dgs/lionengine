@@ -227,8 +227,10 @@ final class ValdynTilt
                 && (timerLianaUnGrip.elapsed(ValdynTilt.LIANA_UNGRIP_TIME) || !timerLianaUnGrip.isStarted()))
         {
             timerLianaUnGrip.stop();
-            valdyn.setCollisionOffset(0, 45);
-            checkCollisionLiana(map.getFirstTileHit(valdyn, TypeTileCollision.COLLISION_LIANA));
+            valdyn.setCollisionOffset(0, 30);
+            checkCollisionLiana(map.getFirstTileHit(valdyn, TypeTileCollision.COLLISION_LIANA_STEEP));
+            valdyn.setCollisionOffset(0, 57);
+            checkCollisionLiana(map.getFirstTileHit(valdyn, TypeTileCollision.COLLISION_LIANA_LEANING));
         }
         if (found)
         {
@@ -303,11 +305,11 @@ final class ValdynTilt
                 valdyn.status.setCollision(TypeEntityCollisionTile.LIANA);
                 valdyn.resetJump();
                 liana = Align.CENTER;
-                if (tile.isLianaSteepLeft())
+                if (tile.isLianaSteepLeft() || tile.isLianaLeaningLeft())
                 {
                     liana = Align.LEFT;
                 }
-                else if (tile.isLianaSteepRight())
+                else if (tile.isLianaSteepRight() || tile.isLianaLeaningRight())
                 {
                     liana = Align.RIGHT;
                 }

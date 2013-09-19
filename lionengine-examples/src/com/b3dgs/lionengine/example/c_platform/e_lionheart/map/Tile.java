@@ -83,7 +83,7 @@ public final class Tile
     }
 
     /**
-     * Check if tile is a left liana steep.
+     * Check if tile is a right liana steep.
      * 
      * @return <code>true</code> if left liana steep, <code>false</code> else.
      */
@@ -91,6 +91,30 @@ public final class Tile
     {
         final TypeTileCollision c = getCollision();
         return c == TypeTileCollision.LIANA_STEEP_RIGHT_1 || c == TypeTileCollision.LIANA_STEEP_RIGHT_2;
+    }
+
+    /**
+     * Check if tile is a left liana leaning.
+     * 
+     * @return <code>true</code> if left liana steep, <code>false</code> else.
+     */
+    public boolean isLianaLeaningLeft()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.LIANA_LEANING_LEFT_1 || c == TypeTileCollision.LIANA_LEANING_LEFT_2
+                || c == TypeTileCollision.LIANA_LEANING_LEFT_3;
+    }
+
+    /**
+     * Check if tile is a right liana leaning.
+     * 
+     * @return <code>true</code> if left liana steep, <code>false</code> else.
+     */
+    public boolean isLianaLeaningRight()
+    {
+        final TypeTileCollision c = getCollision();
+        return c == TypeTileCollision.LIANA_LEANING_RIGHT_1 || c == TypeTileCollision.LIANA_LEANING_RIGHT_2
+                || c == TypeTileCollision.LIANA_LEANING_RIGHT_3;
     }
 
     /**
@@ -135,39 +159,19 @@ public final class Tile
     }
 
     /**
-     * Get the slope right collision.
+     * Get the slope collision.
      * 
      * @param localizable The localizable.
      * @param offset The offset.
+     * @param left The side (true = left, false = right).
+     * @param border The collision border.
      * @return The collision.
      */
-    private Double getSlopeRight(Localizable localizable, int offset)
+    private Double getSlope(Localizable localizable, int offset, boolean left, TypeTileCollision border)
     {
-        final double x = localizable.getLocationX() - getX() - getWidth();
-        double y = getTop() - x * TypeTileCollisionGroup.SLOPE.getFactor() + offset;
-        if (getCollision() == TypeTileCollision.SLOPE_RIGHT_BORDER_UP && y > super.getTop())
-        {
-            y = super.getTop();
-        }
-        if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
-        {
-            return Double.valueOf(y);
-        }
-        return null;
-    }
-
-    /**
-     * Get the slope left collision.
-     * 
-     * @param localizable The localizable.
-     * @param offset The offset.
-     * @return The collision.
-     */
-    private Double getSlopeLeft(Localizable localizable, int offset)
-    {
-        final double x = localizable.getLocationX() - getX();
-        double y = getTop() + x * TypeTileCollisionGroup.SLOPE.getFactor() + offset;
-        if (getCollision() == TypeTileCollision.SLOPE_LEFT_BORDER_UP && y > super.getTop())
+        final double x = localizable.getLocationX() - getX() - (left ? 0 : getWidth());
+        double y = getTop() + x * TypeTileCollisionGroup.SLOPE.getFactor() * (left ? 1 : -1) + offset;
+        if (getCollision() == border && y > super.getTop())
         {
             y = super.getTop();
         }
@@ -183,30 +187,14 @@ public final class Tile
      * 
      * @param localizable The localizable.
      * @param offset The offset.
+     * @param left The side (true = left, false = right).
      * @return The collision.
      */
-    private Double getSlideRight(Localizable localizable, int offset)
+    private Double getSlide(Localizable localizable, int offset, boolean left)
     {
-        final double x = localizable.getLocationX() - getX() - getWidth();
-        final double y = getTop() - x * TypeTileCollisionGroup.SLIDE.getFactor() + offset;
-        if (localizable.getLocationOldY() >= y - 28 - halfTileHeight && localizable.getLocationY() <= y - 14)
-        {
-            return Double.valueOf(y - 21);
-        }
-        return null;
-    }
-
-    /**
-     * Get the slide left collision.
-     * 
-     * @param localizable The localizable.
-     * @param offset The offset.
-     * @return The collision.
-     */
-    private Double getSlideLeft(Localizable localizable, int offset)
-    {
-        final double x = localizable.getLocationX() - getX();
-        final double y = getBottom() + x * TypeTileCollisionGroup.SLIDE.getFactor() + offset;
+        final double x = localizable.getLocationX() - getX() - (left ? 0 : getWidth());
+        final double y = (left ? getBottom() : getTop()) + x * TypeTileCollisionGroup.SLIDE.getFactor()
+                * (left ? 1 : -1) + offset;
         if (localizable.getLocationOldY() >= y - 28 - halfTileHeight && localizable.getLocationY() <= y - 14)
         {
             return Double.valueOf(y - 21);
@@ -232,6 +220,23 @@ public final class Tile
     }
 
     /**
+     * Get the liana steep right collision.
+     * 
+     * @param localizable The localizable.
+     * @return The collision.
+     */
+    private Double getLianaSteepRight(Localizable localizable)
+    {
+        final double x = localizable.getLocationX() - getX() - getWidth();
+        final double y = getTop() + 2 - x * TypeTileCollisionGroup.LIANA_STEEP.getFactor();
+        if (localizable.getLocationOldY() >= y - 10 && localizable.getLocationY() <= y + 5)
+        {
+            return Double.valueOf(y - 2);
+        }
+        return null;
+    }
+
+    /**
      * Get the liana steep left collision.
      * 
      * @param localizable The localizable.
@@ -244,6 +249,25 @@ public final class Tile
         if (localizable.getLocationOldY() >= y - 10 && localizable.getLocationY() <= y + 5)
         {
             return Double.valueOf(y - 2);
+        }
+        return null;
+    }
+
+    /**
+     * Get the liana leaning right collision.
+     * 
+     * @param localizable The localizable.
+     * @param offset The offset.
+     * @param left The side (true = left, false = right).
+     * @return The collision.
+     */
+    private Double getLianaLeaning(Localizable localizable, int offset, boolean left)
+    {
+        final double x = localizable.getLocationX() - getX() - (left ? 0 : getWidth());
+        final double y = getBottom() + x * TypeTileCollisionGroup.LIANA_LEANING.getFactor() * (left ? 1 : -1) + offset;
+        if (localizable.getLocationOldY() >= y - halfTileHeight && localizable.getLocationY() <= y)
+        {
+            return Double.valueOf(y - 1);
         }
         return null;
     }
@@ -292,53 +316,71 @@ public final class Tile
 
             case SLOPE_RIGHT_1:
             case SLOPE_RIGHT_BORDER_UP:
-                return getSlopeRight(localizable, halfTileHeight);
+                return getSlope(localizable, halfTileHeight, false, TypeTileCollision.SLOPE_RIGHT_BORDER_UP);
             case SLOPE_RIGHT_BORDER_DOWN:
             case SLOPE_RIGHT_2:
-                return getSlopeRight(localizable, 0);
+                return getSlope(localizable, 0, false, null);
             case SLOPE_RIGHT_3:
-                return getSlopeRight(localizable, -halfTileHeight);
+                return getSlope(localizable, -halfTileHeight, false, null);
 
             case SLOPE_LEFT_1:
             case SLOPE_LEFT_BORDER_UP:
-                return getSlopeLeft(localizable, halfTileHeight);
+                return getSlope(localizable, halfTileHeight, true, null);
             case SLOPE_LEFT_BORDER_DOWN:
             case SLOPE_LEFT_2:
-                return getSlopeLeft(localizable, 0);
+                return getSlope(localizable, 0, true, TypeTileCollision.SLOPE_LEFT_BORDER_UP);
             case SLOPE_LEFT_3:
-                return getSlopeLeft(localizable, -halfTileHeight);
+                return getSlope(localizable, -halfTileHeight, true, null);
 
             case SLIDE_RIGHT_1:
-                return getSlideRight(localizable, halfTileHeight);
+                return getSlide(localizable, halfTileHeight, false);
             case SLIDE_RIGHT_2:
-                return getSlideRight(localizable, 23);
+                return getSlide(localizable, 23, false);
             case SLIDE_RIGHT_3:
-                return getSlideRight(localizable, -halfTileHeight);
+                return getSlide(localizable, -halfTileHeight, false);
             case SLIDE_RIGHT_GROUND_SLIDE:
                 if (x > -halfTileHeight)
                 {
-                    return getSlideRight(localizable, halfTileHeight);
+                    return getSlide(localizable, halfTileHeight, false);
                 }
                 return getGround(localizable);
 
             case SLIDE_LEFT_1:
-                return getSlideLeft(localizable, halfTileHeight);
+                return getSlide(localizable, halfTileHeight, true);
             case SLIDE_LEFT_2:
-                return getSlideLeft(localizable, 23);
+                return getSlide(localizable, 23, true);
             case SLIDE_LEFT_3:
-                return getSlideLeft(localizable, -halfTileHeight);
+                return getSlide(localizable, -halfTileHeight, true);
             case SLIDE_LEFT_GROUND_SLIDE:
                 if (x > -halfTileHeight)
                 {
-                    return getSlideLeft(localizable, halfTileHeight);
+                    return getSlide(localizable, halfTileHeight, true);
                 }
                 return getGround(localizable);
 
             case LIANA_HORIZONTAL:
                 return getLianaHorizontal(localizable);
 
+            case LIANA_STEEP_RIGHT_2:
+                return getLianaSteepRight(localizable);
+
             case LIANA_STEEP_LEFT_2:
                 return getLianaSteepLeft(localizable);
+
+            case LIANA_LEANING_RIGHT_1:
+                return getLianaLeaning(localizable, halfTileHeight, false);
+            case LIANA_LEANING_RIGHT_2:
+                return getLianaLeaning(localizable, 0, false);
+            case LIANA_LEANING_RIGHT_3:
+                return getLianaLeaning(localizable, -halfTileHeight, false);
+
+            case LIANA_LEANING_LEFT_1:
+                return getLianaLeaning(localizable, halfTileHeight, true);
+            case LIANA_LEANING_LEFT_2:
+                return getLianaLeaning(localizable, 0, true);
+            case LIANA_LEANING_LEFT_3:
+                return getLianaLeaning(localizable, -halfTileHeight, true);
+
             default:
                 return null;
         }

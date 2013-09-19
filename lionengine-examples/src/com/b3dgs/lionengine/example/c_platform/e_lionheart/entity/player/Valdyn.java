@@ -497,7 +497,7 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
-        teleport(1200, 700);
+        teleport(750, 300);
         camera.resetInterval(this);
     }
 
