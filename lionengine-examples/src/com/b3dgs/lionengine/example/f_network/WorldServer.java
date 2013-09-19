@@ -1,6 +1,9 @@
 package com.b3dgs.lionengine.example.f_network;
 
+import java.io.IOException;
+
 import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.world.NetworkedWorldServer;
 
@@ -40,9 +43,9 @@ class WorldServer
     }
 
     @Override
-    protected void loaded()
+    protected void loading(FileReading file) throws IOException
     {
-        super.loaded();
+        super.loading(file);
         // Create two goombas
         for (int i = 0; i < 2; i++)
         {

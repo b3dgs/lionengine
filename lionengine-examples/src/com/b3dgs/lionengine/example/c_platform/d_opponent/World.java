@@ -79,11 +79,6 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-    }
-
-    @Override
-    protected void loaded()
-    {
         camera.setLimits(map);
         camera.setIntervals(16, 0);
         map.adjustCollisions();

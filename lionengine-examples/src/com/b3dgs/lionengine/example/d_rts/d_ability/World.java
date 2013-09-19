@@ -122,11 +122,7 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-    }
 
-    @Override
-    protected void loaded()
-    {
         camera.setView(0, 0, width, height);
         camera.setSensibility(30, 30);
         camera.setBorders(map);

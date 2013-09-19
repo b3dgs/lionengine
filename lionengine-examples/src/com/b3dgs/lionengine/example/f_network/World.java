@@ -84,12 +84,6 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     }
 
     @Override
-    protected void loaded()
-    {
-        // Nothing to do
-    }
-
-    @Override
     protected void saving(FileWriting file) throws IOException
     {
         this.map.save(file);

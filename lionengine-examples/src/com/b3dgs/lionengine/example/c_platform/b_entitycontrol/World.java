@@ -62,10 +62,4 @@ final class World
     {
         // Nothing to do
     }
-
-    @Override
-    protected void loaded()
-    {
-        // Nothing here
-    }
 }

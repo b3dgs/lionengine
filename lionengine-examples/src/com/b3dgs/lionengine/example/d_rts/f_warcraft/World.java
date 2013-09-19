@@ -144,11 +144,7 @@ final class World
     {
         map.load(file);
         map.createMiniMap();
-    }
 
-    @Override
-    protected void loaded()
-    {
         camera.setView(72, 12, 240, 176);
         camera.setSensibility(30, 30);
         camera.setBorders(map);

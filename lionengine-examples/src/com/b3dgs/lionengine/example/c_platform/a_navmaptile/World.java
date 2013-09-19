@@ -112,10 +112,4 @@ final class World
     {
         map.load(file);
     }
-
-    @Override
-    protected void loaded()
-    {
-        // Nothing here as the world is not loaded
-    }
 }

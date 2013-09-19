@@ -99,10 +99,4 @@ final class World
     {
         map.load(file);
     }
-
-    @Override
-    protected void loaded()
-    {
-        // Nothing here for the moment
-    }
 }

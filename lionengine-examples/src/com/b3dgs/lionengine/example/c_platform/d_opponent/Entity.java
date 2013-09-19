@@ -68,7 +68,7 @@ abstract class Entity
         timerExtraJump = new Timing();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(0, 1);
+        setFrameOffsets(0, 9);
         setCollision(getDataCollision("default"));
         loadAnimations();
     }
@@ -259,7 +259,7 @@ abstract class Entity
      */
     private void checkHorizontal(int offsetX)
     {
-        setCollisionOffset(offsetX, 1);
+        setCollisionOffset(offsetX, 9);
         final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {

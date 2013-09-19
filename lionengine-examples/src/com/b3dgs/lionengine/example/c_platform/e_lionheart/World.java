@@ -125,12 +125,8 @@ final class World
         player = factoryEntity.createValdyn();
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());
+        player.setLandscape(landscape);
         statsRenderer.load();
-    }
-
-    @Override
-    protected void loaded()
-    {
         camera.setLimits(map);
         camera.setIntervals(32, 0);
         handlerEntity.prepare();

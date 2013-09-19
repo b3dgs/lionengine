@@ -62,8 +62,7 @@ final class Mario
         movementSpeed = getDataDouble("movementSpeed", "data");
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(0, 1);
-        setLocation(80, 32);
+        setFrameOffsets(0, 9);
         loadAnimations();
     }
 
@@ -77,6 +76,18 @@ final class Mario
         right = keyboard.isPressed(Keyboard.RIGHT);
         left = keyboard.isPressed(Keyboard.LEFT);
         up = keyboard.isPressed(Keyboard.UP);
+    }
+
+    /**
+     * Respawn the hero.
+     */
+    public void respawn()
+    {
+        teleport(80, 32);
+        movement.reset();
+        jumpForce.setForce(Force.ZERO);
+        mirror(false);
+        resetGravity();
     }
 
     /**
@@ -207,7 +218,7 @@ final class Mario
      */
     private void checkHorizontal(int offsetX)
     {
-        setCollisionOffset(offsetX, 1);
+        setCollisionOffset(offsetX, 9);
         final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
@@ -233,13 +244,9 @@ final class Mario
             final Double y = tile.getCollisionY(this);
             if (applyVerticalCollision(y))
             {
-                jumpForce.setForce(Force.ZERO);
                 resetGravity();
+                jumpForce.setForce(Force.ZERO);
                 coll = EntityCollision.GROUND;
-            }
-            else
-            {
-                coll = EntityCollision.NONE;
             }
         }
     }
@@ -286,15 +293,6 @@ final class Mario
     {
         checkMapLimit();
 
-        // Respawn when die
-        if (getLocationY() < 0)
-        {
-            setLocation(80, 32);
-            movement.reset();
-            jumpForce.setForce(Force.ZERO);
-            resetGravity();
-        }
-
         // Horizontal collision
         if (getDiffHorizontal() < 0)
         {
@@ -306,10 +304,17 @@ final class Mario
         }
 
         // Vertical collision
-        if (getDiffVertical() < 0)
+        if (getDiffVertical() < 0 || isOnGround())
         {
             checkVertical(-5); // Left leg
             checkVertical(5); // Right leg
+            checkVertical(0);
+        }
+
+        // Respawn when die
+        if (getLocationY() < 0)
+        {
+            respawn();
         }
     }
 

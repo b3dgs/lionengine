@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.game.platform;
 
+import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -58,7 +59,7 @@ public class CameraPlatform
      * Define the map borders. This function will allow to let the camera know the map size, and so, know which part of
      * the map can be viewed without being outside the map extremity.
      * <p>
-     * Note: Must be called after map loading (usually in {@link WorldGame#loaded()}).
+     * Note: Must be called after map loading (usually in {@link WorldGame#loading(FileReading)}).
      * </p>
      * 
      * @param map The map reference.

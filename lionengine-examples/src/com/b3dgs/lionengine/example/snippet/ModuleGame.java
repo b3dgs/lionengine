@@ -81,11 +81,6 @@ public class ModuleGame
         protected void loading(FileReading file) throws IOException
         {
         }
-
-        @Override
-        protected void loaded()
-        {
-        }
     }
 
     MapTileGame<TypeCollision, Tile> map;

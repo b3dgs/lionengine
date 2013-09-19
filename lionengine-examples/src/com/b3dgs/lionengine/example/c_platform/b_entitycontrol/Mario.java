@@ -221,7 +221,7 @@ final class Mario
         {
             jumpForce.setForce(Force.ZERO);
             resetGravity();
-            setLocationY(Mario.GROUND);
+            teleportY(Mario.GROUND);
         }
     }
 

@@ -281,6 +281,7 @@ public final class Tile
     @Override
     public Double getCollisionY(Localizable localizable)
     {
+        final double x = localizable.getLocationX() - getX() - getWidth();
         switch (getCollision())
         {
             case GROUND:
@@ -313,6 +314,12 @@ public final class Tile
                 return getSlideRight(localizable, 23);
             case SLIDE_RIGHT_3:
                 return getSlideRight(localizable, -halfTileHeight);
+            case SLIDE_RIGHT_GROUND_SLIDE:
+                if (x > -halfTileHeight)
+                {
+                    return getSlideRight(localizable, halfTileHeight);
+                }
+                return getGround(localizable);
 
             case SLIDE_LEFT_1:
                 return getSlideLeft(localizable, halfTileHeight);
@@ -320,6 +327,12 @@ public final class Tile
                 return getSlideLeft(localizable, 23);
             case SLIDE_LEFT_3:
                 return getSlideLeft(localizable, -halfTileHeight);
+            case SLIDE_LEFT_GROUND_SLIDE:
+                if (x > -halfTileHeight)
+                {
+                    return getSlideLeft(localizable, halfTileHeight);
+                }
+                return getGround(localizable);
 
             case LIANA_HORIZONTAL:
                 return getLianaHorizontal(localizable);

@@ -6,12 +6,19 @@ import java.util.Locale;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -19,14 +26,20 @@ import com.b3dgs.lionengine.input.Keyboard;
 /**
  * Handle the Valdyn attacks.
  */
-class ValdynAttack
+final class ValdynAttack
 {
     /** Valdyn reference. */
     private final Valdyn valdyn;
     /** Valdyn movement. */
     private final Movement movement;
+    /** Shade surface. */
+    private final SpriteAnimated shade;
     /** Attack data. */
     private final EnumMap<TypeValdynState, Set<Attack>> attacks;
+    /** Animations shade list. */
+    private final EnumMap<TypeValdynState, Animation> shades;
+    /** List of starting frames when shades are enabled. */
+    private final EnumMap<TypeValdynState, Integer> shadesEnabled;
     /** Attack collision with monster. */
     private final Collidable attackCollision;
     /** Attack state. */
@@ -37,6 +50,8 @@ class ValdynAttack
     private boolean attacking;
     /** Attacked state. */
     private boolean attacked;
+    /** Shade can be played. */
+    private boolean shadeCanBePlayed;
     /** Attack key state. */
     private boolean keyAttack;
 
@@ -50,9 +65,29 @@ class ValdynAttack
     {
         this.valdyn = valdyn;
         this.movement = movement;
+        shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "players", "shade.png"), 7, 7);
+        shade.load(false);
+        shades = new EnumMap<>(TypeValdynState.class);
+        shadesEnabled = new EnumMap<>(TypeValdynState.class);
         attacks = new EnumMap<>(TypeValdynState.class);
         attackCollision = new CollidableModel(valdyn);
         loadAttacks();
+        addShadeAnimation(TypeValdynState.ATTACK_UP, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_HORIZONTAL, 1);
+        addShadeAnimation(TypeValdynState.ATTACK_TURNING, 2);
+        addShadeAnimation(TypeValdynState.ATTACK_JUMP, 1);
+    }
+
+    /**
+     * Add a shade animation for the sword attack effect.
+     * 
+     * @param state The state enum.
+     * @param startAtFrame The frame index (relative to current animation) where it should start.
+     */
+    void addShadeAnimation(TypeValdynState state, int startAtFrame)
+    {
+        shades.put(state, valdyn.getDataAnimation("shade_" + state.getAnimationName()));
+        shadesEnabled.put(state, Integer.valueOf(startAtFrame));
     }
 
     /**
@@ -80,6 +115,47 @@ class ValdynAttack
         {
             keyAttack = false;
         }
+    }
+
+    /**
+     * Update the mirror.
+     * 
+     * @param mirror The mirror state.
+     */
+    void updateMirror(boolean mirror)
+    {
+        shade.setMirror(mirror);
+    }
+
+    /**
+     * Update the shade animation.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    void updateAnimationShade(double extrp)
+    {
+        final TypeState state = valdyn.status.getState();
+        if (valdyn.status.stateChanged())
+        {
+            if (shades.containsKey(state))
+            {
+                shadeCanBePlayed = true;
+            }
+            else
+            {
+                shade.stopAnimation();
+            }
+        }
+        if (shadeCanBePlayed && shadesEnabled.containsKey(state))
+        {
+            final int index = valdyn.getFrame() - valdyn.getDataAnimation(state.getAnimationName()).getFirst();
+            if (index >= shadesEnabled.get(state).intValue())
+            {
+                shade.play(shades.get(state));
+                shadeCanBePlayed = false;
+            }
+        }
+        shade.updateAnimation(extrp);
     }
 
     /**
@@ -167,6 +243,20 @@ class ValdynAttack
         if (valdyn.status.getCollision() == TypeEntityCollisionTile.GROUND && attack == TypeValdynState.ATTACK_FALL)
         {
             attacking = false;
+        }
+    }
+
+    /**
+     * Render the attack collisions.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
+     */
+    void render(Graphic g, CameraPlatform camera)
+    {
+        if (shade.getAnimState() == AnimState.PLAYING)
+        {
+            valdyn.renderAnim(g, shade, camera);
         }
     }
 

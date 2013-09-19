@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.Movement;
 /**
  * Handle all Valdyn tilts (slide, slope, liana...).
  */
-class ValdynTilt
+final class ValdynTilt
 {
     /** Ungrip time max. */
     private static final int LIANA_UNGRIP_TIME = 400;
@@ -153,8 +153,16 @@ class ValdynTilt
     void updateActionJumpSlide(Force jumpForce, double jumpHeightMax)
     {
         jumpForce.setForce(0.0, jumpHeightMax * 0.6);
-        movement.getForce().setForce(jumpHeightMax * 0.6, 0.0);
-        movement.setForceToReach(jumpHeightMax * 0.6, 0.0);
+        if (slide == Align.RIGHT)
+        {
+            movement.getForce().setForce(jumpHeightMax * 0.6, 0.0);
+            movement.setForceToReach(jumpHeightMax * 0.6, 0.0);
+        }
+        else if (slide == Align.LEFT)
+        {
+            movement.getForce().setForce(-jumpHeightMax * 0.6, 0.0);
+            movement.setForceToReach(-jumpHeightMax * 0.6, 0.0);
+        }
     }
 
     /**
@@ -202,6 +210,7 @@ class ValdynTilt
         {
             updated = false;
         }
+        slide = null;
         return updated;
     }
 
@@ -213,9 +222,9 @@ class ValdynTilt
      */
     void updateCollisions(boolean found, Tile tile)
     {
-        slide = null;
         final boolean keyDown = valdyn.isEnabled(TypeEntityAction.MOVE_DOWN);
-        if (!keyDown && (timerLianaUnGrip.elapsed(ValdynTilt.LIANA_UNGRIP_TIME) || !timerLianaUnGrip.isStarted()))
+        if (!keyDown && valdyn.getDiffVertical() < 0.0
+                && (timerLianaUnGrip.elapsed(ValdynTilt.LIANA_UNGRIP_TIME) || !timerLianaUnGrip.isStarted()))
         {
             timerLianaUnGrip.stop();
             valdyn.setCollisionOffset(0, 45);
@@ -223,11 +232,13 @@ class ValdynTilt
         }
         if (found)
         {
-            if (tile.isSlideLeft())
+            final double x = valdyn.getLocationX() - tile.getX() - valdyn.getWidth();
+            final TypeTileCollision collision = tile.getCollision();
+            if (tile.isSlideLeft() || collision == TypeTileCollision.SLIDE_LEFT_GROUND_SLIDE && x > -11)
             {
                 slide = Align.LEFT;
             }
-            else if (tile.isSlideRight())
+            else if (tile.isSlideRight() || collision == TypeTileCollision.SLIDE_RIGHT_GROUND_SLIDE && x > -11)
             {
                 slide = Align.RIGHT;
             }
@@ -235,6 +246,43 @@ class ValdynTilt
         if (valdyn.status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.LIANA))
         {
             movement.reset();
+        }
+    }
+
+    /**
+     * Update the transition between the slide and ground.
+     * 
+     * @param tileLeft The left tile.
+     * @param tileRight The right tile.
+     * @param tile The center tile.
+     */
+    void updateCollisionSlideGroundTransition(Tile tileLeft, Tile tileRight, Tile tile)
+    {
+        final double diffHorizontal = valdyn.getDiffHorizontal();
+        if (tileLeft != null && tileRight != null)
+        {
+            if (tileLeft.isGroup(TypeTileCollisionGroup.FLAT) || tileRight.isGroup(TypeTileCollisionGroup.FLAT))
+            {
+                if (tileLeft.getCollision() == TypeTileCollision.SLIDE_RIGHT_2 && diffHorizontal <= 0)
+                {
+                    movement.reset();
+                    valdyn.teleportX(tileLeft.getX() + Map.TILE_WIDTH);
+                }
+                if (tileRight.getCollision() == TypeTileCollision.SLIDE_LEFT_2 && diffHorizontal >= 0)
+                {
+                    movement.reset();
+                    valdyn.teleportX(tileRight.getX() - 1);
+                }
+            }
+        }
+        if (tile != null)
+        {
+            final double x = valdyn.getLocationX() - tile.getX() - valdyn.getWidth();
+            if (x > -13 && tile.getCollision() == TypeTileCollision.SLIDE_LEFT_GROUND_SLIDE && diffHorizontal >= 0)
+            {
+                movement.reset();
+                valdyn.teleportX(tile.getX() + 7);
+            }
         }
     }
 

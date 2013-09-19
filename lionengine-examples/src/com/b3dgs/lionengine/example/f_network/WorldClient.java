@@ -2,12 +2,14 @@ package com.b3dgs.lionengine.example.f_network;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -108,9 +110,9 @@ class WorldClient
     }
 
     @Override
-    protected void loaded()
+    protected void loading(FileReading file) throws IOException
     {
-        super.loaded();
+        super.loading(file);
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
         map.adjustCollisions();

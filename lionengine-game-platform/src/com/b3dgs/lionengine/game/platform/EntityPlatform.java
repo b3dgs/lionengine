@@ -260,7 +260,7 @@ public abstract class EntityPlatform
      * @param sprite The sprite to render.
      * @param camera The camera reference.
      */
-    protected void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera)
+    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera)
     {
         renderAnim(g, sprite, camera, 0, 0);
     }
@@ -274,7 +274,7 @@ public abstract class EntityPlatform
      * @param rx The horizontal rendering offset.
      * @param ry The vertical rendering offset.
      */
-    protected void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
+    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
     {
         final int x = camera.getViewpointX(getLocationIntX() - sprite.getFrameWidth() / 2 - frameOffsetX);
         final int y = camera.getViewpointY(getLocationIntY() + sprite.getFrameHeight() + frameOffsetY);

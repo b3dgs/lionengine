@@ -1,15 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
-import java.util.EnumMap;
-
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
@@ -19,6 +11,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityColl
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -60,14 +53,8 @@ public final class Valdyn
     private final ValdynAttack attack;
     /** Leg collision with scenery. */
     private final Collidable legCollision;
-    /** Shade surface. */
-    private final SpriteAnimated shade;
     /** Camera reference. */
     private final CameraPlatform camera;
-    /** Animations shade list. */
-    private final EnumMap<TypeValdynState, Animation> shades;
-    /** List of starting frames when shades are enabled. */
-    private final EnumMap<TypeValdynState, Integer> shadesEnabled;
     /** Jump timer (accurate precision of jump force). */
     private final Timing timerJump;
     /** Fall timer (used to determinate the falling state). */
@@ -84,14 +71,14 @@ public final class Valdyn
     private final double sensibilityDecrease;
     /** Movement smooth. */
     private final double movementSmooth;
+    /** Landscape reference. */
+    private Landscape landscape;
     /** Extremity state (used for border state). */
     private boolean extremity;
     /** Jumped state. */
     private boolean jumped;
     /** Crouch state. */
     private boolean crouch;
-    /** Shade can be played. */
-    private boolean shadeCanBePlayed;
     /** Hurt effect counter. */
     private int hurtEffectCounter;
     /** Left key state. */
@@ -112,10 +99,6 @@ public final class Valdyn
     {
         super(context, TypeEntity.VALDYN);
         camera = context.camera;
-        shade = Drawable.loadSpriteAnimated(Media.get(AppLionheart.ENTITIES_DIR, "players", "shade.png"), 7, 7);
-        shade.load(false);
-        shades = new EnumMap<>(TypeValdynState.class);
-        shadesEnabled = new EnumMap<>(TypeValdynState.class);
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -126,10 +109,6 @@ public final class Valdyn
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
         setFrameOffsets(0, -2);
-        addShadeAnimation(TypeValdynState.ATTACK_UP, 1);
-        addShadeAnimation(TypeValdynState.ATTACK_HORIZONTAL, 1);
-        addShadeAnimation(TypeValdynState.ATTACK_TURNING, 2);
-        addShadeAnimation(TypeValdynState.ATTACK_JUMP, 1);
         loadCollisions(TypeValdynCollision.values());
         loadAnimations(TypeValdynState.values());
         legCollision = new CollidableModel(this);
@@ -179,6 +158,16 @@ public final class Valdyn
             mirror(mirror);
         }
         extremity = true;
+    }
+
+    /**
+     * Set the landscape reference.
+     * 
+     * @param landscape The landscape reference.
+     */
+    public void setLandscape(Landscape landscape)
+    {
+        this.landscape = landscape;
     }
 
     /**
@@ -344,7 +333,7 @@ public final class Valdyn
                 mirror(true);
             }
         }
-        shade.setMirror(getMirror());
+        attack.updateMirror(getMirror());
     }
 
     /**
@@ -430,55 +419,13 @@ public final class Valdyn
     }
 
     /**
-     * Update the shade animation.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    private void updateAnimationShade(double extrp)
-    {
-        final TypeState state = status.getState();
-        if (status.stateChanged())
-        {
-            if (shades.containsKey(state))
-            {
-                shadeCanBePlayed = true;
-            }
-            else
-            {
-                shade.stopAnimation();
-            }
-        }
-        if (shadeCanBePlayed && shadesEnabled.containsKey(state))
-        {
-            final int index = getFrame() - getDataAnimation(state.getAnimationName()).getFirst();
-            if (index >= shadesEnabled.get(state).intValue())
-            {
-                shade.play(shades.get(state));
-                shadeCanBePlayed = false;
-            }
-        }
-        shade.updateAnimation(extrp);
-    }
-
-    /**
-     * Add a shade animation for the sword attack effect.
-     * 
-     * @param state The state enum.
-     * @param startAtFrame The frame index (relative to current animation) where it should start.
-     */
-    private void addShadeAnimation(TypeValdynState state, int startAtFrame)
-    {
-        shades.put(state, getDataAnimation("shade_" + state.getAnimationName()));
-        shadesEnabled.put(state, Integer.valueOf(startAtFrame));
-    }
-
-    /**
      * Check the collision on the extremity.
      * 
      * @param offsetX The offset collision.
      * @param mirror The mirror to apply.
+     * @return The tile hit.
      */
-    private void checkCollisionExtremity(int offsetX, boolean mirror)
+    private Tile checkCollisionExtremity(int offsetX, boolean mirror)
     {
         setCollisionOffset(offsetX, 0);
         final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
@@ -490,6 +437,7 @@ public final class Valdyn
         {
             updateExtremity(mirror);
         }
+        return tile;
     }
 
     /**
@@ -529,7 +477,7 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
-        teleport(1200, 700);
+        teleport(2100, 300);
         camera.resetInterval(this);
     }
 
@@ -541,10 +489,7 @@ public final class Valdyn
         if (render || hurtEffectCounter == 0)
         {
             super.render(g, camera);
-            if (shade.getAnimState() == AnimState.PLAYING)
-            {
-                renderAnim(g, shade, camera);
-            }
+            attack.render(g, camera);
         }
     }
 
@@ -695,24 +640,29 @@ public final class Valdyn
         }
 
         // Vertical collision
-        if (getDiffVertical() < 0 || isOnGround())
-        {
-            checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true); // Left leg;
-            checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false); // Left leg;
-            setCollisionOffset(0, 0);
-            final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
-            final boolean found = checkCollisionVertical(tile);
-            tilt.updateCollisions(found, tile);
-        }
+        final Tile tileRight = checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true);
+        final Tile tileLeft = checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false);
+        setCollisionOffset(0, 0);
+        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
+        final boolean found = checkCollisionVertical(tile);
+        tilt.updateCollisions(found, tile);
+        setCollisionOffset(0, 0);
+
+        // Special fix for slide from ground
+        tilt.updateCollisionSlideGroundTransition(tileLeft, tileRight, tile);
+
+        // Horizontal collision
+        // TODO: horizontal collisions
 
         attack.updateCollisions();
         legCollision.updateCollision();
 
         // Kill when fall down
-        if (getLocationY() < 0)
+        final double waterHeight = landscape.getWaterHeight() - getHeight() * 1.5;
+        if (getLocationY() < waterHeight)
         {
             kill();
-            setLocationY(0);
+            teleportY(waterHeight);
         }
     }
 
@@ -725,6 +675,6 @@ public final class Valdyn
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
             setAnimSpeed(speed);
         }
-        updateAnimationShade(extrp);
+        attack.updateAnimationShade(extrp);
     }
 }

@@ -18,11 +18,11 @@
 	<collision name="SLIDE_RIGHT_1" type="SLIDE" pattern="4" start="177" end="180"/>
 	<collision name="SLIDE_RIGHT_2" type="SLIDE" pattern="4" start="181" end="184"/>
 	<collision name="SLIDE_RIGHT_3" type="SLIDE" pattern="4" start="185" end="186"/>
-	<collision name="SLIDE_RIGHT_GROUND" type="SLIDE" pattern="4" start="201" end="201"/>
+	<collision name="SLIDE_RIGHT_GROUND_SLIDE" type="SLIDE" pattern="4" start="201" end="201"/>
 	<collision name="SLIDE_LEFT_1" type="SLIDE" pattern="4" start="187" end="190"/>
 	<collision name="SLIDE_LEFT_2" type="SLIDE" pattern="4" start="191" end="194"/>
 	<collision name="SLIDE_LEFT_3" type="SLIDE" pattern="4" start="195" end="196"/>
-	<collision name="SLIDE_LEFT_GROUND" type="SLIDE" pattern="4" start="202" end="202"/>
+	<collision name="SLIDE_LEFT_GROUND_SLIDE" type="SLIDE" pattern="4" start="202" end="202"/>
 	<collision name="LIANA_STEEP_RIGHT_1" type="LIANA_STEEP" pattern="5" start="1" end="8"/>
 	<collision name="LIANA_STEEP_RIGHT_2" type="LIANA_STEEP" pattern="5" start="9" end="16"/>
 	<collision name="LIANA_STEEP_LEFT_1" type="LIANA_STEEP" pattern="5" start="17" end="26"/>

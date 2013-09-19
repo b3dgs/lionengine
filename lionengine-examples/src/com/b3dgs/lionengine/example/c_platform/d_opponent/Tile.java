@@ -50,7 +50,7 @@ final class Tile
                 final int left = getLeft();
                 if (localizable.getLocationX() >= left)
                 {
-                    return Double.valueOf(left - 5);
+                    return Double.valueOf(left);
                 }
             }
             // From right
@@ -59,7 +59,7 @@ final class Tile
                 final int right = getRight();
                 if (localizable.getLocationX() <= right)
                 {
-                    return Double.valueOf(right + 5);
+                    return Double.valueOf(right);
                 }
             }
         }
@@ -77,5 +77,11 @@ final class Tile
             return Double.valueOf(top);
         }
         return null;
+    }
+
+    @Override
+    public int getTop()
+    {
+        return super.getTop() - 8;
     }
 }

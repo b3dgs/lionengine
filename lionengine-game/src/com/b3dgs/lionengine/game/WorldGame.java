@@ -71,12 +71,6 @@ import com.b3dgs.lionengine.input.Mouse;
  *         // Render routine
  *         world.render(g);
  *     }
- * 
- *     &#064;Override
- *     protected void onTerminate()
- *     {
- *         // Called when sequence is closing, optional
- *     }
  * }
  * </pre>
  */
@@ -161,11 +155,6 @@ public abstract class WorldGame
     protected abstract void loading(FileReading file) throws IOException;
 
     /**
-     * Called when world is loaded.
-     */
-    protected abstract void loaded();
-
-    /**
      * Save world to the specified file.
      * 
      * @param media The output media.
@@ -197,6 +186,5 @@ public abstract class WorldGame
         {
             throw new LionEngineException(exception, media, "Error on loading from file !");
         }
-        loaded();
     }
 }

@@ -24,6 +24,8 @@ final class Water
     final int screenWidth;
     /** Screen height. */
     final int screenHeight;
+    /** Water top. */
+    double top;
     /** Standard height. */
     private final int nominal;
     /** Water height. */
@@ -72,6 +74,16 @@ final class Water
     public void renderFront(Graphic g)
     {
         renderComponent(1, g);
+    }
+
+    /**
+     * Get the top of the water.
+     * 
+     * @return The top of the water.
+     */
+    public double getTop()
+    {
+        return height + top;
     }
 
     /**
@@ -146,6 +158,7 @@ final class Water
             final Sprite sprite = Drawable.loadSprite(Media.get(path, "calc.png"));
             sprite.load(false);
             data = new BackgroundElement(0, water.getNominal(), sprite);
+            top = data.getSprite().getHeight();
             this.water = water;
         }
 

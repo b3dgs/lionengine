@@ -64,6 +64,16 @@ public class Landscape
     }
 
     /**
+     * Get the current water height.
+     * 
+     * @return The current water height.
+     */
+    public double getWaterHeight()
+    {
+        return foreground.getTop();
+    }
+
+    /**
      * Get the landscape type.
      * 
      * @return The landscape type.

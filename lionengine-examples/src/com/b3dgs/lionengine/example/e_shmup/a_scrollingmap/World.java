@@ -91,12 +91,6 @@ final class World
     }
 
     @Override
-    protected void loaded()
-    {
-        // Nothing to do
-    }
-
-    @Override
     protected void saving(FileWriting file) throws IOException
     {
         map.save(file);
