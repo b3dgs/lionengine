@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.projectile;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeProjectile;
+import com.b3dgs.lionengine.example.d_rts.d_ability.ProjectileType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
@@ -10,10 +10,10 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
  * Launcher base implementation.
  */
 public final class LauncherProjectile
-        extends LauncherProjectileGame<TypeProjectile, Entity, Weapon, Projectile>
+        extends LauncherProjectileGame<ProjectileType, Entity, Weapon, Projectile>
 {
     /** Type projectile. */
-    private final TypeProjectile type;
+    private final ProjectileType type;
     /** The projectile frame. */
     private int frame;
 
@@ -23,7 +23,7 @@ public final class LauncherProjectile
      * @param type The projectile type.
      * @param context The context factory.
      */
-    public LauncherProjectile(TypeProjectile type, Context context)
+    public LauncherProjectile(ProjectileType type, Context context)
     {
         super(context.factoryProjectile, context.handlerProjectile);
         this.type = type;

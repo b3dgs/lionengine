@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
  * Tile implementation.
  */
 final class Tile
-        extends TileRts<TileCollision, TypeResource>
+        extends TileRts<TileCollision, ResourceType>
 {
     /**
      * Constructor.
@@ -24,11 +24,11 @@ final class Tile
      */
 
     @Override
-    public TileCollision getCollisionFrom(String collision, String type)
+    public TileCollision getCollisionFrom(String collision)
     {
         try
         {
-            return TileCollision.valueOf(type);
+            return TileCollision.valueOf(collision);
         }
         catch (IllegalArgumentException
                | NullPointerException exception)
@@ -40,7 +40,7 @@ final class Tile
     @Override
     public void checkResourceType(TileCollision collision)
     {
-        setResourceType(TypeResource.NONE);
+        setResourceType(ResourceType.NONE);
     }
 
     @Override
@@ -52,6 +52,6 @@ final class Tile
     @Override
     public boolean hasResources()
     {
-        return getResourceType() != TypeResource.NONE;
+        return getResourceType() != ResourceType.NONE;
     }
 }

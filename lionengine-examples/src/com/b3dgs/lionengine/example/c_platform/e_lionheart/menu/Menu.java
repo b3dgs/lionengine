@@ -110,11 +110,11 @@ public class Menu
     /** Choice pressed flag. */
     private boolean choicePressed;
     /** Current menu. */
-    private TypeMenu menu;
+    private MenuType menu;
     /** Next menu. */
-    private TypeMenu menuNext;
+    private MenuType menuNext;
     /** Current menu transition. */
-    private TypeTransition transition;
+    private TransitionType transition;
 
     /**
      * Constructor.
@@ -146,10 +146,10 @@ public class Menu
         // Main menu
         Choice[] choices = new Choice[]
         {
-                new Choice(text, wideFactor, "Start Game", 160, 74, Align.CENTER, TypeMenu.NEW),
-                new Choice(text, wideFactor, "Options", 160, 92, Align.CENTER, TypeMenu.OPTIONS),
-                new Choice(text, wideFactor, "Introduction", 160, 112, Align.CENTER, TypeMenu.MAIN),
-                new Choice(text, wideFactor, "Exit", 160, 140, Align.CENTER, TypeMenu.EXIT)
+                new Choice(text, wideFactor, "Start Game", 160, 74, Align.CENTER, MenuType.NEW),
+                new Choice(text, wideFactor, "Options", 160, 92, Align.CENTER, MenuType.OPTIONS),
+                new Choice(text, wideFactor, "Introduction", 160, 112, Align.CENTER, MenuType.MAIN),
+                new Choice(text, wideFactor, "Exit", 160, 140, Align.CENTER, MenuType.EXIT)
         };
         menusData[0] = new Data(text, wideFactor, "Main", false, choices);
 
@@ -159,7 +159,7 @@ public class Menu
                 new Choice(text, wideFactor, "Difficulty", 104, 86, Align.LEFT),
                 new Choice(text, wideFactor, "Sound", 104, 102, Align.LEFT),
                 new Choice(text, wideFactor, "Controls", 104, 118, Align.LEFT),
-                new Choice(text, wideFactor, "Back", 160, 140, Align.CENTER, TypeMenu.MAIN)
+                new Choice(text, wideFactor, "Back", 160, 140, Align.CENTER, MenuType.MAIN)
         };
         menusData[1] = new Data(text, wideFactor, "Options", true, choices);
 
@@ -172,12 +172,12 @@ public class Menu
                 new Choice(text, wideFactor, "Left", 172, 90, Align.LEFT),
                 new Choice(text, wideFactor, "Right", 172, 106, Align.LEFT),
                 new Choice(text, wideFactor, "Look", 172, 125, Align.LEFT),
-                new Choice(text, wideFactor, "Back", 160, 160, Align.CENTER, TypeMenu.OPTIONS)
+                new Choice(text, wideFactor, "Back", 160, 160, Align.CENTER, MenuType.OPTIONS)
         };
         menusData[2] = new Data(text, wideFactor, "Keys", true, choices);
 
-        menu = TypeMenu.MAIN;
-        transition = TypeTransition.IN;
+        menu = MenuType.MAIN;
+        transition = TransitionType.IN;
         pic = 0;
         alpha = 255.0;
         choice = 0;
@@ -229,7 +229,7 @@ public class Menu
     private void updateMenuNavigation(int menuId)
     {
         final int choiceOld = choice;
-        if (menu == TypeMenu.KEYS)
+        if (menu == MenuType.KEYS)
         {
             if (!waitKey && !choicePressed)
             {
@@ -272,17 +272,17 @@ public class Menu
         {
             // Play sound select
         }
-        TypeMenu next = data.choices[choice].next;
+        MenuType next = data.choices[choice].next;
         // Go to menu key
-        if (menu == TypeMenu.OPTIONS)
+        if (menu == MenuType.OPTIONS)
         {
             if (choice == 2)
             {
-                next = TypeMenu.KEYS;
+                next = MenuType.KEYS;
             }
         }
         // Save keys
-        if (menu == TypeMenu.KEYS)
+        if (menu == MenuType.KEYS)
         {
             if (choice == 6)
             {
@@ -293,7 +293,7 @@ public class Menu
         if (next != null && isPressed(Menu.KEYS[2], Keyboard.SPACE, Keyboard.ENTER, Keyboard.CONTROL))
         {
             menuNext = next;
-            transition = TypeTransition.OUT;
+            transition = TransitionType.OUT;
             txtAlpha = 0.0;
         }
     }
@@ -329,8 +329,8 @@ public class Menu
         // Entering game
         if (canStart && keyboard.used())
         {
-            transition = TypeTransition.OUT;
-            menuNext = TypeMenu.GAME;
+            transition = TransitionType.OUT;
+            menuNext = MenuType.GAME;
             firstLoaded = false;
         }
     }
@@ -426,7 +426,7 @@ public class Menu
                 if (alpha < 0.0 - Menu.ALPHA_STEP)
                 {
                     alpha = 0.0;
-                    transition = TypeTransition.NONE;
+                    transition = TransitionType.NONE;
                 }
                 break;
             // Ready to navigate inside the current menu
@@ -444,7 +444,7 @@ public class Menu
                 {
                     alpha = 255.0;
                     menu = menuNext;
-                    transition = TypeTransition.IN;
+                    transition = TransitionType.IN;
                     choice = 0;
                 }
                 break;
@@ -509,15 +509,15 @@ public class Menu
      */
     private int getMenuID()
     {
-        if (menu == TypeMenu.MAIN)
+        if (menu == MenuType.MAIN)
         {
             return 0;
         }
-        else if (menu == TypeMenu.OPTIONS)
+        else if (menu == MenuType.OPTIONS)
         {
             return 1;
         }
-        else if (menu == TypeMenu.KEYS)
+        else if (menu == MenuType.KEYS)
         {
             return 2;
         }
@@ -585,7 +585,7 @@ public class Menu
             menusData[id].render(g, choice);
         }
         renderMenus(g, id);
-        if (transition != TypeTransition.NONE)
+        if (transition != TransitionType.NONE)
         {
             final int a = UtilityMath.fixBetween((int) alpha, 0, 255);
             g.setColor(Menu.ALPHAS[a]);

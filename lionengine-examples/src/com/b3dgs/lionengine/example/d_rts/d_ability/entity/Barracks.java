@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
@@ -16,6 +16,6 @@ final class Barracks
      */
     Barracks(Context context)
     {
-        super(TypeEntity.barracks_orc, context);
+        super(EntityType.BARRACKS_ORC, context);
     }
 }

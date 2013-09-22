@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -64,10 +65,13 @@ final class Mario
     public void respawn()
     {
         mirror(false);
-        setLocation(80, 32);
+        teleport(80, 25);
         timerDie.stop();
         stepDie = 0;
         dead = false;
+        movement.reset();
+        jumpForce.setForce(Force.ZERO);
+        resetGravity();
     }
 
     /*

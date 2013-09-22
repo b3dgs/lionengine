@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
@@ -18,7 +18,7 @@ final class Move
      */
     Move(SetupSkill setup)
     {
-        super(TypeSkill.move_orc, setup);
+        super(SkillType.MOVE_ORC, setup);
         setOrder(true);
     }
 

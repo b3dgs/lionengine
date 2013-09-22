@@ -24,7 +24,7 @@ abstract class Entity
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    Entity(TypeEntity id, Context context)
+    Entity(EntityType id, Context context)
     {
         super(context.factory.getSetup(id), context.map);
         map = context.map;

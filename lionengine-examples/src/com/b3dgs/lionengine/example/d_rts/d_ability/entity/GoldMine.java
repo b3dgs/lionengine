@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeResource;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
+import com.b3dgs.lionengine.example.d_rts.d_ability.ResourceType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 
@@ -11,12 +11,12 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
  */
 public final class GoldMine
         extends Building
-        implements Extractible<TypeResource>
+        implements Extractible<ResourceType>
 {
     /** Gold amount. */
     private final Alterable gold;
     /** Resource type. */
-    private final TypeResource typeResource;
+    private final ResourceType typeResource;
 
     /**
      * Constructor.
@@ -25,8 +25,8 @@ public final class GoldMine
      */
     GoldMine(Context context)
     {
-        super(TypeEntity.gold_mine, context);
-        typeResource = TypeResource.GOLD;
+        super(EntityType.GOLD_MINE, context);
+        typeResource = ResourceType.GOLD;
         gold = new Alterable(50000);
         setFrame(1);
     }
@@ -58,7 +58,7 @@ public final class GoldMine
     }
 
     @Override
-    public TypeResource getResourceType()
+    public ResourceType getResourceType()
     {
         return typeResource;
     }

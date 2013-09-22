@@ -23,10 +23,10 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCategory;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCategory;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.UtilitySwing;
@@ -52,7 +52,7 @@ public class EntitySelector
     /** Landscape panel. */
     final JPanel landscape;
     /** Entity category icons list. */
-    private final EnumMap<TypeEntityCategory, List<Image>> icons;
+    private final EnumMap<EntityCategory, List<Image>> icons;
     /** Entity selector panel. */
     private final JPanel panel;
     /** Landscape combo. */
@@ -67,9 +67,9 @@ public class EntitySelector
     {
         super();
         this.editor = editor;
-        icons = new EnumMap<>(TypeEntityCategory.class);
+        icons = new EnumMap<>(EntityCategory.class);
         tabbedPane = new JTabbedPane();
-        for (final TypeEntityCategory category : TypeEntityCategory.values())
+        for (final EntityCategory category : EntityCategory.values())
         {
             icons.put(category, new ArrayList<Image>(8));
         }
@@ -88,39 +88,39 @@ public class EntitySelector
      * 
      * @param world World type.
      */
-    void loadEntities(TypeWorld world)
+    void loadEntities(WorldType world)
     {
         landscape.removeAll();
         landscapeCombo = UtilitySwing.addMenuCombo("Landscape", landscape,
-                ComboItem.get(ComboItem.get(TypeLandscape.getWorldLandscape(world))), new ActionCombo()
+                ComboItem.get(ComboItem.get(LandscapeType.getWorldLandscape(world))), new ActionCombo()
                 {
                     @Override
                     public void action(Object item)
                     {
-                        final TypeLandscape landscape = (TypeLandscape) ((ComboItem) item).getObject();
+                        final LandscapeType landscape = (LandscapeType) ((ComboItem) item).getObject();
                         editor.world.level.setLandscape(landscape);
                     }
                 });
         landscape.add(landscapeCombo);
         tabbedPane.removeAll();
-        editor.world.factoryEntity.loadAll(TypeEntity.values());
-        TypeLandscape landscape = editor.world.level.getLandscape();
+        editor.world.factoryEntity.loadAll(EntityType.values());
+        LandscapeType landscape = editor.world.level.getLandscape();
         if (landscape == null)
         {
-            landscape = TypeLandscape.get(0);
+            landscape = LandscapeType.get(0);
         }
         landscapeCombo.setSelectedIndex(landscape.getIndex());
         int max = 0;
-        for (final TypeEntityCategory category : TypeEntityCategory.values())
+        for (final EntityCategory category : EntityCategory.values())
         {
-            if (category == TypeEntityCategory.PLAYER)
+            if (category == EntityCategory.PLAYER)
             {
                 continue;
             }
             final List<Image> ico = icons.get(category);
             ico.clear();
             int length = 0;
-            for (final TypeEntity entity : TypeEntity.values())
+            for (final EntityType entity : EntityType.values())
             {
                 if (entity.getCategory() == category)
                 {
@@ -227,7 +227,7 @@ public class EntitySelector
             y = my / iconSize * iconSize;
             final int size = icons.size();
             final int num = x / iconSize + 1 + y / iconSize * EntitySelector.COLUMNS;
-            final TypeEntityCategory[] categories = TypeEntityCategory.values();
+            final EntityCategory[] categories = EntityCategory.values();
             if (num <= size && x < EntitySelector.COLUMNS * iconSize && mx > 0)
             {
                 g.setColor(EntitySelector.SELECT);
@@ -241,8 +241,8 @@ public class EntitySelector
                     {
                         total += categories[i].getCount();
                     }
-                    editor.setSelectedEntity(TypeEntity.values()[total + num - 1]);
-                    editor.setSelectionState(TypeSelection.PLACE);
+                    editor.setSelectedEntity(EntityType.values()[total + num - 1]);
+                    editor.setSelectionState(SelectionType.PLACE);
                     editor.repaint();
                 }
             }

@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.HandlerEntity;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.UnitAttacker;
 import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -25,7 +25,7 @@ final class AttackAxe
      */
     AttackAxe(SetupSkill setup, HandlerEntity handler)
     {
-        super(TypeSkill.attack_axe, setup);
+        super(SkillType.ATTACK_AXE, setup);
         this.handler = handler;
         setOrder(true);
     }

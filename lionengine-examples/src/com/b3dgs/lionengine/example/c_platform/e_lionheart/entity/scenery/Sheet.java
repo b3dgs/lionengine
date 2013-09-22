@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 
 /**
  * Sheet scenery implementation.
@@ -16,6 +16,6 @@ public final class Sheet
      */
     public Sheet(Context context)
     {
-        super(context, TypeEntity.SHEET);
+        super(context, EntityType.SHEET);
     }
 }

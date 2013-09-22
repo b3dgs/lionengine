@@ -102,12 +102,12 @@ final class World
         handlerEntity.createLayers(map);
         factoryEntity.setContext(context);
 
-        Entity peon = factoryEntity.createEntity(TypeEntity.peon);
+        Entity peon = factoryEntity.createEntity(EntityType.PEON);
         peon.setLocation(8, 10);
         peon.setOrientation(Orientation.EAST);
         handlerEntity.add(peon);
 
-        peon = factoryEntity.createEntity(TypeEntity.peon);
+        peon = factoryEntity.createEntity(EntityType.PEON);
         peon.setLocation(14, 8);
         peon.setOrientation(Orientation.NORTH_WEST);
         handlerEntity.add(peon);

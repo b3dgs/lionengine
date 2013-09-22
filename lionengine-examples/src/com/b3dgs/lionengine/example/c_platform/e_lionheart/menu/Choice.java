@@ -14,7 +14,7 @@ final class Choice
     /** Vertical location. */
     final int y;
     /** Next menu pointer. */
-    final TypeMenu next;
+    final MenuType next;
     /** Text reference. */
     private final Text text;
     /** Choice name. */
@@ -48,7 +48,7 @@ final class Choice
      * @param align The text align.
      * @param next The next menu pointer.
      */
-    Choice(Text text, int wideFactor, String name, int x, int y, Align align, TypeMenu next)
+    Choice(Text text, int wideFactor, String name, int x, int y, Align align, MenuType next)
     {
         this.text = text;
         this.name = name;

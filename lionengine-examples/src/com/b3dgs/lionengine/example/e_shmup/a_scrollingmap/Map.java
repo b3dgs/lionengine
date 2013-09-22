@@ -5,13 +5,13 @@ import com.b3dgs.lionengine.game.shmup.MapTileShmup;
 /**
  * Map implementation.
  */
-public class Map
+final class Map
         extends MapTileShmup<TileCollision, Tile>
 {
     /**
      * Constructor. Tiles are stored in 'tiles' directory, with a size of 16*16
      */
-    public Map()
+    Map()
     {
         super(24, 28);
     }

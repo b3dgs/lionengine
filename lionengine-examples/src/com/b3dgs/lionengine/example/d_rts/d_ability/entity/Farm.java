@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 
 /**
  * Farm building implementation.
@@ -16,6 +16,6 @@ final class Farm
      */
     Farm(Context context)
     {
-        super(TypeEntity.farm_orc, context);
+        super(EntityType.FARM_ORC, context);
     }
 }

@@ -24,7 +24,7 @@ final class Tile
      */
 
     @Override
-    public TileCollision getCollisionFrom(String collision, String type)
+    public TileCollision getCollisionFrom(String collision)
     {
         return TileCollision.NONE;
     }

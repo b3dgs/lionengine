@@ -4,8 +4,8 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -35,7 +35,7 @@ public abstract class EntityTurning
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityTurning(Context context, TypeEntity type)
+    public EntityTurning(Context context, EntityType type)
     {
         super(context, type);
         timerShake = new Timing();
@@ -101,7 +101,7 @@ public abstract class EntityTurning
                 {
                     shakeCounter = 0;
                     shake = false;
-                    status.setState(TypeEntityState.IDLE);
+                    status.setState(EntityState.IDLE);
                     effectSide = 1;
                     timerShake.start();
                 }
@@ -111,7 +111,7 @@ public abstract class EntityTurning
             {
                 shakeCounter = 5;
                 timerShake.stop();
-                status.setState(TypeEntityState.TURN);
+                status.setState(EntityState.TURN);
             }
         }
     }

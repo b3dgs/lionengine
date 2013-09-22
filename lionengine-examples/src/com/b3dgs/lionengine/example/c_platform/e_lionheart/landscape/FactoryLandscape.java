@@ -38,14 +38,14 @@ public final class FactoryLandscape
      * @param landscape The landscape type.
      * @return The landscape instance.
      */
-    public Landscape createLandscape(TypeLandscape landscape)
+    public Landscape createLandscape(LandscapeType landscape)
     {
         switch (landscape.getWorld())
         {
             case SWAMP:
             {
                 final BackgroundPlatform background = new Swamp(config, wide, landscape.getTheme(), flicker);
-                final Water foreground = new Water(config, wide, landscape.getForeground().getTheme());
+                final Foreground foreground = new Foreground(config, wide, landscape.getForeground().getTheme());
                 return new Landscape(landscape, background, foreground);
             }
             default:

@@ -36,7 +36,7 @@ public interface Patroller
      * 
      * @param type The movement to enable.
      */
-    void enableMovement(TypePatrol type);
+    void enableMovement(Patrol type);
 
     /**
      * Set the movement side.
@@ -50,7 +50,7 @@ public interface Patroller
      * 
      * @param movement The movement type.
      */
-    void setPatrolType(TypePatrol movement);
+    void setPatrolType(Patrol movement);
 
     /**
      * Set the first move.
@@ -92,7 +92,7 @@ public interface Patroller
      * 
      * @return The movement type.
      */
-    TypePatrol getPatrolType();
+    Patrol getPatrolType();
 
     /**
      * Get the first move.
@@ -156,5 +156,5 @@ public interface Patroller
      * @param type The movement type.
      * @return <code>true</code> if enabled, <code>false</code> else.
      */
-    boolean isPatrolEnabled(TypePatrol type);
+    boolean isPatrolEnabled(Patrol type);
 }

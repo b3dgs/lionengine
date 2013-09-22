@@ -262,7 +262,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         final int y = file.readInteger() * tileHeight;
         final T tile = createTile(tileWidth, tileHeight);
 
-        tile.setCollision(tile.getCollisionFrom(null, null));
+        tile.setCollision(tile.getCollisionFrom(null));
         tile.setPattern(Integer.valueOf(pattern));
         tile.setNumber(number);
         tile.setX(x);
@@ -350,7 +350,6 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         for (final XmlNode child : root.getChildren())
         {
             final String name = child.readString("name");
-            final String type = child.readString("type");
             final int pattern = child.readInteger("pattern");
             final int start = child.readInteger("start");
             final int end = child.readInteger("end");
@@ -366,7 +365,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                         {
                             if (number + 1 >= start && number + 1 <= end)
                             {
-                                tile.setCollision(tile.getCollisionFrom(name, type));
+                                tile.setCollision(tile.getCollisionFrom(name));
                                 onCollisionAssigned(tile);
                             }
                         }

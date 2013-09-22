@@ -41,7 +41,7 @@ public final class Scene
      * 
      * @param level The level to load.
      */
-    private void loadLevel(TypeLevel level)
+    private void loadLevel(LevelType level)
     {
         world.loadFromFile(Media.get(AppLionheart.LEVELS_DIR, level.getFilename()));
     }
@@ -51,10 +51,10 @@ public final class Scene
      * 
      * @return The next level.
      */
-    private TypeLevel getNextLevel()
+    private LevelType getNextLevel()
     {
         lastLevelIndex++;
-        return TypeLevel.values()[lastLevelIndex % TypeLevel.LEVELS_NUMBER];
+        return LevelType.values()[lastLevelIndex % LevelType.LEVELS_NUMBER];
     }
 
     /*

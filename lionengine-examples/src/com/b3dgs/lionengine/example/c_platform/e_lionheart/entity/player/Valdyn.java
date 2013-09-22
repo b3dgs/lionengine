@@ -4,16 +4,16 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.State;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
@@ -97,7 +97,7 @@ public final class Valdyn
      */
     public Valdyn(Context context)
     {
-        super(context, TypeEntity.VALDYN);
+        super(context, EntityType.VALDYN);
         camera = context.camera;
         timerJump = new Timing();
         timerFall = new Timing();
@@ -109,8 +109,8 @@ public final class Valdyn
         sensibilityIncrease = getDataDouble("sensibilityIncrease", "data", "movement");
         sensibilityDecrease = getDataDouble("sensibilityDecrease", "data", "movement");
         setFrameOffsets(0, -2);
-        loadCollisions(TypeValdynCollision.values());
-        loadAnimations(TypeValdynState.values());
+        loadCollisions(ValdynCollision.values());
+        loadAnimations(ValdynState.values());
         legCollision = new CollidableModel(this);
         legCollision.setCollision(getDataCollision("leg"));
         stats = new Stats(this);
@@ -127,14 +127,14 @@ public final class Valdyn
     {
         if (!isDead())
         {
-            for (final TypeEntityAction action : TypeEntityAction.VALUES)
+            for (final EntityAction action : EntityAction.VALUES)
             {
                 actions.put(action, Boolean.valueOf(keyboard.isPressed(action.getKey())));
             }
-            keyLeft = isEnabled(TypeEntityAction.MOVE_LEFT);
-            keyRight = isEnabled(TypeEntityAction.MOVE_RIGHT);
-            keyUp = isEnabled(TypeEntityAction.JUMP);
-            keyDown = isEnabled(TypeEntityAction.MOVE_DOWN);
+            keyLeft = isEnabled(EntityAction.MOVE_LEFT);
+            keyRight = isEnabled(EntityAction.MOVE_RIGHT);
+            keyUp = isEnabled(EntityAction.JUMP);
+            keyDown = isEnabled(EntityAction.MOVE_DOWN);
         }
         else
         {
@@ -153,7 +153,7 @@ public final class Valdyn
      */
     public void updateExtremity(boolean mirror)
     {
-        if (!crouch && status.getState() == TypeValdynState.BORDER)
+        if (!crouch && status.getState() == ValdynState.BORDER)
         {
             mirror(mirror);
         }
@@ -311,7 +311,7 @@ public final class Valdyn
                         tilt.updateActionJumpSlide(jumpForce, jumpHeightMax);
                         jumped = true;
                     }
-                    status.setCollision(TypeEntityCollisionTile.NONE);
+                    status.setCollision(EntityCollisionTile.NONE);
                 }
             }
             else
@@ -366,23 +366,23 @@ public final class Valdyn
     {
         if (crouch)
         {
-            status.setState(TypeValdynState.CROUCH);
+            status.setState(ValdynState.CROUCH);
         }
         else if (mirror && keyRight && diffHorizontal < 0.0 || !mirror && keyLeft && diffHorizontal > 0.0)
         {
-            status.setState(TypeEntityState.TURN);
+            status.setState(EntityState.TURN);
         }
         else if (diffHorizontal != 0.0)
         {
-            status.setState(TypeEntityState.WALK);
+            status.setState(EntityState.WALK);
         }
         else if (extremity)
         {
-            status.setState(TypeValdynState.BORDER);
+            status.setState(ValdynState.BORDER);
         }
         else
         {
-            status.setState(TypeEntityState.IDLE);
+            status.setState(EntityState.IDLE);
         }
     }
 
@@ -393,11 +393,11 @@ public final class Valdyn
     {
         if (stepDie == 0 || getLocationY() < 0)
         {
-            status.setState(TypeEntityState.DIE);
+            status.setState(EntityState.DIE);
         }
         else
         {
-            status.setState(TypeEntityState.DEAD);
+            status.setState(EntityState.DEAD);
         }
     }
 
@@ -427,7 +427,7 @@ public final class Valdyn
     {
         if (!timerFallen.isStarted())
         {
-            if (status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.GROUND))
+            if (status.collisionChangedFromTo(EntityCollisionTile.NONE, EntityCollisionTile.GROUND))
             {
                 timerFallen.start();
             }
@@ -448,7 +448,7 @@ public final class Valdyn
     private Tile checkCollisionExtremity(int offsetX, boolean mirror)
     {
         setCollisionOffset(offsetX, 0);
-        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         if (tile != null && tile.isBorder())
         {
             checkCollisionVertical(tile);
@@ -473,7 +473,7 @@ public final class Valdyn
         {
             final int tx = getLocationIntX() - tile.getX() + Valdyn.TILE_EXTREMITY_WIDTH * side;
             final Tile next = map.getTile(tile.getX() / map.getTileWidth() + side, tile.getY() / map.getTileHeight());
-            final boolean noNext = next == null || TypeTileCollision.NONE == next.getCollision();
+            final boolean noNext = next == null || TileCollision.NONE == next.getCollision();
             if (side == -1)
             {
                 return noNext && tx <= Valdyn.TILE_EXTREMITY_WIDTH;
@@ -497,7 +497,7 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
-        teleport(750, 300);
+        teleport(2100, 300);
         camera.resetInterval(this);
     }
 
@@ -524,7 +524,7 @@ public final class Valdyn
     @Override
     public void hitBy(Entity entity)
     {
-        if (!timerHurt.isStarted() && entity instanceof EntityMonster)
+        if (!timerHurt.isStarted())
         {
             resetGravity();
             jumpForce.setForce(0.0, jumpHeightMax * 0.8);
@@ -536,7 +536,7 @@ public final class Valdyn
     @Override
     public void hitThat(Entity entity)
     {
-        if (entity instanceof EntityMonster && status.getState() == TypeValdynState.ATTACK_FALL)
+        if (entity instanceof EntityMonster && status.getState() == ValdynState.ATTACK_FALL)
         {
             resetGravity();
             jumpForce.setForce(0.0, jumpHeightMax * 0.8);
@@ -576,7 +576,7 @@ public final class Valdyn
     protected void updateStates()
     {
         final double diffHorizontal = getHorizontalForce();
-        if (!attack.isAttacking() || status.getState() == TypeValdynState.ATTACK_FALL || isSliding() || isLiana())
+        if (!attack.isAttacking() || status.getState() == ValdynState.ATTACK_FALL || isSliding() || isLiana())
         {
             updateStateMirror(diffHorizontal);
         }
@@ -585,7 +585,7 @@ public final class Valdyn
         final boolean mirror = getMirror();
         if (timerHurt.isStarted() && !timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT))
         {
-            status.setState(TypeEntityState.HURT);
+            status.setState(EntityState.HURT);
         }
         else if (attack.updateStates())
         {
@@ -597,15 +597,15 @@ public final class Valdyn
         }
         else if (isFalling())
         {
-            status.setState(TypeEntityState.FALL);
+            status.setState(EntityState.FALL);
         }
         else if (isJumping())
         {
-            status.setState(TypeEntityState.JUMP);
+            status.setState(EntityState.JUMP);
         }
         else if (timerFallen.isStarted())
         {
-            status.setState(TypeEntityState.FALLEN);
+            status.setState(EntityState.FALLEN);
         }
         else if (isOnGround())
         {
@@ -632,19 +632,16 @@ public final class Valdyn
         if (timerDie.elapsed(500))
         {
             resetGravity();
-            if (stepDie == 1)
+            if (stepDie == 1 && timerDie.elapsed(1500))
             {
-                if (timerDie.elapsed(1500))
+                stats.decreaseLife();
+                if (stats.getLife() > 0)
                 {
-                    stats.decreaseLife();
-                    if (stats.getLife() > 0)
-                    {
-                        respawn();
-                    }
-                    else
-                    {
-                        destroy();
-                    }
+                    respawn();
+                }
+                else
+                {
+                    destroy();
                 }
             }
         }
@@ -656,14 +653,14 @@ public final class Valdyn
         extremity = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(50))
         {
-            status.setCollision(TypeEntityCollisionTile.NONE);
+            status.setCollision(EntityCollisionTile.NONE);
         }
 
         // Vertical collision
-        final Tile tileRight = checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true);
-        final Tile tileLeft = checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false);
+        Tile tileRight = checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true);
+        Tile tileLeft = checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false);
         setCollisionOffset(0, 0);
-        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
         final boolean found = checkCollisionVertical(tile);
         tilt.updateCollisions(found, tile);
         setCollisionOffset(0, 0);
@@ -672,7 +669,9 @@ public final class Valdyn
         tilt.updateCollisionSlideGroundTransition(tileLeft, tileRight, tile);
 
         // Horizontal collision
-        // TODO: horizontal collisions
+        tileRight = checkCollisionHorizontal(Valdyn.TILE_EXTREMITY_WIDTH * 2);
+        tileLeft = checkCollisionHorizontal(-Valdyn.TILE_EXTREMITY_WIDTH * 2);
+        // TODO: Hurt when hit spikes (not the border)
 
         attack.updateCollisions();
         legCollision.updateCollision();
@@ -689,8 +688,8 @@ public final class Valdyn
     @Override
     protected void updateAnimations(double extrp)
     {
-        final TypeState state = status.getState();
-        if (state == TypeEntityState.WALK || state == TypeEntityState.TURN || state == TypeValdynState.LIANA_SLIDE)
+        final State state = status.getState();
+        if (state == EntityState.WALK || state == EntityState.TURN || state == ValdynState.LIANA_SLIDE)
         {
             final double speed = Math.abs(getHorizontalForce()) / Valdyn.ANIM_WALK_SPEED_DIVISOR;
             setAnimSpeed(speed);

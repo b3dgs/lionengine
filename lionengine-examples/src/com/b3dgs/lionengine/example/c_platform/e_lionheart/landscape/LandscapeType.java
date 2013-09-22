@@ -1,0 +1,139 @@
+package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
+
+/**
+ * Types of landscapes.
+ */
+public enum LandscapeType
+{
+    /** Swamp dusk. */
+    SWAMP_DUSK(0, WorldType.SWAMP, "dusk", "raster1.xml", ForegroundType.WATER),
+    /** Swamp dawn. */
+    SWAMP_DAWN(1, WorldType.SWAMP, "dawn", "raster2.xml", ForegroundType.WATER),
+    /** Swamp day. */
+    SWAMP_DAY(2, WorldType.SWAMP, "day", "raster3.xml", ForegroundType.WATER);
+
+    /** Values. */
+    private static final LandscapeType[] VALUES = LandscapeType.values();
+
+    /**
+     * Get the type from its index.
+     * 
+     * @param index The index.
+     * @return The type.
+     */
+    public static LandscapeType get(int index)
+    {
+        return LandscapeType.VALUES[index];
+    }
+
+    /**
+     * Get all landscapes related to the world.
+     * 
+     * @param world The world used as reference.
+     * @return The landscapes of this world.
+     */
+    public static LandscapeType[] getWorldLandscape(WorldType world)
+    {
+        final List<LandscapeType> landscapes = new ArrayList<>(3);
+        for (final LandscapeType landscape : LandscapeType.VALUES)
+        {
+            if (landscape.getWorld() == world)
+            {
+                landscapes.add(landscape);
+            }
+        }
+        return landscapes.toArray(new LandscapeType[landscapes.size()]);
+    }
+
+    /** Index. */
+    private final int index;
+    /** World type. */
+    private final WorldType world;
+    /** Theme name. */
+    private final String theme;
+    /** Raster name. */
+    private final String raster;
+    /** The foreground used. */
+    private final ForegroundType foreground;
+
+    /**
+     * Constructor.
+     * 
+     * @param index The index number.
+     * @param world The world type.
+     * @param theme The theme name.
+     * @param raster The raster name.
+     * @param water The water type.
+     */
+    private LandscapeType(int index, WorldType world, String theme, String raster, ForegroundType water)
+    {
+        this.index = index;
+        this.world = world;
+        this.theme = theme;
+        this.raster = raster;
+        foreground = water;
+    }
+
+    /**
+     * Get the index value.
+     * 
+     * @return The index value.
+     */
+    public int getIndex()
+    {
+        return index;
+    }
+
+    /**
+     * Get the world type.
+     * 
+     * @return The world type.
+     */
+    public WorldType getWorld()
+    {
+        return world;
+    }
+
+    /**
+     * Get the theme name.
+     * 
+     * @return The theme name.
+     */
+    public String getTheme()
+    {
+        return theme;
+    }
+
+    /**
+     * Get the raster filename.
+     * 
+     * @return The raster filename.
+     */
+    public String getRaster()
+    {
+        return raster;
+    }
+
+    /**
+     * Get the foreground used.
+     * 
+     * @return The foreground used.
+     */
+    public ForegroundType getForeground()
+    {
+        return foreground;
+    }
+
+    @Override
+    public String toString()
+    {
+        final String string = name().toLowerCase(Locale.ENGLISH).replace('_', ' ');
+        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+    }
+}

@@ -67,7 +67,7 @@ public class HandlerEntity
         final int entitiesNumber = file.readShort();
         for (int i = 0; i < entitiesNumber; i++)
         {
-            final Entity entity = factoryEntity.createEntity(TypeEntity.get(file.readByte()));
+            final Entity entity = factoryEntity.createEntity(EntityType.get(file.readByte()));
             entity.load(file);
             add(entity);
         }

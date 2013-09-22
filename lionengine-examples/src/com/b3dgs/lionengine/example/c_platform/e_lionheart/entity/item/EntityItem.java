@@ -1,10 +1,10 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
@@ -23,7 +23,7 @@ public abstract class EntityItem
      * @param type The entity type.
      * @param effect The effect type.
      */
-    public EntityItem(Context context, TypeEntity type, TypeEffect effect)
+    public EntityItem(Context context, EntityType type, EffectType effect)
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
@@ -68,7 +68,7 @@ public abstract class EntityItem
     protected void updateDead()
     {
         factoryEffect
-                .startEffect(TypeEffect.TAKEN, (int) dieLocation.getX() - getWidth() / 2, (int) dieLocation.getY());
+                .startEffect(EffectType.TAKEN, (int) dieLocation.getX() - getWidth() / 2, (int) dieLocation.getY());
         destroy();
     }
 

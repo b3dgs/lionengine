@@ -6,11 +6,11 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.Bar;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.HandlerEntity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ProducibleEntity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ProductionCost;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeResource;
+import com.b3dgs.lionengine.example.d_rts.d_ability.ResourceType;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
@@ -28,18 +28,18 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
  */
 public abstract class UnitWorker
         extends Unit
-        implements ProducerUsedServices<TypeEntity, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<TypeEntity, ProductionCost, ProducibleEntity>, ExtractorUsedServices<TypeResource>,
-        ExtractorServices<TypeResource>
+        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
+        ProducerServices<EntityType, ProductionCost, ProducibleEntity>, ExtractorUsedServices<ResourceType>,
+        ExtractorServices<ResourceType>
 {
     /** Producer model. */
-    private final ProducerModel<TypeEntity, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Handler reference. */
     private final HandlerEntity handler;
     /** Extractor model. */
-    private final ExtractorModel<TypeResource> extractor;
+    private final ExtractorModel<ResourceType> extractor;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Extraction speed. */
@@ -59,7 +59,7 @@ public abstract class UnitWorker
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected UnitWorker(TypeEntity id, Context context)
+    protected UnitWorker(EntityType id, Context context)
     {
         super(id, context);
         factory = context.factoryEntity;
@@ -140,7 +140,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(TypeEntity id)
+    public Entity getEntityToProduce(EntityType id)
     {
         return factory.createEntity(id);
     }
@@ -238,7 +238,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public TypeEntity getProducingElement()
+    public EntityType getProducingElement()
     {
         return producer.getProducingElement();
     }
@@ -272,13 +272,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void setResource(Extractible<TypeResource> entity)
+    public void setResource(Extractible<ResourceType> entity)
     {
         extractor.setResource(entity);
     }
 
     @Override
-    public void setResource(TypeResource type, int tx, int ty, int tw, int th)
+    public void setResource(ResourceType type, int tx, int ty, int tw, int th)
     {
         extractor.setResource(type, tx, ty, tw, th);
     }
@@ -290,7 +290,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public TypeResource getResourceType()
+    public ResourceType getResourceType()
     {
         return extractor.getResourceType();
     }
@@ -358,13 +358,13 @@ public abstract class UnitWorker
      */
 
     @Override
-    public void notifyStartGoToRessources(TypeResource type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(ResourceType type, Tiled resourceLocation)
     {
         setDestination(resourceLocation);
     }
 
     @Override
-    public void notifyStartExtraction(TypeResource type, Tiled resourceLocation)
+    public void notifyStartExtraction(ResourceType type, Tiled resourceLocation)
     {
         setVisible(false);
         setActive(false);
@@ -372,13 +372,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyExtracted(TypeResource type, int currentQuantity)
+    public void notifyExtracted(ResourceType type, int currentQuantity)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyStartCarry(TypeResource type, int totalQuantity)
+    public void notifyStartCarry(ResourceType type, int totalQuantity)
     {
         setVisible(true);
         setActive(true);
@@ -399,14 +399,14 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyStartDropOff(TypeResource type, int totalQuantity)
+    public void notifyStartDropOff(ResourceType type, int totalQuantity)
     {
         setVisible(false);
         setActive(false);
     }
 
     @Override
-    public void notifyDroppedOff(TypeResource type, int droppedQuantity)
+    public void notifyDroppedOff(ResourceType type, int droppedQuantity)
     {
         final CoordTile out = map.getClosestAvailableTile(this, 16, getResourceLocation());
         if (out != null)

@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.weapon;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeProjectile;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeWeapon;
+import com.b3dgs.lionengine.example.d_rts.e_skills.ProjectileType;
+import com.b3dgs.lionengine.example.d_rts.e_skills.WeaponType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.e_skills.projectile.LauncherProjectile;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
@@ -24,8 +24,8 @@ final class Spear
      */
     Spear(AttackerUsedServices<Entity> user, Context context)
     {
-        super(TypeWeapon.spear, user, context);
-        launcher = new LauncherProjectile(TypeProjectile.spear, context);
+        super(WeaponType.SPEAR, user, context);
+        launcher = new LauncherProjectile(ProjectileType.SPEAR, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

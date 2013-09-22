@@ -45,7 +45,7 @@ public final class Map
         final Tile tile = getTile(tree);
         tile.setNumber(treeCut);
         tile.setResourceType(TypeResource.NONE);
-        tile.setCollision(TypeCollision.GROUND);
+        tile.setCollision(TypeCollision.GROUND9);
         updateTree(tile, true);
     }
 

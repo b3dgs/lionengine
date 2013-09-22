@@ -5,12 +5,12 @@ import java.io.IOException;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.State;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.PatrollerModel;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
@@ -38,7 +38,7 @@ public class EntityBeetle
      * @param context The context reference.
      * @param type The entity type.
      */
-    EntityBeetle(Context context, TypeEntity type)
+    EntityBeetle(Context context, EntityType type)
     {
         super(context, type);
         movement = new Movement();
@@ -63,7 +63,7 @@ public class EntityBeetle
     @Override
     public void hitThat(Entity entity)
     {
-        if (!status.isState(TypeEntityState.TURN))
+        if (!status.isState(EntityState.TURN))
         {
             super.hitThat(entity);
         }
@@ -86,8 +86,8 @@ public class EntityBeetle
     @Override
     protected void handleActions(double extrp)
     {
-        final TypeState state = status.getState();
-        if (state == TypeEntityState.TURN)
+        final State state = status.getState();
+        if (state == EntityState.TURN)
         {
             movement.reset();
             if (getAnimState() == AnimState.FINISHED)
@@ -95,12 +95,12 @@ public class EntityBeetle
                 final int side = patroller.getSide();
                 setSide(-side);
                 mirror(side < 0);
-                if (getPatrolType() == TypePatrol.HORIZONTAL)
+                if (getPatrolType() == Patrol.HORIZONTAL)
                 {
                     setMovementForce(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
-                else if (getPatrolType() == TypePatrol.VERTICAL)
+                else if (getPatrolType() == Patrol.VERTICAL)
                 {
                     setMovementForce(0.0, movementSpeedMax * side);
                     teleportY(getLocationIntY() + side);
@@ -169,7 +169,7 @@ public class EntityBeetle
      */
 
     @Override
-    public void enableMovement(TypePatrol type)
+    public void enableMovement(Patrol type)
     {
         patroller.enableMovement(type);
     }
@@ -181,7 +181,7 @@ public class EntityBeetle
     }
 
     @Override
-    public void setPatrolType(TypePatrol movement)
+    public void setPatrolType(Patrol movement)
     {
         patroller.setPatrolType(movement);
     }
@@ -217,7 +217,7 @@ public class EntityBeetle
     }
 
     @Override
-    public TypePatrol getPatrolType()
+    public Patrol getPatrolType()
     {
         return patroller.getPatrolType();
     }
@@ -271,7 +271,7 @@ public class EntityBeetle
     }
 
     @Override
-    public boolean isPatrolEnabled(TypePatrol type)
+    public boolean isPatrolEnabled(Patrol type)
     {
         return patroller.isPatrolEnabled(type);
     }

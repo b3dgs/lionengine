@@ -2,9 +2,9 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 
 /**
  * Beetle horizontal implementation.
@@ -19,8 +19,8 @@ public final class BeetleHorizontal
      */
     BeetleHorizontal(Context context)
     {
-        super(context, TypeEntity.BEETLE_HORIZONTAL);
-        enableMovement(TypePatrol.HORIZONTAL);
+        super(context, EntityType.BEETLE_HORIZONTAL);
+        enableMovement(Patrol.HORIZONTAL);
     }
 
     /*
@@ -30,7 +30,7 @@ public final class BeetleHorizontal
     @Override
     protected void handleActions(double extrp)
     {
-        if (status.getState() == TypeEntityState.WALK)
+        if (status.getState() == EntityState.WALK)
         {
             final int x = getLocationIntX();
             if (x > getPositionMax())
@@ -53,15 +53,15 @@ public final class BeetleHorizontal
         final int x = getLocationIntX();
         if (hasPatrol() && (x == getPositionMin() || x == getPositionMax()))
         {
-            status.setState(TypeEntityState.TURN);
+            status.setState(EntityState.TURN);
         }
         else if (diffHorizontal != 0.0)
         {
-            status.setState(TypeEntityState.WALK);
+            status.setState(EntityState.WALK);
         }
         else
         {
-            status.setState(TypeEntityState.IDLE);
+            status.setState(EntityState.IDLE);
         }
     }
 

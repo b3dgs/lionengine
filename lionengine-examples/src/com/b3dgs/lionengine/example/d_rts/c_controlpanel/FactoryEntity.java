@@ -13,7 +13,7 @@ import com.b3dgs.lionengine.game.entity.SetupEntityGame;
  * instances just need a reference to this factory.
  */
 final class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     private static final String ENTITY_PATH = "entities";
@@ -25,12 +25,12 @@ final class FactoryEntity
      */
     FactoryEntity()
     {
-        super(TypeEntity.class);
+        super(EntityType.class);
 
         // This function will perform an auto mapping between the types and their data + surface.
         // It is recommended to use the same name between the type and the entity directory containing its data with the
         // same name. In our case, we only have a peon, with peon.xml (data) and peon.png (surface)
-        loadAll(TypeEntity.values());
+        loadAll(EntityType.values());
     }
 
     /**
@@ -48,12 +48,12 @@ final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(TypeEntity type)
+    public Entity createEntity(EntityType type)
     {
         Check.notNull(context, "The context must not be null !");
         switch (type)
         {
-            case peon:
+            case PEON:
                 return new Peon(context);
             default:
                 throw new LionEngineException("Entity not found: " + type.name());
@@ -61,7 +61,7 @@ final class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    protected SetupEntityGame createSetup(EntityType id)
     {
         return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
     }

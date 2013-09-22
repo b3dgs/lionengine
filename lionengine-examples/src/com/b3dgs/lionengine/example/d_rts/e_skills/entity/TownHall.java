@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.entity;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -17,6 +17,6 @@ final class TownHall
      */
     TownHall(Context context)
     {
-        super(TypeEntity.townhall_orc, context);
+        super(EntityType.TOWNHALL_ORC, context);
     }
 }

@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
  * Handler implementation, containing all entities.
  */
 public final class HandlerEntity
-        extends HandlerEntityRts<TypeResource, Tile, Entity, ControlPanel>
+        extends HandlerEntityRts<ResourceType, Tile, Entity, ControlPanel>
 {
     /** Cursor reference. */
     private final Cursor cursor;
@@ -41,9 +41,9 @@ public final class HandlerEntity
     public void update(double extrp, CameraRts camera, CursorRts cursor)
     {
         // Keep standard update
-        if (this.cursor.getType() == TypeCursor.WEN)
+        if (this.cursor.getType() == CursorType.WEN)
         {
-            this.cursor.setType(TypeCursor.POINTER);
+            this.cursor.setType(CursorType.POINTER);
         }
         super.update(extrp, camera, cursor);
     }
@@ -52,10 +52,10 @@ public final class HandlerEntity
     protected void updatingEntity(Entity entity, CursorRts cursor, CameraRts camera)
     {
         // Adapt cursor
-        if (cursor.getClick() == 0 && this.cursor.getType() == TypeCursor.POINTER && entity.isOver()
+        if (cursor.getClick() == 0 && this.cursor.getType() == CursorType.POINTER && entity.isOver()
                 && cursor.isOver(entity, camera))
         {
-            this.cursor.setType(TypeCursor.WEN);
+            this.cursor.setType(CursorType.WEN);
         }
     }
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.maptile.MapTileGame;
@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
  * Map implementation.
  */
 public class Map
-        extends MapTilePlatformRastered<TypeTileCollision, Tile>
+        extends MapTilePlatformRastered<TileCollision, Tile>
 {
     /** Tile width. */
     public static final int TILE_WIDTH = 16;
@@ -58,7 +58,7 @@ public class Map
      * 
      * @param landscape The landscape type.
      */
-    public void setLandscape(TypeLandscape landscape)
+    public void setLandscape(LandscapeType landscape)
     {
         if (Map.RASTER_ENABLED)
         {
@@ -94,7 +94,7 @@ public class Map
         final int y = Map.fromByte(file.readByte());
         final Tile tile = createTile(tileWidth, tileHeight);
 
-        tile.setCollision(tile.getCollisionFrom(null, null));
+        tile.setCollision(tile.getCollisionFrom(null));
         tile.setPattern(Integer.valueOf(pattern));
         tile.setNumber(number);
         tile.setX((x + i * MapTileGame.BLOC_SIZE) * tileWidth);

@@ -4,9 +4,9 @@ import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
@@ -26,7 +26,7 @@ public abstract class EntityScenery
      * @param context The context reference.
      * @param type The entity type.
      */
-    EntityScenery(Context context, TypeEntity type)
+    EntityScenery(Context context, EntityType type)
     {
         super(context, type);
     }
@@ -63,7 +63,7 @@ public abstract class EntityScenery
             {
                 onCollide(entity);
                 mover.checkCollisionVertical(Double.valueOf(getLocationY() + getCollisionData().getOffsetY()),
-                        TypeEntityCollisionTile.GROUND);
+                        EntityCollisionTile.GROUND);
                 collide = true;
             }
         }

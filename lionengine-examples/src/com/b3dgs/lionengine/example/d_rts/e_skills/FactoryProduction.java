@@ -10,15 +10,15 @@ import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
  * The production factory.
  */
 public final class FactoryProduction
-        extends FactoryProductionRts<TypeEntity, ProductionCost, ProducibleEntity>
+        extends FactoryProductionRts<EntityType, ProductionCost, ProducibleEntity>
 {
     /**
      * Constructor.
      */
     FactoryProduction()
     {
-        super(TypeEntity.class);
-        loadAll(TypeEntity.values());
+        super(EntityType.class);
+        loadAll(EntityType.values());
     }
 
     /*
@@ -26,7 +26,7 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity createProducible(TypeEntity id)
+    public ProducibleEntity createProducible(EntityType id)
     {
         final Configurable config = getConfig(id);
         final int step = config.getDataInteger("steps", "cost");
@@ -42,7 +42,7 @@ public final class FactoryProduction
     }
 
     @Override
-    public ProducibleEntity createProducible(TypeEntity id, int tx, int ty)
+    public ProducibleEntity createProducible(EntityType id, int tx, int ty)
     {
         final ProducibleEntity producible = createProducible(id);
 
@@ -52,7 +52,7 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(TypeEntity id)
+    protected SetupGame createSetup(EntityType id)
     {
         return new SetupGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
     }

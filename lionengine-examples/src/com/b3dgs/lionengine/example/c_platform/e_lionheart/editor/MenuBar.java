@@ -18,10 +18,10 @@ import javax.swing.JTextArea;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
@@ -124,7 +124,7 @@ public class MenuBar
         final JPanel panel = UtilitySwing.createBorderedPanel("World", 2);
         centerPanel.add(panel);
         final JComboBox<ComboItem> combo = UtilitySwing.addMenuCombo("Choice", panel,
-                ComboItem.get(TypeWorld.values()), null);
+                ComboItem.get(WorldType.values()), null);
 
         // South panel
         final JPanel southPanel = new JPanel(new GridLayout());
@@ -134,7 +134,7 @@ public class MenuBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                final TypeWorld world = (TypeWorld) ((ComboItem) combo.getSelectedItem()).getObject();
+                final WorldType world = (WorldType) ((ComboItem) combo.getSelectedItem()).getObject();
                 editor.world.level.setWorld(world);
                 UtilitySwing.setEnabled(dialog.getComponents(), false);
                 if (toolsImportMap(dialog))
@@ -233,7 +233,7 @@ public class MenuBar
         if (media != null)
         {
             final Map map = editor.world.map;
-            final LevelRipConverter<TypeTileCollision, Tile> rip = new LevelRipConverter<>();
+            final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
             try
             {
                 rip.start(media, map, Media.get("tiles", editor.world.level.getWorld().asPathName()));

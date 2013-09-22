@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.e_skills.entity;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.weapon.Weapon;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
@@ -27,7 +27,7 @@ public abstract class UnitAttacker
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected UnitAttacker(TypeEntity id, Context context)
+    protected UnitAttacker(EntityType id, Context context)
     {
         super(id, context);
         animAttack = getDataAnimation("attack");

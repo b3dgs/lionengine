@@ -15,7 +15,7 @@ public final class Cursor
         extends CursorRts
 {
     /** Current cursor type. */
-    private TypeCursor type;
+    private CursorType type;
     /** Box width. */
     private int boxWidth;
     /** Box height. */
@@ -33,7 +33,7 @@ public final class Cursor
     Cursor(Display internal, MapTile<?, ?> map, Media... cursor)
     {
         super(internal, map, cursor);
-        type = TypeCursor.POINTER;
+        type = CursorType.POINTER;
     }
 
     /**
@@ -41,7 +41,7 @@ public final class Cursor
      * 
      * @param type The cursor type.
      */
-    public void setType(TypeCursor type)
+    public void setType(CursorType type)
     {
         this.type = type;
         switch (type)
@@ -90,7 +90,7 @@ public final class Cursor
      * 
      * @return The cursor type.
      */
-    public TypeCursor getType()
+    public CursorType getType()
     {
         return type;
     }
@@ -102,7 +102,7 @@ public final class Cursor
      */
     public void renderBox(Graphic g)
     {
-        if (TypeCursor.BOX == type)
+        if (CursorType.BOX == type)
         {
             g.setColor(boxColor);
             g.drawRect((getScreenX() + 8) / getGridWidth() * getGridWidth() - 8,
@@ -118,7 +118,7 @@ public final class Cursor
     @Override
     public void render(Graphic g)
     {
-        if (TypeCursor.BOX != type)
+        if (CursorType.BOX != type)
         {
             super.render(g);
         }

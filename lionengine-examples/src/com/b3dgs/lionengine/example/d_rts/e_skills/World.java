@@ -113,17 +113,17 @@ final class World
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final Entity peon = factoryEntity.createEntity(TypeEntity.peon);
+        final Entity peon = factoryEntity.createEntity(EntityType.PEON);
         peon.setPlayerId(0);
         peon.setLocation(35, 5);
         handlerEntity.add(peon);
 
-        Entity grunt = factoryEntity.createEntity(TypeEntity.grunt);
+        Entity grunt = factoryEntity.createEntity(EntityType.GRUNT);
         grunt.setPlayerId(0);
         grunt.setLocation(39, 7);
         handlerEntity.add(grunt);
 
-        grunt = factoryEntity.createEntity(TypeEntity.grunt);
+        grunt = factoryEntity.createEntity(EntityType.GRUNT);
         grunt.setPlayerId(0);
         grunt.setLocation(41, 8);
         handlerEntity.add(grunt);

@@ -6,9 +6,9 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.Bar;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ProducibleEntity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ProductionCost;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
@@ -20,11 +20,11 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
  */
 public abstract class BuildingProducer
         extends Building
-        implements ProducerUsedServices<TypeEntity, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<TypeEntity, ProductionCost, ProducibleEntity>
+        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
+        ProducerServices<EntityType, ProductionCost, ProducibleEntity>
 {
     /** Producer model. */
-    private final ProducerModel<TypeEntity, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Production step per second. */
@@ -38,7 +38,7 @@ public abstract class BuildingProducer
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected BuildingProducer(TypeEntity id, Context context)
+    protected BuildingProducer(EntityType id, Context context)
     {
         super(id, context);
         factory = context.factoryEntity;
@@ -99,7 +99,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public Entity getEntityToProduce(TypeEntity id)
+    public Entity getEntityToProduce(EntityType id)
     {
         return factory.createEntity(id);
     }
@@ -151,7 +151,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public TypeEntity getProducingElement()
+    public EntityType getProducingElement()
     {
         return producer.getProducingElement();
     }

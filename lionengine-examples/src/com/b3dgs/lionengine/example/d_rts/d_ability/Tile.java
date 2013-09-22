@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
  * Tile implementation. Nothing special here, just to show the default inheritance.
  */
 final class Tile
-        extends TileRts<TileCollision, TypeResource>
+        extends TileRts<TileCollision, ResourceType>
 {
     /**
      * Standard complete constructor.
@@ -24,11 +24,11 @@ final class Tile
      */
 
     @Override
-    public TileCollision getCollisionFrom(String collision, String type)
+    public TileCollision getCollisionFrom(String collision)
     {
         try
         {
-            return TileCollision.valueOf(type);
+            return TileCollision.valueOf(collision);
         }
         catch (IllegalArgumentException
                | NullPointerException exception)
@@ -40,13 +40,13 @@ final class Tile
     @Override
     public void checkResourceType(TileCollision collision)
     {
-        switch (collision)
+        switch (collision.getGroup())
         {
             case TREE:
-                setResourceType(TypeResource.WOOD);
+                setResourceType(ResourceType.WOOD);
                 break;
             default:
-                setResourceType(TypeResource.NONE);
+                setResourceType(ResourceType.NONE);
                 break;
         }
     }
@@ -55,12 +55,12 @@ final class Tile
     public boolean checkBlocking(TileCollision collision)
     {
         // Block if not ground
-        return TileCollision.GROUND != collision;
+        return TileCollisionGroup.GROUND != collision.getGroup();
     }
 
     @Override
     public boolean hasResources()
     {
-        return getResourceType() != TypeResource.NONE;
+        return getResourceType() != ResourceType.NONE;
     }
 }

@@ -10,7 +10,7 @@ import com.b3dgs.lionengine.game.effect.SetupEffectGame;
  * Factory effect implementation.
  */
 public class FactoryEffect
-        extends FactoryEffectGame<TypeEffect, SetupEffectGame, Effect>
+        extends FactoryEffectGame<EffectType, SetupEffectGame, Effect>
 {
     /** Handler effect reference. */
     private final HandlerEffect handlerEffect;
@@ -22,9 +22,9 @@ public class FactoryEffect
      */
     public FactoryEffect(HandlerEffect handlerEffect)
     {
-        super(TypeEffect.class);
+        super(EffectType.class);
         this.handlerEffect = handlerEffect;
-        loadAll(TypeEffect.values());
+        loadAll(EffectType.values());
     }
 
     /**
@@ -34,7 +34,7 @@ public class FactoryEffect
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    public void startEffect(TypeEffect id, int x, int y)
+    public void startEffect(EffectType id, int x, int y)
     {
         final Effect effect = createEffect(id);
         effect.start(x, y);
@@ -46,21 +46,21 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(TypeEffect id)
+    public Effect createEffect(EffectType id)
     {
         switch (id)
         {
             case TAKEN:
-                return new Taken(getSetup(TypeEffect.TAKEN));
+                return new Taken(getSetup(EffectType.TAKEN));
             case EXPLODE:
-                return new ExplodeBig(getSetup(TypeEffect.EXPLODE));
+                return new ExplodeBig(getSetup(EffectType.EXPLODE));
             default:
                 throw new LionEngineException("Unknown id: " + id);
         }
     }
 
     @Override
-    protected SetupEffectGame createSetup(TypeEffect id)
+    protected SetupEffectGame createSetup(EffectType id)
     {
         return new SetupEffectGame(Media.get(AppLionheart.EFFECTS_DIR, id.toString()
                 + AppLionheart.CONFIG_FILE_EXTENSION));

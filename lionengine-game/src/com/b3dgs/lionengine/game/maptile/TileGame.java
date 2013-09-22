@@ -11,7 +11,7 @@ import java.util.List;
  * <li><code>collision</code> : collision name</li>
  * </ul>
  * <p>
- * The abstract function {@link #getCollisionFrom(String, String)} allows to convert a string collision name to its
+ * The abstract function {@link #getCollisionFrom(String)} allows to convert a string collision name to its
  * corresponding enum.
  * </p>
  * 
@@ -56,10 +56,9 @@ public abstract class TileGame<C extends Enum<C>>
      * collisions. The best way to store map collisions name is to use an enum with the same names.
      * 
      * @param collision The collision name.
-     * @param type The collision type.
      * @return The collision type.
      */
-    public abstract C getCollisionFrom(String collision, String type);
+    public abstract C getCollisionFrom(String collision);
 
     /**
      * Check if tile fill condition.

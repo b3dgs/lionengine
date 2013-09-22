@@ -82,8 +82,7 @@ final class World
         camera.setLimits(map);
         camera.setIntervals(16, 0);
         map.adjustCollisions();
-        // Place entity
-        mario.setLocation(80, 32);
+        mario.respawn();
 
         // Create two goombas
         for (int i = 0; i < 2; i++)

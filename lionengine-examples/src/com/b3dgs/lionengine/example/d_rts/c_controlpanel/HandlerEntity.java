@@ -13,7 +13,7 @@ import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
  * Handler implementation, containing all entities.
  */
 final class HandlerEntity
-        extends HandlerEntityRts<TypeResource, Tile, Entity, ControlPanel>
+        extends HandlerEntityRts<ResourceType, Tile, Entity, ControlPanel>
 {
     /** Text reference. */
     private final TextGame text;

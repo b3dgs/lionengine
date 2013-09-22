@@ -22,11 +22,11 @@ public abstract class Entity
         extends EntityPlatform
 {
     /** Entity type. */
-    public final TypeEntity type;
+    public final EntityType type;
     /** Map reference. */
     protected final Map map;
     /** Animations list. */
-    protected final HashMap<TypeState, Animation> animations;
+    protected final HashMap<State, Animation> animations;
     /** Collisions data. */
     protected final HashMap<Enum<?>, CollisionData> collisions;
     /** Entity status. */
@@ -54,7 +54,7 @@ public abstract class Entity
      * @param context The context reference.
      * @param type The entity type.
      */
-    protected Entity(Context context, TypeEntity type)
+    protected Entity(Context context, EntityType type)
     {
         super(context.factoryEntity.getSetup(type));
         this.type = type;
@@ -66,8 +66,8 @@ public abstract class Entity
         timerDie = new Timing();
         dieLocation = new Coord();
         forces = new Force[0];
-        loadCollisions(TypeEntityCollision.values());
-        loadAnimations(TypeEntityState.values());
+        loadCollisions(EntityCollision.values());
+        loadAnimations(EntityState.values());
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class Entity
     /**
      * Update entity states.
      * 
-     * @see TypeEntityState
+     * @see EntityState
      */
     protected abstract void updateStates();
 
@@ -99,7 +99,7 @@ public abstract class Entity
     /**
      * Update the collisions detection.
      * 
-     * @see TypeEntityCollisionTile
+     * @see EntityCollisionTile
      */
     protected abstract void updateCollisions();
 
@@ -138,7 +138,7 @@ public abstract class Entity
         resetGravity();
         mirror(false);
         updateMirror();
-        status.setCollision(TypeEntityCollisionTile.GROUND);
+        status.setCollision(EntityCollisionTile.GROUND);
         status.backupCollision();
     }
 
@@ -230,9 +230,9 @@ public abstract class Entity
      * 
      * @param states The states to load.
      */
-    protected final void loadAnimations(TypeState[] states)
+    protected final void loadAnimations(State[] states)
     {
-        for (final TypeState state : states)
+        for (final State state : states)
         {
             try
             {
@@ -263,7 +263,7 @@ public abstract class Entity
                 continue;
             }
         }
-        setCollision(collisions.get(TypeEntityCollision.DEFAULT));
+        setCollision(collisions.get(EntityCollision.DEFAULT));
     }
 
     /**

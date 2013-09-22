@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -34,7 +34,7 @@ public class EntityScenerySheet
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityScenerySheet(Context context, TypeEntity type)
+    public EntityScenerySheet(Context context, EntityType type)
     {
         super(context, type);
     }

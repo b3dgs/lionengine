@@ -58,7 +58,7 @@ final class World
      */
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<TypeCollision, Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, map, tilesheet);
         try (FileWriting file = File.createFileWriting(output);)
         {

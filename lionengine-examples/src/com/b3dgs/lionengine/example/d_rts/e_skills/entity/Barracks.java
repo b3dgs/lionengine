@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.entity;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
@@ -17,7 +17,7 @@ final class Barracks
      */
     Barracks(Context context)
     {
-        super(TypeEntity.barracks_orc, context);
-        addSkill(context.factoryEntity, 0, TypeSkill.produce_grunt, 0);
+        super(EntityType.BARRACKS_ORC, context);
+        addSkill(context.factoryEntity, 0, SkillType.PRODUCE_GRUNT, 0);
     }
 }

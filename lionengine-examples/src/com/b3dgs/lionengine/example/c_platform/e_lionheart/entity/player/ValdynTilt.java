@@ -2,12 +2,12 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityAction;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityCollisionTile;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollisionGroup;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 
@@ -57,8 +57,8 @@ final class ValdynTilt
      */
     double updateMovementSlope(double speed, double sensibility, double movementSpeedMax, double movementSmooth)
     {
-        final boolean keyLeft = valdyn.isEnabled(TypeEntityAction.MOVE_LEFT);
-        final boolean keyRight = valdyn.isEnabled(TypeEntityAction.MOVE_RIGHT);
+        final boolean keyLeft = valdyn.isEnabled(EntityAction.MOVE_LEFT);
+        final boolean keyRight = valdyn.isEnabled(EntityAction.MOVE_RIGHT);
         final double forceH = movement.getForce().getForceHorizontal();
         if (movement.isDecreasingHorizontal()
                 && (forceH > movementSpeedMax && keyRight || forceH < -movementSpeedMax && keyLeft))
@@ -68,9 +68,10 @@ final class ValdynTilt
         }
         double newSpeed = speed;
         final Tile tile = map.getTile(valdyn, 0, 0);
-        if (valdyn.isOnGround() && tile != null && tile.isGroup(TypeTileCollisionGroup.SLOPE))
+        if (valdyn.isOnGround() && tile != null && tile.isGroup(TileCollisionGroup.SLOPE))
         {
-            if (valdyn.isGoingDown() && (keyLeft && tile.isSlopeLeft() || keyRight && tile.isSlopeRight()))
+            final TileCollisionGroup groupSlope = TileCollisionGroup.SLOPE;
+            if (valdyn.isGoingDown() && (keyLeft && tile.isLeft(groupSlope) || keyRight && tile.isRight(groupSlope)))
             {
                 newSpeed *= 1.3;
             }
@@ -136,7 +137,7 @@ final class ValdynTilt
             newSpeed = newSpeed * 0.2 + 1.5;
         }
         // Exit liana
-        if (liana != null && valdyn.isEnabled(TypeEntityAction.MOVE_DOWN) && !timerLianaUnGrip.isStarted())
+        if (liana != null && valdyn.isEnabled(EntityAction.MOVE_DOWN) && !timerLianaUnGrip.isStarted())
         {
             timerLianaUnGrip.start();
             liana = null;
@@ -172,38 +173,38 @@ final class ValdynTilt
      */
     boolean updateStates()
     {
-        final boolean keyLeft = valdyn.isEnabled(TypeEntityAction.MOVE_LEFT);
-        final boolean keyRight = valdyn.isEnabled(TypeEntityAction.MOVE_RIGHT);
+        final boolean keyLeft = valdyn.isEnabled(EntityAction.MOVE_LEFT);
+        final boolean keyRight = valdyn.isEnabled(EntityAction.MOVE_RIGHT);
         final double diffHorizontal = valdyn.getDiffHorizontal();
         final boolean updated;
         if (slide == Align.LEFT && keyLeft || slide == Align.RIGHT && keyRight)
         {
-            valdyn.status.setState(TypeValdynState.SLIDE_FAST);
+            valdyn.status.setState(ValdynState.SLIDE_FAST);
             updated = true;
         }
         else if (slide == Align.RIGHT && keyLeft || slide == Align.LEFT && keyRight)
         {
-            valdyn.status.setState(TypeValdynState.SLIDE_SLOW);
+            valdyn.status.setState(ValdynState.SLIDE_SLOW);
             updated = true;
         }
         else if (slide != null)
         {
-            valdyn.status.setState(TypeValdynState.SLIDE);
+            valdyn.status.setState(ValdynState.SLIDE);
             updated = true;
         }
         else if (liana == Align.LEFT || liana == Align.RIGHT)
         {
-            valdyn.status.setState(TypeValdynState.LIANA_SLIDE);
+            valdyn.status.setState(ValdynState.LIANA_SLIDE);
             updated = true;
         }
         else if (liana == Align.CENTER && diffHorizontal != 0.0)
         {
-            valdyn.status.setState(TypeValdynState.LIANA_WALK);
+            valdyn.status.setState(ValdynState.LIANA_WALK);
             updated = true;
         }
         else if (liana == Align.CENTER && diffHorizontal == 0.0)
         {
-            valdyn.status.setState(TypeValdynState.LIANA_IDLE);
+            valdyn.status.setState(ValdynState.LIANA_IDLE);
             updated = true;
         }
         else
@@ -222,30 +223,32 @@ final class ValdynTilt
      */
     void updateCollisions(boolean found, Tile tile)
     {
-        final boolean keyDown = valdyn.isEnabled(TypeEntityAction.MOVE_DOWN);
+        final boolean keyDown = valdyn.isEnabled(EntityAction.MOVE_DOWN);
         if (!keyDown && valdyn.getDiffVertical() < 0.0
                 && (timerLianaUnGrip.elapsed(ValdynTilt.LIANA_UNGRIP_TIME) || !timerLianaUnGrip.isStarted()))
         {
             timerLianaUnGrip.stop();
-            valdyn.setCollisionOffset(0, 30);
-            checkCollisionLiana(map.getFirstTileHit(valdyn, TypeTileCollision.COLLISION_LIANA_STEEP));
+            liana = null;
+            valdyn.setCollisionOffset(0, 44);
+            checkCollisionLiana(map.getFirstTileHit(valdyn, TileCollision.COLLISION_LIANA_STEEP));
             valdyn.setCollisionOffset(0, 57);
-            checkCollisionLiana(map.getFirstTileHit(valdyn, TypeTileCollision.COLLISION_LIANA_LEANING));
+            checkCollisionLiana(map.getFirstTileHit(valdyn, TileCollision.COLLISION_LIANA_LEANING));
         }
         if (found)
         {
             final double x = valdyn.getLocationX() - tile.getX() - valdyn.getWidth();
-            final TypeTileCollision collision = tile.getCollision();
-            if (tile.isSlideLeft() || collision == TypeTileCollision.SLIDE_LEFT_GROUND_SLIDE && x > -11)
+            final TileCollisionGroup groupSlide = TileCollisionGroup.SLIDE;
+            final TileCollision collision = tile.getCollision();
+            if (tile.isLeft(groupSlide) || collision == TileCollision.SLIDE_LEFT_GROUND_SLIDE && x > -11)
             {
                 slide = Align.LEFT;
             }
-            else if (tile.isSlideRight() || collision == TypeTileCollision.SLIDE_RIGHT_GROUND_SLIDE && x > -11)
+            else if (tile.isRight(groupSlide) || collision == TileCollision.SLIDE_RIGHT_GROUND_SLIDE && x > -11)
             {
                 slide = Align.RIGHT;
             }
         }
-        if (valdyn.status.collisionChangedFromTo(TypeEntityCollisionTile.NONE, TypeEntityCollisionTile.LIANA))
+        if (valdyn.status.collisionChangedFromTo(EntityCollisionTile.NONE, EntityCollisionTile.LIANA))
         {
             movement.reset();
         }
@@ -263,14 +266,14 @@ final class ValdynTilt
         final double diffHorizontal = valdyn.getDiffHorizontal();
         if (tileLeft != null && tileRight != null)
         {
-            if (tileLeft.isGroup(TypeTileCollisionGroup.FLAT) || tileRight.isGroup(TypeTileCollisionGroup.FLAT))
+            if (tileLeft.isGroup(TileCollisionGroup.FLAT) || tileRight.isGroup(TileCollisionGroup.FLAT))
             {
-                if (tileLeft.getCollision() == TypeTileCollision.SLIDE_RIGHT_2 && diffHorizontal <= 0)
+                if (tileLeft.getCollision() == TileCollision.SLIDE_RIGHT_2 && diffHorizontal <= 0)
                 {
                     movement.reset();
                     valdyn.teleportX(tileLeft.getX() + Map.TILE_WIDTH);
                 }
-                if (tileRight.getCollision() == TypeTileCollision.SLIDE_LEFT_2 && diffHorizontal >= 0)
+                if (tileRight.getCollision() == TileCollision.SLIDE_LEFT_2 && diffHorizontal >= 0)
                 {
                     movement.reset();
                     valdyn.teleportX(tileRight.getX() - 1);
@@ -280,7 +283,7 @@ final class ValdynTilt
         if (tile != null)
         {
             final double x = valdyn.getLocationX() - tile.getX() - valdyn.getWidth();
-            if (x > -13 && tile.getCollision() == TypeTileCollision.SLIDE_LEFT_GROUND_SLIDE && diffHorizontal >= 0)
+            if (x > -13 && tile.getCollision() == TileCollision.SLIDE_LEFT_GROUND_SLIDE && diffHorizontal >= 0)
             {
                 movement.reset();
                 valdyn.teleportX(tile.getX() + 7);
@@ -295,21 +298,22 @@ final class ValdynTilt
      */
     void checkCollisionLiana(Tile tile)
     {
-        liana = null;
         if (tile != null)
         {
             final Double y = tile.getCollisionY(valdyn);
             if (valdyn.applyVerticalCollision(y))
             {
                 valdyn.resetGravity();
-                valdyn.status.setCollision(TypeEntityCollisionTile.LIANA);
+                valdyn.status.setCollision(EntityCollisionTile.LIANA);
                 valdyn.resetJump();
                 liana = Align.CENTER;
-                if (tile.isLianaSteepLeft() || tile.isLianaLeaningLeft())
+                final TileCollisionGroup groupLianaSteep = TileCollisionGroup.LIANA_STEEP;
+                final TileCollisionGroup groupLianaLeaning = TileCollisionGroup.LIANA_LEANING;
+                if (tile.isLeft(groupLianaSteep) || tile.isLeft(groupLianaLeaning))
                 {
                     liana = Align.LEFT;
                 }
-                else if (tile.isLianaSteepRight() || tile.isLianaLeaningRight())
+                else if (tile.isRight(groupLianaSteep) || tile.isRight(groupLianaLeaning))
                 {
                     liana = Align.RIGHT;
                 }

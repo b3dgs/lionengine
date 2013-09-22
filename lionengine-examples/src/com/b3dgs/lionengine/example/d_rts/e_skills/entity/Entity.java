@@ -6,9 +6,9 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Map;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.d_rts.e_skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
  */
 public abstract class Entity
         extends EntityRts
-        implements SkilledServices<TypeSkill, Skill>
+        implements SkilledServices<SkillType, Skill>
 {
     /** Entity life. */
     public final Alterable life;
@@ -34,7 +34,7 @@ public abstract class Entity
     /** Factory skill. */
     private final FactorySkill factorySkill;
     /** Skilled model. */
-    private final SkilledModel<TypeSkill, Skill> skilled;
+    private final SkilledModel<SkillType, Skill> skilled;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public abstract class Entity
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected Entity(TypeEntity id, Context context)
+    protected Entity(EntityType id, Context context)
     {
         super(context.factoryEntity.getSetup(id), context.map);
         map = context.map;
@@ -62,7 +62,7 @@ public abstract class Entity
      * @param id The skill id.
      * @param priority The position number.
      */
-    public void addSkill(FactoryEntity factory, int panel, TypeSkill id, int priority)
+    public void addSkill(FactoryEntity factory, int panel, SkillType id, int priority)
     {
         final Skill skill = factorySkill.createSkill(id);
         skill.setOwner(this);
@@ -112,13 +112,13 @@ public abstract class Entity
     }
 
     @Override
-    public Skill getSkill(int panel, TypeSkill id)
+    public Skill getSkill(int panel, SkillType id)
     {
         return skilled.getSkill(panel, id);
     }
 
     @Override
-    public void removeSkill(int panel, TypeSkill id)
+    public void removeSkill(int panel, SkillType id)
     {
         skilled.removeSkill(panel, id);
     }

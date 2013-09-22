@@ -10,11 +10,11 @@ import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 public class Landscape
 {
     /** Landscape type. */
-    private final TypeLandscape type;
+    private final LandscapeType type;
     /** Background element. */
     private final BackgroundPlatform background;
     /** Foreground element. */
-    private final Water foreground;
+    private final Foreground foreground;
 
     /**
      * Constructor.
@@ -23,7 +23,7 @@ public class Landscape
      * @param background The background element.
      * @param foreground The foreground element.
      */
-    public Landscape(TypeLandscape type, BackgroundPlatform background, Water foreground)
+    public Landscape(LandscapeType type, BackgroundPlatform background, Foreground foreground)
     {
         this.type = type;
         this.background = background;
@@ -78,7 +78,7 @@ public class Landscape
      * 
      * @return The landscape type.
      */
-    public TypeLandscape getType()
+    public LandscapeType getType()
     {
         return type;
     }

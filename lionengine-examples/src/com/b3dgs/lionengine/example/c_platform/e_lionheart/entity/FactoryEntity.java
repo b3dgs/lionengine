@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.TypeWorld;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.FactoryEntityItem;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.FactoryEntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
@@ -18,7 +18,7 @@ import com.b3dgs.lionengine.game.entity.SetupEntityGame;
  * Handle the entity creation by containing all necessary object for their instantiation.
  */
 public final class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
 {
     /** Unknown entity error message. */
     private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
@@ -31,7 +31,7 @@ public final class FactoryEntity
      * @param factory The factory class.
      * @return The item instance.
      */
-    public static Entity createEntity(Context context, TypeEntity type, Class<?> factory)
+    public static Entity createEntity(Context context, EntityType type, Class<?> factory)
     {
         try
         {
@@ -55,14 +55,14 @@ public final class FactoryEntity
     /** Context used. */
     private Context context;
     /** World used. */
-    private TypeWorld world;
+    private WorldType world;
 
     /**
      * Standard constructor.
      */
     public FactoryEntity()
     {
-        super(TypeEntity.class);
+        super(EntityType.class);
     }
 
     /**
@@ -80,7 +80,7 @@ public final class FactoryEntity
      * 
      * @param world The world used.
      */
-    public void setWorld(TypeWorld world)
+    public void setWorld(WorldType world)
     {
         this.world = world;
     }
@@ -100,7 +100,7 @@ public final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(TypeEntity type)
+    public Entity createEntity(EntityType type)
     {
         switch (type.getCategory())
         {
@@ -116,12 +116,12 @@ public final class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    protected SetupEntityGame createSetup(EntityType id)
     {
         final String pathBase = Media.getPath(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder());
         final String configExtension = AppLionheart.CONFIG_FILE_EXTENSION;
         final String path;
-        if (id == TypeEntity.VALDYN)
+        if (id == EntityType.VALDYN)
         {
             path = Media.getPath(pathBase, id.asPathName() + configExtension);
         }

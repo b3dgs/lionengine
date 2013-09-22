@@ -4,7 +4,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
@@ -16,7 +16,7 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  * instances just need a reference to this factory.
  */
 public final class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
@@ -28,12 +28,12 @@ public final class FactoryEntity
      */
     public FactoryEntity()
     {
-        super(TypeEntity.class);
+        super(EntityType.class);
         // This function will perform an auto mapping between the types and their data + surface
         // It is recommended to use the same name between the type and the entity directory contains its data with the
         // same name
         // In our case, we only have a peon, with peon.txt (data) and peon.png (surface)
-        loadAll(TypeEntity.values());
+        loadAll(EntityType.values());
     }
 
     /**
@@ -51,24 +51,24 @@ public final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(TypeEntity type)
+    public Entity createEntity(EntityType type)
     {
         Check.notNull(context, "The context must not be null !");
         switch (type)
         {
-            case peon:
+            case PEON:
                 return new Peon(context);
-            case grunt:
+            case GRUNT:
                 return new Grunt(context);
-            case spearman:
+            case SPEARMAN:
                 return new Spearman(context);
-            case townhall_orc:
+            case TOWNHALL_ORC:
                 return new TownHall(context);
-            case farm_orc:
+            case FARM_ORC:
                 return new Farm(context);
-            case barracks_orc:
+            case BARRACKS_ORC:
                 return new Barracks(context);
-            case gold_mine:
+            case GOLD_MINE:
                 return new GoldMine(context);
             default:
                 throw new LionEngineException("Entity not found: " + type.name());
@@ -76,7 +76,7 @@ public final class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    protected SetupEntityGame createSetup(EntityType id)
     {
         return new SetupEntityGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"), false);
     }

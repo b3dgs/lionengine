@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.weapon;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeWeapon;
+import com.b3dgs.lionengine.example.d_rts.d_ability.WeaponType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
 
@@ -19,7 +19,7 @@ final class Axe
      */
     Axe(AttackerUsedServices<Entity> user, Context context)
     {
-        super(TypeWeapon.axe, user, context);
+        super(WeaponType.AXE, user, context);
     }
 
     /*

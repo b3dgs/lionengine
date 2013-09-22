@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
 
 /**
  * Represents the factory of scenery entity.
@@ -17,7 +17,7 @@ public final class FactoryEntityScenery
      * @param type The item type.
      * @return The item instance.
      */
-    public static Entity createScenery(Context context, TypeEntity type)
+    public static Entity createScenery(Context context, EntityType type)
     {
         return FactoryEntity.createEntity(context, type, FactoryEntityScenery.class);
     }

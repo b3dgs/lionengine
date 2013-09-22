@@ -4,16 +4,16 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.State;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.PatrollerModel;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 
@@ -35,7 +35,7 @@ public class EntityMonster
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityMonster(Context context, TypeEntity type)
+    public EntityMonster(Context context, EntityType type)
     {
         super(context, type);
         factoryEffect = context.factoryEffect;
@@ -70,20 +70,20 @@ public class EntityMonster
     @Override
     protected void updateActions()
     {
-        final TypeState state = status.getState();
-        if (state == TypeEntityState.TURN)
+        final State state = status.getState();
+        if (state == EntityState.TURN)
         {
             if (getAnimState() == AnimState.FINISHED)
             {
                 final int side = getSide();
                 setSide(-side);
                 mirror(side < 0);
-                if (getPatrolType() == TypePatrol.HORIZONTAL)
+                if (getPatrolType() == Patrol.HORIZONTAL)
                 {
                     setMovementForce(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
-                else if (getPatrolType() == TypePatrol.VERTICAL)
+                else if (getPatrolType() == Patrol.VERTICAL)
                 {
                     setMovementForce(0.0, movementSpeedMax * side);
                     teleportY(getLocationIntY() + side);
@@ -94,9 +94,9 @@ public class EntityMonster
                 movement.reset();
             }
         }
-        else if (state == TypeEntityState.WALK)
+        else if (state == EntityState.WALK)
         {
-            if (getPatrolType() == TypePatrol.HORIZONTAL)
+            if (getPatrolType() == Patrol.HORIZONTAL)
             {
                 final int x = getLocationIntX();
                 if (x > getPositionMax())
@@ -108,7 +108,7 @@ public class EntityMonster
                     teleportX(getPositionMin());
                 }
             }
-            else if (getPatrolType() == TypePatrol.VERTICAL)
+            else if (getPatrolType() == Patrol.VERTICAL)
             {
                 final int y = getLocationIntY();
                 if (y > getPositionMax())
@@ -139,12 +139,12 @@ public class EntityMonster
     protected void updateStates()
     {
         boolean willTurn = false;
-        if (getPatrolType() == TypePatrol.HORIZONTAL)
+        if (getPatrolType() == Patrol.HORIZONTAL)
         {
             final int x = getLocationIntX();
             willTurn = x == getPositionMin() || x == getPositionMax();
         }
-        else if (getPatrolType() == TypePatrol.VERTICAL)
+        else if (getPatrolType() == Patrol.VERTICAL)
         {
             final int y = getLocationIntY();
             willTurn = y == getPositionMin() || y == getPositionMax();
@@ -154,22 +154,22 @@ public class EntityMonster
         final double diffVertical = getDiffVertical();
         if (hasPatrol() && willTurn)
         {
-            status.setState(TypeEntityState.TURN);
+            status.setState(EntityState.TURN);
         }
         else if (diffHorizontal != 0.0 || diffVertical != 0.0)
         {
-            status.setState(TypeEntityState.WALK);
+            status.setState(EntityState.WALK);
         }
         else
         {
-            status.setState(TypeEntityState.IDLE);
+            status.setState(EntityState.IDLE);
         }
     }
 
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(TypeEffect.EXPLODE, (int) dieLocation.getX() - getCollisionData().getWidth() / 2 - 5,
+        factoryEffect.startEffect(EffectType.EXPLODE, (int) dieLocation.getX() - getCollisionData().getWidth() / 2 - 5,
                 (int) dieLocation.getY() - 5);
         // TODO: Play explode sound
         destroy();
@@ -214,7 +214,7 @@ public class EntityMonster
      */
 
     @Override
-    public void enableMovement(TypePatrol type)
+    public void enableMovement(Patrol type)
     {
         patroller.enableMovement(type);
     }
@@ -226,7 +226,7 @@ public class EntityMonster
     }
 
     @Override
-    public void setPatrolType(TypePatrol movement)
+    public void setPatrolType(Patrol movement)
     {
         patroller.setPatrolType(movement);
     }
@@ -262,7 +262,7 @@ public class EntityMonster
     }
 
     @Override
-    public TypePatrol getPatrolType()
+    public Patrol getPatrolType()
     {
         return patroller.getPatrolType();
     }
@@ -316,7 +316,7 @@ public class EntityMonster
     }
 
     @Override
-    public boolean isPatrolEnabled(TypePatrol type)
+    public boolean isPatrolEnabled(Patrol type)
     {
         return patroller.isPatrolEnabled(type);
     }

@@ -1,9 +1,9 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.entity;
 
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeWeapon;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
+import com.b3dgs.lionengine.example.d_rts.e_skills.WeaponType;
 
 /**
  * Grunt implementation.
@@ -18,10 +18,10 @@ final class Grunt
      */
     Grunt(Context context)
     {
-        super(TypeEntity.grunt, context);
-        addWeapon(context.factoryWeapon.createWeapon(TypeWeapon.axe, this), 0);
-        addSkill(context.factoryEntity, 0, TypeSkill.move_orc, 0);
-        addSkill(context.factoryEntity, 0, TypeSkill.stop_orc, 1);
-        addSkill(context.factoryEntity, 0, TypeSkill.attack_axe, 2);
+        super(EntityType.GRUNT, context);
+        addWeapon(context.factoryWeapon.createWeapon(WeaponType.AXE, this), 0);
+        addSkill(context.factoryEntity, 0, SkillType.MOVE_ORC, 0);
+        addSkill(context.factoryEntity, 0, SkillType.STOP_ORC, 1);
+        addSkill(context.factoryEntity, 0, SkillType.ATTACK_AXE, 2);
     }
 }

@@ -1,9 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 
 /**
  * Beetle vertical implementation.
@@ -18,8 +18,8 @@ public final class BeetleVertical
      */
     BeetleVertical(Context context)
     {
-        super(context, TypeEntity.BEETLE_VERTICAL);
-        enableMovement(TypePatrol.VERTICAL);
+        super(context, EntityType.BEETLE_VERTICAL);
+        enableMovement(Patrol.VERTICAL);
     }
 
     /*
@@ -29,7 +29,7 @@ public final class BeetleVertical
     @Override
     protected void handleActions(double extrp)
     {
-        if (status.getState() == TypeEntityState.WALK)
+        if (status.getState() == EntityState.WALK)
         {
             final int y = getLocationIntY();
             if (y > getPositionMax())
@@ -52,15 +52,15 @@ public final class BeetleVertical
         final int y = getLocationIntY();
         if (hasPatrol() && (y == getPositionMin() || y == getPositionMax()))
         {
-            status.setState(TypeEntityState.TURN);
+            status.setState(EntityState.TURN);
         }
         else if (diffVertical != 0.0)
         {
-            status.setState(TypeEntityState.WALK);
+            status.setState(EntityState.WALK);
         }
         else
         {
-            status.setState(TypeEntityState.IDLE);
+            status.setState(EntityState.IDLE);
         }
     }
 }

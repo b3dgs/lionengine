@@ -4,7 +4,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeEntity;
+import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverModel;
@@ -31,7 +31,7 @@ public abstract class Unit
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected Unit(TypeEntity id, Context context)
+    protected Unit(EntityType id, Context context)
     {
         super(id, context);
         animIdle = getDataAnimation("idle");

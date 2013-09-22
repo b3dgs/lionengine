@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -113,7 +113,7 @@ public class WorldPanel
     /** Moving offset y. */
     private int movingOffsetY;
     /** Current player selection state. */
-    private TypeSelectionPlayer playerSelection;
+    private SelectionPlayerType playerSelection;
     /** Selection starting horizontal location. */
     private int selectStartX;
     /** Selection starting vertical location. */
@@ -178,7 +178,7 @@ public class WorldPanel
      * 
      * @param selection The current selection.
      */
-    public void setPlayerSelection(TypeSelectionPlayer selection)
+    public void setPlayerSelection(SelectionPlayerType selection)
     {
         playerSelection = selection;
     }
@@ -238,7 +238,7 @@ public class WorldPanel
      */
     private void drawEntityMovement(Graphics2D g, Patrollable mover, int hOff, int vOff, int height)
     {
-        if (mover.getPatrolType() != TypePatrol.NONE)
+        if (mover.getPatrolType() != Patrol.NONE)
         {
             final int sx = mover.getLocationIntX();
             final int sy = mover.getLocationIntY();
@@ -249,7 +249,7 @@ public class WorldPanel
             g.fillRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th) - mover.getHeight(),
                     mover.getWidth() + right, mover.getHeight());
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
-            if (mover.getPatrolType() == TypePatrol.HORIZONTAL)
+            if (mover.getPatrolType() == Patrol.HORIZONTAL)
             {
                 g.fillRect(sx - hOff - left + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th),
                         right, Map.TILE_HEIGHT);
@@ -630,11 +630,11 @@ public class WorldPanel
                 if (hitEntity(mx, my) == null)
                 {
                     unSelectEntities();
-                    final TypeEntity selection = editor.getSelectedEntity();
+                    final EntityType selection = editor.getSelectedEntity();
                     if (selection != null)
                     {
                         final int id = selection.getIndex();
-                        final Entity entity = factoryEntity.createEntity(TypeEntity.get(id));
+                        final Entity entity = factoryEntity.createEntity(EntityType.get(id));
                         setEntityLocation(entity, x, y, 1);
                         handlerEntity.add(entity);
                         handlerEntity.update();

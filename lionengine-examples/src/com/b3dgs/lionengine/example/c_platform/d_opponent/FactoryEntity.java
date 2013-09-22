@@ -8,8 +8,8 @@ import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
-class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
+final class FactoryEntity
+        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
@@ -26,10 +26,10 @@ class FactoryEntity
      */
     FactoryEntity(Map map, int desiredFps)
     {
-        super(TypeEntity.class);
+        super(EntityType.class);
         this.map = map;
         this.desiredFps = desiredFps;
-        loadAll(TypeEntity.values());
+        loadAll(EntityType.values());
     }
 
     /**
@@ -39,7 +39,7 @@ class FactoryEntity
      */
     Mario createMario()
     {
-        return new Mario(getSetup(TypeEntity.mario), map, desiredFps);
+        return new Mario(getSetup(EntityType.MARIO), map, desiredFps);
     }
 
     /**
@@ -49,7 +49,7 @@ class FactoryEntity
      */
     Goomba createGoomba()
     {
-        return new Goomba(getSetup(TypeEntity.goomba), map, desiredFps);
+        return new Goomba(getSetup(EntityType.GOOMBA), map, desiredFps);
     }
 
     /*
@@ -57,19 +57,19 @@ class FactoryEntity
      */
 
     @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    protected SetupEntityGame createSetup(EntityType id)
     {
         return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
     }
 
     @Override
-    public Entity createEntity(TypeEntity type)
+    public Entity createEntity(EntityType type)
     {
         switch (type)
         {
-            case mario:
+            case MARIO:
                 return createMario();
-            case goomba:
+            case GOOMBA:
                 return createGoomba();
             default:
                 throw new LionEngineException("Unknown entity type: " + type);

@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeWeapon;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
+import com.b3dgs.lionengine.example.d_rts.d_ability.WeaponType;
 
 /**
  * Grunt implementation.
@@ -17,7 +17,7 @@ final class Grunt
      */
     Grunt(Context context)
     {
-        super(TypeEntity.grunt, context);
-        addWeapon(context.factoryWeapon.createWeapon(TypeWeapon.axe, this), 0);
+        super(EntityType.GRUNT, context);
+        addWeapon(context.factoryWeapon.createWeapon(WeaponType.AXE, this), 0);
     }
 }

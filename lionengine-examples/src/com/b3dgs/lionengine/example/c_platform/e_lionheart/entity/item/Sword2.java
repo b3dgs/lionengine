@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.TypeEffect;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 
 /**
@@ -18,7 +18,7 @@ public final class Sword2
      */
     public Sword2(Context context)
     {
-        super(context, TypeEntity.SWORD2, TypeEffect.TAKEN);
+        super(context, EntityType.SWORD2, EffectType.TAKEN);
     }
 
     /*

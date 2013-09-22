@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 
 /**
  * Turning hit scenery implementation.
@@ -18,7 +18,7 @@ public final class TurningHit
      */
     public TurningHit(Context context)
     {
-        super(context, TypeEntity.TURNING_HIT);
+        super(context, EntityType.TURNING_HIT);
         shakeCounter = 5;
     }
 
@@ -43,7 +43,7 @@ public final class TurningHit
         // Turning
         if (shakeCounter == 5)
         {
-            status.setState(TypeEntityState.TURN);
+            status.setState(EntityState.TURN);
             shakeCounter = 6;
             effectStart = false;
         }
@@ -55,7 +55,7 @@ public final class TurningHit
             {
                 shakeCounter = 0;
                 shake = false;
-                status.setState(TypeEntityState.IDLE);
+                status.setState(EntityState.IDLE);
                 effectSide = 1;
                 timerShake.start();
             }
@@ -67,7 +67,7 @@ public final class TurningHit
             {
                 shakeCounter = 5;
                 timerShake.stop();
-                status.setState(TypeEntityState.TURN);
+                status.setState(EntityState.TURN);
             }
         }
     }

@@ -37,7 +37,7 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.SELECT);
+                editor.setSelectionState(SelectionType.SELECT);
             }
         }).setToolTipText("Enable the selection mode. Allow to select entities on map.");
         UtilitySwing.addButton("Place", palettePanel, new ActionListener()
@@ -45,7 +45,7 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.PLACE);
+                editor.setSelectionState(SelectionType.PLACE);
             }
         }).setToolTipText("Enable the place mode. Allow to place new entities.");
         UtilitySwing.addButton("Delete", palettePanel, new ActionListener()
@@ -53,7 +53,7 @@ public class ToolBar
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.DELETE);
+                editor.setSelectionState(SelectionType.DELETE);
             }
         }).setToolTipText("Enable the delete mode. Allow to delete entities by clicking on them");
         return palettePanel;

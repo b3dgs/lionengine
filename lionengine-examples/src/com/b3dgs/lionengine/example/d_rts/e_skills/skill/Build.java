@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -17,7 +17,7 @@ final class Build
      */
     Build(SetupSkill setup)
     {
-        super(TypeSkill.building_standard_orc, setup);
+        super(SkillType.BUILDING_STANDARD_ORC, setup);
     }
 
     /*

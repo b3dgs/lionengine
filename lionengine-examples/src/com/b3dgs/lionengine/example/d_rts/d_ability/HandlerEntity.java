@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
  * Handler implementation, containing all entities.
  */
 public final class HandlerEntity
-        extends HandlerEntityRts<TypeResource, Tile, Entity, ControlPanel>
+        extends HandlerEntityRts<ResourceType, Tile, Entity, ControlPanel>
 {
     /** Entity progress bar. */
     private final Bar barProgress;

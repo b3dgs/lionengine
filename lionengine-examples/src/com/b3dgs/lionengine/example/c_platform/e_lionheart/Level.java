@@ -2,10 +2,10 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.TypeLandscape;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -26,9 +26,9 @@ public class Level
     /** Entity handler reference. */
     public final HandlerEntity handlerEntity;
     /** World type. */
-    private TypeWorld world;
+    private WorldType world;
     /** Landscape type. */
-    private TypeLandscape landscape;
+    private LandscapeType landscape;
 
     /**
      * Constructor.
@@ -73,9 +73,9 @@ public class Level
         {
             throw new IOException("Invalid level format !");
         }
-        setWorld(TypeWorld.get(file.readByte()));
-        factoryEntity.loadAll(TypeEntity.values());
-        setLandscape(TypeLandscape.get(file.readByte()));
+        setWorld(WorldType.get(file.readByte()));
+        factoryEntity.loadAll(EntityType.values());
+        setLandscape(LandscapeType.get(file.readByte()));
         map.setLandscape(getLandscape());
         map.load(file);
         worldData.load(file);
@@ -87,7 +87,7 @@ public class Level
      * 
      * @param world The world type.
      */
-    public void setWorld(TypeWorld world)
+    public void setWorld(WorldType world)
     {
         this.world = world;
         factoryEntity.setWorld(world);
@@ -98,7 +98,7 @@ public class Level
      * 
      * @param landscape The landscape type.
      */
-    public void setLandscape(TypeLandscape landscape)
+    public void setLandscape(LandscapeType landscape)
     {
         this.landscape = landscape;
     }
@@ -108,7 +108,7 @@ public class Level
      * 
      * @return The world type used.
      */
-    public TypeWorld getWorld()
+    public WorldType getWorld()
     {
         return world;
     }
@@ -118,7 +118,7 @@ public class Level
      * 
      * @return The landscape type used.
      */
-    public TypeLandscape getLandscape()
+    public LandscapeType getLandscape()
     {
         return landscape;
     }

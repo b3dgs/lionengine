@@ -48,7 +48,7 @@ public class ModuleGame
         }
 
         @Override
-        public TypeCollision getCollisionFrom(String collision, String type)
+        public TypeCollision getCollisionFrom(String collision)
         {
             return null;
         }

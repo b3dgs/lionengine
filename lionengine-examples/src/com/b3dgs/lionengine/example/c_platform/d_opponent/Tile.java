@@ -25,11 +25,11 @@ final class Tile
      */
 
     @Override
-    public TileCollision getCollisionFrom(String collision, String type)
+    public TileCollision getCollisionFrom(String collision)
     {
         try
         {
-            return TileCollision.valueOf(type);
+            return TileCollision.valueOf(collision);
         }
         catch (final NullPointerException exception)
         {

@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.d_rts.e_skills.TypeSkill;
+import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -13,10 +13,10 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * Default skill implementation.
  */
 public abstract class Skill
-        extends SkillRts<TypeSkill>
+        extends SkillRts<SkillType>
 {
     /** Id. */
-    private final TypeSkill id;
+    private final SkillType id;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Background. */
@@ -34,7 +34,7 @@ public abstract class Skill
      * @param id The skill id.
      * @param setup The setup skill reference.
      */
-    protected Skill(TypeSkill id, SetupSkill setup)
+    protected Skill(SkillType id, SetupSkill setup)
     {
         super(setup);
         this.id = id;
@@ -100,7 +100,7 @@ public abstract class Skill
     }
 
     @Override
-    public TypeSkill getId()
+    public SkillType getId()
     {
         return id;
     }

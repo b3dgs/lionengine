@@ -1,9 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntityState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 
 /**
  * Bee monster base implementation.
@@ -17,11 +17,11 @@ public abstract class EntityMonsterBee
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityMonsterBee(Context context, TypeEntity type)
+    public EntityMonsterBee(Context context, EntityType type)
     {
         super(context, type);
-        enableMovement(TypePatrol.HORIZONTAL);
-        enableMovement(TypePatrol.VERTICAL);
+        enableMovement(Patrol.HORIZONTAL);
+        enableMovement(Patrol.VERTICAL);
     }
 
     /*
@@ -33,9 +33,9 @@ public abstract class EntityMonsterBee
     {
         super.updateStates();
         mirror(false);
-        if (status.getState() == TypeEntityState.IDLE)
+        if (status.getState() == EntityState.IDLE)
         {
-            status.setState(TypeEntityState.WALK);
+            status.setState(EntityState.WALK);
         }
     }
 

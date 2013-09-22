@@ -4,8 +4,8 @@ import java.util.EnumMap;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollision;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TypeTileCollisionGroup;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 
@@ -16,7 +16,7 @@ public abstract class EntityMover
         extends Entity
 {
     /** Entity actions. */
-    protected final EnumMap<TypeEntityAction, Boolean> actions;
+    protected final EnumMap<EntityAction, Boolean> actions;
     /** Movement force. */
     protected final Movement movement;
     /** Movement jump force. */
@@ -36,11 +36,11 @@ public abstract class EntityMover
      * @param context The context reference.
      * @param type The entity type.
      */
-    public EntityMover(Context context, TypeEntity type)
+    public EntityMover(Context context, EntityType type)
     {
         super(context, type);
         movement = new Movement();
-        actions = new EnumMap<>(TypeEntityAction.class);
+        actions = new EnumMap<>(EntityAction.class);
         extraGravityForce = new Force();
         jumpForce = new Force();
         jumpHeightMax = getDataDouble("heightMax", "data", "jump");
@@ -55,7 +55,7 @@ public abstract class EntityMover
     /**
      * Update the actions.
      * 
-     * @see TypeEntityAction
+     * @see EntityAction
      */
     protected abstract void updateActions();
 
@@ -66,7 +66,7 @@ public abstract class EntityMover
      * @param collision The collision type.
      * @return <code>true</code> if collision applied, <code>false</code> else.
      */
-    public boolean checkCollisionVertical(Double y, TypeEntityCollisionTile collision)
+    public boolean checkCollisionVertical(Double y, EntityCollisionTile collision)
     {
         if (applyVerticalCollision(y))
         {
@@ -115,7 +115,7 @@ public abstract class EntityMover
      */
     public boolean isOnGround()
     {
-        return status.getCollision() == TypeEntityCollisionTile.GROUND;
+        return status.getCollision() == EntityCollisionTile.GROUND;
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class EntityMover
      * @param action The action to check.
      * @return <code>true</code> if enabled, <code>false</code> else.
      */
-    public boolean isEnabled(TypeEntityAction action)
+    public boolean isEnabled(EntityAction action)
     {
         return actions.get(action).booleanValue();
     }
@@ -140,7 +140,7 @@ public abstract class EntityMover
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
-            checkCollisionVertical(y, TypeEntityCollisionTile.GROUND);
+            checkCollisionVertical(y, EntityCollisionTile.GROUND);
             return true;
         }
         return false;
@@ -150,11 +150,12 @@ public abstract class EntityMover
      * Check horizontal axis.
      * 
      * @param offset The offset value.
+     * @return The tile found.
      */
-    protected void checkCollisionHorizontal(int offset)
+    protected Tile checkCollisionHorizontal(int offset)
     {
-        setCollisionOffset(offset, 1);
-        final Tile tile = map.getFirstTileHit(this, TypeTileCollision.COLLISION_HORIZONTAL);
+        setCollisionOffset(offset, 2);
+        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -163,6 +164,7 @@ public abstract class EntityMover
                 movement.reset();
             }
         }
+        return tile;
     }
 
     /**
@@ -202,7 +204,7 @@ public abstract class EntityMover
         final int h = (int) Math.ceil(getHorizontalForce());
         final Tile nextTile = map.getTile(this, h, 0);
         final double v;
-        if (isOnGround() && nextTile != null && nextTile.isGroup(TypeTileCollisionGroup.SLOPE))
+        if (isOnGround() && nextTile != null && nextTile.isGroup(TileCollisionGroup.SLOPE))
         {
             v = -Math.abs(h) * 1.5;
         }
@@ -238,7 +240,7 @@ public abstract class EntityMover
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(map.getFirstTileHit(this, TypeTileCollision.COLLISION_VERTICAL));
+            checkCollisionVertical(map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL));
         }
     }
 

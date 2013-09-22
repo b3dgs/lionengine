@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
+import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Map;
-import com.b3dgs.lionengine.example.d_rts.d_ability.TypeEntity;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.EntityRts;
 
@@ -13,7 +13,7 @@ public abstract class Entity
         extends EntityRts
 {
     /** Entity type. */
-    public final TypeEntity type;
+    public final EntityType type;
     /** Entity life. */
     public final Alterable life;
     /** Map reference. */
@@ -25,7 +25,7 @@ public abstract class Entity
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected Entity(TypeEntity id, Context context)
+    protected Entity(EntityType id, Context context)
     {
         super(context.factoryEntity.getSetup(id), context.map);
         type = id;

@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 
 /**
  * Crawling monster implementation.
@@ -17,8 +17,8 @@ public final class Crawling
      */
     public Crawling(Context context)
     {
-        super(context, TypeEntity.CRAWLING);
+        super(context, EntityType.CRAWLING);
         setFrameOffsets(0, -4);
-        enableMovement(TypePatrol.HORIZONTAL);
+        enableMovement(Patrol.HORIZONTAL);
     }
 }

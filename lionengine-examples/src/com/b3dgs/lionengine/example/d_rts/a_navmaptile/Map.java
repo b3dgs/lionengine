@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
  * Map implementation.
  */
 final class Map
-        extends MapTileRts<TypeCollision, Tile>
+        extends MapTileRts<TileCollision, Tile>
 {
     /**
      * Constructor.

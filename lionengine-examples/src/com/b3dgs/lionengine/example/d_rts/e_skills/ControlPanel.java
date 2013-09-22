@@ -172,15 +172,15 @@ final class ControlPanel
     @Override
     protected void onStartOrder()
     {
-        if (cursor.getType() != TypeCursor.BOX)
+        if (cursor.getType() != CursorType.BOX)
         {
-            cursor.setType(TypeCursor.CROSS);
+            cursor.setType(CursorType.CROSS);
         }
     }
 
     @Override
     protected void onTerminateOrder()
     {
-        cursor.setType(TypeCursor.POINTER);
+        cursor.setType(CursorType.POINTER);
     }
 }

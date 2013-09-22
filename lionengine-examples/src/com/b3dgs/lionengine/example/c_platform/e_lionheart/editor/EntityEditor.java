@@ -15,8 +15,8 @@ import javax.swing.SwingConstants;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrollable;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.TypePatrol;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.swing.ComboListener;
@@ -121,8 +121,8 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.PLAYER);
-                editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_START);
+                editor.setSelectionState(SelectionType.PLAYER);
+                editor.world.setPlayerSelection(SelectionPlayerType.PLACE_START);
             }
         });
         UtilitySwing.addButton("End", startEnd, new ActionListener()
@@ -130,8 +130,8 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.PLAYER);
-                editor.world.setPlayerSelection(TypeSelectionPlayer.PLACE_END);
+                editor.setSelectionState(SelectionType.PLAYER);
+                editor.world.setPlayerSelection(SelectionPlayerType.PLACE_END);
             }
         });
         playerValues.add(startEnd, BorderLayout.CENTER);
@@ -142,8 +142,8 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.PLAYER);
-                editor.world.setPlayerSelection(TypeSelectionPlayer.ADD_CHECKPOINT);
+                editor.setSelectionState(SelectionType.PLAYER);
+                editor.world.setPlayerSelection(SelectionPlayerType.ADD_CHECKPOINT);
             }
         });
         UtilitySwing.addButton("Remove", checkpoint, new ActionListener()
@@ -151,8 +151,8 @@ public class EntityEditor
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                editor.setSelectionState(TypeSelection.PLAYER);
-                editor.world.setPlayerSelection(TypeSelectionPlayer.REMOVE_CHECKPOINT);
+                editor.setSelectionState(SelectionType.PLAYER);
+                editor.world.setPlayerSelection(SelectionPlayerType.REMOVE_CHECKPOINT);
             }
         });
         playerValues.add(checkpoint, BorderLayout.CENTER);
@@ -195,10 +195,10 @@ public class EntityEditor
             {
                 if (selectedEntity instanceof Patrollable)
                 {
-                    final TypePatrol type = TypePatrol.get(comboMovement.getSelectedIndex());
+                    final Patrol type = Patrol.get(comboMovement.getSelectedIndex());
                     ((Patrollable) selectedEntity).setPatrolType(type);
-                    comboDirection.setEnabled(type != TypePatrol.NONE);
-                    UtilitySwing.setEnabled(patrolValues.getComponents(), type != TypePatrol.NONE);
+                    comboDirection.setEnabled(type != Patrol.NONE);
+                    UtilitySwing.setEnabled(patrolValues.getComponents(), type != Patrol.NONE);
                     editor.world.repaint();
                 }
             }
@@ -243,7 +243,7 @@ public class EntityEditor
         if (entity instanceof Patrollable)
         {
             final Patrollable mover = (Patrollable) entity;
-            for (final TypePatrol movement : TypePatrol.values())
+            for (final Patrol movement : Patrol.values())
             {
                 final boolean enabled = mover.isPatrolEnabled(movement);
                 EntityEditor.setEnabled(comboMovement, movement.getIndex(), enabled);

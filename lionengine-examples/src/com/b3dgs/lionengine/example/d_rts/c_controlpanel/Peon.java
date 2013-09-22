@@ -13,7 +13,7 @@ final class Peon
      */
     Peon(Context context)
     {
-        super(TypeEntity.peon, context);
+        super(EntityType.PEON, context);
         life.setMax(60);
         life.fill();
     }

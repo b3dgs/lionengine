@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollision;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollisionGroup;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeTileColor;
 import com.b3dgs.lionengine.game.rts.map.Border20;
@@ -75,11 +76,11 @@ public final class Tile
      */
 
     @Override
-    public TypeCollision getCollisionFrom(String collision, String type)
+    public TypeCollision getCollisionFrom(String collision)
     {
         try
         {
-            final TypeCollision tileCollision = TypeCollision.valueOf(type);
+            final TypeCollision tileCollision = TypeCollision.valueOf(collision);
             if (TypeCollision.TREE == tileCollision)
             {
                 if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
@@ -114,7 +115,7 @@ public final class Tile
     @Override
     public boolean checkBlocking(TypeCollision collision)
     {
-        return TypeCollision.GROUND != collision;
+        return TypeCollisionGroup.GROUND != collision.getGroup();
     }
 
     @Override

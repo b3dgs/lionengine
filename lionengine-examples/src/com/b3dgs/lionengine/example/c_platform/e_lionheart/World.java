@@ -41,7 +41,7 @@ final class World
     private final Context context;
     /** Stats renderer. */
     private final StatsRenderer statsRenderer;
-    /** Background reference. */
+    /** Landscape reference. */
     private Landscape landscape;
     /** Player reference. */
     private Valdyn player;

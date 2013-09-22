@@ -15,12 +15,12 @@ import javax.swing.JFrame;
 
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.MenuBar;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.SelectionType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.StateBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.ToolBar;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.TypeSelection;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.WorldPanel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -50,9 +50,9 @@ public class Editor
     /** State bar reference. */
     private final StateBar stateBar;
     /** Current selected entity data. */
-    private TypeEntity selectedEntity;
+    private EntityType selectedEntity;
     /** Current state selection. */
-    private TypeSelection selectionState;
+    private SelectionType selectionState;
 
     /**
      * Constructor.
@@ -65,7 +65,7 @@ public class Editor
         toolBar = new ToolBar(this);
         stateBar = new StateBar(this);
         selectedEntity = null;
-        selectionState = TypeSelection.SELECT;
+        selectionState = SelectionType.SELECT;
         init();
     }
 
@@ -93,7 +93,7 @@ public class Editor
      * 
      * @param type The selected entity type.
      */
-    public void setSelectedEntity(TypeEntity type)
+    public void setSelectedEntity(EntityType type)
     {
         selectedEntity = type;
     }
@@ -143,7 +143,7 @@ public class Editor
      * 
      * @return The selected entity type.
      */
-    public TypeEntity getSelectedEntity()
+    public EntityType getSelectedEntity()
     {
         return selectedEntity;
     }
@@ -153,7 +153,7 @@ public class Editor
      * 
      * @return The current selection state.
      */
-    public TypeSelection getSelectionState()
+    public SelectionType getSelectionState()
     {
         return selectionState;
     }
@@ -163,7 +163,7 @@ public class Editor
      * 
      * @param selection The new selection state.
      */
-    public void setSelectionState(TypeSelection selection)
+    public void setSelectionState(SelectionType selection)
     {
         selectionState = selection;
         repaint();

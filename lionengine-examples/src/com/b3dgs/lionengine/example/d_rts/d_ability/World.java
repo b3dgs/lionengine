@@ -78,7 +78,7 @@ final class World
      * @param ty The vertical location.
      * @return The entity instance.
      */
-    private Entity createEntity(TypeEntity type, int tx, int ty)
+    private Entity createEntity(EntityType type, int tx, int ty)
     {
         final Entity entity = factoryEntity.createEntity(type);
         entity.setPlayerId(0);
@@ -135,23 +135,23 @@ final class World
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final GoldMine goldMine = (GoldMine) createEntity(TypeEntity.gold_mine, 30, 13);
+        final GoldMine goldMine = (GoldMine) createEntity(EntityType.GOLD_MINE, 30, 13);
 
-        UnitWorker peon = (UnitWorker) createEntity(TypeEntity.peon, 33, 6);
+        UnitWorker peon = (UnitWorker) createEntity(EntityType.PEON, 33, 6);
         peon.setResource(goldMine);
         peon.startExtraction();
 
-        peon = (UnitWorker) createEntity(TypeEntity.peon, 35, 12);
-        peon.addToProductionQueue(factoryProduction.createProducible(TypeEntity.barracks_orc, 30, 4));
-        peon.addToProductionQueue(factoryProduction.createProducible(TypeEntity.farm_orc, 40, 10));
+        peon = (UnitWorker) createEntity(EntityType.PEON, 35, 12);
+        peon.addToProductionQueue(factoryProduction.createProducible(EntityType.BARRACKS_ORC, 30, 4));
+        peon.addToProductionQueue(factoryProduction.createProducible(EntityType.FARM_ORC, 40, 10));
 
-        final UnitAttacker grunt = (UnitAttacker) createEntity(TypeEntity.grunt, 42, 9);
-        final UnitAttacker spearman = (UnitAttacker) createEntity(TypeEntity.spearman, 39, 4);
+        final UnitAttacker grunt = (UnitAttacker) createEntity(EntityType.GRUNT, 42, 9);
+        final UnitAttacker spearman = (UnitAttacker) createEntity(EntityType.SPEARMAN, 39, 4);
         spearman.attack(grunt);
         grunt.attack(spearman);
 
-        final BuildingProducer townHall = (BuildingProducer) createEntity(TypeEntity.townhall_orc, 35, 7);
+        final BuildingProducer townHall = (BuildingProducer) createEntity(EntityType.TOWNHALL_ORC, 35, 7);
         townHall.setFrame(2);
-        townHall.addToProductionQueue(factoryProduction.createProducible(TypeEntity.peon));
+        townHall.addToProductionQueue(factoryProduction.createProducible(EntityType.PEON));
     }
 }

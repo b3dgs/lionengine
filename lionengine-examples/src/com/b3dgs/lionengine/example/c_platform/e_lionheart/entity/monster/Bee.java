@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.TypeEntity;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 
 /**
  * Bee monster implementation.
@@ -16,6 +16,6 @@ public final class Bee
      */
     public Bee(Context context)
     {
-        super(context, TypeEntity.BEE);
+        super(context, EntityType.BEE);
     }
 }

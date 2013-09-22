@@ -17,7 +17,7 @@ public class PatrollerModel
     /** Entity owner. */
     private final Patrollable owner;
     /** Movement enabled used in patrol. */
-    private final Set<TypePatrol> enableMovement;
+    private final Set<Patrol> enableMovement;
     /** Patrol current movement side. */
     private int side;
     /** Patrol minimum position. */
@@ -27,7 +27,7 @@ public class PatrollerModel
     /** Patrol existence flag. */
     private boolean hasPatrol;
     /** Movement type. */
-    private TypePatrol movementType;
+    private Patrol movementType;
     /** First move flag. */
     private int firstMove;
     /** Movement speed. */
@@ -46,8 +46,8 @@ public class PatrollerModel
     {
         this.owner = owner;
         enableMovement = new HashSet<>(4);
-        movementType = TypePatrol.NONE;
-        enableMovement(TypePatrol.NONE);
+        movementType = Patrol.NONE;
+        enableMovement(Patrol.NONE);
     }
 
     /**
@@ -69,7 +69,7 @@ public class PatrollerModel
         }
 
         // Set position interval
-        if (movementType == TypePatrol.HORIZONTAL)
+        if (movementType == Patrol.HORIZONTAL)
         {
             posMin = owner.getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
             posMax = owner.getLocationIntX() + (getPatrolRight() - 1) * Map.TILE_WIDTH;
@@ -84,7 +84,7 @@ public class PatrollerModel
                 owner.teleport(posMin + 1, owner.getLocationIntY());
             }
         }
-        else if (movementType == TypePatrol.VERTICAL)
+        else if (movementType == Patrol.VERTICAL)
         {
             posMin = owner.getLocationIntY() - getPatrolLeft() * Map.TILE_WIDTH;
             posMax = owner.getLocationIntY() + getPatrolRight() * Map.TILE_WIDTH;
@@ -113,7 +113,7 @@ public class PatrollerModel
     public void save(FileWriting file) throws IOException
     {
         file.writeByte((byte) movementType.getIndex());
-        if (movementType != TypePatrol.NONE)
+        if (movementType != Patrol.NONE)
         {
             file.writeByte((byte) getMoveSpeed());
             file.writeByte((byte) getFirstMove());
@@ -125,9 +125,9 @@ public class PatrollerModel
     @Override
     public void load(FileReading file) throws IOException
     {
-        setPatrolType(TypePatrol.get(file.readByte()));
-        final TypePatrol movementType = getPatrolType();
-        if (movementType != TypePatrol.NONE)
+        setPatrolType(Patrol.get(file.readByte()));
+        final Patrol movementType = getPatrolType();
+        if (movementType != Patrol.NONE)
         {
             setMoveSpeed(file.readByte());
             setFirstMove(file.readByte());
@@ -143,13 +143,13 @@ public class PatrollerModel
     }
 
     @Override
-    public void enableMovement(TypePatrol type)
+    public void enableMovement(Patrol type)
     {
         enableMovement.add(type);
     }
 
     @Override
-    public void setPatrolType(TypePatrol movement)
+    public void setPatrolType(Patrol movement)
     {
         movementType = movement;
     }
@@ -185,7 +185,7 @@ public class PatrollerModel
     }
 
     @Override
-    public TypePatrol getPatrolType()
+    public Patrol getPatrolType()
     {
         return movementType;
     }
@@ -235,11 +235,11 @@ public class PatrollerModel
     @Override
     public boolean isPatrolEnabled()
     {
-        return movementType != TypePatrol.NONE;
+        return movementType != Patrol.NONE;
     }
 
     @Override
-    public boolean isPatrolEnabled(TypePatrol type)
+    public boolean isPatrolEnabled(Patrol type)
     {
         return enableMovement.contains(type);
     }
