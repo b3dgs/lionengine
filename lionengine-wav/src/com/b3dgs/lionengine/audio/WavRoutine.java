@@ -34,6 +34,8 @@ final class WavRoutine
     private Align alignment;
     /** Sound volume. */
     private int volume;
+    /** Sound delay. */
+    private int delay;
     /** Routine flags. */
     private boolean isRunning;
     /** Playing flag. */
@@ -49,10 +51,11 @@ final class WavRoutine
      * Create a sound routine.
      * 
      * @param player The wav player reference.
+     * @param title The sound title.
      */
-    WavRoutine(WavPlayer player)
+    WavRoutine(WavPlayer player, String title)
     {
-        super("SFX Player");
+        super("SFX " + title);
         this.player = player;
         isRunning = true;
         media = null;
@@ -78,6 +81,16 @@ final class WavRoutine
     void setMedia(Media media)
     {
         this.media = media;
+    }
+
+    /**
+     * Set the sound delay.
+     * 
+     * @param delay The delay.
+     */
+    void setDelay(int delay)
+    {
+        this.delay = delay;
     }
 
     /**
@@ -153,6 +166,7 @@ final class WavRoutine
                 final String filename = media.getPath();
                 try
                 {
+                    Thread.sleep(delay);
                     isPlaying = true;
                     restart = false;
 
@@ -216,6 +230,10 @@ final class WavRoutine
                     sourceDataLine.close();
                     audioInputStream.close();
                 }
+                catch (final InterruptedException exception)
+                {
+                    Verbose.critical(WavRoutine.class, "run", "Delay broken: \"", filename, "\"");
+                }
                 catch (final UnsupportedAudioFileException
                              | IllegalArgumentException exception)
                 {
@@ -230,7 +248,6 @@ final class WavRoutine
                     Verbose.critical(WavRoutine.class, "run", "Error on playing sound \"", filename, "\"");
                 }
             }
-
             isPlaying = false;
             if (!restart)
             {
@@ -248,10 +265,7 @@ final class WavRoutine
                     interrupt();
                     media = null;
                     isRunning = false;
-                    synchronized (player.count)
-                    {
-                        player.decreaseCount();
-                    }
+                    player.decreaseCount();
                 }
             }
         }

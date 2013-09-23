@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -54,7 +55,7 @@ public abstract class EntityTurning
             shake = true;
             timerShake.stop();
             shakeCounter = 0;
-            // TODO: Play start turn sound
+            Sfx.BIPBIPBIP.play();
         }
         if (shake)
         {

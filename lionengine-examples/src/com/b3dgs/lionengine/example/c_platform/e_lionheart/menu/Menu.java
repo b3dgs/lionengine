@@ -16,6 +16,8 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteFont;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.SonicArranger;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -212,7 +214,7 @@ public class Menu
         value = UtilityMath.fixBetween(value, min, max);
         if (value != option)
         {
-            // Play sound select
+            Sfx.SELECT.play();
         }
         return value;
     }
@@ -270,7 +272,7 @@ public class Menu
         choice = UtilityMath.fixBetween(choice, 0, data.choiceMax);
         if (choiceOld != choice)
         {
-            // Play sound select
+            Sfx.SELECT.play();
         }
         MenuType next = data.choices[choice].next;
         // Go to menu key
@@ -591,5 +593,17 @@ public class Menu
             g.setColor(Menu.ALPHAS[a]);
             g.drawRect(0, 0, width, height, true);
         }
+    }
+    
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Sfx.terminate();
+        SonicArranger.stop();
+        if (!hasNextSequence)
+        {
+            SonicArranger.terminate();
+        }
+        System.gc();
     }
 }

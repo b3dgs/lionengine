@@ -166,10 +166,9 @@ final class Swamp
             {
                 sprite = (Sprite) backcolorB.getSprite();
             }
-            sprite.render(g, backcolorA.getMainX(), (int) (backcolorA.getOffsetY() + backcolorA.getMainY()));
-            if (wide)
+            for (int i = 0; i < Math.ceil(screenWidth / (double) sprite.getWidth()); i++)
             {
-                sprite.render(g, backcolorA.getMainX() + sprite.getWidth(),
+                sprite.render(g, backcolorA.getMainX() + i * sprite.getWidth(),
                         (int) (backcolorA.getOffsetY() + backcolorA.getMainY()));
             }
 

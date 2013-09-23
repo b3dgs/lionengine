@@ -50,7 +50,6 @@ final class WavPlayer
     WavPlayer(Media media, int maxSimultaneous)
     {
         Check.notNull(media, "Sound file must exists !");
-
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
@@ -66,7 +65,10 @@ final class WavPlayer
      */
     void decreaseCount()
     {
-        count = Integer.valueOf(count.intValue() - 1);
+        synchronized (count)
+        {
+            count = Integer.valueOf(count.intValue() - 1);
+        }
     }
 
     /**
@@ -105,31 +107,35 @@ final class WavPlayer
     @Override
     public void play()
     {
+        play(0);
+    }
+
+    @Override
+    public void play(int delay)
+    {
         final WavRoutine routine;
         if (!freeSounds.isEmpty() || count.intValue() >= maxSimultaneous)
         {
-            try
+            routine = freeSounds.poll();
+            if (routine != null)
             {
-                routine = freeSounds.take();
                 routine.setAlignement(alignment);
                 routine.setMedia(media);
                 routine.setVolume(volume);
+                routine.setDelay(delay);
                 synchronized (monitor)
                 {
                     monitor.notify();
                 }
             }
-            catch (final InterruptedException exception)
-            {
-                Verbose.exception(WavPlayer.class, "play", exception);
-            }
         }
         else
         {
-            routine = new WavRoutine(this);
+            routine = new WavRoutine(this, media.getPath());
             routine.setAlignement(alignment);
             routine.setMedia(media);
             routine.setVolume(volume);
+            routine.setDelay(delay);
             routine.start();
             synchronized (count)
             {
@@ -155,10 +161,41 @@ final class WavPlayer
     @Override
     public void stop()
     {
-        final WavRoutine routine = busySounds.peek();
-        if (routine != null)
+        for (WavRoutine routine : busySounds)
         {
             routine.stopSound();
         }
+    }
+
+    @Override
+    public void terminate()
+    {
+        new Thread("WavPlayer cleanup")
+        {
+            @Override
+            public void run()
+            {
+                while (count.intValue() > 0)
+                {
+                    WavPlayer.this.stop();
+                    for (WavRoutine routine : busySounds)
+                    {
+                        routine.interrupt();
+                    }
+                    for (WavRoutine routine : freeSounds)
+                    {
+                        routine.interrupt();
+                    }
+                    try
+                    {
+                        Thread.sleep(100);
+                    }
+                    catch (InterruptedException exception)
+                    {
+                        Verbose.exception(WavPlayer.class, "terminate", exception);
+                    }
+                }
+            }
+        }.start();
     }
 }

@@ -62,7 +62,7 @@ class Scene
     }
 
     @Override
-    protected void onTerminate()
+    protected void onTerminate(boolean hasNextSequence)
     {
         world.disconnect();
     }

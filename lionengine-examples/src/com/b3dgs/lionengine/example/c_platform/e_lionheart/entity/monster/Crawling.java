@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
 
@@ -20,5 +21,22 @@ public final class Crawling
         super(context, EntityType.CRAWLING);
         setFrameOffsets(0, -4);
         enableMovement(Patrol.HORIZONTAL);
+    }
+
+    /*
+     * EntityMonster
+     */
+
+    @Override
+    protected void updateStates()
+    {
+        if (isFalling())
+        {
+            status.setState(EntityState.FALL);
+        }
+        else
+        {
+            super.updateStates();
+        }
     }
 }

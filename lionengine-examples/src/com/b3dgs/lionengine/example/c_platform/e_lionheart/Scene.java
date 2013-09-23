@@ -1,12 +1,9 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
-import java.awt.Font;
-
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 import com.b3dgs.lionengine.input.Keyboard;
 
@@ -16,8 +13,6 @@ import com.b3dgs.lionengine.input.Keyboard;
 public final class Scene
         extends Sequence
 {
-    /** Text reference. */
-    private final Text text;
     /** World reference. */
     private final World world;
     /** Last level index played. */
@@ -31,7 +26,6 @@ public final class Scene
     public Scene(Loader loader)
     {
         super(loader);
-        text = new Text(Font.SANS_SERIF, 8, Text.NORMAL);
         world = new World(this);
         lastLevelIndex = -1;
     }
@@ -66,7 +60,7 @@ public final class Scene
     {
         loadLevel(getNextLevel());
     }
-
+    
     @Override
     protected void update(double extrp)
     {
@@ -81,6 +75,25 @@ public final class Scene
     protected void render(Graphic g)
     {
         world.render(g);
-        text.draw(g, 0, 0, String.valueOf(getFps()));
+    }
+    
+    @Override
+    protected void onLoaded(double extrp, Graphic g)
+    {
+        SonicArranger.play(world.level.getWorld().getMusic());
+        update(extrp);
+        render(g);
+    }
+    
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Sfx.terminate();
+        SonicArranger.stop();
+        if (!hasNextSequence)
+        {
+            SonicArranger.terminate();
+        }
+        System.gc();
     }
 }

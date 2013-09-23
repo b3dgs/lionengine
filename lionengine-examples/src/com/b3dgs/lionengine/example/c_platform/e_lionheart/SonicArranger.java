@@ -7,10 +7,8 @@ import com.b3dgs.lionengine.audio.Sc68;
 /**
  * Sc68 module binding.
  */
-final class SonicArranger
+public final class SonicArranger
 {
-    /** Musics directory. */
-    public static final String MUSICS_DIR = "musics";
     /** Player instance. */
     private static final Sc68 SC68;
 
@@ -54,7 +52,7 @@ final class SonicArranger
      */
     public static void play(Music music)
     {
-        SonicArranger.SC68.play(Media.get(SonicArranger.MUSICS_DIR, music.getFilename()));
+        SonicArranger.SC68.play(Media.get(AppLionheart.MUSICS_DIR, music.getFilename()));
     }
 
     /**

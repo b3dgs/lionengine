@@ -59,7 +59,7 @@ public final class Scene
     }
 
     @Override
-    protected void onTerminate()
+    protected void onTerminate(boolean hasNextSequence)
     {
         music.stop();
     }

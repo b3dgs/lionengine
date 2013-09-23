@@ -17,9 +17,10 @@ public final class BeetleHorizontal
      * 
      * @param context The context reference.
      */
-    BeetleHorizontal(Context context)
+    public BeetleHorizontal(Context context)
     {
         super(context, EntityType.BEETLE_HORIZONTAL);
+        setFrameOffsets(0, -6);
         enableMovement(Patrol.HORIZONTAL);
     }
 

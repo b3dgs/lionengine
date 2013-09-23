@@ -16,7 +16,7 @@ public final class BeetleVertical
      * 
      * @param context The context reference.
      */
-    BeetleVertical(Context context)
+    public BeetleVertical(Context context)
     {
         super(context, EntityType.BEETLE_VERTICAL);
         enableMovement(Patrol.VERTICAL);

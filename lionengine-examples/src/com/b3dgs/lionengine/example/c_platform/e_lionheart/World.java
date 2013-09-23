@@ -23,12 +23,12 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 final class World
         extends WorldGame
 {
+    /** Level reference. */
+    final Level level;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Background factory. */
     private final FactoryLandscape factoryLandscape;
-    /** Level reference. */
-    private final Level level;
     /** Map reference. */
     private final Map map;
     /** Entity factory. */
@@ -130,7 +130,7 @@ final class World
         camera.setLimits(map);
         camera.setIntervals(32, 0);
         handlerEntity.prepare();
-        player.respawn();
-        // TODO: SonicArranger.play(level.getWorld().getMusic());
+        player.setCheckpoints(level.worldData.getCheckpoints());
+        player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
     }
 }

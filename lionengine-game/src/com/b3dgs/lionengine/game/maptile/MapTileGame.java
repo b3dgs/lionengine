@@ -578,8 +578,8 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     public void render(Graphic g, CameraGame camera)
     {
         render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
-                (int) Math.floor(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.floor(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+                (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
+                (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }
 
     @Override

@@ -208,7 +208,7 @@ public class Editor
     {
         final int tw = world.map.getTileWidth();
         final int th = world.map.getTileHeight();
-        final int hOffsetMax = Math.max(world.map.getWidthInTile() - world.camera.getViewWidth() / tw, 0);
+        final int hOffsetMax = Math.max(world.map.getWidthInTile() - world.camera.getViewWidth() / tw - 1, 0);
         final int vOffsetMax = Math.max(world.map.getHeightInTile() - world.camera.getViewHeight() / th, 0);
         hOffset = UtilityMath.fixBetween(hOffset, 0, hOffsetMax);
         vOffset = UtilityMath.fixBetween(vOffset, 0, vOffsetMax);

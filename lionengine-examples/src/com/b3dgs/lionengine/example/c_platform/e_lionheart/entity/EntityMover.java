@@ -44,6 +44,8 @@ public abstract class EntityMover
         extraGravityForce = new Force();
         jumpForce = new Force();
         jumpHeightMax = getDataDouble("heightMax", "data", "jump");
+        movement.setVelocity(0.2);
+        movement.setSensibility(0.4);
         forces = new Force[]
         {
                 jumpForce, extraGravityForce, movement.getForce()
@@ -201,12 +203,13 @@ public abstract class EntityMover
      */
     private void gravitySlopeAdjuster()
     {
-        final int h = (int) Math.ceil(getHorizontalForce());
+        final double fh = getHorizontalForce();
+        final int h = (int) Math.ceil(fh);
         final Tile nextTile = map.getTile(this, h, 0);
         final double v;
         if (isOnGround() && nextTile != null && nextTile.isGroup(TileCollisionGroup.SLOPE))
         {
-            v = -Math.abs(h) * 1.5;
+            v = -Math.abs(fh) * 1.5;
         }
         else
         {
@@ -237,6 +240,7 @@ public abstract class EntityMover
     protected void updateCollisions()
     {
         checkMapLimit();
+        status.setCollision(EntityCollisionTile.NONE);
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {

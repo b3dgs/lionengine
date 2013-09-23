@@ -18,4 +18,14 @@ public final class BeeLittle
     {
         super(context, EntityType.BEE_LITTLE);
     }
+
+    /*
+     * EntityMonsterBee
+     */
+
+    @Override
+    public boolean getMirror()
+    {
+        return !super.getMirror();
+    }
 }

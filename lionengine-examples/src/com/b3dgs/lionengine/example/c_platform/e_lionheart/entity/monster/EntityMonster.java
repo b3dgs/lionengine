@@ -2,8 +2,10 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
@@ -16,6 +18,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patroll
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.PatrollerModel;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
+import com.b3dgs.lionengine.game.Alterable;
 
 /**
  * Monster base implementation.
@@ -24,6 +27,12 @@ public class EntityMonster
         extends EntityMover
         implements Patrollable
 {
+    /** Hurt max time. */
+    private static final int HURT_TIME = 200;
+    /** Hurt timer. */
+    protected final Timing timerHurt;
+    /** Life. */
+    private final Alterable life;
     /** Effect factory. */
     private final FactoryEffect factoryEffect;
     /** Patrol model. */
@@ -38,8 +47,20 @@ public class EntityMonster
     public EntityMonster(Context context, EntityType type)
     {
         super(context, type);
+        life = new Alterable(getDataInteger("normal", "life"));
+        timerHurt = new Timing();
         factoryEffect = context.factoryEffect;
         patroller = new PatrollerModel(this);
+    }
+
+    /**
+     * Called when entity is hit once.
+     * 
+     * @param entity The entity that hit.
+     */
+    protected void onHitBy(Entity entity)
+    {
+        // Nothing by default
     }
 
     /*
@@ -51,6 +72,8 @@ public class EntityMonster
     {
         super.prepare();
         patroller.prepare();
+        movement.setForceToReach(movement.getForce());
+        life.fill();
     }
 
     @Override
@@ -70,6 +93,10 @@ public class EntityMonster
     @Override
     protected void updateActions()
     {
+        if (timerHurt.isStarted() && timerHurt.elapsed(EntityMonster.HURT_TIME))
+        {
+            timerHurt.stop();
+        }
         final State state = status.getState();
         if (state == EntityState.TURN)
         {
@@ -126,7 +153,20 @@ public class EntityMonster
     @Override
     public void hitBy(Entity entity)
     {
-        kill();
+        if (!timerHurt.isStarted())
+        {
+            timerHurt.start();
+            life.decrease(1);
+            if (life.isEmpty())
+            {
+                kill();
+            }
+            else
+            {
+                Sfx.MONSTER_HURT.play();
+                onHitBy(entity);
+            }
+        }
     }
 
     @Override
@@ -171,7 +211,7 @@ public class EntityMonster
     {
         factoryEffect.startEffect(EffectType.EXPLODE, (int) dieLocation.getX() - getCollisionData().getWidth() / 2 - 5,
                 (int) dieLocation.getY() - 5);
-        // TODO: Play explode sound
+        Sfx.EXPLODE.play();
         destroy();
     }
 

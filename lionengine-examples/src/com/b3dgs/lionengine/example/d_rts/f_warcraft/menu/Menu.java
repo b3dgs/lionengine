@@ -465,7 +465,7 @@ public final class Menu
     }
 
     @Override
-    protected void onTerminate()
+    protected void onTerminate(boolean hasNextSequence)
     {
         end = true;
         for (int i = 0; i < buttons.length; i++)

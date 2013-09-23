@@ -209,7 +209,7 @@ public class ModuleGame
         }
 
         @Override
-        protected void onTerminate()
+        protected void onTerminate(boolean hasNextSequence)
         {
             // Called when sequence is closing, optional
         }

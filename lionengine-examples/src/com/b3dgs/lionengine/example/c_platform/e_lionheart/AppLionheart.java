@@ -33,6 +33,10 @@ public final class AppLionheart
     public static final String BACKGROUNDS_DIR = "backgrounds";
     /** Effects directory. */
     public static final String EFFECTS_DIR = "effects";
+    /** Musics directory. */
+    public static final String MUSICS_DIR = "musics";
+    /** Sound fx directory name. */
+    public static final String SFX_DIR = "sfx";
     /** Entity configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Show collision bounds. */

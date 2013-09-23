@@ -61,7 +61,20 @@ public interface Wav
     void play();
 
     /**
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
+     * 
+     * @param delay The delay in millisecond before being played.
+     */
+    void play(int delay);
+
+    /**
      * Stop sound. The sound will be stopped, but not deleted.
      */
     void stop();
+    
+    /**
+     * Close sound. Release resources.
+     */
+    void terminate();
 }

@@ -1,6 +1,10 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
+import java.io.IOException;
 import java.util.Locale;
+
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 
 /**
  * List of entity types.
@@ -63,18 +67,16 @@ public enum EntityType
     /** Valdyn (player). */
     VALDYN(EntityCategory.PLAYER);
 
-    /** Values. */
-    private static final EntityType[] VALUES = EntityType.values();
-
     /**
-     * Get the type from its index.
+     * Load type from its saved format.
      * 
-     * @param index The index.
-     * @return The type.
+     * @param file The file reading.
+     * @return The loaded type.
+     * @throws IOException If error.
      */
-    public static EntityType get(int index)
+    public static EntityType load(FileReading file) throws IOException
     {
-        return EntityType.VALUES[index];
+        return EntityType.valueOf(file.readString());
     }
 
     /** Type category. */
@@ -92,13 +94,14 @@ public enum EntityType
     }
 
     /**
-     * Get the index value.
+     * Save the entity type.
      * 
-     * @return The index value.
+     * @param file The file writing.
+     * @throws IOException If error.
      */
-    public int getIndex()
+    public void save(FileWriting file) throws IOException
     {
-        return ordinal();
+        file.writeString(name());
     }
 
     /**

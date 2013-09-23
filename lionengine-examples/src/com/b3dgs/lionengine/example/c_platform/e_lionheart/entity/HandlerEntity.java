@@ -49,7 +49,7 @@ public class HandlerEntity
         file.writeShort((short) size());
         for (final Entity entity : list())
         {
-            file.writeByte((byte) entity.type.getIndex());
+            entity.type.save(file);
             entity.save(file);
         }
     }
@@ -67,7 +67,7 @@ public class HandlerEntity
         final int entitiesNumber = file.readShort();
         for (int i = 0; i < entitiesNumber; i++)
         {
-            final Entity entity = factoryEntity.createEntity(EntityType.get(file.readByte()));
+            final Entity entity = factoryEntity.createEntity(EntityType.load(file));
             entity.load(file);
             add(entity);
         }

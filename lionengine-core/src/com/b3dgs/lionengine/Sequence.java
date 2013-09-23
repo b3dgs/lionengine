@@ -243,7 +243,8 @@ public abstract class Sequence
     /**
      * Start the next sequence, call the {@link #load()} function, and wait for current sequence to end before next
      * sequence continues. This function should be used to synchronize two sequences (eg: load a next sequence while
-     * being in a menu). Do not forget to call {@link #end()} in order to give control to the next sequence.
+     * being in a menu). Do not forget to call {@link #end()} in order to give control to the next sequence. The next
+     * sequence should override {@link #onLoaded(double, Graphic)} for special load just before enter in the loop.
      * 
      * @param nextSequence The next sequence reference.
      * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
@@ -328,9 +329,24 @@ public abstract class Sequence
     }
 
     /**
-     * Called when sequence is closing.
+     * Called when the sequence has been loaded.
+     * 
+     * @param extrp The extrapolation value.
+     * @param g The graphic output.
      */
-    protected void onTerminate()
+    protected void onLoaded(double extrp, Graphic g)
+    {
+        // Nothing by default
+    }
+
+    /**
+     * Called when sequence is closing. Should be used in case on special loading (such as music starting) when
+     * {@link #start(Sequence, boolean)} has been used by another sequence.
+     * 
+     * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
+     *            will end definitely).
+     */
+    protected void onTerminate(boolean hasNextSequence)
     {
         // Nothing by default
     }
@@ -391,6 +407,7 @@ public abstract class Sequence
         final int mcx = screen.getLocationX() + external.getWidth() / 2;
         final int mcy = screen.getLocationY() + external.getHeight() / 2;
         mouse.setCenter(mcx, mcy);
+        onLoaded(extrp, screen.getGraphic());
 
         // Main loop
         isRunning = true;
@@ -423,7 +440,7 @@ public abstract class Sequence
                 waitForNextSequenceWaiting();
             }
         }
-        onTerminate();
+        onTerminate(nextSequence != null);
         synchronized (this)
         {
             notifyAll();

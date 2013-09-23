@@ -12,6 +12,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.State;
@@ -146,6 +147,10 @@ final class ValdynAttack
             else
             {
                 shade.stopAnimation();
+            }
+            if (attacking && state != ValdynState.ATTACK_FALL)
+            {
+                Sfx.SWORD.play();
             }
         }
         if (shadeCanBePlayed && shadesEnabled.containsKey(state))

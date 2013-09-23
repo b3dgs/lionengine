@@ -1,8 +1,11 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
+import java.util.Collection;
+
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
@@ -16,6 +19,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.purview.Collidable;
@@ -32,7 +36,7 @@ public final class Valdyn
     /** The width of the tile extremity. */
     public static final int TILE_EXTREMITY_WIDTH = 3;
     /** Hurt effect value (lower is faster). */
-    private static final int HURT_EFFECT_FREQ = 6;
+    private static final int HURT_EFFECT_FREQ = 7;
     /** Hurt time before effect. */
     private static final int HURT_TIME_BEFORE_EFFECT = 500;
     /** Hurt time max. */
@@ -71,6 +75,10 @@ public final class Valdyn
     private final double sensibilityDecrease;
     /** Movement smooth. */
     private final double movementSmooth;
+    /** Checkpoints. */
+    private Collection<CoordTile> checkpoints;
+    /** Last checkpoint. */
+    private CoordTile lastCheckpoint;
     /** Landscape reference. */
     private Landscape landscape;
     /** Extremity state (used for border state). */
@@ -161,6 +169,22 @@ public final class Valdyn
     }
 
     /**
+     * Respawn valdyn at specified location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    public void respawn(int x, int y)
+    {
+        teleport(x, y);
+        respawn();
+        if (lastCheckpoint == null)
+        {
+            lastCheckpoint = new CoordTile(x, y);
+        }
+    }
+
+    /**
      * Set the landscape reference.
      * 
      * @param landscape The landscape reference.
@@ -168,6 +192,16 @@ public final class Valdyn
     public void setLandscape(Landscape landscape)
     {
         this.landscape = landscape;
+    }
+
+    /**
+     * Set the checkpoints list.
+     * 
+     * @param checkpoints The checkpoints list.
+     */
+    public void setCheckpoints(Collection<CoordTile> checkpoints)
+    {
+        this.checkpoints = checkpoints;
     }
 
     /**
@@ -353,7 +387,6 @@ public final class Valdyn
                 mirror(true);
             }
         }
-        attack.updateMirror(getMirror());
     }
 
     /**
@@ -497,8 +530,33 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
-        teleport(2100, 300);
+        if (lastCheckpoint != null)
+        {
+            teleport(lastCheckpoint.getX(), lastCheckpoint.getY());
+        }
         camera.resetInterval(this);
+    }
+
+    @Override
+    public void kill()
+    {
+        super.kill();
+        Sfx.VALDYN_DIE.play();
+    }
+    
+    @Override
+    public void update(double extrp)
+    {
+        super.update(extrp);
+        attack.updateMirror(getMirror());
+        for (final CoordTile coord : checkpoints)
+        {
+            if (getLocationIntX() - getWidth() > coord.getX() && getLocationIntX() < coord.getX() + 64
+                    && getLocationIntY() > coord.getY() - 64 && getLocationIntY() < coord.getY() + 64)
+            {
+                lastCheckpoint = coord;
+            }
+        }
     }
 
     @Override
@@ -526,6 +584,7 @@ public final class Valdyn
     {
         if (!timerHurt.isStarted())
         {
+            Sfx.VALDYN_HURT.play();
             resetGravity();
             jumpForce.setForce(0.0, jumpHeightMax * 0.8);
             stats.decreaseHeart();

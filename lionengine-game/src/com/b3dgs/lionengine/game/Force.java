@@ -153,6 +153,8 @@ public final class Force
      */
     public void addForce(double extrp, double fh, double fv)
     {
+        lastFh = fh;
+        lastFv = fv;
         this.fh += fh * extrp;
         this.fv += fv * extrp;
         fixForce();
@@ -176,6 +178,8 @@ public final class Force
      */
     public void setForce(double fh, double fv)
     {
+        lastFh = fh;
+        lastFv = fv;
         this.fh = fh;
         this.fv = fv;
         fixForce();

@@ -5,6 +5,7 @@
 	<data mass="0" gravityMax="0">
 		<jump heightMax="0.0" />
 	</data>
+	<life normal="2" />
 	<collision name="default" offsetX="0" offsetY="0" width="48" height="48" mirror="false" />
 	<animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
 	<animation name="walk" start="1" end="2" speed="0.25" reversed="false" repeat="true"/>

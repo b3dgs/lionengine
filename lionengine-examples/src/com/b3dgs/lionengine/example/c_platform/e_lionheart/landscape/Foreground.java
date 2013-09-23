@@ -171,14 +171,9 @@ final class Foreground
         @Override
         public void render(Graphic g)
         {
-            int w = 1;
-            if (isWide())
-            {
-                w = 2;
-            }
-
             // Render calc
             final Sprite sprite = (Sprite) data.getSprite();
+            final int w = (int) Math.ceil(screenWidth / (double) sprite.getWidth());
             final int y = (int) (data.getOffsetY() + data.getMainY() + water.getHeight());
             if (y >= 0 && y < screenHeight)
             {
@@ -263,14 +258,9 @@ final class Foreground
         @Override
         public void render(Graphic g)
         {
-            int w = 1;
-            if (isWide())
-            {
-                w = 2;
-            }
-
             // w number of renders used to fill screen
             final Sprite sprite = (Sprite) data.getSprite();
+            int w = (int) Math.ceil(screenWidth / (double) sprite.getWidth());
             int y = (int) (data.getOffsetY() + data.getMainY() + water.getHeight());
 
             if (y >= 0 && y <= screenHeight)
@@ -282,17 +272,13 @@ final class Foreground
             }
 
             // animation rendering
-            w = 6;
-            if (isWide())
-            {
-                w = 8;
-            }
+            w = (int) Math.ceil(screenWidth / (double) anim.getFrameWidth());
             final int x = (int) (-data.getOffsetX() + data.getMainX());
             y = (int) (data.getOffsetY() + data.getMainY() - 16.0 + water.getHeight());
 
             if (y >= 0 && y <= screenHeight)
             {
-                for (int j = 0; j < w; j++)
+                for (int j = 0; j <= w; j++)
                 {
                     anim.render(g, x + anim.getFrameWidth() * j, y);
                 }

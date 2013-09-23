@@ -48,7 +48,6 @@ public abstract class EntityItem
         {
             kill();
             onTaken((Valdyn) entity);
-            // TODO: Play taken sound
         }
     }
 

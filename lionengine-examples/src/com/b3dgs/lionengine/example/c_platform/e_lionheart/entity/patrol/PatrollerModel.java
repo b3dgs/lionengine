@@ -72,7 +72,7 @@ public class PatrollerModel
         if (movementType == Patrol.HORIZONTAL)
         {
             posMin = owner.getLocationIntX() - getPatrolLeft() * Map.TILE_WIDTH;
-            posMax = owner.getLocationIntX() + (getPatrolRight() - 1) * Map.TILE_WIDTH;
+            posMax = owner.getLocationIntX() + getPatrolRight() * Map.TILE_WIDTH;
             owner.setMovementForce(owner.getMovementSpeedMax() * side, 0.0);
             if (side == Patroller.MOVE_LEFT)
             {

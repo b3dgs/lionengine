@@ -242,17 +242,32 @@ public class WorldPanel
         {
             final int sx = mover.getLocationIntX();
             final int sy = mover.getLocationIntY();
+            final int tw = map.getTileWidth();
             final int th = map.getTileHeight();
-            final int left = Map.TILE_WIDTH * mover.getPatrolLeft();
-            final int right = Map.TILE_WIDTH * (mover.getPatrolLeft() + mover.getPatrolRight());
+            final int left = tw * mover.getPatrolLeft();
+            final int right = tw * (mover.getPatrolLeft() + mover.getPatrolRight());
+
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
-            g.fillRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th) - mover.getHeight(),
-                    mover.getWidth() + right, mover.getHeight());
+            if (mover.getPatrolType() == Patrol.HORIZONTAL)
+            {
+                g.fillRect(sx - hOff - left - mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th)
+                        - mover.getHeight(), mover.getWidth() + right, mover.getHeight());
+            }
+            else if (mover.getPatrolType() == Patrol.VERTICAL)
+            {
+                g.fillRect(sx - hOff - mover.getWidth() / 2, -sy + vOff - left + UtilityMath.getRounded(height, th)
+                        - mover.getHeight(), mover.getWidth(), mover.getHeight() + right);
+            }
+
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
             if (mover.getPatrolType() == Patrol.HORIZONTAL)
             {
-                g.fillRect(sx - hOff - left + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th),
-                        right, Map.TILE_HEIGHT);
+                g.fillRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th), right, th);
+            }
+            else if (mover.getPatrolType() == Patrol.VERTICAL)
+            {
+                g.fillRect(sx - hOff + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th) - left
+                        - mover.getHeight() / 2, tw, right);
             }
         }
     }
@@ -633,8 +648,8 @@ public class WorldPanel
                     final EntityType selection = editor.getSelectedEntity();
                     if (selection != null)
                     {
-                        final int id = selection.getIndex();
-                        final Entity entity = factoryEntity.createEntity(EntityType.get(id));
+                        final String id = selection.name();
+                        final Entity entity = factoryEntity.createEntity(EntityType.valueOf(id));
                         setEntityLocation(entity, x, y, 1);
                         handlerEntity.add(entity);
                         handlerEntity.update();

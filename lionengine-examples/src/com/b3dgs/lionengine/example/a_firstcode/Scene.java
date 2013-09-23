@@ -62,7 +62,7 @@ final class Scene
      * It is not necessary to override this method
      */
     @Override
-    protected void onTerminate()
+    protected void onTerminate(boolean hasNextSequence)
     {
         UtilityMessageBox.information("Terminate !", "Closing app...");
     }
