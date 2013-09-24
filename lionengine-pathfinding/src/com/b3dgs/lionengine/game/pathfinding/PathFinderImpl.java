@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.
  */
-class PathFinderImpl
+final class PathFinderImpl
         implements PathFinder
 {
     /** Closed list. */

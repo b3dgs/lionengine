@@ -16,6 +16,7 @@ public class PathfindableModel
 {
     /** Diagonal speed factor. */
     private static final double DIAGONAL_SPEED = 0.8;
+
     /** Map reference. */
     protected final MapTilePath<?, ? extends TilePath<?>> map;
     /** User reference. */
@@ -58,7 +59,7 @@ public class PathfindableModel
     private boolean moving;
     /** Skip flag. Used to skip one loop of update. */
     private boolean skip;
-    /** Recheck ref flag. */
+    /** Rechecks ref flag. */
     private boolean reCheckRef;
 
     /**

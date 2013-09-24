@@ -22,6 +22,7 @@ public final class LionEngineException
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599463L;
+
     /** The message. */
     private final String message;
     /** The reason. */

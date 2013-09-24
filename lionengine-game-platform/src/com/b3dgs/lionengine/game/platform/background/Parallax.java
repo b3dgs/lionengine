@@ -17,6 +17,7 @@ public class Parallax
 {
     /** Magic wrap speed. */
     private static final double SPEED_WRAP = 2.56 / 0.0084;
+
     /** Parallax element. */
     private final BackgroundElement data;
     /** Parallax surface. */

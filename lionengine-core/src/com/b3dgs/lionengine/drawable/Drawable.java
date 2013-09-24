@@ -122,7 +122,7 @@ public final class Drawable
     }
 
     /**
-     * Create a font based on an image.
+     * Load a font based on an image.
      * 
      * @param media The font sprite media.
      * @param data The font data media.
@@ -130,7 +130,7 @@ public final class Drawable
      * @param lh The font image letter height.
      * @return The created font sprite.
      */
-    public static SpriteFont createSpriteFont(Media media, Media data, int lw, int lh)
+    public static SpriteFont loadSpriteFont(Media media, Media data, int lw, int lh)
     {
         return new SpriteFontImpl(media, data, lw, lh);
     }

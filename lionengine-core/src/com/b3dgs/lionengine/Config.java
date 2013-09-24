@@ -31,6 +31,7 @@ public final class Config
     private static final String MESSAGE_ERROR_EXTERNAL = "The external display must not be null !";
     /** Error message filter. */
     private static final String MESSAGE_ERROR_FILTER = "The filter must not be null !";
+
     /** Internal display reference. */
     public final Display internal;
     /** External display reference. */

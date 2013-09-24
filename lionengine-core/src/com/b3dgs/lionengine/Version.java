@@ -12,13 +12,6 @@ package com.b3dgs.lionengine;
  */
 public final class Version
 {
-    /** Major version. */
-    public final int major;
-    /** Minor version. */
-    public final int minor;
-    /** Micro version. */
-    public final int micro;
-
     /**
      * Create a new version descriptor.
      * 
@@ -31,6 +24,13 @@ public final class Version
     {
         return new Version(major, minor, micro);
     }
+
+    /** Major version. */
+    public final int major;
+    /** Minor version. */
+    public final int minor;
+    /** Micro version. */
+    public final int micro;
 
     /**
      * Create a new version descriptor.

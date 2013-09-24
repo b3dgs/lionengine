@@ -29,6 +29,10 @@ public final class DisactivableComboBox<E>
         setBorder(new EmptyBorder(1, 1, 1, 1));
     }
 
+    /*
+     * ListCellRenderer
+     */
+
     @Override
     public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected,
             boolean cellHasFocus)

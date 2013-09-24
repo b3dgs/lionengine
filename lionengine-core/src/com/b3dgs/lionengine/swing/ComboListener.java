@@ -29,10 +29,14 @@ public final class ComboListener<E>
     public ComboListener(JComboBox<E> combo, ActionCombo action)
     {
         this.combo = combo;
+        this.action = action;
         combo.setSelectedIndex(0);
         currentItem = combo.getSelectedItem();
-        this.action = action;
     }
+
+    /*
+     * ActionListener
+     */
 
     @Override
     public void actionPerformed(ActionEvent event)

@@ -14,6 +14,7 @@ public final class Display
 {
     /** Error message display. */
     private static final String MESSAGE_ERROR_DISPLAY = "Invalid display parameters !";
+
     /** Display width. */
     private final int width;
     /** Display height. */
@@ -30,7 +31,7 @@ public final class Display
      * 
      * @param width The screen width (in pixel).
      * @param height The screen height (in pixel).
-     * @param depth The screen colour depth (usually 16 or 32).
+     * @param depth The screen color depth (usually 16 or 32).
      * @param rate The refresh rate (usually 50 or 60).
      */
     public Display(int width, int height, int depth, int rate)

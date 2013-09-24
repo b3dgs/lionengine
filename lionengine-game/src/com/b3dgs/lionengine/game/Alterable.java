@@ -26,6 +26,7 @@ public class Alterable
 {
     /** Minimum value. */
     private static final int MIN = 0;
+
     /** Over max. */
     private final boolean overMax;
     /** Alterable current value. */

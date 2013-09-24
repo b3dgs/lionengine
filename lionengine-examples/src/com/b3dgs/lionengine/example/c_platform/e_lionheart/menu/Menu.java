@@ -130,7 +130,7 @@ public class Menu
         timerPressStart = new Timing();
         wideFactor = wide ? 0 : 1;
 
-        font = Drawable.createSpriteFont(Menu.FONT_SPRITE, Menu.FONT_DATA, 12, 12);
+        font = Drawable.loadSpriteFont(Menu.FONT_SPRITE, Menu.FONT_DATA, 12, 12);
 
         pics = new Sprite[1];
         for (int i = 0; i < 1; i++)

@@ -14,14 +14,14 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
  */
 public abstract class SkillRts<T extends Enum<T>>
 {
-    /** Destination assignment x. */
-    protected int destX;
-    /** Destination assignment y. */
-    protected int destY;
     /** Name. */
     private final String name;
     /** Description. */
     private final String description;
+    /** Destination assignment x. */
+    protected int destX;
+    /** Destination assignment y. */
+    protected int destY;
     /** Skill current level. */
     private int level;
     /** Priority used. */

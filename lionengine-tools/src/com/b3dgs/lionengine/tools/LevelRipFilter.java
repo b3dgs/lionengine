@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.utility.UtilityFile;
 /**
  * Level rip filter.
  */
-class LevelRipFilter
+final class LevelRipFilter
         extends FileFilter
 {
     /** File extension. */

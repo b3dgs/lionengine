@@ -118,33 +118,12 @@ class MouseImpl
      */
 
     @Override
-    public void setCenter(int x, int y)
+    public void update()
     {
-        centerX = x;
-        centerY = y;
-    }
-
-    @Override
-    public boolean hasClicked(int click)
-    {
-        return clicks[click];
-    }
-
-    @Override
-    public boolean hasClickedOnce(int click)
-    {
-        if (clicks[click] && !clicked[click])
-        {
-            clicked[click] = true;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public int getMouseClick()
-    {
-        return lastClick;
+        mx = x - oldX;
+        my = y - oldY;
+        oldX = x;
+        oldY = y;
     }
 
     @Override
@@ -164,62 +143,6 @@ class MouseImpl
             oldX = centerX;
             oldY = centerY;
         }
-    }
-
-    @Override
-    public int getOnScreenX()
-    {
-        return x;
-    }
-
-    @Override
-    public int getOnScreenY()
-    {
-        return y;
-    }
-
-    @Override
-    public int getOnWindowX()
-    {
-        return (int) (wx / xRatio);
-    }
-
-    @Override
-    public int getOnWindowY()
-    {
-        return (int) (wy / yRatio);
-    }
-
-    @Override
-    public int getMoveX()
-    {
-        return mx;
-    }
-
-    @Override
-    public int getMoveY()
-    {
-        return my;
-    }
-
-    @Override
-    public boolean moved()
-    {
-        if (moved)
-        {
-            moved = false;
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void update()
-    {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
     }
 
     @Override
@@ -260,6 +183,87 @@ class MouseImpl
             doClick(click);
         }
     }
+
+    @Override
+    public void setCenter(int x, int y)
+    {
+        centerX = x;
+        centerY = y;
+    }
+
+    @Override
+    public int getMouseClick()
+    {
+        return lastClick;
+    }
+
+    @Override
+    public int getOnScreenX()
+    {
+        return x;
+    }
+
+    @Override
+    public int getOnScreenY()
+    {
+        return y;
+    }
+
+    @Override
+    public int getOnWindowX()
+    {
+        return (int) (wx / xRatio);
+    }
+
+    @Override
+    public int getOnWindowY()
+    {
+        return (int) (wy / yRatio);
+    }
+
+    @Override
+    public int getMoveX()
+    {
+        return mx;
+    }
+
+    @Override
+    public int getMoveY()
+    {
+        return my;
+    }
+
+    @Override
+    public boolean hasClicked(int click)
+    {
+        return clicks[click];
+    }
+
+    @Override
+    public boolean hasClickedOnce(int click)
+    {
+        if (clicks[click] && !clicked[click])
+        {
+            clicked[click] = true;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean moved()
+    {
+        if (moved)
+        {
+            moved = false;
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * MouseListener
+     */
 
     @Override
     public void mousePressed(MouseEvent event)

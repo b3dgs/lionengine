@@ -64,6 +64,7 @@ public abstract class Sequence
     private static final long TIME_INT = 1000000L;
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
+
     /** Config reference. */
     public final Config config;
     /** True if screen is wide. */

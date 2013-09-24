@@ -26,10 +26,9 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  *         throw new RuntimeException();
  *     }
  * 
- *     public static void main(String args[])
+ *     public static void main(String[] args)
  *     {
- *         // Start engine
- *         // (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
+ *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
  *         // The Engine is initialized with our parameters:
  *         // - The name of our program: &quot;First Code&quot;
  *         // - Our program version: &quot;1.0.0&quot;
@@ -37,7 +36,7 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix
  *         // - The verbose level
  *         // - The swing theme (general java appearance)
- *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
+ *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;, Verbose.CRITICAL, Theme.SYSTEM);
  * 
  *         // Configuration reference (native size = 320*240*16 at 60fps)
  *         // This mean that our native resolution is in 320*240
@@ -101,19 +100,19 @@ public final class Engine
     private static String programVersion;
 
     /**
-     * Start engine; has to be called before anything and only one time, in the main.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param ressourcesDir The main resources directory (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, String ressourcesDir)
+    public static void start(String name, Version version, String resourcesDir)
     {
-        Engine.start(name, version, ressourcesDir, Verbose.CRITICAL, Theme.SYSTEM);
+        Engine.start(name, version, resourcesDir, Verbose.CRITICAL, Theme.SYSTEM);
     }
 
     /**
-     * Start engine; has to be called before anything and only one time, in the main.
+     * Start engine. Has to be called before anything and only one time, in the main.
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).

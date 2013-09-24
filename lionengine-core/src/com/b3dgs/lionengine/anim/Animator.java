@@ -17,15 +17,18 @@ package com.b3dgs.lionengine.anim;
  * final Animator animator = Anim.createAnimator();
  * final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
  * animator.play(animation);
+ * 
+ * // ... (loop)
+ * animator.updateAnimation(extrp);
+ * // (loop) ...
  * </pre>
  */
 public interface Animator
 {
     /**
-     * Play the animation, previously created. Should be called only one time, as {@link #updateAnimation(double)} do
-     * the animation update.
+     * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} do the animation update.
      * 
-     * @param animation The animation reference to play.
+     * @param animation The animation to play.
      */
     void play(Animation animation);
 
@@ -33,14 +36,14 @@ public interface Animator
      * Play the animated sprite with a specific animation data. Should be called only one time, as
      * {@link #updateAnimation(double)} do the animation update.
      * 
-     * @param first The first frame index to play (>= {@link Animation#MINIMUM_FRAME}).
-     * @param last The last frame index to play (>= first).
+     * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
+     * @param lastFrame The last frame (included) index to play (>= firstFrame).
      * @param speed The animation playing speed (>= 0.0).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      * @see Animation
      */
-    void play(int first, int last, double speed, boolean reverse, boolean repeat);
+    void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat);
 
     /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
@@ -48,7 +51,7 @@ public interface Animator
     void stopAnimation();
 
     /**
-     * Animation update routine. It will update the animation that have been define with the last call of
+     * Animation update routine. It will update the animation that have been defined with the last call of
      * {@link #play(Animation)} or {@link #play(int, int, double, boolean, boolean)}.
      * 
      * @param extrp The extrapolation value.
@@ -58,7 +61,7 @@ public interface Animator
     /**
      * Set the current animation speed. This function allows to change the current playing animation speed.
      * <p>
-     * Example: it can be used to synchronize the player movement speed to the walking animation speed.
+     * Can be used to synchronize the player movement speed to the walking animation speed.
      * </p>
      * 
      * @param speed The new animation speed.

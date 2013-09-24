@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @param <E> The comparable type.
  */
-class SortedList<E extends Comparable<E>>
+final class SortedList<E extends Comparable<E>>
 {
     /** List of object. */
     private final List<E> list;

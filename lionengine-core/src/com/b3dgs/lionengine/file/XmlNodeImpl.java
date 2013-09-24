@@ -13,7 +13,7 @@ import com.b3dgs.lionengine.Check;
 /**
  * Xml node implementation.
  */
-class XmlNodeImpl
+final class XmlNodeImpl
         implements XmlNode
 {
     /** Root reference. */
@@ -61,6 +61,7 @@ class XmlNodeImpl
     {
         Check.notNull(attribute, "The attribute must not be null !");
         final String value = root.getAttributeValue(attribute);
+
         Check.notNull(value, "Can not read the attribute value for: \"", attribute, "\"");
         return value;
     }

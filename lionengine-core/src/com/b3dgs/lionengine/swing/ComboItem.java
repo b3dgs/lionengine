@@ -59,6 +59,10 @@ public final class ComboItem
         return obj;
     }
 
+    /*
+     * CanEnable
+     */
+
     @Override
     public boolean isEnabled()
     {

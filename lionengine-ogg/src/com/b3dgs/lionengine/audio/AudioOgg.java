@@ -8,14 +8,6 @@ import com.b3dgs.lionengine.Media;
 public final class AudioOgg
 {
     /**
-     * Private constructor.
-     */
-    private AudioOgg()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Load an OGG music from a file name.
      * 
      * @param media The media file.
@@ -24,5 +16,13 @@ public final class AudioOgg
     public static Ogg loadOgg(Media media)
     {
         return new OggPlayer(media);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AudioOgg()
+    {
+        throw new RuntimeException();
     }
 }

@@ -11,10 +11,10 @@ import com.b3dgs.lionengine.game.maptile.MapTile;
  */
 public class Border20Map
 {
-    /** Safe array. */
-    private boolean[][] safe;
     /** Middle flag. */
     private final boolean middle;
+    /** Safe array. */
+    private boolean[][] safe;
 
     /**
      * Create a Border20Map map.

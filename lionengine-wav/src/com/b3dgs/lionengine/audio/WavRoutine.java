@@ -26,6 +26,7 @@ final class WavRoutine
 {
     /** Sound buffer size. */
     static final int BUFFER = 128000;
+
     /** Way player reference. */
     private final WavPlayer player;
     /** Sound file reference. */

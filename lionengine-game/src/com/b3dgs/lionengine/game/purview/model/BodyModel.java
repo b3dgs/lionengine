@@ -14,6 +14,7 @@ public class BodyModel
 {
     /** Gravity of earth (in m/s). */
     private static final double GRAVITY = 9.80665;
+
     /** Body location. */
     protected final Localizable location;
     /** Body force. */

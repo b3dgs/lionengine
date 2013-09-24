@@ -216,12 +216,19 @@ public class ModuleCore
         final Animator animator = Anim.createAnimator();
         final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
         animator.play(animation);
+
+        // ... (loop)
+        animator.updateAnimation(extrp);
+        // (loop) ...
     }
 
     void animState()
     {
         final Animator animator = Anim.createAnimator();
-        animator.getAnimState();
+        animator.getAnimState(); // returns STOPPED
+        animator.play(1, 2, 1.0, false, false);
+        animator.updateAnimation(extrp);
+        animator.getAnimState(); // returns PLAYING
     }
 
     void fileReading()

@@ -18,7 +18,7 @@ import com.b3dgs.lionengine.Media;
 /**
  * Xml parser implementation.
  */
-class XmlParserImpl
+final class XmlParserImpl
         implements XmlParser
 {
     /**

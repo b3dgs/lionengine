@@ -36,7 +36,6 @@ final class SpriteTiledImpl
     SpriteTiledImpl(Media media, int tileWidth, int tileHeight)
     {
         super(media);
-
         Check.argument(tileWidth > 0 && tileHeight > 0, "Sprite tile size must be strictly positive !");
 
         tileOriginalWidth = tileWidth;

@@ -42,6 +42,7 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
+
     /** Map reference. */
     private MapTileGame<C, T> map;
     /** Level rip image. */

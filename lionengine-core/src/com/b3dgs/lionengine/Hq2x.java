@@ -10,7 +10,7 @@ final class Hq2x
     /**
      * The raw scale implementation.
      */
-    private static class RawScale2x
+    private static final class RawScale2x
     {
         /** Source data array. */
         private final int[] srcImage;

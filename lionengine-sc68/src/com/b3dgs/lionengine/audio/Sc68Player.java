@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.Media;
 /**
  * SC68 player implementation.
  */
-class Sc68Player
+final class Sc68Player
         implements Sc68
 {
     /** Binding reference. */

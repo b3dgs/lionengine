@@ -29,6 +29,7 @@ public final class Loader
     private static final String MESSAGE_ERROR_STARTED = "Loader has already been started !";
     /** Error message sequence interrupted. */
     private static final String MESSAGE_ERROR_SEQUENCE = "Sequence badly interrupted !";
+
     /** Screen reference. */
     private final Screen screen;
     /** Keyboard reference. */

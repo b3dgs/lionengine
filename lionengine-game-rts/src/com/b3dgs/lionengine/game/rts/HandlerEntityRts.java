@@ -41,6 +41,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
 {
     /** Maximum number of layers. */
     static final int LAYERS = 4;
+
     /** Control panel reference. */
     protected final C panel;
     /** Entity listener. */

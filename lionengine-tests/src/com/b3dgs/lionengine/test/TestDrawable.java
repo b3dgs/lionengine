@@ -726,7 +726,7 @@ public class TestDrawable
     {
         final Media fontData = Media.get("fontdata.xml");
         final String text = "a%z";
-        final SpriteFont sprite = Drawable.createSpriteFont(media, fontData, 6, 7);
+        final SpriteFont sprite = Drawable.loadSpriteFont(media, fontData, 6, 7);
 
         final ImageInfo info = TestDrawable.assertImageInfoCorrect(media, sprite);
         Assert.assertEquals(info.getWidth(), sprite.getWidthOriginal());
@@ -745,7 +745,7 @@ public class TestDrawable
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
         Assert.assertEquals(sprite, sprite.instanciate());
-        Assert.assertFalse(sprite.equals(Drawable.createSpriteFont(media, fontData, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, fontData, 6, 7)));
     }
 
     /**

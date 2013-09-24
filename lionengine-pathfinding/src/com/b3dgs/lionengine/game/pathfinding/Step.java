@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 /**
  * Path step.
  */
-class Step
+final class Step
 {
     /** Step location x. */
     private final int x;

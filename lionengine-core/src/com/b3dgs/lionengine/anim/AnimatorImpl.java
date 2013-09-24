@@ -12,20 +12,21 @@ final class AnimatorImpl
     private static final double FRAME = 1.0;
     /** Half frame. */
     private static final double HALF_FRAME = 0.5;
-    /** Current playing frame. */
-    private double current;
-    /** Animation speed. */
-    private double speed;
+
     /** First frame. */
     private int first;
     /** Last frame. */
     private int last;
-    /** Animation state. */
-    private AnimState state;
+    /** Animation speed. */
+    private double speed;
     /** Reverse flag. */
     private boolean reverse;
     /** Repeat flag. */
     private boolean repeat;
+    /** Current playing frame. */
+    private double current;
+    /** Animation state. */
+    private AnimState state;
 
     /**
      * Create an animator.
@@ -110,26 +111,19 @@ final class AnimatorImpl
     }
 
     @Override
-    public void play(int first, int last, double speed, boolean reverse, boolean repeat)
+    public void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
-        Check.argument(first >= Animation.MINIMUM_FRAME, "First frame must be >= Animation.MINIMUM_FRAME !");
-        Check.argument(last >= first, "Last frame must be >= first !");
+        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, "First frame must be >= Animation.MINIMUM_FRAME !");
+        Check.argument(lastFrame >= firstFrame, "Last frame must be >= first !");
         Check.argument(speed >= 0.0, "Speed must be >= 0.0 !");
 
-        this.first = first;
-        this.last = last;
+        first = firstFrame;
+        last = lastFrame;
         this.speed = speed;
         this.reverse = reverse;
         this.repeat = repeat;
-        current = this.first;
+        current = first;
         state = AnimState.PLAYING;
-    }
-
-    @Override
-    public void setAnimSpeed(double speed)
-    {
-        Check.argument(speed >= 0.0, "Speed must be >= 0.0 !");
-        this.speed = speed;
     }
 
     @Override
@@ -152,9 +146,10 @@ final class AnimatorImpl
     }
 
     @Override
-    public AnimState getAnimState()
+    public void setAnimSpeed(double speed)
     {
-        return state;
+        Check.argument(speed >= 0.0, "Speed must be >= 0.0 !");
+        this.speed = speed;
     }
 
     @Override
@@ -162,6 +157,12 @@ final class AnimatorImpl
     {
         Check.argument(frame >= Animation.MINIMUM_FRAME, "Frame must be >= Animation.MINIMUM_FRAME !");
         current = frame;
+    }
+
+    @Override
+    public AnimState getAnimState()
+    {
+        return state;
     }
 
     @Override

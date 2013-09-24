@@ -45,15 +45,16 @@ public interface Animation
     void setLast(int last);
 
     /**
-     * Set speed. The standard value is 1.0. A value of 2.0 will play it twice faster. The speed must be positive.
+     * Set speed. The standard value is 1.0. A value of 2.0 will play it twice faster. A value of 0.5 will pay it twice
+     * slower. The speed must be positive.
      * 
      * @param speed The speed (>= 0.0).
      */
     void setSpeed(double speed);
 
     /**
-     * Set reverse state. If the value is set to <code>true</code>, this will make the animation be played in reverse
-     * when the last frame is reached. In this case, the animation will be finished when the first frame is reached. A
+     * Set reverse state. If the value is set to <code>true</code>, it will make the animation be played in reverse when
+     * the last frame is reached. In this case, the animation will be finished when the first frame is reached. A
      * <code>false</code> flag will play normally the animation, from first frame to last frame.
      * 
      * @param reverse The reverse state.
@@ -61,9 +62,8 @@ public interface Animation
     void setReverse(boolean reverse);
 
     /**
-     * Set repeat state (loop). If the value is set to <code>true</code>, this will make the animation be played in
-     * loop. In other word, when the last frame is reached, it will automatically play it again, starting at the first
-     * frame.
+     * Set repeat state (loop). If the value is set to <code>true</code>, it will make the animation be played in loop.
+     * In other word, when the last frame is reached, it will automatically play it again, starting at the first frame.
      * <p>
      * If it is combined with a reverse flag set to <code>true</code>, it will play from first frame to last frame, last
      * frame to first frame, and so on.

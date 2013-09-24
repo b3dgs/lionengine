@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.Media;
 /**
  * File writer implementation.
  */
-class FileWritingImpl
+final class FileWritingImpl
         implements FileWriting
 {
     /** Output stream reference. */

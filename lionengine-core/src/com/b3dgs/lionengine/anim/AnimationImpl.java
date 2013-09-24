@@ -8,6 +8,13 @@ import com.b3dgs.lionengine.Check;
 final class AnimationImpl
         implements Animation
 {
+    /** First frame error. */
+    private static final String ERROR_FIRST_FRAME = "Animation first frame is lower than the minimum frame !";
+    /** Last frame error. */
+    private static final String ERROR_LAST_FRAME = "Animation last frame is lower than the first frame !";
+    /** Speed error. */
+    private static final String ERROR_SPEED = "Animation speed must not be negative !";
+
     /** First animation frame. */
     private int firstFrame;
     /** Last animation frame. */
@@ -20,19 +27,19 @@ final class AnimationImpl
     private boolean repeat;
 
     /**
-     * Create an animation, which can be played by an {@link Animator}.
+     * Constructor.
      * 
-     * @param firstFrame The first frame index to play (>= {@link Animation#MINIMUM_FRAME}).
-     * @param lastFrame The last frame index to play (>= firstFrame).
+     * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
+     * @param lastFrame The last frame (included) index to play (>= firstFrame).
      * @param speed The animation playing speed (>= 0.0).
      * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
      * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
      */
     AnimationImpl(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
-        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, "Animation first frame is lower than the minimum frame !");
-        Check.argument(lastFrame >= firstFrame, "Animation last frame is lower than the first frame !");
-        Check.argument(speed >= 0.0, "Animation speed must not be negative !");
+        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, AnimationImpl.ERROR_FIRST_FRAME);
+        Check.argument(lastFrame >= firstFrame, AnimationImpl.ERROR_LAST_FRAME);
+        Check.argument(speed >= 0.0, AnimationImpl.ERROR_SPEED);
 
         this.firstFrame = firstFrame;
         this.lastFrame = lastFrame;
@@ -48,19 +55,22 @@ final class AnimationImpl
     @Override
     public void setFirst(int first)
     {
-        firstFrame = Math.max(Animation.MINIMUM_FRAME, Math.min(lastFrame, first));
+        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, AnimationImpl.ERROR_FIRST_FRAME);
+        firstFrame = first;
     }
 
     @Override
     public void setLast(int last)
     {
-        lastFrame = Math.max(firstFrame, last);
+        Check.argument(lastFrame >= firstFrame, AnimationImpl.ERROR_LAST_FRAME);
+        lastFrame = last;
     }
 
     @Override
     public void setSpeed(double speed)
     {
-        this.speed = Math.max(0.0, speed);
+        Check.argument(speed >= 0.0, AnimationImpl.ERROR_SPEED);
+        this.speed = speed;
     }
 
     @Override

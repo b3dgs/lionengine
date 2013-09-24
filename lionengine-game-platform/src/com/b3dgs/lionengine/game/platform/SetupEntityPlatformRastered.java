@@ -23,6 +23,7 @@ public class SetupEntityPlatformRastered
     public static final int MAX_RASTERS_R = SetupEntityPlatformRastered.MAX_RASTERS * 2;
     /** Maximum rasters M. */
     public static final int MAX_RASTERS_M = SetupEntityPlatformRastered.MAX_RASTERS - 1;
+
     /** List of rasters animation. */
     public final List<SpriteAnimated> rastersAnim;
     /** Raster filename. */

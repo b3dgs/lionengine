@@ -44,7 +44,6 @@ final class SpriteAnimatedImpl
     SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames)
     {
         super(media);
-
         Check.argument(horizontalFrames > 0 && verticalFrames > 0, "Sprite frames must be strictly positive !");
 
         this.horizontalFrames = horizontalFrames;
@@ -87,9 +86,9 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public void play(int first, int last, double speed, boolean reverse, boolean repeat)
+    public void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
-        animator.play(first, last, speed, reverse, repeat);
+        animator.play(firstFrame, lastFrame, speed, reverse, repeat);
     }
 
     @Override

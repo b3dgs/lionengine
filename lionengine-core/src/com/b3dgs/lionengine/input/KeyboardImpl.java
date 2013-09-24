@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Keyboard input implementation.
  */
-class KeyboardImpl
+final class KeyboardImpl
         implements Keyboard, KeyListener
 {
     /** List of keys. */

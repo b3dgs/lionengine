@@ -48,6 +48,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
 {
     /** Number of horizontal tiles to make a bloc. */
     public static final int BLOC_SIZE = 256;
+
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
     /** Tiles directory. */

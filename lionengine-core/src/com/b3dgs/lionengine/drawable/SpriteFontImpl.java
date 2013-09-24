@@ -25,7 +25,7 @@ final class SpriteFontImpl
     /**
      * Character data.
      */
-    private static class Data
+    private static final class Data
     {
         /** Character id. */
         private final int id;

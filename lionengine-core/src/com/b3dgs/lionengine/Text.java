@@ -71,6 +71,7 @@ public class Text
     public static final int ITALIC = Font.ITALIC;
     /** Bold text. */
     public static final int BOLD = Font.BOLD;
+
     /** Text java font. */
     private final Font font;
     /** Text size. */
@@ -87,7 +88,7 @@ public class Text
     private String txt;
     /** Text alignment. */
     private Align align = Align.LEFT;
-    /** Text colour. */
+    /** Text color. */
     private Color color = Color.WHITE;
     /** Changed flag. */
     private boolean txtChanged = false;
@@ -217,9 +218,9 @@ public class Text
     }
 
     /**
-     * Set the new text colour value.
+     * Set the new text color value.
      * 
-     * @param color The colour value.
+     * @param color The color value.
      */
     public void setColor(Color color)
     {

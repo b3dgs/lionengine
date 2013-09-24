@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine;
 
 /**
- * List of available alignment.
+ * List of available alignments.
  */
 public enum Align
 {

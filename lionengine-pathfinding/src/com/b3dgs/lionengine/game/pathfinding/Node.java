@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 /**
  * Node in the path.
  */
-class Node
+final class Node
         implements Comparable<Node>
 {
     /** Node parent. */

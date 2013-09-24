@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.Media;
 /**
  * File reader implementation.
  */
-class FileReadingImpl
+final class FileReadingImpl
         implements FileReading
 {
     /** Input stream reference. */

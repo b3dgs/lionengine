@@ -15,20 +15,46 @@ public interface Mouse
     int RIGHT = MouseEvent.BUTTON3;
 
     /**
-     * Check if click if pressed.
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
+     * Update the mouse.
      */
-    boolean hasClicked(int click);
+    void update();
 
     /**
-     * Check if click if pressed once only (ignore 'still clicked').
-     * 
-     * @param click The click to check.
-     * @return The pressed state.
+     * Lock mouse at its center.
      */
-    boolean hasClickedOnce(int click);
+    void lock();
+
+    /**
+     * Lock mouse at specified location.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void lock(int x, int y);
+
+    /**
+     * Perform a click.
+     * 
+     * @param click The click to perform.
+     */
+    void doClick(int click);
+
+    /**
+     * Perform a click at specified coordinate.
+     * 
+     * @param click The click to perform.
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void doClickAt(int click, int x, int y);
+
+    /**
+     * Set mouse center for lock operation.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
+    void setCenter(int x, int y);
 
     /**
      * Get current pressed click.
@@ -80,51 +106,25 @@ public interface Mouse
     int getMoveY();
 
     /**
+     * Check if click if pressed.
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    boolean hasClicked(int click);
+
+    /**
+     * Check if click if pressed once only (ignore 'still clicked').
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    boolean hasClickedOnce(int click);
+
+    /**
      * Check if mouse moved.
      * 
      * @return <code>true</code> if moved, <code>false</code> else.
      */
     boolean moved();
-
-    /**
-     * Set mouse center for lock operation.
-     * 
-     * @param x The location x.
-     * @param y The location y.
-     */
-    void setCenter(int x, int y);
-
-    /**
-     * Lock mouse at its center.
-     */
-    void lock();
-
-    /**
-     * Lock mouse at specified location.
-     * 
-     * @param x The location x.
-     * @param y The location y.
-     */
-    void lock(int x, int y);
-
-    /**
-     * Update the mouse.
-     */
-    void update();
-
-    /**
-     * Perform a click.
-     * 
-     * @param click The click to perform.
-     */
-    void doClick(int click);
-
-    /**
-     * Perform a click at specified coordinate.
-     * 
-     * @param click The click to perform.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    void doClickAt(int click, int x, int y);
 }

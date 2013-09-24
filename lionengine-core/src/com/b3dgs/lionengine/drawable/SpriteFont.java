@@ -35,6 +35,13 @@ public interface SpriteFont
     void draw(Graphic g, int x, int y, Align align, String text);
 
     /**
+     * Set line height (default = letter height).
+     * 
+     * @param height The line height.
+     */
+    void setLineHeight(int height);
+
+    /**
      * Get global text width.
      * 
      * @param text The input text.
@@ -49,13 +56,6 @@ public interface SpriteFont
      * @return The text height.
      */
     int getTextHeight(String text);
-
-    /**
-     * Set line height (default = letter height).
-     * 
-     * @param height The line height.
-     */
-    void setLineHeight(int height);
 
     /**
      * Get instanced version of current sprite font (shares the same surface).

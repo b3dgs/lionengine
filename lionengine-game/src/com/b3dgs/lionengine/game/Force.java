@@ -10,6 +10,7 @@ public final class Force
 {
     /** Zero force. */
     public static final Force ZERO = new Force(0.0, 0.0);
+
     /** Horizontal force vector. */
     private double fh;
     /** Vertical force vector. */

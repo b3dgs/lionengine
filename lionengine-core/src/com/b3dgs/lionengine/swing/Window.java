@@ -17,6 +17,7 @@ public abstract class Window
 {
     /** Serial uid. */
     private static final long serialVersionUID = -1567341421280721456L;
+
     /** Window owner reference. */
     protected final JFrame parent;
     /** Main panel reference. */

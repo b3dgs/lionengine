@@ -9,14 +9,6 @@ import com.b3dgs.lionengine.Media;
 public final class AudioMidi
 {
     /**
-     * Private constructor.
-     */
-    private AudioMidi()
-    {
-        throw new RuntimeException();
-    }
-
-    /**
      * Load a midi file <code>(.mid, .midi)</code> and prepare it to be played. A {@link LionEngineException} is thrown
      * if no midi player is available
      * 
@@ -26,5 +18,13 @@ public final class AudioMidi
     public static Midi loadMidi(Media media)
     {
         return new MidiPlayer(media);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private AudioMidi()
+    {
+        throw new RuntimeException();
     }
 }

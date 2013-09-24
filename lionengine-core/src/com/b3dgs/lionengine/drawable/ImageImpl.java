@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 /**
  * Image implementation.
  */
-class ImageImpl
+final class ImageImpl
         implements Image
 {
     /** Image surface. */

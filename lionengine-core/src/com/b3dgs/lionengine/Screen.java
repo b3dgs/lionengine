@@ -87,8 +87,6 @@ final class Screen
 
     /** Configuration reference. */
     public final Config config;
-    /** Active sequence reference. */
-    Sequence sequence;
     /** Display reference. */
     private final Display internal;
     /** Display reference. */
@@ -105,6 +103,8 @@ final class Screen
     private final Graphic graphics;
     /** Applet flag. */
     private final boolean hasApplet;
+    /** Active sequence reference. */
+    Sequence sequence;
     /** Buffer strategy reference. */
     private BufferStrategy buf;
     /** Image buffer reference. */
