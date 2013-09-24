@@ -39,8 +39,12 @@ public final class AppLionheart
     public static final String SFX_DIR = "sfx";
     /** Entity configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
+    /** Audio file extension. */
+    public static final String AUDIO_FILE_EXTENSION = ".wav";
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
+    /** Enable sound. */
+    private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */
@@ -54,6 +58,8 @@ public final class AppLionheart
     public static void main(String[] args)
     {
         Engine.start(AppLionheart.NAME, AppLionheart.VERSION, AppLionheart.RESOURCES);
+        Sfx.setEnabled(AppLionheart.ENABLE_SOUND);
+        SonicArranger.setEnabled(AppLionheart.ENABLE_SOUND);
 
         final Display external = new Display(640, 480, 16, 60);
         final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);

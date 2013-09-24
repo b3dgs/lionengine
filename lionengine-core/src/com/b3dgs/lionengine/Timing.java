@@ -64,8 +64,11 @@ public final class Timing
      */
     public void start()
     {
-        cur = Timing.systemTime();
-        started = true;
+        if (!started)
+        {
+            cur = Timing.systemTime();
+            started = true;
+        }
     }
 
     /**
@@ -121,6 +124,17 @@ public final class Timing
             return Timing.systemTime() - cur;
         }
         return 0;
+    }
+
+    /**
+     * Set the timing value.
+     * 
+     * @param value The value to set.
+     */
+    public void set(long value)
+    {
+        cur = value;
+        started = true;
     }
 
     /**

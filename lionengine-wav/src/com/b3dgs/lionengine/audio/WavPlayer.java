@@ -161,7 +161,7 @@ final class WavPlayer
     @Override
     public void stop()
     {
-        for (WavRoutine routine : busySounds)
+        for (final WavRoutine routine : busySounds)
         {
             routine.stopSound();
         }
@@ -178,11 +178,11 @@ final class WavPlayer
                 while (count.intValue() > 0)
                 {
                     WavPlayer.this.stop();
-                    for (WavRoutine routine : busySounds)
+                    for (final WavRoutine routine : busySounds)
                     {
                         routine.interrupt();
                     }
-                    for (WavRoutine routine : freeSounds)
+                    for (final WavRoutine routine : freeSounds)
                     {
                         routine.interrupt();
                     }
@@ -190,7 +190,7 @@ final class WavPlayer
                     {
                         Thread.sleep(100);
                     }
-                    catch (InterruptedException exception)
+                    catch (final InterruptedException exception)
                     {
                         Verbose.exception(WavPlayer.class, "terminate", exception);
                     }

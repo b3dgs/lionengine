@@ -131,6 +131,7 @@ final class World
         camera.setIntervals(32, 0);
         handlerEntity.prepare();
         player.setCheckpoints(level.worldData.getCheckpoints());
-        player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
+        // player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
+        player.respawn(2800, 300);
     }
 }

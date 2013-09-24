@@ -25,6 +25,8 @@ enum ValdynState implements State
     LIANA_WALK,
     /** Liana slide. */
     LIANA_SLIDE,
+    /** Lian soar. */
+    LIANA_SOAR,
     /** Preparing attack. */
     ATTACK_PREPARING,
     /** Preparing attack down. */

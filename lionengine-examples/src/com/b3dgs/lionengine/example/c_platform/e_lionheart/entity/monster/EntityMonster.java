@@ -108,11 +108,13 @@ public class EntityMonster
                 if (getPatrolType() == Patrol.HORIZONTAL)
                 {
                     setMovementForce(movementSpeedMax * side, 0.0);
+                    movement.setForceToReach(movementSpeedMax * side, 0.0);
                     teleportX(getLocationIntX() + side);
                 }
                 else if (getPatrolType() == Patrol.VERTICAL)
                 {
                     setMovementForce(0.0, movementSpeedMax * side);
+                    movement.setForceToReach(movementSpeedMax * side, 0.0);
                     teleportY(getLocationIntY() + side);
                 }
             }

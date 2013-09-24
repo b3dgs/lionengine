@@ -33,15 +33,21 @@ public enum Sfx
     /** Valdyn die. */
     VALDYN_DIE("valdyn_die");
 
-    /** Audio file extension. */
-    private static final String FILE_EXTENSION = ".wav";
+    /** Sound enabled. */
+    private static boolean enabled;
 
     /**
-     * Static init.
+     * Set the enabled state.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
      */
-    static
+    public static void setEnabled(boolean enabled)
     {
-        Sfx.BLANK.play();
+        Sfx.enabled = enabled;
+        if (enabled)
+        {
+            Sfx.BLANK.play();
+        }
     }
 
     /**
@@ -49,9 +55,12 @@ public enum Sfx
      */
     public static void terminate()
     {
-        for (Sfx sfx : Sfx.values())
+        if (Sfx.enabled)
         {
-            sfx.stop();
+            for (final Sfx sfx : Sfx.values())
+            {
+                sfx.stop();
+            }
         }
     }
 
@@ -86,7 +95,8 @@ public enum Sfx
         this.sounds = new Wav[sounds.length];
         for (int i = 0; i < sounds.length; i++)
         {
-            this.sounds[i] = AudioWav.loadWav(Media.get(AppLionheart.SFX_DIR, sounds[i] + Sfx.FILE_EXTENSION), count);
+            final Media media = Media.get(AppLionheart.SFX_DIR, sounds[i] + AppLionheart.AUDIO_FILE_EXTENSION);
+            this.sounds[i] = AudioWav.loadWav(media, count);
         }
     }
 
@@ -95,17 +105,20 @@ public enum Sfx
      */
     public void play()
     {
-        if (sounds.length == 1)
+        if (Sfx.enabled)
         {
-            sounds[0].stop();
-            sounds[0].play();
-        }
-        else
-        {
-            for (int i = 0; i < count; i++)
+            if (sounds.length == 1)
             {
-                final int rand = UtilityRandom.getRandomInteger(sounds.length - 1);
-                sounds[rand].play(delay * i);
+                sounds[0].stop();
+                sounds[0].play();
+            }
+            else
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    final int rand = UtilityRandom.getRandomInteger(sounds.length - 1);
+                    sounds[rand].play(delay * i);
+                }
             }
         }
     }
@@ -115,7 +128,7 @@ public enum Sfx
      */
     private void stop()
     {
-        for (Wav wav : sounds)
+        for (final Wav wav : sounds)
         {
             wav.terminate();
         }

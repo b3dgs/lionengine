@@ -28,6 +28,7 @@
 	<animation name="liana_idle" start="56" end="56" speed="0.2" reversed="false" repeat="false"/>
 	<animation name="liana_walk" start="36" end="44" speed="0.2" reversed="false" repeat="true"/>
 	<animation name="liana_slide" start="53" end="59" speed="0.2" reversed="true" repeat="true"/>
+	<animation name="liana_soar" start="72" end="82" speed="0.2" reversed="false" repeat="false"/>
 	<animation name="hurt" start="67" end="67" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="dead" start="70" end="71" speed="0.125" reversed="false" repeat="true"/>

@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
@@ -30,6 +31,12 @@ final class ValdynTilt
     private Align slide;
     /** Liana state. */
     private Align liana;
+    /** Liana soar. */
+    private boolean lianaSoar;
+    /** Liana soared. */
+    private boolean lianaSoared;
+    /** Liana soar start y. */
+    private double lianaSoarY;
 
     /**
      * Constructor.
@@ -136,11 +143,41 @@ final class ValdynTilt
         {
             newSpeed = newSpeed * 0.2 + 1.5;
         }
-        // Exit liana
-        if (liana != null && valdyn.isEnabled(EntityAction.MOVE_DOWN) && !timerLianaUnGrip.isStarted())
+
+        if (liana != null)
         {
-            timerLianaUnGrip.start();
-            liana = null;
+            if (valdyn.isAttacking())
+            {
+                newSpeed = 0.0;
+            }
+            // Soar liana
+            if (!lianaSoar && liana == Align.CENTER && valdyn.isEnabled(EntityAction.JUMP))
+            {
+                lianaSoar = true;
+                lianaSoarY = valdyn.getLocationY();
+            }
+            // Exit liana
+            if (valdyn.isEnabled(EntityAction.MOVE_DOWN) && !timerLianaUnGrip.isStarted())
+            {
+                timerLianaUnGrip.start();
+                valdyn.setTimerFall(Valdyn.FALL_TIME_MARGIN);
+                liana = null;
+            }
+        }
+        // No movement while soaring
+        if (lianaSoar)
+        {
+            newSpeed = 0.0;
+        }
+        // Exit liana soared
+        if (lianaSoared)
+        {
+            if (valdyn.getDiffHorizontal() != 0 || valdyn.isEnabled(EntityAction.MOVE_DOWN))
+            {
+                valdyn.status.setCollision(EntityCollisionTile.NONE);
+                valdyn.setTimerFall(Valdyn.FALL_TIME_MARGIN);
+                lianaSoared = false;
+            }
         }
         return newSpeed;
     }
@@ -167,6 +204,14 @@ final class ValdynTilt
     }
 
     /**
+     * Terminate the liana soar.
+     */
+    void stopLianaSoar()
+    {
+        lianaSoared = false;
+    }
+
+    /**
      * Update the states.
      * 
      * @return <code>true</code> if updated, <code>false</code> else.
@@ -177,7 +222,12 @@ final class ValdynTilt
         final boolean keyRight = valdyn.isEnabled(EntityAction.MOVE_RIGHT);
         final double diffHorizontal = valdyn.getDiffHorizontal();
         final boolean updated;
-        if (slide == Align.LEFT && keyLeft || slide == Align.RIGHT && keyRight)
+        if (lianaSoared)
+        {
+            valdyn.status.setState(ValdynState.BORDER);
+            updated = true;
+        }
+        else if (slide == Align.LEFT && keyLeft || slide == Align.RIGHT && keyRight)
         {
             valdyn.status.setState(ValdynState.SLIDE_FAST);
             updated = true;
@@ -200,6 +250,11 @@ final class ValdynTilt
         else if (liana == Align.CENTER && diffHorizontal != 0.0)
         {
             valdyn.status.setState(ValdynState.LIANA_WALK);
+            updated = true;
+        }
+        else if (lianaSoar)
+        {
+            valdyn.status.setState(ValdynState.LIANA_SOAR);
             updated = true;
         }
         else if (liana == Align.CENTER && diffHorizontal == 0.0)
@@ -322,6 +377,56 @@ final class ValdynTilt
     }
 
     /**
+     * Update the animation.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    void updateAnimation(double extrp)
+    {
+        if (lianaSoar && valdyn.status.getState() == ValdynState.LIANA_SOAR)
+        {
+            final int frame = valdyn.getFrameAnim();
+            if (frame > 0 && frame <= 3)
+            {
+                valdyn.setFrameOffsets(0, (int) (-lianaSoarY * 0.15) + 15);
+            }
+            else if (frame > 3 && frame <= 6)
+            {
+                valdyn.setFrameOffsets(0, (int) (-lianaSoarY * 0.15) + 0);
+            }
+            else if (frame == 7)
+            {
+                valdyn.setFrameOffsets(0, (int) (-lianaSoarY * 0.15) + 30);
+            }
+            else if (frame > 7 && frame <= 9)
+            {
+                valdyn.setFrameOffsets(0, (int) (-lianaSoarY * 0.30) + 55);
+            }
+            else if (frame > 9)
+            {
+                valdyn.setFrameOffsets(0, (int) (-lianaSoarY * 0.50) + 118);
+            }
+            if (valdyn.getAnimState() == AnimState.PLAYING)
+            {
+                lianaSoarY += 1.15 * extrp;
+                valdyn.teleportY(lianaSoarY);
+            }
+            if (valdyn.getAnimState() == AnimState.FINISHED)
+            {
+                lianaSoar = false;
+                lianaSoared = true;
+                liana = null;
+                valdyn.teleportY(lianaSoarY);
+                valdyn.resetGravity();
+            }
+        }
+        else
+        {
+            valdyn.setFrameOffsets(0, -2);
+        }
+    }
+
+    /**
      * Get the liana status.
      * 
      * @return The liana status.
@@ -329,6 +434,26 @@ final class ValdynTilt
     Align getLiana()
     {
         return liana;
+    }
+
+    /**
+     * Get the liana soar state.
+     * 
+     * @return The liana soar state.
+     */
+    boolean getLianaSoar()
+    {
+        return lianaSoar;
+    }
+
+    /**
+     * Get the liana soared state.
+     * 
+     * @return The liana soared state.
+     */
+    boolean getLianaSoared()
+    {
+        return lianaSoared;
     }
 
     /**

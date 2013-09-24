@@ -72,7 +72,7 @@ public interface Wav
      * Stop sound. The sound will be stopped, but not deleted.
      */
     void stop();
-    
+
     /**
      * Close sound. Release resources.
      */

@@ -19,6 +19,8 @@ public enum EntityState implements State
     WALK,
     /** Turning state. */
     TURN,
+    /** Prepare jump state. */
+    PREPARE_JUMP,
     /** Jumping state. */
     JUMP,
     /** Falling state. */

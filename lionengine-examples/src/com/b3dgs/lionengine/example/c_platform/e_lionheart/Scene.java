@@ -60,7 +60,7 @@ public final class Scene
     {
         loadLevel(getNextLevel());
     }
-    
+
     @Override
     protected void update(double extrp)
     {
@@ -76,7 +76,7 @@ public final class Scene
     {
         world.render(g);
     }
-    
+
     @Override
     protected void onLoaded(double extrp, Graphic g)
     {
@@ -84,7 +84,7 @@ public final class Scene
         update(extrp);
         render(g);
     }
-    
+
     @Override
     protected void onTerminate(boolean hasNextSequence)
     {

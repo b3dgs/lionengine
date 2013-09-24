@@ -594,7 +594,7 @@ public class Menu
             g.drawRect(0, 0, width, height, true);
         }
     }
-    
+
     @Override
     protected void onTerminate(boolean hasNextSequence)
     {

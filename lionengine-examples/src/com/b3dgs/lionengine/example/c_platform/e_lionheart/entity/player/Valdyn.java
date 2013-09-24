@@ -35,6 +35,8 @@ public final class Valdyn
 {
     /** The width of the tile extremity. */
     public static final int TILE_EXTREMITY_WIDTH = 3;
+    /** The fall time margin (in milli). */
+    static final int FALL_TIME_MARGIN = 100;
     /** Hurt effect value (lower is faster). */
     private static final int HURT_EFFECT_FREQ = 7;
     /** Hurt time before effect. */
@@ -43,8 +45,6 @@ public final class Valdyn
     private static final int HURT_TIME_MAX = 2000;
     /** Divisor for walk speed animation. */
     private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
-    /** The fall time margin (in milli). */
-    private static final int FALL_TIME_MARGIN = 100;
     /** Minimum jump time (in milli). */
     private static final int JUMP_TIME_MIN = 100;
     /** Maximum jump time (in milli). */
@@ -243,6 +243,16 @@ public final class Valdyn
     }
 
     /**
+     * Set the fall time.
+     * 
+     * @param time The fall time.
+     */
+    void setTimerFall(long time)
+    {
+        timerFall.set(time);
+    }
+
+    /**
      * Get a collision data from its key.
      * 
      * @param key The collision key.
@@ -271,6 +281,16 @@ public final class Valdyn
     boolean isLiana()
     {
         return tilt.getLiana() != null;
+    }
+
+    /**
+     * Check if valdyn is attacking.
+     * 
+     * @return <code>true</code> if attacking, <code>false</code> else.
+     */
+    boolean isAttacking()
+    {
+        return attack.isAttacking();
     }
 
     /**
@@ -334,11 +354,12 @@ public final class Valdyn
                 {
                     timerJump.start();
                 }
-                if (canJump())
+                if (canJump() || tilt.getLianaSoared())
                 {
                     if (tilt.getSlide() == null)
                     {
                         jumpForce.setForce(0.0, jumpHeightMax);
+                        tilt.stopLianaSoar();
                     }
                     else
                     {
@@ -359,7 +380,7 @@ public final class Valdyn
                 }
             }
         }
-        if (isOnGround())
+        if (isOnGround() || tilt.getLianaSoared())
         {
             jumped = false;
         }
@@ -543,7 +564,7 @@ public final class Valdyn
         super.kill();
         Sfx.VALDYN_DIE.play();
     }
-    
+
     @Override
     public void update(double extrp)
     {
@@ -617,8 +638,13 @@ public final class Valdyn
     @Override
     protected void updateActions()
     {
+        updateFall();
+        updateFallen();
         updateActionMovement();
-        attack.updateActionAttack();
+        if (!tilt.getLianaSoar())
+        {
+            attack.updateActionAttack();
+        }
         updateActionJump();
         if (timerHurt.isStarted() && timerHurt.elapsed(Valdyn.HURT_TIME_BEFORE_EFFECT))
         {
@@ -674,8 +700,6 @@ public final class Valdyn
         {
             updateStateDead();
         }
-        updateFall();
-        updateFallen();
     }
 
     @Override
@@ -709,6 +733,14 @@ public final class Valdyn
     @Override
     protected void updateCollisions()
     {
+        if (tilt.getLianaSoared())
+        {
+            extremity = true;
+            status.setCollision(EntityCollisionTile.GROUND);
+            teleportY(getLocationOldY());
+            resetGravity();
+            return;
+        }
         extremity = false;
         if (getLocationY() < getLocationOldY() && timerFall.elapsed(50))
         {
@@ -754,5 +786,12 @@ public final class Valdyn
             setAnimSpeed(speed);
         }
         attack.updateAnimationShade(extrp);
+    }
+
+    @Override
+    protected void handleAnimations(double extrp)
+    {
+        super.handleAnimations(extrp);
+        tilt.updateAnimation(extrp);
     }
 }

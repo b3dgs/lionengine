@@ -34,7 +34,7 @@ public final class Dino
     {
         return !super.getMirror();
     }
-    
+
     @Override
     protected void onHitBy(Entity entity)
     {

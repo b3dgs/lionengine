@@ -10,15 +10,23 @@ import com.b3dgs.lionengine.audio.Sc68;
 public final class SonicArranger
 {
     /** Player instance. */
-    private static final Sc68 SC68;
+    private static Sc68 sc68;
+    /** Music enabled. */
+    private static boolean enabled;
 
     /**
-     * Static init.
+     * Set the enabled state.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
      */
-    static
+    public static void setEnabled(boolean enabled)
     {
-        SC68 = AudioSc68.createSc68Player();
-        SonicArranger.SC68.setVolume(40);
+        SonicArranger.enabled = enabled;
+        if (enabled)
+        {
+            SonicArranger.sc68 = AudioSc68.createSc68Player();
+            SonicArranger.sc68.setVolume(40);
+        }
     }
 
     /**
@@ -26,7 +34,10 @@ public final class SonicArranger
      */
     public static void stop()
     {
-        SonicArranger.SC68.stop();
+        if (SonicArranger.enabled)
+        {
+            SonicArranger.sc68.stop();
+        }
     }
 
     /**
@@ -34,7 +45,10 @@ public final class SonicArranger
      */
     public static void pause()
     {
-        SonicArranger.SC68.pause();
+        if (SonicArranger.enabled)
+        {
+            SonicArranger.sc68.pause();
+        }
     }
 
     /**
@@ -42,7 +56,10 @@ public final class SonicArranger
      */
     public static void resume()
     {
-        SonicArranger.SC68.resume();
+        if (SonicArranger.enabled)
+        {
+            SonicArranger.sc68.resume();
+        }
     }
 
     /**
@@ -52,7 +69,10 @@ public final class SonicArranger
      */
     public static void play(Music music)
     {
-        SonicArranger.SC68.play(Media.get(AppLionheart.MUSICS_DIR, music.getFilename()));
+        if (SonicArranger.enabled)
+        {
+            SonicArranger.sc68.play(Media.get(AppLionheart.MUSICS_DIR, music.getFilename()));
+        }
     }
 
     /**
@@ -60,7 +80,10 @@ public final class SonicArranger
      */
     public static void terminate()
     {
-        SonicArranger.SC68.free();
+        if (SonicArranger.enabled)
+        {
+            SonicArranger.sc68.free();
+        }
     }
 
     /**
@@ -70,7 +93,11 @@ public final class SonicArranger
      */
     public static int seek()
     {
-        return SonicArranger.SC68.seek();
+        if (SonicArranger.enabled)
+        {
+            return SonicArranger.sc68.seek();
+        }
+        return -1;
     }
 
     /**
