@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 import java.awt.Color;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollision;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollision;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.Tiled;
@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
  * Map implementation.
  */
 public final class Map
-        extends MapTileRts<TypeCollision, Tile>
+        extends MapTileRts<TileCollision, Tile>
 {
     /** Tree map layer. */
     public final Border20Map treeMap;
@@ -45,7 +45,7 @@ public final class Map
         final Tile tile = getTile(tree);
         tile.setNumber(treeCut);
         tile.setResourceType(TypeResource.NONE);
-        tile.setCollision(TypeCollision.GROUND9);
+        tile.setCollision(TileCollision.GROUND9);
         updateTree(tile, true);
     }
 
@@ -128,9 +128,9 @@ public final class Map
     }
 
     @Override
-    public Tile createTile(int width, int height)
+    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        return new Tile(width, height, id);
+        return new Tile(width, height, pattern, number, collision, id);
     }
 
     @Override
@@ -144,6 +144,20 @@ public final class Map
                 final Tile tile = getTile(h, v);
                 trees[v][h] = tile.getId();
             }
+        }
+    }
+
+    @Override
+    public TileCollision getCollisionFrom(String collision)
+    {
+        try
+        {
+            return TileCollision.valueOf(collision);
+        }
+        catch (IllegalArgumentException
+               | NullPointerException exception)
+        {
+            return TileCollision.NONE;
         }
     }
 

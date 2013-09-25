@@ -18,11 +18,14 @@ public abstract class TilePath<C extends Enum<C>>
      * 
      * @param width The tile width.
      * @param height The tile height.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param collision The tile collision.
      */
-    public TilePath(int width, int height)
+    public TilePath(int width, int height, Integer pattern, int number, C collision)
     {
-        super(width, height);
-        blocking = false;
+        super(width, height, pattern, number, collision);
+        blocking = checkBlocking(collision);
     }
 
     /**

@@ -60,7 +60,7 @@ public final class Timing
     }
 
     /**
-     * Start timer.
+     * Start timer. Can be started only if not already started.
      */
     public void start()
     {

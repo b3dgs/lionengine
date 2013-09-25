@@ -8,6 +8,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 
 /**
  * Abstract entity base implementation designed to move around the map.
@@ -31,10 +32,7 @@ public abstract class EntityMover
     protected double movementSpeedMax;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     public EntityMover(Context context, EntityType type)
     {
@@ -52,6 +50,7 @@ public abstract class EntityMover
         };
         setMass(getDataDouble("mass", "data"));
         setGravityMax(getDataDouble("gravityMax", "data"));
+        addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
     }
 
     /**
@@ -151,13 +150,12 @@ public abstract class EntityMover
     /**
      * Check horizontal axis.
      * 
-     * @param offset The offset value.
+     * @param category The collision category.
      * @return The tile found.
      */
-    protected Tile checkCollisionHorizontal(int offset)
+    protected Tile checkCollisionHorizontal(CollisionTileCategory<TileCollision> category)
     {
-        setCollisionOffset(offset, 2);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -244,7 +242,8 @@ public abstract class EntityMover
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkCollisionVertical(map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL));
+            final Tile tile = getCollisionTile(map, EntityCollisionTileCategory.GROUND_CENTER);
+            checkCollisionVertical(tile);
         }
     }
 

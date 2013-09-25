@@ -29,9 +29,7 @@ final class World
     private double y;
 
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {
@@ -55,9 +53,9 @@ final class World
      */
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, map, tilesheet);
-        try (FileWriting file = File.createFileWriting(output);)
+        try (final FileWriting file = File.createFileWriting(output);)
         {
             map.save(file);
         }

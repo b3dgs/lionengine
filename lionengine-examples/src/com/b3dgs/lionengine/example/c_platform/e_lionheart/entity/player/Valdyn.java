@@ -9,6 +9,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTileCategory;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -22,6 +23,7 @@ import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -124,6 +126,12 @@ public final class Valdyn
         stats = new Stats(this);
         tilt = new ValdynTilt(this, movement, context.map);
         attack = new ValdynAttack(this, movement);
+        addCollisionTile(ValdynCollisionTileCategory.LEG_LEFT, -Valdyn.TILE_EXTREMITY_WIDTH, 0);
+        addCollisionTile(ValdynCollisionTileCategory.LEG_RIGHT, Valdyn.TILE_EXTREMITY_WIDTH, 0);
+        addCollisionTile(ValdynCollisionTileCategory.KNEE_LEFT, -Valdyn.TILE_EXTREMITY_WIDTH * 2, 2);
+        addCollisionTile(ValdynCollisionTileCategory.KNEE_RIGHT, Valdyn.TILE_EXTREMITY_WIDTH * 2, 2);
+        addCollisionTile(ValdynCollisionTileCategory.HAND_LIANA_LEANING, 0, 57);
+        addCollisionTile(ValdynCollisionTileCategory.HAND_LIANA_STEEP, 0, 44);
     }
 
     /**
@@ -495,19 +503,18 @@ public final class Valdyn
     /**
      * Check the collision on the extremity.
      * 
-     * @param offsetX The offset collision.
+     * @param category The collision category.
      * @param mirror The mirror to apply.
      * @return The tile hit.
      */
-    private Tile checkCollisionExtremity(int offsetX, boolean mirror)
+    private Tile checkCollisionExtremity(CollisionTileCategory<TileCollision> category, boolean mirror)
     {
-        setCollisionOffset(offsetX, 0);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null && tile.isBorder())
         {
             checkCollisionVertical(tile);
         }
-        if (isOnExtremity(-UtilityMath.getSign(offsetX)))
+        if (isOnExtremity(-UtilityMath.getSign(getCollisionTileOffset(category).getX())))
         {
             updateExtremity(mirror);
         }
@@ -748,20 +755,18 @@ public final class Valdyn
         }
 
         // Vertical collision
-        Tile tileRight = checkCollisionExtremity(Valdyn.TILE_EXTREMITY_WIDTH, true);
-        Tile tileLeft = checkCollisionExtremity(-Valdyn.TILE_EXTREMITY_WIDTH, false);
-        setCollisionOffset(0, 0);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
+        Tile tileRight = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_RIGHT, true);
+        Tile tileLeft = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_LEFT, false);
+        final Tile tile = getCollisionTile(map, EntityCollisionTileCategory.GROUND_CENTER);
         final boolean found = checkCollisionVertical(tile);
         tilt.updateCollisions(found, tile);
-        setCollisionOffset(0, 0);
 
         // Special fix for slide from ground
         tilt.updateCollisionSlideGroundTransition(tileLeft, tileRight, tile);
 
         // Horizontal collision
-        tileRight = checkCollisionHorizontal(Valdyn.TILE_EXTREMITY_WIDTH * 2);
-        tileLeft = checkCollisionHorizontal(-Valdyn.TILE_EXTREMITY_WIDTH * 2);
+        tileRight = checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_RIGHT);
+        tileLeft = checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_LEFT);
         // TODO: Hurt when hit spikes (not the border)
 
         attack.updateCollisions();

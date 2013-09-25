@@ -19,9 +19,7 @@ public final class Scene
     private int lastLevelIndex;
 
     /**
-     * Standard constructor.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     public Scene(Loader loader)
     {

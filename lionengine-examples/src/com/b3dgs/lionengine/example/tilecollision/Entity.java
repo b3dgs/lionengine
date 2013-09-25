@@ -82,7 +82,6 @@ final class Entity
     protected void handleCollisions(double extrp)
     {
         updateCollision();
-        setCollisionOffset(0, 0);
         tile = map.getFirstTileHit(this, TileCollision.COLLISION);
     }
 

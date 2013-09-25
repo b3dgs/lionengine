@@ -34,9 +34,7 @@ final class Scene
     private double tile;
 
     /**
-     * Create the scene and its vars.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     Scene(Loader loader)
     {

@@ -21,10 +21,7 @@ public abstract class EntityScenery
     private boolean collideOld;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     EntityScenery(Context context, EntityType type)
     {

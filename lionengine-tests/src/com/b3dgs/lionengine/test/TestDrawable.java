@@ -79,6 +79,7 @@ public class TestDrawable
         try
         {
             image.render(null, 0, 0);
+            Assert.fail();
         }
         catch (final NullPointerException exception)
         {
@@ -259,7 +260,8 @@ public class TestDrawable
     {
         try
         {
-            Anim.createAnimation(first, last, last, true, true);
+            Anim.createAnimation(first, last, speed, true, true);
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
@@ -279,7 +281,8 @@ public class TestDrawable
     {
         try
         {
-            animator.play(first, last, last, true, true);
+            animator.play(first, last, speed, true, true);
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
@@ -412,6 +415,7 @@ public class TestDrawable
         try
         {
             Drawable.loadSprite(Media.get("void"));
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
@@ -473,14 +477,6 @@ public class TestDrawable
 
         TestDrawable.testSpriteModification(2, spriteB);
         TestDrawable.testImageRender(g, spriteB);
-        try
-        {
-            spriteB.render(g, 0, 0, 0);
-        }
-        catch (final NullPointerException exception)
-        {
-            // Success
-        }
         spriteB.render(g, 0, 0, 0);
 
         // Instantiate
@@ -591,6 +587,7 @@ public class TestDrawable
         try
         {
             animator.setFrame(0);
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
@@ -599,6 +596,7 @@ public class TestDrawable
         try
         {
             animator.setAnimSpeed(-1.0);
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
@@ -632,7 +630,7 @@ public class TestDrawable
         Assert.assertEquals(2, animator.getFrame());
 
         animator.updateAnimation(0.5);
-        Assert.assertEquals(1, animator.getFrame());
+        Assert.assertEquals(2, animator.getFrame());
 
         animator.updateAnimation(1.5);
         Assert.assertEquals(2, animator.getFrame());

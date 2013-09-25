@@ -40,7 +40,7 @@ public interface Sprite
 {
     /**
      * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
-     * else the surface will be never prepared.
+     * else the surface will never be prepared.
      * 
      * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
      */

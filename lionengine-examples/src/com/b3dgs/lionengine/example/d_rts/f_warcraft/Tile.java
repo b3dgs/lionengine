@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollision;
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollisionGroup;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollision;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollisionGroup;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeTileColor;
 import com.b3dgs.lionengine.game.rts.map.Border20;
@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
  * Tile implementation.
  */
 public final class Tile
-        extends TileRts<TypeCollision, TypeResource>
+        extends TileRts<TileCollision, TypeResource>
 {
     /** Border values. */
     private static final Border20[] VALUES = Border20.values();
@@ -27,11 +27,14 @@ public final class Tile
      * 
      * @param width The tile width.
      * @param height The tile height.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param collision The tile collision.
      * @param theme The theme id.
      */
-    Tile(int width, int height, int theme)
+    public Tile(int width, int height, Integer pattern, int number, TileCollision collision, int theme)
     {
-        super(width, height);
+        super(width, height, pattern, number, collision);
         tree = Border20.NONE;
         offset = 0;
         if (1 == theme)
@@ -76,30 +79,7 @@ public final class Tile
      */
 
     @Override
-    public TypeCollision getCollisionFrom(String collision)
-    {
-        try
-        {
-            final TypeCollision tileCollision = TypeCollision.valueOf(collision);
-            if (TypeCollision.TREE == tileCollision)
-            {
-                if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
-                {
-                    tree = Tile.VALUES[getNumber() - (125 + offset)];
-                }
-            }
-            color = TypeTileColor.valueOf(collision);
-            return tileCollision;
-        }
-        catch (IllegalArgumentException
-               | NullPointerException exception)
-        {
-            return TypeCollision.NONE;
-        }
-    }
-
-    @Override
-    public void checkResourceType(TypeCollision collision)
+    public void checkResourceType(TileCollision collision)
     {
         switch (collision)
         {
@@ -113,9 +93,17 @@ public final class Tile
     }
 
     @Override
-    public boolean checkBlocking(TypeCollision collision)
+    public boolean checkBlocking(TileCollision collision)
     {
-        return TypeCollisionGroup.GROUND != collision.getGroup();
+        if (TileCollision.TREE == collision)
+        {
+            if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
+            {
+                tree = Tile.VALUES[getNumber() - (125 + offset)];
+            }
+        }
+        color = TypeTileColor.valueOf(collision.name());
+        return TileCollisionGroup.GROUND != collision.getGroup();
     }
 
     @Override

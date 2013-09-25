@@ -39,10 +39,7 @@ public class EntityMonster
     private final PatrollerModel patroller;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     public EntityMonster(Context context, EntityType type)
     {

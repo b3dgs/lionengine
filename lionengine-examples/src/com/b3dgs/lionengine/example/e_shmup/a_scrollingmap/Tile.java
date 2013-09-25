@@ -3,29 +3,16 @@ package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 import com.b3dgs.lionengine.game.maptile.TileGame;
 
 /**
- * Tile implementation, using TileModel. Nothing special here, just to show the default inheritance.
+ * Tile implementation.
  */
 final class Tile
         extends TileGame<TileCollision>
 {
     /**
-     * Standard complete constructor.
-     * 
-     * @param width The tile width.
-     * @param height The tile height.
+     * @see TileGame#TileGame(int, int, Integer, int, Enum)
      */
-    Tile(int width, int height)
+    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        super(width, height);
-    }
-
-    /*
-     * TileGame
-     */
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        return TileCollision.NONE;
+        super(width, height, pattern, number, collision);
     }
 }

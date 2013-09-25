@@ -24,6 +24,9 @@ enum TileCollision
     /** Horizontal collisions list. */
     static final List<TileCollision> COLLISION_HORIZONTAL = new ArrayList<>(3);
 
+    /**
+     * Static init.
+     */
     static
     {
         TileCollision.COLLISION_VERTICAL.add(TileCollision.GROUND);

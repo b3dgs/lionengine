@@ -14,9 +14,7 @@ final class Scene
     private final World world;
 
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     Scene(Loader loader)
     {

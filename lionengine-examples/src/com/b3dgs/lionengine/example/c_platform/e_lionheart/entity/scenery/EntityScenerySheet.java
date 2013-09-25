@@ -29,10 +29,7 @@ public class EntityScenerySheet
     protected boolean firstHit;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     public EntityScenerySheet(Context context, EntityType type)
     {

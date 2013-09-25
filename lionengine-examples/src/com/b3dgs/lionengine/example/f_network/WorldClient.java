@@ -11,6 +11,7 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -41,9 +42,7 @@ class WorldClient
     private final Color backgroundColor = new Color(107, 136, 255);
 
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     public WorldClient(final Sequence sequence)
     {

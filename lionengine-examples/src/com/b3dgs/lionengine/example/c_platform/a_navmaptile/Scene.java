@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 
 /**
- * Game loop designed to handle our little world.
+ * Game loop designed to handle our world.
  */
 final class Scene
         extends Sequence
@@ -19,9 +19,7 @@ final class Scene
     private final World world;
 
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     Scene(Loader loader)
     {
@@ -51,6 +49,7 @@ final class Scene
     {
         // Clean screen (as we don't have any background)
         clearScreen(g);
+
         world.render(g);
         text.draw(g, 0, 0, "Use click + mousemove or arrows keys to move the camera");
     }

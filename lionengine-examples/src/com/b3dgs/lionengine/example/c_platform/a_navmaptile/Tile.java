@@ -4,31 +4,22 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
- * Tile implementation, using TileModel. Nothing special here, just to show the default inheritance.
+ * Tile implementation.
  */
 final class Tile
         extends TilePlatform<TileCollision>
 {
     /**
-     * Constructor.
-     * 
-     * @param width The tile width.
-     * @param height The tile height.
+     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
      */
-    Tile(int width, int height)
+    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        super(width, height);
+        super(width, height, pattern, number, collision);
     }
 
     /*
      * TilePlatform
      */
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        return TileCollision.NONE;
-    }
 
     @Override
     public Double getCollisionX(Localizable localizable)

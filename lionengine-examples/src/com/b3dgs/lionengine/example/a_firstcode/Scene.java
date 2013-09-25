@@ -10,8 +10,8 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
 
 /**
- * This is where the game loop is running. Any sequence represents a thread handled by the Loader. To link a sequence
- * with another one, a simple call to this.end(sequence) is necessary. This will terminate the current sequence, and
+ * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
+ * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
  * start the linked one.
  */
 final class Scene
@@ -21,9 +21,7 @@ final class Scene
     private final Text text;
 
     /**
-     * Create the scene and its vars.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     Scene(Loader loader)
     {

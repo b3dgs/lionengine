@@ -12,14 +12,11 @@ final class Tile
         extends TilePlatform<TileCollision>
 {
     /**
-     * Standard complete constructor.
-     * 
-     * @param width The tile width.
-     * @param height The tile height.
+     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
      */
-    Tile(int width, int height)
+    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        super(width, height);
+        super(width, height, pattern, number, collision);
     }
 
     /**
@@ -38,12 +35,6 @@ final class Tile
     /*
      * TilePlatform
      */
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        return TileCollision.valueOf(collision);
-    }
 
     @Override
     public Double getCollisionX(Localizable localizable)

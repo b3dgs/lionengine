@@ -139,6 +139,7 @@ public class TestEngine
     @Before
     public void setUp()
     {
+        Engine.start("UnitTest", Version.create(1, 0, 0), Media.getPath("resources"));
         final Graphics2D g2d = UtilityImage.createBufferedImage(100, 100, Transparency.OPAQUE).createGraphics();
         g = new Graphic(g2d);
     }
@@ -210,6 +211,7 @@ public class TestEngine
     @Test
     public void testLoader()
     {
+        Engine.terminate();
         Engine.start("Test", Version.create(1, 0, 0), Media.getPath("resources"));
 
         final Display internal = new Display(width, height, depth, rate);
@@ -370,7 +372,9 @@ public class TestEngine
         catch (final LionEngineException exception)
         {
             Assert.assertNotNull(exception.getMessage());
+            Verbose.info("----- Print stacktrace -----");
             exception.printStackTrace();
+            Verbose.info("----------------------------");
         }
     }
 

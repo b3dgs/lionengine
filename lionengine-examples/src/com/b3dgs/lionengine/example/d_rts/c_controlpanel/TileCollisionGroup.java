@@ -1,9 +1,9 @@
-package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
+package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 
 /**
- * List of collision types.
+ * List of collision group types.
  */
-public enum TypeCollisionGroup
+public enum TileCollisionGroup
 {
     /** Ground collision. */
     GROUND,

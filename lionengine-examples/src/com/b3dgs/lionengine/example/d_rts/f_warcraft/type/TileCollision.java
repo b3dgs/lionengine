@@ -3,48 +3,48 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 /**
  * List of collision types.
  */
-public enum TypeCollision
+public enum TileCollision
 {
     /** Ground collision. */
-    GROUND0(TypeCollisionGroup.GROUND),
+    GROUND0(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND1(TypeCollisionGroup.GROUND),
+    GROUND1(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND2(TypeCollisionGroup.GROUND),
+    GROUND2(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND3(TypeCollisionGroup.GROUND),
+    GROUND3(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND4(TypeCollisionGroup.GROUND),
+    GROUND4(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND5(TypeCollisionGroup.GROUND),
+    GROUND5(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND6(TypeCollisionGroup.GROUND),
+    GROUND6(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND7(TypeCollisionGroup.GROUND),
+    GROUND7(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND8(TypeCollisionGroup.GROUND),
+    GROUND8(TileCollisionGroup.GROUND),
     /** Ground collision. */
-    GROUND9(TypeCollisionGroup.GROUND),
+    GROUND9(TileCollisionGroup.GROUND),
     /** Tree collision. */
-    TREE_BORDER(TypeCollisionGroup.TREE),
+    TREE_BORDER(TileCollisionGroup.TREE),
     /** Tree collision. */
-    TREE(TypeCollisionGroup.TREE),
+    TREE(TileCollisionGroup.TREE),
     /** Water collision. */
-    WATER(TypeCollisionGroup.WATER),
+    WATER(TileCollisionGroup.WATER),
     /** Border collision. */
-    BORDER(TypeCollisionGroup.BORDER),
+    BORDER(TileCollisionGroup.BORDER),
     /** No collision. */
-    NONE(TypeCollisionGroup.NONE);
+    NONE(TileCollisionGroup.NONE);
 
     /** Collision group. */
-    private final TypeCollisionGroup group;
+    private final TileCollisionGroup group;
 
     /**
      * Constructor.
      * 
      * @param group The collision group.
      */
-    private TypeCollision(TypeCollisionGroup group)
+    private TileCollision(TileCollisionGroup group)
     {
         this.group = group;
     }
@@ -54,7 +54,7 @@ public enum TypeCollision
      * 
      * @return The collision group.
      */
-    public TypeCollisionGroup getGroup()
+    public TileCollisionGroup getGroup()
     {
         return group;
     }

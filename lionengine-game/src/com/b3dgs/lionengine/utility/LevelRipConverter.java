@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
  * <pre>
  * private void ripLevel(Media levelrip, Media tilesheet, Media output)
  * {
- *     final LevelRipConverter&lt;TypeCollision, Tile&gt; rip = new LevelRipConverter&lt;&gt;();
+ *     final LevelRipConverter&lt;Tile&gt; rip = new LevelRipConverter&lt;&gt;();
  *     rip.start(levelrip, map, tilesheet);
  *     try (FileWriting file = File.createFileWriting(output);)
  *     {
@@ -34,17 +34,16 @@ import com.b3dgs.lionengine.game.maptile.TileGame;
  * }
  * </pre>
  * 
- * @param <C> Collision type used.
  * @param <T> Tile type used.
  */
-public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
+public final class LevelRipConverter<T extends TileGame<?>>
         extends Thread
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
 
     /** Map reference. */
-    private MapTileGame<C, T> map;
+    private MapTileGame<?, T> map;
     /** Level rip image. */
     private Sprite imageMap;
     /** Level rip height in tile. */
@@ -74,7 +73,7 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
      * @param numberOfThread The number of used thread.
      * @param id The current thread id.
      */
-    private LevelRipConverter(MapTileGame<C, T> map, Sprite imageMap, int numberOfThread, int id)
+    private LevelRipConverter(MapTileGame<?, T> map, Sprite imageMap, int numberOfThread, int id)
     {
         super("LevelRip Converter");
         this.map = map;
@@ -97,7 +96,7 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
      * @param map The destination map reference.
      * @param patternsDirectory The directory containing tiles themes.
      */
-    public void start(Media levelrip, MapTileGame<?, ?> map, Media patternsDirectory)
+    public void start(Media levelrip, MapTileGame<?, T> map, Media patternsDirectory)
     {
         final int threadsNum = Runtime.getRuntime().availableProcessors();
         final Sprite levelRip = Drawable.loadSprite(levelrip);
@@ -105,7 +104,7 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
         map.loadPatterns(patternsDirectory);
         map.create(levelRip.getWidthOriginal() / map.getTileWidth(), levelRip.getHeightOriginal() / map.getTileHeight());
 
-        final LevelRipConverter<?, ?>[] threads = new LevelRipConverter<?, ?>[threadsNum];
+        final LevelRipConverter<?>[] threads = new LevelRipConverter<?>[threadsNum];
         errors = 0;
         try
         {
@@ -147,14 +146,14 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
     private T searchForTile(BufferedImage tileSprite, int x, int y)
     {
         // Check each tile on each pattern
-        final Iterator<Integer> itr = this.map.getPatterns().iterator();
-        final int tw = this.map.getTileWidth();
-        final int th = this.map.getTileHeight();
+        final Iterator<Integer> itr = map.getPatterns().iterator();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
 
         while (itr.hasNext())
         {
             final Integer pattern = itr.next();
-            final SpriteTiled tileSheet = this.map.getPattern(pattern);
+            final SpriteTiled tileSheet = map.getPattern(pattern);
             final BufferedImage sheet = tileSheet.getSurface();
             final int tilesInX = tileSheet.getWidthOriginal() / tw;
             final int tilesInY = tileSheet.getHeightOriginal() / th;
@@ -173,11 +172,9 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
                     final int xb = surfaceCurrentTileX * tw;
                     final int yb = surfaceCurrentTileY * th;
 
-                    if (this.compareTile(tileSprite, xa, ya, sheet, xb, yb))
+                    if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
                     {
-                        final T tile = this.map.createTile(this.map.getTileWidth(), this.map.getTileHeight());
-                        tile.setPattern(pattern);
-                        tile.setNumber(number);
+                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, null);
                         return tile;
                     }
                 }
@@ -202,9 +199,9 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
     private boolean compareTile(BufferedImage a, int xa, int ya, BufferedImage b, int xb, int yb)
     {
         // Check tiles pixels
-        for (int x = 0; x < this.map.getTileWidth(); x++)
+        for (int x = 0; x < map.getTileWidth(); x++)
         {
-            for (int y = 0; y < this.map.getTileHeight(); y++)
+            for (int y = 0; y < map.getTileHeight(); y++)
             {
                 // Compare color
                 if (a.getRGB(x + xa, y + ya) != b.getRGB(x + xb, y + yb))
@@ -225,28 +222,27 @@ public final class LevelRipConverter<C extends Enum<C>, T extends TileGame<C>>
     public void run()
     {
         // Check all image tiles
-        final BufferedImage tileRef = this.imageMap.getSurface();
-        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < this.imageMapTilesInY; imageMapCurrentTileY++)
+        final BufferedImage tileRef = imageMap.getSurface();
+        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
         {
-            for (int imageMapCurrentTileX = this.startX; imageMapCurrentTileX < this.endX; imageMapCurrentTileX++)
+            for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * this.map.getTileWidth() + 1,
-                        imageMapCurrentTileY * this.map.getTileHeight() + 1);
+                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * map.getTileWidth() + 1,
+                        imageMapCurrentTileY * map.getTileHeight() + 1);
                 if (LevelRipConverter.IGNORED_COLOR != imageColor)
                 {
                     // Search if tile is on sheet and get it
-                    final T tile = this.searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
+                    final T tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
 
                     // A tile has been found
                     if (tile != null)
                     {
-                        this.map.setTile(this.map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX,
-                                tile);
+                        map.setTile(map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX, tile);
                     }
                     else
                     {
-                        this.errors++;
+                        errors++;
                     }
                 }
             }

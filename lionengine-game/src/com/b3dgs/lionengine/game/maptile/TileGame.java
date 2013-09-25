@@ -11,8 +11,6 @@ import java.util.List;
  * <li><code>collision</code> : collision name</li>
  * </ul>
  * <p>
- * The abstract function {@link #getCollisionFrom(String)} allows to convert a string collision name to its
- * corresponding enum.
  * </p>
  * 
  * @param <C> The collision type used.
@@ -39,26 +37,20 @@ public abstract class TileGame<C extends Enum<C>>
      * 
      * @param width The tile width.
      * @param height The tile height.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param collision The tile collision.
      */
-    public TileGame(int width, int height)
+    public TileGame(int width, int height, Integer pattern, int number, C collision)
     {
         this.width = width;
         this.height = height;
-        pattern = null;
-        number = 0;
+        this.pattern = pattern;
+        this.number = number;
+        this.collision = collision;
         x = 0;
         y = 0;
-        collision = null;
     }
-
-    /**
-     * Get collision type from its name as string. The parameter value is read from the file describing the map
-     * collisions. The best way to store map collisions name is to use an enum with the same names.
-     * 
-     * @param collision The collision name.
-     * @return The collision type.
-     */
-    public abstract C getCollisionFrom(String collision);
 
     /**
      * Check if tile fill condition.
@@ -224,7 +216,7 @@ public abstract class TileGame<C extends Enum<C>>
 
     /**
      * Set tile location x. Should be used only when overriding the
-     * {@link MapTileGame#loadTile(com.b3dgs.lionengine.file.FileReading, int)} function.
+     * {@link MapTileGame#loadTile(List, com.b3dgs.lionengine.file.FileReading, int)} function.
      * 
      * @param x The tile location x.
      */
@@ -235,7 +227,7 @@ public abstract class TileGame<C extends Enum<C>>
 
     /**
      * Set tile location y. Should be used only when overriding the
-     * {@link MapTileGame#loadTile(com.b3dgs.lionengine.file.FileReading, int)} function.
+     * {@link MapTileGame#loadTile(List, com.b3dgs.lionengine.file.FileReading, int)} function.
      * 
      * @param y The tile location y.
      */

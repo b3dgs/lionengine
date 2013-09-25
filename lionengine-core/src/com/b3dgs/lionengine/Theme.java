@@ -8,14 +8,14 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public enum Theme
 {
+    /** GTK theme. */
+    GTK,
     /** Metal theme. */
     METAL,
-    /** Current system theme. */
-    SYSTEM,
     /** Motif theme. */
     MOTIF,
-    /** GTK theme. */
-    GTK;
+    /** Current system theme. */
+    SYSTEM;
 
     /** Error message theme. */
     private static final String MESSAGE_ERROR_THEME = "Theme must not be null !";

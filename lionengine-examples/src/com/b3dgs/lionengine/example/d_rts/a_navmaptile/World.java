@@ -29,9 +29,7 @@ final class World
     private final CameraRts camera;
 
     /**
-     * Constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldRts#WorldRts(Sequence)
      */
     World(Sequence sequence)
     {
@@ -58,7 +56,7 @@ final class World
      */
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, map, tilesheet);
         try (FileWriting file = File.createFileWriting(output);)
         {

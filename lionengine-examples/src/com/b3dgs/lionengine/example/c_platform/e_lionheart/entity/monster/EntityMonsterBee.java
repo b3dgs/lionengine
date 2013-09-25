@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
@@ -12,10 +13,7 @@ public abstract class EntityMonsterBee
         extends EntityMonster
 {
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     public EntityMonsterBee(Context context, EntityType type)
     {

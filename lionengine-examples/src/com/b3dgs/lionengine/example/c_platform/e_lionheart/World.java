@@ -49,9 +49,7 @@ final class World
     private boolean gameOver;
 
     /**
-     * Constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {
@@ -131,7 +129,6 @@ final class World
         camera.setIntervals(32, 0);
         handlerEntity.prepare();
         player.setCheckpoints(level.worldData.getCheckpoints());
-        // player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
-        player.respawn(2800, 300);
+        player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
     }
 }

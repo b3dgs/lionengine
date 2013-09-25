@@ -50,9 +50,7 @@ final class World
     private final Context context;
 
     /**
-     * Constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldRts#WorldRts(Sequence)
      */
     World(Sequence sequence)
     {

@@ -23,9 +23,7 @@ final class Scene
     private final Entity entity;
 
     /**
-     * Create the scene and its vars.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     Scene(Loader loader)
     {

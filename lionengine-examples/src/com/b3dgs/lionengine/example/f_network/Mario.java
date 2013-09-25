@@ -132,6 +132,13 @@ class Mario
         {
             super.handleCollisions(extrp);
 
+            // Vertical collision
+            if (getDiffVertical() < 0 || isOnGround())
+            {
+                checkVertical(EntityCollisionTileCategory.LEG_LEFT);
+                checkVertical(EntityCollisionTileCategory.LEG_RIGHT);
+            }
+
             // Kill when fall down
             if (getLocationY() < 0)
             {

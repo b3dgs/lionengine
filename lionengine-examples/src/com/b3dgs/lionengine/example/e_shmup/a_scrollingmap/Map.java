@@ -9,7 +9,7 @@ final class Map
         extends MapTileShmup<TileCollision, Tile>
 {
     /**
-     * Constructor. Tiles are stored in 'tiles' directory, with a size of 16*16
+     * Constructor.
      */
     Map()
     {
@@ -21,8 +21,14 @@ final class Map
      */
 
     @Override
-    public Tile createTile(int width, int height)
+    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        return new Tile(width, height);
+        return new Tile(width, height, pattern, number, collision);
+    }
+
+    @Override
+    public TileCollision getCollisionFrom(String collision)
+    {
+        return TileCollision.NONE;
     }
 }

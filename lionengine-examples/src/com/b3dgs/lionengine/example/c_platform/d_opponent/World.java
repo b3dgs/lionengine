@@ -30,9 +30,7 @@ final class World
     private final HandlerEntity handler;
 
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {

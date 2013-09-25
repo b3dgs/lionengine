@@ -33,9 +33,7 @@ final class World
     private final Force movement;
 
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {
@@ -47,7 +45,7 @@ final class World
         movement = new Force();
 
         // Rip a level and store data in the map
-        final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(Media.get("level_mario.png"), map, Media.get("tiles"));
     }
 

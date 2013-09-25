@@ -31,10 +31,7 @@ public abstract class EntityTurning
     protected boolean shake;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     public EntityTurning(Context context, EntityType type)
     {

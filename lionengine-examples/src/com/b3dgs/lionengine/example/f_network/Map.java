@@ -9,7 +9,7 @@ class Map
         extends MapTilePlatform<TileCollision, Tile>
 {
     /**
-     * Map constructor. Tiles are stored in 'tiles' directory, with a size of 16*16.
+     * Map constructor.
      */
     public Map()
     {
@@ -36,9 +36,26 @@ class Map
         }
     }
 
+    /*
+     * MapTilePlatform
+     */
+
     @Override
-    public Tile createTile(int width, int height)
+    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        return new Tile(width, height);
+        return new Tile(width, height, pattern, number, collision);
+    }
+
+    @Override
+    public TileCollision getCollisionFrom(String collision)
+    {
+        try
+        {
+            return TileCollision.valueOf(collision);
+        }
+        catch (final NullPointerException exception)
+        {
+            return TileCollision.NONE;
+        }
     }
 }

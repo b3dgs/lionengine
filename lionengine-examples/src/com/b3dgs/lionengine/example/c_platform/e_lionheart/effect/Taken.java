@@ -9,9 +9,7 @@ public class Taken
         extends Effect
 {
     /**
-     * Constructor.
-     * 
-     * @param setup The setup reference.
+     * @see Effect#Effect(SetupEffectGame)
      */
     public Taken(SetupEffectGame setup)
     {

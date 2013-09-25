@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.ProductionCost;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Tile;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.Effect;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.effect.TypeEffect;
-import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCollision;
+import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollision;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.game.CoordTile;
@@ -97,7 +97,7 @@ public abstract class UnitWorker
      */
     private void searchNextTree()
     {
-        final CoordTile tile = map.getClosestTile(this, getResourceLocation(), TypeCollision.TREE, 64);
+        final CoordTile tile = map.getClosestTile(this, getResourceLocation(), TileCollision.TREE, 64);
         setResource(TypeResource.WOOD, tile.getX(), tile.getY(), 1, 1);
     }
 

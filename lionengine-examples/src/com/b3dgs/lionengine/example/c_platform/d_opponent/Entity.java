@@ -71,6 +71,9 @@ abstract class Entity
         setFrameOffsets(0, 9);
         setCollision(getDataCollision("default"));
         loadAnimations();
+        addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);
     }
 
     /**
@@ -255,12 +258,11 @@ abstract class Entity
     /**
      * Check the horizontal collision.
      * 
-     * @param offsetX The horizontal offset (leg).
+     * @param category The collision category.
      */
-    private void checkHorizontal(int offsetX)
+    private void checkHorizontal(EntityCollisionTileCategory category)
     {
-        setCollisionOffset(offsetX, 9);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -275,12 +277,11 @@ abstract class Entity
     /**
      * Check the vertical collision.
      * 
-     * @param offsetX The horizontal offset (leg).
+     * @param category The collision category.
      */
-    private void checkVertical(int offsetX)
+    protected void checkVertical(EntityCollisionTileCategory category)
     {
-        setCollisionOffset(offsetX, 0);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
@@ -329,18 +330,17 @@ abstract class Entity
         // Horizontal collision
         if (getDiffHorizontal() < 0)
         {
-            checkHorizontal(-5); // Left leg
+            checkHorizontal(EntityCollisionTileCategory.KNEE_LEFT);
         }
         else if (getDiffHorizontal() > 0)
         {
-            checkHorizontal(5); // Right leg
+            checkHorizontal(EntityCollisionTileCategory.KNEE_RIGHT);
         }
 
         // Vertical collision
-        if (getDiffVertical() < 0)
+        if (getDiffVertical() < 0 || isOnGround())
         {
-            checkVertical(-5); // Left leg
-            checkVertical(5); // Right leg
+            checkVertical(EntityCollisionTileCategory.GROUND_CENTER);
         }
     }
 

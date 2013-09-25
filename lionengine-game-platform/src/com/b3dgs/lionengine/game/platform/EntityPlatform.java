@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.game.platform;
 
-import java.util.List;
+import java.util.HashMap;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
@@ -8,10 +8,11 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
-import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -22,6 +23,8 @@ public abstract class EntityPlatform
 {
     /** Animation surface. */
     protected final SpriteAnimated sprite;
+    /** List of declared tile collision point. */
+    private final HashMap<CollisionTileCategory<?>, CoordTile> tileCollisions;
     /** Collisions special offsets x. */
     private int collOffX;
     /** Collisions special offsets y. */
@@ -55,6 +58,7 @@ public abstract class EntityPlatform
     public EntityPlatform(SetupEntityGame setup)
     {
         super(setup.configurable);
+        tileCollisions = new HashMap<>(1);
         final int hf = setup.configurable.getDataInteger("horizontal", "frames");
         final int vf = setup.configurable.getDataInteger("vertical", "frames");
         final int width = setup.configurable.getDataInteger("width", "size");
@@ -80,8 +84,8 @@ public abstract class EntityPlatform
     protected abstract void handleMovements(final double extrp);
 
     /**
-     * Update collisions, after movements. Should be used to call {@link #setCollisionOffset(int, int)} for each
-     * collision test.
+     * Update collisions, after movements. Should be used to call
+     * {@link #getCollisionTile(MapTilePlatform, CollisionTileCategory)} for each collision test.
      * <p>
      * Example:
      * </p>
@@ -93,32 +97,22 @@ public abstract class EntityPlatform
      *     // Check something here
      *     // ...
      * 
-     *     // Respawn when fall at the bottom of the map
-     *     if (getLocationY() &lt; 0)
-     *     {
-     *         // respawn
-     *     }
-     * 
      *     // Horizontal collision
-     *     Tile tile = collisionCheck(0, 1, TileCollision.COLLISION_HORIZONTAL);
-     *     if (tile != null)
+     *     if (getDiffHorizontal() &lt; 0)
      *     {
-     *         final Double x = tile.getCollisionX(this);
-     *         if (applyHorizontalCollision(x))
-     *         {
-     *             // collision occurred
-     *         }
+     *         checkHorizontal(EntityCollisionTileCategory.KNEE_LEFT);
+     *     }
+     *     else if (getDiffHorizontal() &gt; 0)
+     *     {
+     *         checkHorizontal(EntityCollisionTileCategory.KNEE_RIGHT);
      *     }
      * 
      *     // Vertical collision
-     *     tile = collisionCheck(0, 0, TileCollision.COLLISION_VERTICAL);
-     *     if (tile != null)
+     *     if (getDiffVertical() &lt; 0 || isOnGround())
      *     {
-     *         final Double y = tile.getCollisionY(this);
-     *         if (applyVerticalCollision(y))
-     *         {
-     *             // collision occurred
-     *         }
+     *         checkVertical(EntityCollisionTileCategory.LEG_LEFT);
+     *         checkVertical(EntityCollisionTileCategory.LEG_RIGHT);
+     *         checkVertical(EntityCollisionTileCategory.GROUND_CENTER);
      *     }
      * }
      * </pre>
@@ -282,37 +276,43 @@ public abstract class EntityPlatform
     }
 
     /**
-     * Set the collision offset. Should be called only for special collision, such as leg left & right, and more
-     * generally for any collision that are not at the center. Thus
-     * {@link MapTilePlatform#getFirstTileHit(Localizable, List)} can be called just after.
-     * <p>
-     * Example:
-     * </p>
+     * Define a tile collision at a specific offset from the entity referential.
      * 
-     * <pre>
-     * setCollisionOffset(-10, 0); // Left leg
-     * final Tile tile = map.getFirstTileHit(this, List);
-     * if (tile != null)
-     * {
-     *     // Apply collision
-     * }
-     * 
-     * setCollisionOffset(10, 0); // Right leg
-     * final Tile tile = map.getFirstTileHit(this, List);
-     * if (tile != null)
-     * {
-     *     // Apply collision
-     * }
-     * </pre>
-     * 
+     * @param type The collision tile type.
      * @param offsetX The horizontal offset value.
      * @param offsetY The vertical offset value.
      */
-    public void setCollisionOffset(int offsetX, int offsetY)
+    protected <C extends Enum<C>> void addCollisionTile(CollisionTileCategory<C> type, int offsetX, int offsetY)
     {
-        collOffX = offsetX;
-        collOffY = offsetY;
-        // TODO: find a better solution
+        tileCollisions.put(type, new CoordTile(offsetX, offsetY));
+    }
+
+    /**
+     * Get the collision offset.
+     * 
+     * @param type The collision category.
+     * @return The collision offset.
+     */
+    protected <C extends Enum<C>> CoordTile getCollisionTileOffset(CollisionTileCategory<C> type)
+    {
+        return tileCollisions.get(type);
+    }
+
+    /**
+     * Get the first tile hit for the specified collision tile category matching the collision list.
+     * 
+     * @param map The map reference.
+     * @param category The collision tile category.
+     * @return The first tile hit, <code>null</code> if none.
+     */
+    public <C extends Enum<C>, T extends TilePlatform<C>, M extends MapTilePlatform<C, T>> T getCollisionTile(M map,
+            CollisionTileCategory<C> category)
+    {
+        final CoordTile offsets = tileCollisions.get(category);
+        collOffX = offsets.getX();
+        collOffY = offsets.getY();
+        final T tile = map.getFirstTileHit(this, category.getCollisions());
+        return tile;
     }
 
     /*

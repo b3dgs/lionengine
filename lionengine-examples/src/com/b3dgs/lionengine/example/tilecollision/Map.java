@@ -24,10 +24,7 @@ final class Map
      */
     public void createBlock(int v, int h)
     {
-        final Tile tile = createTile(getTileWidth(), getTileHeight());
-        tile.setCollision(TileCollision.GROUND);
-        tile.setPattern(Integer.valueOf(0));
-        tile.setNumber(0);
+        final Tile tile = createTile(getTileWidth(), getTileHeight(), Integer.valueOf(0), 0, TileCollision.GROUND);
         setTile(v, h, tile);
     }
 
@@ -36,8 +33,14 @@ final class Map
      */
 
     @Override
-    public Tile createTile(int width, int height)
+    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        return new Tile(width, height);
+        return new Tile(width, height, pattern, number, collision);
+    }
+
+    @Override
+    public TileCollision getCollisionFrom(String collision)
+    {
+        return TileCollision.valueOf(collision);
     }
 }

@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
- * World implementation using AbstractWorld.
+ * World implementation.
  */
 final class World
         extends WorldGame
@@ -19,9 +19,7 @@ final class World
     private final Mario mario;
 
     /**
-     * Constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {

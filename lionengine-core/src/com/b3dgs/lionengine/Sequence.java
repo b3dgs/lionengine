@@ -210,7 +210,8 @@ public abstract class Sequence
     /**
      * Update sequence.
      * 
-     * @param extrp The extrapolation value.
+     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation. Example: x
+     *            += 5.0 * extrp
      */
     protected abstract void update(final double extrp);
 
@@ -374,16 +375,6 @@ public abstract class Sequence
     final void start()
     {
         thread.start();
-    }
-
-    /**
-     * Wait for sequence ending.
-     * 
-     * @throws InterruptedException If error on join.
-     */
-    final void join() throws InterruptedException
-    {
-        thread.join();
     }
 
     /**

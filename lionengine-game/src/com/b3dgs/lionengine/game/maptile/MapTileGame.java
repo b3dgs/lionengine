@@ -88,9 +88,21 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      * 
      * @param width The tile width.
      * @param height The tile height.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param collision The tile collision.
      * @return The created tile.
      */
-    public abstract T createTile(int width, int height);
+    public abstract T createTile(int width, int height, Integer pattern, int number, C collision);
+
+    /**
+     * Get collision type from its name as string. The parameter value is read from the file describing the map
+     * collisions. The best way to store map collisions name is to use an enum with the same names.
+     * 
+     * @param collision The collision name.
+     * @return The collision type.
+     */
+    public abstract C getCollisionFrom(String collision);
 
     /**
      * Generate the minimap from the current map.
@@ -222,22 +234,25 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         create(width, height);
         loadPatterns(patternsDirectory);
 
+        final Media media = new Media(Media.getPath(patternsDirectory.getPath(), "collisions.xml"));
+        Media.exist(media);
+        final XmlParser xml = File.createXmlParser();
+        final XmlNode root = xml.load(media);
+        final List<XmlNode> nodes = root.getChildren();
+
         final int t = file.readShort();
         for (int i = 0; i < t; i++)
         {
             final int n = file.readShort();
             for (int j = 0; j < n; j++)
             {
-                final T tile = loadTile(file, i);
+                final T tile = loadTile(nodes, file, i);
                 final int v = tile.getY() / getTileHeight();
                 final int h = tile.getX() / getTileWidth();
                 final List<T> list = tiles.get(v);
                 list.set(h, tile);
             }
         }
-        final Media media = new Media(Media.getPath(patternsDirectory.getPath(), "collisions.xml"));
-        Media.exist(media);
-        readCollisions(media);
     }
 
     /**
@@ -250,22 +265,21 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      * (integer tile location y
      * </pre>
      * 
+     * @param nodes The collision nodes.
      * @param file The file reader reference.
      * @param i The last loaded tile number.
      * @return The loaded tile.
      * @throws IOException If error on reading.
      */
-    public T loadTile(FileReading file, int i) throws IOException
+    public T loadTile(List<XmlNode> nodes, FileReading file, int i) throws IOException
     {
         final int pattern = file.readInteger();
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTileGame.BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
-        final T tile = createTile(tileWidth, tileHeight);
+        final C collision = getCollisionFrom(getCollision(nodes, pattern, number));
+        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
 
-        tile.setCollision(tile.getCollisionFrom(null));
-        tile.setPattern(Integer.valueOf(pattern));
-        tile.setNumber(number);
         tile.setX(x);
         tile.setY(y);
 
@@ -342,38 +356,29 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     /**
      * Read collisions from external file.
      * 
-     * @param media The file containing collisions.
+     * @param nodes The collision nodes.
+     * @param tilePattern The tile pattern number.
+     * @param tileNumber The tile number.
+     * @return The collision found.
      */
-    protected void readCollisions(Media media)
+    protected String getCollision(List<XmlNode> nodes, int tilePattern, int tileNumber)
     {
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode root = xml.load(media);
-        for (final XmlNode child : root.getChildren())
+        for (final XmlNode node : nodes)
         {
-            final String name = child.readString("name");
-            final int pattern = child.readInteger("pattern");
-            final int start = child.readInteger("start");
-            final int end = child.readInteger("end");
+            final String name = node.readString("name");
+            final int pattern = node.readInteger("pattern");
+            final int start = node.readInteger("start");
+            final int end = node.readInteger("end");
 
-            for (final List<T> list : tiles)
+            if (tilePattern == pattern)
             {
-                for (final T tile : list)
+                if (tileNumber + 1 >= start && tileNumber + 1 <= end)
                 {
-                    if (tile != null)
-                    {
-                        final int number = tile.getNumber();
-                        if (tile.getPattern().intValue() == pattern)
-                        {
-                            if (number + 1 >= start && number + 1 <= end)
-                            {
-                                tile.setCollision(tile.getCollisionFrom(name));
-                                onCollisionAssigned(tile);
-                            }
-                        }
-                    }
+                    return name;
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -478,16 +483,6 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     protected Color getTilePixelColor(T tile)
     {
         return Color.WHITE;
-    }
-
-    /**
-     * Called when the collision has been assigned to the tile on loading.
-     * 
-     * @param tile The tile.
-     */
-    protected void onCollisionAssigned(T tile)
-    {
-        // Nothing by default
     }
 
     /*

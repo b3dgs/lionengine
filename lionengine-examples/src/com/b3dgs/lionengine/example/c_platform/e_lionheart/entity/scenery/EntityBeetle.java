@@ -33,10 +33,7 @@ public class EntityBeetle
     private double movementSpeedMax;
 
     /**
-     * Constructor.
-     * 
-     * @param context The context reference.
-     * @param type The entity type.
+     * @see Entity#Entity(Context, EntityType)
      */
     EntityBeetle(Context context, EntityType type)
     {

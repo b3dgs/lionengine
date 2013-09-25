@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
@@ -233,7 +232,7 @@ public class MenuBar
         if (media != null)
         {
             final Map map = editor.world.map;
-            final LevelRipConverter<TileCollision, Tile> rip = new LevelRipConverter<>();
+            final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
             try
             {
                 rip.start(media, map, Media.get("tiles", editor.world.level.getWorld().asPathName()));

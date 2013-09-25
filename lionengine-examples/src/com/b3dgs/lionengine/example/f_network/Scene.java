@@ -15,9 +15,7 @@ class Scene
     private final World<?> world;
 
     /**
-     * Standard constructor.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     public Scene(Loader loader)
     {
@@ -40,6 +38,10 @@ class Scene
             world = worldClient;
         }
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()

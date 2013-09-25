@@ -187,14 +187,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
         }
     }
 
-    @Override
-    protected void onCollisionAssigned(T tile)
-    {
-        final C collision = tile.getCollision();
-        tile.checkResourceType(collision);
-        tile.setBlocking(tile.checkBlocking(collision));
-    }
-
     /*
      * MapTilePath
      */

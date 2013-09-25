@@ -16,10 +16,13 @@ public abstract class TilePlatform<C extends Enum<C>>
      * 
      * @param width The tile width.
      * @param height The tile height.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param collision The tile collision.
      */
-    public TilePlatform(int width, int height)
+    public TilePlatform(int width, int height, Integer pattern, int number, C collision)
     {
-        super(width, height);
+        super(width, height, pattern, number, collision);
     }
 
     /**

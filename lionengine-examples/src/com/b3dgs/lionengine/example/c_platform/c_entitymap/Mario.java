@@ -64,6 +64,11 @@ final class Mario
         setMass(getDataDouble("mass", "data"));
         setFrameOffsets(0, 9);
         loadAnimations();
+        addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
+        addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
+        addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);
     }
 
     /**
@@ -214,12 +219,11 @@ final class Mario
     /**
      * Check the horizontal collision.
      * 
-     * @param offsetX The horizontal offset (leg).
+     * @param category The collision category.
      */
-    private void checkHorizontal(int offsetX)
+    private void checkHorizontal(EntityCollisionTileCategory category)
     {
-        setCollisionOffset(offsetX, 9);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_HORIZONTAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -233,12 +237,11 @@ final class Mario
     /**
      * Check the vertical collision.
      * 
-     * @param offsetX The horizontal offset (leg).
+     * @param category The collision category.
      */
-    private void checkVertical(int offsetX)
+    private void checkVertical(EntityCollisionTileCategory category)
     {
-        setCollisionOffset(offsetX, 0);
-        final Tile tile = map.getFirstTileHit(this, TileCollision.COLLISION_VERTICAL);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
@@ -296,19 +299,19 @@ final class Mario
         // Horizontal collision
         if (getDiffHorizontal() < 0)
         {
-            checkHorizontal(-5); // Left leg
+            checkHorizontal(EntityCollisionTileCategory.KNEE_LEFT);
         }
         else if (getDiffHorizontal() > 0)
         {
-            checkHorizontal(5); // Right leg
+            checkHorizontal(EntityCollisionTileCategory.KNEE_RIGHT);
         }
 
         // Vertical collision
         if (getDiffVertical() < 0 || isOnGround())
         {
-            checkVertical(-5); // Left leg
-            checkVertical(5); // Right leg
-            checkVertical(0);
+            checkVertical(EntityCollisionTileCategory.LEG_LEFT);
+            checkVertical(EntityCollisionTileCategory.LEG_RIGHT);
+            checkVertical(EntityCollisionTileCategory.GROUND_CENTER);
         }
 
         // Respawn when die

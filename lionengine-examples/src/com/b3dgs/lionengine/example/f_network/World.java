@@ -39,9 +39,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     protected N networkedWorld;
 
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     public World(final Sequence sequence)
     {
@@ -70,6 +68,10 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
      * @param command The command.
      */
     public abstract void applyCommand(String command);
+
+    /*
+     * WorldGame
+     */
 
     @Override
     public void update(double extrp)

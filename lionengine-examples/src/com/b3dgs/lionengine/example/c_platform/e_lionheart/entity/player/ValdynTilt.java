@@ -284,10 +284,8 @@ final class ValdynTilt
         {
             timerLianaUnGrip.stop();
             liana = null;
-            valdyn.setCollisionOffset(0, 44);
-            checkCollisionLiana(map.getFirstTileHit(valdyn, TileCollision.COLLISION_LIANA_STEEP));
-            valdyn.setCollisionOffset(0, 57);
-            checkCollisionLiana(map.getFirstTileHit(valdyn, TileCollision.COLLISION_LIANA_LEANING));
+            checkCollisionLiana(valdyn.getCollisionTile(map, ValdynCollisionTileCategory.HAND_LIANA_STEEP));
+            checkCollisionLiana(valdyn.getCollisionTile(map, ValdynCollisionTileCategory.HAND_LIANA_LEANING));
         }
         if (found)
         {

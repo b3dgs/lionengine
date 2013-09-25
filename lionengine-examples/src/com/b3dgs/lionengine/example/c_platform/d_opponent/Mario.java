@@ -30,6 +30,8 @@ final class Mario
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();
+        addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
+        addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);
     }
 
     /**
@@ -153,6 +155,13 @@ final class Mario
         if (!dead)
         {
             super.handleCollisions(extrp);
+
+            // Vertical collision
+            if (getDiffVertical() < 0 || isOnGround())
+            {
+                checkVertical(EntityCollisionTileCategory.LEG_LEFT);
+                checkVertical(EntityCollisionTileCategory.LEG_RIGHT);
+            }
 
             // Kill when fall down
             if (getLocationY() < 0)

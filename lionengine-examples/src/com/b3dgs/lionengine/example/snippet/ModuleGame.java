@@ -29,28 +29,22 @@ import com.b3dgs.lionengine.utility.UtilityTileExtractor;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum TypeEntity
+    enum EntityType
     {
 
     }
 
-    enum TypeCollision
+    enum TileCollision
     {
 
     }
 
     class Tile
-            extends TileGame<TypeCollision>
+            extends TileGame<TileCollision>
     {
-        Tile(int width, int height)
+        public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
         {
-            super(width, height);
-        }
-
-        @Override
-        public TypeCollision getCollisionFrom(String collision)
-        {
-            return null;
+            super(width, height, pattern, number, collision);
         }
     }
 
@@ -83,7 +77,7 @@ public class ModuleGame
         }
     }
 
-    MapTileGame<TypeCollision, Tile> map;
+    MapTileGame<TileCollision, Tile> map;
 
     /*
      * Snippet code
@@ -124,32 +118,32 @@ public class ModuleGame
     }
 
     public class Factory
-            extends FactoryGame<TypeEntity, SetupGame>
+            extends FactoryGame<EntityType, SetupGame>
     {
         public Factory()
         {
-            super(TypeEntity.class);
-            loadAll(TypeEntity.values());
+            super(EntityType.class);
+            loadAll(EntityType.values());
         }
 
         @Override
-        protected SetupGame createSetup(TypeEntity id)
+        protected SetupGame createSetup(EntityType id)
         {
             return new SetupGame(Media.get("directory", id + ".xml"));
         }
     }
 
     public class FactoryEntity
-            extends FactoryEntityGame<TypeEntity, SetupEntityGame, EntityGame>
+            extends FactoryEntityGame<EntityType, SetupEntityGame, EntityGame>
     {
         public FactoryEntity()
         {
-            super(TypeEntity.class);
-            loadAll(TypeEntity.values());
+            super(EntityType.class);
+            loadAll(EntityType.values());
         }
 
         @Override
-        public EntityGame createEntity(TypeEntity id)
+        public EntityGame createEntity(EntityType id)
         {
             switch (id)
             {
@@ -159,7 +153,7 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupEntityGame createSetup(TypeEntity id)
+        protected SetupEntityGame createSetup(EntityType id)
         {
             return new SetupEntityGame(Media.get("directory", id + ".xml"));
         }
@@ -217,7 +211,7 @@ public class ModuleGame
 
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<TypeCollision, Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, map, tilesheet);
         try (FileWriting file = File.createFileWriting(output);)
         {

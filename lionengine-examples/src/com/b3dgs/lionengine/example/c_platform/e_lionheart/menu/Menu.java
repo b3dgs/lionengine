@@ -119,9 +119,7 @@ public class Menu
     private TransitionType transition;
 
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * @see Sequence#Sequence(Loader)
      */
     public Menu(Loader loader)
     {
@@ -323,6 +321,7 @@ public class Menu
             }
             if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
             {
+                timerPressStart.stop();
                 timerPressStart.start();
                 pressStart = !pressStart;
             }

@@ -10,12 +10,7 @@ final class RasteredBackgroundElement
         extends BackgroundElementRastered
 {
     /**
-     * Standard constructor.
-     * 
-     * @param mainX The main location x.
-     * @param mainY The main location y.
-     * @param sprite The sprite reference.
-     * @param rastersNumber The number of rasters.
+     * @see BackgroundElementRastered#BackgroundElementRastered(int, int, Sprite, int)
      */
     RasteredBackgroundElement(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {

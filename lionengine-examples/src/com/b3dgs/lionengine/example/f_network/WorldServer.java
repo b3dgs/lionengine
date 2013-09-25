@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.world.NetworkedWorldServer;
 
@@ -15,9 +16,7 @@ class WorldServer
         implements NetworkedWorldServer
 {
     /**
-     * Default constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldGame#WorldGame(Sequence)
      */
     public WorldServer(final Sequence sequence)
     {

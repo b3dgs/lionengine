@@ -31,9 +31,7 @@ final class World
     private final CursorRts cursor;
 
     /**
-     * Constructor.
-     * 
-     * @param sequence The sequence reference.
+     * @see WorldRts#WorldRts(Sequence)
      */
     World(Sequence sequence)
     {
@@ -61,9 +59,10 @@ final class World
 
             text.drawRect(g, Color.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(Color.YELLOW);
-            text.draw(g, x + 18, y + 20, "Coll: " + tile.getCollision());
-            text.draw(g, x + 18, y + 11, "Tile number: " + tile.getNumber());
-            text.draw(g, x + 18, y + 2, "tx = " + tx + " | ty = " + ty);
+            text.draw(g, x + 18, y + 25, "Group: " + tile.getCollision().getGroup());
+            text.draw(g, x + 18, y + 16, "Coll: " + tile.getCollision());
+            text.draw(g, x + 18, y + 7, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 21, y - 2, "tx = " + tx + " | ty = " + ty);
         }
     }
 
