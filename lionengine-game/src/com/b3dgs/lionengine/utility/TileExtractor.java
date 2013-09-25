@@ -20,7 +20,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * UtilityTileExtractor.start(Media.get(&quot;level.png&quot;), Media.get(&quot;sheet.png&quot;), 16, 16, 256, 256);
  * </pre>
  */
-public final class UtilityTileExtractor
+public final class TileExtractor
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
@@ -37,7 +37,7 @@ public final class UtilityTileExtractor
      */
     public static void start(Media levelrip, Media out, int tilew, int tileh, int destW, int destH)
     {
-        final UtilityTileExtractor extractor = new UtilityTileExtractor(levelrip, tilew, tileh, destW, destH);
+        final TileExtractor extractor = new TileExtractor(levelrip, tilew, tileh, destW, destH);
         extractor.start(out);
     }
 
@@ -67,7 +67,7 @@ public final class UtilityTileExtractor
     /**
      * Private constructor.
      */
-    private UtilityTileExtractor()
+    private TileExtractor()
     {
         throw new RuntimeException();
     }
@@ -81,7 +81,7 @@ public final class UtilityTileExtractor
      * @param destW The tilesheet width.
      * @param destH The tilesheet height.
      */
-    private UtilityTileExtractor(Media media, int tilew, int tileh, int destW, int destH)
+    private TileExtractor(Media media, int tilew, int tileh, int destW, int destH)
     {
         this.tilew = tilew;
         this.tileh = tileh;
@@ -113,7 +113,7 @@ public final class UtilityTileExtractor
                 // Skip blank tile of image map (0, 128, 128)
                 final int imageColor = tileRef.getRGB(imageMapCurrentTileX * tilew + 1,
                         (imageMapTilesInY - 1 - imageMapCurrentTileY) * tileh + 1);
-                if (imageColor != UtilityTileExtractor.IGNORED_COLOR)
+                if (imageColor != TileExtractor.IGNORED_COLOR)
                 {
                     // Search if tile is on sheet and get it
                     final boolean found = searchForTile(tileRef, imageMapCurrentTileX, imageMapTilesInY - 1

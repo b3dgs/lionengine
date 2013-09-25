@@ -14,8 +14,8 @@ import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
-import com.b3dgs.lionengine.game.maptile.MapTile;
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
 

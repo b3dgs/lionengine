@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.game.platform.map;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 

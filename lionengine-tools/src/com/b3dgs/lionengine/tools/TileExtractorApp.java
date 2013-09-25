@@ -17,7 +17,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityMath;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
-import com.b3dgs.lionengine.utility.UtilityTileExtractor;
+import com.b3dgs.lionengine.utility.TileExtractor;
 
 /**
  * Tile converter and tile extractor tool.
@@ -165,7 +165,7 @@ public class TileExtractorApp
 
         if (tileWidth != 0 && tileHeight != 0 && destWidth != 0 && destHeight != 0)
         {
-            UtilityTileExtractor.start(Media.get(filein), Media.get(fileout), tileWidth, tileHeight, destWidth,
+            TileExtractor.start(Media.get(filein), Media.get(fileout), tileWidth, tileHeight, destWidth,
                     destHeight);
             UtilityMessageBox.information("Tile extractor", "Extraction finished !");
         }

@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.game.maptile;
+package com.b3dgs.lionengine.game.map;
 
 import java.awt.Color;
 import java.awt.Graphics;

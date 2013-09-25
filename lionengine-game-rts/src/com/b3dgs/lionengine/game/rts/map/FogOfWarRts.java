@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.maptile.MapTile;
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.EntityRts;
 

@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.input.Keyboard;
 

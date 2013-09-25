@@ -9,8 +9,8 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * This class allows to convert a map image to a map level format.

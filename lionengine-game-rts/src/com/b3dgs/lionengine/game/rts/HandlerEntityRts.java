@@ -14,7 +14,7 @@ import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorServices;

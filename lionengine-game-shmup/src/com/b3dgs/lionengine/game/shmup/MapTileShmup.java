@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.game.shmup;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Map tile shmup implementation.

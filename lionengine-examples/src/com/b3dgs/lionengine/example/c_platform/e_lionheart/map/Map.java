@@ -9,7 +9,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeTy
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatformRastered;
 
 /**

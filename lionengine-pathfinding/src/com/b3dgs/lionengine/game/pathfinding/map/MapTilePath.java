@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.game.pathfinding.map;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
 /**

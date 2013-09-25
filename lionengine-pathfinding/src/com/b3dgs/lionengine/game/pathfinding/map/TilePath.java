@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.game.pathfinding.map;
 
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Representation of a default tile, used for pathfinding.

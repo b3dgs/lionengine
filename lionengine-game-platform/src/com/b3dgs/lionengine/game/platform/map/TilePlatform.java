@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.game.platform.map;
 
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**

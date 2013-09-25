@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.game.rts.map;
 
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents a 20 Axis map, designed to perform linking between two different areas. A good example is the fog of war,

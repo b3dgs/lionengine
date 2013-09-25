@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.game.maptile;
+package com.b3dgs.lionengine.game.map;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;

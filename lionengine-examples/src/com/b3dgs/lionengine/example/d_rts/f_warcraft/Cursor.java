@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCursor;
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**

@@ -21,10 +21,10 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.entity.SetupEntityGame;
-import com.b3dgs.lionengine.game.maptile.MapTileGame;
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
-import com.b3dgs.lionengine.utility.UtilityTileExtractor;
+import com.b3dgs.lionengine.utility.TileExtractor;
 
 @SuppressWarnings("all")
 public class ModuleGame
@@ -225,6 +225,6 @@ public class ModuleGame
 
     private void utilityTileExtractor()
     {
-        UtilityTileExtractor.start(Media.get("level.png"), Media.get("sheet.png"), 16, 16, 256, 256);
+        TileExtractor.start(Media.get("level.png"), Media.get("sheet.png"), 16, 16, 256, 256);
     }
 }

@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
-import com.b3dgs.lionengine.game.maptile.TileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Tile implementation.

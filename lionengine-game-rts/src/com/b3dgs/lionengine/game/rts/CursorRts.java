@@ -6,7 +6,7 @@ import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.maptile.MapTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.input.Mouse;
 
 /**
