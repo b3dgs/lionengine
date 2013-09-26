@@ -46,7 +46,7 @@ public final class Valdyn
     /** Hurt time max. */
     private static final int HURT_TIME_MAX = 2000;
     /** Divisor for walk speed animation. */
-    private static final double ANIM_WALK_SPEED_DIVISOR = 9.0;
+    private static final double ANIM_WALK_SPEED_DIVISOR = 7.0;
     /** Minimum jump time (in milli). */
     private static final int JUMP_TIME_MIN = 100;
     /** Maximum jump time (in milli). */

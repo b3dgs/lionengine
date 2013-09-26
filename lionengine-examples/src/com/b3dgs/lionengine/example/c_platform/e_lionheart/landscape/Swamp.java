@@ -65,8 +65,8 @@ final class Swamp
         add(new Clouds(Media.get(path, "cloud.png"), width, 4));
         add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, 124));
 
-        totalHeight = 48;
-        setOffsetY(config.internal.getHeight() - AppLionheart.ORIGINAL_DISPLAY.getHeight());
+        totalHeight = 120;
+        setOffsetY(config.internal.getHeight() - AppLionheart.ORIGINAL_DISPLAY.getHeight() + 72);
     }
 
     /**

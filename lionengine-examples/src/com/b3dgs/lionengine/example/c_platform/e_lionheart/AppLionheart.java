@@ -50,7 +50,7 @@ public final class AppLionheart
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */
-    private static final Display NATIVE_DISPLAY = new Display(288, 224, 16, 60);
+    private static final Display NATIVE_DISPLAY = new Display(272, 208, 16, 60);
 
     /**
      * Main function.
@@ -65,10 +65,17 @@ public final class AppLionheart
 
         final Display external = new Display(640, 480, 16, 60);
         final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);
-        final Loader loader = new Loader(config);
-        loader.start(new Scene(loader));
-        // final Editor editor = new Editor();
-        // editor.start();
+        final boolean enableEditor = false;
+        if (enableEditor)
+        {
+            final Editor editor = new Editor();
+            editor.start();
+        }
+        else
+        {
+            final Loader loader = new Loader(config);
+            loader.start(new Scene(loader));
+        }
     }
 
     /**

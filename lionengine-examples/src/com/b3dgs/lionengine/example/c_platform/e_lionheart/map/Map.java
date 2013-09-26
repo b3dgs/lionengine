@@ -23,7 +23,7 @@ public class Map
     /** Tile height. */
     public static final int TILE_HEIGHT = 16;
     /** Raster enabled. */
-    private static final boolean RASTER_ENABLED = false;
+    private static final boolean RASTER_ENABLED = true;
 
     /**
      * Convert int to byte value (working on if int is less than 256).

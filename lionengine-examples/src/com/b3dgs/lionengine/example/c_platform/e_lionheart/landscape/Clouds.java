@@ -27,11 +27,11 @@ final class Clouds
         setY(4, 89);
         setY(5, 100);
 
-        setSpeed(0, -1.35);
-        setSpeed(1, -1.2);
-        setSpeed(2, -0.9);
-        setSpeed(3, -0.7);
-        setSpeed(4, -0.5);
-        setSpeed(5, -0.4);
+        setSpeed(0, -1.12);
+        setSpeed(1, -0.95);
+        setSpeed(2, -0.72);
+        setSpeed(3, -0.5);
+        setSpeed(4, -0.36);
+        setSpeed(5, -0.28);
     }
 }
