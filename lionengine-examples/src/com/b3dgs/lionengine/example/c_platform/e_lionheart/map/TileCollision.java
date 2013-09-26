@@ -47,7 +47,7 @@ public enum TileCollision
     /** Slide right bottom. */
     SLIDE_RIGHT_3(TileCollisionGroup.SLIDE, false),
     /** Slide right ground slide. */
-    SLIDE_RIGHT_GROUND_SLIDE(TileCollisionGroup.FLAT, false),
+    SLIDE_RIGHT_GROUND_SLIDE(TileCollisionGroup.SLIDE, false),
     /** Slide left top. */
     SLIDE_LEFT_1(TileCollisionGroup.SLIDE, true),
     /** Slide middle top. */
@@ -55,7 +55,7 @@ public enum TileCollision
     /** Slide bottom top. */
     SLIDE_LEFT_3(TileCollisionGroup.SLIDE, true),
     /** Slide left ground slide. */
-    SLIDE_LEFT_GROUND_SLIDE(TileCollisionGroup.FLAT, true),
+    SLIDE_LEFT_GROUND_SLIDE(TileCollisionGroup.SLIDE, true),
     /** Liana horizontal. */
     LIANA_HORIZONTAL(TileCollisionGroup.LIANA_HORIZONTAL),
     /** Liana steep right top. */

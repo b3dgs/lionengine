@@ -1,6 +1,10 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
+import java.io.IOException;
 import java.util.Locale;
+
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 
 /**
  * List of world types.
@@ -8,47 +12,42 @@ import java.util.Locale;
 public enum WorldType
 {
     /** Swamp world. */
-    SWAMP(0, Music.SWAMP);
-
-    /** Values. */
-    private static final WorldType[] VALUES = WorldType.values();
+    SWAMP(Music.SWAMP);
 
     /**
-     * Get the type from its index.
+     * Load type from its saved format.
      * 
-     * @param index The index.
-     * @return The type.
+     * @param file The file reading.
+     * @return The loaded type.
+     * @throws IOException If error.
      */
-    public static WorldType get(int index)
+    public static WorldType load(FileReading file) throws IOException
     {
-        return WorldType.VALUES[index];
+        return WorldType.valueOf(file.readString());
     }
 
-    /** Index. */
-    private final int index;
     /** World music. */
     private Music music;
 
     /**
      * Constructor.
      * 
-     * @param index The index number.
      * @param music The music type.
      */
-    private WorldType(int index, Music music)
+    private WorldType(Music music)
     {
-        this.index = index;
         this.music = music;
     }
 
     /**
-     * Get the index value.
+     * Save the world type.
      * 
-     * @return The index value.
+     * @param file The file writing.
+     * @throws IOException If error.
      */
-    public int getIndex()
+    public void save(FileWriting file) throws IOException
     {
-        return index;
+        file.writeString(name());
     }
 
     /**

@@ -27,8 +27,8 @@ public abstract class BackgroundPlatform
     protected int totalHeight;
     /** Number of background components. */
     protected int componentsNumber;
-    /** Wide state. */
-    private final boolean wide;
+    /** Offset y; */
+    private int offsetY;
 
     /**
      * Create a new background.
@@ -36,12 +36,10 @@ public abstract class BackgroundPlatform
      * @param theme The background theme.
      * @param min The minimal y value for background.
      * @param max The maximal y value for background.
-     * @param wide The wide state.
      */
-    public BackgroundPlatform(String theme, int min, int max, boolean wide)
+    public BackgroundPlatform(String theme, int min, int max)
     {
         this.theme = theme;
-        this.wide = wide;
         components = new ArrayList<>(1);
         maxY = max;
         minY = min;
@@ -63,6 +61,16 @@ public abstract class BackgroundPlatform
     }
 
     /**
+     * Get the y offset.
+     * 
+     * @return The y offset.
+     */
+    public int getOffsetY()
+    {
+        return offsetY;
+    }
+
+    /**
      * Get the background theme.
      * 
      * @return The background theme.
@@ -70,16 +78,6 @@ public abstract class BackgroundPlatform
     public String getTheme()
     {
         return theme;
-    }
-
-    /**
-     * Get the wide state.
-     * 
-     * @return <code>true</code> if wide screen, <code>false</code> else.
-     */
-    public boolean isWide()
-    {
-        return wide;
     }
 
     /**
@@ -118,6 +116,16 @@ public abstract class BackgroundPlatform
         return sprite;
     }
 
+    /**
+     * Set the y offset.
+     * 
+     * @param offsetY The y offset.
+     */
+    protected void setOffsetY(int offsetY)
+    {
+        this.offsetY = offsetY;
+    }
+
     /*
      * Background
      */
@@ -126,7 +134,7 @@ public abstract class BackgroundPlatform
     public final void update(double extrp, double speed, double y)
     {
         final int lowest = totalHeight;
-        final int py;
+        int py;
         if (maxY == 0)
         {
             py = (int) y;
@@ -134,7 +142,11 @@ public abstract class BackgroundPlatform
         else
         {
             final double currentY = UtilityMath.fixBetween(y, minY, maxY);
-            py = (int) (currentY / maxY * lowest) - lowest;
+            py = (int) (currentY / maxY * lowest) - lowest + offsetY;
+            if (py > 0)
+            {
+                py = 0;
+            }
         }
 
         for (final BackgroundComponent component : components)

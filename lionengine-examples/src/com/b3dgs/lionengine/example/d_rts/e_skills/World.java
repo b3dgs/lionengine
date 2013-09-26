@@ -13,15 +13,15 @@ import com.b3dgs.lionengine.example.d_rts.e_skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.WorldRts;
 import com.b3dgs.lionengine.input.Mouse;
 
 /**
  * World implementation using WorldRts.
  */
 final class World
-        extends WorldRts
+        extends WorldGame
 {
     /** Text reference. */
     private final TextGame text;
@@ -43,7 +43,7 @@ final class World
     private final Context context;
 
     /**
-     * @see WorldRts#WorldRts(Sequence)
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {

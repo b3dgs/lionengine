@@ -107,9 +107,9 @@ public class EntitySelector
         LandscapeType landscape = editor.world.level.getLandscape();
         if (landscape == null)
         {
-            landscape = LandscapeType.get(0);
+            landscape = LandscapeType.values()[0];
         }
-        landscapeCombo.setSelectedIndex(landscape.getIndex());
+        landscapeCombo.setSelectedIndex(landscape.ordinal());
         int max = 0;
         for (final EntityCategory category : EntityCategory.values())
         {

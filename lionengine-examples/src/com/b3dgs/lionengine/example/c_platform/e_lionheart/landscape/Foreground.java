@@ -24,6 +24,10 @@ final class Foreground
     final int screenWidth;
     /** Screen height. */
     final int screenHeight;
+    /** The horizontal factor. */
+    final double scaleH;
+    /** The horizontal factor. */
+    final double scaleV;
     /** Water top. */
     double top;
     /** Standard height. */
@@ -39,12 +43,15 @@ final class Foreground
      * Constructor.
      * 
      * @param config The config reference.
-     * @param wide The wide state.
+     * @param scaleH The horizontal factor.
+     * @param scaleV The vertical factor.
      * @param theme The theme name.
      */
-    Foreground(Config config, boolean wide, String theme)
+    Foreground(Config config, double scaleH, double scaleV, String theme)
     {
-        super(theme, 0, 0, wide);
+        super(theme, 0, 0);
+        this.scaleH = scaleH;
+        this.scaleV = scaleV;
         screenWidth = config.internal.getWidth();
         screenHeight = config.internal.getHeight();
         nominal = 210;
@@ -157,7 +164,7 @@ final class Foreground
         {
             final Sprite sprite = Drawable.loadSprite(Media.get(path, "calc.png"));
             sprite.load(false);
-            data = new BackgroundElement(0, water.getNominal(), sprite);
+            data = new BackgroundElement(0, (int) Math.ceil(water.getNominal() * scaleV), sprite);
             top = data.getSprite().getHeight();
             this.water = water;
         }
@@ -218,7 +225,7 @@ final class Foreground
         {
             final Sprite back = Drawable.loadSprite(Media.get(path, "back.png"));
             back.load(false);
-            data = new BackgroundElement(0, water.getNominal(), back);
+            data = new BackgroundElement(0, (int) Math.floor(water.getNominal() * scaleV), back);
 
             if (UtilityFile.exists(Media.getPath(path, "effect.png")))
             {

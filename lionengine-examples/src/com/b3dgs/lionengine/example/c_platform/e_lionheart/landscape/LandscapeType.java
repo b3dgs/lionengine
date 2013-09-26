@@ -1,10 +1,13 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 
 /**
  * Types of landscapes.
@@ -12,25 +15,11 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 public enum LandscapeType
 {
     /** Swamp dusk. */
-    SWAMP_DUSK(0, WorldType.SWAMP, "dusk", "raster1.xml", ForegroundType.WATER),
+    SWAMP_DUSK(WorldType.SWAMP, "dusk", "raster1.xml", ForegroundType.WATER),
     /** Swamp dawn. */
-    SWAMP_DAWN(1, WorldType.SWAMP, "dawn", "raster2.xml", ForegroundType.WATER),
+    SWAMP_DAWN(WorldType.SWAMP, "dawn", "raster2.xml", ForegroundType.WATER),
     /** Swamp day. */
-    SWAMP_DAY(2, WorldType.SWAMP, "day", "raster3.xml", ForegroundType.WATER);
-
-    /** Values. */
-    private static final LandscapeType[] VALUES = LandscapeType.values();
-
-    /**
-     * Get the type from its index.
-     * 
-     * @param index The index.
-     * @return The type.
-     */
-    public static LandscapeType get(int index)
-    {
-        return LandscapeType.VALUES[index];
-    }
+    SWAMP_DAY(WorldType.SWAMP, "day", "raster3.xml", ForegroundType.WATER);
 
     /**
      * Get all landscapes related to the world.
@@ -41,7 +30,7 @@ public enum LandscapeType
     public static LandscapeType[] getWorldLandscape(WorldType world)
     {
         final List<LandscapeType> landscapes = new ArrayList<>(3);
-        for (final LandscapeType landscape : LandscapeType.VALUES)
+        for (final LandscapeType landscape : LandscapeType.values())
         {
             if (landscape.getWorld() == world)
             {
@@ -51,8 +40,18 @@ public enum LandscapeType
         return landscapes.toArray(new LandscapeType[landscapes.size()]);
     }
 
-    /** Index. */
-    private final int index;
+    /**
+     * Load type from its saved format.
+     * 
+     * @param file The file reading.
+     * @return The loaded type.
+     * @throws IOException If error.
+     */
+    public static LandscapeType load(FileReading file) throws IOException
+    {
+        return LandscapeType.valueOf(file.readString());
+    }
+
     /** World type. */
     private final WorldType world;
     /** Theme name. */
@@ -65,15 +64,13 @@ public enum LandscapeType
     /**
      * Constructor.
      * 
-     * @param index The index number.
      * @param world The world type.
      * @param theme The theme name.
      * @param raster The raster name.
      * @param water The water type.
      */
-    private LandscapeType(int index, WorldType world, String theme, String raster, ForegroundType water)
+    private LandscapeType(WorldType world, String theme, String raster, ForegroundType water)
     {
-        this.index = index;
         this.world = world;
         this.theme = theme;
         this.raster = raster;
@@ -81,13 +78,14 @@ public enum LandscapeType
     }
 
     /**
-     * Get the index value.
+     * Save the landscape type.
      * 
-     * @return The index value.
+     * @param file The file writing.
+     * @throws IOException If error.
      */
-    public int getIndex()
+    public void save(FileWriting file) throws IOException
     {
-        return index;
+        file.writeString(name());
     }
 
     /**

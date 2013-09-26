@@ -53,8 +53,8 @@ public class Level
     public void save(FileWriting file) throws IOException
     {
         file.writeString(Level.FILE_FORMAT);
-        file.writeByte((byte) world.getIndex());
-        file.writeByte((byte) landscape.getIndex());
+        world.save(file);
+        landscape.save(file);
         map.save(file);
         worldData.save(file);
         handlerEntity.save(file);
@@ -73,9 +73,9 @@ public class Level
         {
             throw new IOException("Invalid level format !");
         }
-        setWorld(WorldType.get(file.readByte()));
+        setWorld(WorldType.load(file));
         factoryEntity.loadAll(EntityType.values());
-        setLandscape(LandscapeType.get(file.readByte()));
+        setLandscape(LandscapeType.load(file));
         map.setLandscape(getLandscape());
         map.load(file);
         worldData.load(file);

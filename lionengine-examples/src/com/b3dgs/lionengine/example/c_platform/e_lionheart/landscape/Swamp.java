@@ -3,7 +3,6 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -19,6 +18,10 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 final class Swamp
         extends BackgroundPlatform
 {
+    /** The horizontal factor. */
+    final double scaleH;
+    /** The vertical factor. */
+    final double scaleV;
     /** Number of parallax lines. */
     private final int parallaxsNumber = 96;
     /** Flickering flag. */
@@ -45,21 +48,25 @@ final class Swamp
      * Constructor.
      * 
      * @param config The config reference.
-     * @param wide The wide state.
+     * @param scaleH The horizontal factor.
+     * @param scaleV The horizontal factor.
      * @param theme The theme name.
      * @param flickering The flickering flag.
      */
-    Swamp(Config config, boolean wide, String theme, boolean flickering)
+    Swamp(Config config, double scaleH, double scaleV, String theme, boolean flickering)
     {
-        super(theme, 0, 512, wide);
+        super(theme, 0, 512);
+        this.scaleH = scaleH;
+        this.scaleV = scaleV;
         this.flickering = flickering;
         final String path = Media.getPath(AppLionheart.BACKGROUNDS_DIR, "Swamp", theme);
         final int width = config.internal.getWidth();
-        add(new Backdrop(path, this.flickering, wide, width));
-        add(new Clouds(Media.get(path, "cloud.png"), wide, width, 4));
-        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, wide, 124));
+        add(new Backdrop(path, this.flickering, width));
+        add(new Clouds(Media.get(path, "cloud.png"), width, 4));
+        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, 124));
 
         totalHeight = 48;
+        setOffsetY(config.internal.getHeight() - AppLionheart.ORIGINAL_DISPLAY.getHeight());
     }
 
     /**
@@ -82,8 +89,6 @@ final class Swamp
         private final int screenWidth;
         /** Screen wide value. */
         private final int w;
-        /** Screen wide flag. */
-        private final boolean wide;
         /** Flickering flag. */
         private final boolean flickering;
         /** Flickering counter. */
@@ -96,13 +101,11 @@ final class Swamp
          * 
          * @param path The backdrop path.
          * @param flickering The flickering flag effect.
-         * @param wide The wide screen flag.
          * @param screenWidth The screen width.
          */
-        Backdrop(String path, boolean flickering, boolean wide, int screenWidth)
+        Backdrop(String path, boolean flickering, int screenWidth)
         {
             this.flickering = flickering;
-            this.wide = wide;
             this.screenWidth = screenWidth;
 
             if (flickering)
@@ -118,19 +121,10 @@ final class Swamp
             }
 
             mountain = createElement(path, "mountain.png", 0, 124, false);
-            int wi = (int) Math.ceil(this.screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
-            if (this.wide)
-            {
-                wi = (int) Math.ceil(wi * Ratio.K4_3);
-            }
-            w = wi;
+            w = (int) Math.ceil(this.screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
 
-            int x = 208;
-            if (wide)
-            {
-                x = 276;
-            }
-            moon = Swamp.createRasteredElement(path, "moon.png", x, 105, 73);
+            final int x = (int) (208 * scaleH);
+            moon = Swamp.createRasteredElement(path, "moon.png", x, 105 + getOffsetY(), 73);
             mountainSprite = (Sprite) mountain.getSprite();
         }
 
@@ -138,7 +132,7 @@ final class Swamp
         public void update(double extrp, int x, int y, double speed)
         {
             backcolorA.setOffsetY(y);
-            moon.setOffsetY(-55);
+            moon.setOffsetY(-55 + getOffsetY());
             mountain.setOffsetX(UtilityMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
                     mountainSprite.getWidth()));
             mountain.setOffsetY(y);

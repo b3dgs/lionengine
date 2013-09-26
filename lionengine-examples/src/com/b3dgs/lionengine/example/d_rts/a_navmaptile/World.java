@@ -11,15 +11,15 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
+import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.WorldRts;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
  * World implementation.
  */
 final class World
-        extends WorldRts
+        extends WorldGame
 {
     /** Text reference. */
     private final Text text;
@@ -29,7 +29,7 @@ final class World
     private final CameraRts camera;
 
     /**
-     * @see WorldRts#WorldRts(Sequence)
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {

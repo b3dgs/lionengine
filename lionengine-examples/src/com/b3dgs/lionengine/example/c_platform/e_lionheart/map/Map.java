@@ -75,7 +75,8 @@ public class Map
     @Override
     public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
-        switch (collision.getGroup())
+        final TileCollisionGroup group = collision != null ? collision.getGroup() : TileCollisionGroup.NONE;
+        switch (group)
         {
             case FLAT:
                 return new TileGround(width, height, pattern, number, collision);

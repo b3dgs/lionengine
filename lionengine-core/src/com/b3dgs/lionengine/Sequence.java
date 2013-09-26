@@ -187,13 +187,13 @@ public abstract class Sequence
         {
             buf = UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE);
             gbuf = buf.createGraphics();
-            if (hqx > 1)
+            if (hqx > 1 || filter == Filter.NONE)
             {
-                op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+                op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
             }
             else
             {
-                op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
             }
             UtilityImage.optimizeGraphicsSpeed(gbuf);
         }

@@ -54,14 +54,16 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
+        final double scaleH = internal.getWidth() / (double) AppLionheart.ORIGINAL_DISPLAY.getWidth();
+        final double scaleV = internal.getHeight() / (double) AppLionheart.ORIGINAL_DISPLAY.getHeight();
         camera = new CameraPlatform(width, height);
-        factoryLandscape = new FactoryLandscape(config, wide, false);
+        factoryLandscape = new FactoryLandscape(config, scaleH, scaleV, false);
         factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
         level = new Level(factoryEntity, handlerEntity);
         map = level.map;
         context = new Context(level, display.getRate());
-        statsRenderer = new StatsRenderer(wide);
+        statsRenderer = new StatsRenderer(scaleH);
         handlerEffect = context.handlerEffect;
     }
 

@@ -8,7 +8,6 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -90,8 +89,6 @@ public abstract class WorldGame
     protected final int width;
     /** Screen size height. */
     protected final int height;
-    /** True if screen is wide. */
-    protected final boolean wide;
 
     /**
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
@@ -106,17 +103,6 @@ public abstract class WorldGame
         config = sequence.config;
         internal = sequence.config.internal;
         display = sequence.config.external;
-
-        // Check wide state
-        if (Ratio.R16_9 == config.external.getRatio() && Ratio.R16_10 == config.external.getRatio())
-        {
-            wide = true;
-        }
-        else
-        {
-            wide = false;
-        }
-        // Retrieve screen size
         width = sequence.config.internal.getWidth();
         height = sequence.config.internal.getHeight();
     }

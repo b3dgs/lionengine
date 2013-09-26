@@ -50,7 +50,9 @@ public final class Crawling
         // Jump when slope
         final int side = -getSide();
         final Tile tile = map.getTile(this, side * Map.TILE_WIDTH, 0);
-        if (!jumping && (tile == null || tile.getCollision() == TileCollision.GROUND_SPIKE))
+        final boolean jumpTile = tile == null || tile.getCollision() == TileCollision.NONE
+                || tile.getCollision() == TileCollision.GROUND_SPIKE;
+        if (!jumping && jumpTile)
         {
             jumping = true;
             timerJump.start();

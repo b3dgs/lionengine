@@ -43,12 +43,14 @@ public final class AppLionheart
     public static final String AUDIO_FILE_EXTENSION = ".wav";
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
+    /** Original display. */
+    public static final Display ORIGINAL_DISPLAY = new Display(320, 240, 16, 60);
     /** Enable sound. */
     private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
     /** Native display. */
-    private static final Display NATIVE_DISPLAY = new Display(320, 240, 16, 60);
+    private static final Display NATIVE_DISPLAY = new Display(288, 224, 16, 60);
 
     /**
      * Main function.

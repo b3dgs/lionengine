@@ -2,7 +2,6 @@ package com.b3dgs.lionengine.game.platform.background;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -27,8 +26,6 @@ public abstract class CloudsPlatform
     private final double[] y;
     /** Clouds speed. */
     private final double[] speed;
-    /** Wide flag. */
-    private final boolean wide;
     /** Vertical offset. */
     private final int decY;
 
@@ -38,15 +35,12 @@ public abstract class CloudsPlatform
      * @param media The clouds image media.
      * @param cloudWidth The image width.
      * @param cloudHeight The image height.
-     * @param wide The screen wide.
      * @param screenWidth The screen height.
      * @param decY The vertical offset.
      * @param alpha <code>true</code> if clouds surface uses alpha, <code>false</code> else.
      */
-    public CloudsPlatform(Media media, int cloudWidth, int cloudHeight, boolean wide, int screenWidth, int decY,
-            boolean alpha)
+    public CloudsPlatform(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY, boolean alpha)
     {
-        this.wide = wide;
         this.decY = decY;
 
         // Load surface
@@ -55,11 +49,7 @@ public abstract class CloudsPlatform
         cloudsNumber = sprite.getTilesNumber();
         data = new BackgroundElement(0, 0, sprite);
 
-        int wi = (int) Math.ceil(screenWidth / (double) sprite.getWidthOriginal()) + 1;
-        if (this.wide)
-        {
-            wi = (int) Math.ceil(wi * Ratio.K4_3);
-        }
+        final int wi = (int) Math.ceil(screenWidth / (double) sprite.getWidthOriginal()) + 1;
         w = wi;
 
         // Data arrays

@@ -61,6 +61,10 @@ public final class TileSlide
             case SLIDE_LEFT_3:
                 return getSlide(c, localizable, -halfTileHeight);
             case SLIDE_LEFT_GROUND_SLIDE:
+                if (x > -halfTileHeight)
+                {
+                    return getSlide(c, localizable, halfTileHeight);
+                }
                 return getGround(localizable, 0);
 
             default:

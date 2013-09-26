@@ -17,20 +17,20 @@ public class StatsRenderer
     private final SpriteTiled heart;
     /** Number font. */
     private final SpriteTiled number;
-    /** 1.5 if wide, 1 if not. */
-    private final double wide;
+    /** Horizontal scale factor. */
+    private final double scaleH;
 
     /**
      * Constructor.
      * 
-     * @param wide The wide state.
+     * @param scaleH The horizontal scale factor.
      */
-    public StatsRenderer(boolean wide)
+    public StatsRenderer(double scaleH)
     {
         hud = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "hud.png"), 16, 16);
         heart = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "health.png"), 8, 8);
         number = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "numbers.png"), 8, 16);
-        this.wide = wide ? 1.5 : 1;
+        this.scaleH = scaleH;
     }
 
     /**
@@ -56,11 +56,11 @@ public class StatsRenderer
         renderLife(g, stats);
 
         // Sword level
-        int x = (int) (160 * wide);
+        int x = getScaledX(160, 0);
         hud.render(g, stats.getSwordLevel() + 1, x, 2);
 
         // Amulet
-        x = (int) (230 * wide);
+        x = getScaledX(230, 0);
         if (stats.getAmulet())
         {
             hud.render(g, 1, x, 2);
@@ -102,7 +102,7 @@ public class StatsRenderer
      */
     private void renderTalisment(Graphic g, Stats stats)
     {
-        final int x = (int) (60 * wide);
+        final int x = getScaledX(60, 10);
         hud.render(g, 0, x, 2);
         final int talisments = stats.getTalisment();
         if (talisments < 10)
@@ -125,7 +125,7 @@ public class StatsRenderer
      */
     private void renderLife(Graphic g, Stats stats)
     {
-        final int x = wide == 1.0 ? 280 : (int) (280 * wide * 1.03);
+        final int x = getScaledX(280, 10);
         hud.render(g, 6, x, 2);
         final int lifes = stats.getLife();
         if (lifes < 10)
@@ -138,5 +138,17 @@ public class StatsRenderer
             number.render(g, lifes / 10 + 1, x + 20, 2);
             number.render(g, lifes % 10 + 1, x + 28, 2);
         }
+    }
+
+    /**
+     * Get the scaled horizontal value.
+     * 
+     * @param x The default x.
+     * @param max The max offset.
+     * @return The scaled value.
+     */
+    private int getScaledX(int x, int max)
+    {
+        return (int) ((x - max) * scaleH * (x + max * scaleH) / x);
     }
 }

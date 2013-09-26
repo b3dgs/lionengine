@@ -292,11 +292,13 @@ final class ValdynTilt
             final double x = valdyn.getLocationX() - tile.getX() - valdyn.getWidth();
             final TileCollisionGroup groupSlide = TileCollisionGroup.SLIDE;
             final TileCollision collision = tile.getCollision();
-            if (tile.isLeft(groupSlide) || collision == TileCollision.SLIDE_LEFT_GROUND_SLIDE && x > -11)
+            if (tile.isLeft(groupSlide) && collision != TileCollision.SLIDE_LEFT_GROUND_SLIDE
+                    || collision == TileCollision.SLIDE_LEFT_GROUND_SLIDE && x > -12)
             {
                 slide = Align.LEFT;
             }
-            else if (tile.isRight(groupSlide) || collision == TileCollision.SLIDE_RIGHT_GROUND_SLIDE && x > -11)
+            else if (tile.isRight(groupSlide) && collision != TileCollision.SLIDE_RIGHT_GROUND_SLIDE
+                    || collision == TileCollision.SLIDE_RIGHT_GROUND_SLIDE && x > -12)
             {
                 slide = Align.RIGHT;
             }

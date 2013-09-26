@@ -4,7 +4,6 @@ import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -36,8 +35,6 @@ public class Parallax
     private final int screenWidth;
     /** Screen height. */
     private final int screenHeight;
-    /** Wide flag. */
-    private final boolean wide;
 
     /**
      * Create a new parallax.
@@ -45,18 +42,11 @@ public class Parallax
      * @param internal The internal display.
      * @param media The parallax image media.
      * @param parallaxsNumber The number parallax lines.
-     * @param wide The screen wide.
      * @param decY The vertical offset.
      */
-    public Parallax(Display internal, Media media, int parallaxsNumber, boolean wide, int decY)
+    public Parallax(Display internal, Media media, int parallaxsNumber, int decY)
     {
-        this.wide = wide;
-        int wi = internal.getWidth();
-        if (this.wide)
-        {
-            wi = (int) Math.ceil(wi * Ratio.K4_3);
-        }
-        screenWidth = wi;
+        screenWidth = internal.getWidth();
         screenHeight = internal.getHeight();
 
         // Load surface
@@ -66,12 +56,7 @@ public class Parallax
         parallax.prepare(filter);
         data = new BackgroundElement(0, decY + 64, parallax);
 
-        wi = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6)) + 1;
-        if (this.wide)
-        {
-            wi = (int) Math.ceil(wi * Ratio.K4_3);
-        }
-        w = wi;
+        w = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6)) + 1;
 
         // Create data arrays
         x = new double[this.parallaxsNumber];
@@ -131,7 +116,7 @@ public class Parallax
 
             if (ly >= 0 && ly < screenHeight)
             {
-                for (j = 0; j < w; j++)
+                for (j = 0; j <= w; j++)
                 {
                     lx = (int) (-76 + 76 * j - x[i] - x2[i] + i * (-7.68 + 2.56 * j));
 

@@ -13,13 +13,12 @@ final class Clouds
      * Constructor.
      * 
      * @param path The resources path.
-     * @param wide <code>true</code> for widescreen, <code>false</code> for normal.
      * @param screenWidth The screen width.
      * @param decY The vertical offset.
      */
-    Clouds(Media path, boolean wide, int screenWidth, int decY)
+    Clouds(Media path, int screenWidth, int decY)
     {
-        super(path, 160, 26, wide, screenWidth, decY, false);
+        super(path, 160, 26, screenWidth, decY, false);
 
         setY(0, 0);
         setY(1, 30);

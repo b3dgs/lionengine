@@ -12,15 +12,15 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.WorldRts;
 
 /**
  * World implementation.
  */
 final class World
-        extends WorldRts
+        extends WorldGame
 {
     /** Text reference. */
     private final TextGame text;
@@ -40,7 +40,7 @@ final class World
     private final Context context;
 
     /**
-     * @see WorldRts#WorldRts(Sequence)
+     * @see WorldGame#WorldGame(Sequence)
      */
     World(Sequence sequence)
     {
