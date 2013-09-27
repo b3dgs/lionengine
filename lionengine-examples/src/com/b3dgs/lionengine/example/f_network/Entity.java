@@ -5,8 +5,8 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -77,7 +77,7 @@ public abstract class Entity
      * @param desiredFps The desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Entity(SetupEntityGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
+    public Entity(SetupSurfaceGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
     {
         super(setup);
         this.type = type;

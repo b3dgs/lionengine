@@ -9,12 +9,12 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Checksum;
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Strings;
 import com.b3dgs.lionengine.Text;
@@ -75,9 +75,8 @@ public class ModuleCore
 
     void config()
     {
-        final Display internal = new Display(320, 240, 16, 60);
-        final Display external = new Display(640, 480, 16, 60);
-        new Config(internal, external, true);
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
     }
 
     void imageInfo()
@@ -91,9 +90,8 @@ public class ModuleCore
     void loader()
     {
         Engine.start("First Code", Version.create(1, 0, 0), "resources");
-        final Display internal = new Display(320, 240, 16, 60);
-        final Display external = new Display(640, 480, 16, 60);
-        final Config config = new Config(internal, external, true);
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
@@ -103,12 +101,12 @@ public class ModuleCore
         Media.get("image.png");
     }
 
-    class Scene
+    final class Scene
             extends Sequence
     {
         Scene(Loader loader)
         {
-            super(loader);
+            super(loader, new Resolution(320, 240, 60));
         }
 
         @Override

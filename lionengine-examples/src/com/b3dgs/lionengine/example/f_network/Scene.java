@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.f_network;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 
 /**
@@ -11,15 +12,20 @@ import com.b3dgs.lionengine.Sequence;
 class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(640, 480, 60);
+
     /** World server reference. */
     private final World<?> world;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     public Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         setExtrapolated(true);
 
         final boolean server = false;

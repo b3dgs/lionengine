@@ -67,8 +67,8 @@ public abstract class Sequence
 
     /** Config reference. */
     public final Config config;
-    /** True if screen is wide. */
-    public final boolean wide;
+    /** Internal display reference. */
+    public final Resolution source;
     /** Keyboard reference. */
     public final Keyboard keyboard;
     /** Mouse reference. */
@@ -81,10 +81,8 @@ public abstract class Sequence
     protected final int height;
     /** Screen reference. */
     private final Screen screen;
-    /** Internal display reference. */
-    private final Display internal;
     /** External display reference. */
-    private final Display external;
+    private final Resolution output;
     /** Filter reference. */
     private final Filter filter;
     /** Hq3x use flag. */
@@ -119,40 +117,43 @@ public abstract class Sequence
     private boolean willStop;
 
     /**
-     * Create a new sequence.
+     * Constructor.
      * 
      * @param loader The loader reference.
+     * @param newSource The resolution source reference.
      */
-    public Sequence(final Loader loader)
+    public Sequence(final Loader loader, Resolution newSource)
     {
         Check.notNull(loader, Sequence.MESSAGE_ERROR_LOADER);
 
         // Initialize
         this.loader = loader;
+        config = loader.getConfig();
+        config.setSource(newSource);
         screen = loader.getScreen();
-        config = screen.config;
-        internal = screen.config.internal;
-        external = screen.config.external;
+        output = config.getOutput();
+        source = config.getSource();
         keyboard = loader.getKeyboard();
         mouse = loader.getMouse();
-        filter = config.filter;
-        sync = config.isWindowed() && external.getRate() > 0;
+        mouse.setConfig(config);
+        filter = config.getFilter();
+        sync = config.isWindowed() && output.getRate() > 0;
         graphic = new Graphic();
-        extrapolated = false;
+        extrapolated = true;
 
         // Time needed for a loop to reach desired rate
-        if (external.getRate() == 0)
+        if (output.getRate() == 0)
         {
             frameDelay = 0;
         }
         else
         {
-            frameDelay = Sequence.TIME_LONG / external.getRate();
+            frameDelay = Sequence.TIME_LONG / output.getRate();
         }
 
         // Scale factor
-        final double scaleX = external.getWidth() / (double) internal.getWidth();
-        final double scaleY = external.getHeight() / (double) internal.getHeight();
+        final double scaleX = output.getWidth() / (double) this.source.getWidth();
+        final double scaleY = output.getHeight() / (double) this.source.getHeight();
         final AffineTransform tx = new AffineTransform();
         tx.scale(scaleX, scaleY);
 
@@ -171,12 +172,11 @@ public abstract class Sequence
         }
 
         // Store internal size
-        width = internal.getWidth();
-        height = internal.getHeight();
-        wide = screen.isWide();
+        width = this.source.getWidth();
+        height = this.source.getHeight();
 
         // Standard rendering
-        if (internal.getWidth() == external.getWidth() && internal.getHeight() == external.getHeight())
+        if (this.source.getWidth() == output.getWidth() && this.source.getHeight() == output.getHeight())
         {
             buf = null;
             gbuf = null;
@@ -327,7 +327,7 @@ public abstract class Sequence
      */
     protected final void clearScreen(Graphic g)
     {
-        g.clear(internal);
+        g.clear(source);
     }
 
     /**
@@ -394,10 +394,10 @@ public abstract class Sequence
         // Prepare sequence to be started
         double extrp = Sequence.EXTRP;
         long updateFpsTimer = 0L;
-        currentFrameRate = external.getRate();
+        currentFrameRate = output.getRate();
         screen.requestFocus();
-        final int mcx = screen.getLocationX() + external.getWidth() / 2;
-        final int mcy = screen.getLocationY() + external.getHeight() / 2;
+        final int mcx = screen.getLocationX() + output.getWidth() / 2;
+        final int mcy = screen.getLocationY() + output.getHeight() / 2;
         mouse.setCenter(mcx, mcy);
         onLoaded(extrp, screen.getGraphic());
 
@@ -416,7 +416,7 @@ public abstract class Sequence
             final long currentTime = System.nanoTime();
             if (extrapolated)
             {
-                extrp = internal.getRate() / Sequence.TIME_DOUBLE * (currentTime - lastTime);
+                extrp = source.getRate() / Sequence.TIME_DOUBLE * (currentTime - lastTime);
             }
             else
             {

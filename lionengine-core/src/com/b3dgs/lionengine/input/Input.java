@@ -18,13 +18,11 @@ public final class Input
     /**
      * Create a mouse input.
      * 
-     * @param xRatio The horizontal screen ratio.
-     * @param yRatio The vertical screen ratio.
      * @return The created mouse listener.
      */
-    public static Mouse createMouse(double xRatio, double yRatio)
+    public static Mouse createMouse()
     {
-        return new MouseImpl(xRatio, yRatio);
+        return new MouseImpl();
     }
 
     /**

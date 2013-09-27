@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.file.File;
@@ -17,10 +18,10 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -134,7 +135,7 @@ public class ModuleGame
     }
 
     public class FactoryEntity
-            extends FactoryEntityGame<EntityType, SetupEntityGame, EntityGame>
+            extends FactoryEntityGame<EntityType, SetupSurfaceGame, EntityGame>
     {
         public FactoryEntity()
         {
@@ -153,9 +154,9 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupEntityGame createSetup(EntityType id)
+        protected SetupSurfaceGame createSetup(EntityType id)
         {
-            return new SetupEntityGame(Media.get("directory", id + ".xml"));
+            return new SetupSurfaceGame(Media.get("directory", id + ".xml"));
         }
     }
 
@@ -176,7 +177,7 @@ public class ModuleGame
 
         public MySequence(Loader loader)
         {
-            super(loader);
+            super(loader, new Resolution(320, 240, 60));
             // Initialize variables here
             world = new World(this);
         }

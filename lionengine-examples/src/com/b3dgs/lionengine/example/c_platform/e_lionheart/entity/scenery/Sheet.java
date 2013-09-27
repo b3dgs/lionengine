@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 
 /**
@@ -12,10 +12,10 @@ public final class Sheet
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public Sheet(Context context)
+    public Sheet(Level level)
     {
-        super(context, EntityType.SHEET);
+        super(level, EntityType.SHEET);
     }
 }

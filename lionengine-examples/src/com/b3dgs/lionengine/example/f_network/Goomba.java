@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.f_network;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
@@ -24,7 +24,7 @@ class Goomba
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Goomba(SetupEntityGame setup, Map map, int desiredFps, boolean server)
+    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, TypeEntity.goomba, map, desiredFps, server);
         timerDie = new Timing();

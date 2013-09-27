@@ -6,8 +6,8 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.effect.EffectGame;
-import com.b3dgs.lionengine.game.effect.SetupEffectGame;
 
 /**
  * Effect implementation.
@@ -27,7 +27,7 @@ public class Effect
      * 
      * @param setup The setup reference.
      */
-    public Effect(SetupEffectGame setup)
+    public Effect(SetupSurfaceGame setup)
     {
         super(setup.configurable);
         final int horizontalFrames = getDataInteger("horizontal", "frames");

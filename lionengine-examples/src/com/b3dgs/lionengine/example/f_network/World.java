@@ -46,7 +46,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
         super(sequence);
         this.map = new Map();
         this.marioClients = new HashMap<>(1);
-        this.factory = new FactoryEntity(sequence.config.internal.getRate(), this.map);
+        this.factory = new FactoryEntity(source.getRate(), this.map);
         this.handler = new HandlerEntity(this.marioClients);
         this.networkableModel = new NetworkableModel();
     }

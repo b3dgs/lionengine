@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import java.util.EnumMap;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollision;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.TileCollisionGroup;
@@ -32,11 +32,11 @@ public abstract class EntityMover
     protected double movementSpeedMax;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    public EntityMover(Context context, EntityType type)
+    public EntityMover(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
         movement = new Movement();
         actions = new EnumMap<>(EntityAction.class);
         extraGravityForce = new Force();

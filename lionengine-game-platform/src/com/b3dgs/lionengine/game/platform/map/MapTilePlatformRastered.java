@@ -13,7 +13,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.platform.SetupEntityPlatformRastered;
+import com.b3dgs.lionengine.game.purview.Rasterable;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
@@ -74,10 +74,10 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     public int getRasterIndex(T tile)
     {
         final int value = tile.getY() / getTileHeight();
-        int index = value % SetupEntityPlatformRastered.MAX_RASTERS_R;
-        if (!smooth && index > SetupEntityPlatformRastered.MAX_RASTERS_M)
+        int index = value % Rasterable.MAX_RASTERS_R;
+        if (!smooth && index > Rasterable.MAX_RASTERS_M)
         {
-            index = SetupEntityPlatformRastered.MAX_RASTERS_M - (index - SetupEntityPlatformRastered.MAX_RASTERS);
+            index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);
         }
         return index;
     }
@@ -109,7 +109,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
 
         for (int m = 0; m < max; m++)
         {
-            for (int i = 1; i <= SetupEntityPlatformRastered.MAX_RASTERS; i++)
+            for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
                 String rasFile = null;
                 if (cache)
@@ -129,23 +129,20 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
                         {
                             if (m == 0)
                             {
-                                color[c] = UtilityImage.getRasterColor(i, rasters[c],
-                                        SetupEntityPlatformRastered.MAX_RASTERS);
-                                colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c],
-                                        SetupEntityPlatformRastered.MAX_RASTERS);
+                                color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                                colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
                             }
                             else
                             {
-                                color[c] = UtilityImage.getRasterColor(SetupEntityPlatformRastered.MAX_RASTERS - i,
-                                        rasters[c], SetupEntityPlatformRastered.MAX_RASTERS);
-                                colorNext[c] = UtilityImage.getRasterColor(SetupEntityPlatformRastered.MAX_RASTERS - i
-                                        - 1, rasters[c], SetupEntityPlatformRastered.MAX_RASTERS);
+                                color[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
+                                        Rasterable.MAX_RASTERS);
+                                colorNext[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
+                                        Rasterable.MAX_RASTERS);
                             }
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(i, rasters[c],
-                                    SetupEntityPlatformRastered.MAX_RASTERS);
+                            color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
                             colorNext[c] = color[c];
                         }
                     }
@@ -206,7 +203,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         List<SpriteTiled> rasters = rasterPatterns.get(pattern);
         if (rasters == null)
         {
-            rasters = new ArrayList<>(SetupEntityPlatformRastered.MAX_RASTERS);
+            rasters = new ArrayList<>(Rasterable.MAX_RASTERS);
             rasterPatterns.put(pattern, rasters);
         }
         final SpriteTiled raster = Drawable.loadSpriteTiled(surface, tw, th);

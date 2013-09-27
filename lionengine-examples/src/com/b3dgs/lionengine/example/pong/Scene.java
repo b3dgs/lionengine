@@ -8,6 +8,7 @@ import java.util.Set;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -19,6 +20,9 @@ import com.b3dgs.lionengine.input.Keyboard;
 final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+
     /** Number of lines in the middle. */
     private static final int LINES = 30;
     /** Text drawer. */
@@ -33,13 +37,13 @@ final class Scene
     private final Handler handler;
 
     /**
-     * Create the scene and its vars.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
     Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         text = new Text(Font.SANS_SERIF, 16, Text.NORMAL);
         camera = new CameraGame();
         rackets = new HashSet<>(2);

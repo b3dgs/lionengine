@@ -1,7 +1,6 @@
 package com.b3dgs.lionengine.game.platform.background;
 
-import com.b3dgs.lionengine.Display;
-import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -14,17 +13,12 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public class Parallax
         implements BackgroundComponent
 {
-    /** Magic wrap speed. */
-    private static final double SPEED_WRAP = 2.56 / 0.0084;
-
     /** Parallax element. */
     private final BackgroundElement data;
     /** Parallax surface. */
     private final SpriteParallaxed parallax;
     /** Parallax number. */
     private final int parallaxsNumber;
-    /** Parallax wide. */
-    private final int w;
     /** Parallax location x. */
     private final double[] x;
     /** Parallax location x2. */
@@ -35,28 +29,41 @@ public class Parallax
     private final int screenWidth;
     /** Screen height. */
     private final int screenHeight;
+    /** Horizontal offset. */
+    private final int decX;
+    /** Fact x. */
+    private final double factH;
+    /** Offset x. */
+    private final int offsetX;
+    /** Amplitude. */
+    private final int amplitude;
 
     /**
      * Create a new parallax.
      * 
-     * @param internal The internal display.
+     * @param config The config used.
      * @param media The parallax image media.
      * @param parallaxsNumber The number parallax lines.
+     * @param decX The horizontal offset.
      * @param decY The vertical offset.
+     * @param sx The starting width.
+     * @param sy The starting height.
      */
-    public Parallax(Display internal, Media media, int parallaxsNumber, int decY)
+    public Parallax(Config config, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
     {
-        screenWidth = internal.getWidth();
-        screenHeight = internal.getHeight();
+        screenWidth = config.getSource().getWidth();
+        screenHeight = config.getSource().getHeight();
+        factH = sx / 100.0 / 0.6;
 
         // Load surface
         this.parallaxsNumber = parallaxsNumber;
-        parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, 60, 100);
-        final Filter filter = Filter.NONE;
-        parallax.prepare(filter);
+        parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
+        parallax.prepare(config.getFilter());
         data = new BackgroundElement(0, decY + 64, parallax);
-
-        w = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6)) + 1;
+        this.decX = parallax.getWidthOriginal() + decX;
+        offsetX = parallax.getWidth();
+        final int w = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6 * factH));
+        amplitude = (int) Math.ceil(w / 2.0) + 1;
 
         // Create data arrays
         x = new double[this.parallaxsNumber];
@@ -81,7 +88,8 @@ public class Parallax
     {
         data.setOffsetY(y);
         // This will avoid bug on huge speed (lines out of screen)
-        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -Parallax.SPEED_WRAP, Parallax.SPEED_WRAP);
+        final double speedWrap = 2.56 * factH / 0.0084;
+        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -speedWrap, speedWrap);
 
         // Move each line, depending of its id and size
         for (int i = 0; i < parallaxsNumber; i++)
@@ -90,7 +98,7 @@ public class Parallax
             x2[i] += wrapedSpeed * 0.25;
 
             // When line has arrived to its border
-            if (this.x[1] >= 2.56 || this.x[1] <= -2.56)
+            if (this.x[1] >= 2.56 * factH || this.x[1] <= -2.56 * factH)
             {
                 for (int j = 0; j < parallaxsNumber; j++)
                 {
@@ -105,10 +113,7 @@ public class Parallax
     @Override
     public void render(Graphic g)
     {
-        // Render each lines
         int i, j, lx, ly, lineWidth;
-
-        // w number of renders used to fill screen
         for (i = 0; i < parallaxsNumber; i++)
         {
             ly = (int) y[i];
@@ -116,13 +121,13 @@ public class Parallax
 
             if (ly >= 0 && ly < screenHeight)
             {
-                for (j = 0; j <= w; j++)
+                for (j = -amplitude; j < amplitude; j++)
                 {
-                    lx = (int) (-76 + 76 * j - x[i] - x2[i] + i * (-7.68 + 2.56 * j));
+                    lx = (int) (-offsetX + offsetX * j - x[i] - x2[i] + i * (2.56 * factH) * j);
 
-                    if (lx + lineWidth >= 0 && lx - 0 <= screenWidth)
+                    if (lx + lineWidth + decX >= 0 && lx <= screenWidth)
                     {
-                        parallax.render(g, i, lx, ly);
+                        parallax.render(g, i, lx + decX, ly);
                     }
                 }
             }

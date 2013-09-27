@@ -37,8 +37,6 @@ final class World
     private final HandlerEntity handlerEntity;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
-    /** Context. */
-    private final Context context;
     /** Stats renderer. */
     private final StatsRenderer statsRenderer;
     /** Landscape reference. */
@@ -54,17 +52,17 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        final double scaleH = internal.getWidth() / (double) AppLionheart.ORIGINAL_DISPLAY.getWidth();
-        final double scaleV = internal.getHeight() / (double) AppLionheart.ORIGINAL_DISPLAY.getHeight();
+        final double scaleH = source.getWidth() / (double) Scene.SCENE_DISPLAY.getWidth();
+        final double scaleV = source.getHeight() / (double) Scene.SCENE_DISPLAY.getHeight();
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(config, scaleH, scaleV, false);
         factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
-        level = new Level(factoryEntity, handlerEntity);
+        level = new Level(camera, factoryEntity, handlerEntity, output.getRate());
+        factoryEntity.setLevel(level);
         map = level.map;
-        context = new Context(level, display.getRate());
         statsRenderer = new StatsRenderer(scaleH);
-        handlerEffect = context.handlerEffect;
+        handlerEffect = level.handlerEffect;
     }
 
     /**
@@ -127,10 +125,9 @@ final class World
         landscape = factoryLandscape.createLandscape(level.getLandscape());
         player.setLandscape(landscape);
         statsRenderer.load();
-        camera.setLimits(map);
         camera.setIntervals(32, 0);
         handlerEntity.prepare();
         player.setCheckpoints(level.worldData.getCheckpoints());
-        player.respawn(level.worldData.getStartX() + 32, level.worldData.getStartY());
+        player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
     }
 }

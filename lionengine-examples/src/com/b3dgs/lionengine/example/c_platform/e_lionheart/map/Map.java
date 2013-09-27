@@ -22,8 +22,6 @@ public class Map
     public static final int TILE_WIDTH = 16;
     /** Tile height. */
     public static final int TILE_HEIGHT = 16;
-    /** Raster enabled. */
-    private static final boolean RASTER_ENABLED = true;
 
     /**
      * Convert int to byte value (working on if int is less than 256).
@@ -62,7 +60,7 @@ public class Map
      */
     public void setLandscape(LandscapeType landscape)
     {
-        if (Map.RASTER_ENABLED)
+        if (AppLionheart.RASTER_ENABLED)
         {
             setRaster(Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster()), false, false);
         }

@@ -58,12 +58,12 @@ final class World
         text = new TextGame(Font.SERIF, 10, Text.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
-        cursor = new CursorRts(internal, map, Media.get("cursor.png"));
+        cursor = new CursorRts(source, map, Media.get("cursor.png"));
         controlPanel = new ControlPanel();
         factoryProduction = new FactoryProduction();
         handlerEntity = new HandlerEntity(controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, display.getRate());
+        context = new Context(map, handlerEntity, handlerProjectile, output.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
     }

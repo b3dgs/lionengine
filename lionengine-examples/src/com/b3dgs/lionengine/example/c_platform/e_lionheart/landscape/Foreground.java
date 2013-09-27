@@ -52,8 +52,8 @@ final class Foreground
         super(theme, 0, 0);
         this.scaleH = scaleH;
         this.scaleV = scaleV;
-        screenWidth = config.internal.getWidth();
-        screenHeight = config.internal.getHeight();
+        screenWidth = config.getSource().getWidth();
+        screenHeight = config.getSource().getHeight();
         nominal = 210;
         height = 0.0;
         depth = 4.0;

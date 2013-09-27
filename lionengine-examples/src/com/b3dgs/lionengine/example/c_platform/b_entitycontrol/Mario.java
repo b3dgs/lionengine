@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
 
@@ -51,7 +51,7 @@ final class Mario
      */
     Mario(int desiredFps)
     {
-        super(new SetupEntityGame(Mario.MARIO_CONFIG));
+        super(new SetupSurfaceGame(Mario.MARIO_CONFIG));
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();

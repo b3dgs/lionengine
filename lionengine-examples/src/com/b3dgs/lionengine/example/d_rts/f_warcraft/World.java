@@ -67,7 +67,7 @@ final class World
         cpu = new Player();
         map = new Map();
         fogOfWar = new FogOfWar(config);
-        cursor = new Cursor(internal, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
+        cursor = new Cursor(source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
                 Media.get("cursor_order.png"));
         message = new TimedMessage(new Text(Font.DIALOG, 10, Text.NORMAL));
         controlPanel = new ControlPanel(cursor);
@@ -75,7 +75,7 @@ final class World
         handlerEntity = new HandlerEntity(cursor, controlPanel, map, fogOfWar);
         minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
         handlerProjectile = new HandlerProjectile(handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, cursor, message, display.getRate());
+        context = new Context(map, handlerEntity, handlerProjectile, cursor, message, output.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
         handlerEntity.addListener(minimap);

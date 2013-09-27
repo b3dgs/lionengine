@@ -146,11 +146,11 @@ public final class Menu
      */
     public Menu(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         music = AudioMidi.loadMidi(Media.get(ResourcesLoader.MUSICS_DIR, "menu.mid"));
         logo = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "menu.png"));
-        cursor = new Cursor(config.internal, Media.get("cursor.png"));
+        cursor = new Cursor(source, Media.get("cursor.png"));
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -15,11 +15,11 @@ public final class PotionLittle
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public PotionLittle(Context context)
+    public PotionLittle(Level level)
     {
-        super(context, EntityType.POTION_LITTLE, EffectType.TAKEN);
+        super(level, EntityType.POTION_LITTLE, EffectType.TAKEN);
     }
 
     /*

@@ -5,14 +5,14 @@ import java.util.Locale;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.AppWarcraft;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
-import com.b3dgs.lionengine.game.effect.SetupEffectGame;
 
 /**
  * Factory effect implementation.
  */
 public class FactoryEffect
-        extends FactoryEffectGame<TypeEffect, SetupEffectGame, Effect>
+        extends FactoryEffectGame<TypeEffect, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
@@ -44,9 +44,9 @@ public class FactoryEffect
     }
 
     @Override
-    protected SetupEffectGame createSetup(TypeEffect id)
+    protected SetupSurfaceGame createSetup(TypeEffect id)
     {
-        return new SetupEffectGame(Media.get(AppWarcraft.EFFECTS_DIR, id.name().toLowerCase(Locale.ENGLISH)
+        return new SetupSurfaceGame(Media.get(AppWarcraft.EFFECTS_DIR, id.name().toLowerCase(Locale.ENGLISH)
                 + AppWarcraft.CONFIG_FILE_EXTENSION));
     }
 }

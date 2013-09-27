@@ -6,20 +6,20 @@ import java.util.HashMap;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.platform.EntityPlatform;
+import com.b3dgs.lionengine.game.platform.EntityPlatformRastered;
 
 /**
  * Abstract entity base implementation.
  */
 public abstract class Entity
-        extends EntityPlatform
+        extends EntityPlatformRastered
 {
     /** Entity type. */
     public final EntityType type;
@@ -51,15 +51,15 @@ public abstract class Entity
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      * @param type The entity type.
      */
-    protected Entity(Context context, EntityType type)
+    protected Entity(Level level, EntityType type)
     {
-        super(context.factoryEntity.getSetup(type));
+        super(level.factoryEntity.getSetup(type), Map.TILE_HEIGHT);
         this.type = type;
-        map = context.map;
-        desiredFps = context.desiredFps;
+        map = level.map;
+        desiredFps = level.desiredFps;
         status = new EntityStatus();
         animations = new HashMap<>(4);
         collisions = new HashMap<>(4);

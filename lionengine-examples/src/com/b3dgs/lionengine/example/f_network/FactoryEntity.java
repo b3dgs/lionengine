@@ -1,15 +1,15 @@
 package com.b3dgs.lionengine.example.f_network;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
 class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupEntityGame, Entity>
+        extends FactoryEntityGame<TypeEntity, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entity";
@@ -33,9 +33,9 @@ class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(TypeEntity id)
+    protected SetupSurfaceGame createSetup(TypeEntity id)
     {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"), false);
+        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"), false);
     }
 
     @Override

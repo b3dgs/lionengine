@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 
 /**
@@ -19,7 +20,7 @@ class Scene
      */
     Scene(Loader loader)
     {
-        super(loader);
+        super(loader, new Resolution(320, 240, 16));
     }
 
     @Override

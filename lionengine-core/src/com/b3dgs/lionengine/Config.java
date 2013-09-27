@@ -18,9 +18,8 @@ import javax.swing.JApplet;
  * </p>
  * 
  * <pre>
- * final Display internal = new Display(320, 240, 16, 60);
- * final Display external = new Display(640, 480, 16, 60);
- * final Config config = new Config(internal, external, true);
+ * final Resolution output = new Resolution(640, 480, 60);
+ * final Config config = new Config(output, 16, true);
  * </pre>
  */
 public final class Config
@@ -32,64 +31,62 @@ public final class Config
     /** Error message filter. */
     private static final String MESSAGE_ERROR_FILTER = "The filter must not be null !";
 
-    /** Internal display reference. */
-    public final Display internal;
     /** External display reference. */
-    public final Display external;
+    private final Resolution output;
     /** Filter reference. */
-    public final Filter filter;
+    private final Filter filter;
+    /** Display depth. */
+    private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
+    /** External display reference. */
+    private Resolution source;
+    /** Ratio desired. */
+    private double ratio;
     /** Applet reference. */
     private JApplet applet;
 
     /**
      * Create a config.
      * 
-     * @param internal The internal display (must not be null).
-     * @param external The external display (must not be null).
+     * @param output The output display (used on rendering).
+     * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      */
-    public Config(Display internal, Display external, boolean windowed)
+    public Config(Resolution output, int depth, boolean windowed)
     {
-        this(internal, external, windowed, Filter.NONE);
+        this(output, depth, windowed, Filter.NONE);
     }
 
     /**
      * Create a config.
      * 
-     * @param internal The internal display (must not be null).
-     * @param external The external display (must not be null).
+     * @param output The output display (used on rendering).
+     * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      * @param filter The filter mode (must not be null).
      */
-    public Config(Display internal, Display external, boolean windowed, Filter filter)
+    public Config(Resolution output, int depth, boolean windowed, Filter filter)
     {
-        Check.notNull(internal, Config.MESSAGE_ERROR_INTERNAL);
-        Check.notNull(external, Config.MESSAGE_ERROR_EXTERNAL);
+        Check.notNull(output, Config.MESSAGE_ERROR_EXTERNAL);
         Check.notNull(filter, Config.MESSAGE_ERROR_FILTER);
 
-        this.internal = internal;
-        this.filter = filter;
+        this.output = output;
+        this.depth = depth;
         this.windowed = windowed;
+        this.filter = filter;
+        this.ratio = -1;
+    }
 
-        final int width = internal.getWidth();
-        final int height = internal.getHeight();
-        final int depth = internal.getDepth();
-        final int rate = internal.getRate();
-
-        switch (filter)
-        {
-            case HQ2X:
-                this.external = new Display(width * 2, height * 2, depth, rate);
-                break;
-            case HQ3X:
-                this.external = new Display(width * 3, height * 3, depth, rate);
-                break;
-            default:
-                this.external = external;
-                break;
-        }
+    /**
+     * Set the ratio and adapt the resolution to the new ratio (based on the height value).
+     * 
+     * @param ratio The new ratio.
+     */
+    public void setRatio(double ratio)
+    {
+        this.ratio = ratio;
+        output.setRatio(ratio);
     }
 
     /**
@@ -103,6 +100,26 @@ public final class Config
     }
 
     /**
+     * Get the resolution source.
+     * 
+     * @return The source resolution.
+     */
+    public Resolution getSource()
+    {
+        return source;
+    }
+
+    /**
+     * Get the resolution output.
+     * 
+     * @return The output resolution.
+     */
+    public Resolution getOutput()
+    {
+        return output;
+    }
+
+    /**
      * Get applet reference.
      * 
      * @return The applet reference.
@@ -113,6 +130,26 @@ public final class Config
     }
 
     /**
+     * Get the display depth.
+     * 
+     * @return The display depth.
+     */
+    public int getDepth()
+    {
+        return depth;
+    }
+
+    /**
+     * Get the filter.
+     * 
+     * @return The filter.
+     */
+    public Filter getFilter()
+    {
+        return filter;
+    }
+
+    /**
      * Get the windowed mode.
      * 
      * @return <code>true</code> if is windowed, <code>false</code> else.
@@ -120,5 +157,20 @@ public final class Config
     public boolean isWindowed()
     {
         return windowed;
+    }
+
+    /**
+     * Set the resolution source.
+     * 
+     * @param source The source display (native).
+     */
+    void setSource(Resolution source)
+    {
+        Check.notNull(source, Config.MESSAGE_ERROR_INTERNAL);
+        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
+        if (ratio > 0)
+        {
+            this.source.setRatio(ratio);
+        }
     }
 }

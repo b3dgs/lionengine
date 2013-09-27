@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.effect;
 
-import com.b3dgs.lionengine.game.effect.SetupEffectGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Explode effect.
@@ -13,7 +13,7 @@ public class Explode
      * 
      * @param setup The setup reference.
      */
-    public Explode(SetupEffectGame setup)
+    public Explode(SetupSurfaceGame setup)
     {
         super(setup);
     }

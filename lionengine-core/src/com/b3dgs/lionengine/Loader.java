@@ -14,9 +14,8 @@ import com.b3dgs.lionengine.input.Mouse;
  * 
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
- * final Display internal = new Display(320, 240, 16, 60);
- * final Display external = new Display(640, 480, 16, 60);
- * final Config config = new Config(internal, external, true);
+ * final Resolution output = new Resolution(640, 480, 60);
+ * final Config config = new Config(output, 16, true);
  * final Loader loader = new Loader(config);
  * loader.start(new Scene(loader));
  * </pre>
@@ -30,6 +29,8 @@ public final class Loader
     /** Error message sequence interrupted. */
     private static final String MESSAGE_ERROR_SEQUENCE = "Sequence badly interrupted !";
 
+    /** Config reference. */
+    private final Config config;
     /** Screen reference. */
     private final Screen screen;
     /** Keyboard reference. */
@@ -51,11 +52,11 @@ public final class Loader
     public Loader(Config config)
     {
         Check.notNull(config, Loader.MESSAGE_ERROR_CONFIG);
+        this.config = config;
         screen = new Screen(config);
-        screen.prepareFocusListener();
         keyboard = Input.createKeyboard();
-        mouse = Input.createMouse(config.external.getWidth() / (double) config.internal.getWidth(),
-                config.external.getHeight() / (double) config.internal.getHeight());
+        mouse = Input.createMouse();
+        screen.prepareFocusListener();
         screen.addKeyboard(keyboard);
         screen.addMouse(mouse);
         thread = new LoaderThread(this);
@@ -117,6 +118,16 @@ public final class Loader
         }
         screen.dispose();
         Verbose.info("LionEngine terminated");
+    }
+
+    /**
+     * Get the config.
+     * 
+     * @return The config.
+     */
+    Config getConfig()
+    {
+        return config;
     }
 
     /**

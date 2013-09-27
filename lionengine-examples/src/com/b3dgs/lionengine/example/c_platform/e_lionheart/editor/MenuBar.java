@@ -186,7 +186,6 @@ public class MenuBar
                 editor.toolBar.entityEditor.setSelectedEntity(null);
                 items.get("Save").setEnabled(true);
                 items.get("Import Map").setEnabled(false);
-                editor.world.camera.setLimits(editor.world.map);
             }
             catch (final IOException exception)
             {

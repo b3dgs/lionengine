@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import java.awt.geom.Rectangle2D;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityMover;
@@ -21,11 +21,11 @@ public abstract class EntityScenery
     private boolean collideOld;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    EntityScenery(Context context, EntityType type)
+    EntityScenery(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
     }
 
     /**

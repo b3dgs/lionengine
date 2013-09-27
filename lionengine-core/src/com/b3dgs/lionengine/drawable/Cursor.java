@@ -1,9 +1,9 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -48,12 +48,12 @@ public class Cursor
     /**
      * Create a cursor.
      * 
-     * @param display The display reference.
+     * @param resolution The resolution reference.
      * @param medias The cursor media list.
      */
-    public Cursor(Display display, Media... medias)
+    public Cursor(Resolution resolution, Media... medias)
     {
-        this(0, 0, display.getWidth(), display.getHeight(), medias);
+        this(0, 0, resolution.getWidth(), resolution.getHeight(), medias);
     }
 
     /**

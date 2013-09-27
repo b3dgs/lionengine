@@ -1,10 +1,10 @@
 package com.b3dgs.lionengine.example.d_rts.b_cursor;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 
 // Tutorial: Rts Cursor
@@ -37,12 +37,11 @@ public final class AppRtsCursor
         // Start engine
         Engine.start(AppRtsCursor.PROGRAM, AppRtsCursor.VERSION, AppRtsCursor.PATH);
 
-        // Displays
-        final Display internal = new Display(320, 240, 16, 60);
-        final Display external = new Display(640, 480, 16, 60);
+        // Resolution
+        final Resolution output = new Resolution(640, 480, 60);
 
         // Configuration
-        final Config config = new Config(internal, external, true);
+        final Config config = new Config(output, 16, true);
 
         // Loader
         final Loader loader = new Loader(config);

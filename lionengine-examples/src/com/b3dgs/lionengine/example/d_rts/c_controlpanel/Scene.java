@@ -5,6 +5,7 @@ import java.awt.Font;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 
@@ -14,17 +15,22 @@ import com.b3dgs.lionengine.Text;
 final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+
     /** Text drawer. */
     private final Text text;
     /** World reference. */
     private final World world;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
         world = new World(this);
         setMouseVisible(false);

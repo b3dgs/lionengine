@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -18,6 +19,9 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 final class Swamp
         extends BackgroundPlatform
 {
+    /** Moon rasters. */
+    private static final int MOON_RASTERS = 20;
+
     /** The horizontal factor. */
     final double scaleH;
     /** The vertical factor. */
@@ -37,11 +41,11 @@ final class Swamp
      * @param rastersNumber The number of rasters to use.
      * @return The created element.
      */
-    static RasteredBackgroundElement createRasteredElement(String path, String name, int x, int y, int rastersNumber)
+    static ElementRastered createElementRastered(String path, String name, int x, int y, int rastersNumber)
     {
         final Sprite sprite = Drawable.loadSprite(Media.get(path, name));
         sprite.load(false);
-        return new RasteredBackgroundElement(x, y, sprite, rastersNumber);
+        return new ElementRastered(x, y, sprite, rastersNumber);
     }
 
     /**
@@ -60,13 +64,14 @@ final class Swamp
         this.scaleV = scaleV;
         this.flickering = flickering;
         final String path = Media.getPath(AppLionheart.BACKGROUNDS_DIR, "Swamp", theme);
-        final int width = config.internal.getWidth();
+        final int width = config.getSource().getWidth();
+        final int halfScreen = config.getSource().getWidth() / 4;
         add(new Backdrop(path, this.flickering, width));
         add(new Clouds(Media.get(path, "cloud.png"), width, 4));
-        add(new Parallax(config.internal, Media.get(path, "parallax.png"), parallaxsNumber, 124));
+        add(new Parallax(config, Media.get(path, "parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100));
 
         totalHeight = 120;
-        setOffsetY(config.internal.getHeight() - AppLionheart.ORIGINAL_DISPLAY.getHeight() + 72);
+        setOffsetY(config.getSource().getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
     }
 
     /**
@@ -82,7 +87,7 @@ final class Swamp
         /** Mountain element. */
         private final BackgroundElement mountain;
         /** Moon element. */
-        private final RasteredBackgroundElement moon;
+        private final ElementRastered moon;
         /** Mountain sprite. */
         private final Sprite mountainSprite;
         /** Screen width. */
@@ -124,7 +129,7 @@ final class Swamp
             w = (int) Math.ceil(this.screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
 
             final int x = (int) (208 * scaleH);
-            moon = Swamp.createRasteredElement(path, "moon.png", x, 105 + getOffsetY(), 73);
+            moon = Swamp.createElementRastered(path, "moon.png", x, getOffsetY(), Swamp.MOON_RASTERS);
             mountainSprite = (Sprite) mountain.getSprite();
         }
 
@@ -132,7 +137,7 @@ final class Swamp
         public void update(double extrp, int x, int y, double speed)
         {
             backcolorA.setOffsetY(y);
-            moon.setOffsetY(-55 + getOffsetY());
+            moon.setOffsetY(-20 + getOffsetY());
             mountain.setOffsetX(UtilityMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
                     mountainSprite.getWidth()));
             mountain.setOffsetY(y);
@@ -165,9 +170,8 @@ final class Swamp
                 sprite.render(g, backcolorA.getMainX() + i * sprite.getWidth(),
                         (int) (backcolorA.getOffsetY() + backcolorA.getMainY()));
             }
-
             // Render moon
-            moon.getRaster((int) (mountain.getOffsetY() + 48)).render(g, moon.getMainX(),
+            moon.getRaster((int) (mountain.getOffsetY() / 4 + Swamp.MOON_RASTERS)).render(g, moon.getMainX(),
                     (int) (moon.getOffsetY() + moon.getMainY()));
 
             // Render mountains

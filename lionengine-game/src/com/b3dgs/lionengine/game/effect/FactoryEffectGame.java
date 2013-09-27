@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.game.effect;
 
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Abstract effect factory. It performs a list of available effects from a directory considering an input enumeration.
@@ -10,7 +11,7 @@ import com.b3dgs.lionengine.game.FactoryGame;
  * @param <S> The setup type.
  * @param <E> The effect type.
  */
-public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupEffectGame, E extends EffectGame>
+public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EffectGame>
         extends FactoryGame<T, S>
 {
     /**

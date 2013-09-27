@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 
 /**
@@ -12,11 +12,11 @@ public final class BeeLittle
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public BeeLittle(Context context)
+    public BeeLittle(Level level)
     {
-        super(context, EntityType.BEE_LITTLE);
+        super(level, EntityType.BEE_LITTLE);
     }
 
     /*

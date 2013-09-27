@@ -3,11 +3,11 @@ package com.b3dgs.lionengine.game;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -27,9 +27,8 @@ import com.b3dgs.lionengine.input.Mouse;
  * <li>{@link Keyboard} : The keyboard input reference, in order to retrieve keyboard key uses</li>
  * <li>{@link Mouse} : The mouse input reference, in order to retrieve mouse movement and click uses</li>
  * <li>{@link Config} : The configuration used by the {@link Loader}</li>
- * <li><code>width</code> : The internal screen width, retrieve from the internal screen {@link Display}</li>
- * <li><code>height</code> : The internal screen height, retrieve from the internal screen {@link Display}</li>
- * <li><code>wide</code> : The screen wide flag, where <code>true</code> indicate a large screen</li>
+ * <li><code>width</code> : The source screen width, retrieve from the source screen {@link Resolution}</li>
+ * <li><code>height</code> : The source screen height, retrieve from the source screen {@link Resolution}</li>
  * </ul>
  * </p>
  * It has to be handled by a {@link Sequence}.
@@ -82,9 +81,9 @@ public abstract class WorldGame
     /** Config reference. */
     protected final Config config;
     /** Internal display reference. */
-    protected final Display internal;
+    protected final Resolution source;
     /** External display reference. */
-    protected final Display display;
+    protected final Resolution output;
     /** Screen size width. */
     protected final int width;
     /** Screen size height. */
@@ -101,10 +100,10 @@ public abstract class WorldGame
         keyboard = sequence.keyboard;
         mouse = sequence.mouse;
         config = sequence.config;
-        internal = sequence.config.internal;
-        display = sequence.config.external;
-        width = sequence.config.internal.getWidth();
-        height = sequence.config.internal.getHeight();
+        source = sequence.config.getSource();
+        output = sequence.config.getOutput();
+        width = source.getWidth();
+        height = source.getHeight();
     }
 
     /**

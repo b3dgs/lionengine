@@ -5,6 +5,7 @@ import java.awt.Color;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
@@ -20,6 +21,9 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(640, 480, 60);
+
     /** Image reference. */
     private final Image image;
     /** Sprite reference. */
@@ -34,11 +38,13 @@ final class Scene
     private double tile;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         // As we defined our resources directory as this: Media.get("resources", "loaddraw")
         // Any call to Media.get(...) will load from ./resources/loaddraw/
 

@@ -7,8 +7,8 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 
 /**
@@ -55,7 +55,7 @@ abstract class Entity
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    Entity(SetupEntityGame setup, Map map, int desiredFps)
+    Entity(SetupSurfaceGame setup, Map map, int desiredFps)
     {
         super(setup);
         this.map = map;

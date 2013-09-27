@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.tilecollision;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -13,6 +14,9 @@ import com.b3dgs.lionengine.input.Keyboard;
 final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+
     /** Camera. */
     private final CameraPlatform camera;
     /** Map. */
@@ -23,16 +27,18 @@ final class Scene
     private final Entity entity;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         camera = new CameraPlatform(width, height);
         map = new Map();
         entityRef = new Entity(map);
         entity = new Entity(map);
-
+        setExtrapolated(false);
     }
 
     /*

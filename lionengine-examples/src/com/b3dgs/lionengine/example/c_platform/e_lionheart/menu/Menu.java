@@ -9,6 +9,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
@@ -48,14 +49,16 @@ public class Menu
             "Nothing could be done. Valdyn would have", "to make the entire journey on foot.",
             "He sighed and entered the swamps."
     };
+    /** Original menu display. */
+    public static final Resolution MENU_DISPLAY = new Resolution(640, 480, 60);
     /** Push button message. */
     private static final String PUSH_BUTTON = "Push button";
     /** Error message. */
     private static final String ERROR_MESSAGE = "Unknown type: ";
     /** Font filename. */
-    private static final Media FONT_SPRITE = Media.get("sprites", "font.png");
+    private static final Media FONT_SPRITE = Media.get("sprites", "font_big.png");
     /** Font data. */
-    private static final Media FONT_DATA = Media.get("sprites", "fontdata.xml");
+    private static final Media FONT_DATA = Media.get("sprites", "fontdata_big.xml");
     /** Text color in menu option. */
     private static final Color COLOR_OPTION = new Color(170, 170, 238);
     /** Alpha step speed. */
@@ -87,8 +90,10 @@ public class Menu
     private final Data[] menusData;
     /** Press start display timer. */
     private final Timing timerPressStart;
-    /** Wide factor. */
-    private final int wideFactor;
+    /** Horizontal factor. */
+    private final double factorH;
+    /** Vertical factor. */
+    private final double factorV;
     /** Current picture to render. */
     private final int pic;
     /** Screen mask alpha current value. */
@@ -119,16 +124,19 @@ public class Menu
     private TransitionType transition;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     public Menu(Loader loader)
     {
-        super(loader);
-        text = new Text(Font.SERIF, 12, Text.NORMAL);
+        super(loader, Menu.MENU_DISPLAY);
+        text = new Text(Font.SERIF, 24, Text.NORMAL);
         timerPressStart = new Timing();
-        wideFactor = wide ? 0 : 1;
+        factorH = 2.0 * (source.getWidth() / (double) Menu.MENU_DISPLAY.getWidth());
+        factorV = 2.0 * (source.getHeight() / (double) Menu.MENU_DISPLAY.getHeight());
 
-        font = Drawable.loadSpriteFont(Menu.FONT_SPRITE, Menu.FONT_DATA, 12, 12);
+        font = Drawable.loadSpriteFont(Menu.FONT_SPRITE, Menu.FONT_DATA, 24, 24);
 
         pics = new Sprite[1];
         for (int i = 0; i < 1; i++)
@@ -146,35 +154,35 @@ public class Menu
         // Main menu
         Choice[] choices = new Choice[]
         {
-                new Choice(text, wideFactor, "Start Game", 160, 74, Align.CENTER, MenuType.NEW),
-                new Choice(text, wideFactor, "Options", 160, 92, Align.CENTER, MenuType.OPTIONS),
-                new Choice(text, wideFactor, "Introduction", 160, 112, Align.CENTER, MenuType.MAIN),
-                new Choice(text, wideFactor, "Exit", 160, 140, Align.CENTER, MenuType.EXIT)
+                new Choice(text, factorH, factorV, "Start Game", 160, 74, Align.CENTER, MenuType.NEW),
+                new Choice(text, factorH, factorV, "Options", 160, 92, Align.CENTER, MenuType.OPTIONS),
+                new Choice(text, factorH, factorV, "Introduction", 160, 112, Align.CENTER, MenuType.MAIN),
+                new Choice(text, factorH, factorV, "Exit", 160, 140, Align.CENTER, MenuType.EXIT)
         };
-        menusData[0] = new Data(text, wideFactor, "Main", false, choices);
+        menusData[0] = new Data(text, factorH, factorV, "Main", false, choices);
 
         // Options menu
         choices = new Choice[]
         {
-                new Choice(text, wideFactor, "Difficulty", 104, 86, Align.LEFT),
-                new Choice(text, wideFactor, "Sound", 104, 102, Align.LEFT),
-                new Choice(text, wideFactor, "Controls", 104, 118, Align.LEFT),
-                new Choice(text, wideFactor, "Back", 160, 140, Align.CENTER, MenuType.MAIN)
+                new Choice(text, factorH, factorV, "Difficulty", (int) (104 / factorH), 86, Align.LEFT),
+                new Choice(text, factorH, factorV, "Sound", (int) (104 / factorH), 102, Align.LEFT),
+                new Choice(text, factorH, factorV, "Controls", (int) (104 / factorH), 118, Align.LEFT),
+                new Choice(text, factorH, factorV, "Back", 160, 140, Align.CENTER, MenuType.MAIN)
         };
-        menusData[1] = new Data(text, wideFactor, "Options", true, choices);
+        menusData[1] = new Data(text, factorH, factorV, "Options", true, choices);
 
         // Keys menu
         choices = new Choice[]
         {
-                new Choice(text, wideFactor, "Up", 44, 90, Align.LEFT),
-                new Choice(text, wideFactor, "Down", 44, 106, Align.LEFT),
-                new Choice(text, wideFactor, "Action", 44, 125, Align.LEFT),
-                new Choice(text, wideFactor, "Left", 172, 90, Align.LEFT),
-                new Choice(text, wideFactor, "Right", 172, 106, Align.LEFT),
-                new Choice(text, wideFactor, "Look", 172, 125, Align.LEFT),
-                new Choice(text, wideFactor, "Back", 160, 160, Align.CENTER, MenuType.OPTIONS)
+                new Choice(text, factorH, factorV, "Up", (int) (44 / factorH), 90, Align.LEFT),
+                new Choice(text, factorH, factorV, "Down", (int) (44 / factorH), 106, Align.LEFT),
+                new Choice(text, factorH, factorV, "Action", (int) (44 / factorH), 125, Align.LEFT),
+                new Choice(text, factorH, factorV, "Left", 172, 90, Align.LEFT),
+                new Choice(text, factorH, factorV, "Right", 172, 106, Align.LEFT),
+                new Choice(text, factorH, factorV, "Look", 172, 125, Align.LEFT),
+                new Choice(text, factorH, factorV, "Back", 160, 160, Align.CENTER, MenuType.OPTIONS)
         };
-        menusData[2] = new Data(text, wideFactor, "Keys", true, choices);
+        menusData[2] = new Data(text, factorH, factorV, "Keys", true, choices);
 
         menu = MenuType.MAIN;
         transition = TransitionType.IN;
@@ -300,13 +308,15 @@ public class Menu
 
     /**
      * Handle the menu new sub menu.
+     * 
+     * @param extrp The extrapolation value.
      */
-    private void handleMenuNew()
+    private void handleMenuNew(double extrp)
     {
         boolean canStart = false;
         if (alpha == 0.0)
         {
-            txtAlpha += Menu.ALPHA_STEP;
+            txtAlpha += Menu.ALPHA_STEP * extrp;
             if (txtAlpha > 255.0)
             {
                 txtAlpha = 255.0;
@@ -385,15 +395,17 @@ public class Menu
 
     /**
      * Handle the menu states.
+     * 
+     * @param extrp The extrapolation value.
      */
-    private void handleMenu()
+    private void handleMenu(double extrp)
     {
         switch (menu)
         {
             case MAIN:
                 break;
             case NEW:
-                handleMenuNew();
+                handleMenuNew(extrp);
                 break;
             case GAME:
                 end();
@@ -416,14 +428,16 @@ public class Menu
 
     /**
      * Handle the menu transitions.
+     * 
+     * @param extrp The extrapolation value.
      */
-    private void handleMenuTransition()
+    private void handleMenuTransition(double extrp)
     {
         switch (transition)
         {
         // Fading in to new menu
             case IN:
-                alpha -= Menu.ALPHA_STEP;
+                alpha -= Menu.ALPHA_STEP * extrp;
                 if (alpha < 0.0 - Menu.ALPHA_STEP)
                 {
                     alpha = 0.0;
@@ -440,7 +454,7 @@ public class Menu
                 break;
             // Fading out from current menu
             case OUT:
-                alpha += Menu.ALPHA_STEP;
+                alpha += Menu.ALPHA_STEP * extrp;
                 if (alpha >= 255.0 + Menu.ALPHA_STEP)
                 {
                     alpha = 255.0;
@@ -467,30 +481,31 @@ public class Menu
             case MAIN:
                 break;
             case NEW:
-                menus[1].render(g, 160 * wideFactor - 160, 0);
-                pics[pic].render(g, 160 * wideFactor - 76, 56);
+                menus[1].render(g, (int) (320 * factorH / 2) - 320, (int) (110 * factorV / 2) - 110);
+                pics[pic].render(g, (int) (160 * factorH) - 152, (int) (56 * factorV));
                 font.setAlpha((int) txtAlpha);
-                font.draw(g, 160 * wideFactor, 186, Align.CENTER, Menu.SWAMP_TEXT);
+                font.draw(g, (int) (160 * factorH), (int) (186 * factorV), Align.CENTER, Menu.SWAMP_TEXT);
                 if (pressStart)
                 {
-                    font.draw(g, 160 * wideFactor, 225, Align.CENTER, Menu.PUSH_BUTTON);
+                    font.draw(g, (int) (160 * factorH), (int) (225 * factorV), Align.CENTER, Menu.PUSH_BUTTON);
                 }
                 break;
             case GAME:
                 break;
             case OPTIONS:
                 text.setColor(Menu.COLOR_OPTION);
-                text.draw(g, 172 * wideFactor, menusData[id].choices[0].y, Align.LEFT,
+                text.draw(g, (int) (172 * factorH), menusData[id].choices[0].y, Align.LEFT,
                         Menu.OPTIONS_DIFFICULTY[difficulty]);
-                text.draw(g, 172 * wideFactor, menusData[id].choices[1].y, Align.LEFT, String.valueOf(volume));
-                text.draw(g, 172 * wideFactor, menusData[id].choices[2].y, Align.LEFT, Menu.OPTIONS_CONTROL[control]);
+                text.draw(g, (int) (172 * factorH), menusData[id].choices[1].y, Align.LEFT, String.valueOf(volume));
+                text.draw(g, (int) (172 * factorH), menusData[id].choices[2].y, Align.LEFT,
+                        Menu.OPTIONS_CONTROL[control]);
                 break;
             case KEYS:
                 text.setColor(Menu.COLOR_OPTION);
                 for (int i = 0; i < 6; i++)
                 {
-                    text.draw(g, menusData[id].choices[i].x + 40 * wideFactor, menusData[id].choices[i].y, Align.LEFT,
-                            KeyEvent.getKeyText(Menu.KEYS[i].intValue()));
+                    text.draw(g, menusData[id].choices[i].x + (int) (40 * factorH), menusData[id].choices[i].y,
+                            Align.LEFT, KeyEvent.getKeyText(Menu.KEYS[i].intValue()));
                 }
                 break;
             case INTRO:
@@ -567,8 +582,8 @@ public class Menu
     @Override
     protected void update(double extrp)
     {
-        handleMenuTransition();
-        handleMenu();
+        handleMenuTransition(extrp);
+        handleMenu(extrp);
         if (isPressed(Keyboard.ESCAPE))
         {
             end();
@@ -578,11 +593,11 @@ public class Menu
     @Override
     protected void render(Graphic g)
     {
-        g.clear(config.internal);
+        g.clear(source);
         final int id = getMenuID();
         if (id > -1)
         {
-            menus[id].render(g, 160 * wideFactor - 160, 0);
+            menus[id].render(g, (int) (320 * factorH / 2) - 320, (int) (110 * factorV / 2) - 110);
             menusData[id].render(g, choice);
         }
         renderMenus(g, id);

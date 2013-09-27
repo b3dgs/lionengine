@@ -33,7 +33,7 @@ final class World
         super(sequence);
         camera = new CameraPlatform(width, height);
         map = new Map();
-        hero = new Mario(map, sequence.config.internal.getRate());
+        hero = new Mario(map, source.getRate());
     }
 
     /*

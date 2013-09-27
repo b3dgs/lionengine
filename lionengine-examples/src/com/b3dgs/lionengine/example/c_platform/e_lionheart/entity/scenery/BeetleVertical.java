@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.patrol.Patrol;
@@ -14,11 +14,11 @@ public final class BeetleVertical
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public BeetleVertical(Context context)
+    public BeetleVertical(Level level)
     {
-        super(context, EntityType.BEETLE_VERTICAL);
+        super(level, EntityType.BEETLE_VERTICAL);
         enableMovement(Patrol.VERTICAL);
     }
 

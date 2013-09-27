@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityAction;
@@ -103,12 +103,12 @@ public final class Valdyn
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public Valdyn(Context context)
+    public Valdyn(Level level)
     {
-        super(context, EntityType.VALDYN);
-        camera = context.camera;
+        super(level, EntityType.VALDYN);
+        camera = level.camera;
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -124,7 +124,7 @@ public final class Valdyn
         legCollision = new CollidableModel(this);
         legCollision.setCollision(getDataCollision("leg"));
         stats = new Stats(this);
-        tilt = new ValdynTilt(this, movement, context.map);
+        tilt = new ValdynTilt(this, movement, level.map);
         attack = new ValdynAttack(this, movement);
         addCollisionTile(ValdynCollisionTileCategory.LEG_LEFT, -Valdyn.TILE_EXTREMITY_WIDTH, 0);
         addCollisionTile(ValdynCollisionTileCategory.LEG_RIGHT, Valdyn.TILE_EXTREMITY_WIDTH, 0);
@@ -715,14 +715,14 @@ public final class Valdyn
         if (getLocationY() < 0)
         {
             movement.reset();
-            jumpForce.setForce(0.0, -0.3);
+            jumpForce.setForce(0.0, -1);
             stepDie = 1;
             resetGravity();
         }
         if (timerDie.elapsed(500))
         {
             resetGravity();
-            if (stepDie == 1 && timerDie.elapsed(1500))
+            if (stepDie == 1 && timerDie.elapsed(1000))
             {
                 stats.decreaseLife();
                 if (stats.getLife() > 0)

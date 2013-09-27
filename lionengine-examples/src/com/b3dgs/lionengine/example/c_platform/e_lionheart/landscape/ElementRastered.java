@@ -6,13 +6,13 @@ import com.b3dgs.lionengine.game.platform.background.BackgroundElementRastered;
 /**
  * Rastered background element implementation.
  */
-final class RasteredBackgroundElement
+final class ElementRastered
         extends BackgroundElementRastered
 {
     /**
      * @see BackgroundElementRastered#BackgroundElementRastered(int, int, Sprite, int)
      */
-    RasteredBackgroundElement(int mainX, int mainY, Sprite sprite, int rastersNumber)
+    ElementRastered(int mainX, int mainY, Sprite sprite, int rastersNumber)
     {
         super(mainX, mainY, sprite, rastersNumber);
     }
@@ -22,7 +22,7 @@ final class RasteredBackgroundElement
     {
         for (int i = 0; i < rastersNumber; i++)
         {
-            swamp1(sprite, i);
+            swamp1(sprite, (int) (i * 2.5));
         }
     }
 

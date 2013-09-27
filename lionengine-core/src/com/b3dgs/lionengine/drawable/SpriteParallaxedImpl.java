@@ -22,14 +22,20 @@ final class SpriteParallaxedImpl
     private final int sx;
     /** Parallax height. */
     private final int sy;
+    /** Width original. */
+    private int widthOriginal;
+    /** Height original. */
+    private int heightOriginal;
     /** Surface of each line. */
     private BufferedImage[] lines;
     /** Line width. */
     private int lineWidth;
     /** Line height. */
     private int lineHeight;
-    /** Rendering factor. */
-    private double factor;
+    /** Rendering factor h. */
+    private final double factorH;
+    /** Rendering factor v. */
+    private final double factorV;
 
     /**
      * Create a new parallaxed sprite.
@@ -45,9 +51,10 @@ final class SpriteParallaxedImpl
 
         this.media = media;
         this.linesNumber = linesNumber;
+        factorH = 1.0;
+        factorV = 1.0;
         this.sx = sx;
         this.sy = sy;
-        factor = 1.0;
         lines = null;
     }
 
@@ -58,37 +65,40 @@ final class SpriteParallaxedImpl
     @Override
     public void scale(int percent)
     {
-        stretch(percent, percent);
+        // Nothing to do
     }
 
     @Override
     public void stretch(int widthPercent, int heightPercent)
     {
-        factor = Math.max(sx * widthPercent / 100, sy * heightPercent / 100) / 100.0;
+        // Nothing to do
     }
 
     @Override
     public void prepare(Filter filter)
     {
         BufferedImage surface = UtilityImage.getBufferedImage(media, false);
+        widthOriginal = surface.getWidth();
+        heightOriginal = surface.getHeight();
 
-        if (0 != Double.compare(factor, 1.0))
+        if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {
-            surface = UtilityImage.resize(surface, surface.getWidth() * (int) factor, surface.getHeight()
-                    * (int) factor);
+            surface = UtilityImage.resize(surface, (int) (surface.getWidth() * factorH),
+                    (int) (surface.getHeight() * factorV));
         }
         if (Filter.BILINEAR == filter)
         {
             surface = UtilityImage.applyFilter(surface, filter);
         }
 
-        lineWidth = surface.getWidth();
-        lineHeight = surface.getHeight() / linesNumber;
+        lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
+        lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
         lines = UtilityImage.splitImage(surface, 1, linesNumber);
+        final double factH = sx / 100.0 / 0.6;
 
         for (int i = 0; i < linesNumber; i++)
         {
-            final int width = lines[i].getWidth() * (sx + i * 2) / 100;
+            final int width = (int) Math.ceil(lines[i].getWidth() * (sx + i * 2 * factH) / 100);
             final int height = lines[i].getHeight() * sy / 100;
             lines[i] = UtilityImage.resize(lines[i], width, height);
         }
@@ -103,13 +113,13 @@ final class SpriteParallaxedImpl
     @Override
     public int getWidthOriginal()
     {
-        return (int) (lineWidth / factor);
+        return widthOriginal;
     }
 
     @Override
     public int getHeightOriginal()
     {
-        return (int) (lineHeight / factor);
+        return heightOriginal;
     }
 
     @Override

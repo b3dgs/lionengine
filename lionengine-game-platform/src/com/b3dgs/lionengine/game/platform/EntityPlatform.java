@@ -9,8 +9,8 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
@@ -22,7 +22,7 @@ public abstract class EntityPlatform
         implements Animator
 {
     /** Animation surface. */
-    protected final SpriteAnimated sprite;
+    protected SpriteAnimated sprite;
     /** List of declared tile collision point. */
     private final HashMap<CollisionTileCategory<?>, CoordTile> tileCollisions;
     /** Collisions special offsets x. */
@@ -55,7 +55,7 @@ public abstract class EntityPlatform
      * 
      * @param setup The entity setup.
      */
-    public EntityPlatform(SetupEntityGame setup)
+    public EntityPlatform(SetupSurfaceGame setup)
     {
         super(setup.configurable);
         tileCollisions = new HashMap<>(1);

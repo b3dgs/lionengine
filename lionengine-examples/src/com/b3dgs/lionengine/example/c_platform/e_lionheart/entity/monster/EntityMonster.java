@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
@@ -39,14 +39,14 @@ public class EntityMonster
     private final PatrollerModel patroller;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    public EntityMonster(Context context, EntityType type)
+    public EntityMonster(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
         life = new Alterable(getDataInteger("normal", "life"));
         timerHurt = new Timing();
-        factoryEffect = context.factoryEffect;
+        factoryEffect = level.factoryEffect;
         patroller = new PatrollerModel(this);
     }
 

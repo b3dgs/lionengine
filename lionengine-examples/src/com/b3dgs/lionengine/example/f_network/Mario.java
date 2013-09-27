@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.f_network;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
@@ -33,7 +33,7 @@ class Mario
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Mario(SetupEntityGame setup, Map map, int desiredFps, boolean server)
+    public Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, TypeEntity.mario, map, desiredFps, server);
         animTurn = getDataAnimation("turn");

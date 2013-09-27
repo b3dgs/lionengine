@@ -20,7 +20,7 @@ public class HandlerEntity
         extends HandlerEntityPlatform<Entity>
 {
     /** The camera reference. */
-    public final CameraPlatform camera;
+    private final CameraPlatform camera;
     /** The entity factory reference. */
     private final FactoryEntity factoryEntity;
     /** The player reference. */

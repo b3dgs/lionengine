@@ -7,7 +7,7 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.EntityPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
 
@@ -52,7 +52,7 @@ final class Mario
      */
     Mario(Map map, int desiredFps)
     {
-        super(new SetupEntityGame(Media.get("entities", "mario.xml")));
+        super(new SetupSurfaceGame(Media.get("entities", "mario.xml")));
         this.map = map;
         this.desiredFps = desiredFps;
         animations = new EnumMap<>(EntityState.class);

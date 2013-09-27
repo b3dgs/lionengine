@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -16,11 +16,11 @@ public final class Dino
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public Dino(Context context)
+    public Dino(Level level)
     {
-        super(context, EntityType.DINO);
+        super(level, EntityType.DINO);
         setFrameOffsets(0, -4);
         enableMovement(Patrol.HORIZONTAL);
     }

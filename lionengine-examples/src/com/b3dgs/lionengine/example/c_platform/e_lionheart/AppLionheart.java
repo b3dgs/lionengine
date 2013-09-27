@@ -1,11 +1,12 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 
 // Tutorial: Lionheart
 // This last platform tutorial will show a quick game example to show as much things as possible.
@@ -41,16 +42,14 @@ public final class AppLionheart
     public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Audio file extension. */
     public static final String AUDIO_FILE_EXTENSION = ".wav";
+    /** Raster enabled. */
+    public static boolean RASTER_ENABLED = true;
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
-    /** Original display. */
-    public static final Display ORIGINAL_DISPLAY = new Display(320, 240, 16, 60);
     /** Enable sound. */
     private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
-    /** Native display. */
-    private static final Display NATIVE_DISPLAY = new Display(272, 208, 16, 60);
 
     /**
      * Main function.
@@ -63,18 +62,19 @@ public final class AppLionheart
         Sfx.setEnabled(AppLionheart.ENABLE_SOUND);
         SonicArranger.setEnabled(AppLionheart.ENABLE_SOUND);
 
-        final Display external = new Display(640, 480, 16, 60);
-        final Config config = new Config(AppLionheart.NATIVE_DISPLAY, external, true);
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
         final boolean enableEditor = false;
         if (enableEditor)
         {
+            AppLionheart.RASTER_ENABLED = false;
             final Editor editor = new Editor();
             editor.start();
         }
         else
         {
             final Loader loader = new Loader(config);
-            loader.start(new Scene(loader));
+            loader.start(new Menu(loader));
         }
     }
 

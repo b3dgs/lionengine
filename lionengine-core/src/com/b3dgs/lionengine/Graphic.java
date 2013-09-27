@@ -35,11 +35,11 @@ public class Graphic
     /**
      * Clear the display.
      * 
-     * @param display The display to clear.
+     * @param resolution The resolution.
      */
-    public void clear(Display display)
+    public void clear(Resolution resolution)
     {
-        g.clearRect(0, 0, display.getWidth(), display.getHeight());
+        g.clearRect(0, 0, resolution.getWidth(), resolution.getHeight());
     }
 
     /**

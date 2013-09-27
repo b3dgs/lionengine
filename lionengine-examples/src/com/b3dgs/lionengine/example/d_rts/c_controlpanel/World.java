@@ -50,7 +50,7 @@ final class World
         controlPanel = new ControlPanel();
         factoryEntity = new FactoryEntity();
         camera = new CameraRts(map);
-        cursor = new CursorRts(internal, map, Media.get("cursor.png"));
+        cursor = new CursorRts(source, map, Media.get("cursor.png"));
         handlerEntity = new HandlerEntity(controlPanel, map, text);
         context = new Context(map, factoryEntity);
     }

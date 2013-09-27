@@ -85,12 +85,6 @@ final class Screen
         }
     }
 
-    /** Configuration reference. */
-    public final Config config;
-    /** Display reference. */
-    private final Display internal;
-    /** Display reference. */
-    private final Display external;
     /** Graphics device reference. */
     private final GraphicsDevice dev;
     /** Graphic configuration reference. */
@@ -103,6 +97,8 @@ final class Screen
     private final Graphic graphics;
     /** Applet flag. */
     private final boolean hasApplet;
+    /** Configuration reference. */
+    private final Config config;
     /** Active sequence reference. */
     Sequence sequence;
     /** Buffer strategy reference. */
@@ -117,6 +113,10 @@ final class Screen
     private Component componentForMouse;
     /** Component listener for cursor. */
     private Component componentForCursor;
+    /** Windowed canvas. */
+    private Canvas canvas;
+    /** Fullscreen window. */
+    private java.awt.Window window;
 
     /**
      * Create a new screen.
@@ -132,33 +132,39 @@ final class Screen
         }
 
         // Initialize environment
-        this.config = config;
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        internal = config.internal;
-        external = config.external;
         applet = config.getApplet();
         graphics = new Graphic();
         hasApplet = applet != null;
+        this.config = config;
 
         // Prepare main frame
         frame = hasApplet ? null : initMainFrame();
+        setResolution(config.getOutput());
+    }
 
-        // Initialize rendering
+    /**
+     * Set the screen config. Initialize the display.
+     * 
+     * @param output The output resolution
+     */
+    public void setResolution(Resolution output)
+    {
         if (hasApplet)
         {
-            initApplet();
+            initApplet(output);
         }
         else
         {
             if (config.isWindowed())
             {
-                initWindowed();
+                initWindowed(output);
             }
             else
             {
-                initFullscreen();
+                initFullscreen(output, config.getDepth());
             }
         }
     }
@@ -193,7 +199,7 @@ final class Screen
      */
     public void dispose()
     {
-        graphics.clear(external);
+        graphics.clear(config.getOutput());
         update();
         if (hasApplet)
         {
@@ -313,6 +319,16 @@ final class Screen
     }
 
     /**
+     * Get the config.
+     * 
+     * @return The config.
+     */
+    public Config getConfig()
+    {
+        return config;
+    }
+
+    /**
      * Get frame container reference.
      * 
      * @return The frame reference.
@@ -365,16 +381,6 @@ final class Screen
     }
 
     /**
-     * Check wide screen state.
-     * 
-     * @return <code>true</code> if screen is wide (16/9, 16/10), <code>false</code> else (4/3, 5/4).
-     */
-    public boolean isWide()
-    {
-        return internal.getRatio() == Ratio.R16_9 || internal.getRatio() == Ratio.R16_10;
-    }
-
-    /**
      * Add the mouse focus listener.
      */
     void prepareFocusListener()
@@ -406,12 +412,14 @@ final class Screen
 
     /**
      * Prepare applet.
+     * 
+     * @param output The output resolution
      */
-    private void initApplet()
+    private void initApplet(Resolution output)
     {
         try
         {
-            buffer = UtilityImage.createBufferedImage(external.getWidth(), external.getHeight(), Transparency.OPAQUE);
+            buffer = UtilityImage.createBufferedImage(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             gbuf = buffer.createGraphics();
             graphics.setGraphics(gbuf);
             componentForKeyboard = applet;
@@ -427,21 +435,26 @@ final class Screen
 
     /**
      * Prepare windowed mode.
+     * 
+     * @param output The output resolution
      */
-    private void initWindowed()
+    private void initWindowed(Resolution output)
     {
         try
         {
             // Create canvas
-            final Canvas canvas = new Canvas(conf);
-            canvas.setPreferredSize(new Dimension(external.getWidth(), external.getHeight()));
-            canvas.setBackground(Color.BLACK);
-            canvas.setEnabled(true);
-            canvas.setVisible(true);
-            canvas.setIgnoreRepaint(true);
+            if (canvas == null)
+            {
+                canvas = new Canvas(conf);
+                canvas.setBackground(Color.BLACK);
+                canvas.setEnabled(true);
+                canvas.setVisible(true);
+                canvas.setIgnoreRepaint(true);
 
-            // Add to main frame
-            frame.add(canvas);
+                // Add to main frame
+                frame.add(canvas);
+            }
+            canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
             frame.pack();
             frame.setLocationRelativeTo(null);
 
@@ -470,23 +483,28 @@ final class Screen
 
     /**
      * Prepare fullscreen mode.
+     * 
+     * @param output The output resolution
+     * @param depth The bit depth color.
      */
-    private void initFullscreen()
+    private void initFullscreen(Resolution output, int depth)
     {
         try
         {
             // Create window
-            final java.awt.Window window = new java.awt.Window(frame, conf);
-            window.setPreferredSize(new Dimension(external.getWidth(), external.getHeight()));
-            window.setBackground(Color.BLACK);
-            window.setIgnoreRepaint(true);
+            if (window == null)
+            {
+                window = new java.awt.Window(frame, conf);
+                window.setBackground(Color.BLACK);
+                window.setIgnoreRepaint(true);
 
-            // Set display
-            frame.setUndecorated(true);
+                // Set display
+                frame.setUndecorated(true);
+            }
+            window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
 
             dev.setFullScreenWindow(window);
-            final DisplayMode disp = new DisplayMode(external.getWidth(), external.getHeight(), external.getDepth(),
-                    external.getRate());
+            final DisplayMode disp = new DisplayMode(output.getWidth(), output.getHeight(), depth, output.getRate());
             dev.setDisplayMode(disp);
             window.validate();
 
@@ -542,9 +560,9 @@ final class Screen
                     builder.append("\n");
                 }
             }
-            throw new LionEngineException(Screen.MESSAGE_ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(external
-                    .getWidth()), "*", String.valueOf(external.getHeight()), "*", String.valueOf(external.getDepth()),
-                    " @", String.valueOf(external.getRate()), "Hz", "\n", builder.toString());
+            throw new LionEngineException(Screen.MESSAGE_ERROR_UNSUPPORTED_FULLSCREEN,
+                    String.valueOf(output.getWidth()), "*", String.valueOf(output.getHeight()), "*",
+                    String.valueOf(depth), " @", String.valueOf(output.getRate()), "Hz", "\n", builder.toString());
         }
     }
 

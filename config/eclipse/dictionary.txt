@@ -142,3 +142,5 @@ liana
 ungrip
 bipbipbip
 bipbipbip
+rasterable
+hertz

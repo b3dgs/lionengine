@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -15,11 +15,11 @@ public final class Sword2
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public Sword2(Context context)
+    public Sword2(Level level)
     {
-        super(context, EntityType.SWORD2, EffectType.TAKEN);
+        super(level, EntityType.SWORD2, EffectType.TAKEN);
     }
 
     /*

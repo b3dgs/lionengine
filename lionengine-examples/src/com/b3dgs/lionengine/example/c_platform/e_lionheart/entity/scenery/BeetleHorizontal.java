@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -15,11 +15,11 @@ public final class BeetleHorizontal
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public BeetleHorizontal(Context context)
+    public BeetleHorizontal(Level level)
     {
-        super(context, EntityType.BEETLE_HORIZONTAL);
+        super(level, EntityType.BEETLE_HORIZONTAL);
         setFrameOffsets(0, -6);
         enableMovement(Patrol.HORIZONTAL);
     }

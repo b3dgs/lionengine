@@ -7,6 +7,7 @@ import java.util.List;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Specific background element, supporting raster effects.
@@ -102,11 +103,7 @@ public abstract class BackgroundElementRastered
      */
     public Sprite getRaster(int id)
     {
-        if (id < 0)
-        {
-            return rasters.get(0);
-        }
-        return rasters.get(id);
+        return rasters.get(UtilityMath.fixBetween(id, 0, rasters.size() - 1));
     }
 
     /**

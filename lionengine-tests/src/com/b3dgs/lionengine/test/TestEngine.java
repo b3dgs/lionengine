@@ -16,7 +16,6 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
@@ -25,6 +24,7 @@ import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Ratio;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Theme;
 import com.b3dgs.lionengine.Timing;
@@ -41,8 +41,6 @@ public class TestEngine
     private final int width = 320;
     /** Default test height. */
     private final int height = 240;
-    /** Default test depth. */
-    private final int depth = 16;
     /** Default test rate. */
     private final int rate = 60;
     /** Default test windowed flag. */
@@ -55,15 +53,14 @@ public class TestEngine
      * 
      * @param width The width.
      * @param height The height.
-     * @param depth The depth.
      * @param rate The rate.
      */
-    private static void testDisplayCreation(int width, int height, int depth, int rate)
+    private static void testResolutionCreation(int width, int height, int rate)
     {
         try
         {
-            final Display display1 = new Display(width, height, depth, rate);
-            Assert.assertNotNull(display1);
+            final Resolution resolution = new Resolution(width, height, rate);
+            Assert.assertNotNull(resolution);
             Assert.fail();
         }
         catch (final IllegalArgumentException exception)
@@ -77,32 +74,29 @@ public class TestEngine
     }
 
     /**
-     * Test the display configuration.
+     * Test the resolution configuration.
      * 
-     * @param display The display to test.
+     * @param resolution The resolution to test.
      * @param factor The factor used.
      */
-    private void testDisplay(Display display, int factor)
+    private void testResolution(Resolution resolution, int factor)
     {
-        Assert.assertEquals(display.getWidth(), width * factor);
-        Assert.assertEquals(display.getHeight(), height * factor);
-        Assert.assertEquals(display.getDepth(), depth);
-        Assert.assertEquals(display.getRate(), rate);
+        Assert.assertEquals(resolution.getWidth(), width * factor);
+        Assert.assertEquals(resolution.getHeight(), height * factor);
+        Assert.assertEquals(resolution.getRate(), rate);
     }
 
     /**
      * Test the config container.
      * 
      * @param config The config to test.
-     * @param internal The internal display.
-     * @param external The external display.
+     * @param output The output resolution.
      * @param filter The filter.
      */
-    private static void testConfig(Config config, Display internal, Display external, Filter filter)
+    private static void testConfig(Config config, Resolution output, Filter filter)
     {
-        Assert.assertEquals(internal, config.internal);
-        Assert.assertNotSame(external, config.external);
-        Assert.assertEquals(filter, config.filter);
+        Assert.assertEquals(output, config.getOutput());
+        Assert.assertEquals(filter, config.getFilter());
     }
 
     /**
@@ -194,15 +188,15 @@ public class TestEngine
     @Test
     public void testDisplay()
     {
-        TestEngine.testDisplayCreation(0, 0, 0, -1);
-        TestEngine.testDisplayCreation(0, 1, 0, -1);
-        TestEngine.testDisplayCreation(0, 0, 1, -1);
-        TestEngine.testDisplayCreation(0, 0, 0, 1);
-        TestEngine.testDisplayCreation(0, 1, 1, 1);
-        TestEngine.testDisplayCreation(0, 0, 1, 1);
-        TestEngine.testDisplayCreation(1, 0, 0, -1);
-        TestEngine.testDisplayCreation(1, 1, 0, -1);
-        TestEngine.testDisplayCreation(1, 1, 1, -1);
+        TestEngine.testResolutionCreation(0, 0, -1);
+        TestEngine.testResolutionCreation(0, 1, -1);
+        TestEngine.testResolutionCreation(0, 0, -1);
+        TestEngine.testResolutionCreation(0, 0, 1);
+        TestEngine.testResolutionCreation(0, 1, 1);
+        TestEngine.testResolutionCreation(0, 0, 1);
+        TestEngine.testResolutionCreation(1, 0, -1);
+        TestEngine.testResolutionCreation(1, 1, -1);
+        TestEngine.testResolutionCreation(1, 1, -1);
     }
 
     /**
@@ -214,15 +208,15 @@ public class TestEngine
         Engine.terminate();
         Engine.start("Test", Version.create(1, 0, 0), Media.getPath("resources"));
 
-        final Display internal = new Display(width, height, depth, rate);
-        testDisplay(internal, 1);
+        final Resolution internal = new Resolution(width, height, rate);
+        testResolution(internal, 1);
 
-        final Display external = new Display(width * 2, height * 2, depth, rate);
-        testDisplay(external, 2);
+        final Resolution output2 = new Resolution(width * 2, height * 2, rate);
+        testResolution(output2, 2);
 
         final Filter filter = Filter.HQ3X;
-        final Config config = new Config(internal, external, windowed, filter);
-        TestEngine.testConfig(config, internal, external, filter);
+        final Config config = new Config(output2, 16, windowed, filter);
+        TestEngine.testConfig(config, output2, filter);
 
         try
         {
@@ -235,8 +229,8 @@ public class TestEngine
         }
 
         final Filter filter0 = Filter.HQ2X;
-        final Config config0 = new Config(internal, external, windowed, filter0);
-        TestEngine.testConfig(config0, internal, external, filter0);
+        final Config config0 = new Config(output2, 16, windowed, filter0);
+        TestEngine.testConfig(config0, output2, filter0);
         TestEngine.testLoaderCreation(config);
         try
         {
@@ -249,25 +243,16 @@ public class TestEngine
             // Success
         }
 
-        final Config config1 = new Config(internal, external, true, Filter.HQ2X);
+        final Config config1 = new Config(output2, 16, true, Filter.HQ2X);
         config1.setApplet(null);
 
         TestEngine.testLoaderCreationWithNullScene(config1);
 
-        final Config config2 = new Config(internal, external, false, Filter.HQ3X);
-        try
-        {
-            TestEngine.testLoaderCreationWithNullScene(config2);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        final Config config2 = new Config(output2, 32, false, Filter.HQ3X);
+        TestEngine.testLoaderCreationWithNullScene(config2);
 
-        final Display internal2 = new Display(640, 480, depth, rate);
-        final Display external2 = new Display(1280, 720, depth, 0);
-        final Config config3 = new Config(internal2, external2, false, Filter.BILINEAR);
+        final Resolution external2 = new Resolution(1280, 720, 0);
+        final Config config3 = new Config(external2, 16, false, Filter.BILINEAR);
         try
         {
             TestEngine.testLoaderCreationWithNullScene(config3);
@@ -278,26 +263,26 @@ public class TestEngine
             Verbose.info("Fullscreen mode not supported on test machine - Test skipped");
         }
 
-        final Display external3 = new Display(width, height, depth, 0);
-        final Config config4 = new Config(internal, external3, true, Filter.BILINEAR);
+        final Resolution external3 = new Resolution(width, height, 0);
+        final Config config4 = new Config(external3, 16, true, Filter.BILINEAR);
         final Loader loader = new Loader(config4);
         loader.start(new Scene(loader));
 
-        final Display external4 = new Display(width, height * 2, depth, 0);
-        final Config config5 = new Config(internal, external4, true, Filter.NONE);
+        final Resolution external4 = new Resolution(width, height * 2, 0);
+        final Config config5 = new Config(external4, 16, true, Filter.NONE);
         final Loader loader1 = new Loader(config5);
         final Scene scene = new Scene(loader1);
         scene.setExtrapolated(true);
         loader1.start(scene);
 
-        final Display external5 = new Display(width * 2, height, depth, 0);
-        final Config config6 = new Config(internal, external5, true, Filter.NONE);
+        final Resolution external5 = new Resolution(width * 2, height, 0);
+        final Config config6 = new Config(external5, 32, true, Filter.NONE);
         final Loader loader2 = new Loader(config6);
         loader2.start(new Scene(loader2));
 
         try
         {
-            final Config config7 = new Config(internal, external3, false);
+            final Config config7 = new Config(external3, 32, false);
             final Loader loader3 = new Loader(config7);
             loader3.start(null);
             Assert.fail();
@@ -314,16 +299,7 @@ public class TestEngine
     @Test
     public void testRatio()
     {
-        final double precision = 0.000001;
-        Assert.assertEquals(Ratio.K4_3, Ratio.getRatioFromEnum(Ratio.R4_3), precision);
-        Assert.assertEquals(Ratio.K5_4, Ratio.getRatioFromEnum(Ratio.R5_4), precision);
-        Assert.assertEquals(Ratio.K16_10, Ratio.getRatioFromEnum(Ratio.R16_10), precision);
-        Assert.assertEquals(Ratio.K16_9, Ratio.getRatioFromEnum(Ratio.R16_9), precision);
-
-        Assert.assertEquals(Ratio.R4_3, Ratio.getRatioFromValue(4, 3));
-        Assert.assertEquals(Ratio.R5_4, Ratio.getRatioFromValue(5, 4));
-        Assert.assertEquals(Ratio.R16_10, Ratio.getRatioFromValue(16, 10));
-        Assert.assertEquals(Ratio.R16_9, Ratio.getRatioFromValue(16, 9));
+        Assert.assertTrue(Ratio.equals(Ratio.K16_10, Ratio.K16_10));
     }
 
     /**

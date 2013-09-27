@@ -4,7 +4,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeProjectile;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
@@ -12,7 +12,7 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  * Factory projectile implementation.
  */
 public final class FactoryProjectile
-        extends FactoryProjectileGame<TypeProjectile, Projectile, SetupEntityGame>
+        extends FactoryProjectileGame<TypeProjectile, Projectile, SetupSurfaceGame>
 {
     /**
      * Constructor.
@@ -42,9 +42,9 @@ public final class FactoryProjectile
     }
 
     @Override
-    protected SetupEntityGame createSetup(TypeProjectile id)
+    protected SetupSurfaceGame createSetup(TypeProjectile id)
     {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
+        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
                 false);
     }
 }

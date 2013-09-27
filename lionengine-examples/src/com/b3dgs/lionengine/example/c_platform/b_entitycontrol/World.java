@@ -25,7 +25,7 @@ final class World
     {
         super(sequence);
         camera = new CameraPlatform(width, height);
-        mario = new Mario(config.internal.getRate());
+        mario = new Mario(source.getRate());
     }
 
     /*

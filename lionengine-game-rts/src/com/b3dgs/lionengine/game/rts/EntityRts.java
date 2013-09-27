@@ -10,9 +10,9 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -82,7 +82,7 @@ public abstract class EntityRts
      * @param setup The entity setup.
      * @param map The map reference.
      */
-    public EntityRts(SetupEntityGame setup, MapTileRts<?, ?> map)
+    public EntityRts(SetupSurfaceGame setup, MapTileRts<?, ?> map)
     {
         super(setup.configurable);
         this.map = map;

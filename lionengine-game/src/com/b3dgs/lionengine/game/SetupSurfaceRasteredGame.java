@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -7,23 +7,17 @@ import java.util.List;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.purview.Rasterable;
+import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
- * Define a structure used to create multiple rastered platform entity, sharing the same data.
+ * Define a structure used to create multiple rastered surface, sharing the same data.
  */
-public class SetupEntityPlatformRastered
-        extends SetupEntityGame
+public class SetupSurfaceRasteredGame
+        extends SetupSurfaceGame
 {
-    /** Maximum rasters. */
-    public static final int MAX_RASTERS = 15;
-    /** Maximum rasters R. */
-    public static final int MAX_RASTERS_R = SetupEntityPlatformRastered.MAX_RASTERS * 2;
-    /** Maximum rasters M. */
-    public static final int MAX_RASTERS_M = SetupEntityPlatformRastered.MAX_RASTERS - 1;
-
     /** List of rasters animation. */
     public final List<SpriteAnimated> rastersAnim;
     /** Raster filename. */
@@ -38,7 +32,19 @@ public class SetupEntityPlatformRastered
     private final int frameHeight;
 
     /**
-     * Create a new rastered platform entity setup.
+     * Constructor.
+     * 
+     * @param config The config media.
+     * @param rasterFile The raster media.
+     * @param smoothRaster The raster smooth flag.
+     */
+    public SetupSurfaceRasteredGame(Media config, Media rasterFile, boolean smoothRaster)
+    {
+        this(new ConfigurableModel(), config, false, rasterFile, smoothRaster);
+    }
+
+    /**
+     * Constructor.
      * 
      * @param configurable The configurable reference.
      * @param config The config media.
@@ -46,7 +52,7 @@ public class SetupEntityPlatformRastered
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
      */
-    public SetupEntityPlatformRastered(Configurable configurable, Media config, boolean alpha, Media rasterFile,
+    public SetupSurfaceRasteredGame(Configurable configurable, Media config, boolean alpha, Media rasterFile,
             boolean smoothRaster)
     {
         super(configurable, config, alpha);
@@ -54,7 +60,7 @@ public class SetupEntityPlatformRastered
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)
         {
-            rastersAnim = new ArrayList<>(SetupEntityPlatformRastered.MAX_RASTERS);
+            rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
             hf = configurable.getDataInteger("horizontal", "frames");
             vf = configurable.getDataInteger("vertical", "frames");
             frameHeight = surface.getHeight() / vf;
@@ -81,7 +87,7 @@ public class SetupEntityPlatformRastered
 
         for (int m = 0; m < max; m++)
         {
-            for (int i = 1; i <= SetupEntityPlatformRastered.MAX_RASTERS; i++)
+            for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
             {
                 for (int c = 0; c < rasters.length; c++)
                 {
@@ -89,22 +95,20 @@ public class SetupEntityPlatformRastered
                     {
                         if (m == 0)
                         {
-                            color[c] = UtilityImage.getRasterColor(i, rasters[c],
-                                    SetupEntityPlatformRastered.MAX_RASTERS);
-                            colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c],
-                                    SetupEntityPlatformRastered.MAX_RASTERS);
+                            color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                            colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(SetupEntityPlatformRastered.MAX_RASTERS - i,
-                                    rasters[c], SetupEntityPlatformRastered.MAX_RASTERS);
-                            colorNext[c] = UtilityImage.getRasterColor(SetupEntityPlatformRastered.MAX_RASTERS - i - 1,
-                                    rasters[c], SetupEntityPlatformRastered.MAX_RASTERS);
+                            color[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
+                                    Rasterable.MAX_RASTERS);
+                            colorNext[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
+                                    Rasterable.MAX_RASTERS);
                         }
                     }
                     else
                     {
-                        color[c] = UtilityImage.getRasterColor(i, rasters[c], SetupEntityPlatformRastered.MAX_RASTERS);
+                        color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
                         colorNext[c] = color[c];
                     }
                 }

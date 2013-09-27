@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -29,11 +29,11 @@ public final class Crawling
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public Crawling(Context context)
+    public Crawling(Level level)
     {
-        super(context, EntityType.CRAWLING);
+        super(level, EntityType.CRAWLING);
         timerJump = new Timing();
         setFrameOffsets(0, -4);
         enableMovement(Patrol.HORIZONTAL);

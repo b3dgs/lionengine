@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.effect;
 
-import com.b3dgs.lionengine.game.effect.SetupEffectGame;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Taken effect.
@@ -9,9 +9,9 @@ public class ExplodeBig
         extends Effect
 {
     /**
-     * @see Effect#Effect(SetupEffectGame)
+     * @see Effect#Effect(SetupSurfaceRasteredGame)
      */
-    public ExplodeBig(SetupEffectGame setup)
+    public ExplodeBig(SetupSurfaceRasteredGame setup)
     {
         super(setup);
     }

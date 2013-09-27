@@ -26,34 +26,36 @@ final class Choice
      * Constructor.
      * 
      * @param text The text reference.
-     * @param wideFactor The wide factor value.
+     * @param factorH The horizontal factor value.
+     * @param factorV The vertical factor value.
      * @param name The choice name.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @param align The text align.
      */
-    Choice(Text text, int wideFactor, String name, int x, int y, Align align)
+    Choice(Text text, double factorH, double factorV, String name, int x, int y, Align align)
     {
-        this(text, wideFactor, name, x, y, align, null);
+        this(text, factorH, factorV, name, x, y, align, null);
     }
 
     /**
      * Constructor.
      * 
      * @param text The text reference.
-     * @param wideFactor The wide factor value.
+     * @param factorH The horizontal factor value.
+     * @param factorV The vertical factor value.
      * @param name The choice name.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @param align The text align.
      * @param next The next menu pointer.
      */
-    Choice(Text text, int wideFactor, String name, int x, int y, Align align, MenuType next)
+    Choice(Text text, double factorH, double factorV, String name, int x, int y, Align align, MenuType next)
     {
         this.text = text;
         this.name = name;
-        this.x = 160 * wideFactor - (160 - x);
-        this.y = y;
+        this.x = (int) (160 * factorH) - (160 - x);
+        this.y = (int) (y * factorV);
         this.align = align;
         this.next = next;
     }

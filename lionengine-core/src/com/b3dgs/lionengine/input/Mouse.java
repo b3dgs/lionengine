@@ -2,6 +2,8 @@ package com.b3dgs.lionengine.input;
 
 import java.awt.event.MouseEvent;
 
+import com.b3dgs.lionengine.Config;
+
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
  */
@@ -47,6 +49,13 @@ public interface Mouse
      * @param y The location y.
      */
     void doClickAt(int click, int x, int y);
+
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
+    void setConfig(Config config);
 
     /**
      * Set mouse center for lock operation.

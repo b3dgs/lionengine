@@ -9,9 +9,9 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Damages;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -68,7 +68,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      *            Can be -1 to ignore it.
      * @param frame The projectile tile number (from surface).
      */
-    public ProjectileGame(SetupEntityGame setup, int id, int frame)
+    public ProjectileGame(SetupSurfaceGame setup, int id, int frame)
     {
         super(setup.configurable);
         damages = new Damages();

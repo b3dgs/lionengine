@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
 
 /**
@@ -26,7 +26,7 @@ final class Mario
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    Mario(SetupEntityGame setup, Map map, int desiredFps)
+    Mario(SetupSurfaceGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();

@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Verbose;
 
@@ -20,16 +21,16 @@ import com.b3dgs.lionengine.Verbose;
 class MouseImpl
         implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {
-    /** Screen horizontal ratio. */
-    private final double xRatio;
-    /** Screen vertical ratio. */
-    private final double yRatio;
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
     private final boolean[] clicked;
     /** Robot instance reference. */
     private final Robot robot;
+    /** Screen horizontal ratio. */
+    private double xRatio;
+    /** Screen vertical ratio. */
+    private double yRatio;
     /** On screen monitor location x. */
     private int x;
     /** On screen monitor location y. */
@@ -57,11 +58,8 @@ class MouseImpl
 
     /**
      * Create a mouse input.
-     * 
-     * @param xRatio The screen horizontal ratio.
-     * @param yRatio The screen vertical ratio.
      */
-    MouseImpl(double xRatio, double yRatio)
+    MouseImpl()
     {
         super();
         try
@@ -74,8 +72,6 @@ class MouseImpl
         {
             throw new LionEngineException(exception);
         }
-        this.xRatio = xRatio;
-        this.yRatio = yRatio;
         x = 0;
         y = 0;
         wx = 0;
@@ -182,6 +178,13 @@ class MouseImpl
             robot.mouseMove(x, y);
             doClick(click);
         }
+    }
+
+    @Override
+    public void setConfig(Config config)
+    {
+        this.xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        this.yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }
 
     @Override

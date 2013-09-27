@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
@@ -19,14 +19,14 @@ public abstract class EntityItem
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      * @param type The entity type.
      * @param effect The effect type.
      */
-    public EntityItem(Context context, EntityType type, EffectType effect)
+    public EntityItem(Level level, EntityType type, EffectType effect)
     {
-        super(context, type);
-        factoryEffect = context.factoryEffect;
+        super(level, type);
+        factoryEffect = level.factoryEffect;
         play(getDataAnimation(status.getState().getAnimationName()));
     }
 

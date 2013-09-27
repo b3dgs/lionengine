@@ -2,7 +2,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
@@ -31,11 +31,11 @@ public abstract class EntityTurning
     protected boolean shake;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    public EntityTurning(Context context, EntityType type)
+    public EntityTurning(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
         timerShake = new Timing();
     }
 

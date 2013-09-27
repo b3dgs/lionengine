@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -13,17 +14,24 @@ import com.b3dgs.lionengine.input.Keyboard;
 public final class Scene
         extends Sequence
 {
+    /** Original display. */
+    public static final Resolution ORIGINAL_SCENE_DISPLAY = new Resolution(272, 208, 60);
+    /** Scene display. */
+    public static final Resolution SCENE_DISPLAY = new Resolution(320, 240, 60);
+
     /** World reference. */
     private final World world;
     /** Last level index played. */
     private int lastLevelIndex;
 
     /**
-     * @see Sequence#Sequence(Loader)
+     * Constructor.
+     * 
+     * @param loader The loader reference.
      */
     public Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.ORIGINAL_SCENE_DISPLAY);
         world = new World(this);
         lastLevelIndex = -1;
     }

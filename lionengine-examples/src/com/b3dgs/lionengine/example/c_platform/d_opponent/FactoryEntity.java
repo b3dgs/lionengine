@@ -2,14 +2,14 @@ package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
 final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
@@ -57,9 +57,9 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntityGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType id)
     {
-        return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
+        return new SetupSurfaceGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
     }
 
     @Override

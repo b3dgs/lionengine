@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
@@ -21,6 +20,7 @@ import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
@@ -667,8 +667,6 @@ public class TestDrawable
         spriteA.prepare(Filter.NONE);
         Assert.assertTrue(spriteA.equals(spriteA));
         Assert.assertEquals(info.getWidth(), spriteA.getWidthOriginal());
-        Assert.assertEquals(info.getHeight() / lines, spriteA.getHeightOriginal());
-        Assert.assertEquals(info.getWidth(), spriteA.getWidth());
         Assert.assertEquals(info.getHeight() / lines, spriteA.getHeight());
 
         for (int i = 0; i < lines; i++)
@@ -696,9 +694,6 @@ public class TestDrawable
         spriteB.scale(100 * scale);
         spriteB.prepare(Filter.BILINEAR);
         Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
-        Assert.assertEquals(info.getHeight() / lines, spriteB.getHeightOriginal());
-        Assert.assertEquals(info.getWidth() * scale, spriteB.getWidth());
-        Assert.assertEquals(info.getHeight() / lines * scale, spriteB.getHeight());
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
         Assert.assertFalse(spriteA.equals(media));
@@ -752,10 +747,10 @@ public class TestDrawable
     @Test
     public void testCursor()
     {
-        final Display display = new Display(320, 240, 16, 60);
+        final Resolution output0 = new Resolution(320, 240, 60);
         try
         {
-            final Cursor cursor = new Cursor(display);
+            final Cursor cursor = new Cursor(output0);
             Assert.assertNotNull(cursor);
             Assert.fail();
         }
@@ -764,14 +759,13 @@ public class TestDrawable
             // Success
         }
 
-        final Cursor cursor = new Cursor(display, media);
+        final Cursor cursor = new Cursor(output0, media);
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);
 
-        final Display internal = new Display(640, 480, 16, 60);
-        final Display external = new Display(1280, 720, 16, 60);
-        final Config config = new Config(internal, external, true);
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         final Scene scene = new Scene(loader);
 

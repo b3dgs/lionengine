@@ -4,8 +4,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
 import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  * instances just need a reference to this factory.
  */
 public class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
@@ -68,8 +68,8 @@ public class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType id)
     {
-        return new SetupEntityGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"), false);
+        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"), false);
     }
 }

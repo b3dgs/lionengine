@@ -2,6 +2,9 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
@@ -9,6 +12,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeTy
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * Represents a level and its data (world data, map, entities).
@@ -17,14 +21,22 @@ public class Level
 {
     /** Level file format. */
     public static final String FILE_FORMAT = "lrm";
+    /** Camera reference. */
+    public final CameraPlatform camera;
     /** Map reference. */
     public final Map map;
     /** World data reference. */
     public final WorldData worldData;
     /** Entity factory reference. */
     public final FactoryEntity factoryEntity;
+    /** Factory effect reference. */
+    public final FactoryEffect factoryEffect;
     /** Entity handler reference. */
     public final HandlerEntity handlerEntity;
+    /** Handler effect reference. */
+    public final HandlerEffect handlerEffect;
+    /** Desired fps value. */
+    public final int desiredFps;
     /** World type. */
     private WorldType world;
     /** Landscape type. */
@@ -33,15 +45,21 @@ public class Level
     /**
      * Constructor.
      * 
+     * @param camera The camera reference.
      * @param factoryEntity The entity factory reference.
      * @param handlerEntity The entity handler reference.
+     * @param desiredFps The desired fps value.
      */
-    public Level(FactoryEntity factoryEntity, HandlerEntity handlerEntity)
+    public Level(CameraPlatform camera, FactoryEntity factoryEntity, HandlerEntity handlerEntity, int desiredFps)
     {
+        this.camera = camera;
         this.factoryEntity = factoryEntity;
         this.handlerEntity = handlerEntity;
+        handlerEffect = new HandlerEffect();
+        factoryEffect = new FactoryEffect(handlerEffect);
         map = new Map();
         worldData = new WorldData(map);
+        this.desiredFps = desiredFps;
     }
 
     /**
@@ -74,12 +92,13 @@ public class Level
             throw new IOException("Invalid level format !");
         }
         setWorld(WorldType.load(file));
-        factoryEntity.loadAll(EntityType.values());
         setLandscape(LandscapeType.load(file));
-        map.setLandscape(getLandscape());
+        factoryEntity.loadAll(EntityType.values());
+        factoryEffect.loadAll(EffectType.values());
         map.load(file);
         worldData.load(file);
         handlerEntity.load(file);
+        camera.setLimits(map);
     }
 
     /**
@@ -101,6 +120,9 @@ public class Level
     public void setLandscape(LandscapeType landscape)
     {
         this.landscape = landscape;
+        factoryEntity.setLandscape(landscape);
+        factoryEffect.setLandscape(landscape);
+        map.setLandscape(landscape);
     }
 
     /**

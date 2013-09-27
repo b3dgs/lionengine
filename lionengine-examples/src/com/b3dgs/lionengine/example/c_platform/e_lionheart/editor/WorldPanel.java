@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
@@ -86,8 +85,6 @@ public class WorldPanel
     public final Map map;
     /** The camera reference. */
     public final CameraPlatform camera;
-    /** Context. */
-    public final Context context;
     /** World data. */
     public final WorldData worldData;
     /** The entity handler reference. */
@@ -135,11 +132,11 @@ public class WorldPanel
         camera = new CameraPlatform(WorldPanel.DEFAULT_WIDTH, WorldPanel.DEFAULT_HEIGHT);
         factoryEntity = new FactoryEntity();
         handlerEntity = new Handler(factoryEntity);
-        level = new Level(factoryEntity, handlerEntity);
+        level = new Level(camera, factoryEntity, handlerEntity, 60);
+        factoryEntity.setLevel(level);
         worldData = level.worldData;
         map = level.map;
         camera.setLimits(map);
-        context = new Context(level, 60);
         setPreferredSize(new Dimension(WorldPanel.DEFAULT_WIDTH, WorldPanel.DEFAULT_HEIGHT));
         addMouseListener(this);
         addMouseMotionListener(this);

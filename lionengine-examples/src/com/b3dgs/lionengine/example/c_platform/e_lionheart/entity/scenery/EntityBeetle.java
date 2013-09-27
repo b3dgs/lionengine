@@ -3,7 +3,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
@@ -33,11 +33,11 @@ public class EntityBeetle
     private double movementSpeedMax;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    EntityBeetle(Context context, EntityType type)
+    EntityBeetle(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
         movement = new Movement();
         forces = new Force[]
         {

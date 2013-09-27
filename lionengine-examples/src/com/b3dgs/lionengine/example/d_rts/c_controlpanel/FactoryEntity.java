@@ -3,8 +3,8 @@ package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Factory entity implementation, creating entity from simple function. This allows to set correctly the new instance,
@@ -13,7 +13,7 @@ import com.b3dgs.lionengine.game.entity.SetupEntityGame;
  * instances just need a reference to this factory.
  */
 final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     private static final String ENTITY_PATH = "entities";
@@ -61,8 +61,8 @@ final class FactoryEntity
     }
 
     @Override
-    protected SetupEntityGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType id)
     {
-        return new SetupEntityGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
+        return new SetupSurfaceGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
     }
 }

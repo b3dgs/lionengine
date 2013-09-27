@@ -2,9 +2,9 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
 import java.awt.Color;
 
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCursor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -27,13 +27,13 @@ public final class Cursor
     /**
      * Create a new rts cursor.
      * 
-     * @param internal The internal display reference.
+     * @param source The resolution source reference.
      * @param map The map reference.
      * @param cursor The cursor media.
      */
-    Cursor(Display internal, MapTile<?, ?> map, Media... cursor)
+    Cursor(Resolution source, MapTile<?, ?> map, Media... cursor)
     {
-        super(internal, map, cursor);
+        super(source, map, cursor);
         type = TypeCursor.POINTER;
     }
 

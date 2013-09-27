@@ -5,20 +5,21 @@ import java.lang.reflect.InvocationTargetException;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.FactoryEntityItem;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.FactoryEntityMonster;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.FactoryEntityScenery;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Handle the entity creation by containing all necessary object for their instantiation.
  */
 public final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupEntityGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceRasteredGame, Entity>
 {
     /** Unknown entity error message. */
     private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
@@ -26,18 +27,18 @@ public final class FactoryEntity
     /**
      * Create an item from its type.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      * @param type The item type.
      * @param factory The factory class.
      * @return The item instance.
      */
-    public static Entity createEntity(Context context, EntityType type, Class<?> factory)
+    public static Entity createEntity(Level level, EntityType type, Class<?> factory)
     {
         try
         {
             final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
             clazz.append('.').append(type.asClassName());
-            return (Entity) Class.forName(clazz.toString()).getConstructor(Context.class).newInstance(context);
+            return (Entity) Class.forName(clazz.toString()).getConstructor(Level.class).newInstance(level);
         }
         catch (InstantiationException
                | IllegalAccessException
@@ -52,10 +53,12 @@ public final class FactoryEntity
         }
     }
 
-    /** Context used. */
-    private Context context;
+    /** Level used. */
+    private Level level;
     /** World used. */
     private WorldType world;
+    /** Landscape used. */
+    private LandscapeType landscape;
 
     /**
      * Standard constructor.
@@ -68,11 +71,11 @@ public final class FactoryEntity
     /**
      * Set the context.
      * 
-     * @param context The context reference.
+     * @param level The level reference.
      */
-    public void setContext(Context context)
+    public void setLevel(Level level)
     {
-        this.context = context;
+        this.level = level;
     }
 
     /**
@@ -86,13 +89,23 @@ public final class FactoryEntity
     }
 
     /**
+     * Set the landscape type used.
+     * 
+     * @param landscape The landscape type used.
+     */
+    public void setLandscape(LandscapeType landscape)
+    {
+        this.landscape = landscape;
+    }
+
+    /**
      * Create a new valdyn.
      * 
      * @return The instance of valdyn.
      */
     public Valdyn createValdyn()
     {
-        return new Valdyn(context);
+        return new Valdyn(level);
     }
 
     /*
@@ -105,18 +118,18 @@ public final class FactoryEntity
         switch (type.getCategory())
         {
             case ITEM:
-                return FactoryEntityItem.createItem(context, type);
+                return FactoryEntityItem.createItem(level, type);
             case MONSTER:
-                return FactoryEntityMonster.createMonster(context, type);
+                return FactoryEntityMonster.createMonster(level, type);
             case SCENERY:
-                return FactoryEntityScenery.createScenery(context, type);
+                return FactoryEntityScenery.createScenery(level, type);
             default:
                 throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
         }
     }
 
     @Override
-    protected SetupEntityGame createSetup(EntityType id)
+    protected SetupSurfaceRasteredGame createSetup(EntityType id)
     {
         final String pathBase = Media.getPath(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder());
         final String configExtension = AppLionheart.CONFIG_FILE_EXTENSION;
@@ -129,6 +142,16 @@ public final class FactoryEntity
         {
             path = Media.getPath(pathBase, world.asPathName(), id.asPathName() + configExtension);
         }
-        return new SetupEntityGame(Media.get(path));
+
+        final Media raster;
+        if (AppLionheart.RASTER_ENABLED && id != EntityType.VALDYN)
+        {
+            raster = Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster());
+        }
+        else
+        {
+            raster = null;
+        }
+        return new SetupSurfaceRasteredGame(Media.get(path), raster, false);
     }
 }

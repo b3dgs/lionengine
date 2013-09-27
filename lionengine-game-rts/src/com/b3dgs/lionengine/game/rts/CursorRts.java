@@ -2,8 +2,8 @@ package com.b3dgs.lionengine.game.rts;
 
 import java.awt.geom.Rectangle2D;
 
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -38,32 +38,32 @@ public class CursorRts
     /**
      * Create a new rts cursor.
      * 
-     * @param internal The internal display.
+     * @param source The source display.
      * @param cursor The cursor images media.
      * @param map The map reference.
      */
-    public CursorRts(Display internal, MapTile<?, ?> map, Media... cursor)
+    public CursorRts(Resolution source, MapTile<?, ?> map, Media... cursor)
     {
-        this(internal, map.getTileWidth(), map.getTileHeight(), cursor);
+        this(source, map.getTileWidth(), map.getTileHeight(), cursor);
     }
 
     /**
      * Create a new rts cursor.
      * 
-     * @param internal The internal display.
+     * @param source The source display.
      * @param cursor The cursor images media.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public CursorRts(Display internal, int tileWidth, int tileHeight, Media... cursor)
+    public CursorRts(Resolution source, int tileWidth, int tileHeight, Media... cursor)
     {
-        super(0, 0, internal.getWidth(), internal.getHeight(), cursor);
-        setLocation(internal.getWidth() / 2, internal.getHeight() / 2);
+        super(0, 0, source.getWidth(), source.getHeight(), cursor);
+        setLocation(source.getWidth() / 2, source.getHeight() / 2);
         gridWidth = tileWidth;
         gridHeight = tileHeight;
         grid = new Rectangle2D.Double();
-        width = internal.getWidth();
-        height = internal.getHeight();
+        width = source.getWidth();
+        height = source.getHeight();
     }
 
     /**

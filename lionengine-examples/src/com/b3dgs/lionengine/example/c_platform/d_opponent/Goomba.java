@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 
 /**
  * Goomba implementation.
@@ -20,7 +20,7 @@ final class Goomba
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    Goomba(SetupEntityGame setup, Map map, int desiredFps)
+    Goomba(SetupSurfaceGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();

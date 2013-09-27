@@ -2,9 +2,9 @@ package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -20,7 +20,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     /** Launcher level. */
     public final Alterable level;
     /** The projectile factory reference. */
-    private final FactoryProjectileGame<T, P, ? extends SetupEntityGame> factory;
+    private final FactoryProjectileGame<T, P, ? extends SetupSurfaceGame> factory;
     /** The projectile handler reference. */
     private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
@@ -42,7 +42,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param factory The projectiles factory.
      * @param handler The projectiles handler.
      */
-    public LauncherProjectileGame(FactoryProjectileGame<T, P, ? extends SetupEntityGame> factory,
+    public LauncherProjectileGame(FactoryProjectileGame<T, P, ? extends SetupSurfaceGame> factory,
             HandlerProjectileGame<E, P> handler)
     {
         this.factory = factory;

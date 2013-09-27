@@ -4,34 +4,43 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.effect.EffectGame;
-import com.b3dgs.lionengine.game.effect.SetupEffectGame;
+import com.b3dgs.lionengine.game.purview.Rasterable;
+import com.b3dgs.lionengine.game.purview.model.RasterableModel;
 
 /**
  * Effect base implementation.
  */
 public class Effect
         extends EffectGame
+        implements Rasterable
 {
+    /** Raster model. */
+    private final Rasterable rasterable;
     /** Sprite. */
     private final SpriteAnimated sprite;
     /** Horizontal location. */
     private int x;
     /** Vertical location. */
     private int y;
+    /** Index. */
+    private int index;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Effect(SetupEffectGame setup)
+    public Effect(SetupSurfaceRasteredGame setup)
     {
         super(setup.configurable);
         final int horizontalFrames = getDataInteger("horizontal", "frames");
         final int verticalFrames = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);
+        rasterable = new RasterableModel(setup, Map.TILE_HEIGHT);
     }
 
     /**
@@ -59,11 +68,51 @@ public class Effect
         {
             destroy();
         }
+        if (rasterable.isRastered())
+        {
+            index = rasterable.getRasterIndex(y);
+            final SpriteAnimated anim = getRasterAnim(index);
+            if (anim != null)
+            {
+                anim.setFrame(sprite.getFrame());
+            }
+        }
     }
 
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, camera.getViewpointX(x), camera.getViewpointY(y + sprite.getFrameHeight()));
+        final SpriteAnimated anim;
+        if (rasterable.isRastered())
+        {
+            anim = getRasterAnim(index);
+        }
+        else
+        {
+            anim = sprite;
+        }
+        anim.render(g, camera.getViewpointX(x), camera.getViewpointY(y + sprite.getFrameHeight()));
+    }
+
+    /*
+     * Rasterable
+     */
+
+    @Override
+    public int getRasterIndex(double y)
+    {
+        return rasterable.getRasterIndex(y);
+    }
+
+    @Override
+    public SpriteAnimated getRasterAnim(int rasterIndex)
+    {
+        return rasterable.getRasterAnim(rasterIndex);
+    }
+
+    @Override
+    public boolean isRastered()
+    {
+        return rasterable.isRastered();
     }
 }

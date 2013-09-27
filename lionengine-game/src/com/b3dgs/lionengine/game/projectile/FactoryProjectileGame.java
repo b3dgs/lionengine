@@ -1,7 +1,7 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.game.FactoryGame;
-import com.b3dgs.lionengine.game.entity.SetupEntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Handle projectile factory. Projectiles are instantiated from a list. This way it is easy to define different kind of
@@ -11,7 +11,7 @@ import com.b3dgs.lionengine.game.entity.SetupEntityGame;
  * @param <P> The projectile type used.
  * @param <S> setup entity type.
  */
-public abstract class FactoryProjectileGame<T extends Enum<T>, P extends ProjectileGame<?, ?>, S extends SetupEntityGame>
+public abstract class FactoryProjectileGame<T extends Enum<T>, P extends ProjectileGame<?, ?>, S extends SetupSurfaceGame>
         extends FactoryGame<T, S>
 {
     /**

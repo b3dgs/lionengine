@@ -1,6 +1,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Context;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -29,11 +29,11 @@ public class EntityScenerySheet
     protected boolean firstHit;
 
     /**
-     * @see Entity#Entity(Context, EntityType)
+     * @see Entity#Entity(Level, EntityType)
      */
-    public EntityScenerySheet(Context context, EntityType type)
+    public EntityScenerySheet(Level level, EntityType type)
     {
-        super(context, type);
+        super(level, type);
     }
 
     /*

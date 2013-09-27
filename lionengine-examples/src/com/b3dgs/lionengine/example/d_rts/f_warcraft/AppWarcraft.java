@@ -1,10 +1,10 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Display;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.menu.Menu;
 
@@ -36,10 +36,11 @@ public final class AppWarcraft
     {
         Engine.start(AppWarcraft.PROGRAM, AppWarcraft.VERSION, AppWarcraft.PATH);
 
+        // Resolution
+        final Resolution output = new Resolution(640, 400, 60);
+
         // Configuration
-        final Display internal = new Display(320, 200, 16, 60);
-        final Display external = new Display(640, 400, 16, 60);
-        final Config config = new Config(internal, external, true);
+        final Config config = new Config(output, 16, true);
 
         // Starter
         final Loader loader = new Loader(config);

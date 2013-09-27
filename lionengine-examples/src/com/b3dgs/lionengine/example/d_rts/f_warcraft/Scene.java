@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
@@ -13,6 +14,9 @@ import com.b3dgs.lionengine.audio.Midi;
 public final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    public static final Resolution NATIVE = new Resolution(320, 200, 60);
+
     /** World reference. */
     private final World world;
     /** Game configuration. */
@@ -28,7 +32,7 @@ public final class Scene
      */
     public Scene(final Loader loader, GameConfig config)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         this.config = config;
         world = new World(this, config);
         music = AudioMidi.loadMidi(Media.get(ResourcesLoader.MUSICS_DIR, "orcs.mid"));

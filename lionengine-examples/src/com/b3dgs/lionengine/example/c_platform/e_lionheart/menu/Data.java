@@ -19,15 +19,17 @@ final class Data
     /** Text color on selection. */
     private static final Color COLOR_OVER = new Color(255, 255, 255);
     /** Text instance for the title. */
-    private static final Text TEXT_TITLE = new Text(Font.SERIF, 15, Text.NORMAL);
+    private static final Text TEXT_TITLE = new Text(Font.SERIF, 30, Text.NORMAL);
     /** Maximum number of choices. */
     final int choiceMax;
     /** Choices list. */
     final Choice[] choices;
     /** Text reference. */
     private final Text text;
-    /** Wide factor value. */
-    private final int wideFactor;
+    /** Horizontal factor value. */
+    private final double factorH;
+    /** Vertical factor value. */
+    private final double factorV;
     /** Title name. */
     private final String title;
     /** Show title flag. */
@@ -37,15 +39,17 @@ final class Data
      * Constructor.
      * 
      * @param text The text reference.
-     * @param wideFactor The wide factor value.
+     * @param factorH The horizontal factor value.
+     * @param factorV The vertical factor value.
      * @param title The menu title.
      * @param showTitle <code>true</code> to show the title, <code>false</code> else.
      * @param choices The choices list.
      */
-    Data(Text text, int wideFactor, String title, boolean showTitle, Choice... choices)
+    Data(Text text, double factorH, double factorV, String title, boolean showTitle, Choice... choices)
     {
         this.text = text;
-        this.wideFactor = wideFactor;
+        this.factorH = factorH;
+        this.factorV = factorV;
         this.title = title;
         choiceMax = choices.length - 1;
         this.showTitle = showTitle;
@@ -63,7 +67,7 @@ final class Data
         if (showTitle)
         {
             Data.TEXT_TITLE.setColor(Data.COLOR_TITLE);
-            Data.TEXT_TITLE.draw(g, 160 * wideFactor, 66, Align.CENTER, title);
+            Data.TEXT_TITLE.draw(g, (int) (160 * factorH), (int) (66 * factorV), Align.CENTER, title);
         }
         for (int i = 0; i <= choiceMax; i++)
         {
