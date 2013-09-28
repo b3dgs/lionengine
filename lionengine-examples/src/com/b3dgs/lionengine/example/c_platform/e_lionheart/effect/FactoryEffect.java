@@ -74,8 +74,16 @@ public class FactoryEffect
     @Override
     protected SetupSurfaceRasteredGame createSetup(EffectType id)
     {
+        final Media raster;
+        if (AppLionheart.RASTER_ENABLED)
+        {
+            raster = Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster());
+        }
+        else
+        {
+            raster = null;
+        }
         return new SetupSurfaceRasteredGame(Media.get(AppLionheart.EFFECTS_DIR, id.toString()
-                + AppLionheart.CONFIG_FILE_EXTENSION), Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster()),
-                false);
+                + AppLionheart.CONFIG_FILE_EXTENSION), raster, false);
     }
 }
