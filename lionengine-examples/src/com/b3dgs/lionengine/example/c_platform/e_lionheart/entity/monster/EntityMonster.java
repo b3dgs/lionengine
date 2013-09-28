@@ -217,7 +217,12 @@ public class EntityMonster
     @Override
     protected void updateAnimations(double extrp)
     {
-        // Nothing to do
+        final State state = status.getState();
+        if (state == EntityState.WALK)
+        {
+            final double speed = Math.abs(getHorizontalForce()) / 2;
+            setAnimSpeed(speed);
+        }
     }
 
     /*

@@ -10,7 +10,6 @@ import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.purview.Rasterable;
@@ -106,10 +105,11 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
         final int max = smooth ? 2 : 1;
+        final int maxRasters = Rasterable.MAX_RASTERS;
 
         for (int m = 0; m < max; m++)
         {
-            for (int i = 1; i <= Rasterable.MAX_RASTERS; i++)
+            for (int i = 1; i <= maxRasters; i++)
             {
                 String rasFile = null;
                 if (cache)
@@ -125,24 +125,23 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
                 {
                     for (int c = 0; c < rasters.length; c++)
                     {
+                        final int[] data = rasters[c];
                         if (smooth)
                         {
                             if (m == 0)
                             {
-                                color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
-                                colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
+                                color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
+                                colorNext[c] = UtilityImage.getRasterColor(i + 1, data, maxRasters);
                             }
                             else
                             {
-                                color[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
-                                        Rasterable.MAX_RASTERS);
-                                colorNext[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
-                                        Rasterable.MAX_RASTERS);
+                                color[c] = UtilityImage.getRasterColor(maxRasters - i, data, maxRasters);
+                                colorNext[c] = UtilityImage.getRasterColor(maxRasters - i - 1, data, maxRasters);
                             }
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                            color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
                             colorNext[c] = color[c];
                         }
                     }
@@ -179,11 +178,8 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         {
             if (!file.exists())
             {
-                if (!file.mkdir())
-                {
-                    Verbose.warning(MapTilePlatformRastered.class, "addRasterPattern",
-                            "Directory has not been created: " + file.getPath());
-                }
+                final String path = file.getPath().replace(Media.getTempDir(), "").replace(Media.getSeparator(), ":");
+                Media.createPath(Media.getTempDir(), path.split(":"));
             }
             UtilityImage.saveImage(rasterBuf, new Media(rasFile));
         }
@@ -243,7 +239,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         final SpriteTiled ts;
         if (rasterFile != null)
         {
-            ts = getRasterPattern(tile.getPattern(), this.getRasterIndex(tile));
+            ts = getRasterPattern(tile.getPattern(), getRasterIndex(tile));
         }
         else
         {

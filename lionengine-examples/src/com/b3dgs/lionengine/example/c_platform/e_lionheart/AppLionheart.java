@@ -6,7 +6,6 @@ import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 
 // Tutorial: Lionheart
 // This last platform tutorial will show a quick game example to show as much things as possible.
@@ -40,10 +39,8 @@ public final class AppLionheart
     public static final String SFX_DIR = "sfx";
     /** Entity configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
-    /** Audio file extension. */
-    public static final String AUDIO_FILE_EXTENSION = ".wav";
     /** Raster enabled. */
-    public static boolean RASTER_ENABLED = true;
+    public static boolean RASTER_ENABLED = false;
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
     /** Enable sound. */
@@ -74,7 +71,7 @@ public final class AppLionheart
         else
         {
             final Loader loader = new Loader(config);
-            loader.start(new Menu(loader));
+            loader.start(new Scene(loader));
         }
     }
 

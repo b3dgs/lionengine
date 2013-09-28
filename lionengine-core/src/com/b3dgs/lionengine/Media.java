@@ -58,6 +58,22 @@ public final class Media
     }
 
     /**
+     * Create a full path and each directory.
+     * 
+     * @param source The source directory.
+     * @param path The full path.
+     */
+    public static void createPath(String source, String... path)
+    {
+        final StringBuilder string = new StringBuilder(source);
+        for (final String name : path)
+        {
+            string.append(name).append(Media.separator);
+            new File(string.toString()).mkdir();
+        }
+    }
+
+    /**
      * Get a media from its path (start by default in the resources directory). Example: Media.get("sprites",
      * "hero.png") will return resources/sprites/hero.png. This function is OS independent !
      * 

@@ -204,7 +204,7 @@ public final class UtilityMath
      * @param degree The angle in degree.
      * @return The cos value.
      */
-    public static double cos(int degree)
+    public static double cos(double degree)
     {
         return StrictMath.cos(StrictMath.toRadians(degree));
     }
@@ -215,7 +215,7 @@ public final class UtilityMath
      * @param degree The angle in degree.
      * @return The the sin value.
      */
-    public static double sin(int degree)
+    public static double sin(double degree)
     {
         return StrictMath.sin(StrictMath.toRadians(degree));
     }

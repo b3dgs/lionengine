@@ -478,9 +478,9 @@ public final class UtilityImage
     {
         if (0 == data[5])
         {
-            return data[0] + data[1] * (int) (data[2] * Math.sin(Math.toRadians(i * (data[3] / max) - data[4])));
+            return data[0] + data[1] * (int) (data[2] * UtilityMath.sin(i * (data[3] / (double) max) - data[4]));
         }
-        return data[0] + data[1] * (int) (data[2] * Math.cos(Math.toRadians(i * (data[3] / max) - data[4])));
+        return data[0] + data[1] * (int) (data[2] * UtilityMath.cos(i * (data[3] / (double) max) - data[4]));
     }
 
     /**

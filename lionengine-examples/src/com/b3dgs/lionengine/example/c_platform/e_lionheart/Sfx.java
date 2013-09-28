@@ -33,6 +33,9 @@ public enum Sfx
     /** Valdyn die. */
     VALDYN_DIE("valdyn_die");
 
+    /** Audio file extension. */
+    private static final String AUDIO_FILE_EXTENSION = ".wav";
+
     /** Sound enabled. */
     private static boolean enabled;
 
@@ -95,7 +98,7 @@ public enum Sfx
         this.sounds = new Wav[sounds.length];
         for (int i = 0; i < sounds.length; i++)
         {
-            final Media media = Media.get(AppLionheart.SFX_DIR, sounds[i] + AppLionheart.AUDIO_FILE_EXTENSION);
+            final Media media = Media.get(AppLionheart.SFX_DIR, sounds[i] + Sfx.AUDIO_FILE_EXTENSION);
             this.sounds[i] = AudioWav.loadWav(media, count);
         }
     }
