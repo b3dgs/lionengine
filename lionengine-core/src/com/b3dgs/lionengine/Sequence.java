@@ -15,7 +15,7 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
  * screen used, the current configuration, input references ({@link Keyboard}, {@link Mouse}), and it includes a
- * standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronised to a
+ * standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronized to a
  * specified frame rate.
  * <p>
  * Here a blank sequence implementation:
@@ -25,9 +25,11 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  * public class MySequence
  *         extends Sequence
  * {
+ *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
+ * 
  *     public MySequence(Loader loader)
  *     {
- *         super(loader);
+ *         super(loader, MySequence.NATIVE);
  *         // Initialize variables here
  *     }
  * 
@@ -44,17 +46,16 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  *     }
  * 
  *     &#064;Override
- *     protected void render(Graphics g)
+ *     protected void render(Graphic g)
  *     {
  *         // Render routine
  *     }
  * }
- * 
  * </pre>
  */
 public abstract class Sequence
 {
-    /** Error message internal. */
+    /** Error message loader. */
     private static final String MESSAGE_ERROR_LOADER = "Loader must not be null !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
@@ -67,12 +68,12 @@ public abstract class Sequence
 
     /** Config reference. */
     public final Config config;
-    /** Internal display reference. */
-    public final Resolution source;
     /** Keyboard reference. */
     public final Keyboard keyboard;
     /** Mouse reference. */
     public final Mouse mouse;
+    /** Source resolution reference. */
+    protected final Resolution source;
     /** Loader reference. */
     protected final Loader loader;
     /** Screen width. */
@@ -81,7 +82,7 @@ public abstract class Sequence
     protected final int height;
     /** Screen reference. */
     private final Screen screen;
-    /** External display reference. */
+    /** Output resolution reference. */
     private final Resolution output;
     /** Filter reference. */
     private final Filter filter;
@@ -128,13 +129,13 @@ public abstract class Sequence
 
         // Initialize
         this.loader = loader;
-        config = loader.getConfig();
+        config = loader.config;
+        screen = loader.screen;
+        keyboard = loader.keyboard;
+        mouse = loader.mouse;
         config.setSource(newSource);
-        screen = loader.getScreen();
         output = config.getOutput();
         source = config.getSource();
-        keyboard = loader.getKeyboard();
-        mouse = loader.getMouse();
         mouse.setConfig(config);
         filter = config.getFilter();
         sync = config.isWindowed() && output.getRate() > 0;
@@ -152,31 +153,33 @@ public abstract class Sequence
         }
 
         // Scale factor
-        final double scaleX = output.getWidth() / (double) this.source.getWidth();
-        final double scaleY = output.getHeight() / (double) this.source.getHeight();
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleY = output.getHeight() / (double) source.getHeight();
         final AffineTransform tx = new AffineTransform();
-        tx.scale(scaleX, scaleY);
 
         // Filter level
         switch (filter)
         {
             case HQ2X:
                 hqx = 2;
+                tx.scale(scaleX / 2, scaleY / 2);
                 break;
             case HQ3X:
                 hqx = 3;
+                tx.scale(scaleX / 3, scaleY / 3);
                 break;
             default:
                 hqx = 0;
+                tx.scale(scaleX, scaleY);
                 break;
         }
 
-        // Store internal size
-        width = this.source.getWidth();
-        height = this.source.getHeight();
+        // Store source size
+        width = source.getWidth();
+        height = source.getHeight();
 
         // Standard rendering
-        if (this.source.getWidth() == output.getWidth() && this.source.getHeight() == output.getHeight())
+        if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
         {
             buf = null;
             gbuf = null;
@@ -525,10 +528,10 @@ public abstract class Sequence
             switch (hqx)
             {
                 case 2:
-                    g.drawImage(new Hq2x(buf).getScaledImage(), 0, 0);
+                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
                     break;
                 case 3:
-                    g.drawImage(new Hq3x(buf).getScaledImage(), 0, 0);
+                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
                     break;
                 default:
                     g.drawImage(buf, op, 0, 0);

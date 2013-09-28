@@ -170,43 +170,33 @@ public class ModuleGame
         gold.canSpend(100); // returns false
     }
 
-    public class MySequence
+    public static class MySequence
             extends Sequence
     {
-        private final World world;
+        private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
         public MySequence(Loader loader)
         {
-            super(loader, new Resolution(320, 240, 60));
+            super(loader, MySequence.NATIVE);
             // Initialize variables here
-            world = new World(this);
         }
 
         @Override
         protected void load()
         {
             // Load resources here
-            world.loadFromFile(Media.get("level.lvl"));
         }
 
         @Override
         protected void update(double extrp)
         {
             // Update routine
-            world.update(extrp);
         }
 
         @Override
         protected void render(Graphic g)
         {
             // Render routine
-            world.render(g);
-        }
-
-        @Override
-        protected void onTerminate(boolean hasNextSequence)
-        {
-            // Called when sequence is closing, optional
         }
     }
 

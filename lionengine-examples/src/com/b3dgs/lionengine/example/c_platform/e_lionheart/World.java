@@ -52,10 +52,10 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        final double scaleH = source.getWidth() / (double) Scene.SCENE_DISPLAY.getWidth();
-        final double scaleV = source.getHeight() / (double) Scene.SCENE_DISPLAY.getHeight();
+        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
+        final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
         camera = new CameraPlatform(width, height);
-        factoryLandscape = new FactoryLandscape(config, scaleH, scaleV, false);
+        factoryLandscape = new FactoryLandscape(source, scaleH, scaleV, false);
         factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
         level = new Level(camera, factoryEntity, handlerEntity, output.getRate());

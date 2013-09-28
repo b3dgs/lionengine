@@ -76,7 +76,7 @@ public class ModuleCore
     void config()
     {
         final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
+        new Config(output, 16, true);
     }
 
     void imageInfo()

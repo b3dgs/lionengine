@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -42,18 +42,18 @@ final class Foreground
     /**
      * Constructor.
      * 
-     * @param config The config reference.
+     * @param source The resolution source reference.
      * @param scaleH The horizontal factor.
      * @param scaleV The vertical factor.
      * @param theme The theme name.
      */
-    Foreground(Config config, double scaleH, double scaleV, String theme)
+    Foreground(Resolution source, double scaleH, double scaleV, String theme)
     {
         super(theme, 0, 0);
         this.scaleH = scaleH;
         this.scaleV = scaleV;
-        screenWidth = config.getSource().getWidth();
-        screenHeight = config.getSource().getHeight();
+        screenWidth = source.getWidth();
+        screenHeight = source.getHeight();
         nominal = 210;
         height = 0.0;
         depth = 4.0;
@@ -303,7 +303,7 @@ final class Foreground
                 }
             }
 
-            waterEffect(g, 0.06, 4.0, 0.8, 3.0);
+            waterEffect(g, 0.06, 1.5, 0.8, 3.0);
         }
 
         /**

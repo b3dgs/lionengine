@@ -77,8 +77,8 @@ public class StatsRenderer
     {
         for (int i = 0; i < 8; i++)
         {
-            final int x = i % 4 * 9 + 1;
-            final int y = (int) Math.floor(i / 4) * 9 + 1;
+            final int x = i % 4 * 8 + 1;
+            final int y = (int) Math.floor(i / 4) * 8 + 1;
             if (i < stats.getHeart())
             {
                 heart.render(g, 0, x, y);
@@ -102,18 +102,18 @@ public class StatsRenderer
      */
     private void renderTalisment(Graphic g, Stats stats)
     {
-        final int x = getScaledX(60, 10);
+        final int x = getScaledX(70, 10);
         hud.render(g, 0, x, 2);
         final int talisments = stats.getTalisment();
         if (talisments < 10)
         {
-            number.render(g, 0, x + 20, 2);
-            number.render(g, talisments + 1, x + 28, 2);
+            number.render(g, 1, x + 16, 2);
+            number.render(g, talisments + 1, x + 24, 2);
         }
         else if (talisments < 100)
         {
-            number.render(g, talisments / 10 + 1, x + 20, 2);
-            number.render(g, talisments % 10 + 1, x + 28, 2);
+            number.render(g, talisments / 10 + 1, x + 16, 2);
+            number.render(g, talisments % 10 + 1, x + 24, 2);
         }
     }
 
@@ -125,18 +125,18 @@ public class StatsRenderer
      */
     private void renderLife(Graphic g, Stats stats)
     {
-        final int x = getScaledX(280, 10);
-        hud.render(g, 6, x, 2);
+        final int x = getScaledX(282, 10);
+        hud.render(g, 6, x, 1);
         final int lifes = stats.getLife();
         if (lifes < 10)
         {
-            number.render(g, 0, x + 20, 2);
-            number.render(g, lifes + 1, x + 28, 2);
+            number.render(g, 1, x + 18, 2);
+            number.render(g, lifes + 1, x + 26, 2);
         }
         else if (lifes < 100)
         {
-            number.render(g, lifes / 10 + 1, x + 20, 2);
-            number.render(g, lifes % 10 + 1, x + 28, 2);
+            number.render(g, lifes / 10 + 1, x + 18, 2);
+            number.render(g, lifes % 10 + 1, x + 26, 2);
         }
     }
 

@@ -30,13 +30,13 @@ public final class Loader
     private static final String MESSAGE_ERROR_SEQUENCE = "Sequence badly interrupted !";
 
     /** Config reference. */
-    private final Config config;
+    final Config config;
     /** Screen reference. */
-    private final Screen screen;
+    final Screen screen;
     /** Keyboard reference. */
-    private final Keyboard keyboard;
+    final Keyboard keyboard;
     /** Mouse reference. */
-    private final Mouse mouse;
+    final Mouse mouse;
     /** Thread loader. */
     private final LoaderThread thread;
     /** Next sequence pointer. */
@@ -118,45 +118,5 @@ public final class Loader
         }
         screen.dispose();
         Verbose.info("LionEngine terminated");
-    }
-
-    /**
-     * Get the config.
-     * 
-     * @return The config.
-     */
-    Config getConfig()
-    {
-        return config;
-    }
-
-    /**
-     * Get the screen.
-     * 
-     * @return The screen.
-     */
-    Screen getScreen()
-    {
-        return screen;
-    }
-
-    /**
-     * Get the keyboard.
-     * 
-     * @return The keyboard.
-     */
-    Keyboard getKeyboard()
-    {
-        return keyboard;
-    }
-
-    /**
-     * Get the mouse.
-     * 
-     * @return The mouse.
-     */
-    Mouse getMouse()
-    {
-        return mouse;
     }
 }

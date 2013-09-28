@@ -85,7 +85,7 @@ final class Scene
         animation.updateAnimation(extrp);
 
         // Change the tile number to display
-        tile += 0.1;
+        tile += 0.1 * extrp;
 
         // Ensure value is lower than the total number of tile
         tile %= tilesheet.getTilesNumber();

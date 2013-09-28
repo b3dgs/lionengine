@@ -1,8 +1,8 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -51,27 +51,27 @@ final class Swamp
     /**
      * Constructor.
      * 
-     * @param config The config reference.
+     * @param source The resolution source reference.
      * @param scaleH The horizontal factor.
      * @param scaleV The horizontal factor.
      * @param theme The theme name.
      * @param flickering The flickering flag.
      */
-    Swamp(Config config, double scaleH, double scaleV, String theme, boolean flickering)
+    Swamp(Resolution source, double scaleH, double scaleV, String theme, boolean flickering)
     {
         super(theme, 0, 512);
         this.scaleH = scaleH;
         this.scaleV = scaleV;
         this.flickering = flickering;
         final String path = Media.getPath(AppLionheart.BACKGROUNDS_DIR, "Swamp", theme);
-        final int width = config.getSource().getWidth();
-        final int halfScreen = config.getSource().getWidth() / 4;
+        final int width = source.getWidth();
+        final int halfScreen = source.getWidth() / 4;
         add(new Backdrop(path, this.flickering, width));
         add(new Clouds(Media.get(path, "cloud.png"), width, 4));
-        add(new Parallax(config, Media.get(path, "parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100));
+        add(new Parallax(source, Media.get(path, "parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100));
 
         totalHeight = 120;
-        setOffsetY(config.getSource().getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
+        setOffsetY(source.getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
     }
 
     /**

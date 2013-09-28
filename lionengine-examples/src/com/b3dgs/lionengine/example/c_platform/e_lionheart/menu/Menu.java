@@ -116,6 +116,10 @@ public class Menu
     private boolean waitKey;
     /** Choice pressed flag. */
     private boolean choicePressed;
+    /** Loaded flag. */
+    private boolean loaded;
+    /** Can start flag. */
+    private boolean canStart;
     /** Current menu. */
     private MenuType menu;
     /** Next menu. */
@@ -133,8 +137,8 @@ public class Menu
         super(loader, Menu.MENU_DISPLAY);
         text = new Text(Font.SERIF, 24, Text.NORMAL);
         timerPressStart = new Timing();
-        factorH = 2.0 * (source.getWidth() / (double) Menu.MENU_DISPLAY.getWidth());
-        factorV = 2.0 * (source.getHeight() / (double) Menu.MENU_DISPLAY.getHeight());
+        factorH = 2.0 * (width / (double) Menu.MENU_DISPLAY.getWidth());
+        factorV = 2.0 * (height / (double) Menu.MENU_DISPLAY.getHeight());
 
         font = Drawable.loadSpriteFont(Menu.FONT_SPRITE, Menu.FONT_DATA, 24, 24);
 
@@ -313,14 +317,12 @@ public class Menu
      */
     private void handleMenuNew(double extrp)
     {
-        boolean canStart = false;
         if (alpha == 0.0)
         {
             txtAlpha += Menu.ALPHA_STEP * extrp;
             if (txtAlpha > 255.0)
             {
                 txtAlpha = 255.0;
-                canStart = true;
             }
             // Wait for loading
             if (!firstLoaded && txtAlpha == 255.0)
@@ -328,6 +330,7 @@ public class Menu
                 firstLoaded = true;
                 timerPressStart.start();
                 start(new Scene(loader), true);
+                loaded = true;
             }
             if (txtAlpha == 255.0 && timerPressStart.elapsed(500))
             {
@@ -335,14 +338,17 @@ public class Menu
                 timerPressStart.start();
                 pressStart = !pressStart;
             }
-        }
-
-        // Entering game
-        if (canStart && keyboard.used())
-        {
-            transition = TransitionType.OUT;
-            menuNext = MenuType.GAME;
-            firstLoaded = false;
+            // Enter the game
+            if (loaded && !keyboard.used())
+            {
+                canStart = true;
+            }
+            if (canStart && keyboard.used())
+            {
+                transition = TransitionType.OUT;
+                menuNext = MenuType.GAME;
+                firstLoaded = false;
+            }
         }
     }
 

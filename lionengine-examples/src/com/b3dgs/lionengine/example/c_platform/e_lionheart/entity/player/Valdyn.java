@@ -40,9 +40,9 @@ public final class Valdyn
     /** The fall time margin (in milli). */
     static final int FALL_TIME_MARGIN = 100;
     /** Hurt effect value (lower is faster). */
-    private static final int HURT_EFFECT_FREQ = 7;
+    private static final int HURT_EFFECT_FREQ = 5;
     /** Hurt time before effect. */
-    private static final int HURT_TIME_BEFORE_EFFECT = 500;
+    private static final int HURT_TIME_BEFORE_EFFECT = 100;
     /** Hurt time max. */
     private static final int HURT_TIME_MAX = 2000;
     /** Divisor for walk speed animation. */

@@ -150,7 +150,7 @@ final class Screen
      * 
      * @param output The output resolution
      */
-    public void setResolution(Resolution output)
+    private void setResolution(Resolution output)
     {
         if (hasApplet)
         {

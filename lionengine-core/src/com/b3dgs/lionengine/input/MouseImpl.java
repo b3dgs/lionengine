@@ -183,8 +183,8 @@ class MouseImpl
     @Override
     public void setConfig(Config config)
     {
-        this.xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        this.yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }
 
     @Override

@@ -5,12 +5,13 @@ import javax.swing.JApplet;
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
  * <ul>
- * <li>internal : It is corresponding to the native screen display for what the program was designed for</li>
- * <li>external : It is corresponding to the desired screen display output. If internal & external are not equal, the
+ * <li>source : It is corresponding to the native screen resolution for what the program was designed for (the source is
+ * defined by the {@link Sequence})</li>
+ * <li>output : It is corresponding to the desired screen resolution output. If source & output are not equal, the
  * screen will be stretched</li>
  * <li>windowed : Allows to set the screen output mode (<code>true</code> for windowed, <code>false</code> for
  * fullscreen)</li>
- * <li>filter : Used only in case of screen stretching, depending of the external display</li>
+ * <li>filter : Used only in case of screen stretching, depending of the output resolution</li>
  * <li>applet : Can be used to set the applet reference in case of applet mode</li>
  * </ul>
  * <p>
@@ -24,14 +25,14 @@ import javax.swing.JApplet;
  */
 public final class Config
 {
-    /** Error message internal. */
-    private static final String MESSAGE_ERROR_INTERNAL = "The internal display must not be null !";
-    /** Error message external. */
-    private static final String MESSAGE_ERROR_EXTERNAL = "The external display must not be null !";
+    /** Error message source. */
+    private static final String MESSAGE_ERROR_SOURCE = "The source resolution must not be null !";
+    /** Error message output. */
+    private static final String MESSAGE_ERROR_OUTPUT = "The output resolution must not be null !";
     /** Error message filter. */
     private static final String MESSAGE_ERROR_FILTER = "The filter must not be null !";
 
-    /** External display reference. */
+    /** Output resolution reference. */
     private final Resolution output;
     /** Filter reference. */
     private final Filter filter;
@@ -39,7 +40,7 @@ public final class Config
     private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
-    /** External display reference. */
+    /** Source resolution reference. */
     private Resolution source;
     /** Ratio desired. */
     private double ratio;
@@ -49,7 +50,7 @@ public final class Config
     /**
      * Create a config.
      * 
-     * @param output The output display (used on rendering).
+     * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      */
@@ -61,21 +62,21 @@ public final class Config
     /**
      * Create a config.
      * 
-     * @param output The output display (used on rendering).
+     * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      * @param filter The filter mode (must not be null).
      */
     public Config(Resolution output, int depth, boolean windowed, Filter filter)
     {
-        Check.notNull(output, Config.MESSAGE_ERROR_EXTERNAL);
+        Check.notNull(output, Config.MESSAGE_ERROR_OUTPUT);
         Check.notNull(filter, Config.MESSAGE_ERROR_FILTER);
 
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
         this.filter = filter;
-        this.ratio = -1;
+        setRatio(output.getWidth() / (double) output.getHeight());
     }
 
     /**
@@ -162,11 +163,11 @@ public final class Config
     /**
      * Set the resolution source.
      * 
-     * @param source The source display (native).
+     * @param source The source resolution (native).
      */
     void setSource(Resolution source)
     {
-        Check.notNull(source, Config.MESSAGE_ERROR_INTERNAL);
+        Check.notNull(source, Config.MESSAGE_ERROR_SOURCE);
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
         if (ratio > 0)
         {

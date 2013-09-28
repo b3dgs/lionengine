@@ -7,15 +7,15 @@ package com.b3dgs.lionengine;
  * <li><code>ratio</code>, which is computed by using the <code>width & height</code>, allows to know the screen ratio.</li>
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
- * The This class is mainly used to describe the display resolution chosen.
+ * This class is mainly used to describe the display resolution chosen.
  */
 public final class Resolution
 {
-    /** Display width. */
+    /** Resolution width. */
     private int width;
-    /** Display height. */
+    /** Resolution height. */
     private int height;
-    /** Display ratio. */
+    /** Resolution ratio. */
     private double ratio;
     /** Display rate. */
     private int rate;
@@ -23,8 +23,8 @@ public final class Resolution
     /**
      * Constructor.
      * 
-     * @param width The display width (in pixel).
-     * @param height The display height (in pixel).
+     * @param width The resolution width (in pixel).
+     * @param height The resolution height (in pixel).
      * @param rate The refresh rate (usually 50 or 60).
      */
     public Resolution(int width, int height, int rate)
@@ -35,8 +35,8 @@ public final class Resolution
     /**
      * Set the resolution.
      * 
-     * @param width The display width (in pixel).
-     * @param height The display height (in pixel).
+     * @param width The resolution width (in pixel).
+     * @param height The resolution height (in pixel).
      */
     public void set(int width, int height)
     {
@@ -46,8 +46,8 @@ public final class Resolution
     /**
      * Set the resolution.
      * 
-     * @param width The display width (in pixel).
-     * @param height The display height (in pixel).
+     * @param width The resolution width (in pixel).
+     * @param height The resolution height (in pixel).
      * @param rate The refresh rate in hertz (usually 50 or 60).
      */
     public void set(int width, int height, int rate)
@@ -55,7 +55,7 @@ public final class Resolution
         Check.argument(width > 0 && height > 0 && rate >= 0);
         this.width = width;
         this.height = height;
-        this.ratio = width / (double) height;
+        ratio = width / (double) height;
         this.rate = rate;
     }
 
@@ -68,7 +68,8 @@ public final class Resolution
     {
         if (!Ratio.equals(this.ratio, ratio))
         {
-            width = (int) Math.floor(height * ratio);
+            width = (int) Math.ceil(height * ratio);
+            width = (int) Math.floor(width / 2.0) * 2;
             this.ratio = ratio;
         }
     }
@@ -84,9 +85,9 @@ public final class Resolution
     }
 
     /**
-     * Get the display width.
+     * Get the resolution width.
      * 
-     * @return The display width.
+     * @return The resolution width.
      */
     public int getWidth()
     {
@@ -94,9 +95,9 @@ public final class Resolution
     }
 
     /**
-     * Get the display height.
+     * Get the resolution height.
      * 
-     * @return The display height.
+     * @return The resolution height.
      */
     public int getHeight()
     {
@@ -104,9 +105,9 @@ public final class Resolution
     }
 
     /**
-     * Get the display ratio.
+     * Get the resolution ratio.
      * 
-     * @return The display ratio.
+     * @return The resolution ratio.
      */
     public double getRatio()
     {

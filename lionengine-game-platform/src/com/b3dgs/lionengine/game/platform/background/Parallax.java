@@ -1,8 +1,9 @@
 package com.b3dgs.lionengine.game.platform.background;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -41,7 +42,7 @@ public class Parallax
     /**
      * Create a new parallax.
      * 
-     * @param config The config used.
+     * @param source The resolution source used.
      * @param media The parallax image media.
      * @param parallaxsNumber The number parallax lines.
      * @param decX The horizontal offset.
@@ -49,16 +50,16 @@ public class Parallax
      * @param sx The starting width.
      * @param sy The starting height.
      */
-    public Parallax(Config config, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
+    public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
     {
-        screenWidth = config.getSource().getWidth();
-        screenHeight = config.getSource().getHeight();
+        screenWidth = source.getWidth();
+        screenHeight = source.getHeight();
         factH = sx / 100.0 / 0.6;
 
         // Load surface
         this.parallaxsNumber = parallaxsNumber;
         parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
-        parallax.prepare(config.getFilter());
+        parallax.prepare(Filter.NONE);
         data = new BackgroundElement(0, decY + 64, parallax);
         this.decX = parallax.getWidthOriginal() + decX;
         offsetX = parallax.getWidth();

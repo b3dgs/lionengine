@@ -35,13 +35,13 @@ public final class AppFirstCode
         // - The swing theme (general java appearance)
         Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
 
-        // Display configuration (desired = 640*480*16 at 60fps)
+        // Display configuration (desired = 640*480*16)
         // This is corresponding to the output configuration
         // As our native is in 320*240, the output will be scaled by 2
         // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
         final Resolution output = new Resolution(640, 480, 60);
 
-        // Final configuration (rendering will be scaled by 2 considering native and desired config)
+        // Final configuration (rendering will be scaled by 2 considering source and output resolution)
         // This is the final configuration container, including window mode
         final Config config = new Config(output, 16, true);
 

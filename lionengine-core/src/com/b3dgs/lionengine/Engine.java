@@ -21,11 +21,6 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * <pre>
  * public final class AppFirstCode
  * {
- *     private AppFirstCode()
- *     {
- *         throw new RuntimeException();
- *     }
- * 
  *     public static void main(String[] args)
  *     {
  *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
@@ -38,26 +33,25 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  *         // - The swing theme (general java appearance)
  *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;, Verbose.CRITICAL, Theme.SYSTEM);
  * 
- *         // Configuration reference (native size = 320*240*16 at 60fps)
- *         // This mean that our native resolution is in 320*240
- *         // These data are used in case of rendering scaling, if the desired output is different
- *         // The last value is used to perform the frame rate calculation, corresponding to the native frame rate
- *         final Display internal = new Display(320, 240, 16, 60);
- * 
- *         // Display configuration (desired = 640*480*16 at 60fps)
+ *         // Display configuration (desired = 640*480*16)
  *         // This is corresponding to the output configuration
  *         // As our native is in 320*240, the output will be scaled by 2
  *         // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
- *         final Display external = new Display(640, 480, 16, 60);
+ *         final Resolution output = new Resolution(640, 480, 60);
  * 
- *         // Final configuration (rendering will be scaled by 2 considering native and desired config)
+ *         // Final configuration (rendering will be scaled by 2 considering source and output resolution)
  *         // This is the final configuration container, including window mode
- *         final Config config = new Config(internal, external, true);
+ *         final Config config = new Config(output, 16, true);
  * 
  *         // Program starter, the main thread, setup with our configuration
  *         // It just needs one sequence reference to start
  *         final Loader loader = new Loader(config);
  *         loader.start(new Scene(loader));
+ *     }
+ * 
+ *     private AppFirstCode()
+ *     {
+ *         throw new RuntimeException();
  *     }
  * }
  * </pre>
