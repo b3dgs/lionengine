@@ -8,6 +8,7 @@ import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
 
 /**
@@ -50,7 +51,10 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        // Update routine
+        if (keyboard.isPressed(Keyboard.ESCAPE))
+        {
+            end();
+        }
     }
 
     @Override

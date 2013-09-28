@@ -4,8 +4,6 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Theme;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 
 // Tutorial: First code
@@ -26,27 +24,24 @@ public final class AppFirstCode
     public static void main(String[] args)
     {
         // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
-        // The Engine is initialized with our parameters:
+        // The engine is initialized with our parameters:
         // - The name of our program: "First Code"
-        // - Our program version: "1.0.0"
+        // - The program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
-        // This mean that any resources loaded with Media.get(...) will have this directory as prefix
-        // - The verbose level
-        // - The swing theme (general java appearance)
-        Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
+        // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
 
-        // Display configuration (desired = 640*480*16)
-        // This is corresponding to the output configuration
-        // As our native is in 320*240, the output will be scaled by 2
-        // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
+        // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
+        // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
+        // If the current frame rate is lower than the required in the native, the extrapolation value will allow to
+        // compensate any data calculation.
         final Resolution output = new Resolution(640, 480, 60);
 
-        // Final configuration (rendering will be scaled by 2 considering source and output resolution)
-        // This is the final configuration container, including window mode
+        // Final configuration (rendering will be scaled by 2 considering source and output resolution).
+        // This is the final configuration container, including color depth and window mode.
         final Config config = new Config(output, 16, true);
 
-        // Program starter, the main thread, setup with our configuration
-        // It just needs one sequence reference to start
+        // Program starter, setup with our configuration. It just needs one sequence reference to start.
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
