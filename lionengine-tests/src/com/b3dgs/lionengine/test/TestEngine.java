@@ -299,7 +299,7 @@ public class TestEngine
     @Test
     public void testRatio()
     {
-        Assert.assertTrue(Ratio.equals(Ratio.K16_10, Ratio.K16_10));
+        Assert.assertTrue(Ratio.equals(Ratio.R16_10, Ratio.R16_10));
     }
 
     /**
