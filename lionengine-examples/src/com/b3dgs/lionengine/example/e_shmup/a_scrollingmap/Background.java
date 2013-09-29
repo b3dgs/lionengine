@@ -49,7 +49,7 @@ final class Background
         alpha = normal;
         alphaDest = alpha;
         alphaReal = alphaDest;
-        surface = Drawable.loadSpriteTiled(Media.get("stars.png"), 3, 6);
+        surface = Drawable.loadSpriteTiled(Media.get("backgrounds", "stars.png"), 3, 6);
         surface.load(false);
         stars = new Star[256];
         for (int i = 0; i < stars.length; i++)

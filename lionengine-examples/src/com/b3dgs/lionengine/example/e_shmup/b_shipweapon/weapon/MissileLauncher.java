@@ -27,7 +27,13 @@ final class MissileLauncher
     @Override
     protected void launchProjectile(EntityGame owner)
     {
-        addProjectile(ProjectileType.MISSILE, 1, 136, -4, 4, -10, -10);
-        addProjectile(ProjectileType.MISSILE, 1, 151, 4, 4, 10, -10);
+        addProjectile(ProjectileType.MISSILE, 1, 136, -4.5, 4.5, -10, -10);
+        addProjectile(ProjectileType.MISSILE, 1, 151, 4.5, 4.5, 10, -10);
+        
+        addProjectile(ProjectileType.MISSILE, 1, 136, -5, 3.75, -10, -12);
+        addProjectile(ProjectileType.MISSILE, 1, 151, 5, 3.75, 10, -12);
+        
+        addProjectile(ProjectileType.MISSILE, 1, 136, -6, 3.5, -10, -14);
+        addProjectile(ProjectileType.MISSILE, 1, 151, 6, 3.5, 10, -14);
     }
 }

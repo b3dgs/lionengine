@@ -8,6 +8,7 @@ import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.Weapon;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.WeaponType;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -50,6 +51,7 @@ final class Ship
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(160, 200);
+        setCollision(new CollisionData(12, -28, 24, 28, false));
     }
 
     /**
@@ -66,6 +68,7 @@ final class Ship
         final double y = UtilityMath.curveValue(getLocationY(), destY, 3.0);
         setLocation(x, y);
         updateOffset();
+        updateCollision();
         if (mouse.hasClicked(Mouse.LEFT))
         {
             weaponFront.launch();

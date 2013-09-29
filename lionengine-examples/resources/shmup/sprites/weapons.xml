@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity name="weapons" surface="weapons.png">
+	<frames horizontal="15" vertical="16"/>
+	<size width="12" height="14"/>
+	<offset x="0" y="0"/>
+</entity>

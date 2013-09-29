@@ -2,6 +2,7 @@ package com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
@@ -18,6 +19,7 @@ public abstract class Projectile
     Projectile(SetupSurfaceGame setup, int id, int frame)
     {
         super(setup, id, frame);
+        setCollision(new CollisionData(10, -4, 4, 4, false));
     }
 
     /*

@@ -17,7 +17,7 @@ final class PulseCannon
     PulseCannon(FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
-        setRate(80);
+        setRate(100);
     }
 
     /*
@@ -27,6 +27,9 @@ final class PulseCannon
     @Override
     protected void launchProjectile(EntityGame owner)
     {
-        addProjectile(ProjectileType.BULLET, 1, 0, 0, 5, 0, -3);
+        addProjectile(ProjectileType.BULLET, 1, 1, 0, 5, 0, -3);
+
+        addProjectile(ProjectileType.BULLET, 1, 77, -5, -5, -5, -18);
+        addProjectile(ProjectileType.BULLET, 1, 78, 5, -5, 5, -18);
     }
 }
