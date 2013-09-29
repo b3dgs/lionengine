@@ -55,14 +55,14 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     }
 
     /**
-     * Perform an attack from the owner (called when the launcher fired its projectile(s).
+     * Perform an attack from the owner (called when the launcher fired its projectile(s)).
      * <p>
      * Use theses functions to add projectiles:
      * </p>
      * <ul>
-     * <li>{@link #addProjectile(Enum, int, int, double, double, double, double)}</li>
-     * <li>{@link #addProjectile(Enum, int, int, int, double, double, double, double)}</li>
-     * <li>{@link #addProjectile(Enum, long, int, int, double, double, double, double)}</li>
+     * <li>{@link #addProjectile(Enum, int, int, double, double, int, int)}</li>
+     * <li>{@link #addProjectile(Enum, int, int, int, double, double, int, int)}</li>
+     * <li>{@link #addProjectile(Enum, long, int, int, double, double, int, int)}</li>
      * </ul>
      * 
      * @param owner The owner reference.
@@ -70,7 +70,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     protected abstract void launchProjectile(E2 owner);
 
     /**
-     * Perform an attack from the owner to target (called when the launcher fired its projectile(s).
+     * Perform an attack from the owner to target (called when the launcher fired its projectile(s)).
      * 
      * @param owner The owner reference.
      * @param target The target reference.
@@ -87,6 +87,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         if (timer.elapsed(rate))
         {
             launchProjectile(owner);
+            timer.stop();
             timer.start();
             return true;
         }
@@ -104,6 +105,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         if (timer.elapsed(rate))
         {
             launchProjectile(owner, target);
+            timer.stop();
             timer.start();
             return true;
         }
@@ -193,7 +195,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      */
-    protected void addProjectile(T type, int dmg, int frame, E target, double speed, double offX, double offY)
+    protected void addProjectile(T type, int dmg, int frame, E target, double speed, int offX, int offY)
     {
         if (target != null)
         {
@@ -220,7 +222,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      */
-    protected void addProjectile(T type, int dmg, int frame, double vecX, double vecY, double offX, double offY)
+    protected void addProjectile(T type, int dmg, int frame, double vecX, double vecY, int offX, int offY)
     {
         addProjectile(type, -1, 0, dmg, frame, vecX, vecY, offX, offY, null);
     }
@@ -237,7 +239,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      */
-    protected void addProjectile(T type, int id, int dmg, int frame, double vecX, double vecY, double offX, double offY)
+    protected void addProjectile(T type, int id, int dmg, int frame, double vecX, double vecY, int offX, int offY)
     {
         addProjectile(type, id, 0, dmg, frame, vecX, vecY, offX, offY, null);
     }
@@ -254,8 +256,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      */
-    protected void addProjectile(T type, long delay, int dmg, int frame, double vecX, double vecY, double offX,
-            double offY)
+    protected void addProjectile(T type, long delay, int dmg, int frame, double vecX, double vecY, int offX, int offY)
     {
         addProjectile(type, -1, delay, dmg, frame, vecX, vecY, offX, offY, null);
     }
@@ -274,8 +275,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param offY The vertical projectile location offset.
      * @param target The target reference.
      */
-    private void addProjectile(T type, int id, long delay, int dmg, int frame, double vecX, double vecY, double offX,
-            double offY, E target)
+    private void addProjectile(T type, int id, long delay, int dmg, int frame, double vecX, double vecY, int offX,
+            int offY, E target)
     {
         final P projectile = factory.createProjectile(type, id, frame);
 
@@ -284,10 +285,11 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         projectile.setCanHitTargetOnly(hitTargetOnly);
         projectile.damages.setMin(dmg);
         projectile.damages.setMax(dmg);
-        projectile.start(owner.getLocationIntX(), owner.getLocationIntY(), vecX, vecY);
-        projectile.moveLocation(1, offX + offsetX, offsetY - offY);
+        final int x = owner.getLocationIntX() + offX + offsetX;
+        final int y = owner.getLocationIntY() + offY + offsetY;
+        projectile.start(x, y, vecX, vecY);
         projectile.setDelay(delay);
 
-        this.handler.add(projectile);
+        handler.add(projectile);
     }
 }

@@ -28,7 +28,7 @@ public abstract class Projectile
      */
 
     @Override
-    protected void updateMovement(double vecX, double vecY, double extrp)
+    protected void updateMovement(double extrp, double vecX, double vecY)
     {
         // Apply a linear movement to the projectile with its vector
         moveLocation(extrp, vecX, vecY);

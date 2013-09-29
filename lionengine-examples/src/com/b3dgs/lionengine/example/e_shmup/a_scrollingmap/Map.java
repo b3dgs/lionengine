@@ -1,12 +1,12 @@
 package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
-import com.b3dgs.lionengine.game.shmup.MapTileShmup;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
  * Map implementation.
  */
 final class Map
-        extends MapTileShmup<TileCollision, Tile>
+        extends MapTileGame<TileCollision, Tile>
 {
     /**
      * Constructor.

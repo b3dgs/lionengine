@@ -104,11 +104,11 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     /**
      * Define the projectile movement.
      * 
+     * @param extrp The extrapolation value.
      * @param vecX The horizontal vector.
      * @param vecY The vertical vector.
-     * @param extrp The extrapolation value.
      */
-    protected abstract void updateMovement(double vecX, double vecY, double extrp);
+    protected abstract void updateMovement(double extrp, double vecX, double vecY);
 
     /**
      * Start projectile handling.
@@ -132,7 +132,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      */
     public void update(double extrp)
     {
-        updateMovement(vecX, vecY, extrp);
+        updateMovement(extrp, vecX, vecY);
         updateCollision();
     }
 

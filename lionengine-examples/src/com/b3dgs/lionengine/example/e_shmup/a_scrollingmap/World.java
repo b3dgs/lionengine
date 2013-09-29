@@ -38,7 +38,7 @@ final class World
         background = new Background();
         camera = new CameraGame();
         camera.setView(0, 0, width, height);
-        y = -210;
+        y = -216;
 
         // Rip a level and store data in the map
         ripLevel(Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"), Media.get("levels", "0.map"));
@@ -74,9 +74,9 @@ final class World
     {
         camera.setLocationY(y);
         y += 1.0;
-        if (y > 220)
+        if (y > 216)
         {
-            y = -220;
+            y = -216;
         }
         background.update(extrp);
     }

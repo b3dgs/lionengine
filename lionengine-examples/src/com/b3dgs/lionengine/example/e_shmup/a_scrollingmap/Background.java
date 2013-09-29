@@ -77,7 +77,7 @@ final class Background
 
         if (UtilityRandom.getRandomInteger(0, 1000) == 0 && effectTime.elapsed(5000))
         {
-            effect();
+            startEffect();
             effectTime.start();
         }
     }
@@ -94,7 +94,7 @@ final class Background
         g.drawRect(0, 0, 320, 200, true);
         for (final Star star : stars)
         {
-            surface.render(g, star.getId(), (int) star.getX() - camera.getLocationIntX(), (int) star.getY());
+            surface.render(g, star.getId(), camera.getViewpointX((int) star.getX()), (int) star.getY());
         }
         if (effect)
         {
@@ -117,7 +117,7 @@ final class Background
     /**
      * Start the lightning effect.
      */
-    private void effect()
+    private void startEffect()
     {
         alphaReal = 25;
         alphaDest = normal;

@@ -1,4 +1,4 @@
-package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
+package com.b3dgs.lionengine.example.e_shmup.b_shipweapon;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Engine;
@@ -7,16 +7,16 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 
-// Tutorial: Shmup Scrolling Map
-// This tutorial shows how to make a simple scrolling using a MapTile for a Shoot'em Up game.
+// Tutorial: Shmup Ship Weapon
+// This tutorial shows how to handle the weapon for a ship controlled by the player.
 
 /**
  * Program starts here.
  */
-public final class AppShmupScrollingMap
+public final class AppShmupShipWeapon
 {
     /** Application name. */
-    public static final String NAME = "Shmup Scrolling Map";
+    public static final String NAME = "Shmup Ship Weapon";
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
@@ -30,7 +30,7 @@ public final class AppShmupScrollingMap
     public static void main(String[] argv)
     {
         // Start engine
-        Engine.start(AppShmupScrollingMap.NAME, AppShmupScrollingMap.VERSION, AppShmupScrollingMap.RESOURCES);
+        Engine.start(AppShmupShipWeapon.NAME, AppShmupShipWeapon.VERSION, AppShmupShipWeapon.RESOURCES);
 
         // Resolution
         final Resolution output = new Resolution(640, 400, 60);
@@ -46,7 +46,7 @@ public final class AppShmupScrollingMap
     /**
      * Private constructor.
      */
-    private AppShmupScrollingMap()
+    private AppShmupShipWeapon()
     {
         throw new RuntimeException();
     }
