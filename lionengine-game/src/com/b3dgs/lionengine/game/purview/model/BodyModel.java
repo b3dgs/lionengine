@@ -155,6 +155,12 @@ public class BodyModel
     {
         location.setLocationY(y);
     }
+    
+    @Override
+    public void setLocationOffset(double x, double y)
+    {
+        location.setLocationOffset(x, y);
+    }
 
     @Override
     public void setSize(int width, int height)
@@ -196,6 +202,18 @@ public class BodyModel
     public double getLocationOldY()
     {
         return location.getLocationOldY();
+    }
+    
+    @Override
+    public int getLocationOffsetX()
+    {
+        return location.getLocationOffsetX();
+    }
+    
+    @Override
+    public int getLocationOffsetY()
+    {
+        return location.getLocationOffsetY();
     }
 
     @Override

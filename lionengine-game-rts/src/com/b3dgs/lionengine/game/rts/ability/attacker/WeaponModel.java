@@ -233,6 +233,18 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     {
         return user.getLocationIntY();
     }
+    
+    @Override
+    public int getLocationOffsetX()
+    {
+        return user.getLocationOffsetX();
+    }
+    
+    @Override
+    public int getLocationOffsetY()
+    {
+        return user.getLocationOffsetY();
+    }
 
     @Override
     public int getWidth()

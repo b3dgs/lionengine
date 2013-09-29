@@ -21,16 +21,16 @@ final class Ship
 {
     /** Ship surface. */
     private final SpriteTiled sprite;
-    /** Id. */
-    private final int id;
     /** Height. */
     private final int screenHeight;
     /** Weapon front. */
     private final Weapon weaponFront;
     /** Weapon rear. */
     private final Weapon weaponRear;
-    /** Move sprite offset. */
-    private int offset;
+    /** Old offset. */
+    private int offsetOldX;
+    /** Tile offset. */
+    private int tileOffset;
 
     /**
      * Constructor.
@@ -42,15 +42,13 @@ final class Ship
     {
         super();
         this.screenHeight = screenHeight;
-        sprite = Drawable.loadSpriteTiled(Media.get("sprites", "ships.png"), 24, 28);
+        sprite = Drawable.loadSpriteTiled(Media.get("ships", "gencore_phoenix.png"), 24, 28);
         sprite.load(false);
-        id = 10;
         weaponFront = factoryWeapon.createLauncher(WeaponType.PULSE_CANNON);
         weaponFront.setOwner(this);
         weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_LAUNCHER);
         weaponRear.setOwner(this);
         setSize(24, 28);
-        setLocation(160, 200);
         setCollision(new CollisionData(12, -28, 24, 28, false));
     }
 
@@ -62,12 +60,14 @@ final class Ship
      */
     public void update(double extrp, Mouse mouse)
     {
+        offsetOldX = getLocationOffsetX();
         final double destX = mouse.getOnWindowX() - getWidth() / 2;
         final double destY = screenHeight - mouse.getOnWindowY() + getHeight() / 2;
-        final double x = UtilityMath.curveValue(getLocationX(), destX, 3.0);
-        final double y = UtilityMath.curveValue(getLocationY(), destY, 3.0);
-        setLocation(x, y);
-        updateOffset();
+        final double x = UtilityMath.curveValue(getLocationOffsetX(), destX, 3.0);
+        final double y = UtilityMath.curveValue(getLocationOffsetY(), destY, 3.0);
+        setLocationOffset(x, y);
+
+        updateTileOffset();
         updateCollision();
         if (mouse.hasClicked(Mouse.LEFT))
         {
@@ -84,34 +84,36 @@ final class Ship
      */
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, id + offset, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        final int x = camera.getViewpointX(getLocationIntX()) + getLocationOffsetX();
+        final int y = camera.getViewpointY(getLocationIntY()) - getLocationOffsetY();
+        sprite.render(g, tileOffset, x, y);
     }
 
     /**
-     * Update the ship offset depending of its movement.
+     * Update the ship sprite offset depending of its movement.
      */
-    private void updateOffset()
+    private void updateTileOffset()
     {
-        final double diffX = getLocationX() - getLocationOldX();
+        final double diffX = getLocationOffsetX() - offsetOldX;
         if (diffX >= -1 && diffX <= 1)
         {
-            offset = 0;
+            tileOffset = 2;
         }
         else if (diffX < -3)
         {
-            offset = -2;
+            tileOffset = 0;
         }
         else if (diffX >= -3 && diffX < 1)
         {
-            offset = -1;
+            tileOffset = 1;
         }
         else if (diffX > 1 && diffX <= 3)
         {
-            offset = 1;
+            tileOffset = 3;
         }
         else if (diffX > 3)
         {
-            offset = 2;
+            tileOffset = 4;
         }
     }
 }

@@ -50,10 +50,10 @@ public class CollidableModel
     {
         if (collision != null)
         {
-            final int xCur = entity.getLocationIntX() - entity.getWidth() / 2;
-            final int yCur = entity.getLocationIntY();
-            final int xOld = (int) entity.getLocationOldX() - entity.getWidth() / 2;
-            final int yOld = (int) entity.getLocationOldY();
+            final int xCur = entity.getLocationIntX() + entity.getLocationOffsetX() - entity.getWidth() / 2;
+            final int yCur = entity.getLocationIntY() + entity.getLocationOffsetY();
+            final int xOld = (int) entity.getLocationOldX() + entity.getLocationOffsetX() - entity.getWidth() / 2;
+            final int yOld = (int) entity.getLocationOldY() + entity.getLocationOffsetY();
 
             boolean mirror = false;
             if (collision.getMirror() && entity instanceof Mirrorable)

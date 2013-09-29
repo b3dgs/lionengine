@@ -27,7 +27,7 @@ public abstract class Weapon
     /*
      * LauncherProjectileGame
      */
-    
+
     @Override
     protected void launchProjectile(EntityGame owner, EntityGame target)
     {

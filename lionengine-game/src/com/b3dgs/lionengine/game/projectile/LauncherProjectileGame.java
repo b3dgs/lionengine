@@ -199,8 +199,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     {
         if (target != null)
         {
-            final int sx = owner.getLocationIntX() + owner.getWidth() / 2;
-            final int sy = owner.getLocationIntY() + owner.getHeight() / 2;
+            final int sx = owner.getLocationIntX() + owner.getLocationOffsetX() + owner.getWidth() / 2;
+            final int sy = owner.getLocationIntY() + owner.getLocationOffsetY() + owner.getHeight() / 2;
             final int dx = target.getLocationIntX() + target.getWidth() / 2;
             final int dy = target.getLocationIntY() + target.getHeight() / 2;
             final double dist = Math.max(Math.abs(sx - dx), Math.abs(sy - dy));
@@ -285,8 +285,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         projectile.setCanHitTargetOnly(hitTargetOnly);
         projectile.damages.setMin(dmg);
         projectile.damages.setMax(dmg);
-        final int x = owner.getLocationIntX() + offX + offsetX;
-        final int y = owner.getLocationIntY() + offY + offsetY;
+        final int x = owner.getLocationIntX() + owner.getLocationOffsetX() + offX + offsetX;
+        final int y = owner.getLocationIntY() + owner.getLocationOffsetY() + offY + offsetY;
         projectile.start(x, y, vecX, vecY);
         projectile.setDelay(delay);
 

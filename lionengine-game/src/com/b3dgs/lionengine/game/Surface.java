@@ -18,6 +18,20 @@ public interface Surface
      * @return The current vertical location.
      */
     int getLocationIntY();
+    
+    /**
+     * Get the horizontal offset location.
+     * 
+     * @return The horizontal offset location.
+     */
+    int getLocationOffsetX();
+    
+    /**
+     * Get the vertical offset location.
+     * 
+     * @return The vertical offset location.
+     */
+    int getLocationOffsetY();
 
     /**
      * Get the width.

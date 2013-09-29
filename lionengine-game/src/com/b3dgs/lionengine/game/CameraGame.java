@@ -374,6 +374,12 @@ public class CameraGame
     }
 
     @Override
+    public void setLocationOffset(double x, double y)
+    {
+        location.setLocationOffset(x, y);
+    }
+
+    @Override
     public void setSize(int width, int height)
     {
         location.setSize(width, height);
@@ -413,6 +419,18 @@ public class CameraGame
     public double getLocationOldY()
     {
         return location.getLocationOldY() + getViewY();
+    }
+
+    @Override
+    public int getLocationOffsetX()
+    {
+        return location.getLocationOffsetX();
+    }
+
+    @Override
+    public int getLocationOffsetY()
+    {
+        return location.getLocationOffsetY();
     }
 
     @Override

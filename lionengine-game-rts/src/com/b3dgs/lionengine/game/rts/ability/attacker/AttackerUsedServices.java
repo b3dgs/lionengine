@@ -1,6 +1,7 @@
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.EntityRts;
 
@@ -10,7 +11,7 @@ import com.b3dgs.lionengine.game.rts.EntityRts;
  * @param <E> The entity type used.
  */
 public interface AttackerUsedServices<E extends EntityRts>
-        extends AttackerListener<E>
+        extends AttackerListener<E>, Surface
 {
     /**
      * Check if the attacker can attack (called when attack is possible).
@@ -41,32 +42,4 @@ public interface AttackerUsedServices<E extends EntityRts>
      * @return The animation state.
      */
     AnimState getAnimState();
-
-    /**
-     * Get the current rounded horizontal location.
-     * 
-     * @return The current rounded horizontal location.
-     */
-    int getLocationIntX();
-
-    /**
-     * Get the current rounded vertical location.
-     * 
-     * @return The current rounded vertical location.
-     */
-    int getLocationIntY();
-
-    /**
-     * Get the width.
-     * 
-     * @return The width.
-     */
-    int getWidth();
-
-    /**
-     * Get the height.
-     * 
-     * @return The height.
-     */
-    int getHeight();
 }
