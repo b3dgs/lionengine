@@ -15,65 +15,22 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGame<E, ?>>
         extends HandlerEntityGame<P>
 {
+    /** Camera reference. */
+    private final CameraGame camera;
     /** The entity handler reference. */
     private final HandlerEntityGame<E> handlerEntity;
 
     /**
      * Create a new player projectile handler.
      * 
+     * @param camera The camera reference.
      * @param handlerEntity The entity handler reference.
      */
-    public HandlerProjectileGame(HandlerEntityGame<E> handlerEntity)
+    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<E> handlerEntity)
     {
         super();
+        this.camera = camera;
         this.handlerEntity = handlerEntity;
-    }
-
-    /**
-     * Update projectiles.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        updateAdd();
-
-        // Update projectiles
-        for (final P projectile : list())
-        {
-            projectile.update(extrp);
-            if (projectile.isDestroyed())
-            {
-                deleteID(projectile.id);
-                remove(projectile);
-            }
-            for (final E entity : handlerEntity.list())
-            {
-                if (!projectile.isDestroyed() && projectile.getOwner() != entity && projectile.collide(entity))
-                {
-                    if (!projectile.canHitOnlyTarget() || projectile.canHitOnlyTarget()
-                            && entity == projectile.getTarget())
-                    {
-                        projectile.onHit(entity, projectile.damages.getRandom());
-                    }
-                }
-            }
-        }
-        updateRemove();
-    }
-
-    /**
-     * Render projectiles.
-     * 
-     * @param g The graphics output.
-     * @param camera The camera reference.
-     */
-    public void render(Graphic g, CameraGame camera)
-    {
-        for (final ProjectileGame<E, ?> projectile : list())
-        {
-            projectile.render(g, camera);
-        }
     }
 
     /**
@@ -100,8 +57,33 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
      */
 
     @Override
-    protected Integer getKey(P object)
+    protected void update(double extrp, P projectile)
     {
-        return object.getId();
+        projectile.update(extrp);
+        for (final E entity : handlerEntity.list())
+        {
+            if (!projectile.isDestroyed() && projectile.getOwner() != entity && projectile.collide(entity))
+            {
+                if (!projectile.canHitOnlyTarget() || projectile.canHitOnlyTarget()
+                        && entity == projectile.getTarget())
+                {
+                    projectile.onHit(entity, projectile.damages.getRandom());
+                }
+            }
+        }
+        if (projectile.isDestroyed())
+        {
+            deleteID(projectile.id);
+        }
+        super.update(extrp, projectile);
+    }
+    
+    @Override
+    protected void render(Graphic g, P projectile)
+    {
+        if (camera.isVisible(projectile))
+        {
+            projectile.render(g, camera);
+        }
     }
 }

@@ -45,10 +45,10 @@ final class World
         super(sequence);
         camera = new CameraGame();
         factoryEffect = new FactoryEffect();
-        handlerEffect = new HandlerEffect();
+        handlerEffect = new HandlerEffect(camera);
         handlerEntity = new HandlerEntity();
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
-        handlerProjectile = new HandlerProjectile(handlerEntity);
+        handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
         ship = new Ship(height, factoryWeapon);
         camera.setView(0, 0, width, height);
@@ -61,7 +61,8 @@ final class World
     @Override
     public void update(double extrp)
     {
-        ship.update(extrp, mouse);
+        ship.updateControl(mouse);
+        ship.update(extrp);
         handlerProjectile.update(extrp);
         handlerEffect.update(extrp);
     }
@@ -71,8 +72,8 @@ final class World
     {
         g.clear(source);
         ship.render(g, camera);
-        handlerProjectile.render(g, camera);
-        handlerEffect.render(g, camera);
+        handlerProjectile.render(g);
+        handlerEffect.render(g);
     }
 
     @Override

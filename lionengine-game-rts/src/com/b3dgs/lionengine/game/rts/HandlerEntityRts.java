@@ -44,6 +44,10 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
 
     /** Control panel reference. */
     protected final C panel;
+    /** Camera reference. */
+    private final CameraRts camera;
+    /** Cursor reference. */
+    private final CursorRts cursor;
     /** Entity listener. */
     private final List<EntityRtsListener<E>> listeners;
     /** Current entity selection set. */
@@ -67,13 +71,16 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * Create a new entity handler. Don't forget to call {@link #createLayers(MapTile)} after map creation (when its
      * size is established).
      * 
+     * @param camera The camera viewpoint.
+     * @param cursor The cursor reference (used for selection).
      * @param panel The control panel reference.
      * @param map The map reference.
-     * @see Mouse
      */
-    public HandlerEntityRts(C panel, MapTileRts<?, T> map)
+    public HandlerEntityRts(CameraRts camera, CursorRts cursor, C panel, MapTileRts<?, T> map)
     {
         super();
+        this.camera = camera;
+        this.cursor = cursor;
         this.panel = panel;
         this.map = map;
         listeners = new ArrayList<>(1);
@@ -145,71 +152,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
             for (int j = 0; j <= map.getHeightInTile(); j++)
             {
                 layer.add(new LinkedList<E>());
-            }
-        }
-    }
-
-    /**
-     * Main routine, which has to be called in main game loop.
-     * 
-     * @param extrp The extrapolation value.
-     * @param camera The camera viewpoint.
-     * @param cursor The cursor reference (used for selection).
-     */
-    public void update(double extrp, CameraRts camera, CursorRts cursor)
-    {
-        // Restore clicked flag
-        if (cursor.getClick() == 0)
-        {
-            clicked = false;
-        }
-
-        // Add entities
-        updateAdd();
-
-        // Check entities
-        for (final E entity : list())
-        {
-            updateEntity(extrp, camera, cursor, entity);
-        }
-
-        // Delete entities to remove
-        updateRemove();
-
-        // Update the click assignment
-        if (cursor.getClick() == mouseClickAssign && !clicked)
-        {
-            updateClickAssignment(camera, cursor);
-        }
-
-        // Update clicked flag
-        if (cursor.getClick() > 0)
-        {
-            clicked = true;
-        }
-    }
-
-    /**
-     * Main rendering routine; has to be called in a game loop.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera reference.
-     * @param cursor The cursor reference.
-     */
-    public void render(Graphic g, CameraRts camera, CursorRts cursor)
-    {
-        for (final List<List<E>> layer : layers)
-        {
-            for (final List<E> l : layer)
-            {
-                for (final E entity : l)
-                {
-                    if (camera.canSee(entity))
-                    {
-                        entity.render(g, camera);
-                        renderingEntity(g, entity, camera, cursor);
-                    }
-                }
             }
         }
     }
@@ -748,6 +690,64 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         g.drawRect(x, y, entity.getWidth() - 1, entity.getHeight() - 1, false);
     }
 
+    /*
+     * HandlerEntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        // Restore clicked flag
+        if (cursor.getClick() == 0)
+        {
+            clicked = false;
+        }
+        super.update(extrp);
+
+        // Update the click assignment
+        if (cursor.getClick() == mouseClickAssign && !clicked)
+        {
+            updateClickAssignment(camera, cursor);
+        }
+
+        // Update clicked flag
+        if (cursor.getClick() > 0)
+        {
+            clicked = true;
+        }
+    }
+    
+    @Override
+    public void render(Graphic g)
+    {
+        for (final List<List<E>> layer : layers)
+        {
+            for (final List<E> l : layer)
+            {
+                for (final E entity : l)
+                {
+                    render(g, entity);
+                }
+            }
+        }
+    }
+    
+    @Override
+    protected void update(double extrp, E entity)
+    {
+        updateEntity(extrp, camera, cursor, entity);
+    }
+    
+    @Override
+    protected void render(Graphic g, E entity)
+    {
+        if (camera.canSee(entity))
+        {
+            entity.render(g, camera);
+            renderingEntity(g, entity, camera, cursor);
+        }
+    }
+    
     /*
      * ControlPanelListener
      */

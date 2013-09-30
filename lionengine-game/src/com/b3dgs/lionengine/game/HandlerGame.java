@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Graphic;
+
 /**
  * Design to handle objects.
  * 
@@ -38,12 +40,56 @@ public abstract class HandlerGame<K, E>
     }
 
     /**
+     * Update the object; called by {@link #update(double)} for each object handled.
+     * 
+     * @param extrp The extrapolation value.
+     * @param object The object to update.
+     */
+    protected abstract void update(double extrp, E object);
+    
+    /**
+     * Render the object; called by {@link #render(Graphic)} for each object handled.
+     * 
+     * @param g The graphics output.
+     * @param object The object to update.
+     */
+    protected abstract void render(Graphic g, E object);
+    
+    /**
      * Get the object key.
      * 
      * @param object The object reference.
      * @return The object key.
      */
     protected abstract K getKey(E object);
+    
+    /**
+     * Update the objects.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    public void update(double extrp)
+    {
+        updateAdd();
+        for (final E object : list())
+        {
+            update(extrp, object);
+        }
+        updateRemove();
+    }
+    
+    /**
+     * Render the objects.
+     * 
+     * @param g The graphics output.
+     */
+    public void render(Graphic g)
+    {
+        for (final E object : list())
+        {
+            render(g, object);
+        }
+    }
 
     /**
      * Add an object to the handler list. Don't forget to call {@link #updateAdd()} at the begin of the update to add

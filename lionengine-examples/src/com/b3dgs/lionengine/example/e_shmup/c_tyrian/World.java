@@ -66,10 +66,10 @@ final class World
         background = new Background();
         camera = new CameraGame();
         factoryEffect = new FactoryEffect();
-        handlerEffect = new HandlerEffect();
-        handlerEntity = new HandlerEntity();
+        handlerEffect = new HandlerEffect(camera);
+        handlerEntity = new HandlerEntity(camera);
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
-        handlerProjectile = new HandlerProjectile(handlerEntity);
+        handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
         factoryEntityStatic = new FactoryEntityStatic();
         factoryShip = new FactoryShip(factoryWeapon);
@@ -113,7 +113,7 @@ final class World
         camera.setLocationY(ship.getLocationY());
         ship.update(extrp, mouse, height);
         handlerProjectile.update(extrp);
-        handlerEntity.update(extrp, handlerProjectile);
+        handlerEntity.update(extrp);
         handlerEffect.update(extrp);
         background.update(extrp);
     }
@@ -123,10 +123,10 @@ final class World
     {
         background.render(g, camera);
         map.render(g, camera);
-        handlerEntity.render(g, camera);
+        handlerEntity.render(g);
         ship.render(g, camera);
-        handlerProjectile.render(g, camera);
-        handlerEffect.render(g, camera);
+        handlerProjectile.render(g);
+        handlerEffect.render(g);
     }
 
     @Override

@@ -78,20 +78,7 @@ final class Racket
         else
         {
             updateManual(extrp, keyboard);
-        }
-
-        // Block on border
-        if (getLocationY() < 0.0 + getHeight() / 2.0)
-        {
-            setLocationY(0.0 + getHeight() / 2.0);
-        }
-        if (getLocationY() > screenHeight - getHeight() / 2.0)
-        {
-            setLocationY(screenHeight - getHeight() / 2.0);
-        }
-
-        // Update collisions
-        updateCollision();
+        } 
     }
 
     /**
@@ -174,5 +161,26 @@ final class Racket
 
         // Apply movement
         moveLocation(extrp, 0.0, speed);
+    }
+    
+    /*
+     * EntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        // Block on border
+        if (getLocationY() < 0.0 + getHeight() / 2.0)
+        {
+            setLocationY(0.0 + getHeight() / 2.0);
+        }
+        if (getLocationY() > screenHeight - getHeight() / 2.0)
+        {
+            setLocationY(screenHeight - getHeight() / 2.0);
+        }
+
+        // Update collisions
+        updateCollision();
     }
 }

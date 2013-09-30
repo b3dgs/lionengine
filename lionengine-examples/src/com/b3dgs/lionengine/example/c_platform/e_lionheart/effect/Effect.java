@@ -22,10 +22,6 @@ public class Effect
     private final Rasterable rasterable;
     /** Sprite. */
     private final SpriteAnimated sprite;
-    /** Horizontal location. */
-    private int x;
-    /** Vertical location. */
-    private int y;
     /** Index. */
     private int index;
 
@@ -41,6 +37,7 @@ public class Effect
         final int verticalFrames = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);
         rasterable = new RasterableModel(setup, Map.TILE_HEIGHT);
+        setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 
     /**
@@ -51,8 +48,7 @@ public class Effect
      */
     public void start(int x, int y)
     {
-        this.x = x;
-        this.y = y;
+        teleport(x, y);
         sprite.play(getDataAnimation("start"));
     }
 
@@ -70,7 +66,7 @@ public class Effect
         }
         if (rasterable.isRastered())
         {
-            index = rasterable.getRasterIndex(y);
+            index = rasterable.getRasterIndex(getLocationIntX());
             final SpriteAnimated anim = getRasterAnim(index);
             if (anim != null)
             {
@@ -91,7 +87,8 @@ public class Effect
         {
             anim = sprite;
         }
-        anim.render(g, camera.getViewpointX(x), camera.getViewpointY(y + sprite.getFrameHeight()));
+        anim.render(g, camera.getViewpointX(getLocationIntX()),
+                camera.getViewpointY(getLocationIntY() + sprite.getFrameHeight()));
     }
 
     /*

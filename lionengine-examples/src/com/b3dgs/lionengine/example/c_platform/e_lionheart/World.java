@@ -99,8 +99,8 @@ final class World
     {
         landscape.renderBackground(g);
         map.render(g, camera);
-        handlerEntity.render(g, camera);
-        handlerEffect.render(g, camera);
+        handlerEntity.render(g);
+        handlerEffect.render(g);
         player.render(g, camera);
         if (AppLionheart.SHOW_COLLISIONS)
         {

@@ -39,7 +39,7 @@ public abstract class Projectile
     @Override
     public void onHit(Entity entity, int damages)
     {
-        // Nothing to do
+        entity.destroy();
     }
 
     @Override

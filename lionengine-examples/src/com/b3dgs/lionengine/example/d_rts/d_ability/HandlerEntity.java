@@ -23,13 +23,15 @@ public final class HandlerEntity
     /**
      * Constructor.
      * 
+     * @param camera The camera viewpoint.
+     * @param cursor The cursor reference (used for selection).
      * @param controlPanel The panel reference.
      * @param map The map reference.
      * @param text The text reference.
      */
-    HandlerEntity(ControlPanel controlPanel, Map map, TextGame text)
+    HandlerEntity(CameraRts camera, CursorRts cursor, ControlPanel controlPanel, Map map, TextGame text)
     {
-        super(controlPanel, map);
+        super(camera, cursor, controlPanel, map);
         barProgress = new Bar(0, 0);
         barProgress.setBorderSize(1, 1);
     }

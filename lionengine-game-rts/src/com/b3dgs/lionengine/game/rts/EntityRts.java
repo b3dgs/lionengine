@@ -132,19 +132,6 @@ public abstract class EntityRts
     public abstract void stop();
 
     /**
-     * Main routine, has to be called in a game loop.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        updateMirror();
-        sprite.setMirror(getMirror());
-        updateCollision();
-        sprite.updateAnimation(extrp);
-    }
-
-    /**
      * Render entity on screen depending of the camera.
      * 
      * @param g The graphic output.
@@ -622,6 +609,15 @@ public abstract class EntityRts
      * EntityGame
      */
 
+    @Override
+    public void update(double extrp)
+    {
+        updateMirror();
+        sprite.setMirror(getMirror());
+        updateCollision();
+        sprite.updateAnimation(extrp);
+    }
+    
     @Override
     public void destroy()
     {

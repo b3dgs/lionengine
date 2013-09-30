@@ -55,7 +55,7 @@ public class Level
         this.camera = camera;
         this.factoryEntity = factoryEntity;
         this.handlerEntity = handlerEntity;
-        handlerEffect = new HandlerEffect();
+        handlerEffect = new HandlerEffect(camera);
         factoryEffect = new FactoryEffect(handlerEffect);
         map = new Map();
         worldData = new WorldData(map);

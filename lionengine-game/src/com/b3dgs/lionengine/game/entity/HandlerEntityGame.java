@@ -8,7 +8,7 @@ import com.b3dgs.lionengine.game.HandlerGame;
  * 
  * @param <E> Entity type used.
  */
-public class HandlerEntityGame<E extends EntityGame>
+public abstract class HandlerEntityGame<E extends EntityGame>
         extends HandlerGame<Integer, E>
 {
     /**
@@ -19,9 +19,23 @@ public class HandlerEntityGame<E extends EntityGame>
         super();
     }
 
+    /*
+     * HandlerGame
+     */
+    
     @Override
-    protected Integer getKey(E object)
+    protected void update(double extrp, E entity)
     {
-        return object.getId();
+        entity.update(extrp);
+        if (entity.isDestroyed())
+        {
+            remove(entity);
+        }
+    }
+    
+    @Override
+    protected Integer getKey(E entity)
+    {
+        return entity.getId();
     }
 }

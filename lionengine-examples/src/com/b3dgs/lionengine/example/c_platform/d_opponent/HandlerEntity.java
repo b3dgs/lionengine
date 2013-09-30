@@ -16,11 +16,12 @@ final class HandlerEntity
     /**
      * Standard constructor.
      * 
+     * @param camera The camera reference.
      * @param mario The mario reference.
      */
-    HandlerEntity(Mario mario)
+    HandlerEntity(CameraPlatform camera, Mario mario)
     {
-        super();
+        super(camera);
         this.mario = mario;
     }
 

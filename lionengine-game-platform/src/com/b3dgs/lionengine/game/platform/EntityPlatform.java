@@ -129,28 +129,6 @@ public abstract class EntityPlatform
     protected abstract void handleAnimations(final double extrp);
 
     /**
-     * Main update routine. By default it calls theses functions in this order:
-     * <ul>
-     * <li>{@link #handleActions(double extrp)}</li>
-     * <li>{@link #handleMovements(double extrp)}</li>
-     * <li>{@link #handleCollisions(double extrp)}</li>
-     * <li>{@link #handleAnimations(double extrp)}</li>
-     * </ul>
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(final double extrp)
-    {
-        handleActions(extrp);
-        handleMovements(extrp);
-        handleCollisions(extrp);
-        collOffX = 0;
-        collOffY = 0;
-        updateCollision();
-        handleAnimations(extrp);
-    }
-
-    /**
      * Render on screen.
      * 
      * @param g The graphic output.
@@ -319,6 +297,29 @@ public abstract class EntityPlatform
      * EntityGame
      */
 
+    /**
+     * Main update routine. By default it calls theses functions in this order:
+     * <ul>
+     * <li>{@link #handleActions(double extrp)}</li>
+     * <li>{@link #handleMovements(double extrp)}</li>
+     * <li>{@link #handleCollisions(double extrp)}</li>
+     * <li>{@link #handleAnimations(double extrp)}</li>
+     * </ul>
+     * 
+     * @param extrp The extrapolation value.
+     */
+    @Override
+    public void update(double extrp)
+    {
+        handleActions(extrp);
+        handleMovements(extrp);
+        handleCollisions(extrp);
+        collOffX = 0;
+        collOffY = 0;
+        updateCollision();
+        handleAnimations(extrp);
+    }
+    
     @Override
     public void updateMirror()
     {

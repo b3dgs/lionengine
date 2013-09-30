@@ -90,6 +90,12 @@ public abstract class EntityGame
         id = EntityGame.getFreeId();
         EntityGame.IDS.add(id);
     }
+    
+    /**
+     * Update the entity.
+     * @param extrp The extrapolation value.
+     */
+    public abstract void update(double extrp);
 
     /**
      * Get the entity id (unique).

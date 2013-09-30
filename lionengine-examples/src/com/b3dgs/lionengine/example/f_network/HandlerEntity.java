@@ -18,11 +18,12 @@ class HandlerEntity
     /**
      * Standard constructor.
      * 
+     * @param camera The camera reference.
      * @param marioClients The clients.
      */
-    public HandlerEntity(HashMap<Byte, Mario> marioClients)
+    public HandlerEntity(CameraPlatform camera, HashMap<Byte, Mario> marioClients)
     {
-        super();
+        super(camera);
         this.marioClients = marioClients;
     }
 

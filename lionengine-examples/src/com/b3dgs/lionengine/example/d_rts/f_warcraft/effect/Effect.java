@@ -17,10 +17,6 @@ public class Effect
 {
     /** Sprite. */
     private final SpriteAnimated sprite;
-    /** Horizontal location. */
-    private int x;
-    /** Vertical location. */
-    private int y;
 
     /**
      * Constructor.
@@ -33,6 +29,7 @@ public class Effect
         final int horizontalFrames = getDataInteger("horizontal", "frames");
         final int verticalFrames = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);
+        setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 
     /**
@@ -43,8 +40,7 @@ public class Effect
      */
     public void start(int x, int y)
     {
-        this.x = x;
-        this.y = y;
+        teleport(x, y);
     }
 
     /**
@@ -77,26 +73,6 @@ public class Effect
         return sprite.getFrame();
     }
 
-    /**
-     * Get the effect width.
-     * 
-     * @return The effect width.
-     */
-    public int getWidth()
-    {
-        return sprite.getFrameWidth();
-    }
-
-    /**
-     * Get the effect height.
-     * 
-     * @return The effect height.
-     */
-    public int getHeight()
-    {
-        return sprite.getFrameHeight();
-    }
-
     /*
      * EffectGame
      */
@@ -114,6 +90,7 @@ public class Effect
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, camera.getViewpointX(x), camera.getViewpointY(y + sprite.getFrameHeight()));
+        sprite.render(g, camera.getViewpointX(getLocationIntX()),
+                camera.getViewpointY(getLocationIntY() + sprite.getFrameHeight()));
     }
 }

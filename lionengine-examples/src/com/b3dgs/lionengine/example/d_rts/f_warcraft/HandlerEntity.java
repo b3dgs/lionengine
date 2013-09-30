@@ -31,14 +31,15 @@ public final class HandlerEntity
     /**
      * Constructor.
      * 
+     * @param camera The camera reference.
      * @param cursor The cursor reference.
      * @param controlPanel The panel reference.
      * @param map The map reference.
      * @param fogOfWar The fog of war reference.
      */
-    HandlerEntity(Cursor cursor, ControlPanel controlPanel, Map map, FogOfWar fogOfWar)
+    HandlerEntity(CameraRts camera, Cursor cursor, ControlPanel controlPanel, Map map, FogOfWar fogOfWar)
     {
-        super(controlPanel, map);
+        super(camera, cursor, controlPanel, map);
         this.cursor = cursor;
         this.fogOfWar = fogOfWar;
     }
@@ -76,13 +77,13 @@ public final class HandlerEntity
      */
 
     @Override
-    public void update(double extrp, CameraRts camera, CursorRts cursor)
+    public void update(double extrp)
     {
-        if (this.cursor.getType() == TypeCursor.WEN)
+        if (cursor.getType() == TypeCursor.WEN)
         {
-            this.cursor.setType(TypeCursor.POINTER);
+            cursor.setType(TypeCursor.POINTER);
         }
-        super.update(extrp, camera, cursor);
+        super.update(extrp);
         fogOfWar.update(list());
     }
 

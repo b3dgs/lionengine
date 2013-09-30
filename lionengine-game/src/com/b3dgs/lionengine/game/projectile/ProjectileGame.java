@@ -126,17 +126,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     }
 
     /**
-     * Update routine.
-     * 
-     * @param extrp extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        updateMovement(extrp, vecX, vecY);
-        updateCollision();
-    }
-
-    /**
      * Rendering routine.
      * 
      * @param g graphics output.
@@ -229,5 +218,16 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public boolean canBeAdded()
     {
         return delay.elapsed(time);
+    }
+    
+    /*
+     * EntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        updateMovement(extrp, vecX, vecY);
+        updateCollision();
     }
 }

@@ -34,6 +34,7 @@ public class HandlerEntity
      */
     public HandlerEntity(CameraPlatform camera, FactoryEntity factoryEntity)
     {
+        super(camera);
         this.camera = camera;
         this.factoryEntity = factoryEntity;
     }

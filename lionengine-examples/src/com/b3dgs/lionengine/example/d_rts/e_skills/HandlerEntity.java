@@ -22,14 +22,15 @@ public final class HandlerEntity
     /**
      * Constructor.
      * 
+     * @param camera The camera reference.
      * @param cursor The cursor reference.
      * @param controlPanel The panel reference.
      * @param map The map reference.
      * @param text The text reference.
      */
-    HandlerEntity(Cursor cursor, ControlPanel controlPanel, Map map, TextGame text)
+    HandlerEntity(CameraRts camera, Cursor cursor, ControlPanel controlPanel, Map map, TextGame text)
     {
-        super(controlPanel, map);
+        super(camera, cursor, controlPanel, map);
         this.cursor = cursor;
     }
 
@@ -38,14 +39,13 @@ public final class HandlerEntity
      */
 
     @Override
-    public void update(double extrp, CameraRts camera, CursorRts cursor)
+    public void update(double extrp)
     {
-        // Keep standard update
-        if (this.cursor.getType() == CursorType.WEN)
+        if (cursor.getType() == CursorType.WEN)
         {
-            this.cursor.setType(CursorType.POINTER);
+            cursor.setType(CursorType.POINTER);
         }
-        super.update(extrp, camera, cursor);
+        super.update(extrp);
     }
 
     @Override

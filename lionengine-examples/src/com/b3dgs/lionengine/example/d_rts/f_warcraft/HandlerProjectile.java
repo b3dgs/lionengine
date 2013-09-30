@@ -3,6 +3,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.projectile.Projectile;
 import com.b3dgs.lionengine.game.projectile.HandlerProjectileGame;
+import com.b3dgs.lionengine.game.rts.CameraRts;
 
 /**
  * Projectile handler implementation.
@@ -13,10 +14,11 @@ public final class HandlerProjectile
     /**
      * Constructor.
      * 
+     * @param camera The camera reference.
      * @param handlerEntity The entity handler reference.
      */
-    HandlerProjectile(HandlerEntity handlerEntity)
+    HandlerProjectile(CameraRts camera, HandlerEntity handlerEntity)
     {
-        super(handlerEntity);
+        super(camera, handlerEntity);
     }
 }

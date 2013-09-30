@@ -56,7 +56,7 @@ public class BodyModel
     }
 
     /*
-     * Body model
+     * Body
      */
 
     @Override
@@ -105,7 +105,7 @@ public class BodyModel
     }
 
     /*
-     * Localizable model
+     * Localizable
      */
 
     @Override

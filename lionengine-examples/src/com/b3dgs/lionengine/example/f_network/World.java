@@ -39,7 +39,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     protected N networkedWorld;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * @param sequence The sequence reference.
      */
     public World(final Sequence sequence)
     {
@@ -47,7 +47,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
         this.map = new Map();
         this.marioClients = new HashMap<>(1);
         this.factory = new FactoryEntity(source.getRate(), this.map);
-        this.handler = new HandlerEntity(this.marioClients);
+        this.handler = new HandlerEntity(null, marioClients);
         this.networkableModel = new NetworkableModel();
     }
 

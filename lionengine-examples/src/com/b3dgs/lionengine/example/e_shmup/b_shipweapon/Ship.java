@@ -55,10 +55,9 @@ final class Ship
     /**
      * Update the ship.
      * 
-     * @param extrp The extrapolation value.
      * @param mouse The mouse reference.
      */
-    public void update(double extrp, Mouse mouse)
+    public void updateControl(Mouse mouse)
     {
         offsetOldX = getLocationOffsetX();
         final double destX = mouse.getOnWindowX() - getWidth() / 2;
@@ -66,9 +65,6 @@ final class Ship
         final double x = UtilityMath.curveValue(getLocationOffsetX(), destX, 3.0);
         final double y = UtilityMath.curveValue(getLocationOffsetY(), destY, 3.0);
         setLocationOffset(x, y);
-
-        updateTileOffset();
-        updateCollision();
         if (mouse.hasClicked(Mouse.LEFT))
         {
             weaponFront.launch();
@@ -115,5 +111,16 @@ final class Ship
         {
             tileOffset = 4;
         }
+    }
+    
+    /*
+     * EntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        updateTileOffset();
+        updateCollision();
     }
 }

@@ -39,17 +39,6 @@ final class Ball
     }
 
     /**
-     * Update and control the racket.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        moveLocation(extrp, force);
-        updateCollision();
-    }
-
-    /**
      * Render the racket on screen.
      * 
      * @param g The graphics output.
@@ -112,5 +101,16 @@ final class Ball
     public void setForces(double fh, double fv)
     {
         force.setForce(fh, fv);
+    }
+    
+    /*
+     * EntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        moveLocation(extrp, force);
+        updateCollision();
     }
 }

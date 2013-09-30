@@ -9,53 +9,45 @@ import com.b3dgs.lionengine.game.HandlerGame;
  * 
  * @param <E> The effect type used.
  */
-public abstract class HandlerEffectGame<E extends EffectGame>
+public class HandlerEffectGame<E extends EffectGame>
         extends HandlerGame<Integer, E>
 {
+    /** Camera reference. */
+    private final CameraGame camera;
+    
     /**
      * Create a new handler.
-     */
-    public HandlerEffectGame()
-    {
-        super();
-    }
-
-    /**
-     * Main routine, which has to be called in main game loop.
      * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        updateAdd();
-        for (final E effect : list())
-        {
-            effect.update(extrp);
-            if (effect.isDestroyed())
-            {
-                remove(effect);
-            }
-        }
-        updateRemove();
-    }
-
-    /**
-     * Render the effects.
-     * 
-     * @param g The graphics output.
      * @param camera The camera reference.
      */
-    public void render(Graphic g, CameraGame camera)
+    public HandlerEffectGame(CameraGame camera)
     {
-        for (final E effect : list())
-        {
-            effect.render(g, camera);
-        }
+        super();
+        this.camera = camera;
     }
 
     /*
      * HandlerGame
      */
+    
+    @Override
+    protected void update(double extrp, E effect)
+    {
+        effect.update(extrp);
+        if (effect.isDestroyed())
+        {
+            remove(effect);
+        }
+    }
+
+    @Override
+    protected void render(Graphic g, E effect)
+    {
+        if (camera.isVisible(effect))
+        {
+            effect.render(g, camera);
+        }
+    }
 
     @Override
     protected Integer getKey(E object)

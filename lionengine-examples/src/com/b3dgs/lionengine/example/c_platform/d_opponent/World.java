@@ -39,7 +39,7 @@ final class World
         map = new Map();
         factory = new FactoryEntity(map, output.getRate());
         mario = factory.createMario();
-        handler = new HandlerEntity(mario);
+        handler = new HandlerEntity(camera, mario);
     }
 
     /*
@@ -64,7 +64,7 @@ final class World
         map.render(g, camera);
         // Draw the mario
         mario.render(g, camera);
-        handler.render(g, camera);
+        handler.render(g);
     }
 
     @Override

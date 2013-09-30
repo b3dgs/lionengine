@@ -1,5 +1,6 @@
 package com.b3dgs.lionengine.example.e_shmup.b_shipweapon.effect;
 
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.effect.HandlerEffectGame;
 
 /**
@@ -10,9 +11,11 @@ public final class HandlerEffect
 {
     /**
      * Constructor.
+     * 
+     * @param camera The camera reference.
      */
-    public HandlerEffect()
+    public HandlerEffect(CameraGame camera)
     {
-        super();
+        super(camera);
     }
 }

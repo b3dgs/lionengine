@@ -11,12 +11,18 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 public abstract class HandlerEntityPlatform<E extends EntityPlatform>
         extends HandlerEntityGame<E>
 {
+    /** Camera reference. */
+    private final CameraPlatform camera;
+    
     /**
      * Create a new handler.
+     * 
+     * @param camera The camera reference.
      */
-    public HandlerEntityPlatform()
+    public HandlerEntityPlatform(CameraPlatform camera)
     {
         super();
+        this.camera = camera;
     }
 
     /**
@@ -52,49 +58,31 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
      */
     protected abstract void renderingEntity(E entity, Graphic g, CameraPlatform camera);
 
-    /**
-     * Update all entities.
-     * 
-     * @param extrp The extrapolation value.
+    /*
+     * HandlerEntityGame
      */
-    public void update(double extrp)
+    
+    @Override
+    protected void update(double extrp, E entity)
     {
-        // Add entities
-        updateAdd();
-
-        // Update
-        for (final E entity : list())
+        if (canUpdateEntity(entity))
         {
-            if (canUpdateEntity(entity))
-            {
-                entity.update(extrp);
-                updatingEntity(entity, extrp);
-            }
-            if (entity.isDestroyed())
-            {
-                remove(entity);
-            }
+            entity.update(extrp);
+            updatingEntity(entity, extrp);
         }
-
-        // Delete
-        updateRemove();
-    }
-
-    /**
-     * Render all entities.
-     * 
-     * @param g The graphics output.
-     * @param camera The camera reference.
-     */
-    public void render(Graphic g, CameraPlatform camera)
-    {
-        for (final E entity : list())
+        if (entity.isDestroyed())
         {
-            if (canRenderEntity(entity))
-            {
-                entity.render(g, camera);
-                renderingEntity(entity, g, camera);
-            }
+            remove(entity);
+        }
+    }
+    
+    @Override
+    protected void render(Graphic g, E entity)
+    {
+        if (canRenderEntity(entity))
+        {
+            entity.render(g, camera);
+            renderingEntity(entity, g, camera);
         }
     }
 }

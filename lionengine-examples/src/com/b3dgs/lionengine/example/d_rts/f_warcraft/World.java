@@ -72,10 +72,10 @@ final class World
         message = new TimedMessage(new Text(Font.DIALOG, 10, Text.NORMAL));
         controlPanel = new ControlPanel(cursor);
         camera = new Camera(map, controlPanel);
-        handlerEntity = new HandlerEntity(cursor, controlPanel, map, fogOfWar);
+        handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, fogOfWar);
         minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
-        handlerProjectile = new HandlerProjectile(handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, cursor, message, output.getRate());
+        handlerProjectile = new HandlerProjectile(camera, handlerEntity);
+        context = new Context(camera, map, handlerEntity, handlerProjectile, cursor, message, output.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
         handlerEntity.addListener(minimap);
@@ -108,7 +108,7 @@ final class World
         text.update(camera);
         cursor.update(extrp, camera, mouse, true);
         controlPanel.update(extrp, camera, cursor, keyboard);
-        handlerEntity.update(extrp, camera, cursor);
+        handlerEntity.update(extrp);
         handlerProjectile.update(extrp);
         minimap.update(cursor, camera, context.handlerEntity, 11, 12);
         context.handlerEffect.update(extrp);
@@ -121,9 +121,9 @@ final class World
     public void render(Graphic g)
     {
         map.render(g, camera);
-        handlerEntity.render(g, camera, cursor);
-        handlerProjectile.render(g, camera);
-        context.handlerEffect.render(g, camera);
+        handlerEntity.render(g);
+        handlerProjectile.render(g);
+        context.handlerEffect.render(g);
         fogOfWar.render(g, camera);
         cursor.renderBox(g);
         controlPanel.renderCursorSelection(g, camera);
@@ -185,7 +185,7 @@ final class World
         final Entity peasant = createEntity(TypeEntity.peasant, 40, 10);
         peasant.setPlayer(cpu);
 
-        handlerEntity.update(1.0f, camera, cursor);
+        handlerEntity.update(1.0);
         handlerEntity.updatePopulation();
         minimap.entityMoved(peon);
     }

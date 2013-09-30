@@ -35,16 +35,6 @@ public class Entity
     }
 
     /**
-     * Update the entity.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public void update(double extrp)
-    {
-        updateCollision();
-    }
-
-    /**
      * Render the entity.
      * 
      * @param g The graphic output.
@@ -65,5 +55,15 @@ public class Entity
     protected void setTileOffset(int offset)
     {
         tileOffset = offset;
+    }
+    
+    /*
+     * EntityGame
+     */
+    
+    @Override
+    public void update(double extrp)
+    {
+        updateCollision();
     }
 }

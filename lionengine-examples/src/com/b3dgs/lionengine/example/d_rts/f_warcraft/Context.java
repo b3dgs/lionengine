@@ -6,6 +6,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.projectile.FactoryProjectil
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.skill.FactorySkill;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.TimedMessage;
+import com.b3dgs.lionengine.game.rts.CameraRts;
 
 /**
  * Context container.
@@ -42,6 +43,7 @@ public final class Context
     /**
      * Constructor.
      * 
+     * @param camera The camera reference.
      * @param map The map reference.
      * @param handlerEntity The handler entity reference.
      * @param handlerProjectile The handler arrow reference.
@@ -49,7 +51,7 @@ public final class Context
      * @param message The timed message reference.
      * @param desiredFps The the desired fps.
      */
-    Context(Map map, HandlerEntity handlerEntity, HandlerProjectile handlerProjectile, Cursor cursor,
+    Context(CameraRts camera, Map map, HandlerEntity handlerEntity, HandlerProjectile handlerProjectile, Cursor cursor,
             TimedMessage message, int desiredFps)
     {
         this.map = map;
@@ -64,7 +66,7 @@ public final class Context
         factoryWeapon = new FactoryWeapon();
         factorySkill = new FactorySkill(handlerEntity, factoryProduction, cursor, map, message);
         factoryEffect = new FactoryEffect();
-        handlerEffect = new HandlerEffect();
+        handlerEffect = new HandlerEffect(camera);
     }
 
     /**

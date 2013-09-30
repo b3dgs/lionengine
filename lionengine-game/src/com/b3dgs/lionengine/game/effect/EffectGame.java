@@ -1,23 +1,30 @@
 package com.b3dgs.lionengine.game.effect;
 
+import java.awt.geom.Line2D;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
+import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 
 /**
  * Represents an effect.
  */
 public abstract class EffectGame
-        extends ConfigurableModel
+        extends ConfigurableModel implements Localizable
 {
     /** Id used. */
     private static final Set<Integer> IDS = new HashSet<>(16);
     /** Last id used. */
     private static int lastId = 1;
+    
+    /** Localizable. */
+    private final Localizable location;
 
     /**
      * Get the next unused id.
@@ -58,6 +65,7 @@ public abstract class EffectGame
         destroy = false;
         id = EffectGame.getFreeId();
         EffectGame.IDS.add(id);
+        location = new LocalizableModel();
     }
 
     /**
@@ -102,5 +110,135 @@ public abstract class EffectGame
     public boolean isDestroyed()
     {
         return destroy;
+    }
+    
+    /*
+     * Localizable
+     */
+
+    @Override
+    public void teleport(double x, double y)
+    {
+        location.teleport(x, y);
+    }
+
+    @Override
+    public void teleportX(double x)
+    {
+        location.teleportX(x);
+    }
+
+    @Override
+    public void teleportY(double y)
+    {
+        location.teleportY(y);
+    }
+
+    @Override
+    public void moveLocation(double extrp, Force force, Force... forces)
+    {
+        location.moveLocation(extrp, force, forces);
+    }
+
+    @Override
+    public void moveLocation(double extrp, double vx, double vy)
+    {
+        location.moveLocation(extrp, vx, vy);
+    }
+
+    @Override
+    public void setLocation(double x, double y)
+    {
+        location.setLocation(x, y);
+    }
+
+    @Override
+    public void setLocationX(double x)
+    {
+        location.setLocationX(x);
+    }
+
+    @Override
+    public void setLocationY(double y)
+    {
+        location.setLocationY(y);
+    }
+    
+    @Override
+    public void setLocationOffset(double x, double y)
+    {
+        location.setLocationOffset(x, y);
+    }
+
+    @Override
+    public void setSize(int width, int height)
+    {
+        location.setSize(width, height);
+    }
+
+    @Override
+    public double getLocationX()
+    {
+        return location.getLocationX();
+    }
+
+    @Override
+    public double getLocationY()
+    {
+        return location.getLocationY();
+    }
+
+    @Override
+    public int getLocationIntX()
+    {
+        return location.getLocationIntX();
+    }
+
+    @Override
+    public int getLocationIntY()
+    {
+        return location.getLocationIntY();
+    }
+
+    @Override
+    public double getLocationOldX()
+    {
+        return location.getLocationOldX();
+    }
+
+    @Override
+    public double getLocationOldY()
+    {
+        return location.getLocationOldY();
+    }
+    
+    @Override
+    public int getLocationOffsetX()
+    {
+        return location.getLocationOffsetX();
+    }
+    
+    @Override
+    public int getLocationOffsetY()
+    {
+        return location.getLocationOffsetY();
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return location.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return location.getHeight();
+    }
+
+    @Override
+    public Line2D getMovement()
+    {
+        return location.getMovement();
     }
 }

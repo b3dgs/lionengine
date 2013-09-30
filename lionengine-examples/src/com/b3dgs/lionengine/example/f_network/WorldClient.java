@@ -94,7 +94,7 @@ class WorldClient
         g.drawRect(0, 0, width, height, true);
         // Draw the map
         map.render(g, camera);
-        handler.render(g, camera);
+        handler.render(g);
         // Draw the hero
         for (final Byte id : marioClients.keySet())
         {
