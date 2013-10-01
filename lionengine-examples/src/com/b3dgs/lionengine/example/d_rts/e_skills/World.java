@@ -68,7 +68,7 @@ final class World
         text = new TextGame(Font.SERIF, 10, Text.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
-        cursor = new Cursor(source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
+        cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
                 Media.get("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
@@ -87,7 +87,7 @@ final class World
     {
         camera.update(keyboard);
         text.update(camera);
-        cursor.update(extrp, camera, mouse, true);
+        cursor.update(extrp);
         controlPanel.update(extrp, camera, cursor, keyboard);
         handlerEntity.update(extrp);
         handlerProjectile.update(extrp);

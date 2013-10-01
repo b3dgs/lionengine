@@ -51,12 +51,6 @@ class HandlerEntity
     }
 
     @Override
-    protected boolean canRenderEntity(Entity entity)
-    {
-        return true;
-    }
-
-    @Override
     protected void updatingEntity(Entity entity, double extrp)
     {
         for (final Mario mario : marioClients.values())

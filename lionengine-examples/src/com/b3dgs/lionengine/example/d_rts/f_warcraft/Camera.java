@@ -28,17 +28,25 @@ public class Camera
         extends CameraRts
 {
     /** The control panel reference. */
-    private final ControlPanel panel;
+    private ControlPanel panel;
 
     /**
      * Constructor.
      * 
      * @param map The map reference.
-     * @param panel The control panel reference.
      */
-    public Camera(MapTile<?, ?> map, ControlPanel panel)
+    public Camera(MapTile<?, ?> map)
     {
         super(map);
+    }
+
+    /**
+     * Set the control panel.
+     * 
+     * @param panel The control panel reference.
+     */
+    public void setControlPanel(ControlPanel panel)
+    {
         this.panel = panel;
     }
 

@@ -167,7 +167,7 @@ public final class Menu
         music = AudioMidi.loadMidi(Media.get(ResourcesLoader.MUSICS_DIR, "menu.mid"));
         logo = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "menu.png"));
-        cursor = new Cursor(source, Media.get("cursor.png"));
+        cursor = new Cursor(mouse, source, Media.get("cursor.png"));
     }
 
     /**
@@ -287,7 +287,7 @@ public final class Menu
     @Override
     protected void update(double extrp)
     {
-        cursor.update(1.0, mouse, true);
+        cursor.update(1.0);
         if (cursor.getClick() == 0)
         {
             Menu.clicked = false;

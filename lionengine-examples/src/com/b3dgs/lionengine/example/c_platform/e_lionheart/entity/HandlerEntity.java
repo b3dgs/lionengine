@@ -124,12 +124,6 @@ public class HandlerEntity
     }
 
     @Override
-    protected boolean canRenderEntity(Entity entity)
-    {
-        return camera.isVisible(entity);
-    }
-
-    @Override
     protected void updatingEntity(Entity entity, double extrp)
     {
         // Scenery interaction (leg)

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.rts;
 
 import java.awt.geom.Rectangle2D;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.drawable.Cursor;
@@ -33,6 +34,8 @@ import com.b3dgs.lionengine.input.Mouse;
 public class CursorRts
         extends Cursor
 {
+    /** Camera reference. */
+    private final CameraRts camera;
     /** Grid width. */
     private final int gridWidth;
     /** Grid height. */
@@ -55,50 +58,38 @@ public class CursorRts
     /**
      * Create a new rts cursor.
      * 
+     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
      * @param cursor The cursor images media.
      * @param map The map reference.
      */
-    public CursorRts(Resolution source, MapTile<?, ?> map, Media... cursor)
+    public CursorRts(Mouse mouse, CameraRts camera, Resolution source, MapTile<?, ?> map, Media... cursor)
     {
-        this(source, map.getTileWidth(), map.getTileHeight(), cursor);
+        this(mouse, camera, source, map.getTileWidth(), map.getTileHeight(), cursor);
     }
 
     /**
      * Create a new rts cursor.
      * 
+     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
      * @param cursor The cursor images media.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public CursorRts(Resolution source, int tileWidth, int tileHeight, Media... cursor)
+    public CursorRts(Mouse mouse, CameraRts camera, Resolution source, int tileWidth, int tileHeight, Media... cursor)
     {
-        super(0, 0, source.getWidth(), source.getHeight(), cursor);
+        super(mouse, 0, 0, source.getWidth(), source.getHeight(), cursor);
+        Check.notNull(camera, "The camera must not be null !");
+        this.camera = camera;
         setLocation(source.getWidth() / 2, source.getHeight() / 2);
         gridWidth = tileWidth;
         gridHeight = tileHeight;
         grid = new Rectangle2D.Double();
         width = source.getWidth();
         height = source.getHeight();
-    }
-
-    /**
-     * This update function is preferable to the other one, as it allows to interact with objects in the map.
-     * 
-     * @param extrp The extrapolation value.
-     * @param camera The camera reference.
-     * @param mouse The mouse reference.
-     * @param async The sync mode (<code>true</code> = sync to window mouse; <code>false</code> = internal movement).
-     */
-    public void update(double extrp, CameraRts camera, Mouse mouse, boolean async)
-    {
-        oldX = super.getLocationX();
-        oldY = super.getLocationY() - camera.getViewY();
-        update(extrp, mouse, async);
-        setArea(0, 0, width, height);
-        offX = camera.getLocationIntX();
-        offY = camera.getLocationIntY() - camera.getViewY() * 2 - 1;
     }
 
     /**
@@ -215,6 +206,17 @@ public class CursorRts
     /*
      * Cursor
      */
+
+    @Override
+    public void update(double extrp)
+    {
+        oldX = super.getLocationX();
+        oldY = super.getLocationY() - camera.getViewY();
+        super.update(extrp);
+        setArea(0, 0, width, height);
+        offX = camera.getLocationIntX();
+        offY = camera.getLocationIntY() - camera.getViewY() * 2 - 1;
+    }
 
     /**
      * Get cursor location x on map (sync to camera).

@@ -223,7 +223,12 @@ public class ModuleCore
 
     void animation()
     {
-        Anim.createAnimation(4, 6, 0.125, false, true);
+        final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+        System.out.println(animation.getFirst()); // 4
+        System.out.println(animation.getLast()); // 6
+        System.out.println(animation.getSpeed()); // 0.125
+        System.out.println(animation.getReverse()); // false
+        System.out.println(animation.getRepeat()); // true
     }
 
     void animator()
@@ -240,8 +245,9 @@ public class ModuleCore
     void animState()
     {
         final Animator animator = Anim.createAnimator();
+        final Animation animation = Anim.createAnimation(1, 2, 1.0, false, false);
         animator.getAnimState(); // returns STOPPED
-        animator.play(1, 2, 1.0, false, false);
+        animator.play(animation);
         animator.updateAnimation(extrp);
         animator.getAnimState(); // returns PLAYING
     }

@@ -26,19 +26,41 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Used to represent a mouse cursor, desynchronized from the window mouse pointer or not. This way, it is possible to
- * set a specific sensibility.
+ * set a specific sensibility. As the cursor surface is stored in an {@link Image}, the cursor can be rendered
+ * immediately after the constructor call. It contains the following functionalities:
+ * <p>
+ * <ul>
+ * <li><code>surface</code>: A cursor can contain many surfaces, but only the selected one is displayed.</li>
+ * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
+ * {@link #setArea(int, int, int, int)}).</li>
+ * <li><code>lock</code>: Allows to lock the cursor on the mouse ({@link Mouse#setCenter(int, int)},
+ * {@link Mouse#lock()})</li>
+ * <li><code>sync</code>: <code>true</code> if cursor is synchronized on the system mouse, <code>false</code> not (
+ * {@link Cursor#setSyncMode(boolean)}).</li>
+ * <li><code>sensibility</code>: If the mouse is not synchronised on the window mouse, it can be defined (
+ * {@link Cursor#setSensibility(double, double)}).</li>
+ * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
+ * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed (
+ * {@link Cursor#setSurfaceId(int)}).</li>
+ * </ul>
+ * </p>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Mouse
+ * @see Image
  */
 public class Cursor
-        implements Renderable
 {
-    /** Image reference. */
+    /** Mouse reference. */
+    private final Mouse mouse;
+    /** Surface reference. */
     private final Image[] surface;
     /** Cursor location x. */
     private double x;
     /** Cursor location y. */
     private double y;
+    /** Synchronisation mode. */
+    private boolean sync;
     /** Horizontal sensibility. */
     private double sensibilityHorizontal;
     /** Vertical sensibility. */
@@ -63,30 +85,34 @@ public class Cursor
     private int offsetY;
 
     /**
-     * Create a cursor.
+     * Constructor.
      * 
-     * @param resolution The resolution reference.
-     * @param medias The cursor media list.
+     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param resolution The resolution used to know the screen limits.
+     * @param medias The cursor media list (containing the different cursor surfaces path).
      */
-    public Cursor(Resolution resolution, Media... medias)
+    public Cursor(Mouse mouse, Resolution resolution, Media... medias)
     {
-        this(0, 0, resolution.getWidth(), resolution.getHeight(), medias);
+        this(mouse, 0, 0, resolution.getWidth(), resolution.getHeight(), medias);
     }
 
     /**
-     * Create a cursor.
+     * Constructor.
      * 
-     * @param minX The minimal x.
-     * @param minY The minimal y.
-     * @param maxX The maximal x.
-     * @param maxY The maximal y.
-     * @param medias The cursor media list.
+     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param minX The minimal x location on screen.
+     * @param minY The minimal y location on screen.
+     * @param maxX The maximal x location on screen.
+     * @param maxY The maximal y location on screen.
+     * @param medias The cursor media list (containing the different cursor surfaces path).
      */
-    public Cursor(int minX, int minY, int maxX, int maxY, Media... medias)
+    public Cursor(Mouse mouse, int minX, int minY, int maxX, int maxY, Media... medias)
     {
+        Check.notNull(mouse, "The mouse must not be null !");
         Check.notNull(medias, "The cursor should have at least one image !");
         Check.argument(medias.length > 0, "The cursor should have at least one image !");
 
+        this.mouse = mouse;
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;
@@ -104,6 +130,7 @@ public class Cursor
         this.minY = Math.min(minY, maxY);
         this.maxX = Math.max(maxX, minX);
         this.maxY = Math.max(maxY, minY);
+        sync = true;
         lock = false;
         surfaceId = 0;
         offsetX = 0;
@@ -114,10 +141,8 @@ public class Cursor
      * Update cursor position depending of mouse movement.
      * 
      * @param extrp The extrapolation value.
-     * @param mouse The mouse reference (must not be <code>null</code>).
-     * @param sync The sync mode (<code>true</code> = sync to window mouse; <code>false</code> = internal movement).
      */
-    public void update(double extrp, Mouse mouse, boolean sync)
+    public void update(double extrp)
     {
         if (sync)
         {
@@ -141,26 +166,13 @@ public class Cursor
     }
 
     /**
-     * Render cursor on screen at this default location.
+     * Render cursor on screen at its current location.
      * 
      * @param g The graphic output.
      */
     public void render(Graphic g)
     {
         surface[surfaceId].render(g, (int) x + offsetX, (int) y + offsetY);
-    }
-
-    /**
-     * Render cursor number on screen at the specified location.
-     * 
-     * @param g The graphic output.
-     * @param number The the image number to render (>= 0).
-     * @param x The rendering offset x.
-     * @param y The rendering offset y.
-     */
-    public void render(Graphic g, int number, int x, int y)
-    {
-        surface[number].render(g, (int) this.x + x, (int) this.y + y);
     }
 
     /**
@@ -171,6 +183,16 @@ public class Cursor
     public void setLockMouse(boolean lock)
     {
         this.lock = lock;
+    }
+
+    /**
+     * Set the cursor synchronisation to the mouse.
+     * 
+     * @param sync The sync mode (<code>true</code> = sync to window mouse; <code>false</code> = internal movement).
+     */
+    public void setSyncMode(boolean sync)
+    {
+        this.sync = sync;
     }
 
     /**
@@ -262,7 +284,7 @@ public class Cursor
      */
     public int getLocationX()
     {
-        return (int) x;
+        return (int) Math.floor(x);
     }
 
     /**
@@ -272,7 +294,7 @@ public class Cursor
      */
     public int getLocationY()
     {
-        return (int) y;
+        return (int) Math.floor(y);
     }
 
     /**
@@ -295,32 +317,13 @@ public class Cursor
         return sensibilityVertical;
     }
 
-    /*
-     * Renderable
-     */
-
     /**
-     * Render cursor on screen at specified location using the current surface id.
+     * Check if the cursor is synchronized to the system mouse or not.
      * 
-     * @param g The graphic output.
-     * @param x The rendering offset x.
-     * @param y The rendering offset y.
+     * @return <code>true</code> = sync to the system mouse; <code>false</code> = internal movement.
      */
-    @Override
-    public void render(Graphic g, int x, int y)
+    public boolean isSynchronized()
     {
-        surface[0].render(g, (int) this.x + x, (int) this.y + y);
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return 1;
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return 1;
+        return sync;
     }
 }

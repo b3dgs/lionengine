@@ -409,12 +409,6 @@ public abstract class EntityPlatform
     }
 
     @Override
-    public void play(int start, int end, double speed, boolean reverse, boolean repeat)
-    {
-        sprite.play(start, end, speed, reverse, repeat);
-    }
-
-    @Override
     public void setAnimSpeed(double speed)
     {
         sprite.setAnimSpeed(speed);

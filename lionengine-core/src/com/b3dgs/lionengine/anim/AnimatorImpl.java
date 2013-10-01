@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.Check;
 
 /**
  * Animator implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimatorImpl
         implements Animator
@@ -124,21 +126,20 @@ final class AnimatorImpl
     public void play(Animation anim)
     {
         Check.notNull(anim, "Animation does not exist !");
-        play(anim.getFirst(), anim.getLast(), anim.getSpeed(), anim.getReverse(), anim.getRepeat());
-    }
-
-    @Override
-    public void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
-    {
+        final int firstFrame = anim.getFirst();
+        final int lastFrame = anim.getLast();
+        final double animSpeed = anim.getSpeed();
+        final boolean animReverse = anim.getReverse();
+        final boolean animRepeat = anim.getRepeat();
         Check.argument(firstFrame >= Animation.MINIMUM_FRAME, "First frame must be >= Animation.MINIMUM_FRAME !");
         Check.argument(lastFrame >= firstFrame, "Last frame must be >= first !");
-        Check.argument(speed >= 0.0, "Speed must be >= 0.0 !");
+        Check.argument(animSpeed >= 0.0, "Speed must be >= 0.0 !");
 
         first = firstFrame;
         last = lastFrame;
-        this.speed = speed;
-        this.reverse = reverse;
-        this.repeat = repeat;
+        speed = animSpeed;
+        reverse = animReverse;
+        repeat = animRepeat;
         current = first;
         state = AnimState.PLAYING;
     }

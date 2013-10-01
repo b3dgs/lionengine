@@ -83,12 +83,12 @@ final class World
         player = new Player();
         cpu = new Player();
         map = new Map();
+        camera = new Camera(map);
         fogOfWar = new FogOfWar(config);
-        cursor = new Cursor(source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
+        cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
                 Media.get("cursor_order.png"));
         message = new TimedMessage(new Text(Font.DIALOG, 10, Text.NORMAL));
         controlPanel = new ControlPanel(cursor);
-        camera = new Camera(map, controlPanel);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, fogOfWar);
         minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
@@ -123,7 +123,7 @@ final class World
     {
         camera.update(keyboard);
         text.update(camera);
-        cursor.update(extrp, camera, mouse, true);
+        cursor.update(extrp);
         controlPanel.update(extrp, camera, cursor, keyboard);
         handlerEntity.update(extrp);
         handlerProjectile.update(extrp);
@@ -174,6 +174,8 @@ final class World
         controlPanel.setSelectionColor(Color.GREEN);
         controlPanel.setPlayer(player);
         controlPanel.setClickSelection(Mouse.LEFT);
+
+        camera.setControlPanel(controlPanel);
 
         handlerEntity.createLayers(map);
         handlerEntity.setPlayer(player);

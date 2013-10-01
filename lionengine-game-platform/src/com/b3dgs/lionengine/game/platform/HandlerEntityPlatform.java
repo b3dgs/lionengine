@@ -51,14 +51,6 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     protected abstract boolean canUpdateEntity(E entity);
 
     /**
-     * Check if entity can be rendered.
-     * 
-     * @param entity The entity to check.
-     * @return <code>true</code> if can be rendered, <code>false</code> else.
-     */
-    protected abstract boolean canRenderEntity(E entity);
-
-    /**
      * Update this entity ({@link EntityPlatform#update(double)} is already called before).
      * 
      * @param entity The current updating entity.
@@ -96,7 +88,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     @Override
     protected void render(Graphic g, E entity)
     {
-        if (canRenderEntity(entity))
+        if (camera.isVisible(entity))
         {
             entity.render(g, camera);
             renderingEntity(entity, g, camera);

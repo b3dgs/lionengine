@@ -298,7 +298,8 @@ public class TestDrawable
     {
         try
         {
-            animator.play(first, last, speed, true, true);
+            final Animation animation = Anim.createAnimation(first, last, speed, true, true);
+            animator.play(animation);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -574,7 +575,6 @@ public class TestDrawable
 
         // Animations
         spriteA.play(animation);
-        spriteA.play(1, 5, 1.0, false, false);
         spriteA.setAnimSpeed(1.0);
         spriteA.updateAnimation(1.0);
         spriteA.stopAnimation();
@@ -624,11 +624,6 @@ public class TestDrawable
         TestDrawable.testPlayAnimation(animator, 1, -1, 1.0);
         TestDrawable.testPlayAnimation(animator, 1, 1, -1.0);
 
-        animation1.setFirst(animation1.getFirst());
-        animation1.setLast(animation1.getLast());
-        animation1.setSpeed(animation1.getSpeed());
-        animation1.setReverse(animation1.getReverse());
-        animation1.setRepeat(animation1.getRepeat());
         animator.stopAnimation();
 
         Assert.assertEquals(AnimState.STOPPED, animator.getAnimState());
@@ -764,10 +759,15 @@ public class TestDrawable
     @Test
     public void testCursor()
     {
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        final Scene scene = new Scene(loader);
+
         final Resolution output0 = new Resolution(320, 240, 60);
         try
         {
-            final Cursor cursor = new Cursor(output0);
+            final Cursor cursor = new Cursor(scene.mouse, output0);
             Assert.assertNotNull(cursor);
             Assert.fail();
         }
@@ -776,22 +776,20 @@ public class TestDrawable
             // Success
         }
 
-        final Cursor cursor = new Cursor(output0, media);
+        final Cursor cursor = new Cursor(scene.mouse, output0, media);
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);
 
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        final Scene scene = new Scene(loader);
-
         cursor.setLockMouse(false);
-        cursor.update(1.0, scene.mouse, false);
-        cursor.update(1.0, scene.mouse, true);
+        cursor.update(1.0);
+        cursor.setSyncMode(true);
+        cursor.update(1.0);
         cursor.setLockMouse(true);
-        cursor.update(1.0, scene.mouse, false);
-        cursor.update(1.0, scene.mouse, true);
+        cursor.setSyncMode(false);
+        cursor.update(1.0);
+        cursor.setSyncMode(true);
+        cursor.update(1.0);
 
         cursor.setLocation(10, 20);
         Assert.assertEquals(10, cursor.getLocationX());
@@ -799,13 +797,9 @@ public class TestDrawable
         Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), 0.000001);
         Assert.assertEquals(2.0, cursor.getSensibilityVertical(), 0.000001);
         cursor.setRenderingOffset(0, 0);
-        Assert.assertEquals(1, cursor.getWidth());
-        Assert.assertEquals(1, cursor.getHeight());
         Assert.assertEquals(0, cursor.getSurfaceId());
         Assert.assertEquals(0, cursor.getClick());
         cursor.render(g);
-        cursor.render(g, 0, 0);
-        cursor.render(g, 0, 0, 0);
     }
 
     /**

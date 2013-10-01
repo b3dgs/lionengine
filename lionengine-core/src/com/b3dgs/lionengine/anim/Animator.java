@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.anim;
 
 /**
- * Animator, which can play an {@link Animation} from animation container.
+ * Animator can play an {@link Animation}.
  * <p>
  * To play correctly an animation, it just needs the following steps:
  * <ul>
- * <li>Call only one time {@link #play(Animation)} or {@link #play(int, int, double, boolean, boolean)}</li>
+ * <li>Call only one time {@link #play(Animation)}</li>
  * <li>Call {@link #updateAnimation(double)} in your main loop</li>
  * </ul>
  * </p>
@@ -39,6 +39,11 @@ package com.b3dgs.lionengine.anim;
  * animator.updateAnimation(extrp);
  * // (loop) ...
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Anim
+ * @see Animation
+ * @see AnimState
  */
 public interface Animator
 {
@@ -50,26 +55,13 @@ public interface Animator
     void play(Animation animation);
 
     /**
-     * Play the animated sprite with a specific animation data. Should be called only one time, as
-     * {@link #updateAnimation(double)} do the animation update.
-     * 
-     * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
-     * @param lastFrame The last frame (included) index to play (>= firstFrame).
-     * @param speed The animation playing speed (>= 0.0).
-     * @param reverse <code>true</code> to reverse animation play (play it from first to last, and last to first).
-     * @param repeat The repeat state (<code>true</code> will play in loop, <code>false</code> will play once only).
-     * @see Animation
-     */
-    void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat);
-
-    /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
      */
     void stopAnimation();
 
     /**
      * Animation update routine. It will update the animation that have been defined with the last call of
-     * {@link #play(Animation)} or {@link #play(int, int, double, boolean, boolean)}.
+     * {@link #play(Animation)}.
      * 
      * @param extrp The extrapolation value.
      */
@@ -100,16 +92,16 @@ public interface Animator
     AnimState getAnimState();
 
     /**
-     * Get the current playing frame number.
+     * Get the playing frame number.
      * 
-     * @return The current playing frame number.
+     * @return The playing frame number.
      */
     int getFrame();
 
     /**
      * Get the current playing animation frame number (value between first and last of the current animation).
      * 
-     * @return The current playing frame number.
+     * @return The current playing animation frame number.
      */
     int getFrameAnim();
 }

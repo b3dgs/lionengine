@@ -53,12 +53,6 @@ final class HandlerEntity
     }
 
     @Override
-    protected boolean canRenderEntity(Entity entity)
-    {
-        return true;
-    }
-
-    @Override
     protected void updatingEntity(Entity entity, double extrp)
     {
         if (!(mario.isDead() || entity.isDead()) && entity.collide(mario))

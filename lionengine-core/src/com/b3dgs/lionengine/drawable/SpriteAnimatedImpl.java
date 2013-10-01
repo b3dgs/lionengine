@@ -103,12 +103,6 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public void play(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
-    {
-        animator.play(firstFrame, lastFrame, speed, reverse, repeat);
-    }
-
-    @Override
     public void setAnimSpeed(double speed)
     {
         animator.setAnimSpeed(speed);

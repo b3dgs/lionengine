@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.Check;
 
 /**
  * Animation implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class AnimationImpl
         implements Animation
@@ -33,15 +35,15 @@ final class AnimationImpl
     private static final String ERROR_SPEED = "Animation speed must not be negative !";
 
     /** First animation frame. */
-    private int firstFrame;
+    private final int firstFrame;
     /** Last animation frame. */
-    private int lastFrame;
+    private final int lastFrame;
     /** Animation speed. */
-    private double speed;
+    private final double speed;
     /** Reverse flag. */
-    private boolean reverse;
+    private final boolean reverse;
     /** Repeat flag. */
-    private boolean repeat;
+    private final boolean repeat;
 
     /**
      * Constructor.
@@ -68,39 +70,6 @@ final class AnimationImpl
     /*
      * Animation
      */
-
-    @Override
-    public void setFirst(int first)
-    {
-        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, AnimationImpl.ERROR_FIRST_FRAME);
-        firstFrame = first;
-    }
-
-    @Override
-    public void setLast(int last)
-    {
-        Check.argument(lastFrame >= firstFrame, AnimationImpl.ERROR_LAST_FRAME);
-        lastFrame = last;
-    }
-
-    @Override
-    public void setSpeed(double speed)
-    {
-        Check.argument(speed >= 0.0, AnimationImpl.ERROR_SPEED);
-        this.speed = speed;
-    }
-
-    @Override
-    public void setReverse(boolean reverse)
-    {
-        this.reverse = reverse;
-    }
-
-    @Override
-    public void setRepeat(boolean repeat)
-    {
-        this.repeat = repeat;
-    }
 
     @Override
     public int getFirst()

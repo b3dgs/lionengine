@@ -25,17 +25,20 @@ package com.b3dgs.lionengine.anim;
  * 
  * <pre>
  * final Animator animator = Anim.createAnimator();
+ * final Animation animation = Anim.createAnimation(1, 2, 1.0, false, false);
  * animator.getAnimState(); // returns STOPPED
- * animator.play(1, 2, 1.0, false, false);
+ * animator.play(animation);
  * animator.updateAnimation(extrp);
  * animator.getAnimState(); // returns PLAYING
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Animation
  * @see Animator
  */
 public enum AnimState
 {
-    /** Animation is stopped. */
+    /** Animation is stopped (default state). */
     STOPPED,
     /** Animation is currently animating. */
     PLAYING,
