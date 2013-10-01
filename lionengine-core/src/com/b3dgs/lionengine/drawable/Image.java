@@ -30,12 +30,15 @@ package com.b3dgs.lionengine.drawable;
  * // Render
  * image.render(g, 0, 0);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see java.awt.Image
  */
 public interface Image
         extends Renderable
 {
     /**
-     * Get the surface which represents the image (java type).
+     * Get the surface which represents the image.
      * 
      * @return The java image reference.
      */
@@ -45,6 +48,7 @@ public interface Image
      * Get instanced version of current image (faster than a clone, but shares the same surface).
      * 
      * @return The instanced image.
+     * @deprecated TODO: To be removed
      */
     Image instanciate();
 }

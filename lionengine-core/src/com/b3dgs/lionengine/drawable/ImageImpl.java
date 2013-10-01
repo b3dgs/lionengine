@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Image implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ImageImpl
         implements Image
@@ -31,7 +33,7 @@ final class ImageImpl
     private final java.awt.Image surface;
 
     /**
-     * Create a new image.
+     * Constructor.
      * 
      * @param media The image media.
      */
@@ -41,7 +43,7 @@ final class ImageImpl
     }
 
     /**
-     * Copy an image from a surface (share).
+     * Constructor.
      * 
      * @param surface The surface to share.
      */

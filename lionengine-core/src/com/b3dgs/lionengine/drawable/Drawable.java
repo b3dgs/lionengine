@@ -22,7 +22,17 @@ import java.awt.image.BufferedImage;
 import com.b3dgs.lionengine.Media;
 
 /**
- * Handle gfx resources, such as images, sprites, tiles, animations...
+ * Drawable factory. Can create the following elements:
+ * <ul>
+ * <li>{@link Image}</li>
+ * <li>{@link Sprite}</li>
+ * <li>{@link SpriteAnimated}</li>
+ * <li>{@link SpriteTiled}</li>
+ * <li>{@link SpriteParallaxed}</li>
+ * <li>{@link SpriteFont}</li>
+ * </ul>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Drawable
 {
@@ -38,9 +48,9 @@ public final class Drawable
     }
 
     /**
-     * Create an image from a buffered image (sharing the same surface). It may be useful in case of multiple images.
+     * Load an image from a buffered image (sharing the same surface). It may be useful in case of multiple images.
      * 
-     * @param surface The file name.
+     * @param surface The surface reference.
      * @return The loaded image.
      */
     public static Image loadImage(BufferedImage surface)
@@ -60,7 +70,7 @@ public final class Drawable
     }
 
     /**
-     * Create a sprite from a buffered image (sharing the same surface). It may be useful in case of multiple sprites.
+     * Load a sprite from a buffered image (sharing the same surface). It may be useful in case of multiple sprites.
      * 
      * @param surface The surface reference.
      * @return The loaded sprite.
@@ -84,7 +94,7 @@ public final class Drawable
     }
 
     /**
-     * Create an animated sprite, giving horizontal and vertical frames (sharing the same surface). It may be useful in
+     * Load an animated sprite, giving horizontal and vertical frames (sharing the same surface). It may be useful in
      * case of multiple animated sprites.
      * 
      * @param surface The surface reference.
@@ -111,7 +121,7 @@ public final class Drawable
     }
 
     /**
-     * Create a tiled sprite using an image reference, giving tile dimension (sharing the same surface). It may be
+     * Load a tiled sprite using an image reference, giving tile dimension (sharing the same surface). It may be
      * useful in case of multiple tiled sprites.
      * 
      * @param surface The surface reference.

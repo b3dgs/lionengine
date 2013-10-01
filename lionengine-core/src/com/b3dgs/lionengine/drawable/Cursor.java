@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
  * {@link Mouse#lock()})</li>
  * <li><code>sync</code>: <code>true</code> if cursor is synchronized on the system mouse, <code>false</code> not (
  * {@link Cursor#setSyncMode(boolean)}).</li>
- * <li><code>sensibility</code>: If the mouse is not synchronised on the window mouse, it can be defined (
+ * <li><code>sensibility</code>: If the mouse is not synchronized on the window mouse, it can be defined (
  * {@link Cursor#setSensibility(double, double)}).</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
  * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed (
@@ -59,7 +59,7 @@ public class Cursor
     private double x;
     /** Cursor location y. */
     private double y;
-    /** Synchronisation mode. */
+    /** Synchronization mode. */
     private boolean sync;
     /** Horizontal sensibility. */
     private double sensibilityHorizontal;
@@ -186,7 +186,7 @@ public class Cursor
     }
 
     /**
-     * Set the cursor synchronisation to the mouse.
+     * Set the cursor synchronization to the mouse.
      * 
      * @param sync The sync mode (<code>true</code> = sync to window mouse; <code>false</code> = internal movement).
      */
