@@ -43,50 +43,41 @@ Once you installed the LionEngine in your project, you may would like to know ho
 public final class AppFirstCode
 {
     /**
+     * Main function called by the jvm.
+     * 
+     * @param args The arguments.
+     */
+    public static void main(String[] args)
+    {
+        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
+        // The engine is initialized with our parameters:
+        // - The name of our program: "First Code"
+        // - The program version: "1.0.0"
+        // - The main resources directory, relative to the execution directory: ./resources/
+        // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
+
+        // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
+        // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
+        // If the current frame rate is lower than the required in the native, the extrapolation value will allow to
+        // compensate any data calculation.
+        final Resolution output = new Resolution(640, 480, 60);
+
+        // Final configuration (rendering will be scaled by 2 considering source and output resolution).
+        // This is the final configuration container, including color depth and window mode.
+        final Config config = new Config(output, 16, true);
+
+        // Program starter, setup with our configuration. It just needs one sequence reference to start.
+        final Loader loader = new Loader(config);
+        loader.start(new Scene(loader));
+    }
+
+    /**
      * Private constructor.
      */
     private AppFirstCode()
     {
         throw new RuntimeException();
-    }
-
-    /**
-     * Main function called by the jvm.
-     * 
-     * @param args The arguments.
-     */
-    public static void main(String args[])
-    {
-        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
-        // The Engine is initialized with our parameters:
-        // - The name of our program: "First Code"
-        // - Our program version: "1.0.0"
-        // - The main resources directory, relative to the execution directory: ./resources/
-        // This mean that any resources loaded with Media.get(...) will have this directory as prefix
-        // - The verbose level
-        // - The swing theme (general java appearance)
-        Engine.start("First Code", Version.create(1, 0, 0), "resources", Verbose.CRITICAL, Theme.SYSTEM);
-
-        // Configuration reference (native size = 320*240*16 at 60fps)
-        // This mean that our native resolution is in 320*240
-        // These data are used in case of rendering scaling, if the desired output is different
-        // The last value is used to perform the frame rate calculation, corresponding to the native frame rate
-        final Display internal = new Display(320, 240, 16, 60);
-
-        // Display configuration (desired = 640*480*16 at 60fps)
-        // This is corresponding to the output configuration
-        // As our native is in 320*240, the output will be scaled by 2
-        // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
-        final Display external = new Display(640, 480, 16, 60);
-
-        // Final configuration (rendering will be scaled by 2 considering native and desired config)
-        // This is the final configuration container, including window mode
-        final Config config = new Config(internal, external, true);
-
-        // Program starter, the main thread, setup with our configuration
-        // It just needs one sequence reference to start
-        final Loader loader = new Loader(config);
-        loader.start(new Scene(loader));
     }
 }
 ```
@@ -94,26 +85,33 @@ public final class AppFirstCode
 #### Minimal sequence
 ```java
 /**
- * This is where the game loop is running. Any sequence represents a thread handled by the Loader. To link a sequence
- * with another one, a simple call to this.end(sequence) is necessary. This will terminate the current sequence, and
+ * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
+ * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
  * start the linked one.
  */
 final class Scene
         extends Sequence
 {
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+
     /** Text drawer. */
     private final Text text;
 
     /**
-     * Create the scene and its vars.
+     * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(final Loader loader)
+    Scene(Loader loader)
     {
-        super(loader);
+        super(loader, Scene.NATIVE);
         text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     protected void load()
@@ -126,7 +124,10 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        // Update routine
+        if (keyboard.isPressed(Keyboard.ESCAPE))
+        {
+            end();
+        }
     }
 
     @Override
@@ -142,7 +143,7 @@ final class Scene
      * It is not necessary to override this method
      */
     @Override
-    protected void onTerminate()
+    protected void onTerminate(boolean hasNextSequence)
     {
         UtilityMessageBox.information("Terminate !", "Closing app...");
     }
