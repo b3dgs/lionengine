@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
@@ -29,17 +31,25 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 public class FactoryShip
         extends FactoryEntityGame<ShipType, SetupSurfaceGame, Ship>
 {
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
     /** Factory weapon. */
     private final FactoryWeapon factoryWeapon;
 
     /**
      * Constructor
      * 
+     * @param factoryEffect The effect factory reference.
+     * @param handlerEffect The effect handler reference.
      * @param factoryWeapon The factory weapon reference.
      */
-    public FactoryShip(FactoryWeapon factoryWeapon)
+    public FactoryShip(FactoryEffect factoryEffect, HandlerEffect handlerEffect, FactoryWeapon factoryWeapon)
     {
         super(ShipType.class);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         this.factoryWeapon = factoryWeapon;
         loadAll(ShipType.values());
     }
@@ -50,7 +60,7 @@ public class FactoryShip
         switch (id)
         {
             case GENCORE_PHOENIX:
-                return new GencorePhoenix(getSetup(id), factoryWeapon);
+                return new GencorePhoenix(getSetup(id), factoryEffect, handlerEffect, factoryWeapon);
             default:
                 throw new LionEngineException("Unknown entity: " + id);
         }

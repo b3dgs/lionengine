@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -28,6 +30,34 @@ import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 public final class FactoryEffect
         extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
 {
+    /**
+     * Create an effect from its type.
+     * 
+     * @param type The item type.
+     * @param setup The setup reference.
+     * @return The item instance.
+     */
+    public static Effect createEntity(EffectType type, SetupSurfaceGame setup)
+    {
+        try
+        {
+            final StringBuilder clazz = new StringBuilder(FactoryEffect.class.getPackage().getName());
+            clazz.append('.').append(type.asClassName());
+            return (Effect) Class.forName(clazz.toString()).getConstructor(SetupSurfaceGame.class).newInstance(setup);
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException
+               | ClassCastException
+               | ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, "Unkown effect: " + type.asClassName());
+        }
+    }
+
     /**
      * Constructor.
      */
@@ -42,15 +72,9 @@ public final class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType id)
+    public Effect createEffect(EffectType type)
     {
-        switch (id)
-        {
-            case SMOKE:
-                return new Smoke(getSetup(id));
-            default:
-                throw new LionEngineException("Unknown effect: " + id);
-        }
+        return createEntity(type, getSetup(type));
     }
 
     @Override

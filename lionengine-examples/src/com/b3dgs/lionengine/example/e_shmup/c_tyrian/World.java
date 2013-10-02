@@ -88,8 +88,8 @@ final class World
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
-        factoryEntityStatic = new FactoryEntityStatic();
-        factoryShip = new FactoryShip(factoryWeapon);
+        factoryEntityStatic = new FactoryEntityStatic(factoryEffect, handlerEffect);
+        factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
         camera.setView(0, 0, width, height);
 

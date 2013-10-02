@@ -40,7 +40,7 @@ import java.util.Map;
  *     &#064;Override
  *     protected SetupGame createSetup(TypeEntity id)
  *     {
- *         return new SetupGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;));
+ *         return new SetupGame(Media.get(&quot;directory&quot;, type + &quot;.xml&quot;));
  *     }
  * }
  * </pre>
@@ -66,10 +66,10 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     /**
      * Get setup instance.
      * 
-     * @param id The entity id (as enumeration).
+     * @param type The entity type (as enumeration).
      * @return The setup instance.
      */
-    protected abstract S createSetup(T id);
+    protected abstract S createSetup(T type);
 
     /**
      * Load all setup from their list, considering an additional list of arguments for specific cases.
@@ -85,24 +85,24 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     }
 
     /**
-     * Add a setup reference at the specified id.
+     * Add a setup reference at the specified type.
      * 
-     * @param id The reference id.
+     * @param type The reference type.
      * @param setup The setup reference.
      */
-    public void addSetup(T id, S setup)
+    public void addSetup(T type, S setup)
     {
-        setups.put(id, setup);
+        setups.put(type, setup);
     }
 
     /**
-     * Get a setup reference from its id.
+     * Get a setup reference from its type.
      * 
-     * @param id The reference id.
+     * @param type The reference type.
      * @return The setup reference.
      */
-    public S getSetup(T id)
+    public S getSetup(T type)
     {
-        return setups.get(id);
+        return setups.get(type);
     }
 }

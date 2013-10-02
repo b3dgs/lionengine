@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship;
 
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.Weapon;
@@ -40,11 +42,14 @@ public class Ship
 
     /**
      * @param setup The setup reference.
+     * @param factoryEffect The effect factory reference.
+     * @param handlerEffect The effect handler reference.
      * @param factoryWeapon The factory weapon reference.
      */
-    public Ship(SetupSurfaceGame setup, FactoryWeapon factoryWeapon)
+    public Ship(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect,
+            FactoryWeapon factoryWeapon)
     {
-        super(setup);
+        super(setup, factoryEffect, handlerEffect);
         weaponFront = factoryWeapon.createLauncher(WeaponType.PULSE_CANNON);
         weaponFront.setOwner(this);
         weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_LAUNCHER);

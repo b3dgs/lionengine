@@ -33,7 +33,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
         extends HandlerEntityGame<P>
 {
     /** Camera reference. */
-    private final CameraGame camera;
+    protected final CameraGame camera;
     /** The entity handler reference. */
     private final HandlerEntityGame<E> handlerEntity;
 

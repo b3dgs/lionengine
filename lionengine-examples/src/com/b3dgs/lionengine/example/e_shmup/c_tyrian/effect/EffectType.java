@@ -25,11 +25,51 @@ import java.util.Locale;
 public enum EffectType
 {
     /** Smoke effect. */
-    SMOKE;
+    SMOKE,
+    /** Explode1 effect. */
+    EXPLODE1,
+    /** Explode2 effect. */
+    EXPLODE2,
+    /** Explode2 effect. */
+    EXPLODE3;
 
+    /**
+     * Get the name as a path (lower case).
+     * 
+     * @return The name.
+     */
+    public String asPathName()
+    {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Get the class name equivalence.
+     * 
+     * @return The class name equivalence.
+     */
+    public String asClassName()
+    {
+        final char[] name = toString().toCharArray();
+        for (int i = 0; i < name.length; i++)
+        {
+            if (name[i] == '_')
+            {
+                name[i + 1] = Character.toUpperCase(name[i + 1]);
+            }
+        }
+        return String.valueOf(name).replace("_", "");
+    }
+
+    /**
+     * Get the title name (first letter as upper).
+     * 
+     * @return The title name.
+     */
     @Override
     public String toString()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        final String string = asPathName();
+        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
     }
 }

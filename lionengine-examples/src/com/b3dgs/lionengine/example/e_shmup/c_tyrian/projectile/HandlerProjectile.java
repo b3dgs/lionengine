@@ -38,4 +38,14 @@ public final class HandlerProjectile
     {
         super(camera, handlerEntity);
     }
+    
+    @Override
+    protected void update(double extrp, Projectile projectile)
+    {
+        super.update(extrp, projectile);
+        if (!camera.isVisible(projectile))
+        {
+            projectile.destroy();
+        }
+    }
 }

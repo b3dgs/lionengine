@@ -30,7 +30,7 @@ final class Smoke
      * 
      * @param setup The setup reference.
      */
-    Smoke(SetupSurfaceGame setup)
+    public Smoke(SetupSurfaceGame setup)
     {
         super(setup);
     }

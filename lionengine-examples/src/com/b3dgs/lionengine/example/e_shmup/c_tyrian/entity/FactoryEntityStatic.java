@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity;
 
 import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
@@ -27,12 +29,22 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 public class FactoryEntityStatic
         extends FactoryEntityGame<EntityStaticType, SetupSurfaceGame, Entity>
 {
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
+
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * @param factoryEffect The effect factory reference.
+     * @param handlerEffect The handler effect reference.
      */
-    public FactoryEntityStatic()
+    public FactoryEntityStatic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(EntityStaticType.class);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         loadAll(EntityStaticType.values());
     }
 
@@ -42,7 +54,7 @@ public class FactoryEntityStatic
         switch (id)
         {
             default:
-                return new Entity(getSetup(id));
+                return new Entity(getSetup(id), factoryEffect, handlerEffect);
         }
     }
 

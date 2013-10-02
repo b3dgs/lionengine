@@ -20,10 +20,15 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.Effect;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.EffectType;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
  * Entity base implementation.
@@ -33,6 +38,10 @@ public class Entity
 {
     /** Entity surface. */
     private final SpriteTiled sprite;
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
     /** Tile offset. */
     private int tileOffset;
 
@@ -40,10 +49,14 @@ public class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param factoryEffect The effect factory reference.
+     * @param handlerEffect The effect handler reference.
      */
-    public Entity(SetupSurfaceGame setup)
+    public Entity(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(setup);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         final int width = setup.configurable.getDataInteger("width", "size");
         final int height = setup.configurable.getDataInteger("height", "size");
         sprite = Drawable.loadSpriteTiled(setup.surface, width, height);
@@ -72,6 +85,19 @@ public class Entity
     protected void setTileOffset(int offset)
     {
         tileOffset = offset;
+    }
+
+    @Override
+    public void destroy()
+    {
+        super.destroy();
+        for (int i = 0; i < 10; i++)
+        {
+            final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE1);
+            explode.start(getLocationIntX() + UtilityRandom.getRandomInteger(getWidth()), getLocationIntY()
+                    - UtilityRandom.getRandomInteger(getHeight()));
+            handlerEffect.add(explode);
+        }
     }
 
     /*
