@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
 

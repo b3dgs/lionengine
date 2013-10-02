@@ -28,6 +28,8 @@ package com.b3dgs.lionengine;
  * final Object object = null;
  * Check.notNull(object, &quot;Object is null !&quot;);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Check
 {

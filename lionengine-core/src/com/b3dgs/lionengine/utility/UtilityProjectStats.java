@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Used to know the number of code line, and number of files in current project.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityProjectStats
 {

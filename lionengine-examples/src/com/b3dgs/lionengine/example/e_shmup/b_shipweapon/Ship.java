@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.Weapon;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.WeaponType;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -57,7 +58,7 @@ final class Ship
      */
     public Ship(int screenHeight, FactoryWeapon factoryWeapon)
     {
-        super();
+        super(new SetupGame(Media.get("ships", "gencore_phoenix.xml")));
         this.screenHeight = screenHeight;
         sprite = Drawable.loadSpriteTiled(Media.get("ships", "gencore_phoenix.png"), 24, 28);
         sprite.load(false);

@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.utility.UtilityMessageBox;
 
 /**
  * Tile converter and tile extractor tool.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileExtractorApp
 {

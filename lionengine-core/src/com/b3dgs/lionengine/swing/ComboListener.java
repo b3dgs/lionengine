@@ -26,6 +26,7 @@ import javax.swing.JComboBox;
  * Combo action listener.
  * 
  * @param <E> The object type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ComboListener<E>
         implements ActionListener

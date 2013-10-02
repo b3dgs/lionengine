@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Sprite implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class SpriteImpl
         implements Sprite
@@ -38,7 +40,9 @@ class SpriteImpl
     protected final int widthOriginal;
     /** Sprite original height. */
     protected final int heightOriginal;
-    /** Sprite surface. */
+    /** Sprite original surface. */
+    protected BufferedImage surfaceOriginal;
+    /** Sprite current surface. */
     protected BufferedImage surface;
     /** Sprite width. */
     protected int width;
@@ -55,32 +59,37 @@ class SpriteImpl
      * Create a new sprite.
      * 
      * @param media The sprite media.
+     * @param surface The surface to share.
      */
-    SpriteImpl(Media media)
+    SpriteImpl(Media media, BufferedImage surface)
     {
         this.media = media;
-        final ImageInfo info = ImageInfo.get(media);
-        widthOriginal = info.getWidth();
-        heightOriginal = info.getHeight();
+        this.surface = surface;
+        if (media != null)
+        {
+            final ImageInfo info = ImageInfo.get(media);
+            widthOriginal = info.getWidth();
+            heightOriginal = info.getHeight();
+        }
+        else
+        {
+            widthOriginal = surface.getWidth();
+            heightOriginal = surface.getHeight();
+        }
         width = widthOriginal;
         height = heightOriginal;
         rgb = null;
     }
 
     /**
-     * Create a new sprite from an existing surface (share).
-     * 
-     * @param surface The surface to share.
+     * Backup the original surface before modification only if needed.
      */
-    SpriteImpl(BufferedImage surface)
+    private void lazySurfaceBackup()
     {
-        this.surface = surface;
-        media = null;
-        widthOriginal = surface.getWidth();
-        heightOriginal = surface.getHeight();
-        width = widthOriginal;
-        height = heightOriginal;
-        rgb = null;
+        if (surfaceOriginal == null)
+        {
+            surfaceOriginal = UtilityImage.getBufferedImage(surface);
+        }
     }
 
     /*
@@ -90,7 +99,10 @@ class SpriteImpl
     @Override
     public void load(boolean alpha)
     {
-        surface = UtilityImage.getBufferedImage(media, alpha);
+        if (surface == null)
+        {
+            surface = UtilityImage.getBufferedImage(media, alpha);
+        }
     }
 
     @Override
@@ -111,38 +123,44 @@ class SpriteImpl
             final int newHeight = getHeightOriginal() * heightPercent / 100;
             width = newWidth;
             height = newHeight;
-            surface = UtilityImage.resize(surface, newWidth, newHeight);
+            lazySurfaceBackup();
+            surface = UtilityImage.resize(surfaceOriginal, newWidth, newHeight);
         }
     }
 
     @Override
     public void rotate(int angle)
     {
-        surface = UtilityImage.rotate(surface, angle);
+        lazySurfaceBackup();
+        surface = UtilityImage.rotate(surfaceOriginal, angle);
     }
 
     @Override
     public void flipHorizontal()
     {
-        surface = UtilityImage.flipHorizontal(surface);
+        lazySurfaceBackup();
+        surface = UtilityImage.flipHorizontal(surfaceOriginal);
     }
 
     @Override
     public void flipVertical()
     {
-        surface = UtilityImage.flipVertical(surface);
+        lazySurfaceBackup();
+        surface = UtilityImage.flipVertical(surfaceOriginal);
     }
 
     @Override
     public void filter(Filter filter)
     {
-        surface = UtilityImage.applyFilter(surface, filter);
+        lazySurfaceBackup();
+        surface = UtilityImage.applyFilter(surfaceOriginal, filter);
     }
 
     @Override
     public void setTransparency(Color mask)
     {
-        surface = UtilityImage.applyMask(surface, mask);
+        lazySurfaceBackup();
+        surface = UtilityImage.applyMask(surfaceOriginal, mask);
     }
 
     @Override
@@ -160,7 +178,8 @@ class SpriteImpl
             {
                 if (firstAlpha)
                 {
-                    rgb[cx][cy] = surface.getRGB(cx, cy);
+                    lazySurfaceBackup();
+                    rgb[cx][cy] = surfaceOriginal.getRGB(cx, cy);
                 }
                 final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
@@ -205,12 +224,6 @@ class SpriteImpl
     public BufferedImage getSurface()
     {
         return surface;
-    }
-
-    @Override
-    public Sprite instanciate()
-    {
-        return new SpriteImpl(surface);
     }
 
     /*

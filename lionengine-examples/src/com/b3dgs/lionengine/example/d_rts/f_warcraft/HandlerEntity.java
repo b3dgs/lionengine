@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCursor;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
+import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
 
 /**
  * Handler implementation, containing all entities.

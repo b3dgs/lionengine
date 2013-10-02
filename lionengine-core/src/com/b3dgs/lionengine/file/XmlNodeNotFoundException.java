@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.file;
 
 /**
- * Thrown when an xml node is not found.
+ * Thrown when an {@link XmlNode} is not found.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class XmlNodeNotFoundException
         extends Exception

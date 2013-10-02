@@ -22,8 +22,10 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Ogg player implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class OggPlayer
+final class OggPlayer
         implements Ogg
 {
     /** Music media. */

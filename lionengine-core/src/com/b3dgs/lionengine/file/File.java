@@ -22,15 +22,23 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Media;
 
 /**
- * Handle files manipulation, reading and writing.
+ * File factory. Can create the following elements:
+ * <ul>
+ * <li>{@link FileReading}</li>
+ * <li>{@link FileWriting}</li>
+ * <li>{@link XmlParser}</li>
+ * <li>{@link XmlNode}</li>
+ * </ul>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class File
 {
     /**
-     * Open a file as read only.
+     * Open a binary file as read only.
      * 
      * @param media The media file.
-     * @return The created FileReader.
+     * @return The created reader.
      * @throws IOException If open failed.
      */
     public static FileReading createFileReading(Media media) throws IOException
@@ -39,11 +47,11 @@ public final class File
     }
 
     /**
-     * Open a file as write only.
+     * Open a binary file as write only.
      * 
      * @param media The media file.
-     * @return The created FileWriter.
-     * @throws IOException If write failed.
+     * @return The created writer.
+     * @throws IOException If open failed.
      */
     public static FileWriting createFileWriting(Media media) throws IOException
     {
@@ -51,9 +59,9 @@ public final class File
     }
 
     /**
-     * Create an xml parser, in order to load an xml node from a file.
+     * Create an XML parser, in order to load an XML node from a file.
      * 
-     * @return The parser reference.
+     * @return The created parser.
      */
     public static XmlParser createXmlParser()
     {
@@ -61,10 +69,10 @@ public final class File
     }
 
     /**
-     * Create an xml node from a name.
+     * Create an XML node from a name.
      * 
      * @param name The node name.
-     * @return The node reference.
+     * @return The created node.
      */
     public static XmlNode createXmlNode(String name)
     {

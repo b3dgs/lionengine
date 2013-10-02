@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery.Entity
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
+import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 
 /**
  * Handle all entity on the map.
@@ -81,7 +81,6 @@ public class HandlerEntity
     public void load(FileReading file) throws IOException
     {
         removeAll();
-        updateRemove();
         final int entitiesNumber = file.readShort();
         for (int i = 0; i < entitiesNumber; i++)
         {
@@ -89,7 +88,7 @@ public class HandlerEntity
             entity.load(file);
             add(entity);
         }
-        updateAdd();
+        update(1.0);
     }
 
     /**

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.rts.ability.attacker;
 
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * @param <T> The weapon enum type used.

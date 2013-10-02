@@ -24,6 +24,8 @@ import java.util.Set;
 
 /**
  * Keyboard input implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class KeyboardImpl
         implements Keyboard, KeyListener
@@ -38,7 +40,7 @@ final class KeyboardImpl
     private char lastKeyName;
 
     /**
-     * Create a keyboard input.
+     * Constructor.
      */
     KeyboardImpl()
     {

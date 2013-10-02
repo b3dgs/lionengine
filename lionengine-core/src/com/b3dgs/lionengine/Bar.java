@@ -15,11 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.drawable;
+package com.b3dgs.lionengine;
 
 import java.awt.Color;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**

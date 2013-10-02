@@ -133,27 +133,9 @@ final class SpriteFontImpl
         children.clear();
     }
 
-    /**
-     * Clone constructor.
-     * 
-     * @param surface The surface reference.
-     * @param fontData The data reference.
-     */
-    private SpriteFontImpl(SpriteTiled surface, TreeMap<Character, Data> fontData)
-    {
-        this.surface = surface;
-        this.fontData = fontData;
-    }
-
     /*
      * SpriteFont
      */
-
-    @Override
-    public void load(boolean alpha)
-    {
-        surface.load(alpha);
-    }
 
     @Override
     public void draw(Graphic g, int x, int y, Align align, String... texts)
@@ -233,6 +215,16 @@ final class SpriteFontImpl
         lineHeight = height;
     }
 
+    /*
+     * Sprite
+     */
+
+    @Override
+    public void load(boolean alpha)
+    {
+        surface.load(alpha);
+    }
+
     @Override
     public void scale(int percent)
     {
@@ -297,12 +289,6 @@ final class SpriteFontImpl
     public BufferedImage getSurface()
     {
         return surface.getSurface();
-    }
-
-    @Override
-    public SpriteFont instanciate()
-    {
-        return new SpriteFontImpl(surface, fontData);
     }
 
     /*

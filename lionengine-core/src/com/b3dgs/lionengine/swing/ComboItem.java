@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.swing;
 
 /**
  * Combo item class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ComboItem
         implements CanEnable

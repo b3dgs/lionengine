@@ -27,10 +27,15 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Parallaxed sprite implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteParallaxedImpl
         implements SpriteParallaxed
 {
+    /** Parallax line error. */
+    private static final String ERROR_PARALLAX_LINE = "The number of parallax lines must be strictly positive !";
+
     /** Parallax surface file name. */
     private final Media media;
     /** Number of parallax line. */
@@ -50,9 +55,9 @@ final class SpriteParallaxedImpl
     /** Line height. */
     private int lineHeight;
     /** Rendering factor h. */
-    private final double factorH;
+    private double factorH;
     /** Rendering factor v. */
-    private final double factorV;
+    private double factorV;
 
     /**
      * Create a new parallaxed sprite.
@@ -64,14 +69,13 @@ final class SpriteParallaxedImpl
      */
     SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
     {
-        Check.argument(linesNumber > 0, "The number of parallax lines must be strictly positive !");
-
+        Check.argument(linesNumber > 0, SpriteParallaxedImpl.ERROR_PARALLAX_LINE);
         this.media = media;
         this.linesNumber = linesNumber;
-        factorH = 1.0;
-        factorV = 1.0;
         this.sx = sx;
         this.sy = sy;
+        factorH = 1.0;
+        factorV = 1.0;
         lines = null;
     }
 
@@ -82,13 +86,14 @@ final class SpriteParallaxedImpl
     @Override
     public void scale(int percent)
     {
-        // Nothing to do
+        stretch(percent, percent);
     }
 
     @Override
     public void stretch(int widthPercent, int heightPercent)
     {
-        // Nothing to do
+        factorH = widthPercent / 100.0;
+        factorV = heightPercent / 100.0;
     }
 
     @Override
@@ -142,7 +147,6 @@ final class SpriteParallaxedImpl
     @Override
     public BufferedImage getLine(int line)
     {
-        Check.notNull(lines, "Lines must be initialized !");
         return lines[line];
     }
 

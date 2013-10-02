@@ -25,6 +25,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityMath;

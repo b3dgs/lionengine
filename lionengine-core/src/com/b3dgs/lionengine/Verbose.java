@@ -44,6 +44,8 @@ import java.util.logging.Logger;
  *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
  * }
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Verbose
 {

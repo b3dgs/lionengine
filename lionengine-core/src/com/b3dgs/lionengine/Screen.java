@@ -60,20 +60,21 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  * 
  * @see Keyboard
  * @see Mouse
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Screen
         implements FocusListener
 {
     /** Error message config. */
-    private static final String MESSAGE_ERROR_CONFIG = "The configuration must exists !";
+    private static final String ERROR_CONFIG = "The configuration must exists !";
     /** Error message display. */
-    private static final String MESSAGE_ERROR_DISPLAY = "No available display !";
+    private static final String ERROR_DISPLAY = "No available display !";
     /** Error message applet. */
-    private static final String MESSAGE_ERROR_APPLET = "Applet mode initialization failed !";
+    private static final String ERROR_APPLET = "Applet mode initialization failed !";
     /** Error message windowed. */
-    private static final String MESSAGE_ERROR_WINDOWED = "Windowed mode initialization failed !";
+    private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
     /** Error message unsupported fullscreen. */
-    private static final String MESSAGE_ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
+    private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
     /** Hidden cursor instance. */
     private static final Cursor CURSOR_HIDDEN = Screen.createHiddenCursor();
     /** Default cursor instance. */
@@ -136,16 +137,16 @@ final class Screen
     private java.awt.Window window;
 
     /**
-     * Create a new screen.
+     * Constructor.
      * 
      * @param config The config reference.
      */
     Screen(Config config)
     {
-        Check.notNull(config, Screen.MESSAGE_ERROR_CONFIG);
+        Check.notNull(config, Screen.ERROR_CONFIG);
         if (GraphicsEnvironment.isHeadless())
         {
-            throw new LionEngineException(Screen.MESSAGE_ERROR_DISPLAY);
+            throw new LionEngineException(Screen.ERROR_DISPLAY);
         }
 
         // Initialize environment
@@ -160,30 +161,6 @@ final class Screen
         // Prepare main frame
         frame = hasApplet ? null : initMainFrame();
         setResolution(config.getOutput());
-    }
-
-    /**
-     * Set the screen config. Initialize the display.
-     * 
-     * @param output The output resolution
-     */
-    private void setResolution(Resolution output)
-    {
-        if (hasApplet)
-        {
-            initApplet(output);
-        }
-        else
-        {
-            if (config.isWindowed())
-            {
-                initWindowed(output);
-            }
-            else
-            {
-                initFullscreen(output, config.getDepth());
-            }
-        }
     }
 
     /**
@@ -446,7 +423,7 @@ final class Screen
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, Screen.MESSAGE_ERROR_APPLET);
+            throw new LionEngineException(exception, Screen.ERROR_APPLET);
         }
     }
 
@@ -494,7 +471,7 @@ final class Screen
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, Screen.MESSAGE_ERROR_WINDOWED);
+            throw new LionEngineException(exception, Screen.ERROR_WINDOWED);
         }
     }
 
@@ -577,9 +554,9 @@ final class Screen
                     builder.append("\n");
                 }
             }
-            throw new LionEngineException(Screen.MESSAGE_ERROR_UNSUPPORTED_FULLSCREEN,
-                    String.valueOf(output.getWidth()), "*", String.valueOf(output.getHeight()), "*",
-                    String.valueOf(depth), " @", String.valueOf(output.getRate()), "Hz", "\n", builder.toString());
+            throw new LionEngineException(Screen.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()), "*",
+                    String.valueOf(output.getHeight()), "*", String.valueOf(depth), " @", String.valueOf(output
+                            .getRate()), "Hz", "\n", builder.toString());
         }
     }
 
@@ -610,6 +587,30 @@ final class Screen
     /*
      * FocusListener
      */
+
+    /**
+     * Set the screen config. Initialize the display.
+     * 
+     * @param output The output resolution
+     */
+    private void setResolution(Resolution output)
+    {
+        if (hasApplet)
+        {
+            initApplet(output);
+        }
+        else
+        {
+            if (config.isWindowed())
+            {
+                initWindowed(output);
+            }
+            else
+            {
+                initFullscreen(output, config.getDepth());
+            }
+        }
+    }
 
     @Override
     public void focusGained(FocusEvent event)

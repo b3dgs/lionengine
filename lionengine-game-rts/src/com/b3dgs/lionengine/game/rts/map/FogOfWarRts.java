@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).

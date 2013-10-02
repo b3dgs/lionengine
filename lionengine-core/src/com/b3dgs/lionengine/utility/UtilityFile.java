@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Static functions giving informations related to files and directory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityFile
 {

@@ -34,9 +34,11 @@ import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
- * Music routine.
+ * Ogg music routine.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class OggRoutine
+final class OggRoutine
         extends Thread
 {
     /** Buffer size. */

@@ -79,8 +79,8 @@ final class World
         // Mouse control
         if (mouse.getMouseClick() > 0)
         {
-            movement.setForce(-mouse.getMoveX() * 4, mouse.getMoveY() * 4);
-            speed = 2.0;
+            movement.setForce(-mouse.getMoveX(), mouse.getMoveY());
+            speed = 100.0;
         }
 
         // Keyboard control
@@ -102,7 +102,7 @@ final class World
         }
 
         // Smooth movement
-        force.reachForce(extrp, movement, speed, 0.01);
+        force.reachForce(extrp, movement, speed, 0.001);
 
         // Apply movement to camera
         camera.moveLocation(extrp, force);

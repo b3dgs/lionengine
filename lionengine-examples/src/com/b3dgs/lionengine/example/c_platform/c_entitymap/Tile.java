@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
- * Tile implementation, using TileModel.
+ * Tile implementation.
  */
 final class Tile
         extends TilePlatform<TileCollision>

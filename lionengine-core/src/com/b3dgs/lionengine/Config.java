@@ -39,15 +39,20 @@ import javax.swing.JApplet;
  * final Resolution output = new Resolution(640, 480, 60);
  * final Config config = new Config(output, 16, true);
  * </pre>
+ * 
+ * @see Resolution
+ * @see Filter
+ * @see Ratio
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Config
 {
     /** Error message source. */
-    private static final String MESSAGE_ERROR_SOURCE = "The source resolution must not be null !";
+    private static final String ERROR_SOURCE = "The source resolution must not be null !";
     /** Error message output. */
-    private static final String MESSAGE_ERROR_OUTPUT = "The output resolution must not be null !";
+    private static final String ERROR_OUTPUT = "The output resolution must not be null !";
     /** Error message filter. */
-    private static final String MESSAGE_ERROR_FILTER = "The filter must not be null !";
+    private static final String ERROR_FILTER = "The filter must not be null !";
 
     /** Output resolution reference. */
     private final Resolution output;
@@ -65,7 +70,7 @@ public final class Config
     private JApplet applet;
 
     /**
-     * Create a config.
+     * Constructor.
      * 
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
@@ -77,7 +82,7 @@ public final class Config
     }
 
     /**
-     * Create a config.
+     * Constructor.
      * 
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
@@ -86,8 +91,8 @@ public final class Config
      */
     public Config(Resolution output, int depth, boolean windowed, Filter filter)
     {
-        Check.notNull(output, Config.MESSAGE_ERROR_OUTPUT);
-        Check.notNull(filter, Config.MESSAGE_ERROR_FILTER);
+        Check.notNull(output, Config.ERROR_OUTPUT);
+        Check.notNull(filter, Config.ERROR_FILTER);
 
         this.output = output;
         this.depth = depth;
@@ -184,7 +189,7 @@ public final class Config
      */
     void setSource(Resolution source)
     {
-        Check.notNull(source, Config.MESSAGE_ERROR_SOURCE);
+        Check.notNull(source, Config.ERROR_SOURCE);
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
         if (ratio > 0)
         {

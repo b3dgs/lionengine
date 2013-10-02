@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.rts.EntityRts;
 import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Default attacker model implementation.

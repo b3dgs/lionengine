@@ -29,6 +29,7 @@ import javax.swing.border.EmptyBorder;
  * Combo renderer implementation.
  * 
  * @param <E> The object type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ComboRenderer<E>
         extends JLabel

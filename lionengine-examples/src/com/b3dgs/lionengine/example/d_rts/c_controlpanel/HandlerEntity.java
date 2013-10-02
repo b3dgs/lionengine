@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
+import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
 
 /**
  * Handler implementation, containing all entities.

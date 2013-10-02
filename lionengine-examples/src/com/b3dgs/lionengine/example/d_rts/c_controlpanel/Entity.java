@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.

@@ -52,6 +52,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * </pre>
  * 
  * @param <T> Tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LevelRipConverter<T extends TileGame<?>>
         extends Thread
@@ -75,7 +76,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
     private int errors;
 
     /**
-     * Create a new level rip converter.
+     * Constructor.
      */
     public LevelRipConverter()
     {
@@ -83,7 +84,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
     }
 
     /**
-     * Create a new level rip converter.
+     * Constructor.
      * 
      * @param map The map reference (to store read data).
      * @param imageMap The level rip image name.

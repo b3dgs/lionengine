@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.menu;
 
+import com.b3dgs.lionengine.Cursor;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.audio.Wav;
-import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.input.Mouse;

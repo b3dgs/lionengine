@@ -29,7 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Bar;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.Cursor;
 import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
@@ -43,8 +45,6 @@ import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.drawable.Bar;
-import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -112,7 +112,7 @@ public class TestDrawable
      */
     private static void testSpriteModification(int scale, Sprite sprite)
     {
-        final Sprite spriteOriginal = sprite.instanciate();
+        final Sprite spriteOriginal = Drawable.loadSprite(sprite.getSurface());
         Assert.assertEquals(spriteOriginal, sprite);
 
         BufferedImage surface = sprite.getSurface();
@@ -411,9 +411,9 @@ public class TestDrawable
         Assert.assertEquals(surface, imageA.getSurface());
 
         // Share correctly the surface
-        final Image imageB = Drawable.loadImage((BufferedImage) imageA.getSurface());
+        final Image imageB = Drawable.loadImage(imageA.getSurface());
         Assert.assertEquals(imageA, imageB);
-        Assert.assertEquals(imageB, imageB.instanciate());
+        Assert.assertEquals(imageB, Drawable.loadImage(imageB.getSurface()));
 
         // Load from file
         final Image imageC = Drawable.loadImage(media);
@@ -449,7 +449,7 @@ public class TestDrawable
 
         TestDrawable.testSpriteModification(2, spriteA);
         // Sprite clone (share surface only)
-        Assert.assertEquals(spriteA, spriteA.instanciate());
+        Assert.assertEquals(spriteA, Drawable.loadSprite(spriteA.getSurface()));
 
         // Load from file
         final Sprite spriteB = Drawable.loadSprite(media);
@@ -498,7 +498,7 @@ public class TestDrawable
         spriteB.render(g, 0, 0, 0);
 
         // Instantiate
-        Assert.assertEquals(spriteB, spriteB.instanciate());
+        Assert.assertEquals(spriteB, Drawable.loadSpriteTiled(spriteB.getSurface(), tileWidth, tileHeight));
 
         // Get tile
         Assert.assertNotNull(spriteB.getTile(0));
@@ -541,7 +541,7 @@ public class TestDrawable
         TestDrawable.testSpriteLoading(spriteC);
         TestDrawable.testSpriteModification(2, spriteA);
         // Test instantiation
-        Assert.assertEquals(spriteA, spriteA.instanciate());
+        Assert.assertEquals(spriteA, Drawable.loadSpriteAnimated(spriteA.getSurface(), frameHorizontal, frameVertical));
 
         try
         {
@@ -700,10 +700,8 @@ public class TestDrawable
         spriteA.render(g, 0, 0);
 
         // Resize
-        final int scale = 2;
         final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(media, lines, 60, 100);
-
-        spriteB.scale(100 * scale);
+        spriteB.scale(200);
         spriteB.prepare(Filter.BILINEAR);
         Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
         Assert.assertFalse(spriteB.equals(spriteA));
@@ -749,7 +747,6 @@ public class TestDrawable
         Assert.assertTrue(sprite.getTextWidth(text) >= 1);
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
-        Assert.assertEquals(sprite, sprite.instanciate());
         Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, fontData, 6, 7)));
     }
 

@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * <pre>
  * UtilityTileExtractor.start(Media.get(&quot;level.png&quot;), Media.get(&quot;sheet.png&quot;), 16, 16, 256, 256);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TileExtractor
 {
@@ -90,7 +92,7 @@ public final class TileExtractor
     }
 
     /**
-     * Private constructor.
+     * Constructor.
      * 
      * @param media The levelrip media path.
      * @param tilew The tile width.

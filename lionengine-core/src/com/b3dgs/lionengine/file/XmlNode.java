@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Describe an xml node, which can be modified (reading & writing). All primitive types are written as string inside any
- * xml file. XmlNode can be save in a file, using an XmlParser.
+ * Describe an XML node, which can be modified (reading & writing). All primitive types are written as string inside any
+ * XML file. XmlNode can be save in a file, using an XmlParser.
  * <p>
  * Note: Special case for the string stored as <code>null</code> which is in fact stored as {@link XmlNode#NULL}. When
  * read, the {@link XmlNode#NULL} string is return if the stored string was <code>null</code>.
@@ -36,6 +36,7 @@ import java.util.Map;
  * node.writeBoolean(&quot;value&quot;, true);
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see XmlParser
  */
 public interface XmlNode
@@ -127,7 +128,7 @@ public interface XmlNode
      * 
      * @param name The child name.
      * @return The child node reference.
-     * @throws XmlNodeNotFoundException Thrown if no node if found at this child name.
+     * @throws XmlNodeNotFoundException If no node if found at this child name.
      */
     XmlNode getChild(String name) throws XmlNodeNotFoundException;
 

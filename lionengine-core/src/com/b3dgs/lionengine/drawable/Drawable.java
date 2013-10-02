@@ -48,12 +48,12 @@ public final class Drawable
     }
 
     /**
-     * Load an image from a buffered image (sharing the same surface). It may be useful in case of multiple images.
+     * Load an image from a java image (sharing the same surface). It may be useful in case of multiple images.
      * 
      * @param surface The surface reference.
      * @return The loaded image.
      */
-    public static Image loadImage(BufferedImage surface)
+    public static Image loadImage(java.awt.Image surface)
     {
         return new ImageImpl(surface);
     }
@@ -66,7 +66,7 @@ public final class Drawable
      */
     public static Sprite loadSprite(Media media)
     {
-        return new SpriteImpl(media);
+        return new SpriteImpl(media, null);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class Drawable
      */
     public static Sprite loadSprite(BufferedImage surface)
     {
-        return new SpriteImpl(surface);
+        return new SpriteImpl(null, surface);
     }
 
     /**
@@ -90,7 +90,7 @@ public final class Drawable
      */
     public static SpriteAnimated loadSpriteAnimated(Media media, int horizontalFrames, int verticalFrames)
     {
-        return new SpriteAnimatedImpl(media, horizontalFrames, verticalFrames);
+        return new SpriteAnimatedImpl(media, null, horizontalFrames, verticalFrames);
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Drawable
      */
     public static SpriteAnimated loadSpriteAnimated(BufferedImage surface, int horizontalFrames, int verticalFrames)
     {
-        return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
+        return new SpriteAnimatedImpl(null, surface, horizontalFrames, verticalFrames);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class Drawable
      */
     public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight)
     {
-        return new SpriteTiledImpl(media, tileWidth, tileHeight);
+        return new SpriteTiledImpl(media, null, tileWidth, tileHeight);
     }
 
     /**
@@ -131,7 +131,7 @@ public final class Drawable
      */
     public static SpriteTiled loadSpriteTiled(BufferedImage surface, int tileWidth, int tileHeight)
     {
-        return new SpriteTiledImpl(surface, tileWidth, tileHeight);
+        return new SpriteTiledImpl(null, surface, tileWidth, tileHeight);
     }
 
     /**
@@ -139,13 +139,13 @@ public final class Drawable
      * 
      * @param media The sprite media.
      * @param linesNumber The number of parallax lines.
-     * @param sx The starting width.
-     * @param sy The starting height.
+     * @param startWidth The starting width percent (100 is default, 50 is twice smaller, 200 is twice larger).
+     * @param startHeight The starting height percent (100 is default, 50 is twice smaller, 200 is twice larger).
      * @return The loaded parallaxed sprite.
      */
-    public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int sx, int sy)
+    public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int startWidth, int startHeight)
     {
-        return new SpriteParallaxedImpl(media, linesNumber, sx, sy);
+        return new SpriteParallaxedImpl(media, linesNumber, startWidth, startHeight);
     }
 
     /**
@@ -153,13 +153,13 @@ public final class Drawable
      * 
      * @param media The font sprite media.
      * @param data The font data media.
-     * @param lw The font image letter width.
-     * @param lh The font image letter height.
+     * @param letterWidth The font image letter width.
+     * @param letterHeight The font image letter height.
      * @return The created font sprite.
      */
-    public static SpriteFont loadSpriteFont(Media media, Media data, int lw, int lh)
+    public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
     {
-        return new SpriteFontImpl(media, data, lw, lh);
+        return new SpriteFontImpl(media, data, letterWidth, letterHeight);
     }
 
     /**

@@ -106,6 +106,9 @@ final class Scene
 
         // Ensure value is lower than the total number of tile
         tile %= tilesheet.getTilesNumber();
+
+        // Rotate sprite
+        sprite.rotate((int) tile * (360 / tilesheet.getTilesNumber()));
     }
 
     @Override

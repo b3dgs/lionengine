@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * List of services provided by a weapon.

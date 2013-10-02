@@ -43,7 +43,7 @@ public class Entity
      */
     public Entity(SetupSurfaceGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         final int width = setup.configurable.getDataInteger("width", "size");
         final int height = setup.configurable.getDataInteger("height", "size");
         sprite = Drawable.loadSpriteTiled(setup.surface, width, height);

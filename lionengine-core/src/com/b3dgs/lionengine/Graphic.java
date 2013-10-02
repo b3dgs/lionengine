@@ -25,6 +25,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Graphic
 {

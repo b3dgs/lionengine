@@ -21,10 +21,28 @@ import java.awt.image.BufferedImage;
 
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 
 /**
  * ParallaxedSprites are used for parallax effect (2.5D perspective). It cuts a sprite surface into an array of lines.
- * They are scaled using a trapeze representation, for the perspective effect.
+ * They are scaled using a trapeze representation, for the perspective effect:
+ * 
+ * <pre>
+ *   &#47;======\
+ *  &#47;========\
+ * &#47;==========\
+ * </pre>
+ * <p>
+ * Usage should be as following:
+ * <ul>
+ * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(Media, int, int, int)}</li>
+ * <li>Scale if necessary with {@link #scale(int)} or {@link #stretch(int, int)}</li>
+ * <li>Call {@link #prepare(Filter)}</li>
+ * <li>Then other functions can be used.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteParallaxed
         extends Renderable
@@ -33,7 +51,7 @@ public interface SpriteParallaxed
      * Method used for sprite scaling, in order to modify its size. Normal factor is equal to 100, so 200 will scale it
      * twice bigger, whereas 50 will scale half its size.
      * 
-     * @param percent value for scaling (>= 0).
+     * @param percent value for scaling (> 0).
      */
     void scale(int percent);
 
@@ -41,8 +59,8 @@ public interface SpriteParallaxed
      * Works as scale, but using different width and height factor. Using different values, the ratio won't be kept, and
      * the sprite will be different !
      * 
-     * @param percentWidth The percent value for scaling width (>= 0).
-     * @param percentHeight The percent value for scaling height (>= 0).
+     * @param percentWidth The percent value for scaling width (> 0).
+     * @param percentHeight The percent value for scaling height (> 0).
      */
     void stretch(int percentWidth, int percentHeight);
 
@@ -78,7 +96,7 @@ public interface SpriteParallaxed
     int getHeightOriginal();
 
     /**
-     * Get a parallax line (first index is 0).
+     * Get a parallax line (store it on a new buffered image, no reference, can be slow).
      * 
      * @param line The desired line (>= 0).
      * @return The line's surface.

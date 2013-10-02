@@ -21,7 +21,30 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
 
 /**
- * Allows the use of image based font.
+ * <p>
+ * SpriteFont is an extended sprite that allows to handle a font based on an image. This way is it possible to create a
+ * custom font, were data (contained in an XML file) describes each letter size.
+ * </p>
+ * <p>
+ * It is based on a {@link SpriteTiled}, which allow to control each letter separately. There is then a correspondence
+ * between each character and their image. It also supports a full text rendering, where the special character
+ * {@link #NEW_LINE} can be used to insert a new line during rendering.
+ * </p>
+ * <p>
+ * The usage is simple:
+ * <ul>
+ * <li>{@link #draw(Graphic, int, int, Align, String)} can be used to render a single text (which can contains
+ * {@link #NEW_LINE} characters).</li>
+ * <li>{@link #draw(Graphic, int, int, Align, String...)} can be used to render many texts, where each of them is
+ * separated by a new line automatically.</li>
+ * </ul>
+ * </p>
+ * <p>
+ * As the SpriteFont is a sprite, is supports all sprite operations.
+ * </p>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Sprite
  */
 public interface SpriteFont
         extends Sprite
@@ -73,12 +96,4 @@ public interface SpriteFont
      * @return The text height.
      */
     int getTextHeight(String text);
-
-    /**
-     * Get instanced version of current sprite font (shares the same surface).
-     * 
-     * @return The cloned sprite font.
-     */
-    @Override
-    SpriteFont instanciate();
 }

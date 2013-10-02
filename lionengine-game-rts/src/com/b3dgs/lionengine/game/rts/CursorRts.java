@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.game.rts;
 import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Cursor;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.input.Mouse;

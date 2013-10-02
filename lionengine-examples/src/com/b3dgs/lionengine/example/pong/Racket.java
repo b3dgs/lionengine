@@ -20,9 +20,11 @@ package com.b3dgs.lionengine.example.pong;
 import java.awt.Color;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityRandom;
@@ -65,7 +67,7 @@ final class Racket
      */
     Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
     {
-        super();
+        super(new SetupGame(Media.get("sample.xml")));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.automatic = automatic;
@@ -73,7 +75,7 @@ final class Racket
         decrease = Keyboard.UP;
         increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
-        setLocation(x, y);
+        teleport(x, y);
         setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight(), false));
         timerRandomMovement.start();
     }
@@ -96,6 +98,7 @@ final class Racket
         {
             updateManual(extrp, keyboard);
         }
+        update(extrp);
     }
 
     /**
@@ -155,6 +158,7 @@ final class Racket
             }
         }
         moveLocation(extrp, 0.0, speed);
+        updateCollision();
     }
 
     /**

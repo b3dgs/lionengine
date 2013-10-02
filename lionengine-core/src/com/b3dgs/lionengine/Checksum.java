@@ -42,11 +42,13 @@ import com.b3dgs.lionengine.utility.UtilityConversion;
  * Assert.assertFalse(checksum.check(other, signature));
  * Assert.assertTrue(checksum.check(integer, test));
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Checksum
 {
     /** Instance error message. */
-    private static final String MESSAGE_ERROR_INSTANCE = "SHA-256 can not be instantiated !";
+    private static final String ERROR_SHA_INSTANCE = "SHA-256 can not be instantiated !";
     /** UTF8. */
     private static final Charset UTF8 = Charset.forName("UTF-8");
     /** SHA Mode. */
@@ -76,7 +78,7 @@ public final class Checksum
         }
         catch (final NoSuchAlgorithmException exception)
         {
-            throw new LionEngineException(exception, Checksum.MESSAGE_ERROR_INSTANCE);
+            throw new LionEngineException(exception, Checksum.ERROR_SHA_INSTANCE);
         }
     }
 

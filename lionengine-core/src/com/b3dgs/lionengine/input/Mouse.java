@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.Config;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mouse
 {

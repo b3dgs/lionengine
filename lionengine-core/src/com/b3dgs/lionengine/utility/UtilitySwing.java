@@ -49,6 +49,8 @@ import com.b3dgs.lionengine.swing.ComboRenderer;
 
 /**
  * Set of functions around swing call, in order to create easily standard JObjects.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilitySwing
 {

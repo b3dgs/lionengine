@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * Thread sequence.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SequenceThread
         extends Thread

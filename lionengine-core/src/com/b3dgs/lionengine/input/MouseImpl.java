@@ -34,8 +34,10 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Mouse input implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class MouseImpl
+final class MouseImpl
         implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** Clicks flags. */
@@ -74,7 +76,7 @@ class MouseImpl
     private boolean moved;
 
     /**
-     * Create a mouse input.
+     * Constructor.
      */
     MouseImpl()
     {

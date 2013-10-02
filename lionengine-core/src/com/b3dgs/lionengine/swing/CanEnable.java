@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.swing;
 
 /**
  * Can enable interface for action combo.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface CanEnable
 {

@@ -28,18 +28,19 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 
 /**
- * Xml parser implementation.
+ * XML parser implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class XmlParserImpl
         implements XmlParser
 {
     /**
-     * Create a xml parser.
+     * Create an XML parser.
      */
     XmlParserImpl()
     {
@@ -53,7 +54,7 @@ final class XmlParserImpl
     @Override
     public XmlNode load(Media media)
     {
-        Check.notNull(media, "The media should not be null !");
+        Media.exist(media);
         final Element root;
         final String file = media.getPath();
         try
@@ -78,7 +79,6 @@ final class XmlParserImpl
     @Override
     public void save(XmlNode root, Media media)
     {
-        Check.notNull(media, "The media should not be null !");
         final String file = media.getPath();
         final XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 

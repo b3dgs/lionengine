@@ -141,8 +141,12 @@ teleport
 liana
 ungrip
 bipbipbip
-bipbipbip
 rasterable
 hertz
 tyrian
 synchronized
+synchronization
+byron
+franklin
+flipping
+closeable

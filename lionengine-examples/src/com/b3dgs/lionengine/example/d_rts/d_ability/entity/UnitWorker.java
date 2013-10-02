@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 import java.awt.Color;
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.Bar;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.drawable.Bar;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
 import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.HandlerEntity;
@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.example.d_rts.d_ability.ProductionCost;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ResourceType;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorModel;
@@ -39,6 +38,7 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorUsedServices;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
+import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Worker unit implementation.

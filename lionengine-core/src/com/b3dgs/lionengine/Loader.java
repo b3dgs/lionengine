@@ -36,15 +36,19 @@ import com.b3dgs.lionengine.input.Mouse;
  * final Loader loader = new Loader(config);
  * loader.start(new Scene(loader));
  * </pre>
+ * 
+ * @see Config
+ * @see Sequence
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Loader
 {
     /** Error message config. */
-    private static final String MESSAGE_ERROR_CONFIG = "Configuration must not be null !";
+    private static final String ERROR_CONFIG = "Configuration must not be null !";
     /** Error message already started. */
-    private static final String MESSAGE_ERROR_STARTED = "Loader has already been started !";
+    private static final String ERROR_STARTED = "Loader has already been started !";
     /** Error message sequence interrupted. */
-    private static final String MESSAGE_ERROR_SEQUENCE = "Sequence badly interrupted !";
+    private static final String ERROR_SEQUENCE = "Sequence badly interrupted !";
 
     /** Config reference. */
     final Config config;
@@ -62,13 +66,13 @@ public final class Loader
     private boolean started;
 
     /**
-     * Create a loader.
+     * Constructor.
      * 
      * @param config The configuration used (must not be null).
      */
     public Loader(Config config)
     {
-        Check.notNull(config, Loader.MESSAGE_ERROR_CONFIG);
+        Check.notNull(config, Loader.ERROR_CONFIG);
         this.config = config;
         screen = new Screen(config);
         keyboard = Input.createKeyboard();
@@ -96,7 +100,7 @@ public final class Loader
         }
         else
         {
-            throw new LionEngineException(Loader.MESSAGE_ERROR_STARTED);
+            throw new LionEngineException(Loader.ERROR_STARTED);
         }
     }
 
@@ -128,7 +132,7 @@ public final class Loader
             }
             catch (final InterruptedException exception)
             {
-                throw new LionEngineException(exception, Loader.MESSAGE_ERROR_SEQUENCE);
+                throw new LionEngineException(exception, Loader.ERROR_SEQUENCE);
             }
             nextSequence = sequence.getNextSequence();
             Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");

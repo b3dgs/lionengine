@@ -21,9 +21,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.b3dgs.lionengine.game.rts.EntityRts;
-import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
 import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
 
 /**
  * Default and abstract model implementation.

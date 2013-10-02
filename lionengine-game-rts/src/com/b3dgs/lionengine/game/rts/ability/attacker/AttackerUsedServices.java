@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.rts.ability.attacker;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * List of services needed by the attacker.

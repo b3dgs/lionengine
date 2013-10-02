@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
+import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 
 /**
  * Handler implementation. All of our entity will be handled here.
@@ -31,7 +31,7 @@ final class HandlerEntity
     private final Mario mario;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param camera The camera reference.
      * @param mario The mario reference.

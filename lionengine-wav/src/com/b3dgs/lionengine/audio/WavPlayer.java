@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.Verbose;
 
 /**
  * Default sound player implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class WavPlayer
         implements Wav
@@ -49,7 +51,7 @@ final class WavPlayer
     private int volume;
 
     /**
-     * Create a sound player.
+     * Constructor.
      * 
      * @param media The audio sound media.
      */
@@ -59,14 +61,14 @@ final class WavPlayer
     }
 
     /**
-     * Create a sound player.
+     * Constructor.
      * 
      * @param media The audio sound media.
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
      */
     WavPlayer(Media media, int maxSimultaneous)
     {
-        Check.notNull(media, "Sound file must exists !");
+        Media.exist(media);
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);

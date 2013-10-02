@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * Default body implementation.
  */
 public class BodyModel
-        implements Body, Localizable
+        implements Body
 {
     /** Gravity of earth (in m/s). */
     private static final double GRAVITY = 9.80665;
 
     /** Body location. */
-    protected final Localizable location;
+    protected final Localizable localizable;
     /** Body force. */
     private final Force force;
     /** Maximum gravity value. */
@@ -44,30 +44,12 @@ public class BodyModel
     private int invertY;
 
     /**
-     * Create a new body.
+     * Constructor.
      */
     public BodyModel()
     {
-        this(null);
-    }
-
-    /**
-     * Create a new body from an existing one.
-     * 
-     * @param body The body to copy
-     */
-    public BodyModel(BodyModel body)
-    {
-        if (body == null)
-        {
-            location = new LocalizableModel();
-            force = new Force();
-        }
-        else
-        {
-            location = new LocalizableModel(body.getLocationX(), body.getLocationY());
-            force = new Force(body.force);
-        }
+        localizable = new LocalizableModel();
+        force = new Force();
         gravityMax = new Force();
         invertY = -1;
     }
@@ -80,7 +62,7 @@ public class BodyModel
     public void updateGravity(double extrp, int desiredFps, Force... forces)
     {
         force.addForce(extrp, 0.0, getWeight() * invertY / desiredFps);
-        location.moveLocation(extrp, force, forces);
+        localizable.moveLocation(extrp, force, forces);
     }
 
     @Override
@@ -128,126 +110,126 @@ public class BodyModel
     @Override
     public void teleport(double x, double y)
     {
-        location.teleport(x, y);
+        localizable.teleport(x, y);
     }
 
     @Override
     public void teleportX(double x)
     {
-        location.teleportX(x);
+        localizable.teleportX(x);
     }
 
     @Override
     public void teleportY(double y)
     {
-        location.teleportY(y);
+        localizable.teleportY(y);
     }
 
     @Override
     public void moveLocation(double extrp, Force force, Force... forces)
     {
-        location.moveLocation(extrp, force, forces);
+        localizable.moveLocation(extrp, force, forces);
     }
 
     @Override
     public void moveLocation(double extrp, double vx, double vy)
     {
-        location.moveLocation(extrp, vx, vy);
+        localizable.moveLocation(extrp, vx, vy);
     }
 
     @Override
     public void setLocation(double x, double y)
     {
-        location.setLocation(x, y);
+        localizable.setLocation(x, y);
     }
 
     @Override
     public void setLocationX(double x)
     {
-        location.setLocationX(x);
+        localizable.setLocationX(x);
     }
 
     @Override
     public void setLocationY(double y)
     {
-        location.setLocationY(y);
+        localizable.setLocationY(y);
     }
 
     @Override
     public void setLocationOffset(double x, double y)
     {
-        location.setLocationOffset(x, y);
+        localizable.setLocationOffset(x, y);
     }
 
     @Override
     public void setSize(int width, int height)
     {
-        location.setSize(width, height);
+        localizable.setSize(width, height);
     }
 
     @Override
     public double getLocationX()
     {
-        return location.getLocationX();
+        return localizable.getLocationX();
     }
 
     @Override
     public double getLocationY()
     {
-        return location.getLocationY();
+        return localizable.getLocationY();
     }
 
     @Override
     public int getLocationIntX()
     {
-        return location.getLocationIntX();
+        return localizable.getLocationIntX();
     }
 
     @Override
     public int getLocationIntY()
     {
-        return location.getLocationIntY();
+        return localizable.getLocationIntY();
     }
 
     @Override
     public double getLocationOldX()
     {
-        return location.getLocationOldX();
+        return localizable.getLocationOldX();
     }
 
     @Override
     public double getLocationOldY()
     {
-        return location.getLocationOldY();
+        return localizable.getLocationOldY();
     }
 
     @Override
     public int getLocationOffsetX()
     {
-        return location.getLocationOffsetX();
+        return localizable.getLocationOffsetX();
     }
 
     @Override
     public int getLocationOffsetY()
     {
-        return location.getLocationOffsetY();
+        return localizable.getLocationOffsetY();
     }
 
     @Override
     public int getWidth()
     {
-        return location.getWidth();
+        return localizable.getWidth();
     }
 
     @Override
     public int getHeight()
     {
-        return location.getHeight();
+        return localizable.getHeight();
     }
 
     @Override
     public Line2D getMovement()
     {
-        return location.getMovement();
+        return localizable.getMovement();
     }
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.rts;
+package com.b3dgs.lionengine.game.rts.entity;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
@@ -29,9 +29,12 @@ import java.util.Set;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.rts.CameraRts;
+import com.b3dgs.lionengine.game.rts.ControlPanelListener;
+import com.b3dgs.lionengine.game.rts.ControlPanelModel;
+import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorServices;

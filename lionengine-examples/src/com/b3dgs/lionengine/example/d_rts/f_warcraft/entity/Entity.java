@@ -30,9 +30,9 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.skill.Skill;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.rts.EntityRts;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.

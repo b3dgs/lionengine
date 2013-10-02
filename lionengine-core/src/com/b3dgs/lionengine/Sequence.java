@@ -69,11 +69,18 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  *     }
  * }
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Loader
+ * @see Resolution
+ * @see Graphic
+ * @see Keyboard
+ * @see Mouse
  */
 public abstract class Sequence
 {
     /** Error message loader. */
-    private static final String MESSAGE_ERROR_LOADER = "Loader must not be null !";
+    private static final String ERROR_LOADER = "Loader must not be null !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
@@ -142,7 +149,7 @@ public abstract class Sequence
      */
     public Sequence(final Loader loader, Resolution newSource)
     {
-        Check.notNull(loader, Sequence.MESSAGE_ERROR_LOADER);
+        Check.notNull(loader, Sequence.ERROR_LOADER);
 
         // Initialize
         this.loader = loader;

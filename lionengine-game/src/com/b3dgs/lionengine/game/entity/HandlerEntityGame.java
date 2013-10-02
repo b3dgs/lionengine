@@ -17,19 +17,19 @@
  */
 package com.b3dgs.lionengine.game.entity;
 
-import com.b3dgs.lionengine.game.HandlerGame;
+import com.b3dgs.lionengine.game.HandlerObjectGame;
 
 /**
  * Designed to handle a type, by updating and rendering it. Mainly used to handle a lot of entity (usually for
  * opponents).
  * 
- * @param <E> Entity type used.
+ * @param <E> The entity type used.
  */
 public abstract class HandlerEntityGame<E extends EntityGame>
-        extends HandlerGame<Integer, E>
+        extends HandlerObjectGame<E>
 {
     /**
-     * Create a new handler.
+     * Constructor.
      */
     public HandlerEntityGame()
     {
@@ -44,15 +44,5 @@ public abstract class HandlerEntityGame<E extends EntityGame>
     protected void update(double extrp, E entity)
     {
         entity.update(extrp);
-        if (entity.isDestroyed())
-        {
-            remove(entity);
-        }
-    }
-
-    @Override
-    protected Integer getKey(E entity)
-    {
-        return entity.getId();
     }
 }

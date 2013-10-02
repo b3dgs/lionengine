@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorModel;
 import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorServices;
@@ -43,6 +42,7 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.ExtractorUsedServices;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
+import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Worker unit implementation.

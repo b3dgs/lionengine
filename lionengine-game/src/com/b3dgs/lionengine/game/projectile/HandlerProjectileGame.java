@@ -91,7 +91,6 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
         {
             deleteID(projectile.id);
         }
-        super.update(extrp, projectile);
     }
 
     @Override

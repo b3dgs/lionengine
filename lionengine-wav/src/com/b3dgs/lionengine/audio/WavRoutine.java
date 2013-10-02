@@ -37,6 +37,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Sound routine implementation. One sound represents one thread.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class WavRoutine
         extends Thread
@@ -66,7 +68,7 @@ final class WavRoutine
     private AudioInputStream audioInputStream;
 
     /**
-     * Create a sound routine.
+     * Constructor.
      * 
      * @param player The wav player reference.
      * @param title The sound title.

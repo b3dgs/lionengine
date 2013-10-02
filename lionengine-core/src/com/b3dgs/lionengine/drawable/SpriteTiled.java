@@ -22,7 +22,8 @@ import java.awt.image.BufferedImage;
 import com.b3dgs.lionengine.Graphic;
 
 /**
- * Tiled sprite are mainly used for tile based levels. It works by loading an image, and split it into different images.
+ * Tiled sprite are mainly used for tile based levels. It works by loading an image and render only a part of it
+ * (virtually splited). The first tile is 0.
  * <p>
  * Example:
  * </p>
@@ -36,6 +37,8 @@ import com.b3dgs.lionengine.Graphic;
  * tilesheet.render(g, 1, 300, 300);
  * tilesheet.render(g, 350, 300);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteTiled
         extends Sprite
@@ -45,8 +48,8 @@ public interface SpriteTiled
      * 
      * @param g The graphic output.
      * @param tile The tile to render (>= 0).
-     * @param x The abscissa.
-     * @param y The ordinate.
+     * @param x The horizontal location..
+     * @param y The vertical location.
      */
     void render(Graphic g, int tile, int x, int y);
 
@@ -114,12 +117,4 @@ public interface SpriteTiled
      * @return The tile's surface.
      */
     BufferedImage getTileReference(int tile);
-
-    /**
-     * Get instanced version of current tiled sprite (shares the same surface).
-     * 
-     * @return The cloned tiled sprite.
-     */
-    @Override
-    SpriteTiled instanciate();
 }

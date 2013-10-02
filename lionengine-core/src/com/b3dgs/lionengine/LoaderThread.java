@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * Loader thread.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class LoaderThread
         extends Thread

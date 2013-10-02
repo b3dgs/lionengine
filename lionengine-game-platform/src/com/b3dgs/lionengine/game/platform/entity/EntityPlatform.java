@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game.platform.entity;
 
 import java.util.HashMap;
 
@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
@@ -74,7 +76,7 @@ public abstract class EntityPlatform
      */
     public EntityPlatform(SetupSurfaceGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         tileCollisions = new HashMap<>(1);
         final int hf = setup.configurable.getDataInteger("horizontal", "frames");
         final int vf = setup.configurable.getDataInteger("vertical", "frames");
@@ -383,19 +385,19 @@ public abstract class EntityPlatform
     @Override
     public void teleport(double x, double y)
     {
-        location.teleport(x - collOffX, y - collOffY);
+        super.teleport(x - collOffX, y - collOffY);
     }
 
     @Override
     public void teleportX(double x)
     {
-        location.teleportX(x - collOffX);
+        super.teleportX(x - collOffX);
     }
 
     @Override
     public void teleportY(double y)
     {
-        location.teleportY(y - collOffY);
+        super.teleportY(y - collOffY);
     }
 
     /*

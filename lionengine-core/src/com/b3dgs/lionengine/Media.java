@@ -40,6 +40,8 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
  * // Will get from execution directory: resources/img/image.png
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Media
 {
@@ -48,7 +50,7 @@ public final class Media
     /** Engine working directory. */
     public static final String WORKING_DIR = Media.assignWorkingDirectory();
     /** Error message internal. */
-    private static final String MESSAGE_ERROR_MEDIA = "The media does not exist !";
+    private static final String ERROR_MEDIA = "The media does not exist !";
     /** System separator. */
     private static String separator = File.separator;
     /** Resources directory. */
@@ -61,16 +63,16 @@ public final class Media
     private static String tmpDir;
 
     /**
-     * Check if the media exists. Throw a {@link LionEngineException} if not.
+     * Check if the media exists. Throws a {@link LionEngineException} if not.
      * 
      * @param media The media to test.
      */
     public static void exist(Media media)
     {
-        Check.notNull(media);
+        Check.notNull(media, Media.ERROR_MEDIA);
         if (!UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath()))
         {
-            throw new LionEngineException(media, Media.MESSAGE_ERROR_MEDIA);
+            throw new LionEngineException(media, Media.ERROR_MEDIA);
         }
     }
 
@@ -416,7 +418,7 @@ public final class Media
      */
     public Media(String path)
     {
-        Check.notNull(path);
+        Check.notNull(path, Media.ERROR_MEDIA);
         this.path = path;
     }
 

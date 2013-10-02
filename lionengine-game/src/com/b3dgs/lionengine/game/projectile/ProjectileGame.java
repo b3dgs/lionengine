@@ -87,7 +87,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      */
     public ProjectileGame(SetupSurfaceGame setup, int id, int frame)
     {
-        super(setup.configurable);
+        super(setup);
         damages = new Damages();
         final int width = setup.configurable.getDataInteger("width", "size");
         final int height = setup.configurable.getDataInteger("height", "size");

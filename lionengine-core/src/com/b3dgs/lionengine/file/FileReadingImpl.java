@@ -24,7 +24,9 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Media;
 
 /**
- * File reader implementation.
+ * File reading implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FileReadingImpl
         implements FileReading
@@ -33,7 +35,7 @@ final class FileReadingImpl
     private final DataInputStream in;
 
     /**
-     * Create a file reader.
+     * Constructor.
      * 
      * @param media The media path.
      * @throws IOException If open failed.
@@ -45,7 +47,7 @@ final class FileReadingImpl
     }
 
     /*
-     * FileReader
+     * FileReadering
      */
 
     @Override

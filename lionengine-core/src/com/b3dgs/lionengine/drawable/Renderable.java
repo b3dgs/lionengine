@@ -20,30 +20,33 @@ package com.b3dgs.lionengine.drawable;
 import com.b3dgs.lionengine.Graphic;
 
 /**
- * Anything that can be rendered on screen.
+ * Represents an element that can be rendered on screen.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Graphic
  */
 public interface Renderable
 {
     /**
-     * Render image on current graphic output, at specified coordinates.
+     * Render element on current graphic output, at specified coordinates.
      * 
      * @param g The graphic output.
-     * @param x The abscissa.
-     * @param y The ordinate.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      */
     void render(Graphic g, int x, int y);
 
     /**
-     * Get the the width size.
+     * Get the element width.
      * 
-     * @return The width size.
+     * @return The element width.
      */
     int getWidth();
 
     /**
-     * Get the the height size.
+     * Get the element height.
      * 
-     * @return The height size.
+     * @return The element height.
      */
     int getHeight();
 }

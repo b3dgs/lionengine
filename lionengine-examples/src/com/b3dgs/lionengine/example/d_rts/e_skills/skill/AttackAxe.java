@@ -20,10 +20,10 @@ package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 import com.b3dgs.lionengine.example.d_rts.e_skills.HandlerEntity;
 import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.UnitAttacker;
-import com.b3dgs.lionengine.game.entity.EntityNotFoundException;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
+import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Attack melee implementation.

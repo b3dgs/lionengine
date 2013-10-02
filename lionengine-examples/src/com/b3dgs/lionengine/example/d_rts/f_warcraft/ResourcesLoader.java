@@ -108,9 +108,9 @@ public final class ResourcesLoader
         switch (race)
         {
             case HUMAN:
-                return ResourcesLoader.CORPSE_HUMAN.instanciate();
+                return Drawable.loadSpriteAnimated(ResourcesLoader.CORPSE_HUMAN.getSurface(), 4, 2);
             case ORC:
-                return ResourcesLoader.CORPSE_ORC.instanciate();
+                return Drawable.loadSpriteAnimated(ResourcesLoader.CORPSE_ORC.getSurface(), 4, 2);
             default:
                 throw new RuntimeException();
         }

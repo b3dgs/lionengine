@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * List of available alignments.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Align
 {

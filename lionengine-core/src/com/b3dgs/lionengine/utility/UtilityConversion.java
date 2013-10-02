@@ -21,6 +21,8 @@ import java.nio.ByteBuffer;
 
 /**
  * Conversion class utility.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityConversion
 {

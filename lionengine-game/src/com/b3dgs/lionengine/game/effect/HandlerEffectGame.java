@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.effect;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.HandlerGame;
+import com.b3dgs.lionengine.game.HandlerObjectGame;
 
 /**
  * Handle effects.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.HandlerGame;
  * @param <E> The effect type used.
  */
 public class HandlerEffectGame<E extends EffectGame>
-        extends HandlerGame<Integer, E>
+        extends HandlerObjectGame<E>
 {
     /** Camera reference. */
     private final CameraGame camera;
@@ -51,10 +51,6 @@ public class HandlerEffectGame<E extends EffectGame>
     protected void update(double extrp, E effect)
     {
         effect.update(extrp);
-        if (effect.isDestroyed())
-        {
-            remove(effect);
-        }
     }
 
     @Override
@@ -64,11 +60,5 @@ public class HandlerEffectGame<E extends EffectGame>
         {
             effect.render(g, camera);
         }
-    }
-
-    @Override
-    protected Integer getKey(E object)
-    {
-        return object.getId();
     }
 }

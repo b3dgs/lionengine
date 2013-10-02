@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.Media;
 
 /**
  * Handle audio OGG.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AudioOgg
 {

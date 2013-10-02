@@ -44,12 +44,14 @@ import java.io.IOException;
  *     Assert.fail(exception.getMessage());
  * }
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FileReading
         extends Closeable
 {
     /**
-     * Read boolean (1 bit, <code>true</code> or <code>false</code>).
+     * Read a boolean (1 bit, <code>true</code> or <code>false</code>).
      * 
      * @return The boolean read.
      * @throws IOException If read failed.
@@ -57,7 +59,7 @@ public interface FileReading
     boolean readBoolean() throws IOException;
 
     /**
-     * Read byte (1 byte, -128 to 127).
+     * Read a byte (1 byte, -128 to 127 both included).
      * 
      * @return The byte read.
      * @throws IOException If read failed.
@@ -65,7 +67,7 @@ public interface FileReading
     byte readByte() throws IOException;
 
     /**
-     * Read char (2 bytes, 0 to 65535).
+     * Read a char (2 bytes, 0 to 65535 both included).
      * 
      * @return The char read.
      * @throws IOException If read failed.
@@ -73,7 +75,7 @@ public interface FileReading
     char readChar() throws IOException;
 
     /**
-     * Read short (2 bytes, -32.768 to 32.767).
+     * Read a short (2 bytes, -32.768 to 32.767 both included).
      * 
      * @return The short read.
      * @throws IOException If read failed.
@@ -81,7 +83,7 @@ public interface FileReading
     short readShort() throws IOException;
 
     /**
-     * Read integer (4 bytes, -2.147.483.648 to 2.147.483.647).
+     * Read an integer (4 bytes, -2.147.483.648 to 2.147.483.647 both included).
      * 
      * @return The integer read.
      * @throws IOException If read failed.
@@ -89,7 +91,7 @@ public interface FileReading
     int readInteger() throws IOException;
 
     /**
-     * Read float (4 bytes, 1.40129846432481707e-45 to 3.40282346638528860e+38).
+     * Read a float (4 bytes, 1.40129846432481707e-45 to 3.40282346638528860e+38 both included).
      * 
      * @return The float read.
      * @throws IOException If read failed.
@@ -97,7 +99,7 @@ public interface FileReading
     float readFloat() throws IOException;
 
     /**
-     * Read long (8 bytes, -9.223.372.036.854.775.808 to 9.223.372.036.854.775.807).
+     * Read a long (8 bytes, -9.223.372.036.854.775.808 to 9.223.372.036.854.775.807 both included).
      * 
      * @return The long read.
      * @throws IOException If read failed.
@@ -105,7 +107,7 @@ public interface FileReading
     long readLong() throws IOException;
 
     /**
-     * Read double (8 bytes, 4.94065645841246544e-324d to 1.79769313486231570e+308d).
+     * Read a double (8 bytes, 4.94065645841246544e-324 to 1.79769313486231570e+308 both included).
      * 
      * @return The double read.
      * @throws IOException If read failed.
@@ -113,12 +115,16 @@ public interface FileReading
     double readDouble() throws IOException;
 
     /**
-     * Read a sequence of chars (2 bytes and more).
+     * Read a sequence of characters (2 bytes and more).
      * 
      * @return The string read.
      * @throws IOException If read failed.
      */
     String readString() throws IOException;
+
+    /*
+     * Closeable
+     */
 
     /**
      * Terminate reading, close file.

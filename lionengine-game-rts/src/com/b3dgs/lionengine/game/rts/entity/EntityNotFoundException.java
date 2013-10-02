@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.entity;
+package com.b3dgs.lionengine.game.rts.entity;
 
 /**
- * This exception is thrown when a entity is not found.
+ * This exception is thrown when an entity is not found.
  */
 public class EntityNotFoundException
         extends Exception

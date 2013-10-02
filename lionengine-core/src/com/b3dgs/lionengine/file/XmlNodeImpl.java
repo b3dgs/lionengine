@@ -28,11 +28,22 @@ import org.jdom2.Element;
 import com.b3dgs.lionengine.Check;
 
 /**
- * Xml node implementation.
+ * XML node implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class XmlNodeImpl
         implements XmlNode
 {
+    /** Node name error. */
+    private static final String ERROR_NODE_NAME = "The node name must not be null !";
+    /** Child name error. */
+    private static final String ERROR_CHILD_NAME = "The child name must not be null !";
+    /** Root node error. */
+    private static final String ERROR_ROOT_NODE = "The root node must not be null !";
+    /** Attribute error. */
+    private static final String ERROR_ATTRIBUTE = "The attribute must not be null !";
+
     /** Root reference. */
     private final Element root;
 
@@ -43,7 +54,7 @@ final class XmlNodeImpl
      */
     XmlNodeImpl(String name)
     {
-        Check.notNull(name, "The node name must not be null !");
+        Check.notNull(name, XmlNodeImpl.ERROR_NODE_NAME);
         root = new Element(name);
     }
 
@@ -54,7 +65,7 @@ final class XmlNodeImpl
      */
     XmlNodeImpl(Element root)
     {
-        Check.notNull(root, "The root node must not be null !");
+        Check.notNull(root, XmlNodeImpl.ERROR_ROOT_NODE);
         this.root = root;
     }
 
@@ -76,7 +87,7 @@ final class XmlNodeImpl
      */
     private String getAttributeValue(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         final String value = root.getAttributeValue(attribute);
 
         Check.notNull(value, "Can not read the attribute value for: \"", attribute, "\"");
@@ -91,7 +102,7 @@ final class XmlNodeImpl
      */
     private void write(String attribute, String content)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         root.setAttribute(attribute, content);
     }
 
@@ -111,7 +122,7 @@ final class XmlNodeImpl
     @Override
     public void writeBoolean(String attribute, boolean content)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         root.setAttribute(attribute, String.valueOf(content));
     }
 
@@ -154,7 +165,7 @@ final class XmlNodeImpl
     @Override
     public void writeString(String attribute, String content)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         if (content == null)
         {
             root.setAttribute(attribute, XmlNode.NULL);
@@ -168,56 +179,56 @@ final class XmlNodeImpl
     @Override
     public boolean readBoolean(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Boolean.parseBoolean(getAttributeValue(attribute));
     }
 
     @Override
     public byte readByte(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Byte.parseByte(getAttributeValue(attribute));
     }
 
     @Override
     public short readShort(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Short.parseShort(getAttributeValue(attribute));
     }
 
     @Override
     public int readInteger(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Integer.parseInt(getAttributeValue(attribute));
     }
 
     @Override
     public long readLong(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Long.parseLong(getAttributeValue(attribute));
     }
 
     @Override
     public float readFloat(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Float.parseFloat(getAttributeValue(attribute));
     }
 
     @Override
     public double readDouble(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         return Double.parseDouble(getAttributeValue(attribute));
     }
 
     @Override
     public String readString(String attribute)
     {
-        Check.notNull(attribute, "The attribute must not be null !");
+        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         final String value = getAttributeValue(attribute);
         if (XmlNode.NULL.equals(value))
         {
@@ -235,7 +246,7 @@ final class XmlNodeImpl
     @Override
     public XmlNode getChild(String name) throws XmlNodeNotFoundException
     {
-        Check.notNull(name, "The child name must not be null !");
+        Check.notNull(name, XmlNodeImpl.ERROR_CHILD_NAME);
         final Element child = root.getChild(name);
         if (child == null)
         {

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.swing;
 
 /**
  * Action combo abstract class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ActionCombo
 {

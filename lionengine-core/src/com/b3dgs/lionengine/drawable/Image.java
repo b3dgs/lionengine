@@ -43,12 +43,4 @@ public interface Image
      * @return The java image reference.
      */
     java.awt.Image getSurface();
-
-    /**
-     * Get instanced version of current image (faster than a clone, but shares the same surface).
-     * 
-     * @return The instanced image.
-     * @deprecated TODO: To be removed
-     */
-    Image instanciate();
 }

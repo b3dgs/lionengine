@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.producer;
 
-import com.b3dgs.lionengine.game.rts.EntityRts;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * List of event linked to the production.

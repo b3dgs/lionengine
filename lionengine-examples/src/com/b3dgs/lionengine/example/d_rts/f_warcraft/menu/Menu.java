@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Cursor;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Media;
@@ -31,7 +32,6 @@ import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.audio.Wav;
-import com.b3dgs.lionengine.drawable.Cursor;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;

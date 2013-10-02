@@ -18,7 +18,13 @@
 package com.b3dgs.lionengine.input;
 
 /**
- * Handle game inputs, mouse and keyboard.
+ * Input factory. Can create the following elements:
+ * <ul>
+ * <li>{@link Keyboard}</li>
+ * <li>{@link Mouse}</li>
+ * </ul>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Input
 {

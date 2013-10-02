@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.file;
 import com.b3dgs.lionengine.Media;
 
 /**
- * Describe an xml parser, which is able to perform save and load operations.
+ * Describe an XML parser, which is able to perform save and load operations.
  * <p>
  * Example:
  * </p>
@@ -42,21 +42,23 @@ import com.b3dgs.lionengine.Media;
  * final XmlNode foo = root.getChild(&quot;foo&quot;);
  * Assert.assertTrue(foo.readBoolean(&quot;myBoolean&quot;));
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface XmlParser
 {
     /**
-     * Load an xml file.
+     * Load an XML file.
      * 
-     * @param media The xml media path.
-     * @return The xml root node.
+     * @param media The XML media path.
+     * @return The XML root node.
      */
     XmlNode load(Media media);
 
     /**
-     * Save an xml tree to a file.
+     * Save an XML tree to a file.
      * 
-     * @param root The xml root node.
+     * @param root The XML root node.
      * @param media The output media path.
      */
     void save(XmlNode root, Media media);

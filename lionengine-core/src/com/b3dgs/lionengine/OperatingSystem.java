@@ -21,6 +21,8 @@ import java.util.Locale;
 
 /**
  * List of available operating systems.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum OperatingSystem
 {

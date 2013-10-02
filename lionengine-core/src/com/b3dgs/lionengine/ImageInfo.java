@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Get quick information from an image without reading all bytes.
+ * Get quick information from an image without reading all data.
  * <p>
  * Example:
  * </p>
@@ -32,6 +32,8 @@ import java.io.InputStream;
  * Assert.assertEquals(32, info.getHeight());
  * Assert.assertEquals(&quot;png&quot;, info.getFormat());
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ImageInfo
 {
@@ -76,7 +78,7 @@ public final class ImageInfo
     private String format;
 
     /**
-     * Crate a new info reader.
+     * Constructor.
      * 
      * @param media The image media path.
      */

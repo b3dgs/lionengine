@@ -46,6 +46,8 @@ import java.util.Map;
  * Strings.clearStringsRef();
  * Assert.assertTrue(Strings.getStringsRefs().isEmpty());
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Strings
 {

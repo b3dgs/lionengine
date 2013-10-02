@@ -19,10 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * List of supported filters.
- * <p>
- * Note: HQ3X has to scale the height reference by 3 (if reference is 320*240, final size has to be 960*720 or
- * 1280*720).
- * </p>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Filter
 {

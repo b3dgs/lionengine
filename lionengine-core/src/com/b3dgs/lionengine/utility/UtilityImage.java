@@ -46,11 +46,13 @@ import com.b3dgs.lionengine.file.XmlParser;
 
 /**
  * Set of static functions related to image manipulation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityImage
 {
     /** Null image message. */
-    private static final String MESSAGE_NULL_IMAGE = "Image must not be null !";
+    private static final String ERROR_IMAGE_NULL = "Image must not be null !";
     /** Graphics environment. */
     private static final GraphicsEnvironment ENV = GraphicsEnvironment.getLocalGraphicsEnvironment();
     /** Graphics device. */
@@ -132,6 +134,26 @@ public final class UtilityImage
     }
 
     /**
+     * Get a buffered image from a buffered image.
+     * 
+     * @param image input buffered image.
+     * @return copied buffered image.
+     */
+    public static BufferedImage getBufferedImage(BufferedImage image)
+    {
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+        final BufferedImage bufferedImage = UtilityImage.createBufferedImage(image.getWidth(), image.getHeight(),
+                image.getTransparency());
+        final Graphics2D g = bufferedImage.createGraphics();
+
+        g.setComposite(AlphaComposite.Src);
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+
+        return bufferedImage;
+    }
+
+    /**
      * Get a volatile image from an image file.
      * 
      * @param media The image media path.
@@ -160,7 +182,7 @@ public final class UtilityImage
      */
     public static VolatileImage getVolatileImage(BufferedImage image)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final VolatileImage volatileImage = UtilityImage.createVolatileImage(image.getWidth(), image.getHeight(),
                 image.getTransparency());
         final Graphics2D g = volatileImage.createGraphics();
@@ -181,7 +203,7 @@ public final class UtilityImage
      */
     public static BufferedImage applyMask(java.awt.Image image, Color maskColor)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final BufferedImage alpha = UtilityImage.createBufferedImage(image.getWidth(null), image.getHeight(null),
                 Transparency.BITMASK);
         final Graphics2D g = alpha.createGraphics();
@@ -220,7 +242,7 @@ public final class UtilityImage
      */
     public static BufferedImage[] referenceSplit(BufferedImage image, int row, int col)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int total = row * col;
         final int width = image.getWidth() / row, height = image.getHeight() / col;
         final BufferedImage[] images = new BufferedImage[total];
@@ -247,7 +269,7 @@ public final class UtilityImage
      */
     public static BufferedImage[] splitImage(BufferedImage image, int row, int col)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int total = row * col;
         final int width = image.getWidth() / row, height = image.getHeight() / col;
         final int transparency = image.getColorModel().getTransparency();
@@ -279,7 +301,7 @@ public final class UtilityImage
      */
     public static BufferedImage rotate(BufferedImage image, int angle)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int w = image.getWidth(), h = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
         final BufferedImage rotated = UtilityImage.createBufferedImage(w, h, transparency);
@@ -303,7 +325,7 @@ public final class UtilityImage
      */
     public static BufferedImage resize(BufferedImage image, int width, int height)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int transparency = image.getColorModel().getTransparency();
         final BufferedImage resized = UtilityImage.createBufferedImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
@@ -323,7 +345,7 @@ public final class UtilityImage
      */
     public static BufferedImage flipHorizontal(BufferedImage image)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int w = image.getWidth(), h = image.getHeight();
         final BufferedImage flipped = UtilityImage.createBufferedImage(w, h, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
@@ -343,7 +365,7 @@ public final class UtilityImage
      */
     public static BufferedImage flipVertical(BufferedImage image)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final int w = image.getWidth(), h = image.getHeight();
         final BufferedImage flipped = UtilityImage.createBufferedImage(w, h, image.getColorModel().getTransparency());
         final Graphics2D g = flipped.createGraphics();
@@ -364,7 +386,7 @@ public final class UtilityImage
      */
     public static BufferedImage applyFilter(BufferedImage image, Filter filter)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         Check.notNull(filter, "Filter must not be null !");
         final Kernel kernel;
         switch (filter)
@@ -516,7 +538,7 @@ public final class UtilityImage
     public static BufferedImage getRasterBuffer(BufferedImage image, int fr, int fg, int fb, int er, int eg, int eb,
             int refSize)
     {
-        Check.notNull(image, UtilityImage.MESSAGE_NULL_IMAGE);
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         final boolean method = true;
         final BufferedImage raster = UtilityImage.createBufferedImage(image.getWidth(), image.getHeight(),
                 image.getTransparency());

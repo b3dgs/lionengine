@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.rts;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.UtilityMath;
 

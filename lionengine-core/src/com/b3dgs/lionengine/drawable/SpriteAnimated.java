@@ -26,15 +26,15 @@ import com.b3dgs.lionengine.anim.Animator;
 
 /**
  * <p>
- * SpriteAnimated is an extended sprite, as it is now able to play it, using animations data. It works like a sprite
- * expected it renders only a part of it (animation job).
+ * SpriteAnimated is an extended sprite that allows to play it using {@link Animation}. It works like a sprite excepted
+ * that it renders only a part of it (current {@link Animator} frame).
  * </p>
  * <p>
- * Animation data contains the first/last frame and the animation speed. Considering the main first frame is on the
+ * {@link Animation} contains the first/last frame and the animation speed, considering the main first frame is on the
  * top-left sprite surface, and the last frame is on the down-right sprite surface, reading it from left to right.
  * </p>
  * <p>
- * The first frame number is 1.
+ * The first frame number is {@link Animation#MINIMUM_FRAME}.
  * </p>
  * <p>
  * Example:
@@ -47,16 +47,18 @@ import com.b3dgs.lionengine.anim.Animator;
  * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
  * animation.play(anim);
  * 
- * // Update
+ * // Update (in loop)
  * animation.updateAnimation(extrp);
  * 
- * // Render
+ * // Render (in loop)
  * animation.setMirror(false);
  * animation.render(g, 160, 300);
  * animation.setMirror(true);
  * animation.render(g, 200, 300);
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Animator
  * @see Animation
  * @see AnimState
  */
@@ -67,14 +69,14 @@ public interface SpriteAnimated
      * Render a specific frame on graphic output at specified coordinates.
      * 
      * @param g The graphic output.
-     * @param frame The frame to render (>= 1).
-     * @param x The abscissa.
-     * @param y The ordinate.
+     * @param frame The frame to render (>= {@link Animation#MINIMUM_FRAME}).
+     * @param x The horizontal location.
+     * @param y The vertical location.
      */
     void render(Graphic g, int frame, int x, int y);
 
     /**
-     * Set the mirror state.
+     * Set the mirror state. The surface will not be modified, as flipping is directly done during rendering process.
      * 
      * @param mirror Set <code>true</code> if it is a mirror rendering (rendering is flipped), <code>false</code> if
      *            normal.
@@ -133,20 +135,8 @@ public interface SpriteAnimated
     /**
      * Get the representative surface of a frame.
      * 
-     * @param frame The frame to get (>= 1).
+     * @param frame The frame to get (>= {@link Animation#MINIMUM_FRAME}).
      * @return The frame's surface.
      */
     BufferedImage getFrame(int frame);
-
-    /*
-     * Image
-     */
-
-    /**
-     * Get instanced version of current animated sprite (shares the same surface).
-     * 
-     * @return The cloned animated sprite.
-     */
-    @Override
-    SpriteAnimated instanciate();
 }

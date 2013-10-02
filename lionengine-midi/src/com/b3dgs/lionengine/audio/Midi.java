@@ -44,6 +44,8 @@ package com.b3dgs.lionengine.audio;
  * midi.pause();
  * midi.stop();
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Midi
 {

@@ -28,13 +28,12 @@ import com.b3dgs.lionengine.Graphic;
 /**
  * Design to handle objects.
  * 
- * @param <K> The key type used.
  * @param <E> The object type used.
  */
-public abstract class HandlerGame<K, E>
+public abstract class HandlerObjectGame<E extends ObjectGame>
 {
     /** List of entities handled. */
-    private final Map<K, E> objects;
+    private final Map<Integer, E> objects;
     /** List of entities to delete. */
     private final List<E> toDelete;
     /** List of entities to add. */
@@ -47,7 +46,7 @@ public abstract class HandlerGame<K, E>
     /**
      * Constructor.
      */
-    public HandlerGame()
+    public HandlerObjectGame()
     {
         objects = new HashMap<>(8);
         toDelete = new ArrayList<>(1);
@@ -73,14 +72,6 @@ public abstract class HandlerGame<K, E>
     protected abstract void render(Graphic g, E object);
 
     /**
-     * Get the object key.
-     * 
-     * @param object The object reference.
-     * @return The object key.
-     */
-    protected abstract K getKey(E object);
-
-    /**
      * Update the objects.
      * 
      * @param extrp The extrapolation value.
@@ -91,6 +82,10 @@ public abstract class HandlerGame<K, E>
         for (final E object : list())
         {
             update(extrp, object);
+            if (object.isDestroyed())
+            {
+                remove(object);
+            }
         }
         updateRemove();
     }
@@ -126,7 +121,7 @@ public abstract class HandlerGame<K, E>
      * @param key The object key.
      * @return The object reference.
      */
-    public E get(K key)
+    public E get(Integer key)
     {
         return objects.get(key);
     }
@@ -174,9 +169,20 @@ public abstract class HandlerGame<K, E>
     }
 
     /**
+     * Get the object key.
+     * 
+     * @param object The object reference.
+     * @return The object key.
+     */
+    private Integer getKey(E object)
+    {
+        return object.getId();
+    }
+
+    /**
      * Update the add list. Should be called before main update.
      */
-    protected void updateAdd()
+    private void updateAdd()
     {
         if (willAdd)
         {
@@ -192,7 +198,7 @@ public abstract class HandlerGame<K, E>
     /**
      * Update the remove list. Should be called after main update.
      */
-    protected void updateRemove()
+    private void updateRemove()
     {
         if (willDelete)
         {

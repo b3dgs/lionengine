@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * By <a href="http://www.b3dgs.com"><b>Byron 3D Games Studio</b></a>
  * </p>
  * <p>
- * Here a standard engine initialization:
+ * Standard engine initialization:
  * </p>
  * 
  * <pre>
@@ -41,27 +41,24 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  *     public static void main(String[] args)
  *     {
  *         // Start engine (name = &quot;First Code&quot;, version = &quot;1.0.0&quot;, resources directory = &quot;resources&quot;)
- *         // The Engine is initialized with our parameters:
+ *         // The engine is initialized with our parameters:
  *         // - The name of our program: &quot;First Code&quot;
- *         // - Our program version: &quot;1.0.0&quot;
+ *         // - The program version: &quot;1.0.0&quot;
  *         // - The main resources directory, relative to the execution directory: ./resources/
- *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix
- *         // - The verbose level
- *         // - The swing theme (general java appearance)
- *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;, Verbose.CRITICAL, Theme.SYSTEM);
+ *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
+ *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * 
- *         // Display configuration (desired = 640*480*16)
- *         // This is corresponding to the output configuration
- *         // As our native is in 320*240, the output will be scaled by 2
- *         // If the current frame rate is lower, the extrapolation value will allow to compensate any data calculation
+ *         // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
+ *         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
+ *         // If the current frame rate is lower than the required in the native, the extrapolation value will allow to
+ *         // compensate any data calculation.
  *         final Resolution output = new Resolution(640, 480, 60);
  * 
- *         // Final configuration (rendering will be scaled by 2 considering source and output resolution)
- *         // This is the final configuration container, including window mode
+ *         // Final configuration (rendering will be scaled by 2 considering source and output resolution).
+ *         // This is the final configuration container, including color depth and window mode.
  *         final Config config = new Config(output, 16, true);
  * 
- *         // Program starter, the main thread, setup with our configuration
- *         // It just needs one sequence reference to start
+ *         // Program starter, setup with our configuration. It just needs one sequence reference to start.
  *         final Loader loader = new Loader(config);
  *         loader.start(new Scene(loader));
  *     }
@@ -73,7 +70,7 @@ import com.b3dgs.lionengine.utility.UtilityFile;
  * }
  * </pre>
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @version 6.0.0
  * @since 13 June 2010
  */
@@ -92,17 +89,17 @@ public final class Engine
     /** Engine website. */
     public static final String WEBSITE = "http://www.b3dgs.com";
     /** Error message program name. */
-    private static final String MESSAGE_ERROR_NAME = "Program name must not be null !";
+    private static final String ERROR_PROGRAM_NAME = "Program name must not be null !";
     /** Error message program version. */
-    private static final String MESSAGE_ERROR_VERSION = "The version must not be null !";
+    private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message resource directory. */
-    private static final String MESSAGE_ERROR_RESOURCE = "The resources directory must not be null !";
+    private static final String ERROR_RESOURCES_DIR = "The resources directory must not be null !";
     /** Error message verbose. */
-    private static final String MESSAGE_ERROR_VERBOSE = "The verbose level must not be null !";
+    private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
     /** Error message theme. */
-    private static final String MESSAGE_ERROR_THEME = "The theme must not be null !";
+    private static final String ERROR_THEME = "The theme must not be null !";
     /** Error message temp directory. */
-    private static final String MESSAGE_ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
+    private static final String ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
     /** Started engine flag. */
     private static boolean started = false;
     /** User program name. */
@@ -133,11 +130,11 @@ public final class Engine
      */
     public static void start(String name, Version version, String resourcesDir, Verbose level, Theme theme)
     {
-        Check.notNull(name, Engine.MESSAGE_ERROR_NAME);
-        Check.notNull(version, Engine.MESSAGE_ERROR_VERSION);
-        Check.notNull(resourcesDir, Engine.MESSAGE_ERROR_RESOURCE);
-        Check.notNull(level, Engine.MESSAGE_ERROR_VERBOSE);
-        Check.notNull(theme, Engine.MESSAGE_ERROR_THEME);
+        Check.notNull(name, Engine.ERROR_PROGRAM_NAME);
+        Check.notNull(version, Engine.ERROR_PROGRAM_VERSION);
+        Check.notNull(resourcesDir, Engine.ERROR_RESOURCES_DIR);
+        Check.notNull(level, Engine.ERROR_VERBOSE_LEVEL);
+        Check.notNull(theme, Engine.ERROR_THEME);
 
         if (!Engine.started)
         {
@@ -243,7 +240,7 @@ public final class Engine
         // Create temporary directory
         if (!tempDir.exists() && !tempDir.mkdir())
         {
-            Verbose.warning(Engine.class, "checkVersion", Engine.MESSAGE_ERROR_TEMP_DIRECTORY);
+            Verbose.warning(Engine.class, "checkVersion", Engine.ERROR_TEMP_DIRECTORY);
         }
     }
 

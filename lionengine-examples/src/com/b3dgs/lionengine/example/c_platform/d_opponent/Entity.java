@@ -20,13 +20,12 @@ package com.b3dgs.lionengine.example.c_platform.d_opponent;
 import java.util.EnumMap;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.platform.EntityPlatform;
+import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
 /**
  * Abstract entity base implementation.
@@ -42,8 +41,6 @@ abstract class Entity
     protected final Movement movement;
     /** Movement jump force. */
     protected final Force jumpForce;
-    /** Extra time for jump before fall. */
-    protected final Timing timerExtraJump;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
     /** Jump force. */
@@ -82,7 +79,6 @@ abstract class Entity
         movementSpeedValue = getDataDouble("movementSpeed", "data");
         movement = new Movement();
         jumpForce = new Force();
-        timerExtraJump = new Timing();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
         setFrameOffsets(0, 9);
@@ -228,7 +224,6 @@ abstract class Entity
             jumpForce.setForce(0.0, jumpForceValue);
             resetGravity();
             coll = EntityCollision.NONE;
-            timerExtraJump.stop();
         }
     }
 
@@ -307,8 +302,6 @@ abstract class Entity
                 jumpForce.setForce(Force.ZERO);
                 resetGravity();
                 coll = EntityCollision.GROUND;
-                // Start timer to allow entity to have an extra jump area before falling
-                timerExtraJump.start();
             }
             else
             {
@@ -343,6 +336,7 @@ abstract class Entity
     protected void handleCollisions(double extrp)
     {
         checkMapLimit();
+        coll = EntityCollision.NONE;
 
         // Horizontal collision
         if (getDiffHorizontal() < 0)

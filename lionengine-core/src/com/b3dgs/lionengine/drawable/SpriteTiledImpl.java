@@ -27,11 +27,16 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Tiled sprite implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteTiledImpl
         extends SpriteImpl
         implements SpriteTiled
 {
+    /** Sprite size error. */
+    private static final String ERROR_SPRITE_TILE_SIZE = "Sprite tile size must be strictly positive !";
+
     /** Number of horizontal tiles. */
     private final int horizontalTiles;
     /** Number of vertical tiles. */
@@ -44,37 +49,17 @@ final class SpriteTiledImpl
     private final int tilesNumber;
 
     /**
-     * Create a new tiled sprite.
+     * Constructor.
      * 
      * @param media The sprite media.
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
-     */
-    SpriteTiledImpl(Media media, int tileWidth, int tileHeight)
-    {
-        super(media);
-        Check.argument(tileWidth > 0 && tileHeight > 0, "Sprite tile size must be strictly positive !");
-
-        tileOriginalWidth = tileWidth;
-        tileOriginalHeight = tileHeight;
-        horizontalTiles = widthOriginal / tileWidth;
-        verticalTiles = heightOriginal / tileHeight;
-        tilesNumber = horizontalTiles * verticalTiles;
-    }
-
-    /**
-     * Create a new tiled sprite from an existing surface.
-     * 
      * @param surface The surface reference.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    SpriteTiledImpl(BufferedImage surface, int tileWidth, int tileHeight)
+    SpriteTiledImpl(Media media, BufferedImage surface, int tileWidth, int tileHeight)
     {
-        super(surface);
-
-        Check.argument(tileWidth > 0 && tileHeight > 0, "Sprite tile size must be strictly positive !");
-
+        super(media, surface);
+        Check.argument(tileWidth > 0 && tileHeight > 0, SpriteTiledImpl.ERROR_SPRITE_TILE_SIZE);
         tileOriginalWidth = tileWidth;
         tileOriginalHeight = tileHeight;
         horizontalTiles = widthOriginal / tileWidth;
@@ -165,12 +150,6 @@ final class SpriteTiledImpl
         final int h = getTileHeight();
 
         return surface.getSubimage(cx * w, cy * h, w, h);
-    }
-
-    @Override
-    public SpriteTiled instanciate()
-    {
-        return new SpriteTiledImpl(surface, getTileWidth(), getTileHeight());
     }
 
     /*

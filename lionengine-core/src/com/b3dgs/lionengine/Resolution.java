@@ -25,6 +25,8 @@ package com.b3dgs.lionengine;
  * <li><code>rate</code> : represents the screen refresh rate (in frames per seconds)</li>
  * </ul>
  * This class is mainly used to describe the display resolution chosen.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Resolution
 {

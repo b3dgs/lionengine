@@ -15,15 +15,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game.platform.entity;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * Default platform entity handler.
  * 
- * @param <E> Entity type used.
+ * @param <E> The entity type used.
  */
 public abstract class HandlerEntityPlatform<E extends EntityPlatform>
         extends HandlerEntityGame<E>

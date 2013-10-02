@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.Check;
 
 /**
  * Static functions around math manipulation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityMath
 {

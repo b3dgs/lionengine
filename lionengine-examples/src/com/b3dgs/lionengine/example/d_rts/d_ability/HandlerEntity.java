@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.example.d_rts.d_ability;
 import java.awt.Color;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Bar;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.drawable.Bar;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.HandlerEntityRts;
+import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
 
 /**
  * Handler implementation, containing all entities.

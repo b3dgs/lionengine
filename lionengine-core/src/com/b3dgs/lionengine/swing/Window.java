@@ -28,6 +28,8 @@ import javax.swing.JPanel;
 
 /**
  * Abstract window, mainly used by Options and Launcher.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Window
         extends JFrame
@@ -41,7 +43,7 @@ public abstract class Window
     protected final JPanel mainPanel;
 
     /**
-     * Create a new window.
+     * Constructor.
      * 
      * @param title The window title.
      * @param width The window width.

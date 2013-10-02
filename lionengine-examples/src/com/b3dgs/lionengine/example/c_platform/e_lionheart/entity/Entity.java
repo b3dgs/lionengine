@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Coord;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.platform.EntityPlatformRastered;
+import com.b3dgs.lionengine.game.platform.entity.EntityPlatformRastered;
 
 /**
  * Abstract entity base implementation.

@@ -78,6 +78,7 @@ import java.awt.geom.Rectangle2D;
  * text.draw(g, 0, 0, &quot;World&quot;);
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Align
  */
 public class Text
@@ -111,7 +112,7 @@ public class Text
     private boolean txtChanged = false;
 
     /**
-     * Create a text, which supports screen output text.
+     * Constructor.
      * 
      * @param fontName The font name ({@link Font}).
      * @param size The font size (in pixel).

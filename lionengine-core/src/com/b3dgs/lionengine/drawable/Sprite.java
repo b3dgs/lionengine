@@ -29,8 +29,8 @@ import com.b3dgs.lionengine.Graphic;
  * uses, such as menus, entities or backgrounds elements (which are not statics).
  * </p>
  * <p>
- * For each modifications (scale, flip, rotate...), the original surface is modified. So <code>rotate(1)</code> followed
- * by <code>rotate(-1)</code> will not give the same sprite as before.
+ * For each modifications (scale, flip, rotate, filter...), the original surface is kept. So <code>rotate(1)</code>
+ * followed by <code>rotate(-1)</code> will give the same sprite as before.
  * </p>
  * <p>
  * There are two steps for the initialization:
@@ -40,6 +40,10 @@ import com.b3dgs.lionengine.Graphic;
  * <li>Call {@link #load(boolean)} (this function will load the surface)</li>
  * </ul>
  * <p>
+ * <p>
+ * A non loaded sprite can be displayed (nothing will be displayed), but the sprite information are available (size).
+ * However, sprite manipulation will throw an exception as the surface is not available.
+ * </p>
  * Example:
  * </p>
  * 
@@ -51,6 +55,8 @@ import com.b3dgs.lionengine.Graphic;
  * // Render
  * sprite.render(g, 64, 280);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sprite
         extends Image
@@ -67,7 +73,7 @@ public interface Sprite
      * Method used for sprite scaling, in order to modify its size. Normal factor is equal to <code>100</code>, so
      * <code>200</code> will scale it twice bigger, whereas <code>50</code> will scale half its size.
      * 
-     * @param percent The value for scaling in percent (>= 0).
+     * @param percent The value for scaling in percent (> 0).
      */
     void scale(int percent);
 
@@ -75,13 +81,13 @@ public interface Sprite
      * Works as scale, but using different width and height factor. Using different value, the ratio won't be kept, and
      * the sprite will be different.
      * 
-     * @param percentWidth The percent value for scaling width (>= 0).
-     * @param percentHeight The percent value for scaling height (>= 0).
+     * @param percentWidth The percent value for scaling width (> 0).
+     * @param percentHeight The percent value for scaling height (> 0).
      */
     void stretch(int percentWidth, int percentHeight);
 
     /**
-     * Rotate the sprite with the specified angle.
+     * Rotate the sprite with the specified angle in degree.
      * 
      * @param angle The rotation angle in degree <code>[0 - 360]</code>.
      */
@@ -112,7 +118,7 @@ public interface Sprite
     void setTransparency(Color mask);
 
     /**
-     * Set alpha value.
+     * Set alpha value. The lower is the value, the higher will be the ghost effect.
      * 
      * @param alpha The alpha value <code>[0 - 255]</code>.
      */
@@ -121,14 +127,14 @@ public interface Sprite
     /**
      * Get the current sprite width (its current size, after scaling operation).
      * 
-     * @return sprite The width size as integer.
+     * @return sprite The sprite width.
      */
     int getWidthOriginal();
 
     /**
      * Get the current sprite height (its current size, after scaling operation).
      * 
-     * @return sprite The height size as integer.
+     * @return sprite The sprite height.
      */
     int getHeightOriginal();
 
@@ -140,8 +146,8 @@ public interface Sprite
      * Render the sprite on graphic output at specified coordinates.
      * 
      * @param g The graphic output.
-     * @param x The abscissa.
-     * @param y The ordinate.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      */
     @Override
     void render(Graphic g, int x, int y);
@@ -151,19 +157,10 @@ public interface Sprite
      */
 
     /**
-     * Get the sprite surface, represented by a BufferedImage.
+     * Get the sprite surface, represented by a {@link BufferedImage}.
      * 
      * @return The buffer reference representing the sprite.
      */
     @Override
     BufferedImage getSurface();
-
-    /**
-     * Get instanced version of current sprite (shares the same surface). The {@link #load(boolean)} function should not
-     * be called for this instance as the surface has already been prepared.
-     * 
-     * @return The instanced sprite.
-     */
-    @Override
-    Sprite instanciate();
 }

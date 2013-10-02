@@ -19,119 +19,47 @@ package com.b3dgs.lionengine.game.entity;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.Body;
 import com.b3dgs.lionengine.game.purview.Collidable;
-import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
 import com.b3dgs.lionengine.game.purview.model.BodyModel;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 import com.b3dgs.lionengine.game.purview.model.MirrorableModel;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Main object that can be used by any higher level object for a game. It supports external configuration, collision,
- * and mirror. You can override this function: {@link #createConfigurable()} to create your own {@link Configurable}
- * type, if needed.
+ * and mirror.
  */
 public abstract class EntityGame
-        extends BodyModel
-        implements Configurable, Collidable, Mirrorable
+        extends ObjectGame
+        implements Body, Collidable, Mirrorable
 {
-    /** Id used. */
-    private static final Set<Integer> IDS = new HashSet<>(16);
-    /** Last id used. */
-    private static int lastId = 1;
-
-    /**
-     * Get the next unused id.
-     * 
-     * @return The next unused id.
-     */
-    private static Integer getFreeId()
-    {
-        while (EntityGame.IDS.contains(Integer.valueOf(EntityGame.lastId)))
-        {
-            EntityGame.lastId++;
-        }
-        return Integer.valueOf(EntityGame.lastId);
-    }
-
-    /** Entity id. */
-    private final Integer id;
-    /** Configurable object reference. */
-    private final Configurable configurable;
+    /** Body object reference. */
+    private final Body body;
     /** Collidable object reference. */
     private final Collidable collidable;
     /** Mirrorable object reference. */
     private final Mirrorable mirrorable;
-    /** Destroyed flag; true will remove it from the handler. */
-    private boolean destroy;
 
     /**
-     * Create a new entity.
-     */
-    public EntityGame()
-    {
-        this(null);
-    }
-
-    /**
-     * Create a new entity from an existing configuration. The configuration will be shared; this will reduce memory
-     * usage.
+     * Constructor.
      * 
-     * @param configurable The configuration reference.
+     * @param setup The setup reference.
      */
-    public EntityGame(Configurable configurable)
+    public EntityGame(SetupGame setup)
     {
-        super(null);
-        if (configurable != null)
-        {
-            this.configurable = configurable;
-        }
-        else
-        {
-            this.configurable = createConfigurable();
-        }
+        super(setup.configurable);
+        body = new BodyModel();
         mirrorable = new MirrorableModel();
         collidable = new CollidableModel(this);
-        destroy = false;
-        id = EntityGame.getFreeId();
-        EntityGame.IDS.add(id);
-    }
-
-    /**
-     * Update the entity.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public abstract void update(double extrp);
-
-    /**
-     * Get the entity id (unique).
-     * 
-     * @return The entity id.
-     */
-    public final Integer getId()
-    {
-        return id;
-    }
-
-    /**
-     * Remove entity from handler, and free memory.
-     */
-    public void destroy()
-    {
-        destroy = true;
-        EntityGame.IDS.remove(getId());
     }
 
     /**
@@ -145,76 +73,180 @@ public abstract class EntityGame
         return UtilityMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
     }
 
-    /**
-     * Check if entity is going to be removed.
-     * 
-     * @return <code>true</code> if going to be removed, <code>false</code> else.
+    /*
+     * Body
      */
-    public boolean isDestroyed()
+
+    @Override
+    public void updateGravity(double extrp, int desiredFps, Force... forces)
     {
-        return destroy;
+        body.updateGravity(extrp, desiredFps, forces);
     }
 
-    /**
-     * Create configurable.
-     * 
-     * @return The configurable instance.
-     */
-    protected Configurable createConfigurable()
+    @Override
+    public void resetGravity()
     {
-        return new ConfigurableModel();
+        body.resetGravity();
+    }
+
+    @Override
+    public void invertAxisY(boolean state)
+    {
+        body.invertAxisY(state);
+    }
+
+    @Override
+    public void setGravityMax(double max)
+    {
+        body.setGravityMax(max);
+    }
+
+    @Override
+    public void setMass(double mass)
+    {
+        body.setMass(mass);
+    }
+
+    @Override
+    public double getMass()
+    {
+        return body.getMass();
+    }
+
+    @Override
+    public double getWeight()
+    {
+        return body.getWeight();
     }
 
     /*
-     * Configurable
+     * Localizable
      */
 
     @Override
-    public void loadData(Media media)
+    public void teleport(double x, double y)
     {
-        configurable.loadData(media);
+        body.teleport(x, y);
     }
 
     @Override
-    public XmlNode getDataRoot()
+    public void teleportX(double x)
     {
-        return configurable.getDataRoot();
+        body.teleportX(x);
     }
 
     @Override
-    public String getDataString(String attribute, String... path)
+    public void teleportY(double y)
     {
-        return configurable.getDataString(attribute, path);
+        body.teleportY(y);
     }
 
     @Override
-    public int getDataInteger(String attribute, String... path)
+    public void moveLocation(double extrp, Force force, Force... forces)
     {
-        return configurable.getDataInteger(attribute, path);
+        body.moveLocation(extrp, force, forces);
     }
 
     @Override
-    public boolean getDataBoolean(String attribute, String... path)
+    public void moveLocation(double extrp, double vx, double vy)
     {
-        return configurable.getDataBoolean(attribute, path);
+        body.moveLocation(extrp, vx, vy);
     }
 
     @Override
-    public double getDataDouble(String attribute, String... path)
+    public void setLocation(double x, double y)
     {
-        return configurable.getDataDouble(attribute, path);
+        body.setLocation(x, y);
     }
 
     @Override
-    public Animation getDataAnimation(String name)
+    public void setLocationX(double x)
     {
-        return configurable.getDataAnimation(name);
+        body.setLocationX(x);
     }
 
     @Override
-    public CollisionData getDataCollision(String name)
+    public void setLocationY(double y)
     {
-        return configurable.getDataCollision(name);
+        body.setLocationY(y);
+    }
+
+    @Override
+    public void setLocationOffset(double x, double y)
+    {
+        body.setLocationOffset(x, y);
+    }
+
+    @Override
+    public void setSize(int width, int height)
+    {
+        body.setSize(width, height);
+    }
+
+    @Override
+    public double getLocationX()
+    {
+        return body.getLocationX();
+    }
+
+    @Override
+    public double getLocationY()
+    {
+        return body.getLocationY();
+    }
+
+    @Override
+    public int getLocationIntX()
+    {
+        return body.getLocationIntX();
+    }
+
+    @Override
+    public int getLocationIntY()
+    {
+        return body.getLocationIntY();
+    }
+
+    @Override
+    public double getLocationOldX()
+    {
+        return body.getLocationOldX();
+    }
+
+    @Override
+    public double getLocationOldY()
+    {
+        return body.getLocationOldY();
+    }
+
+    @Override
+    public int getLocationOffsetX()
+    {
+        return body.getLocationOffsetX();
+    }
+
+    @Override
+    public int getLocationOffsetY()
+    {
+        return body.getLocationOffsetY();
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return body.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return body.getHeight();
+    }
+
+    @Override
+    public Line2D getMovement()
+    {
+        return body.getMovement();
     }
 
     /*

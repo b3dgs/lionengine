@@ -23,6 +23,8 @@ import java.util.List;
 
 /**
  * Special engine exception implementation which limit the trace to the user side.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LionEngineException
         extends RuntimeException

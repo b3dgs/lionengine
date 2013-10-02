@@ -21,10 +21,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Bar;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.drawable.Bar;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;

@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.d_rts.e_skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.rts.EntityRts;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
+import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.

@@ -84,12 +84,6 @@ final class ImageImpl
         return surface;
     }
 
-    @Override
-    public Image instanciate()
-    {
-        return new ImageImpl(surface);
-    }
-
     /*
      * Object
      */

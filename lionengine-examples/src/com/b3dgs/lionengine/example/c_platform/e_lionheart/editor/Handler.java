@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.editor;
 
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;
 
@@ -49,9 +50,8 @@ public class Handler
      */
 
     @Override
-    public void update(double extrp)
+    protected void updatingEntity(Entity entity, double extrp)
     {
-        updateAdd();
-        updateRemove();
+        // Nothing to do
     }
 }

@@ -49,6 +49,8 @@ import com.b3dgs.lionengine.Align;
  * 
  * sound.stop();
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Wav
 {

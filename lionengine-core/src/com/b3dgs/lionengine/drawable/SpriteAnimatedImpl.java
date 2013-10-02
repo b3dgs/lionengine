@@ -30,12 +30,17 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
- * Sprite animated implementation.
+ * Animated sprite implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteAnimatedImpl
         extends SpriteImpl
         implements SpriteAnimated
 {
+    /** Sprite frames error. */
+    private static final String ERROR_SPRITE_FRAMES = "Sprite frames must be strictly positive !";
+
     /** Animator reference. */
     private final Animator animator;
     /** Number of horizontal frames. */
@@ -52,38 +57,17 @@ final class SpriteAnimatedImpl
     private boolean mirror;
 
     /**
-     * Create a sprite animated.
+     * Constructor.
      * 
      * @param media The sprite media.
-     * @param horizontalFrames The number of horizontal frames.
-     * @param verticalFrames The number of vertical frames.
-     */
-    SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames)
-    {
-        super(media);
-        Check.argument(horizontalFrames > 0 && verticalFrames > 0, "Sprite frames must be strictly positive !");
-
-        this.horizontalFrames = horizontalFrames;
-        this.verticalFrames = verticalFrames;
-        frameOriginalWidth = widthOriginal / horizontalFrames;
-        frameOriginalHeight = heightOriginal / verticalFrames;
-        framesNumber = horizontalFrames * verticalFrames;
-        animator = Anim.createAnimator();
-    }
-
-    /**
-     * Create a sprite animated by sharing surface with another one.
-     * 
      * @param surface The surface reference.
      * @param horizontalFrames The number of horizontal frames.
      * @param verticalFrames The number of vertical frames.
      */
-    SpriteAnimatedImpl(BufferedImage surface, int horizontalFrames, int verticalFrames)
+    SpriteAnimatedImpl(Media media, BufferedImage surface, int horizontalFrames, int verticalFrames)
     {
-        super(surface);
-
-        Check.argument(horizontalFrames > 0 && verticalFrames > 0, "Sprite frames must be strictly positive !");
-
+        super(media, surface);
+        Check.argument(horizontalFrames > 0 && verticalFrames > 0, SpriteAnimatedImpl.ERROR_SPRITE_FRAMES);
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
         frameOriginalWidth = widthOriginal / horizontalFrames;
@@ -235,12 +219,6 @@ final class SpriteAnimatedImpl
         g.dispose();
 
         return buf;
-    }
-
-    @Override
-    public SpriteAnimated instanciate()
-    {
-        return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
     }
 
     /*

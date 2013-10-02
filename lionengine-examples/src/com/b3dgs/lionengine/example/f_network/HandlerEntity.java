@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.HandlerEntityPlatform;
+import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 
 /**
  * Handler implementation. All of our entity will be handled here.

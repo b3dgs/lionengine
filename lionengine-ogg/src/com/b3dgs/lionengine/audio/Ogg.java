@@ -31,6 +31,8 @@ package com.b3dgs.lionengine.audio;
  * Thread.sleep(2000);
  * ogg.stop();
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Ogg
 {

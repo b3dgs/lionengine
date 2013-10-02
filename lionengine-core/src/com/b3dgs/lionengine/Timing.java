@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine;
 
 /**
- * Handle timer operation, in milli seconds.
+ * Handle timer operation, in milli seconds, system clock independent.
  * <p>
  * Example:
  * </p>
@@ -44,6 +44,8 @@ package com.b3dgs.lionengine;
  * Assert.assertFalse(timer.isStarted());
  * Assert.assertTrue(timer.get() &gt;= 0);
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Timing
 {

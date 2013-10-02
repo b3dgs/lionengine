@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 /**
  * List of standard architectures.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Architecture
 {

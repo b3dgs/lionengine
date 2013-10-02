@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.utility;
 
 /**
  * Random utility class implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class UtilityRandom
 {

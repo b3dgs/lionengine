@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Force;
  * Represents something designed to receive a gravitational force.
  */
 public interface Body
+        extends Localizable
 {
     /**
      * Update gravity calculation.

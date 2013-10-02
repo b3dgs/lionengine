@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.utility.UtilityFile;
 
 /**
  * Level rip filter.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class LevelRipFilter
         extends FileFilter

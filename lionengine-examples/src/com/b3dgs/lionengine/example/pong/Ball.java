@@ -20,9 +20,11 @@ package com.b3dgs.lionengine.example.pong;
 import java.awt.Color;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
@@ -48,7 +50,7 @@ final class Ball
      */
     Ball(int screenWidth, int screenHeight)
     {
-        super();
+        super(new SetupGame(Media.get("sample.xml")));
         force = new Force();
         speedInit = 2.5;
         setSize(Ball.SIZE, Ball.SIZE);

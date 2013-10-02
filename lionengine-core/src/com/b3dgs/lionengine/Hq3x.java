@@ -21,6 +21,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * HQ3X implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Hq3x
 {
@@ -176,7 +178,7 @@ final class Hq3x
     private final int height;
 
     /**
-     * Create a new hq3x filter.
+     * Constructor.
      * 
      * @param srcImage The buffer source.
      */
