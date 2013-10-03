@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Unit;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -159,7 +158,7 @@ final class Minimap
      */
     private void renderCamera(Graphic g, CameraRts camera, int x, int y)
     {
-        g.setColor(Color.GREEN);
+        g.setColor(ColorRgba.GREEN);
         final int cx = (int) camera.getLocationRealX() / map.getTileWidth() - 1 + x;
         final int cy = (int) camera.getLocationRealY() / map.getTileHeight() - 1 + y;
         final int cw = camera.getViewWidth() / map.getTileWidth() + 1;
@@ -207,12 +206,12 @@ final class Minimap
                 {
                     if (!fogOfWar.isFogged(tx, ty))
                     {
-                        g.setColor(Color.DARK_GRAY);
+                        g.setColor(ColorRgba.GRAY_DARK);
                         g.drawRect(tx, map.getHeightInTile() - 2 - ty, 1, 1, true);
                     }
                     if (!fogOfWar.isVisited(tx, ty))
                     {
-                        g.setColor(Color.BLACK);
+                        g.setColor(ColorRgba.BLACK);
                         g.drawRect(tx, map.getHeightInTile() - 2 - ty, 1, 1, true);
                     }
                 }

@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.c_platform.b_entitycontrol;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 
 // Tutorial: Platform Entity Control
 // This tutorial will show how to manage the different state of a controlled entity using keyboard.

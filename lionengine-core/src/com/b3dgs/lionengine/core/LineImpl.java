@@ -15,37 +15,65 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
+
+import java.awt.geom.Line2D;
 
 /**
- * Loader thread.
+ * Line implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class LoaderThread
-        extends Thread
+final class LineImpl
+        implements Line
 {
-    /** Loader reference. */
-    private final Loader loader;
+    /** Line 2D. */
+    private final Line2D line;
 
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param x1 The x coordinate of the start point.
+     * @param y1 The y coordinate of the start point.
+     * @param x2 The x coordinate of the end point.
+     * @param y2 The y coordinate of the end point.
      */
-    LoaderThread(final Loader loader)
+    LineImpl(double x1, double y1, double x2, double y2)
     {
-        super(Engine.getProgramName());
-        this.loader = loader;
+        line = new Line2D.Double(x1, y1, x2, y2);
     }
 
     /*
-     * Thread
+     * Line
      */
 
     @Override
-    public void run()
+    public void set(double x1, double y1, double x2, double y2)
     {
-        loader.run();
+        line.setLine(x1, y1, x2, y2);
+    }
+
+    @Override
+    public double getX1()
+    {
+        return line.getX1();
+    }
+
+    @Override
+    public double getX2()
+    {
+        return line.getX2();
+    }
+
+    @Override
+    public double getY1()
+    {
+        return line.getY1();
+    }
+
+    @Override
+    public double getY2()
+    {
+        return line.getY2();
     }
 }

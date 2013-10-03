@@ -20,14 +20,21 @@ package com.b3dgs.lionengine.game;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
+ * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a
+ * {@link HandlerObjectGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed. The
+ * {@link #update(double)} method is called by the handler when handled by this one. An object can also be externally
+ * configured by using a {@link Configurable}, filled by an XML file.
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurable
+ * @see HandlerObjectGame
  */
 public abstract class ObjectGame
         implements Configurable

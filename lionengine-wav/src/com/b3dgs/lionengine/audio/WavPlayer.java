@@ -22,8 +22,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Default sound player implementation.

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.skill;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.FactoryProduction;

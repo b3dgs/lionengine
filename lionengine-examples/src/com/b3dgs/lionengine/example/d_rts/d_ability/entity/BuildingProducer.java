@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability.entity;
 
-import java.awt.Color;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
 import com.b3dgs.lionengine.example.d_rts.d_ability.EntityType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.ProducibleEntity;
@@ -87,8 +87,8 @@ public abstract class BuildingProducer
             barProgress.setLocation(x, y);
             barProgress.setMaximumSize(getWidth(), 4);
             barProgress.setWidthPercent(getProductionProgressPercent());
-            barProgress.setColorBackground(Color.GRAY);
-            barProgress.setColorForeground(Color.RED);
+            barProgress.setColorBackground(ColorRgba.GRAY);
+            barProgress.setColorForeground(ColorRgba.RED);
             barProgress.render(g);
         }
     }

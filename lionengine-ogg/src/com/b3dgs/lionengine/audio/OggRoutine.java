@@ -29,8 +29,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,7 +24,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Theme;
+import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.utility.UtilityFile;
+import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * <b>LionEngine</b>.
@@ -88,6 +94,8 @@ public final class Engine
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
     public static final String WEBSITE = "http://www.b3dgs.com";
+    /** Graphic factory. */
+    static GraphicFactory graphicFactory;
     /** Error message program name. */
     private static final String ERROR_PROGRAM_NAME = "Program name must not be null !";
     /** Error message program version. */
@@ -146,6 +154,11 @@ public final class Engine
             Verbose.info("Execution directory = ", Media.WORKING_DIR + Media.getSeparator());
             Verbose.info("Resources directory = ", Media.getPath(Media.WORKING_DIR, Media.getRessourcesDir()));
             Verbose.info("Temporary directory = ", Media.getTempDir() + Media.getSeparator());
+
+            // Set the low level factory
+            Engine.graphicFactory = new GraphicFactoryImpl();
+            UtilityImage.setGraphicFactory(Engine.graphicFactory);
+            UtilityMath.setGeomFactory(new GeomFactoryImpl());
 
             // Check version (clear temporary directory if version is different)
             final String versionFilename = Media.getPath(Media.getTempDir(), "version");

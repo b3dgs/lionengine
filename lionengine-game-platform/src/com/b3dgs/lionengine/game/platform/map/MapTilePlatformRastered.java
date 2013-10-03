@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +24,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.purview.Rasterable;
@@ -135,7 +135,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
                 }
                 if (cache && UtilityFile.exists(rasFile))
                 {
-                    final BufferedImage rasterBuf = UtilityImage.getBufferedImage(new Media(rasFile), false);
+                    final ImageBuffer rasterBuf = UtilityImage.getImageBuffer(new Media(rasFile), false);
                     addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
                 }
                 else
@@ -186,8 +186,8 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
             int eg, int eb)
     {
         final SpriteTiled original = super.getPattern(pattern);
-        final BufferedImage buf = original.getSurface();
-        final BufferedImage rasterBuf = UtilityImage.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
+        final ImageBuffer buf = original.getSurface();
+        final ImageBuffer rasterBuf = UtilityImage.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
         final String rasFile = Media.getPath(Media.getTempDir(), directory, pattern + "_" + rasterID + ".png");
         final File file = new File(Media.getPath(Media.getTempDir(), directory));
 
@@ -211,7 +211,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
      * @param tw The tile width.
      * @param th The tile height.
      */
-    private void addRasterPattern(Integer pattern, BufferedImage surface, int tw, int th)
+    private void addRasterPattern(Integer pattern, ImageBuffer surface, int tw, int th)
     {
         List<SpriteTiled> rasters = rasterPatterns.get(pattern);
         if (rasters == null)

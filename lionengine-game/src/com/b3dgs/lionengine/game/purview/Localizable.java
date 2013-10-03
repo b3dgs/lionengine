@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import java.awt.geom.Line2D;
-
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Surface;
 
 /**
  * Represents something that can be localizable, using a coordinate. It keeps old location to perform a ray cast
  * calculation after a movement, between the last position and the current.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Localizable
         extends Surface
@@ -136,11 +136,4 @@ public interface Localizable
      * @return The old vertical location.
      */
     double getLocationOldY();
-
-    /**
-     * Get the movement from the old to the current location as a line.
-     * 
-     * @return The movement line.
-     */
-    Line2D getMovement();
 }

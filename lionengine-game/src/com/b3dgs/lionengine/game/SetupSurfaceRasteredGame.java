@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.purview.Configurable;
@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurable
  */
 public class SetupSurfaceRasteredGame
         extends SetupSurfaceGame
@@ -146,7 +149,7 @@ public class SetupSurfaceRasteredGame
      */
     private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
     {
-        final BufferedImage rasterBuf = UtilityImage.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
+        final ImageBuffer rasterBuf = UtilityImage.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);
         rastersAnim.add(raster);
     }

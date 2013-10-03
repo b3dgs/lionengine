@@ -18,12 +18,15 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Define a structure used to create configurable objects.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurable
  */
 public class SetupGame
 {
@@ -33,7 +36,7 @@ public class SetupGame
     public final Media configFile;
 
     /**
-     * Create a new entity setup.
+     * Constructor.
      * 
      * @param config The config media.
      */
@@ -43,14 +46,14 @@ public class SetupGame
     }
 
     /**
-     * Create a new entity setup.
+     * Constructor.
      * 
      * @param configurable The configurable reference.
      * @param config The config media.
      */
     public SetupGame(Configurable configurable, Media config)
     {
-        Check.notNull(configurable, "The configurable must bot be null !");
+        Check.notNull(configurable, "The configurable must not be null !");
         Media.exist(config);
         this.configurable = configurable;
         this.configurable.loadData(config);

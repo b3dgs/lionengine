@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.awt.geom.Line2D;
-
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
@@ -28,6 +26,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
  * Standard camera, able to handle movement, and both vertical/horizontal real interval. Camera can be used to move
  * easily, or just follow a specific {@link Localizable}. Also, a view can be set to avoid useless rendering when
  * objects are outside of the camera view.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CameraGame
         implements Localizable
@@ -77,7 +77,7 @@ public class CameraGame
     /**
      * Reset the camera interval to 0 by adapting its position.
      * 
-     * @param localizable The localizable to center.
+     * @param localizable The localizable to center to.
      */
     public void resetInterval(Localizable localizable)
     {
@@ -267,25 +267,10 @@ public class CameraGame
      */
     public boolean isVisible(Localizable localizable)
     {
-        return isVisible(localizable, 0, 0, 0, 0);
-    }
-
-    /**
-     * Check if the localizable is inside the camera view.
-     * 
-     * @param localizable The localizable to check.
-     * @param left The left offset.
-     * @param right The right offset.
-     * @param top The top offset.
-     * @param bottom The bottom offset.
-     * @return <code>true</code> if visible, <code>false</code> else.
-     */
-    public boolean isVisible(Localizable localizable, int left, int right, int top, int bottom)
-    {
-        return localizable.getLocationX() + localizable.getWidth() >= getLocationX() + left
-                && localizable.getLocationX() - localizable.getWidth() <= getLocationX() + getViewWidth() + right
-                && localizable.getLocationY() + localizable.getHeight() >= getLocationY() + bottom
-                && localizable.getLocationY() - localizable.getHeight() <= getLocationY() + getViewHeight() + top;
+        return localizable.getLocationX() + localizable.getWidth() >= getLocationX()
+                && localizable.getLocationX() - localizable.getWidth() <= getLocationX() + getViewWidth()
+                && localizable.getLocationY() + localizable.getHeight() >= getLocationY()
+                && localizable.getLocationY() - localizable.getHeight() <= getLocationY() + getViewHeight();
     }
 
     /**
@@ -460,13 +445,5 @@ public class CameraGame
     public int getHeight()
     {
         return location.getHeight();
-    }
-
-    @Override
-    public Line2D getMovement()
-    {
-        final Line2D m = location.getMovement();
-        m.setLine(m.getX1() - getViewX(), m.getY1() + getViewY(), m.getX2() - getViewX(), m.getY2() + getViewY());
-        return m;
     }
 }

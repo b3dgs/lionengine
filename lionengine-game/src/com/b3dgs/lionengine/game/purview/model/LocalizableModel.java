@@ -17,20 +17,18 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import java.awt.geom.Line2D;
-
-import com.b3dgs.lionengine.game.Coord;
+import com.b3dgs.lionengine.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
- * Default localizable implementation.
+ * Localizable implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LocalizableModel
         implements Localizable
 {
-    /** Ray cast movement. */
-    private final Line2D movement;
     /** Current coordinate. */
     private final Coord current;
     /** Old coordinate. */
@@ -61,7 +59,6 @@ public class LocalizableModel
         current = new Coord(x, y);
         old = new Coord(x, y);
         offset = new Coord();
-        movement = new Line2D.Double(x, y, x, y);
     }
 
     /**
@@ -70,14 +67,6 @@ public class LocalizableModel
     private void backupLocation()
     {
         old.set(current.getX(), current.getY());
-    }
-
-    /**
-     * Update the line between old position and current position.
-     */
-    private void updateMovement()
-    {
-        movement.setLine(old.getX(), old.getY(), current.getX(), current.getY());
     }
 
     /*
@@ -89,7 +78,6 @@ public class LocalizableModel
     {
         current.set(x, y);
         old.set(x, y);
-        updateMovement();
     }
 
     @Override
@@ -97,7 +85,6 @@ public class LocalizableModel
     {
         current.setX(x);
         old.setX(x);
-        updateMovement();
     }
 
     @Override
@@ -105,7 +92,6 @@ public class LocalizableModel
     {
         current.setY(y);
         old.setY(y);
-        updateMovement();
     }
 
     @Override
@@ -117,7 +103,6 @@ public class LocalizableModel
         {
             current.translate(f.getForceHorizontal() * extrp, f.getForceVertical() * extrp);
         }
-        updateMovement();
     }
 
     @Override
@@ -125,7 +110,6 @@ public class LocalizableModel
     {
         backupLocation();
         current.translate(vx * extrp, vy * extrp);
-        updateMovement();
     }
 
     @Override
@@ -133,7 +117,6 @@ public class LocalizableModel
     {
         backupLocation();
         current.set(x, y);
-        updateMovement();
     }
 
     @Override
@@ -141,7 +124,6 @@ public class LocalizableModel
     {
         old.setX(current.getX());
         current.setX(x);
-        updateMovement();
     }
 
     @Override
@@ -149,7 +131,6 @@ public class LocalizableModel
     {
         old.setY(current.getY());
         current.setY(y);
-        updateMovement();
     }
 
     @Override
@@ -223,11 +204,5 @@ public class LocalizableModel
     public int getHeight()
     {
         return height;
-    }
-
-    @Override
-    public Line2D getMovement()
-    {
-        return movement;
     }
 }

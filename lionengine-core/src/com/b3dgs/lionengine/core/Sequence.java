@@ -15,16 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
-import java.awt.Graphics2D;
-import java.awt.Transparency;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import java.lang.Thread.State;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityImage;
@@ -115,9 +117,9 @@ public abstract class Sequence
     /** Filter graphic. */
     private final Graphic graphic;
     /** Image buffer. */
-    private final BufferedImage buf;
+    private final ImageBuffer buf;
     /** Graphic buffer. */
-    private final Graphics2D gbuf;
+    private final Graphic gbuf;
     /** Loop time for desired rate. */
     private final long frameDelay;
     /** Sequence thread. */
@@ -163,7 +165,7 @@ public abstract class Sequence
         mouse.setConfig(config);
         filter = config.getFilter();
         sync = config.isWindowed() && output.getRate() > 0;
-        graphic = new Graphic();
+        graphic = new GraphicImpl();
         extrapolated = true;
 
         // Time needed for a loop to reach desired rate
@@ -208,12 +210,13 @@ public abstract class Sequence
             buf = null;
             gbuf = null;
             op = null;
+            graphic.setGraphic(gbuf);
         }
         // Scaled rendering
         else
         {
-            buf = UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE);
-            gbuf = buf.createGraphics();
+            buf = UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);
+            gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
                 op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
@@ -222,9 +225,8 @@ public abstract class Sequence
             {
                 op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
             }
-            UtilityImage.optimizeGraphicsSpeed(gbuf);
+            graphic.setGraphic(gbuf.getGraphic());
         }
-        graphic.setGraphics(gbuf);
         directRendering = hqx == 0 && (op == null || buf == null);
         thread = new SequenceThread(this);
     }

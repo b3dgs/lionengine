@@ -17,15 +17,14 @@
  */
 package com.b3dgs.lionengine.example.b_loaddraw;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -131,7 +130,7 @@ final class Scene
         final int x = 350 + (int) (tile % tilesheet.getTilesHorizontal()) * tilesheet.getTileWidth();
         final int y = 300 + (int) Math.floor(tile / tilesheet.getTilesHorizontal()) * tilesheet.getTileHeight();
 
-        g.setColor(Color.GREEN);
+        g.setColor(ColorRgba.GREEN);
         g.drawRect(x, y, tilesheet.getTileWidth(), tilesheet.getTileHeight(), false);
     }
 }

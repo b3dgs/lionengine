@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tilecollision;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;

@@ -20,6 +20,8 @@ package com.b3dgs.lionengine;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.b3dgs.lionengine.core.Verbose;
+
 /**
  * Handle java theme selection.
  * 

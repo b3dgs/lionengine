@@ -18,8 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 /**
- * Can describe an attribute (vitality, agility...). For fast and light development, it is recommended to make public
- * final instantiation, as it already purposes set & get functions.
+ * Can describe an attribute (vitality, agility...).
  * <p>
  * Example:
  * </p>
@@ -30,14 +29,16 @@ package com.b3dgs.lionengine.game;
  * vitality.increase(2);
  * System.out.println(vitality.get()); // print 3
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Attribute
+public class Attribute
 {
     /** Current attribute value. */
     private int value;
 
     /**
-     * Create a new blank attribute. Initial value is set to 0 by default.
+     * Constructor. Initial value is set to 0 by default.
      */
     public Attribute()
     {
@@ -55,7 +56,7 @@ public final class Attribute
     }
 
     /**
-     * Set value.
+     * Set attribute value.
      * 
      * @param value The value.
      */
@@ -65,9 +66,9 @@ public final class Attribute
     }
 
     /**
-     * Get value.
+     * Get attribute value.
      * 
-     * @return The value.
+     * @return The attribute value.
      */
     public int get()
     {

@@ -17,16 +17,17 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Line;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 
 /**
  * Purview representing something which can enter in collision with another. Based on a ray casting collision from a
  * bounding box area.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Collidable
 {
@@ -63,7 +64,7 @@ public interface Collidable
      * @param area The area to check.
      * @return <code>true</code> if collide, <code>false</code> else.
      */
-    boolean collide(Rectangle2D area);
+    boolean collide(Rectangle area);
 
     /**
      * Render collision bounding box.
@@ -78,12 +79,12 @@ public interface Collidable
      * 
      * @return The collision representation.
      */
-    Rectangle2D getCollisionBounds();
+    Rectangle getCollisionBounds();
 
     /**
      * Get collision ray cast.
      * 
      * @return The collision ray cast.
      */
-    Line2D getCollisionRay();
+    Line getCollisionRay();
 }

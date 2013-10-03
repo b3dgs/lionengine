@@ -17,14 +17,16 @@
  */
 package com.b3dgs.lionengine;
 
-import java.awt.image.BufferedImage;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * HQ2X implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Hq2x
+public final class Hq2x
 {
     /**
      * The raw scale implementation.
@@ -159,12 +161,12 @@ final class Hq2x
      * 
      * @param srcImage The buffer source.
      */
-    Hq2x(BufferedImage srcImage)
+    public Hq2x(ImageBuffer srcImage)
     {
         width = srcImage.getWidth();
         height = srcImage.getHeight();
         srcData = new int[width * height];
-        srcImage.getRGB(0, 0, width, height, srcData, 0, width);
+        srcImage.getRgb(0, 0, width, height, srcData, 0, width);
     }
 
     /**
@@ -172,11 +174,11 @@ final class Hq2x
      * 
      * @return The filtered buffer.
      */
-    BufferedImage getScaledImage()
+    public ImageBuffer getScaledImage()
     {
         final RawScale2x scaler = new RawScale2x(srcData, width, height);
-        final BufferedImage image = new BufferedImage(width * 2, height * 2, BufferedImage.TYPE_INT_ARGB);
-        image.setRGB(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
+        final ImageBuffer image = UtilityImage.createImageBuffer(width * 2, height * 2, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
         return image;
     }
 }

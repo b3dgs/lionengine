@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
-import java.awt.Color;
-
+import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Cursor;
 import com.b3dgs.lionengine.example.d_rts.e_skills.CursorType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
@@ -80,7 +79,7 @@ final class BuildBarracks
     public void onClicked(ControlPanelModel<?> panel)
     {
         cursor.setType(CursorType.BOX);
-        cursor.setBoxColor(Color.GREEN);
+        cursor.setBoxColor(ColorRgba.GREEN);
         cursor.setBoxSize(width, height);
     }
 }

@@ -17,20 +17,21 @@
  */
 package com.b3dgs.lionengine.example.d_rts.a_navmaptile;
 
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * World implementation.
@@ -51,7 +52,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = new Text(Font.SANS_SERIF, 10, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
 

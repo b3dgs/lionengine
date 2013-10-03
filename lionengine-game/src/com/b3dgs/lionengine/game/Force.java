@@ -20,8 +20,10 @@ package com.b3dgs.lionengine.game;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
- * Represents a 2d vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
- * (horizontal & vertical). For an entity, it can be used as a speed.
+ * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
+ * (horizontal & vertical). Can be used as a speed.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Force
 {
@@ -46,7 +48,7 @@ public final class Force
     private Force forceMin;
 
     /**
-     * Create a blank force vector.
+     * Constructor.
      */
     public Force()
     {
@@ -54,17 +56,7 @@ public final class Force
     }
 
     /**
-     * Create a copy of an existing force.
-     * 
-     * @param force The force to copy.
-     */
-    public Force(Force force)
-    {
-        this(force.fh, force.fv);
-    }
-
-    /**
-     * Create a vector with default forces.
+     * Constructor.
      * 
      * @param fh The horizontal force.
      * @param fv The vertical force.

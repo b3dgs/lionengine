@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
  * 
  * @param <C> The tile collision type.
  * @param <T> The type of tile used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTilePath<C extends Enum<C>, T extends TilePath<C>>
         extends MapTile<C, T>

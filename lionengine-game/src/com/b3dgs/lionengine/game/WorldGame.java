@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -88,6 +88,8 @@ import com.b3dgs.lionengine.input.Mouse;
  *     }
  * }
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class WorldGame
 {

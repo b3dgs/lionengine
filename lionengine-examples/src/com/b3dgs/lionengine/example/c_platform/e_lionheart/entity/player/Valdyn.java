@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;

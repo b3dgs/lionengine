@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.skill;
 
-import java.awt.Color;
-
+import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Cursor;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.FactoryProduction;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Map;
@@ -94,11 +93,11 @@ public abstract class SkillProduceBuilding
             if (map.isAreaAvailable(cursor.getLocationInTileX(), cursor.getLocationInTileY(),
                     toProduce.getWidthInTile(), toProduce.getHeightInTile(), owner.getId().intValue()))
             {
-                this.cursor.setBoxColor(Color.GREEN);
+                this.cursor.setBoxColor(ColorRgba.GREEN);
             }
             else
             {
-                this.cursor.setBoxColor(Color.RED);
+                this.cursor.setBoxColor(ColorRgba.RED);
             }
         }
     }
@@ -130,7 +129,7 @@ public abstract class SkillProduceBuilding
             if (worker.canProduce(producible))
             {
                 cursor.setType(TypeCursor.BOX);
-                cursor.setBoxColor(Color.GREEN);
+                cursor.setBoxColor(ColorRgba.GREEN);
                 cursor.setBoxSize(width, height);
                 toProduce = producible;
             }

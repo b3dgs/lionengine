@@ -27,12 +27,13 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @param <T> The enum containing all type.
  * @param <S> The setup type.
  * @param <E> The effect type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EffectGame>
         extends FactoryGame<T, S>
 {
     /**
-     * Create a new effect factory.
+     * Constructor.
      * 
      * @param keyType The class of the enum type defined.
      */
@@ -42,11 +43,12 @@ public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfac
     }
 
     /**
-     * Get the effect instance from its id. It is recommended to use a switch on the id, and throw an exception for the
+     * Get the effect instance from its key. It is recommended to use a switch on the key, and throw an exception for
+     * the
      * default case (instead of returning a <code>null</code> value).
      * 
-     * @param id The effect id (as enumeration).
+     * @param key The effect key (as enumeration).
      * @return The effect instance.
      */
-    public abstract E createEffect(T id);
+    public abstract E createEffect(T key);
 }

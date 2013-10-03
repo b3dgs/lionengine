@@ -17,13 +17,12 @@
  */
 package com.b3dgs.lionengine.game.rts;
 
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 import com.b3dgs.lionengine.input.Keyboard;
@@ -44,9 +43,9 @@ public abstract class ControlPanelModel<E extends EntityRts>
     /** List of listeners. */
     private final Set<ControlPanelListener> listeners;
     /** Selection area. */
-    private final Rectangle2D selectionArea;
+    private final Rectangle selectionArea;
     /** Area outside panel (where the map is displayed). */
-    private Shape outsidePanel;
+    private Rectangle outsidePanel;
     /** Mouse click number to start a selection. */
     private int clickSelection;
     /** Handler clicked state. */
@@ -72,7 +71,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
     /** Current selection height (stored in selectionArea when selection is done). */
     private int selectH;
     /** Cursor selection color. */
-    private Color colorSelection;
+    private ColorRgba colorSelection;
 
     /**
      * Create a new control panel.
@@ -80,7 +79,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
     public ControlPanelModel()
     {
         listeners = new HashSet<>(1);
-        selectionArea = new Rectangle2D.Double();
+        selectionArea = UtilityMath.createRectangle();
         outsidePanel = null;
         clickSelection = Mouse.LEFT;
         clicked = false;
@@ -94,7 +93,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
         selectY = 0;
         selectW = 0;
         selectH = 0;
-        colorSelection = Color.GRAY;
+        colorSelection = ColorRgba.GRAY;
     }
 
     /**
@@ -159,7 +158,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
             if (selected)
             {
                 notifySelectionDone(selectionArea);
-                selectionArea.setRect(-1, -1, 0, 0);
+                selectionArea.set(-1, -1, 0, 0);
                 selected = false;
             }
         }
@@ -225,7 +224,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
      * 
      * @param area The area representing the clickable area.
      */
-    public void setClickableArea(Shape area)
+    public void setClickableArea(Rectangle area)
     {
         outsidePanel = area;
     }
@@ -237,8 +236,8 @@ public abstract class ControlPanelModel<E extends EntityRts>
      */
     public void setClickableArea(CameraGame camera)
     {
-        outsidePanel = new Rectangle2D.Double(camera.getViewX(), camera.getViewY(), camera.getViewWidth(),
-                camera.getViewHeight());
+        outsidePanel = UtilityMath.createRectangle();
+        outsidePanel.set(camera.getViewX(), camera.getViewY(), camera.getViewWidth(), camera.getViewHeight());
     }
 
     /**
@@ -256,7 +255,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
      * 
      * @param color The selection color.
      */
-    public void setSelectionColor(Color color)
+    public void setSelectionColor(ColorRgba color)
     {
         colorSelection = color;
     }
@@ -266,7 +265,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
      * 
      * @return The clickable map area from panel.
      */
-    public Shape getArea()
+    public Rectangle getArea()
     {
         return outsidePanel;
     }
@@ -413,7 +412,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
             selectH += selectY;
             selectY = 0;
         }
-        selectionArea.setRect(selectX, selectY, selectW, selectH);
+        selectionArea.set(selectX, selectY, selectW, selectH);
     }
 
     /*
@@ -421,7 +420,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
      */
 
     @Override
-    public void notifySelectionStarted(Rectangle2D selection)
+    public void notifySelectionStarted(Rectangle selection)
     {
         for (final ControlPanelListener listener : listeners)
         {
@@ -430,7 +429,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     @Override
-    public void notifySelectionDone(Rectangle2D selection)
+    public void notifySelectionDone(Rectangle selection)
     {
         for (final ControlPanelListener listener : listeners)
         {

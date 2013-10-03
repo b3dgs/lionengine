@@ -23,11 +23,12 @@ package com.b3dgs.lionengine.game.projectile;
  * 
  * @param <T> The enum containing all launchers type.
  * @param <L> The launcher type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryLauncherGame<T extends Enum<T>, L extends LauncherProjectileGame<?, ?, ?, ?>>
 {
     /**
-     * Create a new projectile factory.
+     * Constructor.
      */
     public FactoryLauncherGame()
     {

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
 import java.awt.AWTError;
 import java.awt.AWTException;
@@ -25,15 +25,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
-import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.IllegalComponentStateException;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.Transparency;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
@@ -43,27 +39,28 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
- * Representation of the screen device, supporting fullscreen and windowed mode. Screen class uses a double buffer for
- * any rendering. It also includes a mouse and a keyboard listener.
+ * Screen implementation.
  * 
  * @see Keyboard
  * @see Mouse
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Screen
-        implements FocusListener
+final class ScreenImpl
+        implements Screen, FocusListener
 {
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
@@ -76,7 +73,7 @@ final class Screen
     /** Error message unsupported fullscreen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
     /** Hidden cursor instance. */
-    private static final Cursor CURSOR_HIDDEN = Screen.createHiddenCursor();
+    private static final Cursor CURSOR_HIDDEN = ScreenImpl.createHiddenCursor();
     /** Default cursor instance. */
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
 
@@ -89,11 +86,7 @@ final class Screen
     {
         try
         {
-            final Toolkit toolkit = Toolkit.getDefaultToolkit();
-            final Dimension dim = toolkit.getBestCursorSize(1, 1);
-            final BufferedImage cursor = UtilityImage.createBufferedImage(dim.width, dim.height, Transparency.BITMASK);
-            return toolkit.createCustomCursor(UtilityImage.applyMask(cursor, Color.BLACK), new Point(0, 0),
-                    "hiddenCursor");
+            return GraphicFactoryImpl.createHiddenCursor();
         }
         catch (final AWTError
                      | HeadlessException
@@ -122,9 +115,9 @@ final class Screen
     /** Buffer strategy reference. */
     private BufferStrategy buf;
     /** Image buffer reference. */
-    private BufferedImage buffer;
+    private ImageBuffer buffer;
     /** Graphic buffer reference. */
-    private Graphics2D gbuf;
+    private Graphic gbuf;
     /** Component listener for keyboard inputs. */
     private Component componentForKeyboard;
     /** Component listener for mouse inputs. */
@@ -141,12 +134,12 @@ final class Screen
      * 
      * @param config The config reference.
      */
-    Screen(Config config)
+    ScreenImpl(Config config)
     {
-        Check.notNull(config, Screen.ERROR_CONFIG);
+        Check.notNull(config, ScreenImpl.ERROR_CONFIG);
         if (GraphicsEnvironment.isHeadless())
         {
-            throw new LionEngineException(Screen.ERROR_DISPLAY);
+            throw new LionEngineException(ScreenImpl.ERROR_DISPLAY);
         }
 
         // Initialize environment
@@ -154,254 +147,14 @@ final class Screen
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
         applet = config.getApplet();
-        graphics = new Graphic();
+        graphics = UtilityImage.createGraphic();
         hasApplet = applet != null;
         this.config = config;
 
         // Prepare main frame
         frame = hasApplet ? null : initMainFrame();
         setResolution(config.getOutput());
-    }
-
-    /**
-     * Show the screen.
-     */
-    public void show()
-    {
-        frame.setVisible(true);
-    }
-
-    /**
-     * Must be called when all rendering are done. It switch buffers before rendering.
-     */
-    public void update()
-    {
-        if (hasApplet)
-        {
-            applet.getGraphics().drawImage(buffer, 0, 0, null);
-            graphics.setGraphics(gbuf);
-        }
-        else
-        {
-            buf.show();
-            graphics.setGraphics((Graphics2D) buf.getDrawGraphics());
-        }
-    }
-
-    /**
-     * Close main frame. Dispose all graphics resources.
-     */
-    public void dispose()
-    {
-        graphics.clear(config.getOutput());
-        update();
-        if (hasApplet)
-        {
-            applet.destroy();
-        }
-        else
-        {
-            buf.dispose();
-            frame.dispose();
-        }
-    }
-
-    /**
-     * Give focus to screen.
-     */
-    public void requestFocus()
-    {
-        if (hasApplet)
-        {
-            applet.requestFocus();
-            applet.validate();
-        }
-        else
-        {
-            frame.requestFocus();
-        }
-        componentForMouse.requestFocus();
-    }
-
-    /**
-     * Hide window mouse pointer.
-     */
-    public void hideCursor()
-    {
-        componentForCursor.setCursor(Screen.CURSOR_HIDDEN);
-    }
-
-    /**
-     * Show window mouse pointer.
-     */
-    public void showCursor()
-    {
-        componentForCursor.setCursor(Screen.CURSOR_DEFAULT);
-    }
-
-    /**
-     * Add a key listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public void addKeyListener(KeyListener listener)
-    {
-        componentForKeyboard.addKeyListener(listener);
-    }
-
-    /**
-     * Link keyboard to the screen (listening to).
-     * 
-     * @param keyboard The keyboard reference.
-     */
-    public void addKeyboard(Keyboard keyboard)
-    {
-        componentForKeyboard.addKeyListener((KeyListener) keyboard);
-        componentForKeyboard.requestFocus();
-        try
-        {
-            componentForKeyboard.setFocusTraversalKeysEnabled(false);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.info("Transversal keys are not available !");
-        }
-    }
-
-    /**
-     * Link keyboard to the screen (listening to).
-     * 
-     * @param mouse The mouse reference.
-     */
-    public void addMouse(Mouse mouse)
-    {
-        componentForMouse.addMouseListener((MouseListener) mouse);
-        componentForMouse.addMouseMotionListener((MouseMotionListener) mouse);
-        componentForMouse.addMouseWheelListener((MouseWheelListener) mouse);
-        componentForMouse.requestFocus();
-    }
-
-    /**
-     * Set sequence reference.
-     * 
-     * @param sequence The sequence reference.
-     */
-    public void setSequence(Sequence sequence)
-    {
-        this.sequence = sequence;
-    }
-
-    /**
-     * Set window icon from file.
-     * 
-     * @param filename The icon file name.
-     */
-    public void setIcon(String filename)
-    {
-        final ImageIcon icon = new ImageIcon(filename);
-        frame.setIconImage(icon.getImage());
-    }
-
-    /**
-     * Get current graphic.
-     * 
-     * @return The current graphic.
-     */
-    public Graphic getGraphic()
-    {
-        return graphics;
-    }
-
-    /**
-     * Get the config.
-     * 
-     * @return The config.
-     */
-    public Config getConfig()
-    {
-        return config;
-    }
-
-    /**
-     * Get frame container reference.
-     * 
-     * @return The frame reference.
-     */
-    public JFrame getFrame()
-    {
-        return frame;
-    }
-
-    /**
-     * Get main frame location x.
-     * 
-     * @return The main frame location x.
-     */
-    public int getLocationX()
-    {
-        try
-        {
-            if (hasApplet)
-            {
-                return (int) applet.getLocationOnScreen().getX();
-            }
-            return (int) componentForMouse.getLocationOnScreen().getX();
-        }
-        catch (final IllegalComponentStateException exception)
-        {
-            return 0;
-        }
-    }
-
-    /**
-     * Get main frame location y.
-     * 
-     * @return The main frame location y.
-     */
-    public int getLocationY()
-    {
-        try
-        {
-            if (hasApplet)
-            {
-                return (int) applet.getLocationOnScreen().getY();
-            }
-            return (int) componentForMouse.getLocationOnScreen().getY();
-        }
-        catch (final IllegalComponentStateException exception)
-        {
-            return 0;
-        }
-    }
-
-    /**
-     * Add the mouse focus listener.
-     */
-    void prepareFocusListener()
-    {
-        try
-        {
-            componentForMouse.addFocusListener(this);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.critical(Screen.class, "constructor", "Mouse focus listener can not be added !");
-        }
-    }
-
-    /**
-     * Start the main frame if has.
-     */
-    void start()
-    {
-        if (!hasApplet)
-        {
-            buf.show();
-            graphics.setGraphics((Graphics2D) buf.getDrawGraphics());
-            frame.validate();
-            frame.setEnabled(true);
-            frame.setVisible(true);
-        }
+        prepareFocusListener();
     }
 
     /**
@@ -413,9 +166,9 @@ final class Screen
     {
         try
         {
-            buffer = UtilityImage.createBufferedImage(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
-            gbuf = buffer.createGraphics();
-            graphics.setGraphics(gbuf);
+            buffer = UtilityImage.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            gbuf = buffer.createGraphic();
+            graphics.setGraphic(gbuf);
             componentForKeyboard = applet;
             componentForMouse = applet;
             componentForCursor = applet;
@@ -423,7 +176,7 @@ final class Screen
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, Screen.ERROR_APPLET);
+            throw new LionEngineException(exception, ScreenImpl.ERROR_APPLET);
         }
     }
 
@@ -471,7 +224,7 @@ final class Screen
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, Screen.ERROR_WINDOWED);
+            throw new LionEngineException(exception, ScreenImpl.ERROR_WINDOWED);
         }
     }
 
@@ -554,8 +307,8 @@ final class Screen
                     builder.append("\n");
                 }
             }
-            throw new LionEngineException(Screen.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()), "*",
-                    String.valueOf(output.getHeight()), "*", String.valueOf(depth), " @", String.valueOf(output
+            throw new LionEngineException(ScreenImpl.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()),
+                    "*", String.valueOf(output.getHeight()), "*", String.valueOf(depth), " @", String.valueOf(output
                             .getRate()), "Hz", "\n", builder.toString());
         }
     }
@@ -584,9 +337,20 @@ final class Screen
         return frame;
     }
 
-    /*
-     * FocusListener
+    /**
+     * Prepare the focus listener.
      */
+    private void prepareFocusListener()
+    {
+        try
+        {
+            componentForMouse.addFocusListener(this);
+        }
+        catch (final Exception exception)
+        {
+            Verbose.critical(Screen.class, "constructor", "Mouse focus listener can not be added !");
+        }
+    }
 
     /**
      * Set the screen config. Initialize the display.
@@ -611,6 +375,180 @@ final class Screen
             }
         }
     }
+
+    /*
+     * Screen
+     */
+
+    @Override
+    public void show()
+    {
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void update()
+    {
+        if (hasApplet)
+        {
+            applet.getGraphics().drawImage(((ImageBufferImpl) buffer).getBuffer(), 0, 0, null);
+            graphics.setGraphic(gbuf);
+        }
+        else
+        {
+            buf.show();
+            graphics.setGraphic(buf.getDrawGraphics());
+        }
+    }
+
+    @Override
+    public void dispose()
+    {
+        graphics.clear(config.getOutput());
+        update();
+        if (hasApplet)
+        {
+            applet.destroy();
+        }
+        else
+        {
+            buf.dispose();
+            frame.dispose();
+        }
+    }
+
+    @Override
+    public void requestFocus()
+    {
+        if (hasApplet)
+        {
+            applet.requestFocus();
+            applet.validate();
+        }
+        else
+        {
+            frame.requestFocus();
+        }
+        componentForMouse.requestFocus();
+    }
+
+    @Override
+    public void hideCursor()
+    {
+        componentForCursor.setCursor(ScreenImpl.CURSOR_HIDDEN);
+    }
+
+    @Override
+    public void showCursor()
+    {
+        componentForCursor.setCursor(ScreenImpl.CURSOR_DEFAULT);
+    }
+
+    @Override
+    public void addKeyListener(KeyListener listener)
+    {
+        componentForKeyboard.addKeyListener(listener);
+    }
+
+    @Override
+    public void addKeyboard(Keyboard keyboard)
+    {
+        componentForKeyboard.addKeyListener((KeyListener) keyboard);
+        componentForKeyboard.requestFocus();
+        try
+        {
+            componentForKeyboard.setFocusTraversalKeysEnabled(false);
+        }
+        catch (final Exception exception)
+        {
+            Verbose.info("Transversal keys are not available !");
+        }
+    }
+
+    @Override
+    public void addMouse(Mouse mouse)
+    {
+        componentForMouse.addMouseListener((MouseListener) mouse);
+        componentForMouse.addMouseMotionListener((MouseMotionListener) mouse);
+        componentForMouse.addMouseWheelListener((MouseWheelListener) mouse);
+        componentForMouse.requestFocus();
+    }
+
+    @Override
+    public void setSequence(Sequence sequence)
+    {
+        this.sequence = sequence;
+    }
+
+    @Override
+    public void setIcon(String filename)
+    {
+        final ImageIcon icon = new ImageIcon(filename);
+        frame.setIconImage(icon.getImage());
+    }
+
+    @Override
+    public Graphic getGraphic()
+    {
+        return graphics;
+    }
+
+    @Override
+    public Config getConfig()
+    {
+        return config;
+    }
+
+    @Override
+    public int getLocationX()
+    {
+        try
+        {
+            if (hasApplet)
+            {
+                return (int) applet.getLocationOnScreen().getX();
+            }
+            return (int) componentForMouse.getLocationOnScreen().getX();
+        }
+        catch (final IllegalComponentStateException exception)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getLocationY()
+    {
+        try
+        {
+            if (hasApplet)
+            {
+                return (int) applet.getLocationOnScreen().getY();
+            }
+            return (int) componentForMouse.getLocationOnScreen().getY();
+        }
+        catch (final IllegalComponentStateException exception)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public void start()
+    {
+        if (!hasApplet)
+        {
+            buf.show();
+            graphics.setGraphic(buf.getDrawGraphics());
+            frame.validate();
+            frame.setEnabled(true);
+            frame.setVisible(true);
+        }
+    }
+
+    /*
+     * FocusListener
+     */
 
     @Override
     public void focusGained(FocusEvent event)

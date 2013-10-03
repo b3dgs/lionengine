@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class PathFinderImpl
         implements PathFinder
@@ -48,7 +50,7 @@ final class PathFinderImpl
     private final Heuristic heuristic;
 
     /**
-     * Create a path finder with the default heuristic - closest to target.
+     * Constructor.
      * 
      * @param map The map to be searched.
      * @param maxSearchDistance The maximum depth we'll search before giving up.
@@ -60,7 +62,7 @@ final class PathFinderImpl
     }
 
     /**
-     * Create a path finder.
+     * Constructor.
      * 
      * @param heuristic The heuristic used to determine the search order of the map.
      * @param map The map to be searched.

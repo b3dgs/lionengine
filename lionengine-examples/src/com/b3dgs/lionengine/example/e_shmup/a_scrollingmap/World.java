@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;

@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
@@ -67,7 +66,7 @@ final class Ball
     {
         final int x = camera.getViewpointX(getLocationIntX() - Ball.SIZE / 2);
         final int y = camera.getViewpointY(getLocationIntY() + getHeight() - Ball.SIZE / 2);
-        g.setColor(Color.YELLOW);
+        g.setColor(ColorRgba.YELLOW);
         g.drawOval(x, y, Ball.SIZE, Ball.SIZE, true);
     }
 

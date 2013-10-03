@@ -22,9 +22,9 @@ import java.util.Locale;
 
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.sun.jna.Native;
 
 /**

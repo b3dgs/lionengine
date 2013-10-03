@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;

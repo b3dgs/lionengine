@@ -21,6 +21,8 @@ import java.util.Set;
 
 /**
  * Describe an object which can move on a tile path based map.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Pathfindable
 {

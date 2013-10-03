@@ -30,7 +30,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.utility.TileExtractor;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityMath;

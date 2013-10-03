@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 
 /**
  * Represents a surface that can be rastered.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Rasterable
 {

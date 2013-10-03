@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
-import java.awt.Transparency;
-
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -36,6 +35,7 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  * 
  * @param <E> The entity type used.
  * @param <E2> The source type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
         extends EntityGame
@@ -97,7 +97,7 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
 
         if (setup.surface == null || width == 0 || height == 0)
         {
-            sprite = Drawable.loadSpriteTiled(UtilityImage.createBufferedImage(1, 1, Transparency.OPAQUE), 1, 1);
+            sprite = Drawable.loadSpriteTiled(UtilityImage.createImageBuffer(1, 1, Transparency.OPAQUE), 1, 1);
             Verbose.critical(ProjectileGame.class, "constructor", "Missing surface file: ", setup.surfaceFile.getPath());
         }
         else

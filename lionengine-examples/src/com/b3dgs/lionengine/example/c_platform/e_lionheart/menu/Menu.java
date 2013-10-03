@@ -17,19 +17,19 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.menu;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteFont;
@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.SonicArranger;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -77,21 +78,21 @@ public class Menu
     /** Font data. */
     private static final Media FONT_DATA = Media.get("sprites", "fontdata_big.xml");
     /** Text color in menu option. */
-    private static final Color COLOR_OPTION = new Color(170, 170, 238);
+    private static final ColorRgba COLOR_OPTION = new ColorRgba(170, 170, 238);
     /** Alpha step speed. */
     private static final double ALPHA_STEP = 8.0;
     /** Cached alpha values. */
-    private static final Color[] ALPHAS;
+    private static final ColorRgba[] ALPHAS;
 
     /**
      * Static init.
      */
     static
     {
-        ALPHAS = new Color[256];
+        ALPHAS = new ColorRgba[256];
         for (int i = 0; i < 256; i++)
         {
-            Menu.ALPHAS[i] = new Color(0, 0, 0, i);
+            Menu.ALPHAS[i] = new ColorRgba(0, 0, 0, i);
         }
     }
 
@@ -117,6 +118,8 @@ public class Menu
     private double alpha;
     /** Text alpha current value. */
     private double txtAlpha;
+    /** Alpha changed. */
+    private boolean alphaChanged;
     /** Line choice on menu. */
     private int choice;
     /** Current difficulty index. */
@@ -152,7 +155,7 @@ public class Menu
     public Menu(Loader loader)
     {
         super(loader, Menu.MENU_DISPLAY);
-        text = new Text(Font.SERIF, 24, Text.NORMAL);
+        text = UtilityImage.createText(Text.SERIF, 24, TextStyle.NORMAL);
         timerPressStart = new Timing();
         factorH = 2.0 * (width / (double) Menu.MENU_DISPLAY.getWidth());
         factorV = 2.0 * (height / (double) Menu.MENU_DISPLAY.getHeight());
@@ -336,11 +339,13 @@ public class Menu
     {
         if (alpha == 0.0)
         {
+            final double oldAlpha = txtAlpha;
             txtAlpha += Menu.ALPHA_STEP * extrp;
             if (txtAlpha > 255.0)
             {
                 txtAlpha = 255.0;
             }
+            alphaChanged = oldAlpha != txtAlpha;
             // Wait for loading
             if (!firstLoaded && txtAlpha == 255.0)
             {
@@ -506,7 +511,10 @@ public class Menu
             case NEW:
                 menus[1].render(g, (int) (320 * factorH / 2) - 320, (int) (110 * factorV / 2) - 110);
                 pics[pic].render(g, (int) (160 * factorH) - 152, (int) (56 * factorV));
-                font.setAlpha((int) txtAlpha);
+                if (alphaChanged)
+                {
+                    font.setAlpha((int) txtAlpha);
+                }
                 font.draw(g, (int) (160 * factorH), (int) (186 * factorV), Align.CENTER, Menu.SWAMP_TEXT);
                 if (pressStart)
                 {
@@ -592,6 +600,7 @@ public class Menu
     protected void load()
     {
         font.load(true);
+        font.setAlpha(0);
         for (int i = 0; i < 1; i++)
         {
             pics[i].load(false);

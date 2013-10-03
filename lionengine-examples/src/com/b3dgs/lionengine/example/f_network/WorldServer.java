@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.f_network;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;

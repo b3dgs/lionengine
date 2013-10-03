@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.map;
 import java.io.IOException;
 import java.util.List;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.file.FileReading;

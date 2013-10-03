@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect;
 import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
@@ -74,7 +74,7 @@ public final class FactoryEffect
     @Override
     public Effect createEffect(EffectType type)
     {
-        return createEntity(type, getSetup(type));
+        return FactoryEffect.createEntity(type, getSetup(type));
     }
 
     @Override

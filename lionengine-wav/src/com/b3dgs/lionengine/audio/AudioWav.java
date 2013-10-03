@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Audio factory. Allows to create audio player.

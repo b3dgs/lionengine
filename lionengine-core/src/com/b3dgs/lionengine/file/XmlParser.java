@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.file;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Describe an XML parser, which is able to perform save and load operations.

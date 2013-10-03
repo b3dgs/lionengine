@@ -28,9 +28,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Mouse input implementation.

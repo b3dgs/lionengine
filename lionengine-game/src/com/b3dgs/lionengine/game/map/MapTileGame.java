@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.file.File;
@@ -56,8 +55,9 @@ import com.b3dgs.lionengine.utility.UtilityImage;
  * 
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * 
- * @param <C> Collision type used.
- * @param <T> Tile type used.
+ * @param <C> The collision type used.
+ * @param <T> The tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  */
 public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
@@ -83,10 +83,10 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     /** Tiles map. */
     private List<List<T>> tiles;
     /** Minimap reference. */
-    private BufferedImage minimap;
+    private ImageBuffer minimap;
 
     /**
-     * Create a new tile map.
+     * Constructor.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
@@ -128,9 +128,9 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     {
         if (minimap == null)
         {
-            minimap = UtilityImage.createBufferedImage(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
+            minimap = UtilityImage.createImageBuffer(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
         }
-        final Graphics g = minimap.getGraphics();
+        final Graphic g = minimap.createGraphic();
         final int vert = getHeightInTile();
         final int hori = getWidthInTile();
 
@@ -145,9 +145,9 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                 }
                 else
                 {
-                    g.setColor(Color.BLACK);
+                    g.setColor(ColorRgba.BLACK);
                 }
-                g.fillRect(h, vert - v - 1, 1, 1);
+                g.drawRect(h, vert - v - 1, 1, 1, true);
             }
         }
         g.dispose();
@@ -365,7 +365,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      * 
      * @return The minimap surface reference.
      */
-    public BufferedImage getMiniMap()
+    public ImageBuffer getMiniMap()
     {
         return minimap;
     }
@@ -497,9 +497,9 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      * @param tile The input tile.
      * @return The color representing the tile on minimap.
      */
-    protected Color getTilePixelColor(T tile)
+    protected ColorRgba getTilePixelColor(T tile)
     {
-        return Color.WHITE;
+        return ColorRgba.WHITE;
     }
 
     /*

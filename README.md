@@ -20,7 +20,6 @@ Steps to include the LionEngine in your project:
         * __lionengine-game-platform__ _(specialized for platform games)_
         * __lionengine-pathfinding__ _(for pathfinding support)_
             * __lionengine-game-rts__ _(specialized for strategy games)_
-        * __lionengine-game-shmup__ _(specialized for shoot'em up games)_
         * __lionengine-network__ _(support for networked games)_
   * __lionengine-midi__ _(allows to play Midi musics)_
   * __lionengine-wav__ _(allows to play Wav sounds)_
@@ -106,7 +105,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+        text = UtilityImage.createText(Font.SANS_SERIF, 12, Text.NORMAL);
     }
 
     /*

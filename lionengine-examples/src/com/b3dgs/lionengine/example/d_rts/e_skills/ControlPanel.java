@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.e_skills;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Control panel implementation.
@@ -63,7 +64,7 @@ final class ControlPanel
         super();
         this.cursor = cursor;
         barLife = new Bar(27, 3);
-        text = new Text(Font.DIALOG, 9, Text.NORMAL);
+        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         sprite = Drawable.loadSprite(Media.get("hud.png"));
         entityStats = Drawable.loadSprite(Media.get("entity_stats.png"));
         sprite.load(false);
@@ -125,14 +126,14 @@ final class ControlPanel
         entity.getIcon().render(g, x + 4, y + 4);
         text.draw(g, x + 4, y + 25, entity.getName());
         final int life = entity.life.getPercent();
-        Color color = Color.GREEN;
+        ColorRgba color = ColorRgba.GREEN;
         if (life <= 50)
         {
-            color = Color.YELLOW;
+            color = ColorRgba.YELLOW;
         }
         if (life < 25)
         {
-            color = Color.RED;
+            color = ColorRgba.RED;
         }
         barLife.setLocation(x + 35, y + 20);
         barLife.setWidthPercent(entity.life.getPercent());

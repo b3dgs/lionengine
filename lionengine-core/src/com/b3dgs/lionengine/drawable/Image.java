@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.core.ImageBuffer;
+
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
  * <p>
@@ -32,7 +34,6 @@ package com.b3dgs.lionengine.drawable;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see java.awt.Image
  */
 public interface Image
         extends Renderable
@@ -42,5 +43,5 @@ public interface Image
      * 
      * @return The java image reference.
      */
-    java.awt.Image getSurface();
+    ImageBuffer getSurface();
 }

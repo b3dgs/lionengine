@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.game;
 
 /**
- * Surface representation.
+ * Surface representation, described by a simple location and offset plus a size.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Surface
 {

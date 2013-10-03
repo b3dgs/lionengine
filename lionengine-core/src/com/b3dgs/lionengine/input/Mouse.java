@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.input;
 
 import java.awt.event.MouseEvent;
 
-import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Config;
 
 /**
  * Represents the mouse input. Gives informations such as mouse click and cursor location.

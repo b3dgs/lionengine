@@ -17,21 +17,21 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.menu;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Cursor;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.audio.Wav;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -42,6 +42,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.Scene;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeMenu;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeRace;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -51,17 +52,17 @@ public final class Menu
         extends Sequence
 {
     /** Menu font. */
-    static final Text FONT = new Text(Font.DIALOG, 10, Text.NORMAL);
+    static final Text FONT = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
     /** Main menu element color. */
-    static final Color COLOR_HEAD = new Color(255, 244, 69);
+    static final ColorRgba COLOR_HEAD = new ColorRgba(255, 244, 69);
     /** Menu element color. */
-    static final Color COLOR = new Color(255, 255, 235);
+    static final ColorRgba COLOR = new ColorRgba(255, 255, 235);
     /** Element on mouse over color. */
-    static final Color COLOR_OVER = new Color(255, 245, 70);
+    static final ColorRgba COLOR_OVER = new ColorRgba(255, 245, 70);
     /** Box border color (About & GameSelect box). */
-    static final Color COLOR_BOX_BORDER = new Color(190, 190, 190);
+    static final ColorRgba COLOR_BOX_BORDER = new ColorRgba(190, 190, 190);
     /** Box inside color (About & GameSelect box). */
-    static final Color COLOR_BOX_IN = new Color(20, 48, 77);
+    static final ColorRgba COLOR_BOX_IN = new ColorRgba(20, 48, 77);
     /** Available races list. */
     static final TypeRace[] RACES =
     {
@@ -138,7 +139,7 @@ public final class Menu
     /** Menu choices buttons. */
     private Choice[] choices;
     /** Menu transition colors. */
-    private Color[] alphas;
+    private ColorRgba[] alphas;
     /** Current alpha value. */
     private int alpha;
     /** Current player race. */
@@ -176,7 +177,7 @@ public final class Menu
      * @param g The graphics output.
      * @param color The color.
      */
-    private void applyAlpha(Graphic g, Color color)
+    private void applyAlpha(Graphic g, ColorRgba color)
     {
         g.setColor(color);
         g.drawRect(0, 0, width, height, true);
@@ -226,10 +227,10 @@ public final class Menu
     @Override
     protected void load()
     {
-        alphas = new Color[256];
+        alphas = new ColorRgba[256];
         for (int i = 0; i < 256; i++)
         {
-            alphas[i] = new Color(0, 0, 0, i);
+            alphas[i] = new ColorRgba(0, 0, 0, i);
         }
 
         logo.load(false);
@@ -474,7 +475,7 @@ public final class Menu
                 applyAlpha(g, alphas[255 - alpha]);
                 break;
             case PLAY:
-                applyAlpha(g, Color.BLACK);
+                applyAlpha(g, ColorRgba.BLACK);
                 break;
             default:
                 throw new RuntimeException();

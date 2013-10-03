@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.d_rts.d_ability.weapon;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.d_ability.Context;
 import com.b3dgs.lionengine.example.d_rts.d_ability.WeaponType;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;

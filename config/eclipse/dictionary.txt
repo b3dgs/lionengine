@@ -150,3 +150,8 @@ byron
 franklin
 flipping
 closeable
+optimize
+scanline
+bitmask
+serif
+sans

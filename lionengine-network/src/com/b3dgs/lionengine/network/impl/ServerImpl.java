@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.network.ClientListener;
 import com.b3dgs.lionengine.network.Server;
 import com.b3dgs.lionengine.network.message.NetworkMessage;

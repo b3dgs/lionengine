@@ -17,12 +17,13 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.awt.Color;
-
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Game text implementation. This class enhance the text in order to use it in a game referential. It is perfect to
@@ -32,10 +33,14 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * The use is strictly the same as {@link Text}, just including an additional function which is
  * {@link TextGame#update(CameraGame)}, needed to update the text location.
  * </p>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class TextGame
-        extends Text
+public class TextGame
+        implements Text
 {
+    /** Text reference. */
+    private final Text text;
     /** Location x. */
     private int x;
     /** Location y. */
@@ -50,9 +55,9 @@ public final class TextGame
      * @param size The font size.
      * @param style The font style.
      */
-    public TextGame(String fontName, int size, int style)
+    public TextGame(String fontName, int size, TextStyle style)
     {
-        super(fontName, size, style);
+        text = UtilityImage.createText(fontName, size, style);
     }
 
     /**
@@ -92,7 +97,7 @@ public final class TextGame
      * @param width The rectangle width.
      * @param height The rectangle height.
      */
-    public void drawRect(Graphic g, Color color, int x, int y, int width, int height)
+    public void drawRect(Graphic g, ColorRgba color, int x, int y, int width, int height)
     {
         g.setColor(color);
         g.drawRect(x - this.x, this.y - y - height + this.height, width, height, false);
@@ -105,6 +110,84 @@ public final class TextGame
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        super.draw(g, x - this.x, this.y - y + height, alignment, text);
+        this.text.draw(g, x - this.x, this.y - y + height, alignment, text);
+    }
+
+    @Override
+    public void draw(Graphic g, int x, int y, String text)
+    {
+        this.text.draw(g, x, y, text);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        text.render(g);
+    }
+
+    @Override
+    public void setLocation(int x, int y)
+    {
+        text.setLocation(x, y);
+    }
+
+    @Override
+    public void setText(String text)
+    {
+        this.text.setText(text);
+    }
+
+    @Override
+    public void setAlign(Align align)
+    {
+        text.setAlign(align);
+    }
+
+    @Override
+    public void setColor(ColorRgba color)
+    {
+        text.setColor(color);
+    }
+
+    @Override
+    public int getSize()
+    {
+        return text.getSize();
+    }
+
+    @Override
+    public int getLocationX()
+    {
+        return text.getLocationX();
+    }
+
+    @Override
+    public int getLocationY()
+    {
+        return text.getLocationY();
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return text.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return text.getHeight();
+    }
+
+    @Override
+    public int getStringWidth(Graphic g, String str)
+    {
+        return text.getStringWidth(g, str);
+    }
+
+    @Override
+    public int getStringHeight(Graphic g, String str)
+    {
+        return text.getStringHeight(g, str);
     }
 }

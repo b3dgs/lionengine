@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.platform.background;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.utility.UtilityMath;

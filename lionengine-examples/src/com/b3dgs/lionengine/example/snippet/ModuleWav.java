@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.snippet;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Wav;
+import com.b3dgs.lionengine.core.Media;
 
 @SuppressWarnings("all")
 public class ModuleWav

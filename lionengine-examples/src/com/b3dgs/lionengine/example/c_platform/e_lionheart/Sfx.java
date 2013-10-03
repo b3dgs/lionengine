@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Wav;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**

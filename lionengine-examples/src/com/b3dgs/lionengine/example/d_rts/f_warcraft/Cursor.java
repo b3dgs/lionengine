@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCursor;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -41,7 +40,7 @@ public final class Cursor
     /** Box height. */
     private int boxHeight;
     /** Box color. */
-    private Color boxColor;
+    private ColorRgba boxColor;
 
     /**
      * {@link CursorRts#CursorRts(Mouse, CameraRts, Resolution, MapTile, Media...)}
@@ -96,7 +95,7 @@ public final class Cursor
      * 
      * @param color The grid color.
      */
-    public void setBoxColor(Color color)
+    public void setBoxColor(ColorRgba color)
     {
         boxColor = color;
     }

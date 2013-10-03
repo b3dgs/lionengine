@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.utility;
 import java.io.File;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Static functions giving informations related to files and directory.

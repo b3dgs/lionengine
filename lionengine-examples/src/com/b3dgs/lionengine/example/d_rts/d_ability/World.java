@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.FactoryEntity;
@@ -72,7 +72,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = new TextGame(Font.SERIF, 10, Text.NORMAL);
+        text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
         cursor = new CursorRts(mouse, camera, source, map, Media.get("cursor.png"));
@@ -145,7 +145,7 @@ final class World
 
         controlPanel.setClickableArea(camera);
         controlPanel.setClickSelection(Mouse.LEFT);
-        controlPanel.setSelectionColor(Color.GREEN);
+        controlPanel.setSelectionColor(ColorRgba.GREEN);
 
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Handle audio OGG.

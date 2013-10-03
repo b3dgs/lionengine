@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.utility;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
@@ -42,7 +41,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class TileExtractor
 {
     /** Ignored color. */
-    private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
+    private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /**
      * Start tiles extraction.
@@ -63,9 +62,9 @@ public final class TileExtractor
     /** Image map reference. */
     private SpriteTiled imageMap;
     /** Built pattern from map. */
-    private BufferedImage pattern;
+    private ImageBuffer pattern;
     /** Graphics. */
-    private Graphics2D g;
+    private Graphic g;
     /** Image map height. */
     private int imageMapTilesInY;
     /** Image map width. */
@@ -110,8 +109,8 @@ public final class TileExtractor
         imageMapTilesInX = imageMap.getWidthOriginal() / this.tilew;
         startX = 0;
         endX = imageMapTilesInX;
-        pattern = UtilityImage.createBufferedImage(destW, destH, Transparency.BITMASK);
-        g = pattern.createGraphics();
+        pattern = UtilityImage.createImageBuffer(destW, destH, Transparency.BITMASK);
+        g = pattern.createGraphic();
         cx = 0;
         cy = 0;
     }
@@ -124,13 +123,13 @@ public final class TileExtractor
     private void start(Media fileout)
     {
         // Check all image tiles
-        final BufferedImage tileRef = imageMap.getSurface();
+        final ImageBuffer tileRef = imageMap.getSurface();
         for (int imageMapCurrentTileY = imageMapTilesInY - 1; imageMapCurrentTileY >= 0; imageMapCurrentTileY--)
         {
             for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * tilew + 1,
+                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * tilew + 1,
                         (imageMapTilesInY - 1 - imageMapCurrentTileY) * tileh + 1);
                 if (imageColor != TileExtractor.IGNORED_COLOR)
                 {
@@ -142,7 +141,7 @@ public final class TileExtractor
 
                     if (!found)
                     {
-                        g.drawImage(imageMap.getTile(n), cx, cy, null);
+                        g.drawImage(imageMap.getTile(n), cx, cy);
                         cx += tilew;
                         if (cx > pattern.getWidth())
                         {
@@ -165,9 +164,9 @@ public final class TileExtractor
      * @param y The location y.
      * @return <code>true</code> if found, <code>false</code> else.
      */
-    private boolean searchForTile(BufferedImage tileSprite, int x, int y)
+    private boolean searchForTile(ImageBuffer tileSprite, int x, int y)
     {
-        final BufferedImage sheet = pattern;
+        final ImageBuffer sheet = pattern;
         final int tilesInX = pattern.getWidth() / tilew;
         final int tilesInY = pattern.getHeight() / tileh;
 
@@ -202,7 +201,7 @@ public final class TileExtractor
      * @param yb The location y.
      * @return <code>true</code> if equals, <code>false</code> else.
      */
-    private boolean compareTile(BufferedImage a, int xa, int ya, BufferedImage b, int xb, int yb)
+    private boolean compareTile(ImageBuffer a, int xa, int ya, ImageBuffer b, int xb, int yb)
     {
         // Check tiles pixels
         for (int x = 0; x < tilew; x++)
@@ -210,7 +209,7 @@ public final class TileExtractor
             for (int y = 0; y < tileh; y++)
             {
                 // Compare color
-                if (a.getRGB(x + xa, y + ya) != b.getRGB(x + xb, y + yb))
+                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
                 {
                     return false;
                 }

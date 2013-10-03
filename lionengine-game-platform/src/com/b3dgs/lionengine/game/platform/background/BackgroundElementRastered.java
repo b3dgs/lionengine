@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game.platform.background;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.utility.UtilityImage;
@@ -124,7 +124,7 @@ public abstract class BackgroundElementRastered
     }
 
     /**
-     * Add a raster with specified colour code.
+     * Add a raster with specified color code.
      * 
      * @param sprite The original sprite.
      * @param fr The red color offset.
@@ -133,15 +133,15 @@ public abstract class BackgroundElementRastered
      */
     protected void addRaster(Sprite sprite, int fr, int fg, int fb)
     {
-        final BufferedImage buf = sprite.getSurface();
-        final BufferedImage rasterBuf = UtilityImage.createBufferedImage(buf.getWidth(), buf.getHeight(),
+        final ImageBuffer buf = sprite.getSurface();
+        final ImageBuffer rasterBuf = UtilityImage.createImageBuffer(buf.getWidth(), buf.getHeight(),
                 buf.getTransparency());
 
         for (int i = 0; i < rasterBuf.getWidth(); i++)
         {
             for (int j = 0; j < rasterBuf.getHeight(); j++)
             {
-                rasterBuf.setRGB(i, j, BackgroundElementRastered.filterRGB(buf.getRGB(i, j), fr, fg, fb));
+                rasterBuf.setRgb(i, j, BackgroundElementRastered.filterRGB(buf.getRgb(i, j), fr, fg, fb));
             }
         }
 

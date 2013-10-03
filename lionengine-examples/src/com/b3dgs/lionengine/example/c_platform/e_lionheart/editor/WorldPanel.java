@@ -17,23 +17,23 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.editor;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
@@ -49,6 +49,7 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Mouse;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -61,13 +62,13 @@ public class WorldPanel
     /** Uid. */
     private static final long serialVersionUID = -3609110757656654125L;
     /** Color of the selection area. */
-    private static final Color COLOR_MOUSE_SELECTION = new Color(128, 128, 192, 192);
+    private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(128, 128, 192, 192);
     /** Color of the box around the selected entity. */
-    private static final Color COLOR_ENTITY_SELECTION = new Color(128, 240, 128, 192);
+    private static final ColorRgba COLOR_ENTITY_SELECTION = new ColorRgba(128, 240, 128, 192);
     /** Color of the entity patrol. */
-    private static final Color COLOR_ENTITY_PATROL = new Color(240, 240, 128, 192);
+    private static final ColorRgba COLOR_ENTITY_PATROL = new ColorRgba(240, 240, 128, 192);
     /** Color if the entity patrol area. */
-    private static final Color COLOR_ENTITY_PATROL_AREA = new Color(128, 128, 128, 192);
+    private static final ColorRgba COLOR_ENTITY_PATROL_AREA = new ColorRgba(128, 128, 128, 192);
     /** Default width. */
     private static final int DEFAULT_WIDTH = 640;
     /** Default height. */
@@ -83,7 +84,7 @@ public class WorldPanel
      * @param areaY Vertical global grid size.
      * @param color Grid color.
      */
-    private static void drawGrid(Graphics2D g, int tw, int th, int areaX, int areaY, Color color)
+    private static void drawGrid(Graphic g, int tw, int th, int areaX, int areaY, ColorRgba color)
     {
         g.setColor(color);
         for (int v = 0; v <= areaY; v += tw)
@@ -215,7 +216,7 @@ public class WorldPanel
      * @param vOff The vertical offset.
      * @param height The rendering height (render from bottom).
      */
-    private void drawEntities(Graphics2D g, int hOff, int vOff, int height)
+    private void drawEntities(Graphic g, int hOff, int vOff, int height)
     {
         final int th = map.getTileHeight();
         for (final Entity entity : handlerEntity.list())
@@ -233,11 +234,11 @@ public class WorldPanel
             if (entity.isSelected() || entity.isOver())
             {
                 g.setColor(WorldPanel.COLOR_ENTITY_SELECTION);
-                g.fillRect(sx - hOff - entity.getWidth() / 2,
+                g.drawRect(sx - hOff - entity.getWidth() / 2,
                         -sy + vOff - entity.getHeight() + UtilityMath.getRounded(height, th), entity.getWidth(),
-                        entity.getHeight());
+                        entity.getHeight(), true);
             }
-            entity.render(new Graphic(g), camera);
+            entity.render(g, camera);
         }
     }
 
@@ -250,7 +251,7 @@ public class WorldPanel
      * @param vOff The vertical offset.
      * @param height The rendering height (render from bottom).
      */
-    private void drawEntityMovement(Graphics2D g, Patrollable mover, int hOff, int vOff, int height)
+    private void drawEntityMovement(Graphic g, Patrollable mover, int hOff, int vOff, int height)
     {
         if (mover.getPatrolType() != Patrol.NONE)
         {
@@ -264,24 +265,24 @@ public class WorldPanel
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL_AREA);
             if (mover.getPatrolType() == Patrol.HORIZONTAL)
             {
-                g.fillRect(sx - hOff - left - mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th)
-                        - mover.getHeight(), mover.getWidth() + right, mover.getHeight());
+                g.drawRect(sx - hOff - left - mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th)
+                        - mover.getHeight(), mover.getWidth() + right, mover.getHeight(), true);
             }
             else if (mover.getPatrolType() == Patrol.VERTICAL)
             {
-                g.fillRect(sx - hOff - mover.getWidth() / 2, -sy + vOff - left + UtilityMath.getRounded(height, th)
-                        - mover.getHeight(), mover.getWidth(), mover.getHeight() + right);
+                g.drawRect(sx - hOff - mover.getWidth() / 2, -sy + vOff - left + UtilityMath.getRounded(height, th)
+                        - mover.getHeight(), mover.getWidth(), mover.getHeight() + right, true);
             }
 
             g.setColor(WorldPanel.COLOR_ENTITY_PATROL);
             if (mover.getPatrolType() == Patrol.HORIZONTAL)
             {
-                g.fillRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th), right, th);
+                g.drawRect(sx - hOff - left, -sy + vOff + UtilityMath.getRounded(height, th), right, th, true);
             }
             else if (mover.getPatrolType() == Patrol.VERTICAL)
             {
-                g.fillRect(sx - hOff + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th) - left
-                        - mover.getHeight() / 2, tw, right);
+                g.drawRect(sx - hOff + mover.getWidth() / 2, -sy + vOff + UtilityMath.getRounded(height, th) - left
+                        - mover.getHeight() / 2, tw, right, true);
             }
         }
     }
@@ -295,7 +296,7 @@ public class WorldPanel
      * @param areaX Maximum width.
      * @param areaY Maximum height.
      */
-    private void drawCursor(Graphics2D g, int tw, int th, int areaX, int areaY)
+    private void drawCursor(Graphic g, int tw, int th, int areaX, int areaY)
     {
         if (!selecting && !moving)
         {
@@ -305,7 +306,7 @@ public class WorldPanel
                 final int my = UtilityMath.getRounded(mouseY, th);
 
                 g.setColor(WorldPanel.COLOR_MOUSE_SELECTION);
-                g.fill3DRect(mx, my, tw, th, true);
+                g.drawRect(mx, my, tw, th, true);
             }
         }
     }
@@ -315,7 +316,7 @@ public class WorldPanel
      * 
      * @param g The graphic output.
      */
-    private void drawSelection(Graphics2D g)
+    private void drawSelection(Graphic g)
     {
         if (selecting)
         {
@@ -324,7 +325,7 @@ public class WorldPanel
             final int w = selectEndX - sx;
             final int h = selectEndY - sy;
             g.setColor(WorldPanel.COLOR_MOUSE_SELECTION);
-            g.fillRect(sx, sy, w, h);
+            g.drawRect(sx, sy, w, h, true);
         }
     }
 
@@ -466,8 +467,8 @@ public class WorldPanel
                     - editor.getOffsetViewH();
             final int y = UtilityMath.getRounded(entity.getLocationIntY(), map.getTileHeight())
                     - editor.getOffsetViewV();
-            final Rectangle2D r1 = new Rectangle2D.Float(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle2D r2 = new Rectangle2D.Float(x, y, entity.getWidth(), entity.getHeight());
+            final Rectangle r1 = UtilityMath.createRectangle(x1, y1, x2 - x1, y2 - y1);
+            final Rectangle r2 = UtilityMath.createRectangle(x, y, entity.getWidth(), entity.getHeight());
             if (r1.intersects(r2))
             {
                 return true;
@@ -547,14 +548,13 @@ public class WorldPanel
         return list;
     }
 
-    /*
-     * JPanel
+    /**
+     * Render the world.
+     * 
+     * @param g The graphic output.
      */
-
-    @Override
-    public void paintComponent(Graphics gd)
+    private void render(Graphic g)
     {
-        final Graphics2D g = (Graphics2D) gd;
         final int width = getWidth();
         final int height = getHeight();
         final int tw = map.getTileWidth();
@@ -566,36 +566,48 @@ public class WorldPanel
         camera.setView(0, 0, areaX - tw, areaY);
 
         // Background
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(0, 0, width, height);
+        g.setColor(ColorRgba.GRAY_LIGHT);
+        g.drawRect(0, 0, width, height, true);
 
         // Map area
-        g.setColor(Color.BLUE);
-        g.fillRect(0, 0, areaX, areaY);
+        g.setColor(ColorRgba.BLUE);
+        g.drawRect(0, 0, areaX, areaY, true);
 
         // Renders
         if (!map.getPatterns().isEmpty())
         {
-            map.render(new Graphic(g), camera);
+            map.render(g, camera);
         }
         drawEntities(g, hOff, vOff, height);
-        g.setColor(Color.GREEN);
-        g.fillRect(worldData.getStartX() - hOff, -worldData.getStartY() + vOff + UtilityMath.getRounded(height, th)
-                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
-        g.setColor(Color.RED);
-        g.fillRect(worldData.getEndX() - hOff, -worldData.getEndY() + vOff + UtilityMath.getRounded(height, th)
-                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT);
+        g.setColor(ColorRgba.GREEN);
+        g.drawRect(worldData.getStartX() - hOff, -worldData.getStartY() + vOff + UtilityMath.getRounded(height, th)
+                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT, true);
+        g.setColor(ColorRgba.RED);
+        g.drawRect(worldData.getEndX() - hOff, -worldData.getEndY() + vOff + UtilityMath.getRounded(height, th)
+                - Map.TILE_HEIGHT, Map.TILE_WIDTH, Map.TILE_HEIGHT, true);
 
         for (final CoordTile p : worldData.getCheckpoints())
         {
-            g.setColor(Color.YELLOW);
-            g.fillRect(p.getX() - hOff, -p.getY() + vOff + UtilityMath.getRounded(height, th) - Map.TILE_HEIGHT,
-                    Map.TILE_WIDTH, Map.TILE_HEIGHT);
+            g.setColor(ColorRgba.YELLOW);
+            g.drawRect(p.getX() - hOff, -p.getY() + vOff + UtilityMath.getRounded(height, th) - Map.TILE_HEIGHT,
+                    Map.TILE_WIDTH, Map.TILE_HEIGHT, true);
         }
 
         drawCursor(g, tw, th, areaX, areaY);
-        WorldPanel.drawGrid(g, tw, th, areaX, areaY, Color.GRAY);
+        WorldPanel.drawGrid(g, tw, th, areaX, areaY, ColorRgba.GRAY);
         drawSelection(g);
+    }
+
+    /*
+     * JPanel
+     */
+
+    @Override
+    public void paintComponent(Graphics gd)
+    {
+        final Graphic g = UtilityImage.createGraphic();
+        g.setGraphic((Graphics2D) gd);
+        render(g);
     }
 
     /*

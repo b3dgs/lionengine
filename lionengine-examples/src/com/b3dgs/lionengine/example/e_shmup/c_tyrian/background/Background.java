@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.background;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -40,7 +39,7 @@ public final class Background
     /** Stars array. */
     private final Star[] stars;
     /** Colors array. */
-    private final Color[] colors;
+    private final ColorRgba[] colors;
     /** Lightning effect timer. */
     private final Timing effectTime;
     /** The real alpha value. */
@@ -57,10 +56,10 @@ public final class Background
      */
     public Background()
     {
-        colors = new Color[normal + 1];
+        colors = new ColorRgba[normal + 1];
         for (int i = 0; i < colors.length; i++)
         {
-            colors[i] = new Color(0, 0, 0, i);
+            colors[i] = new ColorRgba(0, 0, 0, i);
         }
         effectTime = new Timing();
         alpha = normal;
@@ -115,7 +114,7 @@ public final class Background
         }
         if (effect)
         {
-            g.setColor(Color.WHITE);
+            g.setColor(ColorRgba.WHITE);
             g.drawRect(0, 0, 320, 200, true);
             effect = false;
         }

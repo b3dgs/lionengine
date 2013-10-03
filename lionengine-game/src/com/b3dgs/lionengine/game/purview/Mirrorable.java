@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.purview;
 
 /**
  * Purview representing an object with the ability of being mirrored. Mainly used with sprites (horizontal axis).
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Mirrorable
 {

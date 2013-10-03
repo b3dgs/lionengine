@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;

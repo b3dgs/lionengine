@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 
 // Tutorial: Shmup Scrolling Map
 // This tutorial shows how to make a simple scrolling using a MapTile for a Shoot'em Up game.

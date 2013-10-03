@@ -22,10 +22,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;

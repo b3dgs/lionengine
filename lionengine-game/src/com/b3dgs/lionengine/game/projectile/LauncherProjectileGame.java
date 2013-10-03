@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.utility.UtilityMath;
  * @param <E> The entity type used.
  * @param <E2> The entity attacker type used.
  * @param <P> The projectile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class LauncherProjectileGame<T extends Enum<T>, E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
 {
@@ -54,7 +55,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     private int rate;
 
     /**
-     * Create a new launcher.
+     * Constructor.
      * 
      * @param factory The projectiles factory.
      * @param handler The projectiles handler.

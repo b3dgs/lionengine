@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Standard range description, with a minimum and a maximum.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Range
 {
@@ -28,7 +30,7 @@ public class Range
     private int max;
 
     /**
-     * Create a new blank range.
+     * Constructor.
      */
     public Range()
     {
@@ -37,7 +39,7 @@ public class Range
     }
 
     /**
-     * Create a new range.
+     * Constructor.
      * 
      * @param min The minimum value.
      * @param max The maximum value.

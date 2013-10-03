@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.FactoryWeapon;

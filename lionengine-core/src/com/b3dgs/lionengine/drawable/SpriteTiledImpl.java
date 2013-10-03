@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -56,7 +55,7 @@ final class SpriteTiledImpl
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    SpriteTiledImpl(Media media, BufferedImage surface, int tileWidth, int tileHeight)
+    SpriteTiledImpl(Media media, ImageBuffer surface, int tileWidth, int tileHeight)
     {
         super(media, surface);
         Check.argument(tileWidth > 0 && tileHeight > 0, SpriteTiledImpl.ERROR_SPRITE_TILE_SIZE);
@@ -125,11 +124,11 @@ final class SpriteTiledImpl
     }
 
     @Override
-    public BufferedImage getTile(int tile)
+    public ImageBuffer getTile(int tile)
     {
-        final BufferedImage buffer = UtilityImage.createBufferedImage(getTileWidth(), getTileHeight(),
-                Transparency.BITMASK);
-        final Graphic g = new Graphic(buffer.createGraphics());
+        final ImageBuffer buffer = UtilityImage
+                .createImageBuffer(getTileWidth(), getTileHeight(), Transparency.BITMASK);
+        final Graphic g = buffer.createGraphic();
         final int cx = tile % getTilesHorizontal();
         final int cy = (int) Math.floor(tile / (double) getTilesHorizontal());
         final int w = getTileWidth();
@@ -139,17 +138,6 @@ final class SpriteTiledImpl
         g.dispose();
 
         return buffer;
-    }
-
-    @Override
-    public BufferedImage getTileReference(int tile)
-    {
-        final int cx = tile % getTilesHorizontal();
-        final int cy = (int) Math.floor(tile / (double) getTilesHorizontal());
-        final int w = getTileWidth();
-        final int h = getTileHeight();
-
-        return surface.getSubimage(cx * w, cy * h, w, h);
     }
 
     /*

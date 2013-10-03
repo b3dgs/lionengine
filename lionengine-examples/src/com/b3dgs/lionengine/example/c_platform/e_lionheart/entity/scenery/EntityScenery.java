@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import java.awt.geom.Rectangle2D;
-
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;
@@ -84,7 +83,7 @@ public abstract class EntityScenery
         if (entity instanceof Valdyn)
         {
             final Valdyn valdyn = (Valdyn) entity;
-            final Rectangle2D collision = getCollisionBounds();
+            final Rectangle collision = getCollisionBounds();
             if (valdyn.getLocationX() < collision.getMinX() - valdyn.getWidth() / 2 + Valdyn.TILE_EXTREMITY_WIDTH * 2)
             {
                 valdyn.updateExtremity(true);

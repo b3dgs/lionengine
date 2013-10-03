@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.test;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -30,21 +26,24 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Cursor;
-import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -115,7 +114,7 @@ public class TestDrawable
         final Sprite spriteOriginal = Drawable.loadSprite(sprite.getSurface());
         Assert.assertEquals(spriteOriginal, sprite);
 
-        BufferedImage surface = sprite.getSurface();
+        ImageBuffer surface = sprite.getSurface();
 
         if (!(sprite instanceof SpriteFont))
         {
@@ -179,7 +178,7 @@ public class TestDrawable
         sprite.stretch(99, 100);
         sprite.stretch(100, 100);
 
-        sprite.setTransparency(Color.BLACK);
+        sprite.setTransparency(ColorRgba.BLACK);
         sprite.setAlpha(128);
         sprite.setAlpha(0);
 
@@ -214,7 +213,7 @@ public class TestDrawable
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), tw, th);
+                    UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -246,7 +245,7 @@ public class TestDrawable
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), hf, vf);
+                    UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -316,8 +315,7 @@ public class TestDrawable
     {
         Engine.start("UnitTest", Version.create(1, 0, 0), Media.getPath("resources"));
         media = Media.get("dot.png");
-        final Graphics2D g2d = UtilityImage.createBufferedImage(100, 100, Transparency.OPAQUE).createGraphics();
-        g = new Graphic(g2d);
+        g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -372,7 +370,7 @@ public class TestDrawable
     {
         try
         {
-            UtilityImage.createBufferedImage(-16, 16, Transparency.OPAQUE);
+            UtilityImage.createImageBuffer(-16, 16, Transparency.OPAQUE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -381,7 +379,7 @@ public class TestDrawable
         }
         try
         {
-            UtilityImage.createBufferedImage(16, -16, Transparency.OPAQUE);
+            UtilityImage.createImageBuffer(16, -16, Transparency.OPAQUE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -402,7 +400,7 @@ public class TestDrawable
 
         final int width = 16;
         final int height = 16;
-        final BufferedImage surface = UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE);
+        final ImageBuffer surface = UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);
         final Image imageA = Drawable.loadImage(surface);
 
         Assert.assertNotNull(imageA);
@@ -441,7 +439,7 @@ public class TestDrawable
         }
 
         // Sprite with existing surface
-        final BufferedImage surface = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surface = UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
 
         Assert.assertNotNull(spriteA.getSurface());
@@ -470,12 +468,12 @@ public class TestDrawable
         final int height = 16;
         final int tileSize = 1;
         final SpriteTiled spriteA = Drawable.loadSpriteTiled(
-                UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE), tileSize, tileSize);
+                UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE), tileSize, tileSize);
 
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(tileSize, spriteA.getTileWidth());
         Assert.assertEquals(tileSize, spriteA.getTileHeight());
-        Assert.assertNotNull(spriteA.getTileReference(0));
+        Assert.assertNotNull(spriteA.getTile(0));
         Assert.assertEquals(width, spriteA.getTilesHorizontal());
         Assert.assertEquals(height, spriteA.getTilesVertical());
         Assert.assertEquals(width * height, spriteA.getTilesNumber());
@@ -497,9 +495,6 @@ public class TestDrawable
         TestDrawable.testImageRender(g, spriteB);
         spriteB.render(g, 0, 0, 0);
 
-        // Instantiate
-        Assert.assertEquals(spriteB, Drawable.loadSpriteTiled(spriteB.getSurface(), tileWidth, tileHeight));
-
         // Get tile
         Assert.assertNotNull(spriteB.getTile(0));
         Assert.assertNotNull(spriteB.getTile(99));
@@ -519,7 +514,7 @@ public class TestDrawable
     public void testSpriteAnimated()
     {
         final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(
-                UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE), 1, 1);
+                UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());
 
@@ -540,8 +535,6 @@ public class TestDrawable
 
         TestDrawable.testSpriteLoading(spriteC);
         TestDrawable.testSpriteModification(2, spriteA);
-        // Test instantiation
-        Assert.assertEquals(spriteA, Drawable.loadSpriteAnimated(spriteA.getSurface(), frameHorizontal, frameVertical));
 
         try
         {
@@ -807,8 +800,8 @@ public class TestDrawable
     {
         final Bar bar = new Bar(10, 20);
         bar.setBorderSize(1, 1);
-        bar.setColorBackground(Color.WHITE);
-        bar.setColorForeground(Color.BLACK);
+        bar.setColorBackground(ColorRgba.WHITE);
+        bar.setColorForeground(ColorRgba.BLACK);
         bar.setLocation(0, 0);
         bar.setMaximumSize(10, 20);
         bar.setVerticalReferential(true);
@@ -834,7 +827,7 @@ public class TestDrawable
         bar.setVerticalReferential(false);
         bar.setHorizontalReferential(true);
         bar.render(g);
-        bar.setColorBackground(Color.WHITE);
+        bar.setColorBackground(ColorRgba.WHITE);
         bar.setColorForeground(null);
         bar.setVerticalReferential(false);
         bar.setHorizontalReferential(false);

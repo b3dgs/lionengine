@@ -15,8 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.input.Input;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.input.Mouse;
@@ -74,10 +76,9 @@ public final class Loader
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
         this.config = config;
-        screen = new Screen(config);
+        screen = Engine.graphicFactory.createScreen(config);
         keyboard = Input.createKeyboard();
         mouse = Input.createMouse();
-        screen.prepareFocusListener();
         screen.addKeyboard(keyboard);
         screen.addMouse(mouse);
         thread = new LoaderThread(this);

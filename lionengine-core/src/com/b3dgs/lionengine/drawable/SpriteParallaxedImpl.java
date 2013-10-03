@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.image.BufferedImage;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -49,7 +48,7 @@ final class SpriteParallaxedImpl
     /** Height original. */
     private int heightOriginal;
     /** Surface of each line. */
-    private BufferedImage[] lines;
+    private ImageBuffer[] lines;
     /** Line width. */
     private int lineWidth;
     /** Line height. */
@@ -99,7 +98,7 @@ final class SpriteParallaxedImpl
     @Override
     public void prepare(Filter filter)
     {
-        BufferedImage surface = UtilityImage.getBufferedImage(media, false);
+        ImageBuffer surface = UtilityImage.getImageBuffer(media, false);
         widthOriginal = surface.getWidth();
         heightOriginal = surface.getHeight();
 
@@ -145,7 +144,7 @@ final class SpriteParallaxedImpl
     }
 
     @Override
-    public BufferedImage getLine(int line)
+    public ImageBuffer getLine(int line)
     {
         return lines[line];
     }

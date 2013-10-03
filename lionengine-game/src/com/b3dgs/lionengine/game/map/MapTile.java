@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 
 /**
@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.CameraGame;
  * 
  * @param <C> Tile collision type.
  * @param <T> Tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  * @see MapTileGame
  */

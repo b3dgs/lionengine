@@ -35,8 +35,10 @@ import com.b3dgs.lionengine.utility.UtilityRandom;
  * dmg.getMin(); // returns 5
  * dmg.getRandom(); // returns a value between 5 and 10 included
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Damages
+public class Damages
         extends Range
 {
     /** Last damages. */
@@ -52,7 +54,7 @@ public final class Damages
     }
 
     /**
-     * Create new damage handler.
+     * Constructor.
      * 
      * @param min The minimum damages value.
      * @param max The maximum damages value.

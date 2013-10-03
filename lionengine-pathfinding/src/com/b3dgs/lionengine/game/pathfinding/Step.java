@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 /**
  * Path step.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Step
 {

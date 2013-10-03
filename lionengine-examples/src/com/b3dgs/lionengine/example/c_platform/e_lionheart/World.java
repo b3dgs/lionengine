@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.HandlerEntity;

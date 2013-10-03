@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.input.Mouse;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * World implementation.
@@ -79,7 +80,7 @@ final class World
     World(Sequence sequence, GameConfig config)
     {
         super(sequence);
-        text = new TextGame(Font.SERIF, 10, Text.NORMAL);
+        text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         player = new Player();
         cpu = new Player();
         map = new Map();
@@ -87,7 +88,7 @@ final class World
         fogOfWar = new FogOfWar(config);
         cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
                 Media.get("cursor_order.png"));
-        message = new TimedMessage(new Text(Font.DIALOG, 10, Text.NORMAL));
+        message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, fogOfWar);
         minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
@@ -171,7 +172,7 @@ final class World
         fogOfWar.setPlayerId(player.id);
 
         controlPanel.setClickableArea(camera);
-        controlPanel.setSelectionColor(Color.GREEN);
+        controlPanel.setSelectionColor(ColorRgba.GREEN);
         controlPanel.setPlayer(player);
         controlPanel.setClickSelection(Mouse.LEFT);
 

@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollision;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.file.FileReading;
@@ -179,7 +179,7 @@ public final class Map
     }
 
     @Override
-    protected Color getTilePixelColor(Tile tile)
+    protected ColorRgba getTilePixelColor(Tile tile)
     {
         return tile.getColor().getTheme(id);
     }

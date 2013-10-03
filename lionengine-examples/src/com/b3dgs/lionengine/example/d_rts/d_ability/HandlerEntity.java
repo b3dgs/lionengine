@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
-import java.awt.Color;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -78,8 +78,8 @@ public final class HandlerEntity
             barProgress.setLocation(x, y);
             barProgress.setMaximumSize(entity.getWidth(), 4);
             barProgress.setWidthPercent(entity.life.getPercent());
-            barProgress.setColorBackground(Color.GRAY);
-            barProgress.setColorForeground(Color.RED);
+            barProgress.setColorBackground(ColorRgba.GRAY);
+            barProgress.setColorForeground(ColorRgba.RED);
             barProgress.render(g);
         }
     }
@@ -91,14 +91,14 @@ public final class HandlerEntity
     }
 
     @Override
-    protected Color getEntityColorOver(Entity entity)
+    protected ColorRgba getEntityColorOver(Entity entity)
     {
-        return Color.GRAY;
+        return ColorRgba.GRAY;
     }
 
     @Override
-    protected Color getEntityColorSelection(Entity entity)
+    protected ColorRgba getEntityColorSelection(Entity entity)
     {
-        return Color.GREEN;
+        return ColorRgba.GREEN;
     }
 }

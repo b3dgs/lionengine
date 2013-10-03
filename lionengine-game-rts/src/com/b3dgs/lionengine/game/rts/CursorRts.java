@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.game.rts;
 
-import java.awt.geom.Rectangle2D;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Cursor;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.input.Mouse;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class can be used to handle easily a strategy cursor, designed to select and give order to any kind of entity.
@@ -41,7 +41,7 @@ public class CursorRts
     /** Grid height. */
     private final int gridHeight;
     /** Grid rectangle buffer. */
-    private final Rectangle2D grid;
+    private final Rectangle grid;
     /** Screen width. */
     private final int width;
     /** Screen height. */
@@ -87,7 +87,7 @@ public class CursorRts
         setLocation(source.getWidth() / 2, source.getHeight() / 2);
         gridWidth = tileWidth;
         gridHeight = tileHeight;
-        grid = new Rectangle2D.Double();
+        grid = UtilityMath.createRectangle();
         width = source.getWidth();
         height = source.getHeight();
     }
@@ -98,11 +98,11 @@ public class CursorRts
      * @param size The size (in tile square).
      * @return rectangle The rectangle reference.
      */
-    public Rectangle2D getGrid(int size)
+    public Rectangle getGrid(int size)
     {
         final int x = getLocationX() / gridWidth * gridWidth;
         final int y = getLocationY() / gridHeight * gridHeight;
-        grid.setRect(x, y, gridWidth * size, gridHeight * size);
+        grid.set(x, y, gridWidth * size, gridHeight * size);
         return grid;
     }
 

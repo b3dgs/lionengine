@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.pathfinding.Heuristic;
 
 /**
  * A heuristic that uses the tile that is closest to the target as the next best tile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HeuristicClosest
         implements Heuristic

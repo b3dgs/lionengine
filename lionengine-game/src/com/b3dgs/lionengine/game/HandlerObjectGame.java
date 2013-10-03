@@ -23,12 +23,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 
 /**
- * Design to handle objects.
+ * Designed to handle objects. Maintain an objects list by updating and rendering them. Modifications on the list can be
+ * done at any time because their are applied at the end of the update.
  * 
  * @param <E> The object type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerObjectGame<E extends ObjectGame>
 {
@@ -116,7 +118,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Get the object from its id.
+     * Get the object from its key.
      * 
      * @param key The object key.
      * @return The object reference.
@@ -127,8 +129,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Add an object to the remove list. Don't forget to call {@link #updateRemove()} at the end of the update to clear
-     * them properly.
+     * Add an object to the remove list. Modifications are applied at the end of the update.
      * 
      * @param object The object to remove.
      */
@@ -139,8 +140,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Remove all objects from the list. Don't forget to call {@link #updateRemove()} at the end of the update to clear
-     * them properly.
+     * Remove all objects from the list. Modifications are applied at the end of the update.
      */
     public void removeAll()
     {
@@ -180,7 +180,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Update the add list. Should be called before main update.
+     * Update the add list.
      */
     private void updateAdd()
     {
@@ -196,7 +196,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Update the remove list. Should be called after main update.
+     * Update the remove list.
      */
     private void updateRemove()
     {

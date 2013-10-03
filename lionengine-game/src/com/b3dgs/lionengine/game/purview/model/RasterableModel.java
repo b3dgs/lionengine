@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Default rasterable implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class RasterableModel
         implements Rasterable

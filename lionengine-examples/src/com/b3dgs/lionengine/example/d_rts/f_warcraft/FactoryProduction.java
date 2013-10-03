@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;

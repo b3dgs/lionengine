@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.image.BufferedImage;
-
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * <p>
@@ -138,5 +137,5 @@ public interface SpriteAnimated
      * @param frame The frame to get (>= {@link Animation#MINIMUM_FRAME}).
      * @return The frame's surface.
      */
-    BufferedImage getFrame(int frame);
+    ImageBuffer getFrame(int frame);
 }

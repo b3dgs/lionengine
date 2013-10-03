@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Orientation;
@@ -62,7 +62,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = new TextGame(Font.SERIF, 10, Text.NORMAL);
+        text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         controlPanel = new ControlPanel();
         factoryEntity = new FactoryEntity();
@@ -112,7 +112,7 @@ final class World
         camera.setLocation(map, 1, 2);
 
         controlPanel.setClickableArea(camera);
-        controlPanel.setSelectionColor(Color.GREEN);
+        controlPanel.setSelectionColor(ColorRgba.GREEN);
 
         handlerEntity.createLayers(map);
         factoryEntity.setContext(context);

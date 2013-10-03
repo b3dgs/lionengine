@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -41,9 +41,9 @@ class SpriteImpl
     /** Sprite original height. */
     protected final int heightOriginal;
     /** Sprite original surface. */
-    protected BufferedImage surfaceOriginal;
+    protected ImageBuffer surfaceOriginal;
     /** Sprite current surface. */
-    protected BufferedImage surface;
+    protected ImageBuffer surface;
     /** Sprite width. */
     protected int width;
     /** Sprite height. */
@@ -61,7 +61,7 @@ class SpriteImpl
      * @param media The sprite media.
      * @param surface The surface to share.
      */
-    SpriteImpl(Media media, BufferedImage surface)
+    SpriteImpl(Media media, ImageBuffer surface)
     {
         this.media = media;
         this.surface = surface;
@@ -88,7 +88,7 @@ class SpriteImpl
     {
         if (surfaceOriginal == null)
         {
-            surfaceOriginal = UtilityImage.getBufferedImage(surface);
+            surfaceOriginal = UtilityImage.getImageBuffer(surface);
         }
     }
 
@@ -101,7 +101,7 @@ class SpriteImpl
     {
         if (surface == null)
         {
-            surface = UtilityImage.getBufferedImage(media, alpha);
+            surface = UtilityImage.getImageBuffer(media, alpha);
         }
     }
 
@@ -157,7 +157,7 @@ class SpriteImpl
     }
 
     @Override
-    public void setTransparency(Color mask)
+    public void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
         surface = UtilityImage.applyMask(surfaceOriginal, mask);
@@ -172,19 +172,19 @@ class SpriteImpl
             rgb = new int[width][height];
             firstAlpha = true;
         }
-        for (int cx = 0; cx < surface.getWidth(); cx++)
+        for (int cx = 0; cx < width; cx++)
         {
-            for (int cy = 0; cy < surface.getHeight(); cy++)
+            for (int cy = 0; cy < height; cy++)
             {
                 if (firstAlpha)
                 {
                     lazySurfaceBackup();
-                    rgb[cx][cy] = surfaceOriginal.getRGB(cx, cy);
+                    rgb[cx][cy] = surfaceOriginal.getRgb(cx, cy);
                 }
                 final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
                 final int mc = alpha << alphaDec | alphaKey;
-                surface.setRGB(cx, cy, rgb[cx][cy] & mc);
+                surface.setRgb(cx, cy, rgb[cx][cy] & mc);
             }
         }
         firstAlpha = false;
@@ -221,7 +221,7 @@ class SpriteImpl
     }
 
     @Override
-    public BufferedImage getSurface()
+    public ImageBuffer getSurface()
     {
         return surface;
     }

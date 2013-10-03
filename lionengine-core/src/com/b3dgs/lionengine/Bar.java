@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
-import java.awt.Color;
-
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -45,9 +45,9 @@ public class Bar
     /** Vertical border. */
     private int vBorder;
     /** Background color. */
-    private Color background;
+    private ColorRgba background;
     /** Foreground color. */
-    private Color foreground;
+    private ColorRgba foreground;
     /** Left-Right referential. */
     private boolean leftRight;
     /** Up-Down referential. */
@@ -158,7 +158,7 @@ public class Bar
      * 
      * @param color The background color.
      */
-    public void setColorBackground(Color color)
+    public void setColorBackground(ColorRgba color)
     {
         background = color;
     }
@@ -168,7 +168,7 @@ public class Bar
      * 
      * @param color The foreground color.
      */
-    public void setColorForeground(Color color)
+    public void setColorForeground(ColorRgba color)
     {
         foreground = color;
     }

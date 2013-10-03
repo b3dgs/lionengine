@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.HandlerObjectGame;
  * opponents).
  * 
  * @param <E> The entity type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityGame<E extends EntityGame>
         extends HandlerObjectGame<E>

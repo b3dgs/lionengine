@@ -27,12 +27,13 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @param <T> enum containing all projectile type.
  * @param <P> The projectile type used.
  * @param <S> setup entity type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryProjectileGame<T extends Enum<T>, P extends ProjectileGame<?, ?>, S extends SetupSurfaceGame>
         extends FactoryGame<T, S>
 {
     /**
-     * Create a new projectile factory.
+     * Constructor.
      * 
      * @param keyType The class of the enum type defined.
      */

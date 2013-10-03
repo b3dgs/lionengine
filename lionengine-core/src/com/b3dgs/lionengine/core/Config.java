@@ -15,9 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
-import javax.swing.JApplet;
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Ratio;
+import com.b3dgs.lionengine.Resolution;
 
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
@@ -67,7 +70,7 @@ public final class Config
     /** Ratio desired. */
     private double ratio;
     /** Applet reference. */
-    private JApplet applet;
+    private Applet<?> applet;
 
     /**
      * Constructor.
@@ -117,7 +120,7 @@ public final class Config
      * 
      * @param applet The applet reference.
      */
-    public void setApplet(JApplet applet)
+    public void setApplet(Applet<?> applet)
     {
         this.applet = applet;
     }
@@ -147,9 +150,13 @@ public final class Config
      * 
      * @return The applet reference.
      */
-    public JApplet getApplet()
+    public <A extends Applet<A>> A getApplet()
     {
-        return applet;
+        if (applet == null)
+        {
+            return null;
+        }
+        return (A) applet.getApplet();
     }
 
     /**

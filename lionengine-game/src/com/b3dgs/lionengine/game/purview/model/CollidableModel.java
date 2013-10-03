@@ -17,19 +17,21 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import java.awt.Polygon;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Line;
+import com.b3dgs.lionengine.core.Polygon;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Default collidable model implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CollidableModel
         implements Collidable
@@ -39,11 +41,11 @@ public class CollidableModel
     /** Entity collision representation. */
     private final Polygon coll;
     /** Ray cast representation. */
-    private final Line2D ray;
+    private final Line ray;
     /** The collision used. */
     private CollisionData collision;
     /** Temp entity bounding box from polygon. */
-    private Rectangle2D box;
+    private Rectangle box;
 
     /**
      * Create a collidable model.
@@ -53,9 +55,9 @@ public class CollidableModel
     public CollidableModel(Localizable entity)
     {
         this.entity = entity;
-        coll = new Polygon();
-        ray = new Line2D.Double();
-        box = coll.getBounds2D();
+        coll = UtilityMath.createPolygon();
+        ray = UtilityMath.createLine();
+        box = coll.getRectangle();
     }
 
     /*
@@ -73,7 +75,7 @@ public class CollidableModel
             final int yOld = (int) entity.getLocationOldY() + entity.getLocationOffsetY();
 
             boolean mirror = false;
-            if (collision.getMirror() && entity instanceof Mirrorable)
+            if (collision.hasMirror() && entity instanceof Mirrorable)
             {
                 mirror = ((Mirrorable) entity).getMirror();
             }
@@ -93,13 +95,13 @@ public class CollidableModel
             coll.addPoint(xOld + offsetX + width, yOld + offsetY + height);
             coll.addPoint(xOld + offsetX + width, yOld + offsetY);
 
-            box = coll.getBounds2D();
+            box = coll.getRectangle();
 
             final int sx = xOld + offsetX + width / 2;
             final int sy = yOld + offsetY + height / 2;
             final int ex = xCur + offsetX + width / 2;
             final int ey = yCur + offsetY + height / 2;
-            ray.setLine(sx, sy, ex, ey);
+            ray.set(sx, sy, ex, ey);
         }
     }
 
@@ -109,8 +111,8 @@ public class CollidableModel
         if (collision == null)
         {
             coll.reset();
-            box = coll.getBounds2D();
-            ray.setLine(0, 0, 0, 0);
+            box = coll.getRectangle();
+            ray.set(0, 0, 0, 0);
         }
         this.collision = collision;
     }
@@ -122,7 +124,7 @@ public class CollidableModel
     }
 
     @Override
-    public boolean collide(Rectangle2D area)
+    public boolean collide(Rectangle area)
     {
         return coll.intersects(area) || coll.contains(area);
     }
@@ -148,13 +150,13 @@ public class CollidableModel
     }
 
     @Override
-    public Rectangle2D getCollisionBounds()
+    public Rectangle getCollisionBounds()
     {
         return box;
     }
 
     @Override
-    public Line2D getCollisionRay()
+    public Line getCollisionRay()
     {
         return ray;
     }

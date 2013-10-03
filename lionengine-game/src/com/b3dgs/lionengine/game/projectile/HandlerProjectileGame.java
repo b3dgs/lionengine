@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
  * 
  * @param <E> The entity type used.
  * @param <P> The projectile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGame<E, ?>>
         extends HandlerEntityGame<P>

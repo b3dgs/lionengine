@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.test;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -32,21 +28,24 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Theme;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -151,8 +150,7 @@ public class TestEngine
     public void setUp()
     {
         Engine.start("UnitTest", Version.create(1, 0, 0), Media.getPath("resources"));
-        final Graphics2D g2d = UtilityImage.createBufferedImage(100, 100, Transparency.OPAQUE).createGraphics();
-        g = new Graphic(g2d);
+        g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -423,9 +421,9 @@ public class TestEngine
     @Test
     public void testText()
     {
-        final Text text1 = new Text(Font.DIALOG, 12, Text.NORMAL);
-        final Text text2 = new Text(Font.DIALOG, 12, Text.BOLD);
-        final Text text3 = new Text(Font.DIALOG, 12, Text.ITALIC);
+        final Text text1 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.NORMAL);
+        final Text text2 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.BOLD);
+        final Text text3 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.ITALIC);
         final String text = "test";
 
         text1.draw(g, 0, 0, text);
@@ -435,7 +433,7 @@ public class TestEngine
         text1.draw(g, 0, 0, Align.LEFT, text);
         text1.draw(g, 0, 0, Align.RIGHT, text);
         text1.setAlign(Align.CENTER);
-        text1.setColor(Color.BLACK);
+        text1.setColor(ColorRgba.BLACK);
         text1.setLocation(1, 5);
         text1.setText(text);
         Assert.assertEquals(12, text1.getSize());

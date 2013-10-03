@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.menu;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Handle a group of choice, which represents the actions in a menu.
@@ -30,13 +30,13 @@ import com.b3dgs.lionengine.Text;
 final class Data
 {
     /** Title text color. */
-    private static final Color COLOR_TITLE = new Color(208, 208, 224);
+    private static final ColorRgba COLOR_TITLE = new ColorRgba(208, 208, 224);
     /** Text color. */
-    private static final Color COLOR_TEXT = new Color(153, 153, 153);
+    private static final ColorRgba COLOR_TEXT = new ColorRgba(153, 153, 153);
     /** Text color on selection. */
-    private static final Color COLOR_OVER = new Color(255, 255, 255);
+    private static final ColorRgba COLOR_OVER = new ColorRgba(255, 255, 255);
     /** Text instance for the title. */
-    private static final Text TEXT_TITLE = new Text(Font.SERIF, 30, Text.NORMAL);
+    private static final Text TEXT_TITLE = UtilityImage.createText(Text.SERIF, 30, TextStyle.NORMAL);
     /** Maximum number of choices. */
     final int choiceMax;
     /** Choices list. */

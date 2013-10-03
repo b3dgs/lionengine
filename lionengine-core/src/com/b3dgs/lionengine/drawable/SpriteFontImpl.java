@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
@@ -262,7 +262,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void setTransparency(Color mask)
+    public void setTransparency(ColorRgba mask)
     {
         surface.setTransparency(mask);
     }
@@ -286,7 +286,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public BufferedImage getSurface()
+    public ImageBuffer getSurface()
     {
         return surface.getSurface();
     }

@@ -34,7 +34,7 @@ import javax.sound.midi.Transmitter;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Default midi implementation.

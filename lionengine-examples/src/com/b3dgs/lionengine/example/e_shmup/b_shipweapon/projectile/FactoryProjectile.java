@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.effect.HandlerEffect;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;

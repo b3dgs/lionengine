@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.game.entity;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Line;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
@@ -37,6 +36,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 /**
  * Main object that can be used by any higher level object for a game. It supports external configuration, collision,
  * and mirror.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class EntityGame
         extends ObjectGame
@@ -243,12 +244,6 @@ public abstract class EntityGame
         return body.getHeight();
     }
 
-    @Override
-    public Line2D getMovement()
-    {
-        return body.getMovement();
-    }
-
     /*
      * Collidable
      */
@@ -272,7 +267,7 @@ public abstract class EntityGame
     }
 
     @Override
-    public boolean collide(Rectangle2D area)
+    public boolean collide(Rectangle area)
     {
         return collidable.collide(area);
     }
@@ -290,13 +285,13 @@ public abstract class EntityGame
     }
 
     @Override
-    public Rectangle2D getCollisionBounds()
+    public Rectangle getCollisionBounds()
     {
         return collidable.getCollisionBounds();
     }
 
     @Override
-    public Line2D getCollisionRay()
+    public Line getCollisionRay()
     {
         return collidable.getCollisionRay();
     }

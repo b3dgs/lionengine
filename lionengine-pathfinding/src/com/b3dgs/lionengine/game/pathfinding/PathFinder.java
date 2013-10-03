@@ -20,12 +20,14 @@ package com.b3dgs.lionengine.game.pathfinding;
 /**
  * A description of an implementation that can find a path from one location on a tile map to another based on
  * information provided by that tile map.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface PathFinder
 {
     /**
-     * Find a path from the starting location provided (sx, sy) to the destination location (dx, dy) avoiding blockages
-     * and attempting to honour costs provided by the tile map.
+     * Find a path from the starting location provided to the destination location avoiding blockages and attempting to
+     * honor costs provided by the tile map.
      * 
      * @param mover The entity that will be moving along the path.
      * @param sx The x coordinate of the start location.

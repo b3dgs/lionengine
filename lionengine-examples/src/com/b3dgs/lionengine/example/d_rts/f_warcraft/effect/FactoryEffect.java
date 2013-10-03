@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.effect;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.effect.FactoryEffectGame;

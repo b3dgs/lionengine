@@ -32,6 +32,8 @@ package com.b3dgs.lionengine.game;
  * gold.spend(25); // returns 75
  * gold.canSpend(100); // returns false
  * </pre>
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Resource
 {
@@ -39,7 +41,7 @@ public class Resource
     private final Alterable ressource;
 
     /**
-     * Create a new blank resource.
+     * Constructor.
      */
     public Resource()
     {
@@ -47,7 +49,7 @@ public class Resource
     }
 
     /**
-     * Create a new resource.
+     * Constructor.
      * 
      * @param amount The starting amount.
      */
@@ -69,7 +71,7 @@ public class Resource
 
     /**
      * Decrease resource stock with a specified amount. Caution, it is possible to be negative. Ensure to call first
-     * {@link Resource#canSpend(int)} if you expect only positive values !
+     * {@link Resource#canSpend(int)} if you expect only positive values.
      * 
      * @param amount The amount of resource to spend.
      */

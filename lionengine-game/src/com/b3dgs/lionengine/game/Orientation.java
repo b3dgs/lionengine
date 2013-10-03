@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game;
 
 /**
  * List of available orientations.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Orientation
 {
@@ -39,8 +41,10 @@ public enum Orientation
     /** Looking north west. */
     NORTH_WEST;
 
+    /** Orientations. */
+    private static final Orientation[] ORIENTATIONS = Orientation.values();
     /** Orientations number. */
-    public static final int ORIENTATIONS_NUMBER = Orientation.values().length;
+    public static final int ORIENTATIONS_NUMBER = Orientation.ORIENTATIONS.length;
     /** Number of elements on one side. */
     public static final int ORIENTATIONS_NUMBER_HALF = Orientation.ORIENTATIONS_NUMBER / 2;
 
@@ -53,6 +57,6 @@ public enum Orientation
      */
     public static Orientation next(Orientation from, int offset)
     {
-        return Orientation.values()[(from.ordinal() + offset) % Orientation.ORIENTATIONS_NUMBER];
+        return Orientation.ORIENTATIONS[(from.ordinal() + offset) % Orientation.ORIENTATIONS_NUMBER];
     }
 }

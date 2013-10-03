@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 /**
  * Heuristic interface. Define a function that is used to perform the cost of a path.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Heuristic
 {

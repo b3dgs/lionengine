@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.rts.map;
 import java.util.Arrays;
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;

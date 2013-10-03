@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.utility;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Coord;
+import com.b3dgs.lionengine.core.GeomFactory;
+import com.b3dgs.lionengine.core.Line;
+import com.b3dgs.lionengine.core.Polygon;
+import com.b3dgs.lionengine.core.Rectangle;
 
 /**
  * Static functions around math manipulation.
@@ -29,6 +31,77 @@ import com.b3dgs.lionengine.Check;
  */
 public final class UtilityMath
 {
+    /** Graphic factory. */
+    private static GeomFactory geomFactory;
+
+    /**
+     * Set the graphic factory context.
+     * 
+     * @param geomFactory The geometry factory context.
+     */
+    public static void setGeomFactory(GeomFactory geomFactory)
+    {
+        UtilityMath.geomFactory = geomFactory;
+    }
+
+    /**
+     * Create a line.
+     * 
+     * @return The created line.
+     */
+    public static Line createLine()
+    {
+        return UtilityMath.geomFactory.createLine();
+    }
+
+    /**
+     * Create a line.
+     * 
+     * @param x1 The x coordinate of the start point.
+     * @param y1 The y coordinate of the start point.
+     * @param x2 The x coordinate of the end point.
+     * @param y2 The y coordinate of the end point.
+     * @return The created line.
+     */
+    public static Line createLine(double x1, double y1, double x2, double y2)
+    {
+        return UtilityMath.geomFactory.createLine(x1, y1, x2, y2);
+    }
+
+    /**
+     * Create a polygon.
+     * 
+     * @return The created polygon.
+     */
+    public static Polygon createPolygon()
+    {
+        return UtilityMath.geomFactory.createPolygon();
+    }
+
+    /**
+     * Create a rectangle.
+     * 
+     * @return The created rectangle.
+     */
+    public static Rectangle createRectangle()
+    {
+        return UtilityMath.geomFactory.createRectangle();
+    }
+
+    /**
+     * Create a rectangle.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param w The rectangle width.
+     * @param h The rectangle height.
+     * @return The created rectangle.
+     */
+    public static Rectangle createRectangle(double x, double y, double w, double h)
+    {
+        return UtilityMath.geomFactory.createRectangle(x, y, w, h);
+    }
+
     /**
      * Fix a value between an interval.
      * 
@@ -93,7 +166,7 @@ public final class UtilityMath
      * @param l2 The second line.
      * @return The intersection point.
      */
-    public static Point2D intersection(Line2D l1, Line2D l2)
+    public static Coord intersection(Line l1, Line l2)
     {
         final int x1 = (int) l1.getX1();
         final int x2 = (int) l1.getX2();
@@ -114,7 +187,7 @@ public final class UtilityMath
         final int xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
         final int yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
-        return new Point2D.Double(xi, yi);
+        return new Coord(xi, yi);
     }
 
     /**

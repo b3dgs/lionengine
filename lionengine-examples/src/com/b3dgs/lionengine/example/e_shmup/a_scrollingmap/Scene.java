@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Game loop designed to handle our little world.

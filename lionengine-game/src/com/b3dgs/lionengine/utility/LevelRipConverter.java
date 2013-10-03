@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.utility;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -58,7 +58,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
         extends Thread
 {
     /** Ignored color. */
-    private static final int IGNORED_COLOR = new Color(0, 128, 128).getRGB();
+    private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /** Map reference. */
     private MapTileGame<?, T> map;
@@ -161,7 +161,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
      * @param y The location y.
      * @return The tile found.
      */
-    private T searchForTile(BufferedImage tileSprite, int x, int y)
+    private T searchForTile(ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each pattern
         final Iterator<Integer> itr = map.getPatterns().iterator();
@@ -172,7 +172,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
         {
             final Integer pattern = itr.next();
             final SpriteTiled tileSheet = map.getPattern(pattern);
-            final BufferedImage sheet = tileSheet.getSurface();
+            final ImageBuffer sheet = tileSheet.getSurface();
             final int tilesInX = tileSheet.getWidthOriginal() / tw;
             final int tilesInY = tileSheet.getHeightOriginal() / th;
 
@@ -214,7 +214,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
      * @param yb The location y.
      * @return <code>true</code> if equals, <code>false</code> else.
      */
-    private boolean compareTile(BufferedImage a, int xa, int ya, BufferedImage b, int xb, int yb)
+    private boolean compareTile(ImageBuffer a, int xa, int ya, ImageBuffer b, int xb, int yb)
     {
         // Check tiles pixels
         for (int x = 0; x < map.getTileWidth(); x++)
@@ -222,7 +222,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
             for (int y = 0; y < map.getTileHeight(); y++)
             {
                 // Compare color
-                if (a.getRGB(x + xa, y + ya) != b.getRGB(x + xb, y + yb))
+                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
                 {
                     return false;
                 }
@@ -240,13 +240,13 @@ public final class LevelRipConverter<T extends TileGame<?>>
     public void run()
     {
         // Check all image tiles
-        final BufferedImage tileRef = imageMap.getSurface();
+        final ImageBuffer tileRef = imageMap.getSurface();
         for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
         {
             for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
             {
                 // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRGB(imageMapCurrentTileX * map.getTileWidth() + 1,
+                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth() + 1,
                         imageMapCurrentTileY * map.getTileHeight() + 1);
                 if (LevelRipConverter.IGNORED_COLOR != imageColor)
                 {

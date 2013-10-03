@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.snippet;
 
-import java.awt.Font;
 import java.io.IOException;
 
 import org.junit.Assert;
@@ -25,22 +24,23 @@ import org.junit.Assert;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Checksum;
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.Strings;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -52,6 +52,7 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
 import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 @SuppressWarnings("all")
 public class ModuleCore
@@ -165,7 +166,7 @@ public class ModuleCore
     void text()
     {
         // Create the text
-        final Text text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+        final Text text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
 
         // Rendering type 1
         text.setText("Hello");

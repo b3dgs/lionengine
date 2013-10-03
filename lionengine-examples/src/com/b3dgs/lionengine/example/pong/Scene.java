@@ -17,19 +17,20 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * This is where the game loop is running.
@@ -61,7 +62,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = new Text(Font.SANS_SERIF, 16, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
         camera = new CameraGame();
         rackets = new HashSet<>(2);
         ball = new Ball(width, height);
@@ -104,7 +105,7 @@ final class Scene
 
         // Draw middle line
         final int size = height / Scene.LINES;
-        g.setColor(Color.GRAY);
+        g.setColor(ColorRgba.GRAY);
 
         for (int i = 0; i < Scene.LINES; i++)
         {
@@ -121,7 +122,7 @@ final class Scene
         ball.render(g, camera);
 
         // Display scores
-        text.setColor(Color.BLUE);
+        text.setColor(ColorRgba.BLUE);
         text.draw(g, width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
         text.draw(g, width / 2 + width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
     }

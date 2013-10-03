@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.b_cursor;
 
-import java.awt.Font;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Game loop designed to handle our little world.
@@ -48,7 +48,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
         world = new World(this);
         setMouseVisible(false);
     }

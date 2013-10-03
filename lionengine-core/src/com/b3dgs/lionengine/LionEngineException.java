@@ -21,6 +21,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.core.Media;
+
 /**
  * Special engine exception implementation which limit the trace to the user side.
  * 

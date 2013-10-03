@@ -17,16 +17,15 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -64,7 +63,7 @@ final class SpriteAnimatedImpl
      * @param horizontalFrames The number of horizontal frames.
      * @param verticalFrames The number of vertical frames.
      */
-    SpriteAnimatedImpl(Media media, BufferedImage surface, int horizontalFrames, int verticalFrames)
+    SpriteAnimatedImpl(Media media, ImageBuffer surface, int horizontalFrames, int verticalFrames)
     {
         super(media, surface);
         Check.argument(horizontalFrames > 0 && verticalFrames > 0, SpriteAnimatedImpl.ERROR_SPRITE_FRAMES);
@@ -206,10 +205,10 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public BufferedImage getFrame(int frame)
+    public ImageBuffer getFrame(int frame)
     {
-        final BufferedImage buf = UtilityImage.createBufferedImage(getWidth(), getHeight(), Transparency.BITMASK);
-        final Graphic g = new Graphic(buf.createGraphics());
+        final ImageBuffer buf = UtilityImage.createImageBuffer(getWidth(), getHeight(), Transparency.BITMASK);
+        final Graphic g = buf.createGraphic();
         final int cx = frame % getFramesHorizontal();
         final int cy = (int) Math.floor(frame / (double) getFramesHorizontal());
         final int w = getFrameWidth();

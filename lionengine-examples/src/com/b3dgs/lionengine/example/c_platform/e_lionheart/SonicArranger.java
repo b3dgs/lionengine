@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.AudioSc68;
 import com.b3dgs.lionengine.audio.Sc68;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Sc68 module binding.

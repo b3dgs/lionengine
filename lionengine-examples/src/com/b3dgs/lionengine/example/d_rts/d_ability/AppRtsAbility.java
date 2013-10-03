@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 
 // Tutorial: Rts Ability
 // This tutorial will show the different kind of ability:

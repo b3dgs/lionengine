@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import java.awt.geom.Line2D;
-
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.purview.Body;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Default body implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class BodyModel
         implements Body
@@ -225,11 +225,5 @@ public class BodyModel
     public int getHeight()
     {
         return localizable.getHeight();
-    }
-
-    @Override
-    public Line2D getMovement()
-    {
-        return localizable.getMovement();
     }
 }

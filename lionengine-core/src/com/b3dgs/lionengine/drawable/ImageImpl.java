@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
@@ -30,7 +31,7 @@ final class ImageImpl
         implements Image
 {
     /** Image surface. */
-    private final java.awt.Image surface;
+    private final ImageBuffer surface;
 
     /**
      * Constructor.
@@ -39,7 +40,7 @@ final class ImageImpl
      */
     ImageImpl(Media media)
     {
-        this(UtilityImage.getBufferedImage(media, false));
+        this(UtilityImage.getImageBuffer(media, false));
     }
 
     /**
@@ -47,7 +48,7 @@ final class ImageImpl
      * 
      * @param surface The surface to share.
      */
-    ImageImpl(java.awt.Image surface)
+    ImageImpl(ImageBuffer surface)
     {
         this.surface = surface;
     }
@@ -65,13 +66,13 @@ final class ImageImpl
     @Override
     public int getWidth()
     {
-        return surface.getWidth(null);
+        return surface.getWidth();
     }
 
     @Override
     public int getHeight()
     {
-        return surface.getHeight(null);
+        return surface.getHeight();
     }
 
     /*
@@ -79,7 +80,7 @@ final class ImageImpl
      */
 
     @Override
-    public java.awt.Image getSurface()
+    public ImageBuffer getSurface()
     {
         return surface;
     }

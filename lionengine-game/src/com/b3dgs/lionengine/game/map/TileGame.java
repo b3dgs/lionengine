@@ -25,12 +25,11 @@ import java.util.List;
  * <li><code>pattern</code> : tilesheet number</li>
  * <li><code>number</code> : tile number inside current tilesheet</li>
  * <li><code>x & y</code> : real location</li>
- * <li><code>collision</code> : collision name</li>
+ * <li><code>collision</code> : collision type</li>
  * </ul>
- * <p>
- * </p>
  * 
  * @param <C> The collision type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class TileGame<C extends Enum<C>>
 {
@@ -50,7 +49,7 @@ public abstract class TileGame<C extends Enum<C>>
     private C collision;
 
     /**
-     * Create a new blank tile.
+     * Constructor.
      * 
      * @param width The tile width.
      * @param height The tile height.

@@ -15,36 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
 /**
- * Thread sequence.
+ * Polygon interface.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SequenceThread
-        extends Thread
+public interface Polygon
 {
-    /** Sequence reference. */
-    private final Sequence sequence;
+    /**
+     * Add a point to the polygon.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    void addPoint(int x, int y);
 
     /**
-     * Constructor.
+     * Reset the polygon.
+     */
+    void reset();
+
+    /**
+     * Get the polygon rectangle bounds.
      * 
-     * @param sequence The sequence reference.
+     * @return The polygon rectangle bounds.
      */
-    SequenceThread(final Sequence sequence)
-    {
-        this.sequence = sequence;
-    }
+    Rectangle getRectangle();
 
-    /*
-     * Thread
+    /**
+     * Check if the rectangle intersects the other.
+     * 
+     * @param rectangle The rectangle to test with.
+     * @return <code>true</code> if intersect, <code>false</code> else.
      */
+    boolean intersects(Rectangle rectangle);
 
-    @Override
-    public void run()
-    {
-        sequence.run();
-    }
+    /**
+     * Check if the rectangle contains the other.
+     * 
+     * @param rectangle The rectangle to test with.
+     * @return <code>true</code> if contains, <code>false</code> else.
+     */
+    boolean contains(Rectangle rectangle);
 }

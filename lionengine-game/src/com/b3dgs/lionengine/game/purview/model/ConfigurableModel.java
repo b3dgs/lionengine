@@ -22,9 +22,9 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
@@ -34,6 +34,8 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Default configurable implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ConfigurableModel
         implements Configurable

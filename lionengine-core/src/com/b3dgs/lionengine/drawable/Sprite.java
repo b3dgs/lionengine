@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * <p>
@@ -115,7 +114,7 @@ public interface Sprite
      * 
      * @param mask The color mask.
      */
-    void setTransparency(Color mask);
+    void setTransparency(ColorRgba mask);
 
     /**
      * Set alpha value. The lower is the value, the higher will be the ghost effect.
@@ -157,10 +156,10 @@ public interface Sprite
      */
 
     /**
-     * Get the sprite surface, represented by a {@link BufferedImage}.
+     * Get the sprite surface.
      * 
      * @return The buffer reference representing the sprite.
      */
     @Override
-    BufferedImage getSurface();
+    ImageBuffer getSurface();
 }

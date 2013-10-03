@@ -17,8 +17,16 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.game.purview.Collidable;
+import com.b3dgs.lionengine.game.purview.Configurable;
+
 /**
- * Represents the collision data, offsets and size.
+ * Represents the collision data, offsets and size. Should be used in combination with
+ * {@link Configurable#getDataCollision(String)} and {@link Collidable#setCollision(CollisionData)}.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurable
+ * @see Collidable
  */
 public class CollisionData
 {
@@ -96,7 +104,7 @@ public class CollisionData
      * 
      * @return <code>true</code> if has mirror, <code>false</code> else.
      */
-    public boolean getMirror()
+    public boolean hasMirror()
     {
         return mirror;
     }

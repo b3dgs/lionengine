@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game;
 
 /**
  * Represents a movement based on a current force and a force to reach.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Movement
 {
@@ -116,7 +118,7 @@ public class Movement
     /**
      * Check if movement is horizontally decreasing.
      * 
-     * @return <code>true</code> if horizontally decreasing, <code>false</code> else;
+     * @return <code>true</code> if horizontally decreasing, <code>false</code> else.
      */
     public boolean isDecreasingHorizontal()
     {
@@ -126,7 +128,7 @@ public class Movement
     /**
      * Check if movement is horizontally decreasing.
      * 
-     * @return <code>true</code> if horizontally decreasing, <code>false</code> else;
+     * @return <code>true</code> if horizontally decreasing, <code>false</code> else.
      */
     public boolean isIncreasingHorizontal()
     {

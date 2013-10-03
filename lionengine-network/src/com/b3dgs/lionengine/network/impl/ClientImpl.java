@@ -28,7 +28,7 @@ import java.net.Socket;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.network.Client;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;

@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.image.BufferedImage;
-
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * ParallaxedSprites are used for parallax effect (2.5D perspective). It cuts a sprite surface into an array of lines.
@@ -101,5 +100,5 @@ public interface SpriteParallaxed
      * @param line The desired line (>= 0).
      * @return The line's surface.
      */
-    BufferedImage getLine(int line);
+    ImageBuffer getLine(int line);
 }

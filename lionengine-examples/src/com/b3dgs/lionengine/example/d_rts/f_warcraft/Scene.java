@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Game loop designed to handle the world.

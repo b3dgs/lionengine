@@ -25,10 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Engine;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Verbose;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.AudioOgg;
@@ -38,6 +35,9 @@ import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.audio.Ogg;
 import com.b3dgs.lionengine.audio.Sc68;
 import com.b3dgs.lionengine.audio.Wav;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test file package.

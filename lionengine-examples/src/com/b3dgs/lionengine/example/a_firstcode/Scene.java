@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.example.a_firstcode;
 
-import java.awt.Font;
-
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMessageBox;
 
 /**
@@ -50,7 +50,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = new Text(Font.SANS_SERIF, 12, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
     /*

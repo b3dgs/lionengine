@@ -21,7 +21,9 @@ import com.b3dgs.lionengine.game.pathfinding.Heuristic;
 
 /**
  * A heuristic that uses the tile that is closest to the target as the next best tile. In this case the square root is
- * removed and the distance squared is used instead
+ * removed and the distance squared is used instead.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HeuristicClosestSquared
         implements Heuristic

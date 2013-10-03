@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.pathfinding;
 
 /**
  * Node in the path.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Node
         implements Comparable<Node>

@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.purview.Mirrorable;
 
 /**
  * Default mirrorable implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MirrorableModel
         implements Mirrorable

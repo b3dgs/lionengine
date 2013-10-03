@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.game.effect;
 
-import java.awt.geom.Line2D;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ObjectGame;
@@ -180,11 +178,5 @@ public abstract class EffectGame
     public int getHeight()
     {
         return location.getHeight();
-    }
-
-    @Override
-    public Line2D getMovement()
-    {
-        return location.getMovement();
     }
 }

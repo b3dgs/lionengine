@@ -21,7 +21,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Abstract entity factory. It performs a list of available entities from a directory considering an input enumeration.
+ * Game type factory. It performs a list of available types from a directory considering an input enumeration.
  * Data are stored with an enumeration as key.
  * <p>
  * Sample implementation:
@@ -45,6 +45,7 @@ import java.util.Map;
  * }
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The enum containing all type.
  * @param <S> The setup entity type used.
  */
@@ -54,7 +55,7 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     private final Map<T, S> setups;
 
     /**
-     * Create a new factory.
+     * Constructor.
      * 
      * @param keyType The class of the enum type defined.
      */

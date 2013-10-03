@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
-import java.awt.Color;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -34,7 +34,7 @@ final class World
         extends WorldGame
 {
     /** Background color. */
-    private static final Color BACKGROUND_COLOR = new Color(107, 136, 255);
+    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Map reference. */

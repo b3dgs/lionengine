@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.pathfinding.Heuristic;
 
 /**
  * A heuristic that drives the search based on the Manhattan distance between the current location and the target.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HeuristicManhattan
         implements Heuristic

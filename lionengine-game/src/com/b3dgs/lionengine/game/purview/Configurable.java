@@ -17,14 +17,16 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CollisionData;
 
 /**
  * Purview representing an object which can be externally configured. When data are loaded, the object can used
  * internally theses data.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Configurable
 {

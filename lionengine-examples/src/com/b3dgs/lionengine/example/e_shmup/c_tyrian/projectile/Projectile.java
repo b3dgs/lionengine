@@ -30,7 +30,7 @@ public abstract class Projectile
 {
     /** Default collision. */
     private static final CollisionData COLLISION = new CollisionData(10, -4, 4, 4, false);
-    
+
     /**
      * @see ProjectileGame#ProjectileGame(SetupSurfaceGame, int, int)
      */

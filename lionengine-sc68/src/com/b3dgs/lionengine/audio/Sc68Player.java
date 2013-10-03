@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.audio;
 import java.io.File;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * SC68 player implementation.

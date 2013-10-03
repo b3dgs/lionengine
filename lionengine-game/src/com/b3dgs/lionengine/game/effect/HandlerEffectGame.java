@@ -17,14 +17,15 @@
  */
 package com.b3dgs.lionengine.game.effect;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.HandlerObjectGame;
 
 /**
- * Handle effects.
+ * Handle effects. Improve the default handler by not rendering effects that are outside the camera view.
  * 
  * @param <E> The effect type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HandlerEffectGame<E extends EffectGame>
         extends HandlerObjectGame<E>
@@ -33,7 +34,7 @@ public class HandlerEffectGame<E extends EffectGame>
     private final CameraGame camera;
 
     /**
-     * Create a new handler.
+     * Constructor.
      * 
      * @param camera The camera reference.
      */

@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.skill;
 
-import java.awt.Font;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
@@ -31,6 +30,7 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Default skill implementation.
@@ -70,7 +70,7 @@ public abstract class Skill
         super(setup);
         this.id = id;
         message = setup.message;
-        text = new Text(Font.DIALOG, 10, Text.NORMAL);
+        text = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
         background = setup.background;
         gold = ResourcesLoader.GOLD;

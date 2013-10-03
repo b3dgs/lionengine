@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.example.f_network;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 import com.b3dgs.lionengine.network.purview.NetworkChat;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Chat implementation.
@@ -37,9 +38,9 @@ class Chat
         implements ConnectionListener
 {
     /** Background. */
-    private static final Color BACKGROUND = new Color(128, 128, 128, 192);
+    private static final ColorRgba BACKGROUND = new ColorRgba(128, 128, 128, 192);
     /** Background writing. */
-    private static final Color BACKGROUND_WRITING = new Color(64, 64, 64, 192);
+    private static final ColorRgba BACKGROUND_WRITING = new ColorRgba(64, 64, 64, 192);
     /** Text. */
     private final Text text;
     /** Mario reference. */
@@ -53,7 +54,7 @@ class Chat
     public Chat(World<?> world)
     {
         super(TypeMessage.MESSAGE_CHAT);
-        text = new Text(Font.DIALOG, 9, Text.NORMAL);
+        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         this.world = world;
     }
 

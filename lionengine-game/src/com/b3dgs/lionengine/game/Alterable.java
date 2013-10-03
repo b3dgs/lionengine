@@ -38,6 +38,7 @@ package com.b3dgs.lionengine.game;
  * </pre>
  * 
  * @see Attribute
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Alterable
 {
@@ -52,7 +53,7 @@ public class Alterable
     private int max;
 
     /**
-     * Create a new alterable.
+     * Constructor.
      * 
      * @param max The maximum reachable value.
      */
@@ -62,7 +63,7 @@ public class Alterable
     }
 
     /**
-     * Create a new alterable.
+     * Constructor.
      * 
      * @param max The maximum reachable value.
      * @param overMax <code>true</code> to allow over value.

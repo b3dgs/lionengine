@@ -17,13 +17,6 @@
  */
 package com.b3dgs.lionengine.test;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -34,13 +27,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Checksum;
-import com.b3dgs.lionengine.Engine;
+import com.b3dgs.lionengine.Coord;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Strings;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Line;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Transparency;
 import com.b3dgs.lionengine.utility.UtilityConversion;
 import com.b3dgs.lionengine.utility.UtilityFile;
 import com.b3dgs.lionengine.utility.UtilityImage;
@@ -65,28 +63,7 @@ public class TestUtility
     {
         try
         {
-            final BufferedImage image = UtilityImage.createBufferedImage(width, height, Transparency.OPAQUE);
-            image.flush();
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-    }
-
-    /**
-     * Test creation of a wrong volatile image.
-     * 
-     * @param width The image width.
-     * @param height The image height.
-     */
-    private static void testCreateVolatileImageFail(int width, int height)
-    {
-        try
-        {
-            final VolatileImage image = UtilityImage.createVolatileImage(width, height, Transparency.OPAQUE);
-            image.flush();
+            UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -239,30 +216,16 @@ public class TestUtility
         TestUtility.testCreateBufferedImageFail(0, 1);
         TestUtility.testCreateBufferedImageFail(1, 0);
 
-        TestUtility.testCreateVolatileImageFail(0, 1);
-        TestUtility.testCreateVolatileImageFail(1, 0);
+        final ImageBuffer bufferedImage = UtilityImage.createImageBuffer(16, 32, Transparency.OPAQUE);
 
-        final BufferedImage bufferedImage = UtilityImage.createBufferedImage(16, 16, Transparency.OPAQUE);
-        final VolatileImage volatileImage = UtilityImage.createVolatileImage(16, 16, Transparency.OPAQUE);
+        Assert.assertEquals(bufferedImage.getWidth(), 16);
+        Assert.assertEquals(bufferedImage.getHeight(), 32);
 
-        Assert.assertEquals(bufferedImage.getWidth(), volatileImage.getWidth());
-        Assert.assertEquals(bufferedImage.getHeight(), volatileImage.getHeight());
-
-        final BufferedImage image0 = UtilityImage.getBufferedImage(Media.get("dot.png"), true);
-        final BufferedImage image1 = UtilityImage.getBufferedImage(Media.get("dot.png"), false);
-        final VolatileImage image2 = UtilityImage.getVolatileImage(Media.get("dot.png"), Transparency.OPAQUE);
+        final ImageBuffer image0 = UtilityImage.getImageBuffer(Media.get("dot.png"), true);
+        final ImageBuffer image1 = UtilityImage.getImageBuffer(Media.get("dot.png"), false);
         try
         {
-            UtilityImage.getBufferedImage(Media.get("null"), false);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            UtilityImage.getVolatileImage(Media.get("null"), Transparency.OPAQUE);
+            UtilityImage.getImageBuffer(Media.get("null"), false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -273,46 +236,27 @@ public class TestUtility
         Assert.assertEquals(image1.getWidth(), image0.getWidth());
         Assert.assertEquals(image1.getHeight(), image0.getHeight());
 
-        Assert.assertEquals(image1.getWidth(), image2.getWidth());
-        Assert.assertEquals(image1.getHeight(), image2.getHeight());
-
-        final VolatileImage image3 = UtilityImage.getVolatileImage(image1);
-        Assert.assertEquals(image1.getWidth(), image3.getWidth());
-        Assert.assertEquals(image1.getHeight(), image3.getHeight());
-
-        final BufferedImage image4 = UtilityImage.applyMask(image1, Color.BLACK);
+        final ImageBuffer image4 = UtilityImage.applyMask(image1, ColorRgba.BLACK);
         Assert.assertEquals(image1.getWidth(), image4.getWidth());
         Assert.assertEquals(image1.getHeight(), image4.getHeight());
 
         UtilityImage.rotate(image1, 90);
-        final BufferedImage resized = UtilityImage.resize(image1, 1, 2);
+        final ImageBuffer resized = UtilityImage.resize(image1, 1, 2);
         Assert.assertEquals(1, resized.getWidth());
         Assert.assertEquals(2, resized.getHeight());
 
-        final BufferedImage flipH = UtilityImage.flipHorizontal(image1);
+        final ImageBuffer flipH = UtilityImage.flipHorizontal(image1);
         Assert.assertEquals(image1.getWidth(), flipH.getWidth());
         Assert.assertEquals(image1.getHeight(), flipH.getHeight());
 
-        final BufferedImage flipV = UtilityImage.flipVertical(image1);
+        final ImageBuffer flipV = UtilityImage.flipVertical(image1);
         Assert.assertEquals(image1.getWidth(), flipV.getWidth());
         Assert.assertEquals(image1.getHeight(), flipV.getHeight());
 
-        final BufferedImage[] splitRef = UtilityImage.referenceSplit(image1, 2, 2);
-        for (final BufferedImage img1 : splitRef)
+        final ImageBuffer[] split = UtilityImage.splitImage(image1, 2, 2);
+        for (final ImageBuffer img1 : split)
         {
-            for (final BufferedImage img2 : splitRef)
-            {
-                Assert.assertEquals(img1.getWidth(), img2.getWidth());
-                Assert.assertEquals(img1.getHeight(), img2.getHeight());
-            }
-        }
-        Assert.assertEquals(image1.getWidth() / 2, splitRef[0].getWidth());
-        Assert.assertEquals(image1.getHeight() / 2, splitRef[0].getHeight());
-
-        final BufferedImage[] split = UtilityImage.splitImage(image1, 2, 2);
-        for (final BufferedImage img1 : split)
-        {
-            for (final BufferedImage img2 : split)
+            for (final ImageBuffer img2 : split)
             {
                 Assert.assertEquals(img1.getWidth(), img2.getWidth());
                 Assert.assertEquals(img1.getHeight(), img2.getHeight());
@@ -326,9 +270,6 @@ public class TestUtility
         final int filterRgb2 = UtilityImage.filterRGB(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         Assert.assertTrue(filterRgb2 >= 0);
 
-        UtilityImage.optimizeGraphicsQuality((Graphics2D) image1.getGraphics());
-        UtilityImage.optimizeGraphicsSpeed((Graphics2D) image1.getGraphics());
-
         try
         {
             UtilityImage.applyFilter(image1, null);
@@ -338,12 +279,10 @@ public class TestUtility
         {
             // Success
         }
-        final BufferedImage bilinear = UtilityImage.applyFilter(image1, Filter.BILINEAR);
-        bilinear.flush();
+        UtilityImage.applyFilter(image1, Filter.BILINEAR);
         try
         {
-            final BufferedImage fail = UtilityImage.applyFilter(image1, Filter.HQ3X);
-            fail.flush();
+            UtilityImage.applyFilter(image1, Filter.HQ3X);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -352,14 +291,13 @@ public class TestUtility
         }
 
         UtilityImage.saveImage(image1, Media.get("testImage.png"));
-        final BufferedImage loaded = UtilityImage.getBufferedImage(Media.get("testImage.png"), false);
+        final ImageBuffer loaded = UtilityImage.getImageBuffer(Media.get("testImage.png"), false);
         Assert.assertEquals(image1.getWidth(), loaded.getWidth());
         Assert.assertEquals(image1.getHeight(), loaded.getHeight());
         final File file = new File(Media.get("testImage.png").getPath());
         Assert.assertTrue(file.delete());
 
-        final BufferedImage raster = UtilityImage.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
-        raster.flush();
+        UtilityImage.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
 
         Assert.assertNotNull(UtilityImage.loadRaster(Media.get("raster.xml")));
         try
@@ -578,10 +516,12 @@ public class TestUtility
         Assert.assertTrue(UtilityMath.curveValue(0.0, 1.0, 0.5) > 0.0);
         Assert.assertTrue(UtilityMath.curveValue(0.0, -1.0, 0.5) < 0.0);
 
-        final Line2D line1 = new Line2D.Double(1.0, -1.0, 1.0, 1.0);
-        final Line2D line2 = new Line2D.Double(0.0, 0.0, 2.0, 0.0);
-        final Point2D point = new Point2D.Double(1.0, 0.0);
-        Assert.assertEquals(point, UtilityMath.intersection(line1, line2));
+        final Line line1 = UtilityMath.createLine(1.0, -1.0, 1.0, 1.0);
+        final Line line2 = UtilityMath.createLine(0.0, 0.0, 2.0, 0.0);
+        final Coord point = new Coord(1.0, 0.0);
+        final Coord intersect = UtilityMath.intersection(line1, line2);
+        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
+        Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
 
         try
         {

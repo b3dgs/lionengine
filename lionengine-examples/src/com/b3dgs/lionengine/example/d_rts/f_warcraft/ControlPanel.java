@@ -17,16 +17,16 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 import com.b3dgs.lionengine.input.Keyboard;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
@@ -77,8 +78,8 @@ final class ControlPanel
         this.cursor = cursor;
         barLife = new Bar(27, 3);
         barProgress = new Bar(62, 6);
-        barProgress.setColorForeground(Color.GREEN);
-        text = new Text(Font.DIALOG, 9, Text.NORMAL);
+        barProgress.setColorForeground(ColorRgba.GREEN);
+        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         sprite = ResourcesLoader.HUD;
         entityStats = ResourcesLoader.ENTITY_STATS;
         progress = ResourcesLoader.PROGRESS;
@@ -195,14 +196,14 @@ final class ControlPanel
         entity.getIcon().render(g, x + 4, y + 4);
         text.draw(g, x + 4, y + 25, entity.getName());
         final int life = entity.getLifePercent();
-        Color color = Color.GREEN;
+        ColorRgba color = ColorRgba.GREEN;
         if (life <= 50)
         {
-            color = Color.YELLOW;
+            color = ColorRgba.YELLOW;
         }
         if (life < 25)
         {
-            color = Color.RED;
+            color = ColorRgba.RED;
         }
         barLife.setLocation(x + 35, y + 20);
         barLife.setWidthPercent(entity.getLifePercent());
@@ -378,7 +379,7 @@ final class ControlPanel
     @Override
     protected int computeSelectionWidth(CursorRts cursor, CameraRts camera, int sx, int sy)
     {
-        final Rectangle2D area = getArea().getBounds2D();
+        final Rectangle area = getArea();
         final int widthMin = camera.getLocationIntX() - sx + (int) area.getX();
         final int widthMax = camera.getLocationIntX() - sx + (int) (area.getX() + area.getWidth()) - 1;
         return UtilityMath.fixBetween(super.computeSelectionWidth(cursor, camera, sx, sy), widthMin, widthMax);
@@ -387,7 +388,7 @@ final class ControlPanel
     @Override
     protected int computeSelectionHeight(CursorRts cursor, CameraRts camera, int sx, int sy)
     {
-        final Rectangle2D area = getArea().getBounds2D();
+        final Rectangle area = getArea();
         final int heightMin = camera.getLocationIntY() - sy + (int) -area.getY() + 1;
         final int heightMax = camera.getLocationIntY() - sy + (int) (-area.getY() + area.getHeight());
         return UtilityMath.fixBetween(super.computeSelectionHeight(cursor, camera, sx, sy), heightMin, heightMax);

@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Pathfindable implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PathfindableModel
         implements Pathfindable

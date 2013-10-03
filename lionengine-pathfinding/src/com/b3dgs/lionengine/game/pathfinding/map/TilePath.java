@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * Representation of a default tile, used for pathfinding.
  * 
  * @param <C> collision type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class TilePath<C extends Enum<C>>
         extends TileGame<C>
@@ -31,7 +32,7 @@ public abstract class TilePath<C extends Enum<C>>
     private boolean blocking;
 
     /**
-     * Create a new blank path tile.
+     * Constructor.
      * 
      * @param width The tile width.
      * @param height The tile height.

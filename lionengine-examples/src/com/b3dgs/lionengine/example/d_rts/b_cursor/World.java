@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.b_cursor;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
@@ -53,7 +53,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = new TextGame(Font.SERIF, 10, Text.NORMAL);
+        text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
         cursor = new CursorRts(mouse, camera, source, map, Media.get("cursor.png"));
@@ -74,8 +74,8 @@ final class World
             final int x = tx * map.getTileWidth();
             final int y = ty * map.getTileHeight();
 
-            text.drawRect(g, Color.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
-            text.setColor(Color.YELLOW);
+            text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
+            text.setColor(ColorRgba.YELLOW);
             text.draw(g, x + 18, y + 25, "Group: " + tile.getCollision().getGroup());
             text.draw(g, x + 18, y + 16, "Coll: " + tile.getCollision());
             text.draw(g, x + 18, y + 7, "Tile number: " + tile.getNumber());

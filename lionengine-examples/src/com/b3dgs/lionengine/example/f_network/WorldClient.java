@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.example.f_network;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -56,7 +56,7 @@ class WorldClient
     /** Networkable. */
     private final Networkable networkableModel;
     /** Background color. */
-    private final Color backgroundColor = new Color(107, 136, 255);
+    private final ColorRgba backgroundColor = new ColorRgba(107, 136, 255);
 
     /**
      * @see WorldGame#WorldGame(Sequence)
@@ -64,8 +64,8 @@ class WorldClient
     public WorldClient(final Sequence sequence)
     {
         super(sequence);
-        textGame = new TextGame(Font.SANS_SERIF, 10, Text.NORMAL);
-        text = new TextGame(Font.SANS_SERIF, 10, Text.NORMAL);
+        textGame = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+        text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
         input = new ClientInput();
         camera = new CameraPlatform(width, height);

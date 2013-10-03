@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.rts.entity;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,7 +24,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Rectangle;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 import com.b3dgs.lionengine.game.rts.map.TileRts;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 import com.b3dgs.lionengine.input.Mouse;
+import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class will handle a list of entities, by updating and rendering them. All actions are defined here, such as
@@ -75,7 +76,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     /** Map reference. */
     private final MapTileRts<?, T> map;
     /** Entity area buffer for selection check. */
-    private final Rectangle2D entityArea;
+    private final Rectangle entityArea;
     /** List of entities id that shared the same path. */
     private final Set<Integer> sharedPathIds;
     /** Player (main owner) reference. */
@@ -105,7 +106,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         this.map = map;
         listeners = new ArrayList<>(1);
         selectedEntity = new HashSet<>(8);
-        entityArea = new Rectangle2D.Double();
+        entityArea = UtilityMath.createRectangle();
         mouseClickAssign = Mouse.RIGHT;
         sharedPathIds = new HashSet<>(0);
         layers = null;
@@ -127,7 +128,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param entity The current entity.
      * @return color The representing mouse over an entity.
      */
-    protected abstract Color getEntityColorOver(E entity);
+    protected abstract ColorRgba getEntityColorOver(E entity);
 
     /**
      * Get the corresponding color when the entity is selected.
@@ -135,7 +136,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param entity The current entity.
      * @return color The representing selected entity.
      */
-    protected abstract Color getEntityColorSelection(E entity);
+    protected abstract ColorRgba getEntityColorSelection(E entity);
 
     /**
      * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
@@ -317,13 +318,13 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * 
      * @param selection The selection area.
      */
-    protected void updateSelection(Rectangle2D selection)
+    protected void updateSelection(Rectangle selection)
     {
         // Reset selection
         selectedEntity.clear();
 
         // Allows both selection and single click without moving the mouse
-        selection.setRect(selection.getX(), selection.getY(), Math.max(1, selection.getWidth()),
+        selection.set(selection.getX(), selection.getY(), Math.max(1, selection.getWidth()),
                 Math.max(1, selection.getHeight()));
 
         // Update the selection list
@@ -333,8 +334,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
             {
                 continue;
             }
-            entityArea.setRect(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(),
-                    entity.getHeight());
+            entityArea.set(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(), entity.getHeight());
 
             if (selection.contains(entityArea) || selection.intersects(entityArea))
             {
@@ -395,7 +395,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param camera The camera reference.
      * @param color The box color.
      */
-    protected void renderEntityOver(Graphic g, E entity, CameraRts camera, Color color)
+    protected void renderEntityOver(Graphic g, E entity, CameraRts camera, ColorRgba color)
     {
         if (entity.isOver() && color != null)
         {
@@ -411,7 +411,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param camera The camera reference.
      * @param color The box color.
      */
-    protected void renderEntitySelection(Graphic g, E entity, CameraRts camera, Color color)
+    protected void renderEntitySelection(Graphic g, E entity, CameraRts camera, ColorRgba color)
     {
         if (entity.isSelected() && color != null)
         {
@@ -629,8 +629,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     {
         if (entity.isActive())
         {
-            entityArea.setRect(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(),
-                    entity.getHeight());
+            entityArea.set(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(), entity.getHeight());
             if (entity.isSelectable() && camera.canSee(entity)
                     && entityArea.contains(cursor.getLocationX(), cursor.getLocationY()))
             {
@@ -702,7 +701,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param camera The camera reference.
      * @param color The box color.
      */
-    private void drawRect(Graphic g, E entity, CameraRts camera, Color color)
+    private void drawRect(Graphic g, E entity, CameraRts camera, ColorRgba color)
     {
         g.setColor(color);
         final int x = camera.getViewpointX(entity.getLocationIntX());
@@ -773,13 +772,13 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      */
 
     @Override
-    public void notifySelectionStarted(Rectangle2D selection)
+    public void notifySelectionStarted(Rectangle selection)
     {
         updateSelection(selection);
     }
 
     @Override
-    public void notifySelectionDone(Rectangle2D selection)
+    public void notifySelectionDone(Rectangle selection)
     {
         updateSelection(selection);
     }

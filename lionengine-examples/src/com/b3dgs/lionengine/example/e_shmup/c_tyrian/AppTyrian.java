@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 
 // Tutorial: Tyrian
 // This tutorial shows how to create a shoot'em'up.

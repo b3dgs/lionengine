@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import java.awt.Color;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -111,7 +110,7 @@ final class Racket
     {
         final int x = camera.getViewpointX(getLocationIntX() - getWidth() / 2);
         final int y = camera.getViewpointY(getLocationIntY() + getHeight() - getHeight() / 2);
-        g.setColor(Color.CYAN);
+        g.setColor(ColorRgba.CYAN);
         g.drawRect(x, y, getWidth(), getHeight(), true);
     }
 

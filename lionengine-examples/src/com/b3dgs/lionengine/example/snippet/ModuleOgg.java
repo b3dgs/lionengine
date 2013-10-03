@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.snippet;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.audio.AudioOgg;
 import com.b3dgs.lionengine.audio.Ogg;
+import com.b3dgs.lionengine.core.Media;
 
 @SuppressWarnings("all")
 public class ModuleOgg

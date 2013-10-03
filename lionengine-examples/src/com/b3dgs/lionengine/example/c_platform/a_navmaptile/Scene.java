@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.c_platform.a_navmaptile;
 
-import java.awt.Font;
-
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Game loop designed to handle our world.
@@ -47,7 +47,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 11, TextStyle.NORMAL);
         world = new World(this);
     }
 

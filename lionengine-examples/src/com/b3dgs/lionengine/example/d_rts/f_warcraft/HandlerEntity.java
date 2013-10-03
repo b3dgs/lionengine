@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Building;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Unit;
@@ -191,22 +191,22 @@ public final class HandlerEntity
     }
 
     @Override
-    protected Color getEntityColorOver(Entity entity)
+    protected ColorRgba getEntityColorOver(Entity entity)
     {
-        return Color.GRAY;
+        return ColorRgba.GRAY;
     }
 
     @Override
-    protected Color getEntityColorSelection(Entity entity)
+    protected ColorRgba getEntityColorSelection(Entity entity)
     {
         if (entity.getPlayer() == player)
         {
-            return Color.GREEN;
+            return ColorRgba.GREEN;
         }
         else if (entity.getPlayer() == null)
         {
-            return Color.LIGHT_GRAY;
+            return ColorRgba.GRAY_LIGHT;
         }
-        return Color.RED;
+        return ColorRgba.RED;
     }
 }

@@ -38,19 +38,19 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  *     }
  * 
  *     &#064;Override
- *     public EntityGame createEntity(TypeEntity id)
+ *     public EntityGame createEntity(TypeEntity key)
  *     {
  *         switch (id)
  *         {
  *             default:
- *                 throw new LionEngineException(&quot;Unknown entity: &quot; + id);
+ *                 throw new LionEngineException(&quot;Unknown entity: &quot; + key);
  *         }
  *     }
  * 
  *     &#064;Override
- *     protected SetupEntityGame createSetup(TypeEntity id)
+ *     protected SetupEntityGame createSetup(TypeEntity key)
  *     {
- *         return new SetupEntityGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;));
+ *         return new SetupEntityGame(Media.get(&quot;directory&quot;, key + &quot;.xml&quot;));
  *     }
  * }
  * </pre>
@@ -58,12 +58,13 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @param <T> The enum containing all type.
  * @param <S> The setup type.
  * @param <E> The entity type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryEntityGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EntityGame>
         extends FactoryGame<T, S>
 {
     /**
-     * Create a new entity factory.
+     * Constructor.
      * 
      * @param keyType The class of the enum type defined.
      */
@@ -73,11 +74,12 @@ public abstract class FactoryEntityGame<T extends Enum<T>, S extends SetupSurfac
     }
 
     /**
-     * Get the entity instance from its id. It is recommended to use a switch on the id, and throw an exception for the
+     * Get the entity instance from its key. It is recommended to use a switch on the key, and throw an exception for
+     * the
      * default case (instead of returning a <code>null</code> value).
      * 
-     * @param id The entity id (as enumeration).
+     * @param key The entity key (as enumeration).
      * @return The entity instance.
      */
-    public abstract E createEntity(T id);
+    public abstract E createEntity(T key);
 }

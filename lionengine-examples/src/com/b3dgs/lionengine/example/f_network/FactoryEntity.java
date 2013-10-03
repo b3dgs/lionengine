@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.f_network;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;

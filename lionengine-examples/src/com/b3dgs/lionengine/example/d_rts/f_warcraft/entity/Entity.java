@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.entity;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Context;

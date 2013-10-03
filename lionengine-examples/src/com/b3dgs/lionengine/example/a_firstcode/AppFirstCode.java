@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.a_firstcode;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Engine;
-import com.b3dgs.lionengine.Loader;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
 
 // Tutorial: First code
 // This tutorial will highlight the minimum required code to initialize properly the engine.

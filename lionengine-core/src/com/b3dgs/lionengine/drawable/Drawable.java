@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.image.BufferedImage;
-
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Drawable factory. Can create the following elements:
@@ -53,7 +52,7 @@ public final class Drawable
      * @param surface The surface reference.
      * @return The loaded image.
      */
-    public static Image loadImage(java.awt.Image surface)
+    public static Image loadImage(ImageBuffer surface)
     {
         return new ImageImpl(surface);
     }
@@ -75,7 +74,7 @@ public final class Drawable
      * @param surface The surface reference.
      * @return The loaded sprite.
      */
-    public static Sprite loadSprite(BufferedImage surface)
+    public static Sprite loadSprite(ImageBuffer surface)
     {
         return new SpriteImpl(null, surface);
     }
@@ -102,7 +101,7 @@ public final class Drawable
      * @param verticalFrames The number of vertical frames.
      * @return The loaded animated sprite.
      */
-    public static SpriteAnimated loadSpriteAnimated(BufferedImage surface, int horizontalFrames, int verticalFrames)
+    public static SpriteAnimated loadSpriteAnimated(ImageBuffer surface, int horizontalFrames, int verticalFrames)
     {
         return new SpriteAnimatedImpl(null, surface, horizontalFrames, verticalFrames);
     }
@@ -129,7 +128,7 @@ public final class Drawable
      * @param tileHeight The tile height.
      * @return The loaded tiled sprite.
      */
-    public static SpriteTiled loadSpriteTiled(BufferedImage surface, int tileWidth, int tileHeight)
+    public static SpriteTiled loadSpriteTiled(ImageBuffer surface, int tileWidth, int tileHeight)
     {
         return new SpriteTiledImpl(null, surface, tileWidth, tileHeight);
     }

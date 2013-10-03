@@ -15,12 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine;
 
 /**
  * Represents a coordinate using double precision.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Coord
+public class Coord
 {
     /** Coordinate horizontal. */
     private double x;
@@ -36,7 +38,7 @@ public final class Coord
     }
 
     /**
-     * Create a coordinate with a specified default location.
+     * Constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.

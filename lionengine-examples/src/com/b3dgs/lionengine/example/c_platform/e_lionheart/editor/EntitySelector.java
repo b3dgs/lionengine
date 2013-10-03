@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -35,7 +34,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -46,6 +47,7 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
+import com.b3dgs.lionengine.utility.UtilityImage;
 import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
@@ -61,7 +63,7 @@ public class EntitySelector
     /** Number of columns. */
     private static final int COLUMNS = 5;
     /** Selection color. */
-    static final Color SELECT = new Color(128, 192, 128, 128);
+    static final ColorRgba SELECT = new ColorRgba(128, 192, 128, 128);
     /** Editor reference. */
     final Editor editor;
     /** Tabs. */
@@ -217,21 +219,21 @@ public class EntitySelector
          * 
          * @param g The graphic output.
          */
-        private void render(Graphics g)
+        private void render(Graphic g)
         {
             final int width = getWidth();
             final int height = getHeight();
-            g.clearRect(0, 0, width, height);
+            g.clear(0, 0, width, height);
 
             final int iconSize = EntitySelector.ICON_SIZE;
             int x = 0, y = 0;
             for (int i = 0; i < icons.size(); i++)
             {
-                g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * iconSize, y * iconSize, iconSize, iconSize);
-                g.setColor(Color.BLACK);
-                g.drawRect(x * iconSize, y * iconSize, iconSize, iconSize);
-                g.drawImage(icons.get(i).getSurface(), x * iconSize + 1, y * iconSize + 1, null);
+                g.setColor(ColorRgba.GRAY_LIGHT);
+                g.drawRect(x * iconSize, y * iconSize, iconSize, iconSize, true);
+                g.setColor(ColorRgba.BLACK);
+                g.drawRect(x * iconSize, y * iconSize, iconSize, iconSize, false);
+                g.drawImage(icons.get(i).getSurface(), x * iconSize + 1, y * iconSize + 1);
                 x++;
                 if (x >= EntitySelector.COLUMNS)
                 {
@@ -248,7 +250,7 @@ public class EntitySelector
             if (num <= size && x < EntitySelector.COLUMNS * iconSize && mx > 0)
             {
                 g.setColor(EntitySelector.SELECT);
-                g.fillRect(x + 1, y + 1, iconSize - 1, iconSize - 1);
+                g.drawRect(x + 1, y + 1, iconSize - 1, iconSize - 1, true);
                 if (click)
                 {
                     click = false;
@@ -270,10 +272,12 @@ public class EntitySelector
          */
 
         @Override
-        public void paintComponent(Graphics g)
+        public void paintComponent(Graphics g2d)
         {
             if (isEnabled())
             {
+                final Graphic g = UtilityImage.createGraphic();
+                g.setGraphic(g2d);
                 render(g);
             }
         }

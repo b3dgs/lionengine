@@ -38,7 +38,7 @@ public final class HandlerProjectile
     {
         super(camera, handlerEntity);
     }
-    
+
     @Override
     protected void update(double extrp, Projectile projectile)
     {

@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Loader;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Sequence;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.menu.Menu;
 import com.b3dgs.lionengine.input.Keyboard;
 

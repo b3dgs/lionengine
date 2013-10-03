@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.awt.image.BufferedImage;
-
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Tiled sprite are mainly used for tile based levels. It works by loading an image and render only a part of it
@@ -108,13 +107,5 @@ public interface SpriteTiled
      * @param tile The desired tile.
      * @return The tile's surface.
      */
-    BufferedImage getTile(int tile);
-
-    /**
-     * Get a tile (as reference, faster).
-     * 
-     * @param tile The desired tile.
-     * @return The tile's surface.
-     */
-    BufferedImage getTileReference(int tile);
+    ImageBuffer getTile(int tile);
 }

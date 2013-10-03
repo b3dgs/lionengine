@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-import com.b3dgs.lionengine.Verbose;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Used to know the number of code line, and number of files in current project.

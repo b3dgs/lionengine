@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;

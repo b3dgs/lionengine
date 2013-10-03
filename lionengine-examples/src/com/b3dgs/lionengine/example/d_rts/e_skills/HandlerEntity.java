@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.d_rts.e_skills;
 
-import java.awt.Color;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -92,14 +92,14 @@ public final class HandlerEntity
     }
 
     @Override
-    protected Color getEntityColorOver(Entity entity)
+    protected ColorRgba getEntityColorOver(Entity entity)
     {
-        return Color.GRAY;
+        return ColorRgba.GRAY;
     }
 
     @Override
-    protected Color getEntityColorSelection(Entity entity)
+    protected ColorRgba getEntityColorSelection(Entity entity)
     {
-        return Color.GREEN;
+        return ColorRgba.GREEN;
     }
 }

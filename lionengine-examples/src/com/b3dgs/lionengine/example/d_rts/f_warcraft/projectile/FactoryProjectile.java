@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.projectile;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeProjectile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;

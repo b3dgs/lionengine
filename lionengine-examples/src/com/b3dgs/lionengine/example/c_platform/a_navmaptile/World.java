@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.c_platform.a_navmaptile;
 
-import java.awt.Font;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Media;
-import com.b3dgs.lionengine.Sequence;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
+import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * World implementation.
@@ -55,7 +56,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = new Text(Font.SANS_SERIF, 11, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 11, TextStyle.NORMAL);
         camera = new CameraPlatform(width, height);
         map = new Map();
         force = new Force();
