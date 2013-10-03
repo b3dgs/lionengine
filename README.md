@@ -58,8 +58,8 @@ public final class AppFirstCode
 
         // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
-        // If the current frame rate is lower than the required in the native, the extrapolation value will allow to
-        // compensate any data calculation.
+        // If the current frame rate is lower than the required in the native,
+        // the extrapolation value will allow to compensate any data calculation.
         final Resolution output = new Resolution(640, 480, 60);
 
         // Final configuration (rendering will be scaled by 2 considering source and output resolution).
@@ -105,7 +105,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = UtilityImage.createText(Font.SANS_SERIF, 12, Text.NORMAL);
+        text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
     /*
