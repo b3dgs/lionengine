@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.network.impl;
+package com.b3dgs.lionengine.network;
 
 /**
  * List of messages system flag. This allows to filter data on message received depending of the case.

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.network.impl;
+package com.b3dgs.lionengine.network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.LionEngineException;
 /**
  * Client socket (bridge between server and client).
  */
-class ClientSocket
+final class ClientSocket
 {
     /** Client socket. */
     private final Socket socket;

@@ -22,8 +22,8 @@ import java.io.IOException;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;
-import com.b3dgs.lionengine.network.world.NetworkedWorldServer;
+import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
+import com.b3dgs.lionengine.network.NetworkedWorldServer;
 
 /**
  * World implementation using AbstractWorld.

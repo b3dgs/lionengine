@@ -76,5 +76,4 @@ public class TransformImpl
     {
         return interpolation;
     }
-
 }

@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.network;
 
-import com.b3dgs.lionengine.network.impl.ClientImpl;
-import com.b3dgs.lionengine.network.impl.ServerImpl;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**

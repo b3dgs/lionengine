@@ -30,11 +30,11 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.network.NetworkedWorldClient;
+import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
 import com.b3dgs.lionengine.network.purview.NetworkableModel;
-import com.b3dgs.lionengine.network.world.NetworkedWorldClient;
-import com.b3dgs.lionengine.network.world.NetworkedWorldModelClient;
 
 /**
  * World implementation using AbstractWorld.

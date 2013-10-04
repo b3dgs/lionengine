@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.network.NetworkedWorld;
+import com.b3dgs.lionengine.network.NetworkedWorldModel;
+import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
 import com.b3dgs.lionengine.network.purview.NetworkableModel;
-import com.b3dgs.lionengine.network.world.NetworkedWorld;
-import com.b3dgs.lionengine.network.world.NetworkedWorldModel;
-import com.b3dgs.lionengine.network.world.NetworkedWorldModelServer;
 
 /**
  * World base implementation.

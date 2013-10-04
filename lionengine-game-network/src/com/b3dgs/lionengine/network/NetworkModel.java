@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.network.impl;
+package com.b3dgs.lionengine.network;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.b3dgs.lionengine.network.ClientListener;
-import com.b3dgs.lionengine.network.Networker;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
