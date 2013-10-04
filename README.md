@@ -123,7 +123,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             end();
         }
