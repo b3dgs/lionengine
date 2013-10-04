@@ -22,9 +22,10 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -39,7 +40,6 @@ import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
-import com.b3dgs.lionengine.input.Keyboard;
 
 /**
  * Handle the Valdyn attacks.

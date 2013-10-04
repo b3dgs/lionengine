@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.f_network;
 
-import java.awt.event.KeyEvent;
-
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.network.purview.NetworkedInput;
 
 /**
@@ -38,21 +37,21 @@ class ClientInput
     @Override
     protected void sendKey(int code, boolean pressed)
     {
-        if (!(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_LEFT || code == KeyEvent.VK_UP))
+        if (!(code == Key.RIGHT.intValue() || code == Key.LEFT.intValue() || code == Key.UP.intValue()))
         {
             return;
         }
 
         final MessageEntity message = new MessageEntity(getClientId());
-        if (code == KeyEvent.VK_RIGHT)
+        if (code == Key.RIGHT.intValue())
         {
             message.addAction(MessageEntityElement.RIGHT, pressed);
         }
-        if (code == KeyEvent.VK_LEFT)
+        if (code == Key.LEFT.intValue())
         {
             message.addAction(MessageEntityElement.LEFT, pressed);
         }
-        if (code == KeyEvent.VK_UP)
+        if (code == Key.UP.intValue())
         {
             message.addAction(MessageEntityElement.UP, pressed);
         }

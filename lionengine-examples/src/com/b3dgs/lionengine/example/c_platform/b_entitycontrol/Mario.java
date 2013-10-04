@@ -19,14 +19,15 @@ package com.b3dgs.lionengine.example.c_platform.b_entitycontrol;
 
 import java.util.EnumMap;
 
+import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.input.Keyboard;
 
 /**
  * Implementation of our controllable entity.
@@ -87,9 +88,9 @@ final class Mario
      */
     public void updateControl(Keyboard keyboard)
     {
-        right = keyboard.isPressed(Keyboard.RIGHT);
-        left = keyboard.isPressed(Keyboard.LEFT);
-        up = keyboard.isPressed(Keyboard.UP);
+        right = keyboard.isPressed(Key.RIGHT);
+        left = keyboard.isPressed(Key.LEFT);
+        up = keyboard.isPressed(Key.UP);
     }
 
     /**

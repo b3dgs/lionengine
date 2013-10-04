@@ -17,8 +17,11 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.b_shipweapon;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Mouse;
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon.FactoryWeapon;
@@ -28,8 +31,6 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Ship implementation.
@@ -83,7 +84,7 @@ final class Ship
         final double x = UtilityMath.curveValue(getLocationOffsetX(), destX, 3.0);
         final double y = UtilityMath.curveValue(getLocationOffsetY(), destY, 3.0);
         setLocationOffset(x, y);
-        if (mouse.hasClicked(Mouse.LEFT))
+        if (mouse.hasClicked(Click.LEFT))
         {
             weaponFront.launch();
             weaponRear.launch();

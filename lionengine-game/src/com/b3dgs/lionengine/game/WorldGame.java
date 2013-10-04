@@ -19,10 +19,12 @@ package com.b3dgs.lionengine.game;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
@@ -32,8 +34,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.input.Mouse;
 
 /**
  * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerEntityGame},

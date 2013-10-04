@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.skill;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
@@ -30,7 +31,6 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Default skill implementation.

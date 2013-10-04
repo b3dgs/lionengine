@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
@@ -35,7 +36,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
 import com.b3dgs.lionengine.file.XmlParser;
-import com.b3dgs.lionengine.utility.UtilityFile;
 
 /**
  * Test file package.

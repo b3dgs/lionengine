@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
@@ -43,8 +45,6 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Valdyn implementation (player).

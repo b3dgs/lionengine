@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.f_network;
 
 import java.util.HashMap;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 

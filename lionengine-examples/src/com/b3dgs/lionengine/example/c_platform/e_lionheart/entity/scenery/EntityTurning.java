@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityState;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Turning scenery implementation base.

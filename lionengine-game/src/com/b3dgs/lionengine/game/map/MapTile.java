@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 
@@ -41,7 +41,7 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
      * @param heightInTile The map height in tile.
      */
     void create(int widthInTile, int heightInTile);
-    
+
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
      * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add

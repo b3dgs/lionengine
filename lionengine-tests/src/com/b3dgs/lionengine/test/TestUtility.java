@@ -27,26 +27,26 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Checksum;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Coord;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Line;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Strings;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityConversion;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilityProjectStats;
+import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Line;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Transparency;
-import com.b3dgs.lionengine.utility.UtilityConversion;
-import com.b3dgs.lionengine.utility.UtilityFile;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
-import com.b3dgs.lionengine.utility.UtilityMessageBox;
-import com.b3dgs.lionengine.utility.UtilityProjectStats;
-import com.b3dgs.lionengine.utility.UtilityRandom;
-import com.b3dgs.lionengine.utility.UtilitySwing;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.swing.UtilityMessageBox;
+import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
  * Test checksum package.

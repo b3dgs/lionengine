@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Unit;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.entity.EntityRtsListener;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Minimap handler.
@@ -84,7 +84,7 @@ final class Minimap
         final int mw = map.getWidthInTile();
         final int mh = map.getHeightInTile();
         // Assign unit destination from minimap
-        if (cursor.getClick() == Mouse.RIGHT)
+        if (cursor.getClick() == Click.RIGHT)
         {
             if (!clicked && isOver(cursor))
             {
@@ -101,7 +101,7 @@ final class Minimap
             }
         }
         // Move camera from minimap
-        else if (cursor.getClick() == Mouse.LEFT)
+        else if (cursor.getClick() == Click.LEFT)
         {
             final int cx = cursor.getScreenX() - ox;
             final int cy = mh - cursor.getScreenY();

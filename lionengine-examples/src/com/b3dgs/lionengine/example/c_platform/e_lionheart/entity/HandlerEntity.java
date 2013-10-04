@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.item.EntityItem;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.monster.EntityMonster;

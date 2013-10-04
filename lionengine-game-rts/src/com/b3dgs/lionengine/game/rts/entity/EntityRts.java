@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.game.rts.entity;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
@@ -32,7 +33,6 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.map.MapTileRts;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class represent the first abstraction for any kind of entity which can be used in a strategy game. It contains a

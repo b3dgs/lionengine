@@ -28,25 +28,25 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Theme;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
-import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.swing.Theme;
 
 /**
  * Test the engine package.

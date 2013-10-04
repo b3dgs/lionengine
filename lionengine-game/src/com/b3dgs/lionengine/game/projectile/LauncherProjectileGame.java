@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Represents a projectile launcher. It allows to handle projectile shots from an entity.

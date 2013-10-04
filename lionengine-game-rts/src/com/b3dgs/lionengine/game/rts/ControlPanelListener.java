@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.rts;
 
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.Rectangle;
 
 /**
  * List of events linked to the control panel.

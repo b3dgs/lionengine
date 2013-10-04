@@ -24,9 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
@@ -43,8 +44,6 @@ import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 import com.b3dgs.lionengine.game.rts.map.TileRts;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class will handle a list of entities, by updating and rendering them. All actions are defined here, such as
@@ -107,7 +106,6 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         listeners = new ArrayList<>(1);
         selectedEntity = new HashSet<>(8);
         entityArea = UtilityMath.createRectangle();
-        mouseClickAssign = Mouse.RIGHT;
         sharedPathIds = new HashSet<>(0);
         layers = null;
         panel.addListener(this);
@@ -178,7 +176,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     }
 
     /**
-     * Set the mouse click assignment ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
+     * Set the mouse click assignment.
      * 
      * @param click The mouse click value.
      */

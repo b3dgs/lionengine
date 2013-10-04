@@ -17,16 +17,16 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Line;
-import com.b3dgs.lionengine.core.Polygon;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Line;
+import com.b3dgs.lionengine.Polygon;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Default collidable model implementation.

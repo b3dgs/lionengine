@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityCollisionTile;

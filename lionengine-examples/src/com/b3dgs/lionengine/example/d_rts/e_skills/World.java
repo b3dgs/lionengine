@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.example.d_rts.e_skills;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.file.FileReading;
@@ -32,7 +34,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
-import com.b3dgs.lionengine.input.Mouse;
 
 /**
  * World implementation using WorldRts.
@@ -120,13 +121,14 @@ final class World
         camera.setSensibility(30, 30);
         camera.setBorders(map);
         camera.setLocation(map, 28, 0);
+        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
 
         controlPanel.setClickableArea(camera);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
-        controlPanel.setClickSelection(Mouse.LEFT);
+        controlPanel.setClickSelection(Click.LEFT);
 
         handlerEntity.createLayers(map);
-        handlerEntity.setClickAssignment(Mouse.RIGHT);
+        handlerEntity.setClickAssignment(Click.RIGHT);
 
         final Entity peon = factoryEntity.createEntity(EntityType.PEON);
         peon.setPlayerId(0);

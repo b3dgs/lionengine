@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.player;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;

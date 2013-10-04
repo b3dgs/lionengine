@@ -19,21 +19,22 @@ package com.b3dgs.lionengine.example.d_rts.e_skills;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.e_skills.skill.Skill;
+import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Control panel implementation.
@@ -70,6 +71,7 @@ final class ControlPanel
         sprite.load(false);
         entityStats.load(false);
         lastSingleSelection = null;
+        setClickSelection(Click.LEFT);
     }
 
     /**

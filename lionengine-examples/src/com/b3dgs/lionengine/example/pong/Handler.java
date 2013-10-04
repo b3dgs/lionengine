@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example.pong;
 
 import java.util.Set;
 
+import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityMath;
-import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
  * Handle the game, count score, and reset the ball in case of goal.

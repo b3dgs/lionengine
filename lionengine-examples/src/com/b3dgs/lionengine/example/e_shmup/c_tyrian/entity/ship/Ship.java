@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship;
 
+import com.b3dgs.lionengine.Mouse;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
@@ -26,8 +29,6 @@ import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.WeaponType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Ship base implementation.
@@ -85,17 +86,18 @@ public class Ship
         moveLocation(extrp, 0.0, 1.0);
         updateTileOffset();
         updateCollision();
-        
+
         energy.increase(2);
-        if (mouse.hasClicked(Mouse.LEFT))
+        if (mouse.hasClicked(Click.LEFT))
         {
             weaponFront.launch(energy);
             weaponRear.launch(energy);
         }
     }
-    
+
     /**
      * Get energy percent.
+     * 
      * @return The energy percent.
      */
     public int getEnergyPercent()

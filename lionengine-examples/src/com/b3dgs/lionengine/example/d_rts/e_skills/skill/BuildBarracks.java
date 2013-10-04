@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
-import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Cursor;
 import com.b3dgs.lionengine.example.d_rts.e_skills.CursorType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;

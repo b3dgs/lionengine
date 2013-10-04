@@ -21,8 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.UtilityConversion;
 import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
-import com.b3dgs.lionengine.utility.UtilityConversion;
 
 /**
  * Entity network message description.

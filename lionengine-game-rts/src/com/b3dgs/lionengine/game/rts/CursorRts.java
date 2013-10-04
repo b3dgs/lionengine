@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.game.rts;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Cursor;
+import com.b3dgs.lionengine.Mouse;
+import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class can be used to handle easily a strategy cursor, designed to select and give order to any kind of entity.

@@ -24,12 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.file.File;
@@ -38,8 +40,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.utility.UtilityFile;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
@@ -526,9 +526,9 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     @Override
     public void append(MapTile<C, T> map, int offsetX, int offsetY)
     {
-        final int newWidth = (widthInTile - (widthInTile - offsetX)) + map.getWidthInTile();
-        final int newHeight = (heightInTile - (heightInTile - offsetY)) + map.getHeightInTile();
-        
+        final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
+        final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
+
         // Adjust height
         final int sizeV = tiles.size();
         for (int i = 0; i < newHeight - sizeV; i++)
@@ -539,7 +539,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         for (int v = 0; v < map.getHeightInTile(); v++)
         {
             final int y = offsetY + v;
-            
+
             // Adjust width
             final int sizeH = tiles.get(y).size();
             for (int i = 0; i < newWidth - sizeH; i++)

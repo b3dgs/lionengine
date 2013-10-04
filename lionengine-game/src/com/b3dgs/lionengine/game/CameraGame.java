@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Standard camera, able to handle movement, and both vertical/horizontal real interval. Camera can be used to move

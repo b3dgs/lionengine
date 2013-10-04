@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
@@ -69,7 +69,7 @@ final class World
             Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
         }
     }
-    
+
     /** Hud reference. */
     private final Hud hud;
     /** Map reference. */
@@ -123,13 +123,13 @@ final class World
         {
             if (i == 0)
             {
-                ripLevel(map, Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"),
+                World.ripLevel(map, Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"),
                         Media.get("levels", "0.map"));
             }
             else
             {
                 final Map map = new Map();
-                ripLevel(map, Media.get("levels", "images", i + ".png"), Media.get("tiles", "level1"),
+                World.ripLevel(map, Media.get("levels", "images", i + ".png"), Media.get("tiles", "level1"),
                         Media.get("levels", i + ".map"));
                 this.map.append(map, 0, map.getHeightInTile() * i);
             }

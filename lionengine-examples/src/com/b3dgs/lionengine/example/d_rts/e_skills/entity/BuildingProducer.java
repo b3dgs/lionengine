@@ -19,13 +19,13 @@ package com.b3dgs.lionengine.example.d_rts.e_skills.entity;
 
 import java.util.Iterator;
 
-import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.d_rts.e_skills.Context;
 import com.b3dgs.lionengine.example.d_rts.e_skills.EntityType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.ProducibleEntity;
 import com.b3dgs.lionengine.example.d_rts.e_skills.ProductionCost;
+import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;

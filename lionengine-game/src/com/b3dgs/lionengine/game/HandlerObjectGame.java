@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 
 /**
  * Designed to handle objects. Maintain an objects list by updating and rendering them. Modifications on the list can be

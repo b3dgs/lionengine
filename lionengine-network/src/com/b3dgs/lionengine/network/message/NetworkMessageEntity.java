@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.b3dgs.lionengine.utility.UtilityConversion;
+import com.b3dgs.lionengine.UtilityConversion;
 
 /**
  * Standard entity message.

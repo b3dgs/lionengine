@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example.d_rts.d_ability;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
+import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;

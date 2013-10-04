@@ -19,12 +19,13 @@ package com.b3dgs.lionengine.example.d_rts.b_cursor;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
@@ -116,5 +117,6 @@ final class World
         camera.setView(0, 0, width, height);
         camera.setSensibility(30, 30);
         camera.setBorders(map);
+        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
     }
 }

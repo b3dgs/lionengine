@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.tilecollision;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.input.Keyboard;
 
 /**
  * This is where the game loop is running.
@@ -85,7 +85,7 @@ final class Scene
         entity.updateMouse(mouse);
         entity.update(extrp);
         // Terminate
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             end();
         }

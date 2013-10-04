@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Specific background element, supporting raster effects.

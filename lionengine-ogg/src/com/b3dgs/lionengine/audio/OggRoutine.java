@@ -30,8 +30,8 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Ogg music routine.

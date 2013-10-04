@@ -72,7 +72,7 @@ public enum EntitySceneryType
     {
         return name().toLowerCase(Locale.ENGLISH);
     }
-    
+
     /**
      * Get the class name equivalence.
      * 

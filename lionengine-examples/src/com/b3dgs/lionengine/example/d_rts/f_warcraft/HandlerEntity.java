@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Building;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Unit;

@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.entity;
 
 import java.util.Set;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Context;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;

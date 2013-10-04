@@ -17,17 +17,17 @@
  */
 package com.b3dgs.lionengine.game.rts.map;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Abstract representation of a path based map, used for pathfinding.

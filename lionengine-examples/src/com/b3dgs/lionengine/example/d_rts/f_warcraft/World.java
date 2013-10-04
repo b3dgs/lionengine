@@ -19,12 +19,15 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
@@ -33,8 +36,6 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * World implementation.
@@ -167,6 +168,7 @@ final class World
         camera.setSensibility(30, 30);
         camera.setBorders(map);
         camera.setLocation(map, 33, 3);
+        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
 
         fogOfWar.create(map);
         fogOfWar.setPlayerId(player.id);
@@ -174,13 +176,13 @@ final class World
         controlPanel.setClickableArea(camera);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
         controlPanel.setPlayer(player);
-        controlPanel.setClickSelection(Mouse.LEFT);
+        controlPanel.setClickSelection(Click.LEFT);
 
         camera.setControlPanel(controlPanel);
 
         handlerEntity.createLayers(map);
         handlerEntity.setPlayer(player);
-        handlerEntity.setClickAssignment(Mouse.RIGHT);
+        handlerEntity.setClickAssignment(Click.RIGHT);
 
         factoryEntity.setContext(context);
 

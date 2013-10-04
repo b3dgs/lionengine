@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.example.a_firstcode;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMessageBox;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.swing.UtilityMessageBox;
 
 /**
  * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
@@ -68,7 +68,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             end();
         }

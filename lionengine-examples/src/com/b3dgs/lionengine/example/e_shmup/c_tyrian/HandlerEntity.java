@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;

@@ -17,15 +17,15 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.background;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.utility.UtilityMath;
-import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
  * Background implementation.

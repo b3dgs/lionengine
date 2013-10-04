@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.e_shmup.b_shipweapon;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.effect.HandlerEffect;

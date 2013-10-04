@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Define a structure used to create multiple entity, sharing the same data.

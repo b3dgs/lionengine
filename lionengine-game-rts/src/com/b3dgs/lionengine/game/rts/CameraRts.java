@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.game.rts;
 
+import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This camera should be used for a strategy oriented game. It allows free movement around the current map, using its
@@ -83,10 +83,6 @@ public class CameraRts
         super();
         this.hStep = hStep;
         this.vStep = vStep;
-        left = Keyboard.LEFT;
-        right = Keyboard.RIGHT;
-        up = Keyboard.UP;
-        down = Keyboard.DOWN;
         borderLeft = Integer.MIN_VALUE;
         borderRight = Integer.MAX_VALUE;
         borderTop = Integer.MIN_VALUE;
@@ -165,14 +161,13 @@ public class CameraRts
      * @param right The right key.
      * @param up The up key.
      * @param down The down key.
-     * @see Keyboard
      */
-    public void setKeys(int left, int right, int up, int down)
+    public void setKeys(Integer left, Integer right, Integer up, Integer down)
     {
-        this.left = Integer.valueOf(left);
-        this.right = Integer.valueOf(right);
-        this.up = Integer.valueOf(up);
-        this.down = Integer.valueOf(down);
+        this.left = left;
+        this.right = right;
+        this.up = up;
+        this.down = down;
     }
 
     /**

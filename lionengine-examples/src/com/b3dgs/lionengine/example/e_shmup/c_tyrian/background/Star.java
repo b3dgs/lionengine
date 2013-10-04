@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.background;
 
-import com.b3dgs.lionengine.utility.UtilityRandom;
+import com.b3dgs.lionengine.UtilityRandom;
 
 /**
  * Star implementation.

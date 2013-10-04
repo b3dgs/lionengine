@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.utility.UtilityRandom;
+import com.b3dgs.lionengine.UtilityRandom;
 
 /**
  * Represents a container designed to return a random value between a range.

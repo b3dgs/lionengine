@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.type;
 
-import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.ColorRgba;
 
 /**
  * List of minimap tile colors.

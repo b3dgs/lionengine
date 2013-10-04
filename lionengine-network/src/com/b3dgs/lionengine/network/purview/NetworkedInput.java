@@ -17,17 +17,16 @@
  */
 package com.b3dgs.lionengine.network.purview;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Collection;
 
+import com.b3dgs.lionengine.KeyboardListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * Networked input listener.
  */
 public abstract class NetworkedInput
-        implements Networkable, KeyListener
+        implements Networkable, KeyboardListener
 {
     /** Model reference. */
     private final NetworkableModel networkable;
@@ -49,25 +48,19 @@ public abstract class NetworkedInput
     protected abstract void sendKey(int code, boolean pressed);
 
     /*
-     * KeyListener
+     * KeyboardListener
      */
 
     @Override
-    public void keyTyped(KeyEvent event)
+    public void keyPressed(int keyCode, char keyChar)
     {
-        // Nothing to do
+        sendKey(keyCode, true);
     }
 
     @Override
-    public void keyPressed(KeyEvent event)
+    public void keyReleased(int keyCode, char keyChar)
     {
-        sendKey(event.getKeyCode(), true);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        sendKey(event.getKeyCode(), false);
+        sendKey(keyCode, false);
     }
 
     /*

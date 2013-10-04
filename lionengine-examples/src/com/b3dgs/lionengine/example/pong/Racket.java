@@ -17,16 +17,17 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityRandom;
 
 /**
  * Racket implementation using EntityGame base.
@@ -71,8 +72,8 @@ final class Racket
         this.screenHeight = screenHeight;
         this.automatic = automatic;
         timerRandomMovement = new Timing();
-        decrease = Keyboard.UP;
-        increase = Keyboard.DOWN;
+        decrease = Key.UP;
+        increase = Key.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         teleport(x, y);
         setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight(), false));

@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.example.d_rts.d_ability;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.FactoryEntity;
@@ -37,7 +39,6 @@ import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.input.Mouse;
 
 /**
  * World implementation.
@@ -142,13 +143,14 @@ final class World
         camera.setSensibility(30, 30);
         camera.setBorders(map);
         camera.setLocation(map, 25, 3);
+        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
 
         controlPanel.setClickableArea(camera);
-        controlPanel.setClickSelection(Mouse.LEFT);
+        controlPanel.setClickSelection(Click.LEFT);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
 
         handlerEntity.createLayers(map);
-        handlerEntity.setClickAssignment(Mouse.RIGHT);
+        handlerEntity.setClickAssignment(Click.RIGHT);
 
         final GoldMine goldMine = (GoldMine) createEntity(EntityType.GOLD_MINE, 30, 13);
 

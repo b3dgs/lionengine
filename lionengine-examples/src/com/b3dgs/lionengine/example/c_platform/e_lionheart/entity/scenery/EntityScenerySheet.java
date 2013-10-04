@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.scenery;
 
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Sheet base scenery implementation.

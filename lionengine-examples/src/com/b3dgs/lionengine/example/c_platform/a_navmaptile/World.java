@@ -19,19 +19,19 @@ package com.b3dgs.lionengine.example.c_platform.a_navmaptile;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.input.Keyboard;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * World implementation.
@@ -85,19 +85,19 @@ final class World
         }
 
         // Keyboard control
-        if (keyboard.isPressed(Keyboard.RIGHT))
+        if (keyboard.isPressed(Key.RIGHT))
         {
             movement.addForce(extrp, 4.0, 0.0);
         }
-        if (keyboard.isPressed(Keyboard.LEFT))
+        if (keyboard.isPressed(Key.LEFT))
         {
             movement.addForce(extrp, -4.0, 0.0);
         }
-        if (keyboard.isPressed(Keyboard.UP))
+        if (keyboard.isPressed(Key.UP))
         {
             movement.addForce(extrp, 0.0, 4.0);
         }
-        if (keyboard.isPressed(Keyboard.DOWN))
+        if (keyboard.isPressed(Key.DOWN))
         {
             movement.addForce(extrp, 0.0, -4.0);
         }

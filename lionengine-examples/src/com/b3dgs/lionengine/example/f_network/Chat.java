@@ -21,14 +21,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 import com.b3dgs.lionengine.network.purview.NetworkChat;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Chat implementation.
@@ -54,8 +55,10 @@ class Chat
     public Chat(World<?> world)
     {
         super(TypeMessage.MESSAGE_CHAT);
-        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         this.world = world;
+        text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
+        setKeyValidate(Key.ENTER.intValue());
+        setKeySpace(Key.SPACE.intValue());
     }
 
     @Override

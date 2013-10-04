@@ -22,9 +22,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
 
 /**
  * Class representing a timed message handler. This allows to prepare a set of timed message that will disappear at the

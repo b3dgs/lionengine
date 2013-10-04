@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Range;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Default attacker model implementation.

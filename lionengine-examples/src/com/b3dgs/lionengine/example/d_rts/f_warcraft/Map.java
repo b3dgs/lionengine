@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TileCollision;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeResource;
 import com.b3dgs.lionengine.file.FileReading;

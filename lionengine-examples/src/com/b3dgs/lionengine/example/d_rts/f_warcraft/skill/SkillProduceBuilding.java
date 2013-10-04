@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.skill;
 
-import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Cursor;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.FactoryProduction;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Map;

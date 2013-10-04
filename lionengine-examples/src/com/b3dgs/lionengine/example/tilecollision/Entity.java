@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.example.tilecollision;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Mouse;
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.input.Mouse;
 
 /**
  * Entity implementation.
@@ -61,7 +62,7 @@ final class Entity
      */
     public void updateMouse(Mouse mouse)
     {
-        if (mouse.hasClicked(Mouse.LEFT))
+        if (mouse.hasClicked(Click.LEFT))
         {
             mouseX = mouse.getOnWindowX();
             mouseY = mouse.getOnWindowY();

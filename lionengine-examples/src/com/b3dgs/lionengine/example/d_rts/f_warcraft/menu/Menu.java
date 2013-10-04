@@ -20,18 +20,20 @@ package com.b3dgs.lionengine.example.d_rts.f_warcraft.menu;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Cursor;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.audio.Wav;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -41,9 +43,7 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.Scene;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeMenu;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeRace;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
+import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Menu sequence implementation.
@@ -413,7 +413,7 @@ public final class Menu
             default:
                 throw new RuntimeException();
         }
-        if (!pressed && keyboard.isPressed(Keyboard.ESCAPE))
+        if (!pressed && keyboard.isPressed(Key.ESCAPE))
         {
             music.stop();
             end();

@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft.menu;
 
-import com.b3dgs.lionengine.Cursor;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.audio.Wav;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.input.Mouse;
+import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Choice selection button (left & right).
@@ -78,7 +78,7 @@ final class Choice
         final int cy = cursor.getLocationY();
         boolean pressed = false;
         over = cx >= x && cy >= y && cx <= x + w && cy <= y + h;
-        if (!Menu.clicked && over && cursor.getClick() == Mouse.LEFT)
+        if (!Menu.clicked && over && cursor.getClick() == Click.LEFT)
         {
             click.play();
             pressed = true;

@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.game.entity;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Line;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Line;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
@@ -31,7 +32,6 @@ import com.b3dgs.lionengine.game.purview.Mirrorable;
 import com.b3dgs.lionengine.game.purview.model.BodyModel;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
 import com.b3dgs.lionengine.game.purview.model.MirrorableModel;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Main object that can be used by any higher level object for a game. It supports external configuration, collision,

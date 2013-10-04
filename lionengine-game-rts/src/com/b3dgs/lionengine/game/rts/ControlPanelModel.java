@@ -20,14 +20,13 @@ package com.b3dgs.lionengine.game.rts;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * This class represents the control panel (HUD), which will contain selected entities, actions, and many other
@@ -81,7 +80,6 @@ public abstract class ControlPanelModel<E extends EntityRts>
         listeners = new HashSet<>(1);
         selectionArea = UtilityMath.createRectangle();
         outsidePanel = null;
-        clickSelection = Mouse.LEFT;
         clicked = false;
         clickedFlag = false;
         selecting = false;
@@ -210,7 +208,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
     }
 
     /**
-     * Set the mouse click selection value ({@link Mouse#LEFT}, {@link Mouse#RIGHT}, {@link Mouse#MIDDLE}).
+     * Set the mouse click selection value.
      * 
      * @param click The click id.
      */

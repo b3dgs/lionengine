@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.menu;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
-import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Handle a group of choice, which represents the actions in a menu.

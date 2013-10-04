@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.landscape;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
@@ -28,7 +29,6 @@ import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 import com.b3dgs.lionengine.game.platform.background.Parallax;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Swamp full background implementation.

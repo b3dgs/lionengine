@@ -21,16 +21,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * This is where the game loop is running.
@@ -91,7 +91,7 @@ final class Scene
     {
         handler.update(extrp, keyboard);
         // Terminate
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             this.end();
         }

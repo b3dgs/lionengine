@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.a_scrollingmap;
 
-import com.b3dgs.lionengine.utility.UtilityRandom;
+import com.b3dgs.lionengine.UtilityRandom;
 
 /**
  * Star implementation.

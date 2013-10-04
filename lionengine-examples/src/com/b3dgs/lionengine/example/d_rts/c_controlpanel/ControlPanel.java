@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 
 import java.util.Set;
 
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 
 /**
@@ -33,6 +34,7 @@ final class ControlPanel
     ControlPanel()
     {
         super();
+        setClickSelection(Click.LEFT);
     }
 
     /*

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.c_platform.d_opponent;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 

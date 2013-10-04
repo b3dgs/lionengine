@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.game.platform;
 
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * More specific camera, platform game oriented. It supports map borders limitation (can't see outside the map).

@@ -29,11 +29,14 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Level;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldData;
@@ -48,9 +51,6 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.input.Mouse;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Represents the world scene, containing the map and the entities.
@@ -647,7 +647,7 @@ public class WorldPanel
         switch (editor.getSelectionState())
         {
             case SELECT:
-                if (event.getButton() == Mouse.LEFT)
+                if (event.getButton() == Click.LEFT)
                 {
                     final Entity entity = hitEntity(mx, my);
                     editor.toolBar.entityEditor.setSelectedEntity(entity);

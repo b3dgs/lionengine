@@ -39,9 +39,9 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.WorldType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Map;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.map.Tile;
 import com.b3dgs.lionengine.swing.ComboItem;
+import com.b3dgs.lionengine.swing.UtilityMessageBox;
+import com.b3dgs.lionengine.swing.UtilitySwing;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
-import com.b3dgs.lionengine.utility.UtilityMessageBox;
-import com.b3dgs.lionengine.utility.UtilitySwing;
 
 /**
  * Menu bar implementation.
@@ -190,7 +190,8 @@ public class MenuBar
     void fileLoad()
     {
         final MapFilter filter = new MapFilter("Lionheart Remake Map", "lrm");
-        final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
+        final Media media = Media.get(UtilitySwing.createOpenFileChooser(Media.getRessourcesDir(),
+                editor.getContentPane(), filter));
         if (media != null)
         {
             try
@@ -244,7 +245,8 @@ public class MenuBar
     boolean toolsImportMap(JDialog dialog)
     {
         final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
-        final Media media = UtilitySwing.createOpenFileChooser(editor.getContentPane(), filter);
+        final Media media = Media.get(UtilitySwing.createOpenFileChooser(Media.getRessourcesDir(),
+                editor.getContentPane(), filter));
         if (media != null)
         {
             final Map map = editor.world.map;

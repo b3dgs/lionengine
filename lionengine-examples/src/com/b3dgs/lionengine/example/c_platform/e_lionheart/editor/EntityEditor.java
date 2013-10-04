@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
 import com.b3dgs.lionengine.swing.ComboListener;
 import com.b3dgs.lionengine.swing.ComboRenderer;
-import com.b3dgs.lionengine.utility.UtilitySwing;
+import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
  * Entity editor.

@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
@@ -28,7 +29,6 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Standard projectile implementation, including collision and moves handling.

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.d_rts.e_skills.skill;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.e_skills.SkillType;
 import com.b3dgs.lionengine.example.d_rts.e_skills.entity.Entity;

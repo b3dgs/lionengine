@@ -25,25 +25,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.Cursor;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.ColorRgba;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Transparency;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -51,7 +50,8 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.drawable.SpriteFont;
 import com.b3dgs.lionengine.drawable.SpriteParallaxed;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Test the Drawable package.

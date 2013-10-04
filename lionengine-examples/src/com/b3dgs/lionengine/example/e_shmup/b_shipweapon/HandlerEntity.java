@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.b_shipweapon;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 

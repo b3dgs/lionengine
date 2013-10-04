@@ -31,6 +31,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.MenuBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.SelectionType;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.StateBar;
@@ -38,7 +39,6 @@ import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.ToolBar;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.editor.WorldPanel;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.entity.EntityType;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Main editor frame.

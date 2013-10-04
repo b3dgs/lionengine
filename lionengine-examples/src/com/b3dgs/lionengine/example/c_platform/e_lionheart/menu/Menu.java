@@ -17,28 +17,26 @@
  */
 package com.b3dgs.lionengine.example.c_platform.e_lionheart.menu;
 
-import java.awt.event.KeyEvent;
-
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteFont;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Sfx;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.SonicArranger;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Menu implementation.
@@ -49,7 +47,7 @@ public class Menu
     /** Default key set. */
     public static final Integer[] KEYS =
     {
-            Keyboard.UP, Keyboard.DOWN, Keyboard.CONTROL, Keyboard.LEFT, Keyboard.RIGHT, Keyboard.ALT
+            Key.UP, Key.DOWN, Key.CONTROL, Key.LEFT, Key.RIGHT, Key.ALT
     };
     /** List of difficulties. */
     private static final String[] OPTIONS_DIFFICULTY =
@@ -322,7 +320,7 @@ public class Menu
             }
         }
         // Accept choice
-        if (next != null && isPressed(Menu.KEYS[2], Keyboard.SPACE, Keyboard.ENTER, Keyboard.CONTROL))
+        if (next != null && isPressed(Menu.KEYS[2], Key.SPACE, Key.ENTER, Key.CONTROL))
         {
             menuNext = next;
             transition = TransitionType.OUT;
@@ -405,7 +403,7 @@ public class Menu
                 choicePressed = false;
             }
             final boolean changeKey = !choicePressed && !waitKey
-                    && (isPressed(Menu.KEYS[2]) || isPressed(Keyboard.SPACE) || keyboard.isPressedOnce(Keyboard.ENTER));
+                    && (isPressed(Menu.KEYS[2]) || isPressed(Key.SPACE) || keyboard.isPressedOnce(Key.ENTER));
             final boolean acceptKey = !choicePressed && waitKey && keyboard.used();
             if (changeKey)
             {
@@ -536,7 +534,7 @@ public class Menu
                 for (int i = 0; i < 6; i++)
                 {
                     text.draw(g, menusData[id].choices[i].x + (int) (40 * factorH), menusData[id].choices[i].y,
-                            Align.LEFT, KeyEvent.getKeyText(Menu.KEYS[i].intValue()));
+                            Align.LEFT, mouse.getKeyText(Menu.KEYS[i].intValue()));
                 }
                 break;
             case INTRO:
@@ -616,7 +614,7 @@ public class Menu
     {
         handleMenuTransition(extrp);
         handleMenu(extrp);
-        if (isPressed(Keyboard.ESCAPE))
+        if (isPressed(Key.ESCAPE))
         {
             end();
         }

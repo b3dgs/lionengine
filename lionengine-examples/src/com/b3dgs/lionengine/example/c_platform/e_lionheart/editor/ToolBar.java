@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.Editor;
-import com.b3dgs.lionengine.utility.UtilitySwing;
+import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
  * Tool bar implementation.

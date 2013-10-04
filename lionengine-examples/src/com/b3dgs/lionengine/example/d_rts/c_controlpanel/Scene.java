@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.d_rts.c_controlpanel;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
-import com.b3dgs.lionengine.utility.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Game loop designed to handle our little world.

@@ -17,13 +17,12 @@
  */
 package com.b3dgs.lionengine.network.purview;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.KeyboardListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 
@@ -31,7 +30,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageChat;
  * Basic chat implementation.
  */
 public abstract class NetworkChat
-        implements Networkable, KeyListener
+        implements Networkable, KeyboardListener
 {
     /** Networkable model. */
     private final NetworkableModel networkable;
@@ -43,6 +42,10 @@ public abstract class NetworkChat
     private final StringBuilder message;
     /** Writing message. */
     private String display;
+    /** Validate key. */
+    private int keyValidate;
+    /** Space key. */
+    private int keySpace;
 
     /**
      * Constructor.
@@ -64,6 +67,26 @@ public abstract class NetworkChat
      * @param g The graphic output.
      */
     public abstract void render(Graphic g);
+
+    /**
+     * Set the key that allow to validate a message.
+     * 
+     * @param keyValidate The key that allow to validate a message.
+     */
+    public void setKeyValidate(int keyValidate)
+    {
+        this.keyValidate = keyValidate;
+    }
+
+    /**
+     * Set the key that insert a space in a message.
+     * 
+     * @param keySpace The key that insert a space in a message.
+     */
+    public void setKeySpace(int keySpace)
+    {
+        this.keySpace = keySpace;
+    }
 
     /**
      * Get the list of messages.
@@ -169,21 +192,14 @@ public abstract class NetworkChat
     }
 
     /*
-     * KeyListener
+     * KeyboardListener
      */
 
     @Override
-    public void keyTyped(KeyEvent e)
+    public void keyPressed(int keyCode, char keyChar)
     {
-        // Nothing to do
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-        final char c = e.getKeyChar();
         // Validate message
-        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        if (keyCode == keyValidate)
         {
             if (message.length() > 0)
             {
@@ -195,22 +211,22 @@ public abstract class NetworkChat
                 message.delete(0, message.length());
             }
         }
-        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+        else if (keyCode == keySpace)
         {
             if (message.length() > 0)
             {
                 message.deleteCharAt(message.length() - 1);
             }
         }
-        else if (Character.isDefined(c) && canAddChar(c))
+        else if (Character.isDefined(keyChar) && canAddChar(keyChar))
         {
-            message.append(c);
+            message.append(keyChar);
         }
         display = message.toString();
     }
 
     @Override
-    public void keyReleased(KeyEvent e)
+    public void keyReleased(int keyCode, char keyChar)
     {
         // Nothing to do
     }

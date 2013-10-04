@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Line;
-import com.b3dgs.lionengine.core.Rectangle;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Line;
+import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 

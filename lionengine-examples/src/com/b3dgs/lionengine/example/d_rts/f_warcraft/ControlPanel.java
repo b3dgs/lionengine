@@ -21,12 +21,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Bar;
-import com.b3dgs.lionengine.core.ColorRgba;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Rectangle;
-import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.TextStyle;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
@@ -34,13 +37,11 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.skill.Skill;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeCursor;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
-import com.b3dgs.lionengine.input.Keyboard;
-import com.b3dgs.lionengine.utility.UtilityImage;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Control panel implementation.
@@ -84,6 +85,7 @@ final class ControlPanel
         entityStats = ResourcesLoader.ENTITY_STATS;
         progress = ResourcesLoader.PROGRESS;
         lastSelection = null;
+        setClickSelection(Click.LEFT);
     }
 
     /**

@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.c_platform.c_entitymap;
 
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.input.Keyboard;
 
 /**
  * Game loop designed to handle our little world.
@@ -61,7 +61,7 @@ final class Scene
     protected void update(double extrp)
     {
         world.update(extrp);
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             end();
         }

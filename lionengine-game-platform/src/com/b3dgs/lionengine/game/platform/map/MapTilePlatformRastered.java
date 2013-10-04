@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.purview.Rasterable;
-import com.b3dgs.lionengine.utility.UtilityFile;
-import com.b3dgs.lionengine.utility.UtilityImage;
 
 /**
  * Rastered version of a platform tile map.

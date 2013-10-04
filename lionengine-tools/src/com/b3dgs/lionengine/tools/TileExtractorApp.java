@@ -30,11 +30,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.swing.UtilityMessageBox;
 import com.b3dgs.lionengine.utility.TileExtractor;
-import com.b3dgs.lionengine.utility.UtilityFile;
-import com.b3dgs.lionengine.utility.UtilityMath;
-import com.b3dgs.lionengine.utility.UtilityMessageBox;
 
 /**
  * Tile converter and tile extractor tool.

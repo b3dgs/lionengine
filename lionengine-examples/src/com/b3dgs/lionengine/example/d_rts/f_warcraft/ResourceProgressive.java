@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.d_rts.f_warcraft;
 
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.utility.UtilityMath;
 
 /**
  * Progressive resource implementation.
