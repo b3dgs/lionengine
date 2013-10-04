@@ -87,19 +87,6 @@ public class Entity
         tileOffset = offset;
     }
 
-    @Override
-    public void destroy()
-    {
-        super.destroy();
-        for (int i = 0; i < 10; i++)
-        {
-            final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE1);
-            explode.start(getLocationIntX() + UtilityRandom.getRandomInteger(getWidth()), getLocationIntY()
-                    - UtilityRandom.getRandomInteger(getHeight()));
-            handlerEffect.add(explode);
-        }
-    }
-
     /*
      * EntityGame
      */
@@ -108,5 +95,20 @@ public class Entity
     public void update(double extrp)
     {
         updateCollision();
+    }
+    
+    @Override
+    public void destroy()
+    {
+        super.destroy();
+        final int n = getWidth() * getHeight() / 100;
+        for (int i = 0; i < n; i++)
+        {
+            final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final int x = getLocationIntX() - explode.getWidth() / 2 + UtilityRandom.getRandomInteger(getWidth());
+            final int y = getLocationIntY() + explode.getHeight() / 2 - UtilityRandom.getRandomInteger(getHeight());
+            explode.start(x, y, i * 25);
+            handlerEffect.add(explode);
+        }
     }
 }

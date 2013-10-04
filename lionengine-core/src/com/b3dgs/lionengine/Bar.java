@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import com.b3dgs.lionengine.core.ColorRgba;
+import com.b3dgs.lionengine.core.GradientColor;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.utility.UtilityMath;
 
@@ -48,6 +49,8 @@ public class Bar
     private ColorRgba background;
     /** Foreground color. */
     private ColorRgba foreground;
+    /** Gradient color. */
+    private GradientColor gradientColor;
     /** Left-Right referential. */
     private boolean leftRight;
     /** Up-Down referential. */
@@ -118,6 +121,11 @@ public class Bar
                 g.setColor(foreground);
                 g.drawRect(x1, y1, x2, y2, true);
             }
+            if (gradientColor != null)
+            {
+                g.setColorGradient(gradientColor);
+                g.drawGradient(x1, y1, x2, y2);
+            }
         }
     }
 
@@ -171,6 +179,21 @@ public class Bar
     public void setColorForeground(ColorRgba color)
     {
         foreground = color;
+    }
+    
+    /**
+     * Set a gradient color from point 1 with color 1 to point2 with color 2.
+     * 
+     * @param x1 The first horizontal location.
+     * @param y1 The first vertical location.
+     * @param color1 The first color.
+     * @param x2 The last horizontal location.
+     * @param y2 The last vertical location.
+     * @param color2 The last color.
+     */
+    public void setColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
+    {
+        gradientColor = new GradientColor(x1, y1, color1, x2, y2, color2);
     }
 
     /**

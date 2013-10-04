@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Explode effect.
+ * Explode 1 effect.
  */
 final class Explode1
         extends Effect

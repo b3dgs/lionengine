@@ -63,7 +63,7 @@ final class Missile
     public void addEffect(int x, int y)
     {
         final Effect effect = factoryEffect.createEffect(EffectType.SMOKE);
-        effect.start(x, y);
+        effect.start(x, y, 0);
         handlerEffect.add(effect);
     }
 

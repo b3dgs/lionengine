@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect;
 
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -33,6 +34,10 @@ public abstract class Effect
 {
     /** Surface. */
     private final SpriteAnimated sprite;
+    /** Delay. */
+    private final Timing timerDelay;
+    /** Delay to wait. */
+    private int delay;
 
     /**
      * Constructor.
@@ -45,6 +50,7 @@ public abstract class Effect
         final int horizontalFrames = getDataInteger("horizontal", "frames");
         final int verticalFrames = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);
+        timerDelay = new Timing();
         setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 
@@ -53,11 +59,13 @@ public abstract class Effect
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
+     * @param delay The effect delay.
      */
-    public void start(int x, int y)
+    public void start(int x, int y, int delay)
     {
         teleport(x, y);
-        sprite.play(getDataAnimation("start"));
+        this.delay = delay;
+        timerDelay.start();
     }
 
     /*
@@ -67,16 +75,27 @@ public abstract class Effect
     @Override
     public void update(double extrp)
     {
-        sprite.updateAnimation(extrp);
-        if (sprite.getAnimState() == AnimState.FINISHED)
+        if (timerDelay.isStarted() && timerDelay.elapsed(delay))
         {
-            destroy();
+            sprite.play(getDataAnimation("start"));
+            timerDelay.stop();
+        }
+        if (!timerDelay.isStarted())
+        {
+            sprite.updateAnimation(extrp);
+            if (sprite.getAnimState() == AnimState.FINISHED)
+            {
+                destroy();
+            }
         }
     }
 
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        if (!timerDelay.isStarted())
+        {
+            sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        }
     }
 }

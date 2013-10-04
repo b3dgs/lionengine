@@ -41,6 +41,17 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
      * @param heightInTile The map height in tile.
      */
     void create(int widthInTile, int heightInTile);
+    
+    /**
+     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
+     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
+     * the new map at the top-right.
+     * 
+     * @param map The map to append.
+     * @param offsetX The horizontal offset in tile (>= 0).
+     * @param offsetY The vertical offset in tile (>= 0).
+     */
+    void append(MapTile<C, T> map, int offsetX, int offsetY);
 
     /**
      * Remove all tiles from map.

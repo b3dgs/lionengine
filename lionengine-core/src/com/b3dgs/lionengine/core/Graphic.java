@@ -112,6 +112,20 @@ public interface Graphic
     void drawRect(int x, int y, int width, int height, boolean fill);
 
     /**
+     * Draws the specified gradient rectangle. The left and right edges of the rectangle are at <code>x</code> and
+     * <code>x&nbsp;+&nbsp;width&nbsp;-&nbsp;1</code>. The top and bottom edges are at <code>y</code> and
+     * <code>y&nbsp;+&nbsp;height&nbsp;-&nbsp;1</code>. The resulting rectangle covers an area <code>width</code> pixels
+     * wide by <code>height</code> pixels tall.
+     * The gradient is defined by {@link #setColorGradient(GradientColor)}.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param width The width.
+     * @param height The height.
+     */
+    void drawGradient(int x, int y, int width, int height);
+
+    /**
      * Draws a line, using the current color, between the points <code>(x1,&nbsp;y1)</code> and
      * <code>(x2,&nbsp;y2)</code> in this graphic.
      * 
@@ -139,6 +153,13 @@ public interface Graphic
      * @param color The color.
      */
     void setColor(ColorRgba color);
+
+    /**
+     * Set the gradient color.
+     * 
+     * @param gradientColor The gradient color.
+     */
+    void setColorGradient(GradientColor gradientColor);
 
     /**
      * Set the graphic context.

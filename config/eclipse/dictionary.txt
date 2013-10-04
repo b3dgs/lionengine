@@ -155,3 +155,6 @@ scanline
 bitmask
 serif
 sans
+openable
+silo
+cyan

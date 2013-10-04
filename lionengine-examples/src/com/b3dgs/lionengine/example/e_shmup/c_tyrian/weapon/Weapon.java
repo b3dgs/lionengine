@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.example.e_shmup.c_tyrian.projectile.FactoryProjectil
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.projectile.Projectile;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.projectile.ProjectileType;
+import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -39,6 +40,22 @@ public abstract class Weapon
     public Weapon(FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
+    }
+
+    /**
+     * Start shoot.
+     * 
+     * @param energy The energy reference.
+     */
+    public void launch(Alterable energy)
+    {
+        if (energy.isEnough(15))
+        {
+            if (launch())
+            {
+                energy.decrease(15);
+            }
+        }
     }
 
     /*

@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.e_shmup.c_tyrian.map;
 
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.HandlerEntity;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.EntityStaticType;
-import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.FactoryEntityStatic;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.scenery.EntitySceneryType;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
@@ -36,44 +36,44 @@ public final class Map
      * @param n The tile number.
      * @return The entity instance, <code>null</code> if none.
      */
-    private static Entity create(FactoryEntityStatic factoryEntityStatic, int n)
+    private static Entity create(FactoryEntityScenery factoryEntityStatic, int n)
     {
         switch (n)
         {
             case 6:
-                return factoryEntityStatic.createEntity(EntityStaticType.L);
+                return factoryEntityStatic.createEntity(EntitySceneryType.SINGLE_CANON);
             case 7:
-                return factoryEntityStatic.createEntity(EntityStaticType.K);
+                return factoryEntityStatic.createEntity(EntitySceneryType.DOUBLE_CANON);
             case 8:
-                return factoryEntityStatic.createEntity(EntityStaticType.Q);
+                return factoryEntityStatic.createEntity(EntitySceneryType.RED_ENGINE);
             case 9:
-                return factoryEntityStatic.createEntity(EntityStaticType.J);
+                return factoryEntityStatic.createEntity(EntitySceneryType.GREEN_PULSE);
             case 19:
-                return factoryEntityStatic.createEntity(EntityStaticType.I);
-            case 23:
-                return factoryEntityStatic.createEntity(EntityStaticType.T);
+                return factoryEntityStatic.createEntity(EntitySceneryType.OPENABLE_PULSE);
+            case 13:
+                return factoryEntityStatic.createEntity(EntitySceneryType.GENERATOR);
             case 26:
-                return factoryEntityStatic.createEntity(EntityStaticType.M);
-            case 28:
-                return factoryEntityStatic.createEntity(EntityStaticType.F);
+                return factoryEntityStatic.createEntity(EntitySceneryType.DOUBLE_PULSE);
+            case 18:
+                return factoryEntityStatic.createEntity(EntitySceneryType.LAMP);
             case 30:
-                return factoryEntityStatic.createEntity(EntityStaticType.E);
+                return factoryEntityStatic.createEntity(EntitySceneryType.SPIDER);
             case 32:
-                return factoryEntityStatic.createEntity(EntityStaticType.A);
+                return factoryEntityStatic.createEntity(EntitySceneryType.SUB_SQUARE);
             case 45:
-                return factoryEntityStatic.createEntity(EntityStaticType.H);
+                return factoryEntityStatic.createEntity(EntitySceneryType.SILO);
             case 46:
-                return factoryEntityStatic.createEntity(EntityStaticType.P);
+                return factoryEntityStatic.createEntity(EntitySceneryType.RED_BOX);
             case 56:
-                return factoryEntityStatic.createEntity(EntityStaticType.S);
-            case 60:
-                return factoryEntityStatic.createEntity(EntityStaticType.D);
-            case 62:
-                return factoryEntityStatic.createEntity(EntityStaticType.C);
-            case 64:
-                return factoryEntityStatic.createEntity(EntityStaticType.B);
+                return factoryEntityStatic.createEntity(EntitySceneryType.THREE_RED_V);
+            case 50:
+                return factoryEntityStatic.createEntity(EntitySceneryType.PUMP);
+            case 52:
+                return factoryEntityStatic.createEntity(EntitySceneryType.HOUSE92);
+            case 54:
+                return factoryEntityStatic.createEntity(EntitySceneryType.HOUSE812);
             case 66:
-                return factoryEntityStatic.createEntity(EntityStaticType.R);
+                return factoryEntityStatic.createEntity(EntitySceneryType.THREE_RED_H);
             default:
                 return null;
         }
@@ -93,7 +93,7 @@ public final class Map
      * @param factoryEntityStatic The entity static factory.
      * @param handlerEntity The handler entity.
      */
-    public void spawnEntityStatic(FactoryEntityStatic factoryEntityStatic, HandlerEntity handlerEntity)
+    public void spawnEntityStatic(FactoryEntityScenery factoryEntityStatic, HandlerEntity handlerEntity)
     {
         for (int tx = 0; tx < widthInTile; tx++)
         {

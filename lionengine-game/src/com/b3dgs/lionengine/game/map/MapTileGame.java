@@ -524,6 +524,45 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     }
 
     @Override
+    public void append(MapTile<C, T> map, int offsetX, int offsetY)
+    {
+        final int newWidth = (widthInTile - (widthInTile - offsetX)) + map.getWidthInTile();
+        final int newHeight = (heightInTile - (heightInTile - offsetY)) + map.getHeightInTile();
+        
+        // Adjust height
+        final int sizeV = tiles.size();
+        for (int i = 0; i < newHeight - sizeV; i++)
+        {
+            tiles.add(new ArrayList<T>(newWidth));
+        }
+
+        for (int v = 0; v < map.getHeightInTile(); v++)
+        {
+            final int y = offsetY + v;
+            
+            // Adjust width
+            final int sizeH = tiles.get(y).size();
+            for (int i = 0; i < newWidth - sizeH; i++)
+            {
+                tiles.get(y).add(null);
+            }
+
+            for (int h = 0; h < map.getWidthInTile(); h++)
+            {
+                final int x = offsetX + h;
+                final T tile = map.getTile(h, v);
+                if (tile != null)
+                {
+                    setTile(y, x, tile);
+                }
+            }
+        }
+
+        widthInTile = newWidth;
+        heightInTile = newHeight;
+    }
+
+    @Override
     public void clear()
     {
         for (int v = 0; v < tiles.size(); v++)

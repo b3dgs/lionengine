@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.background.Background;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.FactoryEntityStatic;
+import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship.FactoryShip;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship.Ship;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.ship.ShipType;
@@ -48,6 +48,30 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
 final class World
         extends WorldGame
 {
+    /**
+     * Create a level from a level rip.
+     * 
+     * @param map The map reference.
+     * @param levelrip The level rip image.
+     * @param tilesheet The tilesheet image.
+     * @param output The output level saved.
+     */
+    private static void ripLevel(Map map, Media levelrip, Media tilesheet, Media output)
+    {
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
+        rip.start(levelrip, map, tilesheet);
+        try (final FileWriting file = File.createFileWriting(output);)
+        {
+            map.save(file);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
+        }
+    }
+    
+    /** Hud reference. */
+    private final Hud hud;
     /** Map reference. */
     private final Map map;
     /** Background reference. */
@@ -67,7 +91,7 @@ final class World
     /** Weapon factory. */
     private final FactoryWeapon factoryWeapon;
     /** Factory entity. */
-    private final FactoryEntityStatic factoryEntityStatic;
+    private final FactoryEntityScenery factoryEntityStatic;
     /** Factory ship. */
     private final FactoryShip factoryShip;
     /** Ship reference. */
@@ -79,6 +103,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
+        hud = new Hud();
         map = new Map();
         background = new Background();
         camera = new CameraGame();
@@ -88,35 +113,29 @@ final class World
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
-        factoryEntityStatic = new FactoryEntityStatic(factoryEffect, handlerEffect);
+        factoryEntityStatic = new FactoryEntityScenery(factoryEffect, handlerEffect);
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, 263, 184);
 
         // Rip a level and store data in the map
-        ripLevel(Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"), Media.get("levels", "0.map"));
+        for (int i = 0; i < 21; i++)
+        {
+            if (i == 0)
+            {
+                ripLevel(map, Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"),
+                        Media.get("levels", "0.map"));
+            }
+            else
+            {
+                final Map map = new Map();
+                ripLevel(map, Media.get("levels", "images", i + ".png"), Media.get("tiles", "level1"),
+                        Media.get("levels", i + ".map"));
+                this.map.append(map, 0, map.getHeightInTile() * i);
+            }
+        }
         map.spawnEntityStatic(factoryEntityStatic, handlerEntity);
-    }
-
-    /**
-     * Create a level from a level rip.
-     * 
-     * @param levelrip The level rip image.
-     * @param tilesheet The tilesheet image.
-     * @param output The output level saved.
-     */
-    private void ripLevel(Media levelrip, Media tilesheet, Media output)
-    {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(levelrip, map, tilesheet);
-        try (final FileWriting file = File.createFileWriting(output);)
-        {
-            map.save(file);
-        }
-        catch (final IOException exception)
-        {
-            Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
-        }
+        hud.setShip(ship);
     }
 
     /*
@@ -128,11 +147,12 @@ final class World
     {
         camera.setLocationX(ship.getLocationOffsetX() / 12);
         camera.setLocationY(ship.getLocationY());
-        ship.update(extrp, mouse, height);
+        ship.update(extrp, mouse, camera, height);
         handlerProjectile.update(extrp);
         handlerEntity.update(extrp);
         handlerEffect.update(extrp);
         background.update(extrp);
+        hud.update(extrp);
     }
 
     @Override
@@ -144,6 +164,7 @@ final class World
         ship.render(g, camera);
         handlerProjectile.render(g);
         handlerEffect.render(g);
+        hud.render(g);
     }
 
     @Override

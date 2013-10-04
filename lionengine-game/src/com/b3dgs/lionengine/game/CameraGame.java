@@ -270,7 +270,7 @@ public class CameraGame
         return localizable.getLocationX() + localizable.getWidth() >= getLocationX()
                 && localizable.getLocationX() - localizable.getWidth() <= getLocationX() + getViewWidth()
                 && localizable.getLocationY() + localizable.getHeight() >= getLocationY()
-                && localizable.getLocationY() - localizable.getHeight() <= getLocationY() + getViewHeight();
+                && localizable.getLocationY() - localizable.getHeight() * 2 <= getLocationY() + getViewHeight();
     }
 
     /**

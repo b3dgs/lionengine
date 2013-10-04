@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.Weapon;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.weapon.WeaponType;
+import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.input.Mouse;
 import com.b3dgs.lionengine.utility.UtilityMath;
@@ -33,6 +35,8 @@ import com.b3dgs.lionengine.utility.UtilityMath;
 public class Ship
         extends Entity
 {
+    /** Ship energy. */
+    private final Alterable energy;
     /** Weapon front. */
     private final Weapon weaponFront;
     /** Weapon rear. */
@@ -50,6 +54,7 @@ public class Ship
             FactoryWeapon factoryWeapon)
     {
         super(setup, factoryEffect, handlerEffect);
+        energy = new Alterable(100);
         weaponFront = factoryWeapon.createLauncher(WeaponType.PULSE_CANNON);
         weaponFront.setOwner(this);
         weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_LAUNCHER);
@@ -63,25 +68,39 @@ public class Ship
      * 
      * @param extrp The extrapolation value.
      * @param mouse The mouse reference.
+     * @param camera The camera reference
      * @param screenHeight The screen height.
      */
-    public void update(double extrp, Mouse mouse, int screenHeight)
+    public void update(double extrp, Mouse mouse, CameraGame camera, int screenHeight)
     {
         offsetOldX = getLocationOffsetX();
-        final double destX = mouse.getOnWindowX() - getWidth() / 2;
-        final double destY = screenHeight - mouse.getOnWindowY() + getHeight() / 2;
+        final double destX = mouse.getOnWindowX() - getWidth() / 2 + camera.getLocationIntX();
+        final double destY = screenHeight - mouse.getOnWindowY();
         final double x = UtilityMath.curveValue(getLocationOffsetX(), destX, 3.0);
         final double y = UtilityMath.curveValue(getLocationOffsetY(), destY, 3.0);
-        setLocationOffset(x, y);
+        final double ox = UtilityMath.fixBetween(x, 0, camera.getViewWidth());
+        final double oy = UtilityMath.fixBetween(y, getHeight() / 2, camera.getViewHeight());
+        setLocationOffset(ox, oy);
 
         moveLocation(extrp, 0.0, 1.0);
         updateTileOffset();
         updateCollision();
+        
+        energy.increase(2);
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            weaponFront.launch();
-            weaponRear.launch();
+            weaponFront.launch(energy);
+            weaponRear.launch(energy);
         }
+    }
+    
+    /**
+     * Get energy percent.
+     * @return The energy percent.
+     */
+    public int getEnergyPercent()
+    {
+        return energy.getPercent();
     }
 
     /**

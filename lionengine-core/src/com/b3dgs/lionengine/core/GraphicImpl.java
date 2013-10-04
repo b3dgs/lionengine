@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -45,6 +46,8 @@ final class GraphicImpl
 
     /** The graphic output. */
     private Graphics2D g;
+    /** Gradient paint. */
+    private GradientPaint gradientPaint;
 
     /**
      * Constructor.
@@ -124,6 +127,14 @@ final class GraphicImpl
     }
 
     @Override
+    public void drawGradient(int x, int y, int width, int height)
+    {
+        g.setPaint(gradientPaint);
+        g.fillRect(x, y, width, height);
+        g.setPaint(null);
+    }
+
+    @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
         g.drawLine(x1, y1, x2, y2);
@@ -146,6 +157,13 @@ final class GraphicImpl
     public void setColor(ColorRgba color)
     {
         g.setColor(new Color(color.getRgba(), true));
+    }
+
+    @Override
+    public void setColorGradient(GradientColor gc)
+    {
+        gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), new Color(gc.getColor1().getRgba()), gc.getX2(),
+                gc.getY2(), new Color(gc.getColor2().getRgba()));
     }
 
     @Override
