@@ -88,7 +88,6 @@ public class HandlerEntity
             entity.load(file);
             add(entity);
         }
-        update(1.0);
     }
 
     /**

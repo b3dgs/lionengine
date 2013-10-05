@@ -109,6 +109,15 @@ public final class Scene
     }
 
     @Override
+    protected void onResolutionChanged(int width, int height, int rate)
+    {
+        if (world != null)
+        {
+            world.setScreenSize(width, height);
+        }
+    }
+
+    @Override
     protected void onTerminate(boolean hasNextSequence)
     {
         Sfx.terminate();

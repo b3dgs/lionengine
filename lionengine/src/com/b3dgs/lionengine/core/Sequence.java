@@ -94,14 +94,8 @@ public abstract class Sequence
     protected final Keyboard keyboard;
     /** Mouse reference. */
     protected final Mouse mouse;
-    /** Source resolution reference. */
-    protected final Resolution source;
     /** Loader reference. */
     protected final Loader loader;
-    /** Screen width. */
-    protected final int width;
-    /** Screen height. */
-    protected final int height;
     /** Synchronize two sequences. */
     private final Semaphore semaphore;
     /** Screen reference. */
@@ -110,24 +104,30 @@ public abstract class Sequence
     private final Resolution output;
     /** Filter reference. */
     private final Filter filter;
-    /** Hq3x use flag. */
-    private final int hqx;
     /** Filter graphic. */
     private final Graphic graphic;
-    /** Image buffer. */
-    private final ImageBuffer buf;
-    /** Graphic buffer. */
-    private final Graphic gbuf;
     /** Loop time for desired rate. */
     private final long frameDelay;
     /** Sequence thread. */
     private final SequenceThread thread;
     /** Has sync. */
     private final boolean sync;
+    /** Source resolution reference. */
+    protected Resolution source;
+    /** Screen width. */
+    protected int width;
+    /** Screen height. */
+    protected int height;
+    /** Image buffer. */
+    private ImageBuffer buf;
+    /** Graphic buffer. */
+    private Graphic gbuf;
+    /** Hq3x use flag. */
+    private int hqx;
     /** Filter used. */
-    private final Transform op;
+    private Transform op;
     /** Direct rendering. */
-    private final boolean directRendering;
+    private boolean directRendering;
     /** Previous sequence pointer. */
     private Sequence previousSequence;
     /** Next sequence pointer. */
@@ -158,10 +158,7 @@ public abstract class Sequence
         screen = loader.screen;
         keyboard = loader.keyboard;
         mouse = loader.mouse;
-        config.setSource(newSource);
         output = config.getOutput();
-        source = config.getSource();
-        mouse.setConfig(config);
         filter = config.getFilter();
         sync = config.isWindowed() && output.getRate() > 0;
         graphic = Engine.factoryGraphic.createGraphic();
@@ -177,6 +174,20 @@ public abstract class Sequence
             frameDelay = Sequence.TIME_LONG / output.getRate();
         }
 
+        setResolution(newSource);
+        thread = new SequenceThread(this);
+    }
+
+    /**
+     * Set the new resolution used by the sequence.
+     * 
+     * @param newSource The new resolution used.
+     */
+    protected final void setResolution(Resolution newSource)
+    {
+        config.setSource(newSource);
+        mouse.setConfig(config);
+        source = config.getSource();
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
@@ -228,7 +239,7 @@ public abstract class Sequence
         }
         op = transform;
         directRendering = hqx == 0 && (op == null || buf == null);
-        thread = new SequenceThread(this);
+        onResolutionChanged(width, height, source.getRate());
     }
 
     /**
@@ -337,6 +348,16 @@ public abstract class Sequence
     }
 
     /**
+     * Get current frame rate (number of image per second).
+     * 
+     * @return The current number of image per second.
+     */
+    public final int getFps()
+    {
+        return (int) currentFrameRate;
+    }
+
+    /**
      * Get the configuration.
      * 
      * @return The configuration.
@@ -367,16 +388,6 @@ public abstract class Sequence
     }
 
     /**
-     * Get current frame rate (number of image per second).
-     * 
-     * @return The current number of image per second.
-     */
-    public final int getFps()
-    {
-        return (int) currentFrameRate;
-    }
-
-    /**
      * Clear the screen.
      * 
      * @param g The graphics output.
@@ -387,7 +398,7 @@ public abstract class Sequence
     }
 
     /**
-     * Called when the sequence has been loaded.
+     * Called when the sequence has been loaded. Does nothing by default.
      * 
      * @param extrp The extrapolation value.
      * @param g The graphic output.
@@ -398,8 +409,20 @@ public abstract class Sequence
     }
 
     /**
+     * Called when the resolution changed. Does nothing by default.
+     * 
+     * @param width The new screen width.
+     * @param height The new screen height.
+     * @param rate The new rate.
+     */
+    protected void onResolutionChanged(int width, int height, int rate)
+    {
+        // Nothing by default
+    }
+
+    /**
      * Called when sequence is closing. Should be used in case on special loading (such as music starting) when
-     * {@link #start(Sequence, boolean)} has been used by another sequence.
+     * {@link #start(Sequence, boolean)} has been used by another sequence. Does nothing by default.
      * 
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
      *            will end definitely).

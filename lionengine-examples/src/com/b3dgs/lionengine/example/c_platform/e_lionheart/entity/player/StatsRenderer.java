@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.c_platform.e_lionheart.AppLionheart;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
 
 /**
  * Render the stats.
@@ -35,19 +36,19 @@ public class StatsRenderer
     /** Number font. */
     private final SpriteTiled number;
     /** Horizontal scale factor. */
-    private final double scaleH;
+    private double scaleH;
 
     /**
      * Constructor.
      * 
-     * @param scaleH The horizontal scale factor.
+     * @param screenWidth The screen width.
      */
-    public StatsRenderer(double scaleH)
+    public StatsRenderer(int screenWidth)
     {
         hud = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "hud.png"), 16, 16);
         heart = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "health.png"), 8, 8);
         number = Drawable.loadSpriteTiled(Media.get(AppLionheart.SPRITES_DIR, "numbers.png"), 8, 16);
-        this.scaleH = scaleH;
+        setScreenWidth(screenWidth);
     }
 
     /**
@@ -82,6 +83,17 @@ public class StatsRenderer
         {
             hud.render(g, 1, x, 2);
         }
+    }
+
+    /**
+     * Set the screen width.
+     * 
+     * @param width The screen width.
+     */
+    public final void setScreenWidth(int width)
+    {
+        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
+        this.scaleH = scaleH;
     }
 
     /**
@@ -142,7 +154,7 @@ public class StatsRenderer
      */
     private void renderLife(Graphic g, Stats stats)
     {
-        final int x = getScaledX(282, 10);
+        final int x = getScaledX((int) (240 + 40 * scaleH), 0);
         hud.render(g, 6, x, 1);
         final int lifes = stats.getLife();
         if (lifes < 10)
@@ -166,6 +178,6 @@ public class StatsRenderer
      */
     private int getScaledX(int x, int max)
     {
-        return (int) ((x - max) * scaleH * (x + max * scaleH) / x);
+        return (int) ((x - max * scaleH) * scaleH * (x + max * scaleH) / x);
     }
 }

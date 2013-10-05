@@ -32,9 +32,9 @@ public class CameraPlatform
         extends CameraGame
 {
     /** Screen width. */
-    private final int screenWidth;
+    private int screenWidth;
     /** Screen height. */
-    private final int screenHeight;
+    private int screenHeight;
     /** Map limits left. */
     private int mapLeftLimit;
     /** Map limits right. */
@@ -71,6 +71,19 @@ public class CameraPlatform
     public void follow(EntityPlatform entity)
     {
         setLocation(entity.getLocationX(), entity.getLocationY() + (int) Math.floor(entity.getHeight() / 2.0));
+    }
+
+    /**
+     * Set the screen size. Used by {@link #setLimits(MapTile)} to know the border top-right of the map from the screen,
+     * and by {@link #follow(EntityPlatform)} to know the screen center.
+     * 
+     * @param screenWidth The screen width.
+     * @param screenHeight The screen height.
+     */
+    public void setScreenSize(int screenWidth, int screenHeight)
+    {
+        this.screenWidth = (int) Math.floor(screenWidth / 2.0) * 2;
+        this.screenHeight = (int) Math.floor(screenHeight / 2.0) * 2;
     }
 
     /**

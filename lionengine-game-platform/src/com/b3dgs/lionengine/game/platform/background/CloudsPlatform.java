@@ -36,7 +36,7 @@ public abstract class CloudsPlatform
     /** Clouds number. */
     private final int cloudsNumber;
     /** Clouds wide. */
-    private final int w;
+    private int w;
     /** Clouds location x. */
     private final double[] x;
     /** Clouds location y. */
@@ -59,15 +59,10 @@ public abstract class CloudsPlatform
     public CloudsPlatform(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY, boolean alpha)
     {
         this.decY = decY;
-
-        // Load surface
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);
         sprite.load(alpha);
         cloudsNumber = sprite.getTilesNumber();
         data = new BackgroundElement(0, 0, sprite);
-
-        final int wi = (int) Math.ceil(screenWidth / (double) sprite.getWidthOriginal()) + 1;
-        w = wi;
 
         // Data arrays
         x = new double[cloudsNumber];
@@ -79,6 +74,7 @@ public abstract class CloudsPlatform
         {
             x[i] = 0;
         }
+        setScreenWidth(screenWidth);
     }
 
     /**
@@ -101,6 +97,17 @@ public abstract class CloudsPlatform
     public void setSpeed(int line, double speed)
     {
         this.speed[line] = speed;
+    }
+
+    /**
+     * Set the screen width. Used to know how much clouds are needed in order to fill the screen.
+     * 
+     * @param screenWidth The screen width.
+     */
+    public final void setScreenWidth(int screenWidth)
+    {
+        final int wi = (int) Math.ceil(screenWidth / (double) sprite.getWidthOriginal()) + 1;
+        w = wi;
     }
 
     /*

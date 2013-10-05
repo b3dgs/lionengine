@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -38,15 +39,19 @@ final class Foreground
         extends BackgroundPlatform
 {
     /** Screen width. */
-    final int screenWidth;
+    int screenWidth;
     /** Screen height. */
-    final int screenHeight;
+    int screenHeight;
     /** The horizontal factor. */
-    final double scaleH;
+    double scaleH;
     /** The horizontal factor. */
-    final double scaleV;
+    double scaleV;
     /** Water top. */
     double top;
+    /** Primary. */
+    private final Primary primary;
+    /** Secondary. */
+    private final Secondary secondary;
     /** Standard height. */
     private final int nominal;
     /** Water height. */
@@ -67,17 +72,16 @@ final class Foreground
     Foreground(Resolution source, double scaleH, double scaleV, String theme)
     {
         super(theme, 0, 0);
-        this.scaleH = scaleH;
-        this.scaleV = scaleV;
-        screenWidth = source.getWidth();
-        screenHeight = source.getHeight();
         nominal = 210;
         height = 0.0;
         depth = 4.0;
         speed = 0.02;
         final String path = Media.getPath("foregrounds", theme);
-        add(new Primary(path, this));
-        add(new Secondary(path, this));
+        primary = new Primary(path, this);
+        secondary = new Secondary(path, this);
+        setScreenSize(source.getWidth(), source.getHeight());
+        add(primary);
+        add(secondary);
     }
 
     /**
@@ -101,6 +105,34 @@ final class Foreground
     }
 
     /**
+     * Called when the resolution changed.
+     * 
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public final void setScreenSize(int width, int height)
+    {
+        screenWidth = width;
+        screenHeight = height;
+        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
+        final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
+        this.scaleH = scaleH;
+        this.scaleV = scaleV;
+        primary.updateMainY();
+        secondary.updateMainY();
+    }
+
+    /**
+     * Set the height.
+     * 
+     * @param height The height to set.
+     */
+    public void setHeight(double height)
+    {
+        this.height = height;
+    }
+
+    /**
      * Get the top of the water.
      * 
      * @return The top of the water.
@@ -118,16 +150,6 @@ final class Foreground
     public double getHeight()
     {
         return height;
-    }
-
-    /**
-     * Set the height.
-     * 
-     * @param height The height to set.
-     */
-    public void setHeight(double height)
-    {
-        this.height = height;
     }
 
     /**
@@ -185,6 +207,18 @@ final class Foreground
             top = data.getSprite().getHeight();
             this.water = water;
         }
+
+        /**
+         * Update the main vertical location.
+         */
+        void updateMainY()
+        {
+            data.setMainY((int) Math.ceil(water.getNominal() * scaleV));
+        }
+
+        /*
+         * BackgroundComponent
+         */
 
         @Override
         public void update(double extrp, int x, int y, double speed)
@@ -263,6 +297,38 @@ final class Foreground
             wx = 0.0;
         }
 
+        /**
+         * Update the main vertical location.
+         */
+        void updateMainY()
+        {
+            data.setMainY((int) Math.floor(water.getNominal() * scaleV));
+        }
+
+        /**
+         * Update water effect.
+         * 
+         * @param g The graphics output.
+         * @param speed The effect speed.
+         * @param frequency The effect frequency.
+         * @param amplitude The effect amplitude.
+         * @param offsetForce The offset force.
+         */
+        private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
+        {
+            final int oy = py + (int) water.getHeight();
+            for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
+            {
+                final double inside = Math.cos(UtilityMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
+                final double outside = Math.cos(wx) * offsetForce;
+                g.copyArea(0, y, screenWidth, 1, (int) (inside + outside), 0);
+            }
+        }
+
+        /*
+         * BackgroundComponent
+         */
+
         @Override
         public void update(double extrp, int x, int y, double speed)
         {
@@ -321,26 +387,6 @@ final class Foreground
             }
 
             waterEffect(g, 0.06, 1.5, 0.8, 3.0);
-        }
-
-        /**
-         * Update water effect.
-         * 
-         * @param g The graphics output.
-         * @param speed The effect speed.
-         * @param frequency The effect frequency.
-         * @param amplitude The effect amplitude.
-         * @param offsetForce The offset force.
-         */
-        private void waterEffect(Graphic g, double speed, double frequency, double amplitude, double offsetForce)
-        {
-            final int oy = py + (int) water.getHeight();
-            for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
-            {
-                final double inside = Math.cos(UtilityMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
-                final double outside = Math.cos(wx) * offsetForce;
-                g.copyArea(0, y, screenWidth, 1, (int) (inside + outside), 0);
-            }
         }
     }
 }

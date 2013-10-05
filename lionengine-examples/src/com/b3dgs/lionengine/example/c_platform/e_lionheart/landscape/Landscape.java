@@ -99,4 +99,16 @@ public class Landscape
     {
         return type;
     }
+
+    /**
+     * Called when the resolution changed.
+     * 
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public void setScreenSize(int width, int height)
+    {
+        ((Swamp) background).setScreenSize(width, height);
+        foreground.setScreenSize(width, height);
+    }
 }

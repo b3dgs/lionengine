@@ -52,6 +52,8 @@ final class GraphicImpl
     private Graphics2D g;
     /** Gradient paint. */
     private GradientPaint gradientPaint;
+    /** Last transform. */
+    private Transform lastTransform;
     /** Affine transform. */
     private AffineTransformOp op;
 
@@ -108,15 +110,16 @@ final class GraphicImpl
     }
 
     @Override
-    public void drawImage(ImageBuffer image, Transform op, int x, int y)
+    public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        if (op != null && this.op == null)
+        if (lastTransform != transform)
         {
+            lastTransform = transform;
             final AffineTransform at = new AffineTransform();
-            at.scale(op.getScaleX(), op.getScaleY());
-            this.op = new AffineTransformOp(at, op.getInterpolation());
+            at.scale(transform.getScaleX(), transform.getScaleY());
+            op = new AffineTransformOp(at, transform.getInterpolation());
         }
-        g.drawImage(GraphicImpl.getBuffer(image), this.op, x, y);
+        g.drawImage(GraphicImpl.getBuffer(image), op, x, y);
     }
 
     @Override

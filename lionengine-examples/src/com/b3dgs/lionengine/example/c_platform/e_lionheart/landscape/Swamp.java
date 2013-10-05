@@ -39,14 +39,20 @@ final class Swamp
     /** Moon rasters. */
     private static final int MOON_RASTERS = 20;
 
-    /** The horizontal factor. */
-    final double scaleH;
-    /** The vertical factor. */
-    final double scaleV;
+    /** Backdrop. */
+    private final Backdrop backdrop;
+    /** Clouds. */
+    private final Clouds clouds;
+    /** Parallax. */
+    private final Parallax parallax;
     /** Number of parallax lines. */
     private final int parallaxsNumber = 96;
     /** Flickering flag. */
     private final boolean flickering;
+    /** The horizontal factor. */
+    double scaleH;
+    /** The vertical factor. */
+    double scaleV;
 
     /**
      * Create a rastered element.
@@ -82,13 +88,33 @@ final class Swamp
         this.flickering = flickering;
         final String path = Media.getPath(AppLionheart.BACKGROUNDS_DIR, "Swamp", theme);
         final int width = source.getWidth();
-        final int halfScreen = source.getWidth() / 4;
-        add(new Backdrop(path, this.flickering, width));
-        add(new Clouds(Media.get(path, "cloud.png"), width, 4));
-        add(new Parallax(source, Media.get(path, "parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100));
-
+        final int halfScreen = (int) (source.getWidth() / 3.5);
+        backdrop = new Backdrop(path, this.flickering, width);
+        clouds = new Clouds(Media.get(path, "cloud.png"), width, 4);
+        parallax = new Parallax(source, Media.get(path, "parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100);
+        add(backdrop);
+        add(clouds);
+        add(parallax);
         totalHeight = 120;
-        setOffsetY(source.getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
+        setScreenSize(source.getWidth(), source.getHeight());
+    }
+
+    /**
+     * Called when the resolution changed.
+     * 
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public void setScreenSize(int width, int height)
+    {
+        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
+        final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
+        this.scaleH = scaleH;
+        this.scaleV = scaleV;
+        setOffsetY(height - Scene.SCENE_DISPLAY.getHeight() + 72);
+        backdrop.setScreenWidth(width);
+        clouds.setScreenWidth(width);
+        parallax.setScreenSize(width, height);
     }
 
     /**
@@ -107,12 +133,14 @@ final class Swamp
         private final ElementRastered moon;
         /** Mountain sprite. */
         private final Sprite mountainSprite;
-        /** Screen width. */
-        private final int screenWidth;
-        /** Screen wide value. */
-        private final int w;
         /** Flickering flag. */
         private final boolean flickering;
+        /** Original offset. */
+        private final int moonOffset;
+        /** Screen width. */
+        int screenWidth;
+        /** Screen wide value. */
+        private int w;
         /** Flickering counter. */
         private int flickerCount;
         /** Flickering type. */
@@ -128,7 +156,6 @@ final class Swamp
         Backdrop(String path, boolean flickering, int screenWidth)
         {
             this.flickering = flickering;
-            this.screenWidth = screenWidth;
 
             if (flickering)
             {
@@ -143,18 +170,30 @@ final class Swamp
             }
 
             mountain = createElement(path, "mountain.png", 0, 124, false);
-            w = (int) Math.ceil(this.screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
 
             final int x = (int) (208 * scaleH);
-            moon = Swamp.createElementRastered(path, "moon.png", x, getOffsetY(), Swamp.MOON_RASTERS);
+            moonOffset = 40;
+            moon = Swamp.createElementRastered(path, "moon.png", x, moonOffset, Swamp.MOON_RASTERS);
             mountainSprite = (Sprite) mountain.getSprite();
+            setScreenWidth(screenWidth);
+        }
+
+        /**
+         * Called when the resolution changed.
+         * 
+         * @param width The new width.
+         */
+        final void setScreenWidth(int width)
+        {
+            screenWidth = width;
+            w = (int) Math.ceil(screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
         }
 
         @Override
         public void update(double extrp, int x, int y, double speed)
         {
             backcolorA.setOffsetY(y);
-            moon.setOffsetY(-20 + getOffsetY());
+            moon.setOffsetY(-20 - moonOffset + getOffsetY());
             mountain.setOffsetX(UtilityMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
                     mountainSprite.getWidth()));
             mountain.setOffsetY(y);
@@ -188,8 +227,8 @@ final class Swamp
                         (int) (backcolorA.getOffsetY() + backcolorA.getMainY()));
             }
             // Render moon
-            moon.getRaster((int) (mountain.getOffsetY() / 4 + Swamp.MOON_RASTERS)).render(g, moon.getMainX(),
-                    (int) (moon.getOffsetY() + moon.getMainY()));
+            moon.getRaster((int) ((mountain.getOffsetY() + (moonOffset - getOffsetY())) / 4 + Swamp.MOON_RASTERS))
+                    .render(g, moon.getMainX(), (int) (moon.getOffsetY() + moon.getMainY()));
 
             // Render mountains
             final int oy = (int) (mountain.getOffsetY() + mountain.getMainY());

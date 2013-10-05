@@ -27,9 +27,9 @@ public class BackgroundElement
     /** Sprite reference. */
     private final Renderable sprite;
     /** Main location x referential. */
-    private final int mainX;
+    private int mainX;
     /** Main location y referential. */
-    private final int mainY;
+    private int mainY;
     /** Offsets location x from reference. */
     private double offsetX;
     /** Offsets location y from reference. */
@@ -49,6 +49,26 @@ public class BackgroundElement
         this.sprite = sprite;
         offsetX = 0.0;
         offsetY = 0.0;
+    }
+
+    /**
+     * Set the main horizontal location.
+     * 
+     * @param mainX The main horizontal location.
+     */
+    public void setMainX(int mainX)
+    {
+        this.mainX = mainX;
+    }
+
+    /**
+     * Set the main vertical location.
+     * 
+     * @param mainY The main vertical location.
+     */
+    public void setMainY(int mainY)
+    {
+        this.mainY = mainY;
     }
 
     /**

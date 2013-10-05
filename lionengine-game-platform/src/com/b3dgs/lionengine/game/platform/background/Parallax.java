@@ -43,18 +43,18 @@ public class Parallax
     private final double[] x2;
     /** Parallax location y. */
     private final double[] y;
-    /** Screen width. */
-    private final int screenWidth;
-    /** Screen height. */
-    private final int screenHeight;
-    /** Horizontal offset. */
-    private final int decX;
     /** Fact x. */
     private final double factH;
     /** Offset x. */
     private final int offsetX;
+    /** Horizontal offset. */
+    private final int decX;
+    /** Screen width. */
+    private int screenWidth;
+    /** Screen height. */
+    private int screenHeight;
     /** Amplitude. */
-    private final int amplitude;
+    private int amplitude;
 
     /**
      * Create a new parallax.
@@ -69,19 +69,13 @@ public class Parallax
      */
     public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
     {
-        screenWidth = source.getWidth();
-        screenHeight = source.getHeight();
-        factH = sx / 100.0 / 0.6;
-
-        // Load surface
         this.parallaxsNumber = parallaxsNumber;
         parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);
         parallax.prepare(Filter.NONE);
         data = new BackgroundElement(0, decY + 64, parallax);
         this.decX = parallax.getWidthOriginal() + decX;
         offsetX = parallax.getWidth();
-        final int w = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6 * factH));
-        amplitude = (int) Math.ceil(w / 2.0) + 1;
+        factH = sx / 100.0 / 0.6;
 
         // Create data arrays
         x = new double[this.parallaxsNumber];
@@ -95,6 +89,22 @@ public class Parallax
             x2[i] = 0.0;
             y[i] = 0.0;
         }
+        setScreenSize(source.getWidth(), source.getHeight());
+    }
+
+    /**
+     * Set the screen size. Used to know the parallax amplitude, and the overall surface to render in order to fill the
+     * screen.
+     * 
+     * @param screenWidth The screen width.
+     * @param screenHeight The screen height.
+     */
+    public final void setScreenSize(int screenWidth, int screenHeight)
+    {
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        final int w = (int) Math.ceil(screenWidth / (parallax.getWidthOriginal() * 0.6 * factH)) + 1;
+        amplitude = (int) Math.ceil(w / 2.0) + 1;
     }
 
     /*

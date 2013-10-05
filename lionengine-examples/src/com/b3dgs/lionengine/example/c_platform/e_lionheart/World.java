@@ -78,8 +78,22 @@ final class World
         level = new Level(camera, factoryEntity, handlerEntity, source.getRate());
         factoryEntity.setLevel(level);
         map = level.map;
-        statsRenderer = new StatsRenderer(scaleH);
+        statsRenderer = new StatsRenderer(width);
         handlerEffect = level.handlerEffect;
+    }
+
+    /**
+     * Called when the resolution changed.
+     * 
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public void setScreenSize(int width, int height)
+    {
+        landscape.setScreenSize(width, height);
+        camera.setView(0, 0, width, height);
+        camera.setScreenSize(width, height);
+        statsRenderer.setScreenWidth(width);
     }
 
     /**
@@ -143,6 +157,7 @@ final class World
         player.setLandscape(landscape);
         statsRenderer.load();
         camera.setIntervals(32, 0);
+        handlerEntity.update(1.0);
         handlerEntity.prepare();
         player.setCheckpoints(level.worldData.getCheckpoints());
         player.respawn(level.worldData.getStartX(), level.worldData.getStartY());
