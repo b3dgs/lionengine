@@ -83,15 +83,16 @@ public final class Media
      * 
      * @param source The source directory.
      * @param path The full path.
+     * @return <code>true</code> if created, <code>false</code> else.
      */
-    public static void createPath(String source, String... path)
+    public static boolean createPath(String source, String... path)
     {
         final StringBuilder string = new StringBuilder(source);
         for (final String name : path)
         {
             string.append(name).append(Media.separator);
-            new File(string.toString()).mkdir();
         }
+        return new File(string.toString()).mkdir();
     }
 
     /**

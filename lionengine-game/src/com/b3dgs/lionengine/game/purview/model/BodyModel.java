@@ -61,7 +61,7 @@ public class BodyModel
     @Override
     public void updateGravity(double extrp, int desiredFps, Force... forces)
     {
-        force.addForce(extrp, 0.0, getWeight() * invertY / desiredFps);
+        force.addForce(0.0, getWeight() * invertY / desiredFps * extrp);
         localizable.moveLocation(extrp, force, forces);
     }
 

@@ -155,6 +155,7 @@ final class Mario
         if (up && canJump())
         {
             jumpForce.setForce(0.0, jumpSpeed);
+            resetGravity();
             coll = EntityCollision.NONE;
         }
     }
@@ -265,9 +266,13 @@ final class Mario
             final Double y = tile.getCollisionY(this);
             if (applyVerticalCollision(y))
             {
-                resetGravity();
                 jumpForce.setForce(Force.ZERO);
+                resetGravity();
                 coll = EntityCollision.GROUND;
+            }
+            else
+            {
+                coll = EntityCollision.NONE;
             }
         }
     }
@@ -305,7 +310,7 @@ final class Mario
         movement.setVelocity(speed);
         movement.setSensibility(sensibility);
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, movement.getForce(), jumpForce);
+        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
         updateMirror();
     }
 

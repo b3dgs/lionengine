@@ -141,7 +141,7 @@ public final class Menu
     /** Menu transition colors. */
     private ColorRgba[] alphas;
     /** Current alpha value. */
-    private int alpha;
+    private double alpha;
     /** Current player race. */
     private int playerRace;
     /** Current opponent race. */
@@ -300,7 +300,7 @@ public final class Menu
         switch (Menu.menu)
         {
             case INTRO_UP:
-                alpha += 3;
+                alpha += 3 * extrp;
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (UtilityMath.time() - introTimer > 3000)
                 {
@@ -308,7 +308,7 @@ public final class Menu
                 }
                 break;
             case INTRO_DOWN:
-                alpha -= 10;
+                alpha -= 10 * extrp;
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
@@ -316,7 +316,7 @@ public final class Menu
                 }
                 break;
             case MAIN_UP:
-                alpha += 10;
+                alpha += 10 * extrp;
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 255)
                 {
@@ -381,7 +381,7 @@ public final class Menu
                 buttons[6].update(cursor);
                 break;
             case NEW_OUT:
-                alpha -= 10;
+                alpha -= 10 * extrp;
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
@@ -432,11 +432,11 @@ public final class Menu
             case INTRO_UP:
             case INTRO_DOWN:
                 logo.render(g, 0, 0);
-                applyAlpha(g, alphas[255 - alpha]);
+                applyAlpha(g, alphas[255 - (int) alpha]);
                 break;
             case MAIN_UP:
                 background.render(g, 0, 0);
-                applyAlpha(g, alphas[255 - alpha]);
+                applyAlpha(g, alphas[255 - (int) alpha]);
                 break;
             case MAIN:
                 background.render(g, 0, 0);
@@ -472,7 +472,7 @@ public final class Menu
                 break;
             case NEW_OUT:
                 drawNew(g);
-                applyAlpha(g, alphas[255 - alpha]);
+                applyAlpha(g, alphas[255 - (int) alpha]);
                 break;
             case PLAY:
                 applyAlpha(g, ColorRgba.BLACK);

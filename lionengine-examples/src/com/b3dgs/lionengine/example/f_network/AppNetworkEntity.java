@@ -36,9 +36,9 @@ public final class AppNetworkEntity
     /**
      * Main function.
      * 
-     * @param argv The arguments.
+     * @param args The arguments.
      */
-    public static void main(String[] argv)
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start("Entity control", Version.create(1, 0, 0), Media.getPath("resources", "platform"));

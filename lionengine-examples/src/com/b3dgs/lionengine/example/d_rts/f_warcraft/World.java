@@ -94,7 +94,7 @@ final class World
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, fogOfWar);
         minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        context = new Context(camera, map, handlerEntity, handlerProjectile, cursor, message, output.getRate());
+        context = new Context(camera, map, handlerEntity, handlerProjectile, cursor, message, source.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
         handlerEntity.addListener(minimap);

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import java.lang.Thread.State;
+import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
@@ -73,8 +74,6 @@ import com.b3dgs.lionengine.Transparency;
  * @see Loader
  * @see Resolution
  * @see Graphic
- * @see Keyboard
- * @see Mouse
  */
 public abstract class Sequence
 {
@@ -90,11 +89,11 @@ public abstract class Sequence
     private static final double EXTRP = 1.0;
 
     /** Config reference. */
-    public final Config config;
+    protected final Config config;
     /** Keyboard reference. */
-    public final Keyboard keyboard;
+    protected final Keyboard keyboard;
     /** Mouse reference. */
-    public final Mouse mouse;
+    protected final Mouse mouse;
     /** Source resolution reference. */
     protected final Resolution source;
     /** Loader reference. */
@@ -103,6 +102,8 @@ public abstract class Sequence
     protected final int width;
     /** Screen height. */
     protected final int height;
+    /** Synchronize two sequences. */
+    private final Semaphore semaphore;
     /** Screen reference. */
     private final Screen screen;
     /** Output resolution reference. */
@@ -152,6 +153,7 @@ public abstract class Sequence
 
         // Initialize
         this.loader = loader;
+        semaphore = new Semaphore(0);
         config = loader.config;
         screen = loader.screen;
         keyboard = loader.keyboard;
@@ -286,16 +288,13 @@ public abstract class Sequence
         nextSequence.start();
         if (wait)
         {
-            synchronized (nextSequence)
+            try
             {
-                try
-                {
-                    nextSequence.wait();
-                }
-                catch (final InterruptedException exception)
-                {
-                    Verbose.exception(Sequence.class, "start", exception);
-                }
+                nextSequence.semaphore.acquire();
+            }
+            catch (final InterruptedException exception)
+            {
+                Verbose.exception(Sequence.class, "start", exception);
             }
         }
     }
@@ -335,6 +334,36 @@ public abstract class Sequence
     public final void setExtrapolated(boolean extrapolated)
     {
         this.extrapolated = extrapolated;
+    }
+
+    /**
+     * Get the configuration.
+     * 
+     * @return The configuration.
+     */
+    public Config getConfig()
+    {
+        return config;
+    }
+
+    /**
+     * Get the keyboard reference.
+     * 
+     * @return The keyboard reference.
+     */
+    public Keyboard getKeyboard()
+    {
+        return keyboard;
+    }
+
+    /**
+     * Get the mouse reference.
+     * 
+     * @return The mouse reference.
+     */
+    public Mouse getMouse()
+    {
+        return mouse;
     }
 
     /**
@@ -460,10 +489,8 @@ public abstract class Sequence
             }
         }
         onTerminate(nextSequence != null);
-        synchronized (this)
-        {
-            notifyAll();
-        }
+        semaphore.release();
+        loader.semaphore.release();
     }
 
     /**
@@ -501,15 +528,12 @@ public abstract class Sequence
      */
     private void notifyPreviousSequenceAndWait()
     {
-        synchronized (this)
-        {
-            notify();
-        }
+        semaphore.release();
         synchronized (previousSequence)
         {
             try
             {
-                previousSequence.wait();
+                previousSequence.semaphore.acquire();
             }
             catch (final InterruptedException exception)
             {

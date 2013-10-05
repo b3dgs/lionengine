@@ -74,7 +74,7 @@ final class World
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, cursor, output.getRate());
+        context = new Context(map, handlerEntity, handlerProjectile, cursor, source.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
     }

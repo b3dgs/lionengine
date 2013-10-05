@@ -273,20 +273,17 @@ final class WavRoutine
             {
                 media = null;
             }
-            synchronized (player.monitor)
+            try
             {
-                try
-                {
-                    player.addFree(this);
-                    player.monitor.wait();
-                }
-                catch (final InterruptedException exception)
-                {
-                    interrupt();
-                    media = null;
-                    isRunning = false;
-                    player.decreaseCount();
-                }
+                player.addFree(this);
+                player.latch.acquire();
+            }
+            catch (final InterruptedException exception)
+            {
+                interrupt();
+                media = null;
+                isRunning = false;
+                player.decreaseCount();
             }
         }
     }

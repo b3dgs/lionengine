@@ -46,11 +46,11 @@ public final class Version
     }
 
     /** Major version. */
-    public final int major;
+    private final int major;
     /** Minor version. */
-    public final int minor;
+    private final int minor;
     /** Micro version. */
-    public final int micro;
+    private final int micro;
 
     /**
      * Create a new version descriptor.
@@ -65,6 +65,40 @@ public final class Version
         this.minor = minor;
         this.micro = micro;
     }
+
+    /**
+     * Get the major number of the version.
+     * 
+     * @return The major number of the version.
+     */
+    public int getMajor()
+    {
+        return major;
+    }
+
+    /**
+     * Get the minor number of the version.
+     * 
+     * @return The minor number of the version.
+     */
+    public int getMinor()
+    {
+        return minor;
+    }
+
+    /**
+     * Get the micro number of the version.
+     * 
+     * @return The micro number of the version.
+     */
+    public int getMicro()
+    {
+        return micro;
+    }
+
+    /*
+     * Object
+     */
 
     @Override
     public String toString()

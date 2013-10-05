@@ -227,7 +227,7 @@ final class Mario
         movement.setVelocity(speed);
         movement.setSensibility(sensibility);
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, movement.getForce(), jumpForce);
+        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
         updateMirror();
     }
 

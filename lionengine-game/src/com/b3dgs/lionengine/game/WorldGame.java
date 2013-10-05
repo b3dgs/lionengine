@@ -116,11 +116,11 @@ public abstract class WorldGame
      */
     public WorldGame(final Sequence sequence)
     {
-        keyboard = sequence.keyboard;
-        mouse = sequence.mouse;
-        config = sequence.config;
-        source = sequence.config.getSource();
-        output = sequence.config.getOutput();
+        keyboard = sequence.getKeyboard();
+        mouse = sequence.getMouse();
+        config = sequence.getConfig();
+        source = config.getSource();
+        output = config.getOutput();
         width = source.getWidth();
         height = source.getHeight();
     }

@@ -56,14 +56,14 @@ public final class AppLionheart
     public static final String SFX_DIR = "sfx";
     /** Entity configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
-    /** Raster enabled. */
-    public static boolean RASTER_ENABLED = false;
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
     /** Enable sound. */
     private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
+    /** Raster enabled. */
+    public static boolean RASTER_ENABLED = false;
 
     /**
      * Main function.

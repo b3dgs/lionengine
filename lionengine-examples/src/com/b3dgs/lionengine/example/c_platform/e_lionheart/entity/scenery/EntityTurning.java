@@ -75,7 +75,7 @@ public abstract class EntityTurning
         {
             if (shakeCounter < 3)
             {
-                effectCounter += EntityTurning.SHAKE_SPEED;
+                effectCounter += EntityTurning.SHAKE_SPEED * extrp;
                 if (effectCounter > EntityScenerySheet.HALF_CIRCLE)
                 {
                     shakeCounter++;

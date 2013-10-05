@@ -268,7 +268,7 @@ final class Foreground
         {
             anim.updateAnimation(extrp);
 
-            data.setOffsetX(data.getOffsetX() + speed * extrp);
+            data.setOffsetX(data.getOffsetX() + speed);
             data.setOffsetX(UtilityMath.wrapDouble(data.getOffsetX(), 0.0, anim.getFrameWidth()));
             data.setOffsetY(y);
 

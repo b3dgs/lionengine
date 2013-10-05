@@ -95,7 +95,7 @@ public class StatsRenderer
         for (int i = 0; i < 8; i++)
         {
             final int x = i % 4 * 8 + 1;
-            final int y = (int) Math.floor(i / 4) * 8 + 1;
+            final int y = (int) Math.floor(i / 4.0) * 8 + 1;
             if (i < stats.getHeart())
             {
                 heart.render(g, 0, x, y);

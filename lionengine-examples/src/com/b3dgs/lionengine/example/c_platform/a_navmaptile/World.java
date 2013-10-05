@@ -87,19 +87,19 @@ final class World
         // Keyboard control
         if (keyboard.isPressed(Key.RIGHT))
         {
-            movement.addForce(extrp, 4.0, 0.0);
+            movement.addForce(4.0, 0.0);
         }
         if (keyboard.isPressed(Key.LEFT))
         {
-            movement.addForce(extrp, -4.0, 0.0);
+            movement.addForce(-4.0, 0.0);
         }
         if (keyboard.isPressed(Key.UP))
         {
-            movement.addForce(extrp, 0.0, 4.0);
+            movement.addForce(0.0, 4.0);
         }
         if (keyboard.isPressed(Key.DOWN))
         {
-            movement.addForce(extrp, 0.0, -4.0);
+            movement.addForce(0.0, -4.0);
         }
 
         // Smooth movement

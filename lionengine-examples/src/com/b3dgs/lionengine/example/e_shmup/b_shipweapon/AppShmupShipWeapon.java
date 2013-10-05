@@ -42,9 +42,9 @@ public final class AppShmupShipWeapon
     /**
      * Main function.
      * 
-     * @param argv The arguments.
+     * @param args The arguments.
      */
-    public static void main(String[] argv)
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppShmupShipWeapon.NAME, AppShmupShipWeapon.VERSION, AppShmupShipWeapon.RESOURCES);

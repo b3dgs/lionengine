@@ -45,7 +45,7 @@ public class Menu
         extends Sequence
 {
     /** Default key set. */
-    public static final Integer[] KEYS =
+    private static final Integer[] KEYS =
     {
             Key.UP, Key.DOWN, Key.CONTROL, Key.LEFT, Key.RIGHT, Key.ALT
     };

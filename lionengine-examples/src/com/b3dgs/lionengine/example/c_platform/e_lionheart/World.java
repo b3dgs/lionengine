@@ -75,7 +75,7 @@ final class World
         factoryLandscape = new FactoryLandscape(source, scaleH, scaleV, false);
         factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
-        level = new Level(camera, factoryEntity, handlerEntity, output.getRate());
+        level = new Level(camera, factoryEntity, handlerEntity, source.getRate());
         factoryEntity.setLevel(level);
         map = level.map;
         statsRenderer = new StatsRenderer(scaleH);

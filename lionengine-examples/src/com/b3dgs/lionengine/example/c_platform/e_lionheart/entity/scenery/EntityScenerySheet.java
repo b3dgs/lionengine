@@ -39,7 +39,7 @@ public class EntityScenerySheet
     /** Effect start flag, <code>true</code> when effect is occurring, <code>false</code> else. */
     protected boolean effectStart;
     /** Effect counter, represent the value used to calculate the effect. */
-    protected int effectCounter;
+    protected double effectCounter;
     /** Effect side, -1 to decrease, 1 to increase. */
     protected int effectSide;
     /** First hit flag, when sheet is hit for the first time. */
@@ -68,7 +68,7 @@ public class EntityScenerySheet
         super.update(extrp);
         if (effectStart)
         {
-            effectCounter += EntityScenerySheet.EFFECT_SPEED * effectSide;
+            effectCounter += EntityScenerySheet.EFFECT_SPEED * effectSide * extrp;
             // Detect end
             if (effectCounter >= EntityScenerySheet.HALF_CIRCLE)
             {

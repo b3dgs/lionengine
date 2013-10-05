@@ -35,9 +35,9 @@ public final class AppTileCollision
     /**
      * Main function called by the jvm.
      * 
-     * @param argv The arguments.
+     * @param args The arguments.
      */
-    public static void main(String[] argv)
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start("Tile Collision", Version.create(1, 0, 0), Media.getPath("resources", "platform", "mario"));

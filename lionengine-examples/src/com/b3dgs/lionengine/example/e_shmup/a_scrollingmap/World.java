@@ -90,7 +90,7 @@ final class World
     public void update(double extrp)
     {
         camera.setLocationY(y);
-        y += 1.0;
+        y += 1.0 * extrp;
         if (y > 216)
         {
             y = -216;

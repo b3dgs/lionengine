@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
@@ -40,9 +41,11 @@ final class WavPlayer
     /** Sound busy threads. */
     final BlockingQueue<WavRoutine> busySounds;
     /** Sound monitor. */
-    final Object monitor;
+    final Semaphore latch;
     /** Created thread counter. */
     volatile Integer count;
+    /** Count monitor. */
+    private final Object monitorCount = new Object();
     /** Sound file reference. */
     private final Media media;
     /** Sound alignment. */
@@ -72,7 +75,7 @@ final class WavPlayer
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
-        monitor = new Object();
+        latch = new Semaphore(0);
         freeSounds = new LinkedBlockingQueue<>(maxSimultaneous);
         busySounds = new LinkedBlockingQueue<>(maxSimultaneous);
         alignment = Align.CENTER;
@@ -84,7 +87,7 @@ final class WavPlayer
      */
     void decreaseCount()
     {
-        synchronized (count)
+        synchronized (monitorCount)
         {
             count = Integer.valueOf(count.intValue() - 1);
         }
@@ -142,10 +145,7 @@ final class WavPlayer
                 routine.setMedia(media);
                 routine.setVolume(volume);
                 routine.setDelay(delay);
-                synchronized (monitor)
-                {
-                    monitor.notify();
-                }
+                latch.release();
             }
         }
         else
@@ -156,7 +156,7 @@ final class WavPlayer
             routine.setVolume(volume);
             routine.setDelay(delay);
             routine.start();
-            synchronized (count)
+            synchronized (monitorCount)
             {
                 count = Integer.valueOf(count.intValue() + 1);
             }

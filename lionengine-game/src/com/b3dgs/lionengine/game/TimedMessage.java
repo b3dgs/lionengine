@@ -126,11 +126,11 @@ public final class TimedMessage
 final class MessageData
 {
     /** The message content. */
-    public final String message;
+    final String message;
     /** The vertical location. */
-    public final int x;
+    final int x;
     /** The vertical location. */
-    public final int y;
+    final int y;
     /** The timer. */
     private final Timing timer;
     /** Max time. */

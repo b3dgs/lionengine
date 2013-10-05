@@ -42,9 +42,9 @@ public final class AppTyrian
     /**
      * Main function.
      * 
-     * @param argv The arguments.
+     * @param args The arguments.
      */
-    public static void main(String[] argv)
+    public static void main(String[] args)
     {
         // Start engine
         Engine.start(AppTyrian.NAME, AppTyrian.VERSION, AppTyrian.RESOURCES);

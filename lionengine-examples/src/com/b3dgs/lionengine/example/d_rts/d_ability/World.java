@@ -81,7 +81,7 @@ final class World
         factoryProduction = new FactoryProduction();
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, output.getRate());
+        context = new Context(map, handlerEntity, handlerProjectile, source.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
     }

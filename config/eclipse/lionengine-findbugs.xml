@@ -30,7 +30,7 @@
 		<Bug pattern="ICAST_INTEGER_MULTIPLY_CAST_TO_LONG" />
 	</Match>
 	<Match>
-		<Class name="com.b3dgs.lionengine.Verbose" />
+		<Class name="com.b3dgs.lionengine.core.Verbose" />
 		<Bug pattern="LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE" />
 	</Match>
 </FindBugsFilter>

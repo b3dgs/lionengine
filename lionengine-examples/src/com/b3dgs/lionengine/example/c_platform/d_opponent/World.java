@@ -54,7 +54,7 @@ final class World
         super(sequence);
         camera = new CameraPlatform(width, height);
         map = new Map();
-        factory = new FactoryEntity(map, output.getRate());
+        factory = new FactoryEntity(map, source.getRate());
         mario = factory.createMario();
         handler = new HandlerEntity(camera, mario);
     }

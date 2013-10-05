@@ -757,7 +757,7 @@ public class TestDrawable
         final Resolution output0 = new Resolution(320, 240, 60);
         try
         {
-            final Cursor cursor = new Cursor(scene.mouse, output0);
+            final Cursor cursor = new Cursor(scene.getMouse(), output0);
             Assert.assertNotNull(cursor);
             Assert.fail();
         }
@@ -766,7 +766,7 @@ public class TestDrawable
             // Success
         }
 
-        final Cursor cursor = new Cursor(scene.mouse, output0, media);
+        final Cursor cursor = new Cursor(scene.getMouse(), output0, media);
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);

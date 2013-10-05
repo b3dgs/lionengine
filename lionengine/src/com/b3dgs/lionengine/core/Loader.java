@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.util.concurrent.Semaphore;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
@@ -59,6 +61,8 @@ public final class Loader
     final Keyboard keyboard;
     /** Mouse reference. */
     final Mouse mouse;
+    /** Synchronize with sequence. */
+    final Semaphore semaphore;
     /** Thread loader. */
     private final LoaderThread thread;
     /** Next sequence pointer. */
@@ -75,6 +79,7 @@ public final class Loader
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
         this.config = config;
+        semaphore = new Semaphore(0);
         screen = Engine.factoryGraphic.createScreen(config);
         keyboard = Engine.factoryInput.createKeyboard();
         mouse = Engine.factoryInput.createMouse();
@@ -125,10 +130,7 @@ public final class Loader
             // Wait for sequence end
             try
             {
-                synchronized (sequence)
-                {
-                    sequence.wait();
-                }
+                semaphore.acquire();
             }
             catch (final InterruptedException exception)
             {

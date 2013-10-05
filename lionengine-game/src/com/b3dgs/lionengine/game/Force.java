@@ -146,27 +146,25 @@ public final class Force
     /**
      * Increase force with input value.
      * 
-     * @param extrp The extrapolation value.
      * @param force The force to add.
      */
-    public void addForce(double extrp, Force force)
+    public void addForce(Force force)
     {
-        addForce(extrp, force.fh, force.fv);
+        addForce(force.fh, force.fv);
     }
 
     /**
      * Increase forces with input value.
      * 
-     * @param extrp The extrapolation value.
      * @param fh The added horizontal force.
      * @param fv The added vertical force.
      */
-    public void addForce(double extrp, double fh, double fv)
+    public void addForce(double fh, double fv)
     {
         lastFh = fh;
         lastFv = fv;
-        this.fh += fh * extrp;
-        this.fv += fv * extrp;
+        this.fh += fh;
+        this.fv += fv;
         fixForce();
     }
 
