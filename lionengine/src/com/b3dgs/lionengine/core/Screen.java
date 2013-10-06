@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.KeyboardListener;
 import com.b3dgs.lionengine.Mouse;
 
 /**

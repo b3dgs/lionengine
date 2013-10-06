@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.core;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.b3dgs.lionengine.KeyboardListener;
-
 /**
  * Keyboard listener implementation.
  * 

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.network.purview;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.KeyboardListener;
+import com.b3dgs.lionengine.core.KeyboardListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**

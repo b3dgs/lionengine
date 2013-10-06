@@ -48,7 +48,6 @@ import javax.swing.WindowConstants;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.KeyboardListener;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;

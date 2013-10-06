@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.KeyboardListener;
 import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;

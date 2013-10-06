@@ -22,7 +22,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.KeyboardListener;
+import com.b3dgs.lionengine.core.KeyboardListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 
