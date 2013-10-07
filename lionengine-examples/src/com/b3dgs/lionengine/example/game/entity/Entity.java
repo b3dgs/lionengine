@@ -15,40 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.effect;
+package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
- * Abstract effect factory. It performs a list of available effects from a directory considering an input enumeration.
- * Data are stored with an enumeration as key.
+ * Entity implementation.
  * 
- * @param <T> The enum containing all type.
- * @param <S> The setup type.
- * @param <E> The effect type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EffectGame>
-        extends FactoryGame<T, S>
+public class Entity
+        extends EntityGame
 {
     /**
      * Constructor.
      * 
-     * @param keyType The class of the enum type defined.
+     * @param setup The setup reference.
      */
-    public FactoryEffectGame(Class<T> keyType)
+    public Entity(SetupSurfaceGame setup)
     {
-        super(keyType);
+        super(setup);
+        setMass(getDataDouble("mass", "data"));
+        setCollision(getDataCollision("default"));
     }
 
     /**
-     * Get the effect instance from its key. It is recommended to use a switch on the key, and throw an exception for
-     * the
-     * default case (instead of returning a <code>null</code> value).
+     * Render the object.
      * 
-     * @param type The effect type (as enumeration).
-     * @return The effect instance.
+     * @param g The graphic output.
      */
-    public abstract E createEffect(T type);
+    public void render(Graphic g)
+    {
+        System.out.println("I am rendering: " + this);
+    }
+
+    /*
+     * EntityGame
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        System.out.println("I am updating: " + this);
+    }
 }

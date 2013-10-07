@@ -34,7 +34,8 @@ final class PulseCannon
     PulseCannon(FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
-        setRate(100);
+        setRate(175);
+        level.setMax(6);
     }
 
     /*
@@ -44,9 +45,47 @@ final class PulseCannon
     @Override
     protected void launchProjectile(Entity owner)
     {
-        addProjectile(ProjectileType.BULLET, 1, 1, 0, 5, 0, -3);
-
-        addProjectile(ProjectileType.BULLET, 1, 77, -5, -5, -5, -18);
-        addProjectile(ProjectileType.BULLET, 1, 78, 5, -5, 5, -18);
+        int dmg;
+        final int lvl = level.getCurrent();
+        final int speed = 6;
+        final int frame = 1;
+        switch (level.getCurrent())
+        {
+            case 4:
+                dmg = 60;
+                setConsume(65);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -6, -3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 6, -3);
+                break;
+            case 5:
+                dmg = 70;
+                setConsume(85);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -12, 6);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -8, 4);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -4, 2);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 0, 0);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 4, 2);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 8, 4);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 12, 6);
+                break;
+            case 6:
+                dmg = 80;
+                setConsume(105);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -23, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -18, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -13, 5);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -8, 3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 0, 0);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 8, 3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 13, 5);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 18, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 23, 7);
+                break;
+            default:
+                dmg = 20 + lvl * 10;
+                setConsume(40 + lvl * 8);
+                addProjectile(ProjectileType.BULLET, dmg, frame + lvl - 1, 0, speed, 0, -3);
+                break;
+        }
     }
 }

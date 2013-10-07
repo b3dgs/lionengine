@@ -15,40 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.effect;
+package com.b3dgs.lionengine.example.game.effect;
 
-import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
 /**
- * Abstract effect factory. It performs a list of available effects from a directory considering an input enumeration.
- * Data are stored with an enumeration as key.
+ * Effect factory.
  * 
- * @param <T> The enum containing all type.
- * @param <S> The setup type.
- * @param <E> The effect type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.factory
  */
-public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EffectGame>
-        extends FactoryGame<T, S>
+public class FactoryEffect
+        extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
-     * 
-     * @param keyType The class of the enum type defined.
      */
-    public FactoryEffectGame(Class<T> keyType)
+    public FactoryEffect()
     {
-        super(keyType);
+        super(EffectType.class);
     }
 
-    /**
-     * Get the effect instance from its key. It is recommended to use a switch on the key, and throw an exception for
-     * the
-     * default case (instead of returning a <code>null</code> value).
-     * 
-     * @param type The effect type (as enumeration).
-     * @return The effect instance.
+    /*
+     * FactoryEffectGame
      */
-    public abstract E createEffect(T type);
+
+    @Override
+    public Effect createEffect(EffectType type)
+    {
+        switch (type)
+        {
+            case EXPLODE:
+                return new Explode(getSetup(type));
+            default:
+                throw new LionEngineException("Unknown type: " + type);
+        }
+    }
+
+    @Override
+    protected SetupSurfaceGame createSetup(EffectType type)
+    {
+        return new SetupSurfaceGame(Media.get("effect", type.asPathName() + ".xml"));
+    }
 }

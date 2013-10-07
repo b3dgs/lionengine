@@ -83,7 +83,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     /** Tiles map. */
     private List<List<T>> tiles;
     /** Minimap reference. */
-    private ImageBuffer minimap;
+    protected ImageBuffer minimap;
 
     /**
      * Constructor.

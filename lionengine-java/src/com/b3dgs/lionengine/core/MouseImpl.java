@@ -144,7 +144,7 @@ final class MouseImpl
     @Override
     public void lock()
     {
-        this.lock(centerX, centerY);
+        lock(centerX, centerY);
     }
 
     @Override

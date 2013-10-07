@@ -15,41 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.b_loaddraw;
+package com.b3dgs.lionengine.example.helloworld;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
-
-// Tutorial: Load draw
-// This tutorial will explain how to use the different kind of images and sprites.
-// It will also show how to load external resources from a simple file name.
 
 /**
- * Program starts here.
+ * Main class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.minimal
  */
-public final class AppLoadDraw
+public final class Main
 {
     /**
-     * Main function.
+     * Main function called by the jvm.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        // Start engine
-        Engine.start("Load Draw", Version.create(1, 0, 0), Media.getPath("resources", "loaddraw"));
-
-        // Resolution
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
         final Resolution output = new Resolution(640, 480, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
@@ -57,7 +48,7 @@ public final class AppLoadDraw
     /**
      * Private constructor.
      */
-    private AppLoadDraw()
+    private Main()
     {
         throw new RuntimeException();
     }

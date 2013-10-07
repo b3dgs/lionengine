@@ -97,7 +97,6 @@ final class World
         context = new Context(camera, map, handlerEntity, handlerProjectile, cursor, message, source.getRate());
         factoryEntity = context.factoryEntity;
         context.assignContext();
-        handlerEntity.addListener(minimap);
     }
 
     /**
@@ -209,6 +208,5 @@ final class World
 
         handlerEntity.update(1.0);
         handlerEntity.updatePopulation();
-        minimap.entityMoved(peon);
     }
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.b_loaddraw;
+package com.b3dgs.lionengine.example.drawable;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
@@ -33,6 +33,9 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This is where the game loop is running.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.minimal
  */
 final class Scene
         extends Sequence

@@ -220,6 +220,14 @@ final class SpriteAnimatedImpl
         return buf;
     }
 
+    @Override
+    protected void stretchSurface(int newWidth, int newHeight)
+    {
+        final int w = (int) Math.round(newWidth / (double) getFramesHorizontal()) * getFramesHorizontal();
+        final int h = (int) Math.round(newHeight / (double) getFramesVertical()) * getFramesVertical();
+        super.stretchSurface(w, h);
+    }
+
     /*
      * Object
      */

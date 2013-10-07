@@ -133,7 +133,7 @@ public interface Mouse
     String getKeyText(int code);
 
     /**
-     * Check if click if pressed.
+     * Check if click is pressed.
      * 
      * @param click The click to check.
      * @return The pressed state.
@@ -141,7 +141,7 @@ public interface Mouse
     boolean hasClicked(int click);
 
     /**
-     * Check if click if pressed once only (ignore 'still clicked').
+     * Check if click is pressed once only (ignore 'still clicked').
      * 
      * @param click The click to check.
      * @return The pressed state.

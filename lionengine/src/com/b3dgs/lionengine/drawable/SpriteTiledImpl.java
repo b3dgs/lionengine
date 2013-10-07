@@ -140,6 +140,14 @@ final class SpriteTiledImpl
         return buffer;
     }
 
+    @Override
+    protected void stretchSurface(int newWidth, int newHeight)
+    {
+        final int w = Math.round(newWidth / (float) getTilesHorizontal()) * getTilesHorizontal();
+        final int h = Math.round(newHeight / (float) getTilesVertical()) * getTilesVertical();
+        super.stretchSurface(w, h);
+    }
+
     /*
      * Object
      */

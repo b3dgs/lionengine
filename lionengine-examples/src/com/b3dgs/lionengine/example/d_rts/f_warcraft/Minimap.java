@@ -25,13 +25,11 @@ import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.f_warcraft.entity.Unit;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
-import com.b3dgs.lionengine.game.rts.entity.EntityRtsListener;
 
 /**
  * Minimap handler.
  */
 final class Minimap
-        implements EntityRtsListener<Entity>
 {
     /** Map reference. */
     private final Map map;
@@ -132,6 +130,8 @@ final class Minimap
     public void render(Graphic g, CameraRts camera)
     {
         map.renderMiniMap(g, x, y);
+        renderEntity(g);
+        renderFog(g);
         renderCamera(g, camera, x, y);
     }
 
@@ -185,7 +185,7 @@ final class Minimap
                 if (fogOfWar.isVisited(tx, ty) && fogOfWar.isFogged(tx, ty))
                 {
                     g.setColor(handlerEntity.getEntityColorSelection(entity));
-                    g.drawRect(tx, map.getHeightInTile() - 1 - th - ty, tw, th, true);
+                    g.drawRect(tx + x, map.getHeightInTile() - 1 - th - ty + y + 1, tw, th, true);
                 }
             }
         }
@@ -217,18 +217,5 @@ final class Minimap
                 }
             }
         }
-    }
-
-    /*
-     * EntityRtsListener
-     */
-
-    @Override
-    public void entityMoved(Entity entity)
-    {
-        final Graphic g = map.createMiniMapGraphics();
-        renderEntity(g);
-        renderFog(g);
-        g.dispose();
     }
 }

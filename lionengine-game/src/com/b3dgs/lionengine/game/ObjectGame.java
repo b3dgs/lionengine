@@ -103,7 +103,7 @@ public abstract class ObjectGame
     }
 
     /**
-     * Remove entity from handler, and free memory.
+     * Remove object from handler, and free memory.
      */
     public void destroy()
     {

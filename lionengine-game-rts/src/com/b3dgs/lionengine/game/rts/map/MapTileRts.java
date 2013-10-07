@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.game.rts.map;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
@@ -39,8 +35,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
         extends MapTileGame<C, T>
         implements MapTilePath<C, T>
 {
-    /** Minimap buffer. */
-    private ImageBuffer minimap;
     /** Reference entity id array. */
     private Integer[][] ref;
 
@@ -60,18 +54,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
     /*
      * MapTileGame
      */
-
-    /**
-     * Get minimap graphics reference.
-     * 
-     * @return The minimap graphics reference.
-     */
-    public Graphic createMiniMapGraphics()
-    {
-        final Graphic g = minimap.createGraphic();
-        g.drawImage(getMiniMap(), 0, 0);
-        return g;
-    }
 
     /**
      * Search a free area from this area.
@@ -309,28 +291,5 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
             }
         }
         return true;
-    }
-
-    /*
-     * Minimap
-     */
-
-    @Override
-    public void createMiniMap()
-    {
-        super.createMiniMap();
-        if (minimap == null)
-        {
-            minimap = UtilityImage.createImageBuffer(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
-        }
-        final Graphic g = minimap.createGraphic();
-        g.drawImage(getMiniMap(), 0, 0);
-        g.dispose();
-    }
-
-    @Override
-    public void renderMiniMap(Graphic g, int x, int y)
-    {
-        g.drawImage(minimap, x, y);
     }
 }

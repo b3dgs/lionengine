@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.a_firstcode;
+package com.b3dgs.lionengine.example.helloworld;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.swing.UtilityMessageBox;
 
 /**
- * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
- * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
- * start the linked one.
+ * Scene implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.minimal
  */
 final class Scene
         extends Sequence
@@ -81,14 +81,5 @@ final class Scene
         text.render(g);
         // Direct rendering
         text.draw(g, width / 2, height / 2 + 8, Align.CENTER, "World");
-    }
-
-    /*
-     * It is not necessary to override this method
-     */
-    @Override
-    protected void onTerminate(boolean hasNextSequence)
-    {
-        UtilityMessageBox.information("Terminate !", "Closing app...");
     }
 }

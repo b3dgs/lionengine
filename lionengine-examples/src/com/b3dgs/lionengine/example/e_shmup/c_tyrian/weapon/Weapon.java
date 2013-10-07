@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 public abstract class Weapon
         extends LauncherProjectileGame<ProjectileType, Entity, Entity, Projectile>
 {
+    /** Energy to consume. */
+    private int consume;
+
     /**
      * Constructor.
      * 
@@ -49,13 +52,23 @@ public abstract class Weapon
      */
     public void launch(Alterable energy)
     {
-        if (energy.isEnough(15))
+        if (energy.isEnough(consume))
         {
             if (launch())
             {
-                energy.decrease(15);
+                energy.decrease(consume);
             }
         }
+    }
+
+    /**
+     * Set the energy to consume.
+     * 
+     * @param consume The energy to consume.
+     */
+    protected void setConsume(int consume)
+    {
+        this.consume = consume;
     }
 
     /*

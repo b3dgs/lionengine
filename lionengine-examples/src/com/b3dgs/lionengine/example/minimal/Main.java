@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.a_firstcode;
+package com.b3dgs.lionengine.example.minimal;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
@@ -23,15 +23,12 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 
-// Tutorial: First code
-// This tutorial will highlight the minimum required code to initialize properly the engine.
-// Each steps are explained, in order to understand what they mean.
-// A sequence sample (Scene) will also show how to use the main routine.
-
 /**
  * Program starts here. When you start the jvm, ensure that this main function is called.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppFirstCode
+public final class Main
 {
     /**
      * Main function called by the jvm.
@@ -66,7 +63,7 @@ public final class AppFirstCode
     /**
      * Private constructor.
      */
-    private AppFirstCode()
+    private Main()
     {
         throw new RuntimeException();
     }

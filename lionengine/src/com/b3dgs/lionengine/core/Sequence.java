@@ -87,8 +87,6 @@ public abstract class Sequence
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
-    /** Config reference. */
-    protected final Config config;
     /** Keyboard reference. */
     protected final Keyboard keyboard;
     /** Mouse reference. */
@@ -97,6 +95,8 @@ public abstract class Sequence
     protected final Loader loader;
     /** Synchronize two sequences. */
     private final Semaphore semaphore;
+    /** Config reference. */
+    private final Config config;
     /** Screen reference. */
     private final Screen screen;
     /** Output resolution reference. */

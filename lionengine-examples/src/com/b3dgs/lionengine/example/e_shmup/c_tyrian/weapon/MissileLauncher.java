@@ -29,7 +29,10 @@ final class MissileLauncher
         extends Weapon
 {
     /**
-     * @see Weapon#Weapon(FactoryProjectile, HandlerProjectile)
+     * Constructor.
+     * 
+     * @param factory The factory reference.
+     * @param handler The handler reference.
      */
     MissileLauncher(FactoryProjectile factory, HandlerProjectile handler)
     {

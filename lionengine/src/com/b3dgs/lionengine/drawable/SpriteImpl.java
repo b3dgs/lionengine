@@ -82,6 +82,19 @@ class SpriteImpl
     }
 
     /**
+     * Stretch the surface with the specified new size.
+     * 
+     * @param newWidth The new width.
+     * @param newHeight The new height.
+     */
+    protected void stretchSurface(int newWidth, int newHeight)
+    {
+        width = newWidth;
+        height = newHeight;
+        surface = UtilityImage.resize(surfaceOriginal, newWidth, newHeight);
+    }
+
+    /**
      * Backup the original surface before modification only if needed.
      */
     private void lazySurfaceBackup()
@@ -121,10 +134,8 @@ class SpriteImpl
         {
             final int newWidth = getWidthOriginal() * widthPercent / 100;
             final int newHeight = getHeightOriginal() * heightPercent / 100;
-            width = newWidth;
-            height = newHeight;
             lazySurfaceBackup();
-            surface = UtilityImage.resize(surfaceOriginal, newWidth, newHeight);
+            stretchSurface(newWidth, newHeight);
         }
     }
 

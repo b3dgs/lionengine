@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity surface="goomba.png">
+	<frames horizontal="3" vertical="1"/>
+	<size width="16" height="16"/>
+	<data mass="2.5"/>
+	<collision name="default" offsetX="0" offsetY="0" width="12" height="15" mirror="false"/>
+	<animation name="idle" start="1" end="1" step="1" speed="0.125" reversed="false" repeat="false"/>
+</entity>
