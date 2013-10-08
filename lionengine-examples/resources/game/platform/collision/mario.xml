@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity surface="mario.png">
+	<frames horizontal="7" vertical="1"/>
+	<size width="16" height="16"/>
+	<data movementSpeed="3.0" jumpSpeed="8.0" mass="2.5"/>
+</entity>

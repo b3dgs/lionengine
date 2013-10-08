@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
 
 /**
  * Tile implementation, using TileModel. Nothing special here, just to show the default inheritance.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.map
  */
 final class Tile
         extends TileRts<TileCollision, TileCollision>

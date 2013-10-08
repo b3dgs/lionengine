@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.platform.background.BackgroundElementRastered;
 
 /**
  * Rastered background element implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ElementRastered
         extends BackgroundElementRastered
@@ -53,7 +55,7 @@ final class ElementRastered
     {
         final int r = 0x300000 - 0x080000 * (int) (i / 1.5);
         final int g = 0x002000 - 0x000100 * (i / 5);
-        final int b = -0x000026 + 0x000006 * (int) (i / 1.5);
+        final int b = -0x000026 + 0x000007 * (int) (i * 1.5);
         addRaster(sprite, r, g, b);
     }
 }

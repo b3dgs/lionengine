@@ -193,9 +193,9 @@ public abstract class EntityRts
         {
             for (int h = 0; h < getWidthInTile(); h++)
             {
-                if (map.getRef(getLocationInTileX() + h, getLocationInTileX() + v).equals(getId()))
+                if (map.getRef(getLocationInTileX() + h, getLocationInTileY() + v).equals(getId()))
                 {
-                    map.setRef(getLocationInTileX() + h, getLocationInTileX() + v, Integer.valueOf(0));
+                    map.setRef(getLocationInTileX() + h, getLocationInTileY() + v, Integer.valueOf(0));
                 }
             }
         }

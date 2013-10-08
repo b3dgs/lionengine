@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collisions>
+	<collision name="GROUND0" pattern="0" start="1" end="2"/>
+	<collision name="GROUND1" pattern="0" start="3" end="18"/>
+	<collision name="GROUND2" pattern="0" start="19" end="33"/>
+	<collision name="GROUND3" pattern="0" start="34" end="49"/>
+	<collision name="GROUND4" pattern="0" start="50" end="51"/>
+	<collision name="GROUND5" pattern="0" start="52" end="67"/>
+	<collision name="GROUND6" pattern="0" start="68" end="68"/>
+	<collision name="GROUND7" pattern="0" start="69" end="96"/>
+	<collision name="GROUND8" pattern="0" start="97" end="124"/>
+	<collision name="GROUND9" pattern="0" start="125" end="125"/>
+	<collision name="TREE_BORDER" pattern="0" start="126" end="141"/>
+	<collision name="TREE" pattern="0" start="142" end="146"/>
+	<collision name="BORDER" pattern="0" start="147" end="185"/>
+	<collision name="WATER" pattern="0" start="186" end="208"/>
+</collisions>

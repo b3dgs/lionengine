@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.example.c_platform.e_lionheart.Scene;
+import com.b3dgs.lionengine.example.lionheart.Scene;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -31,6 +31,8 @@ import com.b3dgs.lionengine.game.platform.background.Parallax;
 
 /**
  * Swamp background implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Swamp
         extends BackgroundPlatform
@@ -81,6 +83,9 @@ final class Swamp
         this.scaleV = scaleV;
         final int width = source.getWidth();
         final int halfScreen = (int) (source.getWidth() / 3.5);
+        this.scaleH = scaleH;
+        this.scaleV = scaleV;
+        setOffsetY(source.getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
         backdrop = new Backdrop(width);
         clouds = new Clouds(Media.get("cloud.png"), width, 4);
         parallax = new Parallax(source, Media.get("parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100);
@@ -88,25 +93,6 @@ final class Swamp
         add(clouds);
         add(parallax);
         totalHeight = 120;
-        setScreenSize(source.getWidth(), source.getHeight());
-    }
-
-    /**
-     * Called when the resolution changed.
-     * 
-     * @param width The new width.
-     * @param height The new height.
-     */
-    public void setScreenSize(int width, int height)
-    {
-        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
-        final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
-        this.scaleH = scaleH;
-        this.scaleV = scaleV;
-        setOffsetY(height - Scene.SCENE_DISPLAY.getHeight() + 72);
-        backdrop.setScreenWidth(width);
-        clouds.setScreenWidth(width);
-        parallax.setScreenSize(width, height);
     }
 
     /**
@@ -128,7 +114,7 @@ final class Swamp
         /** Screen width. */
         int screenWidth;
         /** Screen wide value. */
-        private int w;
+        private final int w;
 
         /**
          * Constructor.
@@ -143,17 +129,7 @@ final class Swamp
             moonOffset = 40;
             moon = Swamp.createElementRastered("moon.png", x, moonOffset, Swamp.MOON_RASTERS);
             mountainSprite = (Sprite) mountain.getSprite();
-            setScreenWidth(screenWidth);
-        }
-
-        /**
-         * Called when the resolution changed.
-         * 
-         * @param width The new width.
-         */
-        final void setScreenWidth(int width)
-        {
-            screenWidth = width;
+            this.screenWidth = screenWidth;
             w = (int) Math.ceil(screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
         }
 

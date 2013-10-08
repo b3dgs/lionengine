@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.platform.background.CloudsPlatform;
 
 /**
  * Clouds implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Clouds
         extends CloudsPlatform

@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
@@ -111,6 +112,12 @@ final class Scene
 
         // Rotate sprite
         sprite.rotate((int) tile * (360 / tilesheet.getTilesNumber()));
+
+        // Exit
+        if (keyboard.isPressedOnce(Key.ESCAPE))
+        {
+            end();
+        }
     }
 
     @Override

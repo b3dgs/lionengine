@@ -289,7 +289,11 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
             for (int j = 0; j < widthInTile; j++)
             {
                 final T tile = list.get(j);
-                tile.setCollision(getCollisionFrom(getCollision(nodes, tile.getPattern().intValue(), tile.getNumber())));
+                if (tile != null)
+                {
+                    tile.setCollision(getCollisionFrom(getCollision(nodes, tile.getPattern().intValue(),
+                            tile.getNumber())));
+                }
             }
         }
     }
