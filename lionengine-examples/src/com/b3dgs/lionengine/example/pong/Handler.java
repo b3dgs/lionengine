@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.Force;
 
 /**
  * Handle the game, count score, and reset the ball in case of goal.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Handler
 {

@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
  * Ball implementation using EntityGame base.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Ball
         extends EntityGame

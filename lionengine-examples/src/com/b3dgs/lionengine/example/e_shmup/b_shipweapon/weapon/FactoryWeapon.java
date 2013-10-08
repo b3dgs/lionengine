@@ -56,7 +56,7 @@ public final class FactoryWeapon
         switch (type)
         {
             case PULSE_CANNON:
-                return new PulseCannon(factory, handler);
+                return new PulseCanon(factory, handler);
             case MISSILE_LAUNCHER:
                 return new MissileLauncher(factory, handler);
             default:

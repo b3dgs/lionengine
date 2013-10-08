@@ -282,11 +282,13 @@ public class CameraGame
      */
     private void move(double extrp, double vx, double vy)
     {
+        double mx = 0.0;
+        double my = 0.0;
         // Horizontal move
         // Can scroll only on offset interval
         if (offset.getLocationIntX() <= -intervalHorizontal || offset.getLocationIntX() >= intervalHorizontal)
         {
-            location.moveLocation(extrp, vx, 0);
+            mx = vx;
         }
         offset.moveLocation(extrp, vx, 0);
 
@@ -304,7 +306,7 @@ public class CameraGame
         // Can scroll only on offset interval
         if (offset.getLocationIntY() <= -intervalVertical || offset.getLocationIntX() >= intervalVertical)
         {
-            location.moveLocation(extrp, 0, vy);
+            my = vy;
         }
         offset.moveLocation(extrp, 0, vy);
 
@@ -317,6 +319,8 @@ public class CameraGame
         {
             offset.setLocationY(intervalVertical);
         }
+
+        location.moveLocation(extrp, mx, my);
     }
 
     /*

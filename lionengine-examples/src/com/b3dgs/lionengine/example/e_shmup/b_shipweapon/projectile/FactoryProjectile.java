@@ -57,14 +57,14 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(ProjectileType type, int id, int frame)
+    public Projectile createProjectile(ProjectileType type)
     {
         switch (type)
         {
             case BULLET:
-                return new Bullet(getSetup(type), id, frame);
+                return new Bullet(getSetup(type));
             case MISSILE:
-                return new Missile(factoryEffect, handlerEffect, getSetup(type), id, frame);
+                return new Missile(factoryEffect, handlerEffect, getSetup(type));
             default:
                 throw new LionEngineException("Unknown type: " + type);
         }

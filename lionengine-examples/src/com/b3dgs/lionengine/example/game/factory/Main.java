@@ -39,6 +39,7 @@ public final class Main
         Engine.start("Factory", Version.create(1, 0, 0), Media.getPath("resources", "game"));
 
         final Factory factory = new Factory();
+        factory.loadAll(Type.values());
 
         final TypeBase base1 = factory.createTypeMethod1(Type.FLY_MACHINE);
         final TypeBase base2 = factory.createTypeMethod2(Type.GROUND_TRUCK);

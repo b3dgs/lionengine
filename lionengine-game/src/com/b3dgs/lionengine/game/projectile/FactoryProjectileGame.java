@@ -46,10 +46,7 @@ public abstract class FactoryProjectileGame<T extends Enum<T>, P extends Project
      * Create a projectile.
      * 
      * @param type The projectile enum.
-     * @param id The projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
-     *            Can be -1 to ignore it.
-     * @param frame The projectile tile number (from surface).
      * @return The created projectile.
      */
-    public abstract P createProjectile(T type, int id, int frame);
+    public abstract P createProjectile(T type);
 }

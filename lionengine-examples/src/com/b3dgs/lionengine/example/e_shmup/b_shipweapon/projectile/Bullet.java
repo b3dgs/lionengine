@@ -26,10 +26,10 @@ final class Bullet
         extends Projectile
 {
     /**
-     * @see Projectile#Projectile(SetupSurfaceGame, int, int)
+     * @see Projectile#Projectile(SetupSurfaceGame)
      */
-    public Bullet(SetupSurfaceGame setup, int id, int frame)
+    public Bullet(SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
     }
 }

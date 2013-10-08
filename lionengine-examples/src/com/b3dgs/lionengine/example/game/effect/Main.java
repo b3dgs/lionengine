@@ -39,8 +39,8 @@ public final class Main
      */
     public static void main(String[] args)
     {
-        Engine.start("Effect", Version.create(1, 0, 0), Media.getPath("resources", "game"));
-        final Resolution output = new Resolution(640, 480, 0);
+        Engine.start("Effect", Version.create(1, 0, 0), Media.getPath("resources", "game", "effect"));
+        final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));

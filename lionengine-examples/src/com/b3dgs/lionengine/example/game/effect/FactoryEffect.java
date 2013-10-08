@@ -58,6 +58,6 @@ public class FactoryEffect
     @Override
     protected SetupSurfaceGame createSetup(EffectType type)
     {
-        return new SetupSurfaceGame(Media.get("effect", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(Media.get(type.asPathName() + ".xml"));
     }
 }

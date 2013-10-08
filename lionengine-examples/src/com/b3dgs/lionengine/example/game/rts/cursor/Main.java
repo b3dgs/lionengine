@@ -15,39 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.pong;
+package com.b3dgs.lionengine.example.game.rts.cursor;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-
-// Tutorial: Pong
-// This tutorial will show how to make a simple pong.
+import com.b3dgs.lionengine.core.Media;
 
 /**
- * Program starts here.
+ * Main class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.minimal
  */
-public final class AppPong
+public final class Main
 {
     /**
-     * Main function called by the jvm.
+     * Main.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        // Start engine
-        Engine.start("Pong", Version.create(1, 0, 0), "resources");
-
-        // Resolution
+        Engine.start("Cursor Rts", Version.create(1, 0, 0), Media.getPath("resources", "game", "rts", "cursor"));
         final Resolution output = new Resolution(640, 480, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
@@ -55,7 +49,7 @@ public final class AppPong
     /**
      * Private constructor.
      */
-    private AppPong()
+    private Main()
     {
         throw new RuntimeException();
     }

@@ -31,6 +31,8 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
  * Racket implementation using EntityGame base.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Racket
         extends EntityGame

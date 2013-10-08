@@ -33,7 +33,7 @@ public class Handler
      */
     public Handler()
     {
-        // Nothing to do
+        super();
     }
 
     /*

@@ -43,12 +43,10 @@ final class Missile
      * @param factoryEffect The factory effect.
      * @param handlerEffect The handler effect.
      * @param setup The setup reference.
-     * @param id The id.
-     * @param frame The frame.
      */
-    public Missile(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup, int id, int frame)
+    public Missile(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         timerEffect = new Timing();

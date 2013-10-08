@@ -62,7 +62,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
         {
             for (final P projectile : list())
             {
-                if (projectile.id == id)
+                if (projectile.getProjectileId() == id)
                 {
                     projectile.destroy();
                 }
@@ -90,7 +90,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
         }
         if (projectile.isDestroyed())
         {
-            deleteID(projectile.id);
+            deleteID(projectile.getProjectileId());
         }
     }
 

@@ -81,7 +81,6 @@ public class Factory
     {
         super(Type.class);
         param = new Object();
-        loadAll(Type.values());
     }
 
     /**

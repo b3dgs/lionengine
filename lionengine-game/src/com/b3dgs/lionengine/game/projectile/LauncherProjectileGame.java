@@ -296,9 +296,10 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
     private void addProjectile(T type, int id, long delay, int dmg, int frame, double vecX, double vecY, int offX,
             int offY, E target)
     {
-        final P projectile = factory.createProjectile(type, id, frame);
+        final P projectile = factory.createProjectile(type);
 
         projectile.setOwner(owner);
+        projectile.setId(id);
         projectile.setTarget(target);
         projectile.setCanHitTargetOnly(hitTargetOnly);
         projectile.damages.setMin(dmg);

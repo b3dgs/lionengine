@@ -15,38 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.e_shmup.b_shipweapon.weapon;
-
-import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile.HandlerProjectile;
-import com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile.ProjectileType;
-import com.b3dgs.lionengine.game.entity.EntityGame;
+package com.b3dgs.lionengine.example.game.projectile;
 
 /**
- * Pulse cannon implementation.
+ * Pulse canon launcher implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PulseCannon
-        extends Weapon
+final class PulseCanon
+        extends Launcher
 {
     /**
-     * @see Weapon#Weapon(FactoryProjectile, HandlerProjectile)
+     * {@link Launcher#Launcher(FactoryProjectile, HandlerProjectile)}
      */
-    PulseCannon(FactoryProjectile factory, HandlerProjectile handler)
+    PulseCanon(FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
-        setRate(100);
+        setRate(80);
     }
 
     /*
-     * Weapon
+     * Launcher
      */
 
     @Override
-    protected void launchProjectile(EntityGame owner)
+    protected void launchProjectile(Entity owner)
     {
-        addProjectile(ProjectileType.BULLET, 1, 1, 0, 5, 0, -3);
+        addProjectile(ProjectileType.PULSE, 1, 0, 0, 7, 0, 0);
+    }
 
-        addProjectile(ProjectileType.BULLET, 1, 77, -5, -5, -5, -18);
-        addProjectile(ProjectileType.BULLET, 1, 78, 5, -5, 5, -18);
+    @Override
+    protected void launchProjectile(Entity owner, Entity target)
+    {
+        addProjectile(ProjectileType.PULSE, 1, 0, target, 7, 0, -12);
     }
 }

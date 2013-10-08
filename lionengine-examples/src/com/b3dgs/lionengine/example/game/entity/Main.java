@@ -36,7 +36,7 @@ public final class Main
      */
     public static void main(String[] args)
     {
-        Engine.start("Handler", Version.create(1, 0, 0), Media.getPath("resources", "game"));
+        Engine.start("Entity", Version.create(1, 0, 0), Media.getPath("resources", "game"));
 
         final Factory factory = new Factory();
         final Handler handler = new Handler();

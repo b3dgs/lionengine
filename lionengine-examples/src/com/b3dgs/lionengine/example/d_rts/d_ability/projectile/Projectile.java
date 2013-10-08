@@ -17,8 +17,12 @@
  */
 package com.b3dgs.lionengine.example.d_rts.d_ability.projectile;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.d_rts.d_ability.entity.Entity;
 import com.b3dgs.lionengine.example.d_rts.d_ability.weapon.Weapon;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
@@ -28,21 +32,30 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 public abstract class Projectile
         extends ProjectileGame<Entity, Weapon>
 {
+    /** Surface. */
+    private final SpriteTiled sprite;
+
     /**
      * Constructor.
      * 
      * @param setup The entity setup.
-     * @param id The projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
-     * @param frame The projectile tile number (from surface).
      */
-    protected Projectile(SetupSurfaceGame setup, int id, int frame)
+    protected Projectile(SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
+        sprite = Drawable.loadSpriteTiled(setup.surface, getWidth(), getHeight());
+        sprite.load(false);
     }
 
     /*
      * ProjectileGame
      */
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        sprite.render(g, 0, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+    }
 
     @Override
     protected void updateMovement(double extrp, double vecX, double vecY)

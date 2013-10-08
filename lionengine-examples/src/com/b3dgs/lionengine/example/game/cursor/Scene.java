@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.cursor;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
@@ -56,12 +57,17 @@ public class Scene
     @Override
     protected void load()
     {
-        // Nothing to do
+        cursor.setSensibility(0.5, 0.5);
     }
 
     @Override
     protected void update(double extrp)
     {
+        if (keyboard.isPressed(Key.ESCAPE))
+        {
+            end();
+        }
+
         if (mouse.hasClickedOnce(Click.LEFT))
         {
             cursor.setSurfaceId(0);
@@ -70,7 +76,16 @@ public class Scene
         {
             cursor.setSurfaceId(1);
         }
+        if (mouse.hasClickedOnce(Click.MIDDLE))
+        {
+            cursor.setSyncMode(!cursor.isSynchronized());
+        }
+
         cursor.update(extrp);
+        if (!cursor.isSynchronized())
+        {
+            mouse.lock();
+        }
     }
 
     @Override

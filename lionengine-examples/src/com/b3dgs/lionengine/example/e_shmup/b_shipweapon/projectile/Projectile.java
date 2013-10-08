@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.example.e_shmup.b_shipweapon.projectile;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -30,12 +32,17 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 public abstract class Projectile
         extends ProjectileGame<EntityGame, EntityGame>
 {
+    /** Projectile surface. */
+    private final SpriteTiled sprite;
+
     /**
-     * @see ProjectileGame#ProjectileGame(SetupSurfaceGame, int, int)
+     * @see ProjectileGame#ProjectileGame(SetupSurfaceGame)
      */
-    Projectile(SetupSurfaceGame setup, int id, int frame)
+    Projectile(SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
+        sprite = Drawable.loadSpriteTiled(setup.surface, 12, 14);
+        sprite.load(false);
         setCollision(new CollisionData(10, -4, 4, 4, false));
     }
 
@@ -46,7 +53,7 @@ public abstract class Projectile
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        super.render(g, camera);
+        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
         if (!camera.isVisible(this))
         {
             destroy();

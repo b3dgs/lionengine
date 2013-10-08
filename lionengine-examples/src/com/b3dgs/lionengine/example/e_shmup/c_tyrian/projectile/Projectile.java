@@ -17,7 +17,11 @@
  */
 package com.b3dgs.lionengine.example.e_shmup.c_tyrian.projectile;
 
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.e_shmup.c_tyrian.entity.Entity;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
@@ -31,18 +35,33 @@ public abstract class Projectile
     /** Default collision. */
     private static final CollisionData COLLISION = new CollisionData(10, -4, 4, 4, false);
 
+    /** Projectile surface. */
+    private final SpriteTiled sprite;
+
     /**
-     * @see ProjectileGame#ProjectileGame(SetupSurfaceGame, int, int)
+     * @see ProjectileGame#ProjectileGame(SetupSurfaceGame)
      */
-    Projectile(SetupSurfaceGame setup, int id, int frame)
+    Projectile(SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
+        sprite = Drawable.loadSpriteTiled(setup.surface, 12, 14);
+        sprite.load(false);
         setCollision(Projectile.COLLISION);
     }
 
     /*
      * ProjectileGame
      */
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        if (!camera.isVisible(this))
+        {
+            destroy();
+        }
+    }
 
     @Override
     public void onHit(Entity entity, int damages)

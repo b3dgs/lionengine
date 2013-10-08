@@ -45,14 +45,14 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(TypeProjectile type, int id, int frame)
+    public Projectile createProjectile(TypeProjectile type)
     {
         switch (type)
         {
             case spear:
-                return new Spear(getSetup(TypeProjectile.spear), id, frame);
+                return new Spear(getSetup(TypeProjectile.spear));
             case arrow:
-                return new Arrow(getSetup(TypeProjectile.arrow), id, frame);
+                return new Arrow(getSetup(TypeProjectile.arrow));
             default:
                 throw new LionEngineException("Projectile not found: " + type.name());
         }

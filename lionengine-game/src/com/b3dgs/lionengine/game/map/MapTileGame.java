@@ -78,12 +78,12 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     protected int widthInTile;
     /** Number of vertical tiles. */
     protected int heightInTile;
+    /** Minimap reference. */
+    protected ImageBuffer minimap;
     /** Loaded flag. */
     private boolean surfacesLoaded;
     /** Tiles map. */
     private List<List<T>> tiles;
-    /** Minimap reference. */
-    protected ImageBuffer minimap;
 
     /**
      * Constructor.
@@ -268,6 +268,28 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                 final int h = tile.getX() / getTileWidth();
                 final List<T> list = tiles.get(v);
                 list.set(h, tile);
+            }
+        }
+    }
+
+    /**
+     * Load map collision from an external file.
+     * 
+     * @param media The collision container.
+     */
+    public void loadCollisions(Media media)
+    {
+        Media.exist(media);
+        final XmlParser xml = File.createXmlParser();
+        final XmlNode root = xml.load(media);
+        final List<XmlNode> nodes = root.getChildren();
+        for (int i = 0; i < heightInTile; i++)
+        {
+            final List<T> list = tiles.get(i);
+            for (int j = 0; j < widthInTile; j++)
+            {
+                final T tile = list.get(j);
+                tile.setCollision(getCollisionFrom(getCollision(nodes, tile.getPattern().intValue(), tile.getNumber())));
             }
         }
     }

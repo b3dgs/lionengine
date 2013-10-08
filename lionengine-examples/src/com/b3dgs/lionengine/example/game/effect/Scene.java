@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.effect;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -67,6 +68,11 @@ public class Scene
     @Override
     protected void update(double extrp)
     {
+        if (keyboard.isPressed(Key.ESCAPE))
+        {
+            end();
+        }
+
         if (mouse.hasClicked(Click.LEFT))
         {
             final Effect effect = factoryEffect.createEffect(EffectType.EXPLODE);

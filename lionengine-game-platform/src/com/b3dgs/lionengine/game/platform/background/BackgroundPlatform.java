@@ -63,6 +63,20 @@ public abstract class BackgroundPlatform
     }
 
     /**
+     * Create an element from a name, plus its coordinates.
+     * 
+     * @param name The element name.
+     * @param x The location x.
+     * @param y The location y.
+     * @param alpha The alpha use flag.
+     * @return The created element.
+     */
+    public BackgroundElement createElement(String name, int x, int y, boolean alpha)
+    {
+        return new BackgroundElement(x, y, createSprite(Media.get(name), alpha));
+    }
+
+    /**
      * Create an element from a path and its name, plus its coordinates.
      * 
      * @param path The element path.

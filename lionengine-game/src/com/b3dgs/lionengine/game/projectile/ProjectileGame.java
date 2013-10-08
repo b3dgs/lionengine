@@ -19,11 +19,6 @@ package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -40,18 +35,10 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
         extends EntityGame
 {
-    /** Projectile data. */
-    public final int frame;
-    /** Projectile id. */
-    public final int id;
     /** Damages. */
     public final Damages damages;
-    /** Surface reference. */
-    private final SpriteTiled sprite;
-    /** Horizontal offset. */
-    private final int offsetX;
-    /** Vertical offset. */
-    private final int offsetY;
+    /** Projectile id. */
+    private int id;
     /** Delay before being added in the handler. */
     private final Timing delay;
     /** Horizontal vector. */
@@ -81,34 +68,26 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      * </pre>
      * 
      * @param setup The entity setup.
-     * @param id The projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
-     *            Can be -1 to ignore it.
-     * @param frame The projectile tile number (from surface).
      */
-    public ProjectileGame(SetupSurfaceGame setup, int id, int frame)
+    public ProjectileGame(SetupSurfaceGame setup)
     {
         super(setup);
         damages = new Damages();
         final int width = setup.configurable.getDataInteger("width", "size");
         final int height = setup.configurable.getDataInteger("height", "size");
-        offsetX = getDataInteger("x", "offset");
-        offsetY = getDataInteger("y", "offset");
         setSize(width, height);
-
-        if (setup.surface == null || width == 0 || height == 0)
-        {
-            sprite = Drawable.loadSpriteTiled(UtilityImage.createImageBuffer(1, 1, Transparency.OPAQUE), 1, 1);
-            Verbose.critical(ProjectileGame.class, "constructor", "Missing surface file: ", setup.surfaceFile.getPath());
-        }
-        else
-        {
-            sprite = Drawable.loadSpriteTiled(setup.surface, width, height);
-        }
-        this.frame = frame;
-        this.id = id;
+        this.id = -1;
         owner = null;
         delay = new Timing();
     }
+
+    /**
+     * Render the projectile.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
+     */
+    public abstract void render(Graphic g, CameraGame camera);
 
     /**
      * Action called when projectile hit an entity.
@@ -143,19 +122,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     }
 
     /**
-     * Rendering routine.
-     * 
-     * @param g graphics output.
-     * @param camera camera reference.
-     */
-    public void render(Graphic g, CameraGame camera)
-    {
-        final int x = camera.getViewpointX(getLocationIntX() - offsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + offsetY);
-        sprite.render(g, frame, x, y);
-    }
-
-    /**
      * Set the projectile target.
      * 
      * @param target The entity target.
@@ -163,6 +129,17 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public void setTarget(E target)
     {
         this.target = target;
+    }
+
+    /**
+     * Set the id.
+     * 
+     * @param id The projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
+     *            Can be -1 to ignore it.
+     */
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     /**
@@ -215,6 +192,16 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     public E getTarget()
     {
         return target;
+    }
+
+    /**
+     * Get the id value.
+     * 
+     * @return The id value.
+     */
+    public int getProjectileId()
+    {
+        return id;
     }
 
     /**

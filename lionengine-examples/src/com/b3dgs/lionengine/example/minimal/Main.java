@@ -43,7 +43,7 @@ public final class Main
         // - The program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
-        Engine.start("First Code", Version.create(1, 0, 0), "resources");
+        Engine.start("Minimal", Version.create(1, 0, 0), "resources");
 
         // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.

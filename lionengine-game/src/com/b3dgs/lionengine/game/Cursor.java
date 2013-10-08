@@ -198,7 +198,7 @@ public class Cursor
     }
 
     /**
-     * Set cursor sensibility (move speed).
+     * Set cursor sensibility (move speed). Default value should be 1.0 (close to system sensibility).
      * 
      * @param sh The horizontal sensibility (>= 0.0).
      * @param sv The vertical sensibility (>= 0.0).

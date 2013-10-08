@@ -31,12 +31,10 @@ final class Arrow
      * Constructor.
      * 
      * @param setup The entity setup.
-     * @param id The projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
-     * @param frame The projectile tile number (from surface).
      */
-    Arrow(SetupSurfaceGame setup, int id, int frame)
+    Arrow(SetupSurfaceGame setup)
     {
-        super(setup, id, frame);
+        super(setup);
         setCollision(new CollisionData(0, 1, 0, 1, false));
     }
 
