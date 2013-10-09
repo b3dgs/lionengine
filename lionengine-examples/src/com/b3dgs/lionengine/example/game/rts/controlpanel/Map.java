@@ -49,14 +49,6 @@ final class Map
     @Override
     public TileCollision getCollisionFrom(String collision)
     {
-        try
-        {
-            return TileCollision.valueOf(collision);
-        }
-        catch (IllegalArgumentException
-               | NullPointerException exception)
-        {
-            return TileCollision.NONE;
-        }
+        return TileCollision.NONE;
     }
 }

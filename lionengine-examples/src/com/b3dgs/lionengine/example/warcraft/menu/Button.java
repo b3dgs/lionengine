@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.audio.Wav;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.type.TypeMenu;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -46,7 +45,7 @@ final class Button
     /** Button height. */
     private final int h;
     /** Button destination menu. */
-    private final TypeMenu menu;
+    private final MenuType menu;
     /** Mouse over flag. */
     private boolean over;
 
@@ -59,7 +58,7 @@ final class Button
      * @param y The vertical location.
      * @param menu The destination menu.
      */
-    Button(SpriteTiled surface, String text, int x, int y, TypeMenu menu)
+    Button(SpriteTiled surface, String text, int x, int y, MenuType menu)
     {
         this.surface = surface;
         this.text = text;

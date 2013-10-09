@@ -39,7 +39,7 @@ public final class AppRtsSkills
      */
     public static void main(String[] args)
     {
-        Engine.start("Rts Cursor", Version.create(1, 0, 0), Media.getPath("resources", "game", "rts", "skills"));
+        Engine.start("Rts Skills", Version.create(1, 0, 0), Media.getPath("resources", "game", "rts", "skill"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

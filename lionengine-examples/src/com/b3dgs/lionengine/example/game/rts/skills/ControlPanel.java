@@ -25,10 +25,7 @@ import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Bar;
@@ -38,16 +35,15 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Control panel implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.rts.controlpanel
  */
-final class ControlPanel
+public final class ControlPanel
         extends ControlPanelModel<Entity>
 {
     /** Text. */
     private final Text text;
-    /** Surface. */
-    private final Sprite sprite;
-    /** Entity stats. */
-    private final Sprite entityStats;
     /** Cursor reference. */
     private final Cursor cursor;
     /** Last single selection. */
@@ -66,10 +62,6 @@ final class ControlPanel
         this.cursor = cursor;
         barLife = new Bar(27, 3);
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
-        sprite = Drawable.loadSprite(Media.get("hud.png"));
-        entityStats = Drawable.loadSprite(Media.get("entity_stats.png"));
-        sprite.load(false);
-        entityStats.load(false);
         lastSingleSelection = null;
         setClickSelection(Click.LEFT);
     }
@@ -83,8 +75,6 @@ final class ControlPanel
      */
     public void render(Graphic g, CursorRts cursor, CameraRts camera)
     {
-        sprite.render(g, 0, 0);
-
         // Render the single selection if has
         if (lastSingleSelection != null)
         {
@@ -124,8 +114,6 @@ final class ControlPanel
     private void renderSingleEntity(Graphic g, int x, int y, Entity entity, CursorRts cursor, CameraRts camera)
     {
         // Entity stats
-        entityStats.render(g, x, y);
-        entity.getIcon().render(g, x + 4, y + 4);
         text.draw(g, x + 4, y + 25, entity.getName());
         final int life = entity.life.getPercent();
         ColorRgba color = ColorRgba.GREEN;

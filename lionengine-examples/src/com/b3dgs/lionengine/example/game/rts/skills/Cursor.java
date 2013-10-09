@@ -28,6 +28,9 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Cursor implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.rts.cursor
  */
 public final class Cursor
         extends CursorRts

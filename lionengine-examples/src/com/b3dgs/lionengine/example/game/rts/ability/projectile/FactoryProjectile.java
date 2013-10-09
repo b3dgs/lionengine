@@ -19,13 +19,15 @@ package com.b3dgs.lionengine.example.game.rts.ability.projectile;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.rts.ability.ProjectileType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory projectile implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.projectile
  */
 public final class FactoryProjectile
         extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>

@@ -21,6 +21,9 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProductionCostRts;
 
 /**
  * The production cost representation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.rts.ability
  */
 public final class ProductionCost
         extends ProductionCostRts

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.skills;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
@@ -25,6 +26,9 @@ import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
 
 /**
  * The production factory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.rts.ability
  */
 public final class FactoryProduction
         extends FactoryProductionRts<EntityType, ProductionCost, ProducibleEntity>

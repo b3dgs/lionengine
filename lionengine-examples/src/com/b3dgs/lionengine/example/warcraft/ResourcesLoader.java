@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.warcraft.type.TypeRace;
 
 /**
  * Static access to loaded resources for misc uses.
@@ -103,7 +102,7 @@ public final class ResourcesLoader
      * @param race The race.
      * @return The corps instance.
      */
-    public static SpriteAnimated getCorpse(TypeRace race)
+    public static SpriteAnimated getCorpse(RaceType race)
     {
         switch (race)
         {

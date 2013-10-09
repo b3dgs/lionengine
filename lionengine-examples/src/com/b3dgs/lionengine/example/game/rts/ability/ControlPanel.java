@@ -25,8 +25,10 @@ import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 
 /**
  * Control panel implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ControlPanel
+public final class ControlPanel
         extends ControlPanelModel<Entity>
 {
     /**

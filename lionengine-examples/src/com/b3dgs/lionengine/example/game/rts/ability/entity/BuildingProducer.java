@@ -22,7 +22,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
 import com.b3dgs.lionengine.example.game.rts.ability.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.ProductionCost;
 import com.b3dgs.lionengine.game.Bar;
@@ -34,6 +33,8 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
 
 /**
  * Building producer implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BuildingProducer
         extends Building

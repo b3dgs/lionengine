@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.map;
 
-import com.b3dgs.lionengine.example.tyrian.HandlerEntity;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.example.tyrian.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.tyrian.entity.scenery.EntitySceneryType;
 import com.b3dgs.lionengine.example.tyrian.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.game.map.MapTileGame;

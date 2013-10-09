@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entity name="Gold Mine" surface="gold_mine.png" icon="gold_mine_icon.png">
-	<frames horizontal="1" vertical="1"/>
-	<size widthInTile="3" heightInTile="3"/>
-	<offset x="0" y="0"/>
-	<attributes life="1000" fov="3"/>
-	<cost steps="5" gold="500" wood="100"/>
-</entity>

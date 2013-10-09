@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.game.rts.skills;
 
 /**
  * List of resource types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum ResourceType
 {

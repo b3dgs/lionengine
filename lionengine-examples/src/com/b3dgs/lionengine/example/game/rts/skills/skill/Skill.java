@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.Entity;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -28,6 +27,8 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 
 /**
  * Default skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Skill
         extends SkillRts<SkillType>
@@ -36,8 +37,6 @@ public abstract class Skill
     private final SkillType id;
     /** Sprite. */
     private final SpriteTiled icon;
-    /** Background. */
-    private final SpriteTiled background;
     /** Owner. */
     protected Entity owner;
     /** Location x on panel. */
@@ -55,7 +54,6 @@ public abstract class Skill
     {
         super(setup);
         this.id = id;
-        background = setup.background;
         icon = setup.icon;
     }
 
@@ -99,7 +97,6 @@ public abstract class Skill
     public void renderOnPanel(Graphic g)
     {
         final int flag = isSelected() ? 1 : 0;
-        background.render(g, flag, x - 2, y - 2);
         icon.render(g, getLevel() - 1, x, y + flag);
     }
 

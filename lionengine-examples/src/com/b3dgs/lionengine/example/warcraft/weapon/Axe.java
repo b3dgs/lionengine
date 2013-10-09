@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.warcraft.weapon;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
 
 /**
  * Axe weapon implementation.
@@ -36,7 +35,7 @@ final class Axe
      */
     Axe(Attacker user, Context context)
     {
-        super(TypeWeapon.axe, user, context);
+        super(WeaponType.axe, user, context);
     }
 
     /*

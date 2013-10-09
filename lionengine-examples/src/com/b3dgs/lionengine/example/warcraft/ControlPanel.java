@@ -33,10 +33,9 @@ import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.Skill;
-import com.b3dgs.lionengine.example.warcraft.type.TypeCursor;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -46,7 +45,7 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 /**
  * Control panel implementation.
  */
-final class ControlPanel
+public final class ControlPanel
         extends ControlPanelModel<Entity>
 {
     /** Text. */
@@ -168,7 +167,7 @@ final class ControlPanel
      */
     private void updateMultipleEntity(Set<Entity> entities, CursorRts cursor, double extrp)
     {
-        final Collection<TypeSkill> skills = ControlPanel.getSkillsInCommon(entities);
+        final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
         for (final Entity entity : entities)
         {
             for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
@@ -234,7 +233,7 @@ final class ControlPanel
                 else
                 {
                     // Population capacity
-                    if (TypeEntity.farm_orc == entity.type || TypeEntity.farm_human == entity.type)
+                    if (EntityType.farm_orc == entity.type || EntityType.farm_human == entity.type)
                     {
                         final String population = "Pop: " + String.valueOf(player.getPopulation()) + " of "
                                 + String.valueOf(player.getPopulationCapacity());
@@ -282,7 +281,7 @@ final class ControlPanel
      */
     private static void renderMultipleEntity(Graphic g, Set<Entity> entities, CursorRts cursor, CameraRts camera)
     {
-        final Collection<TypeSkill> skills = ControlPanel.getSkillsInCommon(entities);
+        final Collection<SkillType> skills = ControlPanel.getSkillsInCommon(entities);
         final Entity entity = entities.iterator().next();
         for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
         {
@@ -300,9 +299,9 @@ final class ControlPanel
      * @param entities Entities list.
      * @return Skill list shared by all entities.
      */
-    private static Collection<TypeSkill> getSkillsInCommon(Set<Entity> entities)
+    private static Collection<SkillType> getSkillsInCommon(Set<Entity> entities)
     {
-        final Set<TypeSkill> skillsInCommon = new HashSet<>(4);
+        final Set<SkillType> skillsInCommon = new HashSet<>(4);
         final Entity entity = entities.iterator().next();
         final Collection<Skill> skills = entity.getSkills(entity.getSkillPanel());
         for (final Skill skill : skills)
@@ -399,15 +398,15 @@ final class ControlPanel
     @Override
     protected void onStartOrder()
     {
-        if (cursor.getType() != TypeCursor.BOX)
+        if (cursor.getType() != CursorType.BOX)
         {
-            cursor.setType(TypeCursor.CROSS);
+            cursor.setType(CursorType.CROSS);
         }
     }
 
     @Override
     protected void onTerminateOrder()
     {
-        cursor.setType(TypeCursor.POINTER);
+        cursor.setType(CursorType.POINTER);
     }
 }

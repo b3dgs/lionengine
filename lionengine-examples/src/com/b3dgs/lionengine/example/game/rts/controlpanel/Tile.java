@@ -28,13 +28,7 @@ final class Tile
         extends TileRts<TileCollision, ResourceType>
 {
     /**
-     * Constructor.
-     * 
-     * @param width The tile width.
-     * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
+     * {@link TileRts#TileRts(int, int, Integer, int, Enum)}
      */
     public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {

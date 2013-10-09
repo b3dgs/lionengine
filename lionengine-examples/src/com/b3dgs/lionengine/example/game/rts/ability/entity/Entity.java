@@ -18,13 +18,14 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
-import com.b3dgs.lionengine.example.game.rts.ability.Map;
+import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Entity
         extends EntityRts

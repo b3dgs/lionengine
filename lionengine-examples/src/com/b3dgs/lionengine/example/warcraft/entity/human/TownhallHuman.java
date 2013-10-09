@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.warcraft.entity.human;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.Warehouse;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -37,7 +37,7 @@ final class TownhallHuman
      */
     TownhallHuman(Context context)
     {
-        super(TypeEntity.townhall_human, context);
-        addSkill(context, 0, TypeSkill.produce_peasant, 0);
+        super(EntityType.townhall_human, context);
+        addSkill(context, 0, SkillType.produce_peasant, 0);
     }
 }

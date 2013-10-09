@@ -37,7 +37,7 @@ public final class AppTyrian
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
-    private static final String RESOURCES = Media.getPath("resources", "shmup");
+    private static final String RESOURCES = Media.getPath("resources", "tyrian");
 
     /**
      * Main function.

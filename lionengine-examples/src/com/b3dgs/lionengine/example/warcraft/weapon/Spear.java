@@ -21,8 +21,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.warcraft.projectile.LauncherProjectile;
-import com.b3dgs.lionengine.example.warcraft.type.TypeProjectile;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
+import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
 
 /**
  * Spear weapon implementation.
@@ -41,8 +40,8 @@ final class Spear
      */
     Spear(Attacker user, Context context)
     {
-        super(TypeWeapon.spear, user, context);
-        launcher = new LauncherProjectile(TypeProjectile.spear, context);
+        super(WeaponType.spear, user, context);
+        launcher = new LauncherProjectile(ProjectileType.spear, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }
@@ -54,6 +53,7 @@ final class Spear
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
+        super.notifyAttackEnded(damages, target);
         launcher.launch(target);
     }
 }

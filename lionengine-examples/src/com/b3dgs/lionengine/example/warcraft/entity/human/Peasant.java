@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.warcraft.entity.human;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Peon implementation.
@@ -35,12 +35,12 @@ final class Peasant
      */
     Peasant(Context context)
     {
-        super(TypeEntity.peasant, context);
-        addSkill(context, 0, TypeSkill.move_human, 0);
-        addSkill(context, 0, TypeSkill.stop_human, 1);
-        addSkill(context, 0, TypeSkill.building_standard_human, 2);
-        addSkill(context, 1, TypeSkill.build_farm_human, 0);
-        addSkill(context, 1, TypeSkill.build_barracks_human, 1);
-        addSkill(context, 1, TypeSkill.cancel_human, 2);
+        super(EntityType.peasant, context);
+        addSkill(context, 0, SkillType.move_human, 0);
+        addSkill(context, 0, SkillType.stop_human, 1);
+        addSkill(context, 0, SkillType.building_standard_human, 2);
+        addSkill(context, 1, SkillType.build_farm_human, 0);
+        addSkill(context, 1, SkillType.build_barracks_human, 1);
+        addSkill(context, 1, SkillType.cancel_human, 2);
     }
 }

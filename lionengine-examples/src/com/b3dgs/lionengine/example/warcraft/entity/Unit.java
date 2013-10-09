@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -74,7 +73,7 @@ public abstract class Unit
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected Unit(TypeEntity id, Context context)
+    protected Unit(EntityType id, Context context)
     {
         super(id, context);
         deathOffsetX = getDataInteger("x", "offsetDeath");

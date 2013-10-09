@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
 
@@ -31,7 +30,7 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
  * Weapons factory.
  */
 public final class FactoryWeapon
-        extends FactoryWeaponRts<TypeWeapon, Entity, Weapon, Attacker>
+        extends FactoryWeaponRts<WeaponType, Entity, Weapon, Attacker>
 {
     /** Context reference. */
     private Context context;
@@ -41,8 +40,8 @@ public final class FactoryWeapon
      */
     public FactoryWeapon()
     {
-        super(TypeWeapon.class);
-        loadAll(TypeWeapon.values());
+        super(WeaponType.class);
+        loadAll(WeaponType.values());
     }
 
     /**
@@ -60,7 +59,7 @@ public final class FactoryWeapon
      */
 
     @Override
-    public Weapon createWeapon(TypeWeapon id, Attacker user)
+    public Weapon createWeapon(WeaponType id, Attacker user)
     {
         switch (id)
         {
@@ -78,7 +77,7 @@ public final class FactoryWeapon
     }
 
     @Override
-    protected SetupGame createSetup(TypeWeapon id)
+    protected SetupGame createSetup(WeaponType id)
     {
         return new SetupGame(Media.get(ResourcesLoader.WEAPONS_DIR, id + ".xml"));
     }

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.NetworkedWorldModel;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
@@ -61,11 +62,11 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     public World(final Sequence sequence)
     {
         super(sequence);
-        this.map = new Map();
-        this.marioClients = new HashMap<>(1);
-        this.factory = new FactoryEntity(source.getRate(), this.map);
-        this.handler = new HandlerEntity(null, marioClients);
-        this.networkableModel = new NetworkableModel();
+        map = new Map();
+        marioClients = new HashMap<>(1);
+        factory = new FactoryEntity(source.getRate(), map);
+        handler = new HandlerEntity(new CameraPlatform(width, height), marioClients);
+        networkableModel = new NetworkableModel();
     }
 
     /**
@@ -76,7 +77,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
      */
     public String getClientName(byte id)
     {
-        return this.marioClients.get(Byte.valueOf(id)).getName();
+        return marioClients.get(Byte.valueOf(id)).getName();
     }
 
     /**
@@ -93,7 +94,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     @Override
     public void update(double extrp)
     {
-        this.handler.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
@@ -105,13 +106,13 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        this.map.save(file);
+        map.save(file);
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        this.map.load(file);
+        map.load(file);
     }
 
     /*
@@ -121,43 +122,43 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     @Override
     public void disconnect()
     {
-        this.networkedWorld.disconnect();
+        networkedWorld.disconnect();
     }
 
     @Override
     public void addNetworkable(Networkable networkable)
     {
-        this.networkedWorld.addNetworkable(networkable);
+        networkedWorld.addNetworkable(networkable);
     }
 
     @Override
     public void removeNetworkable(Networkable networkable)
     {
-        this.networkedWorld.removeNetworkable(networkable);
+        networkedWorld.removeNetworkable(networkable);
     }
 
     @Override
     public void addMessage(NetworkMessage message)
     {
-        this.networkedWorld.addMessage(message);
+        networkedWorld.addMessage(message);
     }
 
     @Override
     public void addMessages(Collection<NetworkMessage> messages)
     {
-        this.networkedWorld.addMessages(messages);
+        networkedWorld.addMessages(messages);
     }
 
     @Override
     public void sendMessages()
     {
-        this.networkedWorld.sendMessages();
+        networkedWorld.sendMessages();
     }
 
     @Override
     public void receiveMessages()
     {
-        this.networkedWorld.receiveMessages();
+        networkedWorld.receiveMessages();
     }
 
     /*
@@ -168,31 +169,31 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     public void notifyClientConnected(Byte id, String name)
     {
         boolean server = false;
-        if (this.networkedWorld instanceof NetworkedWorldModelServer)
+        if (networkedWorld instanceof NetworkedWorldModelServer)
         {
             server = true;
         }
         final Mario mario = this.factory.createMario(server);
-        mario.setLocation(64, 32);
+        mario.teleport(64, 32);
         mario.setName(name);
         mario.setClientId(id);
-        this.addNetworkable(mario);
-        this.marioClients.put(id, mario);
-        this.sendMessages();
+        addNetworkable(mario);
+        marioClients.put(id, mario);
+        sendMessages();
     }
 
     @Override
     public void notifyClientDisconnected(Byte id, String name)
     {
-        final Mario mario = this.marioClients.get(id);
+        final Mario mario = marioClients.get(id);
         this.removeNetworkable(mario);
-        this.marioClients.remove(id);
+        marioClients.remove(id);
     }
 
     @Override
     public void notifyClientNameChanged(Byte id, String name)
     {
-        final Mario mario = this.marioClients.get(id);
+        final Mario mario = marioClients.get(id);
         mario.setName(name);
     }
 }

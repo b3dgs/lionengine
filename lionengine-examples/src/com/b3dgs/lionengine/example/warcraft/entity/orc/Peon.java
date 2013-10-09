@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Peon implementation.
@@ -35,12 +35,12 @@ final class Peon
      */
     Peon(Context context)
     {
-        super(TypeEntity.peon, context);
-        addSkill(context, 0, TypeSkill.move_orc, 0);
-        addSkill(context, 0, TypeSkill.stop_orc, 1);
-        addSkill(context, 0, TypeSkill.building_standard_orc, 2);
-        addSkill(context, 1, TypeSkill.build_farm_orc, 0);
-        addSkill(context, 1, TypeSkill.build_barracks_orc, 1);
-        addSkill(context, 1, TypeSkill.cancel_orc, 2);
+        super(EntityType.peon, context);
+        addSkill(context, 0, SkillType.move_orc, 0);
+        addSkill(context, 0, SkillType.stop_orc, 1);
+        addSkill(context, 0, SkillType.building_standard_orc, 2);
+        addSkill(context, 1, SkillType.build_farm_orc, 0);
+        addSkill(context, 1, SkillType.build_barracks_orc, 1);
+        addSkill(context, 1, SkillType.cancel_orc, 2);
     }
 }

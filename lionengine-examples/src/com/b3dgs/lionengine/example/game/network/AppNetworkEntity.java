@@ -41,7 +41,7 @@ public final class AppNetworkEntity
     public static void main(String[] args)
     {
         // Start engine
-        Engine.start("Entity control", Version.create(1, 0, 0), Media.getPath("resources", "platform"));
+        Engine.start("Network", Version.create(0, 1, 0), Media.getPath("resources", "mario"));
 
         // Resolution
         final Resolution output = new Resolution(640, 480, 60);

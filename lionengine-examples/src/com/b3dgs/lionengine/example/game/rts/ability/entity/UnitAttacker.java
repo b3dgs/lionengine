@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.rts.ability.entity;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
@@ -28,6 +27,8 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
 
 /**
  * Mover attacker implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class UnitAttacker
         extends Unit

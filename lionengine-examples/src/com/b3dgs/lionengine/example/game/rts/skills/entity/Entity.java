@@ -19,15 +19,11 @@ package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
-import com.b3dgs.lionengine.example.game.rts.skills.Map;
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
+import com.b3dgs.lionengine.example.game.rts.skills.map.Map;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.Skill;
+import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
@@ -35,6 +31,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Entity
         extends EntityRts
@@ -46,8 +44,6 @@ public abstract class Entity
     protected final Map map;
     /** Entity name. */
     private final String name;
-    /** Entity icon number. */
-    private final Sprite icon;
     /** Factory skill. */
     private final FactorySkill factorySkill;
     /** Skilled model. */
@@ -67,8 +63,6 @@ public abstract class Entity
         skilled = new SkilledModel<>();
         life = new Alterable(getDataInteger("life", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(Media.get(FactoryEntity.ENTITY_PATH, getDataString("icon")));
-        icon.load(false);
     }
 
     /**
@@ -106,16 +100,6 @@ public abstract class Entity
     public String getName()
     {
         return name;
-    }
-
-    /**
-     * Get the entity icon number.
-     * 
-     * @return The icon number.
-     */
-    public Sprite getIcon()
-    {
-        return icon;
     }
 
     /*

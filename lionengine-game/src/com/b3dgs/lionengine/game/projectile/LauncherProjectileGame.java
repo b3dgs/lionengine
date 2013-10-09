@@ -79,8 +79,6 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * </p>
      * <ul>
      * <li>{@link #addProjectile(Enum, int, int, double, double, int, int)}</li>
-     * <li>{@link #addProjectile(Enum, int, int, int, double, double, int, int)}</li>
-     * <li>{@link #addProjectile(Enum, long, int, int, double, double, int, int)}</li>
      * </ul>
      * 
      * @param owner The owner reference.
@@ -207,13 +205,13 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * 
      * @param type The projectile type.
      * @param dmg The projectile damage.
-     * @param frame The projectile frame.
      * @param target The target to reach.
      * @param speed The projectile speed.
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
+     * @return The created projectile.
      */
-    protected void addProjectile(T type, int dmg, int frame, E target, double speed, int offX, int offY)
+    protected P addProjectile(T type, int dmg, E target, double speed, int offX, int offY)
     {
         if (target != null)
         {
@@ -225,8 +223,9 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
             final double vecX = (dx - sx) / dist * speed;
             final double vecY = (dy - sy) / dist * speed;
 
-            addProjectile(type, -1, 0, dmg, frame, vecX, vecY, offX, offY, target);
+            return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, target);
         }
+        return null;
     }
 
     /**
@@ -234,15 +233,15 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * 
      * @param type The projectile type.
      * @param dmg The projectile damage.
-     * @param frame The projectile frame.
      * @param vecX The horizontal projectile move.
      * @param vecY The vertical projectile move.
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
+     * @return The created projectile.
      */
-    protected void addProjectile(T type, int dmg, int frame, double vecX, double vecY, int offX, int offY)
+    protected P addProjectile(T type, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        addProjectile(type, -1, 0, dmg, frame, vecX, vecY, offX, offY, null);
+        return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
@@ -251,15 +250,15 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param type The projectile type.
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param dmg The projectile damage.
-     * @param frame The projectile frame.
      * @param vecX The horizontal projectile move.
      * @param vecY The vertical projectile move.
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
+     * @return The created projectile.
      */
-    protected void addProjectile(T type, int id, int dmg, int frame, double vecX, double vecY, int offX, int offY)
+    protected P addProjectile(T type, int id, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        addProjectile(type, id, 0, dmg, frame, vecX, vecY, offX, offY, null);
+        return addProjectile(type, id, 0, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
@@ -268,15 +267,15 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param type The projectile type.
      * @param delay delay before be thrown.
      * @param dmg The projectile damage.
-     * @param frame The projectile frame.
      * @param vecX The horizontal projectile move.
      * @param vecY The vertical projectile move.
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
+     * @return The created projectile.
      */
-    protected void addProjectile(T type, long delay, int dmg, int frame, double vecX, double vecY, int offX, int offY)
+    protected P addProjectile(T type, long delay, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        addProjectile(type, -1, delay, dmg, frame, vecX, vecY, offX, offY, null);
+        return addProjectile(type, -1, delay, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
@@ -286,15 +285,14 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param delay delay before be thrown.
      * @param dmg The projectile damage.
-     * @param frame The projectile frame.
      * @param vecX The horizontal projectile move.
      * @param vecY The vertical projectile move.
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      * @param target The target reference.
+     * @return The created projectile.
      */
-    private void addProjectile(T type, int id, long delay, int dmg, int frame, double vecX, double vecY, int offX,
-            int offY, E target)
+    private P addProjectile(T type, int id, long delay, int dmg, double vecX, double vecY, int offX, int offY, E target)
     {
         final P projectile = factory.createProjectile(type);
 
@@ -310,5 +308,6 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         projectile.setDelay(delay);
 
         handler.add(projectile);
+        return projectile;
     }
 }

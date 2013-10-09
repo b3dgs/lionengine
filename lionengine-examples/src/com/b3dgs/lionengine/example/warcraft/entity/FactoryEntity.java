@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.entity.human.FactoryEntityHuman;
 import com.b3dgs.lionengine.example.warcraft.entity.orc.FactoryEntityOrc;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
@@ -32,7 +31,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * Factory entity implementation.
  */
 public class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupSurfaceGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Context. */
     private Context context;
@@ -42,8 +41,8 @@ public class FactoryEntity
      */
     public FactoryEntity()
     {
-        super(TypeEntity.class);
-        loadAll(TypeEntity.values());
+        super(EntityType.class);
+        loadAll(EntityType.values());
     }
 
     /**
@@ -61,7 +60,7 @@ public class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(TypeEntity type)
+    public Entity createEntity(EntityType type)
     {
         Check.notNull(type, "The type must not be null !");
         switch (type.race)
@@ -84,7 +83,7 @@ public class FactoryEntity
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(TypeEntity id)
+    protected SetupSurfaceGame createSetup(EntityType id)
     {
         return new SetupSurfaceGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
     }

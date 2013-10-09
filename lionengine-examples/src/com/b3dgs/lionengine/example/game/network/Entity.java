@@ -36,8 +36,6 @@ public abstract class Entity
         extends EntityPlatform
         implements Networkable
 {
-    /** Zero force instance. */
-    protected static final Force ZERO_FORCE = new Force(0.0, 0.0);
     /** Desired fps value. */
     protected final int desiredFps;
     /** Jump force. */
@@ -101,7 +99,7 @@ public abstract class Entity
         this.map = map;
         animIdle = getDataAnimation("idle");
         animWalk = getDataAnimation("walk");
-        animDie = getDataAnimation("die");
+        animDie = getDataAnimation("dead");
         this.desiredFps = desiredFps;
         this.server = server;
         networkableModel = new NetworkableModel();
@@ -114,6 +112,9 @@ public abstract class Entity
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
         setFrameOffsets(getWidth() / 2, 1);
+        addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
+        addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);
     }
 
     /**
@@ -402,8 +403,8 @@ public abstract class Entity
      */
     protected void resetMovementSpeed()
     {
-        movementForce.setForce(Entity.ZERO_FORCE);
-        movementForceDest.setForce(Entity.ZERO_FORCE);
+        movementForce.setForce(Force.ZERO);
+        movementForceDest.setForce(Force.ZERO);
     }
 
     /**

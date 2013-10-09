@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
+import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
 
 /**
- * Barracks building implementation. This building allows to create new grunt and spearman.
+ * Barracks building implementation. This building allows to create new grunt.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Barracks
         extends BuildingProducer
@@ -35,6 +36,6 @@ final class Barracks
     Barracks(Context context)
     {
         super(EntityType.BARRACKS_ORC, context);
-        addSkill(context.factoryEntity, 0, SkillType.PRODUCE_GRUNT, 0);
+        addSkill(context.factoryEntity, 0, SkillType.PRODUCE_PEON, 0);
     }
 }

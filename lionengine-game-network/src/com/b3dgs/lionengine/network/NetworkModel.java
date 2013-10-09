@@ -50,9 +50,9 @@ public abstract class NetworkModel<L extends ClientListener>
      */
     public NetworkModel(NetworkMessageDecoder decoder)
     {
-        this.messagesOut = new ArrayList<>(4);
-        this.messagesIn = new ArrayList<>(4);
-        this.listeners = new ArrayList<>(1);
+        messagesOut = new ArrayList<>(4);
+        messagesIn = new ArrayList<>(4);
+        listeners = new ArrayList<>(1);
         this.decoder = decoder;
     }
 
@@ -63,7 +63,7 @@ public abstract class NetworkModel<L extends ClientListener>
      */
     public void addListener(L listener)
     {
-        this.listeners.add(listener);
+        listeners.add(listener);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class NetworkModel<L extends ClientListener>
      */
     public void removeListener(L listener)
     {
-        this.listeners.remove(listener);
+        listeners.remove(listener);
     }
 
     /**
@@ -92,7 +92,7 @@ public abstract class NetworkModel<L extends ClientListener>
         {
             buffer.skipBytes(3);
             message.decode(type, from, dest, buffer);
-            this.messagesIn.add(message);
+            messagesIn.add(message);
         }
     }
 
@@ -103,18 +103,18 @@ public abstract class NetworkModel<L extends ClientListener>
     @Override
     public void addMessage(NetworkMessage message)
     {
-        this.messagesOut.add(message);
+        messagesOut.add(message);
     }
 
     @Override
     public void addMessages(Collection<NetworkMessage> messages)
     {
-        this.messagesOut.addAll(messages);
+        messagesOut.addAll(messages);
     }
 
     @Override
     public Collection<NetworkMessage> getMessages()
     {
-        return this.messagesIn;
+        return messagesIn;
     }
 }

@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.warcraft.projectile;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.type.TypeProjectile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
@@ -29,15 +28,15 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  * Factory projectile implementation.
  */
 public final class FactoryProjectile
-        extends FactoryProjectileGame<TypeProjectile, Projectile, SetupSurfaceGame>
+        extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
 {
     /**
      * Constructor.
      */
     public FactoryProjectile()
     {
-        super(TypeProjectile.class);
-        loadAll(TypeProjectile.values());
+        super(ProjectileType.class);
+        loadAll(ProjectileType.values());
     }
 
     /*
@@ -45,21 +44,21 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(TypeProjectile type)
+    public Projectile createProjectile(ProjectileType type)
     {
         switch (type)
         {
             case spear:
-                return new Spear(getSetup(TypeProjectile.spear));
+                return new Spear(getSetup(ProjectileType.spear));
             case arrow:
-                return new Arrow(getSetup(TypeProjectile.arrow));
+                return new Arrow(getSetup(ProjectileType.arrow));
             default:
                 throw new LionEngineException("Projectile not found: " + type.name());
         }
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(TypeProjectile id)
+    protected SetupSurfaceGame createSetup(ProjectileType id)
     {
         return new SetupSurfaceGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
                 false);

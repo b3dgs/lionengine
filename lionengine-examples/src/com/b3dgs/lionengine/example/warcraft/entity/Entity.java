@@ -23,12 +23,11 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.Map;
 import com.b3dgs.lionengine.example.warcraft.Player;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.Skill;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
@@ -39,10 +38,10 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  */
 public abstract class Entity
         extends EntityRts
-        implements SkilledServices<TypeSkill, Skill>
+        implements SkilledServices<SkillType, Skill>
 {
     /** Entity type. */
-    public final TypeEntity type;
+    public final EntityType type;
     /** Map reference. */
     protected final Map map;
     /** Entity life. */
@@ -52,7 +51,7 @@ public abstract class Entity
     /** Entity icon number. */
     private final Sprite icon;
     /** Skilled model. */
-    private final SkilledModel<TypeSkill, Skill> skilled;
+    private final SkilledModel<SkillType, Skill> skilled;
     /** Dead flag. */
     private boolean dead;
     /** Player owner (null if none). */
@@ -66,7 +65,7 @@ public abstract class Entity
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected Entity(TypeEntity id, Context context)
+    protected Entity(EntityType id, Context context)
     {
         super(context.factoryEntity.getSetup(id), context.map);
         type = id;
@@ -91,7 +90,7 @@ public abstract class Entity
      * @param id The skill id.
      * @param priority The position number.
      */
-    public void addSkill(Context context, int panel, TypeSkill id, int priority)
+    public void addSkill(Context context, int panel, SkillType id, int priority)
     {
         final Skill skill = context.factorySkill.createSkill(id);
         skill.setOwner(this);
@@ -245,13 +244,13 @@ public abstract class Entity
     }
 
     @Override
-    public Skill getSkill(int panel, TypeSkill id)
+    public Skill getSkill(int panel, SkillType id)
     {
         return skilled.getSkill(panel, id);
     }
 
     @Override
-    public void removeSkill(int panel, TypeSkill id)
+    public void removeSkill(int panel, SkillType id)
     {
         skilled.removeSkill(panel, id);
     }

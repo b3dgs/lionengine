@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TownHall
         extends BuildingProducer

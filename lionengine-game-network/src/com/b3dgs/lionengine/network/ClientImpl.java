@@ -257,13 +257,16 @@ public class ClientImpl
                 out.writeByte(NetworkMessageSystemId.PING);
                 out.writeByte(clientId);
                 out.flush();
+                pingTimer.stop();
                 pingTimer.start();
+                pingRequestTimer.stop();
                 pingRequestTimer.start();
                 bandwidth += 2;
             }
             catch (final IOException exception)
             {
-                // Ignore
+                Verbose.warning(Client.class, "sendMessage", "Unable to send the messages for client: ",
+                        String.valueOf(clientId));
             }
         }
         // Send messages
@@ -294,6 +297,7 @@ public class ClientImpl
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;
+            bandwidthTimer.stop();
             bandwidthTimer.start();
         }
         messagesOut.clear();

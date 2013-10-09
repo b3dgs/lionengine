@@ -58,6 +58,8 @@ class Mario
         timerDie = new Timing();
         jumpForceValue = 8.0;
         movementSpeedValue = 3.0;
+        addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
+        addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);
     }
 
     /**
@@ -172,6 +174,7 @@ class Mario
                 message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
                 message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
                 addNetworkMessage(message);
+                networkLocation.stop();
                 networkLocation.start();
             }
         }
@@ -218,7 +221,7 @@ class Mario
     public void doRespawn()
     {
         mirror(false);
-        setLocation(80, 32);
+        teleport(80, 32);
         dead = false;
     }
 

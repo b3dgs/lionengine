@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.warcraft.projectile;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeProjectile;
 import com.b3dgs.lionengine.example.warcraft.weapon.Weapon;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
@@ -27,12 +26,10 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
  * Launcher base implementation.
  */
 public final class LauncherProjectile
-        extends LauncherProjectileGame<TypeProjectile, Entity, Weapon, Projectile>
+        extends LauncherProjectileGame<ProjectileType, Entity, Weapon, Projectile>
 {
     /** Type projectile. */
-    private final TypeProjectile type;
-    /** The projectile frame. */
-    private int frame;
+    private final ProjectileType type;
 
     /**
      * Constructor.
@@ -40,20 +37,10 @@ public final class LauncherProjectile
      * @param type The projectile type.
      * @param context The context reference.
      */
-    public LauncherProjectile(TypeProjectile type, Context context)
+    public LauncherProjectile(ProjectileType type, Context context)
     {
         super(context.factoryProjectile, context.handlerProjectile);
         this.type = type;
-    }
-
-    /**
-     * Set the projectile frame.
-     * 
-     * @param frame The projectile frame.
-     */
-    public void setFrame(int frame)
-    {
-        this.frame = frame;
     }
 
     /*
@@ -69,6 +56,7 @@ public final class LauncherProjectile
     @Override
     protected void launchProjectile(Weapon owner, Entity target)
     {
-        addProjectile(type, owner.getAttackDamages(), frame, target, 2.5, 0, 0);
+        final Projectile projectile = addProjectile(type, owner.getAttackDamages(), target, 2.5, 0, 0);
+        projectile.setFrame(owner.getFrame());
     }
 }

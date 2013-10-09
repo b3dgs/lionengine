@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.example.tyrian.background.Background;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.tyrian.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.FactoryShip;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;

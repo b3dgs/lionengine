@@ -22,12 +22,11 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.Cursor;
 import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
-import com.b3dgs.lionengine.example.warcraft.HandlerEntity;
-import com.b3dgs.lionengine.example.warcraft.Map;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.human.FactorySkillHuman;
 import com.b3dgs.lionengine.example.warcraft.skill.orc.FactorySkillOrc;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.skill.FactorySkillRts;
 
@@ -35,7 +34,7 @@ import com.b3dgs.lionengine.game.rts.skill.FactorySkillRts;
  * Skill factory implementation.
  */
 public final class FactorySkill
-        extends FactorySkillRts<TypeSkill, SetupSkill, Skill>
+        extends FactorySkillRts<SkillType, SetupSkill, Skill>
 {
     /** Production factory. */
     public final FactoryProduction factoryProduction;
@@ -64,7 +63,7 @@ public final class FactorySkill
     public FactorySkill(HandlerEntity handler, FactoryProduction factoryProduction, Cursor cursor, Map map,
             TimedMessage message)
     {
-        super(TypeSkill.class);
+        super(SkillType.class);
         this.handler = handler;
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
@@ -73,7 +72,7 @@ public final class FactorySkill
         background.load(false);
         factorySkillHuman = new FactorySkillHuman(this, handler, cursor, map);
         factorySkillOrc = new FactorySkillOrc(this, handler, cursor, map);
-        loadAll(TypeSkill.values());
+        loadAll(SkillType.values());
     }
 
     /*
@@ -81,7 +80,7 @@ public final class FactorySkill
      */
 
     @Override
-    public Skill createSkill(TypeSkill id)
+    public Skill createSkill(SkillType id)
     {
         switch (id.race)
         {
@@ -95,7 +94,7 @@ public final class FactorySkill
     }
 
     @Override
-    protected SetupSkill createSetup(TypeSkill id)
+    protected SetupSkill createSetup(SkillType id)
     {
         return new SetupSkill(Media.get(ResourcesLoader.SKILLS_DIR, id.name() + ".xml"), background, factoryProduction,
                 message);

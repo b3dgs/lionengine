@@ -18,12 +18,13 @@
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.WeaponType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
-import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 
 /**
  * Axe weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Axe
         extends Weapon
@@ -34,7 +35,7 @@ final class Axe
      * @param user The user reference.
      * @param context The context reference.
      */
-    Axe(AttackerUsedServices<Entity> user, Context context)
+    Axe(UnitAttacker user, Context context)
     {
         super(WeaponType.AXE, user, context);
     }

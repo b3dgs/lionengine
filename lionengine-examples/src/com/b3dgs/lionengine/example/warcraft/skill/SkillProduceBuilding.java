@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.example.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.warcraft.Cursor;
+import com.b3dgs.lionengine.example.warcraft.CursorType;
 import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
-import com.b3dgs.lionengine.example.warcraft.Map;
 import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeCursor;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -40,7 +39,7 @@ public abstract class SkillProduceBuilding
     /** Production factory. */
     protected final FactoryProduction factoryProduction;
     /** Entity type to produce. */
-    private final TypeEntity entity;
+    private final EntityType entity;
     /** Production width in tile. */
     private final int width;
     /** Production height in tile. */
@@ -65,7 +64,7 @@ public abstract class SkillProduceBuilding
      * @param cursor The cursor reference.
      * @param map The map reference.
      */
-    protected SkillProduceBuilding(TypeSkill id, SetupSkill setup, TypeEntity entity, Cursor cursor, Map map)
+    protected SkillProduceBuilding(SkillType id, SetupSkill setup, EntityType entity, Cursor cursor, Map map)
     {
         super(id, setup);
         this.cursor = cursor;
@@ -110,7 +109,7 @@ public abstract class SkillProduceBuilding
         {
             setActive(true);
             panel.ordered();
-            this.cursor.setType(TypeCursor.BOX);
+            this.cursor.setType(CursorType.BOX);
         }
         else if (owner instanceof UnitWorker && toProduce != null)
         {
@@ -128,7 +127,7 @@ public abstract class SkillProduceBuilding
             final ProducibleEntity producible = factoryProduction.createProducible(entity, 0, 0);
             if (worker.canProduce(producible))
             {
-                cursor.setType(TypeCursor.BOX);
+                cursor.setType(CursorType.BOX);
                 cursor.setBoxColor(ColorRgba.GREEN);
                 cursor.setBoxSize(width, height);
                 toProduce = producible;
@@ -137,7 +136,7 @@ public abstract class SkillProduceBuilding
             {
                 worker.notifyCanNotProduce(producible);
                 toProduce = null;
-                cursor.setType(TypeCursor.POINTER);
+                cursor.setType(CursorType.POINTER);
                 setActive(false);
                 panel.resetOrder();
             }

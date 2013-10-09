@@ -19,14 +19,14 @@ package com.b3dgs.lionengine.example.warcraft.skill.human;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.warcraft.Cursor;
-import com.b3dgs.lionengine.example.warcraft.HandlerEntity;
-import com.b3dgs.lionengine.example.warcraft.Map;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.Cancel;
 import com.b3dgs.lionengine.example.warcraft.skill.FactorySkill;
 import com.b3dgs.lionengine.example.warcraft.skill.Move;
 import com.b3dgs.lionengine.example.warcraft.skill.Skill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.skill.Stop;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 
 /**
  * Skill factory implementation.
@@ -64,7 +64,7 @@ public final class FactorySkillHuman
      * @param id The skill id.
      * @return The skill instance.
      */
-    public Skill createSkill(TypeSkill id)
+    public Skill createSkill(SkillType id)
     {
         switch (id)
         {

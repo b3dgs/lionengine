@@ -36,7 +36,7 @@ public final class AppMario
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
-    private static final String RESOURCES = Media.getPath("resources", "platform", "mario");
+    private static final String RESOURCES = Media.getPath("resources", "mario");
 
     /**
      * Main function.

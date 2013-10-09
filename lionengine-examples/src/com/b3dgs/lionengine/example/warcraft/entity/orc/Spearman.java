@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
+import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 
 /**
  * Spearman implementation.
@@ -36,10 +36,10 @@ final class Spearman
      */
     Spearman(Context context)
     {
-        super(TypeEntity.spearman, context);
-        addWeapon(context, TypeWeapon.spear, 0);
-        addSkill(context, 0, TypeSkill.move_orc, 0);
-        addSkill(context, 0, TypeSkill.stop_orc, 1);
-        addSkill(context, 0, TypeSkill.attack_spear, 2);
+        super(EntityType.spearman, context);
+        addWeapon(context, WeaponType.spear, 0);
+        addSkill(context, 0, SkillType.move_orc, 0);
+        addSkill(context, 0, SkillType.stop_orc, 1);
+        addSkill(context, 0, SkillType.attack_spear, 2);
     }
 }

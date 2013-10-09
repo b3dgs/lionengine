@@ -18,11 +18,16 @@
 package com.b3dgs.lionengine.example.game.rts.ability;
 
 import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.FactoryProjectile;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.FactoryWeapon;
 
 /**
  * Context container.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Context
 {

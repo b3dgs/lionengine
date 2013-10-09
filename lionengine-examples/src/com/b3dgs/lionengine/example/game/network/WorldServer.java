@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.NetworkedWorldServer;
 
 /**
- * World implementation using AbstractWorld.
+ * World server implementation.
  */
-class WorldServer
+final class WorldServer
         extends World<NetworkedWorldModelServer>
         implements NetworkedWorldServer
 {

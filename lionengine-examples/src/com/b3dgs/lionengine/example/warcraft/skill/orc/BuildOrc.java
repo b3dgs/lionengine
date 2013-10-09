@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillBuild;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Buildings standard human skill implementation.
@@ -34,6 +34,6 @@ final class BuildOrc
      */
     BuildOrc(SetupSkill setup)
     {
-        super(TypeSkill.building_standard_orc, setup);
+        super(SkillType.building_standard_orc, setup);
     }
 }

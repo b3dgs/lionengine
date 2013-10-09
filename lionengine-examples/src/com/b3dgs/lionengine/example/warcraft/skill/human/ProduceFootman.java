@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Produce grunt implementation.
@@ -35,6 +35,6 @@ final class ProduceFootman
      */
     ProduceFootman(SetupSkill setup)
     {
-        super(TypeSkill.produce_footman, setup, TypeEntity.footman);
+        super(SkillType.produce_footman, setup, EntityType.footman);
     }
 }

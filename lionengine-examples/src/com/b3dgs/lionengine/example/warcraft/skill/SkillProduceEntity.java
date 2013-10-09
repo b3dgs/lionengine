@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.skill;
 import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
 import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -35,7 +34,7 @@ public class SkillProduceEntity
     /** Production factory. */
     protected final FactoryProduction factoryProduction;
     /** Entity type to produce. */
-    private final TypeEntity entity;
+    private final EntityType entity;
     /** The production cost gold. */
     private final int gold;
     /** The production cost wood. */
@@ -48,12 +47,12 @@ public class SkillProduceEntity
      * @param setup The setup skill reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceEntity(TypeSkill id, SetupSkill setup, TypeEntity entity)
+    protected SkillProduceEntity(SkillType id, SetupSkill setup, EntityType entity)
     {
         super(id, setup);
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getConfig(TypeEntity.barracks_orc);
+        final Configurable config = factoryProduction.getConfig(EntityType.barracks_orc);
         gold = config.getDataInteger("gold", "cost");
         wood = config.getDataInteger("wood", "cost");
         setOrder(false);

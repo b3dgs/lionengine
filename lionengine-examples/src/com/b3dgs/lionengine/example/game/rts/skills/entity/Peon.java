@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
+import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
 
 /**
  * Peon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Peon
         extends UnitWorker

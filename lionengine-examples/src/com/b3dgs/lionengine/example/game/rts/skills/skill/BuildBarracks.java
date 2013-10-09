@@ -20,17 +20,18 @@ package com.b3dgs.lionengine.example.game.rts.skills.skill;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.example.game.rts.skills.CursorType;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.FactoryProduction;
 import com.b3dgs.lionengine.example.game.rts.skills.ProducibleEntity;
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.UnitWorker;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
- * Build skill implementation.
+ * Build barracks implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class BuildBarracks
         extends Skill

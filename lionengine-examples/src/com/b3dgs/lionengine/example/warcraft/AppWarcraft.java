@@ -42,7 +42,7 @@ public final class AppWarcraft
     /** Configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
     /** Program path. */
-    public static final String PATH = Media.getPath("resources", "rts");
+    public static final String PATH = Media.getPath("resources", "warcraft");
 
     /**
      * Main function.

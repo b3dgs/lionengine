@@ -22,8 +22,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
-import com.b3dgs.lionengine.example.game.rts.ability.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.ProductionCost;
 import com.b3dgs.lionengine.example.game.rts.ability.ResourceType;
@@ -42,6 +40,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Worker unit implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class UnitWorker
         extends Unit
@@ -181,7 +181,7 @@ public abstract class UnitWorker
             final Entity entity = handler.getEntityAt(resource.getLocationInTileX(), resource.getLocationInTileY());
             // Allow worker to enter inside the gold mine
             setIgnoreId(entity.getId(), true);
-            return getDistanceInTile(entity, true) < 1;
+            return getDistanceInTile(entity, false) < 1;
         }
         catch (final EntityNotFoundException entity)
         {
@@ -193,7 +193,7 @@ public abstract class UnitWorker
     public boolean canCarry()
     {
         setIgnoreId(townHall.getId(), true);
-        return getDistanceInTile(townHall, true) <= 1;
+        return getDistanceInTile(townHall, false) < 1;
     }
 
     @Override
@@ -391,7 +391,7 @@ public abstract class UnitWorker
     @Override
     public void notifyExtracted(ResourceType type, int currentQuantity)
     {
-        // Nothing to do
+        clearIgnoredId();
     }
 
     @Override
@@ -432,6 +432,7 @@ public abstract class UnitWorker
         }
         setVisible(true);
         setActive(true);
+        clearIgnoredId();
         // Can retrieve resources here (using type and droppedQuantity)
     }
 }

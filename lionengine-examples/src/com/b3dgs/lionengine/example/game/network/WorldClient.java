@@ -182,7 +182,7 @@ class WorldClient
     public void notifyConnectionEstablished(Byte id, String name)
     {
         final Mario mario = factory.createMario(false);
-        mario.setLocation(64, 32);
+        mario.teleport(64, 32);
         mario.setName(name);
         marioClients.put(id, mario);
         mario.setClientId(id);

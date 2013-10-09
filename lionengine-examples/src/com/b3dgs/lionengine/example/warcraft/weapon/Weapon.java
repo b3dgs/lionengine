@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.weapon;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 
@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 public abstract class Weapon
         extends WeaponModel<Entity, Attacker>
 {
+    /** Frame. */
+    private int frame;
+
     /**
      * Constructor.
      * 
@@ -37,7 +40,7 @@ public abstract class Weapon
      * @param user The user reference.
      * @param context The context reference.
      */
-    protected Weapon(TypeWeapon id, Attacker user, Context context)
+    protected Weapon(WeaponType id, Attacker user, Context context)
     {
         super(user);
 
@@ -62,5 +65,24 @@ public abstract class Weapon
     public Attacker getAttacker()
     {
         return user;
+    }
+
+    /**
+     * Get the frame number.
+     * 
+     * @return The frame number.
+     */
+    public int getFrame()
+    {
+        return frame;
+    }
+
+    /*
+     * WeaponModel
+     */
+    @Override
+    public void notifyAttackEnded(int damages, Entity target)
+    {
+        frame = user.getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER;
     }
 }

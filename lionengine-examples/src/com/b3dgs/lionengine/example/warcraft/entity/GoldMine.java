@@ -19,8 +19,7 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourceProgressive;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeResource;
+import com.b3dgs.lionengine.example.warcraft.ResourceType;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 
 /**
@@ -28,12 +27,12 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
  */
 public final class GoldMine
         extends Building
-        implements Extractible<TypeResource>
+        implements Extractible<ResourceType>
 {
     /** Gold amount. */
     private final ResourceProgressive gold;
     /** Resource type. */
-    private final TypeResource typeResource;
+    private final ResourceType typeResource;
 
     /**
      * Constructor.
@@ -42,8 +41,8 @@ public final class GoldMine
      */
     GoldMine(Context context)
     {
-        super(TypeEntity.gold_mine, context);
-        typeResource = TypeResource.GOLD;
+        super(EntityType.gold_mine, context);
+        typeResource = ResourceType.GOLD;
         gold = new ResourceProgressive(100);
         setFrame(1);
     }
@@ -92,7 +91,7 @@ public final class GoldMine
     }
 
     @Override
-    public TypeResource getResourceType()
+    public ResourceType getResourceType()
     {
         return typeResource;
     }

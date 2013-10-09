@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
@@ -41,7 +40,7 @@ public abstract class Attack
      * @param setup The setup skill reference.
      * @param handler The handler reference.
      */
-    protected Attack(TypeSkill id, SetupSkill setup, HandlerEntity handler)
+    protected Attack(SkillType id, SetupSkill setup, HandlerEntity handler)
     {
         super(id, setup);
         this.handler = handler;

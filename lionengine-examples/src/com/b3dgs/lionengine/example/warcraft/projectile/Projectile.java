@@ -34,6 +34,8 @@ public abstract class Projectile
 {
     /** Surface. */
     private final SpriteTiled sprite;
+    /** Frame. */
+    private int frame;
 
     /**
      * Constructor.
@@ -47,6 +49,16 @@ public abstract class Projectile
         sprite.load(false);
     }
 
+    /**
+     * Set the frame.
+     * 
+     * @param frame The frame.
+     */
+    public void setFrame(int frame)
+    {
+        this.frame = frame;
+    }
+
     /*
      * ProjectileGame
      */
@@ -54,7 +66,7 @@ public abstract class Projectile
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, 0, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        sprite.render(g, frame, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
     }
 
     @Override

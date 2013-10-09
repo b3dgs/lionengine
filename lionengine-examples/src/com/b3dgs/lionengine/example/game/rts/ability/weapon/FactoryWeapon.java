@@ -20,17 +20,18 @@ package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.WeaponType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
 import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
 
 /**
  * Weapons factory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryWeaponRts<WeaponType, Entity, Weapon, AttackerUsedServices<Entity>>
+        extends FactoryWeaponRts<WeaponType, Entity, Weapon, UnitAttacker>
 {
     /** Weapons path. */
     private static final String WEAPONS_DIR = "weapons";
@@ -61,7 +62,7 @@ public final class FactoryWeapon
      */
 
     @Override
-    public Weapon createWeapon(WeaponType id, AttackerUsedServices<Entity> user)
+    public Weapon createWeapon(WeaponType id, UnitAttacker user)
     {
         switch (id)
         {

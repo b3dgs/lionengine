@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.lionheart.editor;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.HandlerEntity;
+import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * Entity editor handler.
@@ -36,7 +37,7 @@ public class Handler
      */
     public Handler(FactoryEntity factoryEntity)
     {
-        super(null, factoryEntity);
+        super(new CameraPlatform(320, 240), factoryEntity);
     }
 
     /**

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
@@ -35,7 +34,7 @@ public final class Move
      */
     public Move(SetupSkill setup)
     {
-        super(TypeSkill.move_orc, setup);
+        super(SkillType.move_orc, setup);
         setOrder(true);
     }
 

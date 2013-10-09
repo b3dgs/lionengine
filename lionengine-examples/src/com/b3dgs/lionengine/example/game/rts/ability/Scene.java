@@ -29,10 +29,15 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.GoldMine;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitWorker;
+import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
+import com.b3dgs.lionengine.example.game.rts.ability.map.Tile;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -40,6 +45,8 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Scene
         extends Sequence

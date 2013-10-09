@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -33,7 +32,7 @@ public abstract class SkillBuild
      * @param id The skill id.
      * @param setup The setup skill reference.
      */
-    protected SkillBuild(TypeSkill id, SetupSkill setup)
+    protected SkillBuild(SkillType id, SetupSkill setup)
     {
         super(id, setup);
     }

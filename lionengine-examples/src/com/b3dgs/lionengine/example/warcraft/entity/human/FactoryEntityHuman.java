@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.entity.human;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 
 /**
  * Factory entity implementation.
@@ -34,7 +34,7 @@ public final class FactoryEntityHuman
      * @param context The context reference.
      * @return The entity instance.
      */
-    public static Entity createEntity(TypeEntity type, Context context)
+    public static Entity createEntity(EntityType type, Context context)
     {
         switch (type)
         {

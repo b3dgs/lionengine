@@ -29,7 +29,7 @@ class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
-    private static final String ENTITY_DIR = "entity";
+    private static final String ENTITY_DIR = "entities";
     /** Entity desired fps. */
     private final int desiredFps;
     /** Map reference. */

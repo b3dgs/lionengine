@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.warcraft.skill.Attack;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Sword attack skill.
@@ -36,6 +36,6 @@ final class AttackSword
      */
     AttackSword(SetupSkill setup, HandlerEntity handler)
     {
-        super(TypeSkill.attack_bow, setup, handler);
+        super(SkillType.attack_bow, setup, handler);
     }
 }

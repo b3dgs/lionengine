@@ -20,16 +20,14 @@ package com.b3dgs.lionengine.example.game.rts.skills.entity;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
- * Factory entity implementation, creating entity from simple function. This allows to set correctly the new instance,
- * depending of what we need. For example, if we want to link another component to any of our entities, we just have to
- * perform the link in the corresponding function (here createPeon), and that's all. Any object that want to create new
- * instances just need a reference to this factory.
+ * Factory entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
         extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
@@ -69,16 +67,8 @@ public class FactoryEntity
         {
             case PEON:
                 return new Peon(context);
-            case GRUNT:
-                return new Grunt(context);
-            case SPEARMAN:
-                return new Spearman(context);
-            case TOWNHALL_ORC:
-                return new TownHall(context);
             case BARRACKS_ORC:
                 return new Barracks(context);
-            case GOLD_MINE:
-                return new GoldMine(context);
             default:
                 throw new LionEngineException("Entity not found: " + type.name());
         }

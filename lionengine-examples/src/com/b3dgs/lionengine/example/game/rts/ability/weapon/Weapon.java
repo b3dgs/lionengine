@@ -18,18 +18,23 @@
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.WeaponType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.purview.Configurable;
-import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
 import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 
 /**
  * Weapon base implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Weapon
-        extends WeaponModel<Entity, AttackerUsedServices<Entity>>
+        extends WeaponModel<Entity, UnitAttacker>
 {
+    /** Frame. */
+    private int frame;
+
     /**
      * Constructor.
      * 
@@ -37,7 +42,7 @@ public abstract class Weapon
      * @param user The user reference.
      * @param context The context reference.
      */
-    protected Weapon(WeaponType id, AttackerUsedServices<Entity> user, Context context)
+    protected Weapon(WeaponType id, UnitAttacker user, Context context)
     {
         super(user);
 
@@ -52,5 +57,25 @@ public abstract class Weapon
         final int dmgMin = config.getDataInteger("min", "damages");
         final int dmgMax = config.getDataInteger("max", "damages");
         setAttackDamages(dmgMin, dmgMax);
+    }
+
+    /**
+     * Get the frame.
+     * 
+     * @return The frame.
+     */
+    public int getFrame()
+    {
+        return frame;
+    }
+
+    /*
+     * WeaponModel
+     */
+
+    @Override
+    public void notifyAttackEnded(int damages, Entity target)
+    {
+        frame = user.getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER;
     }
 }

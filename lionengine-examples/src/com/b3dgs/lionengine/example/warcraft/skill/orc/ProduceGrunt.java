@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Produce grunt implementation.
@@ -35,6 +35,6 @@ final class ProduceGrunt
      */
     ProduceGrunt(SetupSkill setup)
     {
-        super(TypeSkill.produce_grunt, setup, TypeEntity.grunt);
+        super(SkillType.produce_grunt, setup, EntityType.grunt);
     }
 }

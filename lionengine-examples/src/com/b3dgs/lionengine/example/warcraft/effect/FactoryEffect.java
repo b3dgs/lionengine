@@ -29,15 +29,15 @@ import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
  * Factory effect implementation.
  */
 public class FactoryEffect
-        extends FactoryEffectGame<TypeEffect, SetupSurfaceGame, Effect>
+        extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
      */
     public FactoryEffect()
     {
-        super(TypeEffect.class);
-        loadAll(TypeEffect.values());
+        super(EffectType.class);
+        loadAll(EffectType.values());
     }
 
     /*
@@ -45,23 +45,23 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(TypeEffect id)
+    public Effect createEffect(EffectType id)
     {
         switch (id)
         {
             case CONSTRUCTION:
-                return new Construction(getSetup(TypeEffect.CONSTRUCTION));
+                return new Construction(getSetup(EffectType.CONSTRUCTION));
             case BURNING:
-                return new Burning(getSetup(TypeEffect.BURNING));
+                return new Burning(getSetup(EffectType.BURNING));
             case EXPLODE:
-                return new Explode(getSetup(TypeEffect.EXPLODE));
+                return new Explode(getSetup(EffectType.EXPLODE));
             default:
                 throw new LionEngineException("Unknown id: " + id);
         }
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(TypeEffect id)
+    protected SetupSurfaceGame createSetup(EffectType id)
     {
         return new SetupSurfaceGame(Media.get(AppWarcraft.EFFECTS_DIR, id.name().toLowerCase(Locale.ENGLISH)
                 + AppWarcraft.CONFIG_FILE_EXTENSION));

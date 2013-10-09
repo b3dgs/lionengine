@@ -23,6 +23,9 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Spear projectile implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.projectile
  */
 final class Spear
         extends Projectile

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -34,7 +33,7 @@ public final class Stop
      */
     public Stop(SetupSkill setup)
     {
-        super(TypeSkill.stop_orc, setup);
+        super(SkillType.stop_orc, setup);
     }
 
     /*

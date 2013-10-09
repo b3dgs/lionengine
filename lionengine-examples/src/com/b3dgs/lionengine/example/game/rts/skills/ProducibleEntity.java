@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills;
 
+import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.game.rts.ability.producer.Producible;
 
 /**
  * Producible entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.game.rts.ability
  */
 public final class ProducibleEntity
         extends Producible<EntityType, ProductionCost>

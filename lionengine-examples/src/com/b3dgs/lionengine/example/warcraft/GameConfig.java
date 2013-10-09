@@ -17,23 +17,21 @@
  */
 package com.b3dgs.lionengine.example.warcraft;
 
-import com.b3dgs.lionengine.example.warcraft.type.TypeRace;
-
 /**
  * Game configuration.
  */
 public class GameConfig
 {
     /** Player race. */
-    final TypeRace player;
+    public final RaceType player;
     /** Opponent race. */
-    final TypeRace opponent;
+    public final RaceType opponent;
     /** Game map. */
-    final String map;
+    public final String map;
     /** Fog of war state. */
-    final boolean hide;
+    public final boolean hide;
     /** Fog state. */
-    final boolean fog;
+    public final boolean fog;
 
     /**
      * Constructor.
@@ -44,7 +42,7 @@ public class GameConfig
      * @param hide <code>true</code> to enable fog of war map hiding, <code>false</code> else.
      * @param fog <code>true</code> to enable fog map, <code>false</code> else.
      */
-    public GameConfig(TypeRace player, TypeRace opponent, String map, boolean hide, boolean fog)
+    public GameConfig(RaceType player, RaceType opponent, String map, boolean hide, boolean fog)
     {
         this.player = player;
         this.opponent = opponent;

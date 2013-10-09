@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.example.warcraft.entity.human;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
+import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 
 /**
  * Grunt implementation.
@@ -36,10 +36,10 @@ final class Footman
      */
     Footman(Context context)
     {
-        super(TypeEntity.footman, context);
-        addWeapon(context, TypeWeapon.sword, 0);
-        addSkill(context, 0, TypeSkill.move_human, 0);
-        addSkill(context, 0, TypeSkill.stop_human, 1);
-        addSkill(context, 0, TypeSkill.attack_sword, 2);
+        super(EntityType.footman, context);
+        addWeapon(context, WeaponType.sword, 0);
+        addSkill(context, 0, SkillType.move_human, 0);
+        addSkill(context, 0, SkillType.stop_human, 1);
+        addSkill(context, 0, SkillType.attack_sword, 2);
     }
 }

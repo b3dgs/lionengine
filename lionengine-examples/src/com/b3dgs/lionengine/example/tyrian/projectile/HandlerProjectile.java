@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.projectile;
 
-import com.b3dgs.lionengine.example.tyrian.HandlerEntity;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.example.tyrian.entity.HandlerEntity;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.projectile.HandlerProjectileGame;
 

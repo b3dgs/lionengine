@@ -39,10 +39,9 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.GameConfig;
+import com.b3dgs.lionengine.example.warcraft.RaceType;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.Scene;
-import com.b3dgs.lionengine.example.warcraft.type.TypeMenu;
-import com.b3dgs.lionengine.example.warcraft.type.TypeRace;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -64,9 +63,9 @@ public final class Menu
     /** Box inside color (About & GameSelect box). */
     static final ColorRgba COLOR_BOX_IN = new ColorRgba(20, 48, 77);
     /** Available races list. */
-    static final TypeRace[] RACES =
+    static final RaceType[] RACES =
     {
-            TypeRace.HUMAN, TypeRace.ORC
+            RaceType.HUMAN, RaceType.ORC
     };
     /** Available maps list. */
     static final String[] MAPS =
@@ -79,7 +78,7 @@ public final class Menu
             "Revealed", "Hidden"
     };
     /** Current menu. */
-    static TypeMenu menu = TypeMenu.INTRO_UP;
+    static MenuType menu = MenuType.INTRO_UP;
     /** Clicked state. */
     static boolean clicked;
 
@@ -89,7 +88,7 @@ public final class Menu
      * @param name The race enum.
      * @return The race name.
      */
-    private static String format(TypeRace name)
+    private static String format(RaceType name)
     {
         return Menu.format(name.name(), false);
     }
@@ -245,15 +244,15 @@ public final class Menu
         final SpriteTiled arrowButton = Menu.getButton("case3.png", 15, 15);
         arrowButton.load(false);
 
-        buttons[0] = new Button(bigButton, "Start a new game", 104, 93, TypeMenu.NEW);
-        buttons[1] = new Button(bigButton, "Load existing game", 104, 111, TypeMenu.MAIN);
-        buttons[2] = new Button(bigButton, "About", 104, 129, TypeMenu.ABOUT);
-        buttons[3] = new Button(bigButton, "Quit game", 104, 163, TypeMenu.EXIT);
+        buttons[0] = new Button(bigButton, "Start a new game", 104, 93, MenuType.NEW);
+        buttons[1] = new Button(bigButton, "Load existing game", 104, 111, MenuType.MAIN);
+        buttons[2] = new Button(bigButton, "About", 104, 129, MenuType.ABOUT);
+        buttons[3] = new Button(bigButton, "Quit game", 104, 163, MenuType.EXIT);
 
-        buttons[4] = new Button(smallButton, "Ok", 84, 170, TypeMenu.NEW_OUT);
-        buttons[5] = new Button(smallButton, "Cancel", 183, 170, TypeMenu.MAIN);
+        buttons[4] = new Button(smallButton, "Ok", 84, 170, MenuType.NEW_OUT);
+        buttons[5] = new Button(smallButton, "Cancel", 183, 170, MenuType.MAIN);
 
-        buttons[6] = new Button(smallButton, "Back", 133, 170, TypeMenu.MAIN);
+        buttons[6] = new Button(smallButton, "Back", 133, 170, MenuType.MAIN);
 
         choices = new Choice[8];
         choices[0] = new Choice(arrowButton, 142, 100, false);
@@ -272,7 +271,7 @@ public final class Menu
         end = false;
         fog = 0;
         Menu.clicked = false;
-        if (Menu.menu == TypeMenu.INTRO_UP)
+        if (Menu.menu == MenuType.INTRO_UP)
         {
             final Wav sound = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "blizzard.wav"));
             sound.play();
@@ -304,7 +303,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (UtilityMath.time() - introTimer > 3000)
                 {
-                    Menu.menu = TypeMenu.INTRO_DOWN;
+                    Menu.menu = MenuType.INTRO_DOWN;
                 }
                 break;
             case INTRO_DOWN:
@@ -312,7 +311,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
-                    Menu.menu = TypeMenu.MAIN_UP;
+                    Menu.menu = MenuType.MAIN_UP;
                 }
                 break;
             case MAIN_UP:
@@ -322,7 +321,7 @@ public final class Menu
                 {
                     music.setLoop(6300, music.getTicks() - 3680);
                     music.play(true);
-                    Menu.menu = TypeMenu.MAIN;
+                    Menu.menu = MenuType.MAIN;
                 }
                 break;
             case MAIN:
@@ -385,7 +384,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 0)
                 {
-                    Menu.menu = TypeMenu.PLAY;
+                    Menu.menu = MenuType.PLAY;
                 }
                 break;
             case PLAY:
@@ -400,7 +399,7 @@ public final class Menu
                     ffog = true;
                 }
                 music.stop();
-                Menu.menu = TypeMenu.MAIN_UP;
+                Menu.menu = MenuType.MAIN_UP;
                 alpha = 0;
                 final GameConfig config = new GameConfig(Menu.RACES[playerRace], Menu.RACES[opponentRace],
                         Menu.MAPS[map], hide, ffog);

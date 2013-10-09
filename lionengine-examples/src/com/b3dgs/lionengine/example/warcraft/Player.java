@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.example.warcraft.type.TypeResource;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.PlayerRts;
 
@@ -63,7 +62,7 @@ public final class Player
      * @param type The resource type.
      * @param quantity The resource quantity.
      */
-    public void increase(TypeResource type, int quantity)
+    public void increase(ResourceType type, int quantity)
     {
         switch (type)
         {

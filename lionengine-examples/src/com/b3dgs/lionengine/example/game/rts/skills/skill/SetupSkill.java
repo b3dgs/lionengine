@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.rts.skill.SetupSkillRts;
 /**
  * Setup skill implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @author Pierre-Alexandre
  */
 final class SetupSkill
@@ -33,8 +34,6 @@ final class SetupSkill
 {
     /** Skill icon. */
     public final SpriteTiled icon;
-    /** Skill background. */
-    public final SpriteTiled background;
     /** Production factory. */
     final FactoryProduction factoryProduction;
 
@@ -42,13 +41,11 @@ final class SetupSkill
      * Constructor.
      * 
      * @param config The config media.
-     * @param background The skill background.
      * @param factoryProduction The production factory.
      */
-    SetupSkill(Media config, SpriteTiled background, FactoryProduction factoryProduction)
+    SetupSkill(Media config, FactoryProduction factoryProduction)
     {
         super(config);
-        this.background = background;
         this.factoryProduction = factoryProduction;
         icon = Drawable.loadSpriteTiled(Media.get(FactorySkill.SKILL_PATH, configurable.getDataString("icon")), 27, 19);
         icon.load(false);

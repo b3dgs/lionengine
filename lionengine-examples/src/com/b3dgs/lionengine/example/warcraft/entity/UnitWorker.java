@@ -21,16 +21,14 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.HandlerEffect;
-import com.b3dgs.lionengine.example.warcraft.HandlerEntity;
 import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
 import com.b3dgs.lionengine.example.warcraft.ProductionCost;
-import com.b3dgs.lionengine.example.warcraft.Tile;
+import com.b3dgs.lionengine.example.warcraft.ResourceType;
 import com.b3dgs.lionengine.example.warcraft.effect.Effect;
-import com.b3dgs.lionengine.example.warcraft.effect.TypeEffect;
-import com.b3dgs.lionengine.example.warcraft.type.TileCollision;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeResource;
+import com.b3dgs.lionengine.example.warcraft.effect.EffectType;
+import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.warcraft.map.Tile;
+import com.b3dgs.lionengine.example.warcraft.map.TileCollision;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -49,12 +47,12 @@ import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
  */
 public abstract class UnitWorker
         extends Unit
-        implements ProducerUsedServices<TypeEntity, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<TypeEntity, ProductionCost, ProducibleEntity>, ExtractorUsedServices<TypeResource>,
-        ExtractorServices<TypeResource>
+        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
+        ProducerServices<EntityType, ProductionCost, ProducibleEntity>, ExtractorUsedServices<ResourceType>,
+        ExtractorServices<ResourceType>
 {
     /** Producer model. */
-    private final ProducerModel<TypeEntity, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Handler reference. */
@@ -62,7 +60,7 @@ public abstract class UnitWorker
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
     /** Extractor model. */
-    private final ExtractorModel<TypeResource> extractor;
+    private final ExtractorModel<ResourceType> extractor;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Extraction speed. */
@@ -90,7 +88,7 @@ public abstract class UnitWorker
      * @param id The entity type enum.
      * @param context The context reference.
      */
-    protected UnitWorker(TypeEntity id, Context context)
+    protected UnitWorker(EntityType id, Context context)
     {
         super(id, context);
         factory = context.factoryEntity;
@@ -106,7 +104,7 @@ public abstract class UnitWorker
         animWork = getDataAnimation("work");
         animCarryGold = getDataAnimation("carry_gold");
         animCarryWood = getDataAnimation("carry_wood");
-        construction = context.factoryEffect.createEffect(TypeEffect.CONSTRUCTION);
+        construction = context.factoryEffect.createEffect(EffectType.CONSTRUCTION);
     }
 
     /**
@@ -115,7 +113,7 @@ public abstract class UnitWorker
     private void searchNextTree()
     {
         final CoordTile tile = map.getClosestTile(this, getResourceLocation(), TileCollision.TREE, 64);
-        setResource(TypeResource.WOOD, tile.getX(), tile.getY(), 1, 1);
+        setResource(ResourceType.WOOD, tile.getX(), tile.getY(), 1, 1);
     }
 
     /*
@@ -188,7 +186,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(TypeEntity id)
+    public Entity getEntityToProduce(EntityType id)
     {
         return factory.createEntity(id);
     }
@@ -220,7 +218,7 @@ public abstract class UnitWorker
             {
                 return false;
             }
-            final TypeResource type = map.getTile(resource).getResourceType();
+            final ResourceType type = map.getTile(resource).getResourceType();
             switch (type)
             {
                 case WOOD:
@@ -299,7 +297,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public TypeEntity getProducingElement()
+    public EntityType getProducingElement()
     {
         return producer.getProducingElement();
     }
@@ -333,13 +331,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void setResource(Extractible<TypeResource> entity)
+    public void setResource(Extractible<ResourceType> entity)
     {
         extractor.setResource(entity);
     }
 
     @Override
-    public void setResource(TypeResource type, int tx, int ty, int tw, int th)
+    public void setResource(ResourceType type, int tx, int ty, int tw, int th)
     {
         extractor.setResource(type, tx, ty, tw, th);
     }
@@ -351,7 +349,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public TypeResource getResourceType()
+    public ResourceType getResourceType()
     {
         return extractor.getResourceType();
     }
@@ -448,7 +446,7 @@ public abstract class UnitWorker
         setVisible(true);
 
         // Increase pop if needed
-        if (TypeEntity.farm_orc == entity.type || TypeEntity.farm_human == entity.type)
+        if (EntityType.farm_orc == entity.type || EntityType.farm_human == entity.type)
         {
             getPlayer().changePopulationCapacity(5);
         }
@@ -459,13 +457,13 @@ public abstract class UnitWorker
      */
 
     @Override
-    public void notifyStartGoToRessources(TypeResource type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(ResourceType type, Tiled resourceLocation)
     {
         setDestination(resourceLocation);
     }
 
     @Override
-    public void notifyStartExtraction(TypeResource type, Tiled resourceLocation)
+    public void notifyStartExtraction(ResourceType type, Tiled resourceLocation)
     {
         // Search gold mine
         try
@@ -484,7 +482,7 @@ public abstract class UnitWorker
         catch (final EntityNotFoundException exception)
         {
             final Tile tile = map.getTile(resourceLocation);
-            if (TypeResource.WOOD == tile.getResourceType())
+            if (ResourceType.WOOD == tile.getResourceType())
             {
                 pointTo(getResourceLocation());
                 play(animWork);
@@ -493,18 +491,18 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyExtracted(TypeResource type, int currentQuantity)
+    public void notifyExtracted(ResourceType type, int currentQuantity)
     {
         // Nothing to do
     }
 
     @Override
-    public void notifyStartCarry(TypeResource type, int totalQuantity)
+    public void notifyStartCarry(ResourceType type, int totalQuantity)
     {
         try
         {
             townHall = handlerEntity.getClosestEntity(this, Warehouse.class, true);
-            if (TypeResource.GOLD == type)
+            if (ResourceType.GOLD == type)
             {
                 setVisible(true);
                 setActive(true);
@@ -517,7 +515,7 @@ public abstract class UnitWorker
                 setDestination(townHall);
                 play(animCarryGold);
             }
-            else if (TypeResource.WOOD == type)
+            else if (ResourceType.WOOD == type)
             {
                 map.cutTree(getResourceLocation());
                 searchNextTree();
@@ -532,7 +530,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyStartDropOff(TypeResource type, int totalQuantity)
+    public void notifyStartDropOff(ResourceType type, int totalQuantity)
     {
         setVisible(false);
         setActive(false);
@@ -541,7 +539,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyDroppedOff(TypeResource type, int droppedQuantity)
+    public void notifyDroppedOff(ResourceType type, int droppedQuantity)
     {
         final CoordTile out = map.getClosestAvailableTile(this, 16, getResourceLocation());
         if (out != null)

@@ -145,7 +145,7 @@ public class PathfindableModel
                 }
                 else
                 {
-                    setDestination(destX, destY);
+                    // setDestination(destX, destY);
                 }
             }
         }

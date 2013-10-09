@@ -60,7 +60,7 @@ public final class AppLionheart
     /** Enable sound. */
     private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
-    private static final String RESOURCES = Media.getPath("resources", "platform", "lionheart");
+    private static final String RESOURCES = Media.getPath("resources", "lionheart");
     /** Raster enabled. */
     public static boolean RASTER_ENABLED = false;
 

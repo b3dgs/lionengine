@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
 
 /**
  * Farm building implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Farm
         extends BuildingProducer

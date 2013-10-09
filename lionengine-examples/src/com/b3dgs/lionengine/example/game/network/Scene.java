@@ -30,7 +30,7 @@ class Scene
         extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(640, 480, 60);
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** World server reference. */
     private final World<?> world;
@@ -45,7 +45,7 @@ class Scene
         super(loader, Scene.NATIVE);
         setExtrapolated(true);
 
-        final boolean server = false;
+        final boolean server = true;
 
         if (server)
         {
@@ -69,7 +69,7 @@ class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get("level.dat"));
+        world.loadFromFile(Media.get("level.map"));
     }
 
     @Override

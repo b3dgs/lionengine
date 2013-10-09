@@ -17,12 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.SkillType;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Cancel skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Cancel
         extends Skill

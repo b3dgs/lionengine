@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -34,7 +33,7 @@ public final class Cancel
      */
     public Cancel(SetupSkill setup)
     {
-        super(TypeSkill.cancel_orc, setup);
+        super(SkillType.cancel_orc, setup);
     }
 
     /*

@@ -21,8 +21,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.warcraft.projectile.LauncherProjectile;
-import com.b3dgs.lionengine.example.warcraft.type.TypeProjectile;
-import com.b3dgs.lionengine.example.warcraft.type.TypeWeapon;
+import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
 
 /**
  * Bow weapon implementation.
@@ -41,8 +40,8 @@ final class Bow
      */
     Bow(Attacker user, Context context)
     {
-        super(TypeWeapon.spear, user, context);
-        launcher = new LauncherProjectile(TypeProjectile.arrow, context);
+        super(WeaponType.spear, user, context);
+        launcher = new LauncherProjectile(ProjectileType.arrow, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }
@@ -54,6 +53,7 @@ final class Bow
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
+        super.notifyAttackEnded(damages, target);
         launcher.launch(target);
     }
 }

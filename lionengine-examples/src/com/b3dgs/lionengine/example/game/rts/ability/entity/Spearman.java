@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
-import com.b3dgs.lionengine.example.game.rts.ability.WeaponType;
+import com.b3dgs.lionengine.example.game.rts.ability.weapon.WeaponType;
 
 /**
  * Spearman implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Spearman
         extends UnitAttacker

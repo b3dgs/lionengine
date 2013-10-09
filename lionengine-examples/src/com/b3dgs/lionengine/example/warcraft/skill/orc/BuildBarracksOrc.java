@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
 import com.b3dgs.lionengine.example.warcraft.Cursor;
-import com.b3dgs.lionengine.example.warcraft.Map;
+import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceBuilding;
-import com.b3dgs.lionengine.example.warcraft.type.TypeEntity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Build skill implementation.
@@ -39,6 +39,6 @@ final class BuildBarracksOrc
      */
     BuildBarracksOrc(SetupSkill setup, Cursor cursor, Map map)
     {
-        super(TypeSkill.build_barracks_orc, setup, TypeEntity.barracks_orc, cursor, map);
+        super(SkillType.build_barracks_orc, setup, EntityType.barracks_orc, cursor, map);
     }
 }

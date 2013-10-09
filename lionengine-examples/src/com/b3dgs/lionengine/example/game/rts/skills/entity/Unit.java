@@ -21,7 +21,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.EntityType;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverModel;
@@ -30,6 +29,8 @@ import com.b3dgs.lionengine.game.rts.ability.mover.MoverUsedServices;
 
 /**
  * Abstract mover entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Unit
         extends Entity

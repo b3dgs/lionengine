@@ -18,8 +18,12 @@
 package com.b3dgs.lionengine.example.warcraft;
 
 import com.b3dgs.lionengine.example.warcraft.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.warcraft.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.projectile.FactoryProjectile;
+import com.b3dgs.lionengine.example.warcraft.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.warcraft.skill.FactorySkill;
 import com.b3dgs.lionengine.example.warcraft.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.TimedMessage;

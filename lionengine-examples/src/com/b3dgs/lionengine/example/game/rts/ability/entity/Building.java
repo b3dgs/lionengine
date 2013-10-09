@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.EntityType;
 
 /**
  * Abstract building entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class Building
         extends Entity

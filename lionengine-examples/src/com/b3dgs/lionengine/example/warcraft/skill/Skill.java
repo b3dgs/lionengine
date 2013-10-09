@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.type.TypeSkill;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
@@ -36,12 +35,12 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * Default skill implementation.
  */
 public abstract class Skill
-        extends SkillRts<TypeSkill>
+        extends SkillRts<SkillType>
 {
     /** Text. */
     protected final Text text;
     /** Id. */
-    private final TypeSkill id;
+    private final SkillType id;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Background. */
@@ -65,7 +64,7 @@ public abstract class Skill
      * @param id The skill id.
      * @param setup The setup skill reference.
      */
-    protected Skill(TypeSkill id, SetupSkill setup)
+    protected Skill(SkillType id, SetupSkill setup)
     {
         super(setup);
         this.id = id;
@@ -145,7 +144,7 @@ public abstract class Skill
     }
 
     @Override
-    public TypeSkill getId()
+    public SkillType getId()
     {
         return id;
     }

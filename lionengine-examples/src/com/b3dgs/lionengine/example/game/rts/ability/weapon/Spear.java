@@ -18,14 +18,15 @@
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.ProjectileType;
-import com.b3dgs.lionengine.example.game.rts.ability.WeaponType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.LauncherProjectile;
-import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.ProjectileType;
 
 /**
  * Spear weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Spear
         extends Weapon
@@ -39,7 +40,7 @@ final class Spear
      * @param user The user reference.
      * @param context The context reference.
      */
-    Spear(AttackerUsedServices<Entity> user, Context context)
+    Spear(UnitAttacker user, Context context)
     {
         super(WeaponType.SPEAR, user, context);
         launcher = new LauncherProjectile(ProjectileType.SPEAR, context);
@@ -54,6 +55,7 @@ final class Spear
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
+        super.notifyAttackEnded(damages, target);
         launcher.launch(target);
     }
 }
