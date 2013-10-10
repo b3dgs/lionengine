@@ -118,6 +118,10 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
+        if (keyboard.isPressed(Key.ESCAPE))
+        {
+            end();
+        }
         camera.update(keyboard);
         text.update(camera);
         cursor.update(extrp);

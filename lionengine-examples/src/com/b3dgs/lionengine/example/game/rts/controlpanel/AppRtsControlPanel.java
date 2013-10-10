@@ -39,7 +39,8 @@ public final class AppRtsControlPanel
      */
     public static void main(String[] args)
     {
-        Engine.start("Rts Cursor", Version.create(1, 0, 0), Media.getPath("resources", "game", "rts", "controlpanel"));
+        Engine.start("Rts Control Panel", Version.create(1, 0, 0),
+                Media.getPath("resources", "game", "rts", "controlpanel"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

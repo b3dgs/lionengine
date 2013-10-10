@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 /**
  * Client implementation.
  */
-public class ClientImpl
+final class ClientImpl
         extends NetworkModel<ConnectionListener>
         implements Client
 {
@@ -71,7 +71,7 @@ public class ClientImpl
      * @param decoder The message decoder.
      * @throws LionEngineException if cannot connect to the server.
      */
-    public ClientImpl(NetworkMessageDecoder decoder) throws LionEngineException
+    ClientImpl(NetworkMessageDecoder decoder) throws LionEngineException
     {
         super(decoder);
         pingTimer = new Timing();

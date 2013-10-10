@@ -24,9 +24,6 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 
-// Tutorial: Tyrian
-// This tutorial shows how to create a shoot'em'up.
-
 /**
  * Program starts here.
  */

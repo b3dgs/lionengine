@@ -25,16 +25,13 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.menu.Menu;
 
-// Tutorial: Warcraft
-// This last rts tutorial shows a prototype of a Warcraft, using as much things as possible.
-
 /**
  * Program starts here.
  */
 public final class AppWarcraft
 {
     /** Program title. */
-    public static final String PROGRAM = "Warcraft Remake";
+    public static final String PROGRAM = "Warcraft";
     /** Program version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Effects directory. */

@@ -95,7 +95,7 @@ final class Mario
      */
     public void respawn()
     {
-        teleport(80, 26);
+        teleport(550, 26);
         movement.reset();
         jumpForce.setForce(Force.ZERO);
         mirror(false);

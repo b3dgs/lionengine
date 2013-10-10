@@ -106,7 +106,7 @@ final class ServerImpl
      * @param decoder The message decoder.
      * @throws LionEngineException if cannot create the server.
      */
-    public ServerImpl(NetworkMessageDecoder decoder) throws LionEngineException
+    ServerImpl(NetworkMessageDecoder decoder) throws LionEngineException
     {
         super(decoder);
         clientsList = new HashMap<>(1);
