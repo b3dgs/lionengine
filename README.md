@@ -4,7 +4,7 @@ The __LionEngine__ is a game engine especially developed during the project [Lio
 
 Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management ( _images_, _sprites_, _animations_, _tiles_...). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available ( _Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Ogg_). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games.
+In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __networked__ game.
 
 
 ## Installation
@@ -39,8 +39,10 @@ Once you installed the LionEngine in your project, you may would like to know ho
 ```java
 /**
  * Program starts here. When you start the jvm, ensure that this main function is called.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppFirstCode
+public final class AppMinimal
 {
     /**
      * Main function called by the jvm.
@@ -55,7 +57,7 @@ public final class AppFirstCode
         // - The program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
-        Engine.start("First Code", Version.create(1, 0, 0), "resources");
+        Engine.start("Minimal", Version.create(1, 0, 0), "resources");
 
         // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
@@ -75,7 +77,7 @@ public final class AppFirstCode
     /**
      * Private constructor.
      */
-    private AppFirstCode()
+    private AppMinimal()
     {
         throw new RuntimeException();
     }
@@ -88,15 +90,14 @@ public final class AppFirstCode
  * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
  * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
  * start the linked one.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    /** Text drawer. */
-    private final Text text;
 
     /**
      * Constructor.
@@ -106,7 +107,6 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
     /*
@@ -116,9 +116,7 @@ final class Scene
     @Override
     protected void load()
     {
-        text.setText("Hello");
-        text.setLocation(width / 2, height / 2 - 8);
-        text.setAlign(Align.CENTER);
+        // Load
     }
 
     @Override
@@ -128,24 +126,13 @@ final class Scene
         {
             end();
         }
+        // Update
     }
 
     @Override
     protected void render(Graphic g)
     {
-        // Simple rendering
-        text.render(g);
-        // Direct rendering
-        text.draw(g, width / 2, height / 2 + 8, Align.CENTER, "World");
-    }
-
-    /*
-     * It is not necessary to override this method
-     */
-    @Override
-    protected void onTerminate(boolean hasNextSequence)
-    {
-        UtilityMessageBox.information("Terminate !", "Closing app...");
+        // Render
     }
 }
 ```
