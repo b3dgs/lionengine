@@ -15,21 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.chat;
 
 /**
- * List of entity states.
+ * Networked messages enum type.
  */
-enum EntityState
+enum TypeMessage
 {
-    /** Idle state. */
-    IDLE,
-    /** Walk state. */
-    WALK,
-    /** turn state. */
-    TURN,
-    /** Jump state. */
-    JUMP,
-    /** Dead state. */
-    DEAD;
+    /** Chat message. */
+    MESSAGE_CHAT;
+
+    /** Values. */
+    private static final TypeMessage[] VALUES = TypeMessage.values();
+
+    /**
+     * Get the message type from its ordinal.
+     * 
+     * @param ordinal The ordinal.
+     * @return The enum.
+     */
+    public static TypeMessage fromOrdinal(int ordinal)
+    {
+        return TypeMessage.VALUES[ordinal];
+    }
 }

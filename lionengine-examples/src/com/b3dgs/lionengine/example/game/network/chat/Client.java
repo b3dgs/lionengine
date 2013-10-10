@@ -15,47 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.network;
+package com.b3dgs.lionengine.example.game.network.chat;
+
+import com.b3dgs.lionengine.network.purview.NetworkableModel;
 
 /**
- * Networkable world interface client side.
+ * Network client.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface NetworkedWorldClient
-        extends NetworkedWorld, ConnectionListener
+final class Client
+        extends NetworkableModel
 {
-    /**
-     * Connect to a server.
-     * 
-     * @param ip The server ip.
-     * @param port The server port.
-     */
-    void connect(String ip, int port);
+    /** Client name. */
+    private String name;
 
     /**
-     * Set the client new name.
-     * 
-     * @param name The new name.
+     * Constructor.
      */
-    void setName(String name);
+    Client()
+    {
+        // Nothing to do
+    }
+
+    /**
+     * Set the client name.
+     * 
+     * @param name The client name.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
     /**
      * Get the client name.
      * 
      * @return The client name.
      */
-    String getName();
-
-    /**
-     * Get the ping from the server (time elapsed between the ping request and response).
-     * 
-     * @return The ping from the server.
-     */
-    int getPing();
-
-    /**
-     * Get the network id.
-     * 
-     * @return The network id.
-     */
-    byte getId();
+    public String getName()
+    {
+        return name;
+    }
 }

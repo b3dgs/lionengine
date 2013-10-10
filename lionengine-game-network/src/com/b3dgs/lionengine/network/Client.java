@@ -60,13 +60,6 @@ public interface Client
     int getPing();
 
     /**
-     * Get the amount of bytes sent per second.
-     * 
-     * @return The number of bytes sent per second.
-     */
-    int getBandwidth();
-
-    /**
      * Get the client id.
      * 
      * @return The client id.

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
@@ -23,16 +23,20 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Tile implementation.
  */
-class Tile
+final class Tile
         extends TilePlatform<TileCollision>
 {
     /**
      * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+    Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
         super(width, height, pattern, number, collision);
     }
+
+    /*
+     * TilePlatform
+     */
 
     @Override
     public Double getCollisionX(Localizable localizable)
@@ -47,7 +51,7 @@ class Tile
                 final int left = getLeft();
                 if (localizable.getLocationX() >= left)
                 {
-                    return Double.valueOf(left - 5);
+                    return Double.valueOf(left);
                 }
             }
             // From right
@@ -56,7 +60,7 @@ class Tile
                 final int right = getRight();
                 if (localizable.getLocationX() <= right)
                 {
-                    return Double.valueOf(right + 5);
+                    return Double.valueOf(right);
                 }
             }
         }
@@ -74,5 +78,11 @@ class Tile
             return Double.valueOf(top);
         }
         return null;
+    }
+
+    @Override
+    public int getTop()
+    {
+        return super.getTop() - 8;
     }
 }

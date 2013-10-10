@@ -15,32 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
- * List of actions shared.
+ * List of entity types. Lower case is preferred, as the name has to be the same with its corresponding files.
  */
-enum MessageEntityElement
+enum TypeEntity
 {
-    /** Up flag (boolean). */
-    UP,
-    /** Down flag (boolean). */
-    DOWN,
-    /** Right flag (boolean). */
-    RIGHT,
-    /** Left flag (boolean). */
-    LEFT,
-    /** Location adjuster x (integer). */
-    LOCATION_X,
-    /** Location adjuster y (integer). */
-    LOCATION_Y,
-    /** Call jump method. */
-    JUMP,
-    /** Call die method. */
-    DIE;
+    /** Mario. */
+    mario,
+    /** Goomba. */
+    goomba;
 
     /** Values. */
-    private static final MessageEntityElement[] VALUES = MessageEntityElement.values();
+    private static final TypeEntity[] VALUES = TypeEntity.values();
 
     /**
      * Get the message type from its ordinal.
@@ -48,8 +36,8 @@ enum MessageEntityElement
      * @param ordinal The ordinal.
      * @return The enum.
      */
-    public static MessageEntityElement fromOrdinal(int ordinal)
+    public static TypeEntity fromOrdinal(int ordinal)
     {
-        return MessageEntityElement.VALUES[ordinal];
+        return TypeEntity.VALUES[ordinal];
     }
 }

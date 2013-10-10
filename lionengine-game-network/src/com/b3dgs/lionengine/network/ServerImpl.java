@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
@@ -41,10 +42,43 @@ final class ServerImpl
         extends NetworkModel<ClientListener>
         implements Server
 {
+    /**
+     * Send the id and the name to the client.
+     * 
+     * @param client The client to send to.
+     * @param id The id to send.
+     * @param name The name to send.
+     * @throws IOException In case of error.
+     */
+    private static void writeIdAndName(ClientSocket client, int id, String name) throws IOException
+    {
+        // New client id
+        client.getOut().writeByte(id);
+        // New client name
+        final byte[] data = name.getBytes();
+        client.getOut().writeByte(data.length);
+        client.getOut().write(data);
+    }
+
+    /**
+     * Check if the client is in a valid state.
+     * 
+     * @param client The client to test.
+     * @param from The client id.
+     * @param expected The expected client state.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean checkValidity(ClientSocket client, byte from, StateConnection expected)
+    {
+        return from >= 0 && client.getState() == expected;
+    }
+
     /** Client list. */
     private final HashMap<Byte, ClientSocket> clientsList;
     /** Remove list. */
     private final Set<ClientSocket> removeList;
+    /** Average bandwidth. */
+    private final Timing bandwidthTimer;
     /** Connection listener. */
     private ClientConnecter clientConnectionListener;
     /** Server socket. */
@@ -61,6 +95,10 @@ final class ServerImpl
     private byte lastId;
     /** Will remove a client. */
     private boolean willRemove;
+    /** Bandwidth size. */
+    private int bandwidth;
+    /** Bandwidth per second. */
+    private int bandwidthPerSecond;
 
     /**
      * Constructor.
@@ -73,11 +111,13 @@ final class ServerImpl
         super(decoder);
         clientsList = new HashMap<>(1);
         removeList = new HashSet<>(1);
+        bandwidthTimer = new Timing();
         willRemove = false;
         clientsNumber = 0;
         messageOfTheDay = null;
         port = -1;
         started = false;
+        bandwidth = 0;
         lastId = 0;
     }
 
@@ -139,21 +179,179 @@ final class ServerImpl
     }
 
     /**
-     * Send the id and the name to the client.
+     * Update the receive connecting state.
      * 
-     * @param client The client to send to.
-     * @param id The id to send.
-     * @param name The name to send.
-     * @throws IOException In case of error.
+     * @param client The current client.
+     * @param buffer The data buffer.
+     * @param from The id from.
+     * @param expected The expected client state.
+     * @throws IOException If error.
      */
-    private static void writeIdAndName(ClientSocket client, int id, String name) throws IOException
+    private void receiveConnecting(ClientSocket client, DataInputStream buffer, byte from, StateConnection expected)
+            throws IOException
     {
-        // New client id
-        client.getOut().writeByte(id);
-        // New client name
-        final byte[] data = name.getBytes();
-        client.getOut().writeByte(data.length);
-        client.getOut().write(data);
+        if (ServerImpl.checkValidity(client, from, expected))
+        {
+            // Receive the name
+            final byte[] name = new byte[buffer.readByte()];
+            buffer.read(name);
+            client.setName(new String(name));
+
+            // Send new state
+            client.setState(StateConnection.CONNECTED);
+            client.getOut().writeByte(NetworkMessageSystemId.CONNECTED);
+            client.getOut().writeByte(client.getId());
+            client.getOut().writeByte(clientsNumber - 1);
+
+            // Send the list of other clients
+            for (final ClientSocket other : clientsList.values())
+            {
+                if (other.getId() != from)
+                {
+                    ServerImpl.writeIdAndName(client, other.getId(), other.getName());
+                }
+            }
+            // Send message of the day if has
+            if (messageOfTheDay != null)
+            {
+                final byte[] motd = messageOfTheDay.getBytes();
+                client.getOut().writeByte(motd.length);
+                client.getOut().write(motd);
+            }
+            // Send
+            client.getOut().flush();
+        }
+    }
+
+    /**
+     * Update the receive connected state.
+     * 
+     * @param client The current client.
+     * @param from The id from.
+     * @param expected The expected client state.
+     * @throws IOException If error.
+     */
+    private void receiveConnected(ClientSocket client, byte from, StateConnection expected) throws IOException
+    {
+        if (ServerImpl.checkValidity(client, from, expected))
+        {
+            // Terminate last connection step and accept it
+            Verbose.info("Server: ", client.getName(), " connected");
+            for (final ClientListener listener : listeners)
+            {
+                listener.notifyClientConnected(Byte.valueOf(client.getId()), client.getName());
+            }
+
+            // Notify other clients
+            for (final ClientSocket other : clientsList.values())
+            {
+                if (other.getId() == from)
+                {
+                    continue;
+                }
+                other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_CONNECTED);
+                ServerImpl.writeIdAndName(other, client.getId(), client.getName());
+                // Send
+                other.getOut().flush();
+            }
+        }
+    }
+
+    /**
+     * Update the receive disconnected state.
+     * 
+     * @param client The current client.
+     * @param from The id from.
+     * @param expected The expected client state.
+     * @throws IOException If error.
+     */
+    private void receiveDisconnected(ClientSocket client, byte from, StateConnection expected) throws IOException
+    {
+        if (ServerImpl.checkValidity(client, from, expected))
+        {
+            // Notify other clients
+            client.setState(StateConnection.DISCONNECTED);
+            for (final ClientListener listener : listeners)
+            {
+                listener.notifyClientDisconnected(Byte.valueOf(client.getId()), client.getName());
+            }
+            for (final ClientSocket other : clientsList.values())
+            {
+                if (other.getId() == from || other.getState() != StateConnection.CONNECTED)
+                {
+                    continue;
+                }
+                other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED);
+                ServerImpl.writeIdAndName(other, client.getId(), client.getName());
+                // Send
+                other.getOut().flush();
+            }
+            removeClient(Byte.valueOf(from));
+        }
+    }
+
+    /**
+     * Update the receive renamed state.
+     * 
+     * @param client The current client.
+     * @param buffer The data buffer.
+     * @param from The id from.
+     * @param expected The expected client state.
+     * @throws IOException If error.
+     */
+    private void receiveRenamed(ClientSocket client, DataInputStream buffer, byte from, StateConnection expected)
+            throws IOException
+    {
+        if (ServerImpl.checkValidity(client, from, expected))
+        {
+            // Receive the name
+            final byte[] name = new byte[buffer.readByte()];
+            buffer.read(name);
+            final String newName = new String(name);
+            Verbose.info("Server: ", client.getName(), " rennamed to " + newName);
+            client.setName(newName);
+
+            for (final ClientListener listener : listeners)
+            {
+                listener.notifyClientNameChanged(Byte.valueOf(client.getId()), client.getName());
+            }
+
+            // Notify all clients
+            for (final ClientSocket other : clientsList.values())
+            {
+                other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
+                ServerImpl.writeIdAndName(other, client.getId(), client.getName());
+                other.getOut().flush();
+            }
+        }
+    }
+
+    /**
+     * Update the receive standard message state.
+     * 
+     * @param client The client to test.
+     * @param buffer The data buffer.
+     * @param from The id from.
+     * @param expected The expected client state.
+     * @throws IOException If error.
+     */
+    private void receiveMessage(ClientSocket client, DataInputStream buffer, byte from, StateConnection expected)
+            throws IOException
+    {
+        if (ServerImpl.checkValidity(client, from, expected))
+        {
+            final byte dest = buffer.readByte();
+            final byte type = buffer.readByte();
+            final int size = buffer.readInt();
+            if (size > 0)
+            {
+                final byte[] clientData = new byte[size];
+                buffer.read(clientData);
+                final DataInputStream clientBuffer = new DataInputStream(new ByteArrayInputStream(clientData));
+                decodeMessage(type, from, dest, clientBuffer);
+            }
+            bandwidth += 4 + size;
+        }
     }
 
     /*
@@ -177,6 +375,7 @@ final class ServerImpl
                 clientConnectionListener = new ClientConnecter(serverSocket, this);
                 clientConnectionListener.start();
                 this.port = port;
+                bandwidthTimer.start();
                 started = true;
             }
             catch (final Exception exception)
@@ -189,13 +388,19 @@ final class ServerImpl
     @Override
     public void removeClient(Byte clientId)
     {
-        this.removeClient(clientsList.get(clientId));
+        removeClient(clientsList.get(clientId));
     }
 
     @Override
     public int getNumberOfClients()
     {
         return clientsNumber;
+    }
+
+    @Override
+    public int getBandwidth()
+    {
+        return bandwidthPerSecond;
     }
 
     @Override
@@ -217,6 +422,7 @@ final class ServerImpl
         }
         receiveMessages();
         clientConnectionListener.terminate();
+
         // Disconnect all clients
         final List<ClientSocket> delete = new ArrayList<>(clientsList.size());
         for (final ClientSocket client : clientsList.values())
@@ -235,7 +441,7 @@ final class ServerImpl
                 }
                 catch (final IOException exception)
                 {
-                    // Ignore
+                    Verbose.exception(ServerImpl.class, "disconnect", exception);
                 }
             }
             delete.add(client);
@@ -243,7 +449,7 @@ final class ServerImpl
         for (final ClientSocket client : delete)
         {
             client.sendMessage(NetworkMessageSystemId.KICKED);
-            this.removeClient(client);
+            removeClient(client);
         }
         delete.clear();
         clientsList.clear();
@@ -284,152 +490,25 @@ final class ServerImpl
                 switch (messageSystemId)
                 {
                     case NetworkMessageSystemId.CONNECTING:
-                    {
-                        // Check id and state validity
-                        if (from < 0 || client.getState() != StateConnection.CONNECTING)
-                        {
-                            break;
-                        }
-                        // Receive the name
-                        final byte[] name = new byte[buffer.readByte()];
-                        buffer.read(name);
-                        client.setName(new String(name));
-
-                        // Send new state
-                        client.setState(StateConnection.CONNECTED);
-                        client.getOut().writeByte(NetworkMessageSystemId.CONNECTED);
-                        client.getOut().writeByte(client.getId());
-                        client.getOut().writeByte(clientsNumber - 1);
-
-                        // Send the list of other clients
-                        for (final ClientSocket other : clientsList.values())
-                        {
-                            if (other.getId() != from)
-                            {
-                                ServerImpl.writeIdAndName(client, other.getId(), other.getName());
-                            }
-                        }
-                        // Send message of the day if has
-                        if (messageOfTheDay != null)
-                        {
-                            final byte[] motd = messageOfTheDay.getBytes();
-                            client.getOut().writeByte(motd.length);
-                            client.getOut().write(motd);
-                        }
-                        // Send
-                        client.getOut().flush();
+                        receiveConnecting(client, buffer, from, StateConnection.CONNECTING);
                         break;
-                    }
                     case NetworkMessageSystemId.CONNECTED:
-                    {
-                        // Check id and state validity
-                        if (from < 0 || client.getState() != StateConnection.CONNECTED)
-                        {
-                            break;
-                        }
-                        // Terminate last connection step and accept it
-                        Verbose.info("Server: ", client.getName(), " connected");
-                        for (final ClientListener listener : listeners)
-                        {
-                            listener.notifyClientConnected(Byte.valueOf(client.getId()), client.getName());
-                        }
-
-                        // Notify other clients
-                        for (final ClientSocket other : clientsList.values())
-                        {
-                            if (other.getId() == from)
-                            {
-                                continue;
-                            }
-                            other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_CONNECTED);
-                            ServerImpl.writeIdAndName(other, client.getId(), client.getName());
-                            // Send
-                            other.getOut().flush();
-                        }
+                        receiveConnected(client, from, StateConnection.CONNECTED);
                         break;
-                    }
                     case NetworkMessageSystemId.PING:
-                    {
                         client.getOut().writeByte(NetworkMessageSystemId.PING);
                         client.getOut().flush();
+                        bandwidth += 1;
                         break;
-                    }
                     case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
-                    {
-                        // Check id and state validity
-                        if (from < 0 || client.getState() != StateConnection.CONNECTED)
-                        {
-                            break;
-                        }
-                        // Notify other clients
-                        client.setState(StateConnection.DISCONNECTED);
-                        for (final ClientListener listener : listeners)
-                        {
-                            listener.notifyClientDisconnected(Byte.valueOf(client.getId()), client.getName());
-                        }
-                        for (final ClientSocket other : clientsList.values())
-                        {
-                            if (other.getId() == from || other.getState() != StateConnection.CONNECTED)
-                            {
-                                continue;
-                            }
-                            other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED);
-                            ServerImpl.writeIdAndName(other, client.getId(), client.getName());
-                            // Send
-                            other.getOut().flush();
-                        }
-                        this.removeClient(Byte.valueOf(from));
+                        receiveDisconnected(client, from, StateConnection.CONNECTED);
                         break;
-                    }
                     case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
-                    {
-                        // Check id and state validity
-                        if (from < 0 || client.getState() != StateConnection.CONNECTED)
-                        {
-                            break;
-                        }
-                        // Receive the name
-                        final byte[] name = new byte[buffer.readByte()];
-                        buffer.read(name);
-                        final String newName = new String(name);
-                        Verbose.info("Server: ", client.getName(), " rennamed to " + newName);
-                        client.setName(newName);
-
-                        for (final ClientListener listener : listeners)
-                        {
-                            listener.notifyClientNameChanged(Byte.valueOf(client.getId()), client.getName());
-                        }
-
-                        // Notify all clients
-                        for (final ClientSocket other : clientsList.values())
-                        {
-                            other.getOut().writeByte(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
-                            ServerImpl.writeIdAndName(other, client.getId(), client.getName());
-                            other.getOut().flush();
-                        }
+                        receiveRenamed(client, buffer, from, StateConnection.CONNECTED);
                         break;
-                    }
-                    // Standard user message
                     case NetworkMessageSystemId.USER_MESSAGE:
-                    {
-                        // Check id and state validity
-                        if (from < 0 || client.getState() != StateConnection.CONNECTED)
-                        {
-                            break;
-                        }
-                        final byte dest = buffer.readByte();
-                        final byte type = buffer.readByte();
-                        final int size = buffer.readInt();
-                        if (size > 0)
-                        {
-                            final byte[] clientData = new byte[size];
-                            buffer.read(clientData);
-                            final DataInputStream clientBuffer = new DataInputStream(new ByteArrayInputStream(
-                                    clientData));
-                            decodeMessage(type, from, dest, clientBuffer);
-                        }
+                        receiveMessage(client, buffer, from, StateConnection.CONNECTED);
                         break;
-                    }
                     default:
                         break;
                 }
@@ -476,6 +555,7 @@ final class ServerImpl
                     client.getOut().writeInt(encoded.length);
                     client.getOut().write(encoded);
                     client.getOut().flush();
+                    bandwidth += 4 + encoded.length;
                 }
                 catch (final IOException exception)
                 {
@@ -483,6 +563,13 @@ final class ServerImpl
                             String.valueOf(client.getId()));
                 }
             }
+        }
+        if (bandwidthTimer.elapsed(1000L))
+        {
+            bandwidthPerSecond = bandwidth;
+            bandwidth = 0;
+            bandwidthTimer.stop();
+            bandwidthTimer.start();
         }
         messagesOut.clear();
     }

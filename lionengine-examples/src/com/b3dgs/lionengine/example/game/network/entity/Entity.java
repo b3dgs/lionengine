@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.util.Collection;
 
@@ -32,16 +32,12 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
 /**
  * Abstract entity base implementation.
  */
-public abstract class Entity
+abstract class Entity
         extends EntityPlatform
         implements Networkable
 {
     /** Desired fps value. */
     protected final int desiredFps;
-    /** Jump force. */
-    protected double jumpForceValue;
-    /** Movement max speed. */
-    protected double movementSpeedValue;
     /** Movement force force. */
     protected final Force movementForce;
     /** Movement force destination force. */
@@ -50,12 +46,12 @@ public abstract class Entity
     protected final Force jumpForce;
     /** Extra time for jump before fall. */
     protected final Timing timerExtraJump;
+    /** Send correct location timer. */
+    protected final Timing networkLocation;
     /** Map reference. */
     private final Map map;
     /** Network model. */
     private final NetworkableModel networkableModel;
-    /** Send correct location timer. */
-    protected final Timing networkLocation;
     /** Animation idle. */
     private final Animation animIdle;
     /** Animation walk. */
@@ -66,6 +62,10 @@ public abstract class Entity
     private final TypeEntity type;
     /** Client flag. */
     protected final boolean server;
+    /** Jump force. */
+    protected double jumpForceValue;
+    /** Movement max speed. */
+    protected double movementSpeedValue;
     /** Key right state. */
     protected boolean right;
     /** Key left state. */
@@ -84,7 +84,7 @@ public abstract class Entity
     protected boolean dead;
 
     /**
-     * Standard constructor.
+     * Constructor.
      * 
      * @param setup The setup reference.
      * @param type The entity type.
@@ -92,16 +92,16 @@ public abstract class Entity
      * @param desiredFps The desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Entity(SetupSurfaceGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
+    Entity(SetupSurfaceGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
     {
         super(setup);
         this.type = type;
         this.map = map;
+        this.desiredFps = desiredFps;
+        this.server = server;
         animIdle = getDataAnimation("idle");
         animWalk = getDataAnimation("walk");
         animDie = getDataAnimation("dead");
-        this.desiredFps = desiredFps;
-        this.server = server;
         networkableModel = new NetworkableModel();
         movementForce = new Force();
         movementForceDest = new Force();
@@ -111,10 +111,76 @@ public abstract class Entity
         networkLocation.start();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(getWidth() / 2, 1);
+        setCollision(getDataCollision("default"));
+        setFrameOffsets(0, 9);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
         addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);
+    }
+
+    /**
+     * Called when hit this entity.
+     * 
+     * @param entity The entity hit.
+     */
+    public abstract void onHitThat(Entity entity);
+
+    /**
+     * Called when hurt.
+     * 
+     * @param entity Entity that hurt this.
+     * @param damages Hurt damages.
+     */
+    public abstract void onHurtBy(EntityGame entity, int damages);
+
+    /**
+     * Check if hero can jump.
+     * 
+     * @return <code>true</code> if can jump, <code>false</code> else.
+     */
+    public boolean canJump()
+    {
+        return isOnGround();
+    }
+
+    /**
+     * Check if hero is jumping.
+     * 
+     * @return <code>true</code> if jumping, <code>false</code> else.
+     */
+    public boolean isJumping()
+    {
+        return getLocationY() > getLocationOldY();
+    }
+
+    /**
+     * Check if hero is falling.
+     * 
+     * @return <code>true</code> if falling, <code>false</code> else.
+     */
+    public boolean isFalling()
+    {
+        return getLocationY() < getLocationOldY();
+    }
+
+    /**
+     * Check if hero is on ground.
+     * 
+     * @return <code>true</code> if on ground, <code>false</code> else.
+     */
+    public boolean isOnGround()
+    {
+        return coll == EntityCollision.GROUND && !isFalling() && !isJumping();
+    }
+
+    /**
+     * Check if entity is dead.
+     * 
+     * @return <code>true</code> if dead, <code>false</code> else.
+     */
+    public boolean isDead()
+    {
+        return dead;
     }
 
     /**
@@ -125,6 +191,72 @@ public abstract class Entity
     public TypeEntity getType()
     {
         return type;
+    }
+
+    /**
+     * Check the vertical collision.
+     * 
+     * @param category The collision category.
+     */
+    protected void checkVertical(EntityCollisionTileCategory category)
+    {
+        final Tile tile = getCollisionTile(map, category);
+        if (tile != null)
+        {
+            final Double y = tile.getCollisionY(this);
+            if (applyVerticalCollision(y))
+            {
+                jumpForce.setForce(Force.ZERO);
+                resetGravity();
+                coll = EntityCollision.GROUND;
+                // Start timer to allow entity to have an extra jump area before falling
+                timerExtraJump.start();
+            }
+            else
+            {
+                coll = EntityCollision.NONE;
+            }
+        }
+    }
+
+    /**
+     * Select the animation from the state.
+     * 
+     * @param state The current state
+     */
+    protected void selectAnimCur(EntityState state)
+    {
+        switch (state)
+        {
+            case IDLE:
+                animCur = animIdle;
+                break;
+            case WALK:
+                animCur = animWalk;
+                break;
+            case DEAD:
+                animCur = animDie;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Set to zero movement speed force.
+     */
+    protected void resetMovementSpeed()
+    {
+        movementForce.setForce(Force.ZERO);
+        movementForceDest.setForce(Force.ZERO);
+    }
+
+    /**
+     * Called when an horizontal collision occurred.
+     */
+    protected void onHorizontalCollision()
+    {
+        // Nothing to do by default
     }
 
     /**
@@ -235,31 +367,9 @@ public abstract class Entity
         }
     }
 
-    /**
-     * Check the vertical collision.
-     * 
-     * @param category The collision category.
+    /*
+     * EntityPlatform
      */
-    protected void checkVertical(EntityCollisionTileCategory category)
-    {
-        final Tile tile = getCollisionTile(map, category);
-        if (tile != null)
-        {
-            final Double y = tile.getCollisionY(this);
-            if (applyVerticalCollision(y))
-            {
-                jumpForce.setForce(Force.ZERO);
-                resetGravity();
-                coll = EntityCollision.GROUND;
-                // Start timer to allow entity to have an extra jump area before falling
-                timerExtraJump.start();
-            }
-            else
-            {
-                coll = EntityCollision.NONE;
-            }
-        }
-    }
 
     @Override
     protected void handleActions(double extrp)
@@ -308,111 +418,6 @@ public abstract class Entity
             play(animCur);
         }
         updateAnimation(extrp);
-    }
-
-    /**
-     * Select the animation from the state.
-     * 
-     * @param state The current state
-     */
-    protected void selectAnimCur(EntityState state)
-    {
-        switch (state)
-        {
-            case IDLE:
-                animCur = animIdle;
-                break;
-            case WALK:
-                animCur = animWalk;
-                break;
-            case DEAD:
-                animCur = animDie;
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Called when hurt.
-     * 
-     * @param entity Entity that hurt this.
-     * @param damages Hurt damages.
-     */
-    public abstract void onHurtBy(EntityGame entity, int damages);
-
-    /**
-     * Check if hero can jump.
-     * 
-     * @return <code>true</code> if can jump, <code>false</code> else.
-     */
-    public boolean canJump()
-    {
-        return isOnGround();
-    }
-
-    /**
-     * Check if hero is jumping.
-     * 
-     * @return <code>true</code> if jumping, <code>false</code> else.
-     */
-    public boolean isJumping()
-    {
-        return getLocationY() > getLocationOldY();
-    }
-
-    /**
-     * Check if hero is falling.
-     * 
-     * @return <code>true</code> if falling, <code>false</code> else.
-     */
-    public boolean isFalling()
-    {
-        return getLocationY() < getLocationOldY();
-    }
-
-    /**
-     * Check if hero is on ground.
-     * 
-     * @return <code>true</code> if on ground, <code>false</code> else.
-     */
-    public boolean isOnGround()
-    {
-        return coll == EntityCollision.GROUND && !isFalling() && !isJumping();
-    }
-
-    /**
-     * Check if entity is dead.
-     * 
-     * @return <code>true</code> if dead, <code>false</code> else.
-     */
-    public boolean isDead()
-    {
-        return dead;
-    }
-
-    /**
-     * Called when hit this entity.
-     * 
-     * @param entity The entity hit.
-     */
-    public abstract void onHitThat(Entity entity);
-
-    /**
-     * Set to zero movement speed force.
-     */
-    protected void resetMovementSpeed()
-    {
-        movementForce.setForce(Force.ZERO);
-        movementForceDest.setForce(Force.ZERO);
-    }
-
-    /**
-     * Called when an horizontal collision occurred.
-     */
-    protected void onHorizontalCollision()
-    {
-        // Nothing to do by default
     }
 
     /*

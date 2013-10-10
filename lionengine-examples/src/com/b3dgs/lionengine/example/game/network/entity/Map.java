@@ -15,20 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 
 /**
  * Map implementation.
  */
-class Map
+final class Map
         extends MapTilePlatform<TileCollision, Tile>
 {
     /**
      * Map constructor.
      */
-    public Map()
+    Map()
     {
         super(16, 16);
     }
@@ -36,7 +36,7 @@ class Map
     /**
      * Adjust the collision.
      */
-    public void adjustCollisions()
+    void adjustCollisions()
     {
         for (int tx = 0; tx < getWidthInTile(); tx++)
         {

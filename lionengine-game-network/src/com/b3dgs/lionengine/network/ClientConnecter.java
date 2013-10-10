@@ -17,7 +17,11 @@
  */
 package com.b3dgs.lionengine.network;
 
+import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
+
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Client connection listener thread.
@@ -45,6 +49,18 @@ final class ClientConnecter
         this.server = server;
     }
 
+    /**
+     * Terminate the thread.
+     */
+    public void terminate()
+    {
+        isRunning = false;
+    }
+
+    /*
+     * Thread
+     */
+
     @Override
     public void run()
     {
@@ -55,18 +71,14 @@ final class ClientConnecter
             {
                 server.notifyNewClientConnected(serverSocket.accept());
             }
-            catch (final Exception exception)
+            catch (final SocketException exception)
             {
-                // Ignore
+                isRunning = false;
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(ClientConnecter.class, "run", exception);
             }
         }
-    }
-
-    /**
-     * Terminate the thread.
-     */
-    public void terminate()
-    {
-        isRunning = false;
     }
 }

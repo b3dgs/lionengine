@@ -70,4 +70,11 @@ public interface NetworkedWorld
      * Receive all messages from the network.
      */
     void receiveMessages();
+
+    /**
+     * Get the amount of bytes sent per second.
+     * 
+     * @return The number of bytes sent per second.
+     */
+    int getBandwidth();
 }

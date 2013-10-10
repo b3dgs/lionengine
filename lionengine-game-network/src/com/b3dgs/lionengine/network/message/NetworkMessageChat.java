@@ -31,7 +31,7 @@ public class NetworkMessageChat
     private String message;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NetworkMessageChat()
     {
@@ -73,6 +73,10 @@ public class NetworkMessageChat
     {
         return message;
     }
+
+    /*
+     * NetworkMessage
+     */
 
     @Override
     protected void encode(ByteArrayOutputStream buffer) throws IOException

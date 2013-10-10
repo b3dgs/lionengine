@@ -50,10 +50,10 @@ public abstract class NetworkModel<L extends ClientListener>
      */
     public NetworkModel(NetworkMessageDecoder decoder)
     {
+        this.decoder = decoder;
         messagesOut = new ArrayList<>(4);
         messagesIn = new ArrayList<>(4);
         listeners = new ArrayList<>(1);
-        this.decoder = decoder;
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class NetworkModel<L extends ClientListener>
      */
     protected void decodeMessage(byte type, byte from, byte dest, DataInputStream buffer) throws IOException
     {
-        final NetworkMessage message = this.decoder.getNetworkMessageFromType(type);
+        final NetworkMessage message = decoder.getNetworkMessageFromType(type);
         if (message != null)
         {
             buffer.skipBytes(3);

@@ -15,32 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
-
-import com.b3dgs.lionengine.network.message.NetworkMessage;
-import com.b3dgs.lionengine.network.message.NetworkMessageChat;
-import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
- * The decoder implementation.
+ * List of entity states.
  */
-class MessageDecoder
-        implements NetworkMessageDecoder
+enum EntityState
 {
-    @Override
-    public NetworkMessage getNetworkMessageFromType(int type)
-    {
-        final TypeMessage message = TypeMessage.fromOrdinal(type);
-        switch (message)
-        {
-            case MESSAGE_CHAT:
-                return new NetworkMessageChat();
-            case MESSAGE_ENTITY:
-                return new MessageEntity();
-            case MESSAGE_FACTORY:
-                return new MessageFactory();
-            default:
-                return null;
-        }
-    }
+    /** Idle state. */
+    IDLE,
+    /** Walk state. */
+    WALK,
+    /** turn state. */
+    TURN,
+    /** Jump state. */
+    JUMP,
+    /** Dead state. */
+    DEAD;
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
-class FactoryEntity
+final class FactoryEntity
         extends FactoryEntityGame<TypeEntity, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
@@ -41,7 +41,7 @@ class FactoryEntity
      * @param desiredFps The desired fps.
      * @param map The map reference.
      */
-    public FactoryEntity(int desiredFps, Map map)
+    FactoryEntity(int desiredFps, Map map)
     {
         super(TypeEntity.class);
         this.desiredFps = desiredFps;

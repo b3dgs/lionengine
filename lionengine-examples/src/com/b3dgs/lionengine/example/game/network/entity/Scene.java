@@ -15,10 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.core.Sequence;
 /**
  * Game loop designed to handle our little world.
  */
-class Scene
+final class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -40,10 +41,10 @@ class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(Loader loader)
+    Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        setExtrapolated(true);
+        setExtrapolated(true); // Recommended for network game
 
         final boolean server = true;
 
@@ -75,6 +76,10 @@ class Scene
     @Override
     protected void update(double extrp)
     {
+        if (keyboard.isPressed(Key.ESCAPE))
+        {
+            end();
+        }
         world.receiveMessages();
         world.update(extrp);
         world.sendMessages();

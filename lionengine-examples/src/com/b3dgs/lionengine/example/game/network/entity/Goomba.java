@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Goomba implementation.
  */
-class Goomba
+final class Goomba
         extends Entity
 {
     /** Die timer. */
@@ -41,13 +41,25 @@ class Goomba
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, TypeEntity.goomba, map, desiredFps, server);
         timerDie = new Timing();
         jumpForceValue = 9.0;
         movementSpeedValue = 0.75;
         right = true;
+    }
+
+    /**
+     * Die goomba.
+     */
+    public void doDie()
+    {
+        dead = true;
+        right = false;
+        left = false;
+        resetMovementSpeed();
+        timerDie.start();
     }
 
     /**
@@ -58,6 +70,43 @@ class Goomba
     public void setNetworkId(short id)
     {
         networkId = id;
+    }
+
+    /*
+     * Entity
+     */
+
+    @Override
+    public void onHurtBy(EntityGame entity, int damages)
+    {
+        if (!dead)
+        {
+            doDie();
+        }
+    }
+
+    @Override
+    public void onHitThat(Entity entity)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void applyMessage(NetworkMessage message)
+    {
+        if (!(message instanceof MessageEntity))
+        {
+            return;
+        }
+        final MessageEntity msg = (MessageEntity) message;
+        if (msg.getEntityId() == networkId)
+        {
+            super.applyMessage(message);
+            if (msg.hasAction(MessageEntityElement.DIE))
+            {
+                doDie();
+            }
+        }
     }
 
     @Override
@@ -91,6 +140,7 @@ class Goomba
                 message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
                 message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
                 addNetworkMessage(message);
+                networkLocation.stop();
                 networkLocation.start();
             }
         }
@@ -118,51 +168,6 @@ class Goomba
             message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
             message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
             addNetworkMessage(message);
-        }
-    }
-
-    @Override
-    public void onHurtBy(EntityGame entity, int damages)
-    {
-        if (!dead)
-        {
-            doDie();
-        }
-    }
-
-    @Override
-    public void onHitThat(Entity entity)
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Die goomba.
-     */
-    public void doDie()
-    {
-        dead = true;
-        right = false;
-        left = false;
-        resetMovementSpeed();
-        timerDie.start();
-    }
-
-    @Override
-    public void applyMessage(NetworkMessage message)
-    {
-        if (!(message instanceof MessageEntity))
-        {
-            return;
-        }
-        final MessageEntity msg = (MessageEntity) message;
-        if (msg.getEntityId() == networkId)
-        {
-            super.applyMessage(message);
-            if (msg.hasAction(MessageEntityElement.DIE))
-            {
-                doDie();
-            }
         }
     }
 }

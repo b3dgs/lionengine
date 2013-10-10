@@ -85,6 +85,24 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
     }
 
     /**
+     * Encode function for the current key.
+     * 
+     * @param buffer The current buffer to write.
+     * @param key The current key.
+     * @throws IOException Exception in case of error.
+     */
+    protected abstract void encode(ByteArrayOutputStream buffer, M key) throws IOException;
+
+    /**
+     * Decode function for the current key number.
+     * 
+     * @param buffer The current buffer to read.
+     * @param i The current key number.
+     * @throws IOException Exception in case of error.
+     */
+    protected abstract void decode(DataInputStream buffer, int i) throws IOException;
+
+    /**
      * Add an action.
      * 
      * @param element The action type.
@@ -92,7 +110,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, boolean value)
     {
-        this.actions.put(element, Boolean.valueOf(value));
+        actions.put(element, Boolean.valueOf(value));
     }
 
     /**
@@ -103,7 +121,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, char value)
     {
-        this.actions.put(element, Character.valueOf(value));
+        actions.put(element, Character.valueOf(value));
     }
 
     /**
@@ -114,7 +132,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, byte value)
     {
-        this.actions.put(element, Byte.valueOf(value));
+        actions.put(element, Byte.valueOf(value));
     }
 
     /**
@@ -125,7 +143,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, short value)
     {
-        this.actions.put(element, Short.valueOf(value));
+        actions.put(element, Short.valueOf(value));
     }
 
     /**
@@ -136,7 +154,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, int value)
     {
-        this.actions.put(element, Integer.valueOf(value));
+        actions.put(element, Integer.valueOf(value));
     }
 
     /**
@@ -147,7 +165,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public void addAction(M element, double value)
     {
-        this.actions.put(element, Double.valueOf(value));
+        actions.put(element, Double.valueOf(value));
     }
 
     /**
@@ -158,7 +176,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public boolean getActionBoolean(M element)
     {
-        return ((Boolean) this.actions.get(element)).booleanValue();
+        return ((Boolean) actions.get(element)).booleanValue();
     }
 
     /**
@@ -169,7 +187,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public byte getActionByte(M element)
     {
-        return ((Byte) this.actions.get(element)).byteValue();
+        return ((Byte) actions.get(element)).byteValue();
     }
 
     /**
@@ -180,7 +198,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public char getActionChar(M element)
     {
-        return ((Character) this.actions.get(element)).charValue();
+        return ((Character) actions.get(element)).charValue();
     }
 
     /**
@@ -191,7 +209,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public short getActionShort(M element)
     {
-        return ((Short) this.actions.get(element)).shortValue();
+        return ((Short) actions.get(element)).shortValue();
     }
 
     /**
@@ -202,7 +220,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public int getActionInteger(M element)
     {
-        return ((Integer) this.actions.get(element)).intValue();
+        return ((Integer) actions.get(element)).intValue();
     }
 
     /**
@@ -213,7 +231,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public double getActionDouble(M element)
     {
-        return ((Double) this.actions.get(element)).doubleValue();
+        return ((Double) actions.get(element)).doubleValue();
     }
 
     /**
@@ -224,7 +242,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public boolean hasAction(M element)
     {
-        return this.actions.containsKey(element);
+        return actions.containsKey(element);
     }
 
     /**
@@ -234,8 +252,12 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      */
     public short getEntityId()
     {
-        return this.entityId;
+        return entityId;
     }
+
+    /*
+     * NetworkMessage
+     */
 
     /**
      * Retrieve the keys, store its total number in the buffer, and call {@link #encode(ByteArrayOutputStream, Enum) for
@@ -247,8 +269,8 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
     @Override
     protected void encode(ByteArrayOutputStream buffer) throws IOException
     {
-        buffer.write(UtilityConversion.shortToByteArray(this.entityId));
-        final Set<M> keys = this.actions.keySet();
+        buffer.write(UtilityConversion.shortToByteArray(entityId));
+        final Set<M> keys = actions.keySet();
 
         // Fill the data
         buffer.write((byte) keys.size());
@@ -268,29 +290,11 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
     @Override
     protected void decode(DataInputStream buffer) throws IOException
     {
-        this.entityId = buffer.readShort();
+        entityId = buffer.readShort();
         final int number = buffer.readByte();
         for (int i = 0; i < number; i++)
         {
-            this.decode(buffer, i);
+            decode(buffer, i);
         }
     }
-
-    /**
-     * Encode function for the current key.
-     * 
-     * @param buffer The current buffer to write.
-     * @param key The current key.
-     * @throws IOException Exception in case of error.
-     */
-    protected abstract void encode(ByteArrayOutputStream buffer, M key) throws IOException;
-
-    /**
-     * Decode function for the current key number.
-     * 
-     * @param buffer The current buffer to read.
-     * @param i The current key number.
-     * @throws IOException Exception in case of error.
-     */
-    protected abstract void decode(DataInputStream buffer, int i) throws IOException;
 }

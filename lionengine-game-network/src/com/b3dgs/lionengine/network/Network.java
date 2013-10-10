@@ -25,14 +25,6 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 public final class Network
 {
     /**
-     * Private constructor.
-     */
-    private Network()
-    {
-        // Nothing to do
-    }
-
-    /**
      * Create a server.
      * 
      * @param decoder The message type decoder.
@@ -52,5 +44,13 @@ public final class Network
     public static Client createClient(NetworkMessageDecoder decoder)
     {
         return new ClientImpl(decoder);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Network()
+    {
+        // Nothing to do
     }
 }

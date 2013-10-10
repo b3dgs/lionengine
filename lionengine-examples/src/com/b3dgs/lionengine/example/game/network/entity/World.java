@@ -15,18 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.NetworkedWorldModel;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
@@ -49,25 +52,35 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
     protected final Map map;
     /** Factory reference. */
     protected final FactoryEntity factory;
-    /** Handler reference. */
-    protected final HandlerEntity handler;
     /** Mario client reference. */
     protected final HashMap<Byte, Mario> marioClients;
+    /** Text. */
+    protected final Text text;
+    /** Chat. */
+    protected final Chat chat;
     /** Networkable world reference. */
     protected N networkedWorld;
 
     /**
      * @param sequence The sequence reference.
      */
-    public World(final Sequence sequence)
+    World(final Sequence sequence)
     {
         super(sequence);
         map = new Map();
         marioClients = new HashMap<>(1);
         factory = new FactoryEntity(source.getRate(), map);
-        handler = new HandlerEntity(new CameraPlatform(width, height), marioClients);
         networkableModel = new NetworkableModel();
+        text = UtilityImage.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
+        chat = new Chat(this);
     }
+
+    /**
+     * Apply the specified command.
+     * 
+     * @param command The command.
+     */
+    public abstract void applyCommand(String command);
 
     /**
      * Get the client from its id.
@@ -80,27 +93,23 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
         return marioClients.get(Byte.valueOf(id)).getName();
     }
 
-    /**
-     * Apply the specified command.
-     * 
-     * @param command The command.
-     */
-    public abstract void applyCommand(String command);
-
     /*
      * WorldGame
      */
 
     @Override
-    public void update(double extrp)
-    {
-        handler.update(extrp);
-    }
-
-    @Override
     public void render(Graphic g)
     {
-        // Nothing to do
+        text.draw(g, width, 0, Align.RIGHT, "Bandwidth=" + getBandwidth() + "byte/sec");
+        text.draw(g, 0, 0, "Number of connected clients: " + marioClients.size());
+        text.draw(g, 0, 12, "Clients:");
+        int i = 0;
+        for (final Mario client : marioClients.values())
+        {
+            text.draw(g, 0, 24 + i * 12, " - " + client.getName());
+            i++;
+        }
+        chat.render(g);
     }
 
     @Override
@@ -161,6 +170,12 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
         networkedWorld.receiveMessages();
     }
 
+    @Override
+    public int getBandwidth()
+    {
+        return networkedWorld.getBandwidth();
+    }
+
     /*
      * ClientConnectedListener
      */
@@ -173,20 +188,22 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
         {
             server = true;
         }
-        final Mario mario = this.factory.createMario(server);
-        mario.teleport(64, 32);
+        final Mario mario = factory.createMario(server);
+        mario.doRespawn();
         mario.setName(name);
         mario.setClientId(id);
         addNetworkable(mario);
+        addNetworkable(chat);
         marioClients.put(id, mario);
         sendMessages();
+
     }
 
     @Override
     public void notifyClientDisconnected(Byte id, String name)
     {
         final Mario mario = marioClients.get(id);
-        this.removeNetworkable(mario);
+        removeNetworkable(mario);
         marioClients.remove(id);
     }
 

@@ -53,11 +53,11 @@ public class NetworkedWorldModel<L extends ClientListener, N extends NetworkMode
      */
     public NetworkedWorldModel(N network)
     {
-        this.networkables = new HashSet<>(1);
-        this.toAdd = new ArrayList<>(1);
-        this.listeners = new ArrayList<>(1);
         this.network = network;
-        this.willAdd = false;
+        networkables = new HashSet<>(1);
+        toAdd = new ArrayList<>(1);
+        listeners = new ArrayList<>(1);
+        willAdd = false;
     }
 
     /**
@@ -67,7 +67,7 @@ public class NetworkedWorldModel<L extends ClientListener, N extends NetworkMode
      */
     public void addListener(L listener)
     {
-        this.listeners.add(listener);
+        listeners.add(listener);
     }
 
     /**
@@ -77,7 +77,7 @@ public class NetworkedWorldModel<L extends ClientListener, N extends NetworkMode
      */
     public void removeListener(L listener)
     {
-        this.listeners.remove(listener);
+        listeners.remove(listener);
     }
 
     /*
@@ -87,70 +87,76 @@ public class NetworkedWorldModel<L extends ClientListener, N extends NetworkMode
     @Override
     public void disconnect()
     {
-        this.network.disconnect();
-        for (final L listener : this.listeners)
+        network.disconnect();
+        for (final L listener : listeners)
         {
-            this.network.removeListener(listener);
+            network.removeListener(listener);
         }
-        this.listeners.clear();
+        listeners.clear();
     }
 
     @Override
     public void addNetworkable(Networkable networkable)
     {
-        this.toAdd.add(networkable);
-        this.willAdd = true;
+        toAdd.add(networkable);
+        willAdd = true;
     }
 
     @Override
     public void removeNetworkable(Networkable networkable)
     {
-        this.networkables.remove(networkable);
+        networkables.remove(networkable);
     }
 
     @Override
     public void addMessage(NetworkMessage message)
     {
-        this.network.addMessage(message);
+        network.addMessage(message);
     }
 
     @Override
     public void addMessages(Collection<NetworkMessage> messages)
     {
-        this.network.addMessages(messages);
+        network.addMessages(messages);
     }
 
     @Override
     public void sendMessages()
     {
-        for (final Networkable networkable : this.networkables)
+        for (final Networkable networkable : networkables)
         {
-            this.network.addMessages(networkable.getNetworkMessages());
+            network.addMessages(networkable.getNetworkMessages());
             networkable.clearNetworkMessages();
         }
-        this.network.sendMessages();
+        network.sendMessages();
     }
 
     @Override
     public void receiveMessages()
     {
-        if (this.willAdd)
+        if (willAdd)
         {
-            for (final Networkable networkable : this.toAdd)
+            for (final Networkable networkable : toAdd)
             {
-                this.networkables.add(networkable);
+                networkables.add(networkable);
             }
-            this.toAdd.clear();
-            this.willAdd = false;
+            toAdd.clear();
+            willAdd = false;
         }
-        this.network.receiveMessages();
-        for (final NetworkMessage message : this.network.getMessages())
+        network.receiveMessages();
+        for (final NetworkMessage message : network.getMessages())
         {
-            for (final Networkable networkable : this.networkables)
+            for (final Networkable networkable : networkables)
             {
                 networkable.applyMessage(message);
             }
         }
+    }
+
+    @Override
+    public int getBandwidth()
+    {
+        return network.getBandwidth();
     }
 
     @Override

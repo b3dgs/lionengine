@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
@@ -24,32 +24,24 @@ import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 
-// Tutorial: Platform Entity Control
-// This tutorial will show how to manage the different state of a controlled entity using keyboard.
-// It will also explain how to apply animations depending of its state.
-
 /**
- * Program starts here.
+ * Main class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.minimal
  */
 public final class AppNetworkEntity
 {
     /**
-     * Main function.
+     * Main.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        // Start engine
-        Engine.start("Network", Version.create(0, 1, 0), Media.getPath("resources", "mario"));
-
-        // Resolution
+        Engine.start("Network Entity", Version.create(1, 0, 0), Media.getPath("resources", "mario"));
         final Resolution output = new Resolution(640, 480, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }

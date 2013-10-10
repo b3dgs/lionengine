@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
 /**
  * Factory network message description.
  */
-class MessageFactory
+final class MessageFactory
         extends NetworkMessageEntity<TypeEntity>
 {
     /**
      * Constructor.
      */
-    public MessageFactory()
+    MessageFactory()
     {
         super();
     }
@@ -42,7 +42,7 @@ class MessageFactory
      * 
      * @param entityId The entity id.
      */
-    public MessageFactory(short entityId)
+    MessageFactory(short entityId)
     {
         super(TypeMessage.MESSAGE_FACTORY, entityId);
     }
@@ -53,10 +53,14 @@ class MessageFactory
      * @param entityId The entity id.
      * @param destId The client destination id.
      */
-    public MessageFactory(short entityId, byte destId)
+    MessageFactory(short entityId, byte destId)
     {
         super(TypeMessage.MESSAGE_FACTORY, entityId, destId);
     }
+
+    /*
+     * NetworkMessageEntity
+     */
 
     @Override
     protected void encode(ByteArrayOutputStream buffer, TypeEntity key) throws IOException

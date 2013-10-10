@@ -15,31 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.chat;
+
+import com.b3dgs.lionengine.network.message.NetworkMessage;
+import com.b3dgs.lionengine.network.message.NetworkMessageChat;
+import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
- * Networked messages enum type.
+ * The decoder implementation.
  */
-enum TypeMessage
+final class MessageDecoder
+        implements NetworkMessageDecoder
 {
-    /** Chat message. */
-    MESSAGE_CHAT,
-    /** Entity message. */
-    MESSAGE_ENTITY,
-    /** Factory message. */
-    MESSAGE_FACTORY;
-
-    /** Values. */
-    private static final TypeMessage[] VALUES = TypeMessage.values();
-
     /**
-     * Get the message type from its ordinal.
-     * 
-     * @param ordinal The ordinal.
-     * @return The enum.
+     * Constructor.
      */
-    public static TypeMessage fromOrdinal(int ordinal)
+    MessageDecoder()
     {
-        return TypeMessage.VALUES[ordinal];
+        // Nothing to do
+    }
+
+    /*
+     * MessageDecoder
+     */
+
+    @Override
+    public NetworkMessage getNetworkMessageFromType(int type)
+    {
+        final TypeMessage message = TypeMessage.fromOrdinal(type);
+        switch (message)
+        {
+            case MESSAGE_CHAT:
+                return new NetworkMessageChat();
+            default:
+                return null;
+        }
     }
 }

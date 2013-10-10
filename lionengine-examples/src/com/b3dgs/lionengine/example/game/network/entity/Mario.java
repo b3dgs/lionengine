@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Implementation of our controllable entity.
  */
-class Mario
+final class Mario
         extends Entity
 {
     /** Animation turn. */
@@ -50,7 +50,7 @@ class Mario
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, TypeEntity.mario, map, desiredFps, server);
         animTurn = getDataAnimation("turn");
@@ -60,6 +60,37 @@ class Mario
         movementSpeedValue = 3.0;
         addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);
+    }
+
+    /**
+     * Kill mario.
+     */
+    public void doKill()
+    {
+        dead = true;
+        resetMovementSpeed();
+        locationDie = getLocationY();
+        stepDie = 0;
+        timerDie.start();
+    }
+
+    /**
+     * Respawn mario.
+     */
+    public void doRespawn()
+    {
+        mirror(false);
+        teleport(80, 25);
+        dead = false;
+    }
+
+    /**
+     * Jump mario.
+     */
+    public void doJump()
+    {
+        jumpForce.setForce(0.0, jumpForceValue / 1.5);
+        resetGravity();
     }
 
     /**
@@ -80,6 +111,51 @@ class Mario
     public String getName()
     {
         return name;
+    }
+
+    /*
+     * Entity
+     */
+
+    @Override
+    public void onHurtBy(EntityGame entity, int damages)
+    {
+        if (!dead)
+        {
+            doKill();
+        }
+    }
+
+    @Override
+    public void onHitThat(Entity entity)
+    {
+        if (!isJumping())
+        {
+            final MessageEntity message = new MessageEntity(getClientId());
+            message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
+            message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
+            message.addAction(MessageEntityElement.JUMP, true);
+            addNetworkMessage(message);
+            doJump();
+        }
+    }
+
+    @Override
+    public void applyMessage(NetworkMessage message)
+    {
+        if (!(message instanceof MessageEntity))
+        {
+            return;
+        }
+        final MessageEntity msg = (MessageEntity) message;
+        if (message.getClientId() == getClientId().byteValue())
+        {
+            super.applyMessage(message);
+            if (msg.hasAction(MessageEntityElement.JUMP))
+            {
+                doJump();
+            }
+        }
     }
 
     @Override
@@ -176,78 +252,6 @@ class Mario
                 addNetworkMessage(message);
                 networkLocation.stop();
                 networkLocation.start();
-            }
-        }
-    }
-
-    @Override
-    public void onHurtBy(EntityGame entity, int damages)
-    {
-        if (!dead)
-        {
-            doKill();
-        }
-    }
-
-    @Override
-    public void onHitThat(Entity entity)
-    {
-        if (!isJumping())
-        {
-            final MessageEntity message = new MessageEntity(getClientId());
-            message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
-            message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
-            message.addAction(MessageEntityElement.JUMP, true);
-            addNetworkMessage(message);
-            doJump();
-        }
-    }
-
-    /**
-     * Kill mario.
-     */
-    public void doKill()
-    {
-        dead = true;
-        resetMovementSpeed();
-        locationDie = getLocationY();
-        stepDie = 0;
-        timerDie.start();
-    }
-
-    /**
-     * Respawn mario.
-     */
-    public void doRespawn()
-    {
-        mirror(false);
-        teleport(80, 32);
-        dead = false;
-    }
-
-    /**
-     * Jump mario.
-     */
-    public void doJump()
-    {
-        jumpForce.setForce(0.0, jumpForceValue / 1.5);
-        resetGravity();
-    }
-
-    @Override
-    public void applyMessage(NetworkMessage message)
-    {
-        if (!(message instanceof MessageEntity))
-        {
-            return;
-        }
-        final MessageEntity msg = (MessageEntity) message;
-        if (message.getClientId() == getClientId().byteValue())
-        {
-            super.applyMessage(message);
-            if (msg.hasAction(MessageEntityElement.JUMP))
-            {
-                doJump();
             }
         }
     }

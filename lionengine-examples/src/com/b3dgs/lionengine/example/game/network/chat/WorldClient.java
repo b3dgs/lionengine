@@ -15,21 +15,16 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.chat;
 
 import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
-import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorldClient;
 import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -39,43 +34,29 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
 /**
  * World implementation using AbstractWorld.
  */
-class WorldClient
+final class WorldClient
         extends World<NetworkedWorldModelClient>
         implements NetworkedWorldClient, Networkable
 {
-    /** Camera reference. */
-    private final CameraPlatform camera;
-    /** Text game. */
-    private final TextGame textGame;
-    /** Text game. */
-    private final Text text;
-    /** Chat. */
-    private final Chat chat;
-    /** Input. */
-    private final ClientInput input;
     /** Networkable. */
     private final Networkable networkableModel;
-    /** Background color. */
-    private final ColorRgba backgroundColor = new ColorRgba(107, 136, 255);
 
     /**
      * @see WorldGame#WorldGame(Sequence)
      */
-    public WorldClient(final Sequence sequence)
+    WorldClient(final Sequence sequence)
     {
         super(sequence);
-        textGame = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-        text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
-        chat = new Chat(this);
-        input = new ClientInput();
-        camera = new CameraPlatform(width, height);
         networkableModel = new NetworkableModel();
         networkedWorld = new NetworkedWorldModelClient(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
-        sequence.addKeyListener(input);
         sequence.addKeyListener(chat);
     }
+
+    /*
+     * World
+     */
 
     @Override
     public void applyCommand(String command)
@@ -90,48 +71,20 @@ class WorldClient
     @Override
     public void update(double extrp)
     {
-        textGame.update(camera);
-        handler.update(extrp);
-        for (final Byte id : marioClients.keySet())
-        {
-            final Mario mario = marioClients.get(id);
-            mario.update(extrp);
-            if (id.byteValue() == getId())
-            {
-                camera.follow(mario);
-            }
-        }
+        // Nothing to do
     }
 
     @Override
     public void render(final Graphic g)
     {
         super.render(g);
-        g.setColor(backgroundColor);
-        g.drawRect(0, 0, width, height, true);
-        // Draw the map
-        map.render(g, camera);
-        handler.render(g);
-        // Draw the hero
-        for (final Byte id : marioClients.keySet())
-        {
-            final Mario mario = marioClients.get(id);
-            mario.render(g, camera);
-            textGame.draw(g, mario.getLocationIntX(), height - mario.getLocationIntY() - 28, Align.CENTER,
-                    String.valueOf(mario.getName()));
-        }
-        chat.render(g);
-        text.draw(g, 0, 0, "Ping=" + getPing() + "ms");
-        text.draw(g, 0, 12, "Bandwidth=" + getBandwidth() + "byte/sec");
+        text.draw(g, width, 12, Align.RIGHT, "Ping=" + getPing() + "ms");
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        super.loading(file);
-        camera.setLimits(map);
-        camera.setView(0, 0, width, height);
-        map.adjustCollisions();
+        // Nothing to do
     }
 
     /*
@@ -163,12 +116,6 @@ class WorldClient
     }
 
     @Override
-    public int getBandwidth()
-    {
-        return networkedWorld.getBandwidth();
-    }
-
-    @Override
     public byte getId()
     {
         return networkedWorld.getId();
@@ -181,18 +128,15 @@ class WorldClient
     @Override
     public void notifyConnectionEstablished(Byte id, String name)
     {
-        final Mario mario = factory.createMario(false);
-        mario.teleport(64, 32);
-        mario.setName(name);
-        marioClients.put(id, mario);
-        mario.setClientId(id);
+        final Client client = new Client();
+        client.setName(name);
+        clients.put(id, client);
+        client.setClientId(id);
         chat.setClientId(id);
-        input.setClientId(id);
         setClientId(id);
-        addNetworkable(mario);
+        addNetworkable(client);
         addNetworkable(this);
         addNetworkable(chat);
-        addNetworkable(input);
     }
 
     @Override
@@ -204,10 +148,9 @@ class WorldClient
     @Override
     public void notifyConnectionTerminated(Byte id)
     {
-        marioClients.remove(id);
+        clients.remove(id);
         removeNetworkable(this);
         removeNetworkable(chat);
-        removeNetworkable(input);
     }
 
     /*
@@ -217,18 +160,7 @@ class WorldClient
     @Override
     public void applyMessage(NetworkMessage message)
     {
-        if (!(message instanceof MessageFactory))
-        {
-            return;
-        }
-        final MessageFactory msg = (MessageFactory) message;
-        if (msg.hasAction(TypeEntity.goomba))
-        {
-            final Goomba goomba = factory.createGoomba(false);
-            goomba.setNetworkId(msg.getEntityId());
-            handler.add(goomba);
-            addNetworkable(goomba);
-        }
+        // Nothing to do
     }
 
     @Override

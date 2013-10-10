@@ -77,12 +77,6 @@ public class NetworkedWorldModelClient
     }
 
     @Override
-    public int getBandwidth()
-    {
-        return network.getBandwidth();
-    }
-
-    @Override
     public byte getId()
     {
         return network.getId();

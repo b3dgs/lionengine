@@ -42,6 +42,8 @@ public interface Key
     Integer ESCAPE = Integer.valueOf(KeyEvent.VK_ESCAPE);
     /** Space key. */
     Integer SPACE = Integer.valueOf(KeyEvent.VK_SPACE);
+    /** Back Space key. */
+    Integer BACK_SPACE = Integer.valueOf(KeyEvent.VK_BACK_SPACE);
     /** Tab key. */
     Integer TAB = Integer.valueOf(KeyEvent.VK_TAB);
     /** Enter key. */

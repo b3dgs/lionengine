@@ -45,7 +45,7 @@ public abstract class NetworkChat
     /** Validate key. */
     private int keyValidate;
     /** Space key. */
-    private int keySpace;
+    private int keyBackSpace;
 
     /**
      * Constructor.
@@ -54,10 +54,10 @@ public abstract class NetworkChat
      */
     public NetworkChat(Enum<?> type)
     {
+        this.type = type;
         networkable = new NetworkableModel();
         message = new StringBuilder(16);
         messages = new ConcurrentLinkedQueue<>();
-        this.type = type;
         display = "";
     }
 
@@ -67,6 +67,31 @@ public abstract class NetworkChat
      * @param g The graphic output.
      */
     public abstract void render(Graphic g);
+
+    /**
+     * Get the message string from the network message.
+     * 
+     * @param message The network message.
+     * @return The message string.
+     */
+    protected abstract String getMessage(NetworkMessageChat message);
+
+    /**
+     * Check if the message can be sent. Can be used for example to intercept a command (name changing...) to not send
+     * it to the network.
+     * 
+     * @param message The message to check.
+     * @return <code>true</code> if can be sent, <code>false</code> else.
+     */
+    protected abstract boolean canSendMessage(String message);
+
+    /**
+     * Check if the input char can be added.
+     * 
+     * @param c The input char.
+     * @return <code>true</code> if can be added, <code>false</code> else.
+     */
+    protected abstract boolean canAddChar(char c);
 
     /**
      * Set the key that allow to validate a message.
@@ -81,11 +106,11 @@ public abstract class NetworkChat
     /**
      * Set the key that insert a space in a message.
      * 
-     * @param keySpace The key that insert a space in a message.
+     * @param keyBackSpace The key that insert a backspace in a message.
      */
-    public void setKeySpace(int keySpace)
+    public void setKeyBackSpace(int keyBackSpace)
     {
-        this.keySpace = keySpace;
+        this.keyBackSpace = keyBackSpace;
     }
 
     /**
@@ -107,30 +132,6 @@ public abstract class NetworkChat
     {
         return display;
     }
-
-    /**
-     * Get the message string from the network message.
-     * 
-     * @param message The network message.
-     * @return The message string.
-     */
-    protected abstract String getMessage(NetworkMessageChat message);
-
-    /**
-     * Check if the message can be sent.
-     * 
-     * @param message The message to check.
-     * @return <code>true</code> if can be sent, <code>false</code> else.
-     */
-    protected abstract boolean canSendMessage(String message);
-
-    /**
-     * Check if the input char can be added.
-     * 
-     * @param c The input char.
-     * @return <code>true</code> if can be added, <code>false</code> else.
-     */
-    protected abstract boolean canAddChar(char c);
 
     /**
      * Add a new message.
@@ -211,7 +212,7 @@ public abstract class NetworkChat
                 message.delete(0, message.length());
             }
         }
-        else if (keyCode == keySpace)
+        else if (keyCode == keyBackSpace)
         {
             if (message.length() > 0)
             {

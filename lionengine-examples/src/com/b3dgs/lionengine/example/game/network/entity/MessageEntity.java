@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -27,13 +27,35 @@ import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
 /**
  * Entity network message description.
  */
-class MessageEntity
+final class MessageEntity
         extends NetworkMessageEntity<MessageEntityElement>
 {
     /**
+     * Get the value in byte of the enum.
+     * 
+     * @param value The enum value.
+     * @return The byte value.
+     */
+    private static byte getKeyByte(MessageEntityElement value)
+    {
+        return (byte) value.ordinal();
+    }
+
+    /**
+     * Get the key value from the byte value.
+     * 
+     * @param value The byte value.
+     * @return The key value.
+     */
+    private static MessageEntityElement getActionKey(byte value)
+    {
+        return MessageEntityElement.fromOrdinal(value);
+    }
+
+    /**
      * Constructor (used in decoding case).
      */
-    public MessageEntity()
+    MessageEntity()
     {
         super();
     }
@@ -43,7 +65,7 @@ class MessageEntity
      * 
      * @param clientId The client id.
      */
-    public MessageEntity(Byte clientId)
+    MessageEntity(Byte clientId)
     {
         super(TypeMessage.MESSAGE_ENTITY, clientId.byteValue());
     }
@@ -53,7 +75,7 @@ class MessageEntity
      * 
      * @param entityId The entity id.
      */
-    public MessageEntity(short entityId)
+    MessageEntity(short entityId)
     {
         super(TypeMessage.MESSAGE_ENTITY, entityId);
     }
@@ -64,10 +86,14 @@ class MessageEntity
      * @param entityId The entity id.
      * @param destId The client destination id.
      */
-    public MessageEntity(short entityId, byte destId)
+    MessageEntity(short entityId, byte destId)
     {
         super(TypeMessage.MESSAGE_ENTITY, entityId, destId);
     }
+
+    /*
+     * NetworkMessageEntity
+     */
 
     @Override
     protected void encode(ByteArrayOutputStream buffer, MessageEntityElement key) throws IOException
@@ -102,27 +128,5 @@ class MessageEntity
         {
             this.addAction(key, buffer.readInt());
         }
-    }
-
-    /**
-     * Get the value in byte of the enum.
-     * 
-     * @param value The enum value.
-     * @return The byte value.
-     */
-    private static byte getKeyByte(MessageEntityElement value)
-    {
-        return (byte) value.ordinal();
-    }
-
-    /**
-     * Get the key value from the byte value.
-     * 
-     * @param value The byte value.
-     * @return The key value.
-     */
-    private static MessageEntityElement getActionKey(byte value)
-    {
-        return MessageEntityElement.fromOrdinal(value);
     }
 }

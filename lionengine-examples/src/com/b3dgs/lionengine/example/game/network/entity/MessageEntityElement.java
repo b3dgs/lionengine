@@ -15,47 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
- * Networkable world interface client side.
+ * List of actions shared.
  */
-public interface NetworkedWorldClient
-        extends NetworkedWorld, ConnectionListener
+enum MessageEntityElement
 {
-    /**
-     * Connect to a server.
-     * 
-     * @param ip The server ip.
-     * @param port The server port.
-     */
-    void connect(String ip, int port);
+    /** Up flag (boolean). */
+    UP,
+    /** Down flag (boolean). */
+    DOWN,
+    /** Right flag (boolean). */
+    RIGHT,
+    /** Left flag (boolean). */
+    LEFT,
+    /** Location adjuster x (integer). */
+    LOCATION_X,
+    /** Location adjuster y (integer). */
+    LOCATION_Y,
+    /** Call jump method. */
+    JUMP,
+    /** Call die method. */
+    DIE;
+
+    /** Values. */
+    private static final MessageEntityElement[] VALUES = MessageEntityElement.values();
 
     /**
-     * Set the client new name.
+     * Get the message type from its ordinal.
      * 
-     * @param name The new name.
+     * @param ordinal The ordinal.
+     * @return The enum.
      */
-    void setName(String name);
-
-    /**
-     * Get the client name.
-     * 
-     * @return The client name.
-     */
-    String getName();
-
-    /**
-     * Get the ping from the server (time elapsed between the ping request and response).
-     * 
-     * @return The ping from the server.
-     */
-    int getPing();
-
-    /**
-     * Get the network id.
-     * 
-     * @return The network id.
-     */
-    byte getId();
+    public static MessageEntityElement fromOrdinal(int ordinal)
+    {
+        return MessageEntityElement.VALUES[ordinal];
+    }
 }

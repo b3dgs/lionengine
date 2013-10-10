@@ -25,6 +25,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
@@ -235,9 +236,13 @@ public class ClientImpl
             out.flush();
             kick();
         }
+        catch (final SocketException exception)
+        {
+            connected = false;
+        }
         catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientImpl.class, "disconnect", exception);
         }
         connected = false;
     }
@@ -285,7 +290,7 @@ public class ClientImpl
                 out.write(encoded);
                 out.flush();
 
-                bandwidth += 4 + 4 + encoded.length;
+                bandwidth += 8 + encoded.length;
             }
             catch (final IOException exception)
             {
@@ -431,6 +436,7 @@ public class ClientImpl
                             decodeMessage(type, from, dest, buffer);
                         }
                     }
+                    bandwidth += 4 + size;
                     break;
                 }
                 default:

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.util.HashMap;
 
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 /**
  * Handler implementation. All of our entity will be handled here.
  */
-class HandlerEntity
+final class HandlerEntity
         extends HandlerEntityPlatform<Entity>
 {
     /** The mario clients. */
@@ -38,11 +38,15 @@ class HandlerEntity
      * @param camera The camera reference.
      * @param marioClients The clients.
      */
-    public HandlerEntity(CameraPlatform camera, HashMap<Byte, Mario> marioClients)
+    HandlerEntity(CameraPlatform camera, HashMap<Byte, Mario> marioClients)
     {
         super(camera);
         this.marioClients = marioClients;
     }
+
+    /*
+     * HandlerEntityPlatform
+     */
 
     @Override
     protected boolean canUpdateEntity(Entity entity)

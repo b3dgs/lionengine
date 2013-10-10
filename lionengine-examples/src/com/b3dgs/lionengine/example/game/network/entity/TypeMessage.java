@@ -15,20 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
- * List of entity types. Lower case is preferred, as the name has to be the same with its corresponding files.
+ * Networked messages enum type.
  */
-enum TypeEntity
+enum TypeMessage
 {
-    /** Mario. */
-    mario,
-    /** Goomba. */
-    goomba;
+    /** Chat message. */
+    MESSAGE_CHAT,
+    /** Entity message. */
+    MESSAGE_ENTITY,
+    /** Factory message. */
+    MESSAGE_FACTORY;
 
     /** Values. */
-    private static final TypeEntity[] VALUES = TypeEntity.values();
+    private static final TypeMessage[] VALUES = TypeMessage.values();
 
     /**
      * Get the message type from its ordinal.
@@ -36,8 +38,8 @@ enum TypeEntity
      * @param ordinal The ordinal.
      * @return The enum.
      */
-    public static TypeEntity fromOrdinal(int ordinal)
+    public static TypeMessage fromOrdinal(int ordinal)
     {
-        return TypeEntity.VALUES[ordinal];
+        return TypeMessage.VALUES[ordinal];
     }
 }

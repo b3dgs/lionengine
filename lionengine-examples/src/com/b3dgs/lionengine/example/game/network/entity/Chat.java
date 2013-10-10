@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.network;
+package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
 /**
  * Chat implementation.
  */
-class Chat
+final class Chat
         extends NetworkChat
         implements ConnectionListener
 {
@@ -42,6 +42,7 @@ class Chat
     private static final ColorRgba BACKGROUND = new ColorRgba(128, 128, 128, 192);
     /** Background writing. */
     private static final ColorRgba BACKGROUND_WRITING = new ColorRgba(64, 64, 64, 192);
+
     /** Text. */
     private final Text text;
     /** Mario reference. */
@@ -52,13 +53,13 @@ class Chat
      * 
      * @param world The world reference.
      */
-    public Chat(World<?> world)
+    Chat(World<?> world)
     {
         super(TypeMessage.MESSAGE_CHAT);
         this.world = world;
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         setKeyValidate(Key.ENTER.intValue());
-        setKeySpace(Key.SPACE.intValue());
+        setKeyBackSpace(Key.BACK_SPACE.intValue());
     }
 
     @Override
@@ -127,7 +128,7 @@ class Chat
     @Override
     public void notifyConnectionEstablished(Byte id, String name)
     {
-        addMessage("Connection established as: " + name);
+        addMessage("Connection established !");
     }
 
     @Override

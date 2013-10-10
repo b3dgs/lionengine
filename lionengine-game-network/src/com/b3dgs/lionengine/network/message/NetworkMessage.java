@@ -34,7 +34,7 @@ public abstract class NetworkMessage
     private byte clientDestId;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NetworkMessage()
     {
@@ -44,7 +44,7 @@ public abstract class NetworkMessage
     /**
      * Constructor.
      * 
-     * @param type the message type.
+     * @param type The message type.
      * @param clientId The client id.
      */
     public NetworkMessage(Enum<?> type, byte clientId)
@@ -55,7 +55,7 @@ public abstract class NetworkMessage
     /**
      * Constructor.
      * 
-     * @param type the message type.
+     * @param type The message type.
      * @param clientId The client id.
      * @param clientDestId The client destination id (-1 if all).
      */
@@ -65,6 +65,22 @@ public abstract class NetworkMessage
         this.clientId = clientId;
         this.clientDestId = clientDestId;
     }
+
+    /**
+     * Encode the message.
+     * 
+     * @param buffer The current buffer.
+     * @throws IOException Error on writing.
+     */
+    protected abstract void encode(ByteArrayOutputStream buffer) throws IOException;
+
+    /**
+     * Decode the message from the data.
+     * 
+     * @param buffer The data reference.
+     * @throws IOException Error on reading.
+     */
+    protected abstract void decode(DataInputStream buffer) throws IOException;
 
     /**
      * Get the message type.
@@ -109,7 +125,7 @@ public abstract class NetworkMessage
         buffer.write(type);
         buffer.write(clientId);
         buffer.write(clientDestId);
-        this.encode(buffer);
+        encode(buffer);
 
         return buffer;
     }
@@ -128,22 +144,6 @@ public abstract class NetworkMessage
         this.type = type;
         clientId = from;
         clientDestId = dest;
-        this.decode(buffer);
+        decode(buffer);
     }
-
-    /**
-     * Encode the message.
-     * 
-     * @param buffer The current buffer.
-     * @throws IOException Error on writing.
-     */
-    protected abstract void encode(ByteArrayOutputStream buffer) throws IOException;
-
-    /**
-     * Decode the message from the data.
-     * 
-     * @param buffer The data reference.
-     * @throws IOException Error on reading.
-     */
-    protected abstract void decode(DataInputStream buffer) throws IOException;
 }

@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Client socket (bridge between server and client).
@@ -116,7 +117,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientSocket.class, "terminate", exception);
         }
         try
         {
@@ -124,7 +125,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientSocket.class, "terminate", exception);
         }
         try
         {
@@ -132,7 +133,7 @@ final class ClientSocket
         }
         catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientSocket.class, "terminate", exception);
         }
         state = StateConnection.DISCONNECTED;
     }
@@ -173,9 +174,9 @@ final class ClientSocket
             out.write(data);
             out.flush();
         }
-        catch (final Exception exception)
+        catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientSocket.class, "sendMessage", exception);
         }
     }
 
@@ -191,9 +192,9 @@ final class ClientSocket
             out.write(data);
             out.flush();
         }
-        catch (final Exception exception)
+        catch (final IOException exception)
         {
-            // Ignore
+            Verbose.exception(ClientSocket.class, "sendMessage", exception);
         }
     }
 
