@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.swing.Theme;
 
 /**
  * Program starts here.
@@ -81,6 +82,7 @@ public final class AppLionheart
         if (enableEditor)
         {
             AppLionheart.RASTER_ENABLED = false;
+            Theme.set(Theme.SYSTEM);
             final Editor editor = new Editor();
             editor.start();
         }

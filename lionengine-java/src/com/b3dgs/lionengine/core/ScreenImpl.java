@@ -321,7 +321,7 @@ final class ScreenImpl
      */
     private JFrame initMainFrame()
     {
-        final JFrame frame = new JFrame(Engine.getProgramName(), conf);
+        final JFrame frame = new JFrame(Engine.getProgramName() + " " + Engine.getProgramVersion(), conf);
 
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()

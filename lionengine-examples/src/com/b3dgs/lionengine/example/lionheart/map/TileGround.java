@@ -35,6 +35,22 @@ public final class TileGround
         super(width, height, pattern, number, collision);
     }
 
+    /**
+     * Get ground collision.
+     * 
+     * @param localizable The localizable.
+     * @return The collision.
+     */
+    protected Double getPillar(Localizable localizable)
+    {
+        final int top = getTopOriginal();
+        if (localizable.getLocationY() <= top)
+        {
+            return Double.valueOf(top);
+        }
+        return null;
+    }
+
     /*
      * TilePlatform
      */
@@ -47,6 +63,7 @@ public final class TileGround
         switch (c)
         {
             case GROUND_SPIKE:
+            case PILLAR_VERTICAL:
                 if (x > -16 && x < -13)
                 {
                     return Double.valueOf(getX());
@@ -74,6 +91,8 @@ public final class TileGround
             case BORDER_CENTER:
             case BORDER_RIGHT:
                 return getGround(localizable, 0);
+            case PILLAR_HORIZONTAL:
+                return getPillar(localizable);
 
             default:
                 return null;

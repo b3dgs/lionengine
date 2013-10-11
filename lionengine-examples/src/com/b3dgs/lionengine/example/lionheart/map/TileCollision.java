@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.map;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
 
 /**
  * List of collision types.
@@ -75,6 +74,10 @@ public enum TileCollision
     SLIDE_LEFT_3(TileCollisionGroup.SLIDE, true),
     /** Slide left ground slide. */
     SLIDE_LEFT_GROUND_SLIDE(TileCollisionGroup.SLIDE, true),
+    /** Pillar vertical. */
+    PILLAR_VERTICAL(TileCollisionGroup.PILLAR),
+    /** Pillar horizontal. */
+    PILLAR_HORIZONTAL(TileCollisionGroup.PILLAR),
     /** Liana horizontal. */
     LIANA_HORIZONTAL(TileCollisionGroup.LIANA_HORIZONTAL),
     /** Liana steep right top. */
@@ -99,13 +102,13 @@ public enum TileCollision
     LIANA_LEANING_LEFT_3(TileCollisionGroup.LIANA_LEANING, true);
 
     /** Vertical collisions list. */
-    public static final List<TileCollision> COLLISION_VERTICAL = new ArrayList<>(2);
+    public static final EnumSet<TileCollision> COLLISION_VERTICAL = EnumSet.noneOf(TileCollision.class);
     /** Horizontal collisions list. */
-    public static final List<TileCollision> COLLISION_HORIZONTAL = new ArrayList<>(3);
+    public static final EnumSet<TileCollision> COLLISION_HORIZONTAL = EnumSet.noneOf(TileCollision.class);
     /** Vertical collisions list. */
-    public static final List<TileCollision> COLLISION_LIANA_STEEP = new ArrayList<>(2);
+    public static final EnumSet<TileCollision> COLLISION_LIANA_STEEP = EnumSet.noneOf(TileCollision.class);
     /** Vertical collisions list. */
-    public static final List<TileCollision> COLLISION_LIANA_LEANING = new ArrayList<>(2);
+    public static final EnumSet<TileCollision> COLLISION_LIANA_LEANING = EnumSet.noneOf(TileCollision.class);
 
     /**
      * Static init.
@@ -128,6 +131,8 @@ public enum TileCollision
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_3);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_BORDER_DOWN);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLOPE_RIGHT_BORDER_UP);
+
+        TileCollision.COLLISION_VERTICAL.add(TileCollision.PILLAR_HORIZONTAL);
 
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLIDE_LEFT_1);
         TileCollision.COLLISION_VERTICAL.add(TileCollision.SLIDE_LEFT_2);
@@ -152,6 +157,7 @@ public enum TileCollision
         TileCollision.COLLISION_LIANA_LEANING.add(TileCollision.LIANA_LEANING_RIGHT_3);
 
         TileCollision.COLLISION_HORIZONTAL.add(TileCollision.GROUND_SPIKE);
+        TileCollision.COLLISION_HORIZONTAL.add(TileCollision.PILLAR_VERTICAL);
     }
 
     /** Group. */

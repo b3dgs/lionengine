@@ -29,5 +29,7 @@ public enum TypeEditorEntity
     /** Maximum patrol. */
     PATROL_MAX,
     /** Speed. */
-    SPEED;
+    SPEED,
+    /** Jump. */
+    JUMP;
 }

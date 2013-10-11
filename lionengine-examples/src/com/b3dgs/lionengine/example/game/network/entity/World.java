@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
-import com.b3dgs.lionengine.network.NetworkedWorldModel;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -42,7 +41,7 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
  * 
  * @param <N> The network type.
  */
-abstract class World<N extends NetworkedWorldModel<?, ?>>
+abstract class World<N extends NetworkedWorld>
         extends WorldGame
         implements NetworkedWorld
 {
@@ -189,7 +188,7 @@ abstract class World<N extends NetworkedWorldModel<?, ?>>
             server = true;
         }
         final Mario mario = factory.createMario(server);
-        mario.doRespawn();
+        mario.respawn();
         mario.setName(name);
         mario.setClientId(id);
         addNetworkable(mario);

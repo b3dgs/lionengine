@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.network;
 /**
  * List of services provided by a server.
  */
-public interface Server
-        extends Networker
+interface Server
+        extends Networker<ClientListener>
 {
     /**
      * Set the message of the day (sent to a new connected client).

@@ -23,13 +23,29 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * List of services provided by a networker (could be a client or a server).
+ * 
+ * @param <L> The client listener type used.
  */
-public interface Networker
+interface Networker<L extends ClientListener>
 {
     /**
      * Terminate connection and close socket.
      */
     void disconnect();
+
+    /**
+     * Add a client connection listener.
+     * 
+     * @param listener The listener.
+     */
+    void addListener(L listener);
+
+    /**
+     * Remove a client connection listener.
+     * 
+     * @param listener The listener.
+     */
+    void removeListener(L listener);
 
     /**
      * Add a message to the send list.

@@ -65,7 +65,7 @@ final class Mario
     /**
      * Kill mario.
      */
-    public void doKill()
+    public void kill()
     {
         dead = true;
         resetMovementSpeed();
@@ -77,7 +77,7 @@ final class Mario
     /**
      * Respawn mario.
      */
-    public void doRespawn()
+    public void respawn()
     {
         mirror(false);
         teleport(80, 25);
@@ -87,7 +87,7 @@ final class Mario
     /**
      * Jump mario.
      */
-    public void doJump()
+    public void jump()
     {
         jumpForce.setForce(0.0, jumpForceValue / 1.5);
         resetGravity();
@@ -122,7 +122,7 @@ final class Mario
     {
         if (!dead)
         {
-            doKill();
+            kill();
         }
     }
 
@@ -136,7 +136,7 @@ final class Mario
             message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
             message.addAction(MessageEntityElement.JUMP, true);
             addNetworkMessage(message);
-            doJump();
+            jump();
         }
     }
 
@@ -153,7 +153,7 @@ final class Mario
             super.applyMessage(message);
             if (msg.hasAction(MessageEntityElement.JUMP))
             {
-                doJump();
+                jump();
             }
         }
     }
@@ -188,7 +188,7 @@ final class Mario
                 // Respawn
                 if (stepDie == 1 && timerDie.elapsed(2000))
                 {
-                    doRespawn();
+                    respawn();
                 }
             }
             // Lock mario
@@ -237,7 +237,7 @@ final class Mario
             // Kill when fall down
             if (getLocationY() < 0)
             {
-                doKill();
+                kill();
             }
         }
         // Send correct location if moving, or just idle

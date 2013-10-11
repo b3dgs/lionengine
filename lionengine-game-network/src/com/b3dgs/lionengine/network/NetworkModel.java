@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @param <L> Client listener type used.
  */
-public abstract class NetworkModel<L extends ClientListener>
-        implements Networker
+abstract class NetworkModel<L extends ClientListener>
+        implements Networker<L>
 {
     /** Messages list. */
     protected final List<NetworkMessage> messagesOut;
@@ -56,21 +56,13 @@ public abstract class NetworkModel<L extends ClientListener>
         listeners = new ArrayList<>(1);
     }
 
-    /**
-     * Add a client connection listener.
-     * 
-     * @param listener The listener.
-     */
+    @Override
     public void addListener(L listener)
     {
         listeners.add(listener);
     }
 
-    /**
-     * Remove a client connection listener.
-     * 
-     * @param listener The listener.
-     */
+    @Override
     public void removeListener(L listener)
     {
         listeners.remove(listener);

@@ -23,6 +23,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import javax.swing.SwingConstants;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.example.lionheart.Editor;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
+import com.b3dgs.lionengine.example.lionheart.entity.monster.Crawling;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrollable;
 import com.b3dgs.lionengine.swing.ActionCombo;
@@ -111,6 +113,12 @@ public class EntityEditor
     private final JLabel patrolMax;
     /** Speed label. */
     private final JLabel speedValue;
+    /** Patrol panel. */
+    private final JPanel entityPanel;
+    /** Jumpable check box. */
+    private final JCheckBox jumpableCheckBox;
+    /** Jumpable speed. */
+    private final JLabel jumpableSpeedValue;
     /** Selected entity. */
     Entity selectedEntity;
 
@@ -245,6 +253,26 @@ public class EntityEditor
             }
         });
 
+        entityPanel = new JPanel();
+        entityPanel.setLayout(new BorderLayout());
+        tabs.addTab("Entity", entityPanel);
+        final JPanel entityValues = new JPanel();
+        entityValues.setLayout(new GridLayout(1, 4));
+        entityPanel.add(entityValues, BorderLayout.CENTER);
+
+        jumpableCheckBox = UtilitySwing.addCheckBox("Jumpable", entityValues, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                ((Crawling) selectedEntity).setJumpable(((JCheckBox) actionEvent.getSource()).isSelected());
+            }
+        });
+        jumpableCheckBox.setEnabled(false);
+
+        jumpableSpeedValue = new JLabel();
+        addIncDec(entityValues, "Jump speed", jumpableSpeedValue, 1, TypeEditorEntity.JUMP);
+
         UtilitySwing.setEnabled(patrolPanel.getComponents(), false);
         tabs.setPreferredSize(new Dimension(204, 200));
         tabs.setMinimumSize(new Dimension(204, 200));
@@ -259,6 +287,15 @@ public class EntityEditor
     public void setSelectedEntity(Entity entity)
     {
         selectedEntity = entity;
+        jumpableCheckBox.setEnabled(false);
+        jumpableCheckBox.setSelected(false);
+
+        if (entity instanceof Crawling)
+        {
+            jumpableCheckBox.setEnabled(true);
+            jumpableCheckBox.setSelected(((Crawling) entity).isJumpable());
+            setValue(jumpableSpeedValue, ((Crawling) entity).getJumpForceSpeed());
+        }
         if (entity instanceof Patrollable)
         {
             final Patrollable mover = (Patrollable) entity;
@@ -317,6 +354,12 @@ public class EntityEditor
                 break;
             case SPEED:
                 mover.setMoveSpeed(getValue(label));
+                break;
+            case JUMP:
+                if (mover instanceof Crawling)
+                {
+                    ((Crawling) mover).setJumpForceSpeed(getValue(label));
+                }
                 break;
             default:
                 throw new LionEngineException("Unknown type: " + type);

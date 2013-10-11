@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.network;
 /**
  * Listen to new client connection.
  */
-public interface ClientListener
+interface ClientListener
 {
     /**
      * Notify when a new client is connected.

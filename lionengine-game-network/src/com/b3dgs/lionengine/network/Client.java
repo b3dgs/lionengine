@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.network;
 /**
  * List of services provided by a client.
  */
-public interface Client
-        extends Networker
+interface Client
+        extends Networker<ConnectionListener>
 {
     /**
      * Connect to a server.

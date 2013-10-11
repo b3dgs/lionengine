@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.monster;
 
+import java.io.IOException;
+
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTile;
@@ -26,6 +28,8 @@ import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.example.lionheart.map.Tile;
 import com.b3dgs.lionengine.example.lionheart.map.TileCollision;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
 
 /**
@@ -44,6 +48,10 @@ public final class Crawling
     private boolean prepareJump;
     /** Jumping flag. */
     private boolean jumping;
+    /** Jumpable flag. */
+    private boolean jumpable;
+    /** Jump force. */
+    private int jumpForceSpeed;
 
     /**
      * Constructor.
@@ -58,9 +66,71 @@ public final class Crawling
         enableMovement(Patrol.HORIZONTAL);
     }
 
+    /**
+     * Set the jumpable flag.
+     * 
+     * @param jumpable The jumpable flag.
+     */
+    public void setJumpable(boolean jumpable)
+    {
+        this.jumpable = jumpable;
+    }
+
+    /**
+     * Set the jump force speed.
+     * 
+     * @param jumpForceSpeed The jump force speed.
+     */
+    public void setJumpForceSpeed(int jumpForceSpeed)
+    {
+        this.jumpForceSpeed = jumpForceSpeed;
+    }
+
+    /**
+     * Check if crawling is jumpable.
+     * 
+     * @return <code>true</code> if jumpable, <code>false</code> else.
+     */
+    public boolean isJumpable()
+    {
+        return jumpable;
+    }
+
+    /**
+     * Get the jump force.
+     * 
+     * @return The jump force.
+     */
+    public int getJumpForceSpeed()
+    {
+        return jumpForceSpeed;
+    }
+
     /*
      * EntityMonster
      */
+
+    @Override
+    public void save(FileWriting file) throws IOException
+    {
+        super.save(file);
+        file.writeBoolean(jumpable);
+        file.writeInteger(jumpForceSpeed);
+    }
+
+    @Override
+    public void load(FileReading file) throws IOException
+    {
+        super.load(file);
+        jumpable = file.readBoolean();
+        jumpForceSpeed = file.readInteger();
+    }
+
+    @Override
+    public boolean canJump()
+    {
+        return jumpable && super.canJump();
+    }
 
     @Override
     protected void updateActions()
@@ -71,7 +141,7 @@ public final class Crawling
         final Tile tile = map.getTile(this, side * Map.TILE_WIDTH, 0);
         final boolean jumpTile = tile == null || tile.getCollision() == TileCollision.NONE
                 || tile.getCollision() == TileCollision.GROUND_SPIKE;
-        if (!jumping && jumpTile)
+        if (canJump() && !jumping && jumpTile && getLocationX() < getPositionMax() && getLocationX() > getPositionMin())
         {
             jumping = true;
             timerJump.start();
@@ -82,7 +152,7 @@ public final class Crawling
             {
                 prepareJump = false;
                 jumpForce.setForce(0.0, 4.75);
-                setMovementForce(1.75 * side, 0.0);
+                setMovementForce(jumpForceSpeed / 8.0 * side, 0.0);
                 if (status.collisionChangedFromTo(EntityCollisionTile.NONE, EntityCollisionTile.GROUND))
                 {
                     jumping = false;

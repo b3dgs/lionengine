@@ -177,7 +177,7 @@ final class WorldClient
     public void notifyConnectionEstablished(Byte id, String name)
     {
         final Mario mario = factory.createMario(false);
-        mario.doRespawn();
+        mario.respawn();
         mario.setName(name);
         marioClients.put(id, mario);
         mario.setClientId(id);

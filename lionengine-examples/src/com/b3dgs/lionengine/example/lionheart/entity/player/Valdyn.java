@@ -61,7 +61,7 @@ public final class Valdyn
     /** Hurt effect value (lower is faster). */
     private static final int HURT_EFFECT_FREQ = 5;
     /** Hurt time before effect. */
-    private static final int HURT_TIME_BEFORE_EFFECT = 100;
+    private static final int HURT_TIME_BEFORE_EFFECT = 500;
     /** Hurt time max. */
     private static final int HURT_TIME_MAX = 2000;
     /** Divisor for walk speed animation. */
@@ -577,6 +577,9 @@ public final class Valdyn
         timerJump.stop();
         jumpForce.setForce(Force.ZERO);
         attack.respawn();
+        stats.fillHeart();
+        hurtEffectCounter = 0;
+        timerHurt.stop();
         if (lastCheckpoint != null)
         {
             teleport(lastCheckpoint.getX(), lastCheckpoint.getY());
@@ -731,17 +734,12 @@ public final class Valdyn
     @Override
     protected void updateDead()
     {
-        if (getLocationY() < 0)
-        {
-            movement.reset();
-            jumpForce.setForce(0.0, -1);
-            stepDie = 1;
-            resetGravity();
-        }
+        resetGravity();
         if (timerDie.elapsed(500))
         {
-            resetGravity();
-            if (stepDie == 1 && timerDie.elapsed(1000))
+            stepDie = 1;
+            jumpForce.setForce(Force.ZERO);
+            if (stepDie == 1 && timerDie.elapsed(2000))
             {
                 stats.decreaseLife();
                 if (stats.getLife() > 0)
@@ -774,19 +772,26 @@ public final class Valdyn
         }
 
         // Vertical collision
-        Tile tileRight = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_RIGHT, true);
-        Tile tileLeft = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_LEFT, false);
-        final Tile tile = getCollisionTile(map, EntityCollisionTileCategory.GROUND_CENTER);
-        final boolean found = checkCollisionVertical(tile);
-        tilt.updateCollisions(found, tile);
+        if (getLocationY() <= getLocationOldY())
+        {
+            final Tile tileRight = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_RIGHT, true);
+            final Tile tileLeft = checkCollisionExtremity(ValdynCollisionTileCategory.LEG_LEFT, false);
+            final Tile tile = getCollisionTile(map, EntityCollisionTileCategory.GROUND_CENTER);
+            final boolean found = checkCollisionVertical(tile);
+            tilt.updateCollisions(found, tile);
 
-        // Special fix for slide from ground
-        tilt.updateCollisionSlideGroundTransition(tileLeft, tileRight, tile);
+            // Special fix for slide from ground
+            tilt.updateCollisionSlideGroundTransition(tileLeft, tileRight, tile);
+        }
 
         // Horizontal collision
-        tileRight = checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_RIGHT);
-        tileLeft = checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_LEFT);
-        // TODO: Hurt when hit spikes (not the border)
+        checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_RIGHT);
+        checkCollisionHorizontal(ValdynCollisionTileCategory.KNEE_LEFT);
+        final Tile tile = getCollisionTile(map, EntityCollisionTileCategory.GROUND_CENTER);
+        if (tile != null && tile.getCollision() == TileCollision.GROUND_SPIKE)
+        {
+            hitBy(null);
+        }
 
         attack.updateCollisions();
         legCollision.updateCollision();
@@ -796,6 +801,10 @@ public final class Valdyn
         if (getLocationY() < waterHeight)
         {
             kill();
+            movement.reset();
+            jumpForce.setForce(0.0, -1);
+            stepDie = 1;
+            resetGravity();
             teleportY(waterHeight);
         }
     }

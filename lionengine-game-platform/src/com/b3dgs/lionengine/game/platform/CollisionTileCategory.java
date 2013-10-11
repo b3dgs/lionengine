@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform;
 
-import java.util.List;
+import java.util.EnumSet;
 
 /**
  * Collision tile category.
@@ -31,5 +31,5 @@ public interface CollisionTileCategory<C extends Enum<C>>
      * 
      * @return The collisions list.
      */
-    List<C> getCollisions();
+    EnumSet<C> getCollisions();
 }

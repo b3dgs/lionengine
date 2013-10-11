@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
 
 /**
  * List of tile collision.
@@ -37,9 +36,9 @@ enum TileCollision
     NONE;
 
     /** Vertical collisions list. */
-    static final List<TileCollision> COLLISION_VERTICAL = new ArrayList<>(2);
+    static final EnumSet<TileCollision> COLLISION_VERTICAL = EnumSet.noneOf(TileCollision.class);
     /** Horizontal collisions list. */
-    static final List<TileCollision> COLLISION_HORIZONTAL = new ArrayList<>(3);
+    static final EnumSet<TileCollision> COLLISION_HORIZONTAL = EnumSet.noneOf(TileCollision.class);
 
     /**
      * Static init.

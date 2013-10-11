@@ -96,6 +96,7 @@ public class Map
         switch (group)
         {
             case FLAT:
+            case PILLAR:
                 return new TileGround(width, height, pattern, number, collision);
             case LIANA_HORIZONTAL:
             case LIANA_STEEP:

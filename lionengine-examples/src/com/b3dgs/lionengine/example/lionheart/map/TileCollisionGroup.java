@@ -28,6 +28,8 @@ public enum TileCollisionGroup
     NONE(0.0),
     /** Flat. */
     FLAT(0.0),
+    /** Pillar. */
+    PILLAR(0.0),
     /** Slope. */
     SLOPE(0.5),
     /** Slide. */

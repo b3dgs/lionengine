@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
-import java.util.List;
+import java.util.EnumSet;
 
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -101,7 +101,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      * @param collisions Collisions list to search for.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    public T getFirstTileHit(Localizable localizable, List<C> collisions)
+    public T getFirstTileHit(Localizable localizable, EnumSet<C> collisions)
     {
         // Starting location
         final int sv = (int) Math.floor(localizable.getLocationOldY());
@@ -135,7 +135,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         for (double v = sv, h = sh; step <= stepMax; v -= sy, h += sx)
         {
             final T tile = getTile((int) Math.floor(h / getTileWidth()), (int) Math.floor(v / getTileHeight()));
-            if (tile != null && tile.collisionTest(collisions) && tile.hasCollision(localizable))
+            if (tile != null && collisions.contains(tile.getCollision()) && tile.hasCollision(localizable))
             {
                 return tile;
             }

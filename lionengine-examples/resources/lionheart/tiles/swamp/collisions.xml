@@ -23,6 +23,8 @@
 	<collision name="SLIDE_LEFT_2" pattern="4" start="191" end="194"/>
 	<collision name="SLIDE_LEFT_3" pattern="4" start="195" end="196"/>
 	<collision name="SLIDE_LEFT_GROUND_SLIDE" pattern="4" start="202" end="202"/>
+	<collision name="PILLAR_VERTICAL" pattern="4" start="209" end="214"/>
+	<collision name="PILLAR_HORIZONTAL" pattern="4" start="215" end="222"/>
 	<collision name="LIANA_STEEP_RIGHT_1" pattern="5" start="1" end="8"/>
 	<collision name="LIANA_STEEP_RIGHT_2" pattern="5" start="9" end="16"/>
 	<collision name="LIANA_STEEP_LEFT_1" pattern="5" start="17" end="26"/>

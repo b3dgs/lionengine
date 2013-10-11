@@ -145,6 +145,7 @@ public abstract class Entity
         dead = true;
         dieLocation.set(getLocationX(), getLocationY());
         stepDie = 0;
+        timerDie.stop();
         timerDie.start();
     }
 

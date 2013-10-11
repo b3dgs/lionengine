@@ -188,6 +188,7 @@ public class WorldPanel
         {
             level.load(file);
         }
+        handlerEntity.update();
     }
 
     /**
