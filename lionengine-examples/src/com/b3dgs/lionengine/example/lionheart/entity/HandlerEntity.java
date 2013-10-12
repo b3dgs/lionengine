@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.example.lionheart.entity.item.EntityItem;
 import com.b3dgs.lionengine.example.lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
 import com.b3dgs.lionengine.example.lionheart.entity.scenery.EntityScenery;
+import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -120,7 +121,7 @@ public class HandlerEntity
     @Override
     protected boolean canUpdateEntity(Entity entity)
     {
-        return camera.isVisible(entity);
+        return camera.isVisible(entity, Map.TILE_WIDTH * 2, Map.TILE_HEIGHT * 4);
     }
 
     @Override

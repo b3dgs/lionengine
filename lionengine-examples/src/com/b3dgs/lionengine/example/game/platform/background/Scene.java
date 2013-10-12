@@ -68,12 +68,13 @@ final class Scene
     protected void load()
     {
         camera.setView(0, 0, width, height);
+        y = 230;
     }
 
     @Override
     protected void update(double extrp)
     {
-        y += 1.0;
+        y = UtilityMath.wrapDouble(y + 1, 0.0, 360.0);
         camera.moveLocation(extrp, 1.0, 0.0);
         camera.teleportY(UtilityMath.sin(y) * 100 + 100);
         background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());

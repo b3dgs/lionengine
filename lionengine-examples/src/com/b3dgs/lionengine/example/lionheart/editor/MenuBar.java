@@ -205,7 +205,7 @@ public class MenuBar
                 editor.toolBar.setEditorEnabled(true);
                 editor.toolBar.entityEditor.setSelectedEntity(null);
                 items.get("Save").setEnabled(true);
-                items.get("Import Map").setEnabled(false);
+                items.get("Import Map").setEnabled(true);
             }
             catch (final IOException exception)
             {

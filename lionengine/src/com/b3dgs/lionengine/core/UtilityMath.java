@@ -238,7 +238,7 @@ public final class UtilityMath
     }
 
     /**
-     * Wrap value (keep value between min and max).
+     * Wrap value (keep value between min and max). Useful to keep an angle between 0 and 360 for example.
      * 
      * @param value The input value.
      * @param min The minimum value (included).

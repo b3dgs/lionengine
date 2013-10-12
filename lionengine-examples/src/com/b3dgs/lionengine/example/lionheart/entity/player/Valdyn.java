@@ -110,6 +110,8 @@ public final class Valdyn
     private boolean crouch;
     /** Hurt effect counter. */
     private int hurtEffectCounter;
+    /** Drowned death. */
+    private boolean drownedDeath;
     /** Left key state. */
     private boolean keyLeft;
     /** Right key state. */
@@ -249,6 +251,16 @@ public final class Valdyn
     public Collidable getCollisionAttack()
     {
         return attack.getCollisionAttack();
+    }
+
+    /**
+     * Get the death time elapsed.
+     * 
+     * @return The death time elapsed.
+     */
+    public long getDeathTime()
+    {
+        return timerDie.elapsed();
     }
 
     /**
@@ -580,6 +592,9 @@ public final class Valdyn
         stats.fillHeart();
         hurtEffectCounter = 0;
         timerHurt.stop();
+        drownedDeath = false;
+        status.setCollision(EntityCollisionTile.GROUND);
+        status.setState(EntityState.IDLE);
         if (lastCheckpoint != null)
         {
             teleport(lastCheckpoint.getX(), lastCheckpoint.getY());
@@ -632,7 +647,7 @@ public final class Valdyn
     @Override
     public void hitBy(Entity entity)
     {
-        if (!timerHurt.isStarted())
+        if (!isDead() && !timerHurt.isStarted())
         {
             Sfx.VALDYN_HURT.play();
             resetGravity();
@@ -645,7 +660,7 @@ public final class Valdyn
     @Override
     public void hitThat(Entity entity)
     {
-        if (entity instanceof EntityMonster && status.getState() == ValdynState.ATTACK_FALL)
+        if (!isDead() && entity instanceof EntityMonster && status.getState() == ValdynState.ATTACK_FALL)
         {
             resetGravity();
             jumpForce.setForce(0.0, jumpHeightMax * 0.8);
@@ -734,11 +749,32 @@ public final class Valdyn
     @Override
     protected void updateDead()
     {
-        resetGravity();
+        timerHurt.stop();
+        hurtEffectCounter = 0;
+        if (drownedDeath)
+        {
+            if (getLocationY() < 0)
+            {
+                movement.reset();
+                jumpForce.setForce(0.0, -0.4);
+                stepDie = 1;
+                resetGravity();
+            }
+        }
+        else
+        {
+            jumpForce.setForce(-1.25, 2.75);
+            resetGravity();
+        }
         if (timerDie.elapsed(500))
         {
             stepDie = 1;
-            jumpForce.setForce(Force.ZERO);
+            if (!drownedDeath)
+            {
+                resetGravity();
+                jumpForce.setForce(Force.ZERO);
+                teleportY(getLocationOldY());
+            }
             if (stepDie == 1 && timerDie.elapsed(2000))
             {
                 stats.decreaseLife();
@@ -801,11 +837,8 @@ public final class Valdyn
         if (getLocationY() < waterHeight)
         {
             kill();
-            movement.reset();
-            jumpForce.setForce(0.0, -1);
-            stepDie = 1;
-            resetGravity();
             teleportY(waterHeight);
+            drownedDeath = true;
         }
     }
 

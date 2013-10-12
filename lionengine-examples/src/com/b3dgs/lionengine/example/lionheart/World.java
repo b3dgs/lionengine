@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.lionheart;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.lionheart.effect.HandlerEffect;
@@ -141,6 +142,11 @@ final class World
         }
         landscape.renderForeground(g);
         statsRenderer.render(g, player.stats);
+        if (player.isDead() && player.getDeathTime() > 1500)
+        {
+            g.setColor(ColorRgba.BLACK);
+            g.drawRect(0, 0, width, height, true);
+        }
     }
 
     @Override

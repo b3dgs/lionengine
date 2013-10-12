@@ -31,7 +31,7 @@
 	<animation name="liana_soar" start="72" end="82" speed="0.2" reversed="false" repeat="false"/>
 	<animation name="hurt" start="67" end="67" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="die" start="67" end="69" speed="0.125" reversed="false" repeat="false"/>
-	<animation name="dead" start="70" end="71" speed="0.125" reversed="false" repeat="true"/>
+	<animation name="dead" start="70" end="71" speed="0.15" reversed="false" repeat="true"/>
 	
 	<animation name="attack_preparing" start="83" end="84" speed="0.125" reversed="false" repeat="false"/>
 	<animation name="attack_preparing_down" start="85" end="86" speed="0.125" reversed="false" repeat="false"/>

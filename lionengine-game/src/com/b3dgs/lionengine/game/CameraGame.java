@@ -267,10 +267,24 @@ public class CameraGame
      */
     public boolean isVisible(Localizable localizable)
     {
-        return localizable.getLocationX() + localizable.getWidth() >= getLocationX()
-                && localizable.getLocationX() - localizable.getWidth() <= getLocationX() + getViewWidth()
-                && localizable.getLocationY() + localizable.getHeight() >= getLocationY()
-                && localizable.getLocationY() - localizable.getHeight() * 2 <= getLocationY() + getViewHeight();
+        return isVisible(localizable, 0, 0);
+    }
+
+    /**
+     * Check if the localizable is inside the camera view.
+     * 
+     * @param localizable The localizable to check.
+     * @param radiusX The radius offset x.
+     * @param radiusY The radius offset y.
+     * @return <code>true</code> if visible, <code>false</code> else.
+     */
+    public boolean isVisible(Localizable localizable, int radiusX, int radiusY)
+    {
+        return localizable.getLocationX() + localizable.getWidth() + radiusX >= getLocationX()
+                && localizable.getLocationX() - localizable.getWidth() - radiusX <= getLocationX() + getViewWidth()
+                && localizable.getLocationY() + localizable.getHeight() + radiusY >= getLocationY()
+                && localizable.getLocationY() - localizable.getHeight() * 2 - radiusY <= getLocationY()
+                        + getViewHeight();
     }
 
     /**

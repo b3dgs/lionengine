@@ -239,7 +239,7 @@ public class EntityMonster
         final State state = status.getState();
         if (state == EntityState.WALK)
         {
-            final double speed = Math.abs(getHorizontalForce()) / 2;
+            final double speed = Math.abs(getHorizontalForce()) / 3;
             setAnimSpeed(speed);
         }
     }
