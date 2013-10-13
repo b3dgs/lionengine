@@ -1,6 +1,2 @@
-# configuration file for the tritonus library
-#
-
-
-# end
-#
+# for the 'Java' Sequencer
+org.tritonus.midi.device.java.JavaSequencerProvider
