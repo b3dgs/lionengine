@@ -1,0 +1,2 @@
+#  for the vorbis codec
+org.tritonus.sampled.file.jorbis.JorbisAudioFileReader

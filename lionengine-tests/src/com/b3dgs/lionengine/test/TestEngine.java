@@ -21,7 +21,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -274,7 +273,7 @@ public class TestEngine
         }
         catch (final LionEngineException exception)
         {
-            Assume.assumeTrue(exception.getMessage(), exception.getMessage().contains("Unsupported fullscreen mode"));
+            Assert.assertTrue(exception.getMessage(), exception.getMessage().contains("Unsupported fullscreen mode"));
             Verbose.info("Fullscreen mode not supported on test machine - Test skipped");
         }
 

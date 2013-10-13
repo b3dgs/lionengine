@@ -175,7 +175,7 @@ public class TestAudio
         }
         catch (final LionEngineException exception)
         {
-            org.junit.Assume.assumeTrue(exception.getMessage(),
+            Assert.assertTrue(exception.getMessage(),
                     exception.getMessage().contains("No synthesizer available"));
             Verbose.info("Midi synthesizer not supported on test machine - Test skipped");
             return;

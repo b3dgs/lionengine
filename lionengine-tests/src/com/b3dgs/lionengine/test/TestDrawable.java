@@ -119,7 +119,7 @@ public class TestDrawable
         if (!(sprite instanceof SpriteFont))
         {
             sprite.scale(100 * scale);
-            Assert.assertNotEquals(spriteOriginal, sprite);
+            Assert.assertNotSame(spriteOriginal, sprite);
             Assert.assertNotSame(surface, sprite.getSurface());
             Assert.assertEquals(surface.getWidth(), sprite.getWidthOriginal());
             Assert.assertEquals(surface.getWidth() * scale, sprite.getWidth());
@@ -185,7 +185,7 @@ public class TestDrawable
         if (!(sprite instanceof SpriteFont))
         {
             sprite.stretch(100, 100 * scale);
-            Assert.assertNotEquals(spriteOriginal, sprite);
+            Assert.assertNotSame(spriteOriginal, sprite);
         }
     }
 
