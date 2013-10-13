@@ -131,9 +131,6 @@ final class AnimatorImpl
         final double animSpeed = anim.getSpeed();
         final boolean animReverse = anim.getReverse();
         final boolean animRepeat = anim.getRepeat();
-        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, "First frame must be >= Animation.MINIMUM_FRAME !");
-        Check.argument(lastFrame >= firstFrame, "Last frame must be >= first !");
-        Check.argument(animSpeed >= 0.0, "Speed must be >= 0.0 !");
 
         first = firstFrame;
         last = lastFrame;
