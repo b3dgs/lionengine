@@ -69,6 +69,8 @@ final class SpriteParallaxedImpl
     SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
     {
         Check.argument(linesNumber > 0, SpriteParallaxedImpl.ERROR_PARALLAX_LINE);
+        Check.argument(sx > 0, "Width must be strict positive !");
+        Check.argument(sy > 0, "Height must be strict positive !");
         this.media = media;
         this.linesNumber = linesNumber;
         this.sx = sx;

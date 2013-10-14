@@ -46,7 +46,7 @@ public class AnimTest
             Anim.createAnimation(first, last, speed, false, false);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -67,7 +67,7 @@ public class AnimTest
         {
             Anim.createAnimation(first, last, speed, false, false);
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             Assert.fail();
         }
@@ -99,16 +99,16 @@ public class AnimTest
             // Success
         }
 
-        testFactoryFail(0, 0, 0.0);
-        testFactoryFail(-1, 0, 0.0);
-        testFactoryFail(1, 0, 0.0);
-        testFactoryFail(2, 1, 0.0);
-        testFactoryFail(1, 1, -1.0);
+        AnimTest.testFactoryFail(0, 0, 0.0);
+        AnimTest.testFactoryFail(-1, 0, 0.0);
+        AnimTest.testFactoryFail(1, 0, 0.0);
+        AnimTest.testFactoryFail(2, 1, 0.0);
+        AnimTest.testFactoryFail(1, 1, -1.0);
 
-        testFactorySuccess(1, 1, 0.0, false, false);
-        testFactorySuccess(1, 2, 0.0, true, false);
-        testFactorySuccess(1, 1, 1.0, false, true);
-        testFactorySuccess(1, 2, 1.0, true, true);
+        AnimTest.testFactorySuccess(1, 1, 0.0, false, false);
+        AnimTest.testFactorySuccess(1, 2, 0.0, true, false);
+        AnimTest.testFactorySuccess(1, 1, 1.0, false, true);
+        AnimTest.testFactorySuccess(1, 2, 1.0, true, true);
 
         final Animator animator = Anim.createAnimator();
         Assert.assertNotNull(animator);

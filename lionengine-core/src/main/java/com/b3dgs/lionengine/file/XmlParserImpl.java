@@ -21,12 +21,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
@@ -39,6 +46,39 @@ import com.b3dgs.lionengine.core.Media;
 final class XmlParserImpl
         implements XmlParser
 {
+    /** Load factory. */
+    private static DocumentBuilderFactory documentFactory;
+    /** Save factory. */
+    private static TransformerFactory transformerFactory;
+
+    /**
+     * Get the document factory.
+     * 
+     * @return The document factory.
+     */
+    static DocumentBuilderFactory getDocumentFactory()
+    {
+        if (XmlParserImpl.documentFactory == null)
+        {
+            XmlParserImpl.documentFactory = DocumentBuilderFactory.newInstance();
+        }
+        return XmlParserImpl.documentFactory;
+    }
+
+    /**
+     * Get the transformer factory.
+     * 
+     * @return The transformer factory.
+     */
+    static TransformerFactory getTransformerFactory()
+    {
+        if (XmlParserImpl.transformerFactory == null)
+        {
+            XmlParserImpl.transformerFactory = TransformerFactory.newInstance();
+        }
+        return XmlParserImpl.transformerFactory;
+    }
+
     /**
      * Create an XML parser.
      */
@@ -55,40 +95,44 @@ final class XmlParserImpl
     public XmlNode load(Media media)
     {
         Media.exist(media);
-        final Element root;
         final String file = media.getPath();
         try
         {
-            final SAXBuilder builder = new SAXBuilder();
-            final Document gamesave = builder.build(Media.getStream(media, "XmlNode", false));
-            root = gamesave.getRootElement();
+            final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
+            constructeur.setErrorHandler(null);
+            final Document document = constructeur.parse(Media.getStream(media, "XmlParser", false));
+            final Element root = document.getDocumentElement();
+            return new XmlNodeImpl(root);
         }
-        catch (final JDOMException exception)
-        {
-            throw new LionEngineException(exception, "The XmlParser was unable to parse the following file \"", file,
-                    "\"");
-        }
-        catch (final IOException exception)
+        catch (final IOException
+                     | SAXException
+                     | IllegalArgumentException
+                     | ParserConfigurationException exception)
         {
             throw new LionEngineException(exception, "An error occured while reading the following file: \"", file,
                     "\"");
         }
-        return new XmlNodeImpl(root);
     }
 
     @Override
     public void save(XmlNode root, Media media)
     {
         final String file = media.getPath();
-        final XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
-
         try (OutputStream outputStream = new FileOutputStream(file);)
         {
-            outputter.output(new Document(((XmlNodeImpl) root).getElement()), outputStream);
+            final Transformer transformer = XmlParserImpl.getTransformerFactory().newTransformer();
+            if (root instanceof XmlNodeImpl)
+            {
+                final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
+                final StreamResult result = new StreamResult(outputStream);
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                transformer.transform(source, result);
+            }
         }
-        catch (final IOException exception)
+        catch (final IOException
+                     | TransformerException exception)
         {
-            throw new LionEngineException(exception, "An error occured while reading the following file: \"", file,
+            throw new LionEngineException(exception, "An error occured while writing the following file: \"", file,
                     "\"");
         }
     }

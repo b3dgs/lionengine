@@ -22,10 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom2.Attribute;
-import org.jdom2.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * XML node implementation.
@@ -43,6 +50,8 @@ final class XmlNodeImpl
     private static final String ERROR_ROOT_NODE = "The root node must not be null !";
     /** Attribute error. */
     private static final String ERROR_ATTRIBUTE = "The attribute must not be null !";
+    /** Document. */
+    private static Document document;
 
     /** Root reference. */
     private final Element root;
@@ -55,7 +64,19 @@ final class XmlNodeImpl
     XmlNodeImpl(String name)
     {
         Check.notNull(name, XmlNodeImpl.ERROR_NODE_NAME);
-        root = new Element(name);
+        try
+        {
+            final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
+            if (XmlNodeImpl.document == null)
+            {
+                XmlNodeImpl.document = constructeur.newDocument();
+            }
+            root = XmlNodeImpl.document.createElement(name);
+        }
+        catch (final ParserConfigurationException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     /**
@@ -88,7 +109,7 @@ final class XmlNodeImpl
     private String getAttributeValue(String attribute)
     {
         Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        final String value = root.getAttributeValue(attribute);
+        final String value = root.getAttribute(attribute);
 
         Check.notNull(value, "Can not read the attribute value for: \"", attribute, "\"");
         return value;
@@ -115,7 +136,7 @@ final class XmlNodeImpl
     {
         if (node instanceof XmlNodeImpl)
         {
-            root.addContent(((XmlNodeImpl) node).getElement());
+            root.appendChild(((XmlNodeImpl) node).getElement());
         }
     }
 
@@ -240,28 +261,39 @@ final class XmlNodeImpl
     @Override
     public String getText()
     {
-        return root.getText();
+        return root.getTextContent();
     }
 
     @Override
     public XmlNode getChild(String name) throws XmlNodeNotFoundException
     {
         Check.notNull(name, XmlNodeImpl.ERROR_CHILD_NAME);
-        final Element child = root.getChild(name);
-        if (child == null)
+
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
         {
-            throw new XmlNodeNotFoundException("The following node " + name + " was not found !");
+            final Node node = list.item(i);
+            if (node instanceof Element && name.equals(node.getNodeName()))
+            {
+                return new XmlNodeImpl((Element) node);
+            }
         }
-        return new XmlNodeImpl(child);
+
+        throw new XmlNodeNotFoundException("The following node " + name + " was not found !");
     }
 
     @Override
     public List<XmlNode> getChildren(String name)
     {
         final List<XmlNode> nodes = new ArrayList<>(1);
-        for (final Element element : root.getChildren(name))
+        final NodeList list = root.getElementsByTagName(name);
+        for (int i = 0; i < list.getLength(); i++)
         {
-            nodes.add(new XmlNodeImpl(element));
+            final Node node = list.item(i);
+            if (node instanceof Element)
+            {
+                nodes.add(new XmlNodeImpl((Element) node));
+            }
         }
         return nodes;
     }
@@ -270,9 +302,14 @@ final class XmlNodeImpl
     public List<XmlNode> getChildren()
     {
         final List<XmlNode> nodes = new ArrayList<>(1);
-        for (final Element element : root.getChildren())
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
         {
-            nodes.add(new XmlNodeImpl(element));
+            final Node node = list.item(i);
+            if (node instanceof Element)
+            {
+                nodes.add(new XmlNodeImpl((Element) node));
+            }
         }
         return nodes;
     }
@@ -281,10 +318,11 @@ final class XmlNodeImpl
     public Map<String, String> getAttributes()
     {
         final Map<String, String> attributes = new HashMap<>();
-        for (final Attribute attribute : root.getAttributes())
+        final NamedNodeMap map = root.getAttributes();
+        for (int i = 0; i < map.getLength(); i++)
         {
-            final String key = attribute.getName();
-            attributes.put(key, getAttributeValue(key));
+            final String key = map.item(i).getNodeName();
+            attributes.put(key, map.item(i).getNodeValue());
         }
         return attributes;
     }

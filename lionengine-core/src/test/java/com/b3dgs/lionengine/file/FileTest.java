@@ -35,11 +35,6 @@ import com.b3dgs.lionengine.core.Media;
  */
 public class FileTest
 {
-    /** Float precision. */
-    private static final float FLOAT_PRECISION = 0.00000001f;
-    /** Double precision. */
-    private static final double DOUBLE_PRECISION = 0.000000000000001;
-
     /**
      * Test the failure cases.
      * 
@@ -52,7 +47,7 @@ public class FileTest
             File.createFileWriting(null);
             Assert.fail();
         }
-        catch (NullPointerException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }
@@ -73,32 +68,14 @@ public class FileTest
             File.createXmlNode(null);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
-    }
 
-    /** Boolean value. */
-    private final boolean boolValue = true;
-    /** Byte value. */
-    private final byte byteValue = 1;
-    /** Char value. */
-    private final char charValue = 2;
-    /** Short value. */
-    private final short shortValue = 3;
-    /** Int value. */
-    private final int intValue = 4;
-    /** Float value. */
-    private final float floatValue = 5.1f;
-    /** Long value. */
-    private final long longValue = 6L;
-    /** Double value. */
-    private final double doubleValue = 7.1;
-    /** String value. */
-    private final String stringValue = "string";
-    /** Default test file data. */
-    private Media fileData;
+        final XmlParser parser = File.createXmlParser();
+        Assert.assertNotNull(parser);
+    }
 
     /**
      * Test the file factory.
@@ -128,55 +105,17 @@ public class FileTest
         }
 
         FileTest.testFailures();
-        fileData = new Media("test");
-        testFileWriting();
-        testFileReading();
-        UtilityFile.deleteFile(new java.io.File(fileData.getPath()));
-    }
-
-    /**
-     * Test write in data file.
-     */
-    private void testFileWriting()
-    {
-        try (FileWriting writing = File.createFileWriting(fileData);)
+        Assert.assertNotNull(File.createXmlNode("test"));
+        try (FileReading reading = File.createFileReading(new Media(Media.getPath("src", "test", "resources",
+                "malformed.xml")));)
         {
-            writing.writeBoolean(boolValue);
-            writing.writeByte(byteValue);
-            writing.writeChar(charValue);
-            writing.writeShort(shortValue);
-            writing.writeInteger(intValue);
-            writing.writeFloat(floatValue);
-            writing.writeLong(longValue);
-            writing.writeDouble(doubleValue);
-            writing.writeString(stringValue);
+            Assert.assertNotNull(reading);
         }
-        catch (final IOException exception)
+        final Media media = new Media(Media.getPath("src", "test", "resources", "test"));
+        try (FileWriting writing = File.createFileWriting(media);)
         {
-            Assert.fail(exception.getMessage());
+            Assert.assertNotNull(writing);
         }
-    }
-
-    /**
-     * Test read in data file.
-     */
-    private void testFileReading()
-    {
-        try (FileReading reading = File.createFileReading(fileData);)
-        {
-            Assert.assertEquals(Boolean.valueOf(boolValue), Boolean.valueOf(reading.readBoolean()));
-            Assert.assertEquals(byteValue, reading.readByte());
-            Assert.assertEquals(charValue, reading.readChar());
-            Assert.assertEquals(shortValue, reading.readShort());
-            Assert.assertEquals(intValue, reading.readInteger());
-            Assert.assertEquals(floatValue, reading.readFloat(), FileTest.FLOAT_PRECISION);
-            Assert.assertEquals(longValue, reading.readLong());
-            Assert.assertEquals(doubleValue, reading.readDouble(), FileTest.DOUBLE_PRECISION);
-            Assert.assertEquals(stringValue, reading.readString());
-        }
-        catch (final IOException exception)
-        {
-            Assert.fail(exception.getMessage());
-        }
+        UtilityFile.deleteFile(new java.io.File(media.getPath()));
     }
 }

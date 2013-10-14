@@ -187,7 +187,7 @@ public class AnimatorTest
             animator.setAnimSpeed(-1.0);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -198,17 +198,17 @@ public class AnimatorTest
         AnimatorTest.testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
         animator.updateAnimation(1.0);
-        
+
         try
         {
             animator.setFrame(0);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
-        
+
         animator.setFrame(1);
 
         AnimatorTest.testAnimatorState(animator, first, 1, AnimState.PLAYING);
