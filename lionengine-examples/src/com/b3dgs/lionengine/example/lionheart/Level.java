@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.lionheart.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.HandlerEntity;
@@ -118,6 +119,20 @@ public class Level
         worldData.load(file);
         handlerEntity.load(file);
         camera.setLimits(map);
+    }
+
+    /**
+     * Check if entity reached the end.
+     * 
+     * @param entity The entity to check.
+     * @return <code>true</code>if reached the end, <code>false</code> else.
+     */
+    public boolean checkEnd(Entity entity)
+    {
+        return entity.getLocationIntX() + entity.getWidth() > worldData.getEndX()
+                && entity.getLocationIntX() < worldData.getEndX() + 16
+                && entity.getLocationIntY() > worldData.getEndY() - 16
+                && entity.getLocationIntY() < worldData.getEndY() + 16;
     }
 
     /**

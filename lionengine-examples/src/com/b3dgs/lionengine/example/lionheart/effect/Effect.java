@@ -85,7 +85,7 @@ public class Effect
         }
         if (rasterable.isRastered())
         {
-            index = rasterable.getRasterIndex(getLocationIntX());
+            index = rasterable.getRasterIndex(getLocationIntY());
             final SpriteAnimated anim = getRasterAnim(index);
             if (anim != null)
             {

@@ -59,11 +59,11 @@ public final class AppLionheart
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
     /** Enable sound. */
-    private static final boolean ENABLE_SOUND = false;
+    private static final boolean ENABLE_SOUND = true;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "lionheart");
     /** Raster enabled. */
-    public static boolean RASTER_ENABLED = false;
+    public static boolean RASTER_ENABLED = true;
 
     /**
      * Main function.

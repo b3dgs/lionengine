@@ -122,7 +122,7 @@ final class World
         handlerEffect.update(extrp);
         camera.follow(player);
         landscape.update(extrp, camera);
-        if (player.isDestroyed())
+        if (player.isDestroyed() || level.checkEnd(player))
         {
             gameOver = true;
         }
