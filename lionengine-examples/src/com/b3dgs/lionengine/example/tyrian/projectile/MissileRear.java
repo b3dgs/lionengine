@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Missile projectile.
  */
-final class Missile
+abstract class MissileRear
         extends Projectile
 {
     /** Factory effect. */
@@ -43,10 +43,11 @@ final class Missile
      * @param factoryEffect The factory effect.
      * @param handlerEffect The handler effect.
      * @param setup The setup reference.
+     * @param frame The missile frame.
      */
-    public Missile(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup)
+    public MissileRear(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup, int frame)
     {
-        super(setup);
+        super(setup, frame);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         timerEffect = new Timing();

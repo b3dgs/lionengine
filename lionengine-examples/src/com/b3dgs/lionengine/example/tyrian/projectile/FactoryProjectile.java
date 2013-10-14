@@ -63,8 +63,10 @@ public final class FactoryProjectile
         {
             case BULLET:
                 return new Bullet(getSetup(type));
-            case MISSILE:
-                return new Missile(factoryEffect, handlerEffect, getSetup(type));
+            case MISSILE_REAR_LEFT:
+                return new MissileRearLeft(factoryEffect, handlerEffect, getSetup(type));
+            case MISSILE_REAR_RIGHT:
+                return new MissileRearRight(factoryEffect, handlerEffect, getSetup(type));
             default:
                 throw new LionEngineException("Unknown type: " + type);
         }

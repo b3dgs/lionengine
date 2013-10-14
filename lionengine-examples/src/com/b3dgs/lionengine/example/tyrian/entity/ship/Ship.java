@@ -95,7 +95,7 @@ public class Ship
         if (mouse.hasClicked(Click.LEFT))
         {
             weaponFront.launch(energy);
-            // weaponRear.launch(energy);
+            weaponRear.launch(energy);
         }
     }
 

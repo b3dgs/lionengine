@@ -37,13 +37,19 @@ public abstract class Projectile
 
     /** Projectile surface. */
     private final SpriteTiled sprite;
+    /** Surface id. */
+    private final int frame;
 
     /**
-     * @see ProjectileGame#ProjectileGame(SetupSurfaceGame)
+     * Constructor.
+     * 
+     * @param setup The setup reference.
+     * @param frame The frame number.
      */
-    Projectile(SetupSurfaceGame setup)
+    Projectile(SetupSurfaceGame setup, int frame)
     {
         super(setup);
+        this.frame = frame;
         sprite = Drawable.loadSpriteTiled(setup.surface, 12, 14);
         sprite.load(false);
         setCollision(Projectile.COLLISION);
@@ -56,7 +62,7 @@ public abstract class Projectile
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        sprite.render(g, frame, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
         if (!camera.isVisible(this))
         {
             destroy();

@@ -54,37 +54,37 @@ final class PulseCannon
             case 4:
                 dmg = 60;
                 setConsume(65);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -6, -3);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 6, -3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -6, -3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 6, -3);
                 break;
             case 5:
                 dmg = 70;
                 setConsume(85);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -12, 6);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -8, 4);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -4, 2);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 0, 0);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 4, 2);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 8, 4);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 12, 6);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -12, 6);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -8, 4);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -4, 2);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 0, 0);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 4, 2);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 8, 4);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 12, 6);
                 break;
             case 6:
                 dmg = 80;
                 setConsume(105);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -23, 7);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -18, 7);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -13, 5);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, -8, 3);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 0, 0);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 8, 3);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 13, 5);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 18, 7);
-                addProjectile(ProjectileType.BULLET, dmg, frame, 0, speed, 23, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -23, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -18, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -13, 5);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, -8, 3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 0, 0);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 8, 3);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 13, 5);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 18, 7);
+                addProjectile(ProjectileType.BULLET, dmg, frame, speed, 23, 7);
                 break;
             default:
                 dmg = 20 + lvl * 10;
                 setConsume(40 + lvl * 8);
-                addProjectile(ProjectileType.BULLET, dmg, frame + lvl - 1, 0, speed, 0, -3);
+                addProjectile(ProjectileType.BULLET, dmg, frame + lvl - 1, speed, 0, -3);
                 break;
         }
     }

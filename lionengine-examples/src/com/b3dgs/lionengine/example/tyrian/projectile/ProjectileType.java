@@ -22,8 +22,10 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
  */
 public enum ProjectileType
 {
-    /** Bullet projectile. */
+    /** Bullet. */
     BULLET,
-    /** Missile projectile. */
-    MISSILE;
+    /** Missile rear left. */
+    MISSILE_REAR_LEFT,
+    /** Missile rear right. */
+    MISSILE_REAR_RIGHT;
 }
