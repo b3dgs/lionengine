@@ -38,6 +38,6 @@ public class ArchitectureTest
         Assert.assertNotNull(Architecture.UNKNOWN);
 
         Assert.assertNotNull(Architecture.values());
-        Assert.assertEquals(Architecture.valueOf(Architecture.X64.name()), Architecture.X64);
+        Assert.assertEquals(Architecture.X64, Architecture.valueOf(Architecture.X64.name()));
     }
 }

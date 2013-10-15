@@ -34,9 +34,9 @@ public class VersionTest
     public void testVersion()
     {
         final Version version = Version.create(3, 2, 1);
-        Assert.assertEquals(version.getMajor(), 3);
-        Assert.assertEquals(version.getMinor(), 2);
-        Assert.assertEquals(version.getMicro(), 1);
+        Assert.assertEquals(3, version.getMajor());
+        Assert.assertEquals(2, version.getMinor());
+        Assert.assertEquals(1, version.getMicro());
 
         Assert.assertNotNull(version.toString());
     }

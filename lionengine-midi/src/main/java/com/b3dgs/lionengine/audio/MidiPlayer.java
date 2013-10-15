@@ -44,48 +44,10 @@ import com.b3dgs.lionengine.core.Media;
 final class MidiPlayer
         implements Midi
 {
-    /**
-     * Open and return the sequencer instance opened.
-     * 
-     * @return The opened sequencer.
-     */
-    private static Sequencer openSequencer()
-    {
-        try
-        {
-            final Sequencer sequencer = MidiSystem.getSequencer(false);
-            sequencer.open();
-            return sequencer;
-        }
-        catch (final MidiUnavailableException exception)
-        {
-            throw new LionEngineException(exception, "No sequencer available !");
-        }
-    }
-
-    /**
-     * Open and return the synthesizer instance opened.
-     * 
-     * @return The opened synthesizer.
-     */
-    private static Synthesizer openSynthesizer()
-    {
-        try
-        {
-            final Synthesizer synthesizer = MidiSystem.getSynthesizer();
-            synthesizer.open();
-            return synthesizer;
-        }
-        catch (final MidiUnavailableException exception)
-        {
-            throw new LionEngineException(exception, "No synthesizer available !");
-        }
-    }
-
+    /** Current synthesizer. */
+    private final Synthesizer synthesizer;
     /** Current sequencer reference. */
     private final Sequencer sequencer;
-    /** Current synthesizer reference. */
-    private final Synthesizer synthesizer;
     /** Current sequence reference. */
     private final Sequence sequence;
     /** Receiver. */
@@ -104,24 +66,26 @@ final class MidiPlayer
      */
     MidiPlayer(Media media)
     {
-        // Open sequence
-        sequencer = MidiPlayer.openSequencer();
-        synthesizer = MidiPlayer.openSynthesizer();
-        sequence = openSequence(media);
-        ticks = sequence.getTickLength();
-        paused = false;
-
         // Prepare output
         try
         {
+            synthesizer = MidiSystem.getSynthesizer();
+            sequencer = MidiSystem.getSequencer(false);
+            synthesizer.open();
             synthReceiver = synthesizer.getReceiver();
             seqTransmitter = sequencer.getTransmitter();
+            sequencer.open();
             seqTransmitter.setReceiver(synthReceiver);
         }
         catch (final MidiUnavailableException exception)
         {
             throw new LionEngineException(exception, "No midi output available !");
         }
+
+        // Open sequence
+        sequence = openSequence(media);
+        ticks = sequence.getTickLength();
+        paused = false;
 
         // Meta data listener
         final int metaDataEventId = 47;
@@ -144,6 +108,8 @@ final class MidiPlayer
     void close()
     {
         sequencer.close();
+        synthReceiver.close();
+        seqTransmitter.close();
         synthesizer.close();
     }
 
@@ -217,14 +183,14 @@ final class MidiPlayer
         Check.argument(volume >= Midi.VOLUME_MIN && volume <= Midi.VOLUME_MAX, "Wrong volume value: ",
                 String.valueOf(volume), " [" + Midi.VOLUME_MIN + "-" + Midi.VOLUME_MAX + "]");
 
-        final MidiChannel[] channels = synthesizer.getChannels();
         final double maxChannelVolume = 127.0;
-        final int volumeChangeId = 7;
         final int vol = (int) (volume * maxChannelVolume / Midi.VOLUME_MAX);
 
+        final MidiChannel[] channels = synthesizer.getChannels();
+        // set the master volume for each channel
         for (final MidiChannel channel : channels)
         {
-            channel.controlChange(volumeChangeId, vol);
+            channel.controlChange(7, vol);
         }
     }
 
@@ -240,7 +206,6 @@ final class MidiPlayer
         synthReceiver.close();
         seqTransmitter.close();
         sequencer.close();
-        synthesizer.close();
     }
 
     @Override

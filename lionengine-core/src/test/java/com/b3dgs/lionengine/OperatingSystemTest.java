@@ -42,6 +42,6 @@ public class OperatingSystemTest
         Assert.assertNotNull(OperatingSystem.SOLARIS);
 
         Assert.assertNotNull(OperatingSystem.values());
-        Assert.assertEquals(OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()), OperatingSystem.WINDOWS);
+        Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()));
     }
 }

@@ -36,6 +36,6 @@ public class FilterTest
         Assert.assertEquals(Filter.BILINEAR, Filter.BILINEAR);
         Assert.assertNotEquals(Filter.HQ2X, Filter.HQ3X);
         Assert.assertNotNull(Filter.values());
-        Assert.assertEquals(Filter.valueOf(Filter.NONE.name()), Filter.NONE);
+        Assert.assertEquals(Filter.NONE, Filter.valueOf(Filter.NONE.name()));
     }
 }

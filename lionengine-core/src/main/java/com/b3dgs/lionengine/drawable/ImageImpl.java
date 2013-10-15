@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -50,6 +51,7 @@ final class ImageImpl
      */
     ImageImpl(ImageBuffer surface)
     {
+        Check.notNull(surface, "Surface must not be null !");
         this.surface = surface;
     }
 
@@ -104,7 +106,7 @@ final class ImageImpl
             final boolean sameWidth = image.getWidth() == getWidth();
             final boolean sameHeight = image.getHeight() == getHeight();
 
-            return sameSurface && sameWidth && sameHeight;
+            return sameWidth && sameHeight && sameSurface;
         }
         return false;
     }
@@ -114,7 +116,7 @@ final class ImageImpl
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (surface == null ? 0 : surface.hashCode());
+        result = prime * result + surface.hashCode();
         return result;
     }
 }

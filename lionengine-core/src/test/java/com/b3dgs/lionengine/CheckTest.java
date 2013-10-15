@@ -63,7 +63,7 @@ public class CheckTest
         {
             Check.argument(true);
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             Assert.fail();
         }
@@ -73,7 +73,7 @@ public class CheckTest
             Check.argument(false);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -90,7 +90,7 @@ public class CheckTest
             Check.notNull(null);
             Assert.fail();
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -99,7 +99,7 @@ public class CheckTest
         {
             Check.notNull(new Object());
         }
-        catch (LionEngineException exception)
+        catch (final LionEngineException exception)
         {
             Assert.fail();
         }

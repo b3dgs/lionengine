@@ -332,7 +332,7 @@ final class SpriteFontImpl
             final boolean sameWidth = sprite.getWidth() == getWidth();
             final boolean sameHeight = sprite.getHeight() == getHeight();
 
-            return sameSurface && sameWidth && sameHeight;
+            return sameWidth && sameHeight && sameSurface;
         }
         return false;
     }
@@ -342,9 +342,9 @@ final class SpriteFontImpl
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (fontData == null ? 0 : fontData.hashCode());
+        result = prime * result + fontData.hashCode();
         result = prime * result + lineHeight;
-        result = prime * result + (surface == null ? 0 : surface.hashCode());
+        result = prime * result + surface.hashCode();
         return result;
     }
 }

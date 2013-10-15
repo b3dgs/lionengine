@@ -34,6 +34,6 @@ public class TransparencyTest
     public void testTransparency()
     {
         Assert.assertNotNull(Transparency.values());
-        Assert.assertEquals(Transparency.valueOf(Transparency.BITMASK.name()), Transparency.BITMASK);
+        Assert.assertEquals(Transparency.BITMASK, Transparency.valueOf(Transparency.BITMASK.name()));
     }
 }

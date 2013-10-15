@@ -15,21 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.test;
+package com.b3dgs.lionengine;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Test all classes.
+ * Test the gradient color class.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-@RunWith(Suite.class)
-@SuiteClasses(
+public class GradientColorTest
 {
-        TestEngine.class, TestDrawable.class, TestFile.class, TestAudio.class, TestGame.class, TestUtility.class
-})
-public class TestAll
-{
-    // All test
+    /**
+     * Test the gradient color.
+     */
+    @Test
+    public void testGradientColor()
+    {
+        final GradientColor gradientColor = new GradientColor(1, 2, ColorRgba.BLACK, 3, 4, ColorRgba.WHITE);
+        Assert.assertEquals(1, gradientColor.getX1());
+        Assert.assertEquals(2, gradientColor.getY1());
+        Assert.assertEquals(ColorRgba.BLACK, gradientColor.getColor1());
+
+        Assert.assertEquals(3, gradientColor.getX2());
+        Assert.assertEquals(4, gradientColor.getY2());
+        Assert.assertEquals(ColorRgba.WHITE, gradientColor.getColor2());
+    }
 }

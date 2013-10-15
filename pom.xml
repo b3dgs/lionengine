@@ -10,11 +10,36 @@
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
 	<url>https://github.com/DjThunder/lionengine</url>
-
 	<organization>
 		<name>Byron 3D Games Studio</name>
 		<url>www.b3dgs.com</url>
 	</organization>
+	<scm>
+		<url>https://github.com/DjThunder/lionengine.git</url>
+	</scm>
+	
+	<developers>
+		<developer>
+			<id>DjThunder</id>
+			<name>Pierre-Alexandre</name>
+			<email>contact@b3dgs.com</email>
+			<url>http://www.b3dgs.com</url>
+			<organization>Byron 3D Games Studio</organization>
+			<organizationUrl>http://www.b3dgs.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>1</timezone>
+		</developer>
+	</developers>
+	
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) version 2.0</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<prerequisites>
 		<maven>3.1.1</maven>

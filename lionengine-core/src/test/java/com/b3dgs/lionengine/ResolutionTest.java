@@ -73,22 +73,22 @@ public class ResolutionTest
     public void testResolutionSetter()
     {
         final Resolution resolution = new Resolution(320, 240, 60);
-        Assert.assertEquals(resolution.getRatio(), Ratio.R4_3, 0.000001);
+        Assert.assertEquals(Ratio.R4_3, resolution.getRatio(), 0.000001);
 
         resolution.set(640, 360);
-        Assert.assertEquals(resolution.getRatio(), Ratio.R16_9, 0.000001);
+        Assert.assertEquals(Ratio.R16_9, resolution.getRatio(), 0.000001);
 
         resolution.set(640, 400, 50);
-        Assert.assertEquals(resolution.getRate(), 50);
-        Assert.assertEquals(resolution.getRatio(), Ratio.R16_10, 0.000001);
+        Assert.assertEquals(50, resolution.getRate());
+        Assert.assertEquals(Ratio.R16_10, resolution.getRatio(), 0.000001);
 
         resolution.setRatio(Ratio.R5_4);
         resolution.setRate(70);
-        Assert.assertEquals(resolution.getWidth(), 500);
-        Assert.assertEquals(resolution.getHeight(), 400);
-        Assert.assertEquals(resolution.getRatio(), Ratio.R5_4, 0.000001);
-        Assert.assertEquals(resolution.getRate(), 70);
-        
+        Assert.assertEquals(500, resolution.getWidth());
+        Assert.assertEquals(400, resolution.getHeight());
+        Assert.assertEquals(Ratio.R5_4, resolution.getRatio(), 0.000001);
+        Assert.assertEquals(70, resolution.getRate());
+
         resolution.setRatio(Ratio.R5_4);
     }
 }

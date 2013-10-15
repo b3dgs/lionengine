@@ -56,8 +56,8 @@ public class SpriteTest
     public static void setUp()
     {
         Engine.start("SpriteTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
-        media = Media.get("dot.png");
-        g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        SpriteTest.media = Media.get("dot.png");
+        SpriteTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -367,11 +367,22 @@ public class SpriteTest
         Assert.assertEquals(imageB, Drawable.loadImage(imageB.getSurface()));
 
         // Load from file
-        final Image imageC = Drawable.loadImage(media);
-        SpriteTest.assertImageInfoCorrect(media, imageC);
+        final Image imageC = Drawable.loadImage(SpriteTest.media);
+        SpriteTest.assertImageInfoCorrect(SpriteTest.media, imageC);
         Assert.assertNotNull(imageC.getSurface());
-        SpriteTest.testImageRender(g, imageC);
-        Assert.assertFalse(imageC.equals(Drawable.loadImage(media)));
+        SpriteTest.testImageRender(SpriteTest.g, imageC);
+        Assert.assertFalse(imageC.equals(Drawable.loadImage(SpriteTest.media)));
+
+        // Equals
+        final ImageBuffer surfaceA = UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final Image imageD = Drawable.loadImage(surfaceA);
+        final ImageBuffer surfaceB = UtilityImage.createImageBuffer(16, 20, Transparency.OPAQUE);
+        final Image imageE = Drawable.loadImage(surfaceB);
+        final ImageBuffer surfaceC = UtilityImage.createImageBuffer(20, 16, Transparency.OPAQUE);
+        final Image imageF = Drawable.loadImage(surfaceC);
+        Assert.assertTrue(imageD.equals(imageD));
+        Assert.assertFalse(imageD.equals(imageE));
+        Assert.assertFalse(imageD.equals(imageF));
     }
 
     /**
@@ -403,12 +414,15 @@ public class SpriteTest
         Assert.assertEquals(spriteA, Drawable.loadSprite(spriteA.getSurface()));
 
         // Load from file
-        final Sprite spriteB = Drawable.loadSprite(media);
-        SpriteTest.assertImageInfoCorrect(media, spriteB);
+        final Sprite spriteB = Drawable.loadSprite(SpriteTest.media);
+        SpriteTest.assertImageInfoCorrect(SpriteTest.media, spriteB);
 
         SpriteTest.testSpriteLoading(spriteB);
-        SpriteTest.testImageRender(g, spriteB);
-        Assert.assertFalse(spriteB.equals(Drawable.loadSprite(media)));
+        SpriteTest.testImageRender(SpriteTest.g, spriteB);
+        Assert.assertFalse(spriteB.equals(Drawable.loadSprite(SpriteTest.media)));
+
+        // Hash code
+        Assert.assertNotEquals(spriteA.hashCode(), spriteB.hashCode());
     }
 
     /**
@@ -434,8 +448,8 @@ public class SpriteTest
         // Load from file
         final int tileWidth = 16;
         final int tileHeight = 8;
-        final SpriteTiled spriteB = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-        SpriteTest.assertImageInfoCorrect(media, spriteB);
+        final SpriteTiled spriteB = Drawable.loadSpriteTiled(SpriteTest.media, tileWidth, tileHeight);
+        SpriteTest.assertImageInfoCorrect(SpriteTest.media, spriteB);
 
         Assert.assertEquals(tileWidth, spriteB.getTileWidthOriginal());
         Assert.assertEquals(tileWidth, spriteB.getTileWidth());
@@ -445,10 +459,25 @@ public class SpriteTest
         SpriteTest.testSpriteLoading(spriteB);
 
         SpriteTest.testSpriteModification(2, spriteB);
-        SpriteTest.testImageRender(g, spriteB);
-        spriteB.render(g, 0, 0, 0);
+        SpriteTest.testImageRender(SpriteTest.g, spriteB);
+        spriteB.render(SpriteTest.g, 0, 0, 0);
 
         Assert.assertFalse(spriteA.equals(spriteB));
+
+        // Equals
+        final SpriteTiled spriteD = Drawable.loadSpriteTiled(SpriteTest.media, tileWidth, tileHeight);
+        final SpriteTiled spriteE = Drawable.loadSpriteTiled(SpriteTest.media, tileWidth + 2, tileHeight + 1);
+        spriteD.load(false);
+        spriteE.load(false);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(110, 100);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(100, 110);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(110, 110);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
+        Assert.assertTrue(spriteD.equals(spriteF));
 
         // Get tile
         Assert.assertNotNull(spriteB.getTile(0));
@@ -459,7 +488,7 @@ public class SpriteTest
         SpriteTest.testSpriteTiledLoadError(0, 0);
         SpriteTest.testSpriteTiledLoadError(0, 1);
         SpriteTest.testSpriteTiledLoadError(1, 0);
-        Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(media, tileWidth, tileHeight)));
+        Assert.assertFalse(spriteB.equals(Drawable.loadSpriteTiled(SpriteTest.media, tileWidth, tileHeight)));
     }
 
     /**
@@ -479,8 +508,8 @@ public class SpriteTest
         // Load from file
         final int frameHorizontal = 4;
         final int frameVertical = 2;
-        final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(media, frameHorizontal, frameVertical);
-        final ImageInfo info = SpriteTest.assertImageInfoCorrect(media, spriteC);
+        final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(SpriteTest.media, frameHorizontal, frameVertical);
+        final ImageInfo info = SpriteTest.assertImageInfoCorrect(SpriteTest.media, spriteC);
 
         Assert.assertEquals(frameHorizontal * frameVertical, spriteC.getFramesNumber());
         Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidthOriginal());
@@ -490,6 +519,27 @@ public class SpriteTest
 
         SpriteTest.testSpriteLoading(spriteC);
         SpriteTest.testSpriteModification(2, spriteA);
+
+        // Equals
+        final SpriteAnimated spriteD = Drawable.loadSpriteAnimated(SpriteTest.media, frameHorizontal, frameVertical);
+        final SpriteAnimated spriteE = Drawable.loadSpriteAnimated(SpriteTest.media, frameHorizontal + 2,
+                frameVertical + 1);
+        spriteD.load(false);
+        spriteE.load(false);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(110, 100);
+        spriteD.setMirror(true);
+        final int hash = spriteD.hashCode();
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(100, 110);
+        spriteD.setMirror(false);
+        Assert.assertFalse(spriteD.equals(spriteE));
+        spriteE.stretch(110, 110);
+        Assert.assertNotEquals(hash, spriteD.hashCode());
+        Assert.assertFalse(spriteD.equals(spriteE));
+        final SpriteAnimated spriteF = Drawable
+                .loadSpriteAnimated(spriteD.getSurface(), frameHorizontal, frameVertical);
+        Assert.assertTrue(spriteD.equals(spriteF));
 
         try
         {
@@ -512,9 +562,9 @@ public class SpriteTest
         }
 
         // Test render
-        SpriteTest.testImageRender(g, spriteC);
+        SpriteTest.testImageRender(SpriteTest.g, spriteC);
         spriteC.setMirror(true);
-        spriteC.render(g, 0, 0);
+        spriteC.render(SpriteTest.g, 0, 0);
 
         // Error
         SpriteTest.testSpriteAnimatedLoadError(0, 0);
@@ -534,7 +584,7 @@ public class SpriteTest
         Assert.assertNotNull(spriteA.getFrame(1));
         Assert.assertNotNull(spriteA.getFrame(-1));
         Assert.assertNotNull(spriteA.getFrame(0));
-        Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(media, frameHorizontal, frameVertical)));
+        Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(SpriteTest.media, frameHorizontal, frameVertical)));
     }
 
     /**
@@ -543,21 +593,23 @@ public class SpriteTest
     @Test
     public void testParallax()
     {
-        final ImageInfo info = ImageInfo.get(media);
+        final ImageInfo info = ImageInfo.get(SpriteTest.media);
         final int lines = 8;
-        final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(media, lines, 60, 100);
+        final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(SpriteTest.media, lines, 60, 100);
 
         Assert.assertEquals(0, spriteA.getWidthOriginal());
+        Assert.assertEquals(0, spriteA.getHeightOriginal());
 
         spriteA.prepare(Filter.NONE);
         Assert.assertTrue(spriteA.equals(spriteA));
+        Assert.assertEquals((int) (spriteA.getWidthOriginal() * 0.6), spriteA.getWidth());
         Assert.assertEquals(info.getWidth(), spriteA.getWidthOriginal());
         Assert.assertEquals(info.getHeight() / lines, spriteA.getHeight());
 
         for (int i = 0; i < lines; i++)
         {
             Assert.assertNotNull(spriteA.getLine(i));
-            spriteA.render(g, i, 0, 0);
+            spriteA.render(SpriteTest.g, i, 0, 0);
         }
 
         // Test render
@@ -570,21 +622,21 @@ public class SpriteTest
         {
             // Success
         }
-        spriteA.render(g, 0, 0);
+        spriteA.render(SpriteTest.g, 0, 0);
 
         // Resize
-        final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(media, lines, 60, 100);
+        final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(SpriteTest.media, lines, 60, 100);
         spriteB.scale(200);
         spriteB.prepare(Filter.BILINEAR);
         Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
-        Assert.assertFalse(spriteA.equals(media));
+        Assert.assertFalse(spriteA.equals(SpriteTest.media));
 
         // Error case
         try
         {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, 0, 60, 100);
+            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteTest.media, 0, 60, 100);
             Assert.assertNotNull(spriteC);
             Assert.fail();
         }
@@ -594,7 +646,7 @@ public class SpriteTest
         }
         try
         {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, lines, 60, 0);
+            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteTest.media, lines, 60, 0);
             Assert.assertNotNull(spriteC);
             Assert.fail();
         }
@@ -604,7 +656,7 @@ public class SpriteTest
         }
         try
         {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(media, lines, 0, 60);
+            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteTest.media, lines, 0, 60);
             Assert.assertNotNull(spriteC);
             Assert.fail();
         }
@@ -622,28 +674,28 @@ public class SpriteTest
     {
         final Media fontData = Media.get("fontdata.xml");
         final String text = "a%z";
-        final SpriteFont sprite = Drawable.loadSpriteFont(media, fontData, 6, 7);
-        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(media, fontData, 6, 7)));
+        final SpriteFont sprite = Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7);
+        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7)));
 
-        final ImageInfo info = SpriteTest.assertImageInfoCorrect(media, sprite);
+        final ImageInfo info = SpriteTest.assertImageInfoCorrect(SpriteTest.media, sprite);
         Assert.assertEquals(info.getWidth(), sprite.getWidthOriginal());
         Assert.assertEquals(info.getHeight(), sprite.getHeightOriginal());
 
         SpriteTest.testSpriteLoading(sprite);
-        SpriteTest.testImageRender(g, sprite);
+        SpriteTest.testImageRender(SpriteTest.g, sprite);
         SpriteTest.testSpriteModification(2, sprite);
         sprite.scale(200);
 
-        sprite.draw(g, 0, 0, Align.LEFT, text);
-        sprite.draw(g, 0, 0, Align.CENTER, text);
-        sprite.draw(g, 0, 0, Align.RIGHT, text);
+        sprite.draw(SpriteTest.g, 0, 0, Align.LEFT, text);
+        sprite.draw(SpriteTest.g, 0, 0, Align.CENTER, text);
+        sprite.draw(SpriteTest.g, 0, 0, Align.RIGHT, text);
         sprite.setLineHeight(0);
         Assert.assertTrue(sprite.getTextWidth(text) >= 1);
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, fontData, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7)));
 
         sprite.stretch(90, 110);
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(media, fontData, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7)));
     }
 }

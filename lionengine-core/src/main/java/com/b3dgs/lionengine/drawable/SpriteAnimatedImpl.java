@@ -250,8 +250,8 @@ final class SpriteAnimatedImpl
             final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
             final boolean sameFramesNumber = sprite.getFramesNumber() == getFramesNumber();
 
-            return sameSprite && sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames
-                    && sameFramesNumber;
+            return sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames && sameFramesNumber
+                    && sameSprite;
         }
         return false;
     }
@@ -261,7 +261,7 @@ final class SpriteAnimatedImpl
     {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + (animator == null ? 0 : animator.hashCode());
+        result = prime * result + animator.hashCode();
         result = prime * result + frameOriginalHeight;
         result = prime * result + frameOriginalWidth;
         result = prime * result + framesNumber;

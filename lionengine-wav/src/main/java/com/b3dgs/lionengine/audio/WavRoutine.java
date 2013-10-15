@@ -114,15 +114,6 @@ final class WavRoutine
     }
 
     /**
-     * Terminate play and pause thread.
-     */
-    void terminate()
-    {
-        isRunning = false;
-        media = null;
-    }
-
-    /**
      * Set sound volume.
      * 
      * @param vol sound volume.
@@ -151,14 +142,6 @@ final class WavRoutine
                 Verbose.exception(WavRoutine.class, "stopSound", exception);
             }
         }
-    }
-
-    /**
-     * Restart sound.
-     */
-    void restart()
-    {
-        restart = true;
     }
 
     /**

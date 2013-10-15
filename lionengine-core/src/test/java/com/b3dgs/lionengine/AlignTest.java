@@ -36,6 +36,6 @@ public class AlignTest
         Assert.assertEquals(Align.CENTER, Align.CENTER);
         Assert.assertNotEquals(Align.LEFT, Align.RIGHT);
         Assert.assertNotNull(Align.values());
-        Assert.assertEquals(Align.valueOf(Align.CENTER.name()), Align.CENTER);
+        Assert.assertEquals(Align.CENTER, Align.valueOf(Align.CENTER.name()));
     }
 }

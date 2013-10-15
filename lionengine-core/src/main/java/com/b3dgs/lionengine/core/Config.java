@@ -99,6 +99,7 @@ public final class Config
     {
         Check.notNull(output, Config.ERROR_OUTPUT);
         Check.notNull(filter, Config.ERROR_FILTER);
+        Check.argument(depth > 0, "Depth must be strict positive !");
 
         this.output = output;
         this.depth = depth;
@@ -201,9 +202,6 @@ public final class Config
     {
         Check.notNull(source, Config.ERROR_SOURCE);
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
-        if (ratio > 0)
-        {
-            this.source.setRatio(ratio);
-        }
+        this.source.setRatio(ratio);
     }
 }

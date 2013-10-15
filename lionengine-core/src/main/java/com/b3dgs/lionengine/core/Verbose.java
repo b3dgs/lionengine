@@ -175,7 +175,8 @@ public enum Verbose
                 });
             }
         }
-        catch (final Exception exception)
+        catch (final SecurityException
+                     | NullPointerException exception)
         {
             Verbose.critical(Verbose.class, "start", exception.getMessage());
         }
@@ -193,15 +194,12 @@ public enum Verbose
     private static void verbose(Verbose level, Class<?> clazz, String function, Throwable thrown, String... message)
     {
         String verbose = null;
-        if (Verbose.NONE != level)
+        final StringBuilder builder = new StringBuilder("");
+        for (final String element : message)
         {
-            final StringBuilder builder = new StringBuilder("");
-            for (final String element : message)
-            {
-                builder.append(element);
-            }
-            verbose = builder.toString();
+            builder.append(element);
         }
+        verbose = builder.toString();
         switch (level)
         {
             case INFORMATION:

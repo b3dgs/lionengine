@@ -256,7 +256,7 @@ class SpriteImpl
             final boolean sameWidth = sprite.getWidth() == getWidth();
             final boolean sameHeight = sprite.getHeight() == getHeight();
 
-            return sameSurface && sameWidth && sameHeight;
+            return sameWidth && sameHeight && sameSurface;
         }
         return false;
     }

@@ -64,7 +64,7 @@ public final class Loader
     /** Synchronize with sequence. */
     final Semaphore semaphore;
     /** Thread loader. */
-    private final LoaderThread thread;
+    final LoaderThread thread;
     /** Next sequence pointer. */
     private Sequence nextSequence;
     /** Started flag. */

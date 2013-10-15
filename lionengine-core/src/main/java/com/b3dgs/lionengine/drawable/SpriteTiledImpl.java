@@ -169,8 +169,8 @@ final class SpriteTiledImpl
             final boolean sameHorizontalTiles = sprite.getTilesHorizontal() == getTilesHorizontal();
             final boolean sameVerticalTiles = sprite.getTilesVertical() == getTilesVertical();
             final boolean sameTilesNumber = sprite.getTilesNumber() == getTilesNumber();
-            return sameSurface && sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles
-                    && sameTilesNumber;
+            return sameTileWidth && sameTileHeight && sameHorizontalTiles && sameVerticalTiles && sameTilesNumber
+                    && sameSurface;
         }
         return false;
     }

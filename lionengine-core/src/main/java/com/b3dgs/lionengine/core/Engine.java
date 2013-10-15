@@ -152,20 +152,19 @@ public final class Engine
             Verbose.info("Resources directory = ", Media.getPath(Media.WORKING_DIR, Media.getRessourcesDir()));
             Verbose.info("Temporary directory = ", Media.getTempDir() + Media.getSeparator());
 
-            // Load low level factory
-            Engine.factoryGraphic = Engine.getFactory("FactoryGraphicImpl");
-            Engine.factoryGeom = Engine.getFactory("FactoryGeomImpl");
-            Engine.factoryInput = Engine.getFactory("FactoryInputImpl");
-
-            UtilityImage.setGraphicFactory(Engine.factoryGraphic);
-            UtilityMath.setGeomFactory(Engine.factoryGeom);
-
             // Check version (clear temporary directory if version is different)
             final String versionFilename = Media.getPath(Media.getTempDir(), "version");
             Engine.checkVersion(versionFilename);
             Engine.storeVersion(versionFilename);
 
             Engine.started = true;
+
+            // Load low level factory
+            Engine.factoryGraphic = Engine.getFactory("FactoryGraphicImpl");
+            Engine.factoryGeom = Engine.getFactory("FactoryGeomImpl");
+            Engine.factoryInput = Engine.getFactory("FactoryInputImpl");
+            UtilityImage.setGraphicFactory(Engine.factoryGraphic);
+            UtilityMath.setGeomFactory(Engine.factoryGeom);
         }
     }
 
