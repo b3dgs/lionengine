@@ -21,16 +21,13 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Transmitter;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -50,10 +47,6 @@ final class MidiPlayer
     private final Sequencer sequencer;
     /** Current sequence reference. */
     private final Sequence sequence;
-    /** Receiver. */
-    private final Receiver synthReceiver;
-    /** Transmitter. */
-    private final Transmitter seqTransmitter;
     /** Total ticks. */
     private final long ticks;
     /** Paused flag. */
@@ -66,40 +59,33 @@ final class MidiPlayer
      */
     MidiPlayer(Media media)
     {
-        // Prepare output
         try
         {
-            synthesizer = MidiSystem.getSynthesizer();
+            sequence = openSequence(media);
             sequencer = MidiSystem.getSequencer(false);
-            synthesizer.open();
-            synthReceiver = synthesizer.getReceiver();
-            seqTransmitter = sequencer.getTransmitter();
             sequencer.open();
-            seqTransmitter.setReceiver(synthReceiver);
+            sequencer.setSequence(sequence);
+
+            synthesizer = MidiSystem.getSynthesizer();
+            synthesizer.open();
+
+            if (synthesizer.getDefaultSoundbank() == null)
+            {
+                sequencer.getTransmitter().setReceiver(MidiSystem.getReceiver());
+            }
+            else
+            {
+                sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
+            }
         }
-        catch (final MidiUnavailableException exception)
+        catch (final InvalidMidiDataException
+                     | MidiUnavailableException exception)
         {
             throw new LionEngineException(exception, "No midi output available !");
         }
 
-        // Open sequence
-        sequence = openSequence(media);
         ticks = sequence.getTickLength();
         paused = false;
-
-        // Meta data listener
-        final int metaDataEventId = 47;
-        sequencer.addMetaEventListener(new MetaEventListener()
-        {
-            @Override
-            public void meta(MetaMessage event)
-            {
-                if (metaDataEventId == event.getType())
-                {
-                    close();
-                }
-            }
-        });
     }
 
     /**
@@ -108,26 +94,22 @@ final class MidiPlayer
     void close()
     {
         sequencer.close();
-        synthReceiver.close();
-        seqTransmitter.close();
         synthesizer.close();
     }
 
     /**
-     * Open the sequence from the media and assign it to the sequencer.
+     * Open the sequence from the media.
      * 
      * @param media The media describing the sequence.
      * @return The opened sequence instance.
      */
-    private Sequence openSequence(Media media)
+    private static Sequence openSequence(Media media)
     {
         Check.notNull(media, "Midi file must exists !");
         final File file = Media.getTempFile(media, true, false);
         try
         {
-            final Sequence currentSequence = MidiSystem.getSequence(file);
-            sequencer.setSequence(currentSequence);
-            return currentSequence;
+            return MidiSystem.getSequence(file);
         }
         catch (final IOException exception)
         {
@@ -178,7 +160,7 @@ final class MidiPlayer
     }
 
     @Override
-    public void setVolume(int volume)
+    public void setVolume(final int volume)
     {
         Check.argument(volume >= Midi.VOLUME_MIN && volume <= Midi.VOLUME_MAX, "Wrong volume value: ",
                 String.valueOf(volume), " [" + Midi.VOLUME_MIN + "-" + Midi.VOLUME_MAX + "]");
@@ -186,11 +168,30 @@ final class MidiPlayer
         final double maxChannelVolume = 127.0;
         final int vol = (int) (volume * maxChannelVolume / Midi.VOLUME_MAX);
 
-        final MidiChannel[] channels = synthesizer.getChannels();
-        // set the master volume for each channel
-        for (final MidiChannel channel : channels)
+        if (synthesizer.getDefaultSoundbank() == null)
         {
-            channel.controlChange(7, vol);
+            try
+            {
+                final ShortMessage volumeMessage = new ShortMessage();
+                for (int i = 0; i < 16; i++)
+                {
+                    volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, vol);
+                    MidiSystem.getReceiver().send(volumeMessage, -1);
+                }
+            }
+            catch (MidiUnavailableException
+                   | InvalidMidiDataException exception)
+            {
+                return;
+            }
+        }
+        else
+        {
+            final MidiChannel[] channels = synthesizer.getChannels();
+            for (int c = 0; channels != null && c < channels.length; c++)
+            {
+                channels[c].controlChange(7, vol);
+            }
         }
     }
 
@@ -203,8 +204,6 @@ final class MidiPlayer
     @Override
     public void stop()
     {
-        synthReceiver.close();
-        seqTransmitter.close();
         sequencer.close();
     }
 
