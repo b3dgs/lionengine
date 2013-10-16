@@ -94,7 +94,6 @@ public class MidiTest
 
         try
         {
-            midi.setVolume(20);
             midi.play(false);
             Thread.sleep(500);
             midi.pause();
@@ -103,8 +102,8 @@ public class MidiTest
             midi.resume();
             midi.pause();
             midi.pause();
-            midi.setVolume(20);
             midi.play(true);
+            midi.setVolume(20);
             midi.stop();
         }
         catch (final LionEngineException exception)
@@ -159,11 +158,24 @@ public class MidiTest
             // Success
         }
 
+        try
+        {
+            final Midi midi2 = AudioMidi.loadMidi(new Media(Media.getPath("src", "test", "resources", "fail.mid")));
+            midi2.play(false);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+
         final Midi midi2 = AudioMidi.loadMidi(new Media(Media.getPath("src", "test", "resources", "music.mid")));
-        midi2.setLoop(6000, 7000);
-        midi2.setStart(7000);
-        midi2.setVolume(20);
+        midi2.setLoop(6100, 8000);
+        midi2.setStart(6100);
         midi2.play(true);
-        Thread.sleep(1000);
+        Thread.sleep(500);
+        midi2.setVolume(30);
+        Thread.sleep(500);
+        midi2.stop();
     }
 }

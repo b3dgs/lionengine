@@ -41,6 +41,30 @@ import com.b3dgs.lionengine.core.Media;
 final class MidiPlayer
         implements Midi
 {
+    /**
+     * Open the sequence from the media.
+     * 
+     * @param media The media describing the sequence.
+     * @return The opened sequence instance.
+     */
+    private static Sequence openSequence(Media media)
+    {
+        Check.notNull(media, "Midi file must exists !");
+        final File file = Media.getTempFile(media, true, false);
+        try
+        {
+            return MidiSystem.getSequence(file);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, media, "Error on reading sequence !");
+        }
+        catch (final InvalidMidiDataException exception)
+        {
+            throw new LionEngineException(exception, media, "Invalid midi data !");
+        }
+    }
+
     /** Current synthesizer. */
     private final Synthesizer synthesizer;
     /** Current sequencer reference. */
@@ -61,7 +85,7 @@ final class MidiPlayer
     {
         try
         {
-            sequence = openSequence(media);
+            sequence = MidiPlayer.openSequence(media);
             sequencer = MidiSystem.getSequencer(false);
             sequencer.open();
             sequencer.setSequence(sequence);
@@ -86,39 +110,6 @@ final class MidiPlayer
 
         ticks = sequence.getTickLength();
         paused = false;
-    }
-
-    /**
-     * Close the sequencer and the synthesizer.
-     */
-    void close()
-    {
-        sequencer.close();
-        synthesizer.close();
-    }
-
-    /**
-     * Open the sequence from the media.
-     * 
-     * @param media The media describing the sequence.
-     * @return The opened sequence instance.
-     */
-    private static Sequence openSequence(Media media)
-    {
-        Check.notNull(media, "Midi file must exists !");
-        final File file = Media.getTempFile(media, true, false);
-        try
-        {
-            return MidiSystem.getSequence(file);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, media, "Error on reading sequence !");
-        }
-        catch (final InvalidMidiDataException exception)
-        {
-            throw new LionEngineException(exception, media, "Invalid midi data !");
-        }
     }
 
     /*
@@ -205,6 +196,7 @@ final class MidiPlayer
     public void stop()
     {
         sequencer.close();
+        synthesizer.close();
     }
 
     @Override

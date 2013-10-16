@@ -141,7 +141,7 @@ final class ClientImpl
         {
             final byte[] name = new byte[size];
             this.in.read(name);
-            return new String(name);
+            return new String(name, NetworkMessage.CHARSET);
         }
         return null;
     }
@@ -163,7 +163,10 @@ final class ClientImpl
             pingRequestTimer.start();
             bandwidthTimer.start();
         }
-        catch (final Exception exception)
+        catch (final IOException
+                     | SecurityException
+                     | IllegalArgumentException
+                     | NullPointerException exception)
         {
             throw new LionEngineException(exception, "Cannot connect to the server !");
         }
@@ -187,7 +190,7 @@ final class ClientImpl
         {
             out.write(NetworkMessageSystemId.OTHER_CLIENT_RENAMED);
             out.write(clientId);
-            final byte[] data = this.name.getBytes();
+            final byte[] data = this.name.getBytes(NetworkMessage.CHARSET);
             out.writeByte(data.length);
             out.write(data);
             out.flush();
@@ -334,7 +337,7 @@ final class ClientImpl
                         // Send the name
                         out.writeByte(NetworkMessageSystemId.CONNECTING);
                         out.writeByte(clientId);
-                        final byte[] data = name.getBytes();
+                        final byte[] data = name.getBytes(NetworkMessage.CHARSET);
                         out.writeByte(data.length);
                         out.write(data);
                         out.flush();

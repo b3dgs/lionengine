@@ -67,9 +67,12 @@ final class XmlNodeImpl
         try
         {
             final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
-            if (XmlNodeImpl.document == null)
+            synchronized (XmlNodeImpl.class)
             {
-                XmlNodeImpl.document = constructeur.newDocument();
+                if (XmlNodeImpl.document == null)
+                {
+                    XmlNodeImpl.document = constructeur.newDocument();
+                }
             }
             root = XmlNodeImpl.document.createElement(name);
         }

@@ -55,7 +55,7 @@ final class ServerImpl
         // New client id
         client.getOut().writeByte(id);
         // New client name
-        final byte[] data = name.getBytes();
+        final byte[] data = name.getBytes(NetworkMessage.CHARSET);
         client.getOut().writeByte(data.length);
         client.getOut().write(data);
     }
@@ -195,7 +195,7 @@ final class ServerImpl
             // Receive the name
             final byte[] name = new byte[buffer.readByte()];
             buffer.read(name);
-            client.setName(new String(name));
+            client.setName(new String(name, NetworkMessage.CHARSET));
 
             // Send new state
             client.setState(StateConnection.CONNECTED);
@@ -214,7 +214,7 @@ final class ServerImpl
             // Send message of the day if has
             if (messageOfTheDay != null)
             {
-                final byte[] motd = messageOfTheDay.getBytes();
+                final byte[] motd = messageOfTheDay.getBytes(NetworkMessage.CHARSET);
                 client.getOut().writeByte(motd.length);
                 client.getOut().write(motd);
             }
@@ -307,7 +307,7 @@ final class ServerImpl
             // Receive the name
             final byte[] name = new byte[buffer.readByte()];
             buffer.read(name);
-            final String newName = new String(name);
+            final String newName = new String(name, NetworkMessage.CHARSET);
             Verbose.info("Server: ", client.getName(), " rennamed to " + newName);
             client.setName(newName);
 

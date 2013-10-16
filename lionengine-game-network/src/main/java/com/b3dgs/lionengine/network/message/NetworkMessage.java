@@ -20,12 +20,32 @@ package com.b3dgs.lionengine.network.message;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
 /**
  * Network message description.
  */
 public abstract class NetworkMessage
 {
+    /** Charset. */
+    public static final Charset CHARSET;
+
+    /** Init. */
+    static
+    {
+        Charset charset;
+        try
+        {
+            charset = Charset.forName("UTF-8");
+        }
+        catch (final UnsupportedCharsetException exception)
+        {
+            charset = Charset.defaultCharset();
+        }
+        CHARSET = charset;
+    }
+
     /** The message type (should be an enum ordinal to make the id clean). */
     private byte type;
     /** Id of the client who sent this message. */

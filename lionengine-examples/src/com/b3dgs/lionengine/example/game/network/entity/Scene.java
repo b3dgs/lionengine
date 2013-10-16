@@ -46,7 +46,7 @@ final class Scene
         super(loader, Scene.NATIVE);
         setExtrapolated(true); // Recommended for network game
 
-        final boolean server = true;
+        final boolean server = false;
 
         if (server)
         {

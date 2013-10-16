@@ -58,9 +58,12 @@ final class XmlParserImpl
      */
     static DocumentBuilderFactory getDocumentFactory()
     {
-        if (XmlParserImpl.documentFactory == null)
+        synchronized (XmlParserImpl.class)
         {
-            XmlParserImpl.documentFactory = DocumentBuilderFactory.newInstance();
+            if (XmlParserImpl.documentFactory == null)
+            {
+                XmlParserImpl.documentFactory = DocumentBuilderFactory.newInstance();
+            }
         }
         return XmlParserImpl.documentFactory;
     }
@@ -72,9 +75,12 @@ final class XmlParserImpl
      */
     static TransformerFactory getTransformerFactory()
     {
-        if (XmlParserImpl.transformerFactory == null)
+        synchronized (XmlParserImpl.class)
         {
-            XmlParserImpl.transformerFactory = TransformerFactory.newInstance();
+            if (XmlParserImpl.transformerFactory == null)
+            {
+                XmlParserImpl.transformerFactory = TransformerFactory.newInstance();
+            }
         }
         return XmlParserImpl.transformerFactory;
     }

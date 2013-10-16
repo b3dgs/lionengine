@@ -159,3 +159,4 @@ openable
 silo
 cyan
 jumpable
+charset

@@ -81,7 +81,7 @@ public class NetworkMessageChat
     @Override
     protected void encode(ByteArrayOutputStream buffer) throws IOException
     {
-        buffer.write(message.getBytes());
+        buffer.write(message.getBytes(NetworkMessage.CHARSET));
     }
 
     @Override
@@ -89,6 +89,6 @@ public class NetworkMessageChat
     {
         final byte[] msg = new byte[buffer.available()];
         buffer.readFully(msg);
-        message = new String(msg);
+        message = new String(msg, NetworkMessage.CHARSET);
     }
 }
