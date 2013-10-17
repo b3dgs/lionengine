@@ -36,15 +36,16 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
     /** Camera reference. */
     protected final CameraGame camera;
     /** The entity handler reference. */
-    private final HandlerEntityGame<E> handlerEntity;
+    private final HandlerEntityGame<E>[] handlerEntity;
 
     /**
      * Create a new player projectile handler.
      * 
      * @param camera The camera reference.
-     * @param handlerEntity The entity handler reference.
+     * @param handlerEntity The entity handlers reference.
      */
-    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<E> handlerEntity)
+    @SafeVarargs
+    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<E>... handlerEntity)
     {
         super();
         this.camera = camera;
@@ -78,13 +79,17 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
     protected void update(double extrp, P projectile)
     {
         projectile.update(extrp);
-        for (final E entity : handlerEntity.list())
+        for (final HandlerEntityGame<E> handler : handlerEntity)
         {
-            if (!projectile.isDestroyed() && projectile.getOwner() != entity && projectile.collide(entity))
+            for (final E entity : handler.list())
             {
-                if (!projectile.canHitOnlyTarget() || projectile.canHitOnlyTarget() && entity == projectile.getTarget())
+                if (!projectile.isDestroyed() && projectile.getOwner() != entity && projectile.collide(entity))
                 {
-                    projectile.onHit(entity, projectile.damages.getRandom());
+                    if (!projectile.canHitOnlyTarget() || projectile.canHitOnlyTarget()
+                            && entity == projectile.getTarget())
+                    {
+                        projectile.onHit(entity, projectile.damages.getRandom());
+                    }
                 }
             }
         }

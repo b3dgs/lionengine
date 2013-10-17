@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <entity surface="three_red_v.png">
 	<size width="24" height="28"/>
+	<collision name="default" offsetX="1" offsetY="4" width="22" height="18" mirror="false" />
 </entity>

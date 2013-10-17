@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <entity surface="pump.png">
-	<size width="48" height="56"/>
+	<size width="48" height="84"/>
+	<collision name="default" offsetX="4" offsetY="28" width="40" height="44" mirror="false" />
 </entity>

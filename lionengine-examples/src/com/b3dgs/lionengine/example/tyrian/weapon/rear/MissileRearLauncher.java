@@ -51,7 +51,7 @@ final class MissileRearLauncher
     @Override
     protected void launchProjectile(Entity owner)
     {
-        int dmg = 60;
+        final int dmg = 60;
         final int speed = 2;
         switch (level.getCurrent())
         {
@@ -86,13 +86,11 @@ final class MissileRearLauncher
 
                 if (side)
                 {
-                    addProjectile(ProjectileType.MISSILE_REAR, 200L, dmg, -speed * 1.5, speed, -10, -20).setFrame(
-                            138);
+                    addProjectile(ProjectileType.MISSILE_REAR, 200L, dmg, -speed * 1.5, speed, -10, -20).setFrame(138);
                 }
                 else
                 {
-                    addProjectile(ProjectileType.MISSILE_REAR, 200L, dmg, speed * 1.5, speed, 10, -20).setFrame(
-                            153);
+                    addProjectile(ProjectileType.MISSILE_REAR, 200L, dmg, speed * 1.5, speed, 10, -20).setFrame(153);
                 }
                 side = !side;
                 break;

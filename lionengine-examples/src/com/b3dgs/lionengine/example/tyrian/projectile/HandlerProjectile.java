@@ -34,10 +34,14 @@ public final class HandlerProjectile
      * @param camera The camera reference.
      * @param handlerEntity The handler entity reference.
      */
-    public HandlerProjectile(CameraGame camera, HandlerEntity handlerEntity)
+    public HandlerProjectile(CameraGame camera, HandlerEntity[] handlerEntity)
     {
         super(camera, handlerEntity);
     }
+
+    /*
+     * HandlerProjectileGame
+     */
 
     @Override
     protected void update(double extrp, Projectile projectile)

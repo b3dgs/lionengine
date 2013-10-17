@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<effect name="explode2" surface="explode2.png">
+<effect surface="explode2.png">
 	<frames horizontal="7" vertical="2"/>
 	<animation name="start" start="1" end="13" speed="0.5" reversed="false" repeat="false"/>
 </effect>

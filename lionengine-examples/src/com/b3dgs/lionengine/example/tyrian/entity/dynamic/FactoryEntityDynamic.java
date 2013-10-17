@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.entity.scenery;
+package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -28,10 +28,10 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
- * Factory entity scenery.
+ * Factory entity dynamic.
  */
-public class FactoryEntityScenery
-        extends FactoryEntityGame<EntitySceneryType, SetupSurfaceGame, Entity>
+public class FactoryEntityDynamic
+        extends FactoryEntityGame<EntityDynamicType, SetupSurfaceGame, Entity>
 {
     /** Unknown entity error message. */
     private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
@@ -47,7 +47,7 @@ public class FactoryEntityScenery
      * @return The entity instance.
      */
     private static Entity createEntity(SetupSurfaceGame setup, FactoryEffect factoryEffect,
-            HandlerEffect handlerEffect, EntitySceneryType type, Class<?> factory)
+            HandlerEffect handlerEffect, EntityDynamicType type, Class<?> factory)
     {
         try
         {
@@ -66,7 +66,7 @@ public class FactoryEntityScenery
                | ClassCastException
                | ClassNotFoundException exception)
         {
-            throw new LionEngineException(exception, FactoryEntityScenery.UNKNOWN_ENTITY_ERROR + type.asClassName());
+            throw new LionEngineException(exception, FactoryEntityDynamic.UNKNOWN_ENTITY_ERROR + type.asClassName());
         }
     }
 
@@ -81,23 +81,23 @@ public class FactoryEntityScenery
      * @param factoryEffect The effect factory reference.
      * @param handlerEffect The handler effect reference.
      */
-    public FactoryEntityScenery(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public FactoryEntityDynamic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntitySceneryType.class);
+        super(EntityDynamicType.class);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
-        loadAll(EntitySceneryType.values());
+        loadAll(EntityDynamicType.values());
     }
 
     @Override
-    public Entity createEntity(EntitySceneryType type)
+    public Entity createEntity(EntityDynamicType type)
     {
-        return FactoryEntityScenery.createEntity(getSetup(type), factoryEffect, handlerEffect, type, getClass());
+        return FactoryEntityDynamic.createEntity(getSetup(type), factoryEffect, handlerEffect, type, getClass());
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntitySceneryType type)
+    protected SetupSurfaceGame createSetup(EntityDynamicType type)
     {
-        return new SetupSurfaceGame(Media.get("entities", "scenery", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(Media.get("entities", "dynamic", type.asPathName() + ".xml"));
     }
 }

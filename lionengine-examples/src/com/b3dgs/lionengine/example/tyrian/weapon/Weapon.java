@@ -44,6 +44,7 @@ public abstract class Weapon
     {
         super(factory, handler);
         level.setMax(5);
+        consume = 300;
     }
 
     /**

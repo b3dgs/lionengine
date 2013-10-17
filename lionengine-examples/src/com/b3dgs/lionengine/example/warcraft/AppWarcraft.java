@@ -33,7 +33,7 @@ public final class AppWarcraft
     /** Program title. */
     public static final String PROGRAM = "Warcraft";
     /** Program version. */
-    public static final Version VERSION = Version.create(1, 0, 0);
+    public static final Version VERSION = Version.create(0, 1, 0);
     /** Effects directory. */
     public static final String EFFECTS_DIR = "effects";
     /** Configuration file extension. */

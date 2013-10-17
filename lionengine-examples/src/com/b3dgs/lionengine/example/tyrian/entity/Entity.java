@@ -61,7 +61,9 @@ public class Entity
         final int height = setup.configurable.getDataInteger("height", "size");
         sprite = Drawable.loadSpriteTiled(setup.surface, width, height);
         setSize(width, height);
-        setCollision(new CollisionData(width / 2, -height, width, height, false));
+        final CollisionData data = getDataCollision("default");
+        setCollision(new CollisionData(getWidth() / 2 + data.getOffsetX(), -data.getOffsetY() - data.getHeight(),
+                data.getWidth(), data.getHeight(), false));
     }
 
     /**
@@ -101,7 +103,7 @@ public class Entity
     public void destroy()
     {
         super.destroy();
-        final int n = getWidth() * getHeight() / 100;
+        final int n = getWidth() * getHeight() / 200;
         for (int i = 0; i < n; i++)
         {
             final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE2);

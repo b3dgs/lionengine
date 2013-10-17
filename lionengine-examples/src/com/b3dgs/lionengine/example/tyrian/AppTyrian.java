@@ -32,7 +32,7 @@ public final class AppTyrian
     /** Application name. */
     public static final String NAME = "Tyrian";
     /** Application version. */
-    public static final Version VERSION = Version.create(1, 0, 0);
+    public static final Version VERSION = Version.create(0, 1, 0);
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "tyrian");
 

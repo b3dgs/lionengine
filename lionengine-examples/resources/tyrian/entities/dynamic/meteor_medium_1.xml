@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity surface="meteor_medium_1.png">
+	<size width="48" height="56"/>
+	<collision name="default" offsetX="8" offsetY="8" width="32" height="38" mirror="false" />
+</entity>

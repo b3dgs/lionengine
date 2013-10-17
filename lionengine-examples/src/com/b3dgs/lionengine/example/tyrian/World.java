@@ -27,7 +27,10 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.example.tyrian.background.Background;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.tyrian.entity.dynamic.EntityDynamicType;
+import com.b3dgs.lionengine.example.tyrian.entity.dynamic.FactoryEntityDynamic;
 import com.b3dgs.lionengine.example.tyrian.entity.scenery.FactoryEntityScenery;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.FactoryShip;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
@@ -60,15 +63,29 @@ final class World
      */
     private static void ripLevel(Map map, Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(levelrip, map, tilesheet);
-        try (final FileWriting file = File.createFileWriting(output);)
+        if (Media.checkExist(output))
         {
-            map.save(file);
+            try (final FileReading file = File.createFileReading(output);)
+            {
+                map.load(file);
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(World.class, "ripLevel", exception, "Error on loading map !");
+            }
         }
-        catch (final IOException exception)
+        else
         {
-            Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
+            final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
+            rip.start(levelrip, map, tilesheet);
+            try (final FileWriting file = File.createFileWriting(output);)
+            {
+                map.save(file);
+            }
+            catch (final IOException exception)
+            {
+                Verbose.exception(World.class, "ripLevel", exception, "Error on saving map !");
+            }
         }
     }
 
@@ -84,16 +101,20 @@ final class World
     private final FactoryEffect factoryEffect;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
-    /** Handler entity. */
-    private final HandlerEntity handlerEntity;
+    /** Handler entity scenery. */
+    private final HandlerEntity handlerEntityScenery;
+    /** Handler entity dynamic. */
+    private final HandlerEntity handlerEntityDynamic;
     /** Factory projectile. */
     private final FactoryProjectile factoryProjectile;
     /** Handler projectile. */
     private final HandlerProjectile handlerProjectile;
     /** Weapon factory. */
     private final FactoryWeapon factoryWeapon;
-    /** Factory entity. */
-    private final FactoryEntityScenery factoryEntityStatic;
+    /** Factory entity scenery. */
+    private final FactoryEntityScenery factoryEntityScenery;
+    /** Factory entity dynamic. */
+    private final FactoryEntityDynamic factoryEntityDynamic;
     /** Factory ship. */
     private final FactoryShip factoryShip;
     /** Ship reference. */
@@ -111,11 +132,17 @@ final class World
         camera = new CameraGame();
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);
-        handlerEntity = new HandlerEntity(camera);
+        handlerEntityScenery = new HandlerEntity(camera);
+        handlerEntityDynamic = new HandlerEntity(camera);
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
-        handlerProjectile = new HandlerProjectile(camera, handlerEntity);
+        final HandlerEntity[] handlers = new HandlerEntity[]
+        {
+                handlerEntityScenery, handlerEntityDynamic
+        };
+        handlerProjectile = new HandlerProjectile(camera, handlers);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
-        factoryEntityStatic = new FactoryEntityScenery(factoryEffect, handlerEffect);
+        factoryEntityScenery = new FactoryEntityScenery(factoryEffect, handlerEffect);
+        factoryEntityDynamic = new FactoryEntityDynamic(factoryEffect, handlerEffect);
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
         camera.setView(0, 0, 263, 184);
@@ -137,7 +164,7 @@ final class World
                 map.append(newMap, 0, newMap.getHeightInTile() * i);
             }
         }
-        map.spawnEntityStatic(factoryEntityStatic, handlerEntity);
+        map.spawnEntityStatic(factoryEntityScenery, handlerEntityScenery);
         hud.setShip(ship);
     }
 
@@ -152,10 +179,19 @@ final class World
         camera.setLocationY(ship.getLocationY());
         ship.update(extrp, mouse, camera, height);
         handlerProjectile.update(extrp);
-        handlerEntity.update(extrp);
+        handlerEntityScenery.update(extrp);
+        handlerEntityDynamic.update(extrp);
         handlerEffect.update(extrp);
         background.update(extrp);
         hud.update(extrp);
+
+        if (UtilityRandom.getRandomInteger(100) == 0)
+        {
+            final Entity entity = factoryEntityDynamic.createEntity(EntityDynamicType.METEOR_BIG);
+            entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
+                    camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
+            handlerEntityDynamic.add(entity);
+        }
     }
 
     @Override
@@ -163,7 +199,8 @@ final class World
     {
         background.render(g, camera);
         map.render(g, camera);
-        handlerEntity.render(g);
+        handlerEntityScenery.render(g);
+        handlerEntityDynamic.render(g);
         ship.render(g, camera);
         handlerProjectile.render(g);
         handlerEffect.render(g);

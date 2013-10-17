@@ -15,25 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.effect;
+package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
 import java.util.Locale;
 
 /**
- * List of effect types.
+ * List of dynamic entity types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EffectType
+public enum EntityDynamicType
 {
-    /** Smoke. */
-    SMOKE,
-    /** Bullet hit. */
-    BULLET_HIT,
-    /** Explode1. */
-    EXPLODE1,
-    /** Explode2. */
-    EXPLODE2,
-    /** Explode3. */
-    EXPLODE3;
+    /** Meteor little 1. */
+    METEOR_LITTLE_1,
+    /** Meteor little 2. */
+    METEOR_LITTLE_2,
+    /** Meteor medium 1. */
+    METEOR_MEDIUM_1,
+    /** Meteor medium 2. */
+    METEOR_MEDIUM_2,
+    /** Meteor big. */
+    METEOR_BIG;
 
     /**
      * Get the name as a path (lower case).

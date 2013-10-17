@@ -72,10 +72,21 @@ public final class Media
     public static void exist(Media media)
     {
         Check.notNull(media, Media.ERROR_MEDIA);
-        if (!UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath()))
+        if (!Media.checkExist(media))
         {
             throw new LionEngineException(media, Media.ERROR_MEDIA);
         }
+    }
+
+    /**
+     * Check if the media exists.
+     * 
+     * @param media The media to test.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    public static boolean checkExist(Media media)
+    {
+        return UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath());
     }
 
     /**

@@ -51,7 +51,7 @@ final class Pulse
     public void onHit(Entity entity, int damages)
     {
         super.onHit(entity, damages);
-        final Effect effect = factoryEffect.createEffect(EffectType.EXPLODE3);
+        final Effect effect = factoryEffect.createEffect(EffectType.BULLET_HIT);
         effect.start(getLocationIntX(), getLocationIntY() + effect.getHeight() / 2, 0);
         handlerEffect.add(effect);
     }

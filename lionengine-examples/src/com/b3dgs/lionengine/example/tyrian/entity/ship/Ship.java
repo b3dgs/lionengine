@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Ship base implementation.
  */
-public class Ship
+public abstract class Ship
         extends Entity
 {
     /** Ship energy. */
@@ -58,7 +58,7 @@ public class Ship
         energy = new Alterable(1000);
         weaponFront = factoryWeapon.createLauncher(WeaponType.HYPER_PULSE);
         weaponFront.setOwner(this);
-        weaponRear = factoryWeapon.createLauncher(WeaponType.WAVE_CANNON);
+        weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_REAR_LAUNCHER);
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(0, -216);
@@ -87,15 +87,16 @@ public class Ship
         updateTileOffset();
         updateCollision();
 
-        energy.increase(200);
+        energy.increase(50);
         if (mouse.hasClickedOnce(Click.RIGHT))
         {
+            weaponFront.level.increase(1);
             weaponRear.level.increase(1);
         }
         if (mouse.hasClicked(Click.LEFT))
         {
-            //weaponFront.launch(energy);
-           weaponRear.launch(energy);
+            weaponFront.launch(energy);
+            weaponRear.launch(energy);
         }
     }
 

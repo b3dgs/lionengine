@@ -51,7 +51,7 @@ final class WaveCannon
     @Override
     protected void launchProjectile(Entity owner)
     {
-        int dmg = 60;
+        final int dmg = 60;
         final int speed = 11;
         switch (level.getCurrent())
         {

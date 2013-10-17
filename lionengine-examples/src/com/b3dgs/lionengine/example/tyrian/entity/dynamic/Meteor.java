@@ -15,29 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.projectile.front;
+package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.tyrian.projectile.Missile;
+import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Missile front projectile.
+ * Meteor implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MissileFront
-        extends Missile
+abstract class Meteor
+        extends Entity
 {
     /**
-     * Constructor.
-     * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
-     * @param setup The setup reference.
+     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
-    public MissileFront(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public Meteor(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(setup, 120, factoryEffect, handlerEffect);
+        super(setup, factoryEffect, handlerEffect);
+    }
 
+    /*
+     * Entity
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        super.update(extrp);
+        moveLocation(extrp, 0, -0.5);
     }
 }

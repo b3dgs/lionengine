@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <entity surface="red_box.png">
 	<size width="24" height="28"/>
+	<collision name="default" offsetX="5" offsetY="5" width="14" height="18" mirror="false" />
 </entity>
