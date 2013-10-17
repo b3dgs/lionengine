@@ -17,13 +17,95 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
+import java.util.Locale;
+
 /**
  * List of weapon types.
  */
 public enum WeaponType
 {
+    /*
+     * Front
+     */
+
     /** Pulse cannon. */
-    PULSE_CANNON,
-    /** Missile launcher. */
-    MISSILE_LAUNCHER;
+    PULSE_CANNON(WeaponCategory.FRONT),
+    /** Missile rear launcher. */
+    MISSILE_FRONT_LAUNCHER(WeaponCategory.FRONT),
+    /** Machine gun. */
+    MACHINE_GUN(WeaponCategory.FRONT),
+    /** Hyper Pulse. */
+    HYPER_PULSE(WeaponCategory.FRONT),
+
+    /*
+     * Rear
+     */
+
+    /** Missile rear launcher. */
+    MISSILE_REAR_LAUNCHER(WeaponCategory.REAR),
+    /** Wave cannon. */
+    WAVE_CANNON(WeaponCategory.REAR);
+
+    /** Weapon category. */
+    private final WeaponCategory category;
+
+    /**
+     * Constructor.
+     * 
+     * @param category The weapon category.
+     */
+    private WeaponType(WeaponCategory category)
+    {
+        this.category = category;
+    }
+
+    /**
+     * Get the weapon category.
+     * 
+     * @return The weapon category.
+     */
+    public WeaponCategory getCategory()
+    {
+        return category;
+    }
+
+    /**
+     * Get the name as a path (lower case).
+     * 
+     * @return The name.
+     */
+    public String asPathName()
+    {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Get the class name equivalence.
+     * 
+     * @return The class name equivalence.
+     */
+    public String asClassName()
+    {
+        final char[] name = toString().toCharArray();
+        for (int i = 0; i < name.length; i++)
+        {
+            if (name[i] == '_')
+            {
+                name[i + 1] = Character.toUpperCase(name[i + 1]);
+            }
+        }
+        return String.valueOf(name).replace("_", "");
+    }
+
+    /**
+     * Get the type name (first letter as upper).
+     * 
+     * @return The type name.
+     */
+    @Override
+    public String toString()
+    {
+        final String string = asPathName();
+        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+    }
 }

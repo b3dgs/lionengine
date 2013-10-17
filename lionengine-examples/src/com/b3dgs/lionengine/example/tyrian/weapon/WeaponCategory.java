@@ -15,27 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.projectile;
-
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+package com.b3dgs.lionengine.example.tyrian.weapon;
 
 /**
- * Missile rear left projectile.
+ * List of weapon categories.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MissileRearLeft
-        extends MissileRear
+public enum WeaponCategory
 {
-    /**
-     * Constructor.
-     * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
-     * @param setup The setup reference.
-     */
-    public MissileRearLeft(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup)
-    {
-        super(factoryEffect, handlerEffect, setup, 136);
-    }
+    /** Front weapon. */
+    FRONT,
+    /** Rear weapon. */
+    REAR;
 }

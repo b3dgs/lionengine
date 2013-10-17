@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
@@ -35,24 +37,42 @@ public abstract class Projectile
     /** Default collision. */
     private static final CollisionData COLLISION = new CollisionData(10, -4, 4, 4, false);
 
+    /** Factory effect. */
+    protected final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    protected final HandlerEffect handlerEffect;
     /** Projectile surface. */
     private final SpriteTiled sprite;
     /** Surface id. */
-    private final int frame;
+    private int frame;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      * @param frame The frame number.
+     * @param factoryEffect The factory effect.
+     * @param handlerEffect The handler effect.
      */
-    Projectile(SetupSurfaceGame setup, int frame)
+    protected Projectile(SetupSurfaceGame setup, int frame, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(setup);
         this.frame = frame;
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         sprite = Drawable.loadSpriteTiled(setup.surface, 12, 14);
         sprite.load(false);
         setCollision(Projectile.COLLISION);
+    }
+
+    /**
+     * Set the projectile frame.
+     * 
+     * @param frame The projectile frame.
+     */
+    public void setFrame(int frame)
+    {
+        this.frame = frame;
     }
 
     /*

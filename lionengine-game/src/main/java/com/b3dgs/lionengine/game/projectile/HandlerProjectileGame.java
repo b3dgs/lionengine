@@ -102,4 +102,10 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
             projectile.render(g, camera);
         }
     }
+
+    @Override
+    protected boolean canBeAdded(P projectile)
+    {
+        return projectile.canBeAdded();
+    }
 }

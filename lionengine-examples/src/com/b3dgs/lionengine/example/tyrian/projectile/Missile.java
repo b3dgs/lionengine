@@ -22,35 +22,35 @@ import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Missile projectile.
  */
-abstract class MissileRear
+public abstract class Missile
         extends Projectile
 {
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
     /** Effect timer. */
     private final Timing timerEffect;
+    /** Thrown. */
+    private boolean thrown;
+    /** Speed. */
+    private double speed;
 
     /**
      * Constructor.
      * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
      * @param setup The setup reference.
      * @param frame The missile frame.
+     * @param factoryEffect The factory effect.
+     * @param handlerEffect The handler effect.
      */
-    public MissileRear(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup, int frame)
+    protected Missile(SetupSurfaceGame setup, int frame, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(setup, frame);
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(setup, frame, factoryEffect, handlerEffect);
         timerEffect = new Timing();
+        speed = 1.0;
     }
 
     /**
@@ -71,17 +71,53 @@ abstract class MissileRear
      */
 
     @Override
-    public void start(int x, int y, double vecX, double vecY)
+    public void update(double extrp)
     {
-        super.start(x, y, vecX, vecY);
-        addEffect(getLocationIntX(), getLocationIntY());
-        timerEffect.start();
+        super.update(extrp);
+        if (!thrown)
+        {
+            addEffect(getLocationIntX(), getLocationIntY());
+            timerEffect.start();
+            thrown = true;
+        }
+    }
+
+    @Override
+    public void onHit(Entity entity, int damages)
+    {
+        super.onHit(entity, damages);
+        final int size = 2;
+        final int x = getLocationIntX();
+        final int y = getLocationIntY() + getHeight();
+        for (int i = 0; i < size; i++)
+        {
+            final Effect effect1 = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final Effect effect2 = factoryEffect.createEffect(EffectType.EXPLODE2);
+
+            effect1.start(x - i * effect1.getWidth() / 2, y, i * 20);
+            effect2.start(x + i * effect2.getWidth() / 2, y, i * 20);
+
+            handlerEffect.add(effect1);
+            handlerEffect.add(effect2);
+        }
+        for (int i = 0; i < size; i++)
+        {
+            final Effect effect1 = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final Effect effect2 = factoryEffect.createEffect(EffectType.EXPLODE2);
+
+            effect1.start(x, y - i * effect1.getHeight() / 2, i * 20);
+            effect2.start(x, y + i * effect2.getHeight() / 2, i * 20);
+
+            handlerEffect.add(effect1);
+            handlerEffect.add(effect2);
+        }
     }
 
     @Override
     protected void updateMovement(double extrp, double vecX, double vecY)
     {
-        super.updateMovement(extrp, vecX, vecY);
+        super.updateMovement(extrp, vecX * speed, vecY * speed);
+        speed += 0.1;
         if (timerEffect.elapsed(40))
         {
             addEffect(getLocationIntX(), getLocationIntY());

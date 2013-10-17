@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.tyrian;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
@@ -122,17 +123,18 @@ final class World
         // Rip a level and store data in the map
         for (int i = 0; i < 21; i++)
         {
+            final int index = UtilityRandom.getRandomInteger(20);
             if (i == 0)
             {
-                World.ripLevel(map, Media.get("levels", "images", "0.png"), Media.get("tiles", "level1"),
+                World.ripLevel(map, Media.get("levels", "images", index + ".png"), Media.get("tiles", "level1"),
                         Media.get("levels", "0.map"));
             }
             else
             {
-                final Map map = new Map();
-                World.ripLevel(map, Media.get("levels", "images", i + ".png"), Media.get("tiles", "level1"),
+                final Map newMap = new Map();
+                World.ripLevel(newMap, Media.get("levels", "images", index + ".png"), Media.get("tiles", "level1"),
                         Media.get("levels", i + ".map"));
-                this.map.append(map, 0, map.getHeightInTile() * i);
+                map.append(newMap, 0, newMap.getHeightInTile() * i);
             }
         }
         map.spawnEntityStatic(factoryEntityStatic, handlerEntity);

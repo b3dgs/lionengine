@@ -17,9 +17,15 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.example.game.factory.Type;
+import com.b3dgs.lionengine.example.game.factory.TypeBase;
 import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
+import com.b3dgs.lionengine.example.tyrian.weapon.front.FactoryWeaponFront;
+import com.b3dgs.lionengine.example.tyrian.weapon.rear.FactoryWeaponRear;
 import com.b3dgs.lionengine.game.projectile.FactoryLauncherGame;
 
 /**
@@ -28,6 +34,35 @@ import com.b3dgs.lionengine.game.projectile.FactoryLauncherGame;
 public final class FactoryWeapon
         extends FactoryLauncherGame<WeaponType, Weapon>
 {
+    /**
+     * Create a type instance from its enum, using a generic way.
+     * 
+     * @param factory The factory class.
+     * @param type The enum type.
+     * @param param The instance parameter.
+     * @return The instance.
+     */
+    public static TypeBase createGeneric(Class<?> factory, Type type, Object param)
+    {
+        try
+        {
+            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
+            clazz.append('.').append(type.asClassName());
+            return (TypeBase) Class.forName(clazz.toString()).getConstructor(Object.class).newInstance(param);
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException
+               | ClassCastException
+               | ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, "Unknown type: " + type);
+        }
+    }
+
     /** Factory reference. */
     private final FactoryProjectile factory;
     /** Handler reference. */
@@ -53,12 +88,12 @@ public final class FactoryWeapon
     @Override
     public Weapon createLauncher(WeaponType type)
     {
-        switch (type)
+        switch (type.getCategory())
         {
-            case PULSE_CANNON:
-                return new PulseCannon(factory, handler);
-            case MISSILE_LAUNCHER:
-                return new MissileLauncher(factory, handler);
+            case FRONT:
+                return FactoryWeaponFront.createWeapon(type, factory, handler);
+            case REAR:
+                return FactoryWeaponRear.createWeapon(type, factory, handler);
             default:
                 throw new LionEngineException("Unknown type: " + type);
         }

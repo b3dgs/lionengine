@@ -56,9 +56,9 @@ public class Ship
     {
         super(setup, factoryEffect, handlerEffect);
         energy = new Alterable(1000);
-        weaponFront = factoryWeapon.createLauncher(WeaponType.PULSE_CANNON);
+        weaponFront = factoryWeapon.createLauncher(WeaponType.HYPER_PULSE);
         weaponFront.setOwner(this);
-        weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_LAUNCHER);
+        weaponRear = factoryWeapon.createLauncher(WeaponType.WAVE_CANNON);
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(0, -216);
@@ -90,12 +90,12 @@ public class Ship
         energy.increase(200);
         if (mouse.hasClickedOnce(Click.RIGHT))
         {
-            weaponFront.level.increase(1);
+            weaponRear.level.increase(1);
         }
         if (mouse.hasClicked(Click.LEFT))
         {
-            weaponFront.launch(energy);
-            weaponRear.launch(energy);
+            //weaponFront.launch(energy);
+           weaponRear.launch(energy);
         }
     }
 

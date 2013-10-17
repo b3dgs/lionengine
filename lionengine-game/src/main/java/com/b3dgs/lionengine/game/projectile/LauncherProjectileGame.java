@@ -302,9 +302,9 @@ public abstract class LauncherProjectileGame<T extends Enum<T>, E extends Entity
         projectile.setCanHitTargetOnly(hitTargetOnly);
         projectile.damages.setMin(dmg);
         projectile.damages.setMax(dmg);
-        final int x = owner.getLocationIntX() + owner.getLocationOffsetX() + offX + offsetX;
-        final int y = owner.getLocationIntY() + owner.getLocationOffsetY() + offY + offsetY;
-        projectile.start(x, y, vecX, vecY);
+        final int x = owner.getLocationIntX() + owner.getLocationOffsetX();
+        final int y = owner.getLocationIntY() + owner.getLocationOffsetY();
+        projectile.start(x, y, offX + offsetX, offY + offsetY, vecX, vecY);
         projectile.setDelay(delay);
 
         handler.add(projectile);

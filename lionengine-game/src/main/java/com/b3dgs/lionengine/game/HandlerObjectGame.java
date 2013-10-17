@@ -169,6 +169,17 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
+     * Check if object can be added.
+     * 
+     * @param object The object to check.
+     * @return <code>true</code> if can be added, <code>false</code> else.
+     */
+    protected boolean canBeAdded(E object)
+    {
+        return true;
+    }
+
+    /**
      * Get the object key.
      * 
      * @param object The object reference.
@@ -186,12 +197,30 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     {
         if (willAdd)
         {
+            List<E> toKeep = null;
             for (final E object : toAdd)
             {
-                objects.put(getKey(object), object);
+                if (canBeAdded(object))
+                {
+                    objects.put(getKey(object), object);
+                }
+                else
+                {
+                    if (toKeep == null)
+                    {
+                        toKeep = new ArrayList<>(0);
+                    }
+                    toKeep.add(object);
+                }
             }
             toAdd.clear();
             willAdd = false;
+            if (toKeep != null)
+            {
+                toAdd.addAll(toKeep);
+                toKeep.clear();
+                willAdd = true;
+            }
         }
     }
 

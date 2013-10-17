@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.projectile.front.FactoryProjectileFront;
+import com.b3dgs.lionengine.example.tyrian.projectile.rear.FactoryProjectileRear;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 
@@ -30,7 +32,7 @@ import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 public final class FactoryProjectile
         extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
 {
-    /** Weapon surfaces. */
+    /** Projectile surfaces. */
     private final SetupSurfaceGame setup;
     /** Factory effect. */
     private final FactoryEffect factoryEffect;
@@ -59,14 +61,12 @@ public final class FactoryProjectile
     @Override
     public Projectile createProjectile(ProjectileType type)
     {
-        switch (type)
+        switch (type.getCategory())
         {
-            case BULLET:
-                return new Bullet(getSetup(type));
-            case MISSILE_REAR_LEFT:
-                return new MissileRearLeft(factoryEffect, handlerEffect, getSetup(type));
-            case MISSILE_REAR_RIGHT:
-                return new MissileRearRight(factoryEffect, handlerEffect, getSetup(type));
+            case FRONT:
+                return FactoryProjectileFront.createProjectile(type, getSetup(type), factoryEffect, handlerEffect);
+            case REAR:
+                return FactoryProjectileRear.createProjectile(type, getSetup(type), factoryEffect, handlerEffect);
             default:
                 throw new LionEngineException("Unknown type: " + type);
         }

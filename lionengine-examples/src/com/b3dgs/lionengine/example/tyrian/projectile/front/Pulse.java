@@ -15,17 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.projectile;
+package com.b3dgs.lionengine.example.tyrian.projectile.front;
 
+import com.b3dgs.lionengine.example.tyrian.effect.Effect;
+import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.example.tyrian.projectile.Projectile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Missile rear right projectile.
+ * Pulse projectile.
  */
-final class MissileRearRight
-        extends MissileRear
+final class Pulse
+        extends Projectile
 {
     /**
      * Constructor.
@@ -34,8 +38,21 @@ final class MissileRearRight
      * @param handlerEffect The handler effect.
      * @param setup The setup reference.
      */
-    public MissileRearRight(FactoryEffect factoryEffect, HandlerEffect handlerEffect, SetupSurfaceGame setup)
+    public Pulse(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(factoryEffect, handlerEffect, setup, 151);
+        super(setup, 0, factoryEffect, handlerEffect);
+    }
+
+    /*
+     * Projectile
+     */
+
+    @Override
+    public void onHit(Entity entity, int damages)
+    {
+        super.onHit(entity, damages);
+        final Effect effect = factoryEffect.createEffect(EffectType.EXPLODE3);
+        effect.start(getLocationIntX(), getLocationIntY() + effect.getHeight() / 2, 0);
+        handlerEffect.add(effect);
     }
 }

@@ -17,15 +17,93 @@
  */
 package com.b3dgs.lionengine.example.tyrian.projectile;
 
+import java.util.Locale;
+
 /**
  * List of projectile types.
  */
 public enum ProjectileType
 {
+    /*
+     * Front
+     */
+
+    /** Pulse. */
+    PULSE(ProjectileCategory.FRONT),
+    /** Missile front. */
+    MISSILE_FRONT(ProjectileCategory.FRONT),
     /** Bullet. */
-    BULLET,
+    BULLET(ProjectileCategory.FRONT),
+
+    /*
+     * Rear
+     */
+
+    /** Wave. */
+    WAVE(ProjectileCategory.REAR),
     /** Missile rear left. */
-    MISSILE_REAR_LEFT,
-    /** Missile rear right. */
-    MISSILE_REAR_RIGHT;
+    MISSILE_REAR(ProjectileCategory.REAR);
+
+    /** Weapon category. */
+    private final ProjectileCategory category;
+
+    /**
+     * Constructor.
+     * 
+     * @param category The projectile category.
+     */
+    private ProjectileType(ProjectileCategory category)
+    {
+        this.category = category;
+    }
+
+    /**
+     * Get the projectile category.
+     * 
+     * @return The projectile category.
+     */
+    public ProjectileCategory getCategory()
+    {
+        return category;
+    }
+
+    /**
+     * Get the name as a path (lower case).
+     * 
+     * @return The name.
+     */
+    public String asPathName()
+    {
+        return name().toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Get the class name equivalence.
+     * 
+     * @return The class name equivalence.
+     */
+    public String asClassName()
+    {
+        final char[] name = toString().toCharArray();
+        for (int i = 0; i < name.length; i++)
+        {
+            if (name[i] == '_')
+            {
+                name[i + 1] = Character.toUpperCase(name[i + 1]);
+            }
+        }
+        return String.valueOf(name).replace("_", "");
+    }
+
+    /**
+     * Get the type name (first letter as upper).
+     * 
+     * @return The type name.
+     */
+    @Override
+    public String toString()
+    {
+        final String string = asPathName();
+        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+    }
 }

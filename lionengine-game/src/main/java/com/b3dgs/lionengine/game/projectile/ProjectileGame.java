@@ -45,6 +45,10 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     private double vecX;
     /** Vertical vector. */
     private double vecY;
+    /** Horizontal offset. */
+    private int offX;
+    /** Vertical offset. */
+    private int offY;
     /** Target. */
     private E target;
     /** Entity owner. */
@@ -111,14 +115,18 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
+     * @param offX The horizontal location offset.
+     * @param offY The vertical location offset.
      * @param vecX The horizontal vector.
      * @param vecY The vertical vector.
      */
-    public void start(int x, int y, double vecX, double vecY)
+    public void start(int x, int y, int offX, int offY, double vecX, double vecY)
     {
-        setLocation(x + getWidth() / 2, y + getHeight() / 2);
+        setLocation(x + offX + getWidth() / 2, y + offY + getHeight() / 2);
         this.vecX = vecX;
         this.vecY = vecY;
+        this.offX = offX;
+        this.offY = offY;
     }
 
     /**
@@ -231,6 +239,13 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     @Override
     public void update(double extrp)
     {
+        if (time > 0)
+        {
+            final int x = owner.getLocationIntX() + owner.getLocationOffsetX() + offX;
+            final int y = owner.getLocationIntY() + owner.getLocationOffsetY() + offY;
+            teleport(x + getWidth() / 2, y + getHeight() / 2);
+            time = 0;
+        }
         updateMovement(extrp, vecX, vecY);
         updateCollision();
     }

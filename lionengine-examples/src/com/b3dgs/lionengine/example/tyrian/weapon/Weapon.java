@@ -43,6 +43,7 @@ public abstract class Weapon
     public Weapon(FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
+        level.setMax(5);
     }
 
     /**

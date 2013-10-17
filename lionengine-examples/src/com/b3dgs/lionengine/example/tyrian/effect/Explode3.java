@@ -15,23 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.projectile;
+package com.b3dgs.lionengine.example.tyrian.effect;
 
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Simple projectile, with a linear movement.
+ * Explode 3 effect.
  */
-final class Bullet
-        extends Projectile
+final class Explode3
+        extends Effect
 {
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Bullet(SetupSurfaceGame setup)
+    public Explode3(SetupSurfaceGame setup)
     {
-        super(setup, 1);
+        super(setup);
     }
 }
