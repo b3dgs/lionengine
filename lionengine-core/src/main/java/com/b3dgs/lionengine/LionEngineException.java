@@ -38,8 +38,11 @@ public final class LionEngineException
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
-            "Engine", "Drawable", "File", "Audio", "Input", "Network", "game", "audio", "drawable", "engine", "file",
-            "geometry", "input", "network", "utility", "window"
+            "anim", "core", "drawable", "file", "game", "utility", "network", "audio", "swing", "Align", "Applet",
+            "Architecture", "Check", "Checksum", "ColorRgba", "Coord", "Filter", "GradientColor", "Graphic",
+            "ImageInfo", "Keyboard", "Line", "LionEngineException", "Mouse", "OperatingSystem", "Polygon", "Ratio",
+            "Rectangle", "Resolution", "Strings", "Text", "TestStyle", "Timing", "Transparency", "UtilityConversion",
+            "UtilityFile", "UtilityProjectsStats", "UtilityRandom"
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599463L;
