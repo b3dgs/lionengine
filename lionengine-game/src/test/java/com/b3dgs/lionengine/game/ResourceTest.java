@@ -44,7 +44,7 @@ public class ResourceTest
         Assert.assertFalse(resource.canSpend(amount));
         resource.spend(amount);
         Assert.assertEquals(0, resource.get());
-        
+
         Assert.assertNotNull(new Resource(10));
     }
 }

@@ -22,11 +22,12 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.example.tyrian.menu.Menu;
 
 /**
  * Game loop designed to handle our little world.
  */
-final class Scene
+public final class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -40,7 +41,7 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         world = new World(this);
@@ -63,7 +64,7 @@ final class Scene
         world.update(extrp);
         if (keyboard.isPressed(Key.ESCAPE))
         {
-            end();
+            end(new Menu(loader));
         }
     }
 

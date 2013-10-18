@@ -204,10 +204,6 @@ public class CameraRts
         return getLocationIntY() / map.getTileHeight();
     }
 
-    /*
-     * CameraGame
-     */
-
     /**
      * Check if cursor in inside camera view (outside panel).
      * 
@@ -234,6 +230,10 @@ public class CameraRts
                 && entity.getLocationY() + entity.getHeight() >= getLocationRealY() + border
                 && entity.getLocationY() <= getLocationRealY() + getViewHeight() - border;
     }
+
+    /*
+     * CameraGame
+     */
 
     @Override
     public void moveLocation(double extrp, double vx, double vy)

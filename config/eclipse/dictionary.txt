@@ -160,3 +160,5 @@ silo
 cyan
 jumpable
 charset
+remake
+sfx

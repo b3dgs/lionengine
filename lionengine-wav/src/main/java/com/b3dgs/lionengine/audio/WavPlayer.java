@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
- * Default sound player implementation.
+ * Wav player implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
