@@ -21,9 +21,11 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.example.warcraft.menu.Menu;
 
 /**
  * Game loop designed to handle the world.
@@ -71,6 +73,10 @@ public final class Scene
     protected void update(double extrp)
     {
         world.update(extrp);
+        if (keyboard.isPressedOnce(Key.ESCAPE))
+        {
+            end(new Menu(loader));
+        }
     }
 
     @Override

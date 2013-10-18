@@ -95,29 +95,36 @@ public final class Tile
     @Override
     public void checkResourceType(TileCollision collision)
     {
-        switch (collision)
+        if (collision != null)
         {
-            case TREE:
-                setResourceType(ResourceType.WOOD);
-                break;
-            default:
-                setResourceType(ResourceType.NONE);
-                break;
+            switch (collision)
+            {
+                case TREE:
+                    setResourceType(ResourceType.WOOD);
+                    break;
+                default:
+                    setResourceType(ResourceType.NONE);
+                    break;
+            }
         }
     }
 
     @Override
     public boolean checkBlocking(TileCollision collision)
     {
-        if (TileCollision.TREE == collision)
+        if (collision != null)
         {
-            if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
+            if (TileCollision.TREE == collision)
             {
-                tree = Tile.VALUES[getNumber() - (125 + offset)];
+                if (getNumber() >= 125 + offset && getNumber() <= 144 + offset)
+                {
+                    tree = Tile.VALUES[getNumber() - (125 + offset)];
+                }
             }
+            color = TileColorType.valueOf(collision.name());
+            return TileCollisionGroup.GROUND != collision.getGroup();
         }
-        color = TileColorType.valueOf(collision.name());
-        return TileCollisionGroup.GROUND != collision.getGroup();
+        return false;
     }
 
     @Override

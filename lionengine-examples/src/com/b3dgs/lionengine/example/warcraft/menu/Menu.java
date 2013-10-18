@@ -125,6 +125,8 @@ public final class Menu
         return Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, filename), width, height);
     }
 
+    /** Intro sound. */
+    private final Wav blizzard;
     /** Menu music. */
     private final Midi music;
     /** Introduction logo. */
@@ -168,6 +170,7 @@ public final class Menu
         logo = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "menu.png"));
         cursor = new Cursor(mouse, source, Media.get("cursor.png"));
+        blizzard = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "blizzard.wav"));
     }
 
     /**
@@ -273,8 +276,7 @@ public final class Menu
         Menu.clicked = false;
         if (Menu.menu == MenuType.INTRO_UP)
         {
-            final Wav sound = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "blizzard.wav"));
-            sound.play();
+            //blizzard.play();
         }
         if (keyboard.used())
         {
@@ -407,6 +409,8 @@ public final class Menu
                 break;
             case EXIT:
                 music.stop();
+                ResourcesLoader.SOUND_CLICK.terminate();
+                blizzard.terminate();
                 end();
                 break;
             default:
@@ -415,6 +419,8 @@ public final class Menu
         if (!pressed && keyboard.isPressed(Key.ESCAPE))
         {
             music.stop();
+            ResourcesLoader.SOUND_CLICK.terminate();
+            blizzard.terminate();
             end();
         }
     }
@@ -475,6 +481,8 @@ public final class Menu
                 break;
             case PLAY:
                 applyAlpha(g, ColorRgba.BLACK);
+                break;
+            case EXIT:
                 break;
             default:
                 throw new RuntimeException();
