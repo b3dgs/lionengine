@@ -34,6 +34,10 @@ public final class AppTyrian
     public static final String NAME = "Tyrian";
     /** Application version. */
     public static final Version VERSION = Version.create(0, 1, 0);
+    /** Sfx directory. */
+    public static final String SFX_DIR = "sfx";
+    /** Enable sound. */
+    private static final boolean ENABLE_SOUND = true;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "tyrian");
 
@@ -44,16 +48,11 @@ public final class AppTyrian
      */
     public static void main(String[] args)
     {
-        // Start engine
         Engine.start(AppTyrian.NAME, AppTyrian.VERSION, AppTyrian.RESOURCES);
+        Sfx.setEnabled(AppTyrian.ENABLE_SOUND);
 
-        // Resolution
         final Resolution output = new Resolution(640, 400, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Loader
         final Loader loader = new Loader(config);
         loader.start(new Menu(loader));
     }

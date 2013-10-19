@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.drawable.SpriteFont;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.example.tyrian.Scene;
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 
 /**
  * The menu implementation.
@@ -53,7 +54,7 @@ public final class Menu
     private final Sprite surfaces[];
     /** Cursor. */
     private final Sprite cursor;
-    /** Armoury. */
+    /** Armory. */
     private final Sprite armory;
     /** Ship. */
     private final SpriteTiled ship;
@@ -359,5 +360,10 @@ public final class Menu
     protected void onTerminate(boolean hasNextSequence)
     {
         midi.stop();
+        Sfx.stopAll();
+        if (!hasNextSequence)
+        {
+            Sfx.terminateAll();
+        }
     }
 }

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon.rear;
 
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
@@ -53,6 +54,7 @@ final class MissileRearLauncher
     {
         final int dmg = 60;
         final int speed = 2;
+        Sfx.WEAPON_MISSILE.play();
         switch (level.getCurrent())
         {
             case 0:

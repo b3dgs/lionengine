@@ -644,11 +644,12 @@ public class Menu
     @Override
     protected void onTerminate(boolean hasNextSequence)
     {
-        Sfx.terminate();
         SonicArranger.stop();
+        Sfx.stopAll();
         if (!hasNextSequence)
         {
             SonicArranger.terminate();
+            Sfx.terminateAll();
         }
         System.gc();
     }

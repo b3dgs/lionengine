@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon.front;
 
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
@@ -48,6 +49,7 @@ final class PulseCannon
     {
         int dmg;
         final int speed = 6;
+        Sfx.WEAPON_PULSE.play();
         switch (level.getCurrent())
         {
             case 0:

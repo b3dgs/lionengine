@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon.front;
 
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
@@ -50,6 +51,7 @@ final class MissileFrontLauncher
     {
         int dmg;
         final int speed = 3;
+        Sfx.WEAPON_MISSILE.play();
         switch (level.getCurrent())
         {
             case 0:

@@ -73,4 +73,14 @@ public final class Scene
     {
         world.render(g);
     }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Sfx.stopAll();
+        if (!hasNextSequence)
+        {
+            Sfx.terminateAll();
+        }
+    }
 }

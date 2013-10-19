@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.audio;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -46,6 +47,8 @@ final class WavRoutine
     /** Sound buffer size. */
     static final int BUFFER = 128000;
 
+    /** Sound monitor. */
+    final Semaphore latch;
     /** Way player reference. */
     private final WavPlayer player;
     /** Sound file reference. */
@@ -62,6 +65,8 @@ final class WavRoutine
     private boolean isPlaying;
     /** Restart flag. */
     private boolean restart;
+    /** Close flag. */
+    private boolean close;
     /** Audio output. */
     private SourceDataLine sourceDataLine;
     /** Audio stream. */
@@ -77,6 +82,7 @@ final class WavRoutine
     {
         super("SFX " + title);
         this.player = player;
+        latch = new Semaphore(0);
         isRunning = true;
         media = null;
         isPlaying = false;
@@ -124,6 +130,14 @@ final class WavRoutine
     }
 
     /**
+     * Re allow to play one again.
+     */
+    void restart()
+    {
+        restart = true;
+    }
+
+    /**
      * Stop sound, close stream and flush output.
      */
     void stopSound()
@@ -135,11 +149,15 @@ final class WavRoutine
                 sourceDataLine.flush();
                 sourceDataLine.stop();
                 audioInputStream.close();
-                restart = false;
             }
             catch (final IOException exception)
             {
                 Verbose.exception(WavRoutine.class, "stopSound", exception);
+            }
+            finally
+            {
+                restart = false;
+                close = true;
             }
         }
     }
@@ -154,6 +172,22 @@ final class WavRoutine
         return isPlaying;
     }
 
+    /**
+     * Read the stream.
+     * 
+     * @param tempBuffer The buffer.
+     * @return The read byte.
+     * @throws IOException If error.
+     */
+    int readStream(byte[] tempBuffer) throws IOException
+    {
+        if (!close)
+        {
+            return audioInputStream.read(tempBuffer, 0, tempBuffer.length);
+        }
+        return -1;
+    }
+
     /*
      * Thread
      */
@@ -163,13 +197,13 @@ final class WavRoutine
     {
         while (isRunning)
         {
+            close = false;
             player.addBusy(this);
             if (media != null)
             {
                 final String filename = media.getPath();
                 try
                 {
-                    Thread.sleep(delay);
                     isPlaying = true;
                     restart = false;
 
@@ -213,12 +247,17 @@ final class WavRoutine
                         gainControl.setValue((float) dB);
                     }
 
+                    if (delay > 0)
+                    {
+                        Thread.sleep(delay);
+                    }
+
                     // Start playing by filling buffer till the end
                     sourceDataLine.start();
                     int cnt;
                     final byte[] tempBuffer = new byte[WavRoutine.BUFFER];
 
-                    while ((cnt = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1)
+                    while ((cnt = readStream(tempBuffer)) != -1)
                     {
                         if (cnt > 0)
                         {
@@ -235,7 +274,7 @@ final class WavRoutine
                 }
                 catch (final InterruptedException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Delay broken: \"", filename, "\"");
+                    interrupt();
                 }
                 catch (final UnsupportedAudioFileException
                              | IllegalArgumentException exception)
@@ -248,7 +287,7 @@ final class WavRoutine
                 }
                 catch (final IOException exception)
                 {
-                    Verbose.critical(WavRoutine.class, "run", "Error on playing sound \"", filename, "\"");
+                    Verbose.exception(WavRoutine.class, "run", exception);
                 }
             }
             isPlaying = false;
@@ -259,7 +298,7 @@ final class WavRoutine
             try
             {
                 player.addFree(this);
-                player.latch.acquire();
+                latch.acquire();
             }
             catch (final InterruptedException exception)
             {

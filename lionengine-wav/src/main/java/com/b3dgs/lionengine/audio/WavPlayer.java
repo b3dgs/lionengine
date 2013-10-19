@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
@@ -37,9 +39,9 @@ final class WavPlayer
     /** Maximum number of sounds played at the same time. */
     final int maxSimultaneous;
     /** Sound ready threads. */
-    final BlockingQueue<WavRoutine> freeSounds;
+    final Queue<WavRoutine> freeSounds;
     /** Sound busy threads. */
-    final BlockingQueue<WavRoutine> busySounds;
+    final Queue<WavRoutine> busySounds;
     /** Sound monitor. */
     final Semaphore latch;
     /** Created thread counter. */
@@ -76,8 +78,8 @@ final class WavPlayer
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
         latch = new Semaphore(0);
-        freeSounds = new LinkedBlockingQueue<>(maxSimultaneous);
-        busySounds = new LinkedBlockingQueue<>(maxSimultaneous);
+        freeSounds = new LinkedList<>();
+        busySounds = new LinkedList<>();
         alignment = Align.CENTER;
         volume = 100;
     }
@@ -97,12 +99,11 @@ final class WavPlayer
      * Add a sound routine to the free list and remove it from the busy list.
      * 
      * @param routine Sound routine.
-     * @throws InterruptedException If errors.
      */
-    void addFree(WavRoutine routine) throws InterruptedException
+    void addFree(WavRoutine routine)
     {
         busySounds.remove(routine);
-        freeSounds.put(routine);
+        freeSounds.add(routine);
     }
 
     /**
@@ -112,14 +113,7 @@ final class WavPlayer
      */
     void addBusy(WavRoutine routine)
     {
-        try
-        {
-            busySounds.put(routine);
-        }
-        catch (final InterruptedException exception)
-        {
-            Verbose.exception(WavPlayer.class, "play", exception);
-        }
+        busySounds.add(routine);
     }
 
     /*
@@ -138,14 +132,24 @@ final class WavPlayer
         final WavRoutine routine;
         if (!freeSounds.isEmpty() || count.intValue() >= maxSimultaneous)
         {
-            routine = freeSounds.poll();
+            if (freeSounds.isEmpty())
+            {
+                routine = busySounds.poll();
+            }
+            else
+            {
+                routine = freeSounds.poll();
+            }
+
             if (routine != null)
             {
+                routine.stopSound();
                 routine.setAlignement(alignment);
                 routine.setMedia(media);
                 routine.setVolume(volume);
                 routine.setDelay(delay);
-                latch.release();
+                routine.restart();
+                routine.latch.release();
             }
         }
         else
@@ -180,10 +184,12 @@ final class WavPlayer
     @Override
     public void stop()
     {
-        for (final WavRoutine routine : busySounds)
+        final List<WavRoutine> toStop = new ArrayList<>(busySounds);
+        for (final WavRoutine routine : toStop)
         {
             routine.stopSound();
         }
+        toStop.clear();
     }
 
     @Override
@@ -194,16 +200,16 @@ final class WavPlayer
             @Override
             public void run()
             {
-                while (count.intValue() > 0)
+                while (!busySounds.isEmpty())
                 {
-                    WavPlayer.this.stop();
-                    for (final WavRoutine routine : busySounds)
+                    final List<WavRoutine> toStop = new ArrayList<>(busySounds);
+                    for (final WavRoutine routine : toStop)
                     {
-                        routine.interrupt();
-                    }
-                    for (final WavRoutine routine : freeSounds)
-                    {
-                        routine.interrupt();
+                        if (routine != null)
+                        {
+                            routine.stopSound();
+                            routine.interrupt();
+                        }
                     }
                     try
                     {
@@ -213,6 +219,27 @@ final class WavPlayer
                     {
                         Verbose.exception(WavPlayer.class, "terminate", exception);
                     }
+                    toStop.clear();
+                    busySounds.clear();
+                }
+                while (count.intValue() != 0)
+                {
+                    for (final WavRoutine routine : freeSounds)
+                    {
+                        if (routine != null)
+                        {
+                            routine.interrupt();
+                        }
+                    }
+                    try
+                    {
+                        Thread.sleep(100);
+                    }
+                    catch (final InterruptedException exception)
+                    {
+                        Verbose.exception(WavPlayer.class, "terminate", exception);
+                    }
+                    freeSounds.clear();
                 }
             }
         }.start();

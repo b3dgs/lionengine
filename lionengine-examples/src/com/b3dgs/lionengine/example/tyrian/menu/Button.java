@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.tyrian.menu;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 
 /**
  * Menu button implementation.
@@ -95,7 +96,7 @@ class Button
      */
     public void onClick()
     {
-        // TODO: Click sfx
+        Sfx.CLICK.play();
     }
 
     /**
@@ -122,7 +123,7 @@ class Button
     {
         if (!overed)
         {
-            // TODO: Select sfx
+            Sfx.SELECT.play();
             overed = true;
         }
     }

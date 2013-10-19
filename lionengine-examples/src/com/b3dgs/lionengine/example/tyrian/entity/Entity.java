@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
@@ -104,6 +105,7 @@ public class Entity
     {
         super.destroy();
         final int n = getWidth() * getHeight() / 200;
+        int delay = 0;
         for (int i = 0; i < n; i++)
         {
             final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE2);
@@ -111,6 +113,11 @@ public class Entity
             final int y = getLocationIntY() + explode.getHeight() / 2 - UtilityRandom.getRandomInteger(getHeight());
             explode.start(x, y, i * 25);
             handlerEffect.add(explode);
+            if (i % 10 == 0)
+            {
+                Sfx.EXPLODE_LARGE.play(delay * 400);
+                delay++;
+            }
         }
     }
 }

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.tyrian.weapon.front;
 
 import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
@@ -51,6 +52,7 @@ final class MachineGun
     {
         int dmg;
         final int speed = 12;
+        Sfx.WEAPON_MACHINE_GUN.play();
         switch (level.getCurrent())
         {
             case 0:
