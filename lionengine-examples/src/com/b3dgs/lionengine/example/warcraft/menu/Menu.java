@@ -25,9 +25,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.audio.AudioMidi;
-import com.b3dgs.lionengine.audio.AudioWav;
 import com.b3dgs.lionengine.audio.Midi;
-import com.b3dgs.lionengine.audio.Wav;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
@@ -42,6 +40,7 @@ import com.b3dgs.lionengine.example.warcraft.GameConfig;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.Scene;
+import com.b3dgs.lionengine.example.warcraft.Sfx;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -125,8 +124,6 @@ public final class Menu
         return Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, filename), width, height);
     }
 
-    /** Intro sound. */
-    private final Wav blizzard;
     /** Menu music. */
     private final Midi music;
     /** Introduction logo. */
@@ -170,7 +167,6 @@ public final class Menu
         logo = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "blizzard.png"));
         background = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "menu.png"));
         cursor = new Cursor(mouse, source, Media.get("cursor.png"));
-        blizzard = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "blizzard.wav"));
     }
 
     /**
@@ -276,7 +272,7 @@ public final class Menu
         Menu.clicked = false;
         if (Menu.menu == MenuType.INTRO_UP)
         {
-            //blizzard.play();
+            Sfx.BLIZZARD.play();
         }
         if (keyboard.used())
         {
@@ -409,8 +405,6 @@ public final class Menu
                 break;
             case EXIT:
                 music.stop();
-                ResourcesLoader.SOUND_CLICK.terminate();
-                blizzard.terminate();
                 end();
                 break;
             default:
@@ -419,8 +413,6 @@ public final class Menu
         if (!pressed && keyboard.isPressed(Key.ESCAPE))
         {
             music.stop();
-            ResourcesLoader.SOUND_CLICK.terminate();
-            blizzard.terminate();
             end();
         }
     }
@@ -503,5 +495,10 @@ public final class Menu
         }
         buttons = null;
         choices = null;
+        Sfx.stopAll();
+        if (!hasNextSequence)
+        {
+            Sfx.terminateAll();
+        }
     }
 }

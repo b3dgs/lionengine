@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.example.warcraft.menu;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.audio.Wav;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.warcraft.Sfx;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -29,8 +28,6 @@ import com.b3dgs.lionengine.game.Cursor;
  */
 final class Choice
 {
-    /** Click sound. */
-    private final Wav click;
     /** Button surface. */
     private final SpriteTiled surface;
     /** Button horizontal location. */
@@ -60,7 +57,6 @@ final class Choice
         this.x = x;
         this.y = y;
         this.right = right;
-        click = ResourcesLoader.SOUND_CLICK;
         w = surface.getTileWidth();
         h = surface.getTileHeight();
         over = false;
@@ -80,7 +76,7 @@ final class Choice
         over = cx >= x && cy >= y && cx <= x + w && cy <= y + h;
         if (!Menu.clicked && over && cursor.getClick() == Click.LEFT)
         {
-            click.play();
+            Sfx.CLICK.play();
             pressed = true;
             Menu.clicked = true;
         }

@@ -88,6 +88,11 @@ public final class Scene
     @Override
     protected void onTerminate(boolean hasNextSequence)
     {
+        Sfx.stopAll();
+        if (!hasNextSequence)
+        {
+            Sfx.terminateAll();
+        }
         music.stop();
     }
 }

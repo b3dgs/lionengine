@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft;
 
-import com.b3dgs.lionengine.audio.AudioWav;
-import com.b3dgs.lionengine.audio.Wav;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -68,8 +66,6 @@ public final class ResourcesLoader
     public static final SpriteAnimated BURNING;
     /** Burning building. */
     public static final SpriteAnimated EXPLODE;
-    /** Click sound. */
-    public static final Wav SOUND_CLICK;
     /** Corps human. */
     private static final SpriteAnimated CORPSE_HUMAN;
     /** Corps orc. */
@@ -93,7 +89,6 @@ public final class ResourcesLoader
         CONSTRUCTION = Drawable.loadSpriteAnimated(Media.get(ResourcesLoader.EFFECT_DIR, "construction.png"), 3, 1);
         BURNING = Drawable.loadSpriteAnimated(Media.get(ResourcesLoader.EFFECT_DIR, "burning.png"), 4, 2);
         EXPLODE = Drawable.loadSpriteAnimated(Media.get(ResourcesLoader.EFFECT_DIR, "explode.png"), 6, 3);
-        SOUND_CLICK = AudioWav.loadWav(Media.get(ResourcesLoader.SFXS_DIR, "click1.wav"));
     }
 
     /**

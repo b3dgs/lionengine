@@ -38,6 +38,10 @@ public final class AppWarcraft
     public static final String EFFECTS_DIR = "effects";
     /** Configuration file extension. */
     public static final String CONFIG_FILE_EXTENSION = ".xml";
+    /** Sfx directory. */
+    public static final String SFX_DIR = "sfx";
+    /** Enable sound. */
+    private static final boolean ENABLE_SOUND = true;
     /** Program path. */
     public static final String PATH = Media.getPath("resources", "warcraft");
 
@@ -49,14 +53,10 @@ public final class AppWarcraft
     public static void main(String[] args)
     {
         Engine.start(AppWarcraft.PROGRAM, AppWarcraft.VERSION, AppWarcraft.PATH);
+        Sfx.setEnabled(AppWarcraft.ENABLE_SOUND);
 
-        // Resolution
         final Resolution output = new Resolution(640, 400, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Starter
         final Loader loader = new Loader(config);
         ResourcesLoader.load();
         loader.start(new Menu(loader));
