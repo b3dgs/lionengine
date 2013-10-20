@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.tyrian.entity;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 
@@ -29,6 +30,8 @@ public final class HandlerEntity
 {
     /** Camera reference. */
     private final CameraGame camera;
+    /** Ship reference. */
+    private Ship ship;
 
     /**
      * Constructor.
@@ -41,9 +44,29 @@ public final class HandlerEntity
         this.camera = camera;
     }
 
+    /**
+     * Set the ship reference.
+     * 
+     * @param ship The ship reference.
+     */
+    public void setShip(Ship ship)
+    {
+        this.ship = ship;
+    }
+
     /*
      * HandlerEntityGame
      */
+
+    @Override
+    protected void update(double extrp, Entity entity)
+    {
+        super.update(extrp, entity);
+        if (ship != null && entity.collide(ship))
+        {
+            entity.onHit(ship);
+        }
+    }
 
     @Override
     protected void render(Graphic g, Entity entity)

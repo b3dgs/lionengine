@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 /**
  * Factory entity dynamic.
  */
-public class FactoryEntityDynamic
+public final class FactoryEntityDynamic
         extends FactoryEntityGame<EntityDynamicType, SetupSurfaceGame, Entity>
 {
     /** Unknown entity error message. */
@@ -88,6 +88,10 @@ public class FactoryEntityDynamic
         this.handlerEffect = handlerEffect;
         loadAll(EntityDynamicType.values());
     }
+
+    /*
+     * FactoryEntityGame
+     */
 
     @Override
     public Entity createEntity(EntityDynamicType type)

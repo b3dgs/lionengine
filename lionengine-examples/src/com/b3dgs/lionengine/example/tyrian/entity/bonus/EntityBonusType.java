@@ -15,32 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.tyrian.effect;
+package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
 import java.util.Locale;
 
 /**
- * List of effect types.
+ * List of bonus types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EffectType
+public enum EntityBonusType
 {
-    /** Smoke. */
-    SMOKE,
-    /** Bullet hit. */
-    BULLET_HIT,
-    /** Explode1. */
-    EXPLODE1,
-    /** Explode2. */
-    EXPLODE2,
-    /** Explode3. */
-    EXPLODE3,
-    /** Coin10. */
+    /** Coin 10. */
     COIN10,
-    /** Coin25. */
+    /** Coin 25. */
     COIN25,
-    /** Coin50. */
+    /** Coin 50. */
     COIN50,
-    /** Coin75. */
+    /** Coin 75. */
     COIN75;
 
     /**

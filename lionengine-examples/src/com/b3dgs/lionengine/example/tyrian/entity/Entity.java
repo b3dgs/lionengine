@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -37,12 +38,12 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 public class Entity
         extends EntityGame
 {
+    /** Factory effect. */
+    protected final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    protected final HandlerEffect handlerEffect;
     /** Entity surface. */
     private final SpriteTiled sprite;
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
     /** Tile offset. */
     private int tileOffset;
 
@@ -81,6 +82,38 @@ public class Entity
     }
 
     /**
+     * Called when entity is destroyed.
+     */
+    protected void onDestroyed()
+    {
+        final int n = getWidth() * getHeight() / 200;
+        int delay = 0;
+        for (int i = 0; i < n; i++)
+        {
+            final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final int x = getLocationIntX() - explode.getWidth() / 2 + UtilityRandom.getRandomInteger(getWidth());
+            final int y = getLocationIntY() + explode.getHeight() / 2 - UtilityRandom.getRandomInteger(getHeight());
+            explode.start(x, y, i * 25);
+            handlerEffect.add(explode);
+            if (i % 10 == 0)
+            {
+                Sfx.EXPLODE_LARGE.play(delay * 400);
+                delay++;
+            }
+        }
+    }
+
+    /**
+     * The ship hit.
+     * 
+     * @param ship The ship hit.
+     */
+    protected void onHit(Ship ship)
+    {
+        // Nothing by default
+    }
+
+    /**
      * Set the tile offset.
      * 
      * @param offset The tile offset.
@@ -104,20 +137,6 @@ public class Entity
     public void destroy()
     {
         super.destroy();
-        final int n = getWidth() * getHeight() / 200;
-        int delay = 0;
-        for (int i = 0; i < n; i++)
-        {
-            final Effect explode = factoryEffect.createEffect(EffectType.EXPLODE2);
-            final int x = getLocationIntX() - explode.getWidth() / 2 + UtilityRandom.getRandomInteger(getWidth());
-            final int y = getLocationIntY() + explode.getHeight() / 2 - UtilityRandom.getRandomInteger(getHeight());
-            explode.start(x, y, i * 25);
-            handlerEffect.add(explode);
-            if (i % 10 == 0)
-            {
-                Sfx.EXPLODE_LARGE.play(delay * 400);
-                delay++;
-            }
-        }
+        onDestroyed();
     }
 }

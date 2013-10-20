@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.tyrian.entity.bonus.EntityBonusType;
+import com.b3dgs.lionengine.example.tyrian.entity.bonus.FactoryEntityBonus;
 import com.b3dgs.lionengine.example.tyrian.entity.dynamic.EntityDynamicType;
 import com.b3dgs.lionengine.example.tyrian.entity.dynamic.FactoryEntityDynamic;
 import com.b3dgs.lionengine.example.tyrian.entity.scenery.FactoryEntityScenery;
@@ -105,6 +107,8 @@ final class World
     private final HandlerEntity handlerEntityScenery;
     /** Handler entity dynamic. */
     private final HandlerEntity handlerEntityDynamic;
+    /** Handler entity bonus. */
+    private final HandlerEntity handlerEntityBonus;
     /** Factory projectile. */
     private final FactoryProjectile factoryProjectile;
     /** Handler projectile. */
@@ -115,6 +119,8 @@ final class World
     private final FactoryEntityScenery factoryEntityScenery;
     /** Factory entity dynamic. */
     private final FactoryEntityDynamic factoryEntityDynamic;
+    /** Factory entity bonus. */
+    private final FactoryEntityBonus factoryEntityBonus;
     /** Factory ship. */
     private final FactoryShip factoryShip;
     /** Ship reference. */
@@ -134,6 +140,7 @@ final class World
         handlerEffect = new HandlerEffect(camera);
         handlerEntityScenery = new HandlerEntity(camera);
         handlerEntityDynamic = new HandlerEntity(camera);
+        handlerEntityBonus = new HandlerEntity(camera);
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
         final HandlerEntity[] handlers = new HandlerEntity[]
         {
@@ -143,8 +150,11 @@ final class World
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
         factoryEntityScenery = new FactoryEntityScenery(factoryEffect, handlerEffect);
         factoryEntityDynamic = new FactoryEntityDynamic(factoryEffect, handlerEffect);
+        factoryEntityBonus = new FactoryEntityBonus(factoryEffect, handlerEffect);
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
+        handlerEntityDynamic.setShip(ship);
+        handlerEntityBonus.setShip(ship);
         camera.setView(0, 0, 263, 184);
 
         // Rip a level and store data in the map
@@ -181,6 +191,7 @@ final class World
         handlerProjectile.update(extrp);
         handlerEntityScenery.update(extrp);
         handlerEntityDynamic.update(extrp);
+        handlerEntityBonus.update(extrp);
         handlerEffect.update(extrp);
         background.update(extrp);
         hud.update(extrp);
@@ -192,6 +203,13 @@ final class World
                     camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
             handlerEntityDynamic.add(entity);
         }
+        if (UtilityRandom.getRandomInteger(100) == 0)
+        {
+            final Entity entity = factoryEntityBonus.createEntity(EntityBonusType.COIN10);
+            entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
+                    camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
+            handlerEntityBonus.add(entity);
+        }
     }
 
     @Override
@@ -201,6 +219,7 @@ final class World
         map.render(g, camera);
         handlerEntityScenery.render(g);
         handlerEntityDynamic.render(g);
+        handlerEntityBonus.render(g);
         ship.render(g, camera);
         handlerProjectile.render(g);
         handlerEffect.render(g);
