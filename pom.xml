@@ -65,7 +65,7 @@
 		<module>lionengine-game-platform</module>
 		<module>lionengine-game-pathfinding</module>
 		<module>lionengine-game-rts</module>
-		<module>lionengine-game-network</module>
+		<module>lionengine-network</module>
 		<module>lionengine-midi</module>
 		<module>lionengine-ogg</module>
 		<module>lionengine-sc68</module>
