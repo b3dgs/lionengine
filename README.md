@@ -16,17 +16,16 @@ Steps to include the LionEngine in your project:
 * Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 * Include all LionEngine libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-  * __lionengine-java__ _(required if you use the full JDK7)_
-  * __lionengine-game__ _(first base for any game development)_
-        * __lionengine-game-platform__ _(specialized for platform games)_
-        * __lionengine-game-pathfinding__ _(for pathfinding support)_
-            * __lionengine-game-rts__ _(specialized for strategy games)_
-        * __lionengine-game-network__ _(support for networked games)_
-  * __lionengine-midi__ _(allows to play Midi musics)_
-  * __lionengine-wav__ _(allows to play Wav sounds)_
-  * __lionengine-ogg__ _(allows to play Ogg compressed musics)_
-  * __lionengine-sc68__ _(allows to play Sonic Arranger Amiga and Sc68 Atari musics)_
-  * __lionengine-tools__ _(special tools around tiles and level conversion)_
+        * __lionengine-java__ _(required if you use the full JDK7)_
+        * __lionengine-game__ _(first base for any game development)_
+              * __lionengine-game-platform__ _(specialized for platform games)_
+              * __lionengine-game-pathfinding__ _(for pathfinding support)_
+                 * __lionengine-game-rts__ _(specialized for strategy games)_
+        * __lionengine-network__ _(support for network)_
+        * __lionengine-midi__ _(allows to play Midi musics)_
+        * __lionengine-wav__ _(allows to play Wav sounds)_
+        * __lionengine-ogg__ _(allows to play Ogg compressed musics)_
+        * __lionengine-sc68__ _(allows to play Sonic Arranger Amiga and Sc68 Atari musics)_
 * Join (if you want) the javadoc for each library
 * You are now ready to use the LionEngine in your project
 
