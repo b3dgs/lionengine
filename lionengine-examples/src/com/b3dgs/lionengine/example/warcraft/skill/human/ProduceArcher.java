@@ -35,6 +35,6 @@ final class ProduceArcher
      */
     ProduceArcher(SetupSkill setup)
     {
-        super(SkillType.produce_archer, setup, EntityType.archer);
+        super(SkillType.PRODUCE_ARCHER, setup, EntityType.ARCHER);
     }
 }

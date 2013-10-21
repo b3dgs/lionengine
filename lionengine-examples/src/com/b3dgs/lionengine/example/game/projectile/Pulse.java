@@ -33,6 +33,6 @@ final class Pulse
      */
     Pulse(SetupSurfaceGame setup)
     {
-        super(setup, 197);
+        super(setup);
     }
 }

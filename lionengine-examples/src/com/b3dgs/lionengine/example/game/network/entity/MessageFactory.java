@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
  * Factory network message description.
  */
 final class MessageFactory
-        extends NetworkMessageEntity<TypeEntity>
+        extends NetworkMessageEntity<EntityType>
 {
     /**
      * Constructor.
@@ -63,7 +63,7 @@ final class MessageFactory
      */
 
     @Override
-    protected void encode(ByteArrayOutputStream buffer, TypeEntity key) throws IOException
+    protected void encode(ByteArrayOutputStream buffer, EntityType key) throws IOException
     {
         buffer.write((byte) key.ordinal());
     }
@@ -71,7 +71,7 @@ final class MessageFactory
     @Override
     protected void decode(DataInputStream buffer, int i) throws IOException
     {
-        final TypeEntity type = TypeEntity.fromOrdinal(buffer.readByte());
+        final EntityType type = EntityType.fromOrdinal(buffer.readByte());
         this.addAction(type, true);
     }
 }

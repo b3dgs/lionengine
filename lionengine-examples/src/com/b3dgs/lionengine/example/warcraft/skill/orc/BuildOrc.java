@@ -34,6 +34,6 @@ final class BuildOrc
      */
     BuildOrc(SetupSkill setup)
     {
-        super(SkillType.building_standard_orc, setup);
+        super(SkillType.BUILDING_STANDARD_ORC, setup);
     }
 }

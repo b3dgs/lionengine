@@ -36,10 +36,10 @@ final class Grunt
      */
     Grunt(Context context)
     {
-        super(EntityType.grunt, context);
-        addWeapon(context, WeaponType.axe, 0);
-        addSkill(context, 0, SkillType.move_orc, 0);
-        addSkill(context, 0, SkillType.stop_orc, 1);
-        addSkill(context, 0, SkillType.attack_axe, 2);
+        super(EntityType.GRUNT, context);
+        addWeapon(context, WeaponType.AXE, 0);
+        addSkill(context, 0, SkillType.MOVE_ORC, 0);
+        addSkill(context, 0, SkillType.STOP_ORC, 1);
+        addSkill(context, 0, SkillType.ATTACK_AXE, 2);
     }
 }

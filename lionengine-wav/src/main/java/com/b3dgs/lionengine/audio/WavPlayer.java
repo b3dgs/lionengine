@@ -187,7 +187,10 @@ final class WavPlayer
         final List<WavRoutine> toStop = new ArrayList<>(busySounds);
         for (final WavRoutine routine : toStop)
         {
-            routine.stopSound();
+            if (routine != null)
+            {
+                routine.stopSound();
+            }
         }
         toStop.clear();
     }

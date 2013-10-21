@@ -41,9 +41,9 @@ final class FactoryEntity
      */
     FactoryEntity(Map map)
     {
-        super(EntityType.class);
+        super(EntityType.class, EntityType.values(), "");
         this.map = map;
-        loadAll(EntityType.values());
+        load();
     }
 
     /*
@@ -63,8 +63,8 @@ final class FactoryEntity
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType key, Media config)
     {
-        return new SetupSurfaceGame(Media.get(id + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

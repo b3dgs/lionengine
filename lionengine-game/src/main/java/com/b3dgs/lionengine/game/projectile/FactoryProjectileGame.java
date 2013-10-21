@@ -17,29 +17,37 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Handle projectile factory. Projectiles are instantiated from a list. This way it is easy to define different kind of
  * projectile.
  * 
- * @param <T> enum containing all projectile type.
+ * @param <T> The enum containing all projectile type.
  * @param <P> The projectile type used.
  * @param <S> setup entity type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryProjectileGame<T extends Enum<T>, P extends ProjectileGame<?, ?>, S extends SetupSurfaceGame>
+public abstract class FactoryProjectileGame<T extends Enum<T> & ObjectType, P extends ProjectileGame<?, ?>, S extends SetupSurfaceGame>
         extends FactoryGame<T, S>
 {
+    /** Entities folder. */
+    private final String folder;
+
     /**
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The projectile types.
+     * @param folder The projectiles folder.
      */
-    public FactoryProjectileGame(Class<T> keyType)
+    public FactoryProjectileGame(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType);
+        super(keyType, types);
+        this.folder = folder;
     }
 
     /**
@@ -49,4 +57,24 @@ public abstract class FactoryProjectileGame<T extends Enum<T>, P extends Project
      * @return The created projectile.
      */
     public abstract P createProjectile(T type);
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The projectile type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract S createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected S createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
+    }
 }

@@ -35,6 +35,6 @@ final class ProducePeasant
      */
     ProducePeasant(SetupSkill setup)
     {
-        super(SkillType.produce_peasant, setup, EntityType.peasant);
+        super(SkillType.PRODUCE_PEASANT, setup, EntityType.PEASANT);
     }
 }

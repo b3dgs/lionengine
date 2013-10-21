@@ -233,7 +233,7 @@ public final class ControlPanel
                 else
                 {
                     // Population capacity
-                    if (EntityType.farm_orc == entity.type || EntityType.farm_human == entity.type)
+                    if (EntityType.FARM_ORC == entity.type || EntityType.FARM_HUMAN == entity.type)
                     {
                         final String population = "Pop: " + String.valueOf(player.getPopulation()) + " of "
                                 + String.valueOf(player.getPopulationCapacity());

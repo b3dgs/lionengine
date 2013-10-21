@@ -18,65 +18,67 @@
 package com.b3dgs.lionengine.example.warcraft.skill;
 
 import com.b3dgs.lionengine.example.warcraft.RaceType;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of skill types.
  */
-public enum SkillType
+public enum SkillType implements ObjectType
 {
     /*
      * Human skills
      */
 
     /** Move human skill. */
-    move_human(RaceType.HUMAN),
+    MOVE_HUMAN(RaceType.HUMAN),
     /** Build human skill. */
-    building_standard_human(RaceType.HUMAN),
+    BUILDING_STANDARD_HUMAN(RaceType.HUMAN),
     /** Attack melee human skill. */
-    attack_sword(RaceType.HUMAN),
+    ATTACK_SWORD(RaceType.HUMAN),
     /** Attack bow human skill. */
-    attack_bow(RaceType.HUMAN),
+    ATTACK_BOW(RaceType.HUMAN),
     /** Cancel human skill. */
-    cancel_human(RaceType.HUMAN),
+    CANCEL_HUMAN(RaceType.HUMAN),
     /** Stop human skill. */
-    stop_human(RaceType.HUMAN),
+    STOP_HUMAN(RaceType.HUMAN),
     /** Build barracks human skill. */
-    build_barracks_human(RaceType.HUMAN),
+    BUILD_BARRACKS_HUMAN(RaceType.HUMAN),
     /** Build farm human skill. */
-    build_farm_human(RaceType.HUMAN),
+    BUILD_FARM_HUMAN(RaceType.HUMAN),
     /** Produce peasant skill. */
-    produce_peasant(RaceType.HUMAN),
+    PRODUCE_PEASANT(RaceType.HUMAN),
     /** Produce footman skill. */
-    produce_footman(RaceType.HUMAN),
+    PRODUCE_FOOTMAN(RaceType.HUMAN),
     /** Produce archer skill. */
-    produce_archer(RaceType.HUMAN),
+    PRODUCE_ARCHER(RaceType.HUMAN),
 
     /*
      * Orc skills
      */
 
     /** Move orc skill. */
-    move_orc(RaceType.ORC),
+    MOVE_ORC(RaceType.ORC),
     /** Build orc skill. */
-    building_standard_orc(RaceType.ORC),
+    BUILDING_STANDARD_ORC(RaceType.ORC),
     /** Attack melee orc skill. */
-    attack_axe(RaceType.ORC),
+    ATTACK_AXE(RaceType.ORC),
     /** Attack spear orc skill. */
-    attack_spear(RaceType.ORC),
+    ATTACK_SPEAR(RaceType.ORC),
     /** Stop orc skill. */
-    stop_orc(RaceType.ORC),
+    STOP_ORC(RaceType.ORC),
     /** Cancel orc skill. */
-    cancel_orc(RaceType.ORC),
+    CANCEL_ORC(RaceType.ORC),
     /** Build barracks orc skill. */
-    build_barracks_orc(RaceType.ORC),
+    BUILD_BARRACKS_ORC(RaceType.ORC),
     /** Build farm orc skill. */
-    build_farm_orc(RaceType.ORC),
+    BUILD_FARM_ORC(RaceType.ORC),
     /** Produce peon skill. */
-    produce_peon(RaceType.ORC),
+    PRODUCE_PEON(RaceType.ORC),
     /** Produce grunt skill. */
-    produce_grunt(RaceType.ORC),
+    PRODUCE_GRUNT(RaceType.ORC),
     /** Produce spearman skill. */
-    produce_spearman(RaceType.ORC);
+    PRODUCE_SPEARMAN(RaceType.ORC);
 
     /** The race. */
     public final RaceType race;
@@ -89,5 +91,27 @@ public enum SkillType
     private SkillType(RaceType race)
     {
         this.race = race;
+    }
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
     }
 }

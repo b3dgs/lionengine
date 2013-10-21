@@ -83,10 +83,10 @@ public final class FactoryEntityScenery
      */
     public FactoryEntityScenery(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntitySceneryType.class);
+        super(EntitySceneryType.class, EntitySceneryType.values(), Media.getPath("entities", "scenery"));
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
-        loadAll(EntitySceneryType.values());
+        load();
     }
 
     /*
@@ -100,8 +100,8 @@ public final class FactoryEntityScenery
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntitySceneryType type)
+    protected SetupSurfaceGame createSetup(EntitySceneryType key, Media config)
     {
-        return new SetupSurfaceGame(Media.get("entities", "scenery", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

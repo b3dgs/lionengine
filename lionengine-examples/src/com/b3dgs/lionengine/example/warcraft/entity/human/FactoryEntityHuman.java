@@ -38,19 +38,19 @@ public final class FactoryEntityHuman
     {
         switch (type)
         {
-            case peasant:
+            case PEASANT:
                 return new Peasant(context);
-            case footman:
+            case FOOTMAN:
                 return new Footman(context);
-            case archer:
+            case ARCHER:
                 return new Archer(context);
-            case townhall_human:
+            case TOWNHALL_HUMAN:
                 return new TownhallHuman(context);
-            case farm_human:
+            case FARM_HUMAN:
                 return new FarmHuman(context);
-            case barracks_human:
+            case BARRACKS_HUMAN:
                 return new BarracksHuman(context);
-            case lumbermill_human:
+            case LUMBERMILL_HUMAN:
                 return new LumbermillHuman(context);
             default:
                 throw new LionEngineException("Entity not found: ", type.name());

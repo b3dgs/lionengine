@@ -83,10 +83,10 @@ public final class FactoryEntityBonus
      */
     public FactoryEntityBonus(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntityBonusType.class);
+        super(EntityBonusType.class, EntityBonusType.values(), Media.getPath("entities", "bonus"));
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
-        loadAll(EntityBonusType.values());
+        load();
     }
 
     /*
@@ -100,8 +100,8 @@ public final class FactoryEntityBonus
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityBonusType type)
+    protected SetupSurfaceGame createSetup(EntityBonusType key, Media config)
     {
-        return new SetupSurfaceGame(Media.get("entities", "bonus", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

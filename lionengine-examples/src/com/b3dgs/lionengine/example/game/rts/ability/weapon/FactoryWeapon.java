@@ -43,8 +43,8 @@ public final class FactoryWeapon
      */
     public FactoryWeapon()
     {
-        super(WeaponType.class);
-        loadAll(WeaponType.values());
+        super(WeaponType.class, WeaponType.values(), FactoryWeapon.WEAPONS_DIR);
+        load();
     }
 
     /**
@@ -76,8 +76,8 @@ public final class FactoryWeapon
     }
 
     @Override
-    protected SetupGame createSetup(WeaponType id)
+    protected SetupGame createSetup(WeaponType type, Media config)
     {
-        return new SetupGame(Media.get(FactoryWeapon.WEAPONS_DIR, id + ".xml"));
+        return new SetupGame(config);
     }
 }

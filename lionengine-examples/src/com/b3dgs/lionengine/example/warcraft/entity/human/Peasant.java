@@ -35,12 +35,12 @@ final class Peasant
      */
     Peasant(Context context)
     {
-        super(EntityType.peasant, context);
-        addSkill(context, 0, SkillType.move_human, 0);
-        addSkill(context, 0, SkillType.stop_human, 1);
-        addSkill(context, 0, SkillType.building_standard_human, 2);
-        addSkill(context, 1, SkillType.build_farm_human, 0);
-        addSkill(context, 1, SkillType.build_barracks_human, 1);
-        addSkill(context, 1, SkillType.cancel_human, 2);
+        super(EntityType.PEASANT, context);
+        addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
+        addSkill(context, 0, SkillType.STOP_HUMAN, 1);
+        addSkill(context, 0, SkillType.BUILDING_STANDARD_HUMAN, 2);
+        addSkill(context, 1, SkillType.BUILD_FARM_HUMAN, 0);
+        addSkill(context, 1, SkillType.BUILD_BARRACKS_HUMAN, 1);
+        addSkill(context, 1, SkillType.CANCEL_HUMAN, 2);
     }
 }

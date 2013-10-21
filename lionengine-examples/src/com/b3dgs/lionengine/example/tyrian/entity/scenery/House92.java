@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class House92
-        extends Entity
+final class House92
+        extends EntityScenery
 {
     /**
-     * Constructor {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
     public House92(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {

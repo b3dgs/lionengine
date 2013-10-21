@@ -2,4 +2,5 @@
 <entity surface="silo.png">
 	<size width="24" height="28"/>
 	<collision name="default" offsetX="2" offsetY="1" width="20" height="22" mirror="false" />
+	<animation name="idle" start="1" end="9" speed="0.2" reversed="true" repeat="true"/>
 </entity>

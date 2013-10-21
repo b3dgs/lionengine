@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.effect;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -29,26 +31,51 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @param <E> The effect type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryEffectGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EffectGame>
+public abstract class FactoryEffectGame<T extends Enum<T> & ObjectType, S extends SetupSurfaceGame, E extends EffectGame>
         extends FactoryGame<T, S>
 {
+    /** Entities folder. */
+    private final String folder;
+
     /**
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The effect types.
+     * @param folder The effects folder.
      */
-    public FactoryEffectGame(Class<T> keyType)
+    public FactoryEffectGame(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType);
+        super(keyType, types);
+        this.folder = folder;
     }
 
     /**
      * Get the effect instance from its key. It is recommended to use a switch on the key, and throw an exception for
-     * the
-     * default case (instead of returning a <code>null</code> value).
+     * the default case (instead of returning a <code>null</code> value).
      * 
-     * @param type The effect type (as enumeration).
+     * @param type The effect type.
      * @return The effect instance.
      */
     public abstract E createEffect(T type);
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The effect type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract S createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected S createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
+    }
 }

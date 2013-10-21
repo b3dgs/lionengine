@@ -35,7 +35,7 @@ final class Axe
      */
     Axe(Attacker user, Context context)
     {
-        super(WeaponType.axe, user, context);
+        super(WeaponType.AXE, user, context);
     }
 
     /*

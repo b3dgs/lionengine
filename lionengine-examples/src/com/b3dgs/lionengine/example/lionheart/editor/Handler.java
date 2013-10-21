@@ -35,7 +35,7 @@ public class Handler
      * 
      * @param factoryEntity The factory entity reference.
      */
-    public Handler(FactoryEntity factoryEntity)
+    public Handler(FactoryEntity<?> factoryEntity)
     {
         super(new CameraPlatform(320, 240), factoryEntity);
     }

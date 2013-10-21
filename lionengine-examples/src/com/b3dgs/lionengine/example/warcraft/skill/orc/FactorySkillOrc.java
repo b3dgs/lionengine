@@ -68,27 +68,27 @@ public final class FactorySkillOrc
     {
         switch (id)
         {
-            case move_orc:
+            case MOVE_ORC:
                 return new Move(factory.getSetup(id));
-            case building_standard_orc:
+            case BUILDING_STANDARD_ORC:
                 return new BuildOrc(factory.getSetup(id));
-            case attack_axe:
+            case ATTACK_AXE:
                 return new AttackAxe(factory.getSetup(id), handler);
-            case attack_spear:
+            case ATTACK_SPEAR:
                 return new AttackSpear(factory.getSetup(id), handler);
-            case stop_orc:
+            case STOP_ORC:
                 return new Stop(factory.getSetup(id));
-            case cancel_orc:
+            case CANCEL_ORC:
                 return new Cancel(factory.getSetup(id));
-            case build_farm_orc:
+            case BUILD_FARM_ORC:
                 return new BuildFarmOrc(factory.getSetup(id), cursor, map);
-            case build_barracks_orc:
+            case BUILD_BARRACKS_ORC:
                 return new BuildBarracksOrc(factory.getSetup(id), cursor, map);
-            case produce_peon:
+            case PRODUCE_PEON:
                 return new ProducePeon(factory.getSetup(id));
-            case produce_grunt:
+            case PRODUCE_GRUNT:
                 return new ProduceGrunt(factory.getSetup(id));
-            case produce_spearman:
+            case PRODUCE_SPEARMAN:
                 return new ProduceSpearman(factory.getSetup(id));
             default:
                 throw new LionEngineException("Skill not found: ", id.name());

@@ -33,7 +33,7 @@ public final class Stop
      */
     public Stop(SetupSkill setup)
     {
-        super(SkillType.stop_orc, setup);
+        super(SkillType.STOP_ORC, setup);
     }
 
     /*

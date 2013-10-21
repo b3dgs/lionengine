@@ -62,7 +62,7 @@ public class Scene
     @Override
     protected void load()
     {
-        factoryEffect.loadAll(EffectType.values());
+        factoryEffect.load();
     }
 
     @Override

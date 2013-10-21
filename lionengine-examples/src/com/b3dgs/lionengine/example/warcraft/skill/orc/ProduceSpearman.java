@@ -35,6 +35,6 @@ final class ProduceSpearman
      */
     ProduceSpearman(SetupSkill setup)
     {
-        super(SkillType.produce_spearman, setup, EntityType.spearman);
+        super(SkillType.PRODUCE_SPEARMAN, setup, EntityType.SPEARMAN);
     }
 }

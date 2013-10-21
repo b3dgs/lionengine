@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory entity implementation.
@@ -44,8 +43,8 @@ public final class FactoryEntity
      */
     public FactoryEntity()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_PATH);
+        load();
     }
 
     /**
@@ -88,8 +87,8 @@ public final class FactoryEntity
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType key, Media config)
     {
-        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"), false);
+        return new SetupSurfaceGame(config);
     }
 }

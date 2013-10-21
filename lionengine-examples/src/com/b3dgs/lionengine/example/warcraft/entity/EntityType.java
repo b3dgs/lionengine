@@ -18,56 +18,58 @@
 package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.example.warcraft.RaceType;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity types.
  */
-public enum EntityType
+public enum EntityType implements ObjectType
 {
     /*
      * Human units
      */
 
     /** Peasant unit. */
-    peasant(RaceType.HUMAN),
+    PEASANT(RaceType.HUMAN),
     /** Footman unit. */
-    footman(RaceType.HUMAN),
+    FOOTMAN(RaceType.HUMAN),
     /** Archer unit. */
-    archer(RaceType.HUMAN),
+    ARCHER(RaceType.HUMAN),
     /** TownHall building. */
-    townhall_human(RaceType.HUMAN),
+    TOWNHALL_HUMAN(RaceType.HUMAN),
     /** Farm building. */
-    farm_human(RaceType.HUMAN),
+    FARM_HUMAN(RaceType.HUMAN),
     /** Barracks building. */
-    barracks_human(RaceType.HUMAN),
+    BARRACKS_HUMAN(RaceType.HUMAN),
     /** Lumber mill building. */
-    lumbermill_human(RaceType.HUMAN),
+    LUMBERMILL_HUMAN(RaceType.HUMAN),
 
     /*
      * Orc units
      */
 
     /** Peon unit. */
-    peon(RaceType.ORC),
+    PEON(RaceType.ORC),
     /** Grunt unit. */
-    grunt(RaceType.ORC),
+    GRUNT(RaceType.ORC),
     /** Spearman unit. */
-    spearman(RaceType.ORC),
+    SPEARMAN(RaceType.ORC),
     /** TownHall building. */
-    townhall_orc(RaceType.ORC),
+    TOWNHALL_ORC(RaceType.ORC),
     /** Farm building. */
-    farm_orc(RaceType.ORC),
+    FARM_ORC(RaceType.ORC),
     /** Barracks building. */
-    barracks_orc(RaceType.ORC),
+    BARRACKS_ORC(RaceType.ORC),
     /** Lumber mill building. */
-    lumbermill_orc(RaceType.ORC),
+    LUMBERMILL_ORC(RaceType.ORC),
 
     /*
      * Neutral units
      */
 
     /** Gold mine building. */
-    gold_mine(RaceType.NEUTRAL);
+    GOLD_MINE(RaceType.NEUTRAL);
 
     /** The race. */
     public final RaceType race;
@@ -80,5 +82,27 @@ public enum EntityType
     private EntityType(RaceType race)
     {
         this.race = race;
+    }
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
     }
 }

@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SinglePulse
-        extends Entity
+final class SinglePulse
+        extends EntityScenery
 {
     /**
-     * Constructor {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
     public SinglePulse(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {

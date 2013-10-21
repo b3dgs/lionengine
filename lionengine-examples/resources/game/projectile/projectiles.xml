@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<projectile surface="projectiles.png">
-	<tiles width="12" height="14"/>
-	<size width="12" height="14"/>
-</projectile>

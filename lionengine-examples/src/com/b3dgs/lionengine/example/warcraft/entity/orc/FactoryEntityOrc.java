@@ -38,19 +38,19 @@ public final class FactoryEntityOrc
     {
         switch (type)
         {
-            case peon:
+            case PEON:
                 return new Peon(context);
-            case grunt:
+            case GRUNT:
                 return new Grunt(context);
-            case spearman:
+            case SPEARMAN:
                 return new Spearman(context);
-            case townhall_orc:
+            case TOWNHALL_ORC:
                 return new TownhallOrc(context);
-            case farm_orc:
+            case FARM_ORC:
                 return new FarmOrc(context);
-            case barracks_orc:
+            case BARRACKS_ORC:
                 return new BarracksOrc(context);
-            case lumbermill_orc:
+            case LUMBERMILL_ORC:
                 return new LumbermillOrc(context);
             default:
                 throw new LionEngineException("Entity not found: ", type.name());

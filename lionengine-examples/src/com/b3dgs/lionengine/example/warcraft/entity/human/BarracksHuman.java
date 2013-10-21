@@ -35,8 +35,8 @@ final class BarracksHuman
      */
     BarracksHuman(Context context)
     {
-        super(EntityType.barracks_human, context);
-        addSkill(context, 0, SkillType.produce_footman, 0);
-        addSkill(context, 0, SkillType.produce_archer, 1);
+        super(EntityType.BARRACKS_HUMAN, context);
+        addSkill(context, 0, SkillType.PRODUCE_FOOTMAN, 0);
+        addSkill(context, 0, SkillType.PRODUCE_ARCHER, 1);
     }
 }

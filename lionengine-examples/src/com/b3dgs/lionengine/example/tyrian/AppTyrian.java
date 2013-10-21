@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.tyrian.menu.Menu;
 
 /**
  * Program starts here.
@@ -54,7 +53,7 @@ public final class AppTyrian
         final Resolution output = new Resolution(640, 400, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
-        loader.start(new Menu(loader));
+        loader.start(new Scene(loader));
     }
 
     /**

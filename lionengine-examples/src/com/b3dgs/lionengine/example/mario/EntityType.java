@@ -17,23 +17,40 @@
  */
 package com.b3dgs.lionengine.example.mario;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityType
+enum EntityType implements ObjectType
 {
     /** Mario. */
     MARIO,
     /** Goomba. */
     GOOMBA;
 
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
     @Override
     public String toString()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.toString(this);
     }
 }

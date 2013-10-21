@@ -81,7 +81,7 @@ final class Scene
     @Override
     protected void load()
     {
-        factoryProjectile.loadAll(ProjectileType.values());
+        factoryProjectile.load();
         camera.setView(0, 0, width, height);
         canon1.setOwner(entity1);
         canon2.setOwner(entity2);

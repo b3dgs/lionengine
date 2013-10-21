@@ -69,7 +69,7 @@ public class Editor
     /** State bar reference. */
     private final StateBar stateBar;
     /** Current selected entity data. */
-    private EntityType selectedEntity;
+    private EntityType<?> selectedEntity;
     /** Current state selection. */
     private SelectionType selectionState;
 
@@ -112,7 +112,7 @@ public class Editor
      * 
      * @param type The selected entity type.
      */
-    public void setSelectedEntity(EntityType type)
+    public void setSelectedEntity(EntityType<?> type)
     {
         selectedEntity = type;
     }
@@ -162,7 +162,7 @@ public class Editor
      * 
      * @return The selected entity type.
      */
-    public EntityType getSelectedEntity()
+    public EntityType<?> getSelectedEntity()
     {
         return selectedEntity;
     }

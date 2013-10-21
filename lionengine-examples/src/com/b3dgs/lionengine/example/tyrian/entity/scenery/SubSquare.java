@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SubSquare
-        extends Entity
+final class SubSquare
+        extends EntityScenery
 {
     /**
-     * Constructor {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
     public SubSquare(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {

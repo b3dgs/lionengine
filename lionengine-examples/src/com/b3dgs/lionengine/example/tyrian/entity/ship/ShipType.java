@@ -17,19 +17,36 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.ship;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of ship types.
  */
-public enum ShipType
+public enum ShipType implements ObjectType
 {
     /** Gencore phoenix. */
     GENCORE_PHOENIX;
 
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
     @Override
     public String toString()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.toString(this);
     }
 }

@@ -2,4 +2,5 @@
 <entity surface="generator.png">
 	<size width="24" height="56"/>
 	<collision name="default" offsetX="3" offsetY="2" width="15" height="44" mirror="false" />
+	<animation name="idle" start="1" end="2" speed="0.1" reversed="false" repeat="true"/>
 </entity>

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.example.tyrian.Sfx;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Button
+abstract class Button
 {
     /** Button surface. */
     private final SpriteTiled surface;
@@ -65,6 +65,11 @@ class Button
     }
 
     /**
+     * Called when clicked on button.
+     */
+    protected abstract void clicked();
+
+    /**
      * Update the button.
      * 
      * @param extrp The extrapolation value.
@@ -92,14 +97,6 @@ class Button
     }
 
     /**
-     * Called when click occurred.
-     */
-    public void onClick()
-    {
-        Sfx.CLICK.play();
-    }
-
-    /**
      * Render the button.
      * 
      * @param g The graphic output.
@@ -119,12 +116,21 @@ class Button
     /**
      * Called when cursor is over button.
      */
-    public void onOver()
+    private void onOver()
     {
         if (!overed)
         {
             Sfx.SELECT.play();
             overed = true;
         }
+    }
+
+    /**
+     * Called when click occurred.
+     */
+    private void onClick()
+    {
+        Sfx.CLICK.play();
+        clicked();
     }
 }

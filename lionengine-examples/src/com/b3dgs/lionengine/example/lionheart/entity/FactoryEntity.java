@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -24,11 +25,9 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.WorldType;
-import com.b3dgs.lionengine.example.lionheart.entity.item.FactoryEntityItem;
-import com.b3dgs.lionengine.example.lionheart.entity.monster.FactoryEntityMonster;
-import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.example.lionheart.entity.scenery.FactoryEntityScenery;
+import com.b3dgs.lionengine.example.lionheart.entity.player.EntityPlayerType;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
+import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
@@ -36,75 +35,68 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * Handle the entity creation by containing all necessary object for their instantiation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @param <T> The entity type used.
  */
-public final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceRasteredGame, Entity>
+public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
+        extends FactoryEntityGame<T, SetupSurfaceRasteredGame, Entity>
 {
     /** Unknown entity error message. */
-    private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
-
-    /**
-     * Create an item from its type.
-     * 
-     * @param level The level reference.
-     * @param type The item type.
-     * @param factory The factory class.
-     * @return The item instance.
-     */
-    public static Entity createEntity(Level level, EntityType type, Class<?> factory)
-    {
-        try
-        {
-            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
-            clazz.append('.').append(type.asClassName());
-            return (Entity) Class.forName(clazz.toString()).getConstructor(Level.class).newInstance(level);
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException
-               | ClassCastException
-               | ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, FactoryEntity.UNKNOWN_ENTITY_ERROR + type.asClassName());
-        }
-    }
+    public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
 
     /** Level used. */
-    private Level level;
-    /** World used. */
-    private WorldType world;
+    protected Level level;
     /** Landscape used. */
-    private LandscapeType landscape;
+    protected LandscapeType landscape;
 
     /**
-     * Standard constructor.
+     * Constructor.
+     * 
+     * @param keyType The key type.
+     * @param types The types.
+     * @param world The world type.
      */
-    public FactoryEntity()
+    protected FactoryEntity(Class<T> keyType, T[] types, WorldType world)
     {
-        super(EntityType.class);
+        super(keyType, types, Media.getPath(AppLionheart.ENTITIES_DIR, world.asPathName()));
     }
 
     /**
-     * Set the context.
+     * Constructor.
      * 
-     * @param level The level reference.
+     * @param keyType The key type.
+     * @param types The types.
+     * @param folder The folder name.
+     */
+    protected FactoryEntity(Class<T> keyType, T[] types, String folder)
+    {
+        super(keyType, types, Media.getPath(AppLionheart.ENTITIES_DIR, folder));
+    }
+
+    /**
+     * Create an entity from a file loaded.
+     * 
+     * @param file The file loaded.
+     * @return The created entity.
+     * @throws IOException If error.
+     */
+    public abstract Entity createEntity(FileReading file) throws IOException;
+
+    /**
+     * Create an entity from a type.
+     * 
+     * @param type The type.
+     * @return The created entity.
+     */
+    public abstract Entity createEntityFromType(String type);
+
+    /**
+     * Set the level used.
+     * 
+     * @param level The level used.
      */
     public void setLevel(Level level)
     {
         this.level = level;
-    }
-
-    /**
-     * Set the world type used.
-     * 
-     * @param world The world used.
-     */
-    public void setWorld(WorldType world)
-    {
-        this.world = world;
     }
 
     /**
@@ -118,13 +110,33 @@ public final class FactoryEntity
     }
 
     /**
-     * Create a new valdyn.
+     * Create an item from its type.
      * 
-     * @return The instance of valdyn.
+     * @param type The item type.
+     * @param factory The factory class.
+     * @return The item instance.
      */
-    public Valdyn createValdyn()
+    protected Entity createEntity(T type, Class<?> factory)
     {
-        return new Valdyn(level);
+        try
+        {
+            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
+            clazz.append('.').append(type.asClassName());
+            return (Entity) Class.forName(clazz.toString()).getConstructor(SetupSurfaceRasteredGame.class, Level.class)
+                    .newInstance(getSetup(type), level);
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException
+               | ClassCastException
+               | ClassNotFoundException exception)
+        {
+            exception.printStackTrace();
+            throw new LionEngineException(exception, FactoryEntity.UNKNOWN_ENTITY_ERROR + type.asClassName());
+        }
     }
 
     /*
@@ -132,38 +144,10 @@ public final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    protected SetupSurfaceRasteredGame createSetup(T type, Media media)
     {
-        switch (type.getCategory())
-        {
-            case ITEM:
-                return FactoryEntityItem.createItem(level, type);
-            case MONSTER:
-                return FactoryEntityMonster.createMonster(level, type);
-            case SCENERY:
-                return FactoryEntityScenery.createScenery(level, type);
-            default:
-                throw new LionEngineException(FactoryEntity.UNKNOWN_ENTITY_ERROR + type);
-        }
-    }
-
-    @Override
-    protected SetupSurfaceRasteredGame createSetup(EntityType id)
-    {
-        final String pathBase = Media.getPath(AppLionheart.ENTITIES_DIR, id.getCategory().getFolder());
-        final String configExtension = AppLionheart.CONFIG_FILE_EXTENSION;
-        final String path;
-        if (id == EntityType.VALDYN)
-        {
-            path = Media.getPath(pathBase, id.asPathName() + configExtension);
-        }
-        else
-        {
-            path = Media.getPath(pathBase, world.asPathName(), id.asPathName() + configExtension);
-        }
-
         final Media raster;
-        if (AppLionheart.RASTER_ENABLED && id != EntityType.VALDYN)
+        if (AppLionheart.RASTER_ENABLED && type != EntityPlayerType.VALDYN)
         {
             raster = Media.get(AppLionheart.RASTERS_DIR, landscape.getRaster());
         }
@@ -171,6 +155,6 @@ public final class FactoryEntity
         {
             raster = null;
         }
-        return new SetupSurfaceRasteredGame(Media.get(path), raster, false);
+        return new SetupSurfaceRasteredGame(media, raster, false);
     }
 }

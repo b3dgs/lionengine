@@ -39,6 +39,6 @@ final class BuildBarracksOrc
      */
     BuildBarracksOrc(SetupSkill setup, Cursor cursor, Map map)
     {
-        super(SkillType.build_barracks_orc, setup, EntityType.barracks_orc, cursor, map);
+        super(SkillType.BUILD_BARRACKS_ORC, setup, EntityType.BARRACKS_ORC, cursor, map);
     }
 }

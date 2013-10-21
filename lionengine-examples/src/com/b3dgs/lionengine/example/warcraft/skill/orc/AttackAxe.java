@@ -36,6 +36,6 @@ final class AttackAxe
      */
     AttackAxe(SetupSkill setup, HandlerEntity handler)
     {
-        super(SkillType.attack_sword, setup, handler);
+        super(SkillType.ATTACK_SWORD, setup, handler);
     }
 }

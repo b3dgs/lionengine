@@ -33,7 +33,7 @@ public final class Cancel
      */
     public Cancel(SetupSkill setup)
     {
-        super(SkillType.cancel_orc, setup);
+        super(SkillType.CANCEL_ORC, setup);
     }
 
     /*

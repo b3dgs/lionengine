@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.rts.skills;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
-import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
@@ -38,8 +37,8 @@ public final class FactoryProduction
      */
     FactoryProduction()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), "entities");
+        load();
     }
 
     /*
@@ -73,8 +72,8 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(EntityType id)
+    protected SetupGame createSetup(EntityType type, Media config)
     {
-        return new SetupGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
+        return new SetupGame(config);
     }
 }

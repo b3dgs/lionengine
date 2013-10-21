@@ -36,10 +36,10 @@ final class Archer
      */
     Archer(Context context)
     {
-        super(EntityType.archer, context);
-        addWeapon(context, WeaponType.bow, 0);
-        addSkill(context, 0, SkillType.move_human, 0);
-        addSkill(context, 0, SkillType.stop_human, 1);
-        addSkill(context, 0, SkillType.attack_bow, 2);
+        super(EntityType.ARCHER, context);
+        addWeapon(context, WeaponType.BOW, 0);
+        addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
+        addSkill(context, 0, SkillType.STOP_HUMAN, 1);
+        addSkill(context, 0, SkillType.ATTACK_BOW, 2);
     }
 }

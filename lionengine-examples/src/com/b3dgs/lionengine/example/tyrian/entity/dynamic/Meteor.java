@@ -33,7 +33,7 @@ abstract class Meteor
     /**
      * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
-    public Meteor(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Meteor(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(setup, factoryEffect, handlerEffect);
     }

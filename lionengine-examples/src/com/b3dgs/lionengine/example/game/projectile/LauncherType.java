@@ -17,25 +17,38 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of launcher types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum LauncherType
+enum LauncherType implements ObjectType
 {
     /** Pulse canon. */
     PULSE_CANON;
 
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @return The name.
+    /*
+     * ObjectType
      */
-    String asPathName()
+
+    @Override
+    public String asPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
     }
 }

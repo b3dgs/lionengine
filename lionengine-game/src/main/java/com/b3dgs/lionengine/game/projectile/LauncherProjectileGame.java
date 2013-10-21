@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.projectile;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
  * @param <P> The projectile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class LauncherProjectileGame<T extends Enum<T>, E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
+public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
 {
     /** Launcher level. */
     public final Alterable level;

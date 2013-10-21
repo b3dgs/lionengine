@@ -36,7 +36,7 @@ public class FactoryEffect
      */
     public FactoryEffect()
     {
-        super(EffectType.class);
+        super(EffectType.class, EffectType.values(), "");
     }
 
     /*
@@ -56,8 +56,8 @@ public class FactoryEffect
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EffectType type)
+    protected SetupSurfaceGame createSetup(EffectType type, Media config)
     {
-        return new SetupSurfaceGame(Media.get(type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

@@ -20,13 +20,12 @@ package com.b3dgs.lionengine.example.game.network.entity;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
 final class FactoryEntity
-        extends FactoryEntityGame<TypeEntity, SetupSurfaceGame, Entity>
+        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
@@ -43,30 +42,10 @@ final class FactoryEntity
      */
     FactoryEntity(int desiredFps, Map map)
     {
-        super(TypeEntity.class);
+        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
         this.desiredFps = desiredFps;
         this.map = map;
-        loadAll(TypeEntity.values());
-    }
-
-    @Override
-    protected SetupSurfaceGame createSetup(TypeEntity id)
-    {
-        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"), false);
-    }
-
-    @Override
-    public Entity createEntity(TypeEntity type)
-    {
-        switch (type)
-        {
-            case mario:
-                return createMario(true);
-            case goomba:
-                return createGoomba(true);
-            default:
-                return null;
-        }
+        load();
     }
 
     /**
@@ -77,7 +56,7 @@ final class FactoryEntity
      */
     public Mario createMario(boolean server)
     {
-        return new Mario(getSetup(TypeEntity.mario), map, desiredFps, server);
+        return new Mario(getSetup(EntityType.MARIO), map, desiredFps, server);
     }
 
     /**
@@ -88,6 +67,30 @@ final class FactoryEntity
      */
     public Goomba createGoomba(boolean server)
     {
-        return new Goomba(getSetup(TypeEntity.goomba), map, desiredFps, server);
+        return new Goomba(getSetup(EntityType.GOOMBA), map, desiredFps, server);
+    }
+
+    /*
+     * FactoryEntityGame
+     */
+
+    @Override
+    public Entity createEntity(EntityType type)
+    {
+        switch (type)
+        {
+            case MARIO:
+                return createMario(true);
+            case GOOMBA:
+                return createGoomba(true);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    {
+        return new SetupSurfaceGame(config);
     }
 }

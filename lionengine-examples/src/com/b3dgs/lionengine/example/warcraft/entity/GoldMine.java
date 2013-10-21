@@ -41,7 +41,7 @@ public final class GoldMine
      */
     GoldMine(Context context)
     {
-        super(EntityType.gold_mine, context);
+        super(EntityType.GOLD_MINE, context);
         typeResource = ResourceType.GOLD;
         gold = new ResourceProgressive(100);
         setFrame(1);

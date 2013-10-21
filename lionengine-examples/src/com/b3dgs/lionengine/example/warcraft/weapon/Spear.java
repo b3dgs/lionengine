@@ -40,8 +40,8 @@ final class Spear
      */
     Spear(Attacker user, Context context)
     {
-        super(WeaponType.spear, user, context);
-        launcher = new LauncherProjectile(ProjectileType.spear, context);
+        super(WeaponType.SPEAR, user, context);
+        launcher = new LauncherProjectile(ProjectileType.SPEAR, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

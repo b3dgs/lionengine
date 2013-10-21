@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.Bar;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Hud
+final class Hud
 {
     /** Hud background. */
     private final Sprite hud;
@@ -42,7 +42,7 @@ public class Hud
     /**
      * Constructor.
      */
-    public Hud()
+    Hud()
     {
         hud = Drawable.loadSprite(Media.get("sprites", "hud.png"));
         hud.load(false);

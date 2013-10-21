@@ -59,7 +59,7 @@ abstract class Entity
     /** Animation jump. */
     private final Animation animDie;
     /** Entity type. */
-    private final TypeEntity type;
+    private final EntityType type;
     /** Client flag. */
     protected final boolean server;
     /** Jump force. */
@@ -92,7 +92,7 @@ abstract class Entity
      * @param desiredFps The desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    Entity(SetupSurfaceGame setup, TypeEntity type, Map map, int desiredFps, boolean server)
+    Entity(SetupSurfaceGame setup, EntityType type, Map map, int desiredFps, boolean server)
     {
         super(setup);
         this.type = type;
@@ -188,7 +188,7 @@ abstract class Entity
      * 
      * @return The entity type.
      */
-    public TypeEntity getType()
+    public EntityType getType()
     {
         return type;
     }

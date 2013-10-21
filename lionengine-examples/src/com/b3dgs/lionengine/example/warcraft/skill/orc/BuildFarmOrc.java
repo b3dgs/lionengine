@@ -39,6 +39,6 @@ final class BuildFarmOrc
      */
     BuildFarmOrc(SetupSkill setup, Cursor cursor, Map map)
     {
-        super(SkillType.build_farm_orc, setup, EntityType.farm_orc, cursor, map);
+        super(SkillType.BUILD_FARM_ORC, setup, EntityType.FARM_ORC, cursor, map);
     }
 }

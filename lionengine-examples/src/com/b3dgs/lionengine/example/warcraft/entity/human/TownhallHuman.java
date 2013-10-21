@@ -37,7 +37,7 @@ final class TownhallHuman
      */
     TownhallHuman(Context context)
     {
-        super(EntityType.townhall_human, context);
-        addSkill(context, 0, SkillType.produce_peasant, 0);
+        super(EntityType.TOWNHALL_HUMAN, context);
+        addSkill(context, 0, SkillType.PRODUCE_PEASANT, 0);
     }
 }

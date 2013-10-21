@@ -31,9 +31,8 @@ import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTileCategory;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.lionheart.entity.State;
-import com.b3dgs.lionengine.example.lionheart.entity.monster.EntityMonster;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntityMonster;
 import com.b3dgs.lionengine.example.lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.lionheart.map.Tile;
 import com.b3dgs.lionengine.example.lionheart.map.TileCollision;
@@ -41,6 +40,7 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.purview.Collidable;
@@ -124,11 +124,12 @@ public final class Valdyn
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param level The level reference.
      */
-    public Valdyn(Level level)
+    public Valdyn(SetupSurfaceRasteredGame setup, Level level)
     {
-        super(level, EntityType.VALDYN);
+        super(setup, level, EntityPlayerType.VALDYN);
         camera = level.camera;
         timerJump = new Timing();
         timerFall = new Timing();

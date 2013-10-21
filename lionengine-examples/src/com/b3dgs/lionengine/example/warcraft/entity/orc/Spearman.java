@@ -36,10 +36,10 @@ final class Spearman
      */
     Spearman(Context context)
     {
-        super(EntityType.spearman, context);
-        addWeapon(context, WeaponType.spear, 0);
-        addSkill(context, 0, SkillType.move_orc, 0);
-        addSkill(context, 0, SkillType.stop_orc, 1);
-        addSkill(context, 0, SkillType.attack_spear, 2);
+        super(EntityType.SPEARMAN, context);
+        addWeapon(context, WeaponType.SPEAR, 0);
+        addSkill(context, 0, SkillType.MOVE_ORC, 0);
+        addSkill(context, 0, SkillType.STOP_ORC, 1);
+        addSkill(context, 0, SkillType.ATTACK_SPEAR, 2);
     }
 }

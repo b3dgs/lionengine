@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class Coin
+abstract class Coin
         extends Bonus
 {
     /** Animator. */
@@ -47,7 +47,7 @@ public abstract class Coin
      * @param handlerEffect The effect handler reference.
      * @param effect The effect type used.
      */
-    public Coin(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect, EffectType effect)
+    protected Coin(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect, EffectType effect)
     {
         super(setup, factoryEffect, handlerEffect);
         this.effect = effect;

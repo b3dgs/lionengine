@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.rts.ability;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.EntityType;
-import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
@@ -37,8 +36,8 @@ public final class FactoryProduction
      */
     FactoryProduction()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), "entities");
+        load();
     }
 
     /*
@@ -46,9 +45,9 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity createProducible(EntityType id)
+    public ProducibleEntity createProducible(EntityType type)
     {
-        final SetupGame setup = getSetup(id);
+        final SetupGame setup = getSetup(type);
         final Configurable config = setup.configurable;
 
         final int step = config.getDataInteger("steps", "cost");
@@ -58,15 +57,15 @@ public final class FactoryProduction
         final int height = config.getDataInteger("heightInTile", "size");
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
-        final ProducibleEntity producible = new ProducibleEntity(id, cost, height, width);
+        final ProducibleEntity producible = new ProducibleEntity(type, cost, height, width);
 
         return producible;
     }
 
     @Override
-    public ProducibleEntity createProducible(EntityType id, int tx, int ty)
+    public ProducibleEntity createProducible(EntityType type, int tx, int ty)
     {
-        final ProducibleEntity producible = createProducible(id);
+        final ProducibleEntity producible = createProducible(type);
 
         producible.setLocation(tx, ty);
 
@@ -74,8 +73,8 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(EntityType id)
+    protected SetupGame createSetup(EntityType type, Media config)
     {
-        return new SetupGame(Media.get(FactoryEntity.ENTITY_PATH, id + ".xml"));
+        return new SetupGame(config);
     }
 }

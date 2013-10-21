@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatformRastered;
 
 /**
@@ -41,7 +42,7 @@ public abstract class Entity
         extends EntityPlatformRastered
 {
     /** Entity type. */
-    public final EntityType type;
+    public final EntityType<?> type;
     /** Map reference. */
     protected final Map map;
     /** Animations list. */
@@ -70,12 +71,13 @@ public abstract class Entity
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param level The level reference.
      * @param type The entity type.
      */
-    protected Entity(Level level, EntityType type)
+    protected Entity(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
     {
-        super(level.factoryEntity.getSetup(type), Map.TILE_HEIGHT);
+        super(setup, Map.TILE_HEIGHT);
         this.type = type;
         map = level.map;
         desiredFps = level.desiredFps;

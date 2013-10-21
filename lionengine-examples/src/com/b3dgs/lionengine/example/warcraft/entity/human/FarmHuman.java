@@ -34,6 +34,6 @@ final class FarmHuman
      */
     FarmHuman(Context context)
     {
-        super(EntityType.farm_human, context);
+        super(EntityType.FARM_HUMAN, context);
     }
 }

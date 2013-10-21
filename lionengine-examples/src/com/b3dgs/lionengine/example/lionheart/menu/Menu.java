@@ -651,6 +651,5 @@ public class Menu
             SonicArranger.terminate();
             Sfx.terminateAll();
         }
-        System.gc();
     }
 }

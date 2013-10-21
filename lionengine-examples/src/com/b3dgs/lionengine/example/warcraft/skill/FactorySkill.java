@@ -63,7 +63,7 @@ public final class FactorySkill
     public FactorySkill(HandlerEntity handler, FactoryProduction factoryProduction, Cursor cursor, Map map,
             TimedMessage message)
     {
-        super(SkillType.class);
+        super(SkillType.class, SkillType.values(), ResourcesLoader.SKILLS_DIR);
         this.handler = handler;
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
@@ -72,7 +72,7 @@ public final class FactorySkill
         background.load(false);
         factorySkillHuman = new FactorySkillHuman(this, handler, cursor, map);
         factorySkillOrc = new FactorySkillOrc(this, handler, cursor, map);
-        loadAll(SkillType.values());
+        load();
     }
 
     /*
@@ -80,23 +80,22 @@ public final class FactorySkill
      */
 
     @Override
-    public Skill createSkill(SkillType id)
+    public Skill createSkill(SkillType type)
     {
-        switch (id.race)
+        switch (type.race)
         {
             case HUMAN:
-                return factorySkillHuman.createSkill(id);
+                return factorySkillHuman.createSkill(type);
             case ORC:
-                return factorySkillOrc.createSkill(id);
+                return factorySkillOrc.createSkill(type);
             default:
-                throw new LionEngineException("Skill not found: ", id.name());
+                throw new LionEngineException("Skill not found: ", type.name());
         }
     }
 
     @Override
-    protected SetupSkill createSetup(SkillType id)
+    protected SetupSkill createSetup(SkillType type, Media config)
     {
-        return new SetupSkill(Media.get(ResourcesLoader.SKILLS_DIR, id.name() + ".xml"), background, factoryProduction,
-                message);
+        return new SetupSkill(config, background, factoryProduction, message);
     }
 }

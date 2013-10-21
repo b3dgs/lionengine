@@ -25,8 +25,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.lionheart.entity.player.EntityPlayerType;
+import com.b3dgs.lionengine.example.lionheart.entity.player.FactoryEntityPlayer;
 import com.b3dgs.lionengine.example.lionheart.entity.player.StatsRenderer;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.FactoryEntitySwamp;
 import com.b3dgs.lionengine.example.lionheart.landscape.FactoryLandscape;
 import com.b3dgs.lionengine.example.lionheart.landscape.Landscape;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
@@ -52,7 +55,9 @@ final class World
     /** Map reference. */
     private final Map map;
     /** Entity factory. */
-    private final FactoryEntity factoryEntity;
+    private final FactoryEntityPlayer factoryPlayer;
+    /** Entity factory. */
+    private final FactoryEntity<?> factoryEntity;
     /** Handler entity. */
     private final HandlerEntity handlerEntity;
     /** Handler effect. */
@@ -76,7 +81,8 @@ final class World
         final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
         camera = new CameraPlatform(width, height);
         factoryLandscape = new FactoryLandscape(source, scaleH, scaleV, false);
-        factoryEntity = new FactoryEntity();
+        factoryPlayer = new FactoryEntityPlayer();
+        factoryEntity = new FactoryEntitySwamp();
         handlerEntity = new HandlerEntity(camera, factoryEntity);
         level = new Level(camera, factoryEntity, handlerEntity, source.getRate());
         factoryEntity.setLevel(level);
@@ -159,7 +165,9 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         level.load(file);
-        player = factoryEntity.createValdyn();
+        factoryPlayer.load();
+        factoryPlayer.setLevel(level);
+        player = (Valdyn) factoryPlayer.createEntity(EntityPlayerType.VALDYN);
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());
         player.setLandscape(landscape);

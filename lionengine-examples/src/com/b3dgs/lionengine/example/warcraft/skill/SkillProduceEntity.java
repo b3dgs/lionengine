@@ -52,7 +52,7 @@ public class SkillProduceEntity
         super(id, setup);
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getConfig(EntityType.barracks_orc);
+        final Configurable config = factoryProduction.getConfig(EntityType.BARRACKS_ORC);
         gold = config.getDataInteger("gold", "cost");
         wood = config.getDataInteger("wood", "cost");
         setOrder(false);

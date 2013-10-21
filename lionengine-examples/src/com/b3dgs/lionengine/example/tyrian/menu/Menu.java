@@ -139,9 +139,8 @@ public final class Menu
         buttons[0] = new Button(buttonsSurfaces, 0, 112, 130)
         {
             @Override
-            public void onClick()
+            protected void clicked()
             {
-                super.onClick();
                 alpha = 255;
                 menu = 4;
             }
@@ -149,9 +148,8 @@ public final class Menu
         buttons[1] = new Button(buttonsSurfaces, 2, 112, 145)
         {
             @Override
-            public void onClick()
+            protected void clicked()
             {
-                super.onClick();
                 alpha = 255;
                 menu = 5;
             }
@@ -159,9 +157,8 @@ public final class Menu
         buttons[2] = new Button(buttonsSurfaces, 4, 112, 160)
         {
             @Override
-            public void onClick()
+            protected void clicked()
             {
-                super.onClick();
                 alpha = 255;
                 menu = 3;
             }

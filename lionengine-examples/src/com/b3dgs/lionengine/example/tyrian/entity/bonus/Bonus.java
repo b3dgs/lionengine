@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class Bonus
+abstract class Bonus
         extends Entity
 {
     /**

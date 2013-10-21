@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.example.lionheart.map.TileCollision;
 import com.b3dgs.lionengine.example.lionheart.map.TileCollisionGroup;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 
 /**
@@ -51,11 +52,11 @@ public abstract class EntityMover
     protected double movementSpeedMax;
 
     /**
-     * @see Entity#Entity(Level, EntityType)
+     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
      */
-    public EntityMover(Level level, EntityType type)
+    public EntityMover(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
     {
-        super(level, type);
+        super(setup, level, type);
         movement = new Movement();
         actions = new EnumMap<>(EntityAction.class);
         extraGravityForce = new Force();

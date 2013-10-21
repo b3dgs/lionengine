@@ -17,13 +17,38 @@
  */
 package com.b3dgs.lionengine.example.warcraft.projectile;
 
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
+
 /**
  * List of projectile types.
  */
-public enum ProjectileType
+public enum ProjectileType implements ObjectType
 {
     /** Arrow projectile. */
-    arrow,
+    ARROW,
     /** Spear projectile. */
-    spear;
+    SPEAR;
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
+    }
 }

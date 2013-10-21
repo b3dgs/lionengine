@@ -35,6 +35,6 @@ final class ProduceGrunt
      */
     ProduceGrunt(SetupSkill setup)
     {
-        super(SkillType.produce_grunt, setup, EntityType.grunt);
+        super(SkillType.PRODUCE_GRUNT, setup, EntityType.GRUNT);
     }
 }

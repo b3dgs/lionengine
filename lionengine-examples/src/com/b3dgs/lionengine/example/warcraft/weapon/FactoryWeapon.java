@@ -40,8 +40,8 @@ public final class FactoryWeapon
      */
     public FactoryWeapon()
     {
-        super(WeaponType.class);
-        loadAll(WeaponType.values());
+        super(WeaponType.class, WeaponType.values(), ResourcesLoader.WEAPONS_DIR);
+        load();
     }
 
     /**
@@ -63,13 +63,13 @@ public final class FactoryWeapon
     {
         switch (id)
         {
-            case axe:
+            case AXE:
                 return new Axe(user, context);
-            case sword:
+            case SWORD:
                 return new Sword(user, context);
-            case spear:
+            case SPEAR:
                 return new Spear(user, context);
-            case bow:
+            case BOW:
                 return new Bow(user, context);
             default:
                 throw new LionEngineException("Weapon not found: " + id.name());
@@ -77,8 +77,8 @@ public final class FactoryWeapon
     }
 
     @Override
-    protected SetupGame createSetup(WeaponType id)
+    protected SetupGame createSetup(WeaponType type, Media config)
     {
-        return new SetupGame(Media.get(ResourcesLoader.WEAPONS_DIR, id + ".xml"));
+        return new SetupGame(config);
     }
 }

@@ -45,6 +45,7 @@ import com.b3dgs.lionengine.example.lionheart.Editor;
 import com.b3dgs.lionengine.example.lionheart.WorldType;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCategory;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntitySwampType;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.swing.ActionCombo;
 import com.b3dgs.lionengine.swing.ComboItem;
@@ -124,7 +125,7 @@ public class EntitySelector
                 });
         landscape.add(landscapeCombo);
         tabbedPane.removeAll();
-        editor.world.factoryEntity.loadAll(EntityType.values());
+        editor.world.factoryEntity.load();
         LandscapeType landscape = editor.world.level.getLandscape();
         if (landscape == null)
         {
@@ -141,7 +142,7 @@ public class EntitySelector
             final List<Image> ico = icons.get(category);
             ico.clear();
             int length = 0;
-            for (final EntityType entity : EntityType.values())
+            for (final EntityType<?> entity : editor.world.factoryEntity.getTypes())
             {
                 if (entity.getCategory() == category)
                 {
@@ -262,7 +263,7 @@ public class EntitySelector
                     {
                         total += categories[i].getCount();
                     }
-                    editor.setSelectedEntity(EntityType.values()[total + num - 1]);
+                    editor.setSelectedEntity(EntitySwampType.values()[total + num - 1]);
                     editor.setSelectionState(SelectionType.PLACE);
                     editor.repaint();
                 }

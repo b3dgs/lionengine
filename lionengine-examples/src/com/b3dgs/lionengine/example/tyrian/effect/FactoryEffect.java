@@ -63,8 +63,8 @@ public final class FactoryEffect
      */
     public FactoryEffect()
     {
-        super(EffectType.class);
-        loadAll(EffectType.values());
+        super(EffectType.class, EffectType.values(), "effects");
+        load();
     }
 
     /*
@@ -78,8 +78,8 @@ public final class FactoryEffect
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EffectType id)
+    protected SetupSurfaceGame createSetup(EffectType type, Media config)
     {
-        return new SetupSurfaceGame(Media.get("effects", id.toString() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

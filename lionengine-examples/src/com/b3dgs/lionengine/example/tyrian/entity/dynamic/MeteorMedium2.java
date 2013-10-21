@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MeteorMedium2
+final class MeteorMedium2
         extends Meteor
 {
     /**

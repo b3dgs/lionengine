@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 /**
  * Factory ship.
  */
-public class FactoryShip
+public final class FactoryShip
         extends FactoryEntityGame<ShipType, SetupSurfaceGame, Ship>
 {
     /** Factory effect. */
@@ -47,12 +47,16 @@ public class FactoryShip
      */
     public FactoryShip(FactoryEffect factoryEffect, HandlerEffect handlerEffect, FactoryWeapon factoryWeapon)
     {
-        super(ShipType.class);
+        super(ShipType.class, ShipType.values(), "ships");
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         this.factoryWeapon = factoryWeapon;
-        loadAll(ShipType.values());
+        load();
     }
+
+    /*
+     * FactoryEntityGame
+     */
 
     @Override
     public Ship createEntity(ShipType id)
@@ -67,8 +71,8 @@ public class FactoryShip
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(ShipType id)
+    protected SetupSurfaceGame createSetup(ShipType key, Media config)
     {
-        return new SetupSurfaceGame(Media.get("ships", id.toString() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

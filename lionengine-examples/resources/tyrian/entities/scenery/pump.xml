@@ -2,4 +2,5 @@
 <entity surface="pump.png">
 	<size width="48" height="84"/>
 	<collision name="default" offsetX="4" offsetY="28" width="40" height="44" mirror="false" />
+	<animation name="idle" start="1" end="5" speed="0.08" reversed="true" repeat="true"/>
 </entity>

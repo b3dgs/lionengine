@@ -19,11 +19,9 @@ package com.b3dgs.lionengine.example.lionheart;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.lionheart.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
@@ -48,7 +46,7 @@ public class Level
     /** World data reference. */
     public final WorldData worldData;
     /** Entity factory reference. */
-    public final FactoryEntity factoryEntity;
+    public final FactoryEntity<?> factoryEntity;
     /** Factory effect reference. */
     public final FactoryEffect factoryEffect;
     /** Entity handler reference. */
@@ -70,7 +68,7 @@ public class Level
      * @param handlerEntity The entity handler reference.
      * @param desiredFps The desired fps value.
      */
-    public Level(CameraPlatform camera, FactoryEntity factoryEntity, HandlerEntity handlerEntity, int desiredFps)
+    public Level(CameraPlatform camera, FactoryEntity<?> factoryEntity, HandlerEntity handlerEntity, int desiredFps)
     {
         this.camera = camera;
         this.factoryEntity = factoryEntity;
@@ -113,8 +111,8 @@ public class Level
         }
         setWorld(WorldType.load(file));
         setLandscape(LandscapeType.load(file));
-        factoryEntity.loadAll(EntityType.values());
-        factoryEffect.loadAll(EffectType.values());
+        factoryEntity.load();
+        factoryEffect.load();
         map.load(file);
         worldData.load(file);
         handlerEntity.load(file);
@@ -143,7 +141,6 @@ public class Level
     public void setWorld(WorldType world)
     {
         this.world = world;
-        factoryEntity.setWorld(world);
     }
 
     /**

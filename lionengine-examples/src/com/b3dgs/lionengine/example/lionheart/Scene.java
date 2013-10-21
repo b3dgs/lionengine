@@ -129,6 +129,5 @@ public final class Scene
             SonicArranger.terminate();
             Sfx.terminateAll();
         }
-        System.gc();
     }
 }

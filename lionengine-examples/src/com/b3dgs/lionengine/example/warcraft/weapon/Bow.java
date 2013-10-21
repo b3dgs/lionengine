@@ -40,8 +40,8 @@ final class Bow
      */
     Bow(Attacker user, Context context)
     {
-        super(WeaponType.spear, user, context);
-        launcher = new LauncherProjectile(ProjectileType.arrow, context);
+        super(WeaponType.SPEAR, user, context);
+        launcher = new LauncherProjectile(ProjectileType.ARROW, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

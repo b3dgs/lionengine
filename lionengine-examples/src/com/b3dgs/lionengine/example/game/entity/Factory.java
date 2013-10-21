@@ -36,8 +36,8 @@ public class Factory
      */
     public Factory()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), "entity");
+        load();
     }
 
     /*
@@ -57,8 +57,8 @@ public class Factory
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType type)
+    protected SetupSurfaceGame createSetup(EntityType types, Media config)
     {
-        return new SetupSurfaceGame(Media.get("entity", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

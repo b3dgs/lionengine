@@ -218,7 +218,7 @@ final class WorldClient
         }
 
         final MessageFactory msg = (MessageFactory) message;
-        if (msg.hasAction(TypeEntity.goomba))
+        if (msg.hasAction(EntityType.GOOMBA))
         {
             final Goomba goomba = factory.createGoomba(false);
             goomba.setNetworkId(msg.getEntityId());

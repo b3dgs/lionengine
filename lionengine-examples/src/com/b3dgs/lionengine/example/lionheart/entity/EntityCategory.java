@@ -83,7 +83,7 @@ public enum EntityCategory
     /**
      * Increase the count number.
      */
-    void increase()
+    public void increase()
     {
         count++;
     }

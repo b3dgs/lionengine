@@ -34,8 +34,8 @@ public final class FactoryProduction
      */
     FactoryProduction()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), ResourcesLoader.ENTITIES_DIR);
+        load();
     }
 
     /*
@@ -69,8 +69,8 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(EntityType id)
+    protected SetupGame createSetup(EntityType type, Media config)
     {
-        return new SetupGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
+        return new SetupGame(config);
     }
 }

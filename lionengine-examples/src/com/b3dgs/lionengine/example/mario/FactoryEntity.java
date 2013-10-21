@@ -45,10 +45,10 @@ final class FactoryEntity
      */
     FactoryEntity(Map map, int desiredFps)
     {
-        super(EntityType.class);
+        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
         this.map = map;
         this.desiredFps = desiredFps;
-        loadAll(EntityType.values());
+        load();
     }
 
     /**
@@ -76,12 +76,6 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType id)
-    {
-        return new SetupSurfaceGame(Media.get(FactoryEntity.ENTITY_DIR, id + ".xml"));
-    }
-
-    @Override
     public Entity createEntity(EntityType type)
     {
         switch (type)
@@ -93,5 +87,11 @@ final class FactoryEntity
             default:
                 throw new LionEngineException("Unknown entity type: " + type);
         }
+    }
+
+    @Override
+    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    {
+        return new SetupSurfaceGame(config);
     }
 }

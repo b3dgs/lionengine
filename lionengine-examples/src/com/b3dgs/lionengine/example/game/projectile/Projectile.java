@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
-import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -34,23 +34,20 @@ abstract class Projectile
         extends ProjectileGame<Entity, Entity>
 {
     /** Projectile surface. */
-    private final SpriteTiled sprite;
-    /** Frame number. */
-    private final int frame;
+    private final Sprite sprite;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param frame The frame number.
      */
-    Projectile(SetupSurfaceGame setup, int frame)
+    Projectile(SetupSurfaceGame setup)
     {
         super(setup);
-        this.frame = frame;
-        final int tileWidth = getDataInteger("width", "tiles");
-        final int tileHeight = getDataInteger("height", "tiles");
-        sprite = Drawable.loadSpriteTiled(setup.surface, tileWidth, tileHeight);
+        final int width = getDataInteger("width", "size");
+        final int height = getDataInteger("height", "size");
+        sprite = Drawable.loadSprite(setup.surface);
+        setSize(width, height);
         setCollision(new CollisionData(getWidth(), -getHeight() / 2, 1, 1, false));
     }
 
@@ -61,7 +58,7 @@ abstract class Projectile
     @Override
     public void render(Graphic g, CameraGame camera)
     {
-        sprite.render(g, frame, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
+        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
     }
 
     @Override

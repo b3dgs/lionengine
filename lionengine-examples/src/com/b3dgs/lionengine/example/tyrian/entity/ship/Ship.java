@@ -51,7 +51,7 @@ public abstract class Ship
      * @param handlerEffect The effect handler reference.
      * @param factoryWeapon The factory weapon reference.
      */
-    public Ship(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect,
+    protected Ship(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect,
             FactoryWeapon factoryWeapon)
     {
         super(setup, factoryEffect, handlerEffect);
@@ -62,6 +62,20 @@ public abstract class Ship
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(0, -216);
+    }
+
+    /**
+     * Init the ship.
+     * 
+     * @param mouse The mouse reference.
+     * @param screenHeight The screen height.
+     * @param camera The camera reference
+     */
+    public void init(Mouse mouse, CameraGame camera, int screenHeight)
+    {
+        final double x = mouse.getOnWindowX() - getWidth() / 2 + camera.getLocationIntX();
+        final double y = screenHeight - mouse.getOnWindowY();
+        setLocationOffset(x, y);
     }
 
     /**

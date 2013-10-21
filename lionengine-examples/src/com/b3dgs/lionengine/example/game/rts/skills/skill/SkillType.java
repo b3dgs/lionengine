@@ -17,14 +17,15 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of skill types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum SkillType
+public enum SkillType implements ObjectType
 {
     /** Move orc skill. */
     MOVE_ORC,
@@ -39,9 +40,25 @@ public enum SkillType
     /** Produce peon skill. */
     PRODUCE_PEON;
 
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
     @Override
     public String toString()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.toString(this);
     }
 }

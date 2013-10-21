@@ -39,6 +39,6 @@ final class BuildFarmHuman
      */
     BuildFarmHuman(SetupSkill setup, Cursor cursor, Map map)
     {
-        super(SkillType.build_farm_human, setup, EntityType.farm_human, cursor, map);
+        super(SkillType.BUILD_FARM_HUMAN, setup, EntityType.FARM_HUMAN, cursor, map);
     }
 }

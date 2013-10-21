@@ -17,25 +17,38 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of available entity types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EntityType
+public enum EntityType implements ObjectType
 {
     /** Vehicle. */
     GOOMBA;
 
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @return The name.
+    /*
+     * ObjectType
      */
+
+    @Override
     public String asPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
     }
 }

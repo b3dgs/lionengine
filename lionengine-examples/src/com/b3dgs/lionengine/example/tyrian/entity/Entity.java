@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 /**
  * Entity base implementation.
  */
-public class Entity
+public abstract class Entity
         extends EntityGame
 {
     /** Factory effect. */
@@ -54,7 +54,7 @@ public class Entity
      * @param factoryEffect The effect factory reference.
      * @param handlerEffect The effect handler reference.
      */
-    public Entity(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Entity(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(setup);
         this.factoryEffect = factoryEffect;

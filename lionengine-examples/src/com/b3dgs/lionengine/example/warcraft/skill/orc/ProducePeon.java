@@ -35,6 +35,6 @@ final class ProducePeon
      */
     ProducePeon(SetupSkill setup)
     {
-        super(SkillType.produce_peon, setup, EntityType.peon);
+        super(SkillType.PRODUCE_PEON, setup, EntityType.PEON);
     }
 }

@@ -52,7 +52,7 @@ final class Mario
      */
     Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
-        super(setup, TypeEntity.mario, map, desiredFps, server);
+        super(setup, EntityType.MARIO, map, desiredFps, server);
         animTurn = getDataAnimation("turn");
         animJump = getDataAnimation("jump");
         timerDie = new Timing();

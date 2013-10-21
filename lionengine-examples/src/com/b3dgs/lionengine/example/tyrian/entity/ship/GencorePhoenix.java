@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * GencorePhoenix implementation
  */
-public class GencorePhoenix
+final class GencorePhoenix
         extends Ship
 {
     /**

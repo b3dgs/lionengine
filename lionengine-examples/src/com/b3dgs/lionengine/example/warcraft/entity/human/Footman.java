@@ -36,10 +36,10 @@ final class Footman
      */
     Footman(Context context)
     {
-        super(EntityType.footman, context);
-        addWeapon(context, WeaponType.sword, 0);
-        addSkill(context, 0, SkillType.move_human, 0);
-        addSkill(context, 0, SkillType.stop_human, 1);
-        addSkill(context, 0, SkillType.attack_sword, 2);
+        super(EntityType.FOOTMAN, context);
+        addWeapon(context, WeaponType.SWORD, 0);
+        addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
+        addSkill(context, 0, SkillType.STOP_HUMAN, 1);
+        addSkill(context, 0, SkillType.ATTACK_SWORD, 2);
     }
 }

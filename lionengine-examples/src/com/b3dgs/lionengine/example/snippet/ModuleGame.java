@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -47,9 +49,21 @@ import com.b3dgs.lionengine.utility.TileExtractor;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum EntityType
+    enum EntityType implements ObjectType
     {
+        ;
 
+        @Override
+        public String asPathName()
+        {
+            return ObjectTypeUtility.asPathName(this);
+        }
+
+        @Override
+        public String asClassName()
+        {
+            return ObjectTypeUtility.asClassName(this);
+        }
     }
 
     enum TileCollision
@@ -140,8 +154,8 @@ public class ModuleGame
     {
         public Factory()
         {
-            super(EntityType.class);
-            loadAll(EntityType.values());
+            super(EntityType.class, EntityType.values());
+            load();
         }
 
         @Override
@@ -156,8 +170,8 @@ public class ModuleGame
     {
         public FactoryEntity()
         {
-            super(EntityType.class);
-            loadAll(EntityType.values());
+            super(EntityType.class, EntityType.values(), "entities");
+            load();
         }
 
         @Override
@@ -171,9 +185,9 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupSurfaceGame createSetup(EntityType id)
+        protected SetupSurfaceGame createSetup(EntityType key, Media config)
         {
-            return new SetupSurfaceGame(Media.get("directory", id + ".xml"));
+            return new SetupSurfaceGame(config);
         }
     }
 

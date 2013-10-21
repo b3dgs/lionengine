@@ -43,7 +43,7 @@ final class Goomba
      */
     Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
-        super(setup, TypeEntity.goomba, map, desiredFps, server);
+        super(setup, EntityType.GOOMBA, map, desiredFps, server);
         timerDie = new Timing();
         jumpForceValue = 9.0;
         movementSpeedValue = 0.75;

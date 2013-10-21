@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Spider
-        extends Entity
+final class Spider
+        extends EntityScenery
 {
     /**
-     * Constructor {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
      */
     public Spider(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {

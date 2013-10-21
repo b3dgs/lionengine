@@ -83,10 +83,10 @@ public final class FactoryEntityDynamic
      */
     public FactoryEntityDynamic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntityDynamicType.class);
+        super(EntityDynamicType.class, EntityDynamicType.values(), Media.getPath("entities", "dynamic"));
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
-        loadAll(EntityDynamicType.values());
+        load();
     }
 
     /*
@@ -100,8 +100,8 @@ public final class FactoryEntityDynamic
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityDynamicType type)
+    protected SetupSurfaceGame createSetup(EntityDynamicType key, Media config)
     {
-        return new SetupSurfaceGame(Media.get("entities", "dynamic", type.asPathName() + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

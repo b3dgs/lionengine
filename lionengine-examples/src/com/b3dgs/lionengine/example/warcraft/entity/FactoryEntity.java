@@ -41,8 +41,8 @@ public class FactoryEntity
      */
     public FactoryEntity()
     {
-        super(EntityType.class);
-        loadAll(EntityType.values());
+        super(EntityType.class, EntityType.values(), ResourcesLoader.ENTITIES_DIR);
+        load();
     }
 
     /**
@@ -72,7 +72,7 @@ public class FactoryEntity
             case NEUTRAL:
                 switch (type)
                 {
-                    case gold_mine:
+                    case GOLD_MINE:
                         return new GoldMine(context);
                     default:
                         throw new LionEngineException("Entity not found: ", type.name());
@@ -83,8 +83,8 @@ public class FactoryEntity
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType id)
+    protected SetupSurfaceGame createSetup(EntityType type, Media config)
     {
-        return new SetupSurfaceGame(Media.get(ResourcesLoader.ENTITIES_DIR, id + ".xml"));
+        return new SetupSurfaceGame(config);
     }
 }

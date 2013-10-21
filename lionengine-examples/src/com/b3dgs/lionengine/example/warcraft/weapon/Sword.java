@@ -35,7 +35,7 @@ final class Sword
      */
     Sword(Attacker user, Context context)
     {
-        super(WeaponType.sword, user, context);
+        super(WeaponType.SWORD, user, context);
     }
 
     /*

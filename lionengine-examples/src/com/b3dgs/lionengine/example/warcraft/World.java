@@ -190,25 +190,25 @@ final class World
 
         factoryEntity.setContext(context);
 
-        createEntity(EntityType.gold_mine, 30, 13);
-        createEntity(EntityType.gold_mine, 58, 58);
+        createEntity(EntityType.GOLD_MINE, 30, 13);
+        createEntity(EntityType.GOLD_MINE, 58, 58);
 
-        final Entity peon = createEntity(EntityType.peon, 40, 8);
+        final Entity peon = createEntity(EntityType.PEON, 40, 8);
         peon.setPlayer(player);
 
-        Entity grunt = createEntity(EntityType.grunt, 38, 5);
+        Entity grunt = createEntity(EntityType.GRUNT, 38, 5);
         grunt.setPlayer(player);
 
-        grunt = createEntity(EntityType.grunt, 39, 5);
+        grunt = createEntity(EntityType.GRUNT, 39, 5);
         grunt.setPlayer(player);
 
-        final Entity spearman = createEntity(EntityType.spearman, 38, 9);
+        final Entity spearman = createEntity(EntityType.SPEARMAN, 38, 9);
         spearman.setPlayer(player);
 
-        final Entity townHall = createEntity(EntityType.townhall_orc, 40, 5);
+        final Entity townHall = createEntity(EntityType.TOWNHALL_ORC, 40, 5);
         townHall.setPlayer(player);
 
-        final Entity peasant = createEntity(EntityType.peasant, 40, 10);
+        final Entity peasant = createEntity(EntityType.PEASANT, 40, 10);
         peasant.setPlayer(cpu);
 
         handlerEntity.update(1.0);

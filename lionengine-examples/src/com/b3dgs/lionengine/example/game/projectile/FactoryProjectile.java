@@ -36,7 +36,7 @@ final class FactoryProjectile
      */
     FactoryProjectile()
     {
-        super(ProjectileType.class);
+        super(ProjectileType.class, ProjectileType.values(), "");
     }
 
     /*
@@ -56,8 +56,8 @@ final class FactoryProjectile
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType type)
+    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
     {
-        return new SetupSurfaceGame(Media.get("projectiles.xml"));
+        return new SetupSurfaceGame(config);
     }
 }

@@ -2,4 +2,5 @@
 <entity surface="single_canon.png">
 	<size width="24" height="28"/>
 	<collision name="default" offsetX="4" offsetY="2" width="16" height="24" mirror="false" />
+	<animation name="idle" start="1" end="3" speed="0.2" reversed="true" repeat="true"/>
 </entity>

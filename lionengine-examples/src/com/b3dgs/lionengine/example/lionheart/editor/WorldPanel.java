@@ -45,6 +45,7 @@ import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
 import com.b3dgs.lionengine.example.lionheart.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrollable;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.FactoryEntitySwamp;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -110,7 +111,7 @@ public class WorldPanel
     /** The entity handler reference. */
     public final Handler handlerEntity;
     /** The factory reference. */
-    public final FactoryEntity factoryEntity;
+    public final FactoryEntity<?> factoryEntity;
     /** The editor reference. */
     private final Editor editor;
     /** Current horizontal mouse location. */
@@ -150,7 +151,7 @@ public class WorldPanel
         super();
         this.editor = editor;
         camera = new CameraPlatform(WorldPanel.DEFAULT_WIDTH, WorldPanel.DEFAULT_HEIGHT);
-        factoryEntity = new FactoryEntity();
+        factoryEntity = new FactoryEntitySwamp();
         handlerEntity = new Handler(factoryEntity);
         level = new Level(camera, factoryEntity, handlerEntity, 60);
         factoryEntity.setLevel(level);
@@ -674,11 +675,10 @@ public class WorldPanel
                 if (hitEntity(mx, my) == null)
                 {
                     unSelectEntities();
-                    final EntityType selection = editor.getSelectedEntity();
+                    final EntityType<?> selection = editor.getSelectedEntity();
                     if (selection != null)
                     {
-                        final String id = selection.name();
-                        final Entity entity = factoryEntity.createEntity(EntityType.valueOf(id));
+                        final Entity entity = factoryEntity.createEntityFromType(selection.getType().name());
                         setEntityLocation(entity, x, y, 1);
                         handlerEntity.add(entity);
                         handlerEntity.update();

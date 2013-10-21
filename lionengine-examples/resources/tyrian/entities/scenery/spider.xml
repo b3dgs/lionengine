@@ -2,4 +2,5 @@
 <entity surface="spider.png">
 	<size width="48" height="56"/>
 	<collision name="default" offsetX="4" offsetY="4" width="36" height="40" mirror="false" />
+	<animation name="idle" start="1" end="3" speed="0.1" reversed="true" repeat="true"/>
 </entity>

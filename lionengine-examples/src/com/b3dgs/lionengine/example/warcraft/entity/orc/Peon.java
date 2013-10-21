@@ -35,12 +35,12 @@ final class Peon
      */
     Peon(Context context)
     {
-        super(EntityType.peon, context);
-        addSkill(context, 0, SkillType.move_orc, 0);
-        addSkill(context, 0, SkillType.stop_orc, 1);
-        addSkill(context, 0, SkillType.building_standard_orc, 2);
-        addSkill(context, 1, SkillType.build_farm_orc, 0);
-        addSkill(context, 1, SkillType.build_barracks_orc, 1);
-        addSkill(context, 1, SkillType.cancel_orc, 2);
+        super(EntityType.PEON, context);
+        addSkill(context, 0, SkillType.MOVE_ORC, 0);
+        addSkill(context, 0, SkillType.STOP_ORC, 1);
+        addSkill(context, 0, SkillType.BUILDING_STANDARD_ORC, 2);
+        addSkill(context, 1, SkillType.BUILD_FARM_ORC, 0);
+        addSkill(context, 1, SkillType.BUILD_BARRACKS_ORC, 1);
+        addSkill(context, 1, SkillType.CANCEL_ORC, 2);
     }
 }

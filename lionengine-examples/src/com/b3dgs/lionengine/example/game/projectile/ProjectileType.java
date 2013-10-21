@@ -17,25 +17,38 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of projectile types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum ProjectileType
+enum ProjectileType implements ObjectType
 {
     /** Pulse. */
     PULSE;
 
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @return The name.
+    /*
+     * ObjectType
      */
-    String asPathName()
+
+    @Override
+    public String asPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
     }
 }

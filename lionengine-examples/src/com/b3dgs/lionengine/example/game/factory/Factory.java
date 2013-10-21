@@ -79,7 +79,7 @@ public class Factory
      */
     public Factory()
     {
-        super(Type.class);
+        super(Type.class, Type.values());
         param = new Object();
     }
 
@@ -118,7 +118,7 @@ public class Factory
      */
 
     /**
-     * Setup for each type are created here. Done when call to {@link #loadAll(Type[])} is performed. This allows to not
+     * Setup for each type are created here. Done when call to {@link #load()} is performed. This allows to not
      * create the same data for each object, and then share them (less memory used).
      * <p>
      * {@inheritDoc}

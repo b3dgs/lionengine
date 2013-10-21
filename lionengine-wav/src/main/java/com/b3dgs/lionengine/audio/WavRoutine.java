@@ -140,7 +140,7 @@ final class WavRoutine
     /**
      * Stop sound, close stream and flush output.
      */
-    void stopSound()
+    synchronized void stopSound()
     {
         if (sourceDataLine != null)
         {
@@ -179,7 +179,7 @@ final class WavRoutine
      * @return The read byte.
      * @throws IOException If error.
      */
-    int readStream(byte[] tempBuffer) throws IOException
+    synchronized int readStream(byte[] tempBuffer) throws IOException
     {
         if (!close)
         {

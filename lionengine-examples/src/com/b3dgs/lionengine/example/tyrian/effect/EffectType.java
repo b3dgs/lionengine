@@ -17,12 +17,13 @@
  */
 package com.b3dgs.lionengine.example.tyrian.effect;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of effect types.
  */
-public enum EffectType
+public enum EffectType implements ObjectType
 {
     /** Smoke. */
     SMOKE,
@@ -43,43 +44,25 @@ public enum EffectType
     /** Coin75. */
     COIN75;
 
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @return The name.
+    /*
+     * ObjectType
      */
+
+    @Override
     public String asPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.asPathName(this);
     }
 
-    /**
-     * Get the class name equivalence.
-     * 
-     * @return The class name equivalence.
-     */
+    @Override
     public String asClassName()
     {
-        final char[] name = toString().toCharArray();
-        for (int i = 0; i < name.length; i++)
-        {
-            if (name[i] == '_')
-            {
-                name[i + 1] = Character.toUpperCase(name[i + 1]);
-            }
-        }
-        return String.valueOf(name).replace("_", "");
+        return ObjectTypeUtility.asClassName(this);
     }
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @return The title name.
-     */
     @Override
     public String toString()
     {
-        final String string = asPathName();
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        return ObjectTypeUtility.toString(this);
     }
 }

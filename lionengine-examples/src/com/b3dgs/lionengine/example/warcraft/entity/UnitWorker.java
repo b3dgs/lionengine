@@ -446,7 +446,7 @@ public abstract class UnitWorker
         setVisible(true);
 
         // Increase pop if needed
-        if (EntityType.farm_orc == entity.type || EntityType.farm_human == entity.type)
+        if (EntityType.FARM_ORC == entity.type || EntityType.FARM_HUMAN == entity.type)
         {
             getPlayer().changePopulationCapacity(5);
         }

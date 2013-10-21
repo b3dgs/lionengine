@@ -46,10 +46,10 @@ public final class FactorySkill
      */
     public FactorySkill(FactoryProduction factoryProduction, Cursor cursor)
     {
-        super(SkillType.class);
+        super(SkillType.class, SkillType.values(), FactorySkill.SKILL_PATH);
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
-        loadAll(SkillType.values());
+        load();
     }
 
     /*
@@ -57,30 +57,30 @@ public final class FactorySkill
      */
 
     @Override
-    public Skill createSkill(SkillType id)
+    public Skill createSkill(SkillType type)
     {
-        switch (id)
+        switch (type)
         {
             case MOVE_ORC:
-                return new Move(getSetup(id));
+                return new Move(getSetup(type));
             case BUILDING_STANDARD_ORC:
-                return new Build(getSetup(id));
+                return new Build(getSetup(type));
             case STOP_ORC:
-                return new Stop(getSetup(id));
+                return new Stop(getSetup(type));
             case BUILD_BARRACKS_ORC:
-                return new BuildBarracks(getSetup(id), cursor);
+                return new BuildBarracks(getSetup(type), cursor);
             case PRODUCE_PEON:
-                return new ProducePeon(getSetup(id));
+                return new ProducePeon(getSetup(type));
             case CANCEL_ORC:
-                return new Cancel(getSetup(id));
+                return new Cancel(getSetup(type));
             default:
-                throw new LionEngineException("Skill not found: " + id);
+                throw new LionEngineException("Skill not found: " + type);
         }
     }
 
     @Override
-    protected SetupSkill createSetup(SkillType id)
+    protected SetupSkill createSetup(SkillType type, Media config)
     {
-        return new SetupSkill(Media.get(FactorySkill.SKILL_PATH, id + ".xml"), factoryProduction);
+        return new SetupSkill(config, factoryProduction);
     }
 }

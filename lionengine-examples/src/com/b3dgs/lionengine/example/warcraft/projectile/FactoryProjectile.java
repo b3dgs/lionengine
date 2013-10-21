@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Factory projectile implementation.
@@ -35,8 +34,8 @@ public final class FactoryProjectile
      */
     public FactoryProjectile()
     {
-        super(ProjectileType.class);
-        loadAll(ProjectileType.values());
+        super(ProjectileType.class, ProjectileType.values(), ResourcesLoader.PROJECTILES_DIR);
+        load();
     }
 
     /*
@@ -48,19 +47,18 @@ public final class FactoryProjectile
     {
         switch (type)
         {
-            case spear:
-                return new Spear(getSetup(ProjectileType.spear));
-            case arrow:
-                return new Arrow(getSetup(ProjectileType.arrow));
+            case SPEAR:
+                return new Spear(getSetup(ProjectileType.SPEAR));
+            case ARROW:
+                return new Arrow(getSetup(ProjectileType.ARROW));
             default:
                 throw new LionEngineException("Projectile not found: " + type.name());
         }
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType id)
+    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
     {
-        return new SetupSurfaceGame(new ConfigurableModel(), Media.get(ResourcesLoader.PROJECTILES_DIR, id + ".xml"),
-                false);
+        return new SetupSurfaceGame(config);
     }
 }

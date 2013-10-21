@@ -44,20 +44,20 @@ public class FactoryEffect
      */
     public FactoryEffect(HandlerEffect handlerEffect)
     {
-        super(EffectType.class);
+        super(EffectType.class, EffectType.values(), AppLionheart.EFFECTS_DIR);
         this.handlerEffect = handlerEffect;
     }
 
     /**
      * Start an effect an the specified location.
      * 
-     * @param id The effect id.
+     * @param type The effect type.
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    public void startEffect(EffectType id, int x, int y)
+    public void startEffect(EffectType type, int x, int y)
     {
-        final Effect effect = createEffect(id);
+        final Effect effect = createEffect(type);
         effect.start(x, y);
         handlerEffect.add(effect);
     }
@@ -77,21 +77,21 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType id)
+    public Effect createEffect(EffectType type)
     {
-        switch (id)
+        switch (type)
         {
             case TAKEN:
                 return new Taken(getSetup(EffectType.TAKEN));
             case EXPLODE:
                 return new ExplodeBig(getSetup(EffectType.EXPLODE));
             default:
-                throw new LionEngineException("Unknown id: " + id);
+                throw new LionEngineException("Unknown type: " + type);
         }
     }
 
     @Override
-    protected SetupSurfaceRasteredGame createSetup(EffectType id)
+    protected SetupSurfaceRasteredGame createSetup(EffectType type, Media config)
     {
         final Media raster;
         if (AppLionheart.RASTER_ENABLED)
@@ -102,7 +102,6 @@ public class FactoryEffect
         {
             raster = null;
         }
-        return new SetupSurfaceRasteredGame(Media.get(AppLionheart.EFFECTS_DIR, id.toString()
-                + AppLionheart.CONFIG_FILE_EXTENSION), raster, false);
+        return new SetupSurfaceRasteredGame(config, raster, false);
     }
 }

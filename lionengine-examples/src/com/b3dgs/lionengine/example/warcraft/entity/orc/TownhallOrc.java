@@ -37,7 +37,7 @@ final class TownhallOrc
      */
     TownhallOrc(Context context)
     {
-        super(EntityType.townhall_orc, context);
-        addSkill(context, 0, SkillType.produce_peon, 0);
+        super(EntityType.TOWNHALL_ORC, context);
+        addSkill(context, 0, SkillType.PRODUCE_PEON, 0);
     }
 }

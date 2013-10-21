@@ -35,6 +35,6 @@ final class ProduceFootman
      */
     ProduceFootman(SetupSkill setup)
     {
-        super(SkillType.produce_footman, setup, EntityType.footman);
+        super(SkillType.PRODUCE_FOOTMAN, setup, EntityType.FOOTMAN);
     }
 }

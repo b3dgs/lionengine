@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.rts.skill;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 
 /**
  * Abstract skill factory. It performs a list of available skills from a file considering an input enumeration. Data are
@@ -27,24 +29,50 @@ import com.b3dgs.lionengine.game.FactoryGame;
  * @param <S> Setup entity type used.
  * @param <K> Skill type used.
  */
-public abstract class FactorySkillRts<T extends Enum<T>, S extends SetupSkillRts, K extends SkillRts<T>>
+public abstract class FactorySkillRts<T extends Enum<T> & ObjectType, S extends SetupSkillRts, K extends SkillRts<T>>
         extends FactoryGame<T, S>
 {
+    /** Skills folder. */
+    private final String folder;
+
     /**
      * Create a new skill factory.
      * 
      * @param clazz The enum class.
+     * @param types The skill list.
+     * @param folder The skills folder.
      */
-    public FactorySkillRts(Class<T> clazz)
+    public FactorySkillRts(Class<T> clazz, T[] types, String folder)
     {
-        super(clazz);
+        super(clazz, types);
+        this.folder = folder;
     }
 
     /**
-     * Create a skill from its id.
+     * Create a skill from its type.
      * 
-     * @param id The skill id.
+     * @param type The skill type.
      * @return The skill instance.
      */
-    public abstract K createSkill(T id);
+    public abstract K createSkill(T type);
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The skill type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract S createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected S createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
+    }
 }

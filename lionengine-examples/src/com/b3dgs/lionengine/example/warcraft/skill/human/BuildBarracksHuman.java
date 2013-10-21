@@ -39,6 +39,6 @@ final class BuildBarracksHuman
      */
     BuildBarracksHuman(SetupSkill setup, Cursor cursor, Map map)
     {
-        super(SkillType.build_barracks_human, setup, EntityType.barracks_human, cursor, map);
+        super(SkillType.BUILD_BARRACKS_HUMAN, setup, EntityType.BARRACKS_HUMAN, cursor, map);
     }
 }

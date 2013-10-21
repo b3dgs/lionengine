@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -29,57 +31,82 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * <pre>
  * public class FactoryEntity
- *         extends FactoryEntityGame&lt;TypeEntity, SetupEntityGame, EntityGame&gt;
+ *         extends FactoryEntityGame&lt;EntityType, SetupSurfaceGame, EntityGame&gt;
  * {
  *     public FactoryEntity()
  *     {
- *         super(TypeEntity.class);
- *         loadAll(TypeEntity.values());
+ *         super(EntityType.class, EntityType.values(), &quot;entities&quot;);
+ *         load();
  *     }
  * 
  *     &#064;Override
- *     public EntityGame createEntity(TypeEntity key)
+ *     public EntityGame createEntity(EntityType id)
  *     {
  *         switch (id)
  *         {
  *             default:
- *                 throw new LionEngineException(&quot;Unknown entity: &quot; + key);
+ *                 throw new LionEngineException(&quot;Unknown entity: &quot; + id);
  *         }
  *     }
  * 
  *     &#064;Override
- *     protected SetupEntityGame createSetup(TypeEntity key)
+ *     protected SetupSurfaceGame createSetup(EntityType key, Media config)
  *     {
- *         return new SetupEntityGame(Media.get(&quot;directory&quot;, key + &quot;.xml&quot;));
+ *         return new SetupSurfaceGame(config);
  *     }
  * }
  * </pre>
  * 
  * @param <T> The enum containing all type.
- * @param <S> The setup type.
- * @param <E> The entity type.
+ * @param <S> The setup type used.
+ * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryEntityGame<T extends Enum<T>, S extends SetupSurfaceGame, E extends EntityGame>
+public abstract class FactoryEntityGame<T extends Enum<T> & ObjectType, S extends SetupSurfaceGame, E extends EntityGame>
         extends FactoryGame<T, S>
 {
+    /** Entities folder. */
+    private final String folder;
+
     /**
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The types list.
+     * @param folder The entities folder.
      */
-    public FactoryEntityGame(Class<T> keyType)
+    public FactoryEntityGame(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType);
+        super(keyType, types);
+        this.folder = folder;
     }
 
     /**
      * Get the entity instance from its key. It is recommended to use a switch on the key, and throw an exception for
-     * the
-     * default case (instead of returning a <code>null</code> value).
+     * the default case (instead of returning a <code>null</code> value).
      * 
-     * @param key The entity key (as enumeration).
+     * @param type The entity type.
      * @return The entity instance.
      */
-    public abstract E createEntity(T key);
+    public abstract E createEntity(T type);
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The entity type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract S createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected S createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
+    }
 }

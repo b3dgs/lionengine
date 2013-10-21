@@ -34,7 +34,7 @@ public final class Move
      */
     public Move(SetupSkill setup)
     {
-        super(SkillType.move_orc, setup);
+        super(SkillType.MOVE_ORC, setup);
         setOrder(true);
     }
 

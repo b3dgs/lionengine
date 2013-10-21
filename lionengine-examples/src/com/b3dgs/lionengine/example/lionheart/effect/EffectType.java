@@ -17,39 +17,40 @@
  */
 package com.b3dgs.lionengine.example.lionheart.effect;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of effect types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EffectType
+public enum EffectType implements ObjectType
 {
     /** Taken effect (item taken). */
     TAKEN,
     /** Explode big effect (monster killed). */
     EXPLODE;
 
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @return The name.
+    /*
+     * ObjectType
      */
+
+    @Override
     public String asPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.asPathName(this);
     }
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @return The title name.
-     */
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
     @Override
     public String toString()
     {
-        final String string = asPathName();
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        return ObjectTypeUtility.toString(this);
     }
 }

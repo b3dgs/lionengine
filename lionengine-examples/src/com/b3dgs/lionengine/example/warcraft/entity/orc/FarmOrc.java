@@ -34,6 +34,6 @@ final class FarmOrc
      */
     FarmOrc(Context context)
     {
-        super(EntityType.farm_orc, context);
+        super(EntityType.FARM_ORC, context);
     }
 }

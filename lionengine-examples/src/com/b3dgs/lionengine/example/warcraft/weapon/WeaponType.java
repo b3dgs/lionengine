@@ -17,17 +17,42 @@
  */
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
+
 /**
  * List of weapon types.
  */
-public enum WeaponType
+public enum WeaponType implements ObjectType
 {
     /** Axe weapon. */
-    axe,
+    AXE,
     /** Sword weapon. */
-    sword,
+    SWORD,
     /** Spear weapon. */
-    spear,
+    SPEAR,
     /** Bow weapon. */
-    bow;
+    BOW;
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
+    }
 }

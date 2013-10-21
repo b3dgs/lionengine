@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.effect;
 
-import java.util.Locale;
-
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
@@ -36,8 +34,8 @@ public class FactoryEffect
      */
     public FactoryEffect()
     {
-        super(EffectType.class);
-        loadAll(EffectType.values());
+        super(EffectType.class, EffectType.values(), AppWarcraft.EFFECTS_DIR);
+        load();
     }
 
     /*
@@ -45,9 +43,9 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType id)
+    public Effect createEffect(EffectType type)
     {
-        switch (id)
+        switch (type)
         {
             case CONSTRUCTION:
                 return new Construction(getSetup(EffectType.CONSTRUCTION));
@@ -56,14 +54,13 @@ public class FactoryEffect
             case EXPLODE:
                 return new Explode(getSetup(EffectType.EXPLODE));
             default:
-                throw new LionEngineException("Unknown id: " + id);
+                throw new LionEngineException("Unknown type: " + type);
         }
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(EffectType id)
+    protected SetupSurfaceGame createSetup(EffectType type, Media config)
     {
-        return new SetupSurfaceGame(Media.get(AppWarcraft.EFFECTS_DIR, id.name().toLowerCase(Locale.ENGLISH)
-                + AppWarcraft.CONFIG_FILE_EXTENSION));
+        return new SetupSurfaceGame(config);
     }
 }

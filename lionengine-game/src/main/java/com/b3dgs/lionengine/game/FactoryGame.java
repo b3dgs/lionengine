@@ -29,28 +29,30 @@ import java.util.Map;
  * 
  * <pre>
  * public class Factory
- *         extends FactoryGame&lt;TypeEntity, SetupGame&gt;
+ *         extends FactoryGame&lt;EntityType, SetupGame&gt;
  * {
  *     public Factory()
  *     {
- *         super(TypeEntity.class);
- *         loadAll(TypeEntity.values());
+ *         super(EntityType.class, EntityType.values());
+ *         load();
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(TypeEntity id)
+ *     protected SetupGame createSetup(EntityType id)
  *     {
- *         return new SetupGame(Media.get(&quot;directory&quot;, type + &quot;.xml&quot;));
+ *         return new SetupGame(Media.get(&quot;directory&quot;, id + &quot;.xml&quot;));
  *     }
  * }
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <T> The enum containing all type.
- * @param <S> The setup entity type used.
+ * @param <T> The enum containing all types.
+ * @param <S> The setup object type used.
  */
 public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
 {
+    /** Types list. */
+    private final T[] types;
     /** Setups list. */
     private final Map<T, S> setups;
 
@@ -58,28 +60,28 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The types list (use method <code>values</code> of enum).
      */
-    public FactoryGame(Class<T> keyType)
+    public FactoryGame(Class<T> keyType, T[] types)
     {
+        this.types = types;
         setups = new EnumMap<>(keyType);
     }
 
     /**
      * Get setup instance.
      * 
-     * @param type The entity type (as enumeration).
+     * @param type The object type.
      * @return The setup instance.
      */
     protected abstract S createSetup(T type);
 
     /**
-     * Load all setup from their list, considering an additional list of arguments for specific cases.
-     * 
-     * @param list The entities list from enumeration.
+     * Load setup for each type.
      */
-    public void loadAll(T[] list)
+    public void load()
     {
-        for (final T type : list)
+        for (final T type : types)
         {
             addSetup(type, createSetup(type));
         }
@@ -105,5 +107,15 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     public S getSetup(T type)
     {
         return setups.get(type);
+    }
+
+    /**
+     * Get the types list.
+     * 
+     * @return The types list.
+     */
+    public T[] getTypes()
+    {
+        return types;
     }
 }

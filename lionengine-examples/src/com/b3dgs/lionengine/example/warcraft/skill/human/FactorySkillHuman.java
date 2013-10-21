@@ -68,27 +68,27 @@ public final class FactorySkillHuman
     {
         switch (id)
         {
-            case move_human:
+            case MOVE_HUMAN:
                 return new Move(factory.getSetup(id));
-            case building_standard_human:
+            case BUILDING_STANDARD_HUMAN:
                 return new BuildHuman(factory.getSetup(id));
-            case attack_sword:
+            case ATTACK_SWORD:
                 return new AttackSword(factory.getSetup(id), handler);
-            case attack_bow:
+            case ATTACK_BOW:
                 return new AttackBow(factory.getSetup(id), handler);
-            case stop_human:
+            case STOP_HUMAN:
                 return new Stop(factory.getSetup(id));
-            case cancel_human:
+            case CANCEL_HUMAN:
                 return new Cancel(factory.getSetup(id));
-            case build_farm_human:
+            case BUILD_FARM_HUMAN:
                 return new BuildFarmHuman(factory.getSetup(id), cursor, map);
-            case build_barracks_human:
+            case BUILD_BARRACKS_HUMAN:
                 return new BuildBarracksHuman(factory.getSetup(id), cursor, map);
-            case produce_peasant:
+            case PRODUCE_PEASANT:
                 return new ProducePeasant(factory.getSetup(id));
-            case produce_footman:
+            case PRODUCE_FOOTMAN:
                 return new ProduceFootman(factory.getSetup(id));
-            case produce_archer:
+            case PRODUCE_ARCHER:
                 return new ProduceArcher(factory.getSetup(id));
             default:
                 throw new LionEngineException("Skill not found: ", id.name());

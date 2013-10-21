@@ -35,8 +35,8 @@ final class BarracksOrc
      */
     BarracksOrc(Context context)
     {
-        super(EntityType.barracks_orc, context);
-        addSkill(context, 0, SkillType.produce_grunt, 0);
-        addSkill(context, 0, SkillType.produce_spearman, 1);
+        super(EntityType.BARRACKS_ORC, context);
+        addSkill(context, 0, SkillType.PRODUCE_GRUNT, 0);
+        addSkill(context, 0, SkillType.PRODUCE_SPEARMAN, 1);
     }
 }

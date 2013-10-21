@@ -163,7 +163,7 @@ public final class Media
             {
                 fullPath.append(path[i]);
             }
-            else
+            else if (path[i].length() > 0)
             {
                 fullPath.append(path[i]);
                 if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))

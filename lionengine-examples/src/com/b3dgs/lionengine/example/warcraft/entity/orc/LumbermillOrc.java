@@ -34,6 +34,6 @@ final class LumbermillOrc
      */
     LumbermillOrc(Context context)
     {
-        super(EntityType.lumbermill_orc, context);
+        super(EntityType.LUMBERMILL_ORC, context);
     }
 }

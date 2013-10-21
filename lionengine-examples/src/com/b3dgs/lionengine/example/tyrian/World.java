@@ -136,11 +136,13 @@ final class World
         map = new Map();
         background = new Background();
         camera = new CameraGame();
+
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);
         handlerEntityScenery = new HandlerEntity(camera);
         handlerEntityDynamic = new HandlerEntity(camera);
         handlerEntityBonus = new HandlerEntity(camera);
+
         factoryProjectile = new FactoryProjectile(factoryEffect, handlerEffect);
         final HandlerEntity[] handlers = new HandlerEntity[]
         {
@@ -148,14 +150,15 @@ final class World
         };
         handlerProjectile = new HandlerProjectile(camera, handlers);
         factoryWeapon = new FactoryWeapon(factoryProjectile, handlerProjectile);
+
         factoryEntityScenery = new FactoryEntityScenery(factoryEffect, handlerEffect);
         factoryEntityDynamic = new FactoryEntityDynamic(factoryEffect, handlerEffect);
         factoryEntityBonus = new FactoryEntityBonus(factoryEffect, handlerEffect);
+
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
         handlerEntityDynamic.setShip(ship);
         handlerEntityBonus.setShip(ship);
-        camera.setView(0, 0, 263, 184);
 
         // Rip a level and store data in the map
         for (int i = 0; i < 21; i++)
@@ -176,6 +179,8 @@ final class World
         }
         map.spawnEntityStatic(factoryEntityScenery, handlerEntityScenery);
         hud.setShip(ship);
+        ship.init(mouse, camera, height);
+        camera.setView(0, 0, 263, 184);
     }
 
     /*
@@ -187,12 +192,15 @@ final class World
     {
         camera.setLocationX(ship.getLocationOffsetX() / 12);
         camera.setLocationY(ship.getLocationY());
+
         ship.update(extrp, mouse, camera, height);
+
         handlerProjectile.update(extrp);
         handlerEntityScenery.update(extrp);
         handlerEntityDynamic.update(extrp);
         handlerEntityBonus.update(extrp);
         handlerEffect.update(extrp);
+
         background.update(extrp);
         hud.update(extrp);
 
@@ -217,12 +225,16 @@ final class World
     {
         background.render(g, camera);
         map.render(g, camera);
+
         handlerEntityScenery.render(g);
         handlerEntityDynamic.render(g);
         handlerEntityBonus.render(g);
+
         ship.render(g, camera);
+
         handlerProjectile.render(g);
         handlerEffect.render(g);
+
         hud.render(g);
     }
 

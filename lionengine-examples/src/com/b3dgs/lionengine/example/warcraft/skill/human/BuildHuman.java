@@ -34,6 +34,6 @@ final class BuildHuman
      */
     BuildHuman(SetupSkill setup)
     {
-        super(SkillType.building_standard_human, setup);
+        super(SkillType.BUILDING_STANDARD_HUMAN, setup);
     }
 }

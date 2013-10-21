@@ -36,6 +36,6 @@ final class AttackSpear
      */
     AttackSpear(SetupSkill setup, HandlerEntity handler)
     {
-        super(SkillType.attack_spear, setup, handler);
+        super(SkillType.ATTACK_SPEAR, setup, handler);
     }
 }

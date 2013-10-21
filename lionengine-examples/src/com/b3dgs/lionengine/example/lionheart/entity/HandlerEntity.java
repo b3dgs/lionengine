@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.lionheart.AppLionheart;
-import com.b3dgs.lionengine.example.lionheart.entity.item.EntityItem;
-import com.b3dgs.lionengine.example.lionheart.entity.monster.EntityMonster;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.example.lionheart.entity.scenery.EntityScenery;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntityItem;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntityMonster;
+import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntityScenery;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -42,7 +42,7 @@ public class HandlerEntity
     /** The camera reference. */
     private final CameraPlatform camera;
     /** The entity factory reference. */
-    private final FactoryEntity factoryEntity;
+    private final FactoryEntity<?> factoryEntity;
     /** The player reference. */
     private Valdyn player;
 
@@ -52,7 +52,7 @@ public class HandlerEntity
      * @param camera The camera reference.
      * @param factoryEntity The entity factory reference.
      */
-    public HandlerEntity(CameraPlatform camera, FactoryEntity factoryEntity)
+    public HandlerEntity(CameraPlatform camera, FactoryEntity<?> factoryEntity)
     {
         super(camera);
         this.camera = camera;
@@ -87,7 +87,7 @@ public class HandlerEntity
         final int entitiesNumber = file.readShort();
         for (int i = 0; i < entitiesNumber; i++)
         {
-            final Entity entity = factoryEntity.createEntity(EntityType.load(file));
+            final Entity entity = factoryEntity.createEntity(file);
             entity.load(file);
             add(entity);
         }

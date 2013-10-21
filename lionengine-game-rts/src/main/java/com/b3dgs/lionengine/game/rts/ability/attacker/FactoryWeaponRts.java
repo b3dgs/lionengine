@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
@@ -27,26 +29,52 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  * @param <W> The weapon type used.
  * @param <A> The attacker type used.
  */
-public abstract class FactoryWeaponRts<T extends Enum<T>, E extends EntityRts, W extends WeaponServices<E>, A extends AttackerUsedServices<E>>
+public abstract class FactoryWeaponRts<T extends Enum<T> & ObjectType, E extends EntityRts, W extends WeaponServices<E>, A extends AttackerUsedServices<E>>
         extends FactoryGame<T, SetupGame>
 {
+    /** Projectiles folder. */
+    private final String folder;
+
     /**
      * Create a new entity factory.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The weapon list.
+     * @param folder The weapon folder.
      */
-    public FactoryWeaponRts(Class<T> keyType)
+    public FactoryWeaponRts(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType);
+        super(keyType, types);
+        this.folder = folder;
     }
 
     /**
      * Get the entity instance from its id. It is recommended to use a switch on the id, and throw an exception for the
      * default case (instead of returning a <code>null</code> value).
      * 
-     * @param id The entity id (as enumeration).
+     * @param type The entity type.
      * @param user The weapon user.
      * @return The entity instance.
      */
-    public abstract W createWeapon(T id, A user);
+    public abstract W createWeapon(T type, A user);
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The weapon type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract SetupGame createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected SetupGame createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
+    }
 }

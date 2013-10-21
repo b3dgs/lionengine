@@ -17,56 +17,84 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.producer;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
- * Represents the production factory. Designed to return a producible instance from its id.
+ * Represents the production factory. Designed to return a producible instance from its type.
  * 
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
  */
-public abstract class FactoryProductionRts<T extends Enum<T>, C extends ProductionCostRts, P extends Producible<T, C>>
+public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C extends ProductionCostRts, P extends Producible<T, C>>
         extends FactoryGame<T, SetupGame>
 {
+    /** Productions folder. */
+    private final String folder;
+
     /**
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
+     * @param types The production types.
+     * @param folder The productions folder.
      */
-    public FactoryProductionRts(Class<T> keyType)
+    public FactoryProductionRts(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType);
+        super(keyType, types);
+        this.folder = folder;
     }
 
     /**
-     * Create a new producible from the entity id.
+     * Create a new producible from the entity type.
      * 
-     * @param id The entity id.
+     * @param type The entity type.
      * @return The producible instance.
      */
-    public abstract P createProducible(T id);
+    public abstract P createProducible(T type);
 
     /**
-     * Create a new producible from the entity id.
+     * Create a new producible from the entity type.
      * 
-     * @param id The entity id.
+     * @param type The entity type.
      * @param tx The producible horizontal tile.
      * @param ty The producible vertical tile.
      * @return The producible instance.
      */
-    public abstract P createProducible(T id, int tx, int ty);
+    public abstract P createProducible(T type, int tx, int ty);
 
     /**
-     * Get a configurable reference from its id.
+     * Get a configurable reference from its type.
      * 
-     * @param id The reference id.
+     * @param type The reference type.
      * @return The configurable reference.
      */
-    public Configurable getConfig(T id)
+    public Configurable getConfig(T type)
     {
-        return getSetup(id).configurable;
+        return getSetup(type).configurable;
+    }
+
+    /**
+     * Create a setup from its media.
+     * 
+     * @param type The production type.
+     * @param config The setup media config file.
+     * @return The setup instance.
+     */
+    protected abstract SetupGame createSetup(T type, Media config);
+
+    /*
+     * FactoryGame
+     */
+
+    @Override
+    protected SetupGame createSetup(T type)
+    {
+        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        return createSetup(type, config);
     }
 }
