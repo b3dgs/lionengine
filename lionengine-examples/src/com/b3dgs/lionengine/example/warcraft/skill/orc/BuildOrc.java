@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Buildings standard human skill implementation.
  */
-final class BuildOrc
+public final class BuildOrc
         extends SkillBuild
 {
     /**
@@ -32,7 +32,7 @@ final class BuildOrc
      * 
      * @param setup The setup skill reference.
      */
-    BuildOrc(SetupSkill setup)
+    public BuildOrc(SetupSkill setup)
     {
         super(SkillType.BUILDING_STANDARD_ORC, setup);
     }

@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.Context;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Peon
+public final class Peon
         extends UnitWorker
 {
     /**
@@ -32,7 +32,7 @@ final class Peon
      * 
      * @param context The context reference.
      */
-    Peon(Context context)
+    public Peon(Context context)
     {
         super(EntityType.PEON, context);
     }

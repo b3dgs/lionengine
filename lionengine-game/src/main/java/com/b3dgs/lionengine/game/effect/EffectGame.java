@@ -49,6 +49,13 @@ public abstract class EffectGame
     }
 
     /**
+     * Update the effect.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    public abstract void update(double extrp);
+
+    /**
      * Render the effect.
      * 
      * @param g The graphic output.

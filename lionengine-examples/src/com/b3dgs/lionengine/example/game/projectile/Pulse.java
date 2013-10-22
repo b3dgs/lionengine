@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Pulse
+public final class Pulse
         extends Projectile
 {
     /**
      * {@link ProjectileGame#ProjectileGame(SetupSurfaceGame)}
      */
-    Pulse(SetupSurfaceGame setup)
+    public Pulse(SetupSurfaceGame setup)
     {
         super(setup);
     }

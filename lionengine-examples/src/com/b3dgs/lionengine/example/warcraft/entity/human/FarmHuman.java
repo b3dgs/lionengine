@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 /**
  * Farm building implementation. This building allows to increase the population capacity.
  */
-final class FarmHuman
+public final class FarmHuman
         extends Building
 {
     /**
@@ -32,7 +32,7 @@ final class FarmHuman
      * 
      * @param context The context reference.
      */
-    FarmHuman(Context context)
+    public FarmHuman(Context context)
     {
         super(EntityType.FARM_HUMAN, context);
     }

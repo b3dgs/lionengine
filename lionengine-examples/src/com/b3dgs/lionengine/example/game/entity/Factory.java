@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory implementation.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 public class Factory
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /**
      * Constructor.
@@ -45,15 +44,9 @@ public class Factory
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        switch (type)
-        {
-            case GOOMBA:
-                return new Goomba(getSetup(type));
-            default:
-                throw new LionEngineException("Unknown entity type: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

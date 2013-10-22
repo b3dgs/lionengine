@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Axe
+public final class Axe
         extends Weapon
 {
     /**
@@ -35,7 +35,7 @@ final class Axe
      * @param user The user reference.
      * @param context The context reference.
      */
-    Axe(UnitAttacker user, Context context)
+    public Axe(UnitAttacker user, Context context)
     {
         super(WeaponType.AXE, user, context);
     }

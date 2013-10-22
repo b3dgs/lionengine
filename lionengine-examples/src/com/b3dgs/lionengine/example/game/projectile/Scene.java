@@ -68,8 +68,8 @@ final class Scene
         handlerEntity = new HandlerEntity(camera);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
-        canon1 = factoryLauncher.createLauncher(LauncherType.PULSE_CANON);
-        canon2 = factoryLauncher.createLauncher(LauncherType.PULSE_CANON);
+        canon1 = factoryLauncher.create(LauncherType.PULSE_CANNON);
+        canon2 = factoryLauncher.create(LauncherType.PULSE_CANNON);
         entity1 = new Entity();
         entity2 = new Entity();
     }

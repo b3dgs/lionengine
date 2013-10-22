@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.snippet;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
@@ -32,15 +31,13 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -150,44 +147,24 @@ public class ModuleGame
     }
 
     public class Factory
-            extends FactoryGame<EntityType, SetupGame>
+            extends FactoryObjectGame<EntityType, SetupGame, ObjectGame>
     {
         public Factory()
         {
-            super(EntityType.class, EntityType.values());
+            super(EntityType.class, EntityType.values(), "objects");
             load();
         }
 
         @Override
-        protected SetupGame createSetup(EntityType id)
+        public <E extends ObjectGame> E create(EntityType type)
         {
-            return new SetupGame(Media.get("directory", id + ".xml"));
-        }
-    }
-
-    public class FactoryEntity
-            extends FactoryEntityGame<EntityType, SetupSurfaceGame, EntityGame>
-    {
-        public FactoryEntity()
-        {
-            super(EntityType.class, EntityType.values(), "entities");
-            load();
+            return create(type);
         }
 
         @Override
-        public EntityGame createEntity(EntityType id)
+        protected SetupGame createSetup(EntityType type, Media config)
         {
-            switch (id)
-            {
-                default:
-                    throw new LionEngineException("Unknown entity: " + id);
-            }
-        }
-
-        @Override
-        protected SetupSurfaceGame createSetup(EntityType key, Media config)
-        {
-            return new SetupSurfaceGame(config);
+            return new SetupGame(config);
         }
     }
 

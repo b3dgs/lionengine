@@ -114,7 +114,7 @@ final class World
      */
     private Entity createEntity(EntityType type, int tx, int ty)
     {
-        final Entity entity = factoryEntity.createEntity(type);
+        final Entity entity = factoryEntity.create(type);
         entity.setLocation(tx, ty);
         handlerEntity.add(entity);
         return entity;

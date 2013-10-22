@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 /**
  * Spearman implementation.
  */
-final class Archer
+public final class Archer
         extends UnitAttacker
 {
     /**
@@ -34,7 +34,7 @@ final class Archer
      * 
      * @param context The context reference.
      */
-    Archer(Context context)
+    public Archer(Context context)
     {
         super(EntityType.ARCHER, context);
         addWeapon(context, WeaponType.BOW, 0);

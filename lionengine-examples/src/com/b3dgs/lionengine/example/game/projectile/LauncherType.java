@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 enum LauncherType implements ObjectType
 {
     /** Pulse canon. */
-    PULSE_CANON;
+    PULSE_CANNON;
 
     /*
      * ObjectType

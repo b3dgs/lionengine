@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Goomba
+public final class Goomba
         extends Entity
 {
     /** Die timer. */
@@ -39,7 +39,7 @@ final class Goomba
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    Goomba(SetupSurfaceGame setup, Map map, int desiredFps)
+    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();

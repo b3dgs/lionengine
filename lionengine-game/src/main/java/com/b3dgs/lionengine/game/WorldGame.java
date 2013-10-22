@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
  * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerEntityGame},
- * {@link FactoryGame}...).
+ * {@link FactoryObjectGame}...).
  * <p>
  * It contains different elements, such as:
  * <ul>

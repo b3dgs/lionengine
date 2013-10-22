@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class OpenablePulse
+public final class OpenablePulse
         extends EntityScenery
 {
     /**

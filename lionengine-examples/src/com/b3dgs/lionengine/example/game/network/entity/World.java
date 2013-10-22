@@ -187,7 +187,8 @@ abstract class World<N extends NetworkedWorld>
         {
             server = true;
         }
-        final Mario mario = factory.createMario(server);
+        factory.setServer(server);
+        final Mario mario = factory.create(EntityType.MARIO);
         mario.respawn();
         mario.setName(name);
         mario.setClientId(id);

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
  */
-final class BarracksOrc
+public final class BarracksOrc
         extends BuildingProducer
 {
     /**
@@ -33,7 +33,7 @@ final class BarracksOrc
      * 
      * @param context The context reference.
      */
-    BarracksOrc(Context context)
+    public BarracksOrc(Context context)
     {
         super(EntityType.BARRACKS_ORC, context);
         addSkill(context, 0, SkillType.PRODUCE_GRUNT, 0);

@@ -17,47 +17,16 @@
  */
 package com.b3dgs.lionengine.example.tyrian.effect;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
 /**
  * Factory effect implementation.
  */
 public final class FactoryEffect
-        extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
+        extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
 {
-    /**
-     * Create an effect from its type.
-     * 
-     * @param type The item type.
-     * @param setup The setup reference.
-     * @return The item instance.
-     */
-    public static Effect createEntity(EffectType type, SetupSurfaceGame setup)
-    {
-        try
-        {
-            final StringBuilder clazz = new StringBuilder(FactoryEffect.class.getPackage().getName());
-            clazz.append('.').append(type.asClassName());
-            return (Effect) Class.forName(clazz.toString()).getConstructor(SetupSurfaceGame.class).newInstance(setup);
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException
-               | ClassCastException
-               | ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, "Unkown effect: " + type.asClassName());
-        }
-    }
-
     /**
      * Constructor.
      */
@@ -72,9 +41,9 @@ public final class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType type)
+    public <E extends Effect> E create(EffectType type)
     {
-        return FactoryEffect.createEntity(type, getSetup(type));
+        return create(type, getSetup(type));
     }
 
     @Override

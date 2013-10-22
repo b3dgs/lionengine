@@ -104,7 +104,7 @@ public abstract class UnitWorker
         animWork = getDataAnimation("work");
         animCarryGold = getDataAnimation("carry_gold");
         animCarryWood = getDataAnimation("carry_wood");
-        construction = context.factoryEffect.createEffect(EffectType.CONSTRUCTION);
+        construction = context.factoryEffect.create(EffectType.CONSTRUCTION);
     }
 
     /**
@@ -186,9 +186,9 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType id)
+    public Entity getEntityToProduce(EntityType type)
     {
-        return factory.createEntity(id);
+        return factory.create(type);
     }
 
     @Override

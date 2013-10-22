@@ -22,8 +22,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
-import com.b3dgs.lionengine.example.game.rts.skills.ProducibleEntity;
-import com.b3dgs.lionengine.example.game.rts.skills.ProductionCost;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -131,9 +129,9 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType id)
+    public Entity getEntityToProduce(EntityType type)
     {
-        return factory.createEntity(id);
+        return factory.create(type);
     }
 
     @Override

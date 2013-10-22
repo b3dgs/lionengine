@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Implementation of our controllable entity.
  */
-final class Mario
+public final class Mario
         extends Entity
 {
     /** Animation turn. */
@@ -50,7 +50,7 @@ final class Mario
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    public Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, EntityType.MARIO, map, desiredFps, server);
         animTurn = getDataAnimation("turn");

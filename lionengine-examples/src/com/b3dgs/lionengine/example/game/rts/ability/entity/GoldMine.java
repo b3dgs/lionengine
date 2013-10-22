@@ -41,7 +41,7 @@ public final class GoldMine
      * 
      * @param context The context reference.
      */
-    GoldMine(Context context)
+    public GoldMine(Context context)
     {
         super(EntityType.GOLD_MINE, context);
         typeResource = ResourceType.GOLD;

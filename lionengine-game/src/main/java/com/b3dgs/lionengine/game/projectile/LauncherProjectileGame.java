@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.projectile;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
@@ -39,7 +40,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
     /** Launcher level. */
     public final Alterable level;
     /** The projectile factory reference. */
-    private final FactoryProjectileGame<T, P, ? extends SetupSurfaceGame> factory;
+    private final FactoryObjectGame<T, ? extends SetupSurfaceGame, P> factory;
     /** The projectile handler reference. */
     private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
@@ -61,7 +62,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param factory The projectiles factory.
      * @param handler The projectiles handler.
      */
-    public LauncherProjectileGame(FactoryProjectileGame<T, P, ? extends SetupSurfaceGame> factory,
+    public LauncherProjectileGame(FactoryObjectGame<T, ? extends SetupSurfaceGame, P> factory,
             HandlerProjectileGame<E, P> handler)
     {
         this.factory = factory;
@@ -295,7 +296,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      */
     private P addProjectile(T type, int id, long delay, int dmg, double vecX, double vecY, int offX, int offY, E target)
     {
-        final P projectile = factory.createProjectile(type);
+        final P projectile = factory.create(type);
 
         projectile.setOwner(owner);
         projectile.setId(id);

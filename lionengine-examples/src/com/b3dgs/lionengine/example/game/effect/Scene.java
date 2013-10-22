@@ -75,7 +75,7 @@ public class Scene
 
         if (mouse.hasClicked(Click.LEFT))
         {
-            final Effect effect = factoryEffect.createEffect(EffectType.EXPLODE);
+            final Effect effect = factoryEffect.create(EffectType.EXPLODE);
             effect.start(mouse.getOnWindowX(), height - mouse.getOnWindowY());
             handlerEffect.add(effect);
         }

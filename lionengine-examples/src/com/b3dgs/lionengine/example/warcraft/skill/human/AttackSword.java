@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Sword attack skill.
  */
-final class AttackSword
+public final class AttackSword
         extends Attack
 {
     /**
@@ -34,7 +34,7 @@ final class AttackSword
      * @param setup The setup skill reference.
      * @param handler The handler reference.
      */
-    AttackSword(SetupSkill setup, HandlerEntity handler)
+    public AttackSword(SetupSkill setup, HandlerEntity handler)
     {
         super(SkillType.ATTACK_BOW, setup, handler);
     }

@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Arrow projectile implementation.
  */
-final class Arrow
+public final class Arrow
         extends Projectile
 {
     /**
@@ -32,7 +32,7 @@ final class Arrow
      * 
      * @param setup The entity setup.
      */
-    Arrow(SetupSurfaceGame setup)
+    public Arrow(SetupSurfaceGame setup)
     {
         super(setup);
         setCollision(new CollisionData(0, 1, 0, 1, false));

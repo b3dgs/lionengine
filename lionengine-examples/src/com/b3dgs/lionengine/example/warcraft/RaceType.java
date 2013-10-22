@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.example.warcraft;
 
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
+
 /**
  * List of race types.
  */
-public enum RaceType
+public enum RaceType implements ObjectType
 {
     /** Human race. */
     HUMAN,
@@ -28,4 +31,26 @@ public enum RaceType
     ORC,
     /** Neutral. */
     NEUTRAL;
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
+    }
 }

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Lamp
+public final class Lamp
         extends EntityScenery
 {
     /**

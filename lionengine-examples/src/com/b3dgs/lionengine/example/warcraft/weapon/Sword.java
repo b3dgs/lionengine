@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 /**
  * Sword weapon implementation.
  */
-final class Sword
+public final class Sword
         extends Weapon
 {
     /**
@@ -33,7 +33,7 @@ final class Sword
      * @param user The user reference.
      * @param context The context reference.
      */
-    Sword(Attacker user, Context context)
+    public Sword(Attacker user, Context context)
     {
         super(WeaponType.SWORD, user, context);
     }

@@ -81,8 +81,8 @@ public final class Context
         this.cursor = cursor;
         timedMessage = message;
         this.desiredFps = desiredFps;
-        factoryProduction = new FactoryProduction();
         factoryEntity = new FactoryEntity();
+        factoryProduction = new FactoryProduction(factoryEntity);
         factoryProjectile = new FactoryProjectile();
         factoryWeapon = new FactoryWeapon();
         factorySkill = new FactorySkill(handlerEntity, factoryProduction, cursor, map, message);

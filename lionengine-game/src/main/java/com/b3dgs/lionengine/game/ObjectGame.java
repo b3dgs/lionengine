@@ -28,9 +28,8 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a
- * {@link HandlerObjectGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed. The
- * {@link #update(double)} method is called by the handler when handled by this one. An object can also be externally
- * configured by using a {@link Configurable}, filled by an XML file.
+ * {@link HandlerObjectGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed. An object
+ * can also be externally configured by using a {@link Configurable}, filled by an XML file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurable
@@ -84,13 +83,6 @@ public abstract class ObjectGame
         id = ObjectGame.getFreeId();
         ObjectGame.IDS.add(id);
     }
-
-    /**
-     * Update the entity.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public abstract void update(double extrp);
 
     /**
      * Get the entity id (unique).

@@ -41,11 +41,13 @@ public final class AppGameFactory
         final Factory factory = new Factory();
         factory.load();
 
-        final TypeBase base1 = factory.createTypeMethod1(Type.FLY_MACHINE);
-        final TypeBase base2 = factory.createTypeMethod2(Type.GROUND_TRUCK);
+        final TypeBase base = factory.create(Type.FLY_MACHINE);
+        final FlyMachine flyMachine = factory.create(Type.FLY_MACHINE);
+        final GroundTruck groundTruck = factory.create(Type.GROUND_TRUCK);
 
-        System.out.println(base1.getType()); // Type fly
-        System.out.println(base2.getType()); // Type ground
+        System.out.println(base.getType()); // Type fly
+        System.out.println(flyMachine.getType()); // Type fly
+        System.out.println(groundTruck.getType()); // Type ground
     }
 
     /**

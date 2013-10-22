@@ -109,7 +109,7 @@ final class Scene
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Click.RIGHT);
 
-        final Entity peon = factoryEntity.createEntity(EntityType.PEON);
+        final Entity peon = factoryEntity.create(EntityType.PEON);
         peon.setPlayerId(0);
         peon.setLocation(7, 7);
         handlerEntity.add(peon);

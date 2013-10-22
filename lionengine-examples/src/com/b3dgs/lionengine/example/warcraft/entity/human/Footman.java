@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 /**
  * Grunt implementation.
  */
-final class Footman
+public final class Footman
         extends UnitAttacker
 {
     /**
@@ -34,7 +34,7 @@ final class Footman
      * 
      * @param context The context reference.
      */
-    Footman(Context context)
+    public Footman(Context context)
     {
         super(EntityType.FOOTMAN, context);
         addWeapon(context, WeaponType.SWORD, 0);

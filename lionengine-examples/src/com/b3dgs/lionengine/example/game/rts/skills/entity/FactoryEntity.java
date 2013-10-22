@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
@@ -60,17 +59,9 @@ public class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        switch (type)
-        {
-            case PEON:
-                return new Peon(context);
-            case BARRACKS_ORC:
-                return new Barracks(context);
-            default:
-                throw new LionEngineException("Entity not found: " + type.name());
-        }
+        return create(type, context);
     }
 
     @Override

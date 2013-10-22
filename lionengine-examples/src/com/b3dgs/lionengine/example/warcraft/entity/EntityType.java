@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EntityType implements ObjectType
 {
     /*
-     * Human units
+     * Human
      */
 
     /** Peasant unit. */
@@ -46,7 +47,7 @@ public enum EntityType implements ObjectType
     LUMBERMILL_HUMAN(RaceType.HUMAN),
 
     /*
-     * Orc units
+     * Orc
      */
 
     /** Peon unit. */
@@ -65,7 +66,7 @@ public enum EntityType implements ObjectType
     LUMBERMILL_ORC(RaceType.ORC),
 
     /*
-     * Neutral units
+     * Neutral
      */
 
     /** Gold mine building. */
@@ -91,13 +92,13 @@ public enum EntityType implements ObjectType
     @Override
     public String asPathName()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return Media.getPath(race.asPathName(), ObjectTypeUtility.asPathName(this));
     }
 
     @Override
     public String asClassName()
     {
-        return ObjectTypeUtility.asClassName(this);
+        return race.asPathName() + "." + ObjectTypeUtility.asClassName(this);
     }
 
     @Override

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Peon implementation.
  */
-final class Peasant
+public final class Peasant
         extends UnitWorker
 {
     /**
@@ -33,7 +33,7 @@ final class Peasant
      * 
      * @param context The context reference.
      */
-    Peasant(Context context)
+    public Peasant(Context context)
     {
         super(EntityType.PEASANT, context);
         addSkill(context, 0, SkillType.MOVE_HUMAN, 0);

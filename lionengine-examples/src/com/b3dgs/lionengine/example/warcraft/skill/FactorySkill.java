@@ -27,14 +27,14 @@ import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.human.FactorySkillHuman;
 import com.b3dgs.lionengine.example.warcraft.skill.orc.FactorySkillOrc;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
-import com.b3dgs.lionengine.game.rts.skill.FactorySkillRts;
 
 /**
  * Skill factory implementation.
  */
 public final class FactorySkill
-        extends FactorySkillRts<SkillType, SetupSkill, Skill>
+        extends FactoryObjectGame<SkillType, SetupSkill, Skill>
 {
     /** Production factory. */
     public final FactoryProduction factoryProduction;
@@ -80,14 +80,14 @@ public final class FactorySkill
      */
 
     @Override
-    public Skill createSkill(SkillType type)
+    public <S extends Skill> S create(SkillType type)
     {
         switch (type.race)
         {
             case HUMAN:
-                return factorySkillHuman.createSkill(type);
+                return (S) factorySkillHuman.createSkill(type);
             case ORC:
-                return factorySkillOrc.createSkill(type);
+                return (S) factorySkillOrc.createSkill(type);
             default:
                 throw new LionEngineException("Skill not found: ", type.name());
         }

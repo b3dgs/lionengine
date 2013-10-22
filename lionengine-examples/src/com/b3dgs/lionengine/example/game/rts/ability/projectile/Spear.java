@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.projectile
  */
-final class Spear
+public final class Spear
         extends Projectile
 {
     /**
@@ -35,7 +35,7 @@ final class Spear
      * 
      * @param setup The entity setup.
      */
-    Spear(SetupSurfaceGame setup)
+    public Spear(SetupSurfaceGame setup)
     {
         super(setup);
         setCollision(new CollisionData(0, 1, 0, 1, false));

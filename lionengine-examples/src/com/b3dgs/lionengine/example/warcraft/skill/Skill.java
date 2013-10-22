@@ -144,7 +144,7 @@ public abstract class Skill
     }
 
     @Override
-    public SkillType getId()
+    public SkillType getType()
     {
         return id;
     }

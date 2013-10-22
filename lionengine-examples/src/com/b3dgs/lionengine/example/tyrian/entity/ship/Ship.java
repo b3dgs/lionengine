@@ -56,9 +56,9 @@ public abstract class Ship
     {
         super(setup, factoryEffect, handlerEffect);
         energy = new Alterable(1000);
-        weaponFront = factoryWeapon.createLauncher(WeaponType.HYPER_PULSE);
+        weaponFront = factoryWeapon.create(WeaponType.HYPER_PULSE);
         weaponFront.setOwner(this);
-        weaponRear = factoryWeapon.createLauncher(WeaponType.MISSILE_REAR_LAUNCHER);
+        weaponRear = factoryWeapon.create(WeaponType.MISSILE_LAUNCHER_REAR);
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(0, -216);

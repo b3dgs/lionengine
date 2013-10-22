@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 /**
  * Axe weapon implementation.
  */
-final class Axe
+public final class Axe
         extends Weapon
 {
     /**
@@ -33,7 +33,7 @@ final class Axe
      * @param user The user reference.
      * @param context The context reference.
      */
-    Axe(Attacker user, Context context)
+    public Axe(Attacker user, Context context)
     {
         super(WeaponType.AXE, user, context);
     }

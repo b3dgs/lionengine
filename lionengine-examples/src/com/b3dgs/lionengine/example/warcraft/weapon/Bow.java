@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
 /**
  * Bow weapon implementation.
  */
-final class Bow
+public final class Bow
         extends Weapon
 {
     /** Launcher instance. */
@@ -38,7 +38,7 @@ final class Bow
      * @param user The user reference.
      * @param context The context reference.
      */
-    Bow(Attacker user, Context context)
+    public Bow(Attacker user, Context context)
     {
         super(WeaponType.SPEAR, user, context);
         launcher = new LauncherProjectile(ProjectileType.ARROW, context);

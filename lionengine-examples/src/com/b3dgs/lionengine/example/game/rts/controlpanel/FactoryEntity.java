@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.rts.controlpanel;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Map reference. */
     private final Map map;
@@ -51,15 +50,9 @@ final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        switch (type)
-        {
-            case PEON:
-                return new Peon(this, map);
-            default:
-                throw new LionEngineException("Entity not found: " + type.name());
-        }
+        return create(type, this, map);
     }
 
     @Override

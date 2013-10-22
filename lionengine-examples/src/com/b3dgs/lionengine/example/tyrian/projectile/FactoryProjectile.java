@@ -17,20 +17,17 @@
  */
 package com.b3dgs.lionengine.example.tyrian.projectile;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.tyrian.projectile.front.FactoryProjectileFront;
-import com.b3dgs.lionengine.example.tyrian.projectile.rear.FactoryProjectileRear;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 
 /**
  * Factory projectile.
  */
 public final class FactoryProjectile
-        extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
+        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
 {
     /** Projectile surfaces. */
     private final SetupSurfaceGame setup;
@@ -59,17 +56,9 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(ProjectileType type)
+    public <P extends Projectile> P create(ProjectileType type)
     {
-        switch (type.getCategory())
-        {
-            case FRONT:
-                return FactoryProjectileFront.createProjectile(type, getSetup(type), factoryEffect, handlerEffect);
-            case REAR:
-                return FactoryProjectileRear.createProjectile(type, getSetup(type), factoryEffect, handlerEffect);
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, getSetup(type), factoryEffect, handlerEffect);
     }
 
     @Override

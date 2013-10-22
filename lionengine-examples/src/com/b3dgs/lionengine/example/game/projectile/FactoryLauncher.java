@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.projectile.FactoryLauncherGame;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Launcher factory.
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.projectile.FactoryLauncherGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryLauncher
-        extends FactoryLauncherGame<LauncherType, Launcher>
+        extends FactoryObjectGame<LauncherType, SetupGame, Launcher>
 {
     /** Factory projectile. */
     private final FactoryProjectile factory;
@@ -42,9 +43,10 @@ final class FactoryLauncher
      */
     FactoryLauncher(FactoryProjectile factory, HandlerProjectile handler)
     {
-        super();
+        super(LauncherType.class, LauncherType.values(), "");
         this.factory = factory;
         this.handler = handler;
+        load();
     }
 
     /*
@@ -52,14 +54,14 @@ final class FactoryLauncher
      */
 
     @Override
-    public Launcher createLauncher(LauncherType type)
+    public <L extends Launcher> L create(LauncherType type)
     {
-        switch (type)
-        {
-            case PULSE_CANON:
-                return new PulseCanon(factory, handler);
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, factory, handler);
+    }
+
+    @Override
+    protected SetupGame createSetup(LauncherType type, Media config)
+    {
+        return new SetupGame(config);
     }
 }

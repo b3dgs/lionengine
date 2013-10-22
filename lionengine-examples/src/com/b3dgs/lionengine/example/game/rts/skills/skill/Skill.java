@@ -34,7 +34,7 @@ public abstract class Skill
         extends SkillRts<SkillType>
 {
     /** Id. */
-    private final SkillType id;
+    private final SkillType type;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Owner. */
@@ -47,13 +47,13 @@ public abstract class Skill
     /**
      * Constructor.
      * 
-     * @param id The skill id.
+     * @param type The skill type.
      * @param setup The setup skill reference.
      */
-    protected Skill(SkillType id, SetupSkill setup)
+    protected Skill(SkillType type, SetupSkill setup)
     {
         super(setup);
-        this.id = id;
+        this.type = type;
         icon = setup.icon;
     }
 
@@ -114,8 +114,8 @@ public abstract class Skill
     }
 
     @Override
-    public SkillType getId()
+    public SkillType getType()
     {
-        return id;
+        return type;
     }
 }

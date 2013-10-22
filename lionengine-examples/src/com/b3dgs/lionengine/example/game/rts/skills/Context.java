@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.skills;
 
 import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.skills.map.Map;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
@@ -58,8 +59,8 @@ public final class Context
         this.handlerEntity = handlerEntity;
         this.cursor = cursor;
         this.desiredFps = desiredFps;
-        factoryProduction = new FactoryProduction();
         factoryEntity = new FactoryEntity();
+        factoryProduction = new FactoryProduction(factoryEntity);
         factorySkill = new FactorySkill(factoryProduction, cursor);
     }
 

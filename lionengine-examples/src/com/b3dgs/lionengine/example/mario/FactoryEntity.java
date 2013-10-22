@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.mario;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
@@ -28,14 +27,14 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
     /** Map reference. */
     private final Map map;
     /** Entity desired fps. */
-    private final int desiredFps;
+    private final Integer desiredFps;
 
     /**
      * Constructor.
@@ -47,28 +46,8 @@ final class FactoryEntity
     {
         super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
         this.map = map;
-        this.desiredFps = desiredFps;
+        this.desiredFps = Integer.valueOf(desiredFps);
         load();
-    }
-
-    /**
-     * Create a new mario.
-     * 
-     * @return The instance of mario.
-     */
-    Mario createMario()
-    {
-        return new Mario(getSetup(EntityType.MARIO), map, desiredFps);
-    }
-
-    /**
-     * Create a new goomba.
-     * 
-     * @return The instance of goomba.
-     */
-    Goomba createGoomba()
-    {
-        return new Goomba(getSetup(EntityType.GOOMBA), map, desiredFps);
     }
 
     /*
@@ -76,17 +55,9 @@ final class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        switch (type)
-        {
-            case MARIO:
-                return createMario();
-            case GOOMBA:
-                return createGoomba();
-            default:
-                throw new LionEngineException("Unknown entity type: " + type);
-        }
+        return create(type, getSetup(type), map, desiredFps);
     }
 
     @Override

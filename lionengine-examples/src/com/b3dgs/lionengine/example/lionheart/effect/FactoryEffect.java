@@ -17,12 +17,11 @@
  */
 package com.b3dgs.lionengine.example.lionheart.effect;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
-import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
 /**
  * Factory effect implementation.
@@ -30,7 +29,7 @@ import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEffect
-        extends FactoryEffectGame<EffectType, SetupSurfaceRasteredGame, Effect>
+        extends FactoryObjectGame<EffectType, SetupSurfaceRasteredGame, Effect>
 {
     /** Handler effect reference. */
     private final HandlerEffect handlerEffect;
@@ -57,7 +56,7 @@ public class FactoryEffect
      */
     public void startEffect(EffectType type, int x, int y)
     {
-        final Effect effect = createEffect(type);
+        final Effect effect = create(type);
         effect.start(x, y);
         handlerEffect.add(effect);
     }
@@ -77,17 +76,9 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType type)
+    public <E extends Effect> E create(EffectType type)
     {
-        switch (type)
-        {
-            case TAKEN:
-                return new Taken(getSetup(EffectType.TAKEN));
-            case EXPLODE:
-                return new ExplodeBig(getSetup(EffectType.EXPLODE));
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.producer;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
@@ -31,22 +29,18 @@ import com.b3dgs.lionengine.game.purview.Configurable;
  * @param <P> The producible type used.
  */
 public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C extends ProductionCostRts, P extends Producible<T, C>>
-        extends FactoryGame<T, SetupGame>
 {
-    /** Productions folder. */
-    private final String folder;
+    /** Factory reference. */
+    private final FactoryObjectGame<T, ?, ?> factory;
 
     /**
      * Constructor.
      * 
-     * @param keyType The class of the enum type defined.
-     * @param types The production types.
-     * @param folder The productions folder.
+     * @param factory The factory object reference.
      */
-    public FactoryProductionRts(Class<T> keyType, T[] types, String folder)
+    public FactoryProductionRts(FactoryObjectGame<T, ?, ?> factory)
     {
-        super(keyType, types);
-        this.folder = folder;
+        this.factory = factory;
     }
 
     /**
@@ -55,7 +49,7 @@ public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C ext
      * @param type The entity type.
      * @return The producible instance.
      */
-    public abstract P createProducible(T type);
+    public abstract P create(T type);
 
     /**
      * Create a new producible from the entity type.
@@ -65,7 +59,7 @@ public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C ext
      * @param ty The producible vertical tile.
      * @return The producible instance.
      */
-    public abstract P createProducible(T type, int tx, int ty);
+    public abstract P create(T type, int tx, int ty);
 
     /**
      * Get a configurable reference from its type.
@@ -75,26 +69,6 @@ public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C ext
      */
     public Configurable getConfig(T type)
     {
-        return getSetup(type).configurable;
-    }
-
-    /**
-     * Create a setup from its media.
-     * 
-     * @param type The production type.
-     * @param config The setup media config file.
-     * @return The setup instance.
-     */
-    protected abstract SetupGame createSetup(T type, Media config);
-
-    /*
-     * FactoryGame
-     */
-
-    @Override
-    protected SetupGame createSetup(T type)
-    {
-        final Media config = Media.get(folder, type.asPathName() + ".xml");
-        return createSetup(type, config);
+        return factory.getSetup(type).configurable;
     }
 }

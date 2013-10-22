@@ -77,7 +77,7 @@ public abstract class UnitAttacker
      */
     protected void addWeapon(Context context, WeaponType type, int id)
     {
-        final Weapon weapon = context.factoryWeapon.createWeapon(type, this);
+        final Weapon weapon = context.factoryWeapon.create(type, this);
         addWeapon(weapon, id);
     }
 

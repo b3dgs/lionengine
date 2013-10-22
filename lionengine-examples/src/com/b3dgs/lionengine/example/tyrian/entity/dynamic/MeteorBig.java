@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MeteorBig
+public final class MeteorBig
         extends Meteor
 {
     /**

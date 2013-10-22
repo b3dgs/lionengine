@@ -47,6 +47,7 @@ final class WorldServer
         networkedWorld = new NetworkedWorldModelServer(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
+        factory.setServer(true);
     }
 
     /*
@@ -83,7 +84,7 @@ final class WorldServer
         // Create two goombas
         for (int i = 0; i < 2; i++)
         {
-            final Goomba goomba = factory.createGoomba(true);
+            final Goomba goomba = factory.create(EntityType.GOOMBA);
             goomba.teleport(532 + i * 24, 25);
             goomba.setNetworkId(goomba.getId().shortValue());
             handler.add(goomba);

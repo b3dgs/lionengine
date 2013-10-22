@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 
 /**
  * Projectile factory.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryProjectile
-        extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
+        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
 {
     /**
      * Constructor.
@@ -40,19 +39,13 @@ final class FactoryProjectile
     }
 
     /*
-     * FactoryProjectileGame
+     * FactoryObjectGame
      */
 
     @Override
-    public Projectile createProjectile(ProjectileType type)
+    public <P extends Projectile> P create(ProjectileType type)
     {
-        switch (type)
-        {
-            case PULSE:
-                return new Pulse(getSetup(type));
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

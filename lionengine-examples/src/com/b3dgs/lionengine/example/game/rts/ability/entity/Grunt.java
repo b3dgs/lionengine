@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.weapon.WeaponType;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Grunt
+public final class Grunt
         extends UnitAttacker
 {
     /**
@@ -33,9 +33,9 @@ final class Grunt
      * 
      * @param context The context reference.
      */
-    Grunt(Context context)
+    public Grunt(Context context)
     {
         super(EntityType.GRUNT, context);
-        addWeapon(context.factoryWeapon.createWeapon(WeaponType.AXE, this), 0);
+        addWeapon(context.factoryWeapon.create(WeaponType.AXE, this), 0);
     }
 }

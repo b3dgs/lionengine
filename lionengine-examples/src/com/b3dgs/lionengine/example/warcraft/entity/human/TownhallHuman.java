@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
  */
-final class TownhallHuman
+public final class TownhallHuman
         extends BuildingProducer
         implements Warehouse
 {
@@ -35,7 +35,7 @@ final class TownhallHuman
      * 
      * @param context The context reference.
      */
-    TownhallHuman(Context context)
+    public TownhallHuman(Context context)
     {
         super(EntityType.TOWNHALL_HUMAN, context);
         addSkill(context, 0, SkillType.PRODUCE_PEASANT, 0);

@@ -17,17 +17,16 @@
  */
 package com.b3dgs.lionengine.example.warcraft.projectile;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 
 /**
  * Factory projectile implementation.
  */
 public final class FactoryProjectile
-        extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
+        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
 {
     /**
      * Constructor.
@@ -43,17 +42,9 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(ProjectileType type)
+    public <P extends Projectile> P create(ProjectileType type)
     {
-        switch (type)
-        {
-            case SPEAR:
-                return new Spear(getSetup(ProjectileType.SPEAR));
-            case ARROW:
-                return new Arrow(getSetup(ProjectileType.ARROW));
-            default:
-                throw new LionEngineException("Projectile not found: " + type.name());
-        }
+        return create(type, getSetup(ProjectileType.SPEAR));
     }
 
     @Override

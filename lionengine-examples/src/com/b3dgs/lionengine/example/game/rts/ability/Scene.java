@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.GoldMine;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
@@ -88,11 +89,11 @@ final class Scene
         camera = new CameraRts(map);
         cursor = new CursorRts(mouse, camera, source, map, Media.get("cursor.png"));
         controlPanel = new ControlPanel();
-        factoryProduction = new FactoryProduction();
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         context = new Context(map, handlerEntity, handlerProjectile, source.getRate());
         factoryEntity = context.factoryEntity;
+        factoryProduction = new FactoryProduction(factoryEntity);
         context.assignContext();
         setMouseVisible(false);
     }
@@ -107,7 +108,7 @@ final class Scene
      */
     private Entity createEntity(EntityType type, int tx, int ty)
     {
-        final Entity entity = factoryEntity.createEntity(type);
+        final Entity entity = factoryEntity.create(type);
         entity.setPlayerId(0);
         entity.setLocation(tx, ty);
         handlerEntity.add(entity);
@@ -145,8 +146,8 @@ final class Scene
         peon.startExtraction();
 
         peon = (UnitWorker) createEntity(EntityType.PEON, 23, 18);
-        peon.addToProductionQueue(factoryProduction.createProducible(EntityType.BARRACKS_ORC, 17, 15));
-        peon.addToProductionQueue(factoryProduction.createProducible(EntityType.FARM_ORC, 31, 19));
+        peon.addToProductionQueue(factoryProduction.create(EntityType.BARRACKS_ORC, 17, 15));
+        peon.addToProductionQueue(factoryProduction.create(EntityType.FARM_ORC, 31, 19));
 
         final UnitAttacker grunt = (UnitAttacker) createEntity(EntityType.GRUNT, 33, 25);
         final UnitAttacker spearman = (UnitAttacker) createEntity(EntityType.SPEARMAN, 27, 22);
@@ -155,7 +156,7 @@ final class Scene
 
         final BuildingProducer townHall = (BuildingProducer) createEntity(EntityType.TOWNHALL_ORC, 24, 15);
         townHall.setFrame(2);
-        townHall.addToProductionQueue(factoryProduction.createProducible(EntityType.PEON));
+        townHall.addToProductionQueue(factoryProduction.create(EntityType.PEON));
     }
 
     @Override

@@ -18,6 +18,9 @@
 package com.b3dgs.lionengine.game.rts.skill;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -29,7 +32,8 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
  * 
  * @param <T> Skill enum type used.
  */
-public abstract class SkillRts<T extends Enum<T>>
+public abstract class SkillRts<T extends Enum<T> & ObjectType>
+        extends ObjectGame
 {
     /** Name. */
     private final String name;
@@ -68,10 +72,11 @@ public abstract class SkillRts<T extends Enum<T>>
      * 
      * @param setup The setup skill used.
      */
-    public SkillRts(SetupSkillRts setup)
+    public SkillRts(SetupGame setup)
     {
-        name = setup.name;
-        description = setup.description;
+        super(setup.configurable);
+        name = getDataString("name");
+        description = getDataString("description");
         level = 1;
         priority = 0;
         ignore = false;
@@ -133,7 +138,7 @@ public abstract class SkillRts<T extends Enum<T>>
      * 
      * @return The id.
      */
-    public abstract T getId();
+    public abstract T getType();
 
     /**
      * Update routine on panel.

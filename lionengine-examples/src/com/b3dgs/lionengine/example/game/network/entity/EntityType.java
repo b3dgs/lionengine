@@ -59,4 +59,10 @@ enum EntityType implements ObjectType
     {
         return ObjectTypeUtility.asClassName(this);
     }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
+    }
 }

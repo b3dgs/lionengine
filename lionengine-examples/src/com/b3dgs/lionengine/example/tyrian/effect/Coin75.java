@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Coin 75 effect.
  */
-final class Coin75
+public final class Coin75
         extends Effect
 {
     /**

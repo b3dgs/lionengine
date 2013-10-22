@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 
 /**
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * @param <T> Skill enum type used.
  * @param <S> Skill type used.
  */
-public class SkilledModel<T extends Enum<T>, S extends SkillRts<T>>
+public class SkilledModel<T extends Enum<T> & ObjectType, S extends SkillRts<T>>
         implements SkilledServices<T, S>
 {
     /** Skills list. */
@@ -77,7 +78,7 @@ public class SkilledModel<T extends Enum<T>, S extends SkillRts<T>>
             list = new HashMap<>(1);
             skills.put(key, list);
         }
-        list.put(skill.getId(), skill);
+        list.put(skill.getType(), skill);
     }
 
     @Override

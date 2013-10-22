@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Produce grunt implementation.
  */
-final class ProducePeon
+public final class ProducePeon
         extends SkillProduceEntity
 {
     /**
@@ -33,7 +33,7 @@ final class ProducePeon
      * 
      * @param setup The setup skill reference.
      */
-    ProducePeon(SetupSkill setup)
+    public ProducePeon(SetupSkill setup)
     {
         super(SkillType.PRODUCE_PEON, setup, EntityType.PEON);
     }

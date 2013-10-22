@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Bullet hit effect.
  */
-final class BulletHit
+public final class BulletHit
         extends Effect
 {
     /**

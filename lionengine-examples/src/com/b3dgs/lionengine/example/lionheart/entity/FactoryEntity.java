@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.example.lionheart.entity;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.lionheart.Level;
@@ -28,8 +26,8 @@ import com.b3dgs.lionengine.example.lionheart.WorldType;
 import com.b3dgs.lionengine.example.lionheart.entity.player.EntityPlayerType;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Handle the entity creation by containing all necessary object for their instantiation.
@@ -38,7 +36,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @param <T> The entity type used.
  */
 public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
-        extends FactoryEntityGame<T, SetupSurfaceRasteredGame, Entity>
+        extends FactoryObjectGame<T, SetupSurfaceRasteredGame, Entity>
 {
     /** Unknown entity error message. */
     public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
@@ -107,36 +105,6 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
     public void setLandscape(LandscapeType landscape)
     {
         this.landscape = landscape;
-    }
-
-    /**
-     * Create an item from its type.
-     * 
-     * @param type The item type.
-     * @param factory The factory class.
-     * @return The item instance.
-     */
-    protected Entity createEntity(T type, Class<?> factory)
-    {
-        try
-        {
-            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
-            clazz.append('.').append(type.asClassName());
-            return (Entity) Class.forName(clazz.toString()).getConstructor(SetupSurfaceRasteredGame.class, Level.class)
-                    .newInstance(getSetup(type), level);
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException
-               | ClassCastException
-               | ClassNotFoundException exception)
-        {
-            exception.printStackTrace();
-            throw new LionEngineException(exception, FactoryEntity.UNKNOWN_ENTITY_ERROR + type.asClassName());
-        }
     }
 
     /*

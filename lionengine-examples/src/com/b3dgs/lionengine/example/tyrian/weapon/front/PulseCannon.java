@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 /**
  * Pulse cannon implementation.
  */
-final class PulseCannon
+public final class PulseCannon
         extends Weapon
 {
     /**

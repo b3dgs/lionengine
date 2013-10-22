@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Coin10
+public final class Coin10
         extends Coin
 {
     /**

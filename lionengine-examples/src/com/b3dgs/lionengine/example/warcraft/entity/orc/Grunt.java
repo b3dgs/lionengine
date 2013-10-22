@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 /**
  * Grunt implementation.
  */
-final class Grunt
+public final class Grunt
         extends UnitAttacker
 {
     /**
@@ -34,7 +34,7 @@ final class Grunt
      * 
      * @param context The context reference.
      */
-    Grunt(Context context)
+    public Grunt(Context context)
     {
         super(EntityType.GRUNT, context);
         addWeapon(context, WeaponType.AXE, 0);

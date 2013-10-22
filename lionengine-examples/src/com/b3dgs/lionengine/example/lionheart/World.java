@@ -167,7 +167,7 @@ final class World
         level.load(file);
         factoryPlayer.load();
         factoryPlayer.setLevel(level);
-        player = (Valdyn) factoryPlayer.createEntity(EntityPlayerType.VALDYN);
+        player = (Valdyn) factoryPlayer.create(EntityPlayerType.VALDYN);
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());
         player.setLandscape(landscape);

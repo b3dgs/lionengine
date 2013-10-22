@@ -17,21 +17,17 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.entity.human.FactoryEntityHuman;
-import com.b3dgs.lionengine.example.warcraft.entity.orc.FactoryEntityOrc;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation.
  */
 public class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Context. */
     private Context context;
@@ -60,26 +56,9 @@ public class FactoryEntity
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        Check.notNull(type, "The type must not be null !");
-        switch (type.race)
-        {
-            case HUMAN:
-                return FactoryEntityHuman.createEntity(type, context);
-            case ORC:
-                return FactoryEntityOrc.createEntity(type, context);
-            case NEUTRAL:
-                switch (type)
-                {
-                    case GOLD_MINE:
-                        return new GoldMine(context);
-                    default:
-                        throw new LionEngineException("Entity not found: ", type.name());
-                }
-            default:
-                throw new LionEngineException("Entity not found: ", type.name());
-        }
+        return create(type, context);
     }
 
     @Override

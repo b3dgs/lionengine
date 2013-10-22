@@ -62,19 +62,20 @@ public abstract class Entity
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type.
      * @param context The context reference.
      */
-    protected Entity(EntityType id, Context context)
+    protected Entity(EntityType type, Context context)
     {
-        super(context.factoryEntity.getSetup(id), context.map);
-        type = id;
+        super(context.factoryEntity.getSetup(type), context.map);
+        this.type = type;
         map = context.map;
         skilled = new SkilledModel<>();
         life = new Alterable(getDataInteger("life", "attributes"));
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(Media.get(ResourcesLoader.ENTITIES_DIR, getDataString("icon")));
+        icon = Drawable.loadSprite(Media.get(ResourcesLoader.ENTITIES_DIR, type.race.asPathName(),
+                getDataString("icon")));
         icon.load(false);
         dead = false;
         owner = null;
@@ -87,12 +88,12 @@ public abstract class Entity
      * 
      * @param context The context reference.
      * @param panel The skill panel.
-     * @param id The skill id.
+     * @param type The skill type.
      * @param priority The position number.
      */
-    public void addSkill(Context context, int panel, SkillType id, int priority)
+    public void addSkill(Context context, int panel, SkillType type, int priority)
     {
-        final Skill skill = context.factorySkill.createSkill(id);
+        final Skill skill = context.factorySkill.create(type);
         skill.setOwner(this);
         skill.setPriority(priority);
         skill.prepare();

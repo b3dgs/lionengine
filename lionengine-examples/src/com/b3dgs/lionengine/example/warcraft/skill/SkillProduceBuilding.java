@@ -124,7 +124,7 @@ public abstract class SkillProduceBuilding
         if (owner instanceof UnitWorker)
         {
             final UnitWorker worker = (UnitWorker) owner;
-            final ProducibleEntity producible = factoryProduction.createProducible(entity, 0, 0);
+            final ProducibleEntity producible = factoryProduction.create(entity, 0, 0);
             if (worker.canProduce(producible))
             {
                 cursor.setType(CursorType.BOX);

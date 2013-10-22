@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.projectile.ProjectileType;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Spear
+public final class Spear
         extends Weapon
 {
     /** Launcher instance. */
@@ -40,7 +40,7 @@ final class Spear
      * @param user The user reference.
      * @param context The context reference.
      */
-    Spear(UnitAttacker user, Context context)
+    public Spear(UnitAttacker user, Context context)
     {
         super(WeaponType.SPEAR, user, context);
         launcher = new LauncherProjectile(ProjectileType.SPEAR, context);

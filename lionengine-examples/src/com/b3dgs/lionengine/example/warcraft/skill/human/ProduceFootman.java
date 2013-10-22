@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Produce grunt implementation.
  */
-final class ProduceFootman
+public final class ProduceFootman
         extends SkillProduceEntity
 {
     /**
@@ -33,7 +33,7 @@ final class ProduceFootman
      * 
      * @param setup The setup skill reference.
      */
-    ProduceFootman(SetupSkill setup)
+    public ProduceFootman(SetupSkill setup)
     {
         super(SkillType.PRODUCE_FOOTMAN, setup, EntityType.FOOTMAN);
     }

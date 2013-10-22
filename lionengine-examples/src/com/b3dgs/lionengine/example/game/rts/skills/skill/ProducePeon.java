@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.FactoryProduction;
-import com.b3dgs.lionengine.example.game.rts.skills.ProducibleEntity;
+import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ProducePeon
+public final class ProducePeon
         extends Skill
 {
     /** Production factory. */
@@ -39,8 +40,9 @@ final class ProducePeon
      * Constructor.
      * 
      * @param setup The setup skill reference.
+     * @param cursor The cursor reference.
      */
-    ProducePeon(SetupSkill setup)
+    public ProducePeon(SetupSkill setup, Cursor cursor)
     {
         super(SkillType.PRODUCE_PEON, setup);
         factoryProduction = setup.factoryProduction;
@@ -56,7 +58,7 @@ final class ProducePeon
     {
         if (owner instanceof BuildingProducer)
         {
-            final ProducibleEntity producible = factoryProduction.createProducible(EntityType.PEON);
+            final ProducibleEntity producible = factoryProduction.create(EntityType.PEON);
             ((BuildingProducer) owner).addToProductionQueue(producible);
         }
     }

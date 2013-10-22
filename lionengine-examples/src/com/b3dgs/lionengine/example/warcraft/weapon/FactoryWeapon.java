@@ -17,20 +17,18 @@
  */
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
-import com.b3dgs.lionengine.example.warcraft.entity.Entity;
+import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
 
 /**
  * Weapons factory.
  */
 public final class FactoryWeapon
-        extends FactoryWeaponRts<WeaponType, Entity, Weapon, Attacker>
+        extends FactoryObjectGame<WeaponType, SetupGame, Weapon>
 {
     /** Context reference. */
     private Context context;
@@ -54,26 +52,26 @@ public final class FactoryWeapon
         this.context = context;
     }
 
+    /**
+     * Create a weapon from its type.
+     * 
+     * @param type The weapon type.
+     * @param user The user reference.
+     * @return The weapon instance.
+     */
+    public Weapon create(WeaponType type, UnitAttacker user)
+    {
+        return create(type, user, context);
+    }
+
     /*
-     * FactoryWeaponRts
+     * FactoryObjectGame
      */
 
     @Override
-    public Weapon createWeapon(WeaponType id, Attacker user)
+    public <W extends Weapon> W create(WeaponType id)
     {
-        switch (id)
-        {
-            case AXE:
-                return new Axe(user, context);
-            case SWORD:
-                return new Sword(user, context);
-            case SPEAR:
-                return new Spear(user, context);
-            case BOW:
-                return new Bow(user, context);
-            default:
-                throw new LionEngineException("Weapon not found: " + id.name());
-        }
+        return null;
     }
 
     @Override

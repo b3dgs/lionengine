@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
 
 /**
  * Weapons factory.
@@ -31,7 +29,7 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.FactoryWeaponRts;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryWeaponRts<WeaponType, Entity, Weapon, UnitAttacker>
+        extends FactoryObjectGame<WeaponType, SetupGame, Weapon>
 {
     /** Weapons path. */
     private static final String WEAPONS_DIR = "weapons";
@@ -57,22 +55,26 @@ public final class FactoryWeapon
         this.context = context;
     }
 
+    /**
+     * Create a weapon from its type.
+     * 
+     * @param type The weapon type.
+     * @param user The user reference.
+     * @return The weapon instance.
+     */
+    public Weapon create(WeaponType type, UnitAttacker user)
+    {
+        return create(type, user, context);
+    }
+
     /*
-     * FactoryWeaponRts
+     * FactoryObjectGame
      */
 
     @Override
-    public Weapon createWeapon(WeaponType id, UnitAttacker user)
+    public <W extends Weapon> W create(WeaponType id)
     {
-        switch (id)
-        {
-            case AXE:
-                return new Axe(user, context);
-            case SPEAR:
-                return new Spear(user, context);
-            default:
-                throw new LionEngineException("Weapon not found: " + id);
-        }
+        return null;
     }
 
     @Override

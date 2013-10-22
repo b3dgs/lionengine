@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.weapon.WeaponType;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Spearman
+public final class Spearman
         extends UnitAttacker
 {
     /**
@@ -33,9 +33,9 @@ final class Spearman
      * 
      * @param context The context reference.
      */
-    Spearman(Context context)
+    public Spearman(Context context)
     {
         super(EntityType.SPEARMAN, context);
-        addWeapon(context.factoryWeapon.createWeapon(WeaponType.SPEAR, this), 0);
+        addWeapon(context.factoryWeapon.create(WeaponType.SPEAR, this), 0);
     }
 }

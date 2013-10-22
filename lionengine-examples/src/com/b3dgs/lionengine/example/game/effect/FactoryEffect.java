@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
 /**
  * Effect factory.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 public class FactoryEffect
-        extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
+        extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
@@ -44,15 +43,9 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType type)
+    public <E extends Effect> E create(EffectType type)
     {
-        switch (type)
-        {
-            case EXPLODE:
-                return new Explode(getSetup(type));
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

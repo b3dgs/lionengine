@@ -44,20 +44,20 @@ public final class FactoryEntityPlayer
      */
 
     @Override
-    public Entity createEntity(EntityPlayerType type)
+    public <E extends Entity> E create(EntityPlayerType type)
     {
-        return createEntity(type, getClass());
+        return create(type, getSetup(type), level);
     }
 
     @Override
     public Entity createEntity(FileReading file) throws IOException
     {
-        return createEntity(EntityPlayerType.load(file));
+        return create(EntityPlayerType.load(file));
     }
 
     @Override
     public Entity createEntityFromType(String type)
     {
-        return createEntity(EntityPlayerType.valueOf(type));
+        return create(EntityPlayerType.valueOf(type));
     }
 }

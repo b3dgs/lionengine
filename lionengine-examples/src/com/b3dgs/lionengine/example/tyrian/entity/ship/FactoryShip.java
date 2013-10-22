@@ -17,19 +17,18 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.ship;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory ship.
  */
 public final class FactoryShip
-        extends FactoryEntityGame<ShipType, SetupSurfaceGame, Ship>
+        extends FactoryObjectGame<ShipType, SetupSurfaceGame, Ship>
 {
     /** Factory effect. */
     private final FactoryEffect factoryEffect;
@@ -59,19 +58,13 @@ public final class FactoryShip
      */
 
     @Override
-    public Ship createEntity(ShipType id)
+    public <S extends Ship> S create(ShipType type)
     {
-        switch (id)
-        {
-            case GENCORE_PHOENIX:
-                return new GencorePhoenix(getSetup(id), factoryEffect, handlerEffect, factoryWeapon);
-            default:
-                throw new LionEngineException("Unknown entity: " + id);
-        }
+        return create(type, getSetup(type), factoryEffect, handlerEffect, factoryWeapon);
     }
 
     @Override
-    protected SetupSurfaceGame createSetup(ShipType key, Media config)
+    protected SetupSurfaceGame createSetup(ShipType type, Media config)
     {
         return new SetupSurfaceGame(config);
     }

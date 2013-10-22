@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Explode 2 effect.
  */
-final class Explode2
+public final class Explode2
         extends Effect
 {
     /**

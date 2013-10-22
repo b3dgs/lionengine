@@ -228,8 +228,8 @@ public class EntityMonster
     @Override
     protected void updateDead()
     {
-        factoryEffect.startEffect(EffectType.EXPLODE, (int) dieLocation.getX() - getCollisionData().getWidth() / 2 - 5,
-                (int) dieLocation.getY() - 5);
+        factoryEffect.startEffect(EffectType.EXPLODE_BIG, (int) dieLocation.getX() - getCollisionData().getWidth() / 2
+                - 5, (int) dieLocation.getY() - 5);
         Sfx.EXPLODE.play();
         destroy();
     }

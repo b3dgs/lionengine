@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.rts.skills.skill;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.game.rts.skills.FactoryProduction;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.game.rts.skill.SetupSkillRts;
 
 /**

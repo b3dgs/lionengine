@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Buildings standard human skill implementation.
  */
-final class BuildHuman
+public final class BuildHuman
         extends SkillBuild
 {
     /**
@@ -32,7 +32,7 @@ final class BuildHuman
      * 
      * @param setup The setup skill reference.
      */
-    BuildHuman(SetupSkill setup)
+    public BuildHuman(SetupSkill setup)
     {
         super(SkillType.BUILDING_STANDARD_HUMAN, setup);
     }

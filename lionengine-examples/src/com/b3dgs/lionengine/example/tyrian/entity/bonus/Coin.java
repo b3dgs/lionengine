@@ -70,7 +70,7 @@ abstract class Coin
     @Override
     protected void onDestroyed()
     {
-        final Effect taken = factoryEffect.createEffect(effect);
+        final Effect taken = factoryEffect.create(effect);
         taken.start(getLocationIntX() + getWidth() / 2 - taken.getWidth() / 2, getLocationIntY() + getHeight() / 2
                 - taken.getHeight() / 2, 0);
         handlerEffect.add(taken);

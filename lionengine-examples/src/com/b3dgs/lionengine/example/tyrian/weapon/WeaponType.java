@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
@@ -32,7 +33,7 @@ public enum WeaponType implements ObjectType
     /** Pulse cannon. */
     PULSE_CANNON(WeaponCategory.FRONT),
     /** Missile rear launcher. */
-    MISSILE_FRONT_LAUNCHER(WeaponCategory.FRONT),
+    MISSILE_LAUNCHER_FRONT(WeaponCategory.FRONT),
     /** Machine gun. */
     MACHINE_GUN(WeaponCategory.FRONT),
     /** Hyper Pulse. */
@@ -43,7 +44,7 @@ public enum WeaponType implements ObjectType
      */
 
     /** Missile rear launcher. */
-    MISSILE_REAR_LAUNCHER(WeaponCategory.REAR),
+    MISSILE_LAUNCHER_REAR(WeaponCategory.REAR),
     /** Wave cannon. */
     WAVE_CANNON(WeaponCategory.REAR);
 
@@ -77,13 +78,13 @@ public enum WeaponType implements ObjectType
     @Override
     public String asPathName()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return Media.getPath(category.asPathName(), ObjectTypeUtility.asPathName(this));
     }
 
     @Override
     public String asClassName()
     {
-        return ObjectTypeUtility.asClassName(this);
+        return category.asPathName() + "." + ObjectTypeUtility.asClassName(this);
     }
 
     @Override

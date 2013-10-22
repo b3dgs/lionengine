@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft;
 
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
 
@@ -31,11 +30,12 @@ public final class FactoryProduction
 {
     /**
      * Constructor.
+     * 
+     * @param factory The entity factory.
      */
-    FactoryProduction()
+    FactoryProduction(FactoryEntity factory)
     {
-        super(EntityType.class, EntityType.values(), ResourcesLoader.ENTITIES_DIR);
-        load();
+        super(factory);
     }
 
     /*
@@ -43,9 +43,9 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity createProducible(EntityType id)
+    public ProducibleEntity create(EntityType type)
     {
-        final Configurable config = getConfig(id);
+        final Configurable config = getConfig(type);
         final int step = config.getDataInteger("steps", "cost");
         final int gold = config.getDataInteger("gold", "cost");
         final int wood = config.getDataInteger("wood", "cost");
@@ -53,24 +53,18 @@ public final class FactoryProduction
         final int height = config.getDataInteger("heightInTile", "size");
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
-        final ProducibleEntity producible = new ProducibleEntity(id, cost, height, width);
+        final ProducibleEntity producible = new ProducibleEntity(type, cost, height, width);
 
         return producible;
     }
 
     @Override
-    public ProducibleEntity createProducible(EntityType id, int tx, int ty)
+    public ProducibleEntity create(EntityType type, int tx, int ty)
     {
-        final ProducibleEntity producible = createProducible(id);
+        final ProducibleEntity producible = create(type);
 
         producible.setLocation(tx, ty);
 
         return producible;
-    }
-
-    @Override
-    protected SetupGame createSetup(EntityType type, Media config)
-    {
-        return new SetupGame(config);
     }
 }

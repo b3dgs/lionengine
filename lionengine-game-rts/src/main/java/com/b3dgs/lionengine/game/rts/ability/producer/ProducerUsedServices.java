@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.producer;
 
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
@@ -63,7 +63,7 @@ public interface ProducerUsedServices<T extends Enum<T>, C extends ProductionCos
 
     /**
      * Get entity to produce from its id. The common usage is to return a new entity instance by using the factory (
-     * {@link FactoryEntityGame#createEntity(Enum)}.
+     * {@link FactoryObjectGame#create(Enum)}.
      * 
      * @param id The entity id.
      * @return The entity reference.

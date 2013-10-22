@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Smoke effect.
  */
-final class Smoke
+public final class Smoke
         extends Effect
 {
     /**

@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 /**
  * Hyper pulse implementation.
  */
-final class HyperPulse
+public final class HyperPulse
         extends Weapon
 {
     /**

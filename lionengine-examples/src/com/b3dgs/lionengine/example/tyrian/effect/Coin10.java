@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 /**
  * Coin 10 effect.
  */
-final class Coin10
+public final class Coin10
         extends Effect
 {
     /**

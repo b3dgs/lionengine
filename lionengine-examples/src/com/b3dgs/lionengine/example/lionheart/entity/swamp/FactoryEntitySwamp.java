@@ -45,20 +45,20 @@ public final class FactoryEntitySwamp
      */
 
     @Override
-    public Entity createEntity(EntitySwampType type)
+    public <E extends Entity> E create(EntitySwampType type)
     {
-        return createEntity(type, getClass());
+        return create(type, getSetup(type), level);
     }
 
     @Override
     public Entity createEntity(FileReading file) throws IOException
     {
-        return createEntity(EntitySwampType.load(file));
+        return create(EntitySwampType.load(file));
     }
 
     @Override
     public Entity createEntityFromType(String type)
     {
-        return createEntity(EntitySwampType.valueOf(type));
+        return create(EntitySwampType.valueOf(type));
     }
 }

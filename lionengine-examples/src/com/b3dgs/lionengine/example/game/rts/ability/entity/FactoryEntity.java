@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation.
@@ -31,7 +29,7 @@ import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 public final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
@@ -58,32 +56,13 @@ public final class FactoryEntity
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        Check.notNull(context, "The context must not be null !");
-        switch (type)
-        {
-            case PEON:
-                return new Peon(context);
-            case GRUNT:
-                return new Grunt(context);
-            case SPEARMAN:
-                return new Spearman(context);
-            case TOWNHALL_ORC:
-                return new TownHall(context);
-            case FARM_ORC:
-                return new Farm(context);
-            case BARRACKS_ORC:
-                return new Barracks(context);
-            case GOLD_MINE:
-                return new GoldMine(context);
-            default:
-                throw new LionEngineException("Entity not found: " + type.name());
-        }
+        return create(type, context);
     }
 
     @Override

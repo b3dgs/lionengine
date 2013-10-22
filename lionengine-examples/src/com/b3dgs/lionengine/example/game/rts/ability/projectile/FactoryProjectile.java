@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.projectile;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
 
 /**
  * Factory projectile implementation.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.projectile.FactoryProjectileGame;
  * @see com.b3dgs.lionengine.example.game.projectile
  */
 public final class FactoryProjectile
-        extends FactoryProjectileGame<ProjectileType, Projectile, SetupSurfaceGame>
+        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
 {
     /** Directory name from our resources directory containing our entities. */
     private static final String PROJECTILE_PATH = "projectiles";
@@ -48,15 +47,9 @@ public final class FactoryProjectile
      */
 
     @Override
-    public Projectile createProjectile(ProjectileType type)
+    public <P extends Projectile> P create(ProjectileType type)
     {
-        switch (type)
-        {
-            case SPEAR:
-                return new Spear(getSetup(ProjectileType.SPEAR));
-            default:
-                throw new LionEngineException("Projectile not found: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

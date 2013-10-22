@@ -156,7 +156,7 @@ final class World
         factoryEntityBonus = new FactoryEntityBonus(factoryEffect, handlerEffect);
 
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
-        ship = factoryShip.createEntity(ShipType.GENCORE_PHOENIX);
+        ship = factoryShip.create(ShipType.GENCORE_PHOENIX);
         handlerEntityDynamic.setShip(ship);
         handlerEntityBonus.setShip(ship);
 
@@ -206,14 +206,14 @@ final class World
 
         if (UtilityRandom.getRandomInteger(100) == 0)
         {
-            final Entity entity = factoryEntityDynamic.createEntity(EntityDynamicType.METEOR_BIG);
+            final Entity entity = factoryEntityDynamic.create(EntityDynamicType.METEOR_BIG);
             entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
                     camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
             handlerEntityDynamic.add(entity);
         }
         if (UtilityRandom.getRandomInteger(100) == 0)
         {
-            final Entity entity = factoryEntityBonus.createEntity(EntityBonusType.COIN10);
+            final Entity entity = factoryEntityBonus.create(EntityBonusType.COIN10);
             entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
                     camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
             handlerEntityBonus.add(entity);

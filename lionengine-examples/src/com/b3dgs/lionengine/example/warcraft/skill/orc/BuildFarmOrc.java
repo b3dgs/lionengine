@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Build skill implementation.
  */
-final class BuildFarmOrc
+public final class BuildFarmOrc
         extends SkillProduceBuilding
 {
     /**
@@ -37,7 +37,7 @@ final class BuildFarmOrc
      * @param cursor The cursor reference.
      * @param map The map reference.
      */
-    BuildFarmOrc(SetupSkill setup, Cursor cursor, Map map)
+    public BuildFarmOrc(SetupSkill setup, Cursor cursor, Map map)
     {
         super(SkillType.BUILD_FARM_ORC, setup, EntityType.FARM_ORC, cursor, map);
     }

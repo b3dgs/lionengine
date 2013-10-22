@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
-import com.b3dgs.lionengine.example.game.rts.skills.FactoryProduction;
-import com.b3dgs.lionengine.game.rts.skill.FactorySkillRts;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Skill factory implementation.
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.rts.skill.FactorySkillRts;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactorySkillRts<SkillType, SetupSkill, Skill>
+        extends FactoryObjectGame<SkillType, SetupSkill, Skill>
 {
     /** Directory name from our resources directory containing our skills. */
     public static final String SKILL_PATH = "skills";
@@ -57,25 +56,9 @@ public final class FactorySkill
      */
 
     @Override
-    public Skill createSkill(SkillType type)
+    public <S extends Skill> S create(SkillType type)
     {
-        switch (type)
-        {
-            case MOVE_ORC:
-                return new Move(getSetup(type));
-            case BUILDING_STANDARD_ORC:
-                return new Build(getSetup(type));
-            case STOP_ORC:
-                return new Stop(getSetup(type));
-            case BUILD_BARRACKS_ORC:
-                return new BuildBarracks(getSetup(type), cursor);
-            case PRODUCE_PEON:
-                return new ProducePeon(getSetup(type));
-            case CANCEL_ORC:
-                return new Cancel(getSetup(type));
-            default:
-                throw new LionEngineException("Skill not found: " + type);
-        }
+        return create(type, getSetup(type), cursor);
     }
 
     @Override

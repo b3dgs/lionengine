@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 /**
  * Lumber mill building implementation. This building allows to enable spearman production and spear upgrades.
  */
-final class LumbermillOrc
+public final class LumbermillOrc
         extends Building
 {
     /**
@@ -32,7 +32,7 @@ final class LumbermillOrc
      * 
      * @param context The context reference.
      */
-    LumbermillOrc(Context context)
+    public LumbermillOrc(Context context)
     {
         super(EntityType.LUMBERMILL_ORC, context);
     }

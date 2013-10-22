@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Mario
+public final class Mario
         extends Entity
 {
     /** Dead timer. */
@@ -46,7 +46,7 @@ final class Mario
      * @param map The map reference.
      * @param desiredFps desired fps.
      */
-    Mario(SetupSurfaceGame setup, Map map, int desiredFps)
+    public Mario(SetupSurfaceGame setup, Map map, int desiredFps)
     {
         super(setup, map, desiredFps);
         timerDie = new Timing();

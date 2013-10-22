@@ -37,6 +37,16 @@ public class MyObject
     }
 
     /**
+     * Update the object.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    public void update(double extrp)
+    {
+        System.out.println("I am updating: " + this);
+    }
+
+    /**
      * Render the object.
      * 
      * @param g The graphic output.
@@ -44,15 +54,5 @@ public class MyObject
     public void render(Graphic g)
     {
         System.out.println("I am rendering: " + this);
-    }
-
-    /*
-     * ObjectGame
-     */
-
-    @Override
-    public void update(double extrp)
-    {
-        System.out.println("I am updating: " + this);
     }
 }

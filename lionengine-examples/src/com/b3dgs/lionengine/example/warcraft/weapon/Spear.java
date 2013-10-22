@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
 /**
  * Spear weapon implementation.
  */
-final class Spear
+public final class Spear
         extends Weapon
 {
     /** Launcher instance. */
@@ -38,7 +38,7 @@ final class Spear
      * @param user The user reference.
      * @param context The context reference.
      */
-    Spear(Attacker user, Context context)
+    public Spear(Attacker user, Context context)
     {
         super(WeaponType.SPEAR, user, context);
         launcher = new LauncherProjectile(ProjectileType.SPEAR, context);

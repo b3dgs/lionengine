@@ -18,21 +18,23 @@
 package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
 final class FactoryEntity
-        extends FactoryEntityGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
     /** Entity desired fps. */
-    private final int desiredFps;
+    private final Integer desiredFps;
     /** Map reference. */
     private final Map map;
+    /** Server status. */
+    private Boolean server;
 
     /**
      * Standard constructor.
@@ -43,49 +45,30 @@ final class FactoryEntity
     FactoryEntity(int desiredFps, Map map)
     {
         super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
-        this.desiredFps = desiredFps;
+        this.desiredFps = Integer.valueOf(desiredFps);
         this.map = map;
+
         load();
     }
 
     /**
-     * Create a new mario.
+     * Set the server flag.
      * 
-     * @param server <code>true</code> if is server, <code>false</code> if client.
-     * @return The instance of mario.
+     * @param server <code>true</code> if server, <code>false</code> else.
      */
-    public Mario createMario(boolean server)
+    public void setServer(boolean server)
     {
-        return new Mario(getSetup(EntityType.MARIO), map, desiredFps, server);
-    }
-
-    /**
-     * Create a new goomba.
-     * 
-     * @param server <code>true</code> if is server, <code>false</code> if client.
-     * @return The instance of goomba.
-     */
-    public Goomba createGoomba(boolean server)
-    {
-        return new Goomba(getSetup(EntityType.GOOMBA), map, desiredFps, server);
+        this.server = Boolean.valueOf(server);
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
 
     @Override
-    public Entity createEntity(EntityType type)
+    public <E extends Entity> E create(EntityType type)
     {
-        switch (type)
-        {
-            case MARIO:
-                return createMario(true);
-            case GOOMBA:
-                return createGoomba(true);
-            default:
-                return null;
-        }
+        return create(type, getSetup(type), map, desiredFps, server);
     }
 
     @Override

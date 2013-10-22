@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 /**
  * Goomba implementation.
  */
-final class Goomba
+public final class Goomba
         extends Entity
 {
     /** Die timer. */
@@ -41,7 +41,7 @@ final class Goomba
      * @param desiredFps desired fps.
      * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
     {
         super(setup, EntityType.GOOMBA, map, desiredFps, server);
         timerDie = new Timing();

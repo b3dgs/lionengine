@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.example.game.rts.controlpanel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Peon
+public final class Peon
         extends Entity
 {
     /**
@@ -31,7 +31,7 @@ final class Peon
      * @param factory The factory reference.
      * @param map The map reference.
      */
-    Peon(FactoryEntity factory, Map map)
+    public Peon(FactoryEntity factory, Map map)
     {
         super(EntityType.PEON, factory, map);
         life.setMax(60);

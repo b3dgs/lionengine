@@ -22,8 +22,6 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.ProducibleEntity;
-import com.b3dgs.lionengine.example.game.rts.ability.ProductionCost;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -119,7 +117,7 @@ public abstract class BuildingProducer
     @Override
     public Entity getEntityToProduce(EntityType id)
     {
-        return factory.createEntity(id);
+        return factory.create(id);
     }
 
     @Override

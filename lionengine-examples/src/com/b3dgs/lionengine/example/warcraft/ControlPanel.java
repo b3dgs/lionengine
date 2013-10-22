@@ -172,7 +172,7 @@ public final class ControlPanel
         {
             for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
             {
-                if (skills.contains(skill.getId()))
+                if (skills.contains(skill.getType()))
                 {
                     skill.updateOnPanel(cursor, this);
                 }
@@ -285,7 +285,7 @@ public final class ControlPanel
         final Entity entity = entities.iterator().next();
         for (final Skill skill : entity.getSkills(entity.getSkillPanel()))
         {
-            if (skills.contains(skill.getId()))
+            if (skills.contains(skill.getType()))
             {
                 skill.renderOnPanel(g);
             }
@@ -308,7 +308,7 @@ public final class ControlPanel
         {
             if (!skill.isIgnored() && ControlPanel.hasSkillInCommon(entities, skill))
             {
-                skillsInCommon.add(skill.getId());
+                skillsInCommon.add(skill.getType());
             }
         }
         return skillsInCommon;
@@ -330,7 +330,7 @@ public final class ControlPanel
             final Collection<Skill> skillsB = entityB.getSkills(entityB.getSkillPanel());
             for (final Skill skillB : skillsB)
             {
-                if (skillB.getId() == skill.getId() && !skillB.isIgnored())
+                if (skillB.getType() == skill.getType() && !skillB.isIgnored())
                 {
                     count += 1;
                     break;

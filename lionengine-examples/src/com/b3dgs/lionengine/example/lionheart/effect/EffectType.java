@@ -30,7 +30,7 @@ public enum EffectType implements ObjectType
     /** Taken effect (item taken). */
     TAKEN,
     /** Explode big effect (monster killed). */
-    EXPLODE;
+    EXPLODE_BIG;
 
     /*
      * ObjectType

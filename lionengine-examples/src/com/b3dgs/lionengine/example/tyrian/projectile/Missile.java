@@ -61,7 +61,7 @@ public abstract class Missile
      */
     public void addEffect(int x, int y)
     {
-        final Effect effect = factoryEffect.createEffect(EffectType.SMOKE);
+        final Effect effect = factoryEffect.create(EffectType.SMOKE);
         effect.start(x, y, 0);
         handlerEffect.add(effect);
     }
@@ -91,8 +91,8 @@ public abstract class Missile
         final int y = getLocationIntY() + getHeight();
         for (int i = 0; i < size; i++)
         {
-            final Effect effect1 = factoryEffect.createEffect(EffectType.EXPLODE2);
-            final Effect effect2 = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final Effect effect1 = factoryEffect.create(EffectType.EXPLODE2);
+            final Effect effect2 = factoryEffect.create(EffectType.EXPLODE2);
 
             effect1.start(x - i * effect1.getWidth() / 2, y, i * 20);
             effect2.start(x + i * effect2.getWidth() / 2, y, i * 20);
@@ -102,8 +102,8 @@ public abstract class Missile
         }
         for (int i = 0; i < size; i++)
         {
-            final Effect effect1 = factoryEffect.createEffect(EffectType.EXPLODE2);
-            final Effect effect2 = factoryEffect.createEffect(EffectType.EXPLODE2);
+            final Effect effect1 = factoryEffect.create(EffectType.EXPLODE2);
+            final Effect effect2 = factoryEffect.create(EffectType.EXPLODE2);
 
             effect1.start(x, y - i * effect1.getHeight() / 2, i * 20);
             effect2.start(x, y + i * effect2.getHeight() / 2, i * 20);

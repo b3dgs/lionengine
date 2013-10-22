@@ -70,6 +70,7 @@ final class WorldClient
         networkedWorld = new NetworkedWorldModelClient(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
+        factory.setServer(false);
         sequence.addKeyListener(input);
         sequence.addKeyListener(chat);
     }
@@ -176,7 +177,7 @@ final class WorldClient
     @Override
     public void notifyConnectionEstablished(Byte id, String name)
     {
-        final Mario mario = factory.createMario(false);
+        final Mario mario = factory.create(EntityType.MARIO);
         mario.respawn();
         mario.setName(name);
         marioClients.put(id, mario);
@@ -220,7 +221,7 @@ final class WorldClient
         final MessageFactory msg = (MessageFactory) message;
         if (msg.hasAction(EntityType.GOOMBA))
         {
-            final Goomba goomba = factory.createGoomba(false);
+            final Goomba goomba = factory.create(EntityType.GOOMBA);
             goomba.setNetworkId(msg.getEntityId());
             handler.add(goomba);
             addNetworkable(goomba);

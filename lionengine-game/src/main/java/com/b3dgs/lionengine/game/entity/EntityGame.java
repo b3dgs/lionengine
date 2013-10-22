@@ -64,6 +64,13 @@ public abstract class EntityGame
     }
 
     /**
+     * Update the entity.
+     * 
+     * @param extrp The extrapolation value.
+     */
+    public abstract void update(double extrp);
+
+    /**
      * Get the distance between the entity and the specified other entity.
      * 
      * @param entity The entity to compare to.

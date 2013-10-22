@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.rts.ability.skilled;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 
 /**
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * @param <T> Skill enum type used.
  * @param <S> Skill type used.
  */
-public interface SkilledServices<T extends Enum<T>, S extends SkillRts<T>>
+public interface SkilledServices<T extends Enum<T> & ObjectType, S extends SkillRts<T>>
 {
     /**
      * Main routine, has to be called in a game loop.

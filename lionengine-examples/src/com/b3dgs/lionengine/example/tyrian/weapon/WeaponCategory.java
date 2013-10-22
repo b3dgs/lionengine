@@ -17,15 +17,40 @@
  */
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
+
 /**
  * List of weapon categories.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum WeaponCategory
+public enum WeaponCategory implements ObjectType
 {
     /** Front weapon. */
     FRONT,
     /** Rear weapon. */
     REAR;
+
+    /*
+     * ObjectType
+     */
+
+    @Override
+    public String asPathName()
+    {
+        return ObjectTypeUtility.asPathName(this);
+    }
+
+    @Override
+    public String asClassName()
+    {
+        return ObjectTypeUtility.asClassName(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return ObjectTypeUtility.toString(this);
+    }
 }

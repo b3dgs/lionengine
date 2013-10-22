@@ -70,12 +70,12 @@ public abstract class Entity
      * 
      * @param factory The factory reference.
      * @param panel The skill panel.
-     * @param id The skill id.
+     * @param type The skill type.
      * @param priority The position number.
      */
-    public void addSkill(FactoryEntity factory, int panel, SkillType id, int priority)
+    public void addSkill(FactoryEntity factory, int panel, SkillType type, int priority)
     {
-        final Skill skill = factorySkill.createSkill(id);
+        final Skill skill = factorySkill.create(type);
         skill.setOwner(this);
         skill.setPriority(priority);
         skill.prepare();

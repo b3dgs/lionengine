@@ -32,48 +32,48 @@ public final class Map
     /**
      * Create the entity from the tile number.
      * 
-     * @param factoryEntityStatic The entity static factory.
+     * @param factory The entity static factory.
      * @param n The tile number.
      * @return The entity instance, <code>null</code> if none.
      */
-    private static Entity create(FactoryEntityScenery factoryEntityStatic, int n)
+    private static Entity create(FactoryEntityScenery factory, int n)
     {
         switch (n)
         {
             case 6:
-                return factoryEntityStatic.createEntity(EntitySceneryType.SINGLE_CANON);
+                return factory.create(EntitySceneryType.SINGLE_CANON);
             case 7:
-                return factoryEntityStatic.createEntity(EntitySceneryType.DOUBLE_CANON);
+                return factory.create(EntitySceneryType.DOUBLE_CANON);
             case 8:
-                return factoryEntityStatic.createEntity(EntitySceneryType.RED_ENGINE);
+                return factory.create(EntitySceneryType.RED_ENGINE);
             case 9:
-                return factoryEntityStatic.createEntity(EntitySceneryType.GREEN_PULSE);
+                return factory.create(EntitySceneryType.GREEN_PULSE);
             case 19:
-                return factoryEntityStatic.createEntity(EntitySceneryType.OPENABLE_PULSE);
+                return factory.create(EntitySceneryType.OPENABLE_PULSE);
             case 13:
-                return factoryEntityStatic.createEntity(EntitySceneryType.GENERATOR);
+                return factory.create(EntitySceneryType.GENERATOR);
             case 26:
-                return factoryEntityStatic.createEntity(EntitySceneryType.DOUBLE_PULSE);
+                return factory.create(EntitySceneryType.DOUBLE_PULSE);
             case 18:
-                return factoryEntityStatic.createEntity(EntitySceneryType.LAMP);
+                return factory.create(EntitySceneryType.LAMP);
             case 30:
-                return factoryEntityStatic.createEntity(EntitySceneryType.SPIDER);
+                return factory.create(EntitySceneryType.SPIDER);
             case 32:
-                return factoryEntityStatic.createEntity(EntitySceneryType.SUB_SQUARE);
+                return factory.create(EntitySceneryType.SUB_SQUARE);
             case 45:
-                return factoryEntityStatic.createEntity(EntitySceneryType.SILO);
+                return factory.create(EntitySceneryType.SILO);
             case 46:
-                return factoryEntityStatic.createEntity(EntitySceneryType.RED_BOX);
+                return factory.create(EntitySceneryType.RED_BOX);
             case 56:
-                return factoryEntityStatic.createEntity(EntitySceneryType.THREE_RED_V);
+                return factory.create(EntitySceneryType.THREE_RED_V);
             case 50:
-                return factoryEntityStatic.createEntity(EntitySceneryType.PUMP);
+                return factory.create(EntitySceneryType.PUMP);
             case 52:
-                return factoryEntityStatic.createEntity(EntitySceneryType.HOUSE92);
+                return factory.create(EntitySceneryType.HOUSE92);
             case 54:
-                return factoryEntityStatic.createEntity(EntitySceneryType.HOUSE812);
+                return factory.create(EntitySceneryType.HOUSE812);
             case 66:
-                return factoryEntityStatic.createEntity(EntitySceneryType.THREE_RED_H);
+                return factory.create(EntitySceneryType.THREE_RED_H);
             default:
                 return null;
         }

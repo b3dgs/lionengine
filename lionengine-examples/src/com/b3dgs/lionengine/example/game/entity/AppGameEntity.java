@@ -41,7 +41,7 @@ public final class AppGameEntity
         final Factory factory = new Factory();
         final Handler handler = new Handler();
 
-        final Entity entity = factory.createEntity(EntityType.GOOMBA);
+        final Entity entity = factory.create(EntityType.GOOMBA);
         handler.add(entity);
 
         for (int i = 0; i < 2; i++)

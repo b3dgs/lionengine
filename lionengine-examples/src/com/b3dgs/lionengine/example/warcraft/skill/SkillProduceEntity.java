@@ -67,7 +67,7 @@ public class SkillProduceEntity
     {
         if (owner instanceof BuildingProducer)
         {
-            final ProducibleEntity producible = factoryProduction.createProducible(entity, destX, destY);
+            final ProducibleEntity producible = factoryProduction.create(entity, destX, destY);
             ((BuildingProducer) owner).addToProductionQueue(producible);
         }
     }

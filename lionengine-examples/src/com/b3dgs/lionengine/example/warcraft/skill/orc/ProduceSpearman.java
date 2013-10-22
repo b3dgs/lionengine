@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Produce grunt implementation.
  */
-final class ProduceSpearman
+public final class ProduceSpearman
         extends SkillProduceEntity
 {
     /**
@@ -33,7 +33,7 @@ final class ProduceSpearman
      * 
      * @param setup The setup skill reference.
      */
-    ProduceSpearman(SetupSkill setup)
+    public ProduceSpearman(SetupSkill setup)
     {
         super(SkillType.PRODUCE_SPEARMAN, setup, EntityType.SPEARMAN);
     }

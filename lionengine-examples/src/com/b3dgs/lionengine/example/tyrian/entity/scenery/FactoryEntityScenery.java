@@ -17,59 +17,19 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.scenery;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.entity.FactoryEntityGame;
 
 /**
  * Factory entity scenery.
  */
 public final class FactoryEntityScenery
-        extends FactoryEntityGame<EntitySceneryType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntitySceneryType, SetupSurfaceGame, Entity>
 {
-    /** Unknown entity error message. */
-    private static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
-
-    /**
-     * Create an entity from its type.
-     * 
-     * @param setup The setup reference.
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The handler effect reference.
-     * @param type The item type.
-     * @param factory The factory class.
-     * @return The entity instance.
-     */
-    private static Entity createEntity(SetupSurfaceGame setup, FactoryEffect factoryEffect,
-            HandlerEffect handlerEffect, EntitySceneryType type, Class<?> factory)
-    {
-        try
-        {
-            final StringBuilder clazz = new StringBuilder(factory.getPackage().getName());
-            clazz.append('.').append(type.asClassName());
-            return (Entity) Class.forName(clazz.toString())
-                    .getConstructor(SetupSurfaceGame.class, FactoryEffect.class, HandlerEffect.class)
-                    .newInstance(setup, factoryEffect, handlerEffect);
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException
-               | ClassCastException
-               | ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, FactoryEntityScenery.UNKNOWN_ENTITY_ERROR + type.asClassName());
-        }
-    }
-
     /** Factory effect. */
     private final FactoryEffect factoryEffect;
     /** Handler effect. */
@@ -94,9 +54,9 @@ public final class FactoryEntityScenery
      */
 
     @Override
-    public Entity createEntity(EntitySceneryType type)
+    public <E extends Entity> E create(EntitySceneryType type)
     {
-        return FactoryEntityScenery.createEntity(getSetup(type), factoryEffect, handlerEffect, type, getClass());
+        return create(type, getSetup(type), factoryEffect, handlerEffect);
     }
 
     @Override

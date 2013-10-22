@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Produce grunt implementation.
  */
-final class ProduceArcher
+public final class ProduceArcher
         extends SkillProduceEntity
 {
     /**
@@ -33,7 +33,7 @@ final class ProduceArcher
      * 
      * @param setup The setup skill reference.
      */
-    ProduceArcher(SetupSkill setup)
+    public ProduceArcher(SetupSkill setup)
     {
         super(SkillType.PRODUCE_ARCHER, setup, EntityType.ARCHER);
     }

@@ -17,17 +17,16 @@
  */
 package com.b3dgs.lionengine.example.warcraft.effect;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.effect.FactoryEffectGame;
 
 /**
  * Factory effect implementation.
  */
 public class FactoryEffect
-        extends FactoryEffectGame<EffectType, SetupSurfaceGame, Effect>
+        extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
@@ -43,19 +42,9 @@ public class FactoryEffect
      */
 
     @Override
-    public Effect createEffect(EffectType type)
+    public <E extends Effect> E create(EffectType type)
     {
-        switch (type)
-        {
-            case CONSTRUCTION:
-                return new Construction(getSetup(EffectType.CONSTRUCTION));
-            case BURNING:
-                return new Burning(getSetup(EffectType.BURNING));
-            case EXPLODE:
-                return new Explode(getSetup(EffectType.EXPLODE));
-            default:
-                throw new LionEngineException("Unknown type: " + type);
-        }
+        return create(type, getSetup(type));
     }
 
     @Override

@@ -99,9 +99,9 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType id)
+    public Entity getEntityToProduce(EntityType type)
     {
-        return factory.createEntity(id);
+        return factory.create(type);
     }
 
     @Override

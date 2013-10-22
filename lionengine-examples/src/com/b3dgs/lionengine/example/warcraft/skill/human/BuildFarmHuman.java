@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 /**
  * Build skill implementation.
  */
-final class BuildFarmHuman
+public final class BuildFarmHuman
         extends SkillProduceBuilding
 {
     /**
@@ -37,7 +37,7 @@ final class BuildFarmHuman
      * @param cursor The cursor reference.
      * @param map The map reference.
      */
-    BuildFarmHuman(SetupSkill setup, Cursor cursor, Map map)
+    public BuildFarmHuman(SetupSkill setup, Cursor cursor, Map map)
     {
         super(SkillType.BUILD_FARM_HUMAN, setup, EntityType.FARM_HUMAN, cursor, map);
     }
