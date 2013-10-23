@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.warcraft;
 /**
  * Game configuration.
  */
-public class GameConfig
+public final class GameConfig
 {
     /** Player race. */
     public final RaceType player;

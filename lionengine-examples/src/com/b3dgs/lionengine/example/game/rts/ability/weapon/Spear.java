@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.LauncherProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.ProjectileType;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Spear weapon implementation.
@@ -37,12 +38,13 @@ public final class Spear
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param user The user reference.
      * @param context The context reference.
      */
-    public Spear(UnitAttacker user, Context context)
+    public Spear(SetupGame setup, UnitAttacker user, Context context)
     {
-        super(WeaponType.SPEAR, user, context);
+        super(WeaponType.SPEAR, setup, user, context);
         launcher = new LauncherProjectile(ProjectileType.SPEAR, context);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);

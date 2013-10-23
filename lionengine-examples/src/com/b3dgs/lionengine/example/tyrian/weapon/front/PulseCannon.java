@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Pulse cannon implementation.
@@ -31,11 +32,11 @@ public final class PulseCannon
         extends Weapon
 {
     /**
-     * @see Weapon#Weapon(FactoryProjectile, HandlerProjectile)
+     * @see Weapon#Weapon(SetupGame, FactoryProjectile, HandlerProjectile)
      */
-    public PulseCannon(FactoryProjectile factory, HandlerProjectile handler)
+    public PulseCannon(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
     {
-        super(factory, handler);
+        super(setup, factory, handler);
         setOffsetY(-5);
         setRate(175);
     }

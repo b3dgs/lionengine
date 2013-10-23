@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.Skill;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
@@ -52,12 +53,13 @@ public abstract class Entity
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type enum.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected Entity(EntityType id, Context context)
+    protected Entity(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(context.factoryEntity.getSetup(id), context.map);
+        super(setup, context.map);
         map = context.map;
         factorySkill = context.factorySkill;
         skilled = new SkilledModel<>();

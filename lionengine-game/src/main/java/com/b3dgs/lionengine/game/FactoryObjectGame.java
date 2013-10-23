@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -38,14 +40,8 @@ import com.b3dgs.lionengine.core.Media;
  * {
  *     public Factory()
  *     {
- *         super(EntityType.class, EntityType.values(), &quot;objects&quot;);
+ *         super(EntityType.class, &quot;objects&quot;);
  *         load();
- *     }
- * 
- *     &#064;Override
- *     public &lt;E extends ObjectGame&gt; E create(EntityType type)
- *     {
- *         return create(type);
  *     }
  * 
  *     &#064;Override
@@ -66,34 +62,31 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
     /** Unknown entity error message. */
     public static final String UNKNOWN_TYPE_ERROR = "Unknown type: ";
 
+    /** Full name. */
+    private final String name;
     /** Types list. */
     private final T[] types;
     /** Setups list. */
     private final Map<T, S> setups;
     /** Entities folder. */
     private final String folder;
+    /** Arguments. */
+    private Object[] arguments;
 
     /**
      * Constructor.
      * 
      * @param keyType The class of the enum type defined.
-     * @param types The types list (use method <code>values</code> of enum).
      * @param folder The objects folder.
      */
-    public FactoryObjectGame(Class<T> keyType, T[] types, String folder)
+    public FactoryObjectGame(Class<T> keyType, String folder)
     {
-        this.types = types;
+        this.types = keyType.getEnumConstants();
         this.folder = folder;
         setups = new EnumMap<>(keyType);
+        arguments = new Object[0];
+        name = getClass().getPackage().getName() + ".";
     }
-
-    /**
-     * Create an object from its type.
-     * 
-     * @param type The object type.
-     * @return The object instance.
-     */
-    public abstract <E extends O> E create(T type);
 
     /**
      * Create a setup from its media.
@@ -112,6 +105,64 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
         for (final T type : types)
         {
             addSetup(type, createSetup(type));
+        }
+    }
+
+    /**
+     * Set the object constructor additional arguments.
+     * 
+     * @param arguments The additional arguments.
+     */
+    public void setArguments(Object... arguments)
+    {
+        this.arguments = arguments;
+    }
+
+    /**
+     * Create an item from its type using a generic way. The concerned classes to instantiate and their
+     * constructors must be public (at least the target one).
+     * 
+     * @param type The object type.
+     * @return The object instance.
+     */
+    public <E extends O> E create(T type)
+    {
+        try
+        {
+            final Class<?> objectClass = Class.forName(name.concat(type.asClassName()));
+            final LinkedList<Object> finalArguments = new LinkedList<>(Arrays.asList(arguments));
+            finalArguments.addFirst(getSetup(type));
+            E instance = null;
+            for (final Constructor<?> constructor : objectClass.getConstructors())
+            {
+                try
+                {
+                    instance = (E) constructor.newInstance(finalArguments.toArray());
+                    finalArguments.clear();
+                }
+                catch (final InvocationTargetException exception)
+                {
+                    throw new LionEngineException(exception.getCause(), "Unable to create the following type: "
+                            + type.asClassName());
+                }
+                catch (InstantiationException
+                       | IllegalArgumentException
+                       | IllegalAccessException exception)
+                {
+                    instance = null;
+                }
+            }
+            if (instance == null)
+            {
+                throw new LionEngineException(new InstantiationException("Class " + objectClass.getName()
+                        + " and its constructor(s) must exist and be public !"),
+                        "Unable to create the following type: " + type.asClassName());
+            }
+            return instance;
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, FactoryObjectGame.UNKNOWN_TYPE_ERROR + type.asClassName());
         }
     }
 
@@ -157,53 +208,5 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
     {
         final Media config = Media.get(folder, type.asPathName() + ".xml");
         return createSetup(type, config);
-    }
-
-    /**
-     * Create an item from its type using a generic way. The concerned classes to instantiate and their
-     * constructors must be public (at least the target one).
-     * 
-     * @param type The object type.
-     * @param args The constructor arguments.
-     * @return The object instance.
-     */
-    protected <E extends O> E create(T type, Object... args)
-    {
-        try
-        {
-            final StringBuilder clazz = new StringBuilder(getClass().getPackage().getName());
-            clazz.append('.').append(type.asClassName());
-            final Class<?> objectClass = Class.forName(clazz.toString());
-            E instance = null;
-            for (final Constructor<?> constructor : objectClass.getConstructors())
-            {
-                try
-                {
-                    instance = (E) constructor.newInstance(args);
-                }
-                catch (final InvocationTargetException exception)
-                {
-                    throw new LionEngineException(exception.getCause(), "Unable to create the following type: "
-                            + type.asClassName());
-                }
-                catch (InstantiationException
-                       | IllegalArgumentException
-                       | IllegalAccessException exception)
-                {
-                    instance = null;
-                }
-            }
-            if (instance == null)
-            {
-                throw new LionEngineException(new InstantiationException("Class " + objectClass.getName()
-                        + " and its constructor must be public !"), "Unable to create the following type: "
-                        + type.asClassName());
-            }
-            return instance;
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, FactoryObjectGame.UNKNOWN_TYPE_ERROR + type.asClassName());
-        }
     }
 }

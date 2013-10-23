@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Farm building implementation.
@@ -30,10 +31,11 @@ public final class FarmOrc
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public FarmOrc(Context context)
+    public FarmOrc(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.FARM_ORC, context);
+        super(EntityType.FARM_ORC, setup, context);
     }
 }

@@ -21,9 +21,8 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Player;
-import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
-import com.b3dgs.lionengine.example.warcraft.ProductionCost;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
@@ -49,12 +48,13 @@ public abstract class BuildingProducer
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected BuildingProducer(EntityType id, Context context)
+    protected BuildingProducer(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         factory = context.factoryEntity;
         message = context.timedMessage;
         producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);

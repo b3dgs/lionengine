@@ -71,6 +71,5 @@ public final class Context
     public void assignContext()
     {
         factoryEntity.setContext(this);
-        factoryWeapon.setContext(this);
     }
 }

@@ -17,23 +17,26 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Cancel skill implementation.
  */
-public final class Cancel
+public abstract class Cancel
         extends Skill
 {
     /**
      * Constructor.
      * 
+     * @param type The skill type.
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    public Cancel(SetupSkill setup)
+    protected Cancel(SkillType type, SetupSkill setup, Context context)
     {
-        super(SkillType.CANCEL_ORC, setup);
+        super(type, setup, context);
     }
 
     /*

@@ -24,8 +24,6 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.audio.AudioMidi;
-import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
@@ -37,8 +35,8 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.GameConfig;
+import com.b3dgs.lionengine.example.warcraft.Music;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.Scene;
 import com.b3dgs.lionengine.example.warcraft.Sfx;
 import com.b3dgs.lionengine.game.Cursor;
@@ -121,17 +119,17 @@ public final class Menu
      */
     private static SpriteTiled getButton(String filename, int width, int height)
     {
-        return Drawable.loadSpriteTiled(Media.get(ResourcesLoader.MENU_DIR, filename), width, height);
+        return Drawable.loadSpriteTiled(Media.get(AppWarcraft.MENU_DIR, filename), width, height);
     }
 
-    /** Menu music. */
-    private final Midi music;
     /** Introduction logo. */
     private final Sprite logo;
     /** Menu background. */
     private final Sprite background;
     /** Menu cursor. */
     private final Cursor cursor;
+    /** Music. */
+    private final Music music;
     /** Menu buttons. */
     private Button[] buttons;
     /** Menu choices buttons. */
@@ -163,10 +161,10 @@ public final class Menu
     public Menu(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        music = AudioMidi.loadMidi(Media.get(ResourcesLoader.MUSICS_DIR, "menu.mid"));
-        logo = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "blizzard.png"));
-        background = Drawable.loadSprite(Media.get(ResourcesLoader.MENU_DIR, "menu.png"));
+        logo = Drawable.loadSprite(Media.get(AppWarcraft.MENU_DIR, "blizzard.png"));
+        background = Drawable.loadSprite(Media.get(AppWarcraft.MENU_DIR, "menu.png"));
         cursor = new Cursor(mouse, source, Media.get("cursor.png"));
+        music = Music.MENU;
     }
 
     /**
@@ -317,8 +315,7 @@ public final class Menu
                 alpha = UtilityMath.fixBetween(alpha, 0, 255);
                 if (alpha == 255)
                 {
-                    music.setLoop(6300, music.getTicks() - 3680);
-                    music.play(true);
+                    Music.play(music);
                     Menu.menu = MenuType.MAIN;
                 }
                 break;
@@ -396,7 +393,6 @@ public final class Menu
                 {
                     ffog = true;
                 }
-                music.stop();
                 Menu.menu = MenuType.MAIN_UP;
                 alpha = 0;
                 final GameConfig config = new GameConfig(Menu.RACES[playerRace], Menu.RACES[opponentRace],
@@ -404,7 +400,6 @@ public final class Menu
                 end(new Scene(loader, config));
                 break;
             case EXIT:
-                music.stop();
                 end();
                 break;
             default:
@@ -412,7 +407,6 @@ public final class Menu
         }
         if (!pressed && keyboard.isPressed(Key.ESCAPE))
         {
-            music.stop();
             end();
         }
     }
@@ -495,6 +489,7 @@ public final class Menu
         }
         buttons = null;
         choices = null;
+        Music.stop(music);
         Sfx.stopAll();
         if (!hasNextSequence)
         {

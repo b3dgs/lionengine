@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.rts.ability.entity;
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.ResourceType;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 
 /**
@@ -39,11 +40,12 @@ public final class GoldMine
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public GoldMine(Context context)
+    public GoldMine(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.GOLD_MINE, context);
+        super(EntityType.GOLD_MINE, setup, context);
         typeResource = ResourceType.GOLD;
         gold = new Alterable(50000);
         setFrame(1);

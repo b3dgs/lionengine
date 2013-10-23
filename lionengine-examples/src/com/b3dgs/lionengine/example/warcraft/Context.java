@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.warcraft;
 import com.b3dgs.lionengine.example.warcraft.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.warcraft.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.projectile.FactoryProjectile;
@@ -79,13 +80,13 @@ public final class Context
         this.handlerEntity = handlerEntity;
         this.handlerProjectile = handlerProjectile;
         this.cursor = cursor;
-        timedMessage = message;
         this.desiredFps = desiredFps;
+        timedMessage = message;
         factoryEntity = new FactoryEntity();
         factoryProduction = new FactoryProduction(factoryEntity);
         factoryProjectile = new FactoryProjectile();
         factoryWeapon = new FactoryWeapon();
-        factorySkill = new FactorySkill(handlerEntity, factoryProduction, cursor, map, message);
+        factorySkill = new FactorySkill(factoryProduction, timedMessage);
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);
     }
@@ -96,6 +97,6 @@ public final class Context
     public void assignContext()
     {
         factoryEntity.setContext(this);
-        factoryWeapon.setContext(this);
+        factorySkill.setContext(this);
     }
 }

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Machine gun implementation.
@@ -35,11 +36,11 @@ public final class MachineGun
     private int offsetX;
 
     /**
-     * @see Weapon#Weapon(FactoryProjectile, HandlerProjectile)
+     * @see Weapon#Weapon(SetupGame, FactoryProjectile, HandlerProjectile)
      */
-    public MachineGun(FactoryProjectile factory, HandlerProjectile handler)
+    public MachineGun(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
     {
-        super(factory, handler);
+        super(setup, factory, handler);
         setOffsetY(-5);
     }
 

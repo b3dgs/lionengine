@@ -45,7 +45,7 @@ public final class ObjectTypeUtility
      */
     public static String asClassName(Enum<?> type)
     {
-        final char[] name = type.toString().toCharArray();
+        final char[] name = ObjectTypeUtility.toString(type).toCharArray();
         for (int i = 0; i < name.length; i++)
         {
             if (name[i] == '_')

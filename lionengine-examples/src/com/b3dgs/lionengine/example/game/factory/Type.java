@@ -32,6 +32,20 @@ public enum Type implements ObjectType
     /** Ground. */
     GROUND_TRUCK;
 
+    /** Path name. */
+    private final String pathName;
+    /** Class name. */
+    private final String className;
+
+    /**
+     * Constructor.
+     */
+    private Type()
+    {
+        pathName = ObjectTypeUtility.asPathName(this);
+        className = ObjectTypeUtility.asClassName(this);
+    }
+
     /*
      * ObjectType
      */
@@ -39,18 +53,12 @@ public enum Type implements ObjectType
     @Override
     public String asPathName()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return pathName;
     }
 
     @Override
     public String asClassName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return className;
     }
 }

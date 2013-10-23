@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Cursor;
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceBuilding;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
@@ -34,11 +33,10 @@ public final class BuildBarracksHuman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
-     * @param map The map reference.
+     * @param context The context reference.
      */
-    public BuildBarracksHuman(SetupSkill setup, Cursor cursor, Map map)
+    public BuildBarracksHuman(SetupSkill setup, Context context)
     {
-        super(SkillType.BUILD_BARRACKS_HUMAN, setup, EntityType.BARRACKS_HUMAN, cursor, map);
+        super(SkillType.BUILD_BARRACKS_HUMAN, setup, context, EntityType.BARRACKS_HUMAN);
     }
 }

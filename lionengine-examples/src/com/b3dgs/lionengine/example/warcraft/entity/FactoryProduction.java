@@ -15,10 +15,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.warcraft;
+package com.b3dgs.lionengine.example.warcraft.entity;
 
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.example.warcraft.entity.FactoryEntity;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
 
@@ -33,7 +31,7 @@ public final class FactoryProduction
      * 
      * @param factory The entity factory.
      */
-    FactoryProduction(FactoryEntity factory)
+    public FactoryProduction(FactoryEntity factory)
     {
         super(factory);
     }

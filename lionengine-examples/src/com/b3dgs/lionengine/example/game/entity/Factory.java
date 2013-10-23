@@ -35,19 +35,13 @@ public class Factory
      */
     public Factory()
     {
-        super(EntityType.class, EntityType.values(), "entity");
+        super(EntityType.class, "entity");
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityType type)
-    {
-        return create(type, getSetup(type));
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityType types, Media config)

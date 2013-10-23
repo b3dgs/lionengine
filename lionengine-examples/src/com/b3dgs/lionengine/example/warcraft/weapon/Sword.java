@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.weapon;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Sword weapon implementation.
@@ -30,12 +31,13 @@ public final class Sword
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param user The user reference.
      * @param context The context reference.
      */
-    public Sword(Attacker user, Context context)
+    public Sword(SetupGame setup, Attacker user, Context context)
     {
-        super(WeaponType.SWORD, user, context);
+        super(WeaponType.SWORD, setup, user, context);
     }
 
     /*

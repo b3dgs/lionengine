@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Abstract building entity implementation.
@@ -30,12 +31,13 @@ abstract class Building
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected Building(EntityType id, Context context)
+    protected Building(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         setLayer(0);
     }
 }

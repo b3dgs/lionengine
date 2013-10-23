@@ -15,35 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.warcraft.skill;
+package com.b3dgs.lionengine.example.warcraft.entity;
 
-import com.b3dgs.lionengine.game.rts.ControlPanelModel;
-import com.b3dgs.lionengine.game.rts.CursorRts;
+import com.b3dgs.lionengine.game.rts.ability.producer.Producible;
 
 /**
- * Build skill implementation.
+ * Producible entity implementation.
  */
-public abstract class SkillBuild
-        extends Skill
+public final class ProducibleEntity
+        extends Producible<EntityType, ProductionCost>
 {
     /**
      * Constructor.
      * 
-     * @param id The skill id.
-     * @param setup The setup skill reference.
+     * @param id The entity id.
+     * @param cost The production cost.
+     * @param tw The production width.
+     * @param th The production height.
      */
-    protected SkillBuild(SkillType id, SetupSkill setup)
+    ProducibleEntity(EntityType id, ProductionCost cost, int tw, int th)
     {
-        super(id, setup);
-    }
-
-    /*
-     * Skill
-     */
-
-    @Override
-    public void action(ControlPanelModel<?> panel, CursorRts cursor)
-    {
-        owner.setSkillPanel(1);
+        super(id, cost, tw, th);
     }
 }

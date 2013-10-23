@@ -17,16 +17,12 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.warcraft.Cursor;
-import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
-import com.b3dgs.lionengine.example.warcraft.map.Map;
-import com.b3dgs.lionengine.example.warcraft.skill.human.FactorySkillHuman;
-import com.b3dgs.lionengine.example.warcraft.skill.orc.FactorySkillOrc;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
+import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 
@@ -38,64 +34,44 @@ public final class FactorySkill
 {
     /** Production factory. */
     public final FactoryProduction factoryProduction;
-    /** Entity handler. */
-    final HandlerEntity handler;
-    /** Cursor reference. */
-    final Cursor cursor;
     /** Background set. */
     private final SpriteTiled background;
     /** The timed message reference. */
     private final TimedMessage message;
-    /** Human skill factory. */
-    private final FactorySkillHuman factorySkillHuman;
-    /** Orc skill factory. */
-    private final FactorySkillOrc factorySkillOrc;
 
     /**
      * Create a new entity factory.
      * 
-     * @param handler The handler reference.
      * @param factoryProduction The production factory.
-     * @param cursor The cursor reference.
-     * @param map The map reference.
      * @param message The timed message reference.
      */
-    public FactorySkill(HandlerEntity handler, FactoryProduction factoryProduction, Cursor cursor, Map map,
-            TimedMessage message)
+    public FactorySkill(FactoryProduction factoryProduction, TimedMessage message)
     {
-        super(SkillType.class, SkillType.values(), ResourcesLoader.SKILLS_DIR);
-        this.handler = handler;
+        super(SkillType.class, AppWarcraft.SKILLS_DIR);
         this.factoryProduction = factoryProduction;
-        this.cursor = cursor;
         this.message = message;
-        background = ResourcesLoader.SKILL_BACKGROUND;
+        background = Drawable.loadSpriteTiled(Media.get("skill_background.png"), 31, 23);
         background.load(false);
-        factorySkillHuman = new FactorySkillHuman(this, handler, cursor, map);
-        factorySkillOrc = new FactorySkillOrc(this, handler, cursor, map);
         load();
     }
 
-    /*
-     * FactorySkillRts
+    /**
+     * Set the context reference.
+     * 
+     * @param context The context reference.
      */
-
-    @Override
-    public <S extends Skill> S create(SkillType type)
+    public void setContext(Context context)
     {
-        switch (type.race)
-        {
-            case HUMAN:
-                return (S) factorySkillHuman.createSkill(type);
-            case ORC:
-                return (S) factorySkillOrc.createSkill(type);
-            default:
-                throw new LionEngineException("Skill not found: ", type.name());
-        }
+        setArguments(context);
     }
+
+    /*
+     * FactoryObjectGame
+     */
 
     @Override
     protected SetupSkill createSetup(SkillType type, Media config)
     {
-        return new SetupSkill(config, background, factoryProduction, message);
+        return new SetupSkill(config, type, background, factoryProduction, message);
     }
 }

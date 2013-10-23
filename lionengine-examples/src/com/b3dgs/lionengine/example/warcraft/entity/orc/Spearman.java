@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Spearman implementation.
@@ -32,11 +33,12 @@ public final class Spearman
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Spearman(Context context)
+    public Spearman(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.SPEARMAN, context);
+        super(EntityType.SPEARMAN, setup, context);
         addWeapon(context, WeaponType.SPEAR, 0);
         addSkill(context, 0, SkillType.MOVE_ORC, 0);
         addSkill(context, 0, SkillType.STOP_ORC, 1);

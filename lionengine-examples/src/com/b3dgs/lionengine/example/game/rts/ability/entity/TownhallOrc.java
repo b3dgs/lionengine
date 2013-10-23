@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -31,10 +32,11 @@ public final class TownhallOrc
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public TownhallOrc(Context context)
+    public TownhallOrc(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.TOWNHALL_ORC, context);
+        super(EntityType.TOWNHALL_ORC, setup, context);
     }
 }

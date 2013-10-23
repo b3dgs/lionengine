@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Factory
+public final class Factory
         extends FactoryObjectGame<Type, SetupGame, TypeBase>
 {
     /** Parameter. Can be replaced by another type if needed. */
@@ -47,19 +47,14 @@ public class Factory
      */
     public Factory()
     {
-        super(Type.class, Type.values(), "factory");
+        super(Type.class, "factory");
         param = new Object();
+        setArguments(param);
     }
 
     /*
-     * FactoryGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <T extends TypeBase> T create(Type type)
-    {
-        return create(type, param);
-    }
 
     @Override
     protected SetupGame createSetup(Type type, Media config)

@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.ResourceType;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
@@ -71,12 +72,13 @@ public abstract class UnitWorker
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type enum.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected UnitWorker(EntityType id, Context context)
+    protected UnitWorker(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         factory = context.factoryEntity;
         handler = context.handlerEntity;
         producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);

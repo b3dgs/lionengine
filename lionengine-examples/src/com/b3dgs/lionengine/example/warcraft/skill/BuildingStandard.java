@@ -15,25 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.warcraft.skill.orc;
+package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillBuild;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
+import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.game.rts.ControlPanelModel;
+import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
- * Buildings standard human skill implementation.
+ * Build skill implementation.
  */
-public final class BuildOrc
-        extends SkillBuild
+public abstract class BuildingStandard
+        extends Skill
 {
     /**
      * Constructor.
      * 
+     * @param id The skill id.
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    public BuildOrc(SetupSkill setup)
+    protected BuildingStandard(SkillType id, SetupSkill setup, Context context)
     {
-        super(SkillType.BUILDING_STANDARD_ORC, setup);
+        super(id, setup, context);
+    }
+
+    /*
+     * Skill
+     */
+
+    @Override
+    public void action(ControlPanelModel<?> panel, CursorRts cursor)
+    {
+        owner.setSkillPanel(1);
     }
 }

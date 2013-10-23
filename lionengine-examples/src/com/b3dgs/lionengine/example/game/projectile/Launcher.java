@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -30,10 +31,11 @@ abstract class Launcher
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param factory The factory reference.
      * @param handler The handler reference.
      */
-    Launcher(FactoryProjectile factory, HandlerProjectile handler)
+    Launcher(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
     }

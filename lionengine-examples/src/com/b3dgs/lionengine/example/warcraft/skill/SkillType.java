@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
@@ -100,13 +101,13 @@ public enum SkillType implements ObjectType
     @Override
     public String asPathName()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return Media.getPath(race.asPathName(), ObjectTypeUtility.asPathName(this));
     }
 
     @Override
     public String asClassName()
     {
-        return ObjectTypeUtility.asClassName(this);
+        return race.asPathName() + "." + ObjectTypeUtility.asClassName(this);
     }
 
     @Override

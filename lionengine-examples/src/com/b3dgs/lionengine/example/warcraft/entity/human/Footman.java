@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Grunt implementation.
@@ -32,11 +33,12 @@ public final class Footman
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Footman(Context context)
+    public Footman(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.FOOTMAN, context);
+        super(EntityType.FOOTMAN, setup, context);
         addWeapon(context, WeaponType.SWORD, 0);
         addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
         addSkill(context, 0, SkillType.STOP_HUMAN, 1);

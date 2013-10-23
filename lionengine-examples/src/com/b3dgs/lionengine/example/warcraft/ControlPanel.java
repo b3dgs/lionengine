@@ -28,8 +28,10 @@ import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
@@ -80,11 +82,15 @@ public final class ControlPanel
         barProgress = new Bar(62, 6);
         barProgress.setColorForeground(ColorRgba.GREEN);
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
-        sprite = ResourcesLoader.HUD;
-        entityStats = ResourcesLoader.ENTITY_STATS;
-        progress = ResourcesLoader.PROGRESS;
+        sprite = Drawable.loadSprite(Media.get("hud.png"));
+        entityStats = Drawable.loadSprite(Media.get("entity_stats.png"));
+        progress = Drawable.loadSprite(Media.get("progress.png"));
         lastSelection = null;
         setClickSelection(Click.LEFT);
+
+        sprite.load(false);
+        entityStats.load(false);
+        progress.load(false);
     }
 
     /**

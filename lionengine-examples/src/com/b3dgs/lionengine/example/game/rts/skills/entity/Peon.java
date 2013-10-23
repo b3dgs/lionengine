@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
 import com.b3dgs.lionengine.example.game.rts.skills.Context;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Peon implementation.
@@ -31,11 +32,12 @@ public final class Peon
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Peon(Context context)
+    public Peon(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.PEON, context);
+        super(EntityType.PEON, setup, context);
         addSkill(context.factoryEntity, 0, SkillType.MOVE_ORC, 0);
         addSkill(context.factoryEntity, 0, SkillType.STOP_ORC, 1);
         addSkill(context.factoryEntity, 0, SkillType.BUILDING_STANDARD_ORC, 2);

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.Attack;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
@@ -32,10 +32,10 @@ public final class AttackAxe
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param handler The handler reference.
+     * @param context The context reference.
      */
-    public AttackAxe(SetupSkill setup, HandlerEntity handler)
+    public AttackAxe(SetupSkill setup, Context context)
     {
-        super(SkillType.ATTACK_SWORD, setup, handler);
+        super(SkillType.ATTACK_SWORD, setup, context);
     }
 }

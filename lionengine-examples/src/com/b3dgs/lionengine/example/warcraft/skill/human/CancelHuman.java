@@ -15,27 +15,27 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.warcraft;
+package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.game.rts.ability.producer.Producible;
+import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.skill.Cancel;
+import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
+import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
- * Producible entity implementation.
+ * Cancel skill implementation.
  */
-public final class ProducibleEntity
-        extends Producible<EntityType, ProductionCost>
+public final class CancelHuman
+        extends Cancel
 {
     /**
      * Constructor.
      * 
-     * @param id The entity id.
-     * @param cost The production cost.
-     * @param tw The production width.
-     * @param th The production height.
+     * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    ProducibleEntity(EntityType id, ProductionCost cost, int tw, int th)
+    public CancelHuman(SetupSkill setup, Context context)
     {
-        super(id, cost, tw, th);
+        super(SkillType.CANCEL_HUMAN, setup, context);
     }
 }

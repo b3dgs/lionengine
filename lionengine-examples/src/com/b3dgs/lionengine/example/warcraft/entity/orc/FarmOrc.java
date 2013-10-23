@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.entity.orc;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Building;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Farm building implementation. This building allows to increase the population capacity.
@@ -30,10 +31,11 @@ public final class FarmOrc
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public FarmOrc(Context context)
+    public FarmOrc(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.FARM_ORC, context);
+        super(EntityType.FARM_ORC, setup, context);
     }
 }

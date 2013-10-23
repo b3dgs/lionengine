@@ -29,11 +29,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public final class FactoryEntityBonus
         extends FactoryObjectGame<EntityBonusType, SetupSurfaceGame, Bonus>
 {
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-
     /**
      * Constructor.
      * 
@@ -42,21 +37,14 @@ public final class FactoryEntityBonus
      */
     public FactoryEntityBonus(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntityBonusType.class, EntityBonusType.values(), Media.getPath("entities", "bonus"));
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(EntityBonusType.class, Media.getPath("entities", "bonus"));
+        setArguments(factoryEffect, handlerEffect);
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Bonus> E create(EntityBonusType type)
-    {
-        return create(type, getSetup(type), factoryEffect, handlerEffect);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityBonusType key, Media config)

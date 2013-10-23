@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.warcraft;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.example.warcraft.entity.ProductionCost;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.rts.PlayerRts;
 

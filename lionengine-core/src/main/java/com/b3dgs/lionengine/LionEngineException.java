@@ -47,6 +47,42 @@ public final class LionEngineException
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599463L;
 
+    /**
+     * Get the filtered stack traces.
+     * 
+     * @param allTrace All traces.
+     * @return Filtered traces.
+     */
+    private static StackTraceElement[] getFilteredTraces(StackTraceElement[] allTrace)
+    {
+        final List<StackTraceElement> neededTrace = new ArrayList<>(4);
+        for (final StackTraceElement element : allTrace)
+        {
+            final String className = element.getClassName();
+
+            // Ignored package
+            boolean add = true;
+            if (className.startsWith(LionEngineException.IGNORE))
+            {
+                final String pack = className.substring(LionEngineException.IGNORE_SIZE);
+                for (final String ignore : LionEngineException.IGNORED)
+                {
+                    // Ignored sub package
+                    if (pack.startsWith(ignore))
+                    {
+                        add = false;
+                        break;
+                    }
+                }
+            }
+            if (add)
+            {
+                neededTrace.add(element);
+            }
+        }
+        return neededTrace.toArray(new StackTraceElement[neededTrace.size()]);
+    }
+
     /** The message. */
     private final String message;
     /** The reason. */
@@ -115,6 +151,14 @@ public final class LionEngineException
      */
 
     @Override
+    public synchronized Throwable fillInStackTrace()
+    {
+        final Throwable throwable = super.fillInStackTrace();
+        throwable.setStackTrace(LionEngineException.getFilteredTraces(throwable.getStackTrace()));
+        return throwable;
+    }
+
+    @Override
     public void printStackTrace(PrintStream stream)
     {
         synchronized (stream)
@@ -139,31 +183,7 @@ public final class LionEngineException
             }
 
             // Filter traces
-            final List<StackTraceElement> neededTrace = new ArrayList<>(4);
-            for (final StackTraceElement element : allTrace)
-            {
-                final String className = element.getClassName();
-
-                // Ignored package
-                boolean add = true;
-                if (className.startsWith(LionEngineException.IGNORE))
-                {
-                    final String pack = className.substring(LionEngineException.IGNORE_SIZE);
-                    for (final String ignore : LionEngineException.IGNORED)
-                    {
-                        // Ignored sub package
-                        if (pack.startsWith(ignore))
-                        {
-                            add = false;
-                            break;
-                        }
-                    }
-                }
-                if (add)
-                {
-                    neededTrace.add(element);
-                }
-            }
+            final StackTraceElement[] neededTrace = LionEngineException.getFilteredTraces(allTrace);
 
             // Display traces
             boolean first = true;
@@ -174,7 +194,16 @@ public final class LionEngineException
                 {
                     if (first)
                     {
-                        stream.println(": " + message + "\n\tReason: " + reason + "\n\tat " + element);
+                        final String reasonDesc;
+                        if (reason != null)
+                        {
+                            reasonDesc = "\n\tReason: " + reason;
+                        }
+                        else
+                        {
+                            reasonDesc = "";
+                        }
+                        stream.println(": " + message + reasonDesc + "\n\tat " + element);
                     }
                     else
                     {

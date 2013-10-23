@@ -31,10 +31,6 @@ final class FactoryEntity
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
-    /** Map reference. */
-    private final Map map;
-    /** Entity desired fps. */
-    private final Integer desiredFps;
 
     /**
      * Constructor.
@@ -44,21 +40,14 @@ final class FactoryEntity
      */
     FactoryEntity(Map map, int desiredFps)
     {
-        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
-        this.map = map;
-        this.desiredFps = Integer.valueOf(desiredFps);
+        super(EntityType.class, FactoryEntity.ENTITY_DIR);
+        setArguments(map, Integer.valueOf(desiredFps));
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityType type)
-    {
-        return create(type, getSetup(type), map, desiredFps);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityType key, Media config)

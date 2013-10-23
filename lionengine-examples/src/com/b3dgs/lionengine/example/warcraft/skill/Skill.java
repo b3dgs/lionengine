@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -40,7 +40,7 @@ public abstract class Skill
     /** Text. */
     protected final Text text;
     /** Id. */
-    private final SkillType id;
+    private final SkillType type;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Background. */
@@ -61,19 +61,20 @@ public abstract class Skill
     /**
      * Constructor.
      * 
-     * @param id The skill id.
+     * @param type The skill type.
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    protected Skill(SkillType id, SetupSkill setup)
+    protected Skill(SkillType type, SetupSkill setup, Context context)
     {
         super(setup);
-        this.id = id;
+        this.type = type;
         message = setup.message;
         text = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;
         background = setup.background;
-        gold = ResourcesLoader.GOLD;
-        wood = ResourcesLoader.WOOD;
+        gold = setup.gold;
+        wood = setup.wood;
     }
 
     /**
@@ -146,6 +147,6 @@ public abstract class Skill
     @Override
     public SkillType getType()
     {
-        return id;
+        return type;
     }
 }

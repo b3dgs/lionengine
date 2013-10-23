@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
@@ -32,9 +33,10 @@ public final class ProduceArcher
      * Constructor.
      * 
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    public ProduceArcher(SetupSkill setup)
+    public ProduceArcher(SetupSkill setup, Context context)
     {
-        super(SkillType.PRODUCE_ARCHER, setup, EntityType.ARCHER);
+        super(SkillType.PRODUCE_ARCHER, setup, context, EntityType.ARCHER);
     }
 }

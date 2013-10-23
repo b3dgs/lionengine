@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.effect.Effect;
 import com.b3dgs.lionengine.example.warcraft.effect.EffectType;
 import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Abstract building entity implementation.
@@ -61,12 +62,13 @@ public abstract class Building
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected Building(EntityType id, Context context)
+    protected Building(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         setLayer(0);
         setFrame(2);
         handlerEffect = context.handlerEffect;

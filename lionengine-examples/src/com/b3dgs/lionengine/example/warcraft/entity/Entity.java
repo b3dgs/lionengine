@@ -22,13 +22,14 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Player;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.skill.Skill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
@@ -63,9 +64,10 @@ public abstract class Entity
      * Constructor.
      * 
      * @param type The entity type.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected Entity(EntityType type, Context context)
+    protected Entity(EntityType type, SetupSurfaceGame setup, Context context)
     {
         super(context.factoryEntity.getSetup(type), context.map);
         this.type = type;
@@ -74,8 +76,7 @@ public abstract class Entity
         life = new Alterable(getDataInteger("life", "attributes"));
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(Media.get(ResourcesLoader.ENTITIES_DIR, type.race.asPathName(),
-                getDataString("icon")));
+        icon = Drawable.loadSprite(Media.get(AppWarcraft.ENTITIES_DIR, type.race.asPathName(), getDataString("icon")));
         icon.load(false);
         dead = false;
         owner = null;

@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 
@@ -36,15 +37,16 @@ public abstract class Weapon
     /**
      * Constructor.
      * 
-     * @param id The weapon id.
+     * @param type The weapon type.
+     * @param setup The setup reference.
      * @param user The user reference.
      * @param context The context reference.
      */
-    protected Weapon(WeaponType id, Attacker user, Context context)
+    protected Weapon(WeaponType type, SetupGame setup, Attacker user, Context context)
     {
         super(user);
 
-        final Configurable config = context.factoryWeapon.getSetup(id).configurable;
+        final Configurable config = setup.configurable;
         setAttackFrame(config.getDataInteger("attackFrame"));
         setAttackTimer(config.getDataInteger("attackTimer"));
 

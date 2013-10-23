@@ -35,18 +35,12 @@ final class FactoryProjectile
      */
     FactoryProjectile()
     {
-        super(ProjectileType.class, ProjectileType.values(), "");
+        super(ProjectileType.class, "");
     }
 
     /*
      * FactoryObjectGame
      */
-
-    @Override
-    public <P extends Projectile> P create(ProjectileType type)
-    {
-        return create(type, getSetup(type));
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(ProjectileType type, Media config)

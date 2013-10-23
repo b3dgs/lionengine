@@ -216,7 +216,7 @@ public final class Media
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException("Error on getting stream of: \"", path, "\"");
+            throw new LionEngineException("File not found: \"", path, "\"");
         }
     }
 

@@ -21,8 +21,6 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
-import com.b3dgs.lionengine.example.warcraft.ProductionCost;
 import com.b3dgs.lionengine.example.warcraft.ResourceType;
 import com.b3dgs.lionengine.example.warcraft.effect.Effect;
 import com.b3dgs.lionengine.example.warcraft.effect.EffectType;
@@ -31,6 +29,7 @@ import com.b3dgs.lionengine.example.warcraft.map.Tile;
 import com.b3dgs.lionengine.example.warcraft.map.TileCollision;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
@@ -85,12 +84,13 @@ public abstract class UnitWorker
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected UnitWorker(EntityType id, Context context)
+    protected UnitWorker(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         factory = context.factoryEntity;
         handlerEntity = context.handlerEntity;
         handlerEffect = context.handlerEffect;

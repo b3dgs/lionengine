@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.example.warcraft;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.audio.AudioMidi;
-import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
@@ -41,7 +39,7 @@ public final class Scene
     /** Game configuration. */
     private final GameConfig config;
     /** Music. */
-    private final Midi music;
+    private final Music music;
 
     /**
      * Standard constructor.
@@ -54,7 +52,7 @@ public final class Scene
         super(loader, Scene.NATIVE);
         this.config = config;
         world = new World(this, config);
-        music = AudioMidi.loadMidi(Media.get(ResourcesLoader.MUSICS_DIR, "orcs.mid"));
+        music = Music.ORCS;
         setMouseVisible(false);
     }
 
@@ -65,8 +63,8 @@ public final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get(ResourcesLoader.MAPS_DIR, config.map));
-        // music.play(true);
+        world.loadFromFile(Media.get(AppWarcraft.MAPS_DIR, config.map));
+        // Music.play(music);
     }
 
     @Override
@@ -88,11 +86,11 @@ public final class Scene
     @Override
     protected void onTerminate(boolean hasNextSequence)
     {
+        Music.stop(music);
         Sfx.stopAll();
         if (!hasNextSequence)
         {
             Sfx.terminateAll();
         }
-        music.stop();
     }
 }

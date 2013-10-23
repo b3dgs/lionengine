@@ -30,11 +30,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public final class FactoryEntityScenery
         extends FactoryObjectGame<EntitySceneryType, SetupSurfaceGame, Entity>
 {
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-
     /**
      * Constructor.
      * 
@@ -43,21 +38,14 @@ public final class FactoryEntityScenery
      */
     public FactoryEntityScenery(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntitySceneryType.class, EntitySceneryType.values(), Media.getPath("entities", "scenery"));
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(EntitySceneryType.class, Media.getPath("entities", "scenery"));
+        setArguments(factoryEffect, handlerEffect);
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntitySceneryType type)
-    {
-        return create(type, getSetup(type), factoryEffect, handlerEffect);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntitySceneryType key, Media config)

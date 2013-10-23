@@ -151,14 +151,8 @@ public class ModuleGame
     {
         public Factory()
         {
-            super(EntityType.class, EntityType.values(), "objects");
+            super(EntityType.class, "objects");
             load();
-        }
-
-        @Override
-        public <E extends ObjectGame> E create(EntityType type)
-        {
-            return create(type);
         }
 
         @Override

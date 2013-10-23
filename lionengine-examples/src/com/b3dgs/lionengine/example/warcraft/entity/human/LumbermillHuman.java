@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.warcraft.entity.human;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Building;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Lumber mill building implementation. This building allows to enable archer production and bow upgrades.
@@ -30,10 +31,11 @@ public final class LumbermillHuman
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public LumbermillHuman(Context context)
+    public LumbermillHuman(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.LUMBERMILL_HUMAN, context);
+        super(EntityType.LUMBERMILL_HUMAN, setup, context);
     }
 }

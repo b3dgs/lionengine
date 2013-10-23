@@ -31,10 +31,6 @@ public final class FactoryProjectile
 {
     /** Projectile surfaces. */
     private final SetupSurfaceGame setup;
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
 
     /**
      * Constructor.
@@ -44,22 +40,15 @@ public final class FactoryProjectile
      */
     public FactoryProjectile(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(ProjectileType.class, ProjectileType.values(), "projectiles");
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(ProjectileType.class, "projectiles");
         setup = new SetupSurfaceGame(Media.get("sprites", "weapons.xml"));
+        setArguments(factoryEffect, handlerEffect);
         load();
     }
 
     /*
-     * FactoryProjectileGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <P extends Projectile> P create(ProjectileType type)
-    {
-        return create(type, getSetup(type), factoryEffect, handlerEffect);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(ProjectileType type, Media config)

@@ -36,10 +36,24 @@ public final class AppWarcraft
     public static final Version VERSION = Version.create(0, 1, 0);
     /** Effects directory. */
     public static final String EFFECTS_DIR = "effects";
-    /** Configuration file extension. */
-    public static final String CONFIG_FILE_EXTENSION = ".xml";
-    /** Sfx directory. */
+    /** Entities directory. */
+    public static final String ENTITIES_DIR = "entities";
+    /** Projectiles directory. */
+    public static final String PROJECTILES_DIR = "projectiles";
+    /** Skills directory. */
+    public static final String SKILLS_DIR = "skills";
+    /** Maps directory. */
+    public static final String MAPS_DIR = "maps";
+    /** Tiles directory. */
+    public static final String TILES_DIR = "tiles";
+    /** Weapons directory. */
+    public static final String WEAPONS_DIR = "weapons";
+    /** Sounds FX directory. */
     public static final String SFX_DIR = "sfx";
+    /** Musics directory. */
+    public static final String MUSICS_DIR = "musics";
+    /** Menu directory. */
+    public static final String MENU_DIR = "menu";
     /** Enable sound. */
     private static final boolean ENABLE_SOUND = true;
     /** Program path. */
@@ -53,12 +67,12 @@ public final class AppWarcraft
     public static void main(String[] args)
     {
         Engine.start(AppWarcraft.PROGRAM, AppWarcraft.VERSION, AppWarcraft.PATH);
+        Music.setEnabled(AppWarcraft.ENABLE_SOUND);
         Sfx.setEnabled(AppWarcraft.ENABLE_SOUND);
 
         final Resolution output = new Resolution(640, 400, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
-        ResourcesLoader.load();
         loader.start(new Menu(loader));
     }
 

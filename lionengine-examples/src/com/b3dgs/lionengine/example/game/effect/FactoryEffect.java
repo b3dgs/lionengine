@@ -35,18 +35,12 @@ public class FactoryEffect
      */
     public FactoryEffect()
     {
-        super(EffectType.class, EffectType.values(), "");
+        super(EffectType.class, "");
     }
 
     /*
-     * FactoryEffectGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Effect> E create(EffectType type)
-    {
-        return create(type, getSetup(type));
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EffectType type, Media config)

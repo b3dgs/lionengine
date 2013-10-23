@@ -37,6 +37,5 @@ public final class MissileFront
     public MissileFront(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(setup, 120, factoryEffect, handlerEffect);
-
     }
 }

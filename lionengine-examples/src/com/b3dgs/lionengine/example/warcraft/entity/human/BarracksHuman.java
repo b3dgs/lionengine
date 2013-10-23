@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
@@ -31,11 +32,12 @@ public final class BarracksHuman
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public BarracksHuman(Context context)
+    public BarracksHuman(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.BARRACKS_HUMAN, context);
+        super(EntityType.BARRACKS_HUMAN, setup, context);
         addSkill(context, 0, SkillType.PRODUCE_FOOTMAN, 0);
         addSkill(context, 0, SkillType.PRODUCE_ARCHER, 1);
     }

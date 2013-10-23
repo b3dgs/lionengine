@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.weapon.Weapon;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 
@@ -40,12 +41,13 @@ public abstract class UnitAttacker
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
+     * @param type The entity type enum.
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    protected UnitAttacker(EntityType id, Context context)
+    protected UnitAttacker(EntityType type, SetupSurfaceGame setup, Context context)
     {
-        super(id, context);
+        super(type, setup, context);
         animAttack = getDataAnimation("attack");
         attacker = new AttackerModel<>(this);
     }
@@ -77,7 +79,8 @@ public abstract class UnitAttacker
      */
     protected void addWeapon(Context context, WeaponType type, int id)
     {
-        final Weapon weapon = context.factoryWeapon.create(type, this);
+        context.factoryWeapon.setArguments(this, context);
+        final Weapon weapon = context.factoryWeapon.create(type);
         addWeapon(weapon, id);
     }
 

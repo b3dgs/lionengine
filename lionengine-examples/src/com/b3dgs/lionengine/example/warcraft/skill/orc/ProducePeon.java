@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
@@ -32,9 +33,10 @@ public final class ProducePeon
      * Constructor.
      * 
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    public ProducePeon(SetupSkill setup)
+    public ProducePeon(SetupSkill setup, Context context)
     {
-        super(SkillType.PRODUCE_PEON, setup, EntityType.PEON);
+        super(SkillType.PRODUCE_PEON, setup, context, EntityType.PEON);
     }
 }

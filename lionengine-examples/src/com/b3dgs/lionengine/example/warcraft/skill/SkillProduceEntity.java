@@ -17,10 +17,11 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
-import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.warcraft.entity.ProducibleEntity;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 /**
  * Skill build implementation.
  */
-public class SkillProduceEntity
+public abstract class SkillProduceEntity
         extends Skill
 {
     /** Production factory. */
@@ -43,13 +44,14 @@ public class SkillProduceEntity
     /**
      * Constructor.
      * 
-     * @param id The skill id.
+     * @param type The skill id.
      * @param setup The setup skill reference.
+     * @param context The context reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceEntity(SkillType id, SetupSkill setup, EntityType entity)
+    protected SkillProduceEntity(SkillType type, SetupSkill setup, Context context, EntityType entity)
     {
-        super(id, setup);
+        super(type, setup, context);
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
         final Configurable config = factoryProduction.getConfig(EntityType.BARRACKS_ORC);

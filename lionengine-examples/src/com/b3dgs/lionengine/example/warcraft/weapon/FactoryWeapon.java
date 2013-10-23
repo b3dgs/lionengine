@@ -18,9 +18,7 @@
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
-import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
@@ -30,49 +28,18 @@ import com.b3dgs.lionengine.game.SetupGame;
 public final class FactoryWeapon
         extends FactoryObjectGame<WeaponType, SetupGame, Weapon>
 {
-    /** Context reference. */
-    private Context context;
-
     /**
      * Constructor.
      */
     public FactoryWeapon()
     {
-        super(WeaponType.class, WeaponType.values(), ResourcesLoader.WEAPONS_DIR);
+        super(WeaponType.class, AppWarcraft.WEAPONS_DIR);
         load();
-    }
-
-    /**
-     * Set the context.
-     * 
-     * @param context The context
-     */
-    public void setContext(Context context)
-    {
-        this.context = context;
-    }
-
-    /**
-     * Create a weapon from its type.
-     * 
-     * @param type The weapon type.
-     * @param user The user reference.
-     * @return The weapon instance.
-     */
-    public Weapon create(WeaponType type, UnitAttacker user)
-    {
-        return create(type, user, context);
     }
 
     /*
      * FactoryObjectGame
      */
-
-    @Override
-    public <W extends Weapon> W create(WeaponType id)
-    {
-        return null;
-    }
 
     @Override
     protected SetupGame createSetup(WeaponType type, Media config)

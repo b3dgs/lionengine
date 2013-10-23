@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 final class FactoryEntity
         extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
 {
-    /** Map reference. */
-    private final Map map;
-
     /**
      * Constructor.
      * 
@@ -40,20 +37,14 @@ final class FactoryEntity
      */
     FactoryEntity(Map map)
     {
-        super(EntityType.class, EntityType.values(), "");
-        this.map = map;
+        super(EntityType.class, "");
+        setArguments(map);
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityType type)
-    {
-        return create(type, this, map);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityType key, Media config)

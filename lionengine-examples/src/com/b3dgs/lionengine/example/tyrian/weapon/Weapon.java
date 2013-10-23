@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.Projectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -37,10 +38,11 @@ public abstract class Weapon
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param factory The factory reference.
      * @param handler The handler reference.
      */
-    public Weapon(FactoryProjectile factory, HandlerProjectile handler)
+    public Weapon(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
     {
         super(factory, handler);
         level.setMax(5);

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
+import com.b3dgs.lionengine.game.SetupGame;
+
 /**
  * Ground truck implementation.
  * 
@@ -28,10 +30,11 @@ public final class GroundTruck
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param param The parameter.
      */
-    public GroundTruck(Object param)
+    public GroundTruck(SetupGame setup, Object param)
     {
-        super(Type.GROUND_TRUCK, param);
+        super(Type.GROUND_TRUCK, setup, param);
     }
 }

@@ -34,8 +34,6 @@ public final class FactorySkill
     public static final String SKILL_PATH = "skills";
     /** Production factory. */
     private final FactoryProduction factoryProduction;
-    /** Cursor. */
-    private final Cursor cursor;
 
     /**
      * Create a new entity factory.
@@ -45,21 +43,15 @@ public final class FactorySkill
      */
     public FactorySkill(FactoryProduction factoryProduction, Cursor cursor)
     {
-        super(SkillType.class, SkillType.values(), FactorySkill.SKILL_PATH);
+        super(SkillType.class, FactorySkill.SKILL_PATH);
         this.factoryProduction = factoryProduction;
-        this.cursor = cursor;
+        setArguments(cursor);
         load();
     }
 
     /*
-     * FactorySkillRts
+     * FactoryObjectGame
      */
-
-    @Override
-    public <S extends Skill> S create(SkillType type)
-    {
-        return create(type, getSetup(type), cursor);
-    }
 
     @Override
     protected SetupSkill createSetup(SkillType type, Media config)

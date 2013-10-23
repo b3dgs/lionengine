@@ -32,15 +32,13 @@ public class FactoryEntity
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
-    /** Context reference. */
-    private Context context;
 
     /**
      * Constructor. Entity data are stored in a .txt file and the surface in .png file.
      */
     public FactoryEntity()
     {
-        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_PATH);
+        super(EntityType.class, FactoryEntity.ENTITY_PATH);
         load();
     }
 
@@ -51,18 +49,12 @@ public class FactoryEntity
      */
     public void setContext(Context context)
     {
-        this.context = context;
+        setArguments(context);
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityType type)
-    {
-        return create(type, context);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityType key, Media config)

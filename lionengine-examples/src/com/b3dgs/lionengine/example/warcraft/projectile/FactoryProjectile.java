@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.warcraft.projectile;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
@@ -33,19 +33,13 @@ public final class FactoryProjectile
      */
     public FactoryProjectile()
     {
-        super(ProjectileType.class, ProjectileType.values(), ResourcesLoader.PROJECTILES_DIR);
+        super(ProjectileType.class, AppWarcraft.PROJECTILES_DIR);
         load();
     }
 
     /*
-     * FactoryProjectileGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <P extends Projectile> P create(ProjectileType type)
-    {
-        return create(type, getSetup(ProjectileType.SPEAR));
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(ProjectileType type, Media config)

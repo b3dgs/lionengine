@@ -17,23 +17,25 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
+import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.skill.Move;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillBuild;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
- * Buildings standard human skill implementation.
+ * Move skill implementation.
  */
-public final class BuildHuman
-        extends SkillBuild
+public final class MoveHuman
+        extends Move
 {
     /**
      * Constructor.
      * 
      * @param setup The setup skill reference.
+     * @param context The context reference.
      */
-    public BuildHuman(SetupSkill setup)
+    public MoveHuman(SetupSkill setup, Context context)
     {
-        super(SkillType.BUILDING_STANDARD_HUMAN, setup);
+        super(SkillType.MOVE_HUMAN, setup, context);
     }
 }

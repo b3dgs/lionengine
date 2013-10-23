@@ -30,7 +30,7 @@ final class HandlerEntity
         extends HandlerEntityPlatform<Entity>
 {
     /** Mario reference. */
-    private final Mario mario;
+    private final Entity mario;
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ final class HandlerEntity
      * @param camera The camera reference.
      * @param mario The mario reference.
      */
-    HandlerEntity(CameraPlatform camera, Mario mario)
+    HandlerEntity(CameraPlatform camera, Entity mario)
     {
         super(camera);
         this.mario = mario;

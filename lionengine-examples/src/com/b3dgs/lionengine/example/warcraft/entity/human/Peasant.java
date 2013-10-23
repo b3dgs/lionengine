@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Peon implementation.
@@ -31,11 +32,12 @@ public final class Peasant
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Peasant(Context context)
+    public Peasant(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.PEASANT, context);
+        super(EntityType.PEASANT, setup, context);
         addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
         addSkill(context, 0, SkillType.STOP_HUMAN, 1);
         addSkill(context, 0, SkillType.BUILDING_STANDARD_HUMAN, 2);

@@ -30,13 +30,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public final class FactoryShip
         extends FactoryObjectGame<ShipType, SetupSurfaceGame, Ship>
 {
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-    /** Factory weapon. */
-    private final FactoryWeapon factoryWeapon;
-
     /**
      * Constructor
      * 
@@ -46,22 +39,14 @@ public final class FactoryShip
      */
     public FactoryShip(FactoryEffect factoryEffect, HandlerEffect handlerEffect, FactoryWeapon factoryWeapon)
     {
-        super(ShipType.class, ShipType.values(), "ships");
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
-        this.factoryWeapon = factoryWeapon;
+        super(ShipType.class, "ships");
+        setArguments(factoryEffect, handlerEffect, factoryWeapon);
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <S extends Ship> S create(ShipType type)
-    {
-        return create(type, getSetup(type), factoryEffect, handlerEffect, factoryWeapon);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(ShipType type, Media config)

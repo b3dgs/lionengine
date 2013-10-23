@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.example.warcraft.ResourceProgressive;
 import com.b3dgs.lionengine.example.warcraft.ResourceType;
 import com.b3dgs.lionengine.example.warcraft.entity.Building;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 
 /**
@@ -39,11 +40,12 @@ public final class GoldMine
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public GoldMine(Context context)
+    public GoldMine(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.GOLD_MINE, context);
+        super(EntityType.GOLD_MINE, setup, context);
         typeResource = ResourceType.GOLD;
         gold = new ResourceProgressive(100);
         setFrame(1);

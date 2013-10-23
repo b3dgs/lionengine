@@ -43,7 +43,7 @@ public class FactoryEffect
      */
     public FactoryEffect(HandlerEffect handlerEffect)
     {
-        super(EffectType.class, EffectType.values(), AppLionheart.EFFECTS_DIR);
+        super(EffectType.class, AppLionheart.EFFECTS_DIR);
         this.handlerEffect = handlerEffect;
     }
 
@@ -72,14 +72,8 @@ public class FactoryEffect
     }
 
     /*
-     * FactoryEffectGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Effect> E create(EffectType type)
-    {
-        return create(type, getSetup(type));
-    }
 
     @Override
     protected SetupSurfaceRasteredGame createSetup(EffectType type, Media config)

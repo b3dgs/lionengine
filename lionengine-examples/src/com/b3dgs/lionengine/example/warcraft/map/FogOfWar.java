@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.example.warcraft.map;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.GameConfig;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.game.rts.map.FogOfWarRts;
 
 /**
@@ -37,8 +37,8 @@ public final class FogOfWar
      */
     public FogOfWar(GameConfig config)
     {
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Media.get(ResourcesLoader.TILES_DIR, "hide.png"), 16, 16);
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Media.get(ResourcesLoader.TILES_DIR, "fog.png"), 16, 16);
+        final SpriteTiled hide = Drawable.loadSpriteTiled(Media.get(AppWarcraft.TILES_DIR, "hide.png"), 16, 16);
+        final SpriteTiled fog = Drawable.loadSpriteTiled(Media.get(AppWarcraft.TILES_DIR, "fog.png"), 16, 16);
         hide.load(false);
         fog.load(false);
         setFogTiles(hide, fog);

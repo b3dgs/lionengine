@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.WeaponType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Grunt implementation.
@@ -31,11 +32,13 @@ public final class Grunt
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Grunt(Context context)
+    public Grunt(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.GRUNT, context);
-        addWeapon(context.factoryWeapon.create(WeaponType.AXE, this), 0);
+        super(EntityType.GRUNT, setup, context);
+        context.factoryWeapon.setArguments(this, context);
+        addWeapon(context.factoryWeapon.create(WeaponType.AXE), 0);
     }
 }

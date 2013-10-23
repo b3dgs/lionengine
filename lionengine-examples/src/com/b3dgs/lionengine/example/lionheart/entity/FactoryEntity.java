@@ -55,7 +55,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
      */
     protected FactoryEntity(Class<T> keyType, T[] types, WorldType world)
     {
-        super(keyType, types, Media.getPath(AppLionheart.ENTITIES_DIR, world.asPathName()));
+        super(keyType, Media.getPath(AppLionheart.ENTITIES_DIR, world.asPathName()));
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
      */
     protected FactoryEntity(Class<T> keyType, T[] types, String folder)
     {
-        super(keyType, types, Media.getPath(AppLionheart.ENTITIES_DIR, folder));
+        super(keyType, Media.getPath(AppLionheart.ENTITIES_DIR, folder));
     }
 
     /**
@@ -95,6 +95,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
     public void setLevel(Level level)
     {
         this.level = level;
+        setArguments(level);
     }
 
     /**
@@ -108,7 +109,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
 
     @Override

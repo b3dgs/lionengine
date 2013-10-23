@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.WeaponType;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Spearman implementation.
@@ -31,11 +32,13 @@ public final class Spearman
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param context The context reference.
      */
-    public Spearman(Context context)
+    public Spearman(SetupSurfaceGame setup, Context context)
     {
-        super(EntityType.SPEARMAN, context);
-        addWeapon(context.factoryWeapon.create(WeaponType.SPEAR, this), 0);
+        super(EntityType.SPEARMAN, setup, context);
+        context.factoryWeapon.setArguments(this, context);
+        addWeapon(context.factoryWeapon.create(WeaponType.SPEAR), 0);
     }
 }

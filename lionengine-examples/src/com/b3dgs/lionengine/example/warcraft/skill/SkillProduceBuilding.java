@@ -18,11 +18,12 @@
 package com.b3dgs.lionengine.example.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Cursor;
 import com.b3dgs.lionengine.example.warcraft.CursorType;
-import com.b3dgs.lionengine.example.warcraft.FactoryProduction;
-import com.b3dgs.lionengine.example.warcraft.ProducibleEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.warcraft.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.game.purview.Configurable;
@@ -58,17 +59,16 @@ public abstract class SkillProduceBuilding
     /**
      * Constructor.
      * 
-     * @param id The skill id.
+     * @param type The skill type.
      * @param setup The setup skill reference.
+     * @param context The context reference.
      * @param entity The entity type to produce.
-     * @param cursor The cursor reference.
-     * @param map The map reference.
      */
-    protected SkillProduceBuilding(SkillType id, SetupSkill setup, EntityType entity, Cursor cursor, Map map)
+    protected SkillProduceBuilding(SkillType type, SetupSkill setup, Context context, EntityType entity)
     {
-        super(id, setup);
-        this.cursor = cursor;
-        this.map = map;
+        super(type, setup, context);
+        cursor = context.cursor;
+        map = context.map;
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
         final Configurable config = factoryProduction.getConfig(entity);

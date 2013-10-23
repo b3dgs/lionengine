@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Missile front implementation.
@@ -31,14 +32,11 @@ final class MissileLauncherFront
         extends Weapon
 {
     /**
-     * Constructor.
-     * 
-     * @param factory The factory reference.
-     * @param handler The handler reference.
+     * {@link Weapon#Weapon(SetupGame, FactoryProjectile, HandlerProjectile)}
      */
-    public MissileLauncherFront(FactoryProjectile factory, HandlerProjectile handler)
+    public MissileLauncherFront(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
     {
-        super(factory, handler);
+        super(setup, factory, handler);
         setRate(400);
     }
 

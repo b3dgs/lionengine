@@ -29,11 +29,6 @@ import com.b3dgs.lionengine.game.SetupGame;
 public final class FactoryWeapon
         extends FactoryObjectGame<WeaponType, SetupGame, Weapon>
 {
-    /** Factory reference. */
-    private final FactoryProjectile factory;
-    /** Handler reference. */
-    private final HandlerProjectile handler;
-
     /**
      * Constructor.
      * 
@@ -42,20 +37,13 @@ public final class FactoryWeapon
      */
     public FactoryWeapon(FactoryProjectile factory, HandlerProjectile handler)
     {
-        super(WeaponType.class, WeaponType.values(), "weapons");
-        this.factory = factory;
-        this.handler = handler;
+        super(WeaponType.class, "weapons");
+        setArguments(factory, handler);
     }
 
     /*
      * FactoryObjectGame
      */
-
-    @Override
-    public <W extends Weapon> W create(WeaponType type)
-    {
-        return create(type, factory, handler);
-    }
 
     @Override
     protected SetupGame createSetup(WeaponType type, Media config)

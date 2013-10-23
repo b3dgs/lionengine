@@ -30,11 +30,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public final class FactoryEntityDynamic
         extends FactoryObjectGame<EntityDynamicType, SetupSurfaceGame, Entity>
 {
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
-
     /**
      * Constructor.
      * 
@@ -43,21 +38,14 @@ public final class FactoryEntityDynamic
      */
     public FactoryEntityDynamic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntityDynamicType.class, EntityDynamicType.values(), Media.getPath("entities", "dynamic"));
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        super(EntityDynamicType.class, Media.getPath("entities", "dynamic"));
+        setArguments(factoryEffect, handlerEffect);
         load();
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityDynamicType type)
-    {
-        return create(type, getSetup(type), factoryEffect, handlerEffect);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityDynamicType key, Media config)

@@ -37,12 +37,4 @@ public interface ObjectType
      * @return The class name equivalence.
      */
     public String asClassName();
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @return The title name.
-     */
-    @Override
-    public String toString();
 }

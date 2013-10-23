@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.rts.controlpanel;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
@@ -41,13 +42,13 @@ abstract class Entity
     /**
      * Constructor.
      * 
-     * @param id The entity type enum.
-     * @param factory The factory reference.
+     * @param type The entity type.
+     * @param setup The setup reference.
      * @param map The map reference.
      */
-    Entity(EntityType id, FactoryEntity factory, Map map)
+    Entity(EntityType type, SetupSurfaceGame setup, Map map)
     {
-        super(factory.getSetup(id), map);
+        super(setup, map);
         this.map = map;
         animIdle = getDataAnimation("idle");
         life = new Alterable(1);

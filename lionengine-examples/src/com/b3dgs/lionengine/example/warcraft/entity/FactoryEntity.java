@@ -18,26 +18,22 @@
 package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.ResourcesLoader;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity implementation.
  */
 public class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
 {
-    /** Context. */
-    private Context context;
-
     /**
      * Constructor.
      */
     public FactoryEntity()
     {
-        super(EntityType.class, EntityType.values(), ResourcesLoader.ENTITIES_DIR);
+        super(EntityType.class, AppWarcraft.ENTITIES_DIR);
         load();
     }
 
@@ -48,22 +44,16 @@ public class FactoryEntity
      */
     public void setContext(Context context)
     {
-        this.context = context;
+        setArguments(context);
     }
 
     /*
-     * FactoryEntityGame
+     * FactoryObjectGame
      */
 
     @Override
-    public <E extends Entity> E create(EntityType type)
+    protected SetupEntity createSetup(EntityType type, Media config)
     {
-        return create(type, context);
-    }
-
-    @Override
-    protected SetupSurfaceGame createSetup(EntityType type, Media config)
-    {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, type);
     }
 }

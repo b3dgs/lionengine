@@ -33,8 +33,6 @@ final class FactoryEntity
     private final Integer desiredFps;
     /** Map reference. */
     private final Map map;
-    /** Server status. */
-    private Boolean server;
 
     /**
      * Standard constructor.
@@ -44,10 +42,9 @@ final class FactoryEntity
      */
     FactoryEntity(int desiredFps, Map map)
     {
-        super(EntityType.class, EntityType.values(), FactoryEntity.ENTITY_DIR);
+        super(EntityType.class, FactoryEntity.ENTITY_DIR);
         this.desiredFps = Integer.valueOf(desiredFps);
         this.map = map;
-
         load();
     }
 
@@ -58,18 +55,12 @@ final class FactoryEntity
      */
     public void setServer(boolean server)
     {
-        this.server = Boolean.valueOf(server);
+        setArguments(map, desiredFps, Boolean.valueOf(server));
     }
 
     /*
      * FactoryObjectGame
      */
-
-    @Override
-    public <E extends Entity> E create(EntityType type)
-    {
-        return create(type, getSetup(type), map, desiredFps, server);
-    }
 
     @Override
     protected SetupSurfaceGame createSetup(EntityType key, Media config)
