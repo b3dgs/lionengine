@@ -36,7 +36,7 @@ public final class AppGameHandler
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Handler", Version.create(1, 0, 0), Media.getPath("resources", "game"));
+        Engine.start("Game Handler", Version.create(1, 0, 0), Media.getPath("resources", "game", "handler"));
 
         final Handler handler = new Handler();
         handler.add(new MyObject());
