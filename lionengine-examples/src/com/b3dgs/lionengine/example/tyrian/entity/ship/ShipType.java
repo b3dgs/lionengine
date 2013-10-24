@@ -26,27 +26,37 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum ShipType implements ObjectType
 {
     /** Gencore phoenix. */
-    GENCORE_PHOENIX;
+    GENCORE_PHOENIX(GencorePhoenix.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private ShipType(Class<?> target)
+    {
+        this.target = target;
+        pathName = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

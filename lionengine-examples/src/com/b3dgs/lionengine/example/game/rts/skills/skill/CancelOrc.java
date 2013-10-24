@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -33,11 +32,10 @@ public final class CancelOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
      */
-    public CancelOrc(SetupSkill setup, Cursor cursor)
+    public CancelOrc(SetupSkill setup)
     {
-        super(SkillType.CANCEL_ORC, setup);
+        super(setup);
     }
 
     /*

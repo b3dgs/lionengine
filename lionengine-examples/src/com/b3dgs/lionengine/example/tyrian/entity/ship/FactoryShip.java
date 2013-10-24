@@ -22,25 +22,33 @@ import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory ship.
  */
 public final class FactoryShip
-        extends FactoryObjectGame<ShipType, SetupSurfaceGame, Ship>
+        extends FactoryObjectGame<ShipType, SetupEntityShip, Ship>
 {
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
+    /** Factory weapon. */
+    private final FactoryWeapon factoryWeapon;
+
     /**
      * Constructor
      * 
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The effect handler reference.
-     * @param factoryWeapon The factory weapon reference.
+     * @param factoryWeapon The weapon factory reference.
+     * @param factoryEffect The factory effect reference.
+     * @param handlerEffect The handler effect reference.
      */
     public FactoryShip(FactoryEffect factoryEffect, HandlerEffect handlerEffect, FactoryWeapon factoryWeapon)
     {
         super(ShipType.class, "ships");
-        setArguments(factoryEffect, handlerEffect, factoryWeapon);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
+        this.factoryWeapon = factoryWeapon;
         load();
     }
 
@@ -49,8 +57,8 @@ public final class FactoryShip
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(ShipType type, Media config)
+    protected SetupEntityShip createSetup(ShipType type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntityShip(config, factoryEffect, handlerEffect, factoryWeapon);
     }
 }

@@ -26,63 +26,73 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EntitySceneryType implements ObjectType
 {
     /** Sub square. */
-    SUB_SQUARE,
+    SUB_SQUARE(SubSquare.class),
     /** House 812. */
-    HOUSE812,
+    HOUSE812(House812.class),
     /** House 92. */
-    HOUSE92,
+    HOUSE92(House92.class),
     /** Pump. */
-    PUMP,
+    PUMP(Pump.class),
     /** Spider. */
-    SPIDER,
+    SPIDER(Spider.class),
     /** Lamp. */
-    LAMP,
+    LAMP(Lamp.class),
     /** Head. */
-    HEAD,
+    HEAD(Head.class),
     /** Silo. */
-    SILO,
+    SILO(Silo.class),
     /** Openable pulse. */
-    OPENABLE_PULSE,
+    OPENABLE_PULSE(OpenablePulse.class),
     /** Green pulse. */
-    GREEN_PULSE,
+    GREEN_PULSE(GreenPulse.class),
     /** Double canon. */
-    DOUBLE_CANON,
+    DOUBLE_CANON(DoubleCanon.class),
     /** Single canon. */
-    SINGLE_CANON,
+    SINGLE_CANON(SingleCanon.class),
     /** Double pulse. */
-    DOUBLE_PULSE,
+    DOUBLE_PULSE(DoublePulse.class),
     /** Single pulse. */
-    SINGLE_PULSE,
+    SINGLE_PULSE(SinglePulse.class),
     /** Red box. */
-    RED_BOX,
+    RED_BOX(RedBox.class),
     /** Red engine. */
-    RED_ENGINE,
+    RED_ENGINE(RedEngine.class),
     /** Three red horizontal. */
-    THREE_RED_H,
+    THREE_RED_H(ThreeRedH.class),
     /** Three red vertical. */
-    THREE_RED_V,
+    THREE_RED_V(ThreeRedV.class),
     /** Generator. */
-    GENERATOR;
+    GENERATOR(Generator.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private EntitySceneryType(Class<?> target)
+    {
+        this.target = target;
+        pathName = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

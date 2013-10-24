@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.example.lionheart.map.Tile;
@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.example.lionheart.map.TileCollision;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Crawling monster implementation.
@@ -57,11 +56,10 @@ public final class Crawling
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Crawling(SetupSurfaceRasteredGame setup, Level level)
+    public Crawling(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.CRAWLING);
+        super(setup);
         timerJump = new Timing();
         setFrameOffsets(0, -4);
         enableMovement(Patrol.HORIZONTAL);

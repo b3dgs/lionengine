@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
  * 
@@ -32,10 +29,9 @@ public final class BarracksOrc
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public BarracksOrc(SetupSurfaceGame setup, Context context)
+    public BarracksOrc(SetupEntity setup)
     {
-        super(EntityType.BARRACKS_ORC, setup, context);
+        super(setup);
     }
 }

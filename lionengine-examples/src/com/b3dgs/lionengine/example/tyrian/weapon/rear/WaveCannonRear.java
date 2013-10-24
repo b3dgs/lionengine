@@ -19,11 +19,9 @@ package com.b3dgs.lionengine.example.tyrian.weapon.rear;
 
 import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
+import com.b3dgs.lionengine.example.tyrian.weapon.SetupWeapon;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Wave cannon implementation.
@@ -37,11 +35,11 @@ public final class WaveCannonRear
     private int id2;
 
     /**
-     * @see Weapon#Weapon(SetupGame, FactoryProjectile, HandlerProjectile)
+     * @see Weapon#Weapon(SetupWeapon)
      */
-    public WaveCannonRear(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
+    public WaveCannonRear(SetupWeapon setup)
     {
-        super(setup, factory, handler);
+        super(setup);
         setOffsetY(-15);
         setRate(250);
     }

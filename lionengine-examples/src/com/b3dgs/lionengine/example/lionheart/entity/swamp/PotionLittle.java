@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Little Potion item. Give a single heart to the player.
@@ -35,11 +33,10 @@ public final class PotionLittle
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public PotionLittle(SetupSurfaceRasteredGame setup, Level level)
+    public PotionLittle(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.POTION_LITTLE, EffectType.TAKEN);
+        super(setup);
     }
 
     /*

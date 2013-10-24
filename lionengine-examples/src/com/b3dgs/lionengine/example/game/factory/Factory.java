@@ -19,13 +19,12 @@ package com.b3dgs.lionengine.example.game.factory;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Factory implementation example.
  * This factory will allow to create instances of type.
  * Each type should have one configuration file, in XML.
- * According to {@link Type} and {@link Type#asPathName()}, the configuration files should be as follow:
+ * According to {@link Type} and {@link Type#getPathName()}, the configuration files should be as follow:
  * <p>
  * In 'factory' folder:
  * <ul>
@@ -37,7 +36,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Factory
-        extends FactoryObjectGame<Type, SetupGame, TypeBase>
+        extends FactoryObjectGame<Type, Setup, TypeBase>
 {
     /** Parameter. Can be replaced by another type if needed. */
     private final Object param;
@@ -49,7 +48,6 @@ public final class Factory
     {
         super(Type.class, "factory");
         param = new Object();
-        setArguments(param);
     }
 
     /*
@@ -57,8 +55,8 @@ public final class Factory
      */
 
     @Override
-    protected SetupGame createSetup(Type type, Media config)
+    protected Setup createSetup(Type type, Media config)
     {
-        return new SetupGame(config);
+        return new Setup(config, type, param);
     }
 }

@@ -44,7 +44,7 @@ public class Effect
      */
     public Effect(SetupSurfaceGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         // Data are loaded from the XML file, depending of the type
         final int framesHorizontal = getDataInteger("horizontal", "frames");
         final int framesVertical = getDataInteger("vertical", "frames");

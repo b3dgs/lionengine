@@ -23,9 +23,10 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  * List of services provided by an attacker.
  * 
  * @param <E> The entity type used.
+ * @param <A> The attacker type used.
  * @param <W> The weapon type used.
  */
-public interface AttackerServices<E extends EntityRts, W extends WeaponServices<E>>
+public interface AttackerServices<E extends EntityRts, A extends AttackerUsedServices<E>, W extends WeaponServices<E, A>>
 {
     /**
      * Add a weapon.
@@ -41,6 +42,14 @@ public interface AttackerServices<E extends EntityRts, W extends WeaponServices<
      * @param id The weapon to remove from its index number.
      */
     void removeWeapon(int id);
+
+    /**
+     * Get a weapon from its id.
+     * 
+     * @param id The weapon id.
+     * @return The weapon reference.
+     */
+    W getWeapon(int id);
 
     /**
      * Set the current weapon to use.

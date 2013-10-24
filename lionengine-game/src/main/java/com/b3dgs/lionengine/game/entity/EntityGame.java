@@ -57,7 +57,7 @@ public abstract class EntityGame
      */
     public EntityGame(SetupGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         body = new BodyModel();
         mirrorable = new MirrorableModel();
         collidable = new CollidableModel(this);

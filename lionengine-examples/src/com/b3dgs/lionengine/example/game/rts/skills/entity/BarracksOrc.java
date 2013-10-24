@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
-import com.b3dgs.lionengine.example.game.rts.skills.Context;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.SkillType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Barracks building implementation. This building allows to create new grunt.
@@ -33,11 +31,10 @@ public final class BarracksOrc
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public BarracksOrc(SetupSurfaceGame setup, Context context)
+    public BarracksOrc(SetupEntity setup)
     {
-        super(EntityType.BARRACKS_ORC, setup, context);
-        addSkill(context.factoryEntity, 0, SkillType.PRODUCE_PEON, 0);
+        super(setup);
+        addSkill(setup.factoryEntity, 0, SkillType.PRODUCE_PEON, 0);
     }
 }

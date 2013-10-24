@@ -19,10 +19,7 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
 
 import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Pulse projectile.
@@ -33,13 +30,11 @@ public final class Pulse
     /**
      * Constructor.
      * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
      * @param setup The setup reference.
      */
-    public Pulse(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public Pulse(SetupProjectile setup)
     {
-        super(setup, 0, factoryEffect, handlerEffect);
+        super(setup, 0);
     }
 
     /*

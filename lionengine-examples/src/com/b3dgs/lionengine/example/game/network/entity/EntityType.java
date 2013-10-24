@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 enum EntityType implements ObjectType
 {
     /** Mario. */
-    MARIO,
+    MARIO(Mario.class),
     /** Goomba. */
-    GOOMBA;
+    GOOMBA(Goomba.class);
 
     /** Values. */
     private static final EntityType[] VALUES = EntityType.values();
@@ -44,25 +44,35 @@ enum EntityType implements ObjectType
         return EntityType.VALUES[ordinal];
     }
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private EntityType(Class<?> target)
+    {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
+    }
+
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.controlpanel;
 
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Peon implementation.
  * 
@@ -31,11 +29,10 @@ public final class Peon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param map The map reference.
      */
-    public Peon(SetupSurfaceGame setup, Map map)
+    public Peon(SetupEntity setup)
     {
-        super(EntityType.PEON, setup, map);
+        super(setup);
         life.setMax(60);
         life.fill();
     }

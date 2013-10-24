@@ -541,7 +541,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     private void updateClickAttacker(E entity, int tx, int ty)
     {
         @SuppressWarnings("unchecked")
-        final AttackerServices<E, ?> attacker = (AttackerServices<E, ?>) entity;
+        final AttackerServices<E, ?, ?> attacker = (AttackerServices<E, ?, ?>) entity;
         attacker.stopAttack();
         try
         {

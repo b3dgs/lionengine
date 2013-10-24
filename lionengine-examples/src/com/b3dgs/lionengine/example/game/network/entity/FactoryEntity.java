@@ -19,20 +19,21 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
  */
 final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
     /** Entity desired fps. */
-    private final Integer desiredFps;
+    private final int desiredFps;
     /** Map reference. */
     private final Map map;
+    /** Server. */
+    private boolean server;
 
     /**
      * Standard constructor.
@@ -43,7 +44,7 @@ final class FactoryEntity
     FactoryEntity(int desiredFps, Map map)
     {
         super(EntityType.class, FactoryEntity.ENTITY_DIR);
-        this.desiredFps = Integer.valueOf(desiredFps);
+        this.desiredFps = desiredFps;
         this.map = map;
         load();
     }
@@ -55,7 +56,8 @@ final class FactoryEntity
      */
     public void setServer(boolean server)
     {
-        setArguments(map, desiredFps, Boolean.valueOf(server));
+        this.server = server;
+        load();
     }
 
     /*
@@ -63,8 +65,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    protected SetupEntity createSetup(EntityType type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, type, map, desiredFps, server);
     }
 }

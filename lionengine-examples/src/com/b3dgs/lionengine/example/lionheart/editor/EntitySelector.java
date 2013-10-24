@@ -147,7 +147,7 @@ public class EntitySelector
                 if (entity.getCategory() == category)
                 {
                     final Media media = Media.get(AppLionheart.ENTITIES_DIR, category.getFolder(), world.toString(),
-                            entity.asPathName() + "_ico.png");
+                            entity.getPathName() + "_ico.png");
                     ico.add(Drawable.loadImage(media));
                     length++;
                 }

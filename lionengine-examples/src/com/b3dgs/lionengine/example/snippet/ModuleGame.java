@@ -50,16 +50,29 @@ public class ModuleGame
     {
         ;
 
-        @Override
-        public String asPathName()
+        private final Class<?> target;
+        private final String pathName;
+
+        private EntityType(Class<?> target)
         {
-            return ObjectTypeUtility.asPathName(this);
+            this.target = target;
+            pathName = ObjectTypeUtility.asPathName(this);
+        }
+
+        /*
+         * ObjectType
+         */
+
+        @Override
+        public Class<?> getTargetClass()
+        {
+            return target;
         }
 
         @Override
-        public String asClassName()
+        public String getPathName()
         {
-            return ObjectTypeUtility.asClassName(this);
+            return pathName;
         }
     }
 

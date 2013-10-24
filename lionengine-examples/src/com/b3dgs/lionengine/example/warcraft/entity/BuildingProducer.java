@@ -19,10 +19,8 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 import java.util.Iterator;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Player;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
@@ -48,16 +46,14 @@ public abstract class BuildingProducer
     /**
      * Constructor.
      * 
-     * @param type The entity type.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected BuildingProducer(EntityType type, SetupSurfaceGame setup, Context context)
+    protected BuildingProducer(SetupEntity setup)
     {
-        super(type, setup, context);
-        factory = context.factoryEntity;
-        message = context.timedMessage;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
+        super(setup);
+        factory = setup.factoryEntity;
+        message = setup.message;
+        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
     }
 

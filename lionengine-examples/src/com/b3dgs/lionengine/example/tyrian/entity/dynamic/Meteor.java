@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 
 /**
  * Meteor implementation.
@@ -31,11 +29,13 @@ abstract class Meteor
         extends Entity
 {
     /**
-     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * Constructor
+     * 
+     * @param setup The setup reference.
      */
-    protected Meteor(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Meteor(SetupEntity setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 
     /*

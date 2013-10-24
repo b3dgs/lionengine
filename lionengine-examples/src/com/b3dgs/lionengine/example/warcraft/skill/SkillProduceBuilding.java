@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.warcraft.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Cursor;
 import com.b3dgs.lionengine.example.warcraft.CursorType;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
@@ -59,19 +58,17 @@ public abstract class SkillProduceBuilding
     /**
      * Constructor.
      * 
-     * @param type The skill type.
      * @param setup The setup skill reference.
-     * @param context The context reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceBuilding(SkillType type, SetupSkill setup, Context context, EntityType entity)
+    protected SkillProduceBuilding(SetupSkill setup, EntityType entity)
     {
-        super(type, setup, context);
-        cursor = context.cursor;
-        map = context.map;
+        super(setup);
+        cursor = setup.cursor;
+        map = setup.map;
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getConfig(entity);
+        final Configurable config = factoryProduction.getSetup(entity).configurable;
         width = config.getDataInteger("widthInTile", "size");
         height = config.getDataInteger("heightInTile", "size");
         gold = config.getDataInteger("gold", "cost");

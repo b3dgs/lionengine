@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.Cancel;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Cancel skill implementation.
@@ -32,10 +30,9 @@ public final class CancelHuman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public CancelHuman(SetupSkill setup, Context context)
+    public CancelHuman(SetupSkill setup)
     {
-        super(SkillType.CANCEL_HUMAN, setup, context);
+        super(setup);
     }
 }

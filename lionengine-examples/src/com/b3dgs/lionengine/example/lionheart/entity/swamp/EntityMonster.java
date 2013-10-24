@@ -21,14 +21,13 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
 import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.State;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrollable;
@@ -36,7 +35,6 @@ import com.b3dgs.lionengine.example.lionheart.entity.patrol.PatrollerModel;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Monster base implementation.
@@ -59,14 +57,14 @@ public class EntityMonster
     private final PatrollerModel patroller;
 
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    public EntityMonster(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    public EntityMonster(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
         life = new Alterable(getDataInteger("normal", "life"));
         timerHurt = new Timing();
-        factoryEffect = level.factoryEffect;
+        factoryEffect = setup.level.factoryEffect;
         patroller = new PatrollerModel(this);
     }
 

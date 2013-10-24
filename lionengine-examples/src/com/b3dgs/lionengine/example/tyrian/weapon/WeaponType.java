@@ -18,6 +18,12 @@
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.weapon.front.HyperPulse;
+import com.b3dgs.lionengine.example.tyrian.weapon.front.MachineGun;
+import com.b3dgs.lionengine.example.tyrian.weapon.front.MissileLauncherFront;
+import com.b3dgs.lionengine.example.tyrian.weapon.front.PulseCannon;
+import com.b3dgs.lionengine.example.tyrian.weapon.rear.MissileLauncherRear;
+import com.b3dgs.lionengine.example.tyrian.weapon.rear.WaveCannonRear;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
@@ -31,34 +37,41 @@ public enum WeaponType implements ObjectType
      */
 
     /** Pulse cannon. */
-    PULSE_CANNON(WeaponCategory.FRONT),
+    PULSE_CANNON(PulseCannon.class, WeaponCategory.FRONT),
     /** Missile rear launcher. */
-    MISSILE_LAUNCHER_FRONT(WeaponCategory.FRONT),
+    MISSILE_LAUNCHER_FRONT(MissileLauncherFront.class, WeaponCategory.FRONT),
     /** Machine gun. */
-    MACHINE_GUN(WeaponCategory.FRONT),
+    MACHINE_GUN(MachineGun.class, WeaponCategory.FRONT),
     /** Hyper Pulse. */
-    HYPER_PULSE(WeaponCategory.FRONT),
+    HYPER_PULSE(HyperPulse.class, WeaponCategory.FRONT),
 
     /*
      * Rear
      */
 
     /** Missile rear launcher. */
-    MISSILE_LAUNCHER_REAR(WeaponCategory.REAR),
+    MISSILE_LAUNCHER_REAR(MissileLauncherRear.class, WeaponCategory.REAR),
     /** Wave cannon. */
-    WAVE_CANNON(WeaponCategory.REAR);
+    WAVE_CANNON_REAR(WaveCannonRear.class, WeaponCategory.REAR);
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
     /** Weapon category. */
     private final WeaponCategory category;
 
     /**
      * Constructor.
      * 
+     * @param target The target class.
      * @param category The weapon category.
      */
-    private WeaponType(WeaponCategory category)
+    private WeaponType(Class<?> target, WeaponCategory category)
     {
+        this.target = target;
         this.category = category;
+        pathName = Media.getPath(ObjectTypeUtility.asPathName(category), ObjectTypeUtility.asPathName(this));
     }
 
     /**
@@ -76,20 +89,14 @@ public enum WeaponType implements ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return Media.getPath(category.asPathName(), ObjectTypeUtility.asPathName(this));
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return category.asPathName() + "." + ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

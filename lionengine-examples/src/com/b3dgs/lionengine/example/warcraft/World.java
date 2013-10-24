@@ -28,14 +28,21 @@ import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.example.warcraft.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.example.warcraft.map.FogOfWar;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.example.warcraft.map.Minimap;
+import com.b3dgs.lionengine.example.warcraft.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.warcraft.projectile.HandlerProjectile;
+import com.b3dgs.lionengine.example.warcraft.skill.FactorySkill;
+import com.b3dgs.lionengine.example.warcraft.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.TextGame;
@@ -68,14 +75,26 @@ final class World
     private final ControlPanel controlPanel;
     /** Entity factory. */
     private final FactoryEntity factoryEntity;
+    /** The factory reference. */
+    public final FactoryProjectile factoryProjectile;
+    /** The factory skill. */
+    public final FactorySkill factorySkill;
+    /** The factory skill. */
+    public final FactoryLauncher factoryLauncher;
+    /** The factory production. */
+    public final FactoryProduction factoryProduction;
+    /** The factory weapon. */
+    public final FactoryWeapon factoryWeapon;
+    /** The factory effect. */
+    public final FactoryEffect factoryEffect;
     /** Entity handler. */
     private final HandlerEntity handlerEntity;
+    /** Effect handler. */
+    private final HandlerEffect handlerEffect;
     /** Arrows handler. */
     private final HandlerProjectile handlerProjectile;
     /** Timed message. */
     private final TimedMessage message;
-    /** Context. */
-    private final Context context;
 
     /**
      * Constructor.
@@ -87,21 +106,32 @@ final class World
     {
         super(sequence);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
+        message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
+        fogOfWar = new FogOfWar(config);
         player = new Player();
         cpu = new Player();
         map = new Map();
+
         camera = new Camera(map);
-        fogOfWar = new FogOfWar(config);
         cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
                 Media.get("cursor_order.png"));
-        message = new TimedMessage(UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL));
         controlPanel = new ControlPanel(cursor);
+
+        handlerEffect = new HandlerEffect(camera);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, fogOfWar);
-        minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        context = new Context(camera, map, handlerEntity, handlerProjectile, cursor, message, source.getRate());
-        factoryEntity = context.factoryEntity;
-        context.assignContext();
+
+        minimap = new Minimap(map, fogOfWar, controlPanel, handlerEntity, 3, 6);
+
+        factoryProjectile = new FactoryProjectile();
+        factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
+        factoryWeapon = new FactoryWeapon(factoryLauncher);
+        factoryProduction = new FactoryProduction();
+        factorySkill = new FactorySkill(map, cursor, handlerEntity, factoryProduction, message);
+        factoryEffect = new FactoryEffect();
+
+        factoryEntity = new FactoryEntity(map, message, factoryEffect, factorySkill, factoryWeapon, handlerEntity,
+                handlerEffect, handlerProjectile, source.getRate());
     }
 
     /**
@@ -133,8 +163,8 @@ final class World
         controlPanel.update(extrp, camera, cursor, keyboard);
         handlerEntity.update(extrp);
         handlerProjectile.update(extrp);
-        minimap.update(cursor, camera, context.handlerEntity, 11, 12);
-        context.handlerEffect.update(extrp);
+        minimap.update(cursor, camera, handlerEntity, 11, 12);
+        handlerEffect.update(extrp);
         message.update();
         player.update(extrp);
 
@@ -146,7 +176,7 @@ final class World
         map.render(g, camera);
         handlerEntity.render(g);
         handlerProjectile.render(g);
-        context.handlerEffect.render(g);
+        handlerEffect.render(g);
         fogOfWar.render(g, camera);
         cursor.renderBox(g);
         controlPanel.renderCursorSelection(g, camera);
@@ -187,8 +217,6 @@ final class World
         handlerEntity.createLayers(map);
         handlerEntity.setPlayer(player);
         handlerEntity.setClickAssignment(Click.RIGHT);
-
-        factoryEntity.setContext(context);
 
         createEntity(EntityType.GOLD_MINE, 30, 13);
         createEntity(EntityType.GOLD_MINE, 58, 58);

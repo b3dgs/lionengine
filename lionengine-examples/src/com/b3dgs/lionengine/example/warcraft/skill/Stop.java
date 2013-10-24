@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -30,13 +29,11 @@ public abstract class Stop
     /**
      * Constructor.
      * 
-     * @param type The skill type.
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public Stop(SkillType type, SetupSkill setup, Context context)
+    public Stop(SetupSkill setup)
     {
-        super(type, setup, context);
+        super(setup);
     }
 
     /*

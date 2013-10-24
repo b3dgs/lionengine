@@ -17,11 +17,6 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.ship;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * GencorePhoenix implementation
  */
@@ -29,11 +24,10 @@ public final class GencorePhoenix
         extends Ship
 {
     /**
-     * @see Ship#Ship(SetupSurfaceGame, FactoryEffect, HandlerEffect, FactoryWeapon)
+     * @see Ship#Ship(SetupEntityShip)
      */
-    public GencorePhoenix(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect,
-            FactoryWeapon factoryWeapon)
+    public GencorePhoenix(SetupEntityShip setup)
     {
-        super(setup, factoryEffect, handlerEffect, factoryWeapon);
+        super(setup);
     }
 }

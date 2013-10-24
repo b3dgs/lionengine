@@ -28,27 +28,37 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EffectType implements ObjectType
 {
     /** Explode. */
-    EXPLODE;
+    EXPLODE(Explode.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private EffectType(Class<?> target)
+    {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

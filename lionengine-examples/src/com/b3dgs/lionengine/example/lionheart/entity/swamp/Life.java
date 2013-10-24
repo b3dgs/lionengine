@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Life item. Give a life to the player when taken.
@@ -35,11 +33,10 @@ public final class Life
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Life(SetupSurfaceRasteredGame setup, Level level)
+    public Life(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.LIFE, EffectType.TAKEN);
+        super(setup);
     }
 
     /*

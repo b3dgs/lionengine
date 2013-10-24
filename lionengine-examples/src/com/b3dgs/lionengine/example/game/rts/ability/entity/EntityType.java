@@ -28,39 +28,49 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EntityType implements ObjectType
 {
     /** Peon unit. */
-    PEON,
+    PEON(Peon.class),
     /** Grunt unit. */
-    GRUNT,
+    GRUNT(Grunt.class),
     /** Spearman unit. */
-    SPEARMAN,
+    SPEARMAN(Spearman.class),
     /** TownHall building. */
-    TOWNHALL_ORC,
+    TOWNHALL_ORC(TownhallOrc.class),
     /** Farm building. */
-    FARM_ORC,
+    FARM_ORC(FarmOrc.class),
     /** Barracks building. */
-    BARRACKS_ORC,
+    BARRACKS_ORC(BarracksOrc.class),
     /** Gold mine building. */
-    GOLD_MINE;
+    GOLD_MINE(GoldMine.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+
+    /**
+     * The class target.
+     * 
+     * @param target The target class.
+     */
+    private EntityType(Class<?> target)
+    {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

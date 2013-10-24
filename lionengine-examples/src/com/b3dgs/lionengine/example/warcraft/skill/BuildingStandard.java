@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -30,13 +29,11 @@ public abstract class BuildingStandard
     /**
      * Constructor.
      * 
-     * @param id The skill id.
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    protected BuildingStandard(SkillType id, SetupSkill setup, Context context)
+    protected BuildingStandard(SetupSkill setup)
     {
-        super(id, setup, context);
+        super(setup);
     }
 
     /*

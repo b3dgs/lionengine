@@ -28,29 +28,39 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum WeaponType implements ObjectType
 {
     /** Axe weapon. */
-    AXE,
+    AXE(Axe.class),
     /** Spear weapon. */
-    SPEAR;
+    SPEAR(Spear.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+
+    /**
+     * The class target.
+     * 
+     * @param target The target class.
+     */
+    private WeaponType(Class<?> target)
+    {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

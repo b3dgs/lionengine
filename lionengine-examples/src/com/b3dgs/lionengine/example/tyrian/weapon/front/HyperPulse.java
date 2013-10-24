@@ -19,11 +19,9 @@ package com.b3dgs.lionengine.example.tyrian.weapon.front;
 
 import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
+import com.b3dgs.lionengine.example.tyrian.weapon.SetupWeapon;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Hyper pulse implementation.
@@ -32,11 +30,11 @@ public final class HyperPulse
         extends Weapon
 {
     /**
-     * @see Weapon#Weapon(SetupGame, FactoryProjectile, HandlerProjectile)
+     * @see Weapon#Weapon(SetupWeapon)
      */
-    public HyperPulse(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
+    public HyperPulse(SetupWeapon setup)
     {
-        super(setup, factory, handler);
+        super(setup);
         setOffsetY(-5);
         setRate(120);
     }

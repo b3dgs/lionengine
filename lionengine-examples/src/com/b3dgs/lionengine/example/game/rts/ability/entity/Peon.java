@@ -17,9 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Peon implementation.
  * 
@@ -32,10 +29,9 @@ public final class Peon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public Peon(SetupSurfaceGame setup, Context context)
+    public Peon(SetupEntity setup)
     {
-        super(EntityType.PEON, setup, context);
+        super(setup);
     }
 }

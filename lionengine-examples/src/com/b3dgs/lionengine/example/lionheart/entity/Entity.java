@@ -24,13 +24,11 @@ import com.b3dgs.lionengine.Coord;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.map.Map;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatformRastered;
 
 /**
@@ -72,15 +70,13 @@ public abstract class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
-     * @param type The entity type.
      */
-    protected Entity(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    protected Entity(SetupEntity setup)
     {
         super(setup, Map.TILE_HEIGHT);
-        this.type = type;
-        map = level.map;
-        desiredFps = level.desiredFps;
+        type = setup.type;
+        map = setup.level.map;
+        desiredFps = setup.level.desiredFps;
         status = new EntityStatus();
         animations = new HashMap<>(4);
         collisions = new HashMap<>(4);

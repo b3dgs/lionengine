@@ -28,22 +28,24 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum Type implements ObjectType
 {
     /** Fly. */
-    FLY_MACHINE,
+    FLY_MACHINE(FlyMachine.class),
     /** Ground. */
-    GROUND_TRUCK;
+    GROUND_TRUCK(GroundTruck.class);
 
+    /** Class target. */
+    private final Class<?> target;
     /** Path name. */
     private final String pathName;
-    /** Class name. */
-    private final String className;
 
     /**
      * Constructor.
+     * 
+     * @param target The target class.
      */
-    private Type()
+    private Type(Class<?> target)
     {
+        this.target = target;
         pathName = ObjectTypeUtility.asPathName(this);
-        className = ObjectTypeUtility.asClassName(this);
     }
 
     /*
@@ -51,14 +53,14 @@ public enum Type implements ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return pathName;
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return className;
+        return pathName;
     }
 }

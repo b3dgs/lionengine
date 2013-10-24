@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.scenery;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 
 /**
  * Double canon implementation.
@@ -31,10 +29,10 @@ public final class DoubleCanon
         extends EntityScenery
 {
     /**
-     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupEntity)}
      */
-    public DoubleCanon(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public DoubleCanon(SetupEntity setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 }

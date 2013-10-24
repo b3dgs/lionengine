@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
@@ -44,17 +43,15 @@ public abstract class SkillProduceEntity
     /**
      * Constructor.
      * 
-     * @param type The skill id.
      * @param setup The setup skill reference.
-     * @param context The context reference.
      * @param entity The entity type to produce.
      */
-    protected SkillProduceEntity(SkillType type, SetupSkill setup, Context context, EntityType entity)
+    protected SkillProduceEntity(SetupSkill setup, EntityType entity)
     {
-        super(type, setup, context);
+        super(setup);
         this.entity = entity;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getConfig(EntityType.BARRACKS_ORC);
+        final Configurable config = factoryProduction.getSetup(entity).configurable;
         gold = config.getDataInteger("gold", "cost");
         wood = config.getDataInteger("wood", "cost");
         setOrder(false);

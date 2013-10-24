@@ -18,13 +18,11 @@
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
 import com.b3dgs.lionengine.Rectangle;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityMover;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Entity scenery base implementation.
@@ -40,11 +38,11 @@ public abstract class EntityScenery
     private boolean collideOld;
 
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    protected EntityScenery(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    protected EntityScenery(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
     }
 
     /**

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.mario;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
@@ -27,21 +26,27 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
 
+    /** Map. */
+    private final Map map;
+    /** Desired fps. */
+    private final int desiredFps;
+
     /**
      * Constructor.
      * 
-     * @param desiredFps The desired fps.
      * @param map The map reference.
+     * @param desiredFps The desired fps.
      */
     FactoryEntity(Map map, int desiredFps)
     {
         super(EntityType.class, FactoryEntity.ENTITY_DIR);
-        setArguments(map, Integer.valueOf(desiredFps));
+        this.map = map;
+        this.desiredFps = desiredFps;
         load();
     }
 
@@ -50,8 +55,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    protected SetupEntity createSetup(EntityType key, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, map, desiredFps);
     }
 }

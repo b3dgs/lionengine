@@ -30,9 +30,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
+import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.skills.map.Map;
 import com.b3dgs.lionengine.example.game.rts.skills.map.Tile;
+import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -58,12 +60,14 @@ final class Scene
     private final Cursor cursor;
     /** Control panel reference. */
     private final ControlPanel controlPanel;
+    /** Factory production. */
+    private final FactoryProduction factoryProduction;
+    /** Factory skill. */
+    private final FactorySkill factorySkill;
     /** Entity factory. */
     private final FactoryEntity factoryEntity;
     /** Entity handler. */
     private final HandlerEntity handlerEntity;
-    /** Context. */
-    private final Context context;
 
     /**
      * Constructor.
@@ -80,9 +84,9 @@ final class Scene
                 Media.get("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
-        context = new Context(map, handlerEntity, cursor, source.getRate());
-        factoryEntity = context.factoryEntity;
-        context.assignContext();
+        factoryProduction = new FactoryProduction();
+        factorySkill = new FactorySkill(factoryProduction, cursor);
+        factoryEntity = new FactoryEntity(map, factorySkill, handlerEntity, source.getRate());
         setMouseVisible(false);
     }
 

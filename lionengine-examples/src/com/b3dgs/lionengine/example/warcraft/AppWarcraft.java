@@ -40,6 +40,8 @@ public final class AppWarcraft
     public static final String ENTITIES_DIR = "entities";
     /** Projectiles directory. */
     public static final String PROJECTILES_DIR = "projectiles";
+    /** Projectiles directory. */
+    public static final String LAUNCHERS_DIR = "launchers";
     /** Skills directory. */
     public static final String SKILLS_DIR = "skills";
     /** Maps directory. */

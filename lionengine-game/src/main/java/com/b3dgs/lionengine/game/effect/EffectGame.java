@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 
@@ -40,11 +40,11 @@ public abstract class EffectGame
     /**
      * Constructor.
      * 
-     * @param configurable The configuration reference.
+     * @param setup The setup reference.
      */
-    public EffectGame(Configurable configurable)
+    public EffectGame(SetupGame setup)
     {
-        super(configurable);
+        super(setup);
         location = new LocalizableModel();
     }
 

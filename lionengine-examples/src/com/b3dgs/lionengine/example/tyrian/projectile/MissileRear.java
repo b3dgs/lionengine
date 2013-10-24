@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.example.tyrian.projectile;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Missile rear left projectile.
  */
@@ -30,12 +26,10 @@ public final class MissileRear
     /**
      * Constructor.
      * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
      * @param setup The setup reference.
      */
-    public MissileRear(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public MissileRear(SetupProjectile setup)
     {
-        super(setup, 136, factoryEffect, handlerEffect);
+        super(setup, 136);
     }
 }

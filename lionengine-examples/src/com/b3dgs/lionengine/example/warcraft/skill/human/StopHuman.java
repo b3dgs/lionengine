@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.skill.Stop;
 
 /**
@@ -32,10 +30,9 @@ public final class StopHuman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public StopHuman(SetupSkill setup, Context context)
+    public StopHuman(SetupSkill setup)
     {
-        super(SkillType.STOP_ORC, setup, context);
+        super(setup);
     }
 }

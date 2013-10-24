@@ -37,49 +37,49 @@ public enum EntitySwampType implements EntityType<EntitySwampType>
      */
 
     /** Talisment (item). */
-    TALISMENT(EntityCategory.ITEM),
+    TALISMENT(Talisment.class, EntityCategory.ITEM),
     /** Potion little (item). */
-    POTION_LITTLE(EntityCategory.ITEM),
+    POTION_LITTLE(PotionLittle.class, EntityCategory.ITEM),
     /** Potion big (item). */
-    POTION_BIG(EntityCategory.ITEM),
+    POTION_BIG(PotionBig.class, EntityCategory.ITEM),
     /** Life (item). */
-    LIFE(EntityCategory.ITEM),
+    LIFE(Life.class, EntityCategory.ITEM),
     /** Sword2 (item). */
-    SWORD2(EntityCategory.ITEM),
+    SWORD2(Sword2.class, EntityCategory.ITEM),
     /** Sword3 (item). */
-    SWORD3(EntityCategory.ITEM),
+    SWORD3(Sword3.class, EntityCategory.ITEM),
     /** Sword4 (item). */
-    SWORD4(EntityCategory.ITEM),
+    SWORD4(Sword4.class, EntityCategory.ITEM),
 
     /*
      * Monster
      */
 
     /** Crawling (monster). */
-    CRAWLING(EntityCategory.MONSTER),
+    CRAWLING(Crawling.class, EntityCategory.MONSTER),
     /** Dino (monster). */
-    DINO(EntityCategory.MONSTER),
+    DINO(Dino.class, EntityCategory.MONSTER),
     /** Bee (monster). */
-    BEE(EntityCategory.MONSTER),
+    BEE(Bee.class, EntityCategory.MONSTER),
     /** BeeLittle (monster). */
-    BEE_LITTLE(EntityCategory.MONSTER),
+    BEE_LITTLE(BeeLittle.class, EntityCategory.MONSTER),
     /** BumbleBee (monster). */
-    BUMBLE_BEE(EntityCategory.MONSTER),
+    BUMBLE_BEE(BumbleBee.class, EntityCategory.MONSTER),
 
     /*
      * Scenery
      */
 
     /** Sheet (scenery). */
-    SHEET(EntityCategory.SCENERY),
+    SHEET(Sheet.class, EntityCategory.SCENERY),
     /** Turning auto (scenery). */
-    TURNING_AUTO(EntityCategory.SCENERY),
+    TURNING_AUTO(TurningAuto.class, EntityCategory.SCENERY),
     /** Turning hit (scenery). */
-    TURNING_HIT(EntityCategory.SCENERY),
+    TURNING_HIT(TurningHit.class, EntityCategory.SCENERY),
     /** Beetle horizontal (scenery). */
-    BEETLE_HORIZONTAL(EntityCategory.SCENERY),
+    BEETLE_HORIZONTAL(BeetleHorizontal.class, EntityCategory.SCENERY),
     /** Beetle vertical (scenery). */
-    BEETLE_VERTICAL(EntityCategory.SCENERY);
+    BEETLE_VERTICAL(BeetleVertical.class, EntityCategory.SCENERY);
 
     /**
      * Load type from its saved format.
@@ -93,18 +93,24 @@ public enum EntitySwampType implements EntityType<EntitySwampType>
         return EntitySwampType.valueOf(file.readString());
     }
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
     /** Type category. */
     private final EntityCategory category;
 
     /**
      * Constructor.
      * 
-     * @param category The category type.
+     * @param target The target class.
+     * @param category The entity category.
      */
-    private EntitySwampType(EntityCategory category)
+    private EntitySwampType(Class<?> target, EntityCategory category)
     {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
         this.category = category;
-        category.increase();
     }
 
     /*
@@ -134,20 +140,14 @@ public enum EntitySwampType implements EntityType<EntitySwampType>
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

@@ -17,12 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 
 /**
@@ -37,36 +33,32 @@ public abstract class Weapon
     /**
      * Constructor.
      * 
-     * @param type The weapon type.
      * @param setup The setup reference.
-     * @param user The user reference.
-     * @param context The context reference.
      */
-    protected Weapon(WeaponType type, SetupGame setup, Attacker user, Context context)
+    protected Weapon(SetupWeapon setup)
     {
-        super(user);
+        super(setup);
 
-        final Configurable config = setup.configurable;
-        setAttackFrame(config.getDataInteger("attackFrame"));
-        setAttackTimer(config.getDataInteger("attackTimer"));
+        setAttackFrame(getDataInteger("attackFrame"));
+        setAttackTimer(getDataInteger("attackTimer"));
 
-        final int distMin = config.getDataInteger("min", "distance");
-        final int distMax = config.getDataInteger("max", "distance");
+        final int distMin = getDataInteger("min", "distance");
+        final int distMax = getDataInteger("max", "distance");
         setAttackDistance(distMin, distMax);
 
-        final int dmgMin = config.getDataInteger("min", "damages");
-        final int dmgMax = config.getDataInteger("max", "damages");
+        final int dmgMin = getDataInteger("min", "damages");
+        final int dmgMax = getDataInteger("max", "damages");
         setAttackDamages(dmgMin, dmgMax);
     }
 
     /**
-     * Get the attacker reference.
+     * Set the weapon frame.
      * 
-     * @return The attacker reference.
+     * @param frame The weapon frame.
      */
-    public Attacker getAttacker()
+    public void setFrame(int frame)
     {
-        return user;
+        this.frame = frame;
     }
 
     /**
@@ -77,14 +69,5 @@ public abstract class Weapon
     public int getFrame()
     {
         return frame;
-    }
-
-    /*
-     * WeaponModel
-     */
-    @Override
-    public void notifyAttackEnded(int damages, Entity target)
-    {
-        frame = user.getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER;
     }
 }

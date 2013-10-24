@@ -19,10 +19,6 @@ package com.b3dgs.lionengine.game;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.LinkedList;
-import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
@@ -57,21 +53,14 @@ import com.b3dgs.lionengine.core.Media;
  * @param <S> The setup object type used.
  * @param <O> The object type used.
  */
-public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extends SetupGame, O>
+public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extends SetupGame, O extends ObjectGame>
+        extends FactoryGame<T, S>
 {
     /** Unknown entity error message. */
     public static final String UNKNOWN_TYPE_ERROR = "Unknown type: ";
 
-    /** Full name. */
-    private final String name;
-    /** Types list. */
-    private final T[] types;
-    /** Setups list. */
-    private final Map<T, S> setups;
     /** Entities folder. */
     private final String folder;
-    /** Arguments. */
-    private Object[] arguments;
 
     /**
      * Constructor.
@@ -81,11 +70,8 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      */
     public FactoryObjectGame(Class<T> keyType, String folder)
     {
-        this.types = keyType.getEnumConstants();
+        super(keyType);
         this.folder = folder;
-        setups = new EnumMap<>(keyType);
-        arguments = new Object[0];
-        name = getClass().getPackage().getName() + ".";
     }
 
     /**
@@ -98,27 +84,6 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
     protected abstract S createSetup(T type, Media config);
 
     /**
-     * Load setup for each type.
-     */
-    public void load()
-    {
-        for (final T type : types)
-        {
-            addSetup(type, createSetup(type));
-        }
-    }
-
-    /**
-     * Set the object constructor additional arguments.
-     * 
-     * @param arguments The additional arguments.
-     */
-    public void setArguments(Object... arguments)
-    {
-        this.arguments = arguments;
-    }
-
-    /**
      * Create an item from its type using a generic way. The concerned classes to instantiate and their
      * constructors must be public (at least the target one).
      * 
@@ -127,86 +92,43 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      */
     public <E extends O> E create(T type)
     {
-        try
+        final Class<?> objectClass = type.getTargetClass();
+        E instance = null;
+        for (final Constructor<?> constructor : objectClass.getConstructors())
         {
-            final Class<?> objectClass = Class.forName(name.concat(type.asClassName()));
-            final LinkedList<Object> finalArguments = new LinkedList<>(Arrays.asList(arguments));
-            finalArguments.addFirst(getSetup(type));
-            E instance = null;
-            for (final Constructor<?> constructor : objectClass.getConstructors())
+            try
             {
-                try
-                {
-                    instance = (E) constructor.newInstance(finalArguments.toArray());
-                    finalArguments.clear();
-                }
-                catch (final InvocationTargetException exception)
-                {
-                    throw new LionEngineException(exception.getCause(), "Unable to create the following type: "
-                            + type.asClassName());
-                }
-                catch (InstantiationException
-                       | IllegalArgumentException
-                       | IllegalAccessException exception)
-                {
-                    instance = null;
-                }
+                instance = (E) constructor.newInstance(getSetup(type));
             }
-            if (instance == null)
+            catch (final InvocationTargetException exception)
             {
-                throw new LionEngineException(new InstantiationException("Class " + objectClass.getName()
-                        + " and its constructor(s) must exist and be public !"),
-                        "Unable to create the following type: " + type.asClassName());
+                throw new LionEngineException(exception.getCause(), "Unable to create the following type: "
+                        + type.getTargetClass());
             }
-            return instance;
+            catch (InstantiationException
+                   | IllegalArgumentException
+                   | IllegalAccessException exception)
+            {
+                instance = null;
+            }
         }
-        catch (final ClassNotFoundException exception)
+        if (instance == null)
         {
-            throw new LionEngineException(exception, FactoryObjectGame.UNKNOWN_TYPE_ERROR + type.asClassName());
+            throw new LionEngineException(new InstantiationException("Class " + objectClass.getName()
+                    + " and its constructor(s) must exist and be public !"), "Unable to create the following type: "
+                    + type.getTargetClass());
         }
+        return instance;
     }
 
-    /**
-     * Add a setup reference at the specified type.
-     * 
-     * @param type The reference type.
-     * @param setup The setup reference.
+    /*
+     * FactoryGame
      */
-    public void addSetup(T type, S setup)
-    {
-        setups.put(type, setup);
-    }
 
-    /**
-     * Get a setup reference from its type.
-     * 
-     * @param type The reference type.
-     * @return The setup reference.
-     */
-    public S getSetup(T type)
-    {
-        return setups.get(type);
-    }
-
-    /**
-     * Get the types list.
-     * 
-     * @return The types list.
-     */
-    public T[] getTypes()
-    {
-        return types;
-    }
-
-    /**
-     * Get setup instance.
-     * 
-     * @param type The object type.
-     * @return The setup instance.
-     */
+    @Override
     protected S createSetup(T type)
     {
-        final Media config = Media.get(folder, type.asPathName() + ".xml");
+        final Media config = Media.get(folder, type.getPathName() + ".xml");
         return createSetup(type, config);
     }
 }

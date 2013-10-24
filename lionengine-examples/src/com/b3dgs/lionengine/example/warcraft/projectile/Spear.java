@@ -45,7 +45,7 @@ public final class Spear
     @Override
     public void onHit(Entity entity, int damages)
     {
-        entity.decreaseLife(damages, getOwner().getAttacker());
+        entity.decreaseLife(damages, getOwner().getUser());
         destroy(); // Destroy projectile on hit
     }
 }

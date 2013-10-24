@@ -17,11 +17,6 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
-import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Coin 25 implementation.
  * 
@@ -31,10 +26,10 @@ public final class Coin25
         extends Coin
 {
     /**
-     * {@link Bonus#Bonus(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Bonus#Bonus(SetupEntityBonus)}
      */
-    public Coin25(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public Coin25(SetupEntityBonus setup)
     {
-        super(setup, factoryEffect, handlerEffect, EffectType.COIN25);
+        super(setup);
     }
 }

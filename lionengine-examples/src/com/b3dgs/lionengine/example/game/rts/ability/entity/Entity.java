@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
@@ -41,15 +39,13 @@ public abstract class Entity
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected Entity(EntityType type, SetupSurfaceGame setup, Context context)
+    protected Entity(SetupEntity setup)
     {
-        super(setup, context.map);
-        this.type = type;
-        map = context.map;
+        super(setup, setup.map);
+        type = setup.type;
+        map = setup.map;
         life = new Alterable(getDataInteger("life", "attributes"));
     }
 

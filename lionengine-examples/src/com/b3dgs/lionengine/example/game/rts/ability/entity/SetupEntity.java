@@ -15,61 +15,54 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.rts.ability;
+package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
-import com.b3dgs.lionengine.example.game.rts.ability.entity.FactoryEntity;
-import com.b3dgs.lionengine.example.game.rts.ability.entity.HandlerEntity;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
-import com.b3dgs.lionengine.example.game.rts.ability.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.FactoryWeapon;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Context container.
+ * Setup entity implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Context
+public class SetupEntity
+        extends SetupSurfaceGame
 {
-    /** The map reference. */
+    /** Type. */
+    public final EntityType type;
+    /** Map. */
     public final Map map;
-    /** The factory reference. */
+    /** Factory entity. */
     public final FactoryEntity factoryEntity;
-    /** The factory reference. */
-    public final FactoryProjectile factoryProjectile;
-    /** The factory weapon. */
+    /** Factory weapon. */
     public final FactoryWeapon factoryWeapon;
-    /** The handler entity reference. */
+    /** Handler entity. */
     public final HandlerEntity handlerEntity;
-    /** The handler projectile reference. */
-    public final HandlerProjectile handlerProjectile;
-    /** The desired fps. */
-    public final int desiredFps;
+    /** Desired fps. */
+    public final int fps;
 
     /**
      * Constructor.
      * 
+     * @param config The config file.
+     * @param type The entity type.
      * @param map The map reference.
+     * @param factoryEntity The factory entity reference.
+     * @param factoryWeapon The factory weapon reference.
      * @param handlerEntity The handler entity reference.
-     * @param handlerProjectile The handler arrow reference.
-     * @param desiredFps The the desired fps.
+     * @param fps The desired fps.
      */
-    Context(Map map, HandlerEntity handlerEntity, HandlerProjectile handlerProjectile, int desiredFps)
+    public SetupEntity(Media config, EntityType type, Map map, FactoryEntity factoryEntity,
+            FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, int fps)
     {
+        super(config);
+        this.type = type;
         this.map = map;
+        this.factoryEntity = factoryEntity;
+        this.factoryWeapon = factoryWeapon;
         this.handlerEntity = handlerEntity;
-        this.handlerProjectile = handlerProjectile;
-        this.desiredFps = desiredFps;
-        factoryEntity = new FactoryEntity();
-        factoryProjectile = new FactoryProjectile();
-        factoryWeapon = new FactoryWeapon();
-    }
-
-    /**
-     * Assign context to factories.
-     */
-    public void assignContext()
-    {
-        factoryEntity.setContext(this);
+        this.fps = fps;
     }
 }

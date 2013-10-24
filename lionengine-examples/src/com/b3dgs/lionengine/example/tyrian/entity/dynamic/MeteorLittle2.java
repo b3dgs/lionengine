@@ -17,9 +17,7 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 
 /**
  * Meteor little 2 implementation.
@@ -30,10 +28,10 @@ public final class MeteorLittle2
         extends Meteor
 {
     /**
-     * {@link Meteor#Meteor(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Meteor#Meteor(SetupEntity)}
      */
-    public MeteorLittle2(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public MeteorLittle2(SetupEntity setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 }

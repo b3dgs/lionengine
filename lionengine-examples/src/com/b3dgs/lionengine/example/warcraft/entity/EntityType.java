@@ -19,6 +19,21 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
+import com.b3dgs.lionengine.example.warcraft.entity.human.Archer;
+import com.b3dgs.lionengine.example.warcraft.entity.human.BarracksHuman;
+import com.b3dgs.lionengine.example.warcraft.entity.human.FarmHuman;
+import com.b3dgs.lionengine.example.warcraft.entity.human.Footman;
+import com.b3dgs.lionengine.example.warcraft.entity.human.LumbermillHuman;
+import com.b3dgs.lionengine.example.warcraft.entity.human.Peasant;
+import com.b3dgs.lionengine.example.warcraft.entity.human.TownhallHuman;
+import com.b3dgs.lionengine.example.warcraft.entity.neutral.GoldMine;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.BarracksOrc;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.FarmOrc;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.Grunt;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.LumbermillOrc;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.Peon;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.Spearman;
+import com.b3dgs.lionengine.example.warcraft.entity.orc.TownhallOrc;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
@@ -32,56 +47,63 @@ public enum EntityType implements ObjectType
      */
 
     /** Peasant unit. */
-    PEASANT(RaceType.HUMAN),
+    PEASANT(Peasant.class, RaceType.HUMAN),
     /** Footman unit. */
-    FOOTMAN(RaceType.HUMAN),
+    FOOTMAN(Footman.class, RaceType.HUMAN),
     /** Archer unit. */
-    ARCHER(RaceType.HUMAN),
+    ARCHER(Archer.class, RaceType.HUMAN),
     /** TownHall building. */
-    TOWNHALL_HUMAN(RaceType.HUMAN),
+    TOWNHALL_HUMAN(TownhallHuman.class, RaceType.HUMAN),
     /** Farm building. */
-    FARM_HUMAN(RaceType.HUMAN),
+    FARM_HUMAN(FarmHuman.class, RaceType.HUMAN),
     /** Barracks building. */
-    BARRACKS_HUMAN(RaceType.HUMAN),
+    BARRACKS_HUMAN(BarracksHuman.class, RaceType.HUMAN),
     /** Lumber mill building. */
-    LUMBERMILL_HUMAN(RaceType.HUMAN),
+    LUMBERMILL_HUMAN(LumbermillHuman.class, RaceType.HUMAN),
 
     /*
      * Orc
      */
 
     /** Peon unit. */
-    PEON(RaceType.ORC),
+    PEON(Peon.class, RaceType.ORC),
     /** Grunt unit. */
-    GRUNT(RaceType.ORC),
+    GRUNT(Grunt.class, RaceType.ORC),
     /** Spearman unit. */
-    SPEARMAN(RaceType.ORC),
+    SPEARMAN(Spearman.class, RaceType.ORC),
     /** TownHall building. */
-    TOWNHALL_ORC(RaceType.ORC),
+    TOWNHALL_ORC(TownhallOrc.class, RaceType.ORC),
     /** Farm building. */
-    FARM_ORC(RaceType.ORC),
+    FARM_ORC(FarmOrc.class, RaceType.ORC),
     /** Barracks building. */
-    BARRACKS_ORC(RaceType.ORC),
+    BARRACKS_ORC(BarracksOrc.class, RaceType.ORC),
     /** Lumber mill building. */
-    LUMBERMILL_ORC(RaceType.ORC),
+    LUMBERMILL_ORC(LumbermillOrc.class, RaceType.ORC),
 
     /*
      * Neutral
      */
 
     /** Gold mine building. */
-    GOLD_MINE(RaceType.NEUTRAL);
+    GOLD_MINE(GoldMine.class, RaceType.NEUTRAL);
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
     /** The race. */
     public final RaceType race;
 
     /**
-     * Create a new type entity.
+     * The class target.
      * 
+     * @param target The target class.
      * @param race The entity race.
      */
-    private EntityType(RaceType race)
+    private EntityType(Class<?> target, RaceType race)
     {
+        this.target = target;
+        path = Media.getPath(ObjectTypeUtility.asPathName(race), ObjectTypeUtility.asPathName(this));
         this.race = race;
     }
 
@@ -90,20 +112,14 @@ public enum EntityType implements ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return Media.getPath(race.asPathName(), ObjectTypeUtility.asPathName(this));
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return race.asPathName() + "." + ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

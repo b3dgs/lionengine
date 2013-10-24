@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.ObjectGame;
 
 /**
  * Type base implementation.
@@ -25,20 +25,23 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class TypeBase
+        extends ObjectGame
 {
     /** The type used. */
     private final Type type;
+    /** Object argument. */
+    private final Object param;
 
     /**
      * Constructor.
      * 
-     * @param type The type.
      * @param setup The setup reference.
-     * @param param The parameter.
      */
-    protected TypeBase(Type type, SetupGame setup, Object param)
+    protected TypeBase(Setup setup)
     {
-        this.type = type;
+        super(setup);
+        type = setup.type;
+        param = setup.param;
     }
 
     /**
@@ -49,5 +52,15 @@ public abstract class TypeBase
     public Type getType()
     {
         return type;
+    }
+
+    /**
+     * Get the object param.
+     * 
+     * @return The object param.
+     */
+    public Object getParam()
+    {
+        return param;
     }
 }

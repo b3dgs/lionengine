@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitWorker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Peon implementation.
@@ -33,16 +31,15 @@ public final class Peon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public Peon(SetupSurfaceGame setup, Context context)
+    public Peon(SetupEntity setup)
     {
-        super(EntityType.PEON, setup, context);
-        addSkill(context, 0, SkillType.MOVE_ORC, 0);
-        addSkill(context, 0, SkillType.STOP_ORC, 1);
-        addSkill(context, 0, SkillType.BUILDING_STANDARD_ORC, 2);
-        addSkill(context, 1, SkillType.BUILD_FARM_ORC, 0);
-        addSkill(context, 1, SkillType.BUILD_BARRACKS_ORC, 1);
-        addSkill(context, 1, SkillType.CANCEL_ORC, 2);
+        super(setup);
+        addSkill(0, SkillType.MOVE_ORC, 0);
+        addSkill(0, SkillType.STOP_ORC, 1);
+        addSkill(0, SkillType.BUILDING_STANDARD_ORC, 2);
+        addSkill(1, SkillType.BUILD_FARM_ORC, 0);
+        addSkill(1, SkillType.BUILD_BARRACKS_ORC, 1);
+        addSkill(1, SkillType.CANCEL_ORC, 2);
     }
 }

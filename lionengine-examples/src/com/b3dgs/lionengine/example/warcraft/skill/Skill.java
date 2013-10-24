@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.CameraRts;
@@ -61,14 +60,12 @@ public abstract class Skill
     /**
      * Constructor.
      * 
-     * @param type The skill type.
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    protected Skill(SkillType type, SetupSkill setup, Context context)
+    protected Skill(SetupSkill setup)
     {
         super(setup);
-        this.type = type;
+        type = setup.type;
         message = setup.message;
         text = UtilityImage.createText(Text.DIALOG, 10, TextStyle.NORMAL);
         icon = setup.icon;

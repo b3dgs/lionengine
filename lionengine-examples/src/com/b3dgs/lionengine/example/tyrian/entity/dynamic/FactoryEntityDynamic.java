@@ -21,15 +21,20 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity dynamic.
  */
 public final class FactoryEntityDynamic
-        extends FactoryObjectGame<EntityDynamicType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityDynamicType, SetupEntity, Entity>
 {
+    /** Factory effect. */
+    final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    final HandlerEffect handlerEffect;
+
     /**
      * Constructor.
      * 
@@ -39,7 +44,8 @@ public final class FactoryEntityDynamic
     public FactoryEntityDynamic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(EntityDynamicType.class, Media.getPath("entities", "dynamic"));
-        setArguments(factoryEffect, handlerEffect);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         load();
     }
 
@@ -48,8 +54,8 @@ public final class FactoryEntityDynamic
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityDynamicType key, Media config)
+    protected SetupEntity createSetup(EntityDynamicType key, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, factoryEffect, handlerEffect);
     }
 }

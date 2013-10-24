@@ -20,12 +20,10 @@ package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Turning scenery implementation base.
@@ -51,11 +49,11 @@ public abstract class EntityTurning
     protected boolean shake;
 
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    public EntityTurning(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    public EntityTurning(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
         timerShake = new Timing();
     }
 

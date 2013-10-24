@@ -19,10 +19,8 @@ package com.b3dgs.lionengine.example.tyrian.entity.scenery;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 
 /**
  * Entity scenery base implementation.
@@ -36,11 +34,11 @@ abstract class EntityScenery
     private final Animator animator;
 
     /**
-     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupEntity)}
      */
-    protected EntityScenery(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected EntityScenery(SetupEntity setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
         animator = Anim.createAnimator();
         animator.play(getDataAnimation("idle"));
     }

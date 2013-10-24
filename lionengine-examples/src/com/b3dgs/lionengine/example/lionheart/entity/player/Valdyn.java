@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityAction;
@@ -31,6 +30,7 @@ import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTile;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityCollisionTileCategory;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityMover;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.State;
 import com.b3dgs.lionengine.example.lionheart.entity.swamp.EntityMonster;
 import com.b3dgs.lionengine.example.lionheart.landscape.Landscape;
@@ -40,7 +40,6 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.purview.Collidable;
@@ -125,12 +124,11 @@ public final class Valdyn
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Valdyn(SetupSurfaceRasteredGame setup, Level level)
+    public Valdyn(SetupEntity setup)
     {
-        super(setup, level, EntityPlayerType.VALDYN);
-        camera = level.camera;
+        super(setup);
+        camera = setup.level.camera;
         timerJump = new Timing();
         timerFall = new Timing();
         timerFallen = new Timing();
@@ -146,7 +144,7 @@ public final class Valdyn
         legCollision = new CollidableModel(this);
         legCollision.setCollision(getDataCollision("leg"));
         stats = new Stats(this);
-        tilt = new ValdynTilt(this, movement, level.map);
+        tilt = new ValdynTilt(this, movement, setup.level.map);
         attack = new ValdynAttack(this, movement);
         addCollisionTile(ValdynCollisionTileCategory.LEG_LEFT, -Valdyn.TILE_EXTREMITY_WIDTH, 0);
         addCollisionTile(ValdynCollisionTileCategory.LEG_RIGHT, Valdyn.TILE_EXTREMITY_WIDTH, 0);

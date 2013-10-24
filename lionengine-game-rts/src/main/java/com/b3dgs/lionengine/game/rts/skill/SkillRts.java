@@ -74,7 +74,7 @@ public abstract class SkillRts<T extends Enum<T> & ObjectType>
      */
     public SkillRts(SetupGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         name = getDataString("name");
         description = getDataString("description");
         level = 1;

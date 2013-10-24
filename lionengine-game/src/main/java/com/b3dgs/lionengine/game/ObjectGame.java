@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.purview.Configurable;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a
@@ -67,18 +66,11 @@ public abstract class ObjectGame
     /**
      * Constructor.
      * 
-     * @param configurable The configuration reference.
+     * @param setup The setup reference.
      */
-    public ObjectGame(Configurable configurable)
+    public ObjectGame(SetupGame setup)
     {
-        if (configurable != null)
-        {
-            this.configurable = configurable;
-        }
-        else
-        {
-            this.configurable = new ConfigurableModel();
-        }
+        configurable = setup.configurable;
         destroy = false;
         id = ObjectGame.getFreeId();
         ObjectGame.IDS.add(id);

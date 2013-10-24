@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceBuilding;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Build skill implementation.
@@ -33,10 +31,9 @@ public final class BuildBarracksOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public BuildBarracksOrc(SetupSkill setup, Context context)
+    public BuildBarracksOrc(SetupSkill setup)
     {
-        super(SkillType.BUILD_BARRACKS_ORC, setup, context, EntityType.BARRACKS_ORC);
+        super(setup, EntityType.BARRACKS_ORC);
     }
 }

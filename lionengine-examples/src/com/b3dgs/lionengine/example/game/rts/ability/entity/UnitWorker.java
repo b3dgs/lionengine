@@ -21,11 +21,9 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.ResourceType;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
@@ -72,17 +70,15 @@ public abstract class UnitWorker
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected UnitWorker(EntityType type, SetupSurfaceGame setup, Context context)
+    protected UnitWorker(SetupEntity setup)
     {
-        super(type, setup, context);
-        factory = context.factoryEntity;
-        handler = context.handlerEntity;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
-        extractor = new ExtractorModel<>(this, context.desiredFps);
+        super(setup);
+        factory = setup.factoryEntity;
+        handler = setup.handlerEntity;
+        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
+        extractor = new ExtractorModel<>(this, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
         extractionSpeed = getDataInteger("extraction_speed", "extraction");
         extractionCapacity = getDataInteger("extraction_capacity", "extraction");

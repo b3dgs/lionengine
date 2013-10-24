@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Produce grunt implementation.
@@ -33,10 +31,9 @@ public final class ProducePeasant
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public ProducePeasant(SetupSkill setup, Context context)
+    public ProducePeasant(SetupSkill setup)
     {
-        super(SkillType.PRODUCE_PEASANT, setup, context, EntityType.PEASANT);
+        super(setup, EntityType.PEASANT);
     }
 }

@@ -15,51 +15,65 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.rts.ability.projectile;
+package com.b3dgs.lionengine.example.game.rts.ability.launcher;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
-import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
-import com.b3dgs.lionengine.example.game.rts.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.ProjectileType;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
- * Launcher base implementation.
+ * List of launcher types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.projectile
  */
-public final class LauncherProjectile
-        extends LauncherProjectileGame<ProjectileType, Entity, Weapon, Projectile>
+public enum LauncherType implements ObjectType
 {
-    /** Type projectile. */
+    /** Spear. */
+    SPEAR_LAUNCHER(SpearLauncher.class, ProjectileType.SPEAR);
+
+    /** Target class. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+    /** Projectile type. */
     private final ProjectileType type;
 
     /**
      * Constructor.
      * 
+     * @param target The class target.
      * @param type The projectile type.
-     * @param context The context factory.
      */
-    public LauncherProjectile(ProjectileType type, Context context)
+    private LauncherType(Class<?> target, ProjectileType type)
     {
-        super(context.factoryProjectile, context.handlerProjectile);
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
         this.type = type;
     }
 
+    /**
+     * Get the projectile type.
+     * 
+     * @return The projectile type.
+     */
+    public ProjectileType getType()
+    {
+        return type;
+    }
+
     /*
-     * LauncherProjectileGame
+     * ObjectType
      */
 
     @Override
-    protected void launchProjectile(Weapon owner)
+    public Class<?> getTargetClass()
     {
-        // Nothing to do
+        return target;
     }
 
     @Override
-    protected void launchProjectile(Weapon owner, Entity target)
+    public String getPathName()
     {
-        final Projectile projectile = addProjectile(type, owner.getAttackDamages(), target, 2.5, 0, 0);
-        projectile.setFrame(owner.getFrame());
+        return path;
     }
 }

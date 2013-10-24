@@ -21,15 +21,20 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity scenery.
  */
 public final class FactoryEntityScenery
-        extends FactoryObjectGame<EntitySceneryType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntitySceneryType, SetupEntity, Entity>
 {
+    /** Factory effect. */
+    final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    final HandlerEffect handlerEffect;
+
     /**
      * Constructor.
      * 
@@ -39,7 +44,8 @@ public final class FactoryEntityScenery
     public FactoryEntityScenery(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(EntitySceneryType.class, Media.getPath("entities", "scenery"));
-        setArguments(factoryEffect, handlerEffect);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         load();
     }
 
@@ -48,8 +54,8 @@ public final class FactoryEntityScenery
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntitySceneryType key, Media config)
+    protected SetupEntity createSetup(EntitySceneryType key, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, factoryEffect, handlerEffect);
     }
 }

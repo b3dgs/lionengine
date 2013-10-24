@@ -17,14 +17,17 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
+import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * List of services provided by a weapon.
  * 
  * @param <E> The entity type used.
+ * @param <A> The attacker type used.
  */
-public interface WeaponServices<E extends EntityRts>
+public interface WeaponServices<E extends EntityRts, A extends AttackerUsedServices<E>>
+        extends Surface
 {
     /**
      * Define a target to attack.
@@ -44,6 +47,13 @@ public interface WeaponServices<E extends EntityRts>
      * @param extrp The extrapolation value.
      */
     void updateAttack(double extrp);
+
+    /**
+     * Set the weapon user.
+     * 
+     * @param user The weapon user.
+     */
+    void setUser(A user);
 
     /**
      * Set attack pause time between two attacks.
@@ -91,6 +101,13 @@ public interface WeaponServices<E extends EntityRts>
      * @return <code>true</code> if currently attacking, <code>false</code> else.
      */
     boolean isAttacking();
+
+    /**
+     * Get the weapon user.
+     * 
+     * @return The weapon user.
+     */
+    A getUser();
 
     /**
      * Get the target entity.

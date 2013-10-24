@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EntityPlayerType implements EntityType<EntityPlayerType>
 {
     /** Valdyn (player). */
-    VALDYN(EntityCategory.PLAYER);
+    VALDYN(Valdyn.class, EntityCategory.PLAYER);
 
     /**
      * Load type from its saved format.
@@ -47,18 +47,24 @@ public enum EntityPlayerType implements EntityType<EntityPlayerType>
         return EntityPlayerType.valueOf(file.readString());
     }
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
     /** Type category. */
     private final EntityCategory category;
 
     /**
      * Constructor.
      * 
-     * @param category The category type.
+     * @param target The target class.
+     * @param category The entity category.
      */
-    private EntityPlayerType(EntityCategory category)
+    private EntityPlayerType(Class<?> target, EntityCategory category)
     {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
         this.category = category;
-        category.increase();
     }
 
     /*
@@ -88,20 +94,14 @@ public enum EntityPlayerType implements EntityType<EntityPlayerType>
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

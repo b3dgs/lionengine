@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.BuildingStandard;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Buildings standard human skill implementation.
@@ -32,10 +30,9 @@ public final class BuildingStandardOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public BuildingStandardOrc(SetupSkill setup, Context context)
+    public BuildingStandardOrc(SetupSkill setup)
     {
-        super(SkillType.BUILDING_STANDARD_ORC, setup, context);
+        super(setup);
     }
 }

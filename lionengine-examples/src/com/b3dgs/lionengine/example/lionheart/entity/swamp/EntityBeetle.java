@@ -20,10 +20,9 @@ package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.State;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrollable;
@@ -32,7 +31,6 @@ import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Beetle base implementation.
@@ -53,11 +51,11 @@ public class EntityBeetle
     private double movementSpeedMax;
 
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    EntityBeetle(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    EntityBeetle(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
         movement = new Movement();
         forces = new Force[]
         {

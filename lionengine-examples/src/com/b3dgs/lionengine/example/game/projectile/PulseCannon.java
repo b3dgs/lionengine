@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
-import com.b3dgs.lionengine.game.SetupGame;
-
 /**
  * Pulse canon launcher implementation.
  * 
@@ -28,11 +26,11 @@ public final class PulseCannon
         extends Launcher
 {
     /**
-     * {@link Launcher#Launcher(SetupGame, FactoryProjectile, HandlerProjectile)}
+     * {@link Launcher#Launcher(Setup)}
      */
-    public PulseCannon(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
+    public PulseCannon(Setup setup)
     {
-        super(setup, factory, handler);
+        super(setup);
         setRate(80);
     }
 

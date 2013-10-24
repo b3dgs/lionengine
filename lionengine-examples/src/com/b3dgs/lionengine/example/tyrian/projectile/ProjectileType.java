@@ -30,32 +30,39 @@ public enum ProjectileType implements ObjectType
      */
 
     /** Pulse. */
-    PULSE(ProjectileCategory.FRONT),
+    PULSE(Pulse.class, ProjectileCategory.FRONT),
     /** Missile front. */
-    MISSILE_FRONT(ProjectileCategory.FRONT),
+    MISSILE_FRONT(MissileFront.class, ProjectileCategory.FRONT),
     /** Bullet. */
-    BULLET(ProjectileCategory.FRONT),
+    BULLET(Bullet.class, ProjectileCategory.FRONT),
 
     /*
      * Rear
      */
 
     /** Wave. */
-    WAVE(ProjectileCategory.REAR),
+    WAVE(Wave.class, ProjectileCategory.REAR),
     /** Missile rear left. */
-    MISSILE_REAR(ProjectileCategory.REAR);
+    MISSILE_REAR(MissileRear.class, ProjectileCategory.REAR);
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
     /** Weapon category. */
     private final ProjectileCategory category;
 
     /**
      * Constructor.
      * 
+     * @param target The target class.
      * @param category The projectile category.
      */
-    private ProjectileType(ProjectileCategory category)
+    private ProjectileType(Class<?> target, ProjectileCategory category)
     {
+        this.target = target;
         this.category = category;
+        pathName = ObjectTypeUtility.asPathName(this);
     }
 
     /**
@@ -73,20 +80,14 @@ public enum ProjectileType implements ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

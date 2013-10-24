@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Big Potion item. Give all heart to the player.
@@ -35,11 +33,10 @@ public final class PotionBig
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public PotionBig(SetupSurfaceRasteredGame setup, Level level)
+    public PotionBig(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.POTION_BIG, EffectType.TAKEN);
+        super(setup);
     }
 
     /*

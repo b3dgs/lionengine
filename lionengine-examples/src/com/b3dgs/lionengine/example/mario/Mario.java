@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
@@ -43,12 +42,10 @@ public final class Mario
      * Constructor.
      * 
      * @param setup setup reference.
-     * @param map The map reference.
-     * @param desiredFps desired fps.
      */
-    public Mario(SetupSurfaceGame setup, Map map, int desiredFps)
+    public Mario(SetupEntity setup)
     {
-        super(setup, map, desiredFps);
+        super(setup);
         timerDie = new Timing();
         addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);

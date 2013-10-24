@@ -21,16 +21,15 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory projectile.
  */
 public final class FactoryProjectile
-        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
+        extends FactoryObjectGame<ProjectileType, SetupProjectile, Projectile>
 {
-    /** Projectile surfaces. */
-    private final SetupSurfaceGame setup;
+    /** Projectile setup. */
+    private final SetupProjectile setup;
 
     /**
      * Constructor.
@@ -41,8 +40,7 @@ public final class FactoryProjectile
     public FactoryProjectile(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(ProjectileType.class, "projectiles");
-        setup = new SetupSurfaceGame(Media.get("sprites", "weapons.xml"));
-        setArguments(factoryEffect, handlerEffect);
+        setup = new SetupProjectile(Media.get("sprites", "weapons.xml"), factoryEffect, handlerEffect);
         load();
     }
 
@@ -51,7 +49,7 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
+    protected SetupProjectile createSetup(ProjectileType type, Media config)
     {
         return setup;
     }

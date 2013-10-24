@@ -46,7 +46,7 @@ public abstract class Effect
      */
     public Effect(SetupSurfaceGame setup)
     {
-        super(setup.configurable);
+        super(setup);
         final int horizontalFrames = getDataInteger("horizontal", "frames");
         final int verticalFrames = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, horizontalFrames, verticalFrames);

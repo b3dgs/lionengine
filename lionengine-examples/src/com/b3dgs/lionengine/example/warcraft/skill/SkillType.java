@@ -19,6 +19,28 @@ package com.b3dgs.lionengine.example.warcraft.skill;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
+import com.b3dgs.lionengine.example.warcraft.skill.human.AttackBow;
+import com.b3dgs.lionengine.example.warcraft.skill.human.AttackSword;
+import com.b3dgs.lionengine.example.warcraft.skill.human.BuildBarracksHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.BuildFarmHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.BuildingStandardHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.CancelHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.MoveHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.ProduceArcher;
+import com.b3dgs.lionengine.example.warcraft.skill.human.ProduceFootman;
+import com.b3dgs.lionengine.example.warcraft.skill.human.ProducePeasant;
+import com.b3dgs.lionengine.example.warcraft.skill.human.StopHuman;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.AttackAxe;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.AttackSpear;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.BuildBarracksOrc;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.BuildFarmOrc;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.BuildingStandardOrc;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.CancelOrc;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.MoveOrc;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.ProduceGrunt;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.ProducePeon;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.ProduceSpearman;
+import com.b3dgs.lionengine.example.warcraft.skill.orc.StopOrc;
 import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
@@ -32,66 +54,73 @@ public enum SkillType implements ObjectType
      */
 
     /** Move human skill. */
-    MOVE_HUMAN(RaceType.HUMAN),
+    MOVE_HUMAN(MoveHuman.class, RaceType.HUMAN),
     /** Build human skill. */
-    BUILDING_STANDARD_HUMAN(RaceType.HUMAN),
+    BUILDING_STANDARD_HUMAN(BuildingStandardHuman.class, RaceType.HUMAN),
     /** Attack melee human skill. */
-    ATTACK_SWORD(RaceType.HUMAN),
+    ATTACK_SWORD(AttackSword.class, RaceType.HUMAN),
     /** Attack bow human skill. */
-    ATTACK_BOW(RaceType.HUMAN),
+    ATTACK_BOW(AttackBow.class, RaceType.HUMAN),
     /** Cancel human skill. */
-    CANCEL_HUMAN(RaceType.HUMAN),
+    CANCEL_HUMAN(CancelHuman.class, RaceType.HUMAN),
     /** Stop human skill. */
-    STOP_HUMAN(RaceType.HUMAN),
+    STOP_HUMAN(StopHuman.class, RaceType.HUMAN),
     /** Build barracks human skill. */
-    BUILD_BARRACKS_HUMAN(RaceType.HUMAN),
+    BUILD_BARRACKS_HUMAN(BuildBarracksHuman.class, RaceType.HUMAN),
     /** Build farm human skill. */
-    BUILD_FARM_HUMAN(RaceType.HUMAN),
+    BUILD_FARM_HUMAN(BuildFarmHuman.class, RaceType.HUMAN),
     /** Produce peasant skill. */
-    PRODUCE_PEASANT(RaceType.HUMAN),
+    PRODUCE_PEASANT(ProducePeasant.class, RaceType.HUMAN),
     /** Produce footman skill. */
-    PRODUCE_FOOTMAN(RaceType.HUMAN),
+    PRODUCE_FOOTMAN(ProduceFootman.class, RaceType.HUMAN),
     /** Produce archer skill. */
-    PRODUCE_ARCHER(RaceType.HUMAN),
+    PRODUCE_ARCHER(ProduceArcher.class, RaceType.HUMAN),
 
     /*
      * Orc skills
      */
 
     /** Move orc skill. */
-    MOVE_ORC(RaceType.ORC),
+    MOVE_ORC(MoveOrc.class, RaceType.ORC),
     /** Build orc skill. */
-    BUILDING_STANDARD_ORC(RaceType.ORC),
+    BUILDING_STANDARD_ORC(BuildingStandardOrc.class, RaceType.ORC),
     /** Attack melee orc skill. */
-    ATTACK_AXE(RaceType.ORC),
+    ATTACK_AXE(AttackAxe.class, RaceType.ORC),
     /** Attack spear orc skill. */
-    ATTACK_SPEAR(RaceType.ORC),
+    ATTACK_SPEAR(AttackSpear.class, RaceType.ORC),
     /** Stop orc skill. */
-    STOP_ORC(RaceType.ORC),
+    STOP_ORC(StopOrc.class, RaceType.ORC),
     /** Cancel orc skill. */
-    CANCEL_ORC(RaceType.ORC),
+    CANCEL_ORC(CancelOrc.class, RaceType.ORC),
     /** Build barracks orc skill. */
-    BUILD_BARRACKS_ORC(RaceType.ORC),
+    BUILD_BARRACKS_ORC(BuildBarracksOrc.class, RaceType.ORC),
     /** Build farm orc skill. */
-    BUILD_FARM_ORC(RaceType.ORC),
+    BUILD_FARM_ORC(BuildFarmOrc.class, RaceType.ORC),
     /** Produce peon skill. */
-    PRODUCE_PEON(RaceType.ORC),
+    PRODUCE_PEON(ProducePeon.class, RaceType.ORC),
     /** Produce grunt skill. */
-    PRODUCE_GRUNT(RaceType.ORC),
+    PRODUCE_GRUNT(ProduceGrunt.class, RaceType.ORC),
     /** Produce spearman skill. */
-    PRODUCE_SPEARMAN(RaceType.ORC);
+    PRODUCE_SPEARMAN(ProduceSpearman.class, RaceType.ORC);
 
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
     /** The race. */
     public final RaceType race;
 
     /**
-     * Create a new type entity.
+     * The class target.
      * 
+     * @param target The target class.
      * @param race The entity race.
      */
-    private SkillType(RaceType race)
+    private SkillType(Class<?> target, RaceType race)
     {
+        this.target = target;
         this.race = race;
+        path = Media.getPath(ObjectTypeUtility.asPathName(race), ObjectTypeUtility.asPathName(this));
     }
 
     /*
@@ -99,20 +128,14 @@ public enum SkillType implements ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return Media.getPath(race.asPathName(), ObjectTypeUtility.asPathName(this));
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return race.asPathName() + "." + ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

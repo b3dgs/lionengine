@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Grunt implementation.
@@ -34,14 +32,13 @@ public final class Grunt
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public Grunt(SetupSurfaceGame setup, Context context)
+    public Grunt(SetupEntity setup)
     {
-        super(EntityType.GRUNT, setup, context);
-        addWeapon(context, WeaponType.AXE, 0);
-        addSkill(context, 0, SkillType.MOVE_ORC, 0);
-        addSkill(context, 0, SkillType.STOP_ORC, 1);
-        addSkill(context, 0, SkillType.ATTACK_AXE, 2);
+        super(setup);
+        addWeapon(WeaponType.AXE, 0);
+        addSkill(0, SkillType.MOVE_ORC, 0);
+        addSkill(0, SkillType.STOP_ORC, 1);
+        addSkill(0, SkillType.ATTACK_AXE, 2);
     }
 }

@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.Cancel;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Cancel skill implementation.
@@ -32,10 +30,9 @@ public final class CancelOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public CancelOrc(SetupSkill setup, Context context)
+    public CancelOrc(SetupSkill setup)
     {
-        super(SkillType.CANCEL_ORC, setup, context);
+        super(setup);
     }
 }

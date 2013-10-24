@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.Move;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Move skill implementation.
@@ -32,10 +30,9 @@ public final class MoveOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public MoveOrc(SetupSkill setup, Context context)
+    public MoveOrc(SetupSkill setup)
     {
-        super(SkillType.MOVE_ORC, setup, context);
+        super(setup);
     }
 }

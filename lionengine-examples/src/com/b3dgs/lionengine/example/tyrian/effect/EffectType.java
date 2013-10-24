@@ -26,43 +26,53 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EffectType implements ObjectType
 {
     /** Smoke. */
-    SMOKE,
+    SMOKE(Smoke.class),
     /** Bullet hit. */
-    BULLET_HIT,
+    BULLET_HIT(BulletHit.class),
     /** Explode1. */
-    EXPLODE1,
+    EXPLODE1(Explode1.class),
     /** Explode2. */
-    EXPLODE2,
+    EXPLODE2(Explode2.class),
     /** Explode3. */
-    EXPLODE3,
+    EXPLODE3(Explode3.class),
     /** Coin10. */
-    COIN10,
+    COIN10(Coin10.class),
     /** Coin25. */
-    COIN25,
+    COIN25(Coin25.class),
     /** Coin50. */
-    COIN50,
+    COIN50(Coin50.class),
     /** Coin75. */
-    COIN75;
+    COIN75(Coin75.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private EffectType(Class<?> target)
+    {
+        this.target = target;
+        pathName = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

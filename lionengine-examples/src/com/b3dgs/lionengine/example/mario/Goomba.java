@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.mario;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
@@ -36,12 +35,10 @@ public final class Goomba
      * Constructor.
      * 
      * @param setup setup reference.
-     * @param map The map reference.
-     * @param desiredFps desired fps.
      */
-    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps)
+    public Goomba(SetupEntity setup)
     {
-        super(setup, map, desiredFps);
+        super(setup);
         timerDie = new Timing();
         movement.setVelocity(0.3);
         movement.setSensibility(0.1);

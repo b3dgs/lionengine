@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
@@ -51,14 +50,12 @@ public abstract class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The effect handler reference.
      */
-    protected Entity(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Entity(SetupEntity setup)
     {
         super(setup);
-        this.factoryEffect = factoryEffect;
-        this.handlerEffect = handlerEffect;
+        factoryEffect = setup.factoryEffect;
+        handlerEffect = setup.handlerEffect;
         final int width = setup.configurable.getDataInteger("width", "size");
         final int height = setup.configurable.getDataInteger("height", "size");
         sprite = Drawable.loadSpriteTiled(setup.surface, width, height);

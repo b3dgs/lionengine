@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.scenery;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.tyrian.entity.SetupEntity;
 
 /**
  * House92 implementation.
@@ -31,10 +29,10 @@ public final class House92
         extends EntityScenery
 {
     /**
-     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Entity#Entity(SetupEntity)}
      */
-    public House92(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public House92(SetupEntity setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 }

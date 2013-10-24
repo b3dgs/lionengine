@@ -17,10 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Turning hit scenery implementation.
@@ -34,11 +33,10 @@ public final class TurningHit
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public TurningHit(SetupSurfaceRasteredGame setup, Level level)
+    public TurningHit(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.TURNING_HIT);
+        super(setup);
         shakeCounter = 5;
     }
 

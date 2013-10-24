@@ -17,25 +17,24 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
 
 /**
  * The production factory.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProduction
         extends FactoryProductionRts<EntityType, ProductionCost, ProducibleEntity>
 {
     /**
      * Constructor.
-     * 
-     * @param factory The factory reference.
      */
-    public FactoryProduction(FactoryEntity factory)
+    public FactoryProduction()
     {
-        super(factory);
+        super(EntityType.class);
+        load();
     }
 
     /*
@@ -45,8 +44,7 @@ public final class FactoryProduction
     @Override
     public ProducibleEntity create(EntityType type)
     {
-        final Configurable config = getConfig(type);
-
+        final Configurable config = getSetup(type).configurable;
         final int step = config.getDataInteger("steps", "cost");
         final int gold = config.getDataInteger("gold", "cost");
         final int wood = config.getDataInteger("wood", "cost");
@@ -67,5 +65,12 @@ public final class FactoryProduction
         producible.setLocation(tx, ty);
 
         return producible;
+    }
+
+    @Override
+    protected SetupGame createSetup(EntityType type)
+    {
+        final Media config = Media.get("entities", type.getPathName() + ".xml");
+        return new SetupGame(config);
     }
 }

@@ -17,13 +17,12 @@
  */
 package com.b3dgs.lionengine.example.warcraft;
 
-import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of race types.
  */
-public enum RaceType implements ObjectType
+public enum RaceType
 {
     /** Human race. */
     HUMAN,
@@ -32,25 +31,24 @@ public enum RaceType implements ObjectType
     /** Neutral. */
     NEUTRAL;
 
-    /*
-     * ObjectType
+    /** Path name. */
+    private final String path;
+
+    /**
+     * Constructor.
      */
-
-    @Override
-    public String asPathName()
+    private RaceType()
     {
-        return ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.asPathName(this);
     }
 
-    @Override
-    public String asClassName()
+    /**
+     * Get the path name.
+     * 
+     * @return The path name.
+     */
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

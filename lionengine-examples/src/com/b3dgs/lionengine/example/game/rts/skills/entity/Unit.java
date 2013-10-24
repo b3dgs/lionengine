@@ -20,9 +20,7 @@ package com.b3dgs.lionengine.example.game.rts.skills.entity;
 import java.util.Set;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.game.rts.skills.Context;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
@@ -47,16 +45,14 @@ public abstract class Unit
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected Unit(EntityType type, SetupSurfaceGame setup, Context context)
+    protected Unit(SetupEntity setup)
     {
-        super(type, setup, context);
+        super(setup);
         animIdle = getDataAnimation("idle");
         animWalk = getDataAnimation("walk");
-        mover = new MoverModel(this, context.map);
+        mover = new MoverModel(this, setup.map);
         play(animIdle);
     }
 

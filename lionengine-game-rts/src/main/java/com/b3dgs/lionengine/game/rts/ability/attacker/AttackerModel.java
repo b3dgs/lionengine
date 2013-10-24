@@ -28,11 +28,12 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  * Default attacker model implementation.
  * 
  * @param <E> The entity type used.
+ * @param <A> The attacker type used.
  * @param <W> The weapon type used.
  */
-public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
-        extends AbilityModel<AttackerListener<E>, AttackerUsedServices<E>>
-        implements AttackerServices<E, W>, AttackerListener<E>
+public class AttackerModel<E extends EntityRts, A extends AttackerUsedServices<E>, W extends WeaponServices<E, A>>
+        extends AbilityModel<AttackerListener<E>, A>
+        implements AttackerServices<E, A, W>
 {
     /** Weapons list. */
     private final Map<Integer, W> weapons;
@@ -44,7 +45,7 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
      * 
      * @param user The ability user reference.
      */
-    public AttackerModel(AttackerUsedServices<E> user)
+    public AttackerModel(A user)
     {
         super(user);
         weapons = new HashMap<>(1);
@@ -73,6 +74,7 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
     public void addWeapon(W weapon, int id)
     {
         final Integer key = Integer.valueOf(id);
+        weapon.setUser(user);
         weapons.put(key, weapon);
         if (weaponId == null)
         {
@@ -84,6 +86,12 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
     public void removeWeapon(int id)
     {
         weapons.remove(Integer.valueOf(id));
+    }
+
+    @Override
+    public W getWeapon(int id)
+    {
+        return getWeapon(Integer.valueOf(id));
     }
 
     @Override
@@ -114,63 +122,5 @@ public class AttackerModel<E extends EntityRts, W extends WeaponServices<E>>
     public boolean isAttacking()
     {
         return getWeapon(weaponId).isAttacking();
-    }
-
-    /*
-     * AttackerListener
-     */
-
-    @Override
-    public void notifyReachingTarget(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyReachingTarget(target);
-        }
-    }
-
-    @Override
-    public void notifyAttackStarted(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackStarted(target);
-        }
-    }
-
-    @Override
-    public void notifyAttackEnded(int damages, E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackEnded(damages, target);
-        }
-    }
-
-    @Override
-    public void notifyAttackAnimEnded()
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyAttackAnimEnded();
-        }
-    }
-
-    @Override
-    public void notifyPreparingAttack()
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyPreparingAttack();
-        }
-    }
-
-    @Override
-    public void notifyTargetLost(E target)
-    {
-        for (final AttackerListener<E> listener : listeners)
-        {
-            listener.notifyTargetLost(target);
-        }
     }
 }

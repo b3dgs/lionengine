@@ -49,14 +49,13 @@ public final class BuildBarracksOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
      */
-    public BuildBarracksOrc(SetupSkill setup, Cursor cursor)
+    public BuildBarracksOrc(SetupSkill setup)
     {
-        super(SkillType.BUILD_BARRACKS_ORC, setup);
-        this.cursor = cursor;
+        super(setup);
+        cursor = setup.cursor;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getConfig(EntityType.BARRACKS_ORC);
+        final Configurable config = factoryProduction.getSetup(EntityType.BARRACKS_ORC).configurable;
         width = config.getDataInteger("widthInTile", "size");
         height = config.getDataInteger("heightInTile", "size");
         setOrder(true);

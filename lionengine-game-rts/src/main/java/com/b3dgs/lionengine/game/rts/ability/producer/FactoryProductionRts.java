@@ -17,9 +17,8 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.producer;
 
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.FactoryGame;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Represents the production factory. Designed to return a producible instance from its type.
@@ -28,19 +27,17 @@ import com.b3dgs.lionengine.game.purview.Configurable;
  * @param <C> The cost type used.
  * @param <P> The producible type used.
  */
-public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C extends ProductionCostRts, P extends Producible<T, C>>
+public abstract class FactoryProductionRts<T extends Enum<T>, C extends ProductionCostRts, P extends Producible<T, C>>
+        extends FactoryGame<T, SetupGame>
 {
-    /** Factory reference. */
-    private final FactoryObjectGame<T, ?, ?> factory;
-
     /**
      * Constructor.
      * 
-     * @param factory The factory object reference.
+     * @param keyType The class of the enum type defined.
      */
-    public FactoryProductionRts(FactoryObjectGame<T, ?, ?> factory)
+    public FactoryProductionRts(Class<T> keyType)
     {
-        this.factory = factory;
+        super(keyType);
     }
 
     /**
@@ -60,15 +57,4 @@ public abstract class FactoryProductionRts<T extends Enum<T> & ObjectType, C ext
      * @return The producible instance.
      */
     public abstract P create(T type, int tx, int ty);
-
-    /**
-     * Get a configurable reference from its type.
-     * 
-     * @param type The reference type.
-     * @return The configurable reference.
-     */
-    public Configurable getConfig(T type)
-    {
-        return factory.getSetup(type).configurable;
-    }
 }

@@ -23,13 +23,12 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.Player;
 import com.b3dgs.lionengine.example.warcraft.map.Map;
+import com.b3dgs.lionengine.example.warcraft.skill.FactorySkill;
 import com.b3dgs.lionengine.example.warcraft.skill.Skill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.rts.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
@@ -45,6 +44,8 @@ public abstract class Entity
     public final EntityType type;
     /** Map reference. */
     protected final Map map;
+    /** Factory skill. */
+    private final FactorySkill factorySkill;
     /** Entity life. */
     private final Alterable life;
     /** Entity name. */
@@ -63,20 +64,19 @@ public abstract class Entity
     /**
      * Constructor.
      * 
-     * @param type The entity type.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected Entity(EntityType type, SetupSurfaceGame setup, Context context)
+    protected Entity(SetupEntity setup)
     {
-        super(context.factoryEntity.getSetup(type), context.map);
-        this.type = type;
-        map = context.map;
+        super(setup, setup.map);
+        type = setup.type;
+        map = setup.map;
+        factorySkill = setup.factorySkill;
         skilled = new SkilledModel<>();
         life = new Alterable(getDataInteger("life", "attributes"));
         setFov(getDataInteger("fov", "attributes"));
         name = getDataString("name");
-        icon = Drawable.loadSprite(Media.get(AppWarcraft.ENTITIES_DIR, type.race.asPathName(), getDataString("icon")));
+        icon = Drawable.loadSprite(Media.get(AppWarcraft.ENTITIES_DIR, type.race.getPathName(), getDataString("icon")));
         icon.load(false);
         dead = false;
         owner = null;
@@ -87,14 +87,13 @@ public abstract class Entity
     /**
      * Add a skill.
      * 
-     * @param context The context reference.
      * @param panel The skill panel.
      * @param type The skill type.
      * @param priority The position number.
      */
-    public void addSkill(Context context, int panel, SkillType type, int priority)
+    public void addSkill(int panel, SkillType type, int priority)
     {
-        final Skill skill = context.factorySkill.create(type);
+        final Skill skill = factorySkill.create(type);
         skill.setOwner(this);
         skill.setPriority(priority);
         skill.prepare();

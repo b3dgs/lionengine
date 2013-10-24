@@ -21,10 +21,8 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.example.game.rts.skills.Context;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.rts.ability.producer.ProducerServices;
@@ -53,15 +51,13 @@ public abstract class UnitWorker
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected UnitWorker(EntityType type, SetupSurfaceGame setup, Context context)
+    protected UnitWorker(SetupEntity setup)
     {
-        super(type, setup, context);
-        factory = context.factoryEntity;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
+        super(setup);
+        factory = setup.factoryEntity;
+        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
         barProgress = new Bar(0, 0);
         barProgress.setBorderSize(1, 1);

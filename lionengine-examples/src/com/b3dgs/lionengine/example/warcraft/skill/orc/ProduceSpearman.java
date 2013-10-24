@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Produce grunt implementation.
@@ -33,10 +31,9 @@ public final class ProduceSpearman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public ProduceSpearman(SetupSkill setup, Context context)
+    public ProduceSpearman(SetupSkill setup)
     {
-        super(SkillType.PRODUCE_SPEARMAN, setup, context, EntityType.SPEARMAN);
+        super(setup, EntityType.SPEARMAN);
     }
 }

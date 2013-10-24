@@ -47,13 +47,12 @@ public abstract class Skill
     /**
      * Constructor.
      * 
-     * @param type The skill type.
      * @param setup The setup skill reference.
      */
-    protected Skill(SkillType type, SetupSkill setup)
+    protected Skill(SetupSkill setup)
     {
         super(setup);
-        this.type = type;
+        type = setup.type;
         icon = setup.icon;
     }
 

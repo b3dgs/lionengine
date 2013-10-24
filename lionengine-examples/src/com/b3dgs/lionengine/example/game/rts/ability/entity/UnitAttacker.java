@@ -19,9 +19,8 @@ package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
@@ -33,23 +32,21 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
  */
 public abstract class UnitAttacker
         extends Unit
-        implements AttackerUsedServices<Entity>, AttackerServices<Entity, Weapon>
+        implements AttackerUsedServices<Entity>, AttackerServices<Entity, UnitAttacker, Weapon>
 {
     /** Animations. */
     protected final Animation animAttack;
     /** Mover model. */
-    private final AttackerModel<Entity, Weapon> attacker;
+    private final AttackerModel<Entity, UnitAttacker, Weapon> attacker;
 
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected UnitAttacker(EntityType type, SetupSurfaceGame setup, Context context)
+    protected UnitAttacker(SetupEntity setup)
     {
-        super(type, setup, context);
+        super(setup);
         animAttack = getDataAnimation("attack");
         attacker = new AttackerModel<>(this);
     }
@@ -96,6 +93,12 @@ public abstract class UnitAttacker
     public void removeWeapon(int id)
     {
         attacker.removeWeapon(id);
+    }
+
+    @Override
+    public Weapon getWeapon(int id)
+    {
+        return attacker.getWeapon(id);
     }
 
     @Override
@@ -153,7 +156,7 @@ public abstract class UnitAttacker
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
-        // Nothing to do
+        getWeapon(0).setFrame(getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER);
     }
 
     @Override

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
@@ -46,13 +45,10 @@ public final class Mario
      * Standard constructor.
      * 
      * @param setup setup reference.
-     * @param map The map reference.
-     * @param desiredFps desired fps.
-     * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Mario(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    public Mario(SetupEntity setup)
     {
-        super(setup, EntityType.MARIO, map, desiredFps, server);
+        super(setup);
         animTurn = getDataAnimation("turn");
         animJump = getDataAnimation("jump");
         timerDie = new Timing();

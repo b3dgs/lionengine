@@ -28,35 +28,45 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum EntityDynamicType implements ObjectType
 {
     /** Meteor little 1. */
-    METEOR_LITTLE_1,
+    METEOR_LITTLE_1(MeteorLittle1.class),
     /** Meteor little 2. */
-    METEOR_LITTLE_2,
+    METEOR_LITTLE_2(MeteorLittle2.class),
     /** Meteor medium 1. */
-    METEOR_MEDIUM_1,
+    METEOR_MEDIUM_1(MeteorMedium1.class),
     /** Meteor medium 2. */
-    METEOR_MEDIUM_2,
+    METEOR_MEDIUM_2(MeteorMedium2.class),
     /** Meteor big. */
-    METEOR_BIG;
+    METEOR_BIG(MeteorBig.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String pathName;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private EntityDynamicType(Class<?> target)
+    {
+        this.target = target;
+        pathName = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return pathName;
     }
 }

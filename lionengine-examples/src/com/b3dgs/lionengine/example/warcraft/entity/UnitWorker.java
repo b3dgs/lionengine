@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.ResourceType;
 import com.b3dgs.lionengine.example.warcraft.effect.Effect;
 import com.b3dgs.lionengine.example.warcraft.effect.EffectType;
@@ -29,7 +28,6 @@ import com.b3dgs.lionengine.example.warcraft.map.Tile;
 import com.b3dgs.lionengine.example.warcraft.map.TileCollision;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.TimedMessage;
 import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
@@ -84,19 +82,17 @@ public abstract class UnitWorker
     /**
      * Constructor.
      * 
-     * @param type The entity type.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected UnitWorker(EntityType type, SetupSurfaceGame setup, Context context)
+    protected UnitWorker(SetupEntity setup)
     {
-        super(type, setup, context);
-        factory = context.factoryEntity;
-        handlerEntity = context.handlerEntity;
-        handlerEffect = context.handlerEffect;
-        message = context.timedMessage;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
-        extractor = new ExtractorModel<>(this, context.desiredFps);
+        super(setup);
+        factory = setup.factoryEntity;
+        handlerEntity = setup.handlerEntity;
+        handlerEffect = setup.handlerEffect;
+        message = setup.message;
+        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
+        extractor = new ExtractorModel<>(this, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
         extractionSpeed = getDataInteger("extraction_speed", "extraction");
         extractionCapacity = getDataInteger("extraction_capacity", "extraction");
@@ -104,7 +100,7 @@ public abstract class UnitWorker
         animWork = getDataAnimation("work");
         animCarryGold = getDataAnimation("carry_gold");
         animCarryWood = getDataAnimation("carry_wood");
-        construction = context.factoryEffect.create(EffectType.CONSTRUCTION);
+        construction = setup.factoryEffect.create(EffectType.CONSTRUCTION);
     }
 
     /**

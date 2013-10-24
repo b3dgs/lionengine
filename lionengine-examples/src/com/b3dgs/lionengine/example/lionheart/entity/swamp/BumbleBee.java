@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * BumbleBee monster implementation.
@@ -32,10 +31,9 @@ public final class BumbleBee
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public BumbleBee(SetupSurfaceRasteredGame setup, Level level)
+    public BumbleBee(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.BUMBLE_BEE);
+        super(setup);
     }
 }

@@ -45,9 +45,13 @@ public final class AppGameFactory
         final FlyMachine flyMachine = factory.create(Type.FLY_MACHINE);
         final GroundTruck groundTruck = factory.create(Type.GROUND_TRUCK);
 
-        System.out.println(base.getType()); // Type fly
-        System.out.println(flyMachine.getType()); // Type fly
-        System.out.println(groundTruck.getType()); // Type ground
+        System.out.println(base.getType());
+        System.out.println(flyMachine.getType());
+        System.out.println(groundTruck.getType());
+
+        // Parameters are the same
+        System.out.println(flyMachine.getParam());
+        System.out.println(groundTruck.getParam());
     }
 
     /**

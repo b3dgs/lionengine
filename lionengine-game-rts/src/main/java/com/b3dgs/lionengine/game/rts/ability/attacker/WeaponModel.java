@@ -17,23 +17,26 @@
  */
 package com.b3dgs.lionengine.game.rts.ability.attacker;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Damages;
+import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.Range;
-import com.b3dgs.lionengine.game.Surface;
-import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
- * Default attacker model implementation.
+ * Default weapon model implementation.
  * 
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  */
 public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedServices<E>>
-        extends AbilityModel<AttackerListener<E>, A>
-        implements WeaponServices<E>, AttackerListener<E>, Surface
+        extends ObjectGame
+        implements WeaponServices<E, A>, AttackerListener<E>
 {
     /** Attack state. */
     private static enum State
@@ -46,10 +49,14 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
         ATTACKING;
     }
 
+    /** Listener list. */
+    private final Set<AttackerListener<E>> listeners;
     /** Damages. */
     private final Damages damages;
     /** Attack distance allowed. */
     private final Range distAttack;
+    /** User reference. */
+    private A user;
     /** Attacker target. */
     private E target;
     /** Attack frame number. */
@@ -70,11 +77,12 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     /**
      * Create a new attacker ability.
      * 
-     * @param user The ability user reference.
+     * @param setup The setup reference.
      */
-    public WeaponModel(A user)
+    public WeaponModel(SetupGame setup)
     {
-        super(user);
+        super(setup);
+        listeners = new HashSet<>(1);
         damages = new Damages();
         target = null;
         frameAttack = 1;
@@ -192,6 +200,14 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     }
 
     @Override
+    public void setUser(A user)
+    {
+        this.user = user;
+        listeners.clear();
+        listeners.add(user);
+    }
+
+    @Override
     public void setAttackTimer(int time)
     {
         attackPause = time;
@@ -227,6 +243,12 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
     public boolean isAttacking()
     {
         return State.ATTACKING == state;
+    }
+
+    @Override
+    public A getUser()
+    {
+        return user;
     }
 
     @Override
@@ -299,6 +321,15 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
 
     @Override
     public void notifyAttackAnimEnded()
+    {
+        for (final AttackerListener<E> listener : listeners)
+        {
+            listener.notifyAttackAnimEnded();
+        }
+    }
+
+    @Override
+    public void notifyAttackEnded(int damages, E target)
     {
         for (final AttackerListener<E> listener : listeners)
         {

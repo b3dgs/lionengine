@@ -20,10 +20,7 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Missile projectile.
@@ -43,12 +40,10 @@ public abstract class Missile
      * 
      * @param setup The setup reference.
      * @param frame The missile frame.
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
      */
-    protected Missile(SetupSurfaceGame setup, int frame, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Missile(SetupProjectile setup, int frame)
     {
-        super(setup, frame, factoryEffect, handlerEffect);
+        super(setup, frame);
         timerEffect = new Timing();
         speed = 1.0;
     }

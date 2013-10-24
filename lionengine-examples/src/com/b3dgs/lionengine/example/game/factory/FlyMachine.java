@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.SetupGame;
-
 /**
  * Fly machine implementation.
  * 
@@ -31,10 +29,9 @@ public final class FlyMachine
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param param The parameter.
      */
-    public FlyMachine(SetupGame setup, Object param)
+    public FlyMachine(Setup setup)
     {
-        super(Type.FLY_MACHINE, setup, param);
+        super(setup);
     }
 }

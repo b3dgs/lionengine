@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Talisment item.
@@ -35,11 +33,10 @@ public final class Talisment
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Talisment(SetupSurfaceRasteredGame setup, Level level)
+    public Talisment(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.TALISMENT, EffectType.TAKEN);
+        super(setup);
     }
 
     /*

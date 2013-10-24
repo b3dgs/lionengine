@@ -22,7 +22,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -87,18 +86,14 @@ abstract class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param type The entity type.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
-     * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    Entity(SetupSurfaceGame setup, EntityType type, Map map, int desiredFps, boolean server)
+    Entity(SetupEntity setup)
     {
         super(setup);
-        this.type = type;
-        this.map = map;
-        this.desiredFps = desiredFps;
-        this.server = server;
+        type = setup.type;
+        map = setup.map;
+        desiredFps = setup.desiredFps;
+        server = setup.server;
         animIdle = getDataAnimation("idle");
         animWalk = getDataAnimation("walk");
         animDie = getDataAnimation("dead");

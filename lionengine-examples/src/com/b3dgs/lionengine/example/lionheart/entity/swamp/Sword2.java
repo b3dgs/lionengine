@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.Sfx;
-import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Sword2 item. Second level of the sword.
@@ -35,11 +33,10 @@ public final class Sword2
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Sword2(SetupSurfaceRasteredGame setup, Level level)
+    public Sword2(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.SWORD2, EffectType.TAKEN);
+        super(setup);
     }
 
     /*

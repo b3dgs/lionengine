@@ -38,25 +38,6 @@ public final class ObjectTypeUtility
     }
 
     /**
-     * Get the class name equivalence.
-     * 
-     * @param type The object type.
-     * @return The class name equivalence.
-     */
-    public static String asClassName(Enum<?> type)
-    {
-        final char[] name = ObjectTypeUtility.toString(type).toCharArray();
-        for (int i = 0; i < name.length; i++)
-        {
-            if (name[i] == '_')
-            {
-                name[i + 1] = Character.toUpperCase(name[i + 1]);
-            }
-        }
-        return String.valueOf(name).replace("_", "");
-    }
-
-    /**
      * Get the title name (first letter as upper).
      * 
      * @param type The object type.

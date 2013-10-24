@@ -25,16 +25,16 @@ package com.b3dgs.lionengine.game;
 public interface ObjectType
 {
     /**
-     * Get the name as a path (lower case).
+     * Get the target class (which can be instantiated by a {@link FactoryObjectGame}).
      * 
-     * @return The name.
+     * @return The target class.
      */
-    public String asPathName();
+    public Class<?> getTargetClass();
 
     /**
-     * Get the class name equivalence.
+     * Get the name as a path (which is used to point the XML data file).
      * 
-     * @return The class name equivalence.
+     * @return The path name.
      */
-    public String asClassName();
+    public String getPathName();
 }

@@ -17,11 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
-import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.rts.ability.attacker.WeaponModel;
 
@@ -39,14 +36,11 @@ public abstract class Weapon
     /**
      * Constructor.
      * 
-     * @param type The weapon type.
      * @param setup The setup reference.
-     * @param user The user reference.
-     * @param context The context reference.
      */
-    protected Weapon(WeaponType type, SetupGame setup, UnitAttacker user, Context context)
+    protected Weapon(SetupWeapon setup)
     {
-        super(user);
+        super(setup);
 
         final Configurable config = setup.configurable;
         setAttackFrame(config.getDataInteger("attackFrame"));
@@ -62,6 +56,16 @@ public abstract class Weapon
     }
 
     /**
+     * Set the weapon frame.
+     * 
+     * @param frame The weapon frame.
+     */
+    public void setFrame(int frame)
+    {
+        this.frame = frame;
+    }
+
+    /**
      * Get the frame.
      * 
      * @return The frame.
@@ -69,15 +73,5 @@ public abstract class Weapon
     public int getFrame()
     {
         return frame;
-    }
-
-    /*
-     * WeaponModel
-     */
-
-    @Override
-    public void notifyAttackEnded(int damages, Entity target)
-    {
-        frame = user.getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER;
     }
 }

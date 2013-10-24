@@ -20,15 +20,11 @@ package com.b3dgs.lionengine.example.tyrian.entity.ship;
 import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 import com.b3dgs.lionengine.example.tyrian.weapon.WeaponType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Ship base implementation.
@@ -47,18 +43,14 @@ public abstract class Ship
 
     /**
      * @param setup The setup reference.
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The effect handler reference.
-     * @param factoryWeapon The factory weapon reference.
      */
-    protected Ship(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect,
-            FactoryWeapon factoryWeapon)
+    protected Ship(SetupEntityShip setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
         energy = new Alterable(1000);
-        weaponFront = factoryWeapon.create(WeaponType.HYPER_PULSE);
+        weaponFront = setup.factoryWeapon.create(WeaponType.HYPER_PULSE);
         weaponFront.setOwner(this);
-        weaponRear = factoryWeapon.create(WeaponType.MISSILE_LAUNCHER_REAR);
+        weaponRear = setup.factoryWeapon.create(WeaponType.MISSILE_LAUNCHER_REAR);
         weaponRear.setOwner(this);
         setSize(24, 28);
         setLocation(0, -216);

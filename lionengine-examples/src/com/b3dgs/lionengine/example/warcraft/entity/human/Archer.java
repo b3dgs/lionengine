@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Spearman implementation.
@@ -34,14 +32,13 @@ public final class Archer
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public Archer(SetupSurfaceGame setup, Context context)
+    public Archer(SetupEntity setup)
     {
-        super(EntityType.ARCHER, setup, context);
-        addWeapon(context, WeaponType.BOW, 0);
-        addSkill(context, 0, SkillType.MOVE_HUMAN, 0);
-        addSkill(context, 0, SkillType.STOP_HUMAN, 1);
-        addSkill(context, 0, SkillType.ATTACK_BOW, 2);
+        super(setup);
+        addWeapon(WeaponType.BOW, 0);
+        addSkill(0, SkillType.MOVE_HUMAN, 0);
+        addSkill(0, SkillType.STOP_HUMAN, 1);
+        addSkill(0, SkillType.ATTACK_BOW, 2);
     }
 }

@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.warcraft.weapon.Weapon;
 import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 
@@ -31,25 +31,26 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
  */
 public abstract class UnitAttacker
         extends Unit
-        implements Attacker, AttackerServices<Entity, Weapon>
+        implements Attacker, AttackerServices<Entity, Attacker, Weapon>
 {
     /** Animations. */
     protected final Animation animAttack;
     /** Mover model. */
-    private final AttackerModel<Entity, Weapon> attacker;
+    private final AttackerModel<Entity, Attacker, Weapon> attacker;
+    /** Factory weapon. */
+    private final FactoryWeapon factoryWeapon;
 
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected UnitAttacker(EntityType type, SetupSurfaceGame setup, Context context)
+    protected UnitAttacker(SetupEntity setup)
     {
-        super(type, setup, context);
+        super(setup);
         animAttack = getDataAnimation("attack");
-        attacker = new AttackerModel<>(this);
+        attacker = new AttackerModel<Entity, Attacker, Weapon>(this);
+        factoryWeapon = setup.factoryWeapon;
     }
 
     /**
@@ -73,14 +74,12 @@ public abstract class UnitAttacker
     /**
      * Add a weapon from its type.
      * 
-     * @param context The context reference.
      * @param type The weapon type.
      * @param id The weapon id.
      */
-    protected void addWeapon(Context context, WeaponType type, int id)
+    protected void addWeapon(WeaponType type, int id)
     {
-        context.factoryWeapon.setArguments(this, context);
-        final Weapon weapon = context.factoryWeapon.create(type);
+        final Weapon weapon = factoryWeapon.create(type);
         addWeapon(weapon, id);
     }
 
@@ -140,6 +139,12 @@ public abstract class UnitAttacker
     public void removeWeapon(int id)
     {
         attacker.removeWeapon(id);
+    }
+
+    @Override
+    public Weapon getWeapon(int id)
+    {
+        return attacker.getWeapon(id);
     }
 
     @Override
@@ -205,7 +210,7 @@ public abstract class UnitAttacker
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
-        // Nothing to do
+        getWeapon(0).setFrame(getOrientation().ordinal() % Orientation.ORIENTATIONS_NUMBER);
     }
 
     @Override

@@ -28,37 +28,47 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 public enum SkillType implements ObjectType
 {
     /** Move orc skill. */
-    MOVE_ORC,
+    MOVE_ORC(MoveOrc.class),
     /** Build orc skill. */
-    BUILDING_STANDARD_ORC,
+    BUILDING_STANDARD_ORC(BuildingStandardOrc.class),
     /** Stop orc skill. */
-    STOP_ORC,
+    STOP_ORC(StopOrc.class),
     /** Cancel orc skill. */
-    CANCEL_ORC,
+    CANCEL_ORC(CancelOrc.class),
     /** Build barracks orc skill. */
-    BUILD_BARRACKS_ORC,
+    BUILD_BARRACKS_ORC(BuildBarracksOrc.class),
     /** Produce peon skill. */
-    PRODUCE_PEON;
+    PRODUCE_PEON(ProducePeon.class);
+
+    /** Class target. */
+    private final Class<?> target;
+    /** Path name. */
+    private final String path;
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
+     */
+    private SkillType(Class<?> target)
+    {
+        this.target = target;
+        path = ObjectTypeUtility.asPathName(this);
+    }
 
     /*
      * ObjectType
      */
 
     @Override
-    public String asPathName()
+    public Class<?> getTargetClass()
     {
-        return ObjectTypeUtility.asPathName(this);
+        return target;
     }
 
     @Override
-    public String asClassName()
+    public String getPathName()
     {
-        return ObjectTypeUtility.asClassName(this);
-    }
-
-    @Override
-    public String toString()
-    {
-        return ObjectTypeUtility.toString(this);
+        return path;
     }
 }

@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.example.game.rts.ability.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
+import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
+import com.b3dgs.lionengine.example.game.rts.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
@@ -34,23 +36,33 @@ public final class FactoryEntity
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
 
-    /**
-     * Constructor. Entity data are stored in a .txt file and the surface in .png file.
-     */
-    public FactoryEntity()
-    {
-        super(EntityType.class, FactoryEntity.ENTITY_PATH);
-        load();
-    }
+    /** Map reference. */
+    public final Map map;
+    /** The factory weapon. */
+    public final FactoryWeapon factoryWeapon;
+    /** Handler entity reference. */
+    public final HandlerEntity handlerEntity;
+    /** The desired fps. */
+    public final int desiredFps;
 
     /**
-     * Set the context.
+     * Constructor.
      * 
-     * @param context The context
+     * @param map The map reference.
+     * @param factoryWeapon The factory weapon reference.
+     * @param handlerEntity The handler entity reference.
+     * @param handlerProjectile The handler projectile reference.
+     * @param desiredFps The desired fps.
      */
-    public void setContext(Context context)
+    public FactoryEntity(Map map, FactoryWeapon factoryWeapon, HandlerEntity handlerEntity,
+            HandlerProjectile handlerProjectile, int desiredFps)
     {
-        setArguments(context);
+        super(EntityType.class, FactoryEntity.ENTITY_PATH);
+        this.map = map;
+        this.factoryWeapon = factoryWeapon;
+        this.handlerEntity = handlerEntity;
+        this.desiredFps = desiredFps;
+        load();
     }
 
     /*
@@ -58,8 +70,8 @@ public final class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    protected SetupEntity createSetup(EntityType type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, type, map, this, factoryWeapon, handlerEntity, desiredFps);
     }
 }

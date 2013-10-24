@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Building;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 
 /**
  * Lumber mill building implementation. This building allows to enable spearman production and spear upgrades.
@@ -32,10 +30,9 @@ public final class LumbermillOrc
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public LumbermillOrc(SetupSurfaceGame setup, Context context)
+    public LumbermillOrc(SetupEntity setup)
     {
-        super(EntityType.LUMBERMILL_ORC, setup, context);
+        super(setup);
     }
 }

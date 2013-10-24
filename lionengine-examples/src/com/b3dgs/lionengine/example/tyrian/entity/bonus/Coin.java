@@ -22,9 +22,6 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Coin bonus implementation.
@@ -43,14 +40,11 @@ abstract class Coin
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The effect handler reference.
-     * @param effect The effect type used.
      */
-    protected Coin(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect, EffectType effect)
+    protected Coin(SetupEntityBonus setup)
     {
-        super(setup, factoryEffect, handlerEffect);
-        this.effect = effect;
+        super(setup);
+        effect = setup.effect;
         animator = Anim.createAnimator();
         animator.play(getDataAnimation("idle"));
     }

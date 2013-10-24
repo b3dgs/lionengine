@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.example.lionheart.entity.player.EntityPlayerType;
 import com.b3dgs.lionengine.example.lionheart.landscape.LandscapeType;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Handle the entity creation by containing all necessary object for their instantiation.
@@ -36,7 +35,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
  * @param <T> The entity type used.
  */
 public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
-        extends FactoryObjectGame<T, SetupSurfaceRasteredGame, Entity>
+        extends FactoryObjectGame<T, SetupEntity, Entity>
 {
     /** Unknown entity error message. */
     public static final String UNKNOWN_ENTITY_ERROR = "Unknown entity: ";
@@ -95,7 +94,6 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
     public void setLevel(Level level)
     {
         this.level = level;
-        setArguments(level);
     }
 
     /**
@@ -113,7 +111,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
      */
 
     @Override
-    protected SetupSurfaceRasteredGame createSetup(T type, Media media)
+    protected SetupEntity createSetup(T type, Media media)
     {
         final Media raster;
         if (AppLionheart.RASTER_ENABLED && type != EntityPlayerType.VALDYN)
@@ -124,6 +122,6 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
         {
             raster = null;
         }
-        return new SetupSurfaceRasteredGame(media, raster, false);
+        return new SetupEntity(media, raster, false, type, level);
     }
 }

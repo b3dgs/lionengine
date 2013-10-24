@@ -19,11 +19,9 @@ package com.b3dgs.lionengine.example.tyrian.weapon.rear;
 
 import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
+import com.b3dgs.lionengine.example.tyrian.weapon.SetupWeapon;
 import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Missile rear implementation.
@@ -35,11 +33,11 @@ public final class MissileLauncherRear
     private boolean side;
 
     /**
-     * {@link Weapon#Weapon(com.b3dgs.lionengine.game.SetupGame, FactoryProjectile, HandlerProjectile)}
+     * {@link Weapon#Weapon(SetupWeapon)}
      */
-    public MissileLauncherRear(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
+    public MissileLauncherRear(SetupWeapon setup)
     {
-        super(setup, factory, handler);
+        super(setup);
         setRate(400);
     }
 

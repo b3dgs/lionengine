@@ -21,8 +21,10 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
-import com.b3dgs.lionengine.example.warcraft.Context;
+import com.b3dgs.lionengine.example.warcraft.Cursor;
 import com.b3dgs.lionengine.example.warcraft.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.warcraft.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.TimedMessage;
 
@@ -32,6 +34,12 @@ import com.b3dgs.lionengine.game.TimedMessage;
 public final class FactorySkill
         extends FactoryObjectGame<SkillType, SetupSkill, Skill>
 {
+    /** Map. */
+    public final Map map;
+    /** Cursor. */
+    public final Cursor cursor;
+    /** Handler entity. */
+    public final HandlerEntity handlerEntity;
     /** Production factory. */
     public final FactoryProduction factoryProduction;
     /** Background set. */
@@ -42,27 +50,24 @@ public final class FactorySkill
     /**
      * Create a new entity factory.
      * 
+     * @param map The map reference.
+     * @param cursor The cursor reference.
+     * @param handlerEntity The handler entity reference.
      * @param factoryProduction The production factory.
      * @param message The timed message reference.
      */
-    public FactorySkill(FactoryProduction factoryProduction, TimedMessage message)
+    public FactorySkill(Map map, Cursor cursor, HandlerEntity handlerEntity, FactoryProduction factoryProduction,
+            TimedMessage message)
     {
         super(SkillType.class, AppWarcraft.SKILLS_DIR);
+        this.map = map;
+        this.cursor = cursor;
+        this.handlerEntity = handlerEntity;
         this.factoryProduction = factoryProduction;
         this.message = message;
         background = Drawable.loadSpriteTiled(Media.get("skill_background.png"), 31, 23);
         background.load(false);
         load();
-    }
-
-    /**
-     * Set the context reference.
-     * 
-     * @param context The context reference.
-     */
-    public void setContext(Context context)
-    {
-        setArguments(context);
     }
 
     /*
@@ -72,6 +77,6 @@ public final class FactorySkill
     @Override
     protected SetupSkill createSetup(SkillType type, Media config)
     {
-        return new SetupSkill(config, type, background, factoryProduction, message);
+        return new SetupSkill(config, type, background, map, cursor, handlerEntity, factoryProduction, message);
     }
 }

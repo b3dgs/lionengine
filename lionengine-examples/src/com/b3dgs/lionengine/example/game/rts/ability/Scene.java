@@ -36,9 +36,12 @@ import com.b3dgs.lionengine.example.game.rts.ability.entity.GoldMine;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitWorker;
+import com.b3dgs.lionengine.example.game.rts.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.example.game.rts.ability.map.Map;
 import com.b3dgs.lionengine.example.game.rts.ability.map.Tile;
+import com.b3dgs.lionengine.example.game.rts.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
+import com.b3dgs.lionengine.example.game.rts.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -69,12 +72,16 @@ final class Scene
     private final FactoryEntity factoryEntity;
     /** Production data. */
     private final FactoryProduction factoryProduction;
+    /** Production data. */
+    private final FactoryLauncher factoryLauncher;
+    /** Production data. */
+    private final FactoryProjectile factoryProjectile;
+    /** Production data. */
+    private final FactoryWeapon factoryWeapon;
     /** Entity handler. */
     private final HandlerEntity handlerEntity;
     /** Arrows handler. */
     private final HandlerProjectile handlerProjectile;
-    /** Context. */
-    private final Context context;
 
     /**
      * Constructor.
@@ -91,10 +98,11 @@ final class Scene
         controlPanel = new ControlPanel();
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        context = new Context(map, handlerEntity, handlerProjectile, source.getRate());
-        factoryEntity = context.factoryEntity;
-        factoryProduction = new FactoryProduction(factoryEntity);
-        context.assignContext();
+        factoryProjectile = new FactoryProjectile();
+        factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
+        factoryWeapon = new FactoryWeapon(factoryLauncher);
+        factoryEntity = new FactoryEntity(map, factoryWeapon, handlerEntity, handlerProjectile, source.getRate());
+        factoryProduction = new FactoryProduction();
         setMouseVisible(false);
     }
 

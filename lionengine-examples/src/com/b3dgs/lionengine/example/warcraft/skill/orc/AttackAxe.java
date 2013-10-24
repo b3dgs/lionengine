@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.Attack;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Sword attack skill.
@@ -32,10 +30,9 @@ public final class AttackAxe
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public AttackAxe(SetupSkill setup, Context context)
+    public AttackAxe(SetupSkill setup)
     {
-        super(SkillType.ATTACK_SWORD, setup, context);
+        super(setup);
     }
 }

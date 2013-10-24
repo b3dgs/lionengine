@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Building;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 
 /**
  * Farm building implementation. This building allows to increase the population capacity.
@@ -32,10 +30,9 @@ public final class FarmHuman
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public FarmHuman(SetupSurfaceGame setup, Context context)
+    public FarmHuman(SetupEntity setup)
     {
-        super(EntityType.FARM_HUMAN, setup, context);
+        super(setup);
     }
 }

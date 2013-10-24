@@ -17,13 +17,11 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.effect.EffectType;
 import com.b3dgs.lionengine.example.lionheart.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.player.Valdyn;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Abstract implementation of an item.
@@ -40,14 +38,11 @@ public abstract class EntityItem
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
-     * @param type The entity type.
-     * @param effect The effect type.
      */
-    public EntityItem(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type, EffectType effect)
+    public EntityItem(SetupEntity setup)
     {
-        super(setup, level, type);
-        factoryEffect = level.factoryEffect;
+        super(setup);
+        factoryEffect = setup.level.factoryEffect;
         play(getDataAnimation(status.getState().getAnimationName()));
     }
 

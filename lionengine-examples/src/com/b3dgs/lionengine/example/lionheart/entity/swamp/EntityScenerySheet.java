@@ -18,10 +18,8 @@
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Sheet base scenery implementation.
@@ -49,11 +47,11 @@ public class EntityScenerySheet
     protected boolean firstHit;
 
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    public EntityScenerySheet(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    public EntityScenerySheet(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
     }
 
     /*

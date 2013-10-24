@@ -17,12 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.example.warcraft.projectile.LauncherProjectile;
-import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.example.warcraft.launcher.LauncherProjectile;
+import com.b3dgs.lionengine.example.warcraft.launcher.LauncherType;
 
 /**
  * Bow weapon implementation.
@@ -37,13 +34,11 @@ public final class Bow
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param user The user reference.
-     * @param context The context reference.
      */
-    public Bow(SetupGame setup, Attacker user, Context context)
+    public Bow(SetupWeapon setup)
     {
-        super(WeaponType.SPEAR, setup, user, context);
-        launcher = new LauncherProjectile(ProjectileType.ARROW, context);
+        super(setup);
+        launcher = setup.factoryLauncher.create(LauncherType.BOW);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

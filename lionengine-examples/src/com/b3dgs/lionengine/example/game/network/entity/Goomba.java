@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
@@ -37,13 +36,10 @@ public final class Goomba
      * Standard constructor.
      * 
      * @param setup setup reference.
-     * @param map The map reference.
-     * @param desiredFps desired fps.
-     * @param server <code>true</code> if is server, <code>false</code> if client.
      */
-    public Goomba(SetupSurfaceGame setup, Map map, int desiredFps, boolean server)
+    public Goomba(SetupEntity setup)
     {
-        super(setup, EntityType.GOOMBA, map, desiredFps, server);
+        super(setup);
         timerDie = new Timing();
         jumpForceValue = 9.0;
         movementSpeedValue = 0.75;

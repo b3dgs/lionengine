@@ -17,10 +17,7 @@
  */
 package com.b3dgs.lionengine.example.warcraft.weapon;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
-import com.b3dgs.lionengine.example.warcraft.entity.Attacker;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Axe weapon implementation.
@@ -32,12 +29,10 @@ public final class Axe
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param user The user reference.
-     * @param context The context reference.
      */
-    public Axe(SetupGame setup, Attacker user, Context context)
+    public Axe(SetupWeapon setup)
     {
-        super(WeaponType.AXE, setup, user, context);
+        super(setup);
     }
 
     /*
@@ -47,6 +42,6 @@ public final class Axe
     @Override
     public void notifyAttackEnded(int damages, Entity target)
     {
-        target.decreaseLife(damages, user);
+        target.decreaseLife(damages, getUser());
     }
 }

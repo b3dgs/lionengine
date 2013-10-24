@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 
@@ -33,11 +32,10 @@ public final class BuildingStandardOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
      */
-    public BuildingStandardOrc(SetupSkill setup, Cursor cursor)
+    public BuildingStandardOrc(SetupSkill setup)
     {
-        super(SkillType.BUILDING_STANDARD_ORC, setup);
+        super(setup);
     }
 
     /*

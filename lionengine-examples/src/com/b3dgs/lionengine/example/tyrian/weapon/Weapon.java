@@ -18,12 +18,9 @@
 package com.b3dgs.lionengine.example.tyrian.weapon;
 
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.example.tyrian.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.tyrian.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.Projectile;
 import com.b3dgs.lionengine.example.tyrian.projectile.ProjectileType;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -39,12 +36,10 @@ public abstract class Weapon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param factory The factory reference.
-     * @param handler The handler reference.
      */
-    public Weapon(SetupGame setup, FactoryProjectile factory, HandlerProjectile handler)
+    protected Weapon(SetupWeapon setup)
     {
-        super(factory, handler);
+        super(setup, setup.factory, setup.handler);
         level.setMax(5);
         consume = 300;
     }

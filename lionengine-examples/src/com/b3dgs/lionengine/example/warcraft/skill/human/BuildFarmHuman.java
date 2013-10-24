@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceBuilding;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Build skill implementation.
@@ -33,10 +31,9 @@ public final class BuildFarmHuman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public BuildFarmHuman(SetupSkill setup, Context context)
+    public BuildFarmHuman(SetupSkill setup)
     {
-        super(SkillType.BUILD_FARM_HUMAN, setup, context, EntityType.FARM_HUMAN);
+        super(setup, EntityType.FARM_HUMAN);
     }
 }

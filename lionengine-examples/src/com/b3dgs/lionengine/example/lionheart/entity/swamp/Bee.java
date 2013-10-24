@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Bee monster implementation.
@@ -32,11 +31,10 @@ public final class Bee
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Bee(SetupSurfaceRasteredGame setup, Level level)
+    public Bee(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.BEE);
+        super(setup);
     }
 
     /*

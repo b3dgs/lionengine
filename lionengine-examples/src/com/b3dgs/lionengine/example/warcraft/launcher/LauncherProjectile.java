@@ -15,17 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.warcraft.projectile;
+package com.b3dgs.lionengine.example.warcraft.launcher;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.Entity;
+import com.b3dgs.lionengine.example.warcraft.projectile.Projectile;
+import com.b3dgs.lionengine.example.warcraft.projectile.ProjectileType;
 import com.b3dgs.lionengine.example.warcraft.weapon.Weapon;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
  * Launcher base implementation.
  */
-public final class LauncherProjectile
+public class LauncherProjectile
         extends LauncherProjectileGame<ProjectileType, Entity, Weapon, Projectile>
 {
     /** Type projectile. */
@@ -34,13 +35,12 @@ public final class LauncherProjectile
     /**
      * Constructor.
      * 
-     * @param type The projectile type.
-     * @param context The context reference.
+     * @param setup The setup reference.
      */
-    public LauncherProjectile(ProjectileType type, Context context)
+    public LauncherProjectile(SetupLauncher setup)
     {
-        super(context.factoryProjectile, context.handlerProjectile);
-        this.type = type;
+        super(setup, setup.factoryProjectile, setup.handlerProjectile);
+        type = setup.type;
     }
 
     /*

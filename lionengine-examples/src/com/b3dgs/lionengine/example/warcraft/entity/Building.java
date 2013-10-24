@@ -19,11 +19,9 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.effect.Effect;
 import com.b3dgs.lionengine.example.warcraft.effect.EffectType;
 import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Abstract building entity implementation.
@@ -62,18 +60,16 @@ public abstract class Building
     /**
      * Constructor.
      * 
-     * @param type The entity type.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected Building(EntityType type, SetupSurfaceGame setup, Context context)
+    protected Building(SetupEntity setup)
     {
-        super(type, setup, context);
+        super(setup);
         setLayer(0);
         setFrame(2);
-        handlerEffect = context.handlerEffect;
-        burning = context.factoryEffect.create(EffectType.BURNING);
-        explode = context.factoryEffect.create(EffectType.EXPLODE);
+        handlerEffect = setup.handlerEffect;
+        burning = setup.factoryEffect.create(EffectType.BURNING);
+        explode = setup.factoryEffect.create(EffectType.EXPLODE);
         animBurningLow = Anim.createAnimation(1, 4, 0.125, false, true);
         animBurningHigh = Anim.createAnimation(5, 8, 0.125, false, true);
         animExplode = Anim.createAnimation(1, 18, 0.125, false, false);

@@ -17,11 +17,8 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Bonus entity implementation.
@@ -32,11 +29,13 @@ abstract class Bonus
         extends Entity
 {
     /**
-     * {@link Entity#Entity(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * Constructor.
+     * 
+     * @param setup The setup entity.
      */
-    public Bonus(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public Bonus(SetupEntityBonus setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 
     /*

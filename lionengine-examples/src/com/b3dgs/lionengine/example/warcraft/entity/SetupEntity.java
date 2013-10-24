@@ -22,7 +22,13 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.example.warcraft.RaceType;
+import com.b3dgs.lionengine.example.warcraft.effect.FactoryEffect;
+import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.warcraft.map.Map;
+import com.b3dgs.lionengine.example.warcraft.skill.FactorySkill;
+import com.b3dgs.lionengine.example.warcraft.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.TimedMessage;
 
 /**
  * Setup entity implementation.
@@ -32,18 +38,59 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public class SetupEntity
         extends SetupSurfaceGame
 {
+    /** Type. */
+    public final EntityType type;
     /** Corpse. */
     public final ImageBuffer corpse;
+    /** Map. */
+    public final Map map;
+    /** Timed message. */
+    public final TimedMessage message;
+    /** Factory entity. */
+    public final FactoryEntity factoryEntity;
+    /** Factory effect. */
+    public final FactoryEffect factoryEffect;
+    /** Factory skill. */
+    public final FactorySkill factorySkill;
+    /** Factory weapon. */
+    public final FactoryWeapon factoryWeapon;
+    /** Handler entity. */
+    public final HandlerEntity handlerEntity;
+    /** handler effect. */
+    public final HandlerEffect handlerEffect;
+    /** Desired fps. */
+    public final int fps;
 
     /**
      * Constructor.
      * 
      * @param config The config file.
      * @param type The entity type.
+     * @param map The map reference.
+     * @param message The timed message reference.
+     * @param factoryEntity The factory entity reference.
+     * @param factoryEffect The factory effect reference.
+     * @param factorySkill The factory skill reference.
+     * @param factoryWeapon The factory weapon reference.
+     * @param handlerEntity The handler entity reference.
+     * @param handlerEffect The handler effect reference.
+     * @param fps The desired fps.
      */
-    public SetupEntity(Media config, EntityType type)
+    public SetupEntity(Media config, EntityType type, Map map, TimedMessage message, FactoryEntity factoryEntity,
+            FactoryEffect factoryEffect, FactorySkill factorySkill, FactoryWeapon factoryWeapon,
+            HandlerEntity handlerEntity, HandlerEffect handlerEffect, int fps)
     {
         super(config);
+        this.type = type;
+        this.map = map;
+        this.message = message;
+        this.factoryEntity = factoryEntity;
+        this.factoryEffect = factoryEffect;
+        this.factorySkill = factorySkill;
+        this.factoryWeapon = factoryWeapon;
+        this.handlerEntity = handlerEntity;
+        this.handlerEffect = handlerEffect;
+        this.fps = fps;
         if (type.race == RaceType.NEUTRAL)
         {
             corpse = null;
@@ -51,7 +98,7 @@ public class SetupEntity
         else
         {
             corpse = UtilityImage.getImageBuffer(
-                    Media.get(AppWarcraft.EFFECTS_DIR, "corpse_" + type.race.asPathName() + ".png"), false);
+                    Media.get(AppWarcraft.EFFECTS_DIR, "corpse_" + type.race.getPathName() + ".png"), false);
         }
     }
 }

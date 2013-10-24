@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Turning auto scenery implementation.
@@ -32,11 +31,10 @@ public final class TurningAuto
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public TurningAuto(SetupSurfaceRasteredGame setup, Level level)
+    public TurningAuto(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.TURNING_AUTO);
+        super(setup);
         timerShake.start();
     }
 }

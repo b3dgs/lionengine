@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
-import com.b3dgs.lionengine.example.lionheart.entity.EntityType;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Bee monster base implementation.
@@ -33,11 +31,11 @@ public abstract class EntityMonsterBee
         extends EntityMonster
 {
     /**
-     * @see Entity#Entity(SetupSurfaceRasteredGame, Level, EntityType)
+     * @see Entity#Entity(SetupEntity)
      */
-    public EntityMonsterBee(SetupSurfaceRasteredGame setup, Level level, EntityType<?> type)
+    public EntityMonsterBee(SetupEntity setup)
     {
-        super(setup, level, type);
+        super(setup);
         enableMovement(Patrol.HORIZONTAL);
         enableMovement(Patrol.VERTICAL);
     }

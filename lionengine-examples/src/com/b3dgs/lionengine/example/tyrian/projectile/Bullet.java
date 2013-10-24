@@ -19,10 +19,7 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
 
 import com.b3dgs.lionengine.example.tyrian.effect.Effect;
 import com.b3dgs.lionengine.example.tyrian.effect.EffectType;
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Bullet projectile.
@@ -33,13 +30,11 @@ public final class Bullet
     /**
      * Constructor.
      * 
-     * @param factoryEffect The factory effect.
-     * @param handlerEffect The handler effect.
      * @param setup The setup reference.
      */
-    public Bullet(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public Bullet(SetupProjectile setup)
     {
-        super(setup, 124, factoryEffect, handlerEffect);
+        super(setup, 124);
     }
 
     /*

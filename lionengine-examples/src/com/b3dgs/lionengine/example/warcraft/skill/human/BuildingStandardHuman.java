@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.warcraft.skill.human;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.skill.BuildingStandard;
 import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
-import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Buildings standard human skill implementation.
@@ -32,10 +30,9 @@ public final class BuildingStandardHuman
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param context The context reference.
      */
-    public BuildingStandardHuman(SetupSkill setup, Context context)
+    public BuildingStandardHuman(SetupSkill setup)
     {
-        super(SkillType.BUILDING_STANDARD_HUMAN, setup, context);
+        super(setup);
     }
 }

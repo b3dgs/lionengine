@@ -17,12 +17,10 @@
  */
 package com.b3dgs.lionengine.example.warcraft.entity.orc;
 
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.example.warcraft.entity.BuildingProducer;
-import com.b3dgs.lionengine.example.warcraft.entity.EntityType;
+import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 import com.b3dgs.lionengine.example.warcraft.entity.Warehouse;
 import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -35,11 +33,10 @@ public final class TownhallOrc
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    public TownhallOrc(SetupSurfaceGame setup, Context context)
+    public TownhallOrc(SetupEntity setup)
     {
-        super(EntityType.TOWNHALL_ORC, setup, context);
-        addSkill(context, 0, SkillType.PRODUCE_PEON, 0);
+        super(setup);
+        addSkill(0, SkillType.PRODUCE_PEON, 0);
     }
 }

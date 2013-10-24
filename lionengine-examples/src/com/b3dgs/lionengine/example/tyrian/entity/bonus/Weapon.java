@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Weapon bonus.
  * 
@@ -33,11 +29,9 @@ abstract class Weapon
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param factoryEffect The effect factory reference.
-     * @param handlerEffect The effect handler reference.
      */
-    protected Weapon(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    protected Weapon(SetupEntityBonus setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 }

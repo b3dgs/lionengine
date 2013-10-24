@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -68,14 +67,12 @@ abstract class Entity
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
      */
-    Entity(SetupSurfaceGame setup, Map map, int desiredFps)
+    Entity(SetupEntity setup)
     {
         super(setup);
-        this.map = map;
-        this.desiredFps = desiredFps;
+        map = setup.map;
+        desiredFps = setup.desiredFps;
         animations = new EnumMap<>(EntityState.class);
         jumpForceValue = getDataDouble("jumpSpeed", "data");
         movementSpeedValue = getDataDouble("movementSpeed", "data");

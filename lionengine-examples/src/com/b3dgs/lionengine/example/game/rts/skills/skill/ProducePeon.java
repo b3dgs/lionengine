@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
@@ -40,11 +39,10 @@ public final class ProducePeon
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
      */
-    public ProducePeon(SetupSkill setup, Cursor cursor)
+    public ProducePeon(SetupSkill setup)
     {
-        super(SkillType.PRODUCE_PEON, setup);
+        super(setup);
         factoryProduction = setup.factoryProduction;
         setOrder(false);
     }

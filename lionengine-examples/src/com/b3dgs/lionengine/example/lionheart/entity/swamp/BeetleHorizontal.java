@@ -17,11 +17,10 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
 import com.b3dgs.lionengine.example.lionheart.entity.Entity;
 import com.b3dgs.lionengine.example.lionheart.entity.EntityState;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 import com.b3dgs.lionengine.example.lionheart.entity.patrol.Patrol;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 
 /**
  * Beetle horizontal implementation.
@@ -35,11 +34,10 @@ public final class BeetleHorizontal
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public BeetleHorizontal(SetupSurfaceRasteredGame setup, Level level)
+    public BeetleHorizontal(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.BEETLE_HORIZONTAL);
+        super(setup);
         setFrameOffsets(0, -6);
         enableMovement(Patrol.HORIZONTAL);
     }

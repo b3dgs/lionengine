@@ -17,10 +17,6 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
-import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
-import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
 /**
  * Pulse cannon bonus.
  * 
@@ -30,10 +26,10 @@ public class PulseCannon
         extends Weapon
 {
     /**
-     * {@link Weapon#Weapon(SetupSurfaceGame, FactoryEffect, HandlerEffect)}
+     * {@link Weapon#Weapon(SetupEntityBonus)}
      */
-    public PulseCannon(SetupSurfaceGame setup, FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public PulseCannon(SetupEntityBonus setup)
     {
-        super(setup, factoryEffect, handlerEffect);
+        super(setup);
     }
 }

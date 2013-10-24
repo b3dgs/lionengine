@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
-import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
 import com.b3dgs.lionengine.game.rts.ControlPanelModel;
 import com.b3dgs.lionengine.game.rts.CursorRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
@@ -34,11 +33,10 @@ public final class MoveOrc
      * Constructor.
      * 
      * @param setup The setup skill reference.
-     * @param cursor The cursor reference.
      */
-    public MoveOrc(SetupSkill setup, Cursor cursor)
+    public MoveOrc(SetupSkill setup)
     {
-        super(SkillType.MOVE_ORC, setup);
+        super(setup);
         setOrder(true);
     }
 

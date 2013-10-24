@@ -15,60 +15,54 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.rts.skills;
+package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
-import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
-import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryProduction;
-import com.b3dgs.lionengine.example.game.rts.skills.entity.HandlerEntity;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.skills.map.Map;
 import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
- * Context container.
+ * Setup entity implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Context
+public class SetupEntity
+        extends SetupSurfaceGame
 {
-    /** The map reference. */
+    /** Type. */
+    public final EntityType type;
+    /** Map. */
     public final Map map;
-    /** The factory reference. */
+    /** Factory entity. */
     public final FactoryEntity factoryEntity;
-    /** The factory skill. */
+    /** Factory entity. */
     public final FactorySkill factorySkill;
-    /** The factory production. */
-    public final FactoryProduction factoryProduction;
-    /** The handler entity reference. */
+    /** Handler entity. */
     public final HandlerEntity handlerEntity;
-    /** Cursor. */
-    public final Cursor cursor;
-    /** The desired fps. */
-    public final int desiredFps;
+    /** Desired fps. */
+    public final int fps;
 
     /**
      * Constructor.
      * 
+     * @param config The config file.
+     * @param type The entity type.
      * @param map The map reference.
+     * @param factoryEntity The factory entity reference.
+     * @param factorySkill The factory skill reference.
      * @param handlerEntity The handler entity reference.
-     * @param cursor The cursor reference.
-     * @param desiredFps The the desired fps.
+     * @param fps The desired fps.
      */
-    Context(Map map, HandlerEntity handlerEntity, Cursor cursor, int desiredFps)
+    public SetupEntity(Media config, EntityType type, Map map, FactoryEntity factoryEntity, FactorySkill factorySkill,
+            HandlerEntity handlerEntity, int fps)
     {
+        super(config);
+        this.type = type;
         this.map = map;
+        this.factoryEntity = factoryEntity;
+        this.factorySkill = factorySkill;
         this.handlerEntity = handlerEntity;
-        this.cursor = cursor;
-        this.desiredFps = desiredFps;
-        factoryEntity = new FactoryEntity();
-        factoryProduction = new FactoryProduction(factoryEntity);
-        factorySkill = new FactorySkill(factoryProduction, cursor);
-    }
-
-    /**
-     * Assign context to factories.
-     */
-    public void assignContext()
-    {
-        factoryEntity.setContext(this);
+        this.fps = fps;
     }
 }

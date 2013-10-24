@@ -18,8 +18,9 @@
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.game.rts.ability.launcher.FactoryLauncher;
+import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Weapons factory.
@@ -27,17 +28,20 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryObjectGame<WeaponType, SetupGame, Weapon>
+        extends FactoryObjectGame<WeaponType, SetupWeapon, Weapon>
 {
-    /** Weapons path. */
-    private static final String WEAPONS_DIR = "weapons";
+    /** Factory projectile. */
+    private final FactoryLauncher factoryLauncher;
 
     /**
      * Constructor.
+     * 
+     * @param factoryLauncher The launcher factory.
      */
-    public FactoryWeapon()
+    public FactoryWeapon(FactoryLauncher factoryLauncher)
     {
-        super(WeaponType.class, FactoryWeapon.WEAPONS_DIR);
+        super(WeaponType.class, AppWarcraft.WEAPONS_DIR);
+        this.factoryLauncher = factoryLauncher;
         load();
     }
 
@@ -46,8 +50,8 @@ public final class FactoryWeapon
      */
 
     @Override
-    protected SetupGame createSetup(WeaponType type, Media config)
+    protected SetupWeapon createSetup(WeaponType type, Media config)
     {
-        return new SetupGame(config);
+        return new SetupWeapon(config, type, factoryLauncher);
     }
 }

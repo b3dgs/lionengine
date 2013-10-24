@@ -21,14 +21,18 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity bonus.
  */
 public final class FactoryEntityBonus
-        extends FactoryObjectGame<EntityBonusType, SetupSurfaceGame, Bonus>
+        extends FactoryObjectGame<EntityBonusType, SetupEntityBonus, Bonus>
 {
+    /** Factory effect. */
+    private final FactoryEffect factoryEffect;
+    /** Handler effect. */
+    private final HandlerEffect handlerEffect;
+
     /**
      * Constructor.
      * 
@@ -38,7 +42,8 @@ public final class FactoryEntityBonus
     public FactoryEntityBonus(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
         super(EntityBonusType.class, Media.getPath("entities", "bonus"));
-        setArguments(factoryEffect, handlerEffect);
+        this.factoryEffect = factoryEffect;
+        this.handlerEffect = handlerEffect;
         load();
     }
 
@@ -47,8 +52,8 @@ public final class FactoryEntityBonus
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityBonusType key, Media config)
+    protected SetupEntityBonus createSetup(EntityBonusType type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntityBonus(config, type, factoryEffect, handlerEffect);
     }
 }

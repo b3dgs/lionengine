@@ -165,8 +165,8 @@ final class World
     protected void loading(FileReading file) throws IOException
     {
         level.load(file);
-        factoryPlayer.load();
         factoryPlayer.setLevel(level);
+        factoryPlayer.load();
         player = (Valdyn) factoryPlayer.create(EntityPlayerType.VALDYN);
         handlerEntity.setPlayer(player);
         landscape = factoryLandscape.createLandscape(level.getLandscape());

@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.example.game.rts.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.rts.skills.Context;
+import com.b3dgs.lionengine.example.game.rts.skills.map.Map;
+import com.b3dgs.lionengine.example.game.rts.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity implementation.
@@ -28,28 +28,33 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
 {
-    /** Directory name from our resources directory containing our entities. */
-    public static final String ENTITY_PATH = "entities";
+    /** Map reference. */
+    public final Map map;
+    /** The factory skill. */
+    public final FactorySkill factorySkill;
+    /** Handler entity reference. */
+    public final HandlerEntity handlerEntity;
+    /** The desired fps. */
+    public final int desiredFps;
 
     /**
-     * Constructor. Entity data are stored in a .txt file and the surface in .png file.
-     */
-    public FactoryEntity()
-    {
-        super(EntityType.class, FactoryEntity.ENTITY_PATH);
-        load();
-    }
-
-    /**
-     * Set the context.
+     * Constructor.
      * 
-     * @param context The context
+     * @param map The map reference.
+     * @param factorySkill The factory skill reference.
+     * @param handlerEntity The handler entity reference.
+     * @param desiredFps The desired fps.
      */
-    public void setContext(Context context)
+    public FactoryEntity(Map map, FactorySkill factorySkill, HandlerEntity handlerEntity, int desiredFps)
     {
-        setArguments(context);
+        super(EntityType.class, "entities");
+        this.map = map;
+        this.factorySkill = factorySkill;
+        this.handlerEntity = handlerEntity;
+        this.desiredFps = desiredFps;
+        load();
     }
 
     /*
@@ -57,8 +62,8 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType key, Media config)
+    protected SetupEntity createSetup(EntityType type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupEntity(config, type, map, this, factorySkill, handlerEntity, desiredFps);
     }
 }

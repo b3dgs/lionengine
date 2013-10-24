@@ -24,9 +24,7 @@ import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.example.warcraft.Context;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.ability.mover.MoverModel;
@@ -71,20 +69,18 @@ public abstract class Unit
     /**
      * Constructor.
      * 
-     * @param type The entity type enum.
      * @param setup The setup reference.
-     * @param context The context reference.
      */
-    protected Unit(EntityType type, SetupSurfaceGame setup, Context context)
+    protected Unit(SetupEntity setup)
     {
-        super(type, setup, context);
+        super(setup);
         deathOffsetX = getDataInteger("x", "offsetDeath");
         deathOffsetY = getDataInteger("y", "offsetDeath");
         animIdle = getDataAnimation("idle");
         animWalk = getDataAnimation("walk");
         animDead = getDataAnimation("die");
-        mover = new MoverModel(this, context.map);
-        corpse = Drawable.loadSpriteAnimated(context.factoryEntity.getSetup(type).corpse, 4, 2);
+        mover = new MoverModel(this, setup.map);
+        corpse = Drawable.loadSpriteAnimated(setup.corpse, 4, 2);
         die = Die.NONE;
         setLayer(1);
         play(animIdle);

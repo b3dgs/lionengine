@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity.swamp;
 
-import com.b3dgs.lionengine.example.lionheart.Level;
-import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
+import com.b3dgs.lionengine.example.lionheart.entity.SetupEntity;
 
 /**
  * Sheet scenery implementation.
@@ -32,10 +31,9 @@ public final class Sheet
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param level The level reference.
      */
-    public Sheet(SetupSurfaceRasteredGame setup, Level level)
+    public Sheet(SetupEntity setup)
     {
-        super(setup, level, EntitySwampType.SHEET);
+        super(setup);
     }
 }

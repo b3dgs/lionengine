@@ -17,10 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
-import com.b3dgs.lionengine.example.game.rts.ability.Context;
 import com.b3dgs.lionengine.example.game.rts.ability.entity.Entity;
-import com.b3dgs.lionengine.example.game.rts.ability.entity.UnitAttacker;
-import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Axe weapon implementation.
@@ -34,12 +31,10 @@ public final class Axe
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param user The user reference.
-     * @param context The context reference.
      */
-    public Axe(SetupGame setup, UnitAttacker user, Context context)
+    public Axe(SetupWeapon setup)
     {
-        super(WeaponType.AXE, setup, user, context);
+        super(setup);
     }
 
     /*
