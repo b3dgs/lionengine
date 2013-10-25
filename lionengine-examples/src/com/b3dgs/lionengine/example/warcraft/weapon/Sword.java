@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.example.warcraft.entity.Entity;
 
 /**
  * Sword weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Sword
         extends Weapon

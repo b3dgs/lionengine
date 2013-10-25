@@ -46,6 +46,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of skill types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum SkillType implements ObjectType
 {
@@ -120,7 +122,7 @@ public enum SkillType implements ObjectType
     {
         this.target = target;
         this.race = race;
-        path = Media.getPath(ObjectTypeUtility.asPathName(race), ObjectTypeUtility.asPathName(this));
+        path = Media.getPath(ObjectTypeUtility.getPathName(race), ObjectTypeUtility.getPathName(this));
     }
 
     /*

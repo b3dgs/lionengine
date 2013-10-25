@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.network;
 
 /**
  * List of services provided by a client.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface Client
         extends Networker<ConnectionListener>

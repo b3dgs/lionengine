@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.example.tyrian.menu.Menu;
 
 /**
  * Game loop designed to handle our little world.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Scene
         extends Sequence

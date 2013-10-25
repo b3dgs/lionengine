@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
  * data.
  * 
  * @param <T> Skill enum type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class SkillRts<T extends Enum<T> & ObjectType>
         extends ObjectGame

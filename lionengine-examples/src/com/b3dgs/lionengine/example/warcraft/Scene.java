@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.example.warcraft.menu.Menu;
 
 /**
  * Game loop designed to handle the world.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Scene
         extends Sequence

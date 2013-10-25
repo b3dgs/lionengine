@@ -26,7 +26,6 @@ import java.util.concurrent.Semaphore;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Wav player implementation.
@@ -220,7 +219,7 @@ final class WavPlayer
                     }
                     catch (final InterruptedException exception)
                     {
-                        Verbose.exception(WavPlayer.class, "terminate", exception);
+                        Thread.currentThread().interrupt();
                     }
                     toStop.clear();
                     busySounds.clear();
@@ -240,7 +239,7 @@ final class WavPlayer
                     }
                     catch (final InterruptedException exception)
                     {
-                        Verbose.exception(WavPlayer.class, "terminate", exception);
+                        Thread.currentThread().interrupt();
                     }
                     freeSounds.clear();
                 }

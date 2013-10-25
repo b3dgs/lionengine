@@ -24,7 +24,7 @@ import java.awt.image.AffineTransformOp;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransformImpl
+final class TransformImpl
         implements Transform
 {
     /** Scale x. */

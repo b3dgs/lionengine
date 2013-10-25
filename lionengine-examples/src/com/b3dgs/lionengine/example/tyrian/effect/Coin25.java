@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Coin 25 effect.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Coin25
         extends Effect

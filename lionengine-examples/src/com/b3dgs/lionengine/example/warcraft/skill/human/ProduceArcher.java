@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceEntity;
 
 /**
  * Produce grunt implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ProduceArcher
         extends SkillProduceEntity

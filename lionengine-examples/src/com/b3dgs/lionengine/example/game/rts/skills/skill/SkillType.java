@@ -53,7 +53,7 @@ public enum SkillType implements ObjectType
     private SkillType(Class<?> target)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /*

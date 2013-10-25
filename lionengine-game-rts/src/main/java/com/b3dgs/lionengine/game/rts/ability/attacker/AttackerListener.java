@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * List of events listened from an attacker.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  */
 public interface AttackerListener<E extends EntityRts>

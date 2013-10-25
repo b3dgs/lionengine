@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 
 /**
  * Wave projectile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Wave
         extends Projectile

@@ -50,6 +50,7 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * selection and orders. Don't forget to call {@link #createLayers(MapTile)} after map creation (when its size is
  * established).
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> Resource enumeration type.
  * @param <T> Tile type used.
  * @param <E> Entity type used.
@@ -322,7 +323,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         selectedEntity.clear();
 
         // Allows both selection and single click without moving the mouse
-        selection.set(selection.getX(), selection.getY(), Math.max(1, selection.getWidth()),
+        selection.set(selection.getX(), selection.getY() - 1, Math.max(1, selection.getWidth()),
                 Math.max(1, selection.getHeight()));
 
         // Update the selection list
@@ -629,7 +630,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
         {
             entityArea.set(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(), entity.getHeight());
             if (entity.isSelectable() && camera.canSee(entity)
-                    && entityArea.contains(cursor.getLocationX(), cursor.getLocationY()))
+                    && entityArea.contains(cursor.getLocationX(), cursor.getLocationY() - 1))
             {
                 entity.setOver(true);
             }

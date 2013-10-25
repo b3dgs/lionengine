@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.game.platform.entity.HandlerEntityPlatform;
 
 /**
  * Handler implementation. All of our entity will be handled here.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class HandlerEntity
         extends HandlerEntityPlatform<Entity>

@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.drawable.Sprite;
 
 /**
  * Specific background element, supporting raster effects.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BackgroundElementRastered
         extends BackgroundElement

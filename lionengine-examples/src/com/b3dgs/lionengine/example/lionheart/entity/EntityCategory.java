@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.lionheart.entity;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity categories.
@@ -65,9 +65,9 @@ public enum EntityCategory
      * 
      * @return The name.
      */
-    public String asPathName()
+    public String getPathName()
     {
-        return name().toLowerCase(Locale.ENGLISH);
+        return ObjectTypeUtility.getPathName(this);
     }
 
     /**
@@ -96,7 +96,6 @@ public enum EntityCategory
     @Override
     public String toString()
     {
-        final String string = asPathName();
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        return ObjectTypeUtility.toString(this);
     }
 }

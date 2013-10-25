@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity types. Lower case is preferred, as the name has to be the same with its corresponding files.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum EntityType implements ObjectType
 {
@@ -57,7 +59,7 @@ enum EntityType implements ObjectType
     private EntityType(Class<?> target)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /*

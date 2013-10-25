@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory effect implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEffect
         extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>

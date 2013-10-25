@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.rts.ability.producer.ProducerUsedServices;
 
 /**
  * Building producer implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BuildingProducer
         extends Building

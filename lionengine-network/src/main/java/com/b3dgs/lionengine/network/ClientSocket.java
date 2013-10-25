@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Client socket (bridge between server and client).
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientSocket
 {

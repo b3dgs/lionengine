@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
 
 /**
  * Chat implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Chat
         extends NetworkChat

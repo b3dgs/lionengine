@@ -24,13 +24,18 @@ import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
  * receive the ability of extraction.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resources enum type used.
  */
 public class ExtractorModel<R extends Enum<R>>
         extends AbilityModel<ExtractorListener<R>, ExtractorUsedServices<R>>
         implements ExtractorServices<R>, ExtractorListener<R>
 {
-    /** Extractor states. */
+    /**
+     * Extractor states.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
     private static enum State
     {
         /** State none. */

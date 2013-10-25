@@ -45,7 +45,7 @@ public enum Type implements ObjectType
     private Type(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

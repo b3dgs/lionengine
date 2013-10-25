@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Attack melee implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Attack
         extends Skill

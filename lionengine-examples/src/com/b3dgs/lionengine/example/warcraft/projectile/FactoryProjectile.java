@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory projectile implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProjectile
         extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>

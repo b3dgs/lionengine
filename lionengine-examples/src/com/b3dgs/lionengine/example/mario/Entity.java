@@ -68,7 +68,7 @@ abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    Entity(SetupEntity setup)
+    protected Entity(SetupEntity setup)
     {
         super(setup);
         map = setup.map;

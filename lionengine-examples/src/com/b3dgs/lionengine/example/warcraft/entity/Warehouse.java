@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft.entity;
 
 /**
  * Building that represents a warehouse.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Warehouse
 {

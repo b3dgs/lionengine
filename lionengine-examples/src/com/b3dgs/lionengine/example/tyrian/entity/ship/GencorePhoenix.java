@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.example.tyrian.entity.ship;
 
 /**
- * GencorePhoenix implementation
+ * GencorePhoenix implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class GencorePhoenix
         extends Ship

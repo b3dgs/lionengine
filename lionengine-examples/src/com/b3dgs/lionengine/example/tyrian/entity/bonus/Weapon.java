@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
+import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
+import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
+import com.b3dgs.lionengine.example.tyrian.weapon.WeaponType;
+
 /**
  * Weapon bonus.
  * 
@@ -25,6 +29,11 @@ package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 abstract class Weapon
         extends Bonus
 {
+    /** Type. */
+    private final EntityBonusType type;
+    /** Factory weapon. */
+    private final FactoryWeapon factoryWeapon;
+
     /**
      * Constructor.
      * 
@@ -33,5 +42,20 @@ abstract class Weapon
     protected Weapon(SetupEntityBonus setup)
     {
         super(setup);
+        type = setup.type;
+        factoryWeapon = setup.factoryWeapon;
+    }
+
+    @Override
+    protected void onDestroyed()
+    {
+        // Nothing to do
+    }
+
+    @Override
+    protected void onHit(Ship ship)
+    {
+        super.onHit(ship);
+        ship.setWeaponFront(factoryWeapon.create(WeaponType.valueOf(type.name())));
     }
 }

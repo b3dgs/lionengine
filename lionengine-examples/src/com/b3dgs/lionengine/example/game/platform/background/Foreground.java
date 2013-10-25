@@ -183,6 +183,8 @@ final class Foreground
 
     /**
      * First front component, including water effect.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Primary
             implements BackgroundComponent
@@ -243,6 +245,8 @@ final class Foreground
 
     /**
      * Second front component, including water effect.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Secondary
             implements BackgroundComponent

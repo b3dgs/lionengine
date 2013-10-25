@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * Describe an object that can be networked.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Networkable
 {

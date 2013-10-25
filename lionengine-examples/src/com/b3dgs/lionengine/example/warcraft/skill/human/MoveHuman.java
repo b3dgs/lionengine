@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 
 /**
  * Move skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MoveHuman
         extends Move

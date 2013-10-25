@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity scenery types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum EntitySceneryType implements ObjectType
 {
@@ -77,7 +79,7 @@ public enum EntitySceneryType implements ObjectType
     private EntitySceneryType(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

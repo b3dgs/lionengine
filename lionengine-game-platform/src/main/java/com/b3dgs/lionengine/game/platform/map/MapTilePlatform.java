@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Default platform map implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> Collision type used.
  * @param <T> Tile type used.
  */

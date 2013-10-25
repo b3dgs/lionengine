@@ -32,7 +32,7 @@ public final class ObjectTypeUtility
      * @param type The object type.
      * @return The name.
      */
-    public static String asPathName(Enum<?> type)
+    public static String getPathName(Enum<?> type)
     {
         return type.name().toLowerCase(Locale.ENGLISH);
     }
@@ -45,7 +45,7 @@ public final class ObjectTypeUtility
      */
     public static String toString(Enum<?> type)
     {
-        final String string = ObjectTypeUtility.asPathName(type);
+        final String string = ObjectTypeUtility.getPathName(type);
         return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
     }
 }

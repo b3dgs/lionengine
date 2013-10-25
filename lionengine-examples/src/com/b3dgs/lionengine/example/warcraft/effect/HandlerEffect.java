@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 
 /**
  * Handle the effect.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HandlerEffect
         extends HandlerEffectGame<Effect>

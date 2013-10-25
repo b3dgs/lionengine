@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
 
 /**
  * World implementation using AbstractWorld.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class WorldClient
         extends World<NetworkedWorldModelClient>

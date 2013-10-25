@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.example.warcraft.menu.Menu;
 
 /**
  * Program starts here.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AppWarcraft
 {

@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillProduceBuilding;
 
 /**
  * Build skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class BuildBarracksHuman
         extends SkillProduceBuilding

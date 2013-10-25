@@ -45,7 +45,7 @@ enum EntityType implements ObjectType
     private EntityType(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

@@ -25,11 +25,17 @@ import com.b3dgs.lionengine.example.warcraft.effect.HandlerEffect;
 
 /**
  * Abstract building entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Building
         extends Entity
 {
-    /** Die states. */
+    /**
+     * Die states.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
     private static enum Destroy
     {
         /** No death. */

@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 
 /**
  * Projectile handler implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerProjectile
         extends HandlerProjectileGame<Entity, Projectile>

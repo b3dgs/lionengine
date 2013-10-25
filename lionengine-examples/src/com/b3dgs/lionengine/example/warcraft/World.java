@@ -51,6 +51,8 @@ import com.b3dgs.lionengine.game.WorldGame;
 
 /**
  * World implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class World
         extends WorldGame

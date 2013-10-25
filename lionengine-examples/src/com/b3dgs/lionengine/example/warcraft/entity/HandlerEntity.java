@@ -37,6 +37,8 @@ import com.b3dgs.lionengine.game.rts.entity.HandlerEntityRts;
 
 /**
  * Handler implementation, containing all entities.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
         extends HandlerEntityRts<ResourceType, Tile, Entity, ControlPanel>

@@ -22,6 +22,7 @@ import java.util.EnumSet;
 /**
  * Collision tile category.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision type used.
  */
 public interface CollisionTileCategory<C extends Enum<C>>

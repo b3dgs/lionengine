@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 
 /**
  * Wave cannon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class WaveCannonRear
         extends Weapon

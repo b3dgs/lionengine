@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.rts.ability.producer;
 
 /**
  * Represents the cost of a production. Designed to contain its production steps, and cost in resource.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ProductionCostRts
 {

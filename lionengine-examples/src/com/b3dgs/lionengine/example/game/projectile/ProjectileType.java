@@ -43,7 +43,7 @@ enum ProjectileType implements ObjectType
     private ProjectileType(Class<?> target)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /*

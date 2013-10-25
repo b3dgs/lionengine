@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Default attacker model implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  * @param <W> The weapon type used.

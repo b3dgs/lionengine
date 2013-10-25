@@ -28,6 +28,8 @@ public final class Hq3x
 {
     /**
      * The raw scale implementation.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class RawScale3x
     {

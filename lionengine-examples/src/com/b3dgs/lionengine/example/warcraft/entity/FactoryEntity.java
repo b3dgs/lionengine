@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.game.TimedMessage;
 
 /**
  * Factory entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
         extends FactoryObjectGame<EntityType, SetupEntity, Entity>

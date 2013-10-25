@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.Alterable;
 
 /**
  * Progressive resource implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class ResourceProgressive
         extends Alterable

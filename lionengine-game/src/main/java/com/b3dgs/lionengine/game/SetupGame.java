@@ -30,6 +30,9 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  */
 public class SetupGame
 {
+    /** Error configurable. */
+    private static final String ERROR_CONFIGURABLE = "The configurable must not be null !";
+
     /** Configurable reference. */
     public final Configurable configurable;
     /** Config file name. */
@@ -53,7 +56,7 @@ public class SetupGame
      */
     public SetupGame(Configurable configurable, Media config)
     {
-        Check.notNull(configurable, "The configurable must not be null !");
+        Check.notNull(configurable, SetupGame.ERROR_CONFIGURABLE);
         Media.exist(config);
         this.configurable = configurable;
         this.configurable.loadData(config);

@@ -25,6 +25,8 @@ import java.nio.charset.UnsupportedCharsetException;
 
 /**
  * Network message description.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkMessage
 {

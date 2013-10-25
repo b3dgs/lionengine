@@ -17,7 +17,7 @@
 	<scm>
 		<url>https://github.com/DjThunder/lionengine.git</url>
 	</scm>
-	
+
 	<developers>
 		<developer>
 			<id>DjThunder</id>
@@ -32,7 +32,7 @@
 			<timezone>1</timezone>
 		</developer>
 	</developers>
-	
+
 	<licenses>
 		<license>
 			<name>GNU General Public License (GPL) version 2.0</name>
@@ -53,11 +53,11 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<properties>
 		<working.dir>${project.basedir}</working.dir>
 	</properties>
-	
+
 	<modules>
 		<module>lionengine-core</module>
 		<module>lionengine-java</module>

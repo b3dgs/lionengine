@@ -23,6 +23,7 @@ import java.util.Set;
 /**
  * Ability model implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <L> Ability listener type.
  * @param <U> Services used type.
  */

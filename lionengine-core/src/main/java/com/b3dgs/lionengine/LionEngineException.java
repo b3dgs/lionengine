@@ -31,6 +31,8 @@ import com.b3dgs.lionengine.core.Media;
 public final class LionEngineException
         extends RuntimeException
 {
+    /** Activate the ignore flag. */
+    private static final boolean IGNORE_ENGINE_TRACE = true;
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */
@@ -62,22 +64,32 @@ public final class LionEngineException
 
             // Ignored package
             boolean add = true;
-            if (className.startsWith(LionEngineException.IGNORE))
+            if (LionEngineException.IGNORE_ENGINE_TRACE)
             {
-                final String pack = className.substring(LionEngineException.IGNORE_SIZE);
-                for (final String ignore : LionEngineException.IGNORED)
+                if (className.startsWith("sun.reflect") || className.startsWith("java.lang.reflect"))
                 {
-                    // Ignored sub package
-                    if (pack.startsWith(ignore))
+                    add = false;
+                }
+                if (className.startsWith(LionEngineException.IGNORE))
+                {
+                    final String pack = className.substring(LionEngineException.IGNORE_SIZE);
+                    for (final String ignore : LionEngineException.IGNORED)
                     {
-                        add = false;
-                        break;
+                        // Ignored sub package
+                        if (pack.startsWith(ignore))
+                        {
+                            add = false;
+                            break;
+                        }
                     }
                 }
             }
             if (add)
             {
-                neededTrace.add(element);
+                if (!neededTrace.contains(element))
+                {
+                    neededTrace.add(element);
+                }
             }
         }
         return neededTrace.toArray(new StackTraceElement[neededTrace.size()]);

@@ -45,7 +45,7 @@ public enum EffectType implements ObjectType
     private EffectType(Class<?> target)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /*

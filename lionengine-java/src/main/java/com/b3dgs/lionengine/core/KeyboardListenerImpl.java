@@ -25,7 +25,7 @@ import java.awt.event.KeyListener;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class KeyboardListenerImpl
+final class KeyboardListenerImpl
         implements KeyListener
 {
     /** The original listener. */

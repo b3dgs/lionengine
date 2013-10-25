@@ -52,6 +52,10 @@ enum EntityCollisionTileCategory implements CollisionTileCategory<TileCollision>
         this.collisions = collisions;
     }
 
+    /*
+     * CollisionTileCategory
+     */
+
     @Override
     public EnumSet<TileCollision> getCollisions()
     {

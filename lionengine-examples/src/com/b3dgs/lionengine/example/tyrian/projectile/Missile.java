@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 
 /**
  * Missile projectile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Missile
         extends Projectile

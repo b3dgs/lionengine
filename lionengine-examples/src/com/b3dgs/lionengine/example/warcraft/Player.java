@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.rts.PlayerRts;
 
 /**
  * Player implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Player
         extends PlayerRts

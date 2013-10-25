@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.tyrian.entity.dynamic;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
@@ -26,6 +27,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Factory entity dynamic.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryEntityDynamic
         extends FactoryObjectGame<EntityDynamicType, SetupEntity, Entity>
@@ -43,7 +46,7 @@ public final class FactoryEntityDynamic
      */
     public FactoryEntityDynamic(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntityDynamicType.class, Media.getPath("entities", "dynamic"));
+        super(EntityDynamicType.class, AppTyrian.DYNAMICS_DIR);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         load();

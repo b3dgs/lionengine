@@ -97,6 +97,8 @@ final class Swamp
 
     /**
      * Backdrop represents the back background plus top background elements.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private final class Backdrop
             implements BackgroundComponent

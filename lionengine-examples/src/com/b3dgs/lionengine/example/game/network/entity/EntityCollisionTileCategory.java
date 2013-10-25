@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 
 /**
  * List of entity collision categories on tile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum EntityCollisionTileCategory implements CollisionTileCategory<TileCollision>
 {

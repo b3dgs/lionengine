@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * Network base implementation.
  * 
  * @param <L> Client listener type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class NetworkModel<L extends ClientListener>
         implements Networker<L>

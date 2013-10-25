@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 /**
  * Skilled model implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> Skill enum type used.
  * @param <S> Skill type used.
  */

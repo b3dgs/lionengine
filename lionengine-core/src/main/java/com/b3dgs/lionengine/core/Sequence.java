@@ -78,6 +78,8 @@ public abstract class Sequence
 {
     /** Error message loader. */
     private static final String ERROR_LOADER = "Loader must not be null !";
+    /** Error message loader. */
+    private static final String ERROR_RESOLUTION = "Resolution must not be null !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
@@ -184,6 +186,7 @@ public abstract class Sequence
      */
     protected final void setResolution(Resolution newSource)
     {
+        Check.notNull(newSource, Sequence.ERROR_RESOLUTION);
         config.setSource(newSource);
         mouse.setConfig(config);
         source = config.getSource();
@@ -304,6 +307,7 @@ public abstract class Sequence
             }
             catch (final InterruptedException exception)
             {
+                Thread.currentThread().interrupt();
                 Verbose.exception(Sequence.class, "start", exception);
             }
         }
@@ -559,6 +563,7 @@ public abstract class Sequence
             }
             catch (final InterruptedException exception)
             {
+                Thread.currentThread().interrupt();
                 Verbose.exception(Sequence.class, "run", exception);
             }
         }
@@ -633,6 +638,7 @@ public abstract class Sequence
             }
             catch (final InterruptedException exception)
             {
+                Thread.currentThread().interrupt();
                 Verbose.exception(Sequence.class, "sync", exception);
             }
         }

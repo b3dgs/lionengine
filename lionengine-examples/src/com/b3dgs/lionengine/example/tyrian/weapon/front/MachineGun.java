@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 
 /**
  * Machine gun implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MachineGun
         extends Weapon

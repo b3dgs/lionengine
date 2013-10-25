@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 
 /**
  * Grunt implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Footman
         extends UnitAttacker

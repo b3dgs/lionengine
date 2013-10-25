@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Weapons factory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
         extends FactoryObjectGame<WeaponType, SetupWeapon, Weapon>

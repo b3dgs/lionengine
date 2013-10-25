@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Represents a producible entity.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
  */

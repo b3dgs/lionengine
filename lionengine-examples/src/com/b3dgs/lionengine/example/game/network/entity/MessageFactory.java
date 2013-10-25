@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
 
 /**
  * Factory network message description.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MessageFactory
         extends NetworkMessageEntity<EntityType>

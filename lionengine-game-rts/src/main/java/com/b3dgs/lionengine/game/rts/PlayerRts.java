@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game.rts;
 /**
  * This class represents the player, with its data, using a unique ID. The ID will be assigned to any entity owned by
  * the player. Then it is possible to know which entity is owned by a player.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class PlayerRts
 {

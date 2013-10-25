@@ -51,7 +51,7 @@ public enum EntityDynamicType implements ObjectType
     private EntityDynamicType(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

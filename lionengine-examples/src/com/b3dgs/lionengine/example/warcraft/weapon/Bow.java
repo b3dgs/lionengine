@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.launcher.LauncherType;
 
 /**
  * Bow weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Bow
         extends Weapon

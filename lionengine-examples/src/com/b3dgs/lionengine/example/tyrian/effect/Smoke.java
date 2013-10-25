@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Smoke effect.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Smoke
         extends Effect

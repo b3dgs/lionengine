@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * Networkable world implementation server side.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class NetworkedWorldModelServer
         extends NetworkedWorldModel<ClientListener, ServerImpl>

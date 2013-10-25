@@ -32,6 +32,8 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 
 /**
  * Default skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Skill
         extends SkillRts<SkillType>

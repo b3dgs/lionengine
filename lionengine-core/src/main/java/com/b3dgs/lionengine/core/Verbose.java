@@ -43,6 +43,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * }
  * catch (final InterruptedException exception)
  * {
+ *     Thread.currentThread().interrupt();
  *     Verbose.exception(MyClass.class, &quot;function&quot;, exception);
  * }
  * </pre>

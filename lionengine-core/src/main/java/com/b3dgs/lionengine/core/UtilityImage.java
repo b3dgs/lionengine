@@ -93,6 +93,7 @@ public final class UtilityImage
      */
     public static ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
+        Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
         try (InputStream inputStream = Media.getStream(media, "getBufferedImage", false);)
         {
             return UtilityImage.graphicFactory.getImageBuffer(inputStream, alpha);
@@ -215,6 +216,8 @@ public final class UtilityImage
      */
     public static void saveImage(ImageBuffer image, Media media)
     {
+        Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+        Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
         final String imagefile = media.getPath();
         final File file = new File(imagefile);
         try (OutputStream outputStream = new FileOutputStream(file);)

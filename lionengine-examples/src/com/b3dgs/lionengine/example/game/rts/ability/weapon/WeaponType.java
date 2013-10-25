@@ -45,7 +45,7 @@ public enum WeaponType implements ObjectType
     private WeaponType(Class<?> target)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /*

@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.game.rts.ability.launcher.LauncherType;
 
 /**
  * Spear weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Spear
         extends Weapon

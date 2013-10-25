@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
- * Define a structure used to create multiple entity, sharing the same data.
+ * Define a structure used to create multiple entity, sharing the same data and {@link ImageBuffer}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurable

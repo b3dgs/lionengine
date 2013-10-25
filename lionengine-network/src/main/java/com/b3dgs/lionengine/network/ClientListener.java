@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.network;
 
 /**
  * Listen to new client connection.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface ClientListener
 {

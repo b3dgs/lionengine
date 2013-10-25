@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerServices;
 
 /**
  * Mover attacker implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class UnitAttacker
         extends Unit

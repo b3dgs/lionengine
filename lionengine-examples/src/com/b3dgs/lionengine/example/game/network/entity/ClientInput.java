@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.network.purview.NetworkedInput;
 
 /**
  * Client input listener.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ClientInput
         extends NetworkedInput

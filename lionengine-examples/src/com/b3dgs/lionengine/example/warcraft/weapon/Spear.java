@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.launcher.LauncherType;
 
 /**
  * Spear weapon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Spear
         extends Weapon

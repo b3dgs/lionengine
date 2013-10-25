@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.example.tyrian.weapon.Weapon;
 
 /**
  * Missile front implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MissileLauncherFront
         extends Weapon

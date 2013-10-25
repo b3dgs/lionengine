@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.tyrian.map;
 
 /**
  * List of tile collisions.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum TileCollision
 {

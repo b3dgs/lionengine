@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Minimum skill requirement definition, used to create skills.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class SetupSkillRts
         extends SetupGame

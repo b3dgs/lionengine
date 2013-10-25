@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.network.purview.NetworkableModel;
  * World base implementation.
  * 
  * @param <N> The network type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class World<N extends NetworkedWorld>
         extends WorldGame

@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of weapon types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum WeaponType implements ObjectType
 {
@@ -71,7 +73,7 @@ public enum WeaponType implements ObjectType
     {
         this.target = target;
         this.category = category;
-        pathName = Media.getPath(ObjectTypeUtility.asPathName(category), ObjectTypeUtility.asPathName(this));
+        pathName = Media.getPath(ObjectTypeUtility.getPathName(category), ObjectTypeUtility.getPathName(this));
     }
 
     /**

@@ -146,8 +146,8 @@ public class EntitySelector
             {
                 if (entity.getCategory() == category)
                 {
-                    final Media media = Media.get(AppLionheart.ENTITIES_DIR, category.getFolder(), world.toString(),
-                            entity.getPathName() + "_ico.png");
+                    final Media media = Media.get(AppLionheart.ENTITIES_DIR, world.getPathName(), entity.getPathName()
+                            + "_ico.png");
                     ico.add(Drawable.loadImage(media));
                     length++;
                 }
@@ -173,6 +173,8 @@ public class EntitySelector
 
     /**
      * Entity with icon rendering.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private class Entity
             extends JPanel

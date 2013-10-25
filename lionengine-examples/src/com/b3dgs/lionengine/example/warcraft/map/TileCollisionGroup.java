@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft.map;
 
 /**
  * List of collision types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum TileCollisionGroup
 {

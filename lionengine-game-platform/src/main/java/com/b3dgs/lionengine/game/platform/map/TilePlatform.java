@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 /**
  * Specific tile for platform game.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision type used.
  */
 public abstract class TilePlatform<C extends Enum<C>>

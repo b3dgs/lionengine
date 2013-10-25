@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.core.Media;
 
 /**
  * Program starts here.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AppTyrian
 {
@@ -33,6 +35,20 @@ public final class AppTyrian
     public static final String NAME = "Tyrian";
     /** Application version. */
     public static final Version VERSION = Version.create(0, 1, 0);
+    /** Entities directory. */
+    public static final String ENTITIES_DIR = "entities";
+    /** Dynamics directory. */
+    public static final String DYNAMICS_DIR = Media.getPath("entities", "dynamic");
+    /** Scenery directory. */
+    public static final String SCENERY_DIR = Media.getPath(AppTyrian.ENTITIES_DIR, "scenery");
+    /** Bonus directory. */
+    public static final String BONUS_DIR = Media.getPath(AppTyrian.ENTITIES_DIR, "bonus");
+    /** Weapons directory. */
+    public static final String WEAPONS_DIR = "weapons";
+    /** Effects directory. */
+    public static final String EFFECTS_DIR = "effects";
+    /** Ships directory. */
+    public static final String SHIPS_DIR = "ships";
     /** Sfx directory. */
     public static final String SFX_DIR = "sfx";
     /** Enable sound. */

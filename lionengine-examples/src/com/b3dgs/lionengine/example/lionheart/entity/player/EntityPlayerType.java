@@ -63,7 +63,7 @@ public enum EntityPlayerType implements EntityType<EntityPlayerType>
     private EntityPlayerType(Class<?> target, EntityCategory category)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
         this.category = category;
     }
 

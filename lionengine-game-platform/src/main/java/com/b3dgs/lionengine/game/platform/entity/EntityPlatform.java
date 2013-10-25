@@ -35,6 +35,8 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class EntityPlatform
         extends EntityGame

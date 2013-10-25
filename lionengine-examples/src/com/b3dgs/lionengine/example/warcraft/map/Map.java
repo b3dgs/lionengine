@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 
 /**
  * Map implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Map
         extends MapTileRts<TileCollision, Tile>

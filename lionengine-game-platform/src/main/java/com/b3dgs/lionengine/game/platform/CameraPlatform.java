@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
 /**
  * More specific camera, platform game oriented. It supports map borders limitation (can't see outside the map).
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CameraPlatform
         extends CameraGame

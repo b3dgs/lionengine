@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * Implementation of our controllable entity.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Mario
         extends Entity

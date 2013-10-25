@@ -51,6 +51,8 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
  * World implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class World
         extends WorldGame
@@ -153,7 +155,7 @@ final class World
 
         factoryEntityScenery = new FactoryEntityScenery(factoryEffect, handlerEffect);
         factoryEntityDynamic = new FactoryEntityDynamic(factoryEffect, handlerEffect);
-        factoryEntityBonus = new FactoryEntityBonus(factoryEffect, handlerEffect);
+        factoryEntityBonus = new FactoryEntityBonus(factoryEffect, factoryWeapon, handlerEffect);
 
         factoryShip = new FactoryShip(factoryEffect, handlerEffect, factoryWeapon);
         ship = factoryShip.create(ShipType.GENCORE_PHOENIX);
@@ -213,7 +215,7 @@ final class World
         }
         if (UtilityRandom.getRandomInteger(100) == 0)
         {
-            final Entity entity = factoryEntityBonus.create(EntityBonusType.COIN10);
+            final Entity entity = factoryEntityBonus.create(EntityBonusType.PULSE_CANNON);
             entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
                     camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
             handlerEntityBonus.add(entity);

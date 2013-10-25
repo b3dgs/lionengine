@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 
 /**
  * Map implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Map
         extends MapTilePlatform<TileCollision, Tile>

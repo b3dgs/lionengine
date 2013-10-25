@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.drawable.Sprite;
 
 /**
  * AbstractBackground skeleton, used for future backgrounds implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class BackgroundPlatform
         implements Background

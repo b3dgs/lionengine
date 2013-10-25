@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.network;
 
 /**
  * Networkable world interface client side.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface NetworkedWorldClient
         extends NetworkedWorld, ConnectionListener

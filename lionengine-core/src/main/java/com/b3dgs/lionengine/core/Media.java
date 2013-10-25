@@ -86,6 +86,7 @@ public final class Media
      */
     public static boolean checkExist(Media media)
     {
+        Check.notNull(media, Media.ERROR_MEDIA);
         return UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath());
     }
 
@@ -197,6 +198,7 @@ public final class Media
      */
     public static InputStream getStream(Media media, String from, boolean logger)
     {
+        Check.notNull(media, Media.ERROR_MEDIA);
         final String path = media.getPath();
         try
         {
@@ -267,6 +269,7 @@ public final class Media
      */
     public static File getTempFile(Media media, boolean cache, boolean mustExist)
     {
+        Check.notNull(media, Media.ERROR_MEDIA);
         final String filename = media.getPath();
         if (!Media.fromJar && new File(filename).exists())
         {

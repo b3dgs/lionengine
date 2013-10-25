@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.effect.EffectGame;
 
 /**
  * Effect base implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Effect
         extends EffectGame

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.rts.entity;
 
 /**
  * This exception is thrown when an entity is not found.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntityNotFoundException
         extends Exception

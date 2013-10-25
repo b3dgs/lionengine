@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * This interface represents the ability of resource extraction. It is also possible to specify work time.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resource enum type used.
  */
 public interface ExtractorServices<R extends Enum<R>>

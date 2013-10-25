@@ -47,7 +47,7 @@ public enum LauncherType implements ObjectType
     private LauncherType(Class<?> target, ProjectileType type)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
         this.type = type;
     }
 

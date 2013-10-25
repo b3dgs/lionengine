@@ -39,6 +39,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of entity types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum EntityType implements ObjectType
 {
@@ -103,7 +105,7 @@ public enum EntityType implements ObjectType
     private EntityType(Class<?> target, RaceType race)
     {
         this.target = target;
-        path = Media.getPath(ObjectTypeUtility.asPathName(race), ObjectTypeUtility.asPathName(this));
+        path = Media.getPath(ObjectTypeUtility.getPathName(race), ObjectTypeUtility.getPathName(this));
         this.race = race;
     }
 

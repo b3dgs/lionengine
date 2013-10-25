@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.rts.ability.attacker.AttackerUsedServices;
 
 /**
  * Attacker interface.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Attacker
         extends AttackerUsedServices<Entity>

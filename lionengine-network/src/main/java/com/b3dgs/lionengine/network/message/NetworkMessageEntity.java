@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.UtilityConversion;
  * Standard entity message.
  * 
  * @param <M> The message entity element enum.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkMessageEntity<M extends Enum<M>>
         extends NetworkMessage

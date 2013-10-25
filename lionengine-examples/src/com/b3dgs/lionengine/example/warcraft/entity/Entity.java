@@ -35,6 +35,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 
 /**
  * Abstract entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Entity
         extends EntityRts

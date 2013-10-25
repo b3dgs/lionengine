@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Represents an entity that can be extractible, such as a Gold Mine.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resource enum type used.
  */
 public interface Extractible<R extends Enum<R>>

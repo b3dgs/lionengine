@@ -43,6 +43,8 @@ import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Menu sequence implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Menu
         extends Sequence

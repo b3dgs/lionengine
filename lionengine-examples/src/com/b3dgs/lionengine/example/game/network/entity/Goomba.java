@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * Goomba implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Goomba
         extends Entity

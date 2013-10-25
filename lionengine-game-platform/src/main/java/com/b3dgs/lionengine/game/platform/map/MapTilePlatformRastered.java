@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.game.purview.Rasterable;
 /**
  * Rastered version of a platform tile map.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> Collision type.
  * @param <T> Tile type used.
  */

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft.menu;
 
 /**
  * List of menu types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum MenuType
 {

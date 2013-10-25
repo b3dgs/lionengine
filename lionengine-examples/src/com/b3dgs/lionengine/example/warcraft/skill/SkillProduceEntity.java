@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Skill build implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class SkillProduceEntity
         extends Skill

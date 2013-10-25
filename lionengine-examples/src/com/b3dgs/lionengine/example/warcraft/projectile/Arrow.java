@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Arrow projectile implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Arrow
         extends Projectile

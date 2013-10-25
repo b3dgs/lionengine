@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
 /**
  * Represents the ability of moving on a PathBasedMap. It includes pathfinding handling.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MoverServices
         extends Pathfindable

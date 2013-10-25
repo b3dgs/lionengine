@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft;
 
 /**
  * Game configuration.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class GameConfig
 {

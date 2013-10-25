@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TownhallOrc
         extends BuildingProducer

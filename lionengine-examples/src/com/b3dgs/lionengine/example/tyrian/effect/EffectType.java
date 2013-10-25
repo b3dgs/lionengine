@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of effect types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum EffectType implements ObjectType
 {
@@ -57,7 +59,7 @@ public enum EffectType implements ObjectType
     private EffectType(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

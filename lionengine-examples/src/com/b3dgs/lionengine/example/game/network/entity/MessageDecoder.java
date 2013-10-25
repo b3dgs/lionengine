@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
  * The decoder implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MessageDecoder
         implements NetworkMessageDecoder

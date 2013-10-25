@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.rts.CursorRts;
 
 /**
  * Cancel skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Cancel
         extends Skill

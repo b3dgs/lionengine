@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Construction effect.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Construction
         extends Effect

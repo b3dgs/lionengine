@@ -18,18 +18,24 @@
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
+import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Factory entity bonus.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryEntityBonus
         extends FactoryObjectGame<EntityBonusType, SetupEntityBonus, Bonus>
 {
     /** Factory effect. */
     private final FactoryEffect factoryEffect;
+    /** factory weapon. */
+    private final FactoryWeapon factoryWeapon;
     /** Handler effect. */
     private final HandlerEffect handlerEffect;
 
@@ -37,12 +43,14 @@ public final class FactoryEntityBonus
      * Constructor.
      * 
      * @param factoryEffect The effect factory reference.
+     * @param factoryWeapon The weapon factory reference.
      * @param handlerEffect The handler effect reference.
      */
-    public FactoryEntityBonus(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
+    public FactoryEntityBonus(FactoryEffect factoryEffect, FactoryWeapon factoryWeapon, HandlerEffect handlerEffect)
     {
-        super(EntityBonusType.class, Media.getPath("entities", "bonus"));
+        super(EntityBonusType.class, AppTyrian.BONUS_DIR);
         this.factoryEffect = factoryEffect;
+        this.factoryWeapon = factoryWeapon;
         this.handlerEffect = handlerEffect;
         load();
     }
@@ -54,6 +62,6 @@ public final class FactoryEntityBonus
     @Override
     protected SetupEntityBonus createSetup(EntityBonusType type, Media config)
     {
-        return new SetupEntityBonus(config, type, factoryEffect, handlerEffect);
+        return new SetupEntityBonus(config, type, factoryEffect, factoryWeapon, handlerEffect);
     }
 }

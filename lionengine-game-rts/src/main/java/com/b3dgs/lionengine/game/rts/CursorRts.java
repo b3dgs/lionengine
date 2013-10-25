@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.game.map.MapTile;
 /**
  * This class can be used to handle easily a strategy cursor, designed to select and give order to any kind of entity.
  * The cursor can be asynchronous (compared to the mouse window).
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CursorRts
         extends Cursor
@@ -215,7 +217,7 @@ public class CursorRts
         super.update(extrp);
         setArea(0, 0, width, height);
         offX = camera.getLocationIntX();
-        offY = camera.getLocationIntY() - camera.getViewY() * 2 - 1;
+        offY = camera.getLocationIntY() - camera.getViewY() * 2;
     }
 
     /**

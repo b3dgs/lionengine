@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.Rectangle;
 
 /**
  * List of events linked to the control panel.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ControlPanelListener
 {

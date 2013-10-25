@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.network;
 
 /**
  * List of messages system flag. This allows to filter data on message received depending of the case.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 interface NetworkMessageSystemId
 {

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.tyrian.entity.scenery;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.entity.Entity;
@@ -26,6 +27,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Factory entity scenery.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryEntityScenery
         extends FactoryObjectGame<EntitySceneryType, SetupEntity, Entity>
@@ -43,7 +46,7 @@ public final class FactoryEntityScenery
      */
     public FactoryEntityScenery(FactoryEffect factoryEffect, HandlerEffect handlerEffect)
     {
-        super(EntitySceneryType.class, Media.getPath("entities", "scenery"));
+        super(EntitySceneryType.class, AppTyrian.SCENERY_DIR);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         load();

@@ -65,12 +65,12 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        // As we defined our resources directory as this: Media.get("resources", "loaddraw")
-        // Any call to Media.get(...) will load from ./resources/loaddraw/
+        // As we defined our resources directory as this: Media.get("resources", "drawable")
+        // Any call to Media.get(...) will load from ./resources/drawable/
 
-        // Load an image (./resources/loaddraw/image.png)
+        // Load an image (./resources/drawable/image.png)
         image = Drawable.loadImage(Media.get("image.png"));
-        // Load a sprite (./resources/loaddraw/sprite.png)
+        // Load a sprite (./resources/drawable/sprite.png)
         sprite = Drawable.loadSprite(Media.get("sprite.png"));
         // Load an animated sprite, with 7 horizontal frames only
         animation = Drawable.loadSpriteAnimated(Media.get("animation.png"), 7, 1);

@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
  * Implementation of our controllable entity.
  * 
  * @see com.b3dgs.lionengine.example.game.entity
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Mario
         extends EntityPlatform

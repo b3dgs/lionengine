@@ -18,11 +18,14 @@
 package com.b3dgs.lionengine.example.tyrian.effect;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory effect implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryEffect
         extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
@@ -32,7 +35,7 @@ public final class FactoryEffect
      */
     public FactoryEffect()
     {
-        super(EffectType.class, "effects");
+        super(EffectType.class, AppTyrian.EFFECTS_DIR);
         load();
     }
 

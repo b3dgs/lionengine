@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
         extends FactoryObjectGame<EntityType, SetupEntity, Entity>

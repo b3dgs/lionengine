@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Peon implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Peasant
         extends UnitWorker

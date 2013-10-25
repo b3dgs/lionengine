@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.CameraGame;
 
 /**
  * Ship base implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Ship
         extends Entity
@@ -35,9 +37,9 @@ public abstract class Ship
     /** Ship energy. */
     private final Alterable energy;
     /** Weapon front. */
-    private final Weapon weaponFront;
+    private Weapon weaponFront;
     /** Weapon rear. */
-    private final Weapon weaponRear;
+    private Weapon weaponRear;
     /** Old offset. */
     private int offsetOldX;
 
@@ -48,7 +50,7 @@ public abstract class Ship
     {
         super(setup);
         energy = new Alterable(1000);
-        weaponFront = setup.factoryWeapon.create(WeaponType.HYPER_PULSE);
+        weaponFront = setup.factoryWeapon.create(WeaponType.PULSE_CANNON);
         weaponFront.setOwner(this);
         weaponRear = setup.factoryWeapon.create(WeaponType.MISSILE_LAUNCHER_REAR);
         weaponRear.setOwner(this);
@@ -104,6 +106,28 @@ public abstract class Ship
             weaponFront.launch(energy);
             weaponRear.launch(energy);
         }
+    }
+
+    /**
+     * Set the front weapon.
+     * 
+     * @param front The front weapon.
+     */
+    public void setWeaponFront(Weapon front)
+    {
+        weaponFront = front;
+        front.setOwner(this);
+    }
+
+    /**
+     * Set the rear weapon.
+     * 
+     * @param rear The rear weapon.
+     */
+    public void setWeaponRear(Weapon rear)
+    {
+        weaponRear = rear;
+        rear.setOwner(this);
     }
 
     /**

@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.ColorRgba;
 
 /**
  * List of minimap tile colors.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum TileColorType
 {

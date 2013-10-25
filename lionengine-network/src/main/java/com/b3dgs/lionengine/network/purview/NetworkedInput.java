@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
  * Networked input listener.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkedInput
         implements Networkable, KeyboardListener

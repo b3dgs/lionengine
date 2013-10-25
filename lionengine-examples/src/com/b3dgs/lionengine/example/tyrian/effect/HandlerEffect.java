@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.effect.HandlerEffectGame;
 
 /**
  * Handler effect implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEffect
         extends HandlerEffectGame<Effect>

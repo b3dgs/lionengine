@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.rts.map;
 /**
  * Represents the list of supported angles for area linking.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Border20Map
  */
 public enum Border20

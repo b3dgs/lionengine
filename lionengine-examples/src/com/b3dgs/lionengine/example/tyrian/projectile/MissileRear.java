@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.tyrian.projectile;
 
 /**
  * Missile rear left projectile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MissileRear
         extends Missile

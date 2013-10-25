@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 
 /**
  * Lumber mill building implementation. This building allows to enable archer production and bow upgrades.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LumbermillHuman
         extends Building

@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 
 /**
  * Default and abstract mover model implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class MoverModel
         extends AbilityModel<MoverListener, MoverUsedServices>

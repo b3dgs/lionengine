@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of projectile types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum ProjectileType implements ObjectType
 {
@@ -62,7 +64,7 @@ public enum ProjectileType implements ObjectType
     {
         this.target = target;
         this.category = category;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /**

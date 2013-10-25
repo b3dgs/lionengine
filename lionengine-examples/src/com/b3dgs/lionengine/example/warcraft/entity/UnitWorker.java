@@ -41,6 +41,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityNotFoundException;
 
 /**
  * Worker unit implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class UnitWorker
         extends Unit

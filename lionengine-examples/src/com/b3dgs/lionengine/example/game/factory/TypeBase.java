@@ -55,9 +55,9 @@ public abstract class TypeBase
     }
 
     /**
-     * Get the object param.
+     * Get the object parameter.
      * 
-     * @return The object param.
+     * @return The object parameter.
      */
     public Object getParam()
     {

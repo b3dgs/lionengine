@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.CameraGame;
 
 /**
  * Background implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Background
 {

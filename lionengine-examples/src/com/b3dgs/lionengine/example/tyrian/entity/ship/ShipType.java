@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of ship types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum ShipType implements ObjectType
 {
@@ -41,7 +43,7 @@ public enum ShipType implements ObjectType
     private ShipType(Class<?> target)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
     /*

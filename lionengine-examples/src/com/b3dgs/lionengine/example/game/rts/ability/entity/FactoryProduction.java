@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.rts.ability.producer.FactoryProductionRts;
 
 /**
  * The production factory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProduction
         extends FactoryProductionRts<EntityType, ProductionCost, ProducibleEntity>

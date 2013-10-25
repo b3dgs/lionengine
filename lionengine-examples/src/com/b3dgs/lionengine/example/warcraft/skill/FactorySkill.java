@@ -30,6 +30,8 @@ import com.b3dgs.lionengine.game.TimedMessage;
 
 /**
  * Skill factory implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
         extends FactoryObjectGame<SkillType, SetupSkill, Skill>

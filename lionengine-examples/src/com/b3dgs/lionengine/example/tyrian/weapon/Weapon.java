@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
  * Weapon base implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Weapon
         extends LauncherProjectileGame<ProjectileType, Entity, Entity, Projectile>

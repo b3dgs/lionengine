@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * List of services provided by a weapon.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  */

@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.purview.model.RasterableModel;
 
 /**
  * Rastered version of an EntityPlatform.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class EntityPlatformRastered
         extends EntityPlatform

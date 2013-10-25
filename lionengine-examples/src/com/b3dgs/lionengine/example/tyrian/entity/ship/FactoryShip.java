@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.tyrian.entity.ship;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.tyrian.AppTyrian;
 import com.b3dgs.lionengine.example.tyrian.effect.FactoryEffect;
 import com.b3dgs.lionengine.example.tyrian.effect.HandlerEffect;
 import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
@@ -25,6 +26,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Factory ship.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryShip
         extends FactoryObjectGame<ShipType, SetupEntityShip, Ship>
@@ -45,7 +48,7 @@ public final class FactoryShip
      */
     public FactoryShip(FactoryEffect factoryEffect, HandlerEffect handlerEffect, FactoryWeapon factoryWeapon)
     {
-        super(ShipType.class, "ships");
+        super(ShipType.class, AppTyrian.SHIPS_DIR);
         this.factoryEffect = factoryEffect;
         this.handlerEffect = handlerEffect;
         this.factoryWeapon = factoryWeapon;

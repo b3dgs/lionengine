@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.rts.CameraRts;
 
 /**
  * Camera implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Camera
         extends CameraRts

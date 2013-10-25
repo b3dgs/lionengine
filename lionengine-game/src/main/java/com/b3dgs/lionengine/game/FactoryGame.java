@@ -20,37 +20,42 @@ package com.b3dgs.lionengine.game;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
+
 /**
- * Game type factory. It performs a list of available types from a directory considering an input enumeration.
- * Data are stored with an enumeration as key.
+ * It performs a list of {@link SetupGame} considering an input enumeration. This way it is possible to create new
+ * instances of object related to their type by sharing the same data.
  * <p>
  * Sample implementation:
  * </p>
  * 
  * <pre>
  * public class Factory
- *         extends FactoryObjectGame&lt;EntityType, SetupGame, ObjectGame&gt;
+ *         extends FactoryGame&lt;EntityType, SetupGame&gt;
  * {
  *     public Factory()
  *     {
- *         super(EntityType.class, &quot;objects&quot;);
+ *         super(EntityType.class);
  *         load();
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(EntityType type, Media config)
+ *     protected SetupGame createSetup(EntityType type)
  *     {
- *         return new SetupGame(config);
+ *         return new SetupGame(Media.get(type.name() + &quot;.xml&quot;));
  *     }
  * }
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The enum containing all types.
- * @param <S> The setup object type used.
+ * @param <S> The setup type used.
  */
 public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
 {
+    /** Enum type error. */
+    private static final String ERROR_TYPE = "Enum type class must not be null !";
+
     /** Types list. */
     private final T[] types;
     /** Setups list. */
@@ -59,18 +64,19 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     /**
      * Constructor.
      * 
-     * @param keyType The class of the enum type defined.
+     * @param enumType The class of the enum type defined.
      */
-    public FactoryGame(Class<T> keyType)
+    public FactoryGame(Class<T> enumType)
     {
-        this.types = keyType.getEnumConstants();
-        setups = new EnumMap<>(keyType);
+        Check.notNull(enumType, FactoryGame.ERROR_TYPE);
+        this.types = enumType.getEnumConstants();
+        setups = new EnumMap<>(enumType);
     }
 
     /**
-     * Get setup instance.
+     * Get setup instance from the type.
      * 
-     * @param type The object type.
+     * @param type The enum type.
      * @return The setup instance.
      */
     protected abstract S createSetup(T type);
@@ -84,17 +90,6 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
         {
             addSetup(type, createSetup(type));
         }
-    }
-
-    /**
-     * Add a setup reference at the specified type.
-     * 
-     * @param type The reference type.
-     * @param setup The setup reference.
-     */
-    public void addSetup(T type, S setup)
-    {
-        setups.put(type, setup);
     }
 
     /**
@@ -116,5 +111,16 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
     public T[] getTypes()
     {
         return types;
+    }
+
+    /**
+     * Add a setup reference for the specified type.
+     * 
+     * @param type The enum type.
+     * @param setup The setup reference.
+     */
+    protected void addSetup(T type, S setup)
+    {
+        setups.put(type, setup);
     }
 }

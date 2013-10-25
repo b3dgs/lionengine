@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.network;
 
 /**
  * Listen to connection state and other client connection.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ConnectionListener
         extends ClientListener

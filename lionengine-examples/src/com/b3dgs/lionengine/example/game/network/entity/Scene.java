@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Game loop designed to handle our little world.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Scene
         extends Sequence

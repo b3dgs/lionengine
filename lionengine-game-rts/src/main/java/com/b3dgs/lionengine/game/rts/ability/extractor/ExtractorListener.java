@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Extractor events listener.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resource enum type used.
  */
 public interface ExtractorListener<R extends Enum<R>>

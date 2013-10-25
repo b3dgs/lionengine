@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  * This camera should be used for a strategy oriented game. It allows free movement around the current map, using its
  * border as limit. It is also possible to define specific keys for camera handling. Don't forget give a call to
  * {@link CameraRts#setView(int, int, int, int)} and {@link CameraRts#setBorders(MapTile)} when the map is loaded.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CameraRts
         extends CameraGame

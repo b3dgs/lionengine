@@ -30,6 +30,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> Tile type used.
  */
 public abstract class FogOfWarRts<T extends TileGame<?>>

@@ -21,6 +21,8 @@ import java.util.EnumSet;
 
 /**
  * List of tile collision.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum TileCollision
 {

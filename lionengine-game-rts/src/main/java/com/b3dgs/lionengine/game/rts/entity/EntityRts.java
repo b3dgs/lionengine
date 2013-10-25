@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
  * This class represent the first abstraction for any kind of entity which can be used in a strategy game. It contains a
  * set of useful functions, a specific ID, a ready to use animated sprite, and a list of skills. Entity data are
  * automatically loaded, from the file data.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class EntityRts
         extends EntityGame

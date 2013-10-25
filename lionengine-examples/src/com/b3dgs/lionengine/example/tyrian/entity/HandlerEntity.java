@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 
 /**
  * Handler entity.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
         extends HandlerEntityGame<Entity>

@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.rts.ability.mover;
 
 /**
  * Mover events listener.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MoverListener
 {

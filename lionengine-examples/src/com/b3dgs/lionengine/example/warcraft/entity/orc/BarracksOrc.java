@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SkillType;
 
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class BarracksOrc
         extends BuildingProducer

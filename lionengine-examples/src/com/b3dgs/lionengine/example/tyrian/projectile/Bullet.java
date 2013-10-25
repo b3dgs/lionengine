@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.example.tyrian.entity.Entity;
 
 /**
  * Bullet projectile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Bullet
         extends Projectile

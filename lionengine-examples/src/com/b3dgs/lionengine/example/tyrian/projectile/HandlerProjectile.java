@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.game.projectile.HandlerProjectileGame;
 
 /**
  * Handler projectile.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerProjectile
         extends HandlerProjectileGame<Entity, Projectile>

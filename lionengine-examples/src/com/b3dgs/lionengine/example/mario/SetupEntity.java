@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetupEntity
+final class SetupEntity
         extends SetupSurfaceGame
 {
     /** Map. */
@@ -40,7 +40,7 @@ public class SetupEntity
      * @param map The map reference.
      * @param desiredFps The desired fps.
      */
-    public SetupEntity(Media config, Map map, int desiredFps)
+    SetupEntity(Media config, Map map, int desiredFps)
     {
         super(config);
         this.map = map;

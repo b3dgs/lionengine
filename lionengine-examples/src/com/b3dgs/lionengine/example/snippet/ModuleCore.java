@@ -213,6 +213,7 @@ public class ModuleCore
         }
         catch (final InterruptedException exception)
         {
+            Thread.currentThread().interrupt();
             Verbose.exception(MyClass.class, "function", exception);
         }
     }

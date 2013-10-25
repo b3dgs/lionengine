@@ -274,7 +274,7 @@ final class WavRoutine
                 }
                 catch (final InterruptedException exception)
                 {
-                    interrupt();
+                    Thread.currentThread().interrupt();
                 }
                 catch (final UnsupportedAudioFileException
                              | IllegalArgumentException exception)
@@ -302,7 +302,7 @@ final class WavRoutine
             }
             catch (final InterruptedException exception)
             {
-                interrupt();
+                Thread.currentThread().interrupt();
                 media = null;
                 isRunning = false;
                 player.decreaseCount();

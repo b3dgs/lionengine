@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.Alterable;
 
 /**
  * Extraction structure. It represents the extraction quantity and the time needed per extraction unit.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ExtractionRts
 {

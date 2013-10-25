@@ -54,7 +54,7 @@ public abstract class FactoryEntity<T extends Enum<T> & EntityType<T>>
      */
     protected FactoryEntity(Class<T> keyType, T[] types, WorldType world)
     {
-        super(keyType, Media.getPath(AppLionheart.ENTITIES_DIR, world.asPathName()));
+        super(keyType, Media.getPath(AppLionheart.ENTITIES_DIR, world.getPathName()));
     }
 
     /**

@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
  * informations.
  * 
  * @param <E> Entity type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ControlPanelModel<E extends EntityRts>
         implements ControlPanelListener

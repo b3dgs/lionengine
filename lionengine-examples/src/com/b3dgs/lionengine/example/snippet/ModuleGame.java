@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
+import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.ObjectType;
@@ -56,7 +57,7 @@ public class ModuleGame
         private EntityType(Class<?> target)
         {
             this.target = target;
-            pathName = ObjectTypeUtility.asPathName(this);
+            pathName = ObjectTypeUtility.getPathName(this);
         }
 
         /*
@@ -160,9 +161,25 @@ public class ModuleGame
     }
 
     public class Factory
-            extends FactoryObjectGame<EntityType, SetupGame, ObjectGame>
+            extends FactoryGame<EntityType, SetupGame>
     {
         public Factory()
+        {
+            super(EntityType.class);
+            load();
+        }
+
+        @Override
+        protected SetupGame createSetup(EntityType type)
+        {
+            return new SetupGame(Media.get(type.name() + ".xml"));
+        }
+    }
+
+    public class FactoryObject
+            extends FactoryObjectGame<EntityType, SetupGame, ObjectGame>
+    {
+        public FactoryObject()
         {
             super(EntityType.class, "objects");
             load();

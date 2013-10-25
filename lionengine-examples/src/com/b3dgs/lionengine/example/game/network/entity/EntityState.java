@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
  * List of entity states.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum EntityState
 {

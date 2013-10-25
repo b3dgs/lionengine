@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**
  * Projectile base implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Projectile
         extends ProjectileGame<Entity, Entity>

@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.network.purview.Networkable;
  * 
  * @param <L> Listener type.
  * @param <N> Network implementation.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkModel<L>>
         implements NetworkedWorld

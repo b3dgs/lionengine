@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
 
 /**
  * Tile implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Tile
         extends TileRts<TileCollision, ResourceType>

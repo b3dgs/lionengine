@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Used services interface.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MoverUsedServices
         extends MoverListener, Localizable

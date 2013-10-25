@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.game.rts.ability.mover.MoverServices;
 
 /**
  * Move skill implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Move
         extends Skill

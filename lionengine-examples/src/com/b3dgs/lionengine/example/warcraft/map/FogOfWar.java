@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.rts.map.FogOfWarRts;
 
 /**
  * Fog of war implementation base.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FogOfWar
         extends FogOfWarRts<Tile>

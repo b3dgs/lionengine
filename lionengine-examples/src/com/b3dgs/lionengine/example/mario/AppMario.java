@@ -45,16 +45,9 @@ public final class AppMario
      */
     public static void main(String[] args)
     {
-        // Start engine
         Engine.start(AppMario.NAME, AppMario.VERSION, AppMario.RESOURCES);
-
-        // Resolution
         final Resolution output = new Resolution(640, 480, 60);
-
-        // Configuration
         final Config config = new Config(output, 16, true);
-
-        // Loader
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }

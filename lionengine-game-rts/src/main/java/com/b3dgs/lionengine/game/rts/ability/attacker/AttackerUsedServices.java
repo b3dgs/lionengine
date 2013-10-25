@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * List of services needed by the attacker.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  */
 public interface AttackerUsedServices<E extends EntityRts>

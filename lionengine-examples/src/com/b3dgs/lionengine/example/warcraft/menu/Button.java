@@ -26,6 +26,8 @@ import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Button menu implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Button
 {

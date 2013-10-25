@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.example.warcraft.entity.SetupEntity;
 
 /**
  * Farm building implementation. This building allows to increase the population capacity.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FarmHuman
         extends Building

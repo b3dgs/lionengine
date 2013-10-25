@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 
 /**
  * Basic chat implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkChat
         implements Networkable, KeyboardListener

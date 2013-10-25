@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.XmlNode;
@@ -37,6 +38,8 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 public abstract class ObjectGame
         implements Configurable
 {
+    /** Setup error. */
+    private static final String ERROR_SETUP = "Setup must not be null !";
     /** Id used. */
     private static final Set<Integer> IDS = new HashSet<>(16);
     /** Last id used. */
@@ -70,6 +73,7 @@ public abstract class ObjectGame
      */
     public ObjectGame(SetupGame setup)
     {
+        Check.notNull(setup, ObjectGame.ERROR_SETUP);
         configurable = setup.configurable;
         destroy = false;
         id = ObjectGame.getFreeId();

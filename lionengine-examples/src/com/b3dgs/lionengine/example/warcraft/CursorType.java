@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft;
 
 /**
  * List of cursor types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum CursorType
 {

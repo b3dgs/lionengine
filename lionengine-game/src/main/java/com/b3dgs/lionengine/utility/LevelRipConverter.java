@@ -139,6 +139,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
         }
         catch (final InterruptedException exception)
         {
+            Thread.currentThread().interrupt();
             Verbose.critical(LevelRipConverter.class, "An error occured: ", levelrip.getPath());
         }
     }

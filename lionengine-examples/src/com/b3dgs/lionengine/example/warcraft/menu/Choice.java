@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Choice selection button (left & right).
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Choice
 {

@@ -22,6 +22,8 @@ import com.b3dgs.lionengine.example.warcraft.skill.SetupSkill;
 
 /**
  * Sword attack skill.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AttackSword
         extends Attack

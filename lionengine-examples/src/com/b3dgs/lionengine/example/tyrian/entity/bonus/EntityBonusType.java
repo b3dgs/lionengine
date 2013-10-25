@@ -32,6 +32,11 @@ public enum EntityBonusType implements ObjectType
      * Weapon
      */
 
+    /** Pulse cannon. */
+    PULSE_CANNON(PulseCannon.class),
+    /** Hyper Pulse. */
+    HYPER_PULSE(HyperPulse.class),
+
     /*
      * Coin.
      */
@@ -56,12 +61,22 @@ public enum EntityBonusType implements ObjectType
      * Constructor.
      * 
      * @param target The target class.
+     */
+    private EntityBonusType(Class<?> target)
+    {
+        this(target, null);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param target The target class.
      * @param effect The effect type.
      */
     private EntityBonusType(Class<?> target, EffectType effect)
     {
         this.target = target;
-        pathName = ObjectTypeUtility.asPathName(this);
+        pathName = ObjectTypeUtility.getPathName(this);
         this.effect = effect;
     }
 

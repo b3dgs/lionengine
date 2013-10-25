@@ -22,6 +22,7 @@ import java.util.EnumSet;
 /**
  * List of tile collisions.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.platform.tile
  */
 enum TileCollision

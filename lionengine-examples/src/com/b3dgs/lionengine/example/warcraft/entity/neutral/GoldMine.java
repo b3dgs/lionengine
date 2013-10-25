@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.game.rts.ability.extractor.Extractible;
 
 /**
  * Gold mine building implementation. This building allows to extract gold with a worker.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class GoldMine
         extends Building

@@ -109,8 +109,9 @@ public enum EntitySwampType implements EntityType<EntitySwampType>
     private EntitySwampType(Class<?> target, EntityCategory category)
     {
         this.target = target;
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
         this.category = category;
+        category.increase();
     }
 
     /*

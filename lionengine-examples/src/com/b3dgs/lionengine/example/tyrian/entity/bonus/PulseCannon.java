@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.example.tyrian.entity.bonus;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class PulseCannon
+public final class PulseCannon
         extends Weapon
 {
     /**

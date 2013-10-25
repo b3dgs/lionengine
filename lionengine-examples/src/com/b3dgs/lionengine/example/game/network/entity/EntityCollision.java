@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 /**
  * List of entity collision.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 enum EntityCollision
 {

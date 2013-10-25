@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.example.warcraft.weapon.WeaponType;
 
 /**
  * Spearman implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Archer
         extends UnitAttacker

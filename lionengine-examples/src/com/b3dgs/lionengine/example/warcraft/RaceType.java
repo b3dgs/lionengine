@@ -21,6 +21,8 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
 /**
  * List of race types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum RaceType
 {
@@ -39,7 +41,7 @@ public enum RaceType
      */
     private RaceType()
     {
-        path = ObjectTypeUtility.asPathName(this);
+        path = ObjectTypeUtility.getPathName(this);
     }
 
     /**

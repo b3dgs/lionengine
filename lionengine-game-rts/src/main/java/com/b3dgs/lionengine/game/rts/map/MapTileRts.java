@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Abstract representation of a path based map, used for pathfinding.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision enum type used.
  * @param <T> The tile type used.
  */

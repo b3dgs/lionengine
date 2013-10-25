@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Default weapon model implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  */
@@ -38,7 +39,11 @@ public abstract class WeaponModel<E extends EntityRts, A extends AttackerUsedSer
         extends ObjectGame
         implements WeaponServices<E, A>, AttackerListener<E>
 {
-    /** Attack state. */
+    /**
+     * Attack state.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
     private static enum State
     {
         /** None state. */

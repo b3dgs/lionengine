@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
 /**
  * Representation of a default tile, used for pathfinding.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision enum type used.
  * @param <R> The resource enum type used.
  */

@@ -41,6 +41,8 @@ import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Test the Drawable package.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SpriteTest
 {
@@ -422,7 +424,7 @@ public class SpriteTest
         Assert.assertFalse(spriteB.equals(Drawable.loadSprite(SpriteTest.media)));
 
         // Hash code
-        Assert.assertNotEquals(spriteA.hashCode(), spriteB.hashCode());
+        Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
     }
 
     /**
@@ -535,7 +537,7 @@ public class SpriteTest
         spriteD.setMirror(false);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 110);
-        Assert.assertNotEquals(hash, spriteD.hashCode());
+        Assert.assertTrue(hash != spriteD.hashCode());
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteAnimated spriteF = Drawable
                 .loadSpriteAnimated(spriteD.getSurface(), frameHorizontal, frameVertical);

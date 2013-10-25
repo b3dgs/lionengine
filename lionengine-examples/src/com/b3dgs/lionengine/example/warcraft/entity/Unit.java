@@ -33,12 +33,18 @@ import com.b3dgs.lionengine.game.rts.ability.mover.MoverUsedServices;
 
 /**
  * Abstract mover entity implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Unit
         extends Entity
         implements MoverUsedServices, MoverServices
 {
-    /** Die states. */
+    /**
+     * Die states.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
+     */
     private static enum Die
     {
         /** No death. */

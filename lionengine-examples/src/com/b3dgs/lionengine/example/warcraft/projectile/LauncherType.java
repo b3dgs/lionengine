@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.example.warcraft.projectile;
 
 /**
  * List of launcher types.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum LauncherType
 {

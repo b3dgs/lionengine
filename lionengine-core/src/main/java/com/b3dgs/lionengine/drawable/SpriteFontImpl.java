@@ -32,6 +32,8 @@ import com.b3dgs.lionengine.file.XmlParser;
 
 /**
  * Font sprite implementation.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class SpriteFontImpl
         implements SpriteFont
@@ -41,6 +43,8 @@ final class SpriteFontImpl
 
     /**
      * Character data.
+     * 
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static final class Data
     {
