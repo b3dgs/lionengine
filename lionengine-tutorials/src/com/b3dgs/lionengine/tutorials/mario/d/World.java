@@ -38,6 +38,10 @@ final class World
     private final CameraPlatform camera;
     /** Map reference. */
     private final Map map;
+    /** Factory reference. */
+    private final FactoryEntity factory;
+    /** Mario reference. */
+    private final Mario mario;
 
     /**
      * @see WorldGame#WorldGame(Sequence)
@@ -47,6 +51,8 @@ final class World
         super(sequence);
         camera = new CameraPlatform(width, height);
         map = new Map();
+        factory = new FactoryEntity(map, source.getRate());
+        mario = factory.create(EntityType.MARIO);
     }
 
     /*
@@ -56,13 +62,17 @@ final class World
     @Override
     public void update(double extrp)
     {
-        // Update
+        mario.updateControl(keyboard);
+        mario.update(extrp);
+        camera.follow(mario);
     }
 
     @Override
     public void render(Graphic g)
     {
+        g.clear(source);
         map.render(g, camera);
+        mario.render(g, camera);
     }
 
     @Override
@@ -77,5 +87,6 @@ final class World
         map.load(file);
         camera.setLimits(map);
         camera.setIntervals(16, 0);
+        mario.respawn();
     }
 }
