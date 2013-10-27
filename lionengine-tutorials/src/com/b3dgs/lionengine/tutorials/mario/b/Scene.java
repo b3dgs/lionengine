@@ -65,7 +65,7 @@ final class Scene
      */
     private void importAndSave()
     {
-        LevelRipConverter<Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(Media.get("smb_level1-1.png"), map, Media.get("tiles"));
         try (FileWriting file = File.createFileWriting(Media.get("smb_level1-1.lvl"));)
         {
@@ -89,7 +89,7 @@ final class Scene
         {
             map.load(reading);
         }
-        catch (IOException exception)
+        catch (final IOException exception)
         {
             Verbose.exception(Scene.class, "constructor", exception, "Error on loading map !");
         }

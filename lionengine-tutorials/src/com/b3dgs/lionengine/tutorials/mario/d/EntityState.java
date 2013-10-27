@@ -33,7 +33,9 @@ enum EntityState
     /** turn state. */
     TURN,
     /** Jump state. */
-    JUMP;
+    JUMP,
+    /** Dead state. */
+    DEAD;
 
     /** Animation name. */
     private final String animationName;
