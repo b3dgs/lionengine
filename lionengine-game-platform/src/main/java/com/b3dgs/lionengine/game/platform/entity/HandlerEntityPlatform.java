@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 /**
  * Default platform entity handler.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityPlatform<E extends EntityPlatform>
         extends HandlerEntityGame<E>
@@ -34,7 +34,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     private final CameraPlatform camera;
 
     /**
-     * Create a new handler.
+     * Constructor.
      * 
      * @param camera The camera reference.
      */

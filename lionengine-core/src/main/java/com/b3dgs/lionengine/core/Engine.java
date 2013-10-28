@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.Version;
  * </p>
  * 
  * <pre>
- * public final class AppFirstCode
+ * public final class AppMinimal
  * {
  *     public static void main(String[] args)
  *     {
@@ -49,12 +49,12 @@ import com.b3dgs.lionengine.Version;
  *         // - The program version: &quot;1.0.0&quot;
  *         // - The main resources directory, relative to the execution directory: ./resources/
  *         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
- *         Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
+ *         Engine.start(&quot;Minimal&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * 
  *         // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
  *         // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
- *         // If the current frame rate is lower than the required in the native, the extrapolation value will allow to
- *         // compensate any data calculation.
+ *         // If the current frame rate is lower than the required in the native,
+ *         // the extrapolation value will allow to compensate any data calculation.
  *         final Resolution output = new Resolution(640, 480, 60);
  * 
  *         // Final configuration (rendering will be scaled by 2 considering source and output resolution).
@@ -65,17 +65,12 @@ import com.b3dgs.lionengine.Version;
  *         final Loader loader = new Loader(config);
  *         loader.start(new Scene(loader));
  *     }
- * 
- *     private AppFirstCode()
- *     {
- *         throw new RuntimeException();
- *     }
  * }
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @version 6.0.0
  * @since 13 June 2010
+ * @version 6.0.0
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine
 {

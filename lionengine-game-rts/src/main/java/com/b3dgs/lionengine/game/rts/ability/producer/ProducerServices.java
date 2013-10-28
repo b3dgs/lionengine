@@ -22,10 +22,10 @@ import java.util.Iterator;
 /**
  * Represents an ability of creating new entity.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ProducerServices<T extends Enum<T>, C extends ProductionCostRts, P extends Producible<T, C>>
 {

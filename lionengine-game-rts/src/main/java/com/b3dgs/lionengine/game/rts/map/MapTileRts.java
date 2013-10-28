@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.rts.map;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
@@ -28,11 +29,12 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Abstract representation of a path based map, used for pathfinding.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision enum type used.
+ * @param <R> The resource enum type used.
  * @param <T> The tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
+public abstract class MapTileRts<C extends Enum<C>, R extends Enum<R>, T extends TileRts<C, R>>
         extends MapTileGame<C, T>
         implements MapTilePath<C, T>
 {
@@ -40,7 +42,7 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
     private Integer[][] ref;
 
     /**
-     * Create a new rts map.
+     * Constructor.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
@@ -51,10 +53,6 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
         minimap = null;
         ref = null;
     }
-
-    /*
-     * MapTileGame
-     */
 
     /**
      * Search a free area from this area.
@@ -168,6 +166,10 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
         return new CoordTile(closestX, closestY);
     }
 
+    /*
+     * MapTileGame
+     */
+
     @Override
     public void create(int widthInTile, int heightInTile)
     {
@@ -180,6 +182,28 @@ public abstract class MapTileRts<C extends Enum<C>, T extends TileRts<C, ?>>
             for (int h = 0; h < widthInTile; h++)
             {
                 ref[v][h] = value;
+            }
+        }
+    }
+
+    @Override
+    public void loadCollisions(Media media)
+    {
+        super.loadCollisions(media);
+        for (int v = 0; v < heightInTile; v++)
+        {
+            for (int h = 0; h < widthInTile; h++)
+            {
+                final T tile = getTile(h, v);
+                if (tile != null)
+                {
+                    final C collision = tile.getCollision();
+                    if (collision != null)
+                    {
+                        tile.setResourceType(tile.checkResourceType(collision));
+                        tile.setBlocking(tile.checkBlocking(collision));
+                    }
+                }
             }
         }
     }

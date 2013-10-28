@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Represents a producible entity.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Producible<T extends Enum<T>, C extends ProductionCostRts>
         implements Tiled
@@ -43,7 +43,7 @@ public class Producible<T extends Enum<T>, C extends ProductionCostRts>
     private int ty;
 
     /**
-     * Create a productible structure.
+     * Constructor.
      * 
      * @param id The entity id.
      * @param cost The production cost.

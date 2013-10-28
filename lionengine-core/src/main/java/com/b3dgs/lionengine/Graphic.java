@@ -30,9 +30,9 @@ public interface Graphic
     /**
      * Clear the display.
      * 
-     * @param resolution The resolution.
+     * @param source The resolution source.
      */
-    void clear(Resolution resolution);
+    void clear(Resolution source);
 
     /**
      * Clear the display.

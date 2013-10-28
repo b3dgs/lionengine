@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
 /**
  * Define something that can used skills.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> Skill enum type used.
  * @param <S> Skill type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SkilledServices<T extends Enum<T> & ObjectType, S extends SkillRts<T>>
 {

@@ -38,7 +38,7 @@ public class BackgroundElement
     private double offsetY;
 
     /**
-     * Create a new background element.
+     * Constructor.
      * 
      * @param mainX The main location x.
      * @param mainY The main location y.

@@ -66,7 +66,7 @@ public final class Checksum
     private final MessageDigest sha;
 
     /**
-     * Create a new checksum.
+     * Constructor.
      */
     private Checksum()
     {

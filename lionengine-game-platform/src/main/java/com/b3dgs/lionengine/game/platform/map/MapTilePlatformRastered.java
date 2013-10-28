@@ -55,7 +55,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     private boolean rasterLoaded;
 
     /**
-     * Create a new rastered tile map.
+     * Constructor.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.

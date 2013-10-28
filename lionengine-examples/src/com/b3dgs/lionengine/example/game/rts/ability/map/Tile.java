@@ -47,31 +47,21 @@ public final class Tile
      */
 
     @Override
-    public void checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType(TileCollision collision)
     {
-        if (collision != null)
+        switch (collision.getGroup())
         {
-            switch (collision.getGroup())
-            {
-                case TREE:
-                    setResourceType(ResourceType.WOOD);
-                    break;
-                default:
-                    setResourceType(ResourceType.NONE);
-                    break;
-            }
+            case TREE:
+                return ResourceType.WOOD;
+            default:
+                return ResourceType.NONE;
         }
     }
 
     @Override
     public boolean checkBlocking(TileCollision collision)
     {
-        // Block if not ground
-        if (collision != null)
-        {
-            return TileCollisionGroup.GROUND != collision.getGroup();
-        }
-        return false;
+        return TileCollisionGroup.GROUND != collision.getGroup();
     }
 
     @Override

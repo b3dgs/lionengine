@@ -37,7 +37,7 @@ public class MirrorableModel
     private boolean cancel;
 
     /**
-     * Create a mirrorable model.
+     * Constructor.
      */
     public MirrorableModel()
     {

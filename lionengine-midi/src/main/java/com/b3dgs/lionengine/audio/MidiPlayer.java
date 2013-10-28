@@ -77,7 +77,7 @@ final class MidiPlayer
     private boolean paused;
 
     /**
-     * Create a midi player.
+     * Constructor.
      * 
      * @param media The media midi to play.
      */

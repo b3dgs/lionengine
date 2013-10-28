@@ -58,7 +58,7 @@ public class CursorRts
     private int oldY;
 
     /**
-     * Create a new rts cursor.
+     * Constructor.
      * 
      * @param mouse The mouse reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
@@ -72,7 +72,7 @@ public class CursorRts
     }
 
     /**
-     * Create a new rts cursor.
+     * Constructor.
      * 
      * @param mouse The mouse reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).

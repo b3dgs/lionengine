@@ -69,7 +69,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     }
 
     /**
-     * Create a new tile map.
+     * Constructor.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.

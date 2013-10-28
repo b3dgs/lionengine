@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.rts.map.TileRts;
  * @see com.b3dgs.lionengine.example.game.map
  */
 final class Tile
-        extends TileRts<TileCollision, TileCollision>
+        extends TileRts<TileCollision, ResourceType>
 {
     /**
      * Constructor.
@@ -47,9 +47,9 @@ final class Tile
      */
 
     @Override
-    public void checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType(TileCollision collision)
     {
-        setResourceType(TileCollision.NONE);
+        return ResourceType.NONE;
     }
 
     @Override
@@ -61,6 +61,6 @@ final class Tile
     @Override
     public boolean hasResources()
     {
-        return getResourceType() != TileCollision.NONE;
+        return getResourceType() != ResourceType.NONE;
     }
 }

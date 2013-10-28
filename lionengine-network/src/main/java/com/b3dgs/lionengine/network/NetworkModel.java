@@ -57,18 +57,6 @@ abstract class NetworkModel<L extends ClientListener>
         listeners = new ArrayList<>(1);
     }
 
-    @Override
-    public void addListener(L listener)
-    {
-        listeners.add(listener);
-    }
-
-    @Override
-    public void removeListener(L listener)
-    {
-        listeners.remove(listener);
-    }
-
     /**
      * Decode a message from its type.
      * 
@@ -93,6 +81,18 @@ abstract class NetworkModel<L extends ClientListener>
      * Networker
      */
 
+    @Override
+    public void addListener(L listener)
+    {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(L listener)
+    {
+        listeners.remove(listener);
+    }
+    
     @Override
     public void addMessage(NetworkMessage message)
     {

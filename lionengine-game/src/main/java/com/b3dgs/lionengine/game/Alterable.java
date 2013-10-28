@@ -37,8 +37,8 @@ package com.b3dgs.lionengine.game;
  * life.isEmpty(); // returns true
  * </pre>
  * 
- * @see Attribute
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Attribute
  */
 public class Alterable
 {

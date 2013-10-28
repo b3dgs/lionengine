@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
  * <p>
- * Example
+ * Example:
  * </p>
  * 
  * <pre>

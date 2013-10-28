@@ -234,7 +234,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      *   for each tile in this bloc
      *     create blank tile
      *     call tile.load(file)
-     *    call this.setTile(...) to update map with this new tile
+     *     call this.setTile(...) to update map with this new tile
      * </pre>
      * 
      * @param file The input file.
@@ -270,6 +270,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                 list.set(h, tile);
             }
         }
+        loadCollisions(media);
     }
 
     /**

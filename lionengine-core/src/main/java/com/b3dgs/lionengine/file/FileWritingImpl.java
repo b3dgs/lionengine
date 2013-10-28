@@ -37,7 +37,7 @@ final class FileWritingImpl
     private final DataOutputStream out;
 
     /**
-     * Create a file writer.
+     * Constructor.
      * 
      * @param media The media path.
      * @throws IOException If open failed.

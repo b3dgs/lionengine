@@ -40,9 +40,9 @@ import com.b3dgs.lionengine.Mouse;
  * loader.start(new Scene(loader));
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Config
  * @see Sequence
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Loader
 {

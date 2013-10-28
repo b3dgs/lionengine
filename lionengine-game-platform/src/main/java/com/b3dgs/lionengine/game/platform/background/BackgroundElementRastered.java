@@ -92,7 +92,7 @@ public abstract class BackgroundElementRastered
     private final List<Sprite> rasters;
 
     /**
-     * Create a new rastered background element.
+     * Constructor.
      * 
      * @param mainX The main location x.
      * @param mainY The main location y.

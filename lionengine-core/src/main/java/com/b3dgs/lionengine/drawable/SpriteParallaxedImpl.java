@@ -59,7 +59,7 @@ final class SpriteParallaxedImpl
     private double factorV;
 
     /**
-     * Create a new parallaxed sprite.
+     * Constructor.
      * 
      * @param media The sprite media.
      * @param linesNumber The number of line.

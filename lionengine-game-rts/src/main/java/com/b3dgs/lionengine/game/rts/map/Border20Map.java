@@ -35,7 +35,7 @@ public class Border20Map
     private boolean[][] safe;
 
     /**
-     * Create a Border20Map map.
+     * Constructor.
      * 
      * @param middle The middle flag.
      */
@@ -46,7 +46,7 @@ public class Border20Map
     }
 
     /**
-     * Create the Border20Map map.
+     * Constructor.
      * 
      * @param map The map reference.
      */

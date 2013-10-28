@@ -50,7 +50,7 @@ public abstract class BackgroundPlatform
     private int offsetY;
 
     /**
-     * Create a new background.
+     * Constructor.
      * 
      * @param theme The background theme.
      * @param min The minimal y value for background.

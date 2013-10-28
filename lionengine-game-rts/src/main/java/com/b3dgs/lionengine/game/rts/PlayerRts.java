@@ -45,7 +45,7 @@ public abstract class PlayerRts
     private String name;
 
     /**
-     * Create a new player.
+     * Constructor.
      */
     public PlayerRts()
     {

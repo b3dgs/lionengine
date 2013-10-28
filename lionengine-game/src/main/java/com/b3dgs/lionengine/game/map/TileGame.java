@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.file.FileReading;
+
 /**
  * Default class tile; containing following data:
  * <ul>
@@ -209,8 +211,8 @@ public abstract class TileGame<C extends Enum<C>>
     }
 
     /**
-     * Set tile location x. Should be used only when overriding the
-     * {@link MapTileGame#loadTile(List, com.b3dgs.lionengine.file.FileReading, int)} function.
+     * Set tile location x. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * function.
      * 
      * @param x The tile location x.
      */
@@ -220,8 +222,8 @@ public abstract class TileGame<C extends Enum<C>>
     }
 
     /**
-     * Set tile location y. Should be used only when overriding the
-     * {@link MapTileGame#loadTile(List, com.b3dgs.lionengine.file.FileReading, int)} function.
+     * Set tile location y. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * function.
      * 
      * @param y The tile location y.
      */

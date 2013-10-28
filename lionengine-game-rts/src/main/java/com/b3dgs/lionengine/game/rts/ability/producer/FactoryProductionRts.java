@@ -23,10 +23,10 @@ import com.b3dgs.lionengine.game.SetupGame;
 /**
  * Represents the production factory. Designed to return a producible instance from its type.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryProductionRts<T extends Enum<T>, C extends ProductionCostRts, P extends Producible<T, C>>
         extends FactoryGame<T, SetupGame>

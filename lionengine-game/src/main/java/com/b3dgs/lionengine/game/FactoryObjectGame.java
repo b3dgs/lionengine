@@ -49,10 +49,10 @@ import com.b3dgs.lionengine.core.Media;
  * }
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The enum containing all types.
  * @param <S> The setup type used.
  * @param <O> The object type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extends SetupGame, O extends ObjectGame>
         extends FactoryGame<T, S>

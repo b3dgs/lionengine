@@ -27,10 +27,10 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Default attacker model implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  * @param <W> The weapon type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AttackerModel<E extends EntityRts, A extends AttackerUsedServices<E>, W extends WeaponServices<E, A>>
         extends AbilityModel<AttackerListener<E>, A>
@@ -42,7 +42,7 @@ public class AttackerModel<E extends EntityRts, A extends AttackerUsedServices<E
     private Integer weaponId;
 
     /**
-     * Create a new attacker ability.
+     * Constructor.
      * 
      * @param user The ability user reference.
      */

@@ -40,6 +40,8 @@ class SpriteImpl
     protected final int widthOriginal;
     /** Sprite original height. */
     protected final int heightOriginal;
+    /** Sprite file name. */
+    private final Media media;
     /** Sprite original surface. */
     protected ImageBuffer surfaceOriginal;
     /** Sprite current surface. */
@@ -48,15 +50,13 @@ class SpriteImpl
     protected int width;
     /** Sprite height. */
     protected int height;
-    /** Sprite file name. */
-    private final Media media;
     /** Sprite raw data (used for alpha). */
     private int[][] rgb;
     /** First alpha. */
     private boolean firstAlpha;
 
     /**
-     * Create a new sprite.
+     * Constructor.
      * 
      * @param media The sprite media.
      * @param surface The surface to share.

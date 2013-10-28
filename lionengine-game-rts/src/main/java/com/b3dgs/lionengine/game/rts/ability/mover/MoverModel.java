@@ -41,12 +41,12 @@ public class MoverModel
     private boolean alreadyArrived;
 
     /**
-     * Create a mover model.
+     * Constructor.
      * 
      * @param user The user reference.
      * @param map The map reference.
      */
-    public MoverModel(MoverUsedServices user, MapTileRts<?, ?> map)
+    public MoverModel(MoverUsedServices user, MapTileRts<?, ?, ?> map)
     {
         super(user);
         pathfindable = new PathfindableModel(map, user, user.getId());

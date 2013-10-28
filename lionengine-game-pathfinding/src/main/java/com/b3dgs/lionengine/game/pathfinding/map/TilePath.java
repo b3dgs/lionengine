@@ -43,7 +43,6 @@ public abstract class TilePath<C extends Enum<C>>
     public TilePath(int width, int height, Integer pattern, int number, C collision)
     {
         super(width, height, pattern, number, collision);
-        blocking = checkBlocking(collision);
     }
 
     /**

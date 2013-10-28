@@ -59,7 +59,7 @@ package com.b3dgs.lionengine;
  * 
  * <pre>
  * // Create the text
- * Text text = UtilityImage.createText(Text.SANS_SERIF, 12, Text.NORMAL);
+ * final Text text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
  * 
  * // Rendering type 1
  * text.setText(&quot;Hello&quot;);
@@ -192,5 +192,4 @@ public interface Text
      * @return The string height size.
      */
     int getStringHeight(Graphic g, String str);
-
 }

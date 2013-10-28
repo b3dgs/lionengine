@@ -38,33 +38,36 @@ import com.b3dgs.lionengine.Transparency;
  * </p>
  * 
  * <pre>
- * public class MySequence
+ * final class Scene
  *         extends Sequence
  * {
  *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
  * 
- *     public MySequence(Loader loader)
+ *     Scene(Loader loader)
  *     {
- *         super(loader, MySequence.NATIVE);
- *         // Initialize variables here
+ *         super(loader, Scene.NATIVE);
  *     }
  * 
  *     &#064;Override
  *     protected void load()
  *     {
- *         // Load resources here
+ *         // Load
  *     }
  * 
  *     &#064;Override
  *     protected void update(double extrp)
  *     {
- *         // Update routine
+ *         if (keyboard.isPressed(Key.ESCAPE))
+ *         {
+ *             end();
+ *         }
+ *         // Update
  *     }
  * 
  *     &#064;Override
  *     protected void render(Graphic g)
  *     {
- *         // Render routine
+ *         // Render
  *     }
  * }
  * </pre>

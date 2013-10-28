@@ -28,7 +28,7 @@ public abstract class ProductionCostRts
     private final int steps;
 
     /**
-     * Create a new cost.
+     * Constructor.
      * 
      * @param steps The production steps number.
      */

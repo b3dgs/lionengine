@@ -57,7 +57,7 @@ final class XmlNodeImpl
     private final Element root;
 
     /**
-     * Create a root node.
+     * Constructor.
      * 
      * @param name The node name.
      */
@@ -83,7 +83,7 @@ final class XmlNodeImpl
     }
 
     /**
-     * Create a node.
+     * Constructor.
      * 
      * @param root The root reference.
      */

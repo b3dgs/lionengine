@@ -56,9 +56,9 @@ import com.b3dgs.lionengine.Transparency;
 /**
  * Screen implementation.
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Keyboard
  * @see Mouse
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class ScreenImpl
         implements Screen, FocusListener

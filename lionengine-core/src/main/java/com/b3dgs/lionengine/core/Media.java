@@ -40,7 +40,7 @@ import com.b3dgs.lionengine.UtilityFile;
  * <pre>
  * Engine.start(&quot;First Code&quot;, Version.create(1, 0, 0), &quot;resources&quot;);
  * final Media media = Media.get(&quot;img&quot;, &quot;image.png&quot;);
- * // Will get from execution directory: resources/img/image.png
+ * System.out.println(media.getPath()); // print: resources/img/image.png
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -108,8 +108,11 @@ public final class Media
     }
 
     /**
-     * Get a media from its path (start by default in the resources directory). Example: Media.get("sprites",
-     * "hero.png") will return resources/sprites/hero.png. This function is OS independent !
+     * Get a media from its path (start by default in the resources directory).
+     * <p>
+     * Example: <code>Media.get("sprites", "hero.png")</code> will return <code>resources/sprites/hero.png</code>. This
+     * function is OS independent !
+     * </p>
      * 
      * @param path The list of folders (if has) and file.
      * @return The full media path.
@@ -206,13 +209,13 @@ public final class Media
             {
                 if (logger)
                 {
-                    Verbose.info("(getStream from " + from, ") - getting stream from jar: \"", path, "\"");
+                    Verbose.info("getStream from " + from, ": \"", path, "\"");
                 }
                 return Media.loader.getResourceAsStream(path);
             }
             if (logger)
             {
-                Verbose.info("(getStream from " + from, ") - getting stream: \"", path, "\"");
+                Verbose.info("getStream from " + from, ": \"", path, "\"");
             }
             return new FileInputStream(path);
         }
@@ -223,7 +226,7 @@ public final class Media
     }
 
     /**
-     * Copy stream into a temporary file and return this file (localised on current system).
+     * Copy stream into a temporary file and return this file (localized on current system).
      * 
      * @param outfile The file which will store stream.
      * @param stream The input stream.
@@ -273,7 +276,6 @@ public final class Media
         final String filename = media.getPath();
         if (!Media.fromJar && new File(filename).exists())
         {
-            // Engine.verbose("getTempFile", "read from local: ", filename);
             return new File(filename);
         }
         if (cache)
@@ -281,7 +283,6 @@ public final class Media
             final String cacheFile = Media.getPath(Media.tmpDir, Media.getFilenameFromPath(filename));
             if (new File(cacheFile).exists())
             {
-                // Engine.verbose("getTempFile", "read from cache: ", filename);
                 return new File(cacheFile);
             }
         }

@@ -17,46 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.rts.cursor;
 
-import com.b3dgs.lionengine.game.rts.map.MapTileRts;
-
 /**
- * Map implementation.
+ * List of resource types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.map
  */
-final class Map
-        extends MapTileRts<TileCollision, ResourceType, Tile>
+public enum ResourceType
 {
-    /**
-     * Constructor.
-     */
-    Map()
-    {
-        super(16, 16);
-    }
-
-    /*
-     * MapTileRts
-     */
-
-    @Override
-    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
-    {
-        return new Tile(width, height, pattern, number, collision);
-    }
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        try
-        {
-            return TileCollision.valueOf(collision);
-        }
-        catch (IllegalArgumentException
-               | NullPointerException exception)
-        {
-            return TileCollision.NONE;
-        }
-    }
+    /** No resource. */
+    NONE;
 }

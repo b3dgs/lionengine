@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.rts.entity;
 /**
  * Entity activities listener.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface EntityRtsListener<E extends EntityRts>
 {

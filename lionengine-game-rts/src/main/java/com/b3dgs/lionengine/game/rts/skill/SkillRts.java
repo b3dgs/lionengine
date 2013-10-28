@@ -62,7 +62,7 @@ public abstract class SkillRts<T extends Enum<T> & ObjectType>
     private boolean over;
 
     /**
-     * Create a new skill.
+     * Constructor.
      * 
      * <pre>
      * {@code

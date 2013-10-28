@@ -145,7 +145,10 @@ public class PathfindableModel
                 }
                 else
                 {
-                    // setDestination(destX, destY);
+                    if (!isIgnoredId(cid))
+                    {
+                        setDestination(destX, destY);
+                    }
                 }
             }
         }

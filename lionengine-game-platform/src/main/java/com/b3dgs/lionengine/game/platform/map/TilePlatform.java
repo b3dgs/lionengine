@@ -30,7 +30,7 @@ public abstract class TilePlatform<C extends Enum<C>>
         extends TileGame<C>
 {
     /**
-     * Create a new blank tile.
+     * Constructor.
      * 
      * @param width The tile width.
      * @param height The tile height.

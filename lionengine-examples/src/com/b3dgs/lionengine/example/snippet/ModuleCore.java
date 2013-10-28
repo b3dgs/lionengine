@@ -116,7 +116,9 @@ public class ModuleCore
 
     void media()
     {
-        Media.get("image.png");
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
+        final Media media = Media.get("img", "image.png");
+        System.out.println(media.getPath()); // print: resources/img/image.png
     }
 
     final class Scene

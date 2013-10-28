@@ -59,7 +59,7 @@ public class Parallax
     private int amplitude;
 
     /**
-     * Create a new parallax.
+     * Constructor.
      * 
      * @param source The resolution source used.
      * @param media The parallax image media.

@@ -50,11 +50,11 @@ import com.b3dgs.lionengine.game.rts.skill.SkillRts;
  * selection and orders. Don't forget to call {@link #createLayers(MapTile)} after map creation (when its size is
  * established).
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> Resource enumeration type.
  * @param <T> Tile type used.
  * @param <E> Entity type used.
  * @param <C> Control panel type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R>, E extends EntityRts, C extends ControlPanelModel<E>>
         extends HandlerEntityGame<E>
@@ -74,7 +74,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
     /** Current entity selection set. */
     private final Set<E> selectedEntity;
     /** Map reference. */
-    private final MapTileRts<?, T> map;
+    private final MapTileRts<?, R, T> map;
     /** Entity area buffer for selection check. */
     private final Rectangle entityArea;
     /** List of entities id that shared the same path. */
@@ -97,7 +97,7 @@ public abstract class HandlerEntityRts<R extends Enum<R>, T extends TileRts<?, R
      * @param panel The control panel reference.
      * @param map The map reference.
      */
-    public HandlerEntityRts(CameraRts camera, CursorRts cursor, C panel, MapTileRts<?, T> map)
+    public HandlerEntityRts(CameraRts camera, CursorRts cursor, C panel, MapTileRts<?, R, T> map)
     {
         super();
         this.camera = camera;

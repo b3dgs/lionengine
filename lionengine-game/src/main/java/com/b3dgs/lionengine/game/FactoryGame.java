@@ -47,9 +47,9 @@ import com.b3dgs.lionengine.Check;
  * }
  * </pre>
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The enum containing all types.
  * @param <S> The setup type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
 {

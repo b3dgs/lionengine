@@ -22,10 +22,10 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * List of services provided by an attacker.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <E> The entity type used.
  * @param <A> The attacker type used.
  * @param <W> The weapon type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface AttackerServices<E extends EntityRts, A extends AttackerUsedServices<E>, W extends WeaponServices<E, A>>
 {

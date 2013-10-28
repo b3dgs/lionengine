@@ -70,7 +70,7 @@ public final class Timing
     private boolean started;
 
     /**
-     * Create a new timer.
+     * Constructor.
      */
     public Timing()
     {

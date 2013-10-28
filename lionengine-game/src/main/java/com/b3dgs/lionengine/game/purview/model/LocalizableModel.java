@@ -49,7 +49,7 @@ public class LocalizableModel
     }
 
     /**
-     * Create a localizable from a coordinate.
+     * Constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.

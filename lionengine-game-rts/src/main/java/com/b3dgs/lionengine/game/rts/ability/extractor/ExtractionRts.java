@@ -34,7 +34,7 @@ public class ExtractionRts
     private int dropOffPerSecond;
 
     /**
-     * Create a new extraction data.
+     * Constructor.
      */
     public ExtractionRts()
     {

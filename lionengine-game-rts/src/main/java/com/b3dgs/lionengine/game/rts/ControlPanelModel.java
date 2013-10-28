@@ -74,7 +74,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
     private ColorRgba colorSelection;
 
     /**
-     * Create a new control panel.
+     * Constructor.
      */
     public ControlPanelModel()
     {
@@ -181,7 +181,7 @@ public abstract class ControlPanelModel<E extends EntityRts>
 
     /**
      * Render cursor selection routine. This function will draw the current active selection on screen, depending of its
-     * localisation, and using the camera point of view (location on map).
+     * localization, and using the camera point of view (location on map).
      * 
      * @param g The graphic output.
      * @param camera The camera reference.

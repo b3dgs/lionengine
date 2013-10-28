@@ -46,10 +46,10 @@ import com.b3dgs.lionengine.Resolution;
  * final Config config = new Config(output, 16, true);
  * </pre>
  * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Resolution
  * @see Filter
  * @see Ratio
- * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Config
 {

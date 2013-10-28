@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  * </p>
  * 
  * <pre>
- * UtilityTileExtractor.start(Media.get(&quot;level.png&quot;), Media.get(&quot;sheet.png&quot;), 16, 16, 256, 256);
+ * TileExtractor.start(Media.get(&quot;level.png&quot;), Media.get(&quot;sheet.png&quot;), 16, 16, 256, 256);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)

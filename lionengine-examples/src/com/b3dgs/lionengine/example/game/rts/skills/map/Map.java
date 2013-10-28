@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.rts.skills.map;
 
+import com.b3dgs.lionengine.example.game.rts.skills.ResourceType;
 import com.b3dgs.lionengine.game.rts.map.MapTileRts;
 
 /**
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
  * @see com.b3dgs.lionengine.example.game.map
  */
 public final class Map
-        extends MapTileRts<TileCollision, Tile>
+        extends MapTileRts<TileCollision, ResourceType, Tile>
 {
     /**
      * Constructor.

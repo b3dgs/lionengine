@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.rts.map.MapTileRts;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Map
-        extends MapTileRts<TileCollision, Tile>
+        extends MapTileRts<TileCollision, ResourceType, Tile>
 {
     /** Tree map layer. */
     public final Border20Map treeMap;

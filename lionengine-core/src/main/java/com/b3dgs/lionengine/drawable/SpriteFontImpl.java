@@ -56,7 +56,7 @@ final class SpriteFontImpl
         private final int height;
 
         /**
-         * Create a new data.
+         * Constructor.
          * 
          * @param id The character id.
          * @param width The character width.
@@ -108,7 +108,7 @@ final class SpriteFontImpl
     private int lineHeight;
 
     /**
-     * Create a new font sprite.
+     * Constructor.
      * 
      * @param media The font image media.
      * @param mediaData The font data media.

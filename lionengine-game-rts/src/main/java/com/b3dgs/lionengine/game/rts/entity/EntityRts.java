@@ -52,7 +52,7 @@ public abstract class EntityRts
     /** Entity location offset y. */
     protected final int offsetY;
     /** Map reference. */
-    private final MapTileRts<?, ?> map;
+    private final MapTileRts<?, ?, ?> map;
     /** Current animation. */
     private Animation animationCurrent;
     /** Orientation value. */
@@ -102,7 +102,7 @@ public abstract class EntityRts
      * @param setup The entity setup.
      * @param map The map reference.
      */
-    public EntityRts(SetupSurfaceGame setup, MapTileRts<?, ?> map)
+    public EntityRts(SetupSurfaceGame setup, MapTileRts<?, ?, ?> map)
     {
         super(setup);
         this.map = map;

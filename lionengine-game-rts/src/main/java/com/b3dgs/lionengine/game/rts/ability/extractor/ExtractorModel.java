@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.game.rts.ability.AbilityModel;
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
  * receive the ability of extraction.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resources enum type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ExtractorModel<R extends Enum<R>>
         extends AbilityModel<ExtractorListener<R>, ExtractorUsedServices<R>>
@@ -70,7 +70,7 @@ public class ExtractorModel<R extends Enum<R>>
     private int dropOffPerSecond;
 
     /**
-     * Create a new extract ability.
+     * Constructor.
      * 
      * @param user The concerned worker reference.
      * @param desiredFps The the desired frame rate.

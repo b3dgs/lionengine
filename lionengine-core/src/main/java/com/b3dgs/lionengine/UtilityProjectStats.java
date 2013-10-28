@@ -41,7 +41,7 @@ public final class UtilityProjectStats
     /**
      * Start statistics analysis from input directory.
      * 
-     * @param sourcesDir The specified directory to analyse.
+     * @param sourcesDir The specified directory to analyze.
      */
     public static void start(String sourcesDir)
     {

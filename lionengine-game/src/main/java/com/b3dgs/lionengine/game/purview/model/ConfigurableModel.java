@@ -56,7 +56,7 @@ public class ConfigurableModel
     }
 
     /**
-     * Create from existing configurable.
+     * Constructor.
      * 
      * @param configurable The configurable reference.
      */

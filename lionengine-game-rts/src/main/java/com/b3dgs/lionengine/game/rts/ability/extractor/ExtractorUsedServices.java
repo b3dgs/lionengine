@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game.rts.ability.extractor;
 /**
  * List of services needed by the extractor.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <R> The resource enum type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ExtractorUsedServices<R extends Enum<R>>
         extends ExtractorListener<R>

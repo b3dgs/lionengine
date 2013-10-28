@@ -48,7 +48,8 @@ package com.b3dgs.lionengine.anim;
 public interface Animator
 {
     /**
-     * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} do the animation update.
+     * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} does the animation
+     * update.
      * 
      * @param animation The animation to play.
      */

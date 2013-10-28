@@ -86,7 +86,7 @@ final class XmlParserImpl
     }
 
     /**
-     * Create an XML parser.
+     * Constructor.
      */
     XmlParserImpl()
     {

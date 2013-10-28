@@ -171,17 +171,30 @@ public abstract class UnitWorker
     @Override
     public boolean canExtract()
     {
+        final Tiled resource = getResourceLocation();
         try
         {
-            final Tiled resource = getResourceLocation();
-            final Entity entity = handler.getEntityAt(resource.getLocationInTileX(), resource.getLocationInTileY());
+            final Entity entity = handler.getEntityAt(resource);
             // Allow worker to enter inside the gold mine
             setIgnoreId(entity.getId(), true);
-            return getDistanceInTile(entity, false) < 1;
+            return getDistanceInTile(entity, true) <= 1;
         }
         catch (final EntityNotFoundException entity)
         {
-            return getDistanceInTile(extractor.getResourceLocation(), false) < 1;
+            if (!isDestinationReached())
+            {
+                return false;
+            }
+            final ResourceType type = map.getTile(resource).getResourceType();
+            switch (type)
+            {
+                case WOOD:
+                    return getDistanceInTile(extractor.getResourceLocation(), false) <= 1;
+                default:
+                    stopExtraction();
+                    break;
+            }
+            return false;
         }
     }
 

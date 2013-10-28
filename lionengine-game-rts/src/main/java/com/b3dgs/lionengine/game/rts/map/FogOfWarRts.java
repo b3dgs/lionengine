@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * Designed to handle a fog of war (discovering tile and hiding tile).
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> Tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FogOfWarRts<T extends TileGame<?>>
 {
@@ -63,7 +63,7 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     private int playerId;
 
     /**
-     * Create a new tile based fog of war.
+     * Constructor.
      */
     public FogOfWarRts()
     {
@@ -74,7 +74,7 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     }
 
     /**
-     * Create fog from existing map.
+     * Constructor.
      * 
      * @param map The map reference.
      */

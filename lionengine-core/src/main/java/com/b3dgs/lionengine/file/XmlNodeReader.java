@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.file;
 
 /**
- * The reading capacity of an {@link XmlNode}.
+ * The reading capability of an {@link XmlNode}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

@@ -55,6 +55,10 @@ public class RasterableModel
         this.tileHeight = tileHeight;
     }
 
+    /*
+     * Rasterable
+     */
+
     @Override
     public int getRasterIndex(double y)
     {

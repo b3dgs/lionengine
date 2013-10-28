@@ -60,7 +60,7 @@ public abstract class EntityPlatform
     private double locationBeforeCollisionY;
 
     /**
-     * Create a new platform entity from an existing, sharing the same surface.
+     * Constructor.
      * <p>
      * It needs in its config file the frame description:
      * </p>

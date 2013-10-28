@@ -23,11 +23,11 @@ import com.b3dgs.lionengine.game.rts.entity.EntityRts;
 /**
  * List of services used by the producer.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
  * @param <E> The entity type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ProducerUsedServices<T extends Enum<T>, C extends ProductionCostRts, P extends Producible<T, C>, E extends EntityRts>
         extends ProducerListener<T, C, P, E>

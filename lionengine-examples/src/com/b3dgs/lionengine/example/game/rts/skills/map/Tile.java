@@ -42,9 +42,9 @@ public final class Tile
      */
 
     @Override
-    public void checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType(TileCollision collision)
     {
-        setResourceType(ResourceType.NONE);
+        return ResourceType.NONE;
     }
 
     @Override
@@ -56,6 +56,6 @@ public final class Tile
     @Override
     public boolean hasResources()
     {
-        return false;
+        return getResourceType() != ResourceType.NONE;
     }
 }
