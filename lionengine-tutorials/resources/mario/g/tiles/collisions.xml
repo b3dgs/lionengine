@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collisions>
+	<collision name="GROUND" pattern="0" start="1" end="1"/>
+	<collision name="BLOCK" pattern="0" start="2" end="2"/>
+	<collision name="TUBE" pattern="0" start="3" end="4"/>
+	<collision name="WALL" pattern="0" start="5" end="6"/>
+</collisions>
