@@ -48,6 +48,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
     private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
     private final Timing timer;
+    /** Adapt to target movement. */
+    private boolean adaptative;
     /** Entity owner. */
     private E2 owner;
     /** Hit only target. */
@@ -157,6 +159,16 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
     }
 
     /**
+     * Set the adaptative flag.
+     * 
+     * @param adaptative <code>true</code> to anticipate target movement, <code>false</code> else.
+     */
+    public void setAdaptative(boolean adaptative)
+    {
+        this.adaptative = adaptative;
+    }
+
+    /**
      * Set shoot rate (in millisecond).
      * 
      * @param rate shoot rate.
@@ -224,12 +236,21 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
         {
             final int sx = owner.getLocationIntX() + owner.getLocationOffsetX() + owner.getWidth() / 2;
             final int sy = owner.getLocationIntY() + owner.getLocationOffsetY() + owner.getHeight() / 2;
-            final int dx = target.getLocationIntX() + target.getWidth() / 2;
-            final int dy = target.getLocationIntY() + target.getHeight() / 2;
+
+            int dx = target.getLocationIntX() + target.getWidth() / 2;
+            int dy = target.getLocationIntY() + target.getHeight() / 2;
+
+            if (adaptative)
+            {
+                final int ray = UtilityMath.getDistance(owner.getLocationIntX(), owner.getLocationIntY(),
+                        target.getLocationIntX(), target.getLocationIntY());
+                dx += (int) ((target.getLocationX() - target.getLocationOldX()) / speed * ray);
+                dy += (int) ((target.getLocationY() - target.getLocationOldY()) / speed * ray);
+            }
+
             final double dist = Math.max(Math.abs(sx - dx), Math.abs(sy - dy));
             final double vecX = (dx - sx) / dist * speed;
             final double vecY = (dy - sy) / dist * speed;
-
             return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, target);
         }
         return null;
