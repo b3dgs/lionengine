@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.CameraGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.minimal
  */
-public class Scene
+final class Scene
         extends Sequence
 {
     /** Camera. */
@@ -46,7 +46,7 @@ public class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(Loader loader)
+    Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
         camera = new CameraGame();

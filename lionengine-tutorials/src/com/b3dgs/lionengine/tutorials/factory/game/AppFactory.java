@@ -15,37 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.tutorials.factory.game;
 
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
-/**
- * Factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
- */
-final class Factory
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+@SuppressWarnings("all")
+public final class AppFactory
 {
-    /**
-     * Constructor.
-     */
-    Factory()
+    public static void main(String[] args)
     {
-        super(EntityType.class, "entity");
-        load();
-    }
+        Engine.start("Factory", Version.create(1, 0, 0), Media.getPath("resources", "factory"));
 
-    /*
-     * FactoryObjectGame
-     */
+        final Object param1 = new Object();
+        final Object param2 = new Object();
 
-    @Override
-    protected SetupSurfaceGame createSetup(EntityType types, Media config)
-    {
-        return new SetupSurfaceGame(config);
+        final Factory factory = new Factory(param1, param2);
+        factory.load();
+
+        final AbstractObject object1 = factory.create(Type.TYPE1);
+        final AbstractObject object2 = factory.create(Type.TYPE2);
+
+        System.out.println(object1.getParam1() + " - " + object2.getParam1()); // same
+        System.out.println(object1.getParam2() + " - " + object2.getParam2()); // same
+        System.out.println(object1.getIndex() + " - " + object2.getIndex());
     }
 }

@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum Type implements ObjectType
+enum Type implements ObjectType
 {
     /** Fly. */
     FLY_MACHINE(FlyMachine.class),

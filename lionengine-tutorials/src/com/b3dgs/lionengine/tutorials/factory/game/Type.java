@@ -15,37 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.tutorials.factory.game;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-
-/**
- * Factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
- */
-final class Factory
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+@SuppressWarnings("all")
+public enum Type
 {
-    /**
-     * Constructor.
-     */
-    Factory()
-    {
-        super(EntityType.class, "entity");
-        load();
-    }
-
-    /*
-     * FactoryObjectGame
-     */
-
-    @Override
-    protected SetupSurfaceGame createSetup(EntityType types, Media config)
-    {
-        return new SetupSurfaceGame(config);
-    }
+    TYPE1,
+    TYPE2;
 }

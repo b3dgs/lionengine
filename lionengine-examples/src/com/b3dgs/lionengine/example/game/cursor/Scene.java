@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.Cursor;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.minimal
  */
-public class Scene
+final class Scene
         extends Sequence
 {
     /** Cursor. */
@@ -43,7 +43,7 @@ public class Scene
      * 
      * @param loader The loader reference.
      */
-    public Scene(Loader loader)
+    Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
         cursor = new Cursor(mouse, source, Media.get("cursor", "cursor1.png"), Media.get("cursor", "cursor2.png"));

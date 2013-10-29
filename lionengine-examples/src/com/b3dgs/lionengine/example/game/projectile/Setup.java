@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Setup
+class Setup
         extends SetupGame
 {
     /** Factory projectile. */
@@ -40,7 +40,7 @@ public class Setup
      * @param factory The factory reference.
      * @param handler The handler reference.
      */
-    public Setup(Media config, FactoryProjectile factory, HandlerProjectile handler)
+    Setup(Media config, FactoryProjectile factory, HandlerProjectile handler)
     {
         super(config);
         this.factory = factory;

@@ -84,6 +84,7 @@ final class Scene
         factoryProjectile.load();
         camera.setView(0, 0, width, height);
         canon1.setOwner(entity1);
+        canon1.setAdaptative(true);
         canon2.setOwner(entity2);
         handlerEntity.add(entity1);
         handlerEntity.add(entity2);
@@ -99,11 +100,11 @@ final class Scene
 
         location += 1.0;
 
-        entity1.teleport(100 + UtilityMath.cos(location * 1.5) * 70, 180 + UtilityMath.sin(location * 2) * 40);
-        entity2.teleport(100 + UtilityMath.cos(location) * 90, 60 + UtilityMath.sin(location * 1.3) * 30);
+        entity1.setLocation(100 + UtilityMath.cos(location * 1.5) * 70, 180 + UtilityMath.sin(location * 2) * 40);
+        entity2.setLocation(100 + UtilityMath.cos(location) * 90, 60 + UtilityMath.sin(location * 1.3) * 30);
 
         canon1.launch(entity2);
-        canon2.launch();
+        canon2.launch(entity1);
 
         entity1.update(extrp);
         entity2.update(extrp);

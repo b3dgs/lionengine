@@ -15,37 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.tutorials.factory.game;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.FactoryGame;
 
-/**
- * Factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
- */
-final class Factory
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+@SuppressWarnings("all")
+public class Factory
+        extends FactoryGame<Type, Setup>
 {
-    /**
-     * Constructor.
-     */
-    Factory()
+    private final Object param1;
+    private final Object param2;
+
+    public Factory(Object param1, Object param2)
     {
-        super(EntityType.class, "entity");
-        load();
+        super(Type.class);
+        this.param1 = param1;
+        this.param2 = param2;
     }
 
-    /*
-     * FactoryObjectGame
-     */
+    public AbstractObject create(Type type)
+    {
+        switch (type)
+        {
+            case TYPE1:
+                return new ObjectType1(getSetup(type));
+            case TYPE2:
+                return new ObjectType2(getSetup(type));
+            default:
+                throw new RuntimeException("Unknown type: " + type);
+        }
+    }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType types, Media config)
+    protected Setup createSetup(Type type)
     {
-        return new SetupSurfaceGame(config);
+        return new Setup(Media.get(type.name() + ".xml"), param1, param2);
     }
 }

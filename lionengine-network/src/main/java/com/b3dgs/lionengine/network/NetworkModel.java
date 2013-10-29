@@ -92,7 +92,7 @@ abstract class NetworkModel<L extends ClientListener>
     {
         listeners.remove(listener);
     }
-    
+
     @Override
     public void addMessage(NetworkMessage message)
     {

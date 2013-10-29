@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.game.HandlerObjectGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Handler
+final class Handler
         extends HandlerObjectGame<MyObject>
 {
     /**
      * Constructor.
      */
-    public Handler()
+    Handler()
     {
         super();
     }

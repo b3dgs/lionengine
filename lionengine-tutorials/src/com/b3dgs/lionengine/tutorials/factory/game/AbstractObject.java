@@ -15,37 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.tutorials.factory.game;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.ObjectGame;
 
-/**
- * Factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
- */
-final class Factory
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+@SuppressWarnings("all")
+public abstract class AbstractObject
+        extends ObjectGame
 {
-    /**
-     * Constructor.
-     */
-    Factory()
+    private final Object param1;
+    private final Object param2;
+    private final int index;
+
+    protected AbstractObject(Setup setup)
     {
-        super(EntityType.class, "entity");
-        load();
+        super(setup);
+        param1 = setup.param1;
+        param2 = setup.param2;
+        index = getDataInteger("index");
     }
 
-    /*
-     * FactoryObjectGame
-     */
-
-    @Override
-    protected SetupSurfaceGame createSetup(EntityType types, Media config)
+    public Object getParam1()
     {
-        return new SetupSurfaceGame(config);
+        return param1;
+    }
+
+    public Object getParam2()
+    {
+        return param2;
+    }
+
+    public int getIndex()
+    {
+        return index;
     }
 }

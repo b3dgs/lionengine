@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Goomba
+public final class Goomba
         extends Entity
 {
     /**

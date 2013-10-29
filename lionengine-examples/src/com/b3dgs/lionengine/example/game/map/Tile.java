@@ -30,7 +30,7 @@ final class Tile
     /**
      * @see TileGame#TileGame(int, int, Integer, int, Enum)
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+    Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
         super(width, height, pattern, number, collision);
     }

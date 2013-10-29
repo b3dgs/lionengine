@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.game.SetupGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MyObject
+final class MyObject
         extends ObjectGame
 {
     /**
      * Constructor.
      */
-    public MyObject()
+    MyObject()
     {
         super(new SetupGame(Media.get("my_object.xml")));
     }

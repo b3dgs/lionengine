@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.game.ObjectGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TypeBase
+abstract class TypeBase
         extends ObjectGame
 {
     /** The type used. */

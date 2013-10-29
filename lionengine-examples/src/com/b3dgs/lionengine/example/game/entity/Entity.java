@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Entity
+abstract class Entity
         extends EntityGame
 {
     /**
@@ -34,7 +34,7 @@ public class Entity
      * 
      * @param setup The setup reference.
      */
-    public Entity(SetupSurfaceGame setup)
+    protected Entity(SetupSurfaceGame setup)
     {
         super(setup);
         setMass(getDataDouble("mass", "data"));

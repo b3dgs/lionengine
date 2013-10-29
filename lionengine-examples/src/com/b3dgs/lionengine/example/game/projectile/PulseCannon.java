@@ -31,7 +31,7 @@ public final class PulseCannon
     public PulseCannon(Setup setup)
     {
         super(setup);
-        setRate(80);
+        setRate(70);
     }
 
     /*
@@ -47,6 +47,6 @@ public final class PulseCannon
     @Override
     protected void launchProjectile(Entity owner, Entity target)
     {
-        addProjectile(ProjectileType.PULSE, 1, target, 7, 0, -12);
+        addProjectile(ProjectileType.PULSE, 1, target, 4, 0, -12);
     }
 }

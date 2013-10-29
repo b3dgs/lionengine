@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Factory
+final class Factory
         extends FactoryObjectGame<Type, Setup, TypeBase>
 {
     /** Parameter. Can be replaced by another type if needed. */
@@ -44,7 +44,7 @@ public final class Factory
     /**
      * Constructor.
      */
-    public Factory()
+    Factory()
     {
         super(Type.class, "factory");
         param = new Object();

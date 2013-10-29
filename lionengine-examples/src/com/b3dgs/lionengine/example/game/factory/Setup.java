@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Setup
+final class Setup
         extends SetupGame
 {
     /** Type. */
@@ -40,7 +40,7 @@ public class Setup
      * @param type The type.
      * @param param The parameter reference.
      */
-    public Setup(Media config, Type type, Object param)
+    Setup(Media config, Type type, Object param)
     {
         super(config);
         this.type = type;

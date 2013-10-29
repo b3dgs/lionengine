@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.effect.EffectGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Effect
+abstract class Effect
         extends EffectGame
 {
     /** Surface. */
@@ -42,7 +42,7 @@ public class Effect
      * 
      * @param setup the setup reference.
      */
-    public Effect(SetupSurfaceGame setup)
+    protected Effect(SetupSurfaceGame setup)
     {
         super(setup);
         // Data are loaded from the XML file, depending of the type

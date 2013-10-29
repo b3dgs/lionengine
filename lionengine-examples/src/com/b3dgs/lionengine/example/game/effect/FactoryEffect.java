@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.factory
  */
-public class FactoryEffect
+final class FactoryEffect
         extends FactoryObjectGame<EffectType, SetupSurfaceGame, Effect>
 {
     /**
      * Constructor.
      */
-    public FactoryEffect()
+    FactoryEffect()
     {
         super(EffectType.class, "");
     }

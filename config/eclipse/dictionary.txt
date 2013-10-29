@@ -162,3 +162,4 @@ jumpable
 charset
 remake
 sfx
+adaptative

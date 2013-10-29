@@ -15,37 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.entity;
+package com.b3dgs.lionengine.tutorials.factory.objectgame;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.ObjectType;
+import com.b3dgs.lionengine.game.ObjectTypeUtility;
 
-/**
- * Factory implementation.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
- */
-final class Factory
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+@SuppressWarnings("all")
+public enum Type implements ObjectType
 {
-    /**
-     * Constructor.
-     */
-    Factory()
+    OBJECT_TYPE1(ObjectType1.class),
+    OBJECT_TYPE2(ObjectType2.class);
+
+    private final Class<?> target;
+    private final String pathName;
+
+    private Type(Class<?> target)
     {
-        super(EntityType.class, "entity");
-        load();
+        this.target = target;
+        pathName = ObjectTypeUtility.getPathName(this);
     }
 
-    /*
-     * FactoryObjectGame
-     */
+    @Override
+    public Class<?> getTargetClass()
+    {
+        return target;
+    }
 
     @Override
-    protected SetupSurfaceGame createSetup(EntityType types, Media config)
+    public String getPathName()
     {
-        return new SetupSurfaceGame(config);
+        return pathName;
     }
 }

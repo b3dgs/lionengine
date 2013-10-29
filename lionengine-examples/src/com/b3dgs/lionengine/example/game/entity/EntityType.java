@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EntityType implements ObjectType
+enum EntityType implements ObjectType
 {
     /** Goomba. */
     GOOMBA(Goomba.class);

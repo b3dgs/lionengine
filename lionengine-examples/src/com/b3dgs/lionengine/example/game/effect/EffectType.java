@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.ObjectTypeUtility;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum EffectType implements ObjectType
+enum EffectType implements ObjectType
 {
     /** Explode. */
     EXPLODE(Explode.class);
