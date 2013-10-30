@@ -17,43 +17,33 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test range class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class RangeTest
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Test range functions.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testRange()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
+        final Range range = new Range();
+        Assert.assertTrue(range.getMin() == 0);
+        Assert.assertTrue(range.getMax() == 0);
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
+        final Range rangeA = new Range(1, 3);
+        Assert.assertTrue(rangeA.getMin() == 1);
+        Assert.assertTrue(rangeA.getMax() == 3);
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        rangeA.setMin(0);
+        rangeA.setMax(4);
+        Assert.assertTrue(rangeA.getMin() == 0);
+        Assert.assertTrue(rangeA.getMax() == 4);
     }
 }

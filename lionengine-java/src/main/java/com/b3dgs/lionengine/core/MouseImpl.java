@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.core;
 import java.awt.AWTException;
 import java.awt.HeadlessException;
 import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -91,8 +93,12 @@ final class MouseImpl
         {
             throw new LionEngineException(exception);
         }
-        x = 0;
-        y = 0;
+        final PointerInfo a = MouseInfo.getPointerInfo();
+        final Point b = a.getLocation();
+        x = (int) b.getX();
+        y = (int) b.getY();
+        centerX = x;
+        centerY = y;
         wx = 0;
         wy = 0;
         mx = 0;

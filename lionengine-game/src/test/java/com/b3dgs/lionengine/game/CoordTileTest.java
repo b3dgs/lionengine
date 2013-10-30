@@ -17,43 +17,24 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test coordinate tile class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class CoordTileTest
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Test coordinate tile functions.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testCoordTile()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        final CoordTile coord = new CoordTile(1, 5);
+        Assert.assertTrue(coord.getX() == 1);
+        Assert.assertTrue(coord.getY() == 5);
     }
 }

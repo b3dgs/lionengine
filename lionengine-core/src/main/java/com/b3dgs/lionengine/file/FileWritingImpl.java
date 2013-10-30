@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -44,6 +45,7 @@ final class FileWritingImpl
      */
     FileWritingImpl(Media media) throws IOException
     {
+        Check.notNull(media);
         out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(new File(media.getPath()))));
     }
 

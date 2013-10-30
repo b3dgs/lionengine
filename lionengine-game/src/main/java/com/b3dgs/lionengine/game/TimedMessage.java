@@ -161,6 +161,6 @@ final class MessageData
      */
     boolean elapsed()
     {
-        return timer.elapsed(time * 1000000L);
+        return timer.elapsed(time);
     }
 }

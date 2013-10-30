@@ -17,43 +17,13 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
-
 /**
- * Object type utility implementation.
+ * Enumeration type for factory test.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public enum Type
 {
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
-     */
-    public static String getPathName(Enum<?> type)
-    {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
-    }
+    /** Type. */
+    TYPE;
 }

@@ -17,43 +17,21 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
-
 /**
- * Object type utility implementation.
+ * Object game test.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+final class TestObjectPackage
+        extends ObjectGame
 {
     /**
-     * Get the name as a path (lower case).
+     * Constructor.
      * 
-     * @param type The object type.
-     * @return The name.
+     * @param setup The setup reference.
      */
-    public static String getPathName(Enum<?> type)
+    TestObjectPackage(SetupGame setup)
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        super(setup);
     }
 }

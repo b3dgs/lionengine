@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
  * </p>
  * It has to be handled by a {@link Sequence}.
  * <p>
- * Here a standard world use:
+ * Here a standard world usage:
  * </p>
  * 
  * <pre>

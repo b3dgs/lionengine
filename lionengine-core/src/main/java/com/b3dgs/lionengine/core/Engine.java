@@ -169,7 +169,7 @@ public final class Engine
      */
     public static void terminate()
     {
-        Media.setResourcesDirectory("");
+        Media.setResourcesDirectory(null);
         Media.setTempDirectory("");
         Media.setLoadFromJar(null, false);
         Engine.started = false;

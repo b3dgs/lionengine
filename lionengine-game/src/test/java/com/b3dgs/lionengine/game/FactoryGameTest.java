@@ -17,43 +17,32 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import java.util.Arrays;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test the factory game.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class FactoryGameTest
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Test the game factory.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testFactoryGame()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
+        final Factory factory = new Factory();
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
+        Assert.assertTrue(Arrays.equals(Type.values(), factory.getTypes()));
+        Assert.assertNull(factory.getSetup(Type.TYPE));
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        factory.load();
+
+        Assert.assertNotNull(factory.getSetup(Type.TYPE));
+        Assert.assertTrue(Arrays.equals(Type.values(), factory.getTypes()));
     }
 }

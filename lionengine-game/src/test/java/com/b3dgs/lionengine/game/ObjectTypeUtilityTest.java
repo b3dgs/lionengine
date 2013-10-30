@@ -15,35 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.game;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test the check class.
+ * Test object type utility class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CheckTest
+public class ObjectTypeUtilityTest
 {
     /**
-     * Test check class.
+     * Test object type utility class.
      * 
      * @throws Exception If error.
      */
     @Test
-    public void testCheckClass() throws Exception
+    public void testObjectTypeUtilityClass() throws Exception
     {
-        final Constructor<Check> constructor = Check.class.getDeclaredConstructor();
+        final Constructor<ObjectTypeUtility> constructor = ObjectTypeUtility.class.getDeclaredConstructor();
         constructor.setAccessible(true);
         try
         {
-            final Check check = constructor.newInstance();
-            Assert.assertNotNull(check);
+            final ObjectTypeUtility objectTypeUtility = constructor.newInstance();
+            Assert.assertNotNull(objectTypeUtility);
             Assert.fail();
         }
         catch (final InvocationTargetException exception)
@@ -53,54 +54,12 @@ public class CheckTest
     }
 
     /**
-     * Test the check argument function.
+     * Test object type utility functions.
      */
     @Test
-    public void testCheckArgument()
+    public void testObjectTypeUtility()
     {
-        try
-        {
-            Check.argument(true);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail();
-        }
-
-        try
-        {
-            Check.argument(false);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-    }
-
-    /**
-     * Test the check not null function.
-     */
-    @Test
-    public void testCheckNotNull()
-    {
-        try
-        {
-            Check.notNull(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        try
-        {
-            Check.notNull(new Object());
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail();
-        }
+        Assert.assertEquals(ObjectTypeUtility.getPathName(Type.TYPE), Type.TYPE.name().toLowerCase(Locale.ENGLISH));
+        Assert.assertFalse(ObjectTypeUtility.toString(Type.TYPE).equals(Type.TYPE.toString()));
     }
 }

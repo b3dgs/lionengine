@@ -17,43 +17,33 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+
+import com.b3dgs.lionengine.Graphic;
 
 /**
- * Object type utility implementation.
+ * Handler test.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+final class Handler
+        extends HandlerObjectGame<ObjectGame>
 {
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
-     */
-    public static String getPathName(Enum<?> type)
+    @Override
+    protected void update(double extrp, ObjectGame object)
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
+        Assert.assertNotNull(object);
     }
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
+    @Override
+    protected void render(Graphic g, ObjectGame object)
     {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        Assert.assertNotNull(object);
     }
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
+    @Override
+    protected boolean canBeAdded(ObjectGame object)
     {
-        throw new RuntimeException();
+        return size() == 0 && super.canBeAdded(object);
     }
 }

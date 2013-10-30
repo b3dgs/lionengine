@@ -17,13 +17,14 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.io.File;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
@@ -34,11 +35,11 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
- * Test the cursor class.
+ * Test the world class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CursorTest
+public class WorldTest
 {
     /**
      * Terminate engine.
@@ -50,24 +51,50 @@ public class CursorTest
     }
 
     /**
-     * Test the cursor class.
+     * Test the world.
      */
     @Test
-    public void testCursor()
+    public void testWorld()
     {
-        Engine.start("BarTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
+        Engine.start("WorldTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
         final Graphic g = UtilityImage.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         final Scene scene = new Scene(loader);
-        final Mouse mouse = scene.getMouse();
+        final World world = new World(scene);
 
-        final Resolution output0 = new Resolution(320, 240, 60);
+        final Media media = Media.get("test");
         try
         {
-            final Cursor cursor = new Cursor(mouse, output0);
-            Assert.assertNotNull(cursor);
+            world.saveToFile(media);
+        }
+        finally
+        {
+            new File(media.getPath()).delete();
+        }
+
+        world.loadFromFile(Media.get("type.xml"));
+        world.update(0);
+        world.render(g);
+    }
+
+    /**
+     * Test the world.
+     */
+    @Test
+    public void testWorldFail()
+    {
+        Engine.start("WorldTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        final Scene scene = new Scene(loader);
+        final WorldFail world = new WorldFail(scene);
+
+        try
+        {
+            world.saveToFile(null);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -75,31 +102,39 @@ public class CursorTest
             // Success
         }
 
-        final Cursor cursor = new Cursor(mouse, output0, Media.get("cursor.png"));
-        cursor.setArea(0, 0, 320, 240);
-        cursor.setSensibility(1.0, 2.0);
-        cursor.setSurfaceId(0);
+        final Media media = Media.get("test");
+        try
+        {
+            world.saveToFile(media);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        finally
+        {
+            new File(media.getPath()).delete();
+        }
 
-        cursor.setLockMouse(false);
-        cursor.update(1.0);
-        cursor.setSyncMode(true);
-        Assert.assertTrue(cursor.isSynchronized());
-        cursor.update(1.0);
-        cursor.setLockMouse(true);
-        cursor.setSyncMode(false);
-        Assert.assertTrue(!cursor.isSynchronized());
-        cursor.update(1.0);
-        cursor.setSyncMode(true);
-        cursor.update(1.0);
+        try
+        {
+            world.loadFromFile(Media.get("type.xml"));
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
 
-        cursor.setLocation(10, 20);
-        Assert.assertEquals(10, cursor.getLocationX());
-        Assert.assertEquals(20, cursor.getLocationY());
-        Assert.assertEquals(1.0, cursor.getSensibilityHorizontal(), 0.000001);
-        Assert.assertEquals(2.0, cursor.getSensibilityVertical(), 0.000001);
-        cursor.setRenderingOffset(0, 0);
-        Assert.assertEquals(0, cursor.getSurfaceId());
-        Assert.assertEquals(0, cursor.getClick());
-        cursor.render(g);
+        try
+        {
+            world.loadFromFile(null);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
     }
 }

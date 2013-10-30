@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,6 +36,15 @@ import com.b3dgs.lionengine.core.UtilityImage;
  */
 public class BarTest
 {
+    /**
+     * Terminate engine.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        Engine.terminate();
+    }
+
     /**
      * Test the bar class.
      */

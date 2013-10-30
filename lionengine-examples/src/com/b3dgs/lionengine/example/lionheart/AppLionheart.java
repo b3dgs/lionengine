@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.lionheart.menu.Menu;
 import com.b3dgs.lionengine.swing.Theme;
 
 /**
@@ -57,7 +58,7 @@ public final class AppLionheart
     /** Show collision bounds. */
     public static final boolean SHOW_COLLISIONS = false;
     /** Enable sound. */
-    private static final boolean ENABLE_SOUND = true;
+    private static final boolean ENABLE_SOUND = false;
     /** Resources directory. */
     private static final String RESOURCES = Media.getPath("resources", "lionheart");
     /** Raster enabled. */
@@ -74,7 +75,7 @@ public final class AppLionheart
         Sfx.setEnabled(AppLionheart.ENABLE_SOUND);
         SonicArranger.setEnabled(AppLionheart.ENABLE_SOUND);
 
-        final Resolution output = new Resolution(640, 480, 60);
+        final Resolution output = new Resolution(1280, 800, 60);
         final Config config = new Config(output, 16, true);
         final boolean enableEditor = false;
         if (enableEditor)
@@ -87,7 +88,7 @@ public final class AppLionheart
         else
         {
             final Loader loader = new Loader(config);
-            loader.start(new Scene(loader));
+            loader.start(new Menu(loader));
         }
     }
 

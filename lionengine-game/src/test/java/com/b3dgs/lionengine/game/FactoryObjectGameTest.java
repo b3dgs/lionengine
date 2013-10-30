@@ -15,78 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.game;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
- * Test the check class.
+ * Test the factory object game.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CheckTest
+public class FactoryObjectGameTest
 {
     /**
-     * Test check class.
-     * 
-     * @throws Exception If error.
+     * Test the game factory.
      */
     @Test
-    public void testCheckClass() throws Exception
+    public void testFactoryObjectGame()
     {
-        final Constructor<Check> constructor = Check.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        try
-        {
-            final Check check = constructor.newInstance();
-            Assert.assertNotNull(check);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
-    }
+        final FactoryObject factory = new FactoryObject();
 
-    /**
-     * Test the check argument function.
-     */
-    @Test
-    public void testCheckArgument()
-    {
-        try
-        {
-            Check.argument(true);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail();
-        }
+        Assert.assertTrue(Arrays.equals(TypeObject.values(), factory.getTypes()));
+        Assert.assertNull(factory.getSetup(TypeObject.TYPE));
 
         try
         {
-            Check.argument(false);
+            factory.create(TypeObject.TYPE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
         {
             // Success
         }
-    }
 
-    /**
-     * Test the check not null function.
-     */
-    @Test
-    public void testCheckNotNull()
-    {
+        factory.load();
+
         try
         {
-            Check.notNull(null);
+            factory.create(TypeObject.TYPE_PACKAGE);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -96,11 +66,16 @@ public class CheckTest
 
         try
         {
-            Check.notNull(new Object());
+            factory.create(TypeObject.TYPE_CONSTRUCTOR);
+            Assert.fail();
         }
         catch (final LionEngineException exception)
         {
-            Assert.fail();
+            // Success
         }
+
+        Assert.assertNotNull(factory.getSetup(TypeObject.TYPE));
+        Assert.assertNotNull(factory.create(TypeObject.TYPE));
+        Assert.assertTrue(Arrays.equals(TypeObject.values(), factory.getTypes()));
     }
 }

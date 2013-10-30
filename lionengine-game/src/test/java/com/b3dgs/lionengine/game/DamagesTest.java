@@ -17,43 +17,38 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test damages class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class DamagesTest
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Test coordinate tile functions.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testDamages()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
+        final Damages damages = new Damages();
+        Assert.assertTrue(damages.getMin() == 0);
+        Assert.assertTrue(damages.getMax() == 0);
+        Assert.assertTrue(damages.getLast() == 0);
+        Assert.assertTrue(damages.getRandom() == 0);
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
+        final Damages damagesA = new Damages(1, 3);
+        Assert.assertTrue(damagesA.getMin() == 1);
+        Assert.assertTrue(damagesA.getMax() == 3);
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        damagesA.setMin(0);
+        damagesA.setMax(4);
+        Assert.assertTrue(damagesA.getMin() == 0);
+        Assert.assertTrue(damagesA.getMax() == 4);
+
+        final int last = damagesA.getRandom();
+        Assert.assertTrue(damagesA.getLast() == last);
     }
 }

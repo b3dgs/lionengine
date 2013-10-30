@@ -378,7 +378,14 @@ public final class Media
      */
     static void setResourcesDirectory(String dir)
     {
-        Media.resourcesDir = dir + Media.separator;
+        if (dir == null)
+        {
+            Media.resourcesDir = "";
+        }
+        else
+        {
+            Media.resourcesDir = dir + Media.separator;
+        }
     }
 
     /**

@@ -17,43 +17,27 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.core.Media;
 
 /**
- * Object type utility implementation.
+ * Factory implementation for test.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+final class Factory
+        extends FactoryGame<Type, SetupGame>
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Constructor.
      */
-    public static String getPathName(Enum<?> type)
+    Factory()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
+        super(Type.class);
     }
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
+    @Override
+    protected SetupGame createSetup(Type type)
     {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        return new SetupGame(Media.get(Media.getPath("src", "test", "resources", "type.xml")));
     }
 }

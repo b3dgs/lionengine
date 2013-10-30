@@ -17,43 +17,32 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test timed message class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class TimedMessageTest
 {
     /**
-     * Get the name as a path (lower case).
+     * Test timed message functions.
      * 
-     * @param type The object type.
-     * @return The name.
+     * @throws InterruptedException If error.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testTimedMessage() throws InterruptedException
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        final TimedMessage timedMessage = new TimedMessage(null);
+        Assert.assertFalse(timedMessage.hasMessage());
+        timedMessage.addMessage("test", 0, 0, 100);
+        timedMessage.addMessage("test", 0, 0, 500);
+        Assert.assertTrue(timedMessage.hasMessage());
+        timedMessage.update();
+        Thread.sleep(150);
+        timedMessage.update();
+        timedMessage.update();
     }
 }

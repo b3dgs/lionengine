@@ -17,43 +17,52 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import java.io.IOException;
+
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 
 /**
- * Object type utility implementation.
+ * Test world game class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class World
+        extends WorldGame
 {
     /**
-     * Get the name as a path (lower case).
+     * Constructor.
      * 
-     * @param type The object type.
-     * @return The name.
+     * @param sequence The sequence reference.
      */
-    public static String getPathName(Enum<?> type)
+    public World(Sequence sequence)
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
+        super(sequence);
     }
 
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
+    @Override
+    public void update(double extrp)
     {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        // Update
     }
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
+    @Override
+    public void render(Graphic g)
     {
-        throw new RuntimeException();
+        // Render
+    }
+
+    @Override
+    protected void saving(FileWriting file) throws IOException
+    {
+        // Saving
+    }
+
+    @Override
+    protected void loading(FileReading file) throws IOException
+    {
+        // Loading
     }
 }

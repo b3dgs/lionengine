@@ -17,43 +17,47 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.core.Media;
 
 /**
- * Object type utility implementation.
+ * Object type.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public enum TypeObject implements ObjectType
 {
-    /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
-     */
-    public static String getPathName(Enum<?> type)
-    {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
+    /** Type. */
+    TYPE(TestObject.class),
+    /** Package. */
+    TYPE_PACKAGE(TestObjectPackage.class),
+    /** Package. */
+    TYPE_CONSTRUCTOR(TestObjectConstructor.class);
+
+    /** Target. */
+    private final Class<?> target;
+    /** Path. */
+    private final String path;
 
     /**
-     * Get the title name (first letter as upper).
+     * Constructor.
      * 
-     * @param type The object type.
-     * @return The title name.
+     * @param target The target class.
      */
-    public static String toString(Enum<?> type)
+    private TypeObject(Class<?> target)
     {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
+        this.target = target;
+        path = Media.getPath("src", "test", "resources", "type");
     }
 
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
+    @Override
+    public Class<?> getTargetClass()
     {
-        throw new RuntimeException();
+        return target;
+    }
+
+    @Override
+    public String getPathName()
+    {
+        return path;
     }
 }

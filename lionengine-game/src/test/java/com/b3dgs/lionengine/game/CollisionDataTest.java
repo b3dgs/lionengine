@@ -17,43 +17,27 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Object type utility implementation.
+ * Test collision data class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ObjectTypeUtility
+public class CollisionDataTest
 {
     /**
-     * Get the name as a path (lower case).
-     * 
-     * @param type The object type.
-     * @return The name.
+     * Test collision data functions.
      */
-    public static String getPathName(Enum<?> type)
+    @Test
+    public void testCollisionData()
     {
-        return type.name().toLowerCase(Locale.ENGLISH);
-    }
-
-    /**
-     * Get the title name (first letter as upper).
-     * 
-     * @param type The object type.
-     * @return The title name.
-     */
-    public static String toString(Enum<?> type)
-    {
-        final String string = ObjectTypeUtility.getPathName(type);
-        return Character.toString(string.charAt(0)).toUpperCase(Locale.ENGLISH) + string.substring(1);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ObjectTypeUtility()
-    {
-        throw new RuntimeException();
+        final CollisionData collisionData = new CollisionData(1, 2, 3, 4, true);
+        Assert.assertTrue(collisionData.getOffsetX() == 1);
+        Assert.assertTrue(collisionData.getOffsetY() == 2);
+        Assert.assertTrue(collisionData.getWidth() == 3);
+        Assert.assertTrue(collisionData.getHeight() == 4);
+        Assert.assertTrue(collisionData.hasMirror());
     }
 }
