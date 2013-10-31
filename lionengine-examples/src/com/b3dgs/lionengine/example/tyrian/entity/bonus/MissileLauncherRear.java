@@ -18,18 +18,18 @@
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
 /**
- * Pulse cannon bonus.
+ * Missile launcher rear bonus.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class HyperPulse
+public final class MissileLauncherRear
         extends Weapon
 {
     /**
      * {@link Bonus#Bonus(SetupEntityBonus)}
      */
-    public HyperPulse(SetupEntityBonus setup)
+    public MissileLauncherRear(SetupEntityBonus setup)
     {
-        super(setup, true);
+        super(setup, false);
     }
 }

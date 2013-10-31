@@ -88,7 +88,7 @@ public class CameraGameTest
         camera.resetInterval(new LocalizableModel());
         camera.moveLocation(1.0, 5, 5);
         camera.moveLocation(1.0, -5, -5);
-        
+
         camera.setLocationOffset(0, 0);
         camera.setLocationX(0);
         camera.setLocationY(0);
@@ -96,15 +96,15 @@ public class CameraGameTest
         Assert.assertTrue(camera.getLocationIntY() == 0);
 
         Assert.assertTrue(camera.isVisible(new LocalizableModel()));
-        
+
         Assert.assertFalse(camera.isVisible(new LocalizableModel(-10, -10), 0, 0));
         Assert.assertFalse(camera.isVisible(new LocalizableModel(-10, -10), 0, 10));
         Assert.assertFalse(camera.isVisible(new LocalizableModel(-10, -10), 10, 0));
-        
+
         Assert.assertFalse(camera.isVisible(new LocalizableModel(10, 10), 0, 0));
         Assert.assertFalse(camera.isVisible(new LocalizableModel(10, 10), 0, 10));
         Assert.assertFalse(camera.isVisible(new LocalizableModel(10, 10), 10, 0));
-        
+
         Assert.assertTrue(camera.isVisible(new LocalizableModel(-10, -10), 10, 10));
         Assert.assertTrue(camera.isVisible(new LocalizableModel(10, 10), 10, 10));
     }

@@ -96,15 +96,27 @@ public abstract class Ship
         updateCollision();
 
         energy.increase(50);
-        if (mouse.hasClickedOnce(Click.RIGHT))
-        {
-            weaponFront.level.increase(1);
-            weaponRear.level.increase(1);
-        }
         if (mouse.hasClicked(Click.LEFT))
         {
             weaponFront.launch(energy);
             weaponRear.launch(energy);
+        }
+    }
+
+    /**
+     * Increase the weapon level.
+     * 
+     * @param front <code>true</code> for the front weapon, <code>false</code> for the rear.
+     */
+    public void increaseWeaponLevel(boolean front)
+    {
+        if (front)
+        {
+            weaponFront.level.increase(1);
+        }
+        else
+        {
+            weaponRear.level.increase(1);
         }
     }
 

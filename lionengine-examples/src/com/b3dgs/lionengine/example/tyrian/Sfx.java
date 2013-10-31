@@ -51,7 +51,9 @@ public enum Sfx
     /** Explode little. */
     EXPLODE_LITTLE("explode_little", 3),
     /** Bonus. */
-    BONUS("bonus", 3);
+    BONUS("bonus", 3),
+    /** Power up. */
+    POWER_UP("power_up", 1);
 
     /** Audio file extension. */
     private static final String AUDIO_FILE_EXTENSION = ".wav";

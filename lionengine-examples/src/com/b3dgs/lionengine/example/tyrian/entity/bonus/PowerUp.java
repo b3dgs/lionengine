@@ -17,38 +17,45 @@
  */
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
+import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.anim.Anim;
+import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.example.tyrian.Sfx;
 import com.b3dgs.lionengine.example.tyrian.entity.ship.Ship;
-import com.b3dgs.lionengine.example.tyrian.weapon.FactoryWeapon;
-import com.b3dgs.lionengine.example.tyrian.weapon.WeaponType;
 
 /**
- * Weapon bonus.
+ * Power up bonus implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Weapon
+public final class PowerUp
         extends Bonus
 {
-    /** Type. */
-    private final EntityBonusType type;
-    /** Factory weapon. */
-    private final FactoryWeapon factoryWeapon;
-    /** Front. */
-    private final boolean front;
+    /** Animator. */
+    private final Animator animator;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param front <code>true</code> if front weapon, <code>false</code> if rear.
      */
-    protected Weapon(SetupEntityBonus setup, boolean front)
+    public PowerUp(SetupEntityBonus setup)
     {
         super(setup);
-        type = setup.type;
-        factoryWeapon = setup.factoryWeapon;
-        this.front = front;
+        animator = Anim.createAnimator();
+        animator.play(getDataAnimation("idle"));
+    }
+
+    /*
+     * Bonus
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        super.update(extrp);
+        animator.updateAnimation(extrp);
+        setTileOffset(animator.getFrame() - 1);
     }
 
     @Override
@@ -61,13 +68,6 @@ abstract class Weapon
     protected void onHit(Ship ship)
     {
         super.onHit(ship);
-        if (front)
-        {
-            ship.setWeaponFront(factoryWeapon.create(WeaponType.valueOf(type.name())));
-        }
-        else
-        {
-            ship.setWeaponRear(factoryWeapon.create(WeaponType.valueOf(type.name())));
-        }
+        ship.increaseWeaponLevel(UtilityRandom.getRandomBoolean());
     }
 }

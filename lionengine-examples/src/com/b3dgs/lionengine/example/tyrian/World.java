@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.tyrian;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
@@ -127,6 +128,10 @@ final class World
     private final FactoryShip factoryShip;
     /** Ship reference. */
     private final Ship ship;
+    /** Meteor timer. */
+    private final Timing timerMeteor;
+    /** Bonus timer. */
+    private final Timing timerBonus;
 
     /**
      * @see WorldGame#WorldGame(Sequence)
@@ -138,6 +143,8 @@ final class World
         map = new Map();
         background = new Background();
         camera = new CameraGame();
+        timerMeteor = new Timing();
+        timerBonus = new Timing();
 
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);
@@ -183,6 +190,8 @@ final class World
         hud.setShip(ship);
         ship.init(mouse, camera, height);
         camera.setView(0, 0, 263, 184);
+        timerMeteor.start();
+        timerBonus.start();
     }
 
     /*
@@ -206,19 +215,51 @@ final class World
         background.update(extrp);
         hud.update(extrp);
 
-        if (UtilityRandom.getRandomInteger(100) == 0)
+        if (timerMeteor.elapsed(500))
         {
-            final Entity entity = factoryEntityDynamic.create(EntityDynamicType.METEOR_BIG);
-            entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
-                    camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
-            handlerEntityDynamic.add(entity);
+            if (UtilityRandom.getRandomInteger(50) == 0)
+            {
+                final Entity entity = factoryEntityDynamic.create(EntityDynamicType.METEOR_BIG);
+                entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
+                        camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
+                handlerEntityDynamic.add(entity);
+                timerMeteor.start();
+            }
         }
-        if (UtilityRandom.getRandomInteger(100) == 0)
+        if (timerBonus.elapsed(2000))
         {
-            final Entity entity = factoryEntityBonus.create(EntityBonusType.PULSE_CANNON);
+            final EntityBonusType bonus;
+            switch (UtilityRandom.getRandomInteger(30))
+            {
+                case 0:
+                    bonus = EntityBonusType.PULSE_CANNON;
+                    break;
+                case 1:
+                    bonus = EntityBonusType.HYPER_PULSE;
+                    break;
+                case 2:
+                    bonus = EntityBonusType.MACHINE_GUN;
+                    break;
+                case 3:
+                    bonus = EntityBonusType.MISSILE_LAUNCHER_FRONT;
+                    break;
+                case 4:
+                    bonus = EntityBonusType.MISSILE_LAUNCHER_REAR;
+                    break;
+                case 5:
+                    bonus = EntityBonusType.WAVE_CANNON_REAR;
+                    break;
+                default:
+                    bonus = EntityBonusType.POWER_UP;
+                    break;
+
+            }
+            final Entity entity = factoryEntityBonus.create(bonus);
             entity.teleport(UtilityRandom.getRandomInteger(camera.getViewWidth()) - entity.getWidth() / 2,
                     camera.getLocationY() + camera.getViewHeight() + entity.getHeight());
             handlerEntityBonus.add(entity);
+            timerBonus.stop();
+            timerBonus.start();
         }
     }
 

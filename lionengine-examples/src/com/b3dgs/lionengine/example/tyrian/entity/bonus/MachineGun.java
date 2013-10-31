@@ -18,17 +18,17 @@
 package com.b3dgs.lionengine.example.tyrian.entity.bonus;
 
 /**
- * Pulse cannon bonus.
+ * Machine gun bonus.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class HyperPulse
+public final class MachineGun
         extends Weapon
 {
     /**
      * {@link Bonus#Bonus(SetupEntityBonus)}
      */
-    public HyperPulse(SetupEntityBonus setup)
+    public MachineGun(SetupEntityBonus setup)
     {
         super(setup, true);
     }

@@ -36,6 +36,14 @@ public enum EntityBonusType implements ObjectType
     PULSE_CANNON(PulseCannon.class),
     /** Hyper Pulse. */
     HYPER_PULSE(HyperPulse.class),
+    /** Missile launcher front. */
+    MISSILE_LAUNCHER_FRONT(MissileLauncherFront.class),
+    /** Machine gun. */
+    MACHINE_GUN(MachineGun.class),
+    /** Missile launcher rear. */
+    MISSILE_LAUNCHER_REAR(MissileLauncherRear.class),
+    /** Wave cannon. */
+    WAVE_CANNON_REAR(WaveCannonRear.class),
 
     /*
      * Coin.
@@ -48,7 +56,14 @@ public enum EntityBonusType implements ObjectType
     /** Coin 50. */
     COIN50(Coin50.class, EffectType.COIN50),
     /** Coin 75. */
-    COIN75(Coin75.class, EffectType.COIN75);
+    COIN75(Coin75.class, EffectType.COIN75),
+
+    /*
+     * Other
+     */
+
+    /** Power up. */
+    POWER_UP(PowerUp.class);
 
     /** Class target. */
     private final Class<?> target;

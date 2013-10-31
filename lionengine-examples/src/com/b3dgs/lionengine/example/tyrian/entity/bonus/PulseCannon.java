@@ -26,10 +26,10 @@ public final class PulseCannon
         extends Weapon
 {
     /**
-     * {@link Weapon#Weapon(SetupEntityBonus)}
+     * {@link Bonus#Bonus(SetupEntityBonus)}
      */
     public PulseCannon(SetupEntityBonus setup)
     {
-        super(setup);
+        super(setup, true);
     }
 }
