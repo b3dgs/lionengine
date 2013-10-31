@@ -97,7 +97,7 @@ public final class Engine
     /** Error message temp directory. */
     private static final String ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
     /** Started engine flag. */
-    private static boolean started = false;
+    static boolean started = false;
     /** Graphic factory. */
     static FactoryGraphic factoryGraphic;
     /** Geometry factory. */

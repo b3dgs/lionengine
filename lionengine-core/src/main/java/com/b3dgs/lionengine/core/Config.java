@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import javax.sound.midi.Sequence;
-
 import com.b3dgs.lionengine.Applet;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;

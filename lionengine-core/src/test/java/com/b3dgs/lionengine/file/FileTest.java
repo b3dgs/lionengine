@@ -47,7 +47,7 @@ public class FileTest
             File.createFileWriting(null);
             Assert.fail();
         }
-        catch (final NullPointerException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }

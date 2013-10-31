@@ -516,6 +516,10 @@ public abstract class Sequence
             {
                 waitForNextSequenceWaiting();
             }
+            if (!Engine.started)
+            {
+                isRunning = false;
+            }
         }
         onTerminate(nextSequence != null);
         semaphore.release();
