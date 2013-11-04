@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.rts.ability.launcher;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.projectile.HandlerProjectile;
-import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
@@ -44,7 +43,7 @@ public final class FactoryLauncher
      */
     public FactoryLauncher(FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
     {
-        super(LauncherType.class, AppWarcraft.LAUNCHERS_DIR);
+        super(LauncherType.class, "launchers");
         this.factoryProjectile = factoryProjectile;
         this.handlerProjectile = handlerProjectile;
         load();

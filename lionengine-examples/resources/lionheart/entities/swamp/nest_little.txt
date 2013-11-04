@@ -1,3 +1,0 @@
-=STR= #NAME# 	= "NestLittle"
-=RNG= #FRAMES# 	= {01-01}
-=ANM= #IDLE# 	= {01-01}

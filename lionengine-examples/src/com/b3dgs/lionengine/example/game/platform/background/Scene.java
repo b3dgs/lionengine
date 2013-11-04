@@ -36,7 +36,7 @@ final class Scene
         extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /** Camera. */
     private final CameraGame camera;

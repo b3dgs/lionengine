@@ -1,4 +1,0 @@
-=STR= #NAME# 	= "Bird"
-=RNG= #FRAMES# 	= {05-04}
-=ANM= #IDLE# 	= {01-10}
-=ANM= #WALK# 	= {11-20}

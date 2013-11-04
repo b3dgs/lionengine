@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<entity surface="single_pulse.png">
-	<size width="24" height="28"/>
-	<collision name="default" offsetX="4" offsetY="0" width="16" height="18" mirror="false" />
-	<animation name="idle" start="1" end="3" speed="0.2" reversed="true" repeat="true"/>
-</entity>

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<entity surface="coin50.png">
-	<size width="12" height="14"/>
-	<collision name="default" offsetX="0" offsetY="0" width="12" height="14" mirror="false" />
-	<animation name="idle" start="1" end="5" speed="0.2" reversed="false" repeat="true"/>
-</entity>

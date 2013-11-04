@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.example.lionheart.Scene;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -85,7 +84,7 @@ final class Swamp
         final int halfScreen = (int) (source.getWidth() / 3.5);
         this.scaleH = scaleH;
         this.scaleV = scaleV;
-        setOffsetY(source.getHeight() - Scene.SCENE_DISPLAY.getHeight() + 72);
+        setOffsetY(source.getHeight() - Scene.NATIVE.getHeight() + 72);
         backdrop = new Backdrop(width);
         clouds = new Clouds(Media.get("cloud.png"), width, 4);
         parallax = new Parallax(source, Media.get("parallax.png"), parallaxsNumber, halfScreen, 124, 50, 100);

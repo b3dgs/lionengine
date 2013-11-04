@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.rts.ability.weapon;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.rts.ability.launcher.FactoryLauncher;
-import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
@@ -40,7 +39,7 @@ public final class FactoryWeapon
      */
     public FactoryWeapon(FactoryLauncher factoryLauncher)
     {
-        super(WeaponType.class, AppWarcraft.WEAPONS_DIR);
+        super(WeaponType.class, "weapons");
         this.factoryLauncher = factoryLauncher;
         load();
     }

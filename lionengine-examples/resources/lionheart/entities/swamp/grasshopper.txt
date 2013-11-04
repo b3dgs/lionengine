@@ -1,7 +1,0 @@
-=STR= #NAME# 	= "Grasshopper"
-=RNG= #FRAMES# 	= {04-04}
-=ANM= #IDLE# 	= {01-01}
-=ANM= #WALK# 	= {01-10}
-=ANM= #TURN# 	= {14-15}
-=ANM= #JUMP# 	= {12-13}
-=ANM= #FALL# 	= {11-11}

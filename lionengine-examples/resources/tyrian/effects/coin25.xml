@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<effect surface="coin25.png">
-	<frames horizontal="3" vertical="1"/>
-	<animation name="start" start="1" end="3" speed="0.2" reversed="false" repeat="false"/>
-</effect>

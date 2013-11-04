@@ -26,7 +26,6 @@ import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.example.lionheart.Scene;
 import com.b3dgs.lionengine.game.platform.background.BackgroundComponent;
 import com.b3dgs.lionengine.game.platform.background.BackgroundElement;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
@@ -113,8 +112,8 @@ final class Foreground
     {
         screenWidth = width;
         screenHeight = height;
-        final double scaleH = width / (double) Scene.SCENE_DISPLAY.getWidth();
-        final double scaleV = height / (double) Scene.SCENE_DISPLAY.getHeight();
+        final double scaleH = width / (double) Scene.NATIVE.getWidth();
+        final double scaleV = height / (double) Scene.NATIVE.getHeight();
         this.scaleH = scaleH;
         this.scaleV = scaleV;
         primary.updateMainY();

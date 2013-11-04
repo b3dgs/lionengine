@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<entity surface="missile_launcher_front.png">
-	<size width="24" height="28"/>
-	<collision name="default" offsetX="0" offsetY="0" width="24" height="28" mirror="false" />
-	<animation name="idle" start="1" end="1" speed="0.2" reversed="false" repeat="false"/>
-</entity>

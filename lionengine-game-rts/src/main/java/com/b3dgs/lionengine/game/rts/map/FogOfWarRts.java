@@ -157,8 +157,8 @@ public abstract class FogOfWarRts<T extends TileGame<?>>
     public void render(Graphic g, CameraRts camera)
     {
         render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
-                (int) Math.floor(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.floor(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+                (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
+                (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }
 
     /**

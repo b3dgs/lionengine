@@ -1,4 +1,0 @@
-=STR= #NAME# 	= "Dragon"
-=RNG= #FRAMES# 	= {06-04}
-=ANM= #IDLE# 	= {24-24}
-=ANM= #WALK# 	= {01-24}
