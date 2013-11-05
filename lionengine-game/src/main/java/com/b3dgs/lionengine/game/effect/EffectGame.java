@@ -116,12 +116,6 @@ public abstract class EffectGame
     }
 
     @Override
-    public void setLocationOffset(double x, double y)
-    {
-        location.setLocationOffset(x, y);
-    }
-
-    @Override
     public void setSize(int width, int height)
     {
         location.setSize(width, height);
@@ -161,18 +155,6 @@ public abstract class EffectGame
     public double getLocationOldY()
     {
         return location.getLocationOldY();
-    }
-
-    @Override
-    public int getLocationOffsetX()
-    {
-        return location.getLocationOffsetX();
-    }
-
-    @Override
-    public int getLocationOffsetY()
-    {
-        return location.getLocationOffsetY();
     }
 
     @Override

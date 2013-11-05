@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.example.game.rts.cursor;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum TileCollisionGroup
+enum TileCollisionGroup
 {
     /** Ground collision. */
     GROUND,

@@ -94,14 +94,6 @@ public interface Localizable
     void setLocationY(double y);
 
     /**
-     * Set location offset.
-     * 
-     * @param x The new horizontal location offset.
-     * @param y The new vertical location offset.
-     */
-    void setLocationOffset(double x, double y);
-
-    /**
      * Set size.
      * 
      * @param width The width.

@@ -36,7 +36,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
     /** Camera reference. */
     protected final CameraGame camera;
     /** The entity handler reference. */
-    private final HandlerEntityGame<E>[] handlerEntity;
+    private final HandlerEntityGame<? extends E>[] handlerEntity;
 
     /**
      * Create a new player projectile handler.
@@ -45,7 +45,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
      * @param handlerEntity The entity handlers reference.
      */
     @SafeVarargs
-    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<E>... handlerEntity)
+    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<? extends E>... handlerEntity)
     {
         super();
         this.camera = camera;
@@ -79,7 +79,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
     protected void update(double extrp, P projectile)
     {
         projectile.update(extrp);
-        for (final HandlerEntityGame<E> handler : handlerEntity)
+        for (final HandlerEntityGame<? extends E> handler : handlerEntity)
         {
             for (final E entity : handler.list())
             {

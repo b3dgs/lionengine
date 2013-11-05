@@ -45,6 +45,8 @@ final class WavPlayer
     final Semaphore latch;
     /** Created thread counter. */
     volatile Integer count;
+    /** Terminated. */
+    volatile Boolean terminated;
     /** Count monitor. */
     private final Object monitorCount = new Object();
     /** Sound file reference. */
@@ -81,6 +83,7 @@ final class WavPlayer
         busySounds = new LinkedList<>();
         alignment = Align.CENTER;
         volume = 100;
+        terminated = Boolean.FALSE;
     }
 
     /**
@@ -128,40 +131,46 @@ final class WavPlayer
     @Override
     public void play(int delay)
     {
-        final WavRoutine routine;
-        if (!freeSounds.isEmpty() || count.intValue() >= maxSimultaneous)
+        synchronized (terminated)
         {
-            if (freeSounds.isEmpty())
+            if (!terminated.booleanValue())
             {
-                routine = busySounds.poll();
-            }
-            else
-            {
-                routine = freeSounds.poll();
-            }
+                final WavRoutine routine;
+                if (!freeSounds.isEmpty() || count.intValue() >= maxSimultaneous)
+                {
+                    if (freeSounds.isEmpty())
+                    {
+                        routine = busySounds.poll();
+                    }
+                    else
+                    {
+                        routine = freeSounds.poll();
+                    }
 
-            if (routine != null)
-            {
-                routine.stopSound();
-                routine.setAlignement(alignment);
-                routine.setMedia(media);
-                routine.setVolume(volume);
-                routine.setDelay(delay);
-                routine.restart();
-                routine.latch.release();
-            }
-        }
-        else
-        {
-            routine = new WavRoutine(this, media.getPath());
-            routine.setAlignement(alignment);
-            routine.setMedia(media);
-            routine.setVolume(volume);
-            routine.setDelay(delay);
-            routine.start();
-            synchronized (monitorCount)
-            {
-                count = Integer.valueOf(count.intValue() + 1);
+                    if (routine != null)
+                    {
+                        routine.stopSound();
+                        routine.setAlignement(alignment);
+                        routine.setMedia(media);
+                        routine.setVolume(volume);
+                        routine.setDelay(delay);
+                        routine.restart();
+                        routine.latch.release();
+                    }
+                }
+                else
+                {
+                    routine = new WavRoutine(this, media.getPath());
+                    routine.setAlignement(alignment);
+                    routine.setMedia(media);
+                    routine.setVolume(volume);
+                    routine.setDelay(delay);
+                    routine.start();
+                    synchronized (monitorCount)
+                    {
+                        count = Integer.valueOf(count.intValue() + 1);
+                    }
+                }
             }
         }
     }
@@ -197,6 +206,7 @@ final class WavPlayer
     @Override
     public void terminate()
     {
+        terminated = Boolean.TRUE;
         new Thread("WavPlayer cleanup")
         {
             @Override
@@ -226,23 +236,31 @@ final class WavPlayer
                 }
                 while (count.intValue() != 0)
                 {
-                    for (final WavRoutine routine : freeSounds)
+                    synchronized (terminated)
                     {
-                        if (routine != null)
+
+                        final List<WavRoutine> toStop = new ArrayList<>(freeSounds);
+                        for (final WavRoutine routine : toStop)
                         {
-                            routine.interrupt();
+                            if (routine != null)
+                            {
+                                routine.interrupt();
+                            }
                         }
+
+                        try
+                        {
+                            Thread.sleep(100);
+                        }
+                        catch (final InterruptedException exception)
+                        {
+                            Thread.currentThread().interrupt();
+                        }
+                        toStop.clear();
+                        freeSounds.clear();
                     }
-                    try
-                    {
-                        Thread.sleep(100);
-                    }
-                    catch (final InterruptedException exception)
-                    {
-                        Thread.currentThread().interrupt();
-                    }
-                    freeSounds.clear();
                 }
+                terminated = Boolean.FALSE;
             }
         }.start();
     }

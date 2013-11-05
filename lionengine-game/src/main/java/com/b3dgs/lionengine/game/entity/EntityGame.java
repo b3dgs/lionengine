@@ -180,12 +180,6 @@ public abstract class EntityGame
     }
 
     @Override
-    public void setLocationOffset(double x, double y)
-    {
-        body.setLocationOffset(x, y);
-    }
-
-    @Override
     public void setSize(int width, int height)
     {
         body.setSize(width, height);
@@ -225,18 +219,6 @@ public abstract class EntityGame
     public double getLocationOldY()
     {
         return body.getLocationOldY();
-    }
-
-    @Override
-    public int getLocationOffsetX()
-    {
-        return body.getLocationOffsetX();
-    }
-
-    @Override
-    public int getLocationOffsetY()
-    {
-        return body.getLocationOffsetY();
     }
 
     @Override

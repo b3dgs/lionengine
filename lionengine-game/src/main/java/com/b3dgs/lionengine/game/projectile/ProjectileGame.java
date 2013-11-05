@@ -241,8 +241,8 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     {
         if (time > 0)
         {
-            final int x = owner.getLocationIntX() + owner.getLocationOffsetX() + offX;
-            final int y = owner.getLocationIntY() + owner.getLocationOffsetY() + offY;
+            final int x = owner.getLocationIntX() + offX;
+            final int y = owner.getLocationIntY() + offY;
             teleport(x + getWidth() / 2, y + getHeight() / 2);
             time = 0;
         }

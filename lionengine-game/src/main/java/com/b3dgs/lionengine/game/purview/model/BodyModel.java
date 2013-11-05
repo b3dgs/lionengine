@@ -156,12 +156,6 @@ public class BodyModel
     }
 
     @Override
-    public void setLocationOffset(double x, double y)
-    {
-        localizable.setLocationOffset(x, y);
-    }
-
-    @Override
     public void setSize(int width, int height)
     {
         localizable.setSize(width, height);
@@ -201,18 +195,6 @@ public class BodyModel
     public double getLocationOldY()
     {
         return localizable.getLocationOldY();
-    }
-
-    @Override
-    public int getLocationOffsetX()
-    {
-        return localizable.getLocationOffsetX();
-    }
-
-    @Override
-    public int getLocationOffsetY()
-    {
-        return localizable.getLocationOffsetY();
     }
 
     @Override

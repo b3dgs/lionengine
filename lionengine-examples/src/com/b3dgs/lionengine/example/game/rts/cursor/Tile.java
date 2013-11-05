@@ -37,7 +37,7 @@ final class Tile
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+    Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {
         super(width, height, pattern, number, collision);
     }

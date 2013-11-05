@@ -33,8 +33,6 @@ public class LocalizableModel
     private final Coord current;
     /** Old coordinate. */
     private final Coord old;
-    /** Offset coordinate. */
-    private final Coord offset;
     /** Body width. */
     private int width;
     /** Body height. */
@@ -58,7 +56,6 @@ public class LocalizableModel
     {
         current = new Coord(x, y);
         old = new Coord(x, y);
-        offset = new Coord();
     }
 
     /**
@@ -134,12 +131,6 @@ public class LocalizableModel
     }
 
     @Override
-    public void setLocationOffset(double x, double y)
-    {
-        offset.set(x, y);
-    }
-
-    @Override
     public void setSize(int width, int height)
     {
         this.width = width;
@@ -180,18 +171,6 @@ public class LocalizableModel
     public double getLocationOldY()
     {
         return old.getY();
-    }
-
-    @Override
-    public int getLocationOffsetX()
-    {
-        return (int) Math.floor(offset.getX());
-    }
-
-    @Override
-    public int getLocationOffsetY()
-    {
-        return (int) Math.floor(offset.getY());
     }
 
     @Override

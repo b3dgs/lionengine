@@ -52,9 +52,6 @@ public class CameraGameTest
         Assert.assertTrue(camera.getLocationOldX() == 0.0);
         Assert.assertTrue(camera.getLocationOldY() == 0.0);
 
-        Assert.assertTrue(camera.getLocationOffsetX() == 0);
-        Assert.assertTrue(camera.getLocationOffsetY() == 0);
-
         Assert.assertTrue(camera.getMovementHorizontal() == 2.0);
         Assert.assertTrue(camera.getMovementVertical() == 2.0);
 
@@ -89,7 +86,6 @@ public class CameraGameTest
         camera.moveLocation(1.0, 5, 5);
         camera.moveLocation(1.0, -5, -5);
 
-        camera.setLocationOffset(0, 0);
         camera.setLocationX(0);
         camera.setLocationY(0);
         Assert.assertTrue(camera.getLocationIntX() == 0);
