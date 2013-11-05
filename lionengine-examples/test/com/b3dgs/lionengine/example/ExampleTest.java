@@ -40,14 +40,12 @@ import com.b3dgs.lionengine.example.game.projectile.AppGameProjectile;
 import com.b3dgs.lionengine.example.game.rts.ability.AppRtsAbility;
 import com.b3dgs.lionengine.example.game.rts.controlpanel.AppRtsControlPanel;
 import com.b3dgs.lionengine.example.game.rts.cursor.AppRtsCursor;
+import com.b3dgs.lionengine.example.game.rts.fog.AppRtsFog;
 import com.b3dgs.lionengine.example.game.rts.skills.AppRtsSkills;
 import com.b3dgs.lionengine.example.helloworld.AppHelloWorld;
-import com.b3dgs.lionengine.example.lionheart.AppLionheart;
 import com.b3dgs.lionengine.example.mario.AppMario;
 import com.b3dgs.lionengine.example.minimal.AppMinimal;
 import com.b3dgs.lionengine.example.pong.AppPong;
-import com.b3dgs.lionengine.example.tyrian.AppTyrian;
-import com.b3dgs.lionengine.example.warcraft.AppWarcraft;
 
 /**
  * Test the examples.
@@ -140,26 +138,19 @@ public class ExampleTest
         AppMario.main(null);
         robot.keyPress(Key.RIGHT.intValue());
         robot.keyPress(Key.UP.intValue());
-        waitAndTerminate(2000);
+        waitAndTerminate(3000);
         robot.keyRelease(Key.RIGHT.intValue());
         robot.keyRelease(Key.UP.intValue());
-
-        AppTyrian.main(null);
-        waitAndTerminate(5000);
 
         robot.waitForIdle();
     }
 
     /**
      * Test platform examples.
-     * 
-     * @throws AWTException If error.
      */
     @Test
-    public void testPlatform() throws AWTException
+    public void testPlatform()
     {
-        final Robot robot = new Robot();
-
         AppPlatformBackground.main(null);
         waitAndTerminate(8000);
 
@@ -171,15 +162,6 @@ public class ExampleTest
 
         AppPlatformTile.main(null);
         waitAndTerminate(500);
-
-        AppLionheart.main(null);
-        robot.keyPress(Key.RIGHT.intValue());
-        robot.keyPress(Key.UP.intValue());
-        waitAndTerminate(7000);
-        robot.keyRelease(Key.RIGHT.intValue());
-        robot.keyRelease(Key.UP.intValue());
-
-        robot.waitForIdle();
     }
 
     /**
@@ -196,11 +178,11 @@ public class ExampleTest
 
         AppRtsCursor.main(null);
         waitAndTerminate(2000);
+        
+        AppRtsFog.main(null);
+        waitAndTerminate(3000);
 
         AppRtsSkills.main(null);
         waitAndTerminate(1000);
-
-        AppWarcraft.main(null);
-        waitAndTerminate(5000);
     }
 }
