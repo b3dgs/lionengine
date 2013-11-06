@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
@@ -242,7 +241,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      */
     public void load(FileReading file) throws IOException
     {
-        patternsDirectory = new Media(file.readString());
+        patternsDirectory = Media.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
@@ -251,8 +250,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         create(width, height);
         loadPatterns(patternsDirectory);
 
-        final Media media = new Media(Media.getPath(patternsDirectory.getPath(), "collisions.xml"));
-        Media.exist(media);
+        final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), "collisions.xml"));
         final XmlParser xml = File.createXmlParser();
         final XmlNode root = xml.load(media);
         final List<XmlNode> nodes = root.getChildren();
@@ -280,7 +278,6 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      */
     public void loadCollisions(Media media)
     {
-        Media.exist(media);
         final XmlParser xml = File.createXmlParser();
         final XmlNode root = xml.load(media);
         final List<XmlNode> nodes = root.getChildren();
@@ -604,38 +601,28 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     {
         if (!surfacesLoaded)
         {
-            Media.exist(directory);
             surfacesLoaded = true;
             patternsDirectory = directory;
-            final String path = directory.getPath();
             patterns.clear();
             String[] files;
 
             // Retrieve patterns list
-            final String index = Media.getPath(path, "patterns.xml");
-            if (UtilityFile.exists(Media.WORKING_DIR + Media.getSeparator() + index))
+            final XmlParser xml = File.createXmlParser();
+            final Media mediaPatterns = Media.create(Media.getPath(patternsDirectory.getPath(), "patterns.xml"));
+            final XmlNode root = xml.load(mediaPatterns);
+            final List<XmlNode> children = root.getChildren();
+            files = new String[children.size()];
+            int i = 0;
+            for (final XmlNode child : children)
             {
-                final XmlParser xml = File.createXmlParser();
-                final Media media = new Media(index);
-                final XmlNode root = xml.load(media);
-                final List<XmlNode> children = root.getChildren();
-                files = new String[children.size()];
-                int i = 0;
-                for (final XmlNode child : children)
-                {
-                    files[i] = child.getText();
-                    i++;
-                }
-            }
-            else
-            {
-                files = UtilityFile.getFilesList(Media.WORKING_DIR + Media.getSeparator() + path, "png");
+                files[i] = child.getText();
+                i++;
             }
 
             // Load patterns from list
             for (final String file : files)
             {
-                final Media media = new Media(Media.getPath(path, file));
+                final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), file));
                 try
                 {
                     final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));

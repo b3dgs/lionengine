@@ -75,7 +75,7 @@ public class CursorTest
             // Success
         }
 
-        final Cursor cursor = new Cursor(mouse, output0, Media.get("cursor.png"));
+        final Cursor cursor = new Cursor(mouse, output0, Media.create("cursor.png"));
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);

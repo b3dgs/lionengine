@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -50,10 +49,9 @@ final class MidiPlayer
     private static Sequence openSequence(Media media)
     {
         Check.notNull(media, "Midi file must exists !");
-        final File file = Media.getTempFile(media, true, false);
         try
         {
-            return MidiSystem.getSequence(file);
+            return MidiSystem.getSequence(media.getStream());
         }
         catch (final IOException exception)
         {

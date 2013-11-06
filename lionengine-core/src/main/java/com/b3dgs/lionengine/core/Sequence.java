@@ -165,7 +165,7 @@ public abstract class Sequence
         output = config.getOutput();
         filter = config.getFilter();
         sync = config.isWindowed() && output.getRate() > 0;
-        graphic = Engine.factoryGraphic.createGraphic();
+        graphic = EngineImpl.factoryGraphic.createGraphic();
         extrapolated = true;
 
         // Time needed for a loop to reach desired rate
@@ -191,12 +191,15 @@ public abstract class Sequence
     {
         Check.notNull(newSource, Sequence.ERROR_RESOLUTION);
         config.setSource(newSource);
-        mouse.setConfig(config);
+        if (mouse != null)
+        {
+            mouse.setConfig(config);
+        }
         source = config.getSource();
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = Engine.factoryGeom.createTransform();
+        Transform transform = EngineImpl.factoryGeom.createTransform();
 
         // Filter level
         switch (filter)
@@ -230,7 +233,7 @@ public abstract class Sequence
         // Scaled rendering
         else
         {
-            buf = Engine.factoryGraphic.createCompatibleImage(width, height, Transparency.OPAQUE);
+            buf = EngineImpl.factoryGraphic.createCompatibleImage(width, height, Transparency.OPAQUE);
             gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
@@ -483,7 +486,10 @@ public abstract class Sequence
         screen.requestFocus();
         final int mcx = screen.getLocationX() + output.getWidth() / 2;
         final int mcy = screen.getLocationY() + output.getHeight() / 2;
-        mouse.setCenter(mcx, mcy);
+        if (mouse != null)
+        {
+            mouse.setCenter(mcx, mcy);
+        }
         onLoaded(extrp, screen.getGraphic());
 
         // Main loop
@@ -491,8 +497,12 @@ public abstract class Sequence
         while (isRunning)
         {
             final long lastTime = System.nanoTime();
-            mouse.update();
+            if (mouse != null)
+            {
+                mouse.update();
+            }
             update(extrp);
+            screen.show();
             preRender(screen.getGraphic());
             screen.update();
             sync(System.nanoTime() - lastTime);
@@ -516,7 +526,7 @@ public abstract class Sequence
             {
                 waitForNextSequenceWaiting();
             }
-            if (!Engine.started)
+            if (!EngineImpl.started)
             {
                 isRunning = false;
             }

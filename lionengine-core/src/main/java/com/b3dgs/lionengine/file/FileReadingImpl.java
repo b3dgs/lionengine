@@ -42,8 +42,7 @@ final class FileReadingImpl
      */
     FileReadingImpl(Media media) throws IOException
     {
-        Media.exist(media);
-        in = new DataInputStream(new BufferedInputStream(Media.getStream(media, "FileReading")));
+        in = new DataInputStream(new BufferedInputStream(media.getStream()));
     }
 
     /*

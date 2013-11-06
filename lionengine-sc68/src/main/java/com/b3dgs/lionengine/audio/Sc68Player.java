@@ -21,6 +21,7 @@ import java.io.File;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * SC68 player implementation.
@@ -52,7 +53,7 @@ final class Sc68Player
     public void play(Media media)
     {
         Check.notNull(media);
-        final File music = Media.getTempFile(media, true, false);
+        final File music = UtilityMedia.getTempFile(media, true, false);
         binding.SC68Play(music.getPath());
     }
 

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -47,7 +48,7 @@ final class GraphicImpl
     }
 
     /** Paint mode. */
-    private static final Paint PAINT = new Paint();
+    private final Paint paint;
     /** The graphic output. */
     private Canvas g;
     /** Last transform. */
@@ -58,7 +59,7 @@ final class GraphicImpl
      */
     GraphicImpl()
     {
-        // Nothing to do
+        paint = new Paint();
     }
 
     /**
@@ -68,6 +69,7 @@ final class GraphicImpl
      */
     GraphicImpl(Canvas g)
     {
+        paint = new Paint();
         this.g = g;
     }
 
@@ -78,13 +80,15 @@ final class GraphicImpl
     @Override
     public void clear(Resolution resolution)
     {
-        g.clipRect(0, 0, resolution.getWidth(), resolution.getHeight());
+        paint.setColor(Color.BLACK);
+        g.drawRect(0, 0, resolution.getWidth(), resolution.getHeight(), paint);
     }
 
     @Override
     public void clear(int x, int y, int width, int height)
     {
-        g.clipRect(x, y, width, height);
+        paint.setColor(Color.BLACK);
+        g.drawRect(x, y, width, height, paint);
     }
 
     @Override
@@ -102,7 +106,7 @@ final class GraphicImpl
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
-        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, PAINT);
+        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, paint);
     }
 
     @Override
@@ -113,7 +117,7 @@ final class GraphicImpl
             lastTransform = transform;
             g.scale((float) transform.getScaleX(), (float) transform.getScaleY());
         }
-        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, PAINT);
+        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, paint);
     }
 
     @Override
@@ -121,7 +125,7 @@ final class GraphicImpl
     {
         final Rect src = new Rect(dx1, dy1, dx2, dy2);
         final Rect dest = new Rect(sx1, sy1, sx2, sy2);
-        g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, PAINT);
+        g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, paint);
     }
 
     @Override
@@ -130,11 +134,11 @@ final class GraphicImpl
         // TODO: Fill ?
         if (fill)
         {
-            g.drawRect(x, y, x + width, x + height, PAINT);
+            g.drawRect(x, y, x + width, y + height, paint);
         }
         else
         {
-            g.drawRect(x, y, x + width, x + height, PAINT);
+            g.drawRect(x, y, x + width, y + height, paint);
         }
     }
 
@@ -147,19 +151,19 @@ final class GraphicImpl
     @Override
     public void drawLine(int x1, int y1, int x2, int y2)
     {
-        g.drawLine(x1, y1, x2, y2, PAINT);
+        g.drawLine(x1, y1, x2, y2, paint);
     }
 
     @Override
     public void drawOval(int x, int y, int width, int height, boolean fill)
     {
-        g.drawCircle(x, y, width * height, PAINT);
+        g.drawCircle(x, y, width * height, paint);
     }
 
     @Override
     public void setColor(ColorRgba color)
     {
-        PAINT.setColor(color.getRgba());
+        paint.setColor(color.getRgba());
     }
 
     @Override
@@ -184,6 +188,6 @@ final class GraphicImpl
     @Override
     public ColorRgba getColor()
     {
-        return new ColorRgba(PAINT.getColor());
+        return new ColorRgba(paint.getColor());
     }
 }

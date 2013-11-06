@@ -35,7 +35,7 @@ public class HandlerObjectGameTest
     @Test
     public void testHandlerObjectGame()
     {
-        final SetupGame setup = new SetupGame(Media.get(Media.getPath("src", "test", "resources", "type.xml")));
+        final SetupGame setup = new SetupGame(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
 
         final Handler handler = new Handler();
         Assert.assertTrue(handler.size() == 0);

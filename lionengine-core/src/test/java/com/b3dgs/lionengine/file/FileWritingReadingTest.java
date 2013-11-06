@@ -41,7 +41,7 @@ public class FileWritingReadingTest
     @Test
     public void testReaderWriter()
     {
-        fileData = new Media("test.dat");
+        fileData = Media.create("test.dat");
         try
         {
             testFileWriting();

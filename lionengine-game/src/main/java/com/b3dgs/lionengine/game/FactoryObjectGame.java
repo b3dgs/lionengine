@@ -151,7 +151,8 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
         Check.notNull(type.getPathName(), FactoryObjectGame.ERROR_PATH_NAME, " (", type.name(), ")");
-        final Media config = Media.get(folder, type.getPathName() + FactoryObjectGame.FILE_DATA_EXTENSION);
+        final Media config = Media.create(Media.getPath(folder, type.getPathName()
+                + FactoryObjectGame.FILE_DATA_EXTENSION));
         return createSetup(type, config);
     }
 }

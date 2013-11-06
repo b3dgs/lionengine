@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -42,8 +42,8 @@ final class Entity
      */
     Entity()
     {
-        super(new SetupGame(Media.get("entity.xml")));
-        sprite = Drawable.loadSpriteTiled(Media.get("entity.png"), 24, 28);
+        super(new SetupGame(UtilityMedia.get("entity.xml")));
+        sprite = Drawable.loadSpriteTiled(UtilityMedia.get("entity.png"), 24, 28);
         sprite.load(false);
         setSize(24, 28);
         setCollision(new CollisionData(getWidth() / 2, -getHeight(), getWidth(), getHeight(), false));

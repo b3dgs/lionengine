@@ -20,6 +20,7 @@ package com.b3dgs.lionengine;
 import java.io.File;
 import java.util.Locale;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -100,6 +101,22 @@ public final class UtilityFile
             ext = file.substring(i + 1).toLowerCase(Locale.getDefault());
         }
         return ext;
+    }
+    
+    /**
+     * Get the filename from a path (last part of a path, after the last separator).
+     * 
+     * @param path The path used to extract filename.
+     * @return The filename extracted from path.
+     */
+    public static String getFilenameFromPath(String path)
+    {
+        int i = path.lastIndexOf(Media.getSeparator());
+        if (i == -1)
+        {
+            i = path.lastIndexOf(Media.getSeparator());
+        }
+        return path.substring(i + 1, path.length());
     }
 
     /**

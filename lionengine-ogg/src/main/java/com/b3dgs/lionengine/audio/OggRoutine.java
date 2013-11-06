@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
@@ -52,11 +51,11 @@ final class OggRoutine
      * @throws UnsupportedAudioFileException If error.
      * @throws IOException If error on reading audio.
      */
-    private static AudioInputStream getAudioStream(File mus) throws UnsupportedAudioFileException, IOException
+    private static AudioInputStream getAudioStream(Media mus) throws UnsupportedAudioFileException, IOException
     {
         final boolean bBigEndian = false;
         final int nSampleSizeInBits = 16;
-        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mus);
+        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mus.getStream());
         final AudioFormat audioFormat = audioInputStream.getFormat();
         final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
         final boolean bIsSupportedDirectly = AudioSystem.isLineSupported(info);
@@ -139,9 +138,8 @@ final class OggRoutine
     {
         while (!stop)
         {
-            final File mus = Media.getTempFile(media, true, true);
             final int bufferInternal = AudioSystem.NOT_SPECIFIED;
-            try (AudioInputStream audioInputStream = OggRoutine.getAudioStream(mus);
+            try (AudioInputStream audioInputStream = OggRoutine.getAudioStream(media);
                  SourceDataLine line = OggRoutine.getSourceDataLine(audioInputStream.getFormat(), bufferInternal);)
             {
                 // Set volume

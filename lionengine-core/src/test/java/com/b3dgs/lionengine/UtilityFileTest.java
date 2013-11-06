@@ -42,7 +42,7 @@ public class UtilityFileTest
      */
     private static Media get(String file)
     {
-        return new Media(Media.getPath("src", "test", "resources", file));
+        return Media.create(Media.getPath("src", "test", "resources", file));
     }
 
     /**
@@ -54,7 +54,7 @@ public class UtilityFileTest
      */
     private static Media get(String file, String file2)
     {
-        return new Media(Media.getPath("src", "test", "resources", file, file2));
+        return Media.create(Media.getPath("src", "test", "resources", file, file2));
     }
 
     /**
@@ -103,7 +103,7 @@ public class UtilityFileTest
         Assert.assertEquals("png", UtilityFile.getExtension(descriptor));
         Assert.assertEquals("", UtilityFile.getExtension("noextension"));
         Assert.assertEquals("", UtilityFile.getExtension("noextension."));
-        Assert.assertEquals(file, Media.getFilenameFromPath(path));
+        Assert.assertEquals(file, UtilityFile.getFilenameFromPath(path));
         Assert.assertTrue(UtilityFile.isFile(path));
         Assert.assertFalse(UtilityFile.isFile(null));
         Assert.assertFalse(UtilityFile.isDir(path));

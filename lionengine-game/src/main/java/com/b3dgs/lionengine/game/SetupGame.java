@@ -57,7 +57,6 @@ public class SetupGame
     public SetupGame(Configurable configurable, Media config)
     {
         Check.notNull(configurable, SetupGame.ERROR_CONFIGURABLE);
-        Media.exist(config);
         this.configurable = configurable;
         this.configurable.loadData(config);
         configFile = config;

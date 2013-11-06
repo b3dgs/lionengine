@@ -58,7 +58,7 @@ public class SpriteTest
     public static void setUp()
     {
         Engine.start("SpriteTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
-        SpriteTest.media = Media.get("dot.png");
+        SpriteTest.media = Media.create("dot.png");
         SpriteTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -261,7 +261,7 @@ public class SpriteTest
      */
     private static void testSpriteTiledLoadError(int tw, int th)
     {
-        final Media media = Media.get("dot.png");
+        final Media media = Media.create("dot.png");
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(
@@ -293,7 +293,7 @@ public class SpriteTest
      */
     private static void testSpriteAnimatedLoadError(int hf, int vf)
     {
-        final Media media = Media.get("dot.png");
+        final Media media = Media.create("dot.png");
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
@@ -345,7 +345,7 @@ public class SpriteTest
         // Load unexisting image
         try
         {
-            Drawable.loadImage(Media.get("void"));
+            Drawable.loadImage(Media.create("void"));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -396,7 +396,7 @@ public class SpriteTest
         // Load unexisting sprite
         try
         {
-            Drawable.loadSprite(Media.get("void"));
+            Drawable.loadSprite(Media.create("void"));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -674,7 +674,7 @@ public class SpriteTest
     @Test
     public void testSpriteFont()
     {
-        final Media fontData = Media.get("fontdata.xml");
+        final Media fontData = Media.create("fontdata.xml");
         final String text = "a%z";
         final SpriteFont sprite = Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7);
         Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(SpriteTest.media, fontData, 6, 7)));

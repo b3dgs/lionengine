@@ -15,36 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.core;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.b3dgs.lionengine.core.Media;
+import java.io.InputStream;
 
 /**
- * Test the object game class.
+ * Media implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ObjectGameTest
+final class MediaImpl
+        extends Media
 {
-    /**
-     * Test the object game.
-     */
-    @Test
-    public void testObjectGame()
-    {
-        final Media media = Media.create(Media.getPath("src", "test", "resources", "type.xml"));
-        final ObjectGame object = new TestObject(new SetupGame(media));
-        Assert.assertTrue(object.getDataBoolean("flag"));
-        Assert.assertTrue(object.getDataInteger("index") == 1);
-        Assert.assertTrue(object.getDataDouble("index") == 1.0);
-        Assert.assertNotNull(object.getDataString("flag"));
-        Assert.assertNotNull(object.getDataCollision("default"));
-        Assert.assertNotNull(object.getDataAnimation("idle"));
+    /** Media path. */
+    private final String path;
 
-        object.loadData(media);
-        Assert.assertNotNull(object.getDataRoot());
+    /**
+     * Constructor.
+     * 
+     * @param path The media path.
+     */
+    public MediaImpl(String path)
+    {
+        this.path = path;
+    }
+
+    @Override
+    public String getPath()
+    {
+        return path;
+    }
+
+    @Override
+    public InputStream getStream()
+    {
+        return UtilityMedia.getStream(this, "MediaImpl", false);
     }
 }

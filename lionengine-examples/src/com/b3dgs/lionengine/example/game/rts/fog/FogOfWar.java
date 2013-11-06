@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.rts.fog;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.rts.map.FogOfWarRts;
@@ -35,8 +35,8 @@ final class FogOfWar
      */
     FogOfWar()
     {
-        final SpriteTiled hide = Drawable.loadSpriteTiled(Media.get("hide.png"), 16, 16);
-        final SpriteTiled fog = Drawable.loadSpriteTiled(Media.get("fog.png"), 16, 16);
+        final SpriteTiled hide = Drawable.loadSpriteTiled(UtilityMedia.get("hide.png"), 16, 16);
+        final SpriteTiled fog = Drawable.loadSpriteTiled(UtilityMedia.get("fog.png"), 16, 16);
         hide.load(false);
         fog.load(false);
         setFogTiles(hide, fog);

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
@@ -49,8 +47,6 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     private Media rasterFile;
     /** Rasters smooth flag. */
     private boolean smooth;
-    /** Rasters cache use flag. */
-    private boolean cache;
     /** Loaded state. */
     private boolean rasterLoaded;
 
@@ -72,14 +68,11 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
      * 
      * @param raster The raster media.
      * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
-     * @param cache <code>true</code> to cache data on hard drive (it is highly recommended to set it to
-     *            <code>false</code> !)
      */
-    public void setRaster(Media raster, boolean smooth, boolean cache)
+    public void setRaster(Media raster, boolean smooth)
     {
         this.rasterFile = raster;
         this.smooth = smooth;
-        this.cache = cache;
     }
 
     /**
@@ -129,43 +122,30 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         {
             for (int i = 1; i <= maxRasters; i++)
             {
-                String rasFile = null;
-                if (cache)
+                for (int c = 0; c < rasters.length; c++)
                 {
-                    rasFile = Media.getPath(Media.getTempDir(), directory, pattern + "_" + i + ".png");
-                }
-                if (cache && UtilityFile.exists(rasFile))
-                {
-                    final ImageBuffer rasterBuf = UtilityImage.getImageBuffer(new Media(rasFile), false);
-                    addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
-                }
-                else
-                {
-                    for (int c = 0; c < rasters.length; c++)
+                    final int[] data = rasters[c];
+                    if (smooth)
                     {
-                        final int[] data = rasters[c];
-                        if (smooth)
+                        if (m == 0)
                         {
-                            if (m == 0)
-                            {
-                                color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
-                                colorNext[c] = UtilityImage.getRasterColor(i + 1, data, maxRasters);
-                            }
-                            else
-                            {
-                                color[c] = UtilityImage.getRasterColor(maxRasters - i, data, maxRasters);
-                                colorNext[c] = UtilityImage.getRasterColor(maxRasters - i - 1, data, maxRasters);
-                            }
+                            color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
+                            colorNext[c] = UtilityImage.getRasterColor(i + 1, data, maxRasters);
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
-                            colorNext[c] = color[c];
+                            color[c] = UtilityImage.getRasterColor(maxRasters - i, data, maxRasters);
+                            colorNext[c] = UtilityImage.getRasterColor(maxRasters - i - 1, data, maxRasters);
                         }
                     }
-                    addRasterPattern(directory, pattern, i, color[0], color[1], color[2], colorNext[0], colorNext[1],
-                            colorNext[2]);
+                    else
+                    {
+                        color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
+                        colorNext[c] = color[c];
+                    }
                 }
+                addRasterPattern(directory, pattern, i, color[0], color[1], color[2], colorNext[0], colorNext[1],
+                        colorNext[2]);
             }
         }
     }
@@ -189,18 +169,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
         final SpriteTiled original = super.getPattern(pattern);
         final ImageBuffer buf = original.getSurface();
         final ImageBuffer rasterBuf = UtilityImage.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
-        final String rasFile = Media.getPath(Media.getTempDir(), directory, pattern + "_" + rasterID + ".png");
-        final File file = new File(Media.getPath(Media.getTempDir(), directory));
 
-        if (cache)
-        {
-            if (!file.exists())
-            {
-                final String path = file.getPath().replace(Media.getTempDir(), "").replace(Media.getSeparator(), ":");
-                Media.createPath(Media.getTempDir(), path.split(":"));
-            }
-            UtilityImage.saveImage(rasterBuf, new Media(rasFile));
-        }
         addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
     }
 

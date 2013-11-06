@@ -35,7 +35,7 @@ final class LoaderThread
      */
     LoaderThread(final Loader loader)
     {
-        super(Engine.getProgramName());
+        super(EngineImpl.getProgramName());
         this.loader = loader;
     }
 

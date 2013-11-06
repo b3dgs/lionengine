@@ -49,7 +49,7 @@ public class WavTest
             // Success
         }
 
-        final Wav sound = AudioWav.loadWav(new Media(Media.getPath("src", "test", "resources", "sound.wav")));
+        final Wav sound = AudioWav.loadWav(Media.create(Media.getPath("src", "test", "resources", "sound.wav")));
         try
         {
             sound.setVolume(-1);
@@ -82,7 +82,7 @@ public class WavTest
         Thread.sleep(200);
         sound.stop();
 
-        final Wav soundSim = AudioWav.loadWav(new Media(Media.getPath("src", "test", "resources", "sound.wav")), 2);
+        final Wav soundSim = AudioWav.loadWav(Media.create(Media.getPath("src", "test", "resources", "sound.wav")), 2);
         soundSim.play();
         soundSim.play(20);
         soundSim.play();
@@ -91,7 +91,7 @@ public class WavTest
         soundSim.play(100);
         soundSim.terminate();
 
-        final Wav soundSim2 = AudioWav.loadWav(new Media(Media.getPath("src", "test", "resources", "sound.wav")), 2);
+        final Wav soundSim2 = AudioWav.loadWav(Media.create(Media.getPath("src", "test", "resources", "sound.wav")), 2);
         soundSim2.setVolume(50);
         soundSim2.play();
         soundSim2.play();

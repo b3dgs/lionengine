@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.game.rts.CursorRts;
@@ -63,7 +63,7 @@ final class Scene
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
-        cursor = new CursorRts(mouse, camera, source, map, Media.get("cursor.png"));
+        cursor = new CursorRts(mouse, camera, source, map, UtilityMedia.get("cursor.png"));
         setMouseVisible(false);
     }
 
@@ -99,8 +99,8 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Media.get("level.png"), map, Media.get("tiles"));
-        map.loadCollisions(Media.get("tiles", "collisions.xml"));
+        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
+        map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
 
         camera.setView(0, 0, width, height);
         camera.setSensibility(30, 30);

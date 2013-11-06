@@ -106,12 +106,12 @@ public class FileTest
 
         FileTest.testFailures();
         Assert.assertNotNull(File.createXmlNode("test"));
-        try (FileReading reading = File.createFileReading(new Media(Media.getPath("src", "test", "resources",
+        try (FileReading reading = File.createFileReading(Media.create(Media.getPath("src", "test", "resources",
                 "malformed.xml")));)
         {
             Assert.assertNotNull(reading);
         }
-        final Media media = new Media(Media.getPath("src", "test", "resources", "test"));
+        final Media media = Media.create(Media.getPath("src", "test", "resources", "test"));
         try (FileWriting writing = File.createFileWriting(media);)
         {
             Assert.assertNotNull(writing);

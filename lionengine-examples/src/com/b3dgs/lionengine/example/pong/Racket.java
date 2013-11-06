@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.Key;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -69,7 +69,7 @@ final class Racket
      */
     Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
     {
-        super(new SetupGame(Media.get("sample.xml")));
+        super(new SetupGame(UtilityMedia.get("sample.xml")));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.automatic = automatic;

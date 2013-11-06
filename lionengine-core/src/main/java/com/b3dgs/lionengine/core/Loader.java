@@ -80,9 +80,9 @@ public final class Loader
         Check.notNull(config, Loader.ERROR_CONFIG);
         this.config = config;
         semaphore = new Semaphore(0);
-        screen = Engine.factoryGraphic.createScreen(config);
-        keyboard = Engine.factoryInput.createKeyboard();
-        mouse = Engine.factoryInput.createMouse();
+        screen = EngineImpl.factoryGraphic.createScreen(config);
+        keyboard = EngineImpl.factoryInput.createKeyboard();
+        mouse = EngineImpl.factoryInput.createMouse();
         screen.addKeyboard(keyboard);
         screen.addMouse(mouse);
         thread = new LoaderThread(this);

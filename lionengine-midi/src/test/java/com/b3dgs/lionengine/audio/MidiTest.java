@@ -71,7 +71,7 @@ public class MidiTest
 
         try
         {
-            AudioMidi.loadMidi(new Media(""));
+            AudioMidi.loadMidi(Media.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -82,7 +82,7 @@ public class MidiTest
         final Midi midi;
         try
         {
-            midi = AudioMidi.loadMidi(new Media(Media.getPath("src", "test", "resources", "music.mid")));
+            midi = AudioMidi.loadMidi(Media.create(Media.getPath("src", "test", "resources", "music.mid")));
             Assert.assertTrue(midi.getTicks() > 0);
         }
         catch (final LionEngineException exception)
@@ -160,7 +160,7 @@ public class MidiTest
 
         try
         {
-            final Midi midi2 = AudioMidi.loadMidi(new Media(Media.getPath("src", "test", "resources", "fail.mid")));
+            final Midi midi2 = AudioMidi.loadMidi(Media.create(Media.getPath("src", "test", "resources", "fail.mid")));
             midi2.play(false);
             Assert.fail();
         }
@@ -169,7 +169,7 @@ public class MidiTest
             // Success
         }
 
-        final Midi midi2 = AudioMidi.loadMidi(new Media(Media.getPath("src", "test", "resources", "music.mid")));
+        final Midi midi2 = AudioMidi.loadMidi(Media.create(Media.getPath("src", "test", "resources", "music.mid")));
         midi2.setLoop(6100, 8000);
         midi2.setStart(6100);
         midi2.play(true);

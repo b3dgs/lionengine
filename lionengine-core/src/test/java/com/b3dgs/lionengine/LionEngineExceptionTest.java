@@ -61,7 +61,7 @@ public class LionEngineExceptionTest
 
         try
         {
-            throw new LionEngineException(new Media("media"), message);
+            throw new LionEngineException(Media.create("media"), message);
         }
         catch (final LionEngineException exception)
         {

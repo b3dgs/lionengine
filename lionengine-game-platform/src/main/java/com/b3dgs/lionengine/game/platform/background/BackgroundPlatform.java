@@ -75,7 +75,7 @@ public abstract class BackgroundPlatform
      */
     public BackgroundElement createElement(String name, int x, int y, boolean alpha)
     {
-        return new BackgroundElement(x, y, createSprite(Media.get(name), alpha));
+        return new BackgroundElement(x, y, createSprite(Media.create(name), alpha));
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class BackgroundPlatform
      */
     public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
     {
-        return new BackgroundElement(x, y, createSprite(Media.get(path, name), alpha));
+        return new BackgroundElement(x, y, createSprite(Media.create(Media.getPath(path, name)), alpha));
     }
 
     /**

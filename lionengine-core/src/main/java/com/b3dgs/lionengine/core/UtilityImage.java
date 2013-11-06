@@ -94,7 +94,7 @@ public final class UtilityImage
     public static ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
-        try (InputStream inputStream = Media.getStream(media, "getBufferedImage", false);)
+        try (InputStream inputStream = media.getStream();)
         {
             return UtilityImage.graphicFactory.getImageBuffer(inputStream, alpha);
         }

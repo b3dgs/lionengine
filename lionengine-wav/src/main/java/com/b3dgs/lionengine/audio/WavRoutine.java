@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.audio;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
@@ -208,8 +207,7 @@ final class WavRoutine
                     restart = false;
 
                     // Open stream
-                    final File file = Media.getTempFile(media, true, false);
-                    audioInputStream = AudioSystem.getAudioInputStream(file);
+                    audioInputStream = AudioSystem.getAudioInputStream(media.getStream());
                     final AudioFormat audioFormat = audioInputStream.getFormat();
                     final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
 

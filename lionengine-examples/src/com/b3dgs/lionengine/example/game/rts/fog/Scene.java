@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.rts.CameraRts;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -79,7 +79,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Media.get("level.png"), map, Media.get("tiles"));
+        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
         fogOfWar.create(map);
         factoryEntity.load();
 

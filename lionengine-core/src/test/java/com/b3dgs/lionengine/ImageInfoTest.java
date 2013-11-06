@@ -47,7 +47,7 @@ public class ImageInfoTest
 
         try
         {
-            ImageInfo.get(new Media(""));
+            ImageInfo.get(Media.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -55,34 +55,34 @@ public class ImageInfoTest
             // Success
         }
 
-        final ImageInfo infoPng = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.png")));
+        final ImageInfo infoPng = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.png")));
         Assert.assertEquals(64, infoPng.getWidth());
         Assert.assertEquals(32, infoPng.getHeight());
         Assert.assertEquals("png", infoPng.getFormat());
 
-        final ImageInfo infoGif = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.gif")));
+        final ImageInfo infoGif = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.gif")));
         Assert.assertEquals(64, infoGif.getWidth());
         Assert.assertEquals(32, infoGif.getHeight());
         Assert.assertEquals("gif", infoGif.getFormat());
 
-        final ImageInfo infoBmp = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.bmp")));
+        final ImageInfo infoBmp = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.bmp")));
         Assert.assertEquals(64, infoBmp.getWidth());
         Assert.assertEquals(32, infoBmp.getHeight());
         Assert.assertEquals("bmp", infoBmp.getFormat());
 
-        final ImageInfo infoJpg = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.jpg")));
+        final ImageInfo infoJpg = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.jpg")));
         Assert.assertEquals(64, infoJpg.getWidth());
         Assert.assertEquals(32, infoJpg.getHeight());
         Assert.assertEquals("jpeg", infoJpg.getFormat());
 
-        final ImageInfo infoTiff = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.tif")));
+        final ImageInfo infoTiff = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.tif")));
         Assert.assertEquals(64, infoTiff.getWidth());
         Assert.assertEquals(32, infoTiff.getHeight());
         Assert.assertEquals("tiff", infoTiff.getFormat());
 
         try
         {
-            final ImageInfo infoTga = ImageInfo.get(new Media(Media.getPath("src", "test", "resources", "dot.tga")));
+            final ImageInfo infoTga = ImageInfo.get(Media.create(Media.getPath("src", "test", "resources", "dot.tga")));
             Assert.assertEquals("tga", infoTga.getFormat());
             Assert.fail();
         }

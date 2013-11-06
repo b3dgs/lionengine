@@ -42,7 +42,7 @@ public class XmlParserTest
     @Test
     public void testXmlWriteRead() throws XmlNodeNotFoundException
     {
-        fileXml = new Media("test.xml");
+        fileXml = Media.create("test.xml");
         try
         {
             testWriteXml();
@@ -90,7 +90,7 @@ public class XmlParserTest
         final XmlParser parserSave = File.createXmlParser();
         try
         {
-            parserSave.save(File.createXmlNode("child"), new Media(""));
+            parserSave.save(File.createXmlNode("child"), Media.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -104,7 +104,7 @@ public class XmlParserTest
         {
             try
             {
-                parserSave.save(File.createXmlNode("child"), new Media(file.getPath()));
+                parserSave.save(File.createXmlNode("child"), Media.create(file.getPath()));
                 Assert.fail();
             }
             catch (final LionEngineException exception)
@@ -169,7 +169,7 @@ public class XmlParserTest
         try
         {
             final XmlParser parser = File.createXmlParser();
-            parser.load(new Media(Media.getPath("src", "test", "resources", "malformed.xml")));
+            parser.load(Media.create(Media.getPath("src", "test", "resources", "malformed.xml")));
             Assert.fail();
         }
         catch (final LionEngineException exception)

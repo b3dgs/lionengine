@@ -25,8 +25,8 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.rts.skills.entity.FactoryEntity;
@@ -80,8 +80,8 @@ final class Scene
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraRts(map);
-        cursor = new Cursor(mouse, camera, source, map, Media.get("cursor.png"), Media.get("cursor_over.png"),
-                Media.get("cursor_order.png"));
+        cursor = new Cursor(mouse, camera, source, map, UtilityMedia.get("cursor.png"),
+                UtilityMedia.get("cursor_over.png"), UtilityMedia.get("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         factoryProduction = new FactoryProduction();
@@ -98,7 +98,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Media.get("level.png"), map, Media.get("tiles"));
+        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
 
         camera.setView(72, 0, 248, 240);
         camera.setSensibility(30, 30);

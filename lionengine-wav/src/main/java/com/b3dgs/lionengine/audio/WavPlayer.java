@@ -74,7 +74,6 @@ final class WavPlayer
      */
     WavPlayer(Media media, int maxSimultaneous)
     {
-        Media.exist(media);
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);

@@ -100,13 +100,12 @@ final class XmlParserImpl
     @Override
     public XmlNode load(Media media)
     {
-        Media.exist(media);
         final String file = media.getPath();
         try
         {
             final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
             constructeur.setErrorHandler(null);
-            final Document document = constructeur.parse(Media.getStream(media, "XmlParser", false));
+            final Document document = constructeur.parse(media.getStream());
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(root);
         }

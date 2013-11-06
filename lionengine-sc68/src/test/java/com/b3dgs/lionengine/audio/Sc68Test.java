@@ -79,7 +79,7 @@ public class Sc68Test
             // Success
         }
         sc68.setVolume(15);
-        sc68.play(Media.get("music.sc68"));
+        sc68.play(Media.create("music.sc68"));
         Thread.sleep(1000);
         sc68.pause();
         Thread.sleep(500);

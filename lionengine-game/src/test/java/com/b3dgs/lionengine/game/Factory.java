@@ -38,6 +38,6 @@ final class Factory
     @Override
     protected SetupGame createSetup(Type type)
     {
-        return new SetupGame(Media.get(Media.getPath("src", "test", "resources", "type.xml")));
+        return new SetupGame(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
     }
 }

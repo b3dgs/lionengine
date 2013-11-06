@@ -65,13 +65,13 @@ public class EngineTest
     @Test
     public void testEngine()
     {
-        Assert.assertEquals(null, Engine.getProgramName());
-        Assert.assertEquals(null, Engine.getProgramVersion());
+        Assert.assertEquals(null, EngineImpl.getProgramName());
+        Assert.assertEquals(null, EngineImpl.getProgramVersion());
 
         Engine.start("EngineTest", Version.create(0, 0, 0), Media.getPath("src", "test", "resources"));
         Engine.start("EngineTest", Version.create(0, 1, 0), Media.getPath("src", "test", "resources"));
-        Assert.assertEquals("EngineTest", Engine.getProgramName());
-        Assert.assertEquals("0.0.0", Engine.getProgramVersion());
+        Assert.assertEquals("EngineTest", EngineImpl.getProgramName());
+        Assert.assertEquals("0.0.0", EngineImpl.getProgramVersion());
         Engine.terminate();
 
         Engine.start("EngineTest", Version.create(0, 1, 0), Media.getPath("src", "test", "resources"));

@@ -48,7 +48,7 @@ public class OggTest
             // Success
         }
 
-        final Ogg ogg = AudioOgg.loadOgg(new Media(Media.getPath("src", "test", "resources", "music.ogg")));
+        final Ogg ogg = AudioOgg.loadOgg(Media.create(Media.getPath("src", "test", "resources", "music.ogg")));
         try
         {
             ogg.setVolume(-1);

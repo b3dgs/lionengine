@@ -86,8 +86,7 @@ public final class ImageInfo
      */
     private ImageInfo(Media media)
     {
-        Media.exist(media);
-        try (InputStream inputStream = Media.getStream(media, "ImageInfo", false);)
+        try (InputStream inputStream = media.getStream();)
         {
             final int byte1 = inputStream.read();
             final int byte2 = inputStream.read();

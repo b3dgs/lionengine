@@ -17,65 +17,38 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.geom.Line2D;
-
-import com.b3dgs.lionengine.Line;
+import java.io.InputStream;
 
 /**
- * Line implementation.
+ * Media implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class LineImpl
-        implements Line
+final class MediaImpl
+        extends Media
 {
-    /** Line 2D. */
-    private final Line2D line;
+    /** Media path. */
+    private final String path;
 
     /**
      * Constructor.
      * 
-     * @param x1 The x coordinate of the start point.
-     * @param y1 The y coordinate of the start point.
-     * @param x2 The x coordinate of the end point.
-     * @param y2 The y coordinate of the end point.
+     * @param path The media path.
      */
-    LineImpl(double x1, double y1, double x2, double y2)
+    public MediaImpl(String path)
     {
-        line = new Line2D.Double(x1, y1, x2, y2);
-    }
-
-    /*
-     * Line
-     */
-
-    @Override
-    public void set(double x1, double y1, double x2, double y2)
-    {
-        line.setLine(x1, y1, x2, y2);
+        this.path = path;
     }
 
     @Override
-    public double getX1()
+    public String getPath()
     {
-        return line.getX1();
+        return path;
     }
 
     @Override
-    public double getX2()
+    public InputStream getStream()
     {
-        return line.getX2();
-    }
-
-    @Override
-    public double getY1()
-    {
-        return line.getY1();
-    }
-
-    @Override
-    public double getY2()
-    {
-        return line.getY2();
+        return UtilityMedia.getStream(this, "MediaImpl", false);
     }
 }

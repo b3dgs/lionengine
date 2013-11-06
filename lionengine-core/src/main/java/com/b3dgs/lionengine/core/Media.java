@@ -18,17 +18,10 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Locale;
+import java.lang.reflect.InvocationTargetException;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -45,97 +38,54 @@ import com.b3dgs.lionengine.UtilityFile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Media
+public abstract class Media
 {
-    /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = Media.assignSystemTempDirectory();
-    /** Engine working directory. */
-    public static final String WORKING_DIR = Media.assignWorkingDirectory();
-    /** Error message internal. */
-    private static final String ERROR_MEDIA = "The media does not exist !";
     /** System separator. */
     private static String separator = File.separator;
-    /** Resources directory. */
-    private static String resourcesDir = "";
-    /** From jar flag. */
-    private static boolean fromJar = false;
-    /** Class loader. */
-    private static Class<?> loader = null;
-    /** Engine temporary directory. */
-    private static String tmpDir;
+    /** Media implementation. */
+    private static Class<? extends Media> mediaImpl;
 
     /**
-     * Check if the media exists. Throws a {@link LionEngineException} if not.
+     * Create a media.
      * 
-     * @param media The media to test.
-     */
-    public static void exist(Media media)
-    {
-        Check.notNull(media, Media.ERROR_MEDIA);
-        if (!Media.checkExist(media))
-        {
-            throw new LionEngineException(media, Media.ERROR_MEDIA);
-        }
-    }
-
-    /**
-     * Check if the media exists.
-     * 
-     * @param media The media to test.
-     * @return <code>true</code> if exists, <code>false</code> else.
-     */
-    public static boolean checkExist(Media media)
-    {
-        Check.notNull(media, Media.ERROR_MEDIA);
-        return UtilityFile.exists(Media.WORKING_DIR + Media.separator + media.getPath());
-    }
-
-    /**
-     * Create a full path and each directory.
-     * 
-     * @param source The source directory.
-     * @param path The full path.
-     * @return <code>true</code> if created, <code>false</code> else.
-     */
-    public static boolean createPath(String source, String... path)
-    {
-        final StringBuilder string = new StringBuilder(source);
-        for (final String name : path)
-        {
-            string.append(name).append(Media.separator);
-        }
-        return new File(string.toString()).mkdir();
-    }
-
-    /**
-     * Get a media from its path (start by default in the resources directory).
-     * <p>
-     * Example: <code>Media.get("sprites", "hero.png")</code> will return <code>resources/sprites/hero.png</code>. This
-     * function is OS independent !
-     * </p>
-     * 
-     * @param path The list of folders (if has) and file.
-     * @return The full media path.
-     */
-    public static Media get(String... path)
-    {
-        Check.notNull(path);
-        return new Media(Media.getPathSeparator(Media.separator, Media.resourcesDir,
-                Media.getPathSeparator(Media.separator, path)));
-    }
-
-    /**
-     * Get a media from an existing file descriptor.
-     * 
-     * @param file The file descriptor.
+     * @param path The media path.
      * @return The media instance.
      */
-    public static Media get(File file)
+    public static Media create(String path)
     {
-        final String filename = file.getPath();
-        final String localFile = filename.substring(Media.getRessourcesDir().length()
-                + filename.lastIndexOf(Media.getRessourcesDir()));
-        return Media.get(localFile);
+        try
+        {
+            return mediaImpl.getConstructor(String.class).newInstance(path);
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException exception)
+        {
+            throw new LionEngineException(exception, "Unable to load the media class !");
+        }
+    }
+
+    /**
+     * Set the file separator.
+     * 
+     * @param separator The file separator.
+     */
+    public static void setSeparator(String separator)
+    {
+        Media.separator = separator;
+    }
+
+    /**
+     * Get the media separator.
+     * 
+     * @return The media separator.
+     */
+    public static String getSeparator()
+    {
+        return Media.separator;
     }
 
     /**
@@ -147,7 +97,7 @@ public final class Media
      */
     public static String getPath(String... path)
     {
-        return Media.getPathSeparator(File.separator, path);
+        return Media.getPathSeparator(Media.separator, path);
     }
 
     /**
@@ -180,271 +130,13 @@ public final class Media
     }
 
     /**
-     * Get stream of specified path.
+     * Set the media implementation.
      * 
-     * @param media The input media path, pointing to a file.
-     * @param from The from function.
-     * @return The opened input stream.
+     * @param mediaImpl The media implementation.
      */
-    public static InputStream getStream(Media media, String from)
+    static void setMediaImpl(Class<? extends Media> mediaImpl)
     {
-        return Media.getStream(media, from, true);
-    }
-
-    /**
-     * Get stream of specified path.
-     * 
-     * @param media The input media path, pointing to a file.
-     * @param from The from function.
-     * @param logger The logger flag.
-     * @return The opened input stream.
-     */
-    public static InputStream getStream(Media media, String from, boolean logger)
-    {
-        Check.notNull(media, Media.ERROR_MEDIA);
-        final String path = media.getPath();
-        try
-        {
-            if (Media.fromJar)
-            {
-                if (logger)
-                {
-                    Verbose.info("getStream from " + from, ": \"", path, "\"");
-                }
-                return Media.loader.getResourceAsStream(path);
-            }
-            if (logger)
-            {
-                Verbose.info("getStream from " + from, ": \"", path, "\"");
-            }
-            return new FileInputStream(path);
-        }
-        catch (final FileNotFoundException exception)
-        {
-            throw new LionEngineException("File not found: \"", path, "\"");
-        }
-    }
-
-    /**
-     * Copy stream into a temporary file and return this file (localized on current system).
-     * 
-     * @param outfile The file which will store stream.
-     * @param stream The input stream.
-     * @return The file containing a copy of the input stream.
-     */
-    public static File getFile(String outfile, InputStream stream)
-    {
-        final File file = new File(outfile);
-        try (OutputStream out = new FileOutputStream(file);)
-        {
-            try
-            {
-                final byte[] bytes = new byte[1024];
-                int read;
-
-                while ((read = stream.read(bytes)) != -1)
-                {
-                    out.write(bytes, 0, read);
-                }
-                out.flush();
-                Verbose.info("File temporary created: ", outfile);
-            }
-            finally
-            {
-                stream.close();
-            }
-        }
-        catch (final IOException exception)
-        {
-            Verbose.critical(Media.class, "getFile", "Temporary file error on: \"", outfile, "\"");
-        }
-        return file;
-    }
-
-    /**
-     * Get a temporary file, including cache check. The file will be cached only in a JAR context.
-     * 
-     * @param media The original media path (may be inside a JAR).
-     * @param cache The cache state (<code>true</code> will check if file is not already cached).
-     * @param mustExist <code>true</code> if the file must already exist (will throw a {@link LionEngineException} if
-     *            not existing), <code>false</code> else.
-     * @return The copy of original file (may be cached file reference).
-     */
-    public static File getTempFile(Media media, boolean cache, boolean mustExist)
-    {
-        Check.notNull(media, Media.ERROR_MEDIA);
-        final String filename = media.getPath();
-        if (!Media.fromJar && new File(filename).exists())
-        {
-            return new File(filename);
-        }
-        if (cache)
-        {
-            final String cacheFile = Media.getPath(Media.tmpDir, Media.getFilenameFromPath(filename));
-            if (new File(cacheFile).exists())
-            {
-                return new File(cacheFile);
-            }
-        }
-        Check.argument(!mustExist, "The temp file must exist: \"", filename, "\"");
-        final String str = filename.replace(Media.separator.charAt(0), ';');
-        final String[] slp = str.split(";");
-        final String n = slp[slp.length - 1];
-
-        return Media.getFile(Media.getPath(Media.tmpDir, n), Media.getStream(media, "getTempFile"));
-    }
-
-    /**
-     * Get the filename from a path (last part of a path, after the last separator).
-     * 
-     * @param path The path used to extract filename.
-     * @return The filename extracted from path.
-     */
-    public static String getFilenameFromPath(String path)
-    {
-        int i = path.lastIndexOf(Media.separator);
-        if (i == -1)
-        {
-            i = path.lastIndexOf(Media.separator);
-        }
-        return path.substring(i + 1, path.length());
-    }
-
-    /**
-     * Get temporary directory (where are stored files from jar).
-     * 
-     * @return The temporary directory (<code>/tmp, .../AppData/Local/Temp, ...</code>)
-     */
-    public static String getTempDir()
-    {
-        return Media.tmpDir;
-    }
-
-    /**
-     * Get current working directory (execution directory).
-     * 
-     * @return The working directory.
-     */
-    public static String getWorkingDir()
-    {
-        return Media.WORKING_DIR;
-    }
-
-    /**
-     * Get current resource directory.
-     * 
-     * @return The resource directory.
-     */
-    public static String getRessourcesDir()
-    {
-        return Media.resourcesDir;
-    }
-
-    /**
-     * Get current separator character (equals / in case of applet, else OS dependent).
-     * 
-     * @return The path separator representation.
-     */
-    public static String getSeparator()
-    {
-        return Media.separator;
-    }
-
-    /**
-     * Activate or no the resources loading from *.jar.
-     * 
-     * @param clazz The class loader reference (resources entry point).
-     * @param enabled The activation state (<code>true</code> to enable, <code>false</code> to disable).
-     */
-    static void setLoadFromJar(Class<?> clazz, boolean enabled)
-    {
-        Media.fromJar = enabled;
-        if (enabled)
-        {
-            Media.loader = clazz;
-            Media.separator = "/";
-        }
-        else
-        {
-            Media.loader = null;
-            Media.separator = File.separator;
-        }
-    }
-
-    /**
-     * Define resources directory. Root for all game medias.
-     * 
-     * @param dir The main root directory.
-     */
-    static void setResourcesDirectory(String dir)
-    {
-        if (dir == null)
-        {
-            Media.resourcesDir = "";
-        }
-        else
-        {
-            Media.resourcesDir = dir + Media.separator;
-        }
-    }
-
-    /**
-     * Set the temporary directory name from the program name.
-     * 
-     * @param programName The program name.
-     */
-    static void setTempDirectory(String programName)
-    {
-        final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-        Media.tmpDir = Media.getPath(Media.SYSTEM_TEMP_DIR, dir);
-    }
-
-    /**
-     * Get the working directory.
-     * 
-     * @return The working directory.
-     */
-    private static String assignWorkingDirectory()
-    {
-        try
-        {
-            return System.getProperty("user.dir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
-        }
-    }
-
-    /**
-     * Get the system temp directory.
-     * 
-     * @return The system temp directory.
-     */
-    private static String assignSystemTempDirectory()
-    {
-        try
-        {
-            return System.getProperty("java.io.tmpdir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
-        }
-    }
-
-    /** Media path. */
-    private final String path;
-
-    /**
-     * Constructor.
-     * 
-     * @param path The media path (must not be null).
-     */
-    public Media(String path)
-    {
-        Check.notNull(path, Media.ERROR_MEDIA);
-        this.path = path;
+        Media.mediaImpl = mediaImpl;
     }
 
     /**
@@ -452,8 +144,12 @@ public final class Media
      * 
      * @return The media path.
      */
-    public String getPath()
-    {
-        return path;
-    }
+    public abstract String getPath();
+
+    /**
+     * Get the media stream.
+     * 
+     * @return The media stream.
+     */
+    public abstract InputStream getStream();
 }

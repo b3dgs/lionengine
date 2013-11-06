@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Key;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -69,7 +69,7 @@ final class Mario
      */
     Mario(int desiredFps)
     {
-        super(new SetupSurfaceGame(Media.get("mario.xml")));
+        super(new SetupSurfaceGame(UtilityMedia.get("mario.xml")));
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();

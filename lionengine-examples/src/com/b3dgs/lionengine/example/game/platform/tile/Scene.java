@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
@@ -69,7 +69,7 @@ final class Scene
     protected void load()
     {
         map.create(20, 15);
-        map.loadPatterns(Media.get("tiles"));
+        map.loadPatterns(UtilityMedia.get("tiles"));
         map.createBlock(5, 7);
         map.createBlock(5, 8);
         map.createBlock(5, 9);

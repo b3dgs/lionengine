@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -172,7 +173,7 @@ public class ModuleGame
         @Override
         protected SetupGame createSetup(EntityType type)
         {
-            return new SetupGame(Media.get(type.name() + ".xml"));
+            return new SetupGame(UtilityMedia.get(type.name() + ".xml"));
         }
     }
 
@@ -248,6 +249,6 @@ public class ModuleGame
 
     private void utilityTileExtractor()
     {
-        TileExtractor.start(Media.get("level.png"), Media.get("sheet.png"), 16, 16, 256, 256);
+        TileExtractor.start(UtilityMedia.get("level.png"), UtilityMedia.get("sheet.png"), 16, 16, 256, 256);
     }
 }

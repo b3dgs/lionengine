@@ -24,13 +24,13 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Explode
+public final class Explode
         extends Effect
 {
     /**
      * {@link Effect#Effect(com.b3dgs.lionengine.game.SetupSurfaceGame)}
      */
-    Explode(SetupSurfaceGame setup)
+    public Explode(SetupSurfaceGame setup)
     {
         super(setup);
     }

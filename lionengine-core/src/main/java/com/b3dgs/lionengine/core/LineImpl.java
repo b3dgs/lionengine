@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.Line;
 final class LineImpl
         implements Line
 {
-    /** X1. */
+    /** The X coordinate of the start point of the line segment. */
     private double x1;
-    /** Y1. */
+    /** The Y coordinate of the start point of the line segment. */
     private double y1;
-    /** X2. */
+    /** The X coordinate of the end point of the line segment. */
     private double x2;
-    /** Y2. */
+    /** The Y coordinate of the end point of the line segment. */
     private double y2;
 
     /**
@@ -48,8 +48,8 @@ final class LineImpl
     {
         this.x1 = x1;
         this.y1 = y1;
-        this.y2 = y2;
         this.x2 = x2;
+        this.y2 = y2;
     }
 
     /*
@@ -61,8 +61,8 @@ final class LineImpl
     {
         this.x1 = x1;
         this.y1 = y1;
-        this.y2 = y2;
         this.x2 = x2;
+        this.y2 = y2;
     }
 
     @Override

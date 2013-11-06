@@ -50,8 +50,8 @@ public class DrawableTest
     public static void setUp()
     {
         Engine.start("DrawableTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
-        DrawableTest.media = Media.get("dot.png");
-        DrawableTest.font = Media.get("fontdata.xml");
+        DrawableTest.media = Media.create("dot.png");
+        DrawableTest.font = Media.create("fontdata.xml");
     }
 
     /**
@@ -74,7 +74,7 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadImage(new Media("void")));
+                Assert.assertNotNull(Drawable.loadImage(Media.create("void")));
                 Assert.fail();
             }
             else
@@ -103,7 +103,7 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadSprite(new Media("void")));
+                Assert.assertNotNull(Drawable.loadSprite(Media.create("void")));
                 Assert.fail();
             }
             else

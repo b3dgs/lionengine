@@ -58,7 +58,7 @@ public class SetupSurfaceGame
     {
         super(configurable, config);
         final String conf = config.getPath();
-        surfaceFile = new Media(conf.substring(0, conf.lastIndexOf(Media.getSeparator()) + 1)
+        surfaceFile = Media.create(conf.substring(0, conf.lastIndexOf(Media.getSeparator()) + 1)
                 + this.configurable.getDataString("surface"));
         surface = UtilityImage.getImageBuffer(surfaceFile, alpha);
     }

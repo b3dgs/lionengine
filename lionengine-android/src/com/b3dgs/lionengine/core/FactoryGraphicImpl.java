@@ -23,6 +23,7 @@ import java.io.OutputStream;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
@@ -103,7 +104,7 @@ final class FactoryGraphicImpl
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
         // TODO: ApplyMask
-        return null;
+        return imageBuffer;
     }
 
     @Override
@@ -130,36 +131,46 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        // TODO: Rotate
-        return null;
+        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        return new ImageBufferImpl(rotated);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        // TODO: Resize
-        return null;
+        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Bitmap resized = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        return new ImageBufferImpl(resized);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        // TODO: FlipHorizontal
-        return null;
+        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Matrix matrix = new Matrix();
+        matrix.setScale(-1, 1);
+        final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        return new ImageBufferImpl(rotated);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        // TODO: FlipVertical
-        return null;
+        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Matrix matrix = new Matrix();
+        matrix.setScale(1, -1);
+        final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        return new ImageBufferImpl(rotated);
     }
 
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
     {
         // TODO: ApplyFilter
-        return null;
+        return imageBuffer;
     }
 
     @Override
@@ -173,6 +184,6 @@ final class FactoryGraphicImpl
             int refSize)
     {
         // TODO: GetRasterBuffer
-        return null;
+        return imageBuffer;
     }
 }

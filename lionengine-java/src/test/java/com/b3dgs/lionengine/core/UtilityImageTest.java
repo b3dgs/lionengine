@@ -117,11 +117,11 @@ public class UtilityImageTest
         Assert.assertEquals(bufferedImage.getWidth(), 16);
         Assert.assertEquals(bufferedImage.getHeight(), 32);
 
-        final ImageBuffer image0 = UtilityImage.getImageBuffer(Media.get("dot.png"), true);
-        final ImageBuffer image1 = UtilityImage.getImageBuffer(Media.get("dot.png"), false);
+        final ImageBuffer image0 = UtilityImage.getImageBuffer(Media.create("dot.png"), true);
+        final ImageBuffer image1 = UtilityImage.getImageBuffer(Media.create("dot.png"), false);
         try
         {
-            UtilityImage.getImageBuffer(Media.get("null"), false);
+            UtilityImage.getImageBuffer(Media.create("null"), false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -131,7 +131,7 @@ public class UtilityImageTest
 
         try
         {
-            UtilityImage.getImageBuffer(Media.get("wrong_image.png"), false);
+            UtilityImage.getImageBuffer(Media.create("wrong_image.png"), false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -196,19 +196,19 @@ public class UtilityImageTest
             // Success
         }
 
-        UtilityImage.saveImage(image1, Media.get("testImage.png"));
-        final ImageBuffer loaded = UtilityImage.getImageBuffer(Media.get("testImage.png"), false);
+        UtilityImage.saveImage(image1, Media.create("testImage.png"));
+        final ImageBuffer loaded = UtilityImage.getImageBuffer(Media.create("testImage.png"), false);
         Assert.assertEquals(image1.getWidth(), loaded.getWidth());
         Assert.assertEquals(image1.getHeight(), loaded.getHeight());
-        final File file = new File(Media.get("testImage.png").getPath());
+        final File file = new File(Media.create("testImage.png").getPath());
         Assert.assertTrue(file.delete());
 
         UtilityImage.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
 
-        Assert.assertNotNull(UtilityImage.loadRaster(Media.get("raster.xml")));
+        Assert.assertNotNull(UtilityImage.loadRaster(Media.create("raster.xml")));
         try
         {
-            UtilityImage.loadRaster(Media.get("rasterError.xml"));
+            UtilityImage.loadRaster(Media.create("rasterError.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

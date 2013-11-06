@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.rts.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.rts.skills.Cursor;
@@ -56,7 +57,8 @@ final class SetupSkill
         this.type = type;
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
-        icon = Drawable.loadSpriteTiled(Media.get(FactorySkill.SKILL_PATH, configurable.getDataString("icon")), 27, 19);
+        icon = Drawable.loadSpriteTiled(UtilityMedia.get(FactorySkill.SKILL_PATH, configurable.getDataString("icon")),
+                27, 19);
         icon.load(false);
     }
 }

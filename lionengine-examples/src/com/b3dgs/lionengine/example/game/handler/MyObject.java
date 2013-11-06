@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
@@ -35,7 +35,7 @@ final class MyObject
      */
     MyObject()
     {
-        super(new SetupGame(Media.get("my_object.xml")));
+        super(new SetupGame(UtilityMedia.get("my_object.xml")));
     }
 
     /**

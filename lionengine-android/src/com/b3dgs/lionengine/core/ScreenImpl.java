@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.core;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
@@ -33,11 +35,23 @@ import com.b3dgs.lionengine.Resolution;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenImpl
+public final class ScreenImpl
         implements Screen
 {
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
+    /** View. */
+    private static SurfaceHolder view;
+
+    /**
+     * Set the view holder.
+     * 
+     * @param view The view holder.
+     */
+    public static void setView(SurfaceHolder view)
+    {
+        ScreenImpl.view = view;
+    }
 
     /** Active graphic buffer reference. */
     private final Graphic graphics;
@@ -45,7 +59,6 @@ final class ScreenImpl
     private final Config config;
     /** Active sequence reference. */
     Sequence sequence;
-
     /** Canvas buffer. */
     private Bitmap buf;
     /** Windowed canvas. */
@@ -78,9 +91,10 @@ final class ScreenImpl
         // Create canvas
         if (canvas == null)
         {
-            buf = Bitmap.createBitmap(config.getSource().getWidth(), config.getSource().getHeight(),
-                    Bitmap.Config.ARGB_8888);
+            buf = Bitmap.createBitmap(output.getWidth(), output.getHeight(), Bitmap.Config.ARGB_8888);
             canvas = new Canvas(buf);
+            canvas.drawColor(Color.RED);
+            graphics.setGraphic(canvas);
         }
     }
 
@@ -105,28 +119,28 @@ final class ScreenImpl
     public void show()
     {
         // TODO: Show ?
+        // view.setVisibility(View.VISIBLE);
+        canvas = view.lockCanvas();
+        graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        canvas.save();
-        graphics.setGraphic(buf);
-        canvas.restore();
+        view.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        graphics.clear(config.getOutput());
-        update();
-        // TODO: Dispose ?
+        // graphics.clear(config.getOutput());
+        // view.destroyDrawingCache();
     }
 
     @Override
     public void requestFocus()
     {
-        // Nothing to do
+        // view.requestFocus();
     }
 
     @Override

@@ -64,7 +64,7 @@ public class WorldTest
         final Scene scene = new Scene(loader);
         final World world = new World(scene);
 
-        final Media media = Media.get("test");
+        final Media media = Media.create("test");
         try
         {
             world.saveToFile(media);
@@ -74,7 +74,7 @@ public class WorldTest
             new File(media.getPath()).delete();
         }
 
-        world.loadFromFile(Media.get("type.xml"));
+        world.loadFromFile(Media.create("type.xml"));
         world.update(0);
         world.render(g);
     }
@@ -102,7 +102,7 @@ public class WorldTest
             // Success
         }
 
-        final Media media = Media.get("test");
+        final Media media = Media.create("test");
         try
         {
             world.saveToFile(media);
@@ -119,7 +119,7 @@ public class WorldTest
 
         try
         {
-            world.loadFromFile(Media.get("type.xml"));
+            world.loadFromFile(Media.create("type.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

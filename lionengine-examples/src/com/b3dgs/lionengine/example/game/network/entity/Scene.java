@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * Game loop designed to handle our little world.
@@ -72,7 +72,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get("level.map"));
+        world.loadFromFile(UtilityMedia.get("level.map"));
     }
 
     @Override

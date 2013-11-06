@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -46,7 +46,8 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        cursor = new Cursor(mouse, source, Media.get("cursor", "cursor1.png"), Media.get("cursor", "cursor2.png"));
+        cursor = new Cursor(mouse, source, UtilityMedia.get("cursor", "cursor1.png"), UtilityMedia.get("cursor",
+                "cursor2.png"));
         setMouseVisible(false);
     }
 
