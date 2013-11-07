@@ -102,7 +102,7 @@ public final class UtilityFile
         }
         return ext;
     }
-    
+
     /**
      * Get the filename from a path (last part of a path, after the last separator).
      * 
@@ -246,10 +246,15 @@ public final class UtilityFile
             {
                 UtilityFile.deleteDirectory(new File(directory, element));
             }
+            if (!directory.delete())
+            {
+                Verbose.warning(UtilityFile.class, "deleteDirectory", "Directory not deleted: " + directory);
+            }
         }
-        if (!directory.delete())
+        else if (directory.isFile())
         {
-            Verbose.warning(UtilityFile.class, "deleteDir", "Directory not deleted: " + directory);
+            deleteFile(directory);
+            Verbose.info("File deleted: " + directory);
         }
     }
 

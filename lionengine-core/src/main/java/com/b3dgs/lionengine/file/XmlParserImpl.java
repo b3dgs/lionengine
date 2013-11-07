@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.file;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -123,7 +122,7 @@ final class XmlParserImpl
     public void save(XmlNode root, Media media)
     {
         final String file = media.getPath();
-        try (OutputStream outputStream = new FileOutputStream(file);)
+        try (OutputStream outputStream = media.getOutputStream();)
         {
             final Transformer transformer = XmlParserImpl.getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)

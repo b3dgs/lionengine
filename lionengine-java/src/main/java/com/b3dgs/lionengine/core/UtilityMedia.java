@@ -182,6 +182,32 @@ public final class UtilityMedia
     }
 
     /**
+     * Get output stream of specified path.
+     * 
+     * @param media The input media path, pointing to a file.
+     * @param from The from function.
+     * @param logger The logger flag.
+     * @return The opened input stream.
+     */
+    public static OutputStream getOutputStream(Media media, String from, boolean logger)
+    {
+        Check.notNull(media, UtilityMedia.ERROR_MEDIA);
+        final String path = Media.getPath(UtilityMedia.resourcesDir, media.getPath());
+        try
+        {
+            if (logger)
+            {
+                Verbose.info("getOutputStream from " + from, ": \"", path, "\"");
+            }
+            return new FileOutputStream(path);
+        }
+        catch (final FileNotFoundException exception)
+        {
+            throw new LionEngineException("Cannot open the file: \"", path, "\"");
+        }
+    }
+
+    /**
      * Copy stream into a temporary file and return this file (localized on current system).
      * 
      * @param outfile The file which will store stream.

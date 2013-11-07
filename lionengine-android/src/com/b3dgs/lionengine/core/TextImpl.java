@@ -77,12 +77,13 @@ final class TextImpl
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        // TODO: Draw
+        g.drawString(x, y, alignment, text);
     }
 
     @Override
     public void render(Graphic g)
     {
+        g.setColor(color);
         draw(g, x, y, align, txt);
         if (txtChanged)
         {

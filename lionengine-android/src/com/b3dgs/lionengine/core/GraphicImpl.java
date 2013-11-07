@@ -20,9 +20,13 @@ package com.b3dgs.lionengine.core;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Shader.TileMode;
 
+import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.GradientColor;
 import com.b3dgs.lionengine.Graphic;
@@ -53,6 +57,12 @@ final class GraphicImpl
     private Canvas g;
     /** Last transform. */
     private Transform lastTransform;
+    /** Last gradient. */
+    private GradientColor gradientColor;
+    /** Linear gradient. */
+    private LinearGradient linearGradient;
+    /** Last matrix. */
+    private Matrix matrix;
 
     /**
      * Constructor.
@@ -81,6 +91,7 @@ final class GraphicImpl
     public void clear(Resolution resolution)
     {
         paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.FILL);
         g.drawRect(0, 0, resolution.getWidth(), resolution.getHeight(), paint);
     }
 
@@ -88,6 +99,7 @@ final class GraphicImpl
     public void clear(int x, int y, int width, int height)
     {
         paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.FILL);
         g.drawRect(x, y, width, height, paint);
     }
 
@@ -115,29 +127,31 @@ final class GraphicImpl
         if (lastTransform != transform)
         {
             lastTransform = transform;
-            g.scale((float) transform.getScaleX(), (float) transform.getScaleY());
+            matrix = new Matrix();
+            matrix.preScale((float) transform.getScaleX(), (float) transform.getScaleY());
         }
-        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, paint);
+        g.drawBitmap(GraphicImpl.getBuffer(image), matrix, paint);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        final Rect src = new Rect(dx1, dy1, dx2, dy2);
-        final Rect dest = new Rect(sx1, sy1, sx2, sy2);
+        final Rect src = new Rect(sx1, sy1, sx2, sy2);
+        final Rect dest = new Rect(dx1, dy1, dx2, dy2);
         g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, paint);
     }
 
     @Override
     public void drawRect(int x, int y, int width, int height, boolean fill)
     {
-        // TODO: Fill ?
         if (fill)
         {
+            paint.setStyle(Paint.Style.FILL);
             g.drawRect(x, y, x + width, y + height, paint);
         }
         else
         {
+            paint.setStyle(Paint.Style.STROKE);
             g.drawRect(x, y, x + width, y + height, paint);
         }
     }
@@ -145,7 +159,9 @@ final class GraphicImpl
     @Override
     public void drawGradient(int x, int y, int width, int height)
     {
-        // TODO: Gradient
+        paint.setShader(linearGradient);
+        drawRect(x, y, width, height, true);
+        paint.setShader(null);
     }
 
     @Override
@@ -157,7 +173,37 @@ final class GraphicImpl
     @Override
     public void drawOval(int x, int y, int width, int height, boolean fill)
     {
+        if (fill)
+        {
+            paint.setStyle(Paint.Style.FILL);
+        }
+        else
+        {
+            paint.setStyle(Paint.Style.STROKE);
+        }
         g.drawCircle(x, y, width * height, paint);
+    }
+
+    @Override
+    public void drawString(int x, int y, Align alignment, String text)
+    {
+        final Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        switch (alignment)
+        {
+            case LEFT:
+                g.drawText(text, x, y, paint);
+                break;
+            case CENTER:
+                g.drawText(text, x + (bounds.right - bounds.left) / 2, y, paint);
+                break;
+            case RIGHT:
+                g.drawText(text, x - bounds.right, y, paint);
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + alignment);
+        }
+
     }
 
     @Override
@@ -169,7 +215,11 @@ final class GraphicImpl
     @Override
     public void setColorGradient(GradientColor gc)
     {
-        // TODO: Gradient
+        if (gc != gradientColor)
+        {
+            linearGradient = new LinearGradient(gc.getX1(), gc.getY1(), gc.getX2(), gc.getY2(), gc.getColor1()
+                    .getRgba(), gc.getColor2().getRgba(), TileMode.CLAMP);
+        }
     }
 
     @Override

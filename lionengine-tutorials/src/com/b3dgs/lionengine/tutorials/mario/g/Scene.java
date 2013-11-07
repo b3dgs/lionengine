@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * Game loop designed to handle our little world.
@@ -51,7 +51,7 @@ final class Scene
     {
         super(loader, Scene.NATIVE);
         world = new World(this);
-        music = AudioMidi.loadMidi(Media.get("musics", "music.mid"));
+        music = AudioMidi.loadMidi(UtilityMedia.get("musics", "music.mid"));
     }
 
     /*
@@ -61,7 +61,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Media.get("smb_level1-1.lvl"));
+        world.loadFromFile(UtilityMedia.get("smb_level1-1.lvl"));
         music.play(true);
     }
 

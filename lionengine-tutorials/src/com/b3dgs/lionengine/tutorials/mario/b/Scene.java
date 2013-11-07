@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -66,8 +66,8 @@ final class Scene
     private void importAndSave()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Media.get("smb_level1-1.png"), map, Media.get("tiles"));
-        try (FileWriting file = File.createFileWriting(Media.get("smb_level1-1.lvl"));)
+        rip.start(UtilityMedia.get("smb_level1-1.png"), map, UtilityMedia.get("tiles"));
+        try (FileWriting file = File.createFileWriting(UtilityMedia.get("smb_level1-1.lvl"));)
         {
             map.save(file);
         }
@@ -85,7 +85,7 @@ final class Scene
     protected void load()
     {
         importAndSave();
-        try (FileReading reading = File.createFileReading(Media.get("smb_level1-1.lvl"));)
+        try (FileReading reading = File.createFileReading(UtilityMedia.get("smb_level1-1.lvl"));)
         {
             map.load(reading);
         }

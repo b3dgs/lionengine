@@ -388,6 +388,12 @@ final class ScreenImpl
     }
 
     @Override
+    public void preUpdate()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void update()
     {
         if (hasApplet)
@@ -545,6 +551,12 @@ final class ScreenImpl
             frame.setEnabled(true);
             frame.setVisible(true);
         }
+    }
+
+    @Override
+    public boolean isReady()
+    {
+        return buf != null;
     }
 
     /*

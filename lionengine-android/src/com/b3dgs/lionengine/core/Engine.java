@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
-import android.content.res.AssetManager;
+import android.app.Activity;
+import android.view.SurfaceView;
 
 import com.b3dgs.lionengine.Version;
 
@@ -72,11 +73,11 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param assetManager The asset manager reference (must not be <code>null</code>).
+     * @param activity The activity reference (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, AssetManager assetManager)
+    public static void start(String name, Version version, Activity activity)
     {
-        Engine.start(name, version, assetManager, Verbose.CRITICAL);
+        Engine.start(name, version, activity, Verbose.CRITICAL);
     }
 
     /**
@@ -84,15 +85,20 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param assetManager The asset manager reference (must not be <code>null</code>).
+     * @param activity The activity reference (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, AssetManager assetManager, Verbose level)
+    public static void start(String name, Version version, Activity activity, Verbose level)
     {
         if (!EngineImpl.started)
         {
+            final SurfaceView view = new SurfaceView(activity);
+            view.setWillNotDraw(false);
+            ScreenImpl.setView(view.getHolder());
+            activity.setContentView(view);
+
             EngineImpl.start(name, version, level);
-            Engine.init(name, version, assetManager, level);
+            Engine.init(name, version, activity, level);
         }
     }
 
@@ -110,12 +116,13 @@ public final class Engine
      * 
      * @param name The program name.
      * @param version The program version.
-     * @param assetManager The asset manager reference.
+     * @param activity The activity reference.
      * @param level The verbose level.
      */
-    private static void init(String name, Version version, AssetManager assetManager, Verbose level)
+    private static void init(String name, Version version, Activity activity, Verbose level)
     {
         Media.setMediaImpl(MediaImpl.class);
-        UtilityMedia.setAssertManager(assetManager);
+        UtilityMedia.setAssertManager(activity.getAssets());
+        UtilityMedia.setContentResolver(activity.getContentResolver());
     }
 }

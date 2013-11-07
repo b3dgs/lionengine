@@ -116,6 +116,19 @@ public final class Loader
     {
         while (nextSequence != null)
         {
+            // Wait for screen
+            while (!screen.isReady())
+            {
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch (final InterruptedException exception)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
             // Select next sequence
             final Sequence sequence = nextSequence;
             screen.setSequence(sequence);

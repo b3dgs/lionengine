@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -219,8 +217,7 @@ public final class UtilityImage
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
         final String imagefile = media.getPath();
-        final File file = new File(imagefile);
-        try (OutputStream outputStream = new FileOutputStream(file);)
+        try (OutputStream outputStream = media.getOutputStream();)
         {
             UtilityImage.graphicFactory.saveImage(image, outputStream);
         }

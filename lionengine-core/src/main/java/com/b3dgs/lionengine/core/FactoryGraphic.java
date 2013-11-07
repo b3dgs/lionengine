@@ -101,11 +101,11 @@ interface FactoryGraphic
      * Split an image into an array of sub image (data not shared).
      * 
      * @param image The image to split.
-     * @param row The number of horizontal divisions.
-     * @param col The number of vertical divisions.
+     * @param h The number of horizontal divisions.
+     * @param v The number of vertical divisions.
      * @return The splited images.
      */
-    ImageBuffer[] splitImage(ImageBuffer image, int row, int col);
+    ImageBuffer[] splitImage(ImageBuffer image, int h, int v);
 
     /**
      * Rotate input buffered image.

@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.tutorials.world;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityMedia;
 
 @SuppressWarnings("all")
 final class Scene
@@ -40,8 +40,8 @@ final class Scene
     @Override
     protected void load()
     {
-        world.saveToFile(Media.get("world.lvl"));
-        world.loadFromFile(Media.get("world.lvl"));
+        world.saveToFile(UtilityMedia.get("world.lvl"));
+        world.loadFromFile(UtilityMedia.get("world.lvl"));
     }
 
     @Override

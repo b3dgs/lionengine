@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
@@ -36,7 +35,7 @@ import com.b3dgs.lionengine.Resolution;
  * @see Mouse
  */
 public final class ScreenImpl
-        implements Screen
+        implements Screen, SurfaceHolder.Callback
 {
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
@@ -59,10 +58,10 @@ public final class ScreenImpl
     private final Config config;
     /** Active sequence reference. */
     Sequence sequence;
-    /** Canvas buffer. */
-    private Bitmap buf;
     /** Windowed canvas. */
     private Canvas canvas;
+    /** Ready flag. */
+    private boolean ready;
 
     /**
      * Constructor.
@@ -79,6 +78,7 @@ public final class ScreenImpl
 
         // Prepare main frame
         setResolution(config.getOutput());
+        ScreenImpl.view.addCallback(this);
     }
 
     /**
@@ -91,8 +91,8 @@ public final class ScreenImpl
         // Create canvas
         if (canvas == null)
         {
-            buf = Bitmap.createBitmap(output.getWidth(), output.getHeight(), Bitmap.Config.ARGB_8888);
-            canvas = new Canvas(buf);
+            ScreenImpl.view.setFixedSize(output.getWidth(), output.getHeight());
+            canvas = new Canvas();
             canvas.drawColor(Color.RED);
             graphics.setGraphic(canvas);
         }
@@ -116,31 +116,40 @@ public final class ScreenImpl
      */
 
     @Override
+    public void start()
+    {
+        ready = false;
+    }
+
+    @Override
     public void show()
     {
-        // TODO: Show ?
-        // view.setVisibility(View.VISIBLE);
-        canvas = view.lockCanvas();
+        // Nothing to do
+    }
+
+    @Override
+    public void preUpdate()
+    {
+        canvas = ScreenImpl.view.lockCanvas();
         graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        view.unlockCanvasAndPost(canvas);
+        ScreenImpl.view.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        // graphics.clear(config.getOutput());
-        // view.destroyDrawingCache();
+        ScreenImpl.view.removeCallback(this);
     }
 
     @Override
     public void requestFocus()
     {
-        // view.requestFocus();
+        // Nothing to do
     }
 
     @Override
@@ -210,8 +219,30 @@ public final class ScreenImpl
     }
 
     @Override
-    public void start()
+    public boolean isReady()
     {
-        // TODO: Start ?
+        return ready;
+    }
+
+    /*
+     * SurfaceHolder.Callback
+     */
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder)
+    {
+        ready = true;
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder)
+    {
+        ready = false;
     }
 }

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.tutorials.handler;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
@@ -28,7 +28,7 @@ public class AbstractObject
 {
     public AbstractObject()
     {
-        super(new SetupGame(Media.get("object.xml")));
+        super(new SetupGame(UtilityMedia.get("object.xml")));
     }
 
     public void update(double extrp)

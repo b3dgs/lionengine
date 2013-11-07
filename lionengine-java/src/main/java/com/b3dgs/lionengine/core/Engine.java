@@ -204,4 +204,12 @@ public final class Engine
             }
         }
     }
+
+    /**
+     * Constructor.
+     */
+    private Engine()
+    {
+        throw new RuntimeException();
+    }
 }

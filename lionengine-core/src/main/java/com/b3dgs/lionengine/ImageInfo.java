@@ -86,6 +86,7 @@ public final class ImageInfo
      */
     private ImageInfo(Media media)
     {
+        Check.notNull(media);
         try (InputStream inputStream = media.getStream();)
         {
             final int byte1 = inputStream.read();

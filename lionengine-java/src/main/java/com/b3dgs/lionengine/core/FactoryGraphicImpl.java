@@ -258,18 +258,18 @@ final class FactoryGraphicImpl
     }
 
     @Override
-    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int row, int col)
+    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
         final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
-        final int total = row * col;
-        final int width = image.getWidth() / row, height = image.getHeight() / col;
+        final int total = h * v;
+        final int width = image.getWidth() / h, height = image.getHeight() / v;
         final int transparency = image.getColorModel().getTransparency();
         final BufferedImage[] images = new BufferedImage[total];
         int frame = 0;
 
-        for (int y = 0; y < col; y++)
+        for (int y = 0; y < v; y++)
         {
-            for (int x = 0; x < row; x++)
+            for (int x = 0; x < h; x++)
             {
                 images[frame] = FactoryGraphicImpl.CONFIG.createCompatibleImage(width, height, transparency);
                 final Graphics2D g = images[frame].createGraphics();

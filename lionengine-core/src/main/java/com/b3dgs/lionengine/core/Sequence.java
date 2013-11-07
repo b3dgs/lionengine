@@ -501,10 +501,13 @@ public abstract class Sequence
             {
                 mouse.update();
             }
-            update(extrp);
-            screen.show();
-            preRender(screen.getGraphic());
-            screen.update();
+            if (screen.isReady())
+            {
+                update(extrp);
+                screen.preUpdate();
+                preRender(screen.getGraphic());
+                screen.update();
+            }
             sync(System.nanoTime() - lastTime);
 
             // Perform extrapolation and frame rate calculation

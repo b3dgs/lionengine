@@ -35,6 +35,11 @@ interface Screen
     void show();
 
     /**
+     * Pre update.
+     */
+    void preUpdate();
+
+    /**
      * Must be called when all rendering are done. It switch buffers before rendering.
      */
     void update();
@@ -127,4 +132,10 @@ interface Screen
      */
     int getLocationY();
 
+    /**
+     * Check if screen is ready.
+     * 
+     * @return <code>true</code> if ready, <code>false</code> else.
+     */
+    boolean isReady();
 }

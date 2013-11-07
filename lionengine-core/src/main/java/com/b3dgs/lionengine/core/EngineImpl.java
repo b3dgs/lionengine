@@ -98,6 +98,8 @@ abstract class EngineImpl
     protected static void terminate()
     {
         EngineImpl.started = false;
+        EngineImpl.programName = null;
+        EngineImpl.programVersion = null;
     }
 
     /**
@@ -162,6 +164,6 @@ abstract class EngineImpl
      */
     EngineImpl()
     {
-        // Nothing to do
+        throw new RuntimeException();
     }
 }

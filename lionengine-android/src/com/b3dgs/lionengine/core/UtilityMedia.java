@@ -20,8 +20,11 @@ package com.b3dgs.lionengine.core;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
+import android.content.ContentResolver;
 import android.content.res.AssetManager;
+import android.net.Uri;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -53,6 +56,8 @@ public final class UtilityMedia
     private static String tmpDir;
     /** Asset manager. */
     private static AssetManager assetManager;
+    /** Content resolver. */
+    private static ContentResolver contentResolver;
 
     /**
      * Create a full path and each directory.
@@ -158,9 +163,35 @@ public final class UtilityMedia
         }
         try
         {
-            return assetManager.open(media.getPath());
+            return UtilityMedia.assetManager.open(media.getPath());
         }
-        catch (IOException exception)
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, "Error on getting stream of: \"", path, "\"");
+        }
+    }
+
+    /**
+     * Get output stream of specified path.
+     * 
+     * @param media The input media path, pointing to a file.
+     * @param from The from function.
+     * @param logger The logger flag.
+     * @return The opened input stream.
+     */
+    public static OutputStream getOutputStream(Media media, String from, boolean logger)
+    {
+        Check.notNull(media, UtilityMedia.ERROR_MEDIA);
+        final String path = media.getPath();
+        if (logger)
+        {
+            Verbose.info("getOutputStream from " + from, ": \"", path, "\"");
+        }
+        try
+        {
+            return UtilityMedia.contentResolver.openOutputStream(Uri.parse(Uri.encode(path)));
+        }
+        catch (final IOException exception)
         {
             throw new LionEngineException(exception, "Error on getting stream of: \"", path, "\"");
         }
@@ -210,6 +241,16 @@ public final class UtilityMedia
     static void setAssertManager(AssetManager assetManager)
     {
         UtilityMedia.assetManager = assetManager;
+    }
+
+    /**
+     * Set the content resolver.
+     * 
+     * @param contentResolver The content resolver.
+     */
+    static void setContentResolver(ContentResolver contentResolver)
+    {
+        UtilityMedia.contentResolver = contentResolver;
     }
 
     /**

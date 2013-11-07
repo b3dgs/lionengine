@@ -147,6 +147,16 @@ public interface Graphic
     void drawOval(int x, int y, int width, int height, boolean fill);
 
     /**
+     * Draw a string on screen.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param alignment The text alignment.
+     * @param text The text to write.
+     */
+    void drawString(int x, int y, Align alignment, String text);
+
+    /**
      * Set the current graphic color.
      * 
      * @param color The color.

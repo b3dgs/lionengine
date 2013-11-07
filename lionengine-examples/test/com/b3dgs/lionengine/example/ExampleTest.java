@@ -74,7 +74,7 @@ public class ExampleTest
         {
             Thread.sleep(duration);
         }
-        catch (InterruptedException exception)
+        catch (final InterruptedException exception)
         {
             Thread.currentThread().interrupt();
         }
@@ -87,9 +87,9 @@ public class ExampleTest
      */
     private static void waitAndTerminate(long duration)
     {
-        pause(duration);
+        ExampleTest.pause(duration);
         Engine.terminate();
-        pause(250);
+        ExampleTest.pause(250);
     }
 
     /**
@@ -101,44 +101,44 @@ public class ExampleTest
     public void testExamples() throws AWTException
     {
         AppMinimal.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
 
         AppHelloWorld.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
 
         AppDrawable.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
 
         AppPong.main(null);
-        waitAndTerminate(2000);
+        ExampleTest.waitAndTerminate(2000);
 
         AppGameCursor.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
 
         AppGameEffect.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
 
         AppGameEntity.main(null);
-        waitAndTerminate(750);
+        ExampleTest.waitAndTerminate(750);
 
         AppGameFactory.main(null);
-        waitAndTerminate(750);
+        ExampleTest.waitAndTerminate(750);
 
         AppGameHandler.main(null);
-        waitAndTerminate(750);
+        ExampleTest.waitAndTerminate(750);
 
         AppGameMap.main(null);
-        waitAndTerminate(2000);
+        ExampleTest.waitAndTerminate(2000);
 
         AppGameProjectile.main(null);
-        waitAndTerminate(5000);
+        ExampleTest.waitAndTerminate(5000);
 
         final Robot robot = new Robot();
 
         AppMario.main(null);
         robot.keyPress(Key.RIGHT.intValue());
         robot.keyPress(Key.UP.intValue());
-        waitAndTerminate(3000);
+        ExampleTest.waitAndTerminate(3000);
         robot.keyRelease(Key.RIGHT.intValue());
         robot.keyRelease(Key.UP.intValue());
 
@@ -152,16 +152,16 @@ public class ExampleTest
     public void testPlatform()
     {
         AppPlatformBackground.main(null);
-        waitAndTerminate(8000);
+        ExampleTest.waitAndTerminate(8000);
 
         AppPlatformCollision.main(null);
-        waitAndTerminate(1000);
+        ExampleTest.waitAndTerminate(1000);
 
         AppPlatformEntity.main(null);
-        waitAndTerminate(1000);
+        ExampleTest.waitAndTerminate(1000);
 
         AppPlatformTile.main(null);
-        waitAndTerminate(500);
+        ExampleTest.waitAndTerminate(500);
     }
 
     /**
@@ -171,18 +171,18 @@ public class ExampleTest
     public void testRts()
     {
         AppRtsAbility.main(null);
-        waitAndTerminate(20000);
+        ExampleTest.waitAndTerminate(20000);
 
         AppRtsControlPanel.main(null);
-        waitAndTerminate(2000);
+        ExampleTest.waitAndTerminate(2000);
 
         AppRtsCursor.main(null);
-        waitAndTerminate(2000);
-        
+        ExampleTest.waitAndTerminate(2000);
+
         AppRtsFog.main(null);
-        waitAndTerminate(3000);
+        ExampleTest.waitAndTerminate(3000);
 
         AppRtsSkills.main(null);
-        waitAndTerminate(1000);
+        ExampleTest.waitAndTerminate(1000);
     }
 }

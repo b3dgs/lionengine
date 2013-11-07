@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -55,7 +56,7 @@ public abstract class Media
     {
         try
         {
-            return mediaImpl.getConstructor(String.class).newInstance(path);
+            return Media.mediaImpl.getConstructor(String.class).newInstance(path);
         }
         catch (InstantiationException
                | IllegalAccessException
@@ -147,9 +148,23 @@ public abstract class Media
     public abstract String getPath();
 
     /**
+     * Get the file descriptor.
+     * 
+     * @return The file descriptor.
+     */
+    public abstract File getFile();
+
+    /**
      * Get the media stream.
      * 
      * @return The media stream.
      */
     public abstract InputStream getStream();
+
+    /**
+     * Get the media output stream.
+     * 
+     * @return The media output stream.
+     */
+    public abstract OutputStream getOutputStream();
 }

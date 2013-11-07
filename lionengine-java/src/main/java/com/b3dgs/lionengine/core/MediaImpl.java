@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Media implementation.
@@ -47,8 +49,20 @@ final class MediaImpl
     }
 
     @Override
+    public File getFile()
+    {
+        return new File(Media.getPath(UtilityMedia.getRessourcesDir(), path));
+    }
+
+    @Override
     public InputStream getStream()
     {
         return UtilityMedia.getStream(this, "MediaImpl", false);
+    }
+
+    @Override
+    public OutputStream getOutputStream()
+    {
+        return UtilityMedia.getOutputStream(this, "MediaImpl", false);
     }
 }

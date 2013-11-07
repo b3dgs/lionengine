@@ -21,13 +21,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.graphics.AvoidXfermode;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
@@ -97,30 +103,40 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        return new ImageBufferImpl(Bitmap.createBitmap(getBuffer(imageBuffer)));
+        return new ImageBufferImpl(Bitmap.createBitmap(FactoryGraphicImpl.getBuffer(imageBuffer)));
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        // TODO: ApplyMask
-        return imageBuffer;
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Paint mask = new Paint();
+        mask.setXfermode(new AvoidXfermode(maskColor.getRgba(), 0, AvoidXfermode.Mode.TARGET));
+        final Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(bitmap, 0, 0, mask);
+        return new ImageBufferImpl(bitmap);
     }
 
     @Override
-    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int row, int col)
+    public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
-        final Bitmap bitmap = getBuffer(imageBuffer);
-        final ImageBuffer[] buffers = new ImageBuffer[row * col];
-        final int width = bitmap.getWidth() / col;
-        final int height = bitmap.getHeight() / row;
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final ImageBuffer[] buffers = new ImageBuffer[h * v];
+        final int width = bitmap.getWidth() / h;
+        final int height = bitmap.getHeight() / v;
+        final Rect dest = new Rect(0, 0, width, height);
 
+        final Paint paint = new Paint();
         int i = 0;
-        for (int r = 0; r < row; r++)
+        for (int r = 0; r < h; r++)
         {
-            for (int c = 0; c < col; c++)
+            for (int c = 0; c < v; c++)
             {
-                buffers[i] = new ImageBufferImpl(Bitmap.createBitmap(bitmap, c * width, r * width, width, height));
+                final Bitmap part = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+                final Canvas canvas = new Canvas(part);
+                final Rect source = new Rect(r * width, c * height, r * width + width, c * height + height);
+                canvas.drawBitmap(bitmap, source, dest, paint);
+                buffers[i] = new ImageBufferImpl(part);
                 i++;
             }
         }
@@ -131,17 +147,18 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-        final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+        final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, imageBuffer.getWidth(), imageBuffer.getHeight(),
+                matrix, false);
         return new ImageBufferImpl(rotated);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
         final Bitmap resized = Bitmap.createScaledBitmap(bitmap, width, height, false);
         return new ImageBufferImpl(resized);
     }
@@ -149,9 +166,9 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
-        matrix.setScale(-1, 1);
+        matrix.preScale(-1, 1);
         final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
         return new ImageBufferImpl(rotated);
     }
@@ -159,9 +176,9 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        final Bitmap bitmap = getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
-        matrix.setScale(1, -1);
+        matrix.preScale(1, -1);
         final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
         return new ImageBufferImpl(rotated);
     }
@@ -176,7 +193,10 @@ final class FactoryGraphicImpl
     @Override
     public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
     {
-        // TODO: SaveImage
+        if (!FactoryGraphicImpl.getBuffer(imageBuffer).compress(CompressFormat.PNG, 100, outputStream))
+        {
+            throw new LionEngineException("Unable to save the file !");
+        }
     }
 
     @Override

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
@@ -55,7 +56,8 @@ final class OggRoutine
     {
         final boolean bBigEndian = false;
         final int nSampleSizeInBits = 16;
-        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(mus.getStream());
+        final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(mus
+                .getStream()));
         final AudioFormat audioFormat = audioInputStream.getFormat();
         final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, AudioSystem.NOT_SPECIFIED);
         final boolean bIsSupportedDirectly = AudioSystem.isLineSupported(info);

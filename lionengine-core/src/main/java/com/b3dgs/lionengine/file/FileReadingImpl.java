@@ -21,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -42,6 +43,7 @@ final class FileReadingImpl
      */
     FileReadingImpl(Media media) throws IOException
     {
+        Check.notNull(media);
         in = new DataInputStream(new BufferedInputStream(media.getStream()));
     }
 

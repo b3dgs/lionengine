@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.factory.game;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.FactoryGame;
 
 @SuppressWarnings("all")
@@ -50,6 +50,6 @@ public class Factory
     @Override
     protected Setup createSetup(Type type)
     {
-        return new Setup(Media.get(type.name() + ".xml"), param1, param2);
+        return new Setup(UtilityMedia.get(type.name() + ".xml"), param1, param2);
     }
 }
