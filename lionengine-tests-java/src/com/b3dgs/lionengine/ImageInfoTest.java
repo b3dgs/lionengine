@@ -39,7 +39,7 @@ public class ImageInfoTest
     {
         Engine.terminate();
     }
-    
+
     /**
      * Test image info functions.
      */

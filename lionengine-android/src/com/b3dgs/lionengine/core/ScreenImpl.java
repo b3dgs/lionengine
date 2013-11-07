@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
@@ -40,16 +41,16 @@ public final class ScreenImpl
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
     /** View. */
-    private static SurfaceHolder view;
+    static SurfaceHolder view;
 
     /**
      * Set the view holder.
      * 
      * @param view The view holder.
      */
-    public static void setView(SurfaceHolder view)
+    public static void setView(SurfaceView view)
     {
-        ScreenImpl.view = view;
+        ScreenImpl.view = view.getHolder();
     }
 
     /** Active graphic buffer reference. */
@@ -231,7 +232,7 @@ public final class ScreenImpl
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {
-        // Nothing to do
+        ready = true;
     }
 
     @Override

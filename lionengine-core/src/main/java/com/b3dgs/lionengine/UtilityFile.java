@@ -253,7 +253,7 @@ public final class UtilityFile
         }
         else if (directory.isFile())
         {
-            deleteFile(directory);
+            UtilityFile.deleteFile(directory);
             Verbose.info("File deleted: " + directory);
         }
     }

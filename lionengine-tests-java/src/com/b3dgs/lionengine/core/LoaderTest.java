@@ -56,7 +56,7 @@ public class LoaderTest
         {
             Thread.sleep(100);
         }
-        catch (InterruptedException exception)
+        catch (final InterruptedException exception)
         {
             Thread.currentThread().interrupt();
         }

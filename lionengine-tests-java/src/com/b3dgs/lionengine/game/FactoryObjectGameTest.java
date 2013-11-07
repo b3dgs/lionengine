@@ -42,7 +42,7 @@ public class FactoryObjectGameTest
     {
         Engine.terminate();
     }
-    
+
     /**
      * Test the game factory.
      */

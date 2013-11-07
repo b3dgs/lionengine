@@ -92,10 +92,7 @@ public final class Engine
     {
         if (!EngineImpl.started)
         {
-            final SurfaceView view = new SurfaceView(activity);
-            view.setWillNotDraw(false);
-            ScreenImpl.setView(view.getHolder());
-            activity.setContentView(view);
+            Engine.createView(activity);
 
             EngineImpl.start(name, version, level);
             Engine.init(name, version, activity, level);
@@ -109,6 +106,19 @@ public final class Engine
     public static void terminate()
     {
         EngineImpl.terminate();
+    }
+
+    /**
+     * Create the view.
+     * 
+     * @param activity The activity reference.
+     */
+    private static void createView(Activity activity)
+    {
+        final SurfaceView view = new SurfaceView(activity);
+        view.setWillNotDraw(false);
+        ScreenImpl.setView(view);
+        activity.setContentView(view);
     }
 
     /**
