@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.core.Media;
  * node1.add(node2);
  * 
  * // Save the tree
- * final Media file = Media.get(&quot;file.xml&quot;);
+ * final Media file = UtilityMedia.get(&quot;file.xml&quot;);
  * final XmlParser parser = File.createXmlParser();
  * parser.save(node1, file);
  * 

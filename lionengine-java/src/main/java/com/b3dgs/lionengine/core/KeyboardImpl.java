@@ -81,6 +81,12 @@ final class KeyboardImpl
     {
         return lastCode;
     }
+    
+    @Override
+    public String getKeyText(int code)
+    {
+        return KeyEvent.getKeyText(code);
+    }
 
     @Override
     public char getKeyName()

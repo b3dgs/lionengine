@@ -50,8 +50,6 @@ abstract class EngineImpl
     static boolean started = false;
     /** Graphic factory. */
     static FactoryGraphic factoryGraphic;
-    /** Geometry factory. */
-    static FactoryGeom factoryGeom;
     /** Input factory. */
     static FactoryInput factoryInput;
     /** User program name. */
@@ -84,10 +82,8 @@ abstract class EngineImpl
 
             // Load low level factory
             EngineImpl.factoryGraphic = EngineImpl.getFactory("FactoryGraphicImpl");
-            EngineImpl.factoryGeom = EngineImpl.getFactory("FactoryGeomImpl");
             EngineImpl.factoryInput = EngineImpl.getFactory("FactoryInputImpl");
             UtilityImage.setGraphicFactory(EngineImpl.factoryGraphic);
-            UtilityMath.setGeomFactory(EngineImpl.factoryGeom);
         }
     }
 
@@ -145,7 +141,7 @@ abstract class EngineImpl
      */
     private static <C> C getFactory(String name)
     {
-        final String factoryName = FactoryGeom.class.getPackage().getName() + "." + name;
+        final String factoryName = EngineImpl.class.getPackage().getName() + "." + name;
         try
         {
 

@@ -421,4 +421,10 @@ final class FactoryGraphicImpl
 
         return new ImageBufferImpl(raster);
     }
+
+    @Override
+    public Transform createTransform()
+    {
+        return new TransformImpl();
+    }
 }

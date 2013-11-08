@@ -105,7 +105,7 @@ final class World
         for (int i = 0; i < 2; i++)
         {
             final Goomba goomba = factory.create(EntityType.GOOMBA);
-            goomba.setLocation(532 + i * 24, 32);
+            goomba.setLocation(532 + i * 24, 25);
             handler.add(goomba);
         }
     }

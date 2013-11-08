@@ -49,6 +49,6 @@ final class FactoryInputImpl
     @Override
     public Mouse createMouse()
     {
-        return null;
+        return new MouseImpl();
     }
 }

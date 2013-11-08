@@ -53,6 +53,14 @@ public interface Keyboard
      * @return The pressed key name.
      */
     char getKeyName();
+    
+    /**
+     * Get the text key of the key code.
+     * 
+     * @param code The key code.
+     * @return The key text.
+     */
+    String getKeyText(int code);
 
     /**
      * Check if the keyboard is currently used (at least one pressed key).

@@ -27,17 +27,17 @@ import java.io.IOException;
  * </p>
  * 
  * <pre>
- * final Media file = Media.get(&quot;test.txt&quot;);
+ * final Media file = UtilityMedia.get(&quot;test.txt&quot;);
  * try (FileReading reading = File.createFileReading(file);)
  * {
- *     final boolean boolRead = reading.readBoolean();
- *     final byte byteRead = reading.readByte();
- *     final char charRead = reading.readChar();
- *     final short shortRead = reading.readShort();
- *     final int intRead = reading.readInteger();
- *     final float floatRead = reading.readFloat();
- *     final long longRead = reading.readLong();
- *     final double doubleRead = reading.readDouble();
+ *     reading.readBoolean();
+ *     reading.readByte();
+ *     reading.readChar();
+ *     reading.readShort();
+ *     reading.readInteger();
+ *     reading.readFloat();
+ *     reading.readLong();
+ *     reading.readDouble();
  * }
  * catch (final IOException exception)
  * {

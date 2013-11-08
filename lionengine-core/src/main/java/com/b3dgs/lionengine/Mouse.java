@@ -125,14 +125,6 @@ public interface Mouse
     int getMoveY();
 
     /**
-     * Get the text key of the key code.
-     * 
-     * @param code The key code.
-     * @return The key text.
-     */
-    String getKeyText(int code);
-
-    /**
      * Check if click is pressed.
      * 
      * @param click The click to check.

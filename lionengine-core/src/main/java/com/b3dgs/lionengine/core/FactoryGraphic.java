@@ -174,4 +174,11 @@ interface FactoryGraphic
      * @return The rastered image.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
+
+    /**
+     * Create a transform.
+     * 
+     * @return The created transform.
+     */
+    Transform createTransform();
 }

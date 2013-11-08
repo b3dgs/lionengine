@@ -199,7 +199,7 @@ public abstract class Sequence
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = EngineImpl.factoryGeom.createTransform();
+        Transform transform = EngineImpl.factoryGraphic.createTransform();
 
         // Filter level
         switch (filter)
@@ -497,10 +497,7 @@ public abstract class Sequence
         while (isRunning)
         {
             final long lastTime = System.nanoTime();
-            if (mouse != null)
-            {
-                mouse.update();
-            }
+            mouse.update();
             if (screen.isReady())
             {
                 update(extrp);

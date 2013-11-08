@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import android.graphics.Rect;
-
 import com.b3dgs.lionengine.Rectangle;
 
 /**
@@ -29,8 +27,14 @@ import com.b3dgs.lionengine.Rectangle;
 final class RectangleImpl
         implements Rectangle
 {
-    /** Rectangle 2D. */
-    private final Rect rectangle2d;
+    /** The coordinate X. */
+    private double x;
+    /** The coordinate Y. */
+    private double y;
+    /** The width . */
+    private double width;
+    /** The height. */
+    private double height;
 
     /**
      * Constructor.
@@ -42,17 +46,10 @@ final class RectangleImpl
      */
     RectangleImpl(double x, double y, double w, double h)
     {
-        rectangle2d = new Rect((int) x, (int) y, (int) (x + w), (int) (y + h));
-    }
-
-    /**
-     * Get the rectangle 2D.
-     * 
-     * @return The rectangle 2D.
-     */
-    Rect getRectangle2D()
-    {
-        return rectangle2d;
+        this.x = x;
+        this.y = y;
+        width = w;
+        height = h;
     }
 
     /*
@@ -62,73 +59,84 @@ final class RectangleImpl
     @Override
     public boolean intersects(Rectangle rectangle)
     {
-        return rectangle2d.intersect(((RectangleImpl) rectangle).rectangle2d);
+        final double x0 = getX();
+        final double y0 = getY();
+        return rectangle.getX() + rectangle.getWidth() > x0 && rectangle.getY() + rectangle.getHeight() > y0
+                && rectangle.getX() < x0 + getWidth() && rectangle.getY() < y0 + getHeight();
     }
 
     @Override
     public boolean contains(Rectangle rectangle)
     {
-        return rectangle2d.contains(((RectangleImpl) rectangle).rectangle2d);
+        final double x0 = getX();
+        final double y0 = getY();
+        return rectangle.getX() >= x0 && rectangle.getY() >= y0
+                && rectangle.getX() + rectangle.getWidth() <= x0 + getWidth()
+                && rectangle.getY() + rectangle.getHeight() <= y0 + getHeight();
     }
 
     @Override
     public boolean contains(int x, int y)
-
     {
-        return rectangle2d.contains(x, y);
+        final double x0 = getX();
+        final double y0 = getY();
+        return x >= x0 && y >= y0 && x < x0 + getWidth() && y < y0 + getHeight();
     }
 
     @Override
     public void set(double x, double y, double w, double h)
     {
-        rectangle2d.set((int) x, (int) y, (int) (x + w), (int) (y + h));
+        this.x = x;
+        this.y = y;
+        width = w;
+        height = h;
     }
 
     @Override
     public double getX()
     {
-        return rectangle2d.left;
+        return x;
     }
 
     @Override
     public double getY()
     {
-        return rectangle2d.top;
+        return y;
     }
 
     @Override
     public double getMinX()
     {
-        return rectangle2d.left;
+        return x;
     }
 
     @Override
     public double getMinY()
     {
-        return rectangle2d.top;
+        return y;
     }
 
     @Override
     public double getMaxX()
     {
-        return rectangle2d.right;
+        return x + width;
     }
 
     @Override
     public double getMaxY()
     {
-        return rectangle2d.bottom;
+        return y + height;
     }
 
     @Override
     public double getWidth()
     {
-        return rectangle2d.right - rectangle2d.left;
+        return width;
     }
 
     @Override
     public double getHeight()
     {
-        return rectangle2d.top - rectangle2d.bottom;
+        return height;
     }
 }

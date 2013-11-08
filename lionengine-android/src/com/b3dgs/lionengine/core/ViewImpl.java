@@ -17,62 +17,49 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.geom.Rectangle2D;
-
-import com.b3dgs.lionengine.Polygon;
-import com.b3dgs.lionengine.Rectangle;
+import android.content.Context;
+import android.view.MotionEvent;
+import android.view.SurfaceView;
 
 /**
- * Polygon implementation.
+ * Surface view implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class PolygonImpl
-        implements Polygon
+final class ViewImpl
+        extends SurfaceView
 {
-    /** Polygon. */
-    private final java.awt.Polygon polygon;
+    /** Mouse. */
+    private MouseImpl mouse;
 
     /**
      * Constructor.
+     * 
+     * @param context The context reference.
      */
-    PolygonImpl()
+    ViewImpl(Context context)
     {
-        polygon = new java.awt.Polygon();
+        super(context);
+    }
+
+    /**
+     * Set the mouse reference.
+     * 
+     * @param mouse The mouse reference.
+     */
+    void setMouse(MouseImpl mouse)
+    {
+        this.mouse = mouse;
     }
 
     /*
-     * Polygon
+     * SurfaceView
      */
 
     @Override
-    public void addPoint(int x, int y)
+    public boolean onTouchEvent(MotionEvent event)
     {
-        polygon.addPoint(x, y);
-    }
-
-    @Override
-    public void reset()
-    {
-        polygon.reset();
-    }
-
-    @Override
-    public Rectangle getRectangle()
-    {
-        final Rectangle2D bounds = polygon.getBounds2D();
-        return UtilityMath.createRectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
-    }
-
-    @Override
-    public boolean intersects(Rectangle rectangle)
-    {
-        return polygon.intersects(((RectangleImpl) rectangle).getRectangle2D());
-    }
-
-    @Override
-    public boolean contains(Rectangle rectangle)
-    {
-        return polygon.contains(((RectangleImpl) rectangle).getRectangle2D());
+        mouse.updateCoord(event);
+        return true;
     }
 }

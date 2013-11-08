@@ -136,11 +136,14 @@ public class CollidableModel
         final int y = camera.getViewpointY((int) (box.getY() + box.getHeight()));
         g.drawRect(x, y, (int) box.getWidth(), (int) box.getHeight(), false);
 
-        final int x1 = camera.getViewpointX((int) ray.getX1());
-        final int y1 = camera.getViewpointY((int) ray.getY1());
-        final int x2 = camera.getViewpointX((int) ray.getX2());
-        final int y2 = camera.getViewpointY((int) ray.getY2());
-        g.drawLine(x1, y1, x2, y2);
+        for (final Line line : coll.getPoints())
+        {
+            final int x3 = camera.getViewpointX((int) line.getX1());
+            final int y3 = camera.getViewpointY((int) line.getY1());
+            final int x4 = camera.getViewpointX((int) line.getX2());
+            final int y4 = camera.getViewpointY((int) line.getY2());
+            g.drawLine(x3, y3, x4, y4);
+        }
     }
 
     @Override

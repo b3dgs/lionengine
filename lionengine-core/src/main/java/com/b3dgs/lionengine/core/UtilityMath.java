@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.Rectangle;
  */
 public final class UtilityMath
 {
-    /** Graphic factory. */
-    private static FactoryGeom geomFactory;
-
     /**
      * Create a line.
      * 
@@ -40,7 +37,7 @@ public final class UtilityMath
      */
     public static Line createLine()
     {
-        return UtilityMath.geomFactory.createLine();
+        return new LineImpl(0, 0, 0, 0);
     }
 
     /**
@@ -54,7 +51,7 @@ public final class UtilityMath
      */
     public static Line createLine(double x1, double y1, double x2, double y2)
     {
-        return UtilityMath.geomFactory.createLine(x1, y1, x2, y2);
+        return new LineImpl(x1, y1, x2, y2);
     }
 
     /**
@@ -64,7 +61,7 @@ public final class UtilityMath
      */
     public static Polygon createPolygon()
     {
-        return UtilityMath.geomFactory.createPolygon();
+        return new PolygonImpl();
     }
 
     /**
@@ -74,7 +71,7 @@ public final class UtilityMath
      */
     public static Rectangle createRectangle()
     {
-        return UtilityMath.geomFactory.createRectangle();
+        return new RectangleImpl(0, 0, 0, 0);
     }
 
     /**
@@ -88,7 +85,7 @@ public final class UtilityMath
      */
     public static Rectangle createRectangle(double x, double y, double w, double h)
     {
-        return UtilityMath.geomFactory.createRectangle(x, y, w, h);
+        return new RectangleImpl(x, y, w, h);
     }
 
     /**
@@ -331,16 +328,6 @@ public final class UtilityMath
     public static long nano()
     {
         return System.nanoTime();
-    }
-
-    /**
-     * Set the graphic factory context.
-     * 
-     * @param geomFactory The geometry factory context.
-     */
-    static void setGeomFactory(FactoryGeom geomFactory)
-    {
-        UtilityMath.geomFactory = geomFactory;
     }
 
     /**

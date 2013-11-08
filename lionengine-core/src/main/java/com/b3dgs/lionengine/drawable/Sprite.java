@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final Sprite sprite = Drawable.loadSprite(Media.get(&quot;sprite.png&quot;));
+ * final Sprite sprite = Drawable.loadSprite(UtilityMedia.get(&quot;sprite.png&quot;));
  * sprite.load(false);
  * 
  * // Render

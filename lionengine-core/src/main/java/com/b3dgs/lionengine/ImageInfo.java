@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Media;
  * </p>
  * 
  * <pre>
- * final ImageInfo info = ImageInfo.get(Media.get(&quot;dot.png&quot;));
+ * final ImageInfo info = ImageInfo.get(UtilityMedia.get(&quot;dot.png&quot;));
  * Assert.assertEquals(64, info.getWidth());
  * Assert.assertEquals(32, info.getHeight());
  * Assert.assertEquals(&quot;png&quot;, info.getFormat());

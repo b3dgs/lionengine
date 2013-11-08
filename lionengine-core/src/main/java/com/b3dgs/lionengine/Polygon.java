@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.List;
+
 /**
  * Polygon interface.
  * 
@@ -59,4 +61,11 @@ public interface Polygon
      * @return <code>true</code> if contains, <code>false</code> else.
      */
     boolean contains(Rectangle rectangle);
+
+    /**
+     * Get the points.
+     * 
+     * @return The points.
+     */
+    List<Line> getPoints();
 }

@@ -41,15 +41,15 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Media.get(&quot;animation.png&quot;), 7, 1);
+ * final SpriteAnimated animation = Drawable.loadSpriteAnimated(UtilityMedia.get(&quot;animation.png&quot;), 7, 1);
  * animation.load(false);
  * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
  * animation.play(anim);
  * 
- * // Update (in loop)
+ * // Update
  * animation.updateAnimation(extrp);
  * 
- * // Render (in loop)
+ * // Render
  * animation.setMirror(false);
  * animation.render(g, 160, 300);
  * animation.setMirror(true);

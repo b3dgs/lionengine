@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
@@ -41,16 +40,19 @@ public final class ScreenImpl
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
     /** View. */
-    static SurfaceHolder view;
+    static ViewImpl view;
+    /** Holder. */
+    static SurfaceHolder holder;
 
     /**
      * Set the view holder.
      * 
      * @param view The view holder.
      */
-    public static void setView(SurfaceView view)
+    public static void setView(ViewImpl view)
     {
-        ScreenImpl.view = view.getHolder();
+        ScreenImpl.view = view;
+        ScreenImpl.holder = view.getHolder();
     }
 
     /** Active graphic buffer reference. */
@@ -79,7 +81,7 @@ public final class ScreenImpl
 
         // Prepare main frame
         setResolution(config.getOutput());
-        ScreenImpl.view.addCallback(this);
+        ScreenImpl.holder.addCallback(this);
     }
 
     /**
@@ -92,7 +94,7 @@ public final class ScreenImpl
         // Create canvas
         if (canvas == null)
         {
-            ScreenImpl.view.setFixedSize(output.getWidth(), output.getHeight());
+            ScreenImpl.holder.setFixedSize(output.getWidth(), output.getHeight());
             canvas = new Canvas();
             canvas.drawColor(Color.RED);
             graphics.setGraphic(canvas);
@@ -131,20 +133,20 @@ public final class ScreenImpl
     @Override
     public void preUpdate()
     {
-        canvas = ScreenImpl.view.lockCanvas();
+        canvas = ScreenImpl.holder.lockCanvas();
         graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        ScreenImpl.view.unlockCanvasAndPost(canvas);
+        ScreenImpl.holder.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        ScreenImpl.view.removeCallback(this);
+        ScreenImpl.holder.removeCallback(this);
     }
 
     @Override
@@ -180,7 +182,7 @@ public final class ScreenImpl
     @Override
     public void addMouse(Mouse mouse)
     {
-        // Nothing to do
+        ScreenImpl.view.setMouse((MouseImpl) mouse);
     }
 
     @Override

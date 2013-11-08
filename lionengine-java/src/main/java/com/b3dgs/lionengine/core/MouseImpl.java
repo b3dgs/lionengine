@@ -24,7 +24,6 @@ import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -259,12 +258,6 @@ final class MouseImpl
     public int getMoveY()
     {
         return my;
-    }
-
-    @Override
-    public String getKeyText(int code)
-    {
-        return KeyEvent.getKeyText(code);
     }
 
     @Override
