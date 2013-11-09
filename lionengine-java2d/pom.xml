@@ -9,8 +9,8 @@
 	</parent>
 
 
-	<artifactId>lionengine-java</artifactId>
-	<name>LionEngine Java</name>
+	<artifactId>lionengine-java2d</artifactId>
+	<name>LionEngine Java2D</name>
 
 	<dependencies>
 		<dependency>

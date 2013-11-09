@@ -60,7 +60,7 @@
 
 	<modules>
 		<module>lionengine-core</module>
-		<module>lionengine-java</module>
+		<module>lionengine-java2d</module>
 		<module>lionengine-game</module>
 		<module>lionengine-game-platform</module>
 		<module>lionengine-game-pathfinding</module>
