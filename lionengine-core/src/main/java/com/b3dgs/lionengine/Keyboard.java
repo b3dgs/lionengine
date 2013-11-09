@@ -53,7 +53,7 @@ public interface Keyboard
      * @return The pressed key name.
      */
     char getKeyName();
-    
+
     /**
      * Get the text key of the key code.
      * 

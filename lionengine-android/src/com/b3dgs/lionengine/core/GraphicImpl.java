@@ -53,6 +53,10 @@ final class GraphicImpl
 
     /** Paint mode. */
     private final Paint paint;
+    /** Last matrix. */
+    private final Matrix scale;
+    /** Flip matrix. */
+    private final Matrix flip;
     /** The graphic output. */
     private Canvas g;
     /** Last transform. */
@@ -61,15 +65,13 @@ final class GraphicImpl
     private GradientColor gradientColor;
     /** Linear gradient. */
     private LinearGradient linearGradient;
-    /** Last matrix. */
-    private Matrix matrix;
 
     /**
      * Constructor.
      */
     GraphicImpl()
     {
-        paint = new Paint();
+        this(null);
     }
 
     /**
@@ -80,6 +82,9 @@ final class GraphicImpl
     GraphicImpl(Canvas g)
     {
         paint = new Paint();
+        scale = new Matrix();
+        flip = new Matrix();
+        flip.preScale(-1, 1);
         this.g = g;
     }
 
@@ -127,18 +132,26 @@ final class GraphicImpl
         if (lastTransform != transform)
         {
             lastTransform = transform;
-            matrix = new Matrix();
-            matrix.preScale((float) transform.getScaleX(), (float) transform.getScaleY());
+            scale.preScale((float) transform.getScaleX(), (float) transform.getScaleY());
         }
-        g.drawBitmap(GraphicImpl.getBuffer(image), matrix, paint);
+        g.drawBitmap(GraphicImpl.getBuffer(image), scale, paint);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        final Rect src = new Rect(sx1, sy1, sx2, sy2);
         final Rect dest = new Rect(dx1, dy1, dx2, dy2);
-        g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, paint);
+        final Rect src = new Rect(sx1, sy1, sx2, sy2);
+        if (sx1 > sx2)
+        {
+            final Bitmap part = Bitmap.createBitmap(GraphicImpl.getBuffer(image), sx2, sy1, sx1 - sx2, sy2 - sy1, flip,
+                    false);
+            g.drawBitmap(part, dx1, dy1, paint);
+        }
+        else
+        {
+            g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, paint);
+        }
     }
 
     @Override

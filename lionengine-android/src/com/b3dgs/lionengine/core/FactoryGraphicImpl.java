@@ -203,8 +203,47 @@ final class FactoryGraphicImpl
     public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
             int refSize)
     {
-        // TODO: GetRasterBuffer
-        return imageBuffer;
+        final Bitmap image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final boolean method = true;
+        final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
+
+        final double sr = -((er - fr) / 0x010000) / (double) refSize;
+        final double sg = -((eg - fg) / 0x000100) / (double) refSize;
+        final double sb = -((eb - fb) / 0x000001) / (double) refSize;
+
+        if (method)
+        {
+            for (int i = 0; i < raster.getWidth(); i++)
+            {
+                for (int j = 0; j < raster.getHeight(); j++)
+                {
+                    final int r = (int) (sr * (j % refSize)) * 0x010000;
+                    final int g = (int) (sg * (j % refSize)) * 0x000100;
+                    final int b = (int) (sb * (j % refSize)) * 0x000001;
+
+                    raster.setPixel(i, j, UtilityImage.filterRGB(image.getPixel(i, j), fr + r, fg + g, fb + b));
+                }
+            }
+        }
+        else
+        {
+            final int[] org = new int[image.getWidth() * image.getHeight() * 4];
+            image.getPixels(org, 0, 0, 0, 0, image.getWidth(), image.getHeight());
+            final int width = raster.getWidth();
+            final int height = raster.getHeight();
+            final int[] pixels = new int[width * height * 4];
+            raster.getPixels(org, 0, 0, 0, 0, width, height);
+
+            for (int j = 0; j < height; j++)
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    pixels[j * width + i] = UtilityImage.filterRGB(org[j * width + i], fr, fg, fb);
+                }
+            }
+        }
+
+        return new ImageBufferImpl(raster);
     }
 
     @Override

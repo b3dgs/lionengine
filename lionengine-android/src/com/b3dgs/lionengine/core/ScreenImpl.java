@@ -89,7 +89,7 @@ public final class ScreenImpl
      * 
      * @param output The output resolution
      */
-    private void initWindowed(Resolution output)
+    private void init(Resolution output)
     {
         // Create canvas
         if (canvas == null)
@@ -108,10 +108,7 @@ public final class ScreenImpl
      */
     private void setResolution(Resolution output)
     {
-        if (config.isWindowed())
-        {
-            initWindowed(output);
-        }
+        init(output);
     }
 
     /*
