@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine.core;
 
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
@@ -31,6 +35,29 @@ import com.b3dgs.lionengine.TextStyle;
 final class TextImpl
         implements Text
 {
+    /**
+     * Get the text style equivalence.
+     * 
+     * @param style The text style.
+     * @return The text style.
+     */
+    private static int getStyle(TextStyle style)
+    {
+        switch (style)
+        {
+            case NORMAL:
+                return Typeface.NORMAL;
+            case BOLD:
+                return Typeface.BOLD;
+            case ITALIC:
+                return Typeface.ITALIC;
+            default:
+                throw new RuntimeException("Unknown type: " + style);
+        }
+    }
+
+    /** Paint. */
+    final Paint paint;
     /** Text size. */
     private final int size;
     /** Text location x. */
@@ -60,8 +87,12 @@ final class TextImpl
     TextImpl(String fontName, int size, TextStyle style)
     {
         this.size = size;
+        paint = new Paint();
         align = Align.LEFT;
         color = ColorRgba.WHITE;
+        paint.setTextSize(size);
+        paint.setColor(color.getRgba());
+        paint.setTypeface(Typeface.create(fontName, TextImpl.getStyle(style)));
     }
 
     /*
@@ -77,7 +108,7 @@ final class TextImpl
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        g.drawString(x, y, alignment, text);
+        ((GraphicImpl) g).drawString(x, y + (int) (size * 0.8), alignment, text, paint);
     }
 
     @Override
@@ -117,6 +148,7 @@ final class TextImpl
     public void setColor(ColorRgba color)
     {
         this.color = color;
+        paint.setColor(color.getRgba());
     }
 
     @Override
@@ -152,14 +184,16 @@ final class TextImpl
     @Override
     public int getStringWidth(Graphic g, String str)
     {
-        // TODO: Width
-        return 0;
+        final Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.right - bounds.left;
     }
 
     @Override
     public int getStringHeight(Graphic g, String str)
     {
-        // TODO: Height
-        return 0;
+        final Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.bottom - bounds.top;
     }
 }

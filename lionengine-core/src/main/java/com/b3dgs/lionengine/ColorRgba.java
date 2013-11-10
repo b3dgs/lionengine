@@ -47,6 +47,14 @@ public class ColorRgba
 
     /** Color value. */
     private final int value;
+    /** Red. */
+    private final int red;
+    /** Green. */
+    private final int green;
+    /** Blue. */
+    private final int blue;
+    /** Alpha. */
+    private final int alpha;
 
     /**
      * Constructor.
@@ -75,6 +83,10 @@ public class ColorRgba
         Check.argument(b >= 0 && b <= 255, "Wrong blue value !");
         Check.argument(a >= 0 && a <= 255, "Wrong alpha value !");
         value = (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) << 0;
+        red = r;
+        green = g;
+        blue = b;
+        alpha = a;
     }
 
     /**
@@ -85,6 +97,10 @@ public class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
+        red = (value & 0xFF) << 16;
+        green = (value & 0xFF) << 8;
+        blue = (value & 0xFF) << 0;
+        alpha = (value & 0xFF) << 24;
     }
 
     /**
@@ -95,5 +111,45 @@ public class ColorRgba
     public int getRgba()
     {
         return value;
+    }
+
+    /**
+     * Get red value.
+     * 
+     * @return The red value.
+     */
+    public int getRed()
+    {
+        return red;
+    }
+
+    /**
+     * Get green value.
+     * 
+     * @return The green value.
+     */
+    public int getGreen()
+    {
+        return green;
+    }
+
+    /**
+     * Get blue value.
+     * 
+     * @return The blue value.
+     */
+    public int getBlue()
+    {
+        return blue;
+    }
+
+    /**
+     * Get alpha value.
+     * 
+     * @return The alpha value.
+     */
+    public int getAlpha()
+    {
+        return alpha;
     }
 }

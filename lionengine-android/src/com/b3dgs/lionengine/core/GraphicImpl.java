@@ -59,8 +59,6 @@ final class GraphicImpl
     private final Matrix flip;
     /** The graphic output. */
     private Canvas g;
-    /** Last transform. */
-    private Transform lastTransform;
     /** Last gradient. */
     private GradientColor gradientColor;
     /** Linear gradient. */
@@ -86,6 +84,21 @@ final class GraphicImpl
         flip = new Matrix();
         flip.preScale(-1, 1);
         this.g = g;
+    }
+
+    /**
+     * Draw a string on screen.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param alignment The text alignment.
+     * @param text The text to write.
+     * @param paint The paint used.
+     */
+    void drawString(int x, int y, Align alignment, String text, Paint paint)
+    {
+        paint.setTextAlign(Paint.Align.valueOf(alignment.name()));
+        g.drawText(text, x, y, paint);
     }
 
     /*
@@ -123,23 +136,22 @@ final class GraphicImpl
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
+        paint.setAlpha(255);
         g.drawBitmap(GraphicImpl.getBuffer(image), x, y, paint);
     }
 
     @Override
     public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        if (lastTransform != transform)
-        {
-            lastTransform = transform;
-            scale.preScale((float) transform.getScaleX(), (float) transform.getScaleY());
-        }
+        paint.setAlpha(255);
+        scale.setScale((float) transform.getScaleX(), (float) transform.getScaleY());
         g.drawBitmap(GraphicImpl.getBuffer(image), scale, paint);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
+        paint.setAlpha(255);
         final Rect dest = new Rect(dx1, dy1, dx2, dy2);
         final Rect src = new Rect(sx1, sy1, sx2, sy2);
         if (sx1 > sx2)
@@ -195,28 +207,6 @@ final class GraphicImpl
             paint.setStyle(Paint.Style.STROKE);
         }
         g.drawCircle(x, y, width * height, paint);
-    }
-
-    @Override
-    public void drawString(int x, int y, Align alignment, String text)
-    {
-        final Rect bounds = new Rect();
-        paint.getTextBounds(text, 0, text.length(), bounds);
-        switch (alignment)
-        {
-            case LEFT:
-                g.drawText(text, x, y, paint);
-                break;
-            case CENTER:
-                g.drawText(text, x + (bounds.right - bounds.left) / 2, y, paint);
-                break;
-            case RIGHT:
-                g.drawText(text, x - bounds.right, y, paint);
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + alignment);
-        }
-
     }
 
     @Override

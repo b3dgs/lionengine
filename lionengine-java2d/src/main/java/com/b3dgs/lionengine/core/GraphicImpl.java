@@ -24,7 +24,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.GradientColor;
 import com.b3dgs.lionengine.Graphic;
@@ -167,12 +166,6 @@ final class GraphicImpl
         {
             g.drawOval(x, y, width, height);
         }
-    }
-
-    @Override
-    public void drawString(int x, int y, Align alignment, String text)
-    {
-        g.drawString(text, x, y);
     }
 
     @Override

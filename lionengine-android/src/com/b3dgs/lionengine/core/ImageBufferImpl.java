@@ -126,6 +126,6 @@ final class ImageBufferImpl
     public Transparency getTransparency()
     {
         // TODO: GetTransparency
-        return ImageBufferImpl.getTransparency(0);
+        return ImageBufferImpl.getTransparency(1);
     }
 }
