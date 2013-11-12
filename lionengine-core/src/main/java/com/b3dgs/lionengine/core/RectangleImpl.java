@@ -59,28 +59,29 @@ final class RectangleImpl
     @Override
     public boolean intersects(Rectangle rectangle)
     {
-        final double x0 = getX();
-        final double y0 = getY();
-        return rectangle.getX() + rectangle.getWidth() > x0 && rectangle.getY() + rectangle.getHeight() > y0
-                && rectangle.getX() < x0 + getWidth() && rectangle.getY() < y0 + getHeight();
+        if (rectangle == null)
+        {
+            return false;
+        }
+        return rectangle.getX() + rectangle.getWidth() > x && rectangle.getY() + rectangle.getHeight() > y
+                && rectangle.getX() < x + width && rectangle.getY() < y + height;
     }
 
     @Override
     public boolean contains(Rectangle rectangle)
     {
-        final double x0 = getX();
-        final double y0 = getY();
-        return rectangle.getX() >= x0 && rectangle.getY() >= y0
-                && rectangle.getX() + rectangle.getWidth() <= x0 + getWidth()
-                && rectangle.getY() + rectangle.getHeight() <= y0 + getHeight();
+        if (rectangle == null)
+        {
+            return false;
+        }
+        return rectangle.getX() >= x && rectangle.getY() >= y && rectangle.getX() + rectangle.getWidth() <= x + width
+                && rectangle.getY() + rectangle.getHeight() <= y + height;
     }
 
     @Override
     public boolean contains(int x, int y)
     {
-        final double x0 = getX();
-        final double y0 = getY();
-        return x >= x0 && y >= y0 && x < x0 + getWidth() && y < y0 + getHeight();
+        return x >= this.x && y >= this.y && x < this.x + width && y < this.y + height;
     }
 
     @Override

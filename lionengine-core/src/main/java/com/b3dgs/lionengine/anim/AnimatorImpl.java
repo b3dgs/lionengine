@@ -132,6 +132,7 @@ final class AnimatorImpl
     public void play(Animation anim)
     {
         Check.notNull(anim, AnimatorImpl.ERROR_ANIM);
+
         final int firstFrame = anim.getFirst();
         final int lastFrame = anim.getLast();
         final double animSpeed = anim.getSpeed();
@@ -170,6 +171,7 @@ final class AnimatorImpl
     public void setAnimSpeed(double speed)
     {
         Check.argument(speed >= 0.0, AnimatorImpl.ERROR_SPEED);
+
         this.speed = speed;
     }
 
@@ -177,6 +179,7 @@ final class AnimatorImpl
     public void setFrame(int frame)
     {
         Check.argument(frame >= Animation.MINIMUM_FRAME, AnimatorImpl.ERROR_FRAME);
+
         current = frame;
     }
 

@@ -159,6 +159,7 @@ public class UtilityMathTest
         try
         {
             UtilityMath.intersection(line1, line1);
+            Assert.fail();
         }
         catch (final IllegalStateException exception)
         {

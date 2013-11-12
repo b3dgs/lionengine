@@ -57,6 +57,10 @@ public final class Config
     private static final String ERROR_OUTPUT = "The output resolution must not be null !";
     /** Error message filter. */
     private static final String ERROR_FILTER = "The filter must not be null !";
+    /** Error message depth. */
+    private static final String ERROR_DEPTH = "Depth must be strict positive !";
+    /** Error message depth. */
+    private static final String ERROR_RATIO = "Ratio must be strict positive !";
 
     /** Output resolution reference. */
     private final Resolution output;
@@ -97,22 +101,25 @@ public final class Config
     {
         Check.notNull(output, Config.ERROR_OUTPUT);
         Check.notNull(filter, Config.ERROR_FILTER);
-        Check.argument(depth > 0, "Depth must be strict positive !");
+        Check.argument(depth > 0, Config.ERROR_DEPTH);
 
         this.output = output;
         this.depth = depth;
         this.windowed = windowed;
         this.filter = filter;
+
         setRatio(output.getWidth() / (double) output.getHeight());
     }
 
     /**
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
-     * @param ratio The new ratio.
+     * @param ratio The new ratio [> 0].
      */
     public void setRatio(double ratio)
     {
+        Check.argument(ratio > 0, Config.ERROR_RATIO);
+
         this.ratio = ratio;
         output.setRatio(ratio);
     }
@@ -199,6 +206,7 @@ public final class Config
     void setSource(Resolution source)
     {
         Check.notNull(source, Config.ERROR_SOURCE);
+
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
         this.source.setRatio(ratio);
     }

@@ -22,7 +22,7 @@ package com.b3dgs.lionengine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ColorRgba
+public final class ColorRgba
 {
     /** Red color. */
     public static final ColorRgba RED = new ColorRgba(255, 0, 0);
@@ -32,6 +32,8 @@ public class ColorRgba
     public static final ColorRgba BLUE = new ColorRgba(0, 0, 255);
     /** Cyan color. */
     public static final ColorRgba CYAN = new ColorRgba(0, 255, 255);
+    /** Purple color. */
+    public static final ColorRgba PURPLE = new ColorRgba(255, 0, 255);
     /** Yellow color. */
     public static final ColorRgba YELLOW = new ColorRgba(255, 255, 0);
     /** White color. */
@@ -83,10 +85,10 @@ public class ColorRgba
         Check.argument(b >= 0 && b <= 255, "Wrong blue value !");
         Check.argument(a >= 0 && a <= 255, "Wrong alpha value !");
         value = (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) << 0;
+        alpha = a;
         red = r;
         green = g;
         blue = b;
-        alpha = a;
     }
 
     /**
@@ -97,10 +99,10 @@ public class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        red = (value & 0xFF) << 16;
-        green = (value & 0xFF) << 8;
-        blue = (value & 0xFF) << 0;
-        alpha = (value & 0xFF) << 24;
+        alpha = value >> 24 & 0xFF;
+        red = value >> 16 & 0xFF;
+        green = value >> 8 & 0xFF;
+        blue = value >> 0 & 0xFF;
     }
 
     /**

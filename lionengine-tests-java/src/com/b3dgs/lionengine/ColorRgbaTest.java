@@ -63,6 +63,12 @@ public class ColorRgbaTest
 
         final ColorRgba color3 = new ColorRgba(0, 255, 0, 255);
         Assert.assertEquals(ColorRgba.GREEN.getRgba(), color3.getRgba());
+        
+        final ColorRgba color4 = new ColorRgba(100, 75, 50, 25);
+        Assert.assertEquals(100, color4.getRed());
+        Assert.assertEquals(75, color4.getGreen());
+        Assert.assertEquals(50, color4.getBlue());
+        Assert.assertEquals(25, color4.getAlpha());
     }
 
     /**

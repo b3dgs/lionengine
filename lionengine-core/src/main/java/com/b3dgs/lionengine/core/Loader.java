@@ -46,6 +46,8 @@ import com.b3dgs.lionengine.Mouse;
  */
 public final class Loader
 {
+    /** Engine terminated. */
+    private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Error message config. */
     private static final String ERROR_CONFIG = "Configuration must not be null !";
     /** Error message already started. */
@@ -78,6 +80,7 @@ public final class Loader
     public Loader(Config config)
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
+
         this.config = config;
         semaphore = new Semaphore(0);
         screen = EngineImpl.factoryGraphic.createScreen(config);
@@ -92,7 +95,7 @@ public final class Loader
     /**
      * Start the loader. Has to be called only one time.
      * 
-     * @param sequence The the next sequence to start.
+     * @param sequence The the next sequence to start (can be <code>null</code>).
      */
     public void start(Sequence sequence)
     {
@@ -153,6 +156,6 @@ public final class Loader
             Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");
         }
         screen.dispose();
-        Verbose.info("LionEngine terminated");
+        Verbose.info(Loader.ENGINE_TERMINATED);
     }
 }

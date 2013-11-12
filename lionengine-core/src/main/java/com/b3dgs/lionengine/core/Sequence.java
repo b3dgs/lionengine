@@ -83,6 +83,8 @@ public abstract class Sequence
     private static final String ERROR_LOADER = "Loader must not be null !";
     /** Error message loader. */
     private static final String ERROR_RESOLUTION = "Resolution must not be null !";
+    /** Error message loader. */
+    private static final String ERROR_SEQUENCE = "Sequence must not be null !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
@@ -149,11 +151,12 @@ public abstract class Sequence
      * Constructor.
      * 
      * @param loader The loader reference.
-     * @param newSource The resolution source reference.
+     * @param resolution The resolution source reference.
      */
-    public Sequence(final Loader loader, Resolution newSource)
+    public Sequence(final Loader loader, Resolution resolution)
     {
         Check.notNull(loader, Sequence.ERROR_LOADER);
+        Check.notNull(resolution, Sequence.ERROR_RESOLUTION);
 
         // Initialize
         this.loader = loader;
@@ -178,7 +181,7 @@ public abstract class Sequence
             frameDelay = Sequence.TIME_LONG / output.getRate();
         }
 
-        setResolution(newSource);
+        setResolution(resolution);
         thread = new SequenceThread(this);
     }
 
@@ -190,12 +193,14 @@ public abstract class Sequence
     protected final void setResolution(Resolution newSource)
     {
         Check.notNull(newSource, Sequence.ERROR_RESOLUTION);
+
         config.setSource(newSource);
         if (mouse != null)
         {
             mouse.setConfig(config);
         }
         source = config.getSource();
+
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
@@ -296,11 +301,13 @@ public abstract class Sequence
      * being in a menu). Do not forget to call {@link #end()} in order to give control to the next sequence. The next
      * sequence should override {@link #onLoaded(double, Graphic)} for special load just before enter in the loop.
      * 
-     * @param nextSequence The next sequence reference.
+     * @param nextSequence The next sequence reference (must not be <code>null</code>).
      * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
      */
     public final void start(final Sequence nextSequence, boolean wait)
     {
+        Check.notNull(nextSequence, Sequence.ERROR_SEQUENCE);
+
         this.nextSequence = nextSequence;
         nextSequence.previousSequence = this;
         nextSequence.setTitle(nextSequence.getClass().getName());
@@ -610,12 +617,10 @@ public abstract class Sequence
     {
         if (directRendering)
         {
-            // Direct rendering
             render(g);
         }
         else
         {
-            // Intermediate rendering (use of filter)
             render(graphic);
             switch (hqx)
             {

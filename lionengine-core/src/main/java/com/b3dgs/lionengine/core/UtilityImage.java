@@ -79,6 +79,7 @@ public final class UtilityImage
     public static ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
         Check.argument(width > 0 && height > 0, "Image size must be strictly positive !");
+
         return UtilityImage.graphicFactory.createCompatibleImage(width, height, transparency);
     }
 
@@ -92,6 +93,7 @@ public final class UtilityImage
     public static ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
+
         try (InputStream inputStream = media.getStream();)
         {
             return UtilityImage.graphicFactory.getImageBuffer(inputStream, alpha);
@@ -111,6 +113,7 @@ public final class UtilityImage
     public static ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
         Check.notNull(imageBuffer, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.getImageBuffer(imageBuffer);
     }
 
@@ -124,6 +127,7 @@ public final class UtilityImage
     public static ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
         Check.notNull(imageBuffer, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.applyMask(imageBuffer, maskColor);
     }
 
@@ -138,6 +142,7 @@ public final class UtilityImage
     public static ImageBuffer[] splitImage(ImageBuffer image, int row, int col)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.splitImage(image, row, col);
     }
 
@@ -151,6 +156,7 @@ public final class UtilityImage
     public static ImageBuffer rotate(ImageBuffer image, int angle)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.rotate(image, angle);
     }
 
@@ -165,6 +171,7 @@ public final class UtilityImage
     public static ImageBuffer resize(ImageBuffer image, int width, int height)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.resize(image, width, height);
     }
 
@@ -177,6 +184,7 @@ public final class UtilityImage
     public static ImageBuffer flipHorizontal(ImageBuffer image)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.flipHorizontal(image);
     }
 
@@ -189,6 +197,7 @@ public final class UtilityImage
     public static ImageBuffer flipVertical(ImageBuffer image)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.flipVertical(image);
     }
 
@@ -203,6 +212,7 @@ public final class UtilityImage
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         Check.notNull(filter, "Filter must not be null !");
+
         return UtilityImage.graphicFactory.applyFilter(image, filter);
     }
 
@@ -216,6 +226,7 @@ public final class UtilityImage
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
         Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
+
         final String imagefile = media.getPath();
         try (OutputStream outputStream = media.getOutputStream();)
         {
@@ -345,6 +356,7 @@ public final class UtilityImage
             int refSize)
     {
         Check.notNull(image, UtilityImage.ERROR_IMAGE_NULL);
+
         return UtilityImage.graphicFactory.getRasterBuffer(image, fr, fg, fb, er, eg, eb, refSize);
     }
 

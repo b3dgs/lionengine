@@ -51,7 +51,9 @@ public class VerboseTest
         Verbose.info("info");
         Verbose.warning(VerboseTest.class, "testVerbose", "warning");
         Verbose.critical(VerboseTest.class, "testVerbose", "critical");
+        Verbose.info("*** EXPECTED EXCEPTION ***");
         Verbose.exception(VerboseTest.class, "testVerbose", new LionEngineException("exception"), "exception");
+        Verbose.info("*************************");
     }
 
     /**
@@ -67,6 +69,5 @@ public class VerboseTest
         VerboseTest.testVerbose(Verbose.CRITICAL);
         Assert.assertNotNull(Verbose.values());
         Assert.assertEquals(Verbose.NONE, Verbose.valueOf(Verbose.NONE.name()));
-        Engine.terminate();
     }
 }

@@ -46,6 +46,8 @@ abstract class EngineImpl
     private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message verbose. */
     private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
+    /** Factory base name. */
+    private static final String FACTORY_BASE = EngineImpl.class.getPackage().getName() + ".";
     /** Started engine flag. */
     static boolean started = false;
     /** Graphic factory. */
@@ -75,8 +77,11 @@ abstract class EngineImpl
             EngineImpl.init(name, version, level);
 
             // LionEngine started
-            Verbose.info("Starting \"LionEngine ", EngineImpl.VERSION, "\" for \"", EngineImpl.programName, " ",
-                    EngineImpl.programVersion, "\"");
+            final StringBuilder message = new StringBuilder("Starting \"LionEngine ");
+            message.append(EngineImpl.VERSION).append("\" for \"");
+            message.append(EngineImpl.programName).append(" ");
+            message.append(EngineImpl.programVersion).append("\"");
+            Verbose.info(message.toString());
 
             EngineImpl.started = true;
 
@@ -141,10 +146,9 @@ abstract class EngineImpl
      */
     private static <C> C getFactory(String name)
     {
-        final String factoryName = EngineImpl.class.getPackage().getName() + "." + name;
+        final String factoryName = EngineImpl.FACTORY_BASE + name;
         try
         {
-
             return (C) Class.forName(factoryName).newInstance();
         }
         catch (InstantiationException

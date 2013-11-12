@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -41,6 +42,8 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public abstract class Media
 {
+    /** Error path. */
+    private static final String ERROR_PATH = "Path must not be null !";
     /** System separator. */
     private static String separator = File.separator;
     /** Media implementation. */
@@ -54,6 +57,7 @@ public abstract class Media
      */
     public static Media create(String path)
     {
+        Check.notNull(path, Media.ERROR_PATH);
         try
         {
             return Media.mediaImpl.getConstructor(String.class).newInstance(path);
@@ -111,6 +115,8 @@ public abstract class Media
      */
     public static String getPathSeparator(String separator, String... path)
     {
+        Check.notNull(path, Media.ERROR_PATH);
+
         final StringBuilder fullPath = new StringBuilder(path.length);
         for (int i = 0; i < path.length; i++)
         {

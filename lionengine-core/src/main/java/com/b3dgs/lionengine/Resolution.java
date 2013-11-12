@@ -30,6 +30,13 @@ package com.b3dgs.lionengine;
  */
 public final class Resolution
 {
+    /** Error message size. */
+    private static final String ERROR_SIZE = "Size must be strict positive !";
+    /** Error message rate. */
+    private static final String ERROR_RATE = "Rate must be positive !";
+    /** Error message depth. */
+    private static final String ERROR_RATIO = "Ratio must be strict positive !";
+
     /** Resolution width. */
     private int width;
     /** Resolution height. */
@@ -65,26 +72,30 @@ public final class Resolution
     /**
      * Set the resolution.
      * 
-     * @param width The resolution width (in pixel).
-     * @param height The resolution height (in pixel).
-     * @param rate The refresh rate in hertz (usually 50 or 60).
+     * @param width The resolution width (in pixel) [> 0].
+     * @param height The resolution height (in pixel) [> 0].
+     * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
      */
     public void set(int width, int height, int rate)
     {
-        Check.argument(width > 0 && height > 0 && rate >= 0);
+        Check.argument(width > 0 && height > 0, Resolution.ERROR_SIZE);
+        Check.argument(rate >= 0, Resolution.ERROR_RATE);
+
         this.width = width;
         this.height = height;
-        ratio = width / (double) height;
         this.rate = rate;
+        ratio = width / (double) height;
     }
 
     /**
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
-     * @param ratio The new ratio.
+     * @param ratio The new ratio [> 0].
      */
     public void setRatio(double ratio)
     {
+        Check.argument(ratio > 0, Resolution.ERROR_RATIO);
+
         if (!Ratio.equals(this.ratio, ratio))
         {
             width = (int) Math.ceil(height * ratio);
@@ -96,10 +107,12 @@ public final class Resolution
     /**
      * Set the refresh rate value in hertz.
      * 
-     * @param rate The refresh rate value.
+     * @param rate The refresh rate value [>= 0].
      */
     public void setRate(int rate)
     {
+        Check.argument(rate >= 0, Resolution.ERROR_RATE);
+
         this.rate = rate;
     }
 

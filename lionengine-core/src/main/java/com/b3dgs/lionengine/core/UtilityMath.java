@@ -142,6 +142,7 @@ public final class UtilityMath
     {
         final double reciprocal = 1.0 / speed;
         final double invReciprocal = 1.0 - reciprocal;
+
         return value * invReciprocal + dest * reciprocal;
     }
 
@@ -307,6 +308,7 @@ public final class UtilityMath
     public static int getSign(int value)
     {
         Check.argument(value != 0, "Argument must not be equal to 0 !");
+
         return Math.abs(value) / value;
     }
 
