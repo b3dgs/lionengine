@@ -16,7 +16,8 @@ Steps to include the LionEngine in your project:
 * Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 * Include all LionEngine libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-        * __lionengine-java__ _(required if you use the full JDK7)_
+        * __lionengine-java2d__ _(required if you use the full JDK7)_
+        * __lionengine-android__ _(required if you use Android 2.3.3)_
         * __lionengine-game__ _(first base for any game development)_
           * __lionengine-game-platform__ _(specialized for platform games)_
           * __lionengine-game-pathfinding__ _(for pathfinding support)_
@@ -36,39 +37,14 @@ Once you installed the LionEngine in your project, you may would like to know ho
 
 #### Main class
 ```java
-/**
- * Program starts here. When you start the jvm, ensure that this main function is called.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- */
 public final class AppMinimal
 {
-    /**
-     * Main function called by the jvm.
-     * 
-     * @param args The arguments.
-     */
     public static void main(String[] args)
     {
-        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
-        // The engine is initialized with our parameters:
-        // - The name of our program: "First Code"
-        // - The program version: "1.0.0"
-        // - The main resources directory, relative to the execution directory: ./resources/
-        // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
         Engine.start("Minimal", Version.create(1, 0, 0), "resources");
 
-        // Resolution configuration (output = 640*480 at 60Hz). This is corresponding to the output configuration.
-        // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
-        // If the current frame rate is lower than the required in the native,
-        // the extrapolation value will allow to compensate any data calculation.
         final Resolution output = new Resolution(640, 480, 60);
-
-        // Final configuration (rendering will be scaled by 2 considering source and output resolution).
-        // This is the final configuration container, including color depth and window mode.
         final Config config = new Config(output, 16, true);
-
-        // Program starter, setup with our configuration. It just needs one sequence reference to start.
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
@@ -77,32 +53,15 @@ public final class AppMinimal
 
 #### Minimal sequence
 ```java
-/**
- * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
- * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
- * start the linked one.
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- */
 final class Scene
         extends Sequence
 {
-    /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
-     */
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     protected void load()
