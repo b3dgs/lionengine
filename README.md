@@ -6,17 +6,21 @@ Using Java 7 internal libraries, it is specifically designed for 2D games (no su
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __networked__ game.
 
+Since the version __6.0.0__, it supports __Android 2.3.3__ *(API10)*.
+The only changes to perform are the gameplay part, as the '__mouse__' and '__keyboard__' concept are different on Android.
+Everything else is fully compatible and do no requires any changes.
 
 ## Installation
 
 Steps to include the LionEngine in your project:
 
 * Install at least the [Java JDK 7] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* Install the [Android SDK] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-android__)
 * Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
 * Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 * Include all LionEngine libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-        * __lionengine-java2d__ _(required if you use the full JDK7)_
+        * __lionengine-java2d__ _(required if you use the full JDK7, target for computer)_
         * __lionengine-android__ _(required if you use Android 2.3.3)_
         * __lionengine-game__ _(first base for any game development)_
           * __lionengine-game-platform__ _(specialized for platform games)_
@@ -35,7 +39,7 @@ Steps to include the LionEngine in your project:
 
 Once you installed the LionEngine in your project, you may would like to know how to prepare a quick sample as a first try.
 
-#### Main class
+#### Main Java class (using lionengine-java2d)
 ```java
 public final class AppMinimal
 {
@@ -47,6 +51,32 @@ public final class AppMinimal
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
+    }
+}
+```
+
+### Main Android class (using lionengine-android)
+```java
+public final class MainActivity
+        extends Activity
+{
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+
+        Engine.start("Minimal", Version.create(1, 0, 0), this);
+        final Resolution output = new Resolution(800, 480, 60);
+        final Config config = new Config(output, 32, false);
+        final Loader loader = new Loader(config);
+        loader.start(new Scene(loader));
+    }
+
+    @Override
+    public void finish()
+    {
+        super.finish();
+        Engine.terminate();
     }
 }
 ```
@@ -72,10 +102,6 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
-        {
-            end();
-        }
         // Update
     }
 
