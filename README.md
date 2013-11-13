@@ -4,21 +4,21 @@ The __LionEngine__ is a game engine especially developed during the project [Lio
 
 Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management ( _images_, _sprites_, _animations_, _tiles_...). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available ( _Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Ogg_). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
-In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __networked__ game.
+In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
 Since the version __6.0.0__, it supports __Android 2.3.3__ *(API10)*.
-The only changes to perform are the gameplay part, as the '__mouse__' and '__keyboard__' concept are different on Android.
-Everything else is fully compatible and do no requires any changes.
+The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concept are different on Android.
+Everything else is fully compatible and do not requires any changes.
 
 ## Installation
 
-Steps to include the LionEngine in your project:
+Steps to include the __LionEngine__ in your project:
 
 * Install at least the [Java JDK 7] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * Install the [Android SDK] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-android__)
 * Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
 * Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* Include all LionEngine libraries you need for your project, following the tree dependency:
+* Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
         * __lionengine-java2d__ _(required if you use the full JDK7, target for computer)_
         * __lionengine-android__ _(required if you use Android 2.3.3)_
@@ -32,12 +32,12 @@ Steps to include the LionEngine in your project:
         * __lionengine-ogg__ _(allows to play Ogg compressed musics)_
         * __lionengine-sc68__ _(allows to play Sonic Arranger Amiga and Sc68 Atari musics)_
 * Join (if you want) the javadoc for each library
-* You are now ready to use the LionEngine in your project
+* You are now ready to use the __LionEngine__ in your project
 
 
 ## Getting Started
 
-Once you installed the LionEngine in your project, you may would like to know how to prepare a quick sample as a first try.
+Once you installed the __LionEngine__ in your project, you may would like to know how to prepare a quick sample as a first try.
 
 #### Main Java class (using lionengine-java2d)
 ```java
@@ -55,9 +55,9 @@ public final class AppMinimal
 }
 ```
 
-### Main Android class (using lionengine-android)
+#### Main Android class (using lionengine-android)
 ```java
-public final class MainActivity
+public final class AppMinimal
         extends Activity
 {
     @Override
