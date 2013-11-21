@@ -165,16 +165,11 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.9</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>javadoc</goal>
-								<goal>test-javadoc</goal>
-							</goals>
-							<phase>site</phase>
-						</execution>
-					</executions>
+					<version>2.9.1</version>
+					<configuration>
+						<show>protected</show>
+						<nohelp>true</nohelp>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -189,14 +184,6 @@
 					<version>2.6</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.2</version>
-					<configuration>
-						<locales>en</locales>
 					</configuration>
 				</plugin>
 
