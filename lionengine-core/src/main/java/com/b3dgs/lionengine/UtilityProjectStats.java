@@ -96,11 +96,19 @@ public final class UtilityProjectStats
                 Charset.forName("UTF-8")));)
         {
             String s;
-            do
+            boolean stop = false;
+            while (!stop)
             {
                 s = in.readLine();
-                UtilityProjectStats.numberOfLines++;
-            } while (s != null);
+                if (s != null)
+                {
+                    UtilityProjectStats.numberOfLines++;
+                }
+                else
+                {
+                    stop = true;
+                }
+            }
         }
         catch (final IOException exception)
         {
