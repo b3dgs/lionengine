@@ -238,7 +238,7 @@ public final class UtilityMedia
         }
         catch (final IOException exception)
         {
-            Verbose.critical(Media.class, "getFile", "Temporary file error on: \"", outfile, "\"");
+            Verbose.exception(Media.class, "getFile", exception, "Temporary file error on: \"", outfile, "\"");
         }
         return file;
     }

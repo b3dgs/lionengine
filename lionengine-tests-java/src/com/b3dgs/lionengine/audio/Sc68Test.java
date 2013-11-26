@@ -99,5 +99,33 @@ public class Sc68Test
         Assert.assertTrue(sc68.seek() >= 0);
         sc68.stop();
         sc68.free();
+        Engine.terminate();
+    }
+    
+    /**
+     * Test Sc68 stress.
+     * 
+     * @throws InterruptedException If error.
+     */
+    @Test
+    public void testSc68Stress() throws InterruptedException
+    {
+        Engine.start("Sc68TestStress", Version.create(1, 0, 0), "resources");
+        final Sc68 sc68 = AudioSc68.createSc68Player();
+        sc68.play(Media.create("music.sc68"));
+        sc68.stop();
+        sc68.play(Media.create("music.sc68"));
+        Thread.sleep(100);
+        sc68.stop();
+        sc68.play(Media.create("music.sc68"));
+        sc68.pause();
+        sc68.resume();
+        sc68.play(Media.create("music.sc68"));
+        sc68.play(Media.create("music.sc68"));
+        Thread.sleep(500);
+        sc68.stop();
+        sc68.play(Media.create("music.sc68"));
+        sc68.free();
+        Engine.terminate();
     }
 }
