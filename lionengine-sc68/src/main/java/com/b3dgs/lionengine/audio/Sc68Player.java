@@ -50,11 +50,11 @@ final class Sc68Player
      */
 
     @Override
-    public void play(Media media)
+    public void play(Media media, boolean loop)
     {
         Check.notNull(media);
         final File music = UtilityMedia.getTempFile(media, true, false);
-        binding.SC68Play(music.getPath());
+        binding.SC68Play(music.getPath(), loop ? 1 : 0);
     }
 
     @Override
@@ -83,14 +83,8 @@ final class Sc68Player
     }
 
     @Override
-    public void free()
-    {
-        binding.SC68Free();
-    }
-
-    @Override
     public int seek()
     {
-        return binding.SC68Seek();
+        return binding.SC68SeekGet();
     }
 }

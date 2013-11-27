@@ -31,8 +31,9 @@ interface Sc68Binding
      * Play sc68.
      * 
      * @param name The track name.
+     * @param loop The loop flag.
      */
-    void SC68Play(String name);
+    void SC68Play(String name, int loop);
 
     /**
      * Set volume.
@@ -57,14 +58,9 @@ interface Sc68Binding
     void SC68Stop();
 
     /**
-     * Free library.
-     */
-    void SC68Free();
-
-    /**
      * Get play index.
      * 
      * @return The play index.
      */
-    int SC68Seek();
+    int SC68SeekGet();
 }

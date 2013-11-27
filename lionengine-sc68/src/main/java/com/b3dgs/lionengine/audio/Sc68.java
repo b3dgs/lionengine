@@ -50,8 +50,9 @@ public interface Sc68
      * Play a music from its id, previously loaded.
      * 
      * @param media The music media.
+     * @param loop The loop flag.
      */
-    void play(Media media);
+    void play(Media media, boolean loop);
 
     /**
      * Set player volume (between 0 and 100, as a percent).
@@ -74,11 +75,6 @@ public interface Sc68
      * Stop a music.
      */
     void stop();
-
-    /**
-     * Terminate plugin.
-     */
-    void free();
 
     /**
      * Get music progress counter.

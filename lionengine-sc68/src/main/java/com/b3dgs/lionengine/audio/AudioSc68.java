@@ -68,7 +68,7 @@ public final class AudioSc68
                 break;
         }
 
-        final String name = "SC68Player_" + arch.toLowerCase(Locale.getDefault()) + ext;
+        final String name = "sc68_player_" + arch.toLowerCase(Locale.getDefault()) + ext;
         try
         {
             final File lib = UtilityMedia.getFile(Media.getPath(UtilityMedia.getTempDir(), name), getClass()
