@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import com.b3dgs.lionengine.core.UtilityMath;
+
 /**
  * Represents a color with red, green, blue and alpha.
  * 
@@ -103,6 +105,25 @@ public final class ColorRgba
         red = value >> 16 & 0xFF;
         green = value >> 8 & 0xFF;
         blue = value >> 0 & 0xFF;
+    }
+
+    /**
+     * Increase color.
+     * 
+     * @param r The increase red value.
+     * @param g The increase green value.
+     * @param b The increase blue value.
+     * @return The increased color value.
+     */
+    public int inc(int r, int g, int b)
+    {
+        if (alpha == 0)
+        {
+            return 0;
+        }
+        return (255 & 0xFF) << 24 | (UtilityMath.fixBetween(red + r, 0, 255) & 0xFF) << 16
+                | (UtilityMath.fixBetween(green + g, 0, 255) & 0xFF) << 8
+                | (UtilityMath.fixBetween(blue + b, 0, 255) & 0xFF) << 0;
     }
 
     /**

@@ -124,6 +124,15 @@ public interface Sprite
     void setAlpha(int alpha);
 
     /**
+     * Set fade value. The lower is the value, the blacker will be the fade effect. The higher is the value, the whiter
+     * will be the fade effect.
+     * 
+     * @param alpha The alpha value <code>[0 - 255]</code>.
+     * @param fade The fade value <code>[0 - 255]</code>.
+     */
+    void setFade(int alpha, int fade);
+
+    /**
      * Get the current sprite width (its current size, after scaling operation).
      * 
      * @return sprite The sprite width.

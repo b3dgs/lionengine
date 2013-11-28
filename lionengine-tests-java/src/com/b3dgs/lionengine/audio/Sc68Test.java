@@ -119,8 +119,10 @@ public class Sc68Test
         sc68.play(Media.create("music.sc68"), true);
         sc68.pause();
         sc68.resume();
-        sc68.play(Media.create("music.sc68"), true);
-        sc68.play(Media.create("music.sc68"), true);
+        for (int i = 0; i < 10; i++)
+        {
+            sc68.play(Media.create("music.sc68"), true);
+        }
         Thread.sleep(500);
         sc68.stop();
         sc68.play(Media.create("music.sc68"), true);

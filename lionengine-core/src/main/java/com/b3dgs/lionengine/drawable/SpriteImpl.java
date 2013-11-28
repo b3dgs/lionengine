@@ -178,6 +178,12 @@ class SpriteImpl
     public void setAlpha(int alpha)
     {
         Check.argument(alpha >= 0 && alpha <= 255, "Alpha must be >= 0 and <= 255 !");
+        setFade(alpha, -255);
+    }
+    
+    @Override
+    public void setFade(int alpha, int fade)
+    {
         if (rgb == null)
         {
             rgb = new int[width][height];
@@ -194,8 +200,8 @@ class SpriteImpl
                 }
                 final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
-                final int mc = alpha << alphaDec | alphaKey;
-                surface.setRgb(cx, cy, rgb[cx][cy] & mc);
+                final int mc = Math.abs(alpha) << alphaDec | alphaKey;
+                surface.setRgb(cx, cy, new ColorRgba(rgb[cx][cy]).inc(fade + alpha, fade + alpha, fade + alpha) & mc);
             }
         }
         firstAlpha = false;

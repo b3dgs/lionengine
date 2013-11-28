@@ -276,6 +276,12 @@ final class SpriteFontImpl
     {
         surface.setAlpha(alpha);
     }
+    
+    @Override
+    public void setFade(int alpha, int fade)
+    {
+        surface.setFade(alpha, fade);
+    }
 
     @Override
     public int getWidthOriginal()

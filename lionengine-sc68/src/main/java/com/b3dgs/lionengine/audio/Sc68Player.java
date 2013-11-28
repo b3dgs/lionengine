@@ -54,7 +54,7 @@ final class Sc68Player
     {
         Check.notNull(media);
         final File music = UtilityMedia.getTempFile(media, true, false);
-        binding.SC68Play(music.getPath(), loop ? 1 : 0);
+        binding.SC68Play(music.getPath(), loop ? 0 : 1);
     }
 
     @Override
