@@ -50,41 +50,41 @@ final class Sc68Player
      */
 
     @Override
-    public void play(Media media, boolean loop)
+    public void play(Media media)
     {
         Check.notNull(media);
         final File music = UtilityMedia.getTempFile(media, true, false);
-        binding.SC68Play(music.getPath(), loop ? 0 : 1);
+        binding.Sc68Play(music.getPath());
     }
 
     @Override
     public void setVolume(int volume)
     {
         Check.argument(volume >= 0 && volume <= 100, "Wrong volume value !");
-        binding.SC68Volume(volume);
+        binding.Sc68SetVolume(volume);
     }
 
     @Override
     public void pause()
     {
-        binding.SC68Pause();
+        binding.Sc68Pause();
     }
 
     @Override
     public void resume()
     {
-        binding.SC68UnPause();
+        binding.Sc68Resume();
     }
 
     @Override
     public void stop()
     {
-        binding.SC68Stop();
+        binding.Sc68Stop();
     }
 
     @Override
     public int seek()
     {
-        return binding.SC68SeekGet();
+        return binding.Sc68Seek();
     }
 }

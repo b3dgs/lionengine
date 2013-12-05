@@ -50,9 +50,8 @@ public interface Sc68
      * Play a music from its id, previously loaded.
      * 
      * @param media The music media.
-     * @param loop The loop flag.
      */
-    void play(Media media, boolean loop);
+    void play(Media media);
 
     /**
      * Set player volume (between 0 and 100, as a percent).

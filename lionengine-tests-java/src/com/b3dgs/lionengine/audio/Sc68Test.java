@@ -62,7 +62,7 @@ public class Sc68Test
         final Sc68 sc68 = AudioSc68.createSc68Player();
         try
         {
-            sc68.play(null, false);
+            sc68.play(null);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -89,7 +89,7 @@ public class Sc68Test
             // Success
         }
         sc68.setVolume(15);
-        sc68.play(Media.create("music.sc68"), true);
+        sc68.play(Media.create("music.sc68"));
         Thread.sleep(1000);
         sc68.pause();
         Thread.sleep(500);
@@ -111,21 +111,21 @@ public class Sc68Test
     {
         Engine.start("Sc68TestStress", Version.create(1, 0, 0), "resources");
         final Sc68 sc68 = AudioSc68.createSc68Player();
-        sc68.play(Media.create("music.sc68"), true);
+        sc68.play(Media.create("music.sc68"));
         sc68.stop();
-        sc68.play(Media.create("music.sc68"), false);
+        sc68.play(Media.create("music.sc68"));
         Thread.sleep(100);
         sc68.stop();
-        sc68.play(Media.create("music.sc68"), true);
+        sc68.play(Media.create("music.sc68"));
         sc68.pause();
         sc68.resume();
         for (int i = 0; i < 10; i++)
         {
-            sc68.play(Media.create("music.sc68"), true);
+            sc68.play(Media.create("music.sc68"));
         }
         Thread.sleep(500);
         sc68.stop();
-        sc68.play(Media.create("music.sc68"), true);
+        sc68.play(Media.create("music.sc68"));
         Engine.terminate();
     }
 }

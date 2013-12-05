@@ -34,7 +34,7 @@ public class ModuleSc68
     {
         final Sc68 sc68 = AudioSc68.createSc68Player();
         sc68.setVolume(25);
-        sc68.play(UtilityMedia.get("music.sc68"), true);
+        sc68.play(UtilityMedia.get("music.sc68"));
 
         Thread.sleep(1000);
         sc68.pause();

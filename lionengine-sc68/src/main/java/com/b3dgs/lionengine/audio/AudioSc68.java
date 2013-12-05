@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.audio;
 import java.io.File;
 import java.util.Locale;
 
-import com.b3dgs.lionengine.Architecture;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.core.Media;
@@ -64,7 +63,7 @@ public final class AudioSc68
                 break;
             default:
                 ext = ".so";
-                arch = Architecture.X64.name();
+                arch = "x86_64";
                 break;
         }
 
