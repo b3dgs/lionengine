@@ -24,11 +24,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Locale;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -47,8 +45,6 @@ import com.b3dgs.lionengine.UtilityFile;
  */
 public final class UtilityMedia
 {
-    /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = UtilityMedia.assignSystemTempDirectory();
     /** Engine working directory. */
     public static final String WORKING_DIR = UtilityMedia.assignWorkingDirectory();
     /** Error message internal. */
@@ -59,8 +55,6 @@ public final class UtilityMedia
     private static boolean fromJar = false;
     /** Class loader. */
     private static Class<?> loader = null;
-    /** Engine temporary directory. */
-    private static String tmpDir;
 
     /**
      * Check if the media exists. Throws a {@link LionEngineException} if not.
@@ -262,7 +256,7 @@ public final class UtilityMedia
         }
         if (cache)
         {
-            final String cacheFile = Media.getPath(UtilityMedia.tmpDir, UtilityFile.getFilenameFromPath(filename));
+            final String cacheFile = Media.getPath(UtilityFile.getTempDir(), UtilityFile.getFilenameFromPath(filename));
             if (new File(cacheFile).exists())
             {
                 return new File(cacheFile);
@@ -274,17 +268,7 @@ public final class UtilityMedia
         final String n = slp[slp.length - 1];
 
         return UtilityMedia
-                .getFile(Media.getPath(UtilityMedia.tmpDir, n), UtilityMedia.getStream(media, "getTempFile"));
-    }
-
-    /**
-     * Get temporary directory (where are stored files from jar).
-     * 
-     * @return The temporary directory (<code>/tmp, .../AppData/Local/Temp, ...</code>)
-     */
-    public static String getTempDir()
-    {
-        return UtilityMedia.tmpDir;
+                .getFile(Media.getPath(UtilityFile.getTempDir(), n), UtilityMedia.getStream(media, "getTempFile"));
     }
 
     /**
@@ -346,17 +330,6 @@ public final class UtilityMedia
     }
 
     /**
-     * Set the temporary directory name from the program name.
-     * 
-     * @param programName The program name.
-     */
-    static void setTempDirectory(String programName)
-    {
-        final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-        UtilityMedia.tmpDir = Media.getPath(UtilityMedia.SYSTEM_TEMP_DIR, dir);
-    }
-
-    /**
      * Get the working directory.
      * 
      * @return The working directory.
@@ -366,23 +339,6 @@ public final class UtilityMedia
         try
         {
             return System.getProperty("user.dir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
-        }
-    }
-
-    /**
-     * Get the system temp directory.
-     * 
-     * @return The system temp directory.
-     */
-    private static String assignSystemTempDirectory()
-    {
-        try
-        {
-            return System.getProperty("java.io.tmpdir");
         }
         catch (final SecurityException exception)
         {

@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityFile;
 import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**

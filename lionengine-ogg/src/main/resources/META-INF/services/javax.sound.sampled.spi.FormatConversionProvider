@@ -1,5 +1,0 @@
-# for the jorbis decoder
-
-org.tritonus.sampled.convert.jorbis.JorbisFormatConversionProvider
-
-#end

@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityFile;
 
 /**
  * Test the file writing and reading.

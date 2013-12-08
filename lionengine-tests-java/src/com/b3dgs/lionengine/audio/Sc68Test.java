@@ -126,6 +126,7 @@ public class Sc68Test
         Thread.sleep(500);
         sc68.stop();
         sc68.play(Media.create("music.sc68"));
+        sc68.stop();
         Engine.terminate();
     }
 }

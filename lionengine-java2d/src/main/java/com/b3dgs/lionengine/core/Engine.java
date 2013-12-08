@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -112,10 +111,10 @@ public final class Engine
             Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Media.getSeparator());
             Verbose.info("Resources directory = ",
                     Media.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
-            Verbose.info("Temporary directory = ", UtilityMedia.getTempDir() + Media.getSeparator());
+            Verbose.info("Temporary directory = ", UtilityFile.getTempDir() + Media.getSeparator());
 
             // Check version (clear temporary directory if version is different)
-            final String versionFilename = Media.getPath(UtilityMedia.getTempDir(), "version");
+            final String versionFilename = Media.getPath(UtilityFile.getTempDir(), "version");
             Engine.checkVersion(versionFilename);
             Engine.storeVersion(versionFilename);
         }
@@ -129,7 +128,7 @@ public final class Engine
     {
         EngineImpl.terminate();
         UtilityMedia.setResourcesDirectory(null);
-        UtilityMedia.setTempDirectory("");
+        UtilityFile.setTempDirectory("");
         UtilityMedia.setLoadFromJar(null, false);
     }
 
@@ -144,7 +143,7 @@ public final class Engine
     private static void init(String name, Version version, String resourcesDir, Verbose level)
     {
         Media.setMediaImpl(MediaImpl.class);
-        UtilityMedia.setTempDirectory(name);
+        UtilityFile.setTempDirectory(name);
         UtilityMedia.setResourcesDirectory(resourcesDir);
     }
 
@@ -155,7 +154,7 @@ public final class Engine
      */
     private static void checkVersion(String versionFilename)
     {
-        final File tempDir = new File(UtilityMedia.getTempDir());
+        final File tempDir = new File(UtilityFile.getTempDir());
         if (tempDir.exists())
         {
             boolean delete = true;
