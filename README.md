@@ -27,10 +27,7 @@ Steps to include the __LionEngine__ in your project:
           * __lionengine-game-pathfinding__ _(for pathfinding support)_
              * __lionengine-game-rts__ _(specialized for strategy games)_
         * __lionengine-network__ _(support for network)_
-        * __lionengine-midi__ _(allows to play Midi musics)_
-        * __lionengine-wav__ _(allows to play Wav sounds)_
-        * __lionengine-ogg__ _(allows to play Ogg compressed musics)_
-        * __lionengine-sc68__ _(allows to play Sonic Arranger Amiga and Sc68 Atari musics)_
+        * __lionengine-audio__ _(allows to play Midi & Ogg & Sc68 Atari musics, Wav sounds)_
 * Join (if you want) the javadoc for each library
 * You are now ready to use the __LionEngine__ in your project
 
