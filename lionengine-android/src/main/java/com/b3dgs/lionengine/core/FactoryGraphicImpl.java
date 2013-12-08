@@ -186,8 +186,11 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
     {
-        // TODO: ApplyFilter
-        return imageBuffer;
+        if (filter == Filter.NONE)
+        {
+            return imageBuffer;
+        }
+        throw new UnsupportedOperationException("applyFilter is not supported !");
     }
 
     @Override

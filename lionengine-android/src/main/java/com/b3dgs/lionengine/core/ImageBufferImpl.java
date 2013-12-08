@@ -31,27 +31,6 @@ import com.b3dgs.lionengine.Transparency;
 final class ImageBufferImpl
         implements ImageBuffer
 {
-    /**
-     * Get the transparency equivalence.
-     * 
-     * @param transparency The transparency.
-     * @return The equivalence.
-     */
-    static Transparency getTransparency(int transparency)
-    {
-        switch (transparency)
-        {
-            case 0:
-                return Transparency.OPAQUE;
-            case 1:
-                return Transparency.BITMASK;
-            case 2:
-                return Transparency.TRANSLUCENT;
-            default:
-                return Transparency.OPAQUE;
-        }
-    }
-
     /** Buffered image. */
     private final Bitmap bufferedImage;
 
@@ -125,7 +104,10 @@ final class ImageBufferImpl
     @Override
     public Transparency getTransparency()
     {
-        // TODO: GetTransparency
-        return ImageBufferImpl.getTransparency(1);
+        if (bufferedImage.hasAlpha())
+        {
+            return Transparency.TRANSLUCENT;
+        }
+        return Transparency.BITMASK;
     }
 }

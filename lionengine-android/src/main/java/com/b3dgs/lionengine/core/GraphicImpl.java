@@ -130,7 +130,7 @@ final class GraphicImpl
     @Override
     public void copyArea(int x, int y, int width, int height, int dx, int dy)
     {
-        // TODO: CopyArea
+        throw new UnsupportedOperationException("copyArea is not supported !");
     }
 
     @Override
