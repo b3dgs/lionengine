@@ -2,7 +2,7 @@
 
 The __LionEngine__ is a game engine especially developed during the project [Lionheart Remake] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionheart_remake) for an easy Java use. The engine is as a library, in Jar format (including its javadoc), which can be included in any project; for utility class uses, or to directly implement and inherit a game skeleton ( _including management of frame rate, extrapolation, input output..._).
 
-Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management ( _images_, _sprites_, _animations_, _tiles_...). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available ( _Wav_, _Midi_, and more using plug-ins, such as _Sc68_ and _Ogg_). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
+Using Java 7 internal libraries, it is specifically designed for 2D games (no support for 3D at the moment), and proposes a set of functions for 2D resource management ( _images_, _sprites_, _animations_, _tiles_...). Inputs and outputs are also available, with an easy keys retrieval, mouse movement... Management of music file are also available ( _Wav_, _Midi_, and more using plug-ins, such as _Sc68_). Windowed, full-screen and applet formats are fully supported, with a complete frame rate control.
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
@@ -27,7 +27,7 @@ Steps to include the __LionEngine__ in your project:
           * __lionengine-game-pathfinding__ _(for pathfinding support)_
              * __lionengine-game-rts__ _(specialized for strategy games)_
         * __lionengine-network__ _(support for network)_
-        * __lionengine-audio__ _(allows to play Midi & Ogg & Sc68 Atari musics, Wav sounds)_
+        * __lionengine-sc68__ _(allows to play Sc68 Atari musics)_
 * Join (if you want) the javadoc for each library
 * You are now ready to use the __LionEngine__ in your project
 
