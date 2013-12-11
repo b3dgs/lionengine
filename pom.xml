@@ -67,7 +67,7 @@
 		<module>lionengine-game-pathfinding</module>
 		<module>lionengine-game-rts</module>
 		<module>lionengine-network</module>
-		<module>lionengine-audio</module>
+		<module>lionengine-sc68</module>
 	</modules>
 
 	<build>

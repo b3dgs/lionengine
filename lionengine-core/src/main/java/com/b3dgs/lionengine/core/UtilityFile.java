@@ -29,10 +29,10 @@ public final class UtilityFile
 {
     /** System temp directory. */
     public static final String SYSTEM_TEMP_DIR = UtilityFile.assignSystemTempDirectory();
-    
+
     /** Engine temporary directory. */
     private static String tmpDir;
-    
+
     /**
      * Check if the path is a directory.
      * 
@@ -273,9 +273,10 @@ public final class UtilityFile
             Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
         }
     }
-    
+
     /**
      * Get the program temp directory.
+     * 
      * @return The program temp directory.
      */
     public static String getTempDir()
@@ -293,7 +294,7 @@ public final class UtilityFile
         final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
         UtilityFile.tmpDir = Media.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
     }
-    
+
     /**
      * Get the system temp directory.
      * 
@@ -310,7 +311,7 @@ public final class UtilityFile
             return "";
         }
     }
-    
+
     /**
      * Private constructor.
      */

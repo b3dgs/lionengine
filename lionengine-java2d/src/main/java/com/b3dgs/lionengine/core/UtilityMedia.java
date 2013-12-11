@@ -267,8 +267,8 @@ public final class UtilityMedia
         final String[] slp = str.split(";");
         final String n = slp[slp.length - 1];
 
-        return UtilityMedia
-                .getFile(Media.getPath(UtilityFile.getTempDir(), n), UtilityMedia.getStream(media, "getTempFile"));
+        return UtilityMedia.getFile(Media.getPath(UtilityFile.getTempDir(), n),
+                UtilityMedia.getStream(media, "getTempFile"));
     }
 
     /**

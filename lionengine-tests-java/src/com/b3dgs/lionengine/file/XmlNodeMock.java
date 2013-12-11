@@ -29,7 +29,7 @@ final class XmlNodeMock
         implements XmlNode
 {
     /** Float precision. */
-    static final float FLOAT_PRECISION = 0.00000001f;
+    static final float FLOAT_PRECISION = 0.0001f;
     /** Double precision. */
     static final double DOUBLE_PRECISION = 0.000000000000001;
     /** Boolean value. */

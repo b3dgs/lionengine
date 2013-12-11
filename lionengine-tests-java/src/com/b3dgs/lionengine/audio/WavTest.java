@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.AudioWav;
 import com.b3dgs.lionengine.core.Media;
 
 /**

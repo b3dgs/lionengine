@@ -15,49 +15,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio;
+package com.b3dgs.lionengine.core;
+
+import com.b3dgs.lionengine.audio.Wav;
 
 /**
- * Handle music routine. A music is an heavy sound, designed to be played once (loop or not).
- * <p>
- * Example:
- * </p>
- * 
- * <pre>
- * final Ogg ogg = AudioOgg.loadOgg(Media.get(&quot;music.ogg&quot;));
- * ogg.setVolume(100);
- * ogg.play(false);
- * 
- * Thread.sleep(2000);
- * ogg.stop();
- * </pre>
+ * Audio factory. Allows to create audio player.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Ogg
+public final class AudioWav
 {
-    /** Minimum volume value. */
-    int VOLUME_MIN = 0;
-    /** Maximum volume value. */
-    int VOLUME_MAX = 100;
+    /** Audio factory. */
+    static FactoryAudio factoryAudio;
 
     /**
-     * Play music. The music will be played until the end. In case of a loop, music will be played in loop. Music are
-     * played in a separated thread.
+     * Load a sound file <code>(.wav)</code>.
      * 
-     * @param repeat The loop flag.
+     * @param media The audio sound media.
+     * @return The loaded Sound.
      */
-    void play(boolean repeat);
+    public static Wav loadWav(Media media)
+    {
+        return AudioWav.factoryAudio.createAudioWav(media);
+    }
 
     /**
-     * Set the sound volume.
+     * Load a sound file <code>(.wav)</code>.
      * 
-     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     * @param media The audio sound media.
+     * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
+     * @return The loaded Sound.
      */
-    void setVolume(int volume);
+    public static Wav loadWav(Media media, int maxSimultaneous)
+    {
+        return AudioWav.factoryAudio.createAudioWav(media, maxSimultaneous);
+    }
 
     /**
-     * Stop music. The music will be stopped, but not deleted.
+     * Private constructor.
      */
-    void stop();
+    private AudioWav()
+    {
+        throw new RuntimeException();
+    }
 }

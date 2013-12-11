@@ -15,40 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio;
+package com.b3dgs.lionengine.core;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import org.junit.Assert;
-import org.junit.Test;
+import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.audio.Wav;
 
 /**
- * Test the audio ogg class.
+ * Audio factory implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AudioOggTest
+final class FactoryAudioImpl
+        implements FactoryAudio
 {
     /**
-     * Test AudioSc68 class.
-     * 
-     * @throws Exception If error.
+     * Constructor.
      */
-    @Test
-    public void testAudioOgg() throws Exception
+    FactoryAudioImpl()
     {
-        final Constructor<AudioOgg> constructor = AudioOgg.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        try
-        {
-            final AudioOgg audioOgg = constructor.newInstance();
-            Assert.assertNotNull(audioOgg);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        // Nothing to do
+    }
+
+    /*
+     * FactoryInput
+     */
+
+    @Override
+    public Midi createAudioMidi(Media media)
+    {
+        return new MidiPlayer(media);
+    }
+
+    @Override
+    public Wav createAudioWav(Media media)
+    {
+        return new WavPlayer(media);
+    }
+
+    @Override
+    public Wav createAudioWav(Media media, int maxSimultaneous)
+    {
+        return new WavPlayer(media, maxSimultaneous);
     }
 }

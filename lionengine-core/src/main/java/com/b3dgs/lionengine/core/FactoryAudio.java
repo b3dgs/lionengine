@@ -15,26 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.snippet;
+package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.audio.AudioOgg;
-import com.b3dgs.lionengine.audio.Ogg;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.audio.Wav;
 
-@SuppressWarnings("all")
-public class ModuleOgg
+/**
+ * Represents the audio factory.
+ * 
+ * @author Pierre-Alexandre (contact@b3dgs.com)
+ */
+interface FactoryAudio
 {
-    /*
-     * Snippet code
+    /**
+     * Create midi.
+     * 
+     * @param media The music to play.
+     * @return The created midi.
      */
+    Midi createAudioMidi(Media media);
 
-    void ogg() throws InterruptedException
-    {
-        final Ogg ogg = AudioOgg.loadOgg(UtilityMedia.get("music.ogg"));
-        ogg.setVolume(100);
-        ogg.play(false);
+    /**
+     * Create wav.
+     * 
+     * @param media The sound to play.
+     * @return The created wav.
+     */
+    Wav createAudioWav(Media media);
 
-        Thread.sleep(2000);
-        ogg.stop();
-    }
+    /**
+     * Create wav.
+     * 
+     * @param media The sound to play.
+     * @param maxSimultaneous The maximum simultaneous sounds.
+     * @return The created wav.
+     */
+    Wav createAudioWav(Media media, int maxSimultaneous);
 }

@@ -180,7 +180,7 @@ class SpriteImpl
         Check.argument(alpha >= 0 && alpha <= 255, "Alpha must be >= 0 and <= 255 !");
         setFade(alpha, -255);
     }
-    
+
     @Override
     public void setFade(int alpha, int fade)
     {

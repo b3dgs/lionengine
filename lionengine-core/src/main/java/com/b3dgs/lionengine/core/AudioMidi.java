@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio;
+package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.audio.Midi;
 
 /**
  * Audio factory. Allows to create audio player.
@@ -27,6 +27,9 @@ import com.b3dgs.lionengine.core.Media;
  */
 public final class AudioMidi
 {
+    /** Audio factory. */
+    static FactoryAudio factoryAudio;
+
     /**
      * Load a midi file <code>(.mid, .midi)</code> and prepare it to be played. A {@link LionEngineException} is thrown
      * if no midi player is available
@@ -36,7 +39,7 @@ public final class AudioMidi
      */
     public static Midi loadMidi(Media media)
     {
-        return new MidiPlayer(media);
+        return AudioMidi.factoryAudio.createAudioMidi(media);
     }
 
     /**

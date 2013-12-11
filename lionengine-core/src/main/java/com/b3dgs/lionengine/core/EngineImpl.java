@@ -54,6 +54,8 @@ abstract class EngineImpl
     static FactoryGraphic factoryGraphic;
     /** Input factory. */
     static FactoryInput factoryInput;
+    /** Audio factory. */
+    static FactoryAudio factoryAudio;
     /** User program name. */
     private static String programName;
     /** User program version. */
@@ -88,6 +90,9 @@ abstract class EngineImpl
             // Load low level factory
             EngineImpl.factoryGraphic = EngineImpl.getFactory("FactoryGraphicImpl");
             EngineImpl.factoryInput = EngineImpl.getFactory("FactoryInputImpl");
+            EngineImpl.factoryAudio = EngineImpl.getFactory("FactoryAudioImpl");
+            AudioWav.factoryAudio = EngineImpl.factoryAudio;
+            AudioMidi.factoryAudio = EngineImpl.factoryAudio;
             UtilityImage.setGraphicFactory(EngineImpl.factoryGraphic);
         }
     }

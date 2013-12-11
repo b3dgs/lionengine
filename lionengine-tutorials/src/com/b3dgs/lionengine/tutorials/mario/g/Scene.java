@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.g;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.audio.AudioMidi;
 import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.core.AudioMidi;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;

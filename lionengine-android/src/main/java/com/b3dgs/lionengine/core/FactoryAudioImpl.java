@@ -15,33 +15,46 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio;
+package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.audio.Midi;
+import com.b3dgs.lionengine.audio.Wav;
 
 /**
- * Handle audio OGG.
+ * Audio factory implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AudioOgg
+final class FactoryAudioImpl
+        implements FactoryAudio
 {
     /**
-     * Load an OGG music from a file name.
-     * 
-     * @param media The media file.
-     * @return loaded OGG.
+     * Constructor.
      */
-    public static Ogg loadOgg(Media media)
+    FactoryAudioImpl()
     {
-        return new OggPlayer(media);
+        // Nothing to do
     }
 
-    /**
-     * Private constructor.
+    /*
+     * FactoryInput
      */
-    private AudioOgg()
+
+    @Override
+    public Midi createAudioMidi(Media media)
     {
-        throw new RuntimeException();
+        return new MidiPlayer(media);
+    }
+
+    @Override
+    public Wav createAudioWav(Media media)
+    {
+        return new WavPlayer(media);
+    }
+
+    @Override
+    public Wav createAudioWav(Media media, int maxSimultaneous)
+    {
+        return new WavPlayer(media, maxSimultaneous);
     }
 }

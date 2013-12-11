@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.audio;
+package com.b3dgs.lionengine.core;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -32,9 +32,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Sound routine implementation. One sound represents one thread.
