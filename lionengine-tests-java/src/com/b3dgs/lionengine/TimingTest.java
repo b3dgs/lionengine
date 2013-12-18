@@ -40,6 +40,7 @@ public class TimingTest
         Assert.assertTrue(timer.elapsed() == 0);
         Assert.assertFalse(timer.elapsed(1000L));
         timer.start();
+        timer.restart();
         timer.start();
         Assert.assertTrue(timer.isStarted());
         Thread.sleep(100);

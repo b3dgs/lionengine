@@ -105,8 +105,7 @@ final class Scene
         {
             peon.teleport(UtilityRandom.getRandomInteger(250), UtilityRandom.getRandomInteger(200));
             fogOfWar.update(handlerEntity.list());
-            timer.stop();
-            timer.start();
+            timer.restart();
         }
     }
 

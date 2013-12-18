@@ -100,6 +100,15 @@ public final class Timing
     }
 
     /**
+     * Stop and start the timer.
+     */
+    public void restart()
+    {
+        stop();
+        start();
+    }
+
+    /**
      * Pause timer.
      */
     public void pause()

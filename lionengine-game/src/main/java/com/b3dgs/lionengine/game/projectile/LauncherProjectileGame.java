@@ -112,8 +112,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
         if (timer.elapsed(rate))
         {
             launchProjectile(owner);
-            timer.stop();
-            timer.start();
+            timer.restart();
             return true;
         }
         return false;
@@ -130,8 +129,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
         if (timer.elapsed(rate))
         {
             launchProjectile(owner, target);
-            timer.stop();
-            timer.start();
+            timer.restart();
             return true;
         }
         return false;

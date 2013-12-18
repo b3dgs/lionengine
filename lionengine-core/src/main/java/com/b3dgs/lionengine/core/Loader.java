@@ -46,8 +46,6 @@ import com.b3dgs.lionengine.Mouse;
  */
 public final class Loader
 {
-    /** Engine terminated. */
-    private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Error message config. */
     private static final String ERROR_CONFIG = "Configuration must not be null !";
     /** Error message already started. */
@@ -156,6 +154,6 @@ public final class Loader
             Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");
         }
         screen.dispose();
-        Verbose.info(Loader.ENGINE_TERMINATED);
+        EngineImpl.terminate();
     }
 }

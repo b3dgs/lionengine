@@ -138,8 +138,7 @@ public final class Goomba
                 message.addAction(MessageEntityElement.LOCATION_X, getLocationIntX());
                 message.addAction(MessageEntityElement.LOCATION_Y, getLocationIntY());
                 addNetworkMessage(message);
-                networkLocation.stop();
-                networkLocation.start();
+                networkLocation.restart();
             }
         }
     }

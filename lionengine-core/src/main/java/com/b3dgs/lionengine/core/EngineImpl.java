@@ -46,6 +46,8 @@ abstract class EngineImpl
     private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message verbose. */
     private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
+    /** Engine terminated. */
+    private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Factory base name. */
     private static final String FACTORY_BASE = EngineImpl.class.getPackage().getName() + ".";
     /** Started engine flag. */
@@ -106,6 +108,7 @@ abstract class EngineImpl
         EngineImpl.started = false;
         EngineImpl.programName = null;
         EngineImpl.programVersion = null;
+        Verbose.info(EngineImpl.ENGINE_TERMINATED);
     }
 
     /**

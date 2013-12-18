@@ -267,10 +267,8 @@ final class ClientImpl
                 out.writeByte(NetworkMessageSystemId.PING);
                 out.writeByte(clientId);
                 out.flush();
-                pingTimer.stop();
-                pingTimer.start();
-                pingRequestTimer.stop();
-                pingRequestTimer.start();
+                pingTimer.restart();
+                pingRequestTimer.restart();
                 bandwidth += 2;
             }
             catch (final IOException exception)

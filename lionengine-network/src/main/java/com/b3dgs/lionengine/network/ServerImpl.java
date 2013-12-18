@@ -570,8 +570,7 @@ final class ServerImpl
         {
             bandwidthPerSecond = bandwidth;
             bandwidth = 0;
-            bandwidthTimer.stop();
-            bandwidthTimer.start();
+            bandwidthTimer.restart();
         }
         messagesOut.clear();
     }
