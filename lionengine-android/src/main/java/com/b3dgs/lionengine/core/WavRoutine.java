@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,22 +36,10 @@ final class WavRoutine
     final Semaphore latch;
     /** Way player reference. */
     private final WavPlayer player;
-    /** Sound file reference. */
-    private Media media;
-    /** Sound alignment. */
-    private Align alignment;
-    /** Sound volume. */
-    private int volume;
-    /** Sound delay. */
-    private int delay;
     /** Routine flags. */
     private boolean isRunning;
     /** Playing flag. */
     private boolean isPlaying;
-    /** Restart flag. */
-    private boolean restart;
-    /** Close flag. */
-    private boolean close;
 
     /**
      * Constructor.
@@ -65,9 +53,7 @@ final class WavRoutine
         this.player = player;
         latch = new Semaphore(0);
         isRunning = true;
-        media = null;
         isPlaying = false;
-        restart = false;
     }
 
     /**
@@ -77,7 +63,7 @@ final class WavRoutine
      */
     void setAlignement(Align alignment)
     {
-        this.alignment = alignment;
+        // Nothing to do
     }
 
     /**
@@ -87,7 +73,7 @@ final class WavRoutine
      */
     void setMedia(Media media)
     {
-        this.media = media;
+        // Nothing to do
     }
 
     /**
@@ -97,7 +83,7 @@ final class WavRoutine
      */
     void setDelay(int delay)
     {
-        this.delay = delay;
+        // Nothing to do
     }
 
     /**
@@ -107,7 +93,7 @@ final class WavRoutine
      */
     void setVolume(int vol)
     {
-        volume = vol;
+        // Nothing to do
     }
 
     /**
@@ -115,7 +101,7 @@ final class WavRoutine
      */
     void restart()
     {
-        restart = true;
+        // Nothing to do
     }
 
     /**
@@ -145,14 +131,9 @@ final class WavRoutine
     {
         while (isRunning)
         {
-            close = false;
             player.addBusy(this);
 
             isPlaying = false;
-            if (!restart)
-            {
-                media = null;
-            }
             try
             {
                 player.addFree(this);
@@ -161,7 +142,6 @@ final class WavRoutine
             catch (final InterruptedException exception)
             {
                 Thread.currentThread().interrupt();
-                media = null;
                 isRunning = false;
                 player.decreaseCount();
             }
