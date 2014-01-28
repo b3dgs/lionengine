@@ -9,6 +9,7 @@
     <li><a href="#general-features">General features</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#download">Download</a></li>
     <li><a href="#tutorials">Tutorials</a></li>
    </ul>
   </div>
@@ -193,6 +194,11 @@ final class Scene
 }
 ```
 
+## Download
+
+* [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.0.0_lib.zip)
+
 ## Tutorials
 
-[Go to tutorial index](../../wiki)
+* [Go to tutorial index](../../wiki)
