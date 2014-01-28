@@ -7,9 +7,9 @@
    <ul>
     <li><a href="#presentation">Presentation</a></li>
     <li><a href="#general-features">General features</a></li>
+    <li><a href="#download">Download</a></li>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#download">Download</a></li>
     <li><a href="#tutorials">Tutorials</a></li>
    </ul>
   </div>
@@ -93,6 +93,11 @@ Everything else is fully compatible and does not require any changes.
 
 * #### __lionengine-sc68__
 >  * Support for Sc68 Atari music
+
+## Download
+
+* [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.0.0_lib.zip)
 
 ## Installation
 
@@ -193,11 +198,6 @@ final class Scene
     }
 }
 ```
-
-## Download
-
-* [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.0.0_lib.zip)
 
 ## Tutorials
 
