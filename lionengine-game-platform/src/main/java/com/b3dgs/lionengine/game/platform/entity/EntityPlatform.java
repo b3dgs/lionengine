@@ -308,10 +308,15 @@ public abstract class EntityPlatform
             CollisionTileCategory<C> category)
     {
         final CoordTile offsets = tileCollisions.get(category);
-        collOffX = offsets.getX();
-        collOffY = offsets.getY();
-        final T tile = map.getFirstTileHit(this, category.getCollisions());
-        return tile;
+        if (offsets != null)
+        {
+            collOffX = offsets.getX();
+            collOffY = offsets.getY();
+
+            final T tile = map.getFirstTileHit(this, category.getCollisions());
+            return tile;
+        }
+        return null;
     }
 
     /*
