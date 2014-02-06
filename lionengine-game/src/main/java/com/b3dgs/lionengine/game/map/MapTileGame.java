@@ -79,8 +79,6 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     protected int heightInTile;
     /** Minimap reference. */
     protected ImageBuffer minimap;
-    /** Loaded flag. */
-    private boolean surfacesLoaded;
     /** Tiles map. */
     private List<List<T>> tiles;
 
@@ -96,7 +94,6 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         this.tileHeight = tileHeight;
         patterns = new HashMap<>();
         patternsDirectory = null;
-        surfacesLoaded = false;
     }
 
     /**
@@ -589,53 +586,52 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     @Override
     public void clear()
     {
-        for (int v = 0; v < tiles.size(); v++)
+        if (tiles != null)
         {
-            tiles.get(v).clear();
+            for (int v = 0; v < tiles.size(); v++)
+            {
+                tiles.get(v).clear();
+            }
+            tiles.clear();
         }
-        tiles.clear();
     }
 
     @Override
     public void loadPatterns(Media directory)
     {
-        if (!surfacesLoaded)
+        patternsDirectory = directory;
+        patterns.clear();
+        String[] files;
+
+        // Retrieve patterns list
+        final XmlParser xml = File.createXmlParser();
+        final Media mediaPatterns = Media.create(Media.getPath(patternsDirectory.getPath(), "patterns.xml"));
+        final XmlNode root = xml.load(mediaPatterns);
+        final List<XmlNode> children = root.getChildren();
+        files = new String[children.size()];
+        int i = 0;
+        for (final XmlNode child : children)
         {
-            surfacesLoaded = true;
-            patternsDirectory = directory;
-            patterns.clear();
-            String[] files;
+            files[i] = child.getText();
+            i++;
+        }
 
-            // Retrieve patterns list
-            final XmlParser xml = File.createXmlParser();
-            final Media mediaPatterns = Media.create(Media.getPath(patternsDirectory.getPath(), "patterns.xml"));
-            final XmlNode root = xml.load(mediaPatterns);
-            final List<XmlNode> children = root.getChildren();
-            files = new String[children.size()];
-            int i = 0;
-            for (final XmlNode child : children)
+        // Load patterns from list
+        for (final String file : files)
+        {
+            final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), file));
+            try
             {
-                files[i] = child.getText();
-                i++;
+                final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));
+                final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
+
+                sprite.load(false);
+                patterns.put(pattern, sprite);
             }
-
-            // Load patterns from list
-            for (final String file : files)
+            catch (final NumberFormatException exception)
             {
-                final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), file));
-                try
-                {
-                    final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));
-                    final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-
-                    sprite.load(false);
-                    patterns.put(pattern, sprite);
-                }
-                catch (final NumberFormatException exception)
-                {
-                    throw new LionEngineException(exception, media,
-                            "Error on getting pattern number (should be a name with a number only) !");
-                }
+                throw new LionEngineException(exception, media,
+                        "Error on getting pattern number (should be a name with a number only) !");
             }
         }
     }
