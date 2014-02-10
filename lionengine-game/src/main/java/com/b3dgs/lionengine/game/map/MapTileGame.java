@@ -65,6 +65,51 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     /** Number of horizontal tiles to make a bloc. */
     public static final int BLOC_SIZE = 256;
 
+    /**
+     * Search the collision correspondence depending of the category.
+     * 
+     * @param collision The collision node.
+     * @param name The collision name.
+     * @param category The collision search category.
+     * @param tilePattern The tile pattern number.
+     * @param tileNumber The tile number.
+     * @return The collision found.
+     */
+    private static String searchCollision(XmlNode collision, String name, String category, int tilePattern,
+            int tileNumber)
+    {
+        final List<XmlNode> tilesCollisions = collision.getChildren(category);
+    
+        for (final XmlNode tile : tilesCollisions)
+        {
+            final int pattern = tile.readInteger("pattern");
+            int start = -1;
+            int end = -1;
+    
+            if ("tiles".equals(category))
+            {
+                start = tile.readInteger("start");
+                end = tile.readInteger("end");
+            }
+            else if ("tile".equals(category))
+            {
+                start = tile.readInteger("number");
+                end = start;
+            }
+            if (tilePattern == pattern)
+            {
+                if (tileNumber + 1 >= start && tileNumber + 1 <= end)
+                {
+                    tilesCollisions.clear();
+                    return name;
+                }
+            }
+        }
+    
+        tilesCollisions.clear();
+        return null;
+    }
+
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
     /** Tiles directory. */
@@ -277,7 +322,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     {
         final XmlParser xml = File.createXmlParser();
         final XmlNode root = xml.load(media);
-        final List<XmlNode> nodes = root.getChildren();
+        final List<XmlNode> collisions = root.getChildren();
         for (int i = 0; i < heightInTile; i++)
         {
             final List<T> list = tiles.get(i);
@@ -286,7 +331,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                 final T tile = list.get(j);
                 if (tile != null)
                 {
-                    tile.setCollision(getCollisionFrom(getCollision(nodes, tile.getPattern().intValue(),
+                    tile.setCollision(getCollisionFrom(getCollision(collisions, tile.getPattern().intValue(),
                             tile.getNumber())));
                 }
             }
@@ -394,26 +439,27 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     /**
      * Read collisions from external file.
      * 
-     * @param nodes The collision nodes.
+     * @param collisions The collision nodes.
      * @param tilePattern The tile pattern number.
      * @param tileNumber The tile number.
      * @return The collision found.
      */
-    protected String getCollision(List<XmlNode> nodes, int tilePattern, int tileNumber)
+    protected String getCollision(List<XmlNode> collisions, int tilePattern, int tileNumber)
     {
-        for (final XmlNode node : nodes)
+        for (final XmlNode collision : collisions)
         {
-            final String name = node.readString("name");
-            final int pattern = node.readInteger("pattern");
-            final int start = node.readInteger("start");
-            final int end = node.readInteger("end");
+            final String name = collision.readString("name");
 
-            if (tilePattern == pattern)
+            String found = searchCollision(collision, name, "tiles", tilePattern, tileNumber);
+            if (found != null)
             {
-                if (tileNumber + 1 >= start && tileNumber + 1 <= end)
-                {
-                    return name;
-                }
+                return found;
+            }
+
+            found = searchCollision(collision, name, "tile", tilePattern, tileNumber);
+            if (found != null)
+            {
+                return found;
             }
         }
         return null;

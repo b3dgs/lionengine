@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collisions>
-	<collision name="GROUND0" pattern="0" start="1" end="2"/>
-	<collision name="GROUND1" pattern="0" start="3" end="18"/>
-	<collision name="GROUND2" pattern="0" start="19" end="33"/>
-	<collision name="GROUND3" pattern="0" start="34" end="49"/>
-	<collision name="GROUND4" pattern="0" start="50" end="51"/>
-	<collision name="GROUND5" pattern="0" start="52" end="67"/>
-	<collision name="GROUND6" pattern="0" start="68" end="68"/>
-	<collision name="GROUND7" pattern="0" start="69" end="96"/>
-	<collision name="GROUND8" pattern="0" start="97" end="124"/>
-	<collision name="GROUND9" pattern="0" start="125" end="125"/>
-	<collision name="TREE_BORDER" pattern="0" start="126" end="141"/>
-	<collision name="TREE" pattern="0" start="142" end="146"/>
-	<collision name="BORDER" pattern="0" start="147" end="185"/>
-	<collision name="WATER" pattern="0" start="186" end="208"/>
+	<collision name="GROUND0">
+		<tiles pattern="0" start="1" end="2"/>
+	</collision>
+	
+	<collision name="GROUND1">
+		<tiles pattern="0" start="3" end="18"/>
+	</collision>
+	
+	<collision name="GROUND2">
+		<tiles pattern="0" start="19" end="33"/>
+	</collision>
+	
+	<collision name="GROUND3">
+		<tiles pattern="0" start="34" end="49"/>
+	</collision>
+	
+	<collision name="GROUND4">
+		<tiles pattern="0" start="50" end="51"/>
+	</collision>
+	
+	<collision name="GROUND5">
+		<tiles pattern="0" start="52" end="67"/>
+	</collision>
+	
+	<collision name="GROUND6">
+		<tile pattern="0" number="68"/>
+	</collision>
+	
+	<collision name="GROUND7">
+		<tiles pattern="0" start="69" end="96"/>
+	</collision>
+	
+	<collision name="GROUND8">
+		<tiles pattern="0" start="97" end="124"/>
+	</collision>
+	
+	<collision name="GROUND9">
+		<tile pattern="0" number="125"/>
+	</collision>
+	
+	<collision name="TREE_BORDER">
+		<tiles pattern="0" start="126" end="141"/>
+	</collision>
+	
+	<collision name="TREE">
+		<tiles pattern="0" start="142" end="146"/>
+	</collision>
+	
+	<collision name="BORDER">
+		<tiles pattern="0" start="147" end="185"/>
+	</collision>
+	
+	<collision name="WATER">
+		<tiles pattern="0" start="186" end="208"/>
+	</collision>
 </collisions>
