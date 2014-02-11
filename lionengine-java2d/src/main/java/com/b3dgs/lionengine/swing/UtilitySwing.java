@@ -53,15 +53,42 @@ public final class UtilitySwing
     /**
      * Create and open a single file chooser.
      * 
+     * @param title The dialog title.
      * @param dir The initial directory.
      * @param parent The parent reference.
      * @param filter The file filter to use.
      * @return The selected media if accepted, <code>null</code> if not.
      */
-    public static File createOpenFileChooser(String dir, Component parent, FileFilter filter)
+    public static File createOpenFileChooser(String title, String dir, Component parent, FileFilter filter)
     {
         final JFileChooser fileChooser = new JFileChooser(dir);
+        fileChooser.setDialogTitle(title);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(filter);
+        final int approve = fileChooser.showOpenDialog(parent);
+        if (approve == JFileChooser.APPROVE_OPTION)
+        {
+            return fileChooser.getSelectedFile();
+        }
+        return null;
+    }
+
+    /**
+     * Create and open a single directory chooser.
+     * 
+     * @param title The dialog title.
+     * @param dir The initial directory.
+     * @param parent The parent reference.
+     * @param filter The file filter to use.
+     * @return The selected media if accepted, <code>null</code> if not.
+     */
+    public static File createOpenDirectoryChooser(String title, String dir, Component parent, FileFilter filter)
+    {
+        final JFileChooser fileChooser = new JFileChooser(dir);
+        fileChooser.setDialogTitle(title);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileFilter(filter);
