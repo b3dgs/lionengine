@@ -130,6 +130,8 @@ final class XmlParserImpl
                 final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
                 transformer.transform(source, result);
             }
         }

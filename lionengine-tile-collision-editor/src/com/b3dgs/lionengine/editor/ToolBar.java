@@ -20,13 +20,17 @@ package com.b3dgs.lionengine.editor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
@@ -46,24 +50,21 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
     /**
      * Create the palette panel.
      * 
-     * @param collisions The collisions list.
      * @return The panel instance.
      */
-    private static JPanel createPalettePanel(Object[] collisions)
+    private static JPanel createPalettePanel()
     {
         final JPanel palettePanel = UtilitySwing.createBorderedPanel("Collisions", 1);
-        palettePanel.setLayout(new GridLayout(2, 1));
+        palettePanel.setLayout(new GridLayout(3, 1));
 
         final JLabel comboLabel = new JLabel("Choice");
         palettePanel.add(comboLabel);
 
-        final JComboBox<Object> combo = new JComboBox<>(collisions);
-        combo.setEnabled(true);
-        palettePanel.add(combo);
-
         return palettePanel;
     }
 
+    /** Collision combo. */
+    final JComboBox<C> collisionCombo;
     /** Palette panel. */
     private final JPanel palettePanel;
 
@@ -71,14 +72,73 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
      * Constructor.
      * 
      * @param collisions The collisions list.
+     * @param collisionClass The collision class.
      * @param editor The editor reference.
      */
-    public ToolBar(final TileCollisionEditor<C, T> editor, C[] collisions)
+    public ToolBar(final TileCollisionEditor<C, T> editor, final Class<C> collisionClass, C[] collisions)
     {
         super();
-        palettePanel = ToolBar.createPalettePanel(collisions);
-        setPaletteEnabled(true);
+        palettePanel = ToolBar.createPalettePanel();
+
+        collisionCombo = new JComboBox<>(collisions);
+        palettePanel.add(collisionCombo);
+        collisionCombo.setEnabled(false);
+
+        final JButton assignLabel = new JButton("Assign");
+        assignLabel.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                final T tile = editor.world.getSelectedTile();
+                if (tile != null)
+                {
+                    final Object selection = collisionCombo.getSelectedItem();
+                    if (selection.getClass().isAssignableFrom(collisionClass))
+                    {
+                        final C collision = collisionClass.cast(selection);
+                        tile.setCollision(collision);
+
+                        final Integer pattern = tile.getPattern();
+                        final int number = tile.getNumber();
+                        final MapTileGame<C, T> map = editor.world.map;
+                        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+                        {
+                            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+                            {
+                                final T next = map.getTile(tx, ty);
+                                if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                                {
+                                    next.setCollision(collision);
+                                }
+                            }
+                        }
+                        editor.world.repaint();
+                    }
+                }
+            }
+        });
+        palettePanel.add(assignLabel);
+
         init();
+    }
+
+    /**
+     * Set the selected tile.
+     * 
+     * @param tile The selected tile.
+     */
+    public void setSelectedTile(T tile)
+    {
+        if (tile != null)
+        {
+            collisionCombo.setSelectedItem(tile.getCollision());
+            collisionCombo.setEnabled(true);
+        }
+        else
+        {
+            collisionCombo.setEnabled(false);
+        }
     }
 
     /**

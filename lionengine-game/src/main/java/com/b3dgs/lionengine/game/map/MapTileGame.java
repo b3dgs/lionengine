@@ -79,13 +79,13 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
             int tileNumber)
     {
         final List<XmlNode> tilesCollisions = collision.getChildren(category);
-    
+
         for (final XmlNode tile : tilesCollisions)
         {
             final int pattern = tile.readInteger("pattern");
             int start = -1;
             int end = -1;
-    
+
             if ("tiles".equals(category))
             {
                 start = tile.readInteger("start");
@@ -105,7 +105,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                 }
             }
         }
-    
+
         tilesCollisions.clear();
         return null;
     }
@@ -749,5 +749,11 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     public int getHeightInTile()
     {
         return heightInTile;
+    }
+
+    @Override
+    public boolean isCreated()
+    {
+        return tiles != null;
     }
 }

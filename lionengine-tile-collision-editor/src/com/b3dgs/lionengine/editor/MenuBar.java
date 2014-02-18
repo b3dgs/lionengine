@@ -19,8 +19,13 @@ package com.b3dgs.lionengine.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.swing.JDialog;
 import javax.swing.JMenu;
@@ -32,6 +37,9 @@ import javax.swing.filechooser.FileFilter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.file.File;
+import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
@@ -50,17 +58,86 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
 {
     /** Uid. */
     private static final long serialVersionUID = 1199844863419699405L;
-    /** Editor reference. */
-    private final TileCollisionEditor<C, T> editor;
+
+    /**
+     * Save the tile node depending of their consecutiveness.
+     * 
+     * @param node The XML node.
+     * @param pattern The pattern number.
+     * @param numbers The numbers list.
+     * @return <code>true</code> if stored, <code>false</code> else.
+     */
+    private static boolean saveTileNode(XmlNode node, Integer pattern, List<Integer> numbers)
+    {
+        final boolean added;
+        if (numbers.size() == 1)
+        {
+            final XmlNode tile = File.createXmlNode("tile");
+            node.add(tile);
+            tile.writeInteger("pattern", pattern.intValue());
+            tile.writeInteger("number", numbers.get(0).intValue());
+            added = true;
+        }
+        else if (numbers.size() > 1)
+        {
+            final XmlNode tile = File.createXmlNode("tiles");
+            node.add(tile);
+            tile.writeInteger("pattern", pattern.intValue());
+            tile.writeInteger("start", numbers.get(0).intValue());
+            tile.writeInteger("end", numbers.get(numbers.size() - 1).intValue());
+            added = true;
+        }
+        else
+        {
+            added = false;
+        }
+        return added;
+    }
+
+    /**
+     * Split non consecutive numbers per pattern into multiple list of numbers.
+     * 
+     * @param patterns The pattern set.
+     * @param pattern The current pattern.
+     * @return The splited numbers list.
+     */
+    private static List<List<Integer>> splitNonConsecutiveNumbers(Map<Integer, SortedSet<Integer>> patterns,
+            Integer pattern)
+    {
+        final SortedSet<Integer> numbers = patterns.get(pattern);
+        final List<List<Integer>> series = new ArrayList<>(8);
+
+        int lastValue = -2;
+        List<Integer> currentSerie = null;
+        for (Integer number : numbers)
+        {
+            final int newValue = number.intValue();
+            if (newValue - lastValue != 1)
+            {
+                currentSerie = new ArrayList<>(8);
+                series.add(currentSerie);
+            }
+            lastValue = newValue;
+            if (currentSerie != null)
+            {
+                currentSerie.add(number);
+            }
+        }
+        return series;
+    }
+
     /** Items list. */
     final TreeMap<String, JMenuItem> items;
+    /** Editor reference. */
+    private final TileCollisionEditor<C, T> editor;
 
     /**
      * Constructor.
      * 
      * @param editor The editor reference.
+     * @param collisions The collisions list.
      */
-    public MenuBar(final TileCollisionEditor<C, T> editor)
+    public MenuBar(final TileCollisionEditor<C, T> editor, final C[] collisions)
     {
         super();
         this.editor = editor;
@@ -71,7 +148,7 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                fileSave();
+                fileSave(collisions);
             }
         });
         addItem(menu, "Exit", new ActionListener()
@@ -82,8 +159,6 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
                 fileExit();
             }
         });
-
-        addMenu("Edit");
 
         menu = addMenu("Tools");
         addItem(menu, "Import Map", new ActionListener()
@@ -108,10 +183,25 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
 
     /**
      * Save action.
+     * 
+     * @param collisions The collisions list.
      */
-    void fileSave()
+    void fileSave(C[] collisions)
     {
-        // Nothing for the moment
+        final MapTileGame<C, T> map = editor.world.map;
+        final XmlNode root = File.createXmlNode("collisions");
+        for (C collision : collisions)
+        {
+            final XmlNode node = File.createXmlNode("collision");
+            node.writeString("name", collision.name());
+            if (saveTilesCollisions(map, node, collision))
+            {
+                root.add(node);
+            }
+        }
+
+        final XmlParser parser = File.createXmlParser();
+        parser.save(root, UtilityMedia.get("collisions.xml"));
     }
 
     /**
@@ -131,8 +221,8 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
     boolean toolsImportMap(JDialog dialog)
     {
         final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
-        final File file = UtilitySwing.createOpenFileChooser("Select level rip", UtilityMedia.getRessourcesDir(),
-                editor.getContentPane(), filter);
+        final java.io.File file = UtilitySwing.createOpenFileChooser("Select level rip",
+                UtilityMedia.getRessourcesDir(), editor.getContentPane(), filter);
         if (file == null)
         {
             return false;
@@ -143,7 +233,7 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
             return false;
         }
 
-        final File tilesDir = UtilitySwing.createOpenDirectoryChooser("Select tiles directory",
+        final java.io.File tilesDir = UtilitySwing.createOpenDirectoryChooser("Select tiles directory",
                 UtilityMedia.getRessourcesDir(), editor.getContentPane(), new FileFilter()
                 {
                     @Override
@@ -153,7 +243,7 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
                     }
 
                     @Override
-                    public boolean accept(File file)
+                    public boolean accept(java.io.File file)
                     {
                         return file.isDirectory();
                     }
@@ -180,6 +270,7 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
                 {
                     UtilitySwing.terminateDialog(dialog);
                 }
+                map.loadCollisions(UtilityMedia.get(mediaTiles.getPath(), "collisions.xml"));
                 editor.world.camera.setLimits(map);
                 editor.repaint();
                 items.get("Import Map").setEnabled(false);
@@ -205,6 +296,30 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
         txt.setEditable(false);
         dialog.add(txt);
         UtilitySwing.startDialog(dialog);
+    }
+
+    boolean importMap()
+    {
+        final MapTileGame<C, T> map = editor.world.map;
+        final LevelRipConverter<T> rip = new LevelRipConverter<>();
+        try
+        {
+            rip.start(UtilityMedia.get("levels", "rip", "0.png"), map, UtilityMedia.get("tiles", "swamp"));
+            final int errors = rip.getErrors();
+            if (errors == 0)
+            {
+                map.loadCollisions(UtilityMedia.get("tiles", "swamp", "collisions.xml"));
+                editor.world.camera.setLimits(map);
+                editor.repaint();
+                items.get("Import Map").setEnabled(false);
+                return true;
+            }
+        }
+        catch (final LionEngineException exception)
+        {
+            UtilityMessageBox.error("Import Map", exception.getMessage() + "\nImport interrupted !");
+        }
+        return false;
     }
 
     /**
@@ -235,5 +350,65 @@ public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
         menu.add(item);
         items.put(name, item);
         return item;
+    }
+
+    /**
+     * Save tiles collisions for all of the map tile.
+     * 
+     * @param map The map reference.
+     * @param node The XML node.
+     * @param collision The current collision.
+     * @return <code>true</code> if at least on tile stored, <code>false</code> else.
+     */
+    private boolean saveTilesCollisions(MapTileGame<C, T> map, XmlNode node, C collision)
+    {
+        final Map<Integer, SortedSet<Integer>> patterns = getCollisionsPattern(map, node, collision);
+        boolean added = false;
+        for (Integer pattern : patterns.keySet())
+        {
+            final List<List<Integer>> elements = splitNonConsecutiveNumbers(patterns, pattern);
+            for (List<Integer> numbers : elements)
+            {
+                added = saveTileNode(node, pattern, numbers);
+            }
+        }
+        return added;
+    }
+
+    /**
+     * Sort each tile number for each pattern for each collision in a map.
+     * 
+     * @param map The map reference.
+     * @param node The current node.
+     * @param collision The current collision.
+     * @return The values.
+     */
+    private Map<Integer, SortedSet<Integer>> getCollisionsPattern(MapTileGame<C, T> map, XmlNode node, C collision)
+    {
+        final Map<Integer, SortedSet<Integer>> patterns = new HashMap<>(8);
+        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+        {
+            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+            {
+                final T tile = map.getTile(tx, ty);
+                if (tile != null && tile.getCollision() == collision)
+                {
+                    final Integer pattern = tile.getPattern();
+                    final SortedSet<Integer> numbers;
+
+                    if (!patterns.containsKey(pattern))
+                    {
+                        numbers = new TreeSet<>();
+                        patterns.put(pattern, numbers);
+                    }
+                    else
+                    {
+                        numbers = patterns.get(pattern);
+                    }
+                    numbers.add(Integer.valueOf(tile.getNumber() + 1));
+                }
+            }
+        }
+        return patterns;
     }
 }

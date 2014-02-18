@@ -47,8 +47,14 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
 {
     /** Uid. */
     private static final long serialVersionUID = -3609110757656654125L;
+    /** Color of the grid. */
+    private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 208);
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(128, 128, 192, 192);
+    /** Color of the selection area. */
+    private static final ColorRgba COLOR_SELECTED = new ColorRgba(192, 192, 192, 208);
+    /** Color of the selection area. */
+    private static final ColorRgba COLOR_GROUP_SELECTED = new ColorRgba(240, 160, 160, 200);
     /** Default width. */
     private static final int DEFAULT_WIDTH = 640;
     /** Default height. */
@@ -83,6 +89,8 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
     public final CameraPlatform camera;
     /** The editor reference. */
     private final TileCollisionEditor<C, T> editor;
+    /** Selected tile. */
+    private T selectedTile;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -93,10 +101,6 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
     private boolean clicking;
     /** Moving entity flag. */
     private boolean moving;
-    /** Moving offset x. */
-    private int movingOffsetX;
-    /** Moving offset y. */
-    private int movingOffsetY;
 
     /**
      * Constructor.
@@ -113,6 +117,16 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
         setPreferredSize(new Dimension(WorldPanel.DEFAULT_WIDTH, WorldPanel.DEFAULT_HEIGHT));
         addMouseListener(this);
         addMouseMotionListener(this);
+    }
+
+    /**
+     * Get the current selected tile.
+     * 
+     * @return The current selected, <code>null</code> if none.
+     */
+    public T getSelectedTile()
+    {
+        return selectedTile;
     }
 
     /**
@@ -191,8 +205,34 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
             map.render(g, camera);
         }
 
+        if (selectedTile != null)
+        {
+            // Render selected collision
+            g.setColor(WorldPanel.COLOR_GROUP_SELECTED);
+            for (int ty = 0; ty < map.getHeightInTile(); ty++)
+            {
+                for (int tx = 0; tx < map.getWidthInTile(); tx++)
+                {
+                    final T tile = map.getTile(tx, ty);
+                    if (tile != null)
+                    {
+                        if (tile.getCollision() == selectedTile.getCollision())
+                        {
+                            g.drawRect(camera.getViewpointX(tile.getX()), camera.getViewpointY(tile.getY()) - th,
+                                    tile.getWidth(), tile.getHeight(), true);
+                        }
+                    }
+                }
+            }
+
+            // Render selected tile
+            g.setColor(WorldPanel.COLOR_SELECTED);
+            g.drawRect(camera.getViewpointX(selectedTile.getX()), camera.getViewpointY(selectedTile.getY()) - th,
+                    selectedTile.getWidth(), selectedTile.getHeight(), true);
+        }
+
         drawCursor(g, tw, th, areaX, areaY);
-        WorldPanel.drawGrid(g, tw, th, areaX, areaY, ColorRgba.GRAY);
+        WorldPanel.drawGrid(g, tw, th, areaX, areaY, WorldPanel.COLOR_GRID);
     }
 
     /*
@@ -237,9 +277,14 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         final int h = UtilityMath.getRounded(getHeight(), th) - map.getTileHeight();
-        final int x = editor.getOffsetViewH() + UtilityMath.getRounded(mx, tw);
-        final int y = editor.getOffsetViewV() - UtilityMath.getRounded(my, th) + h;
+        final int tx = (editor.getOffsetViewH() + UtilityMath.getRounded(mx, tw)) / tw;
+        final int ty = (editor.getOffsetViewV() - UtilityMath.getRounded(my, th) + h) / th;
 
+        if (map.isCreated())
+        {
+            selectedTile = map.getTile(tx, ty);
+            editor.toolBar.setSelectedTile(selectedTile);
+        }
         clicking = true;
         updateMouse(mx, my);
     }
@@ -258,34 +303,16 @@ public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
     @Override
     public void mouseDragged(MouseEvent event)
     {
-        final int th = map.getTileHeight();
         final int mx = event.getX();
         final int my = event.getY();
-        final int areaY = UtilityMath.getRounded(getHeight(), th);
-        if (!moving)
-        {
-            movingOffsetX = UtilityMath.getRounded(mouseX, map.getTileWidth()) - mx;
-            movingOffsetY = my - UtilityMath.getRounded(mouseY, th) - th;
-            moving = true;
-        }
-        final int ox = mouseX + editor.getOffsetViewH() + movingOffsetX;
-        final int oy = areaY - mouseY + editor.getOffsetViewV() - 1 + movingOffsetY;
-        final int x = mx + editor.getOffsetViewH() + movingOffsetX;
-        final int y = areaY - my + editor.getOffsetViewV() - 1 + movingOffsetY;
-
         updateMouse(mx, my);
     }
 
     @Override
     public void mouseMoved(MouseEvent event)
     {
-        final int th = map.getTileHeight();
         final int mx = event.getX();
         final int my = event.getY();
-        final int areaY = UtilityMath.getRounded(getHeight(), th);
-        final int x = UtilityMath.getRounded(mx, map.getTileWidth());
-        final int y = UtilityMath.getRounded(areaY - my - 1, th);
-
         updateMouse(mx, my);
     }
 }

@@ -131,4 +131,11 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
      * @return The number of vertical tiles.
      */
     int getHeightInTile();
+
+    /**
+     * Check if map has been created.
+     * 
+     * @return <code>true</code> if created, <code>false</code> else.
+     */
+    boolean isCreated();
 }

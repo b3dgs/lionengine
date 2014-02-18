@@ -56,14 +56,14 @@ public class TileCollisionEditor<C extends Enum<C>, T extends TileGame<C>>
     private static final int STEP_TILE_V = 8;
     /** World panel reference. */
     public final WorldPanel<C, T> world;
+    /** Menu bar reference. */
+    public final ToolBar<C, T> toolBar;
     /** Current horizontal view offset in tile. */
     private int hOffset;
     /** Current vertical view offset in tile. */
     private int vOffset;
     /** Menu bar reference. */
     private final MenuBar<C, T> menuBar;
-    /** Menu bar reference. */
-    private final ToolBar<C, T> toolBar;
     /** State bar reference. */
     private final StateBar<C, T> stateBar;
 
@@ -71,16 +71,18 @@ public class TileCollisionEditor<C extends Enum<C>, T extends TileGame<C>>
      * Constructor.
      * 
      * @param map The map reference.
+     * @param collisionClass The collision class.
      * @param collisions The collisions list.
      */
-    public TileCollisionEditor(MapTileGame<C, T> map, C[] collisions)
+    public TileCollisionEditor(MapTileGame<C, T> map, Class<C> collisionClass, C[] collisions)
     {
         super("Tile collision editor");
         world = new WorldPanel<>(this, map);
-        menuBar = new MenuBar<>(this);
-        toolBar = new ToolBar<>(this, collisions);
+        menuBar = new MenuBar<>(this, collisions);
+        toolBar = new ToolBar<>(this, collisionClass, collisions);
         stateBar = new StateBar<>(this);
         init();
+        menuBar.importMap();
     }
 
     /**
