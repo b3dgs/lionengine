@@ -37,9 +37,9 @@ final class PolygonImpl
     private static final int MIN = 4;
 
     /** The array of coordinates X. */
-    private int xpoints[];
+    private int[] xpoints;
     /** The array of coordinates Y. */
-    private int ypoints[];
+    private int[] ypoints;
     /** The total number of points. */
     private int npoints;
     /** The bounds. */
@@ -62,14 +62,11 @@ final class PolygonImpl
      */
     private void updateBounds(int x, int y)
     {
-        double nx = x;
-        double ny = y;
-        double nw = bounds.getWidth();
-        double nh = bounds.getHeight();
+        final double nw;
+        final double nh;
         if (x < bounds.getX())
         {
             nw = bounds.getWidth() + (bounds.getX() - x);
-            nx = x;
         }
         else
         {
@@ -79,13 +76,12 @@ final class PolygonImpl
         if (y < bounds.getY())
         {
             nh = bounds.getHeight() + (bounds.getY() - y);
-            ny = y;
         }
         else
         {
             nh = Math.max(bounds.getHeight(), y - bounds.getY());
         }
-        bounds.set(nx, ny, nw, nh);
+        bounds.set(x, y, nw, nh);
     }
 
     /**
@@ -95,7 +91,7 @@ final class PolygonImpl
      * @param ypoints The vertical points.
      * @param npoints The points number.
      */
-    private void calculateBounds(int xpoints[], int ypoints[], int npoints)
+    private void calculateBounds(int[] xpoints, int[] ypoints, int npoints)
     {
         int boundsMinX = Integer.MAX_VALUE;
         int boundsMinY = Integer.MAX_VALUE;

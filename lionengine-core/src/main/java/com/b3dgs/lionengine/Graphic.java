@@ -163,6 +163,7 @@ public interface Graphic
     /**
      * Set the graphic context.
      * 
+     * @param <G> The graphic type used.
      * @param graphic The graphic context.
      */
     <G> void setGraphic(G graphic);
@@ -170,6 +171,7 @@ public interface Graphic
     /**
      * Get the graphic context.
      * 
+     * @param <G> The graphic type used.
      * @return The graphic context.
      */
     <G> G getGraphic();

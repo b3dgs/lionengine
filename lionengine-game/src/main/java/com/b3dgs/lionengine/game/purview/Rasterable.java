@@ -27,11 +27,11 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 public interface Rasterable
 {
     /** Maximum rasters. */
-    public static final int MAX_RASTERS = 15;
+    int MAX_RASTERS = 15;
     /** Maximum rasters R. */
-    public static final int MAX_RASTERS_R = Rasterable.MAX_RASTERS * 2;
+    int MAX_RASTERS_R = Rasterable.MAX_RASTERS * 2;
     /** Maximum rasters M. */
-    public static final int MAX_RASTERS_M = Rasterable.MAX_RASTERS - 1;
+    int MAX_RASTERS_M = Rasterable.MAX_RASTERS - 1;
 
     /**
      * Get raster index from location.

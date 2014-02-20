@@ -63,7 +63,7 @@ public interface ObjectType
      * 
      * @return The target class.
      */
-    public Class<?> getTargetClass();
+    Class<?> getTargetClass();
 
     /**
      * Get the name as a path (which is used to point the XML data file). The method
@@ -71,5 +71,5 @@ public interface ObjectType
      * 
      * @return The path name.
      */
-    public String getPathName();
+    String getPathName();
 }

@@ -30,5 +30,5 @@ public interface Applet<A>
      * 
      * @return The applet reference.
      */
-    public A getApplet();
+    A getApplet();
 }

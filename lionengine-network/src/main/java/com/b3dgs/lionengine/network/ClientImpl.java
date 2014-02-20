@@ -71,9 +71,8 @@ final class ClientImpl
      * Constructor.
      * 
      * @param decoder The message decoder.
-     * @throws LionEngineException if cannot connect to the server.
      */
-    ClientImpl(NetworkMessageDecoder decoder) throws LionEngineException
+    ClientImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
         pingTimer = new Timing();
@@ -142,8 +141,10 @@ final class ClientImpl
         if (size > 0)
         {
             final byte[] name = new byte[size];
-            this.in.read(name);
-            return new String(name, NetworkMessage.CHARSET);
+            if (this.in.read(name) != -1)
+            {
+                return new String(name, NetworkMessage.CHARSET);
+            }
         }
         return null;
     }
@@ -433,10 +434,12 @@ final class ClientImpl
                     if (size > 0)
                     {
                         final byte[] data = new byte[size];
-                        in.read(data);
-                        try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
+                        if (in.read(data) != -1)
                         {
-                            decodeMessage(type, from, dest, buffer);
+                            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
+                            {
+                                decodeMessage(type, from, dest, buffer);
+                            }
                         }
                     }
                     bandwidth += 4 + size;

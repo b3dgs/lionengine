@@ -17,6 +17,7 @@
     <module name="JavadocType"/>
     <module name="JavadocVariable"/>
     <module name="JavadocStyle">
+      <property name="checkFirstSentence" value="false"/>
       <property name="checkHtml" value="false"/>
     </module>
     <module name="ConstantName"/>
@@ -99,7 +100,10 @@
     </module>
     <module name="FinalClass"/>
     <module name="HideUtilityClassConstructor"/>
-    <module name="InterfaceIsType"/>
+    <module name="InterfaceIsType">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
     <module name="VisibilityModifier">
       <property name="severity" value="ignore"/>
       <property name="protectedAllowed" value="true"/>
@@ -128,6 +132,10 @@
       <property name="ignoreHashCodeMethod" value="true"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
+    <module name="InterfaceIsType">
+      <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
@@ -143,5 +151,8 @@
   <module name="RegexpSingleline">
     <property name="format" value="[^\*]\s+$"/>
     <property name="message" value="Line has trailing spaces."/>
+  </module>
+  <module name="SuppressionFilter">
+    <property name="file" value="C:\Users\Pierre-Alexandre\git\lionengine\config\eclipse\checkstyle-suppression.xml"/>
   </module>
 </module>

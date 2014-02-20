@@ -44,6 +44,8 @@ final class WavPlayer
     final Queue<WavRoutine> busySounds;
     /** Sound monitor. */
     final Semaphore latch;
+    /** Monitor. */
+    final Object monitor = new Object();
     /** Created thread counter. */
     volatile Integer count;
     /** Terminated. */
@@ -133,7 +135,7 @@ final class WavPlayer
     @Override
     public void play(int delay)
     {
-        synchronized (terminated)
+        synchronized (monitor)
         {
             if (!terminated.booleanValue())
             {
@@ -238,7 +240,7 @@ final class WavPlayer
                 }
                 while (count.intValue() != 0)
                 {
-                    synchronized (terminated)
+                    synchronized (monitor)
                     {
 
                         final List<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
@@ -252,7 +254,7 @@ final class WavPlayer
 
                         try
                         {
-                            Thread.sleep(100);
+                            monitor.wait(100);
                         }
                         catch (final InterruptedException exception)
                         {

@@ -77,11 +77,11 @@ package com.b3dgs.lionengine;
 public interface Text
 {
     /** Standard text font sans serif. */
-    public static final String SANS_SERIF = "SansSerif";
+    String SANS_SERIF = "SansSerif";
     /** Standard text font serif. */
-    public static final String SERIF = "Serif";
+    String SERIF = "Serif";
     /** Standard text dialog. */
-    public static final String DIALOG = "Dialog";
+    String DIALOG = "Dialog";
 
     /**
      * Renders text on graphic output, to the specified location.

@@ -450,13 +450,13 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         {
             final String name = collision.readString("name");
 
-            String found = searchCollision(collision, name, "tiles", tilePattern, tileNumber);
+            String found = MapTileGame.searchCollision(collision, name, "tiles", tilePattern, tileNumber);
             if (found != null)
             {
                 return found;
             }
 
-            found = searchCollision(collision, name, "tile", tilePattern, tileNumber);
+            found = MapTileGame.searchCollision(collision, name, "tile", tilePattern, tileNumber);
             if (found != null)
             {
                 return found;

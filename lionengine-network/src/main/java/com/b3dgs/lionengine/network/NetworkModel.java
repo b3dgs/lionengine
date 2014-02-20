@@ -71,9 +71,12 @@ abstract class NetworkModel<L extends ClientListener>
         final NetworkMessage message = decoder.getNetworkMessageFromType(type);
         if (message != null)
         {
-            buffer.skipBytes(3);
-            message.decode(type, from, dest, buffer);
-            messagesIn.add(message);
+            final int skip = 3;
+            if (buffer.skipBytes(skip) == skip)
+            {
+                message.decode(type, from, dest, buffer);
+                messagesIn.add(message);
+            }
         }
     }
 

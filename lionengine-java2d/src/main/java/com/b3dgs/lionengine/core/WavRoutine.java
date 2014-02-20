@@ -129,7 +129,7 @@ final class WavRoutine
     /**
      * Re allow to play one again.
      */
-    void restart()
+    synchronized void restart()
     {
         restart = true;
     }
@@ -194,7 +194,10 @@ final class WavRoutine
     {
         while (isRunning)
         {
-            close = false;
+            synchronized (this)
+            {
+                close = false;
+            }
             player.addBusy(this);
             if (media != null)
             {
@@ -202,7 +205,10 @@ final class WavRoutine
                 try
                 {
                     isPlaying = true;
-                    restart = false;
+                    synchronized (this)
+                    {
+                        restart = false;
+                    }
 
                     // Open stream
                     audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getStream()));
@@ -287,9 +293,12 @@ final class WavRoutine
                 }
             }
             isPlaying = false;
-            if (!restart)
+            synchronized (this)
             {
-                media = null;
+                if (!restart)
+                {
+                    media = null;
+                }
             }
             try
             {

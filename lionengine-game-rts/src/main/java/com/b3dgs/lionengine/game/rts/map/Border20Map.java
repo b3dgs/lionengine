@@ -142,7 +142,7 @@ public class Border20Map
                 }
                 if (l == Border20.NONE && r == Border20.NONE && t != Border20.NONE && d == Border20.NONE)
                 {
-                    // this.set(map, v, h, Axis18.TOP_MIDDLE);
+                    // set(map, v, h, Axis18.TOP_MIDDLE);
                 }
                 if (l != Border20.NONE && r != Border20.NONE && t != Border20.NONE && d == Border20.NONE)
                 {

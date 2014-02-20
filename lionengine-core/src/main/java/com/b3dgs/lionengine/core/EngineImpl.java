@@ -149,6 +149,7 @@ abstract class EngineImpl
     /**
      * Load low level factory.
      * 
+     * @param <C> The factory type used.
      * @param name The factory name.
      * @return The factory instance.
      */

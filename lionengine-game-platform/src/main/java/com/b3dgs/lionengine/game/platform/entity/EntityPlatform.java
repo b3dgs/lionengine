@@ -277,6 +277,7 @@ public abstract class EntityPlatform
     /**
      * Define a tile collision at a specific offset from the entity referential.
      * 
+     * @param <C> The collision type used.
      * @param type The collision tile type.
      * @param offsetX The horizontal offset value.
      * @param offsetY The vertical offset value.
@@ -289,6 +290,7 @@ public abstract class EntityPlatform
     /**
      * Get the collision offset.
      * 
+     * @param <C> The collision type used.
      * @param type The collision category.
      * @return The collision offset.
      */
@@ -300,6 +302,9 @@ public abstract class EntityPlatform
     /**
      * Get the first tile hit for the specified collision tile category matching the collision list.
      * 
+     * @param <C> The collision type used.
+     * @param <T> The tile type used.
+     * @param <M> The map tile platform used.
      * @param map The map reference.
      * @param category The collision tile category.
      * @return The first tile hit, <code>null</code> if none.

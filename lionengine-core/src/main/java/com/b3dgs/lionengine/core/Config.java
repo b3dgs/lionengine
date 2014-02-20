@@ -157,6 +157,7 @@ public final class Config
     /**
      * Get applet reference.
      * 
+     * @param <A> The applet type used.
      * @return The applet reference.
      */
     public <A extends Applet<A>> A getApplet()

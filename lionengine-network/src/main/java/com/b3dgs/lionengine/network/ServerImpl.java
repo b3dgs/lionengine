@@ -106,9 +106,8 @@ final class ServerImpl
      * Constructor.
      * 
      * @param decoder The message decoder.
-     * @throws LionEngineException if cannot create the server.
      */
-    ServerImpl(NetworkMessageDecoder decoder) throws LionEngineException
+    ServerImpl(NetworkMessageDecoder decoder)
     {
         super(decoder);
         clientsList = new HashMap<>(1);
@@ -196,7 +195,10 @@ final class ServerImpl
         {
             // Receive the name
             final byte[] name = new byte[buffer.readByte()];
-            buffer.read(name);
+            if (buffer.read(name) == -1)
+            {
+                throw new IOException("Unable to read client name !");
+            }
             client.setName(new String(name, NetworkMessage.CHARSET));
 
             // Send new state
@@ -308,7 +310,10 @@ final class ServerImpl
         {
             // Receive the name
             final byte[] name = new byte[buffer.readByte()];
-            buffer.read(name);
+            if (buffer.read(name) == -1)
+            {
+                throw new IOException("Unable to read client name on rename !");
+            }
             final String newName = new String(name, NetworkMessage.CHARSET);
             Verbose.info("Server: ", client.getName(), " rennamed to " + newName);
             client.setName(newName);
@@ -348,9 +353,11 @@ final class ServerImpl
             if (size > 0)
             {
                 final byte[] clientData = new byte[size];
-                buffer.read(clientData);
-                final DataInputStream clientBuffer = new DataInputStream(new ByteArrayInputStream(clientData));
-                decodeMessage(type, from, dest, clientBuffer);
+                if (buffer.read(clientData) != -1)
+                {
+                    final DataInputStream clientBuffer = new DataInputStream(new ByteArrayInputStream(clientData));
+                    decodeMessage(type, from, dest, clientBuffer);
+                }
             }
             bandwidth += 4 + size;
         }

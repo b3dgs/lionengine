@@ -110,7 +110,7 @@ public abstract class FactoryGame<T extends Enum<T>, S extends SetupGame>
      */
     public T[] getTypes()
     {
-        return types;
+        return types.clone();
     }
 
     /**

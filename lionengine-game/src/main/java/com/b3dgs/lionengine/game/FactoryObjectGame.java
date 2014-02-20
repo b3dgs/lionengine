@@ -104,6 +104,7 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      * Create an object from its type using a generic way. The concerned classes to instantiate and its
      * constructor must be public, and must be as the main one: {@link ObjectGame#ObjectGame(SetupGame)}.
      * 
+     * @param <E> The object type used.
      * @param type The object type.
      * @return The object instance.
      */
