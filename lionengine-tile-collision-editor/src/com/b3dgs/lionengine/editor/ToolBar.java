@@ -26,12 +26,15 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionInput;
+import com.b3dgs.lionengine.game.platform.CollisionOperation;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
@@ -41,32 +44,30 @@ import com.b3dgs.lionengine.swing.UtilitySwing;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
+public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
         extends JToolBar
 {
     /** Uid. */
     private static final long serialVersionUID = -3884748128028563357L;
 
-    /**
-     * Create the palette panel.
-     * 
-     * @return The panel instance.
-     */
-    private static JPanel createPalettePanel()
-    {
-        final JPanel palettePanel = UtilitySwing.createBorderedPanel("Collisions", 1);
-        palettePanel.setLayout(new GridLayout(3, 1));
-
-        final JLabel comboLabel = new JLabel("Choice");
-        palettePanel.add(comboLabel);
-
-        return palettePanel;
-    }
-
     /** Collision combo. */
     final JComboBox<C> collisionCombo;
+    /** Parameter combo. */
+    final JComboBox<CollisionInput> inputCombo;
+    /** Operation combo. */
+    final JComboBox<CollisionOperation> operationCombo;
+    /** Value field. */
+    final JTextField valueField;
+    /** Operation offset combo. */
+    final JComboBox<CollisionOperation> operationOffsetCombo;
+    /** Value offset field. */
+    final JTextField valueOffsetField;
     /** Palette panel. */
     private final JPanel palettePanel;
+    /** Collision type choice. */
+    private final JPanel collisionTypeChoice;
+    /** Formula handler. */
+    private final JPanel formulaHandler;
 
     /**
      * Constructor.
@@ -75,50 +76,25 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
      * @param collisionClass The collision class.
      * @param editor The editor reference.
      */
-    public ToolBar(final TileCollisionEditor<C, T> editor, final Class<C> collisionClass, C[] collisions)
+    public ToolBar(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
     {
         super();
-        palettePanel = ToolBar.createPalettePanel();
+        palettePanel = new JPanel();
+        palettePanel.setLayout(new GridLayout(2, 1));
 
         collisionCombo = new JComboBox<>(collisions);
-        palettePanel.add(collisionCombo);
-        collisionCombo.setEnabled(false);
+        collisionTypeChoice = createCollisionTypeChoice(editor, collisionClass, collisions);
+        palettePanel.add(collisionTypeChoice);
 
-        final JButton assignLabel = new JButton("Assign");
-        assignLabel.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent)
-            {
-                final T tile = editor.world.getSelectedTile();
-                if (tile != null)
-                {
-                    final Object selection = collisionCombo.getSelectedItem();
-                    if (selection.getClass().isAssignableFrom(collisionClass))
-                    {
-                        final C collision = collisionClass.cast(selection);
-                        tile.setCollision(collision);
+        inputCombo = new JComboBox<>(CollisionInput.values());
+        operationCombo = new JComboBox<>(CollisionOperation.values());
+        valueField = new JTextField("1");
+        operationOffsetCombo = new JComboBox<>(CollisionOperation.values());
+        valueOffsetField = new JTextField("0");
+        formulaHandler = createFormulaHandler(editor, collisionClass);
+        palettePanel.add(formulaHandler);
 
-                        final Integer pattern = tile.getPattern();
-                        final int number = tile.getNumber();
-                        final MapTileGame<C, T> map = editor.world.map;
-                        for (int ty = 0; ty < map.getHeightInTile(); ty++)
-                        {
-                            for (int tx = 0; tx < map.getWidthInTile(); tx++)
-                            {
-                                final T next = map.getTile(tx, ty);
-                                if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
-                                {
-                                    next.setCollision(collision);
-                                }
-                            }
-                        }
-                        editor.world.repaint();
-                    }
-                }
-            }
-        });
-        palettePanel.add(assignLabel);
+        setSelectedTile(null);
 
         init();
     }
@@ -132,12 +108,16 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
     {
         if (tile != null)
         {
+            UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), true);
             collisionCombo.setSelectedItem(tile.getCollision());
             collisionCombo.setEnabled(true);
+            UtilitySwing.setEnabled(formulaHandler.getComponents(), true);
         }
         else
         {
             collisionCombo.setEnabled(false);
+            UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), false);
+            UtilitySwing.setEnabled(formulaHandler.getComponents(), false);
         }
     }
 
@@ -149,6 +129,58 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
     public void setPaletteEnabled(boolean enabled)
     {
         UtilitySwing.setEnabled(palettePanel.getComponents(), enabled);
+    }
+
+    /**
+     * Create the collision type choice.
+     * 
+     * @param editor The editor reference.
+     * @param collisionClass The collision class.
+     * @param collisions The collisions list.
+     * @return The created panel.
+     */
+    private JPanel createCollisionTypeChoice(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
+    {
+        final JPanel panel = UtilitySwing.createBorderedPanel("Choice", 1);
+        panel.setLayout(new GridLayout(2, 1));
+
+        panel.add(collisionCombo);
+        collisionCombo.setEnabled(false);
+
+        final JButton assignLabel = new JButton("Assign");
+        assignLabel.addActionListener(new AssignCollisionListener(editor.world, collisionClass));
+        panel.add(assignLabel);
+
+        return panel;
+    }
+
+    /**
+     * Create the collision type choice.
+     * 
+     * @param editor The editor reference.
+     * @param collisionClass The collision class.
+     * @return The created panel.
+     */
+    private JPanel createFormulaHandler(TileCollisionEditor<C, T> editor, Class<C> collisionClass)
+    {
+        final JPanel panel = UtilitySwing.createBorderedPanel("Formula", 1);
+        panel.setLayout(new GridLayout(2, 1));
+
+        final JPanel formulaPanel = new JPanel();
+        formulaPanel.setLayout(new GridLayout(1, 5));
+        panel.add(formulaPanel);
+
+        final JButton applyLabel = new JButton("Apply");
+        applyLabel.addActionListener(new AssignFormulaListener(editor.world));
+
+        formulaPanel.add(inputCombo);
+        formulaPanel.add(operationCombo);
+        formulaPanel.add(valueField);
+        formulaPanel.add(operationOffsetCombo);
+        formulaPanel.add(valueOffsetField);
+        panel.add(applyLabel);
+
+        return panel;
     }
 
     /**
@@ -171,5 +203,119 @@ public final class ToolBar<C extends Enum<C>, T extends TileGame<C>>
 
         setPreferredSize(new Dimension(204, 480));
         setMinimumSize(new Dimension(204, 480));
+    }
+
+    /**
+     * Assign the collision listener.
+     */
+    private final class AssignCollisionListener
+            implements ActionListener
+    {
+        /** The world panel reference. */
+        private final WorldPanel<C, T> world;
+        /** Collision class. */
+        private final Class<C> collisionClass;
+
+        /**
+         * Constructor.
+         * 
+         * @param world The world reference.
+         * @param collisionClass The collision class reference.
+         */
+        AssignCollisionListener(WorldPanel<C, T> world, Class<C> collisionClass)
+        {
+            this.world = world;
+            this.collisionClass = collisionClass;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            final T tile = world.getSelectedTile();
+            if (tile != null)
+            {
+                final Object selection = collisionCombo.getSelectedItem();
+                if (selection != null && selection.getClass().isAssignableFrom(collisionClass))
+                {
+                    final C collision = collisionClass.cast(selection);
+                    tile.setCollision(collision);
+
+                    final Integer pattern = tile.getPattern();
+                    final int number = tile.getNumber();
+                    final MapTileGame<C, T> map = world.map;
+                    for (int ty = 0; ty < map.getHeightInTile(); ty++)
+                    {
+                        for (int tx = 0; tx < map.getWidthInTile(); tx++)
+                        {
+                            final T next = map.getTile(tx, ty);
+                            if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                            {
+                                next.setCollision(collision);
+                            }
+                        }
+                    }
+                    world.repaint();
+                }
+            }
+        }
+    }
+
+    /**
+     * Assign the formula listener.
+     */
+    private final class AssignFormulaListener
+            implements ActionListener
+    {
+        /** The world panel reference. */
+        private final WorldPanel<C, T> world;
+
+        /**
+         * Constructor.
+         * 
+         * @param world The world reference.
+         */
+        AssignFormulaListener(WorldPanel<C, T> world)
+        {
+            this.world = world;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            final T tile = world.getSelectedTile();
+            if (tile != null)
+            {
+                final CollisionInput input = (CollisionInput) inputCombo.getSelectedItem();
+                final CollisionOperation operation = (CollisionOperation) operationCombo.getSelectedItem();
+                final int value = Integer.parseInt(valueField.getText());
+                final CollisionOperation operationOffset = (CollisionOperation) operationOffsetCombo.getSelectedItem();
+                final int offset = Integer.parseInt(valueOffsetField.getText());
+
+                final CollisionFunction function = new CollisionFunction();
+                function.setInput(input);
+                function.setOperation(operation);
+                function.setValue(value);
+                function.setOperationOffset(operationOffset);
+                function.setOffset(offset);
+
+                tile.setCollisionFunction(function);
+
+                final Integer pattern = tile.getPattern();
+                final int number = tile.getNumber();
+                final MapTileGame<C, T> map = world.map;
+                for (int ty = 0; ty < map.getHeightInTile(); ty++)
+                {
+                    for (int tx = 0; tx < map.getWidthInTile(); tx++)
+                    {
+                        final T next = map.getTile(tx, ty);
+                        if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                        {
+                            next.setCollisionFunction(function);
+                        }
+                    }
+                }
+                world.repaint();
+            }
+        }
     }
 }

@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MenuBar<C extends Enum<C>, T extends TileGame<C>>
+public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
         extends JMenuBar
 {
     /** Uid. */

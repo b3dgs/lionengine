@@ -31,8 +31,8 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Represents the world scene, containing the map and the entities.
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class WorldPanel<C extends Enum<C>, T extends TileGame<C>>
+public final class WorldPanel<C extends Enum<C>, T extends TilePlatform<C>>
         extends JPanel
         implements MouseListener, MouseMotionListener
 {

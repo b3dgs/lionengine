@@ -22,7 +22,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * State bar implementation (giving information on the current editor states).
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class StateBar<C extends Enum<C>, T extends TileGame<C>>
+public final class StateBar<C extends Enum<C>, T extends TilePlatform<C>>
         extends JPanel
 {
     /** Uid. */

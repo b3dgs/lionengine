@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Little editor that allows to set the tile collision from a level rip and save them as collisions data.
@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionEditor<C extends Enum<C>, T extends TileGame<C>>
+public class TileCollisionEditor<C extends Enum<C>, T extends TilePlatform<C>>
         extends JFrame
 {
     /** Editor version. */
