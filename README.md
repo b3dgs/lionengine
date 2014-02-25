@@ -142,7 +142,7 @@ Once you installed the __LionEngine__ in your project, you may would like to kno
 ```
 
 * Using **_lionengine-android_**
-```java
+  ```java
   public final class AppMinimal
           extends Activity
   {
