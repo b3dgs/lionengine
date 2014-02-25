@@ -201,4 +201,4 @@ final class Scene
 
 ## Tutorials
 
-* [Go to tutorial index](../../wiki)
+* [LionEngine Forum](http://www.b3dgs.com/v6/forum/)
