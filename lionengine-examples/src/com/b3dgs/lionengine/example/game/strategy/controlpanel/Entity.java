@@ -63,7 +63,7 @@ abstract class Entity
     }
 
     /*
-     * EntityRts
+     * EntityStrategy
      */
 
     @Override

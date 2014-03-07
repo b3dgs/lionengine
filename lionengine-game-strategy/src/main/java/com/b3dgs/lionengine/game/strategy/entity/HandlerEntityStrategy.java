@@ -375,12 +375,12 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             {
                 if (skill instanceof SkillStrategy)
                 {
-                    final SkillStrategy<?> skillRts = (SkillStrategy<?>) skill;
-                    if (skillRts.isIgnored() || !skillRts.isActive())
+                    final SkillStrategy<?> skillStrategy = (SkillStrategy<?>) skill;
+                    if (skillStrategy.isIgnored() || !skillStrategy.isActive())
                     {
                         continue;
                     }
-                    skillRts.renderOnMap(g, cursor, camera);
+                    skillStrategy.renderOnMap(g, cursor, camera);
                 }
             }
         }
@@ -681,12 +681,12 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             {
                 if (skill instanceof SkillStrategy)
                 {
-                    final SkillStrategy<?> skillRts = (SkillStrategy<?>) skill;
-                    if (skillRts.isIgnored())
+                    final SkillStrategy<?> skillStrategy = (SkillStrategy<?>) skill;
+                    if (skillStrategy.isIgnored())
                     {
                         continue;
                     }
-                    skillRts.updateOnMap(extrp, camera, cursor);
+                    skillStrategy.updateOnMap(extrp, camera, cursor);
                 }
             }
         }

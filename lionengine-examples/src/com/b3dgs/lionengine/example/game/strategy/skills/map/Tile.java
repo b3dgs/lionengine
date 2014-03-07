@@ -38,7 +38,7 @@ public final class Tile
     }
 
     /*
-     * TileRts
+     * TileStrategy
      */
 
     @Override
