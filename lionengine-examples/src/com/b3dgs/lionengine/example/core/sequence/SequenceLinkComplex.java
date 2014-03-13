@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * SequenceC implementation.
+ * SequenceLinkComplex implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
