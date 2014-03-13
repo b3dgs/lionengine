@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.CameraGame;
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 final class Scene
         extends Sequence

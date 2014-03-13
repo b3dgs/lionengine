@@ -15,17 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.game.world;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
  * World implementation.
@@ -35,18 +36,10 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 final class World
         extends WorldGame
 {
-    /** Background color. */
-    private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
-    /** Camera reference. */
-    private final CameraPlatform camera;
-    /** Map reference. */
-    private final Map map;
-    /** Factory reference. */
-    private final FactoryEntity factory;
-    /** Mario reference. */
-    private final Mario mario;
-    /** Handler reference. */
-    private final HandlerEntity handler;
+    /** The text. */
+    private final Text text;
+    /** The str. */
+    private String str;
 
     /**
      * @see WorldGame#WorldGame(Sequence)
@@ -54,11 +47,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        camera = new CameraPlatform(width, height);
-        map = new Map();
-        factory = new FactoryEntity(map, source.getRate());
-        mario = factory.create(EntityType.MARIO);
-        handler = new HandlerEntity(camera, mario);
+        text = UtilityImage.createText(Text.SERIF, 12, TextStyle.NORMAL);
     }
 
     /*
@@ -68,45 +57,24 @@ final class World
     @Override
     public void update(double extrp)
     {
-        mario.updateControl(keyboard);
-        mario.update(extrp);
-        handler.update(extrp);
-        camera.follow(mario);
+        // Nothing do update
     }
 
     @Override
     public void render(Graphic g)
     {
-        g.setColor(World.BACKGROUND_COLOR);
-        g.drawRect(0, 0, width, height, true);
-        // Draw the map
-        map.render(g, camera);
-        // Draw the mario
-        mario.render(g, camera);
-        handler.render(g);
+        text.draw(g, 10, 10, str);
     }
 
     @Override
     protected void saving(FileWriting file) throws IOException
     {
-        map.save(file);
+        file.writeString("world");
     }
 
     @Override
     protected void loading(FileReading file) throws IOException
     {
-        map.load(file);
-        camera.setLimits(map);
-        camera.setIntervals(16, 0);
-        map.adjustCollisions();
-        mario.respawn();
-
-        // Create two goombas
-        for (int i = 0; i < 2; i++)
-        {
-            final Goomba goomba = factory.create(EntityType.GOOMBA);
-            goomba.setLocation(532 + i * 24, 25);
-            handler.add(goomba);
-        }
+        str = file.readString();
     }
 }

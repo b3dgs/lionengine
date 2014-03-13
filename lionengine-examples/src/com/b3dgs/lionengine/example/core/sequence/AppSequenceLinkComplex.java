@@ -15,63 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
- * Game loop designed to handle our little world.
+ * Program starts here.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
-        extends Sequence
+public final class AppSequenceLinkComplex
 {
-    /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    /** World reference. */
-    private final World world;
+    /**
+     * Main function called by the jvm.
+     * 
+     * @param args The arguments.
+     */
+    public static void main(String[] args)
+    {
+        Engine.start("AppSequenceLinkComplex", Version.create(1, 0, 0), "resources");
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(new SequenceLinkComplex(loader));
+    }
 
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * Private constructor.
      */
-    Scene(Loader loader)
+    private AppSequenceLinkComplex()
     {
-        super(loader, Scene.NATIVE);
-        world = new World(this);
-    }
-
-    /*
-     * Sequence
-     */
-
-    @Override
-    protected void load()
-    {
-        world.loadFromFile(UtilityMedia.get("level.map"));
-    }
-
-    @Override
-    protected void update(double extrp)
-    {
-        world.update(extrp);
-        if (keyboard.isPressedOnce(Key.ESCAPE))
-        {
-            end();
-        }
-    }
-
-    @Override
-    protected void render(Graphic g)
-    {
-        world.render(g);
+        throw new RuntimeException();
     }
 }

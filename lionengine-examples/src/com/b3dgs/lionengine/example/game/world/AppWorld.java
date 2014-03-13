@@ -15,48 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.game.world;
 
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
- * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
+ * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
+public final class AppWorld
 {
-    /** Main entity directory name. */
-    private static final String ENTITY_DIR = "entities";
-
-    /** Map. */
-    private final Map map;
-    /** Desired fps. */
-    private final int desiredFps;
-
     /**
-     * Constructor.
+     * The main method.
      * 
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
+     * @param args the arguments
      */
-    FactoryEntity(Map map, int desiredFps)
+    public static void main(String[] args)
     {
-        super(EntityType.class, FactoryEntity.ENTITY_DIR);
-        this.map = map;
-        this.desiredFps = desiredFps;
-        load();
-    }
-
-    /*
-     * FactoryObjectGame
-     */
-
-    @Override
-    protected SetupEntity createSetup(EntityType key, Media config)
-    {
-        return new SetupEntity(config, map, desiredFps);
+        Engine.start("World", Version.create(1, 0, 0), Media.getPath("resources", "world"));
+        final Resolution output = new Resolution(320, 100, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(new Scene(loader));
     }
 }

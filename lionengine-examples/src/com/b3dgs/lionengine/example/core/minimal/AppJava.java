@@ -15,39 +15,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.core.minimal;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 
 /**
- * Program starts here.
+ * Program starts here. When you start the jvm, ensure that this main function is called.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppMario
+public final class AppJava
 {
-    /** Application name. */
-    public static final String NAME = "Mario";
-    /** Application version. */
-    public static final Version VERSION = Version.create(1, 0, 0);
-    /** Resources directory. */
-    private static final String RESOURCES = Media.getPath("resources", "mario");
-
     /**
-     * Main function.
+     * Main function called by the jvm.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        Engine.start(AppMario.NAME, AppMario.VERSION, AppMario.RESOURCES);
+        // Start engine (name = "First Code", version = "1.0.0", resources directory = "resources")
+        // The engine is initialized with our parameters:
+        // - The name of our program: "First Code"
+        // - The program version: "1.0.0"
+        // - The main resources directory, relative to the execution directory: ./resources/
+        // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
+        Engine.start("AppJava", Version.create(1, 0, 0), "resources");
+
+        // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.
+        // As our native is in 320*240 (described in the Scene), the output will be scaled by 2.
+        // If the current frame rate is lower than the required in the native,
+        // the extrapolation value will allow to compensate any data calculation.
         final Resolution output = new Resolution(640, 480, 60);
+
+        // Final configuration (rendering will be scaled by 2 considering source and output resolution).
+        // This is the final configuration container, including color depth and window mode.
         final Config config = new Config(output, 16, true);
+
+        // Program starter, setup with our configuration. It just needs one sequence reference to start.
         final Loader loader = new Loader(config);
         loader.start(new Scene(loader));
     }
@@ -55,7 +63,7 @@ public final class AppMario
     /**
      * Private constructor.
      */
-    private AppMario()
+    private AppJava()
     {
         throw new RuntimeException();
     }

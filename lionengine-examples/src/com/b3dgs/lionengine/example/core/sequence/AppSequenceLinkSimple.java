@@ -15,46 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import java.util.Locale;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Loader;
 
 /**
- * List of entity states.
+ * Program starts here.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityState
+public final class AppSequenceLinkSimple
 {
-    /** Idle state. */
-    IDLE,
-    /** Walk state. */
-    WALK,
-    /** turn state. */
-    TURN,
-    /** Jump state. */
-    JUMP,
-    /** Dead state. */
-    DEAD;
-
-    /** Animation name. */
-    private final String animationName;
-
     /**
-     * Constructor.
+     * Main function called by the jvm.
+     * 
+     * @param args The arguments.
      */
-    private EntityState()
+    public static void main(String[] args)
     {
-        animationName = name().toLowerCase(Locale.ENGLISH);
+        Engine.start("AppSequenceLinkSimple", Version.create(1, 0, 0), "resources");
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(new SequenceLinkSimple(loader));
     }
 
     /**
-     * Get the animation name.
-     * 
-     * @return The animation name.
+     * Private constructor.
      */
-    public String getAnimationName()
+    private AppSequenceLinkSimple()
     {
-        return animationName;
+        throw new RuntimeException();
     }
 }

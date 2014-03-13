@@ -15,37 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.platform.background;
+package com.b3dgs.lionengine.example.core.minimal;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 
 /**
- * Game loop designed to handle our world.
+ * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
+ * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
+ * start the linked one.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
  */
 final class Scene
         extends Sequence
 {
     /** Native resolution. */
-    public static final Resolution NATIVE = new Resolution(320, 240, 60);
-
-    /** Camera. */
-    private final CameraGame camera;
-    /** Background. */
-    private final BackgroundPlatform background;
-    /** Foreground. */
-    private final Foreground foreground;
-    /** Camera y. */
-    private double y;
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
     /**
      * Constructor.
@@ -55,9 +44,6 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new CameraGame();
-        background = new Swamp(source, 1.0, 1.0);
-        foreground = new Foreground(source, 1.0, 1.0);
     }
 
     /*
@@ -67,29 +53,22 @@ final class Scene
     @Override
     protected void load()
     {
-        camera.setView(0, 0, width, height);
-        y = 230;
+        // Load
     }
 
     @Override
     protected void update(double extrp)
     {
-        y = UtilityMath.wrapDouble(y + 1, 0.0, 360.0);
-        camera.moveLocation(extrp, 1.0, 0.0);
-        camera.teleportY(UtilityMath.sin(y) * 100 + 100);
-        background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
-        foreground.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
-
-        if (keyboard.isPressedOnce(Key.ESCAPE))
+        if (keyboard.isPressed(Key.ESCAPE))
         {
             end();
         }
+        // Update
     }
 
     @Override
     protected void render(Graphic g)
     {
-        background.render(g);
-        foreground.render(g);
+        // Render
     }
 }

@@ -15,35 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.minimal;
+package com.b3dgs.lionengine.example.core.sequence;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
- * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
- * start the linked one.
+ * SequenceC implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
+public class SequenceLinkComplex
         extends Sequence
 {
     /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    private static final Resolution NATIVE = new Resolution(320, 100, 32);
+
+    /** Count value. */
+    private int count;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public SequenceLinkComplex(Loader loader)
     {
-        super(loader, Scene.NATIVE);
+        super(loader, NATIVE);
     }
 
     /*
@@ -53,22 +53,26 @@ final class Scene
     @Override
     protected void load()
     {
-        // Load
+        count = 0;
     }
 
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
+        count++;
+        if (count == 1)
+        {
+            start(new SequenceNext(loader), false);
+        }
+        if (count > 2)
         {
             end();
         }
-        // Update
     }
 
     @Override
     protected void render(Graphic g)
     {
-        // Render
+        System.out.println("ComplexLink rendering number " + count);
     }
 }

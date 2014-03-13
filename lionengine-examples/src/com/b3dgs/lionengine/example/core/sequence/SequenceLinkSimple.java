@@ -15,52 +15,60 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.ObjectTypeUtility;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * List of entity types.
+ * SequenceA implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityType implements ObjectType
+public class SequenceLinkSimple
+        extends Sequence
 {
-    /** Mario. */
-    MARIO(Mario.class),
-    /** Goomba. */
-    GOOMBA(Goomba.class);
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 100, 32);
 
-    /** Class target. */
-    private final Class<?> target;
-    /** Path name. */
-    private final String pathName;
+    /** Count value. */
+    private int count;
 
     /**
      * Constructor.
      * 
-     * @param target The target class.
+     * @param loader The loader reference.
      */
-    private EntityType(Class<?> target)
+    public SequenceLinkSimple(Loader loader)
     {
-        this.target = target;
-        pathName = ObjectTypeUtility.getPathName(this);
+        super(loader, NATIVE);
     }
 
     /*
-     * ObjectType
+     * Sequence
      */
 
     @Override
-    public Class<?> getTargetClass()
+    protected void load()
     {
-        return target;
+        count = 0;
     }
 
     @Override
-    public String getPathName()
+    protected void update(double extrp)
     {
-        return pathName;
+        count++;
+        if (count > 2)
+        {
+            end(new SequenceNext(loader));
+        }
+    }
+
+    @Override
+    protected void render(Graphic g)
+    {
+        System.out.println("SimpleLink rendering number " + count);
     }
 }

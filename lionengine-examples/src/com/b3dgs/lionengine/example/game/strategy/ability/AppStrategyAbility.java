@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.core.Media;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 public final class AppStrategyAbility
 {
@@ -39,7 +39,8 @@ public final class AppStrategyAbility
      */
     public static void main(String[] args)
     {
-        Engine.start("Strategy Ability", Version.create(1, 0, 0), Media.getPath("resources", "game", "strategy", "ability"));
+        Engine.start("Strategy Ability", Version.create(1, 0, 0),
+                Media.getPath("resources", "game", "strategy", "ability"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
  * Game loop designed to handle our world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 final class Scene
         extends Sequence

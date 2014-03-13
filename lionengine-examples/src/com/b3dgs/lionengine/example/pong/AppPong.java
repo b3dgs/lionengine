@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Loader;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 public final class AppPong
 {

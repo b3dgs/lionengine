@@ -15,35 +15,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.mario;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Setup entity implementation.
+ * SequenceNext implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class SetupEntity
-        extends SetupSurfaceGame
+public class SequenceNext
+        extends Sequence
 {
-    /** Map. */
-    final Map map;
-    /** Desired fps. */
-    final int desiredFps;
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 100, 32);
 
     /**
      * Constructor.
      * 
-     * @param config The media config.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
+     * @param loader The loader reference.
      */
-    SetupEntity(Media config, Map map, int desiredFps)
+    public SequenceNext(Loader loader)
     {
-        super(config);
-        this.map = map;
-        this.desiredFps = desiredFps;
+        super(loader, NATIVE);
+    }
+
+    /*
+     * Sequence
+     */
+
+    @Override
+    protected void load()
+    {
+        System.out.println("SequenceNext loaded !");
+    }
+
+    @Override
+    protected void update(double extrp)
+    {
+        end();
+    }
+
+    @Override
+    protected void render(Graphic g)
+    {
+        System.out.println("I am Next !");
     }
 }
