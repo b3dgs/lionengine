@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.core.Sequence;
 public class SequenceNext
         extends Sequence
 {
-    /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 100, 32);
-
     /**
      * Constructor.
      * 
@@ -40,7 +37,7 @@ public class SequenceNext
      */
     public SequenceNext(Loader loader)
     {
-        super(loader, NATIVE);
+        super(loader, new Resolution(320, 100, 32));
     }
 
     /*
