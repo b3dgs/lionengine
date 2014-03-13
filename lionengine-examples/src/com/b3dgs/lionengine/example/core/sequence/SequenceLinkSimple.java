@@ -30,9 +30,6 @@ import com.b3dgs.lionengine.core.Sequence;
 public class SequenceLinkSimple
         extends Sequence
 {
-    /** Native resolution. */
-    private static final Resolution NATIVE = new Resolution(320, 100, 32);
-
     /** Count value. */
     private int count;
 
@@ -43,7 +40,7 @@ public class SequenceLinkSimple
      */
     public SequenceLinkSimple(Loader loader)
     {
-        super(loader, NATIVE);
+        super(loader, new Resolution(320, 100, 32));
     }
 
     /*
