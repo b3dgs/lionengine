@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collisions>
+	<collision name="GROUND">
+		<tile pattern="0" number="1"/>
+	</collision>
+	
+	<collision name="BLOCK">
+		<tile pattern="0" number="2"/>
+	</collision>
+	
+	<collision name="TUBE">
+		<tiles pattern="0" start="3" end="4"/>
+	</collision>
+	
+	<collision name="WALL">
+		<tiles pattern="0" start="5" end="6"/>
+	</collision>
+</collisions>

@@ -48,7 +48,7 @@ final class Scene
         super(loader, Scene.NATIVE);
         setExtrapolated(true); // Recommended for network game
 
-        final boolean server = false;
+        final boolean server = true;
 
         if (server)
         {
@@ -72,7 +72,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(UtilityMedia.get("level.map"));
+        world.loadFromFile(UtilityMedia.get("smb_level1-1.lvl"));
     }
 
     @Override

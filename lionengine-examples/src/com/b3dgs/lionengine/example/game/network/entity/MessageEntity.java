@@ -123,12 +123,12 @@ final class MessageEntity
         if (key == MessageEntityElement.DOWN || key == MessageEntityElement.LEFT || key == MessageEntityElement.RIGHT
                 || key == MessageEntityElement.UP)
         {
-            this.addAction(key, buffer.readByte() == 0 ? false : true);
+            addAction(key, buffer.readByte() == 0 ? false : true);
         }
         // Location correction
         if (key == MessageEntityElement.LOCATION_X || key == MessageEntityElement.LOCATION_Y)
         {
-            this.addAction(key, buffer.readInt());
+            addAction(key, buffer.readInt());
         }
     }
 }

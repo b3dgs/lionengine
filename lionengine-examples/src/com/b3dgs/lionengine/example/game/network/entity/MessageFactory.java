@@ -74,6 +74,6 @@ final class MessageFactory
     protected void decode(DataInputStream buffer, int i) throws IOException
     {
         final EntityType type = EntityType.fromOrdinal(buffer.readByte());
-        this.addAction(type, true);
+        addAction(type, true);
     }
 }
