@@ -113,7 +113,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         final int eh = (int) Math.floor(localizable.getLocationX());
 
         // Distance calculation
-        final int dv = sv - ev;
+        final int dv = ev - sv;
         final int dh = sh - eh;
 
         // Search vector and number of search steps
@@ -133,7 +133,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         }
 
         int step = 0;
-        for (double v = sv, h = sh; step <= stepMax; v -= sy, h += sx)
+        for (double v = sv, h = sh; step <= stepMax; v += sy, h -= sx)
         {
             final T tile = getTile((int) Math.floor(h / getTileWidth()), (int) Math.floor(v / getTileHeight()));
             if (tile != null && collisions.contains(tile.getCollision()))
