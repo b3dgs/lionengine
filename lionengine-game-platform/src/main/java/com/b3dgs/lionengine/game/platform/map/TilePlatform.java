@@ -63,6 +63,16 @@ public abstract class TilePlatform<C extends Enum<C>>
     }
 
     /**
+     * Get the collision function.
+     * 
+     * @return The collision function.
+     */
+    public CollisionFunction getCollisionFunction()
+    {
+        return collisionFunction;
+    }
+
+    /**
      * Get the horizontal collision location between the tile and the localizable.
      * 
      * @param localizable The localizable object searching the collision.

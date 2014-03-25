@@ -111,7 +111,14 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
             UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), true);
             collisionCombo.setSelectedItem(tile.getCollision());
             collisionCombo.setEnabled(true);
+
             UtilitySwing.setEnabled(formulaHandler.getComponents(), true);
+            final CollisionFunction function = tile.getCollisionFunction();
+            inputCombo.setSelectedItem(function.getInput());
+            operationCombo.setSelectedItem(function.getOperation());
+            valueField.setText(String.valueOf(function.getValue()));
+            operationOffsetCombo.setSelectedItem(function.getOperationOffset());
+            valueOffsetField.setText(String.valueOf(function.getOffset()));
         }
         else
         {
@@ -300,15 +307,13 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
 
                 tile.setCollisionFunction(function);
 
-                final Integer pattern = tile.getPattern();
-                final int number = tile.getNumber();
                 final MapTileGame<C, T> map = world.map;
                 for (int ty = 0; ty < map.getHeightInTile(); ty++)
                 {
                     for (int tx = 0; tx < map.getWidthInTile(); tx++)
                     {
                         final T next = map.getTile(tx, ty);
-                        if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                        if (next != null && next.getCollision() == tile.getCollision())
                         {
                             next.setCollisionFunction(function);
                         }

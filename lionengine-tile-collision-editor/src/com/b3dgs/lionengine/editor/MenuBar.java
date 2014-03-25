@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
 import com.b3dgs.lionengine.swing.UtilitySwing;
@@ -109,7 +110,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
 
         int lastValue = -2;
         List<Integer> currentSerie = null;
-        for (Integer number : numbers)
+        for (final Integer number : numbers)
         {
             final int newValue = number.intValue();
             if (newValue - lastValue != 1)
@@ -130,6 +131,8 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
     final TreeMap<String, JMenuItem> items;
     /** Editor reference. */
     private final TileCollisionEditor<C, T> editor;
+    /** Collisions function buffer (used for save). */
+    private final Map<C, CollisionFunction> collisionsFunction;
 
     /**
      * Constructor.
@@ -142,6 +145,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
         super();
         this.editor = editor;
         items = new TreeMap<>();
+        collisionsFunction = new HashMap<>();
         JMenu menu = addMenu("File");
         addItem(menu, "Save", new ActionListener()
         {
@@ -190,7 +194,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
     {
         final MapTileGame<C, T> map = editor.world.map;
         final XmlNode root = File.createXmlNode("collisions");
-        for (C collision : collisions)
+        for (final C collision : collisions)
         {
             final XmlNode node = File.createXmlNode("collision");
             node.writeString("name", collision.name());
@@ -198,7 +202,19 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
             {
                 root.add(node);
             }
+            final CollisionFunction function = collisionsFunction.get(collision);
+            if (function != null)
+            {
+                final XmlNode functionNode = File.createXmlNode("function");
+                functionNode.writeString("input", function.getInput().name());
+                functionNode.writeString("operation", function.getOperation().name());
+                functionNode.writeInteger("value", function.getValue());
+                functionNode.writeString("operationOffset", function.getOperationOffset().name());
+                functionNode.writeInteger("offset", function.getOffset());
+                node.add(functionNode);
+            }
         }
+        collisionsFunction.clear();
 
         final XmlParser parser = File.createXmlParser();
         parser.save(root, UtilityMedia.get("collisions.xml"));
@@ -298,6 +314,11 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
         UtilitySwing.startDialog(dialog);
     }
 
+    /**
+     * Import map quickly without dialog. Test case.
+     * 
+     * @return <code>true</code> if imported, <code>false</code> else.
+     */
     boolean importMap()
     {
         final MapTileGame<C, T> map = editor.world.map;
@@ -364,12 +385,12 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
     {
         final Map<Integer, SortedSet<Integer>> patterns = getCollisionsPattern(map, node, collision);
         boolean added = false;
-        for (Integer pattern : patterns.keySet())
+        for (final Integer pattern : patterns.keySet())
         {
-            final List<List<Integer>> elements = splitNonConsecutiveNumbers(patterns, pattern);
-            for (List<Integer> numbers : elements)
+            final List<List<Integer>> elements = MenuBar.splitNonConsecutiveNumbers(patterns, pattern);
+            for (final List<Integer> numbers : elements)
             {
-                added = saveTileNode(node, pattern, numbers);
+                added = MenuBar.saveTileNode(node, pattern, numbers);
             }
         }
         return added;
@@ -406,6 +427,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                         numbers = patterns.get(pattern);
                     }
                     numbers.add(Integer.valueOf(tile.getNumber() + 1));
+                    collisionsFunction.put(collision, tile.getCollisionFunction());
                 }
             }
         }

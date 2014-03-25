@@ -55,7 +55,7 @@ public final class StateBar<C extends Enum<C>, T extends TilePlatform<C>>
     @Override
     public void paintComponent(Graphics gd)
     {
-        StringBuilder state = new StringBuilder("Location: [");
+        final StringBuilder state = new StringBuilder("Location: [");
         state.append(editor.getOffsetViewInTileV());
         state.append(" | ");
         state.append(editor.getOffsetViewInTileH());

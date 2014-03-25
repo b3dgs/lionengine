@@ -18,8 +18,18 @@
 package com.b3dgs.lionengine.game.platform.map;
 
 import java.util.EnumSet;
+import java.util.List;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.file.File;
+import com.b3dgs.lionengine.file.XmlNode;
+import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
+import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionInput;
+import com.b3dgs.lionengine.game.platform.CollisionOperation;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
@@ -165,5 +175,71 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     public int getInTileY(Localizable localizable)
     {
         return (int) Math.floor(localizable.getLocationY() / getTileHeight());
+    }
+
+    /*
+     * MapTileGame
+     */
+
+    @Override
+    public void loadCollisions(Media media)
+    {
+        super.loadCollisions(media);
+
+        final XmlParser xml = File.createXmlParser();
+        final XmlNode root = xml.load(media);
+        final List<XmlNode> collisions = root.getChildren();
+        for (XmlNode node : collisions)
+        {
+            try
+            {
+                final XmlNode functionNode = node.getChild("function");
+                final C collision = getCollisionFrom(node.readString("name"));
+                loadCollisionFunction(collision, functionNode);
+            }
+            catch (XmlNodeNotFoundException e)
+            {
+                Verbose.exception(MapTilePlatform.class, "loadCollisions", e);
+            }
+        }
+    }
+
+    /**
+     * Load the collision function from the node.
+     * 
+     * @param collision The current collision enum.
+     * @param functionNode The function node reference.
+     */
+    private void loadCollisionFunction(C collision, XmlNode functionNode)
+    {
+        final CollisionFunction function = new CollisionFunction();
+        function.setInput(CollisionInput.valueOf(functionNode.readString("input")));
+        function.setOperation(CollisionOperation.valueOf(functionNode.readString("operation")));
+        function.setValue(functionNode.readInteger("value"));
+        function.setOperationOffset(CollisionOperation.valueOf(functionNode.readString("operationOffset")));
+        function.setOffset(functionNode.readInteger("offset"));
+
+        assignCollisionFunction(collision, function);
+    }
+
+    /**
+     * Assign the collision function to all tiles with the same collision.
+     * 
+     * @param collision The current collision enum.
+     * @param function The function reference.
+     */
+    private void assignCollisionFunction(C collision, CollisionFunction function)
+    {
+        for (int i = 0; i < heightInTile; i++)
+        {
+            for (int j = 0; j < widthInTile; j++)
+            {
+                final T tile = getTile(j, i);
+                if (tile != null && tile.getCollision() == collision)
+                {
+                    tile.setCollisionFunction(function);
+                }
+            }
+        }
     }
 }
