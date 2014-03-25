@@ -139,8 +139,8 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
 
     /**
      * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
-     * recommended to unselect the entity with {@link EntityStrategy#setSelection(boolean)} and remove the entity from the
-     * selection which is given as a parameter. Example: Ignore a certain type of entity.
+     * recommended to unselect the entity with {@link EntityStrategy#setSelection(boolean)} and remove the entity from
+     * the selection which is given as a parameter. Example: Ignore a certain type of entity.
      * 
      * @param selection The selected entities.
      */

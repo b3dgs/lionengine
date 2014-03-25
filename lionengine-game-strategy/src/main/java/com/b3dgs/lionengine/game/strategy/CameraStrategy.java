@@ -27,7 +27,8 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 /**
  * This camera should be used for a strategy oriented game. It allows free movement around the current map, using its
  * border as limit. It is also possible to define specific keys for camera handling. Don't forget give a call to
- * {@link CameraStrategy#setView(int, int, int, int)} and {@link CameraStrategy#setBorders(MapTile)} when the map is loaded.
+ * {@link CameraStrategy#setView(int, int, int, int)} and {@link CameraStrategy#setBorders(MapTile)} when the map is
+ * loaded.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

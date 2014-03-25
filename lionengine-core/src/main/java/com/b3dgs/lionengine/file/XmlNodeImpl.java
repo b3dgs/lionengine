@@ -282,7 +282,7 @@ final class XmlNodeImpl
             }
         }
 
-        throw new XmlNodeNotFoundException("The following node " + name + " was not found !");
+        throw new XmlNodeNotFoundException("The node \"" + name + "\" was not found !");
     }
 
     @Override

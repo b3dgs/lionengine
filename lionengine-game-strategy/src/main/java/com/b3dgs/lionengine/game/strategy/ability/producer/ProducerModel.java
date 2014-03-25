@@ -83,7 +83,8 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
      * @param handler The handler reference.
      * @param desiredFps The the desired frame rate.
      */
-    public ProducerModel(ProducerUsedServices<T, C, P, E> user, HandlerEntityStrategy<?, ?, E, ?> handler, int desiredFps)
+    public ProducerModel(ProducerUsedServices<T, C, P, E> user, HandlerEntityStrategy<?, ?, E, ?> handler,
+            int desiredFps)
     {
         super(user);
         this.handler = handler;

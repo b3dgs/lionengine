@@ -81,7 +81,8 @@ public class CursorStrategy
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public CursorStrategy(Mouse mouse, CameraStrategy camera, Resolution source, int tileWidth, int tileHeight, Media... cursor)
+    public CursorStrategy(Mouse mouse, CameraStrategy camera, Resolution source, int tileWidth, int tileHeight,
+            Media... cursor)
     {
         super(mouse, 0, 0, source.getWidth(), source.getHeight(), cursor);
         Check.notNull(camera, "The camera must not be null !");
