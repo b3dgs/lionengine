@@ -117,6 +117,19 @@ public final class UtilitySwing
     }
 
     /**
+     * Set a bordered panel.
+     * 
+     * @param panel The panel reference.
+     * @param title The panel title.
+     * @param margin The panel margin.
+     */
+    public static void setBorderedPanel(JPanel panel, String title, int margin)
+    {
+        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder(title),
+                BorderFactory.createEmptyBorder(margin, margin, margin, margin)));
+    }
+
+    /**
      * Create a button.
      * 
      * @param name The button name.

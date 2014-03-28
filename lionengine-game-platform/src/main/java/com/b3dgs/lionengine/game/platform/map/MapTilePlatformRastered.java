@@ -78,12 +78,12 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     /**
      * Get raster index from input tile (depending of its height).
      * 
-     * @param tile The input tile.
+     * @param ty The vertical tile location.
      * @return The raster index.
      */
-    public int getRasterIndex(T tile)
+    public int getRasterIndex(int ty)
     {
-        final int value = tile.getY() / getTileHeight();
+        final int value = ty / getTileHeight();
         int index = value % Rasterable.MAX_RASTERS_R;
         if (!smooth && index > Rasterable.MAX_RASTERS_M)
         {
@@ -221,17 +221,17 @@ public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TileP
     }
 
     @Override
-    protected void renderingTile(Graphic g, T tile, int x, int y, int screenHeight)
+    protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
     {
         final SpriteTiled ts;
         if (rasterFile != null)
         {
-            ts = getRasterPattern(tile.getPattern(), getRasterIndex(tile));
+            ts = getRasterPattern(pattern, getRasterIndex(tile.getY()));
         }
         else
         {
-            ts = super.getPattern(tile.getPattern());
+            ts = super.getPattern(pattern);
         }
-        ts.render(g, tile.getNumber(), x, y + screenHeight);
+        ts.render(g, number, x, y);
     }
 }

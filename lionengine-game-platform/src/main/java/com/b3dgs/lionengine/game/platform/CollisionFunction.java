@@ -24,14 +24,12 @@ package com.b3dgs.lionengine.game.platform;
  */
 public class CollisionFunction
 {
+    /** The name. */
+    private String name;
     /** The input used. */
     private CollisionInput input;
-    /** Operation. */
-    private CollisionOperation operation;
     /** Value. */
-    private int value;
-    /** Offset operation. */
-    private CollisionOperation operationOffset;
+    private double value;
     /** Offset value. */
     private int offset;
 
@@ -41,10 +39,18 @@ public class CollisionFunction
     public CollisionFunction()
     {
         input = CollisionInput.X;
-        operation = CollisionOperation.MULTIPLY;
-        value = 1;
-        operationOffset = CollisionOperation.ADD;
+        value = 0;
         offset = 0;
+    }
+
+    /**
+     * Set the name.
+     * 
+     * @param name The name.
+     */
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     /**
@@ -58,33 +64,13 @@ public class CollisionFunction
     }
 
     /**
-     * Set the operation used.
-     * 
-     * @param operation The operation to set
-     */
-    public void setOperation(CollisionOperation operation)
-    {
-        this.operation = operation;
-    }
-
-    /**
      * Set the value.
      * 
      * @param value The value to set
      */
-    public void setValue(int value)
+    public void setValue(double value)
     {
         this.value = value;
-    }
-
-    /**
-     * Set the operation offset.
-     * 
-     * @param operationOffset The operationOffset to set
-     */
-    public void setOperationOffset(CollisionOperation operationOffset)
-    {
-        this.operationOffset = operationOffset;
     }
 
     /**
@@ -98,6 +84,16 @@ public class CollisionFunction
     }
 
     /**
+     * Get the name.
+     * 
+     * @return The name.
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    /**
      * Get the input.
      * 
      * @return the input
@@ -108,33 +104,13 @@ public class CollisionFunction
     }
 
     /**
-     * Get the operation.
-     * 
-     * @return the operation
-     */
-    public CollisionOperation getOperation()
-    {
-        return operation;
-    }
-
-    /**
      * Get the value.
      * 
      * @return the value
      */
-    public int getValue()
+    public double getValue()
     {
         return value;
-    }
-
-    /**
-     * Get the operation offset.
-     * 
-     * @return the operationOffset
-     */
-    public CollisionOperation getOperationOffset()
-    {
-        return operationOffset;
     }
 
     /**

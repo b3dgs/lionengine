@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
@@ -48,13 +48,13 @@ public final class WorldPanel<C extends Enum<C>, T extends TilePlatform<C>>
     /** Uid. */
     private static final long serialVersionUID = -3609110757656654125L;
     /** Color of the grid. */
-    private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 208);
+    private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
     /** Color of the selection area. */
-    private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(128, 128, 192, 192);
+    private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
     /** Color of the selection area. */
-    private static final ColorRgba COLOR_SELECTED = new ColorRgba(192, 192, 192, 208);
+    private static final ColorRgba COLOR_SELECTED = new ColorRgba(192, 192, 192, 96);
     /** Color of the selection area. */
-    private static final ColorRgba COLOR_GROUP_SELECTED = new ColorRgba(240, 160, 160, 200);
+    private static final ColorRgba COLOR_GROUP_SELECTED = new ColorRgba(240, 240, 240, 96);
     /** Default width. */
     private static final int DEFAULT_WIDTH = 640;
     /** Default height. */
@@ -84,7 +84,7 @@ public final class WorldPanel<C extends Enum<C>, T extends TilePlatform<C>>
     }
 
     /** The map reference. */
-    public final MapTileGame<C, T> map;
+    public final MapTilePlatform<C, T> map;
     /** The camera reference. */
     public final CameraPlatform camera;
     /** The editor reference. */
@@ -108,7 +108,7 @@ public final class WorldPanel<C extends Enum<C>, T extends TilePlatform<C>>
      * @param editor The editor reference.
      * @param map The map reference.
      */
-    public WorldPanel(final TileCollisionEditor<C, T> editor, MapTileGame<C, T> map)
+    public WorldPanel(final TileCollisionEditor<C, T> editor, MapTilePlatform<C, T> map)
     {
         super();
         this.editor = editor;

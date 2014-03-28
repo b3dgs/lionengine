@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.purview.Localizable;
@@ -30,8 +33,8 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 public abstract class TilePlatform<C extends Enum<C>>
         extends TileGame<C>
 {
-    /** Collision function. */
-    private final CollisionFunction collisionFunction;
+    /** Collision function X. */
+    private final Set<CollisionFunction> collisionFunctions;
 
     /**
      * Constructor.
@@ -45,31 +48,37 @@ public abstract class TilePlatform<C extends Enum<C>>
     public TilePlatform(int width, int height, Integer pattern, int number, C collision)
     {
         super(width, height, pattern, number, collision);
-        collisionFunction = new CollisionFunction();
+        collisionFunctions = new HashSet<>();
     }
 
     /**
-     * Set the collision function.
+     * Add a collision function .
      * 
      * @param function The collision function.
      */
-    public void setCollisionFunction(CollisionFunction function)
+    public void addCollisionFunction(CollisionFunction function)
     {
-        collisionFunction.setInput(function.getInput());
-        collisionFunction.setOperation(function.getOperation());
-        collisionFunction.setValue(function.getValue());
-        collisionFunction.setOperationOffset(function.getOperationOffset());
-        collisionFunction.setOffset(function.getOffset());
+        collisionFunctions.add(function);
     }
 
     /**
-     * Get the collision function.
+     * Remove a collision function.
+     * 
+     * @param function The collision function to remove.
+     */
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.remove(function);
+    }
+
+    /**
+     * Get the collision functions.
      * 
      * @return The collision function.
      */
-    public CollisionFunction getCollisionFunction()
+    public Set<CollisionFunction> getCollisionFunctions()
     {
-        return collisionFunction;
+        return collisionFunctions;
     }
 
     /**

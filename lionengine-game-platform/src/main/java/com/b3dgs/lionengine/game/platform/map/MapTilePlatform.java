@@ -17,19 +17,23 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionInput;
-import com.b3dgs.lionengine.game.platform.CollisionOperation;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
@@ -43,6 +47,9 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<C>>
         extends MapTileGame<C, T>
 {
+    /** Collision draw cache. */
+    private EnumMap<C, ImageBuffer> collisionCache;
+
     /**
      * Get the tile search speed value.
      * 
@@ -79,6 +86,18 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     }
 
     /**
+     * Get the collision value by compute the current value with the collision function.
+     * 
+     * @param function The collision function.
+     * @param current The current value to use as input.
+     * @return The collision function result.
+     */
+    private static double getCollisionValue(CollisionFunction function, int current)
+    {
+        return current * function.getValue() + function.getOffset();
+    }
+
+    /**
      * Constructor.
      * 
      * @param tileWidth The tile width.
@@ -87,6 +106,77 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     public MapTilePlatform(int tileWidth, int tileHeight)
     {
         super(tileWidth, tileHeight);
+    }
+
+    /**
+     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
+     * 
+     * @param collisionClass The collisionClass enumeration class.
+     */
+    public void createCollisionDraw(Class<C> collisionClass)
+    {
+        collisionCache = new EnumMap<>(collisionClass);
+        for (final C collision : collisionClass.getEnumConstants())
+        {
+            final Set<CollisionFunction> functions = searchCollisionFunctions(collision);
+            if (functions != null)
+            {
+                final ImageBuffer buffer = UtilityImage.createImageBuffer(getTileWidth(), getTileHeight(),
+                        Transparency.TRANSLUCENT);
+                final Graphic g = buffer.createGraphic();
+                g.setColor(new ColorRgba(0, 0, 0, 0));
+                g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+                g.setColor(ColorRgba.PURPLE);
+
+                for (final CollisionFunction function : functions)
+                {
+                    createFunctionDraw(g, function);
+                }
+                g.dispose();
+                collisionCache.put(collision, buffer);
+            }
+        }
+    }
+
+    /**
+     * Assign the collision function to all tiles with the same collision.
+     * 
+     * @param collision The current collision enum.
+     * @param function The function reference.
+     */
+    public void assignCollisionFunction(C collision, CollisionFunction function)
+    {
+        for (int i = 0; i < heightInTile; i++)
+        {
+            for (int j = 0; j < widthInTile; j++)
+            {
+                final T tile = getTile(j, i);
+                if (tile != null && tile.getCollision() == collision)
+                {
+                    tile.addCollisionFunction(function);
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove a collision function.
+     * 
+     * @param function The function to remove.
+     */
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        for (int i = 0; i < heightInTile; i++)
+        {
+            for (int j = 0; j < widthInTile; j++)
+            {
+                final T tile = getTile(j, i);
+                if (tile != null)
+                {
+                    tile.removeCollisionFunction(function);
+                }
+            }
+        }
     }
 
     /**
@@ -177,29 +267,54 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         return (int) Math.floor(localizable.getLocationY() / getTileHeight());
     }
 
-    /*
-     * MapTileGame
+    /**
+     * Get all collision functions by searching the first tile with the specified collision and return its functions.
+     * 
+     * @param collision The collision to search.
+     * @return The functions found, <code>null</code> if none.
      */
-
-    @Override
-    public void loadCollisions(Media media)
+    public Set<CollisionFunction> searchCollisionFunctions(C collision)
     {
-        super.loadCollisions(media);
-
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode root = xml.load(media);
-        final List<XmlNode> collisions = root.getChildren();
-        for (XmlNode node : collisions)
+        for (int i = 0; i < heightInTile; i++)
         {
-            try
+            for (int j = 0; j < widthInTile; j++)
             {
-                final XmlNode functionNode = node.getChild("function");
-                final C collision = getCollisionFrom(node.readString("name"));
-                loadCollisionFunction(collision, functionNode);
+                final T tile = getTile(j, i);
+                if (tile != null && tile.getCollision() == collision)
+                {
+                    return tile.getCollisionFunctions();
+                }
             }
-            catch (XmlNodeNotFoundException e)
+        }
+        return null;
+    }
+
+    /**
+     * Create the function draw to buffer.
+     * 
+     * @param g The graphic buffer.
+     * @param function The function to draw.
+     */
+    private void createFunctionDraw(Graphic g, CollisionFunction function)
+    {
+        for (int y = 0; y < getTileHeight(); y++)
+        {
+            for (int x = 0; x < getTileWidth(); x++)
             {
-                Verbose.exception(MapTilePlatform.class, "loadCollisions", e);
+                switch (function.getInput())
+                {
+                    case X:
+                        final int fx = (int) MapTilePlatform.getCollisionValue(function, x);
+                        g.drawRect(x, fx, 0, 0, false);
+                        break;
+                    case Y:
+                        final int fy = (int) MapTilePlatform.getCollisionValue(function, y);
+                        g.drawRect(fy, y, 0, 0, false);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }
     }
@@ -213,33 +328,57 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     private void loadCollisionFunction(C collision, XmlNode functionNode)
     {
         final CollisionFunction function = new CollisionFunction();
+        function.setName(functionNode.readString("name"));
         function.setInput(CollisionInput.valueOf(functionNode.readString("input")));
-        function.setOperation(CollisionOperation.valueOf(functionNode.readString("operation")));
-        function.setValue(functionNode.readInteger("value"));
-        function.setOperationOffset(CollisionOperation.valueOf(functionNode.readString("operationOffset")));
+        function.setValue(functionNode.readDouble("value"));
         function.setOffset(functionNode.readInteger("offset"));
 
         assignCollisionFunction(collision, function);
     }
 
     /**
-     * Assign the collision function to all tiles with the same collision.
+     * Render the collision function.
      * 
-     * @param collision The current collision enum.
-     * @param function The function reference.
+     * @param g The graphic output.
+     * @param tile The tile reference.
+     * @param x The horizontal render location.
+     * @param y The vertical render location.
      */
-    private void assignCollisionFunction(C collision, CollisionFunction function)
+    private void renderCollision(Graphic g, T tile, int x, int y)
     {
-        for (int i = 0; i < heightInTile; i++)
+        final ImageBuffer buffer = collisionCache.get(tile.getCollision());
+        if (buffer != null)
         {
-            for (int j = 0; j < widthInTile; j++)
+            g.drawImage(buffer, x, y);
+        }
+    }
+
+    /*
+     * MapTileGame
+     */
+
+    @Override
+    public void loadCollisions(Media media)
+    {
+        super.loadCollisions(media);
+
+        final XmlParser xml = File.createXmlParser();
+        final XmlNode root = xml.load(media);
+        final List<XmlNode> collisions = root.getChildren("collision");
+        for (final XmlNode node : collisions)
+        {
+            final C collision = getCollisionFrom(node.readString("name"));
+            for (final XmlNode functionNode : node.getChildren("function"))
             {
-                final T tile = getTile(j, i);
-                if (tile != null && tile.getCollision() == collision)
-                {
-                    tile.setCollisionFunction(function);
-                }
+                loadCollisionFunction(collision, functionNode);
             }
         }
+    }
+
+    @Override
+    protected void renderTile(Graphic g, T tile, int x, int y)
+    {
+        super.renderTile(g, tile, x, y);
+        renderCollision(g, tile, x, y);
     }
 }

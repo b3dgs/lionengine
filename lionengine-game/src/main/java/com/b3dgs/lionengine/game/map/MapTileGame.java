@@ -496,7 +496,9 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
                         final T tile = getTile(tx, ty);
                         if (tile != null)
                         {
-                            renderTile(g, screenHeight, sx, sy, tile);
+                            final int x = tile.getX() - sx;
+                            final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
+                            renderTile(g, tile, x, y);
                         }
                     }
                 }
@@ -509,30 +511,28 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      * {@link #render(Graphic, int, int, int, int, int, int, int)}).
      * 
      * @param g The graphic output.
-     * @param screenHeight The view height (rendering start from bottom).
-     * @param sx The starting x (view real location x).
-     * @param sy The starting y (view real location y).
+     * @param x The location x.
+     * @param y The location y.
      * @param tile The tile to render.
      */
-    protected void renderTile(Graphic g, int screenHeight, int sx, int sy, T tile)
+    protected void renderTile(Graphic g, T tile, int x, int y)
     {
-        final int x = tile.getX() - sx;
-        final int y = -tile.getY() - tile.getHeight() + sy;
-        renderingTile(g, tile, x, y, screenHeight);
+        renderingTile(g, tile, tile.getPattern(), tile.getNumber(), x, y);
     }
 
     /**
-     * Render a specific tile from specified location.
+     * Render a specific tile to specified location.
      * 
      * @param g The graphic output.
      * @param tile The tile to render.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
      * @param x The location x.
      * @param y The location y.
-     * @param screenHeight The view height (rendering start from bottom).
      */
-    protected void renderingTile(Graphic g, T tile, int x, int y, int screenHeight)
+    protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
     {
-        getPattern(tile.getPattern()).render(g, tile.getNumber(), x, y + screenHeight);
+        getPattern(pattern).render(g, number, x, y);
     }
 
     /**

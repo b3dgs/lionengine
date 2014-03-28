@@ -33,7 +33,7 @@ import javax.swing.JFrame;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.UtilityMath;
-import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
@@ -74,7 +74,7 @@ public class TileCollisionEditor<C extends Enum<C>, T extends TilePlatform<C>>
      * @param collisionClass The collision class.
      * @param collisions The collisions list.
      */
-    public TileCollisionEditor(MapTileGame<C, T> map, Class<C> collisionClass, C[] collisions)
+    public TileCollisionEditor(MapTilePlatform<C, T> map, Class<C> collisionClass, C[] collisions)
     {
         super("Tile collision editor");
         world = new WorldPanel<>(this, map);
@@ -83,6 +83,7 @@ public class TileCollisionEditor<C extends Enum<C>, T extends TilePlatform<C>>
         stateBar = new StateBar<>(this);
         init();
         menuBar.importMap();
+        map.createCollisionDraw(collisionClass);
     }
 
     /**

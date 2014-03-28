@@ -18,22 +18,26 @@
 package com.b3dgs.lionengine.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.ScrollPaneConstants;
 
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionInput;
-import com.b3dgs.lionengine.game.platform.CollisionOperation;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
@@ -52,47 +56,48 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
 
     /** Collision combo. */
     final JComboBox<C> collisionCombo;
-    /** Parameter combo. */
-    final JComboBox<CollisionInput> inputCombo;
-    /** Operation combo. */
-    final JComboBox<CollisionOperation> operationCombo;
-    /** Value field. */
-    final JTextField valueField;
-    /** Operation offset combo. */
-    final JComboBox<CollisionOperation> operationOffsetCombo;
-    /** Value offset field. */
-    final JTextField valueOffsetField;
     /** Palette panel. */
-    private final JPanel palettePanel;
+    final JPanel palettePanel;
+    /** Formula panel. */
+    final JScrollPane formulaScrollPane;
+    /** Formula panel. */
+    final JPanel formulaPanel;
+    /** Editor reference. */
+    private final TileCollisionEditor<C, T> editor;
+    /** Collision class used. */
+    private final Class<C> collisionClass;
     /** Collision type choice. */
     private final JPanel collisionTypeChoice;
-    /** Formula handler. */
-    private final JPanel formulaHandler;
 
     /**
      * Constructor.
      * 
-     * @param collisions The collisions list.
      * @param collisionClass The collision class.
      * @param editor The editor reference.
+     * @param collisions The collisions list.
      */
     public ToolBar(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
     {
         super();
+        this.editor = editor;
+        this.collisionClass = collisionClass;
+
         palettePanel = new JPanel();
-        palettePanel.setLayout(new GridLayout(2, 1));
+        palettePanel.setLayout(new BoxLayout(palettePanel, BoxLayout.PAGE_AXIS));
 
         collisionCombo = new JComboBox<>(collisions);
         collisionTypeChoice = createCollisionTypeChoice(editor, collisionClass, collisions);
         palettePanel.add(collisionTypeChoice);
 
-        inputCombo = new JComboBox<>(CollisionInput.values());
-        operationCombo = new JComboBox<>(CollisionOperation.values());
-        valueField = new JTextField("1");
-        operationOffsetCombo = new JComboBox<>(CollisionOperation.values());
-        valueOffsetField = new JTextField("0");
-        formulaHandler = createFormulaHandler(editor, collisionClass);
-        palettePanel.add(formulaHandler);
+        UtilitySwing.addButton("Add formula", palettePanel, new CreateFormulaListener(editor, collisionClass))
+                .setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        formulaPanel = new JPanel();
+        formulaPanel.setLayout(new GridBagLayout());
+        formulaScrollPane = new JScrollPane(formulaPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        formulaScrollPane.setPreferredSize(new Dimension(200, 300));
+        palettePanel.add(formulaScrollPane);
 
         setSelectedTile(null);
 
@@ -106,26 +111,27 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
      */
     public void setSelectedTile(T tile)
     {
+        formulaPanel.removeAll();
         if (tile != null)
         {
             UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), true);
             collisionCombo.setSelectedItem(tile.getCollision());
             collisionCombo.setEnabled(true);
 
-            UtilitySwing.setEnabled(formulaHandler.getComponents(), true);
-            final CollisionFunction function = tile.getCollisionFunction();
-            inputCombo.setSelectedItem(function.getInput());
-            operationCombo.setSelectedItem(function.getOperation());
-            valueField.setText(String.valueOf(function.getValue()));
-            operationOffsetCombo.setSelectedItem(function.getOperationOffset());
-            valueOffsetField.setText(String.valueOf(function.getOffset()));
+            for (final CollisionFunction function : tile.getCollisionFunctions())
+            {
+                final CollisionFunctionPanel<C, T> panel = new CollisionFunctionPanel<>(editor, collisionClass,
+                        function.getName());
+                panel.setSelectedFunction(function);
+                addToFormulaPanel(panel);
+            }
         }
         else
         {
             collisionCombo.setEnabled(false);
             UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), false);
-            UtilitySwing.setEnabled(formulaHandler.getComponents(), false);
         }
+        updateUI();
     }
 
     /**
@@ -139,6 +145,32 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
     }
 
     /**
+     * Add the collision function panel to the formula panel.
+     * 
+     * @param panel The panel to add.
+     */
+    void addToFormulaPanel(CollisionFunctionPanel<C, T> panel)
+    {
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        formulaPanel.add(panel, gbc);
+    }
+
+    /**
+     * Remove a collision function.
+     * 
+     * @param panel The function to remove.
+     */
+    void removeCollisionFunction(CollisionFunctionPanel<C, T> panel)
+    {
+        formulaPanel.remove(panel);
+        updateUI();
+    }
+
+    /**
      * Create the collision type choice.
      * 
      * @param editor The editor reference.
@@ -148,7 +180,7 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
      */
     private JPanel createCollisionTypeChoice(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
     {
-        final JPanel panel = UtilitySwing.createBorderedPanel("Choice", 1);
+        final JPanel panel = UtilitySwing.createBorderedPanel("Collision", 1);
         panel.setLayout(new GridLayout(2, 1));
 
         panel.add(collisionCombo);
@@ -157,35 +189,6 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
         final JButton assignLabel = new JButton("Assign");
         assignLabel.addActionListener(new AssignCollisionListener(editor.world, collisionClass));
         panel.add(assignLabel);
-
-        return panel;
-    }
-
-    /**
-     * Create the collision type choice.
-     * 
-     * @param editor The editor reference.
-     * @param collisionClass The collision class.
-     * @return The created panel.
-     */
-    private JPanel createFormulaHandler(TileCollisionEditor<C, T> editor, Class<C> collisionClass)
-    {
-        final JPanel panel = UtilitySwing.createBorderedPanel("Formula", 1);
-        panel.setLayout(new GridLayout(2, 1));
-
-        final JPanel formulaPanel = new JPanel();
-        formulaPanel.setLayout(new GridLayout(1, 5));
-        panel.add(formulaPanel);
-
-        final JButton applyLabel = new JButton("Apply");
-        applyLabel.addActionListener(new AssignFormulaListener(editor.world));
-
-        formulaPanel.add(inputCombo);
-        formulaPanel.add(operationCombo);
-        formulaPanel.add(valueField);
-        formulaPanel.add(operationOffsetCombo);
-        formulaPanel.add(valueOffsetField);
-        panel.add(applyLabel);
 
         return panel;
     }
@@ -245,82 +248,75 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
                 if (selection != null && selection.getClass().isAssignableFrom(collisionClass))
                 {
                     final C collision = collisionClass.cast(selection);
-                    tile.setCollision(collision);
-
-                    final Integer pattern = tile.getPattern();
-                    final int number = tile.getNumber();
-                    final MapTileGame<C, T> map = world.map;
-                    for (int ty = 0; ty < map.getHeightInTile(); ty++)
+                    final Set<CollisionFunction> functions = world.map.searchCollisionFunctions(collision);
+                    if (functions != null)
                     {
-                        for (int tx = 0; tx < map.getWidthInTile(); tx++)
+                        tile.setCollision(collision);
+
+                        final Integer pattern = tile.getPattern();
+                        final int number = tile.getNumber();
+                        final MapTileGame<C, T> map = world.map;
+                        for (int ty = 0; ty < map.getHeightInTile(); ty++)
                         {
-                            final T next = map.getTile(tx, ty);
-                            if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                            for (int tx = 0; tx < map.getWidthInTile(); tx++)
                             {
-                                next.setCollision(collision);
+                                final T next = map.getTile(tx, ty);
+                                if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
+                                {
+                                    next.setCollision(collision);
+                                }
                             }
                         }
+                        for (final CollisionFunction function : functions)
+                        {
+                            world.map.assignCollisionFunction(collision, function);
+                        }
+                        world.repaint();
+                        setSelectedTile(tile);
                     }
-                    world.repaint();
                 }
             }
         }
     }
 
     /**
-     * Assign the formula listener.
+     * Create the formula listener.
      */
-    private final class AssignFormulaListener
+    private final class CreateFormulaListener
             implements ActionListener
     {
-        /** The world panel reference. */
-        private final WorldPanel<C, T> world;
+        /** The editor panel reference. */
+        private final TileCollisionEditor<C, T> editor;
+        /** The collision class. */
+        private final Class<C> collisionClass;
 
         /**
-         * Constructor.
+         * Create the formula creation listener.
          * 
-         * @param world The world reference.
+         * @param editor The editor reference.
+         * @param collisionClass The collision class.
          */
-        AssignFormulaListener(WorldPanel<C, T> world)
+        CreateFormulaListener(TileCollisionEditor<C, T> editor, Class<C> collisionClass)
         {
-            this.world = world;
+            this.editor = editor;
+            this.collisionClass = collisionClass;
         }
 
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
+        public void actionPerformed(ActionEvent event)
         {
-            final T tile = world.getSelectedTile();
-            if (tile != null)
-            {
-                final CollisionInput input = (CollisionInput) inputCombo.getSelectedItem();
-                final CollisionOperation operation = (CollisionOperation) operationCombo.getSelectedItem();
-                final int value = Integer.parseInt(valueField.getText());
-                final CollisionOperation operationOffset = (CollisionOperation) operationOffsetCombo.getSelectedItem();
-                final int offset = Integer.parseInt(valueOffsetField.getText());
+            final String name = JOptionPane.showInputDialog("Enter the name:");
+            final CollisionFunctionPanel<C, T> panel = new CollisionFunctionPanel<>(editor, collisionClass, name);
+            addToFormulaPanel(panel);
 
-                final CollisionFunction function = new CollisionFunction();
-                function.setInput(input);
-                function.setOperation(operation);
-                function.setValue(value);
-                function.setOperationOffset(operationOffset);
-                function.setOffset(offset);
+            final CollisionFunction function = new CollisionFunction();
+            function.setName(name);
+            panel.setSelectedFunction(function);
+            editor.world.map.assignCollisionFunction((C) collisionCombo.getSelectedItem(), function);
+            editor.world.map.createCollisionDraw(collisionClass);
+            editor.world.repaint();
 
-                tile.setCollisionFunction(function);
-
-                final MapTileGame<C, T> map = world.map;
-                for (int ty = 0; ty < map.getHeightInTile(); ty++)
-                {
-                    for (int tx = 0; tx < map.getWidthInTile(); tx++)
-                    {
-                        final T next = map.getTile(tx, ty);
-                        if (next != null && next.getCollision() == tile.getCollision())
-                        {
-                            next.setCollisionFunction(function);
-                        }
-                    }
-                }
-                world.repaint();
-            }
+            updateUI();
         }
     }
 }

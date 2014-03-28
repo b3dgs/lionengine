@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -132,7 +133,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
     /** Editor reference. */
     private final TileCollisionEditor<C, T> editor;
     /** Collisions function buffer (used for save). */
-    private final Map<C, CollisionFunction> collisionsFunction;
+    private final Map<C, Set<CollisionFunction>> collisionsFunction;
 
     /**
      * Constructor.
@@ -202,16 +203,18 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
             {
                 root.add(node);
             }
-            final CollisionFunction function = collisionsFunction.get(collision);
-            if (function != null)
+            final Set<CollisionFunction> functions = collisionsFunction.get(collision);
+            if (functions != null)
             {
-                final XmlNode functionNode = File.createXmlNode("function");
-                functionNode.writeString("input", function.getInput().name());
-                functionNode.writeString("operation", function.getOperation().name());
-                functionNode.writeInteger("value", function.getValue());
-                functionNode.writeString("operationOffset", function.getOperationOffset().name());
-                functionNode.writeInteger("offset", function.getOffset());
-                node.add(functionNode);
+                for (final CollisionFunction function : functions)
+                {
+                    final XmlNode functionNode = File.createXmlNode("function");
+                    functionNode.writeString("name", function.getName());
+                    functionNode.writeString("input", function.getInput().name());
+                    functionNode.writeDouble("value", function.getValue());
+                    functionNode.writeInteger("offset", function.getOffset());
+                    node.add(functionNode);
+                }
             }
         }
         collisionsFunction.clear();
@@ -427,7 +430,8 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                         numbers = patterns.get(pattern);
                     }
                     numbers.add(Integer.valueOf(tile.getNumber() + 1));
-                    collisionsFunction.put(collision, tile.getCollisionFunction());
+
+                    collisionsFunction.put(collision, tile.getCollisionFunctions());
                 }
             }
         }
