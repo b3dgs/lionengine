@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionInput;
+import com.b3dgs.lionengine.game.platform.CollisionRefential;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
@@ -60,11 +60,11 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     {
         if (d < 0)
         {
-            return -1.0;
+            return -1;
         }
         else if (d > 0)
         {
-            return 1.0;
+            return 1;
         }
         return 0.0;
     }
@@ -83,18 +83,6 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
             return MapTilePlatform.getTileSearchSpeed(dinf);
         }
         return dinf / (double) dsup;
-    }
-
-    /**
-     * Get the collision value by compute the current value with the collision function.
-     * 
-     * @param function The collision function.
-     * @param current The current value to use as input.
-     * @return The collision function result.
-     */
-    private static double getCollisionValue(CollisionFunction function, int current)
-    {
-        return current * function.getValue() + function.getOffset();
     }
 
     /**
@@ -214,7 +202,7 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
 
         // Distance calculation
         final int dv = ev - sv;
-        final int dh = sh - eh;
+        final int dh = eh - sh;
 
         // Search vector and number of search steps
         final double sx, sy;
@@ -222,27 +210,37 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         if (Math.abs(dv) >= Math.abs(dh))
         {
             sy = MapTilePlatform.getTileSearchSpeed(dv);
-            sx = MapTilePlatform.getTileSearchSpeed(dv, dh);
+            sx = MapTilePlatform.getTileSearchSpeed(Math.abs(dv), dh);
             stepMax = Math.abs(dv);
         }
         else
         {
             sx = MapTilePlatform.getTileSearchSpeed(dh);
-            sy = MapTilePlatform.getTileSearchSpeed(dh, dv);
+            sy = MapTilePlatform.getTileSearchSpeed(Math.abs(dh), dv);
             stepMax = Math.abs(dh);
         }
 
+        T t = null;
         int step = 0;
-        for (double v = sv, h = sh; step <= stepMax; v += sy, h -= sx)
+        for (double v = sv, h = sh; step <= stepMax;)
         {
-            final T tile = getTile((int) Math.floor(h / getTileWidth()), (int) Math.floor(v / getTileHeight()));
-            if (tile != null && collisions.contains(tile.getCollision()))
+            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()));
+            if (t == null)
             {
-                return tile;
+                t = tile;
             }
+            h += sx;
+
+            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()));
+            if (t == null)
+            {
+                t = tile;
+            }
+            v += sy;
+
             step++;
         }
-        return null;
+        return t;
     }
 
     /**
@@ -297,25 +295,54 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      */
     private void createFunctionDraw(Graphic g, CollisionFunction function)
     {
-        for (int y = 0; y < getTileHeight(); y++)
+        final int min = function.getRange().getMin();
+        final int max = function.getRange().getMax();
+        switch (function.getAxis())
         {
-            for (int x = 0; x < getTileWidth(); x++)
-            {
+            case X:
                 switch (function.getInput())
                 {
                     case X:
-                        final int fx = (int) MapTilePlatform.getCollisionValue(function, x);
-                        g.drawRect(x, fx, 0, 0, false);
+                        for (int x = min; x <= max; x++)
+                        {
+                            final int fx = (int) function.computeCollision(x);
+                            g.drawRect(fx, getTileHeight() - x, 0, 0, false);
+                        }
                         break;
                     case Y:
-                        final int fy = (int) MapTilePlatform.getCollisionValue(function, y);
-                        g.drawRect(fy, y, 0, 0, false);
+                        for (int y = min; y <= max; y++)
+                        {
+                            final int fy = (int) function.computeCollision(y);
+                            g.drawRect(fy, y, 0, 0, false);
+                        }
                         break;
                     default:
-                        break;
+                        throw new RuntimeException("Unknown type: " + function.getInput());
                 }
-
-            }
+                break;
+            case Y:
+                switch (function.getInput())
+                {
+                    case X:
+                        for (int x = min; x <= max; x++)
+                        {
+                            final int fx = (int) function.computeCollision(x);
+                            g.drawRect(x, getTileHeight() - 1 - fx, 0, 0, false);
+                        }
+                        break;
+                    case Y:
+                        for (int y = min; y <= max; y++)
+                        {
+                            final int fy = (int) function.computeCollision(y);
+                            g.drawRect(fy, y, 0, 0, false);
+                        }
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown type: " + function.getInput());
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + function.getAxis());
         }
     }
 
@@ -329,11 +356,37 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     {
         final CollisionFunction function = new CollisionFunction();
         function.setName(functionNode.readString("name"));
-        function.setInput(CollisionInput.valueOf(functionNode.readString("input")));
+        function.setAxis(CollisionRefential.valueOf(functionNode.readString("axis")));
+        function.setInput(CollisionRefential.valueOf(functionNode.readString("input")));
         function.setValue(functionNode.readDouble("value"));
         function.setOffset(functionNode.readInteger("offset"));
+        function.setRange(functionNode.readInteger("min"), functionNode.readInteger("max"));
 
         assignCollisionFunction(collision, function);
+    }
+
+    /**
+     * Check the collision at the specified location.
+     * 
+     * @param localizable The localizable reference.
+     * @param collisions Collisions list to search for.
+     * @param h The horizontal index.
+     * @param ty The vertical tile.
+     * @return The first tile hit, <code>null</code> if none found.
+     */
+    private T checkCollision(Localizable localizable, EnumSet<C> collisions, double h, int ty)
+    {
+        final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
+        if (tile != null && collisions.contains(tile.getCollision()))
+        {
+            final Double coll = tile.getCollisionY(localizable);
+            if (coll != null)
+            {
+                localizable.teleportY(coll.doubleValue());
+            }
+            return tile;
+        }
+        return null;
     }
 
     /**
@@ -379,6 +432,9 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     protected void renderTile(Graphic g, T tile, int x, int y)
     {
         super.renderTile(g, tile, x, y);
-        renderCollision(g, tile, x, y);
+        if (collisionCache != null)
+        {
+            renderCollision(g, tile, x, y);
+        }
     }
 }

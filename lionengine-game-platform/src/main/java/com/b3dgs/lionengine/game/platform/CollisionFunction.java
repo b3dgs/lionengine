@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.platform;
 
+import com.b3dgs.lionengine.game.Range;
+
 /**
  * Describe the collision function used.
  * 
@@ -24,10 +26,14 @@ package com.b3dgs.lionengine.game.platform;
  */
 public class CollisionFunction
 {
+    /** Value range. */
+    private final Range range;
     /** The name. */
     private String name;
+    /** The axis used. */
+    private CollisionRefential axis;
     /** The input used. */
-    private CollisionInput input;
+    private CollisionRefential input;
     /** Value. */
     private double value;
     /** Offset value. */
@@ -38,9 +44,22 @@ public class CollisionFunction
      */
     public CollisionFunction()
     {
-        input = CollisionInput.X;
+        range = new Range();
+        axis = CollisionRefential.X;
+        input = CollisionRefential.X;
         value = 0;
         offset = 0;
+    }
+
+    /**
+     * Get the collision value by compute the current value with the collision function.
+     * 
+     * @param current The current value to use as input.
+     * @return The collision function result.
+     */
+    public double computeCollision(int current)
+    {
+        return current * value + offset;
     }
 
     /**
@@ -56,9 +75,19 @@ public class CollisionFunction
     /**
      * Set the input type used.
      * 
+     * @param axis The axis to set
+     */
+    public void setAxis(CollisionRefential axis)
+    {
+        this.axis = axis;
+    }
+
+    /**
+     * Set the input type used.
+     * 
      * @param input The input to set
      */
-    public void setInput(CollisionInput input)
+    public void setInput(CollisionRefential input)
     {
         this.input = input;
     }
@@ -84,6 +113,18 @@ public class CollisionFunction
     }
 
     /**
+     * Set the function working range.
+     * 
+     * @param min The minimum value.
+     * @param max The maximum value.
+     */
+    public void setRange(int min, int max)
+    {
+        range.setMin(min);
+        range.setMax(max);
+    }
+
+    /**
      * Get the name.
      * 
      * @return The name.
@@ -94,11 +135,21 @@ public class CollisionFunction
     }
 
     /**
+     * Get the axis.
+     * 
+     * @return the axis
+     */
+    public CollisionRefential getAxis()
+    {
+        return axis;
+    }
+
+    /**
      * Get the input.
      * 
      * @return the input
      */
-    public CollisionInput getInput()
+    public CollisionRefential getInput()
     {
         return input;
     }
@@ -121,5 +172,15 @@ public class CollisionFunction
     public int getOffset()
     {
         return offset;
+    }
+
+    /**
+     * Get the working range.
+     * 
+     * @return The working range.
+     */
+    public Range getRange()
+    {
+        return range;
     }
 }

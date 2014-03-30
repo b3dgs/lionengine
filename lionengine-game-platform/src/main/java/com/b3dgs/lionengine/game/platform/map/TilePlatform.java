@@ -20,8 +20,10 @@ package com.b3dgs.lionengine.game.platform.map;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionRefential;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
@@ -30,7 +32,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision type used.
  */
-public abstract class TilePlatform<C extends Enum<C>>
+public class TilePlatform<C extends Enum<C>>
         extends TileGame<C>
 {
     /** Collision function X. */
@@ -87,7 +89,28 @@ public abstract class TilePlatform<C extends Enum<C>>
      * @param localizable The localizable object searching the collision.
      * @return The collision x (<code>null</code> if none).
      */
-    public abstract Double getCollisionX(Localizable localizable);
+    public Double getCollisionX(Localizable localizable)
+    {
+        for (final CollisionFunction function : collisionFunctions)
+        {
+            if (function.getAxis() == CollisionRefential.X)
+            {
+                final int min = function.getRange().getMin();
+                final int max = function.getRange().getMax();
+                final int x = getInputValue(function, localizable);
+                if (x >= min && x <= max)
+                {
+                    final double margin = 0;
+                    final double value = getX() + function.computeCollision(x);
+                    if (localizable.getLocationOldX() >= value - margin && localizable.getLocationX() <= value + margin)
+                    {
+                        return Double.valueOf(value);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Get the vertical collision location between the tile and the localizable.
@@ -95,7 +118,29 @@ public abstract class TilePlatform<C extends Enum<C>>
      * @param localizable The localizable object searching the collision.
      * @return The collision y (<code>null</code> if none).
      */
-    public abstract Double getCollisionY(Localizable localizable);
+    public Double getCollisionY(Localizable localizable)
+    {
+        for (final CollisionFunction function : collisionFunctions)
+        {
+            if (function.getAxis() == CollisionRefential.Y)
+            {
+                final int min = function.getRange().getMin();
+                final int max = function.getRange().getMax();
+                final int x = getInputValue(function, localizable);
+                if (x >= min && x <= max)
+                {
+                    final double margin = Math.ceil(Math.abs((localizable.getLocationOldX() - localizable
+                            .getLocationX()) * function.getValue())) + 1;
+                    final double value = getY() + function.computeCollision(x);
+                    if (localizable.getLocationOldY() >= value - margin && localizable.getLocationY() <= value + margin)
+                    {
+                        return Double.valueOf(value);
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Check if there is a collision between the localizable and the tile.
@@ -106,5 +151,26 @@ public abstract class TilePlatform<C extends Enum<C>>
     public boolean hasCollision(Localizable localizable)
     {
         return getCollision() != null && (getCollisionX(localizable) != null || getCollisionY(localizable) != null);
+    }
+
+    /**
+     * Get the input value from the function.
+     * 
+     * @param function The function used.
+     * @param localizable The localizable reference.
+     * @return The input value.
+     */
+    private int getInputValue(CollisionFunction function, Localizable localizable)
+    {
+        final CollisionRefential input = function.getInput();
+        switch (input)
+        {
+            case X:
+                return UtilityMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
+            case Y:
+                return UtilityMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
+            default:
+                throw new RuntimeException("Unknow type: " + input);
+        }
     }
 }

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.file.FileReading;
  * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TileGame<C extends Enum<C>>
+public class TileGame<C extends Enum<C>>
 {
     /** Tile width. */
     private final int width;

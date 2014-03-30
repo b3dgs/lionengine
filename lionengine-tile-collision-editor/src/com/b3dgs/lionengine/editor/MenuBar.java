@@ -210,9 +210,12 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                 {
                     final XmlNode functionNode = File.createXmlNode("function");
                     functionNode.writeString("name", function.getName());
+                    functionNode.writeString("axis", function.getAxis().name());
                     functionNode.writeString("input", function.getInput().name());
                     functionNode.writeDouble("value", function.getValue());
                     functionNode.writeInteger("offset", function.getOffset());
+                    functionNode.writeInteger("min", function.getRange().getMin());
+                    functionNode.writeInteger("max", function.getRange().getMax());
                     node.add(functionNode);
                 }
             }

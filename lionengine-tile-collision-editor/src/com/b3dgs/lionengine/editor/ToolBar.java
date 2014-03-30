@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -89,14 +88,11 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
         collisionTypeChoice = createCollisionTypeChoice(editor, collisionClass, collisions);
         palettePanel.add(collisionTypeChoice);
 
-        UtilitySwing.addButton("Add formula", palettePanel, new CreateFormulaListener(editor, collisionClass))
-                .setAlignmentX(Component.CENTER_ALIGNMENT);
-
         formulaPanel = new JPanel();
         formulaPanel.setLayout(new GridBagLayout());
         formulaScrollPane = new JScrollPane(formulaPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        formulaScrollPane.setPreferredSize(new Dimension(200, 300));
+        formulaScrollPane.setPreferredSize(new Dimension(200, 405));
         palettePanel.add(formulaScrollPane);
 
         setSelectedTile(null);
@@ -186,9 +182,13 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
         panel.add(collisionCombo);
         collisionCombo.setEnabled(false);
 
+        final JPanel buttons = new JPanel(new BorderLayout());
         final JButton assignLabel = new JButton("Assign");
         assignLabel.addActionListener(new AssignCollisionListener(editor.world, collisionClass));
-        panel.add(assignLabel);
+        buttons.add(assignLabel, BorderLayout.WEST);
+
+        UtilitySwing.addButton("Add formula", buttons, new CreateFormulaListener(editor, collisionClass));
+        panel.add(buttons, BorderLayout.EAST);
 
         return panel;
     }
@@ -247,12 +247,17 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
                 final Object selection = collisionCombo.getSelectedItem();
                 if (selection != null && selection.getClass().isAssignableFrom(collisionClass))
                 {
+                    for (final CollisionFunction function : world.map.searchCollisionFunctions(tile.getCollision()))
+                    {
+                        tile.removeCollisionFunction(function);
+                    }
+
                     final C collision = collisionClass.cast(selection);
+                    tile.setCollision(collision);
+
                     final Set<CollisionFunction> functions = world.map.searchCollisionFunctions(collision);
                     if (functions != null)
                     {
-                        tile.setCollision(collision);
-
                         final Integer pattern = tile.getPattern();
                         final int number = tile.getNumber();
                         final MapTileGame<C, T> map = world.map;

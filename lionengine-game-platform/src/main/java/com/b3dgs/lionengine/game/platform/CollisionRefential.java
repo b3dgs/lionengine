@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.game.platform;
 
 /**
- * List of collision inputs.
+ * List of collision referential.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum CollisionInput
+public enum CollisionRefential
 {
-    /** Horizontal location. */
+    /** Horizontal. */
     X,
-    /** Vertical location. */
+    /** Vertical. */
     Y;
 }

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +31,7 @@ import javax.swing.SwingConstants;
 
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionInput;
+import com.b3dgs.lionengine.game.platform.CollisionRefential;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
@@ -49,12 +50,18 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
 
     /** Collision class. */
     final Class<C> collisionClass;
-    /** Parameter combo. */
-    final JComboBox<CollisionInput> inputCombo;
+    /** Axis combo. */
+    final JComboBox<CollisionRefential> axisCombo;
+    /** Input combo. */
+    final JComboBox<CollisionRefential> inputCombo;
     /** Value field. */
     final JTextField valueField;
     /** Value offset field. */
     final JTextField valueOffsetField;
+    /** Range min. */
+    final JTextField rangeMinField;
+    /** Range max. */
+    final JTextField rangeMaxField;
     /** Selected function. */
     CollisionFunction selectedFunction;
 
@@ -68,9 +75,12 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
     public CollisionFunctionPanel(TileCollisionEditor<C, T> editor, Class<C> collisionClass, String title)
     {
         this.collisionClass = collisionClass;
-        inputCombo = new JComboBox<>(CollisionInput.values());
+        axisCombo = new JComboBox<>(CollisionRefential.values());
+        inputCombo = new JComboBox<>(CollisionRefential.values());
         valueField = new JTextField("1");
         valueOffsetField = new JTextField("0");
+        rangeMinField = new JTextField("0");
+        rangeMaxField = new JTextField(String.valueOf(editor.world.map.getTileWidth() - 1));
         createFormulaHandler(editor, title);
     }
 
@@ -83,9 +93,12 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
     {
         if (function != null)
         {
+            axisCombo.setSelectedItem(function.getAxis());
             inputCombo.setSelectedItem(function.getInput());
             valueField.setText(String.valueOf(function.getValue()));
             valueOffsetField.setText(String.valueOf(function.getOffset()));
+            rangeMinField.setText(String.valueOf(function.getRange().getMin()));
+            rangeMaxField.setText(String.valueOf(function.getRange().getMax()));
             UtilitySwing.setEnabled(getComponents(), true);
         }
         else
@@ -105,12 +118,18 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
     {
         UtilitySwing.setBorderedPanel(this, "Formula: " + title, 1);
         final JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
+        panel.setLayout(new BorderLayout());
         add(panel);
 
+        final JPanel referentialPanel = new JPanel();
+        final JLabel referentialLabel = new JLabel("Axis: ");
+        referentialPanel.add(referentialLabel);
+        referentialPanel.add(axisCombo);
+        panel.add(referentialPanel, BorderLayout.NORTH);
+
         final JPanel formulaPanel = new JPanel();
-        formulaPanel.setLayout(new GridLayout(1, 5));
-        panel.add(formulaPanel);
+        formulaPanel.setLayout(new GridLayout(2, 5));
+        panel.add(formulaPanel, BorderLayout.CENTER);
 
         final JButton applyLabel = new JButton("Apply");
         applyLabel.addActionListener(new AssignFormulaListener(editor.world));
@@ -123,11 +142,17 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
         formulaPanel.add(new JLabel("+", null, SwingConstants.CENTER));
         formulaPanel.add(valueOffsetField);
 
+        formulaPanel.add(new JLabel("range", null, SwingConstants.CENTER));
+        formulaPanel.add(new JLabel("min", null, SwingConstants.CENTER));
+        formulaPanel.add(rangeMinField);
+        formulaPanel.add(new JLabel("max", null, SwingConstants.CENTER));
+        formulaPanel.add(rangeMaxField);
+
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2));
         buttonPanel.add(applyLabel);
         buttonPanel.add(deleteLabel);
-        panel.add(buttonPanel);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -155,13 +180,18 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
             final T tile = world.getSelectedTile();
             if (tile != null)
             {
-                final CollisionInput input = (CollisionInput) inputCombo.getSelectedItem();
+                final CollisionRefential axis = (CollisionRefential) axisCombo.getSelectedItem();
+                final CollisionRefential input = (CollisionRefential) inputCombo.getSelectedItem();
                 final double value = Double.parseDouble(valueField.getText());
                 final int offset = Integer.parseInt(valueOffsetField.getText());
+                final int rangeMin = Integer.parseInt(rangeMinField.getText());
+                final int rangeMax = Integer.parseInt(rangeMaxField.getText());
 
+                selectedFunction.setAxis(axis);
                 selectedFunction.setInput(input);
                 selectedFunction.setValue(value);
                 selectedFunction.setOffset(offset);
+                selectedFunction.setRange(rangeMin, rangeMax);
 
                 tile.addCollisionFunction(selectedFunction);
 
