@@ -31,25 +31,35 @@ abstract class EngineImpl
     /** Engine name. */
     public static final String NAME = "LionEngine";
     /** Engine version. */
-    public static final String VERSION = "6.0.0";
-    /** Engine last release date. */
+    public static final String VERSION = "6.1.0";
+    /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */
-    public static final String LAST_RELEASE_DATE = "17 January 2014";
+    public static final String LAST_RELEASE_DATE = "30 March 2014";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
-    public static final String WEBSITE = "http://www.b3dgs.com";
+    public static final String WEBSITE = "http://lionengine.b3dgs.com";
     /** Error message program name. */
     private static final String ERROR_PROGRAM_NAME = "Program name must not be null !";
     /** Error message program version. */
     private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message verbose. */
     private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
+    /** Error message load factory. */
+    private static final String ERROR_LOAD_FACTORY = "Unable to load the factory at: ";
+    /** Engine starting. */
+    private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Factory base name. */
     private static final String FACTORY_BASE = EngineImpl.class.getPackage().getName() + ".";
+    /** Factory graphic name. */
+    private static final String FACTORY_GRAPHIC = "FactoryGraphicImpl";
+    /** Factory input name. */
+    private static final String FACTORY_INPUT = "FactoryInputImpl";
+    /** Factory audio name. */
+    private static final String FACTORY_AUDIO = "FactoryAudioImpl";
     /** Started engine flag. */
     static boolean started = false;
     /** Graphic factory. */
@@ -81,7 +91,7 @@ abstract class EngineImpl
             EngineImpl.init(name, version, level);
 
             // LionEngine started
-            final StringBuilder message = new StringBuilder("Starting \"LionEngine ");
+            final StringBuilder message = new StringBuilder(EngineImpl.ENGINE_STARTING);
             message.append(EngineImpl.VERSION).append("\" for \"");
             message.append(EngineImpl.programName).append(" ");
             message.append(EngineImpl.programVersion).append("\"");
@@ -90,9 +100,9 @@ abstract class EngineImpl
             EngineImpl.started = true;
 
             // Load low level factory
-            EngineImpl.factoryGraphic = EngineImpl.getFactory("FactoryGraphicImpl");
-            EngineImpl.factoryInput = EngineImpl.getFactory("FactoryInputImpl");
-            EngineImpl.factoryAudio = EngineImpl.getFactory("FactoryAudioImpl");
+            EngineImpl.factoryGraphic = EngineImpl.getFactory(EngineImpl.FACTORY_GRAPHIC);
+            EngineImpl.factoryInput = EngineImpl.getFactory(EngineImpl.FACTORY_INPUT);
+            EngineImpl.factoryAudio = EngineImpl.getFactory(EngineImpl.FACTORY_AUDIO);
             AudioWav.factoryAudio = EngineImpl.factoryAudio;
             AudioMidi.factoryAudio = EngineImpl.factoryAudio;
             UtilityImage.setGraphicFactory(EngineImpl.factoryGraphic);
@@ -164,7 +174,7 @@ abstract class EngineImpl
                | IllegalAccessException
                | ClassNotFoundException exception)
         {
-            throw new LionEngineException(exception, "Unable to load the factory at: " + factoryName);
+            throw new LionEngineException(exception, EngineImpl.ERROR_LOAD_FACTORY + factoryName);
         }
     }
 
