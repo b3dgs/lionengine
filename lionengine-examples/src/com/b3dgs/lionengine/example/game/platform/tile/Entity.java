@@ -103,7 +103,7 @@ final class Entity
     protected void handleCollisions(double extrp)
     {
         updateCollision();
-        tile = map.getFirstTileHit(this, TileCollision.COLLISION);
+        tile = map.getFirstTileHit(this, TileCollision.COLLISION, false);
     }
 
     @Override

@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionRefential;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
@@ -44,7 +45,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * @param <C> Collision type used.
  * @param <T> Tile type used.
  */
-public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<C>>
+public abstract class MapTilePlatform<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends MapTileGame<C, T>
 {
     /** Collision draw cache. */
@@ -103,10 +104,18 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      */
     public void createCollisionDraw(Class<C> collisionClass)
     {
-        collisionCache = new EnumMap<>(collisionClass);
+        if (collisionCache == null)
+        {
+            collisionCache = new EnumMap<>(collisionClass);
+        }
+        else
+        {
+            collisionCache.clear();
+        }
+
         for (final C collision : collisionClass.getEnumConstants())
         {
-            final Set<CollisionFunction> functions = searchCollisionFunctions(collision);
+            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
                 final ImageBuffer buffer = UtilityImage.createImageBuffer(getTileWidth(), getTileHeight(),
@@ -134,36 +143,20 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      */
     public void assignCollisionFunction(C collision, CollisionFunction function)
     {
-        for (int i = 0; i < heightInTile; i++)
-        {
-            for (int j = 0; j < widthInTile; j++)
-            {
-                final T tile = getTile(j, i);
-                if (tile != null && tile.getCollision() == collision)
-                {
-                    tile.addCollisionFunction(function);
-                }
-            }
-        }
+        collision.addCollisionFunction(function);
     }
 
     /**
      * Remove a collision function.
      * 
+     * @param collisionClass The collision enum type.
      * @param function The function to remove.
      */
-    public void removeCollisionFunction(CollisionFunction function)
+    public void removeCollisionFunction(Class<C> collisionClass, CollisionFunction function)
     {
-        for (int i = 0; i < heightInTile; i++)
+        for (final C collision : collisionClass.getEnumConstants())
         {
-            for (int j = 0; j < widthInTile; j++)
-            {
-                final T tile = getTile(j, i);
-                if (tile != null)
-                {
-                    tile.removeCollisionFunction(function);
-                }
-            }
+            collision.removeCollisionFunction(function);
         }
     }
 
@@ -188,9 +181,11 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      * 
      * @param localizable The localizable reference.
      * @param collisions Collisions list to search for.
+     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
+     *            just return the first tile hit.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    public T getFirstTileHit(Localizable localizable, EnumSet<C> collisions)
+    public T getFirstTileHit(Localizable localizable, EnumSet<C> collisions, boolean applyRayCast)
     {
         // Starting location
         final int sv = (int) Math.floor(localizable.getLocationOldY());
@@ -224,14 +219,14 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
         int step = 0;
         for (double v = sv, h = sh; step <= stepMax;)
         {
-            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()));
+            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()), applyRayCast);
             if (t == null)
             {
                 t = tile;
             }
             h += sx;
 
-            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()));
+            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()), applyRayCast);
             if (t == null)
             {
                 t = tile;
@@ -239,6 +234,10 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
             v += sy;
 
             step++;
+            if (!applyRayCast && t != null)
+            {
+                return t;
+            }
         }
         return t;
     }
@@ -263,28 +262,6 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
     public int getInTileY(Localizable localizable)
     {
         return (int) Math.floor(localizable.getLocationY() / getTileHeight());
-    }
-
-    /**
-     * Get all collision functions by searching the first tile with the specified collision and return its functions.
-     * 
-     * @param collision The collision to search.
-     * @return The functions found, <code>null</code> if none.
-     */
-    public Set<CollisionFunction> searchCollisionFunctions(C collision)
-    {
-        for (int i = 0; i < heightInTile; i++)
-        {
-            for (int j = 0; j < widthInTile; j++)
-            {
-                final T tile = getTile(j, i);
-                if (tile != null && tile.getCollision() == collision)
-                {
-                    return tile.getCollisionFunctions();
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -372,15 +349,17 @@ public abstract class MapTilePlatform<C extends Enum<C>, T extends TilePlatform<
      * @param collisions Collisions list to search for.
      * @param h The horizontal index.
      * @param ty The vertical tile.
+     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
+     *            just return the first tile hit.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    private T checkCollision(Localizable localizable, EnumSet<C> collisions, double h, int ty)
+    private T checkCollision(Localizable localizable, EnumSet<C> collisions, double h, int ty, boolean applyRayCast)
     {
         final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
         if (tile != null && collisions.contains(tile.getCollision()))
         {
             final Double coll = tile.getCollisionY(localizable);
-            if (coll != null)
+            if (applyRayCast && coll != null)
             {
                 localizable.teleportY(coll.doubleValue());
             }

@@ -78,7 +78,7 @@ public final class Mario
     public void respawn()
     {
         mirror(false);
-        teleport(80, 25);
+        teleport(80, 32);
         dead = false;
     }
 

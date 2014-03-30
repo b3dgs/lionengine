@@ -29,9 +29,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionRefential;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.swing.UtilitySwing;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatform<C>>
+public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends JPanel
 {
     /** Serial UID. */
@@ -80,7 +80,7 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
         valueField = new JTextField("1");
         valueOffsetField = new JTextField("0");
         rangeMinField = new JTextField("0");
-        rangeMaxField = new JTextField(String.valueOf(editor.world.map.getTileWidth() - 1));
+        rangeMaxField = new JTextField("0");
         createFormulaHandler(editor, title);
     }
 
@@ -193,20 +193,8 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
                 selectedFunction.setOffset(offset);
                 selectedFunction.setRange(rangeMin, rangeMax);
 
-                tile.addCollisionFunction(selectedFunction);
+                tile.getCollision().addCollisionFunction(selectedFunction);
 
-                final MapTileGame<C, T> map = world.map;
-                for (int ty = 0; ty < map.getHeightInTile(); ty++)
-                {
-                    for (int tx = 0; tx < map.getWidthInTile(); tx++)
-                    {
-                        final T next = map.getTile(tx, ty);
-                        if (next != null && next.getCollision() == tile.getCollision())
-                        {
-                            next.addCollisionFunction(selectedFunction);
-                        }
-                    }
-                }
                 world.map.createCollisionDraw(collisionClass);
                 world.repaint();
             }
@@ -239,7 +227,7 @@ public final class CollisionFunctionPanel<C extends Enum<C>, T extends TilePlatf
         @Override
         public void actionPerformed(ActionEvent event)
         {
-            editor.world.map.removeCollisionFunction(panel.selectedFunction);
+            editor.world.map.removeCollisionFunction(collisionClass, panel.selectedFunction);
             editor.toolBar.removeCollisionFunction(panel);
             editor.world.map.createCollisionDraw(collisionClass);
             editor.world.repaint();

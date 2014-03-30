@@ -76,10 +76,12 @@ final class Scene
         map.createBlock(6, 7);
         map.createBlock(7, 7);
         map.createBlock(6, 8);
+        map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
 
         entityRef.setLocation(192, 112);
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
+        map.createCollisionDraw(TileCollision.class);
     }
 
     @Override

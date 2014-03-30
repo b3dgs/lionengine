@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
@@ -282,7 +283,8 @@ public abstract class EntityPlatform
      * @param offsetX The horizontal offset value.
      * @param offsetY The vertical offset value.
      */
-    protected <C extends Enum<C>> void addCollisionTile(CollisionTileCategory<C> type, int offsetX, int offsetY)
+    protected <C extends Enum<C> & CollisionTile> void addCollisionTile(CollisionTileCategory<C> type, int offsetX,
+            int offsetY)
     {
         tileCollisions.put(type, new CoordTile(offsetX, offsetY));
     }
@@ -294,7 +296,7 @@ public abstract class EntityPlatform
      * @param type The collision category.
      * @return The collision offset.
      */
-    protected <C extends Enum<C>> CoordTile getCollisionTileOffset(CollisionTileCategory<C> type)
+    protected <C extends Enum<C> & CollisionTile> CoordTile getCollisionTileOffset(CollisionTileCategory<C> type)
     {
         return tileCollisions.get(type);
     }
@@ -309,8 +311,8 @@ public abstract class EntityPlatform
      * @param category The collision tile category.
      * @return The first tile hit, <code>null</code> if none.
      */
-    public <C extends Enum<C>, T extends TilePlatform<C>, M extends MapTilePlatform<C, T>> T getCollisionTile(M map,
-            CollisionTileCategory<C> category)
+    public <C extends Enum<C> & CollisionTile, T extends TilePlatform<C>, M extends MapTilePlatform<C, T>> T getCollisionTile(
+            M map, CollisionTileCategory<C> category)
     {
         final CoordTile offsets = tileCollisions.get(category);
         if (offsets != null)
@@ -318,7 +320,7 @@ public abstract class EntityPlatform
             collOffX = offsets.getX();
             collOffY = offsets.getY();
 
-            final T tile = map.getFirstTileHit(this, category.getCollisions());
+            final T tile = map.getFirstTileHit(this, category.getCollisions(), true);
             return tile;
         }
         return null;

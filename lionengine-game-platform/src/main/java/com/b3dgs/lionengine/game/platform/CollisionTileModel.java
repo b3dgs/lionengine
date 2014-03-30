@@ -15,38 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.platform.tile;
+package com.b3dgs.lionengine.game.platform;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Tile implementation.
+ * Model implementation of the collision tile for fast inheritance.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Tile
-        extends TilePlatform<TileCollision>
+public class CollisionTileModel
+        implements CollisionTile
 {
-    /**
-     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
-     */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
-    {
-        super(width, height, pattern, number, collision);
-    }
+    /** Collision function X. */
+    private final Set<CollisionFunction> collisionFunctions;
 
     /**
-     * Render the tile collision.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera reference.
+     * Constructor.
      */
-    public void renderCollision(Graphic g, CameraPlatform camera)
+    public CollisionTileModel()
     {
-        final int x = camera.getViewpointX(getX());
-        final int y = camera.getViewpointY(getY() + getHeight());
-        g.drawRect(x, y, getWidth(), getHeight(), false);
+        collisionFunctions = new HashSet<>();
+    }
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.add(function);
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.remove(function);
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return collisionFunctions;
     }
 }

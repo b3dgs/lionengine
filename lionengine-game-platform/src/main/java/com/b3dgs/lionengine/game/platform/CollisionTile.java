@@ -15,38 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.platform.tile;
+package com.b3dgs.lionengine.game.platform;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import java.util.Set;
 
 /**
- * Tile implementation.
+ * Represents the collision tile.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionTileModel
  */
-final class Tile
-        extends TilePlatform<TileCollision>
+public interface CollisionTile
 {
     /**
-     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
+     * Add a collision function.
+     * 
+     * @param function The collision function.
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
-    {
-        super(width, height, pattern, number, collision);
-    }
+    public void addCollisionFunction(CollisionFunction function);
 
     /**
-     * Render the tile collision.
+     * Remove a collision function.
      * 
-     * @param g The graphic output.
-     * @param camera The camera reference.
+     * @param function The collision function to remove.
      */
-    public void renderCollision(Graphic g, CameraPlatform camera)
-    {
-        final int x = camera.getViewpointX(getX());
-        final int y = camera.getViewpointY(getY() + getHeight());
-        g.drawRect(x, y, getWidth(), getHeight(), false);
-    }
+    public void removeCollisionFunction(CollisionFunction function);
+
+    /**
+     * Get the collision functions.
+     * 
+     * @return The collision function.
+     */
+    public Set<CollisionFunction> getCollisionFunctions();
 }

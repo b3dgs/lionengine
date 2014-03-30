@@ -109,7 +109,7 @@ abstract class Entity
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
         setCollision(getDataCollision("default"));
-        setFrameOffsets(0, 9);
+        setFrameOffsets(0, 1);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
         addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);

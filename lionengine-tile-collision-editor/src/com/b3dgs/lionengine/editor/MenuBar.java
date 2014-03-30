@@ -43,6 +43,8 @@ import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
+import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
 import com.b3dgs.lionengine.swing.UtilitySwing;
@@ -55,7 +57,7 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
+public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends JMenuBar
 {
     /** Uid. */
@@ -132,21 +134,19 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
     final TreeMap<String, JMenuItem> items;
     /** Editor reference. */
     private final TileCollisionEditor<C, T> editor;
-    /** Collisions function buffer (used for save). */
-    private final Map<C, Set<CollisionFunction>> collisionsFunction;
 
     /**
      * Constructor.
      * 
      * @param editor The editor reference.
+     * @param collisionClass The collision enum type.
      * @param collisions The collisions list.
      */
-    public MenuBar(final TileCollisionEditor<C, T> editor, final C[] collisions)
+    public MenuBar(final TileCollisionEditor<C, T> editor, final Class<C> collisionClass, final C[] collisions)
     {
         super();
         this.editor = editor;
         items = new TreeMap<>();
-        collisionsFunction = new HashMap<>();
         JMenu menu = addMenu("File");
         addItem(menu, "Save", new ActionListener()
         {
@@ -171,7 +171,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
             @Override
             public void actionPerformed(ActionEvent event)
             {
-                toolsImportMap(null);
+                toolsImportMap(null, collisionClass);
             }
         });
 
@@ -203,7 +203,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
             {
                 root.add(node);
             }
-            final Set<CollisionFunction> functions = collisionsFunction.get(collision);
+            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
                 for (final CollisionFunction function : functions)
@@ -220,7 +220,6 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                 }
             }
         }
-        collisionsFunction.clear();
 
         final XmlParser parser = File.createXmlParser();
         parser.save(root, UtilityMedia.get("collisions.xml"));
@@ -238,9 +237,10 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
      * Import map action.
      * 
      * @param dialog The dialog reference (<code>null</code> else).
+     * @param collisionClass The collision enum type.
      * @return <code>true</code> if imported, <code>false</code> else.
      */
-    boolean toolsImportMap(JDialog dialog)
+    boolean toolsImportMap(JDialog dialog, Class<C> collisionClass)
     {
         final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
         final java.io.File file = UtilitySwing.createOpenFileChooser("Select level rip",
@@ -280,7 +280,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
             return false;
         }
 
-        final MapTileGame<C, T> map = editor.world.map;
+        final MapTilePlatform<C, T> map = editor.world.map;
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         try
         {
@@ -293,6 +293,7 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                     UtilitySwing.terminateDialog(dialog);
                 }
                 map.loadCollisions(UtilityMedia.get(mediaTiles.getPath(), "collisions.xml"));
+                map.createCollisionDraw(collisionClass);
                 editor.world.camera.setLimits(map);
                 editor.repaint();
                 items.get("Import Map").setEnabled(false);
@@ -318,35 +319,6 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
         txt.setEditable(false);
         dialog.add(txt);
         UtilitySwing.startDialog(dialog);
-    }
-
-    /**
-     * Import map quickly without dialog. Test case.
-     * 
-     * @return <code>true</code> if imported, <code>false</code> else.
-     */
-    boolean importMap()
-    {
-        final MapTileGame<C, T> map = editor.world.map;
-        final LevelRipConverter<T> rip = new LevelRipConverter<>();
-        try
-        {
-            rip.start(UtilityMedia.get("levels", "rip", "0.png"), map, UtilityMedia.get("tiles", "swamp"));
-            final int errors = rip.getErrors();
-            if (errors == 0)
-            {
-                map.loadCollisions(UtilityMedia.get("tiles", "swamp", "collisions.xml"));
-                editor.world.camera.setLimits(map);
-                editor.repaint();
-                items.get("Import Map").setEnabled(false);
-                return true;
-            }
-        }
-        catch (final LionEngineException exception)
-        {
-            UtilityMessageBox.error("Import Map", exception.getMessage() + "\nImport interrupted !");
-        }
-        return false;
     }
 
     /**
@@ -433,8 +405,6 @@ public class MenuBar<C extends Enum<C>, T extends TilePlatform<C>>
                         numbers = patterns.get(pattern);
                     }
                     numbers.add(Integer.valueOf(tile.getNumber() + 1));
-
-                    collisionsFunction.put(collision, tile.getCollisionFunctions());
                 }
             }
         }

@@ -71,7 +71,7 @@ final class Mario
         jumpSpeed = getDataDouble("jumpSpeed", "data");
         movementSpeed = getDataDouble("movementSpeed", "data");
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(0, 9);
+        setFrameOffsets(0, 1);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_RIGHT, 5, 0);
@@ -96,7 +96,7 @@ final class Mario
      */
     public void respawn()
     {
-        teleport(550, 26);
+        teleport(550, 32);
         movement.reset();
         jumpForce.setForce(Force.ZERO);
         mirror(false);

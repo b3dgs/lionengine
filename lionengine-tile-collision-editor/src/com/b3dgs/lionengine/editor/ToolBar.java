@@ -24,7 +24,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -35,8 +34,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 
-import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
@@ -47,7 +46,7 @@ import com.b3dgs.lionengine.swing.UtilitySwing;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
+public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends JToolBar
 {
     /** Uid. */
@@ -111,10 +110,11 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
         if (tile != null)
         {
             UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), true);
-            collisionCombo.setSelectedItem(tile.getCollision());
+            final C collision = tile.getCollision();
+            collisionCombo.setSelectedItem(collision);
             collisionCombo.setEnabled(true);
 
-            for (final CollisionFunction function : tile.getCollisionFunctions())
+            for (final CollisionFunction function : collision.getCollisionFunctions())
             {
                 final CollisionFunctionPanel<C, T> panel = new CollisionFunctionPanel<>(editor, collisionClass,
                         function.getName());
@@ -247,38 +247,10 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
                 final Object selection = collisionCombo.getSelectedItem();
                 if (selection != null && selection.getClass().isAssignableFrom(collisionClass))
                 {
-                    for (final CollisionFunction function : world.map.searchCollisionFunctions(tile.getCollision()))
-                    {
-                        tile.removeCollisionFunction(function);
-                    }
-
                     final C collision = collisionClass.cast(selection);
                     tile.setCollision(collision);
-
-                    final Set<CollisionFunction> functions = world.map.searchCollisionFunctions(collision);
-                    if (functions != null)
-                    {
-                        final Integer pattern = tile.getPattern();
-                        final int number = tile.getNumber();
-                        final MapTileGame<C, T> map = world.map;
-                        for (int ty = 0; ty < map.getHeightInTile(); ty++)
-                        {
-                            for (int tx = 0; tx < map.getWidthInTile(); tx++)
-                            {
-                                final T next = map.getTile(tx, ty);
-                                if (next != null && next.getPattern().equals(pattern) && next.getNumber() == number)
-                                {
-                                    next.setCollision(collision);
-                                }
-                            }
-                        }
-                        for (final CollisionFunction function : functions)
-                        {
-                            world.map.assignCollisionFunction(collision, function);
-                        }
-                        world.repaint();
-                        setSelectedTile(tile);
-                    }
+                    world.repaint();
+                    setSelectedTile(tile);
                 }
             }
         }
@@ -316,6 +288,7 @@ public final class ToolBar<C extends Enum<C>, T extends TilePlatform<C>>
 
             final CollisionFunction function = new CollisionFunction();
             function.setName(name);
+            function.setRange(0, editor.world.map.getTileWidth() - 1);
             panel.setSelectedFunction(function);
             editor.world.map.assignCollisionFunction((C) collisionCombo.getSelectedItem(), function);
             editor.world.map.createCollisionDraw(collisionClass);

@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.purview.Rasterable;
 
 /**
@@ -38,7 +39,7 @@ import com.b3dgs.lionengine.game.purview.Rasterable;
  * @param <C> Collision type.
  * @param <T> Tile type used.
  */
-public abstract class MapTilePlatformRastered<C extends Enum<C>, T extends TilePlatform<C>>
+public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends MapTilePlatform<C, T>
 {
     /** List of rastered patterns. */

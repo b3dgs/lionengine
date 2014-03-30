@@ -47,8 +47,8 @@ final class Map
             {
                 final Tile tile = getTile(tx, ty);
                 final Tile top = getTile(tx, ty + 1);
-                if (top != null && tile != null && tile.getCollision() != TileCollision.NONE
-                        && top.getCollision() == tile.getCollision())
+                if (top != null && tile != null && top.getCollision() != TileCollision.NONE
+                        && tile.getCollision() != TileCollision.NONE)
                 {
                     tile.setCollision(TileCollision.WALL);
                 }

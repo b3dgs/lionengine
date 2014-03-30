@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.game.platform.map;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionRefential;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
@@ -32,12 +32,9 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> The collision type used.
  */
-public class TilePlatform<C extends Enum<C>>
+public class TilePlatform<C extends Enum<C> & CollisionTile>
         extends TileGame<C>
 {
-    /** Collision function X. */
-    private final Set<CollisionFunction> collisionFunctions;
-
     /**
      * Constructor.
      * 
@@ -50,37 +47,6 @@ public class TilePlatform<C extends Enum<C>>
     public TilePlatform(int width, int height, Integer pattern, int number, C collision)
     {
         super(width, height, pattern, number, collision);
-        collisionFunctions = new HashSet<>();
-    }
-
-    /**
-     * Add a collision function .
-     * 
-     * @param function The collision function.
-     */
-    public void addCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.add(function);
-    }
-
-    /**
-     * Remove a collision function.
-     * 
-     * @param function The collision function to remove.
-     */
-    public void removeCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.remove(function);
-    }
-
-    /**
-     * Get the collision functions.
-     * 
-     * @return The collision function.
-     */
-    public Set<CollisionFunction> getCollisionFunctions()
-    {
-        return collisionFunctions;
     }
 
     /**
@@ -91,6 +57,9 @@ public class TilePlatform<C extends Enum<C>>
      */
     public Double getCollisionX(Localizable localizable)
     {
+        final C collision = getCollision();
+        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+
         for (final CollisionFunction function : collisionFunctions)
         {
             if (function.getAxis() == CollisionRefential.X)
@@ -100,9 +69,9 @@ public class TilePlatform<C extends Enum<C>>
                 final int x = getInputValue(function, localizable);
                 if (x >= min && x <= max)
                 {
-                    final double margin = 0;
                     final double value = getX() + function.computeCollision(x);
-                    if (localizable.getLocationOldX() >= value - margin && localizable.getLocationX() <= value + margin)
+                    if (localizable.getLocationOldX() >= value && localizable.getLocationX() <= value
+                            || localizable.getLocationX() >= value && localizable.getLocationOldX() <= value)
                     {
                         return Double.valueOf(value);
                     }
@@ -120,6 +89,9 @@ public class TilePlatform<C extends Enum<C>>
      */
     public Double getCollisionY(Localizable localizable)
     {
+        final C collision = getCollision();
+        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+
         for (final CollisionFunction function : collisionFunctions)
         {
             if (function.getAxis() == CollisionRefential.Y)

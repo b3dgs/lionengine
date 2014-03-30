@@ -22,6 +22,7 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class StateBar<C extends Enum<C>, T extends TilePlatform<C>>
+public final class StateBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
         extends JPanel
 {
     /** Uid. */

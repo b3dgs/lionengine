@@ -25,7 +25,7 @@ import java.util.EnumSet;
  * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface CollisionTileCategory<C extends Enum<C>>
+public interface CollisionTileCategory<C extends Enum<C> & CollisionTile>
 {
     /**
      * Get the list of collisions to test.
