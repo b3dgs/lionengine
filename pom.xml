@@ -60,8 +60,9 @@
 
 	<modules>
 		<module>lionengine-core</module>
-		<module>lionengine-android</module>
-		<module>lionengine-java2d</module>
+		<module>lionengine-core-android</module>
+		<module>lionengine-core-awt</module>
+		<module>lionengine-core-swt</module>
 		<module>lionengine-game</module>
 		<module>lionengine-game-platform</module>
 		<module>lionengine-game-pathfinding</module>
