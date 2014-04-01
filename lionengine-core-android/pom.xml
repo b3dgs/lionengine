@@ -9,8 +9,8 @@
 	</parent>
 
 
-	<artifactId>lionengine-android</artifactId>
-	<name>LionEngine Android</name>
+	<artifactId>lionengine-core-android</artifactId>
+	<name>LionEngine Core Android</name>
 
 	<dependencies>
 		<dependency>
