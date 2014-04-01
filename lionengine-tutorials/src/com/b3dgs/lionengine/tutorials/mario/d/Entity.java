@@ -77,7 +77,7 @@ abstract class Entity
         jumpForce = new Force();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(0, 9);
+        setFrameOffsets(0, 1);
         loadAnimations();
     }
 
@@ -247,9 +247,9 @@ abstract class Entity
     {
         checkMapLimit();
         coll = EntityCollision.NONE;
-        if (getLocationY() < 23)
+        if (getLocationY() < 31)
         {
-            teleportY(23);
+            teleportY(31);
             coll = EntityCollision.GROUND;
         }
     }

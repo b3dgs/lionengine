@@ -80,7 +80,7 @@ abstract class Entity
         jumpForce = new Force();
         state = EntityState.IDLE;
         setMass(getDataDouble("mass", "data"));
-        setFrameOffsets(0, 9);
+        setFrameOffsets(0, 1);
         setCollision(getDataCollision("default"));
         loadAnimations();
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);

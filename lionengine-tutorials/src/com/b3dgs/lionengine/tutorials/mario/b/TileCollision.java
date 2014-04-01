@@ -17,13 +17,44 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.b;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.game.platform.CollisionFunction;
+import com.b3dgs.lionengine.game.platform.CollisionTile;
+import com.b3dgs.lionengine.game.platform.CollisionTileModel;
+
 /**
  * List of tile collisions.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TileCollision
+enum TileCollision implements CollisionTile
 {
     /** No collision. */
     NONE;
+
+    /** Model. */
+    private final CollisionTileModel model = new CollisionTileModel();
+
+    /*
+     * CollisionTile
+     */
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        model.addCollisionFunction(function);
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        model.removeCollisionFunction(function);
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return model.getCollisionFunctions();
+    }
 }
