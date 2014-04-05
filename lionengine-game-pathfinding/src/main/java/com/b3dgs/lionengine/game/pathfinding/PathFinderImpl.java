@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.pathfinding.heuristic.HeuristicClosest;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;

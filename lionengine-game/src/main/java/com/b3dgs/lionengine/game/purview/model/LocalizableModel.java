@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import com.b3dgs.lionengine.Coord;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.geom.Coord;
+import com.b3dgs.lionengine.geom.Geom;
 
 /**
  * Localizable implementation.
@@ -54,8 +55,8 @@ public class LocalizableModel
      */
     public LocalizableModel(double x, double y)
     {
-        current = new Coord(x, y);
-        old = new Coord(x, y);
+        current = Geom.createCoord(x, y);
+        old = Geom.createCoord(x, y);
     }
 
     /**

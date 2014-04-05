@@ -20,6 +20,9 @@ package com.b3dgs.lionengine;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.geom.Coord;
+import com.b3dgs.lionengine.geom.Geom;
+
 /**
  * Test the coordinate class.
  * 
@@ -33,7 +36,7 @@ public class CoordTest
     @Test
     public void testCoord()
     {
-        final Coord coord = new Coord();
+        final Coord coord = Geom.createCoord();
         Assert.assertEquals(coord.getX(), 0.0, 0.000001);
         Assert.assertEquals(coord.getY(), 0.0, 0.000001);
 

@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.game.purview;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Line;
-import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.geom.Line;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Purview representing something which can enter in collision with another. Based on a ray casting collision from a

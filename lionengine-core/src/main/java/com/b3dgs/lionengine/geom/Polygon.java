@@ -15,50 +15,57 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.geom;
+
+import java.util.List;
 
 /**
- * Line interface.
+ * Polygon interface.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Line
+public interface Polygon
 {
     /**
-     * Set the line coordinates.
+     * Add a point to the polygon.
      * 
-     * @param x1 The x coordinate of the start point
-     * @param y1 The y coordinate of the start point
-     * @param x2 The x coordinate of the end point
-     * @param y2 The y coordinate of the end point
+     * @param x The horizontal location.
+     * @param y The vertical location.
      */
-    void set(double x1, double y1, double x2, double y2);
+    void addPoint(int x, int y);
 
     /**
-     * Get the x1 location.
-     * 
-     * @return The x1 location.
+     * Reset the polygon.
      */
-    double getX1();
+    void reset();
 
     /**
-     * Get the x2 location.
+     * Get the polygon rectangle bounds.
      * 
-     * @return The x2 location.
+     * @return The polygon rectangle bounds.
      */
-    double getX2();
+    Rectangle getRectangle();
 
     /**
-     * Get the y1 location.
+     * Check if the rectangle intersects the other.
      * 
-     * @return The y1 location.
+     * @param rectangle The rectangle to test with.
+     * @return <code>true</code> if intersect, <code>false</code> else.
      */
-    double getY1();
+    boolean intersects(Rectangle rectangle);
 
     /**
-     * Get the y2 location.
+     * Check if the rectangle contains the other.
      * 
-     * @return The y2 location.
+     * @param rectangle The rectangle to test with.
+     * @return <code>true</code> if contains, <code>false</code> else.
      */
-    double getY2();
+    boolean contains(Rectangle rectangle);
+
+    /**
+     * Get the points.
+     * 
+     * @return The points.
+     */
+    List<Line> getPoints();
 }

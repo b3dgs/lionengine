@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
 import com.b3dgs.lionengine.file.XmlParser;

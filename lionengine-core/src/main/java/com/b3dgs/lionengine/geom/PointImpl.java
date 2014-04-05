@@ -15,27 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.geom;
 
 /**
- * Represents a coordinate using double precision.
+ * Point implementation
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Coord
+final class PointImpl
+        implements Point
 {
-    /** Coordinate horizontal. */
-    private double x;
-    /** Coordinate vertical. */
-    private double y;
-
-    /**
-     * Create a coordinate set to <code>(0.0, 0.0)</code> by default.
-     */
-    public Coord()
-    {
-        this(0.0, 0.0);
-    }
+    /** Point horizontal. */
+    private int x;
+    /** Point vertical. */
+    private int y;
 
     /**
      * Constructor.
@@ -43,72 +36,50 @@ public class Coord
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    public Coord(double x, double y)
+    PointImpl(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
 
-    /**
-     * Translate coordinate using specified values.
-     * 
-     * @param vx The horizontal force.
-     * @param vy The vertical force.
+    /*
+     * Point
      */
-    public void translate(double vx, double vy)
+
+    @Override
+    public void translate(int vx, int vy)
     {
         x += vx;
         y += vy;
     }
 
-    /**
-     * Set the new coordinate.
-     * 
-     * @param x The new horizontal location.
-     * @param y The new vertical location.
-     */
-    public void set(double x, double y)
+    @Override
+    public void set(int x, int y)
     {
         this.x = x;
         this.y = y;
     }
 
-    /**
-     * Set the new horizontal location.
-     * 
-     * @param x The new horizontal location.
-     */
-    public void setX(double x)
+    @Override
+    public void setX(int x)
     {
         this.x = x;
     }
 
-    /**
-     * Set the new vertical location.
-     * 
-     * @param y The new vertical location.
-     */
-    public void setY(double y)
+    @Override
+    public void setY(int y)
     {
         this.y = y;
     }
 
-    /**
-     * Get the horizontal location.
-     * 
-     * @return The horizontal location.
-     */
-    public double getX()
+    @Override
+    public int getX()
     {
         return x;
     }
 
-    /**
-     * Get the vertical location.
-     * 
-     * @return The vertical location.
-     */
-    public double getY()
+    @Override
+    public int getY()
     {
         return y;
     }

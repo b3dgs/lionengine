@@ -15,57 +15,72 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
-
-import java.util.List;
+package com.b3dgs.lionengine.geom;
 
 /**
- * Polygon interface.
+ * Coordinate implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Polygon
+final class CoordImpl
+        implements Coord
 {
+    /** Coordinate horizontal. */
+    private double x;
+    /** Coordinate vertical. */
+    private double y;
+
     /**
-     * Add a point to the polygon.
+     * Constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    void addPoint(int x, int y);
+    CoordImpl(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
-    /**
-     * Reset the polygon.
+    /*
+     * Coord
      */
-    void reset();
 
-    /**
-     * Get the polygon rectangle bounds.
-     * 
-     * @return The polygon rectangle bounds.
-     */
-    Rectangle getRectangle();
+    @Override
+    public void translate(double vx, double vy)
+    {
+        x += vx;
+        y += vy;
+    }
 
-    /**
-     * Check if the rectangle intersects the other.
-     * 
-     * @param rectangle The rectangle to test with.
-     * @return <code>true</code> if intersect, <code>false</code> else.
-     */
-    boolean intersects(Rectangle rectangle);
+    @Override
+    public void set(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 
-    /**
-     * Check if the rectangle contains the other.
-     * 
-     * @param rectangle The rectangle to test with.
-     * @return <code>true</code> if contains, <code>false</code> else.
-     */
-    boolean contains(Rectangle rectangle);
+    @Override
+    public void setX(double x)
+    {
+        this.x = x;
+    }
 
-    /**
-     * Get the points.
-     * 
-     * @return The points.
-     */
-    List<Line> getPoints();
+    @Override
+    public void setY(double y)
+    {
+        this.y = y;
+    }
+
+    @Override
+    public double getX()
+    {
+        return x;
+    }
+
+    @Override
+    public double getY()
+    {
+        return y;
+    }
 }

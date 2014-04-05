@@ -23,11 +23,13 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Coord;
-import com.b3dgs.lionengine.Line;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Polygon;
-import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.geom.Coord;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Line;
+import com.b3dgs.lionengine.geom.Polygon;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Test the utility math class.
@@ -118,17 +120,17 @@ public class UtilityMathTest
     @Test
     public void testMath()
     {
-        final Line line1 = UtilityMath.createLine();
+        final Line line1 = Geom.createLine();
         line1.set(1.0, -1.0, 1.0, 1.0);
-        final Line line2 = UtilityMath.createLine(0.0, 0.0, 2.0, 0.0);
-        final Coord point = new Coord(1.0, 0.0);
+        final Line line2 = Geom.createLine(0.0, 0.0, 2.0, 0.0);
+        final Coord point = Geom.createCoord(1.0, 0.0);
         final Coord intersect = UtilityMath.intersection(line1, line2);
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
 
-        final Rectangle rectangle1 = UtilityMath.createRectangle();
+        final Rectangle rectangle1 = Geom.createRectangle();
         rectangle1.set(0.0, 0.0, 10.0, 10.0);
-        final Rectangle rectangle2 = UtilityMath.createRectangle(1.0, 1.0, 5.0, 5.0);
+        final Rectangle rectangle2 = Geom.createRectangle(1.0, 1.0, 5.0, 5.0);
         Assert.assertTrue(rectangle1.contains(rectangle2));
         Assert.assertTrue(rectangle2.intersects(rectangle1));
 
@@ -144,7 +146,7 @@ public class UtilityMathTest
 
         Assert.assertTrue(rectangle1.contains(2, 3));
 
-        final Polygon polygon = UtilityMath.createPolygon();
+        final Polygon polygon = Geom.createPolygon();
         polygon.addPoint(0, 0);
         polygon.addPoint(0, 10);
         polygon.addPoint(10, 0);

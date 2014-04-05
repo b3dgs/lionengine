@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.game.purview.model;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Line;
-import com.b3dgs.lionengine.Polygon;
-import com.b3dgs.lionengine.Rectangle;
-import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Line;
+import com.b3dgs.lionengine.geom.Polygon;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * Default collidable model implementation.
@@ -55,8 +55,8 @@ public class CollidableModel
     public CollidableModel(Localizable entity)
     {
         this.entity = entity;
-        coll = UtilityMath.createPolygon();
-        ray = UtilityMath.createLine();
+        coll = Geom.createPolygon();
+        ray = Geom.createLine();
         box = coll.getRectangle();
     }
 

@@ -15,13 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Coord;
-import com.b3dgs.lionengine.Line;
-import com.b3dgs.lionengine.Polygon;
-import com.b3dgs.lionengine.Rectangle;
+import com.b3dgs.lionengine.geom.Coord;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Line;
 
 /**
  * Static functions around math manipulation.
@@ -30,64 +28,6 @@ import com.b3dgs.lionengine.Rectangle;
  */
 public final class UtilityMath
 {
-    /**
-     * Create a line.
-     * 
-     * @return The created line.
-     */
-    public static Line createLine()
-    {
-        return new LineImpl(0, 0, 0, 0);
-    }
-
-    /**
-     * Create a line.
-     * 
-     * @param x1 The x coordinate of the start point.
-     * @param y1 The y coordinate of the start point.
-     * @param x2 The x coordinate of the end point.
-     * @param y2 The y coordinate of the end point.
-     * @return The created line.
-     */
-    public static Line createLine(double x1, double y1, double x2, double y2)
-    {
-        return new LineImpl(x1, y1, x2, y2);
-    }
-
-    /**
-     * Create a polygon.
-     * 
-     * @return The created polygon.
-     */
-    public static Polygon createPolygon()
-    {
-        return new PolygonImpl();
-    }
-
-    /**
-     * Create a rectangle.
-     * 
-     * @return The created rectangle.
-     */
-    public static Rectangle createRectangle()
-    {
-        return new RectangleImpl(0, 0, 0, 0);
-    }
-
-    /**
-     * Create a rectangle.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param w The rectangle width.
-     * @param h The rectangle height.
-     * @return The created rectangle.
-     */
-    public static Rectangle createRectangle(double x, double y, double w, double h)
-    {
-        return new RectangleImpl(x, y, w, h);
-    }
-
     /**
      * Fix a value between an interval.
      * 
@@ -174,7 +114,7 @@ public final class UtilityMath
         final int xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
         final int yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
-        return new Coord(xi, yi);
+        return Geom.createCoord(xi, yi);
     }
 
     /**

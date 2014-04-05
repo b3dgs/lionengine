@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;

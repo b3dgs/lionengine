@@ -22,10 +22,11 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Rectangle;
-import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * This class represents the control panel (HUD), which will contain selected entities, actions, and many other
@@ -78,7 +79,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     public ControlPanelModel()
     {
         listeners = new HashSet<>(1);
-        selectionArea = UtilityMath.createRectangle();
+        selectionArea = Geom.createRectangle();
         outsidePanel = null;
         clicked = false;
         clickedFlag = false;
@@ -233,7 +234,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      */
     public void setClickableArea(CameraGame camera)
     {
-        outsidePanel = UtilityMath.createRectangle();
+        outsidePanel = Geom.createRectangle();
         outsidePanel.set(camera.getViewX(), camera.getViewY(), camera.getViewWidth(), camera.getViewHeight());
     }
 

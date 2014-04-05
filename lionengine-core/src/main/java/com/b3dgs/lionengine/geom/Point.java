@@ -15,28 +15,56 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy;
-
-import com.b3dgs.lionengine.geom.Rectangle;
+package com.b3dgs.lionengine.geom;
 
 /**
- * List of events linked to the control panel.
+ * Represents a point using int precision.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ControlPanelListener
+public interface Point
 {
     /**
-     * Notify when selection started.
+     * Translate int using specified values.
      * 
-     * @param selection The selection.
+     * @param vx The horizontal force.
+     * @param vy The vertical force.
      */
-    void notifySelectionStarted(Rectangle selection);
+    void translate(int vx, int vy);
 
     /**
-     * Notify when selection is done.
+     * Set the new int.
      * 
-     * @param selection The selection.
+     * @param x The new horizontal location.
+     * @param y The new vertical location.
      */
-    void notifySelectionDone(Rectangle selection);
+    void set(int x, int y);
+
+    /**
+     * Set the new horizontal location.
+     * 
+     * @param x The new horizontal location.
+     */
+    void setX(int x);
+
+    /**
+     * Set the new vertical location.
+     * 
+     * @param y The new vertical location.
+     */
+    void setY(int y);
+
+    /**
+     * Get the horizontal location.
+     * 
+     * @return The horizontal location.
+     */
+    int getX();
+
+    /**
+     * Get the vertical location.
+     * 
+     * @return The vertical location.
+     */
+    int getY();
 }

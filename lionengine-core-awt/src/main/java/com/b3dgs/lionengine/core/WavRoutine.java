@@ -32,6 +32,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilityMath;
 
 /**
  * Sound routine implementation. One sound represents one thread.

@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.game.strategy;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * This class can be used to handle easily a strategy cursor, designed to select and give order to any kind of entity.
@@ -91,7 +91,7 @@ public class CursorStrategy
         setLocation(source.getWidth() / 2, source.getHeight() / 2);
         gridWidth = tileWidth;
         gridHeight = tileHeight;
-        grid = UtilityMath.createRectangle();
+        grid = Geom.createRectangle();
         width = source.getWidth();
         height = source.getHeight();
     }

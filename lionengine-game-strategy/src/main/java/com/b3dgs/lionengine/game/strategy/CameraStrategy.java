@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy;
 
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.purview.Localizable;

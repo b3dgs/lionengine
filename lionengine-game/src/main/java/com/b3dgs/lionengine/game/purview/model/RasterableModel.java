@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.purview.model;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.core.UtilityMath;
+import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.purview.Rasterable;

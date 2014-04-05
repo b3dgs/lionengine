@@ -15,15 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.geom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.b3dgs.lionengine.Line;
-import com.b3dgs.lionengine.Polygon;
-import com.b3dgs.lionengine.Rectangle;
 
 /**
  * Polygon implementation.
@@ -107,7 +103,7 @@ final class PolygonImpl
             boundsMinY = Math.min(boundsMinY, y);
             boundsMaxY = Math.max(boundsMaxY, y);
         }
-        bounds = UtilityMath.createRectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
+        bounds = Geom.createRectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
     }
 
     /*
@@ -172,7 +168,7 @@ final class PolygonImpl
         final List<Line> list = new ArrayList<>(npoints);
         for (int i = 0; i < npoints / 2; i++)
         {
-            list.add(UtilityMath.createLine(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));
+            list.add(Geom.createLine(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));
         }
         return list;
     }

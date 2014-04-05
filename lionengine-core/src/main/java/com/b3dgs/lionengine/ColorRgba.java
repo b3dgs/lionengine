@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.core.UtilityMath;
-
 /**
  * Represents a color with red, green, blue and alpha.
  * 

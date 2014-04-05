@@ -26,8 +26,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Rectangle;
-import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
@@ -44,6 +42,8 @@ import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * This class will handle a list of entities, by updating and rendering them. All actions are defined here, such as
@@ -106,7 +106,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         this.map = map;
         listeners = new ArrayList<>(1);
         selectedEntity = new HashSet<>(8);
-        entityArea = UtilityMath.createRectangle();
+        entityArea = Geom.createRectangle();
         sharedPathIds = new HashSet<>(0);
         layers = null;
         panel.addListener(this);
