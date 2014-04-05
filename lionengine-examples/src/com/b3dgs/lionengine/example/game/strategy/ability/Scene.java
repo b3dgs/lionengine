@@ -22,9 +22,7 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -144,10 +142,10 @@ final class Scene
         rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
         map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
 
-        keyboard.setHorizontalControlNegative(Key.LEFT);
-        keyboard.setHorizontalControlPositive(Key.RIGHT);
-        keyboard.setVerticalControlNegative(Key.DOWN);
-        keyboard.setVerticalControlPositive(Key.UP);
+        keyboard.setHorizontalControlNegative(Keyboard.LEFT);
+        keyboard.setHorizontalControlPositive(Keyboard.RIGHT);
+        keyboard.setVerticalControlNegative(Keyboard.DOWN);
+        keyboard.setVerticalControlPositive(Keyboard.UP);
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setSensibility(30, 30);
@@ -155,11 +153,11 @@ final class Scene
         camera.setLocation(map, 15, 13);
 
         controlPanel.setClickableArea(camera);
-        controlPanel.setClickSelection(Click.LEFT);
+        controlPanel.setClickSelection(Mouse.LEFT);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
 
         handlerEntity.createLayers(map);
-        handlerEntity.setClickAssignment(Click.RIGHT);
+        handlerEntity.setClickAssignment(Mouse.RIGHT);
 
         final GoldMine goldMine = (GoldMine) createEntity(EntityType.GOLD_MINE, 20, 23);
 
@@ -184,7 +182,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
+        if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }

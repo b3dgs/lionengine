@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
@@ -62,7 +62,7 @@ public final class ControlPanel
         barLife = new Bar(27, 3);
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         lastSingleSelection = null;
-        setClickSelection(Click.LEFT);
+        setClickSelection(Mouse.LEFT);
     }
 
     /**

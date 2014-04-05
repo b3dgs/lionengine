@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -74,8 +73,8 @@ final class Racket
         this.screenHeight = screenHeight;
         this.automatic = automatic;
         timerRandomMovement = new Timing();
-        decrease = Key.UP;
-        increase = Key.DOWN;
+        decrease = Keyboard.UP;
+        increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         teleport(x, y);
         setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight(), false));

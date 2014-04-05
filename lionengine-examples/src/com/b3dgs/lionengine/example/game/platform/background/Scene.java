@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.platform.background;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
@@ -85,7 +84,7 @@ final class Scene
         background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
         foreground.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
 
-        if (keyboard.isPressedOnce(Key.ESCAPE))
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
         }

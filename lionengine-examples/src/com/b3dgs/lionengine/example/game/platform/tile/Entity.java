@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.example.game.platform.tile;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.CollisionData;
@@ -65,7 +64,7 @@ final class Entity
      */
     public void updateMouse(Mouse mouse)
     {
-        if (mouse.hasClicked(Click.LEFT))
+        if (mouse.hasClicked(Mouse.LEFT))
         {
             mouseX = mouse.getX();
             mouseY = mouse.getY();

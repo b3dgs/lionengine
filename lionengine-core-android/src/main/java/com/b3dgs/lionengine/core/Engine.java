@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.Version;
  *         final Resolution output = new Resolution(400, 240, 60);
  *         final Config config = new Config(output, 16, true);
  *         final Loader loader = new Loader(config);
- *         loader.start(new Scene(loader));
+ *         loader.start(Scene.class);
  *     }
  * 
  *     &#064;Override
@@ -56,7 +56,7 @@ import com.b3dgs.lionengine.Version;
  * </pre>
  * 
  * @since 13 June 2010
- * @version 6.1.0
+ * @version 6.2.0
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine

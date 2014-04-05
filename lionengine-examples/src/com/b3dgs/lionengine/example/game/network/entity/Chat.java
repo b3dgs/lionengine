@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.network.ConnectionListener;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
@@ -60,8 +60,8 @@ final class Chat
         super(TypeMessage.MESSAGE_CHAT);
         this.world = world;
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
-        setKeyValidate(Key.ENTER.intValue());
-        setKeyBackSpace(Key.BACK_SPACE.intValue());
+        setKeyValidate(Keyboard.ENTER.intValue());
+        setKeyBackSpace(Keyboard.BACK_SPACE.intValue());
     }
 
     @Override

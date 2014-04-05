@@ -40,6 +40,13 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class Mouse
         implements InputDevicePointer, MouseListener, MouseMotionListener, MouseWheelListener
 {
+    /** Left click. */
+    public static final int LEFT = MouseEvent.BUTTON1;
+    /** Middle click. */
+    public static final int MIDDLE = MouseEvent.BUTTON2;
+    /** Right click. */
+    public static final int RIGHT = MouseEvent.BUTTON3;
+
     /** Clicks flags. */
     private final boolean[] clicks;
     /** Clicked flags. */
@@ -164,13 +171,13 @@ public final class Mouse
             int event;
             switch (click)
             {
-                case Click.LEFT:
+                case Mouse.LEFT:
                     event = InputEvent.BUTTON1_MASK;
                     break;
-                case Click.MIDDLE:
+                case Mouse.MIDDLE:
                     event = InputEvent.BUTTON2_MASK;
                     break;
-                case Click.RIGHT:
+                case Mouse.RIGHT:
                     event = InputEvent.BUTTON3_MASK;
                     break;
                 default:

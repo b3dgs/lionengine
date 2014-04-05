@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
@@ -100,7 +99,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
+        if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
-import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.network.purview.NetworkedInput;
 
 /**
@@ -43,21 +43,21 @@ final class ClientInput
     @Override
     protected void sendKey(int code, boolean pressed)
     {
-        if (!(code == Key.RIGHT.intValue() || code == Key.LEFT.intValue() || code == Key.UP.intValue()))
+        if (!(code == Keyboard.RIGHT.intValue() || code == Keyboard.LEFT.intValue() || code == Keyboard.UP.intValue()))
         {
             return;
         }
 
         final MessageEntity message = new MessageEntity(getClientId());
-        if (code == Key.RIGHT.intValue())
+        if (code == Keyboard.RIGHT.intValue())
         {
             message.addAction(MessageEntityElement.RIGHT, pressed);
         }
-        if (code == Key.LEFT.intValue())
+        if (code == Keyboard.LEFT.intValue())
         {
             message.addAction(MessageEntityElement.LEFT, pressed);
         }
-        if (code == Key.UP.intValue())
+        if (code == Keyboard.UP.intValue())
         {
             message.addAction(MessageEntityElement.UP, pressed);
         }

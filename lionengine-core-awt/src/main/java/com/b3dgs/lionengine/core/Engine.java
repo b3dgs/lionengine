@@ -61,13 +61,13 @@ import com.b3dgs.lionengine.Version;
  * 
  *         // Program starter, setup with our configuration. It just needs one sequence reference to start.
  *         final Loader loader = new Loader(config);
- *         loader.start(new Scene(loader));
+ *         loader.start(Scene.class);
  *     }
  * }
  * </pre>
  * 
  * @since 13 June 2010
- * @version 6.1.0
+ * @version 6.2.0
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine

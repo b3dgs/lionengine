@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.example.game.effect;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -77,12 +75,12 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
+        if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
 
-        if (mouse.hasClicked(Click.LEFT))
+        if (mouse.hasClicked(Mouse.LEFT))
         {
             final Effect effect = factoryEffect.create(EffectType.EXPLODE);
             effect.start(mouse.getX(), getHeight() - mouse.getY());

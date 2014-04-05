@@ -61,7 +61,7 @@ import com.b3dgs.lionengine.Version;
  * 
  *         // Program starter, setup with our configuration. It just needs one sequence reference to start.
  *         final Loader loader = new Loader(config);
- *         loader.start(new Scene(loader));
+ *         loader.start(Scene.class);
  *     }
  * }
  * </pre>

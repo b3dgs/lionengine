@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 
@@ -31,6 +32,29 @@ import org.eclipse.swt.events.KeyListener;
 public final class Keyboard
         implements InputDeviceDirectional, KeyListener
 {
+    /** Arrow up key. */
+    public static final Integer UP = Integer.valueOf(SWT.KeyUp);
+    /** Arrow down key. */
+    public static final Integer DOWN = Integer.valueOf(SWT.KeyDown);
+    /** Arrow right key. */
+    public static final Integer RIGHT = Integer.valueOf(SWT.RIGHT);
+    /** Arrow left key. */
+    public static final Integer LEFT = Integer.valueOf(SWT.LEFT);
+    /** CTRL key. */
+    public static final Integer CONTROL = Integer.valueOf(SWT.CONTROL);
+    /** ALT key. */
+    public static final Integer ALT = Integer.valueOf(SWT.ALT);
+    /** Escape key. */
+    public static final Integer ESCAPE = Integer.valueOf(SWT.ESC);
+    /** Space key. */
+    public static final Integer SPACE = Integer.valueOf(SWT.SPACE);
+    /** Enter key. */
+    public static final Integer ENTER = Integer.valueOf(SWT.LF);
+    /** Back Space key. */
+    public static final Integer BACK_SPACE = Integer.valueOf(SWT.BS);
+    /** Tab key. */
+    public static final Integer TAB = Integer.valueOf(SWT.TAB);
+
     /** List of keys. */
     private final Set<Integer> keys;
     /** Pressed states. */

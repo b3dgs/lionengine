@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.tutorials.mario.g;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.entity.EntityGame;
@@ -60,9 +59,9 @@ public final class Mario
     {
         if (!dead)
         {
-            right = keyboard.isPressed(Key.RIGHT);
-            left = keyboard.isPressed(Key.LEFT);
-            up = keyboard.isPressed(Key.UP);
+            right = keyboard.isPressed(Keyboard.RIGHT);
+            left = keyboard.isPressed(Keyboard.LEFT);
+            up = keyboard.isPressed(Keyboard.UP);
         }
     }
 

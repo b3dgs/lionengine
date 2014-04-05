@@ -19,9 +19,7 @@ package com.b3dgs.lionengine.example.game.cursor;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Click;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -74,20 +72,20 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        if (keyboard.isPressed(Key.ESCAPE))
+        if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
 
-        if (mouse.hasClickedOnce(Click.LEFT))
+        if (mouse.hasClickedOnce(Mouse.LEFT))
         {
             cursor.setSurfaceId(0);
         }
-        if (mouse.hasClickedOnce(Click.RIGHT))
+        if (mouse.hasClickedOnce(Mouse.RIGHT))
         {
             cursor.setSurfaceId(1);
         }
-        if (mouse.hasClickedOnce(Click.MIDDLE))
+        if (mouse.hasClickedOnce(Mouse.MIDDLE))
         {
             cursor.setSyncMode(!cursor.isSynchronized());
         }

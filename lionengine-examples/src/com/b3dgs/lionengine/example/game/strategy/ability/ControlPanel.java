@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 
@@ -37,7 +37,7 @@ public final class ControlPanel
     ControlPanel()
     {
         super();
-        setClickSelection(Click.LEFT);
+        setClickSelection(Mouse.LEFT);
     }
 
     /*

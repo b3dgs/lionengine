@@ -23,7 +23,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.DeviceType;
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
@@ -121,7 +120,7 @@ final class Scene
         sprite.rotate((int) tile * (360 / tilesheet.getTilesNumber()));
 
         // Exit
-        if (keyboard.isPressedOnce(Key.ESCAPE))
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
         }

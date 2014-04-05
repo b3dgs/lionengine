@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.core.Key;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.game.Force;
 
@@ -46,9 +45,9 @@ public final class Mario
      */
     public void updateControl(Keyboard keyboard)
     {
-        right = keyboard.isPressed(Key.RIGHT);
-        left = keyboard.isPressed(Key.LEFT);
-        up = keyboard.isPressed(Key.UP);
+        right = keyboard.isPressed(Keyboard.RIGHT);
+        left = keyboard.isPressed(Keyboard.LEFT);
+        up = keyboard.isPressed(Keyboard.UP);
     }
 
     /**
