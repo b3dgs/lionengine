@@ -30,7 +30,6 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
@@ -55,15 +54,15 @@ final class FactoryGraphicImpl
      */
     static Cursor createHiddenCursor()
     {
-        final Color white = Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
-        final Color black = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+        final Color white = ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE);
+        final Color black = ScreenImpl.display.getSystemColor(SWT.COLOR_BLACK);
         final PaletteData palette = new PaletteData(new RGB[]
         {
                 white.getRGB(), black.getRGB()
         });
         final ImageData sourceData = new ImageData(16, 16, 1, palette);
         sourceData.transparentPixel = 0;
-        final Cursor cursor = new Cursor(Display.getDefault(), sourceData, 0, 0);
+        final Cursor cursor = new Cursor(ScreenImpl.display, sourceData, 0, 0);
         return cursor;
     }
 
@@ -138,21 +137,21 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        final Image buffer = new Image(Display.getDefault(), width, height);
+        final Image buffer = new Image(ScreenImpl.display, width, height);
         return new ImageBufferImpl(buffer);
     }
 
     @Override
     public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
     {
-        final Image image = new Image(Display.getDefault(), inputStream);
+        final Image image = new Image(ScreenImpl.display, inputStream);
         return new ImageBufferImpl(image);
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        final Image image = new Image(Display.getDefault(), FactoryGraphicImpl.getBuffer(imageBuffer), SWT.IMAGE_COPY);
+        final Image image = new Image(ScreenImpl.display, FactoryGraphicImpl.getBuffer(imageBuffer), SWT.IMAGE_COPY);
         return new ImageBufferImpl(image);
     }
 
@@ -176,7 +175,7 @@ final class FactoryGraphicImpl
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = new Image(Display.getDefault(), width, height);
+                images[frame] = new Image(ScreenImpl.display, width, height);
                 final GC g = new GC(images[frame]);
                 g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height);
                 g.dispose();
@@ -222,11 +221,7 @@ final class FactoryGraphicImpl
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
         final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
-        final Image resized = new Image(Display.getDefault(), width, height);
-        final GC gc = new GC(resized);
-
-        gc.drawImage(image, 0, 0, imageBuffer.getWidth(), imageBuffer.getHeight(), 0, 0, width, height);
-        gc.dispose();
+        final Image resized = new Image(ScreenImpl.display, image.getImageData().scaledTo(width, height));
 
         return new ImageBufferImpl(resized);
     }
@@ -236,7 +231,7 @@ final class FactoryGraphicImpl
     {
         final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
         final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-        final Image flipped = new Image(Display.getDefault(), w, h);
+        final Image flipped = new Image(ScreenImpl.display, w, h);
         final GC gc = new GC(flipped);
 
         final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);

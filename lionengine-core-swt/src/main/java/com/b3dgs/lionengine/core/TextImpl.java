@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -128,11 +129,11 @@ final class TextImpl
             default:
                 throw new RuntimeException();
         }
-        final ColorRgba colorOld = g.getColor();
-        g.setColor(color);
+        final Color c = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
+        gc.setForeground(c);
         gc.setFont(font);
-        gc.drawString(text, tx, ty - size / 2);
-        g.setColor(colorOld);
+        gc.drawString(text, tx, ty - size, true);
+        c.dispose();
     }
 
     @Override

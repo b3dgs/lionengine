@@ -20,20 +20,25 @@ package com.b3dgs.lionengine.core;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Transparency;
 
 /**
  * Screen implementation.
@@ -49,38 +54,25 @@ final class ScreenImpl
     private static final String ERROR_CONFIG = "The configuration must exists !";
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
-    /** Error message applet. */
-    private static final String ERROR_APPLET = "Applet mode initialization failed !";
     /** Error message windowed. */
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
     /** Error message unsupported fullscreen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
 
-    /** Hidden cursor instance. */
-    // private static final Cursor CURSOR_HIDDEN = ScreenImpl.createHiddenCursor();
-    /** Default cursor instance. */
-    // private static final Cursor CURSOR_DEFAULT = Display.getDefault().getSystemCursor(0);
-
-    /**
-     * Create instance for hidden cursor.
-     * 
-     * @return The hidden cursor.
-     */
-    private static Cursor createHiddenCursor()
-    {
-        return FactoryGraphicImpl.createHiddenCursor();
-    }
-
     /** Display. */
-    public static Display display;
+    static Display display;
+    /** Renderer reference. */
+    final Renderer renderer;
+    /** Hidden cursor instance. */
+    private final Cursor cursorHidden;
+    /** Default cursor instance. */
+    private final Cursor cursorDefault;
     /** Frame reference. */
     private final Shell frame;
     /** Input devices. */
     private final HashMap<InputDeviceType, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
-    /** Applet flag. */
-    private final boolean hasApplet;
     /** Configuration reference. */
     private final Config config;
     /** Active sequence reference. */
@@ -99,8 +91,6 @@ final class ScreenImpl
     private int height;
     GC last;
 
-    Image image;
-
     /**
      * Constructor.
      * 
@@ -112,18 +102,58 @@ final class ScreenImpl
         Check.notNull(config, ScreenImpl.ERROR_CONFIG);
 
         // Initialize environment
-        ScreenImpl.display = new Display();
-        graphics = UtilityImage.createGraphic();
-        devices = new HashMap<>(2);
-        hasApplet = false;
+        try
+        {
+            ScreenImpl.display = new Display();
+        }
+        catch (final SWTException exception)
+        {
+            throw new LionEngineException(exception, ScreenImpl.ERROR_DISPLAY);
+        }
+        this.renderer = renderer;
         this.config = config;
 
+        cursorHidden = FactoryGraphicImpl.createHiddenCursor();
+        cursorDefault = ScreenImpl.display.getSystemCursor(0);
+        graphics = UtilityImage.createGraphic();
+        devices = new HashMap<>(2);
+
         // Prepare main frame
-        frame = hasApplet ? null : initMainFrame();
+        frame = initMainFrame(config.isWindowed());
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
         addDeviceMouse();
+    }
+
+    /**
+     * Initialize the main frame.
+     * 
+     * @param windowed <code>true</code> if windowed, <code>false</code> else.
+     * @return The created main frame.
+     */
+    private Shell initMainFrame(boolean windowed)
+    {
+        final Shell shell;
+        if (windowed)
+        {
+            shell = new Shell(ScreenImpl.display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
+        }
+        else
+        {
+            shell = new Shell(ScreenImpl.display, SWT.NO_TRIM | SWT.ON_TOP);
+            shell.setBounds(ScreenImpl.display.getPrimaryMonitor().getBounds());
+        }
+        shell.setText(EngineImpl.getProgramName() + " " + EngineImpl.getProgramVersion());
+        shell.addDisposeListener(new DisposeListener()
+        {
+            @Override
+            public void widgetDisposed(DisposeEvent event)
+            {
+                renderer.end(null);
+            }
+        });
+        return shell;
     }
 
     /**
@@ -158,13 +188,19 @@ final class ScreenImpl
             if (canvas == null)
             {
                 canvas = new Canvas(frame, SWT.DOUBLE_BUFFERED);
-                canvas.setBackground(new Color(ScreenImpl.display, 0, 0, 0));
                 canvas.setEnabled(true);
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            image = new Image(ScreenImpl.display, output.getWidth(), output.getHeight());
+            buffer = UtilityImage.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             frame.pack();
+
+            final Monitor primary = ScreenImpl.display.getPrimaryMonitor();
+            final Rectangle bounds = primary.getBounds();
+            final Rectangle rect = frame.getBounds();
+            final int x = bounds.x + (bounds.width - rect.width) / 2;
+            final int y = bounds.y + (bounds.height - rect.height) / 2;
+            frame.setLocation(x, y);
 
             buf = canvas;
         }
@@ -203,18 +239,6 @@ final class ScreenImpl
     }
 
     /**
-     * Initialize the main frame.
-     * 
-     * @return The created main frame.
-     */
-    private Shell initMainFrame()
-    {
-        final Shell shell = new Shell(ScreenImpl.display, SWT.DOUBLE_BUFFERED);
-
-        return shell;
-    }
-
-    /**
      * Prepare the focus listener.
      */
     private void prepareFocusListener()
@@ -236,7 +260,7 @@ final class ScreenImpl
      */
     private void addKeyboardListener(Keyboard keyboard)
     {
-        frame.addKeyListener(keyboard);
+        canvas.addKeyListener(keyboard);
         frame.forceFocus();
     }
 
@@ -247,9 +271,9 @@ final class ScreenImpl
      */
     private void addMouseListener(Mouse mouse)
     {
-        frame.addMouseListener(mouse);
-        frame.addMouseMoveListener(mouse);
-        frame.addMouseWheelListener(mouse);
+        canvas.addMouseListener(mouse);
+        canvas.addMouseMoveListener(mouse);
+        canvas.addMouseWheelListener(mouse);
         frame.forceFocus();
     }
 
@@ -279,16 +303,14 @@ final class ScreenImpl
     @Override
     public void start()
     {
-        if (!hasApplet)
-        {
-            buf.setVisible(true);
-            buf.update();
-            last = new GC(image);
-            graphics.setGraphic(last);
-            frame.update();
-            frame.setEnabled(true);
-            frame.setVisible(true);
-        }
+        buf.setVisible(true);
+        buf.update();
+        gbuf = buffer.createGraphic();
+        last = gbuf.getGraphic();
+        graphics.setGraphic(last);
+        frame.update();
+        frame.setEnabled(true);
+        frame.setVisible(true);
     }
 
     @Override
@@ -301,15 +323,19 @@ final class ScreenImpl
     public void update()
     {
         ScreenImpl.display.readAndDispatch();
-        final GC gc = new GC(canvas);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-        if (last != null)
+        if (!canvas.isDisposed())
         {
-            last.dispose();
+            final GC gc = new GC(canvas);
+            gc.drawImage(((ImageBufferImpl) buffer).getBuffer(), 0, 0);
+            gc.dispose();
+            if (last != null)
+            {
+                last.dispose();
+            }
+            gbuf = buffer.createGraphic();
+            last = gbuf.getGraphic();
+            graphics.setGraphic(last);
         }
-        last = new GC(image);
-        graphics.setGraphic(last);
     }
 
     @Override
@@ -319,24 +345,34 @@ final class ScreenImpl
         update();
         buf.dispose();
         frame.dispose();
+        ScreenImpl.display.dispose();
     }
 
     @Override
     public void requestFocus()
     {
-        frame.forceFocus();
+        if (!frame.isDisposed())
+        {
+            frame.forceFocus();
+        }
     }
 
     @Override
     public void hideCursor()
     {
-        // frame.setCursor(ScreenImpl.CURSOR_HIDDEN);
+        if (!frame.isDisposed())
+        {
+            frame.setCursor(cursorHidden);
+        }
     }
 
     @Override
     public void showCursor()
     {
-        // frame.setCursor(ScreenImpl.CURSOR_DEFAULT);
+        if (!frame.isDisposed())
+        {
+            frame.setCursor(cursorDefault);
+        }
     }
 
     @Override
@@ -354,8 +390,11 @@ final class ScreenImpl
     @Override
     public void setIcon(String filename)
     {
-        // final Image icon = new Image(Display.getDefault(), filename);
-        // frame.setImage(icon);
+        if (!frame.isDisposed())
+        {
+            final Image icon = new Image(ScreenImpl.display, filename);
+            frame.setImage(icon);
+        }
     }
 
     @Override
@@ -379,13 +418,21 @@ final class ScreenImpl
     @Override
     public int getX()
     {
-        return frame.getLocation().x;
+        if (!frame.isDisposed())
+        {
+            return frame.getLocation().x;
+        }
+        return 0;
     }
 
     @Override
     public int getY()
     {
-        return frame.getLocation().y;
+        if (!frame.isDisposed())
+        {
+            return frame.getLocation().y;
+        }
+        return 0;
     }
 
     @Override

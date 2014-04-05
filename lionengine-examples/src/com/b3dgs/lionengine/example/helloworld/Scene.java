@@ -81,6 +81,7 @@ final class Scene
     @Override
     protected void render(Graphic g)
     {
+        g.clear(0, 0, getWidth(), getHeight());
         // Simple rendering
         text.render(g);
         // Direct rendering

@@ -51,12 +51,8 @@ final class GraphicImpl
     private Color gradientColor1;
     /** Gradient paint. */
     private Color gradientColor2;
-    /** Last transform. */
-    private Transform lastTransform;
     /** Last color. */
     private Color lastColor;
-    /** Last swt transform. */
-    private org.eclipse.swt.graphics.Transform lastSwtTransform;
 
     /**
      * Constructor.
@@ -108,18 +104,8 @@ final class GraphicImpl
     @Override
     public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        if (lastTransform != transform)
-        {
-            lastTransform = transform;
-            if (lastSwtTransform != null)
-            {
-                lastSwtTransform.dispose();
-            }
-            lastSwtTransform = new org.eclipse.swt.graphics.Transform(GraphicImpl.getBuffer(image).getDevice());
-            lastSwtTransform.scale((float) transform.getScaleX(), (float) transform.getScaleY());
-            gc.setTransform(lastSwtTransform);
-        }
-        gc.drawImage(GraphicImpl.getBuffer(image), x, y);
+        gc.drawImage(GraphicImpl.getBuffer(image), x, y, image.getWidth(), image.getHeight(), x, y,
+                (int) (image.getWidth() * transform.getScaleX()), (int) (image.getHeight() * transform.getScaleY()));
     }
 
     @Override
@@ -149,7 +135,7 @@ final class GraphicImpl
     {
         if (fill)
         {
-            gc.drawRectangle(x, y, width, height);
+            gc.fillRectangle(x, y, width, height);
         }
         else
         {
@@ -191,8 +177,8 @@ final class GraphicImpl
         {
             lastColor.dispose();
         }
-        lastColor = new Color(gc.getDevice(), color.getRed(), color.getGreen(), color.getBlue());
-        gc.setForeground(lastColor);
+        lastColor = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
+        gc.setBackground(lastColor);
     }
 
     @Override
@@ -208,8 +194,8 @@ final class GraphicImpl
         {
             gradientColor1.dispose();
         }
-        gradientColor1 = new Color(this.gc.getDevice(), color1.getRed(), color1.getGreen(), color1.getBlue());
-        gradientColor2 = new Color(this.gc.getDevice(), color2.getRed(), color2.getGreen(), color2.getBlue());
+        gradientColor1 = new Color(ScreenImpl.display, color1.getRed(), color1.getGreen(), color1.getBlue());
+        gradientColor2 = new Color(ScreenImpl.display, color2.getRed(), color2.getGreen(), color2.getBlue());
     }
 
     @Override
@@ -232,7 +218,7 @@ final class GraphicImpl
     @Override
     public ColorRgba getColor()
     {
-        final Color color = gc.getForeground();
+        final Color color = gc.getBackground();
         return new ColorRgba(color.getRed(), color.getGreen(), color.getBlue());
     }
 }

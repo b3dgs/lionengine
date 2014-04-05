@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -33,11 +32,11 @@ public final class Mouse
         implements InputDevicePointer, MouseListener, MouseMoveListener, MouseWheelListener
 {
     /** Left click. */
-    public static final int LEFT = SWT.BUTTON1;
+    public static final int LEFT = 1;
     /** Middle click. */
-    public static final int MIDDLE = SWT.BUTTON2;
+    public static final int MIDDLE = 2;
     /** Right click. */
-    public static final int RIGHT = SWT.BUTTON3;
+    public static final int RIGHT = 3;
 
     /** Clicks flags. */
     private final boolean[] clicks;

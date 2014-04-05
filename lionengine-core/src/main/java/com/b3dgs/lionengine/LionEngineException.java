@@ -126,22 +126,22 @@ public final class LionEngineException
     /**
      * Constructor.
      * 
-     * @param throwable The throwable reference.
+     * @param exception The exception reference.
      * @param messages The exception message(s).
      */
-    public LionEngineException(Throwable throwable, String... messages)
+    public LionEngineException(Throwable exception, String... messages)
     {
-        this(throwable, null, messages);
+        this(exception, null, messages);
     }
 
     /**
      * Constructor.
      * 
-     * @param throwable The throwable reference.
+     * @param exception The exception reference.
      * @param media The media error source.
      * @param messages The exception message(s).
      */
-    public LionEngineException(Throwable throwable, Media media, String... messages)
+    public LionEngineException(Throwable exception, Media media, String... messages)
     {
         super();
         final StringBuilder buffer = new StringBuilder(16);
@@ -154,8 +154,8 @@ public final class LionEngineException
             buffer.append(m);
         }
         message = buffer.toString();
-        reason = throwable;
-        stack = throwable != null ? throwable.getStackTrace() : new StackTraceElement[] {};
+        reason = exception;
+        stack = exception != null ? exception.getStackTrace() : new StackTraceElement[] {};
     }
 
     /*

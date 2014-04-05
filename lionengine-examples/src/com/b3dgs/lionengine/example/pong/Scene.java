@@ -100,7 +100,7 @@ final class Scene
         // Terminate
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
-            this.end();
+            end();
         }
     }
 

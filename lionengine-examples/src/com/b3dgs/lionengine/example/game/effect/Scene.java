@@ -70,11 +70,13 @@ final class Scene
     protected void load()
     {
         factoryEffect.load();
+        mouse.setConfig(getConfig());
     }
 
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
