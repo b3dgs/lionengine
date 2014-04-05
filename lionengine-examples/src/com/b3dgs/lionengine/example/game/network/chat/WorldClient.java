@@ -77,7 +77,7 @@ final class WorldClient
     }
 
     @Override
-    public void render(final Graphic g)
+    public void render(Graphic g)
     {
         super.render(g);
         text.draw(g, width, 12, Align.RIGHT, "Ping=" + getPing() + "ms");

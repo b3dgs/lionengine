@@ -18,34 +18,25 @@
 package com.b3dgs.lionengine.core;
 
 /**
- * Loader thread.
+ * Input device with key listener.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class LoaderThread
-        extends Thread
+public interface InputDeviceKeyListener
 {
-    /** Loader reference. */
-    private final Loader loader;
+    /**
+     * Called when a key is pressed.
+     * 
+     * @param keyCode The key code.
+     * @param keyChar The key character.
+     */
+    void keyPressed(int keyCode, char keyChar);
 
     /**
-     * Constructor.
+     * Called when a key is released.
      * 
-     * @param loader The loader reference.
+     * @param keyCode The key code.
+     * @param keyChar The key character.
      */
-    LoaderThread(final Loader loader)
-    {
-        super(EngineImpl.getProgramName());
-        this.loader = loader;
-    }
-
-    /*
-     * Thread
-     */
-
-    @Override
-    public void run()
-    {
-        loader.run();
-    }
+    void keyReleased(int keyCode, char keyChar);
 }

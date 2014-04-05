@@ -19,15 +19,13 @@ package com.b3dgs.lionengine.core;
 
 import android.view.MotionEvent;
 
-import com.b3dgs.lionengine.Mouse;
-
 /**
  * Mouse input implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MouseImpl
-        implements Mouse
+public final class Mouse
+        implements InputDevicePointer
 {
     /** Clicked flags. */
     private boolean click;
@@ -47,10 +45,6 @@ final class MouseImpl
     private int oldX;
     /** Old location y. */
     private int oldY;
-    /** Screen center x. */
-    private int centerX;
-    /** Screen center y. */
-    private int centerY;
     /** Last click number. */
     private int lastClick;
     /** Moved flag. */
@@ -59,17 +53,87 @@ final class MouseImpl
     /**
      * Constructor.
      */
-    MouseImpl()
+    Mouse()
     {
         super();
         x = 0;
         y = 0;
-        centerX = x;
-        centerY = y;
         mx = 0;
         my = 0;
         oldX = x;
         oldY = y;
+    }
+
+    /**
+     * Update the mouse.
+     */
+    public void update()
+    {
+        mx = x - oldX;
+        my = y - oldY;
+        oldX = x;
+        oldY = y;
+    }
+
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
+    public void setConfig(Config config)
+    {
+        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
+        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
+    }
+
+    /**
+     * Get current pressed click.
+     * 
+     * @return The pressed click.
+     */
+    public int getMouseClick()
+    {
+        return lastClick;
+    }
+
+    /**
+     * Get location on screen x.
+     * 
+     * @return The location on screen x.
+     */
+    public int getOnScreenX()
+    {
+        return x;
+    }
+
+    /**
+     * Get location on screen y.
+     * 
+     * @return The location on screen y.
+     */
+    public int getOnScreenY()
+    {
+        return y;
+    }
+
+    /**
+     * Get location on window x.
+     * 
+     * @return The location on window x.
+     */
+    public int getOnWindowX()
+    {
+        return (int) (x / xRatio);
+    }
+
+    /**
+     * Get location on window y.
+     * 
+     * @return The location on window y.
+     */
+    public int getOnWindowY()
+    {
+        return (int) (y / yRatio);
     }
 
     /**
@@ -102,85 +166,27 @@ final class MouseImpl
     }
 
     /*
-     * Mouse
+     * InputDevice
      */
 
     @Override
-    public void update()
+    public InputDeviceType getType()
     {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
+        return DeviceType.MOUSE;
     }
 
-    @Override
-    public void lock()
-    {
-        lock(centerX, centerY);
-    }
+    /*
+     * InputDevicePointer
+     */
 
     @Override
-    public void lock(int x, int y)
-    {
-        this.x = centerX;
-        this.y = centerY;
-        oldX = centerX;
-        oldY = centerY;
-    }
-
-    @Override
-    public void doClick(int click)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void doClickAt(int click, int x, int y)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void setConfig(Config config)
-    {
-        xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
-        yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
-    }
-
-    @Override
-    public void setCenter(int x, int y)
-    {
-        centerX = x;
-        centerY = y;
-    }
-
-    @Override
-    public int getMouseClick()
-    {
-        return lastClick;
-    }
-
-    @Override
-    public int getOnScreenX()
-    {
-        return x;
-    }
-
-    @Override
-    public int getOnScreenY()
-    {
-        return y;
-    }
-
-    @Override
-    public int getOnWindowX()
+    public int getX()
     {
         return (int) (x / xRatio);
     }
 
     @Override
-    public int getOnWindowY()
+    public int getY()
     {
         return (int) (y / yRatio);
     }
@@ -198,6 +204,12 @@ final class MouseImpl
     }
 
     @Override
+    public int getClick()
+    {
+        return lastClick;
+    }
+
+    @Override
     public boolean hasClicked(int click)
     {
         return this.click;
@@ -210,7 +222,7 @@ final class MouseImpl
     }
 
     @Override
-    public boolean moved()
+    public boolean hasMoved()
     {
         if (moved)
         {

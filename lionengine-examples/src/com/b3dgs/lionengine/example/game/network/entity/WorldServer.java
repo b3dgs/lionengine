@@ -75,7 +75,7 @@ final class WorldServer
     @Override
     public void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, width, height);
         super.render(g);
     }
 

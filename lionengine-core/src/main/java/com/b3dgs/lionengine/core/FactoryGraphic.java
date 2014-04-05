@@ -36,12 +36,21 @@ import com.b3dgs.lionengine.Transparency;
 interface FactoryGraphic
 {
     /**
+     * Create a renderer.
+     * 
+     * @param config The config reference.
+     * @return The renderer instance.
+     */
+    Renderer createRenderer(Config config);
+
+    /**
      * Create a screen.
      * 
+     * @param renderer The renderer reference.
      * @param config The config reference.
      * @return The screen instance.
      */
-    Screen createScreen(Config config);
+    Screen createScreen(Renderer renderer, Config config);
 
     /**
      * Crate a text.
@@ -61,30 +70,30 @@ interface FactoryGraphic
     Graphic createGraphic();
 
     /**
-     * Create a compatible image.
+     * Create an image buffer.
      * 
      * @param width The image width.
      * @param height The image height.
      * @param transparency The image transparency.
      * @return The image buffer.
      */
-    ImageBuffer createCompatibleImage(int width, int height, Transparency transparency);
+    ImageBuffer createImageBuffer(int width, int height, Transparency transparency);
 
     /**
-     * Get a buffered image from an image file.
+     * Get an image buffer from an image file.
      * 
      * @param inputStream The input stream.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
-     * @return The created buffered image from file.
+     * @return The created image buffer from file.
      * @throws IOException If error on loading image.
      */
     ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException;
 
     /**
-     * Get a buffered image from an image buffer.
+     * Get an image buffer from an image buffer.
      * 
      * @param imageBuffer The image buffer.
-     * @return The created buffered image from file.
+     * @return The created image buffer from file.
      */
     ImageBuffer getImageBuffer(ImageBuffer imageBuffer);
 
@@ -93,7 +102,7 @@ interface FactoryGraphic
      * 
      * @param imageBuffer The image reference.
      * @param maskColor The color mask.
-     * @return The masked buffered image.
+     * @return The masked image buffer.
      */
     ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor);
 
@@ -108,42 +117,42 @@ interface FactoryGraphic
     ImageBuffer[] splitImage(ImageBuffer image, int h, int v);
 
     /**
-     * Rotate input buffered image.
+     * Rotate input image buffer.
      * 
-     * @param image The input buffered image.
+     * @param image The input image buffer.
      * @param angle The angle to apply in degree (0-359)
-     * @return The new buffered image with angle applied.
+     * @return The new image buffer with angle applied.
      */
     ImageBuffer rotate(ImageBuffer image, int angle);
 
     /**
-     * Resize input buffered image.
+     * Resize input image buffer.
      * 
-     * @param image The input buffered image.
+     * @param image The input image buffer.
      * @param width The new width.
      * @param height The new height.
-     * @return The new buffered image with new size.
+     * @return The new image buffer with new size.
      */
     ImageBuffer resize(ImageBuffer image, int width, int height);
 
     /**
      * Apply an horizontal flip to the input image.
      * 
-     * @param image The input buffered image.
-     * @return The flipped buffered image as a new instance.
+     * @param image The input image buffer.
+     * @return The flipped image buffer as a new instance.
      */
     ImageBuffer flipHorizontal(ImageBuffer image);
 
     /**
      * Apply a vertical flip to the input image.
      * 
-     * @param image The input buffered image.
-     * @return The flipped buffered image as a new instance.
+     * @param image The input image buffer.
+     * @return The flipped image buffer as a new instance.
      */
     ImageBuffer flipVertical(ImageBuffer image);
 
     /**
-     * Apply a filter to the input buffered image.
+     * Apply a filter to the input image buffer.
      * 
      * @param image The input image.
      * @param filter The filter to use.
@@ -163,7 +172,7 @@ interface FactoryGraphic
     /**
      * Get raster buffer from data.
      * 
-     * @param image The buffer image.
+     * @param image The image buffer.
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.

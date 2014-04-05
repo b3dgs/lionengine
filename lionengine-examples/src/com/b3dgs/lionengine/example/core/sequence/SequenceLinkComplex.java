@@ -59,7 +59,7 @@ public class SequenceLinkComplex
         count++;
         if (count == 1)
         {
-            start(new SequenceNext(loader), false);
+            start(false, SequenceNext.class);
         }
         if (count > 2)
         {

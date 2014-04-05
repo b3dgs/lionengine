@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.AudioMidi;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Midi;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**

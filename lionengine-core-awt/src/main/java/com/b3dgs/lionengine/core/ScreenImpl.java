@@ -32,13 +32,10 @@ import java.awt.HeadlessException;
 import java.awt.IllegalComponentStateException;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
@@ -47,9 +44,7 @@ import javax.swing.WindowConstants;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 
@@ -97,10 +92,14 @@ final class ScreenImpl
         }
     }
 
+    /** Renderer reference. */
+    final Renderer renderer;
     /** Graphics device reference. */
     private final GraphicsDevice dev;
     /** Graphic configuration reference. */
     private final GraphicsConfiguration conf;
+    /** Input devices. */
+    private final HashMap<InputDeviceType, InputDevice> devices;
     /** Frame reference. */
     private final JFrame frame;
     /** Applet reference. */
@@ -112,7 +111,7 @@ final class ScreenImpl
     /** Configuration reference. */
     private final Config config;
     /** Active sequence reference. */
-    Sequence sequence;
+    private Sequence sequence;
     /** Buffer strategy reference. */
     private BufferStrategy buf;
     /** Image buffer reference. */
@@ -129,13 +128,18 @@ final class ScreenImpl
     private Canvas canvas;
     /** Fullscreen window. */
     private java.awt.Window window;
+    /** Width. */
+    private int width;
+    /** Height. */
+    private int height;
 
     /**
      * Constructor.
      * 
+     * @param renderer The renderer reference.
      * @param config The config reference.
      */
-    ScreenImpl(Config config)
+    ScreenImpl(Renderer renderer, Config config)
     {
         Check.notNull(config, ScreenImpl.ERROR_CONFIG);
         if (GraphicsEnvironment.isHeadless())
@@ -150,12 +154,68 @@ final class ScreenImpl
         applet = config.getApplet();
         graphics = UtilityImage.createGraphic();
         hasApplet = applet != null;
+        devices = new HashMap<>(2);
+        this.renderer = renderer;
         this.config = config;
 
         // Prepare main frame
         frame = hasApplet ? null : initMainFrame();
         setResolution(config.getOutput());
         prepareFocusListener();
+        addDeviceKeyboard();
+        addDeviceMouse();
+    }
+
+    /**
+     * Link keyboard to the screen (listening to).
+     * 
+     * @param keyboard The keyboard reference.
+     */
+    private void addKeyboardListener(Keyboard keyboard)
+    {
+        componentForKeyboard.addKeyListener(keyboard);
+        componentForKeyboard.requestFocus();
+        try
+        {
+            componentForKeyboard.setFocusTraversalKeysEnabled(false);
+        }
+        catch (final Exception exception)
+        {
+            Verbose.info("Transversal keys are not available !");
+        }
+    }
+
+    /**
+     * Link keyboard to the screen (listening to).
+     * 
+     * @param mouse The mouse reference.
+     */
+    private void addMouseListener(Mouse mouse)
+    {
+        componentForMouse.addMouseListener(mouse);
+        componentForMouse.addMouseMotionListener(mouse);
+        componentForMouse.addMouseWheelListener(mouse);
+        componentForMouse.requestFocus();
+    }
+
+    /**
+     * Add a keyboard device.
+     */
+    private void addDeviceKeyboard()
+    {
+        final Keyboard keyboard = new Keyboard();
+        addKeyboardListener(keyboard);
+        devices.put(keyboard.getType(), keyboard);
+    }
+
+    /**
+     * Add a keyboard device.
+     */
+    private void addDeviceMouse()
+    {
+        final Mouse mouse = new Mouse();
+        addMouseListener(mouse);
+        devices.put(mouse.getType(), mouse);
     }
 
     /**
@@ -329,7 +389,7 @@ final class ScreenImpl
             @Override
             public void windowClosing(WindowEvent event)
             {
-                sequence.end();
+                renderer.end(null);
             }
         });
         frame.setResizable(false);
@@ -375,6 +435,8 @@ final class ScreenImpl
                 initFullscreen(output, config.getDepth());
             }
         }
+        width = output.getWidth();
+        height = output.getHeight();
     }
 
     /*
@@ -382,9 +444,16 @@ final class ScreenImpl
      */
 
     @Override
-    public void show()
+    public void start()
     {
-        frame.setVisible(true);
+        if (!hasApplet)
+        {
+            buf.show();
+            graphics.setGraphic(buf.getDrawGraphics());
+            frame.validate();
+            frame.setEnabled(true);
+            frame.setVisible(true);
+        }
     }
 
     @Override
@@ -411,7 +480,7 @@ final class ScreenImpl
     @Override
     public void dispose()
     {
-        graphics.clear(config.getOutput());
+        graphics.clear(0, 0, width, height);
         update();
         if (hasApplet)
         {
@@ -452,33 +521,9 @@ final class ScreenImpl
     }
 
     @Override
-    public void addKeyListener(KeyboardListener listener)
+    public void addKeyListener(InputDeviceKeyListener listener)
     {
-        componentForKeyboard.addKeyListener(new KeyboardListenerImpl(listener));
-    }
-
-    @Override
-    public void addKeyboard(Keyboard keyboard)
-    {
-        componentForKeyboard.addKeyListener((KeyListener) keyboard);
-        componentForKeyboard.requestFocus();
-        try
-        {
-            componentForKeyboard.setFocusTraversalKeysEnabled(false);
-        }
-        catch (final Exception exception)
-        {
-            Verbose.info("Transversal keys are not available !");
-        }
-    }
-
-    @Override
-    public void addMouse(Mouse mouse)
-    {
-        componentForMouse.addMouseListener((MouseListener) mouse);
-        componentForMouse.addMouseMotionListener((MouseMotionListener) mouse);
-        componentForMouse.addMouseWheelListener((MouseWheelListener) mouse);
-        componentForMouse.requestFocus();
+        componentForKeyboard.addKeyListener(new KeyListener(listener));
     }
 
     @Override
@@ -507,7 +552,13 @@ final class ScreenImpl
     }
 
     @Override
-    public int getLocationX()
+    public <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    {
+        return (T) devices.get(type);
+    }
+
+    @Override
+    public int getX()
     {
         try
         {
@@ -524,7 +575,7 @@ final class ScreenImpl
     }
 
     @Override
-    public int getLocationY()
+    public int getY()
     {
         try
         {
@@ -537,19 +588,6 @@ final class ScreenImpl
         catch (final IllegalComponentStateException exception)
         {
             return 0;
-        }
-    }
-
-    @Override
-    public void start()
-    {
-        if (!hasApplet)
-        {
-            buf.show();
-            graphics.setGraphic(buf.getDrawGraphics());
-            frame.validate();
-            frame.setEnabled(true);
-            frame.setVisible(true);
         }
     }
 

@@ -17,49 +17,39 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 /**
- * Keyboard listener implementation.
+ * The renderer implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class KeyboardListenerImpl
-        implements KeyListener
+final class RendererImpl
+        extends Renderer
 {
-    /** The original listener. */
-    private final KeyboardListener listener;
-
     /**
      * Constructor.
      * 
-     * @param listener The original listener.
+     * @param config The config reference.
      */
-    KeyboardListenerImpl(KeyboardListener listener)
+    RendererImpl(Config config)
     {
-        this.listener = listener;
+        super(config, "Android");
     }
 
     /*
-     * KeyListener
+     * Renderer
      */
 
     @Override
-    public void keyTyped(KeyEvent event)
+    protected void asyncLoad(final Sequence nextSequence)
     {
-        // Nothing to do
-    }
-
-    @Override
-    public void keyPressed(KeyEvent event)
-    {
-        listener.keyPressed(event.getKeyCode(), event.getKeyChar());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent event)
-    {
-        listener.keyReleased(event.getKeyCode(), event.getKeyChar());
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                nextSequence.load();
+            }
+        };
+        thread.start();
     }
 }

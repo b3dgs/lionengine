@@ -19,8 +19,11 @@ package com.b3dgs.lionengine.example.game.platform.tile;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -37,6 +40,10 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Mouse reference. */
+    private final Mouse mouse;
     /** Camera. */
     private final CameraPlatform camera;
     /** Map. */
@@ -54,7 +61,9 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new CameraPlatform(width, height);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
+        camera = new CameraPlatform(getWidth(), getHeight());
         map = new Map();
         entityRef = new Entity(map);
         entity = new Entity(map);
@@ -80,7 +89,7 @@ final class Scene
 
         entityRef.setLocation(192, 112);
         camera.setLimits(map);
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
         map.createCollisionDraw(TileCollision.class);
     }
 
@@ -99,7 +108,7 @@ final class Scene
     @Override
     protected void render(Graphic g)
     {
-        clearScreen(g);
+        g.clear(0, 0, getWidth(), getHeight());
         map.render(g, camera);
         entity.render(g, camera);
         entityRef.render(g, camera);

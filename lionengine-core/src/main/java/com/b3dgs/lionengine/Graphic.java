@@ -30,13 +30,6 @@ public interface Graphic
     /**
      * Clear the display.
      * 
-     * @param source The resolution source.
-     */
-    void clear(Resolution source);
-
-    /**
-     * Clear the display.
-     * 
      * @param x The horizontal location.
      * @param y The vertical location.
      * @param width The width.

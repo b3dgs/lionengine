@@ -22,8 +22,11 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.TextGame;
@@ -43,6 +46,10 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Mouse reference. */
+    private final Mouse mouse;
     /** Text reference. */
     private final TextGame text;
     /** Map reference. */
@@ -60,11 +67,13 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);
-        cursor = new CursorStrategy(mouse, camera, source, map, UtilityMedia.get("cursor.png"));
-        setMouseVisible(false);
+        cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"));
+        setSystemCursorVisible(false);
     }
 
     /**
@@ -102,10 +111,14 @@ final class Scene
         rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
         map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
 
-        camera.setView(0, 0, width, height);
+        keyboard.setHorizontalControlNegative(Key.LEFT);
+        keyboard.setHorizontalControlPositive(Key.RIGHT);
+        keyboard.setVerticalControlNegative(Key.DOWN);
+        keyboard.setVerticalControlPositive(Key.UP);
+
+        camera.setView(0, 0, getWidth(), getHeight());
         camera.setSensibility(30, 30);
         camera.setBorders(map);
-        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
     }
 
     @Override

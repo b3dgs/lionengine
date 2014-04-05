@@ -22,15 +22,13 @@ import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.Keyboard;
-
 /**
- * Keyboard input implementation.
+ * Represents the keyboard input. Gives informations such as pressed key and code.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class KeyboardImpl
-        implements Keyboard, KeyListener
+public final class Keyboard
+        implements InputDeviceDirectional, KeyListener
 {
     /** List of keys. */
     private final Set<Integer> keys;
@@ -40,11 +38,19 @@ final class KeyboardImpl
     private Integer lastCode;
     /** Last key name. */
     private char lastKeyName;
+    /** Left key. */
+    private Integer left;
+    /** Right key. */
+    private Integer right;
+    /** Up key. */
+    private Integer up;
+    /** Down key. */
+    private Integer down;
 
     /**
      * Constructor.
      */
-    KeyboardImpl()
+    Keyboard()
     {
         keys = new HashSet<>();
         pressed = new HashSet<>();
@@ -52,17 +58,23 @@ final class KeyboardImpl
         lastCode = Integer.valueOf(-1);
     }
 
-    /*
-     * Keyboard
+    /**
+     * Check if the key is currently pressed.
+     * 
+     * @param key The key to check.
+     * @return <code>true</code> if pressed, <code>false</code> else.
      */
-
-    @Override
     public boolean isPressed(Integer key)
     {
         return keys.contains(key);
     }
 
-    @Override
+    /**
+     * Check if the key is currently pressed (not continuously).
+     * 
+     * @param key The key to check.
+     * @return <code>true</code> if pressed, <code>false</code> else.
+     */
     public boolean isPressedOnce(Integer key)
     {
         if (keys.contains(key))
@@ -76,28 +88,100 @@ final class KeyboardImpl
         return false;
     }
 
-    @Override
+    /**
+     * Get the current pressed key code.
+     * 
+     * @return The pressed key code.
+     */
     public Integer getKeyCode()
     {
         return lastCode;
     }
 
-    @Override
-    public String getKeyText(int code)
-    {
-        return KeyEvent.getKeyText(code);
-    }
-
-    @Override
+    /**
+     * Get the current pressed key name.
+     * 
+     * @return The pressed key name.
+     */
     public char getKeyName()
     {
         return lastKeyName;
     }
 
-    @Override
+    /**
+     * Check if the keyboard is currently used (at least one pressed key).
+     * 
+     * @return <code>true</code> if has at least on pressed key, <code>false</code> else (no pressed key).
+     */
     public boolean used()
     {
         return !keys.isEmpty();
+    }
+
+    /*
+     * InputDevice
+     */
+
+    @Override
+    public InputDeviceType getType()
+    {
+        return DeviceType.KEYBOARD;
+    }
+
+    /*
+     * InputDeviceDirectional
+     */
+
+    @Override
+    public void setHorizontalControlPositive(Integer code)
+    {
+        right = code;
+    }
+
+    @Override
+    public void setHorizontalControlNegative(Integer code)
+    {
+        left = code;
+    }
+
+    @Override
+    public void setVerticalControlPositive(Integer code)
+    {
+        up = code;
+    }
+
+    @Override
+    public void setVerticalControlNegative(Integer code)
+    {
+        down = code;
+    }
+
+    @Override
+    public int getHorizontalDirection()
+    {
+        if (isPressed(left))
+        {
+            return -1;
+        }
+        else if (isPressed(right))
+        {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int getVerticalDirection()
+    {
+        if (isPressed(down))
+        {
+            return -1;
+        }
+        else if (isPressed(up))
+        {
+            return 1;
+        }
+        return 0;
     }
 
     /*

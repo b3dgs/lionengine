@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.example.game.platform.entity;
 
 import java.util.EnumMap;
 
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;

@@ -18,29 +18,30 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.Mouse;
 
 /**
- * Representation of the screen device, supporting fullscreen and windowed mode. It uses a double buffer for any
- * rendering.
+ * Representation of the screen device, supporting different screen rendering type and input devices.
+ * A screen is connected to a {@link Sequence} in order to render it.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see InputDevice
+ * @see Graphic
+ * @see Sequence
  */
 interface Screen
 {
     /**
-     * Show the screen.
+     * Start the main frame if has.
      */
-    void show();
+    void start();
 
     /**
-     * Pre update.
+     * Pre update, specially called before the main {@link #update()} in order to prepare it if necessary.
      */
     void preUpdate();
 
     /**
-     * Must be called when all rendering are done. It switch buffers before rendering.
+     * Must be called when all rendering are done. It switches buffers before rendering.
      */
     void update();
 
@@ -48,11 +49,6 @@ interface Screen
      * Close main frame. Dispose all graphics resources.
      */
     void dispose();
-
-    /**
-     * Start the main frame if has.
-     */
-    void start();
 
     /**
      * Give focus to screen.
@@ -74,21 +70,7 @@ interface Screen
      * 
      * @param listener The listener to add.
      */
-    void addKeyListener(KeyboardListener listener);
-
-    /**
-     * Link keyboard to the screen (listening to).
-     * 
-     * @param keyboard The keyboard reference.
-     */
-    void addKeyboard(Keyboard keyboard);
-
-    /**
-     * Link keyboard to the screen (listening to).
-     * 
-     * @param mouse The mouse reference.
-     */
-    void addMouse(Mouse mouse);
+    void addKeyListener(InputDeviceKeyListener listener);
 
     /**
      * Set sequence reference.
@@ -119,18 +101,27 @@ interface Screen
     Config getConfig();
 
     /**
+     * Get the input device instance from its type.
+     * 
+     * @param <T> The input device.
+     * @param type The input device type.
+     * @return The input instance reference, <code>null</code> if not found.
+     */
+    <T extends InputDevice> T getInputDevice(InputDeviceType type);
+
+    /**
      * Get main frame location x.
      * 
      * @return The main frame location x.
      */
-    int getLocationX();
+    int getX();
 
     /**
      * Get main frame location y.
      * 
      * @return The main frame location y.
      */
-    int getLocationY();
+    int getY();
 
     /**
      * Check if screen is ready.

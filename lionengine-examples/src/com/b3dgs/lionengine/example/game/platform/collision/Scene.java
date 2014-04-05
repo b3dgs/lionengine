@@ -20,7 +20,9 @@ package com.b3dgs.lionengine.example.game.platform.collision;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -38,9 +40,11 @@ final class Scene
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
     /** Background color. */
     private static final ColorRgba BACKGROUND_COLOR = new ColorRgba(107, 136, 255);
+
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Map reference. */
@@ -56,9 +60,10 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new CameraPlatform(width, height);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        camera = new CameraPlatform(getWidth(), getHeight());
         map = new Map();
-        hero = new Mario(map, source.getRate());
+        hero = new Mario(map, getConfig().getSource().getRate());
     }
 
     /*
@@ -94,7 +99,7 @@ final class Scene
     protected void render(Graphic g)
     {
         g.setColor(Scene.BACKGROUND_COLOR);
-        g.drawRect(0, 0, width, height, true);
+        g.drawRect(0, 0, getWidth(), getHeight(), true);
 
         map.render(g, camera);
         hero.render(g, camera);

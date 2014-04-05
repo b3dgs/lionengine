@@ -31,15 +31,14 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 
 /**
- * Mouse input implementation.
+ * Represents the mouse input. Gives informations such as mouse click and cursor location.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MouseImpl
-        implements Mouse, MouseListener, MouseMotionListener, MouseWheelListener
+public final class Mouse
+        implements InputDevicePointer, MouseListener, MouseMotionListener, MouseWheelListener
 {
     /** Clicks flags. */
     private final boolean[] clicks;
@@ -79,7 +78,7 @@ final class MouseImpl
     /**
      * Constructor.
      */
-    MouseImpl()
+    Mouse()
     {
         super();
         try
@@ -111,33 +110,14 @@ final class MouseImpl
         }
         catch (final AWTException exception)
         {
-            Verbose.critical(MouseImpl.class, "constructor", "No mouse robot available !");
+            Verbose.critical(Mouse.class, "constructor", "No mouse robot available !");
         }
         robot = r;
     }
 
     /**
-     * Update coordinate from event.
-     * 
-     * @param event event consumed.
+     * Update the mouse.
      */
-    private void updateCoord(MouseEvent event)
-    {
-        oldX = x;
-        oldY = y;
-        x = event.getXOnScreen();
-        y = event.getYOnScreen();
-        wx = event.getX();
-        wy = event.getY();
-        mx = x - oldX;
-        my = y - oldY;
-    }
-
-    /*
-     * Mouse
-     */
-
-    @Override
     public void update()
     {
         mx = x - oldX;
@@ -146,13 +126,20 @@ final class MouseImpl
         oldY = y;
     }
 
-    @Override
+    /**
+     * Lock mouse at its center.
+     */
     public void lock()
     {
         lock(centerX, centerY);
     }
 
-    @Override
+    /**
+     * Lock mouse at specified location.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
     public void lock(int x, int y)
     {
         if (robot != null)
@@ -165,7 +152,11 @@ final class MouseImpl
         }
     }
 
-    @Override
+    /**
+     * Perform a click.
+     * 
+     * @param click The click to perform.
+     */
     public void doClick(int click)
     {
         if (robot != null)
@@ -194,7 +185,13 @@ final class MouseImpl
         }
     }
 
-    @Override
+    /**
+     * Perform a click at specified coordinate.
+     * 
+     * @param click The click to perform.
+     * @param x The location x.
+     * @param y The location y.
+     */
     public void doClickAt(int click, int x, int y)
     {
         if (robot != null)
@@ -204,46 +201,88 @@ final class MouseImpl
         }
     }
 
-    @Override
+    /**
+     * Set the config.
+     * 
+     * @param config The config.
+     */
     public void setConfig(Config config)
     {
         xRatio = config.getOutput().getWidth() / (double) config.getSource().getWidth();
         yRatio = config.getOutput().getHeight() / (double) config.getSource().getHeight();
     }
 
-    @Override
+    /**
+     * Set mouse center for lock operation.
+     * 
+     * @param x The location x.
+     * @param y The location y.
+     */
     public void setCenter(int x, int y)
     {
         centerX = x;
         centerY = y;
     }
 
-    @Override
-    public int getMouseClick()
-    {
-        return lastClick;
-    }
-
-    @Override
+    /**
+     * Get location on screen x.
+     * 
+     * @return The location on screen x.
+     */
     public int getOnScreenX()
     {
         return x;
     }
 
-    @Override
+    /**
+     * Get location on screen y.
+     * 
+     * @return The location on screen y.
+     */
     public int getOnScreenY()
     {
         return y;
     }
 
+    /**
+     * Update coordinate from event.
+     * 
+     * @param event event consumed.
+     */
+    private void updateCoord(MouseEvent event)
+    {
+        oldX = x;
+        oldY = y;
+        x = event.getXOnScreen();
+        y = event.getYOnScreen();
+        wx = event.getX();
+        wy = event.getY();
+        mx = x - oldX;
+        my = y - oldY;
+    }
+
+    /*
+     * InputDevice
+     */
+
     @Override
-    public int getOnWindowX()
+    public InputDeviceType getType()
+    {
+        return DeviceType.MOUSE;
+    }
+
+    /*
+     * InputDevicePointer
+     */
+
+    @Override
+    public int getX()
     {
         return (int) (wx / xRatio);
     }
 
     @Override
-    public int getOnWindowY()
+    public int getY()
     {
         return (int) (wy / yRatio);
     }
@@ -258,6 +297,12 @@ final class MouseImpl
     public int getMoveY()
     {
         return my;
+    }
+
+    @Override
+    public int getClick()
+    {
+        return lastClick;
     }
 
     @Override
@@ -278,7 +323,7 @@ final class MouseImpl
     }
 
     @Override
-    public boolean moved()
+    public boolean hasMoved()
     {
         if (moved)
         {
@@ -302,7 +347,7 @@ final class MouseImpl
         }
         catch (final ArrayIndexOutOfBoundsException exception)
         {
-            Verbose.warning(MouseImpl.class, "mouseReleased", "Button out of range: ", String.valueOf(lastClick));
+            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(lastClick));
         }
     }
 
@@ -318,7 +363,7 @@ final class MouseImpl
         }
         catch (final ArrayIndexOutOfBoundsException exception)
         {
-            Verbose.warning(MouseImpl.class, "mouseReleased", "Button out of range: ", String.valueOf(button));
+            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(button));
         }
     }
 

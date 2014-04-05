@@ -35,7 +35,7 @@ final class WavRoutine
     /** Sound monitor. */
     final Semaphore latch;
     /** Way player reference. */
-    private final WavPlayer player;
+    private final Wav player;
     /** Routine flags. */
     private boolean isRunning;
     /** Playing flag. */
@@ -47,7 +47,7 @@ final class WavRoutine
      * @param player The wav player reference.
      * @param title The sound title.
      */
-    WavRoutine(WavPlayer player, String title)
+    WavRoutine(Wav player, String title)
     {
         super("SFX " + title);
         this.player = player;

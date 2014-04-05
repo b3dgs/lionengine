@@ -21,7 +21,9 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -43,6 +45,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Map reference. */
@@ -56,7 +60,8 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new CameraPlatform(width, height);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        camera = new CameraPlatform(getWidth(), getHeight());
         map = new Map();
     }
 

@@ -200,7 +200,7 @@ public final class Hq3x
     public ImageBuffer getScaledImage()
     {
         final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = EngineImpl.factoryGraphic.createCompatibleImage(width * 3, height * 3,
+        final ImageBuffer image = EngineImpl.factoryGraphic.createImageBuffer(width * 3, height * 3,
                 Transparency.OPAQUE);
         image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
         return image;

@@ -22,7 +22,9 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -44,6 +46,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(640, 480, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Image reference. */
     private final Image image;
     /** Sprite reference. */
@@ -67,6 +71,9 @@ final class Scene
         super(loader, Scene.NATIVE);
         // As we defined our resources directory as this: Media.get("resources", "drawable")
         // Any call to Media.get(...) will load from ./resources/drawable/
+
+        // Load keyboard
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
 
         // Load an image (./resources/drawable/image.png)
         image = Drawable.loadImage(UtilityMedia.get("image.png"));
@@ -124,7 +131,7 @@ final class Scene
     protected void render(Graphic g)
     {
         // Clean screen (as we don't have any background)
-        clearScreen(g);
+        g.clear(0, 0, getWidth(), getHeight());
 
         // Render all resources at specified location
         image.render(g, 0, 0);

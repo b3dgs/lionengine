@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.DeviceType;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
@@ -34,6 +36,8 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
 final class World
         extends WorldGame
 {
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Map reference. */
@@ -49,6 +53,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
+        keyboard = sequence.getInputDevice(DeviceType.KEYBOARD);
         camera = new CameraPlatform(width, height);
         map = new Map();
         factory = new FactoryEntity(map, source.getRate());
@@ -70,7 +75,7 @@ final class World
     @Override
     public void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, width, height);
         map.render(g, camera);
         mario.render(g, camera);
     }

@@ -21,7 +21,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
@@ -146,9 +145,9 @@ public final class ControlPanel
      */
 
     @Override
-    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor, Keyboard keyboard)
+    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor)
     {
-        super.update(extrp, camera, cursor, keyboard);
+        super.update(extrp, camera, cursor);
 
         // Update the single selection if has
         if (lastSingleSelection != null)

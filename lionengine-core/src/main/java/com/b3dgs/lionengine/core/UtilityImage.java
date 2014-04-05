@@ -80,7 +80,7 @@ public final class UtilityImage
     {
         Check.argument(width > 0 && height > 0, "Image size must be strictly positive !");
 
-        return UtilityImage.graphicFactory.createCompatibleImage(width, height, transparency);
+        return UtilityImage.graphicFactory.createImageBuffer(width, height, transparency);
     }
 
     /**

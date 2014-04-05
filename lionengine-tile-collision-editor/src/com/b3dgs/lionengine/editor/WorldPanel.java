@@ -109,7 +109,7 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
      * @param editor The editor reference.
      * @param map The map reference.
      */
-    public WorldPanel(final TileCollisionEditor<C, T> editor, MapTilePlatform<C, T> map)
+    public WorldPanel(TileCollisionEditor<C, T> editor, MapTilePlatform<C, T> map)
     {
         super();
         this.editor = editor;

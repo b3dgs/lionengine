@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.example.game.map;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -38,6 +40,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera. */
     private final CameraGame camera;
     /** Map. */
@@ -55,6 +59,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         camera = new CameraGame();
         map = new Map();
     }
@@ -68,7 +73,7 @@ final class Scene
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
         side = 3;
     }
 
@@ -98,7 +103,7 @@ final class Scene
     @Override
     protected void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, getWidth(), getHeight());
         map.render(g, camera);
     }
 }

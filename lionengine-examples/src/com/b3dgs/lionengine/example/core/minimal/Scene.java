@@ -19,14 +19,16 @@ package com.b3dgs.lionengine.example.core.minimal;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * This is where the game loop is running. A sequence represents a thread handled by the Loader. To link a sequence with
- * another one, a simple call to {@link #end(Sequence)} is necessary. This will terminate the current sequence, and
- * start the linked one.
+ * another one, a simple call to {@link Sequence#end(Class, Object...)} is necessary. This will terminate the current
+ * sequence, and start the linked one.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -36,6 +38,9 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+
     /**
      * Constructor.
      * 
@@ -44,6 +49,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
     }
 
     /*

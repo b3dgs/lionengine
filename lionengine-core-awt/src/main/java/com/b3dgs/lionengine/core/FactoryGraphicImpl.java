@@ -168,9 +168,15 @@ final class FactoryGraphicImpl
      */
 
     @Override
-    public Screen createScreen(Config config)
+    public Renderer createRenderer(Config config)
     {
-        return new ScreenImpl(config);
+        return new RendererImpl(config);
+    }
+
+    @Override
+    public Screen createScreen(Renderer renderer, Config config)
+    {
+        return new ScreenImpl(renderer, config);
     }
 
     @Override
@@ -186,7 +192,7 @@ final class FactoryGraphicImpl
     }
 
     @Override
-    public ImageBuffer createCompatibleImage(int width, int height, Transparency transparency)
+    public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
         final BufferedImage buffer = FactoryGraphicImpl.CONFIG.createCompatibleImage(width, height,
                 FactoryGraphicImpl.getTransparency(transparency));

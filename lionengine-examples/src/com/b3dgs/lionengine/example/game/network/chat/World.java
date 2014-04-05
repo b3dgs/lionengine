@@ -99,7 +99,7 @@ abstract class World<N extends NetworkedWorld>
     @Override
     public void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, width, height);
         text.draw(g, width, 0, Align.RIGHT, "Bandwidth=" + getBandwidth() + "byte/sec");
         text.draw(g, 0, 0, "Number of connected clients: " + clients.size());
         text.draw(g, 0, 12, "Clients:");

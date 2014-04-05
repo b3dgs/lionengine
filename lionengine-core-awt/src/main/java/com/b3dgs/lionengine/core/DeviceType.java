@@ -17,44 +17,38 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.audio.Midi;
-import com.b3dgs.lionengine.audio.Wav;
-
 /**
- * Audio factory implementation.
+ * List of available input devices.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryAudioImpl
-        implements FactoryAudio
+public enum DeviceType implements InputDeviceType
 {
+    /** Mouse input device. */
+    MOUSE(Mouse.class),
+    /** Keyboard input device. */
+    KEYBOARD(Keyboard.class);
+
+    /** The target class. */
+    private final Class<? extends InputDevice> target;
+
     /**
      * Constructor.
+     * 
+     * @param target The target class.
      */
-    FactoryAudioImpl()
+    private DeviceType(Class<? extends InputDevice> target)
     {
-        // Nothing to do
+        this.target = target;
     }
 
     /*
-     * FactoryInput
+     * InputDeviceType
      */
 
     @Override
-    public Midi createAudioMidi(Media media)
+    public Class<? extends InputDevice> getTargetClass()
     {
-        return new MidiPlayer(media);
-    }
-
-    @Override
-    public Wav createAudioWav(Media media)
-    {
-        return new WavPlayer(media);
-    }
-
-    @Override
-    public Wav createAudioWav(Media media, int maxSimultaneous)
-    {
-        return new WavPlayer(media, maxSimultaneous);
+        return target;
     }
 }

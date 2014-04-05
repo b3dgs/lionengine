@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.core;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -23,15 +23,10 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Config;
-import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.game.Cursor;
 
 /**
  * Test the cursor class.
@@ -57,11 +52,7 @@ public class CursorTest
     {
         Engine.start("BarTest", Version.create(1, 0, 0), "resources");
         final Graphic g = UtilityImage.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        final Scene scene = new Scene(loader);
-        final Mouse mouse = scene.getMouse();
+        final Mouse mouse = new Mouse();
 
         final Resolution output0 = new Resolution(320, 240, 60);
         try
@@ -80,12 +71,10 @@ public class CursorTest
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);
 
-        cursor.setLockMouse(false);
         cursor.update(1.0);
         cursor.setSyncMode(true);
         Assert.assertTrue(cursor.isSynchronized());
         cursor.update(1.0);
-        cursor.setLockMouse(true);
         cursor.setSyncMode(false);
         Assert.assertTrue(!cursor.isSynchronized());
         cursor.update(1.0);

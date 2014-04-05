@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.platform.tile;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -67,8 +67,8 @@ final class Entity
     {
         if (mouse.hasClicked(Click.LEFT))
         {
-            mouseX = mouse.getOnWindowX();
-            mouseY = mouse.getOnWindowY();
+            mouseX = mouse.getX();
+            mouseY = mouse.getY();
         }
     }
 

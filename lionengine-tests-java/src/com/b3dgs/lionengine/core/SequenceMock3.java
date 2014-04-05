@@ -37,7 +37,7 @@ public class SequenceMock3
     {
         super(loader, new Resolution(640, 480, 60));
         setExtrapolated(true);
-        setMouseVisible(true);
+        setSystemCursorVisible(true);
     }
 
     @Override

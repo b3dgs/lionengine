@@ -22,7 +22,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.KeyboardListener;
+import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageChat;
 
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessageChat;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkChat
-        implements Networkable, KeyboardListener
+        implements Networkable, InputDeviceKeyListener
 {
     /** Networkable model. */
     private final NetworkableModel networkable;

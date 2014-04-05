@@ -22,7 +22,9 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
@@ -39,6 +41,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard. */
+    private final Keyboard keyboard;
     /** Text drawer. */
     private final Text text;
 
@@ -50,6 +54,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
@@ -61,7 +66,7 @@ final class Scene
     protected void load()
     {
         text.setText("Hello");
-        text.setLocation(width / 2, height / 2 - 8);
+        text.setLocation(getWidth() / 2, getHeight() / 2 - 8);
         text.setAlign(Align.CENTER);
     }
 
@@ -80,6 +85,6 @@ final class Scene
         // Simple rendering
         text.render(g);
         // Direct rendering
-        text.draw(g, width / 2, height / 2 + 8, Align.CENTER, "World");
+        text.draw(g, getWidth() / 2, getHeight() / 2 + 8, Align.CENTER, "World");
     }
 }

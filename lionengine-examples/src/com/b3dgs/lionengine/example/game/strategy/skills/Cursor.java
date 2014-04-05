@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.game.strategy.skills;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
@@ -45,9 +45,9 @@ public final class Cursor
     private ColorRgba boxColor;
 
     /**
-     * {@link CursorStrategy#CursorStrategy(Mouse, CameraStrategy, Resolution, MapTile, Media...)}
+     * {@link CursorStrategy#CursorStrategy(InputDevicePointer, CameraStrategy, Resolution, MapTile, Media...)}
      */
-    Cursor(Mouse mouse, CameraStrategy camera, Resolution source, MapTile<?, ?> map, Media... cursor)
+    Cursor(InputDevicePointer mouse, CameraStrategy camera, Resolution source, MapTile<?, ?> map, Media... cursor)
     {
         super(mouse, camera, source, map, cursor);
         type = CursorType.POINTER;

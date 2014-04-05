@@ -17,38 +17,39 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.audio.Midi;
-import com.b3dgs.lionengine.audio.Wav;
-
 /**
- * Represents the audio factory.
+ * The renderer implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface FactoryAudio
+final class RendererImpl
+        extends Renderer
 {
     /**
-     * Create midi.
+     * Constructor.
      * 
-     * @param media The music to play.
-     * @return The created midi.
+     * @param config The config reference.
      */
-    Midi createAudioMidi(Media media);
+    RendererImpl(Config config)
+    {
+        super(config, "AWT");
+    }
 
-    /**
-     * Create wav.
-     * 
-     * @param media The sound to play.
-     * @return The created wav.
+    /*
+     * Renderer
      */
-    Wav createAudioWav(Media media);
 
-    /**
-     * Create wav.
-     * 
-     * @param media The sound to play.
-     * @param maxSimultaneous The maximum simultaneous sounds.
-     * @return The created wav.
-     */
-    Wav createAudioWav(Media media, int maxSimultaneous);
+    @Override
+    protected void asyncLoad(final Sequence nextSequence)
+    {
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                nextSequence.loadInternal();
+            }
+        };
+        thread.start();
+    }
 }

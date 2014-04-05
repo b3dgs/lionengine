@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.example.game.platform.background;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMath;
@@ -38,6 +40,8 @@ final class Scene
     /** Native resolution. */
     public static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera. */
     private final CameraGame camera;
     /** Background. */
@@ -55,9 +59,10 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         camera = new CameraGame();
-        background = new Swamp(source, 1.0, 1.0);
-        foreground = new Foreground(source, 1.0, 1.0);
+        background = new Swamp(getConfig().getSource(), 1.0, 1.0);
+        foreground = new Foreground(getConfig().getSource(), 1.0, 1.0);
     }
 
     /*
@@ -67,7 +72,7 @@ final class Scene
     @Override
     protected void load()
     {
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
         y = 230;
     }
 

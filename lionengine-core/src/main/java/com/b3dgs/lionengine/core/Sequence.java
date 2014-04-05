@@ -17,21 +17,15 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.lang.Thread.State;
 import java.util.concurrent.Semaphore;
 
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Transparency;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
- * screen used, the current configuration, input references ({@link Keyboard}, {@link Mouse}), and it includes a
- * standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronized to a
+ * screen used, the current configuration, input references ({@link #getInputDevice(InputDeviceType)}), and it includes
+ * a standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronized to a
  * specified frame rate.
  * <p>
  * Here a blank sequence implementation:
@@ -57,10 +51,6 @@ import com.b3dgs.lionengine.Transparency;
  *     &#064;Override
  *     protected void update(double extrp)
  *     {
- *         if (keyboard.isPressed(Key.ESCAPE))
- *         {
- *             end();
- *         }
  *         // Update
  *     }
  * 
@@ -75,114 +65,156 @@ import com.b3dgs.lionengine.Transparency;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Loader
  * @see Resolution
- * @see Graphic
+ * @see InputDevice
  */
 public abstract class Sequence
 {
-    /** Error message loader. */
-    private static final String ERROR_LOADER = "Loader must not be null !";
-    /** Error message loader. */
-    private static final String ERROR_RESOLUTION = "Resolution must not be null !";
-    /** Error message loader. */
-    private static final String ERROR_SEQUENCE = "Sequence must not be null !";
-    /** One nano second. */
-    private static final long TIME_LONG = 1000000000L;
-    /** One nano second. */
-    private static final double TIME_DOUBLE = 1000000000.0;
-    /** One millisecond. */
-    private static final long TIME_INT = 1000000L;
-    /** Extrapolation standard. */
-    private static final double EXTRP = 1.0;
-
-    /** Keyboard reference. */
-    protected final Keyboard keyboard;
-    /** Mouse reference. */
-    protected final Mouse mouse;
-    /** Loader reference. */
-    protected final Loader loader;
-    /** Synchronize two sequences. */
-    private final Semaphore semaphore;
-    /** Config reference. */
-    private final Config config;
-    /** Screen reference. */
-    private final Screen screen;
-    /** Output resolution reference. */
-    private final Resolution output;
-    /** Filter reference. */
-    private final Filter filter;
-    /** Filter graphic. */
-    private final Graphic graphic;
-    /** Loop time for desired rate. */
-    private final long frameDelay;
-    /** Sequence thread. */
-    private final SequenceThread thread;
-    /** Has sync. */
-    private final boolean sync;
-    /** Source resolution reference. */
-    protected Resolution source;
-    /** Screen width. */
-    protected int width;
-    /** Screen height. */
-    protected int height;
-    /** Image buffer. */
-    private ImageBuffer buf;
-    /** Graphic buffer. */
-    private Graphic gbuf;
-    /** Hq3x use flag. */
-    private int hqx;
-    /** Filter used. */
-    private Transform op;
-    /** Direct rendering. */
-    private boolean directRendering;
-    /** Previous sequence pointer. */
-    private Sequence previousSequence;
-    /** Next sequence pointer. */
-    private Sequence nextSequence;
-    /** Extrapolation flag. */
-    private boolean extrapolated;
-    /** Current frame rate. */
-    private double currentFrameRate;
-    /** Thread running flag. */
-    private boolean isRunning;
-    /** Will stop flag. */
-    private boolean willStop;
+    /** Async loaded semaphore. */
+    final Semaphore loadedSemaphore;
+    /** Native resolution. */
+    final Resolution resolution;
+    /** Loader reference. Must be used only to create new sequence by giving it as argument. */
+    private final Loader loader;
+    /** Renderer. */
+    private final Renderer renderer;
+    /** Rendering width. */
+    private int width;
+    /** Rendering height. */
+    private int height;
+    /** Loaded state. */
+    private boolean loaded;
 
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
      * @param resolution The resolution source reference.
+     * @param loader The loader reference.
      */
-    public Sequence(final Loader loader, Resolution resolution)
+    public Sequence(Loader loader, Resolution resolution)
     {
-        Check.notNull(loader, Sequence.ERROR_LOADER);
-        Check.notNull(resolution, Sequence.ERROR_RESOLUTION);
-
-        // Initialize
         this.loader = loader;
-        semaphore = new Semaphore(0);
-        config = loader.config;
-        screen = loader.screen;
-        keyboard = loader.keyboard;
-        mouse = loader.mouse;
-        output = config.getOutput();
-        filter = config.getFilter();
-        sync = config.isWindowed() && output.getRate() > 0;
-        graphic = EngineImpl.factoryGraphic.createGraphic();
-        extrapolated = true;
+        this.resolution = resolution;
+        loadedSemaphore = new Semaphore(0);
+        renderer = loader.renderer;
+        renderer.getConfig().setSource(resolution);
+        width = resolution.getWidth();
+        height = resolution.getHeight();
+    }
 
-        // Time needed for a loop to reach desired rate
-        if (output.getRate() == 0)
-        {
-            frameDelay = 0;
-        }
-        else
-        {
-            frameDelay = Sequence.TIME_LONG / output.getRate();
-        }
+    /**
+     * Start the next sequence and wait for current sequence to end before next sequence continues. This function should
+     * be used to synchronize two sequences (eg: load a next sequence while being in a menu). Do not forget to call
+     * {@link #end()} in order to give control to the next sequence. The next sequence should override
+     * {@link #onLoaded(double, Graphic)} for special load just before enter in the loop.
+     * 
+     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
+     * @param nextSequence The next sequence reference (must not be <code>null</code>).
+     * @param arguments The arguments list.
+     */
+    public final void start(boolean wait, Class<? extends Sequence> nextSequence, Object... arguments)
+    {
+        renderer.start(Loader.createSequence(nextSequence, loader, arguments), wait);
+    }
 
-        setResolution(resolution);
-        thread = new SequenceThread(this);
+    /**
+     * Terminate sequence.
+     */
+    public final void end()
+    {
+        renderer.end();
+    }
+
+    /**
+     * Terminate sequence, and set the next sequence.
+     * 
+     * @param nextSequence The next sequence reference.
+     * @param arguments The sequence arguments list if needed by its constructor.
+     */
+    public final void end(Class<? extends Sequence> nextSequence, Object... arguments)
+    {
+        renderer.end(Loader.createSequence(nextSequence, loader, arguments));
+    }
+
+    /**
+     * Add a key listener.
+     * 
+     * @param listener The listener to add.
+     */
+    public final void addKeyListener(InputDeviceKeyListener listener)
+    {
+        renderer.addKeyListener(listener);
+    }
+
+    /**
+     * Set the system cursor visibility.
+     * 
+     * @param visible <code>true</code> if visible, <code>false</code> else.
+     */
+    public final void setSystemCursorVisible(boolean visible)
+    {
+        renderer.setSystemCursorVisible(visible);
+    }
+
+    /**
+     * Set the extrapolation flag.
+     * 
+     * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
+     */
+    public final void setExtrapolated(boolean extrapolated)
+    {
+        renderer.setExtrapolated(extrapolated);
+    }
+
+    /**
+     * Get the input device instance from its type.
+     * 
+     * @param <T> The input device.
+     * @param type The input device type.
+     * @return The input instance reference, <code>null</code> if not found.
+     */
+    public final <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    {
+        return renderer.getInputDevice(type);
+    }
+
+    /**
+     * Get the configuration.
+     * 
+     * @return The configuration.
+     */
+    public final Config getConfig()
+    {
+        return renderer.getConfig();
+    }
+
+    /**
+     * Get the rendering width.
+     * 
+     * @return The rendering width.
+     */
+    public final int getWidth()
+    {
+        return width;
+    }
+
+    /**
+     * Get the rendering height.
+     * 
+     * @return The rendering height.
+     */
+    public final int getHeight()
+    {
+        return height;
+    }
+
+    /**
+     * Get current frame rate (number of image per second).
+     * 
+     * @return The current number of image per second.
+     */
+    public final int getFps()
+    {
+        return renderer.getFps();
     }
 
     /**
@@ -192,67 +224,7 @@ public abstract class Sequence
      */
     protected final void setResolution(Resolution newSource)
     {
-        Check.notNull(newSource, Sequence.ERROR_RESOLUTION);
-
-        config.setSource(newSource);
-        if (mouse != null)
-        {
-            mouse.setConfig(config);
-        }
-        source = config.getSource();
-
-        // Scale factor
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = EngineImpl.factoryGraphic.createTransform();
-
-        // Filter level
-        switch (filter)
-        {
-            case HQ2X:
-                hqx = 2;
-                transform.scale(scaleX / 2, scaleY / 2);
-                break;
-            case HQ3X:
-                hqx = 3;
-                transform.scale(scaleX / 3, scaleY / 3);
-                break;
-            default:
-                hqx = 0;
-                transform.scale(scaleX, scaleY);
-                break;
-        }
-
-        // Store source size
-        width = source.getWidth();
-        height = source.getHeight();
-
-        // Standard rendering
-        if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
-        {
-            buf = null;
-            gbuf = null;
-            transform = null;
-            graphic.setGraphic(gbuf);
-        }
-        // Scaled rendering
-        else
-        {
-            buf = EngineImpl.factoryGraphic.createCompatibleImage(width, height, Transparency.OPAQUE);
-            gbuf = buf.createGraphic();
-            if (hqx > 1 || filter == Filter.NONE)
-            {
-                transform.setInterpolation(false);
-            }
-            else
-            {
-                transform.setInterpolation(true);
-            }
-            graphic.setGraphic(gbuf.getGraphic());
-        }
-        op = transform;
-        directRendering = hqx == 0 && (op == null || buf == null);
-        onResolutionChanged(width, height, source.getRate());
+        renderer.setResolution(newSource);
     }
 
     /**
@@ -263,155 +235,17 @@ public abstract class Sequence
     /**
      * Update sequence.
      * 
-     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation. Example: x
-     *            += 5.0 * extrp
+     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation.
+     *            Example: x += 5.0 * extrp
      */
-    protected abstract void update(final double extrp);
+    protected abstract void update(double extrp);
 
     /**
      * Render sequence.
      * 
      * @param g The graphic output.
      */
-    protected abstract void render(final Graphic g);
-
-    /**
-     * Terminate sequence, close screen, and start launcher if exists.
-     */
-    public final void end()
-    {
-        end(nextSequence);
-    }
-
-    /**
-     * Terminate sequence, and set the next sequence.
-     * 
-     * @param nextSequence The next sequence reference.
-     */
-    public final void end(final Sequence nextSequence)
-    {
-        this.nextSequence = nextSequence;
-        isRunning = false;
-        willStop = true;
-    }
-
-    /**
-     * Start the next sequence, call the {@link #load()} function, and wait for current sequence to end before next
-     * sequence continues. This function should be used to synchronize two sequences (eg: load a next sequence while
-     * being in a menu). Do not forget to call {@link #end()} in order to give control to the next sequence. The next
-     * sequence should override {@link #onLoaded(double, Graphic)} for special load just before enter in the loop.
-     * 
-     * @param nextSequence The next sequence reference (must not be <code>null</code>).
-     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
-     */
-    public final void start(final Sequence nextSequence, boolean wait)
-    {
-        Check.notNull(nextSequence, Sequence.ERROR_SEQUENCE);
-
-        this.nextSequence = nextSequence;
-        nextSequence.previousSequence = this;
-        nextSequence.setTitle(nextSequence.getClass().getName());
-        nextSequence.start();
-        if (wait)
-        {
-            try
-            {
-                nextSequence.semaphore.acquire();
-            }
-            catch (final InterruptedException exception)
-            {
-                Thread.currentThread().interrupt();
-                Verbose.exception(Sequence.class, "start", exception);
-            }
-        }
-    }
-
-    /**
-     * Add a key listener.
-     * 
-     * @param listener The listener to add.
-     */
-    public final void addKeyListener(KeyboardListener listener)
-    {
-        screen.addKeyListener(listener);
-    }
-
-    /**
-     * Set the mouse visibility.
-     * 
-     * @param visible The visibility state.
-     */
-    public final void setMouseVisible(boolean visible)
-    {
-        if (visible)
-        {
-            screen.showCursor();
-        }
-        else
-        {
-            screen.hideCursor();
-        }
-    }
-
-    /**
-     * Set the extrapolation flag.
-     * 
-     * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
-     */
-    public final void setExtrapolated(boolean extrapolated)
-    {
-        this.extrapolated = extrapolated;
-    }
-
-    /**
-     * Get current frame rate (number of image per second).
-     * 
-     * @return The current number of image per second.
-     */
-    public final int getFps()
-    {
-        return (int) currentFrameRate;
-    }
-
-    /**
-     * Get the configuration.
-     * 
-     * @return The configuration.
-     */
-    public Config getConfig()
-    {
-        return config;
-    }
-
-    /**
-     * Get the keyboard reference.
-     * 
-     * @return The keyboard reference.
-     */
-    public Keyboard getKeyboard()
-    {
-        return keyboard;
-    }
-
-    /**
-     * Get the mouse reference.
-     * 
-     * @return The mouse reference.
-     */
-    public Mouse getMouse()
-    {
-        return mouse;
-    }
-
-    /**
-     * Clear the screen.
-     * 
-     * @param g The graphics output.
-     */
-    protected final void clearScreen(Graphic g)
-    {
-        g.clear(source);
-    }
+    protected abstract void render(Graphic g);
 
     /**
      * Called when the sequence has been loaded. Does nothing by default.
@@ -438,7 +272,7 @@ public abstract class Sequence
 
     /**
      * Called when sequence is closing. Should be used in case on special loading (such as music starting) when
-     * {@link #start(Sequence, boolean)} has been used by another sequence. Does nothing by default.
+     * {@link #start(boolean, Class, Object...)} has been used by another sequence. Does nothing by default.
      * 
      * @param hasNextSequence <code>true</code> if there is a next sequence, <code>false</code> else (then application
      *            will end definitely).
@@ -465,204 +299,40 @@ public abstract class Sequence
     }
 
     /**
-     * Start sequence.
+     * Start the sequence and load it.
      */
     final void start()
     {
-        thread.start();
+        if (!loaded)
+        {
+            load();
+            loaded = true;
+        }
     }
 
     /**
-     * Run sequence.
+     * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
+     * to synchronize loading process when it is called asynchronously.
      */
-    final void run()
+    final void loadInternal()
     {
-        // Load sequence
-        load();
-
-        // Check previous sequence
-        if (previousSequence != null)
+        if (!loaded)
         {
-            notifyPreviousSequenceAndWait();
+            load();
+            loaded = true;
+            loadedSemaphore.release();
         }
-
-        // Prepare sequence to be started
-        double extrp = Sequence.EXTRP;
-        long updateFpsTimer = 0L;
-        currentFrameRate = output.getRate();
-        screen.requestFocus();
-        final int mcx = screen.getLocationX() + output.getWidth() / 2;
-        final int mcy = screen.getLocationY() + output.getHeight() / 2;
-        if (mouse != null)
-        {
-            mouse.setCenter(mcx, mcy);
-        }
-        onLoaded(extrp, screen.getGraphic());
-
-        // Main loop
-        isRunning = true;
-        while (isRunning)
-        {
-            final long lastTime = System.nanoTime();
-            mouse.update();
-            if (screen.isReady())
-            {
-                update(extrp);
-                screen.preUpdate();
-                preRender(screen.getGraphic());
-                screen.update();
-            }
-            sync(System.nanoTime() - lastTime);
-
-            // Perform extrapolation and frame rate calculation
-            final long currentTime = System.nanoTime();
-            if (extrapolated)
-            {
-                extrp = source.getRate() / Sequence.TIME_DOUBLE * (currentTime - lastTime);
-            }
-            else
-            {
-                extrp = Sequence.EXTRP;
-            }
-            if (currentTime - updateFpsTimer > Sequence.TIME_LONG)
-            {
-                currentFrameRate = Sequence.TIME_DOUBLE / (currentTime - lastTime);
-                updateFpsTimer = currentTime;
-            }
-            if (willStop && nextSequence != null)
-            {
-                waitForNextSequenceWaiting();
-            }
-            if (!EngineImpl.started)
-            {
-                isRunning = false;
-            }
-        }
-        onTerminate(nextSequence != null);
-        semaphore.release();
-        loader.semaphore.release();
     }
 
     /**
-     * Set thread title.
+     * Set the resolution. Must only be called by {@link Renderer#setResolution(Resolution)}.
      * 
-     * @param title The title.
+     * @param width The new screen width.
+     * @param height The new screen height.
      */
-    final void setTitle(String title)
+    final void setResolution(int width, int height)
     {
-        thread.setName(title);
-    }
-
-    /**
-     * Get next sequence.
-     * 
-     * @return The next sequence.
-     */
-    final Sequence getNextSequence()
-    {
-        return nextSequence;
-    }
-
-    /**
-     * Get the started state.
-     * 
-     * @return <code>true</code> if started, <code>false</code> else.
-     */
-    final boolean isStarted()
-    {
-        return thread.isAlive();
-    }
-
-    /**
-     * Notify the previous sequence and wait for its termination.
-     */
-    private void notifyPreviousSequenceAndWait()
-    {
-        semaphore.release();
-        synchronized (previousSequence)
-        {
-            try
-            {
-                previousSequence.semaphore.acquire();
-            }
-            catch (final InterruptedException exception)
-            {
-                Thread.currentThread().interrupt();
-                Verbose.exception(Sequence.class, "run", exception);
-            }
-        }
-    }
-
-    /**
-     * Active wait for the next sequence to wait for this sequence before allow ending.
-     */
-    private void waitForNextSequenceWaiting()
-    {
-        if (!isRunning && nextSequence.isStarted())
-        {
-            isRunning = true;
-        }
-        if (nextSequence.thread.getState() == State.WAITING)
-        {
-            isRunning = false;
-        }
-    }
-
-    /**
-     * Render handler.
-     * 
-     * @param g The graphic output.
-     */
-    private void preRender(final Graphic g)
-    {
-        if (directRendering)
-        {
-            render(g);
-        }
-        else
-        {
-            render(graphic);
-            switch (hqx)
-            {
-                case 2:
-                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                case 3:
-                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                default:
-                    g.drawImage(buf, op, 0, 0);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Sync frame rate to desired if possible.
-     * 
-     * @param time The update tile.
-     */
-    private void sync(final long time)
-    {
-        // Sync only if windowed and has a desired rate
-        if (sync)
-        {
-            try
-            {
-                // Time to wait
-                final long wait = frameDelay - time;
-
-                // Need to wait
-                if (wait > 0)
-                {
-                    Thread.sleep(wait / Sequence.TIME_INT, (int) (wait % Sequence.TIME_INT));
-                }
-            }
-            catch (final InterruptedException exception)
-            {
-                Thread.currentThread().interrupt();
-                Verbose.exception(Sequence.class, "sync", exception);
-            }
-        }
+        this.width = width;
+        this.height = height;
     }
 }

@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.util.concurrent.Semaphore;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 
 /**
- * Engine starter, need to be called for sequence selection and screen initializer. It already handles a screen using a
- * specified configuration. Any implemented sequence has to be added into the loader. It just needs a single instance, a
- * first sequence reference, and a call to start(), in the main.
+ * Engine starter, need to be called only one time with the first {@link Sequence} to start, by using
+ * {@link #start(Class)}.
  * <p>
  * Example:
  * </p>
@@ -37,38 +38,101 @@ import com.b3dgs.lionengine.Mouse;
  * final Resolution output = new Resolution(640, 480, 60);
  * final Config config = new Config(output, 16, true);
  * final Loader loader = new Loader(config);
- * loader.start(new Scene(loader));
+ * loader.start(Scene.class);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Config
- * @see Sequence
  */
 public final class Loader
 {
     /** Error message config. */
     private static final String ERROR_CONFIG = "Configuration must not be null !";
+    /** Error message sequence. */
+    private static final String ERROR_SEQUENCE = "Sequence must not be null !";
     /** Error message already started. */
     private static final String ERROR_STARTED = "Loader has already been started !";
-    /** Error message sequence interrupted. */
-    private static final String ERROR_SEQUENCE = "Sequence badly interrupted !";
 
-    /** Config reference. */
-    final Config config;
-    /** Screen reference. */
-    final Screen screen;
-    /** Keyboard reference. */
-    final Keyboard keyboard;
-    /** Mouse reference. */
-    final Mouse mouse;
-    /** Synchronize with sequence. */
-    final Semaphore semaphore;
-    /** Thread loader. */
-    final LoaderThread thread;
-    /** Next sequence pointer. */
-    private Sequence nextSequence;
-    /** Started flag. */
-    private boolean started;
+    /**
+     * Create a sequence from its class.
+     * 
+     * @param nextSequence The next sequence class.
+     * @param loader The loader reference.
+     * @param arguments The arguments list.
+     * @return The sequence instance, <code>null</code> if none.
+     */
+    static Sequence createSequence(Class<? extends Sequence> nextSequence, Loader loader, Object... arguments)
+    {
+        try
+        {
+            final Constructor<Sequence> constructor = (Constructor<Sequence>) nextSequence
+                    .getDeclaredConstructor(Loader.getParamTypes(loader, arguments));
+            final boolean accessible = constructor.isAccessible();
+            if (!accessible)
+            {
+                constructor.setAccessible(true);
+            }
+
+            final Sequence sequence = constructor.newInstance(Loader.getParams(loader, arguments));
+            if (constructor.isAccessible() != accessible)
+            {
+                constructor.setAccessible(accessible);
+            }
+
+            return sequence;
+        }
+        catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException exception)
+        {
+            Verbose.exception(Loader.class, "createSequence", exception);
+            return null;
+        }
+    }
+
+    /**
+     * Get the parameter types as array.
+     * 
+     * @param loader The loader reference.
+     * @param arguments The arguments list.
+     * @return The arguments array.
+     */
+    private static Class<?>[] getParamTypes(Loader loader, Object... arguments)
+    {
+        final List<Object> types = new ArrayList<>(1);
+        types.add(loader.getClass());
+
+        for (final Object argument : arguments)
+        {
+            types.add(argument.getClass());
+        }
+
+        final Class<?>[] typesArray = new Class<?>[types.size()];
+        return types.toArray(typesArray);
+    }
+
+    /**
+     * Get the parameter as array.
+     * 
+     * @param loader The loader reference.
+     * @param arguments The arguments list.
+     * @return The arguments array.
+     */
+    private static Object[] getParams(Loader loader, Object... arguments)
+    {
+        final List<Object> params = new ArrayList<>(1);
+        params.add(loader);
+        params.addAll(Arrays.asList(arguments));
+
+        final Object[] paramsArray = new Object[params.size()];
+        return params.toArray(paramsArray);
+    }
+
+    /** Renderer instance. */
+    final Renderer renderer;
 
     /**
      * Constructor.
@@ -78,82 +142,24 @@ public final class Loader
     public Loader(Config config)
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
-
-        this.config = config;
-        semaphore = new Semaphore(0);
-        screen = EngineImpl.factoryGraphic.createScreen(config);
-        keyboard = EngineImpl.factoryInput.createKeyboard();
-        mouse = EngineImpl.factoryInput.createMouse();
-        screen.addKeyboard(keyboard);
-        screen.addMouse(mouse);
-        thread = new LoaderThread(this);
-        nextSequence = null;
+        renderer = EngineImpl.factoryGraphic.createRenderer(config);
     }
 
     /**
-     * Start the loader. Has to be called only one time.
+     * Start the loader with an initial sequence. Has to be called only one time.
      * 
-     * @param sequence The the next sequence to start (can be <code>null</code>).
+     * @param sequence The the next sequence to start (must not be <code>null</code>).
      */
-    public void start(Sequence sequence)
+    public void start(Class<? extends Sequence> sequence)
     {
-        if (!started)
+        Check.notNull(sequence, Loader.ERROR_SEQUENCE);
+        if (!renderer.isAlive())
         {
-            nextSequence = sequence;
-            screen.start();
-            started = true;
-            thread.start();
+            renderer.startFirstSequence(sequence, this);
         }
         else
         {
             throw new LionEngineException(Loader.ERROR_STARTED);
         }
-    }
-
-    /**
-     * Run loader.
-     */
-    void run()
-    {
-        while (nextSequence != null)
-        {
-            // Wait for screen
-            while (!screen.isReady())
-            {
-                try
-                {
-                    Thread.sleep(100);
-                }
-                catch (final InterruptedException exception)
-                {
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-            // Select next sequence
-            final Sequence sequence = nextSequence;
-            screen.setSequence(sequence);
-            final String sequenceName = sequence.getClass().getName();
-            Verbose.info("Starting sequence ", sequenceName);
-            if (!sequence.isStarted())
-            {
-                sequence.setTitle(sequenceName);
-                sequence.start();
-            }
-
-            // Wait for sequence end
-            try
-            {
-                semaphore.acquire();
-            }
-            catch (final InterruptedException exception)
-            {
-                throw new LionEngineException(exception, Loader.ERROR_SEQUENCE);
-            }
-            nextSequence = sequence.getNextSequence();
-            Verbose.info("Sequence ", sequence.getClass().getName(), " terminated");
-        }
-        screen.dispose();
-        EngineImpl.terminate();
     }
 }

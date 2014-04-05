@@ -40,7 +40,7 @@ public class SequenceMock2
         super(loader, new Resolution(320, 240, 60));
         setResolution(new Resolution(100, 100, 60));
         setExtrapolated(true);
-        setMouseVisible(false);
+        setSystemCursorVisible(false);
     }
 
     @Override
@@ -48,20 +48,18 @@ public class SequenceMock2
     {
         Assert.assertTrue(getFps() >= 0);
         Assert.assertNotNull(getConfig());
-        Assert.assertNotNull(getKeyboard());
-        Assert.assertNotNull(getMouse());
     }
 
     @Override
     protected void update(double extrp)
     {
-        start(new SequenceMock3(loader), false);
+        start(false, SequenceMock3.class);
         end();
     }
 
     @Override
     protected void render(Graphic g)
     {
-        clearScreen(g);
+        g.clear(0, 0, getWidth(), getHeight());
     }
 }

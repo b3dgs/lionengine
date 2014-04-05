@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.snippet;
 
 import org.junit.Assert;
 
-import com.b3dgs.lionengine.audio.AudioSc68;
-import com.b3dgs.lionengine.audio.Sc68;
+import com.b3dgs.lionengine.core.AudioSc68;
+import com.b3dgs.lionengine.core.Sc68;
 import com.b3dgs.lionengine.core.UtilityMedia;
 
 @SuppressWarnings("all")

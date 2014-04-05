@@ -20,8 +20,11 @@ package com.b3dgs.lionengine.example.game.effect;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.CameraGame;
 
@@ -34,6 +37,10 @@ import com.b3dgs.lionengine.game.CameraGame;
 final class Scene
         extends Sequence
 {
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Mouse reference. */
+    private final Mouse mouse;
     /** Camera. */
     private final CameraGame camera;
     /** Factory effect. */
@@ -49,10 +56,12 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
         camera = new CameraGame();
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
     }
 
     /*
@@ -76,7 +85,7 @@ final class Scene
         if (mouse.hasClicked(Click.LEFT))
         {
             final Effect effect = factoryEffect.create(EffectType.EXPLODE);
-            effect.start(mouse.getOnWindowX(), height - mouse.getOnWindowY());
+            effect.start(mouse.getX(), getHeight() - mouse.getY());
             handlerEffect.add(effect);
         }
 
@@ -86,7 +95,7 @@ final class Scene
     @Override
     protected void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, getWidth(), getHeight());
         handlerEffect.render(g);
     }
 }

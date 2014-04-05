@@ -27,7 +27,6 @@ import java.awt.image.BufferedImage;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.GradientColor;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Resolution;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -62,7 +61,7 @@ final class GraphicImpl
      */
     GraphicImpl()
     {
-        // Nothing to do
+        g = null;
     }
 
     /**
@@ -78,12 +77,6 @@ final class GraphicImpl
     /*
      * Graphic
      */
-
-    @Override
-    public void clear(Resolution resolution)
-    {
-        g.clearRect(0, 0, resolution.getWidth(), resolution.getHeight());
-    }
 
     @Override
     public void clear(int x, int y, int width, int height)

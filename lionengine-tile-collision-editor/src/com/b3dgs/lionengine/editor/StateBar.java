@@ -45,7 +45,7 @@ public final class StateBar<C extends Enum<C> & CollisionTile, T extends TilePla
      * 
      * @param editor The editor reference.
      */
-    public StateBar(final TileCollisionEditor<C, T> editor)
+    public StateBar(TileCollisionEditor<C, T> editor)
     {
         this.editor = editor;
         final Dimension size = new Dimension(getWidth(), 16);

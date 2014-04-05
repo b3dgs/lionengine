@@ -21,7 +21,9 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
@@ -40,6 +42,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Map reference. */
     private final Map map;
     /** Fog of war reference. */
@@ -63,6 +67,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         map = new Map();
         fogOfWar = new FogOfWar();
         camera = new CameraStrategy(map);
@@ -83,7 +88,7 @@ final class Scene
         fogOfWar.create(map);
         factoryEntity.load();
 
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
         camera.setSensibility(30, 30);
         camera.setBorders(map);
 

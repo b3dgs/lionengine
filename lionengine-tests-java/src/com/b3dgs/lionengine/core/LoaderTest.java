@@ -72,7 +72,15 @@ public class LoaderTest
         Engine.start("LoaderTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(320, 240, 60), 32, true);
         final Loader loader = new Loader(config);
-        loader.start(null);
+        try
+        {
+            loader.start(null);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
         Engine.terminate();
         try
         {
@@ -96,8 +104,8 @@ public class LoaderTest
         Engine.start("LoaderTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(320, 240, 60), 32, true);
         final Loader loader = new Loader(config);
-        loader.start(new SequenceMock(loader));
-        loader.thread.join();
+        loader.start(SequenceMock.class);
+        loader.renderer.join();
     }
 
     /**
@@ -111,8 +119,8 @@ public class LoaderTest
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(640, 480, 0), 16, true, Filter.BILINEAR);
         final Loader loader = new Loader(config);
-        loader.start(new SequenceMock(loader));
-        loader.thread.join();
+        loader.start(SequenceMock.class);
+        loader.renderer.join();
     }
 
     /**
@@ -126,8 +134,8 @@ public class LoaderTest
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(613, 273, 0), 16, true, Filter.HQ2X);
         final Loader loader = new Loader(config);
-        loader.start(new SequenceMock(loader));
-        loader.thread.join();
+        loader.start(SequenceMock.class);
+        loader.renderer.join();
     }
 
     /**
@@ -141,8 +149,8 @@ public class LoaderTest
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
         final Loader loader = new Loader(config);
-        loader.start(new SequenceMock(loader));
-        loader.thread.join();
+        loader.start(SequenceMock.class);
+        loader.renderer.join();
     }
 
     /**
@@ -160,8 +168,8 @@ public class LoaderTest
 
         final Config config = new Config(new Resolution((int) size.getWidth(), (int) size.getHeight(), 60), 16, false);
         final Loader loader = new Loader(config);
-        loader.start(new SequenceMock3(loader));
-        loader.thread.join();
+        loader.start(SequenceMock3.class);
+        loader.renderer.join();
     }
 
     /**
@@ -175,8 +183,7 @@ public class LoaderTest
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
         final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
         final Loader loader = new Loader(config);
-        final Sequence sequence = new SequenceMock(loader);
-        loader.start(sequence);
-        loader.thread.join();
+        loader.start(SequenceMock.class);
+        loader.renderer.join();
     }
 }

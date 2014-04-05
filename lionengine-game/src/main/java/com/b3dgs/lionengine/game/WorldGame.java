@@ -20,9 +20,7 @@ package com.b3dgs.lionengine.game;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Loader;
@@ -41,8 +39,6 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
  * <p>
  * It contains different elements, such as:
  * <ul>
- * <li>{@link Keyboard} : The keyboard input reference, in order to retrieve keyboard key uses</li>
- * <li>{@link Mouse} : The mouse input reference, in order to retrieve mouse movement and click uses</li>
  * <li>{@link Config} : The configuration used by the {@link Loader}</li>
  * <li><code>width</code> : The source screen width, retrieve from the source screen {@link Resolution}</li>
  * <li><code>height</code> : The source screen height, retrieve from the source screen {@link Resolution}</li>
@@ -93,10 +89,6 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
  */
 public abstract class WorldGame
 {
-    /** Keyboard reference. */
-    protected final Keyboard keyboard;
-    /** Mouse reference. */
-    protected final Mouse mouse;
     /** Config reference. */
     protected final Config config;
     /** Internal display reference. */
@@ -114,10 +106,8 @@ public abstract class WorldGame
      * 
      * @param sequence The sequence reference.
      */
-    public WorldGame(final Sequence sequence)
+    public WorldGame(Sequence sequence)
     {
-        keyboard = sequence.getKeyboard();
-        mouse = sequence.getMouse();
         config = sequence.getConfig();
         source = config.getSource();
         output = config.getOutput();
@@ -130,14 +120,14 @@ public abstract class WorldGame
      * 
      * @param extrp The extrapolation value.
      */
-    public abstract void update(final double extrp);
+    public abstract void update(double extrp);
 
     /**
      * Internal world rendering.
      * 
      * @param g The graphic output.
      */
-    public abstract void render(final Graphic g);
+    public abstract void render(Graphic g);
 
     /**
      * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file

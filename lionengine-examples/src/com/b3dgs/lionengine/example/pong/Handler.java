@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.pong;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Force;
 

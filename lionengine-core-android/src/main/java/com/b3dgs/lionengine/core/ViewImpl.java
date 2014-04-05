@@ -30,7 +30,7 @@ final class ViewImpl
         extends SurfaceView
 {
     /** Mouse. */
-    private MouseImpl mouse;
+    private Mouse mouse;
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ final class ViewImpl
      * 
      * @param mouse The mouse reference.
      */
-    void setMouse(MouseImpl mouse)
+    void setMouse(Mouse mouse)
     {
         this.mouse = mouse;
     }

@@ -26,7 +26,9 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityImage;
@@ -43,9 +45,11 @@ final class Scene
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
-
     /** Number of lines in the middle. */
     private static final int LINES = 30;
+
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Text drawer. */
     private final Text text;
     /** Camera. */
@@ -65,12 +69,13 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
         text = UtilityImage.createText(Text.SANS_SERIF, 16, TextStyle.NORMAL);
         camera = new CameraGame();
         rackets = new HashSet<>(2);
-        ball = new Ball(width, height);
-        handler = new Handler(width, height, rackets, ball);
-        setMouseVisible(false);
+        ball = new Ball(getWidth(), getHeight());
+        handler = new Handler(getWidth(), getHeight(), rackets, ball);
+        setSystemCursorVisible(false);
     }
 
     /*
@@ -80,11 +85,11 @@ final class Scene
     @Override
     protected void load()
     {
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
         // Add a player on left
-        rackets.add(new Racket(width, height, 10, height / 2, true));
+        rackets.add(new Racket(getWidth(), getHeight(), 10, getHeight() / 2, true));
         // Add a player on right
-        rackets.add(new Racket(width, height, width - 10, height / 2, true));
+        rackets.add(new Racket(getWidth(), getHeight(), getWidth() - 10, getHeight() / 2, true));
         handler.setRacketSpeed(3.0);
         handler.engage();
     }
@@ -104,15 +109,15 @@ final class Scene
     protected void render(Graphic g)
     {
         // Clear screen
-        clearScreen(g);
+        g.clear(0, 0, getWidth(), getHeight());
 
         // Draw middle line
-        final int size = height / Scene.LINES;
+        final int size = getHeight() / Scene.LINES;
         g.setColor(ColorRgba.GRAY);
 
         for (int i = 0; i < Scene.LINES; i++)
         {
-            g.drawRect(width / 2 - 4, i * size + size / 4, 4, size / 2, true);
+            g.drawRect(getWidth() / 2 - 4, i * size + size / 4, 4, size / 2, true);
         }
 
         // Draw rackets
@@ -126,7 +131,7 @@ final class Scene
 
         // Display scores
         text.setColor(ColorRgba.BLUE);
-        text.draw(g, width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
-        text.draw(g, width / 2 + width / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
+        text.draw(g, getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
+        text.draw(g, getWidth() / 2 + getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
     }
 }

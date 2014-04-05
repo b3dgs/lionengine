@@ -55,7 +55,7 @@ public class SequenceMock
     {
         if (count > 30)
         {
-            start(new SequenceMock2(loader), true);
+            start(true, SequenceMock2.class);
             end();
         }
         count++;
@@ -66,9 +66,9 @@ public class SequenceMock
     {
         if (count > 5)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < getWidth(); x++)
             {
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y < getHeight(); y++)
                 {
                     g.setColor(new ColorRgba(UtilityRandom.getRandomInteger(255), UtilityRandom.getRandomInteger(255),
                             UtilityRandom.getRandomInteger(255)));

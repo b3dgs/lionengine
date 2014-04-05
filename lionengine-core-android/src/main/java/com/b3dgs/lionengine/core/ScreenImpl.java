@@ -17,14 +17,15 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.util.HashMap;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
 import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -55,6 +56,8 @@ public final class ScreenImpl
         ScreenImpl.holder = view.getHolder();
     }
 
+    /** Input devices. */
+    private final HashMap<InputDeviceType, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Configuration reference. */
@@ -69,19 +72,30 @@ public final class ScreenImpl
     /**
      * Constructor.
      * 
+     * @param renderer The renderer reference.
      * @param config The config reference.
      */
-    ScreenImpl(Config config)
+    ScreenImpl(Renderer renderer, Config config)
     {
         Check.notNull(config, ScreenImpl.ERROR_CONFIG);
 
-        // Initialize environment
-        graphics = UtilityImage.createGraphic();
         this.config = config;
+        devices = new HashMap<InputDeviceType, InputDevice>(1);
+        graphics = UtilityImage.createGraphic();
 
-        // Prepare main frame
         setResolution(config.getOutput());
         ScreenImpl.holder.addCallback(this);
+        addDeviceMouse();
+    }
+
+    /**
+     * Add a keyboard device.
+     */
+    private void addDeviceMouse()
+    {
+        final Mouse mouse = new Mouse();
+        ScreenImpl.view.setMouse(mouse);
+        devices.put(mouse.getType(), mouse);
     }
 
     /**
@@ -122,12 +136,6 @@ public final class ScreenImpl
     }
 
     @Override
-    public void show()
-    {
-        // Nothing to do
-    }
-
-    @Override
     public void preUpdate()
     {
         canvas = ScreenImpl.holder.lockCanvas();
@@ -165,21 +173,9 @@ public final class ScreenImpl
     }
 
     @Override
-    public void addKeyListener(KeyboardListener listener)
+    public void addKeyListener(InputDeviceKeyListener listener)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void addKeyboard(Keyboard keyboard)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void addMouse(Mouse mouse)
-    {
-        ScreenImpl.view.setMouse((MouseImpl) mouse);
     }
 
     @Override
@@ -207,13 +203,19 @@ public final class ScreenImpl
     }
 
     @Override
-    public int getLocationX()
+    public <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    {
+        return null;
+    }
+
+    @Override
+    public int getX()
     {
         return 0;
     }
 
     @Override
-    public int getLocationY()
+    public int getY()
     {
         return 0;
     }

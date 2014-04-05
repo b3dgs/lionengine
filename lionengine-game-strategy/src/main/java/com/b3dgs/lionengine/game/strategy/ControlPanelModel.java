@@ -22,7 +22,6 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Keyboard;
 import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -138,9 +137,8 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      * @param extrp The extrapolation value.
      * @param camera The camera viewpoint.
      * @param cursor The cursor reference (used for selection).
-     * @param keyboard The keyboard reference.
      */
-    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor, Keyboard keyboard)
+    public void update(double extrp, CameraStrategy camera, CursorStrategy cursor)
     {
         // Restore clicked state
         if (cursor.getClick() == 0)

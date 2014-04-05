@@ -25,17 +25,47 @@ import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.audio.Wav;
 
 /**
- * Wav player implementation.
+ * Handle sound fx routine. The sound is expected to be short, as it has to be played quickly. It supports the following
+ * main controls:
+ * <ul>
+ * <li>Alignment</li>
+ * <li>Volume</li>
+ * <li>Channel</li>
+ * </ul>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Wav sound = AudioWav.loadWav(Media.get(&quot;sound.wav&quot;));
+ * sound.setVolume(100);
+ * 
+ * sound.setAlignment(Align.LEFT);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.setAlignment(Align.CENTER);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.setAlignment(Align.RIGHT);
+ * sound.play();
+ * Thread.sleep(200);
+ * 
+ * sound.stop();
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class WavPlayer
-        implements Wav
+public final class Wav
 {
+    /** Minimum volume value. */
+    public static final int VOLUME_MIN = 0;
+    /** Maximum volume value. */
+    public static final int VOLUME_MAX = 100;
+
     /** Maximum number of sounds played at the same time. */
     final int maxSimultaneous;
     /** Sound ready threads. */
@@ -44,7 +74,7 @@ final class WavPlayer
     final Queue<WavRoutine> busySounds;
     /** Sound monitor. */
     final Semaphore latch;
-    /** Monitor. */
+    /** Terminated. */
     final Object monitor = new Object();
     /** Created thread counter. */
     volatile Integer count;
@@ -64,7 +94,7 @@ final class WavPlayer
      * 
      * @param media The audio sound media.
      */
-    WavPlayer(Media media)
+    Wav(Media media)
     {
         this(media, 1);
     }
@@ -75,7 +105,7 @@ final class WavPlayer
      * @param media The audio sound media.
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
      */
-    WavPlayer(Media media, int maxSimultaneous)
+    Wav(Media media, int maxSimultaneous)
     {
         Check.notNull(media);
         this.media = media;
@@ -87,7 +117,6 @@ final class WavPlayer
         alignment = Align.CENTER;
         volume = 100;
         terminated = Boolean.FALSE;
-        throw new LionEngineException("Not supported !");
     }
 
     /**
@@ -126,13 +155,21 @@ final class WavPlayer
      * Wav
      */
 
-    @Override
+    /**
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
+     */
     public void play()
     {
         play(0);
     }
 
-    @Override
+    /**
+     * Play sound immediately until the end, and free resources. Sounds are played in a separated thread. If all
+     * channels are used, the sound will not be played.
+     * 
+     * @param delay The delay in millisecond before being played.
+     */
     public void play(int delay)
     {
         synchronized (monitor)
@@ -179,21 +216,31 @@ final class WavPlayer
         }
     }
 
-    @Override
+    /**
+     * Set sound alignment.
+     * 
+     * @param align sound alignment.
+     */
     public void setAlignment(Align align)
     {
         alignment = align;
     }
 
-    @Override
-    public void setVolume(int vol)
+    /**
+     * Set the sound volume.
+     * 
+     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     */
+    public void setVolume(int volume)
     {
-        Check.argument(vol >= Wav.VOLUME_MIN && vol <= Wav.VOLUME_MAX, "Wrong volume value: ", String.valueOf(vol),
-                " [" + Wav.VOLUME_MIN + "-" + Wav.VOLUME_MAX + "]");
-        volume = vol;
+        Check.argument(volume >= Wav.VOLUME_MIN && volume <= Wav.VOLUME_MAX, "Wrong volume value: ",
+                String.valueOf(volume), " [" + Wav.VOLUME_MIN + "-" + Wav.VOLUME_MAX + "]");
+        this.volume = volume;
     }
 
-    @Override
+    /**
+     * Stop sound. The sound will be stopped, but not deleted.
+     */
     public void stop()
     {
         final List<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
@@ -207,7 +254,9 @@ final class WavPlayer
         toStop.clear();
     }
 
-    @Override
+    /**
+     * Close sound. Release resources.
+     */
     public void terminate()
     {
         terminated = Boolean.TRUE;
@@ -242,7 +291,6 @@ final class WavPlayer
                 {
                     synchronized (monitor)
                     {
-
                         final List<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
                         for (final WavRoutine routine : toStop)
                         {

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy;
 
-import com.b3dgs.lionengine.Keyboard;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -39,14 +39,6 @@ public class CameraStrategy
     private final int hStep;
     /** Movement steps vertical. */
     private final int vStep;
-    /** Movement key left. */
-    private Integer left;
-    /** Movement key right. */
-    private Integer right;
-    /** Movement key up. */
-    private Integer up;
-    /** Movement key down. */
-    private Integer down;
     /** Movement border left. */
     private int borderLeft;
     /** Movement border right. */
@@ -98,34 +90,22 @@ public class CameraStrategy
     /**
      * Update camera by handling its movements.
      * 
-     * @param keyboard The keyboard reference.
+     * @param inputDevice The input device reference.
      */
-    public void update(Keyboard keyboard)
+    public void update(InputDeviceDirectional inputDevice)
     {
         final long time = UtilityMath.time();
+        final int x = inputDevice.getHorizontalDirection();
+        final int y = inputDevice.getVerticalDirection();
         if (time - hTime > hSens)
         {
             hTime = time;
-            if (keyboard.isPressed(left))
-            {
-                moveLocation(1.0, -hStep, 0);
-            }
-            if (keyboard.isPressed(right))
-            {
-                moveLocation(1.0, hStep, 0);
-            }
+            moveLocation(1.0, hStep * x, 0);
         }
         if (time - vTime > vSens)
         {
             vTime = time;
-            if (keyboard.isPressed(up))
-            {
-                moveLocation(1.0, 0, vStep);
-            }
-            if (keyboard.isPressed(down))
-            {
-                moveLocation(1.0, 0, -vStep);
-            }
+            moveLocation(1.0, 0, vStep * y);
         }
         location.setLocationX(UtilityMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
         location.setLocationY(UtilityMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
@@ -155,22 +135,6 @@ public class CameraStrategy
         borderTop = 0;
         borderBottom = map.getHeightInTile() * map.getTileHeight() - getViewHeight();
         setLocation(0, 0);
-    }
-
-    /**
-     * Set specific camera keyboard controls.
-     * 
-     * @param left The left key.
-     * @param right The right key.
-     * @param up The up key.
-     * @param down The down key.
-     */
-    public void setKeys(Integer left, Integer right, Integer up, Integer down)
-    {
-        this.left = left;
-        this.right = right;
-        this.up = up;
-        this.down = down;
     }
 
     /**

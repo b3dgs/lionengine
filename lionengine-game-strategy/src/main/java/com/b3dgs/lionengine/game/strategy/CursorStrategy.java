@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.strategy;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Mouse;
 import com.b3dgs.lionengine.Rectangle;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMath;
 import com.b3dgs.lionengine.game.Cursor;
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * This class can be used to handle easily a strategy cursor, designed to select and give order to any kind of entity.
- * The cursor can be asynchronous (compared to the mouse window).
+ * The cursor can be asynchronous (compared to the system pointer).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -60,31 +60,32 @@ public class CursorStrategy
     /**
      * Constructor.
      * 
-     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
      * @param cursor The cursor images media.
      * @param map The map reference.
      */
-    public CursorStrategy(Mouse mouse, CameraStrategy camera, Resolution source, MapTile<?, ?> map, Media... cursor)
+    public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, MapTile<?, ?> map,
+            Media... cursor)
     {
-        this(mouse, camera, source, map.getTileWidth(), map.getTileHeight(), cursor);
+        this(pointer, camera, source, map.getTileWidth(), map.getTileHeight(), cursor);
     }
 
     /**
      * Constructor.
      * 
-     * @param mouse The mouse reference (must not be <code>null</code>).
+     * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
      * @param cursor The cursor images media.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public CursorStrategy(Mouse mouse, CameraStrategy camera, Resolution source, int tileWidth, int tileHeight,
-            Media... cursor)
+    public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, int tileWidth,
+            int tileHeight, Media... cursor)
     {
-        super(mouse, 0, 0, source.getWidth(), source.getHeight(), cursor);
+        super(pointer, 0, 0, source.getWidth(), source.getHeight(), cursor);
         Check.notNull(camera, "The camera must not be null !");
         this.camera = camera;
         setLocation(source.getWidth() / 2, source.getHeight() / 2);

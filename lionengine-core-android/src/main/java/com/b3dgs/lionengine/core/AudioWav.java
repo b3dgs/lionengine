@@ -17,35 +17,40 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.audio.Midi;
-
 /**
  * Audio factory. Allows to create audio player.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AudioMidi
+public final class AudioWav
 {
-    /** Audio factory. */
-    static FactoryAudio factoryAudio;
+    /**
+     * Load a sound file <code>(.wav)</code>.
+     * 
+     * @param media The audio sound media.
+     * @return The loaded Sound.
+     */
+    public static Wav loadWav(Media media)
+    {
+        return new Wav(media);
+    }
 
     /**
-     * Load a midi file <code>(.mid, .midi)</code> and prepare it to be played. A {@link LionEngineException} is thrown
-     * if no midi player is available
+     * Load a sound file <code>(.wav)</code>.
      * 
-     * @param media The audio midi media.
-     * @return The loaded midi;
+     * @param media The audio sound media.
+     * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
+     * @return The loaded Sound.
      */
-    public static Midi loadMidi(Media media)
+    public static Wav loadWav(Media media, int maxSimultaneous)
     {
-        return AudioMidi.factoryAudio.createAudioMidi(media);
+        return new Wav(media, maxSimultaneous);
     }
 
     /**
      * Private constructor.
      */
-    private AudioMidi()
+    private AudioWav()
     {
         throw new RuntimeException();
     }

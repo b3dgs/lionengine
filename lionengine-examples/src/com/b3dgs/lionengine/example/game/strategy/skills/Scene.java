@@ -23,8 +23,11 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
@@ -50,6 +53,10 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Mouse reference. */
+    private final Mouse mouse;
     /** Text reference. */
     private final TextGame text;
     /** Map reference. */
@@ -77,17 +84,19 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);
-        cursor = new Cursor(mouse, camera, source, map, UtilityMedia.get("cursor.png"),
+        cursor = new Cursor(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"),
                 UtilityMedia.get("cursor_over.png"), UtilityMedia.get("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         factoryProduction = new FactoryProduction();
         factorySkill = new FactorySkill(factoryProduction, cursor);
-        factoryEntity = new FactoryEntity(map, factorySkill, handlerEntity, source.getRate());
-        setMouseVisible(false);
+        factoryEntity = new FactoryEntity(map, factorySkill, handlerEntity, getConfig().getSource().getRate());
+        setSystemCursorVisible(false);
     }
 
     /*
@@ -100,11 +109,15 @@ final class Scene
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
 
+        keyboard.setHorizontalControlNegative(Key.LEFT);
+        keyboard.setHorizontalControlPositive(Key.RIGHT);
+        keyboard.setVerticalControlNegative(Key.DOWN);
+        keyboard.setVerticalControlPositive(Key.UP);
+
         camera.setView(72, 0, 248, 240);
         camera.setSensibility(30, 30);
         camera.setBorders(map);
         camera.setLocation(map, 0, 0);
-        camera.setKeys(Key.LEFT, Key.RIGHT, Key.UP, Key.DOWN);
 
         controlPanel.setClickableArea(camera);
         controlPanel.setSelectionColor(ColorRgba.GREEN);
@@ -129,7 +142,7 @@ final class Scene
         camera.update(keyboard);
         text.update(camera);
         cursor.update(extrp);
-        controlPanel.update(extrp, camera, cursor, keyboard);
+        controlPanel.update(extrp, camera, cursor);
         handlerEntity.update(extrp);
     }
 

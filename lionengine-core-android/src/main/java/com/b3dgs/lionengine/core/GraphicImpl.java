@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.GradientColor;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Resolution;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -104,14 +103,6 @@ final class GraphicImpl
     /*
      * Graphic
      */
-
-    @Override
-    public void clear(Resolution resolution)
-    {
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        g.drawRect(0, 0, resolution.getWidth(), resolution.getHeight(), paint);
-    }
 
     @Override
     public void clear(int x, int y, int width, int height)

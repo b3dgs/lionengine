@@ -17,38 +17,36 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.Mouse;
-
 /**
- * Input factory implementation.
+ * List of available input devices.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryInputImpl
-        implements FactoryInput
+public enum DeviceType implements InputDeviceType
 {
+    /** Mouse input device. */
+    MOUSE(Mouse.class);
+
+    /** The target class. */
+    private final Class<? extends InputDevice> target;
+
     /**
      * Constructor.
+     * 
+     * @param target The target class.
      */
-    FactoryInputImpl()
+    private DeviceType(Class<? extends InputDevice> target)
     {
-        // Nothing to do
+        this.target = target;
     }
 
     /*
-     * FactoryInput
+     * InputDeviceType
      */
 
     @Override
-    public Keyboard createKeyboard()
+    public Class<? extends InputDevice> getTargetClass()
     {
-        return null;
-    }
-
-    @Override
-    public Mouse createMouse()
-    {
-        return new MouseImpl();
+        return target;
     }
 }

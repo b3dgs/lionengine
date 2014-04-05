@@ -18,33 +18,17 @@
 package com.b3dgs.lionengine.core;
 
 /**
- * Thread sequence.
+ * Represents the input device types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see InputDevice
  */
-final class SequenceThread
-        extends Thread
+public interface InputDeviceType
 {
-    /** Sequence reference. */
-    private final Sequence sequence;
-
     /**
-     * Constructor.
+     * Get the input device target class.
      * 
-     * @param sequence The sequence reference.
+     * @return The input device target class.
      */
-    SequenceThread(final Sequence sequence)
-    {
-        this.sequence = sequence;
-    }
-
-    /*
-     * Thread
-     */
-
-    @Override
-    public void run()
-    {
-        sequence.run();
-    }
+    Class<? extends InputDevice> getTargetClass();
 }

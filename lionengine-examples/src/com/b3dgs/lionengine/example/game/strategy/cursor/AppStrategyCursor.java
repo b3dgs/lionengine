@@ -44,7 +44,7 @@ public final class AppStrategyCursor
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
-        loader.start(new Scene(loader));
+        loader.start(Scene.class);
     }
 
     /**

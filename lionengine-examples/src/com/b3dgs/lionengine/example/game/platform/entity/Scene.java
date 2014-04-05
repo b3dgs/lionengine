@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.example.game.platform.entity;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -36,6 +38,8 @@ final class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
     /** Camera reference. */
     private final CameraPlatform camera;
     /** Mario reference. */
@@ -49,8 +53,9 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        camera = new CameraPlatform(width, height);
-        mario = new Mario(source.getRate());
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        camera = new CameraPlatform(getWidth(), getHeight());
+        mario = new Mario(getConfig().getSource().getRate());
     }
 
     /*
@@ -60,7 +65,7 @@ final class Scene
     @Override
     protected void load()
     {
-        camera.setView(0, 0, width, height);
+        camera.setView(0, 0, getWidth(), getHeight());
     }
 
     @Override
@@ -78,10 +83,10 @@ final class Scene
     protected void render(Graphic g)
     {
         // Clean screen (as we don't have any background)
-        clearScreen(g);
+        g.clear(0, 0, getWidth(), getHeight());
 
         // Draw the floor
-        g.drawLine(0, 208, width, 208);
+        g.drawLine(0, 208, getWidth(), 208);
 
         // Draw the mario
         mario.render(g, camera);

@@ -177,7 +177,7 @@ public final class Hq2x
     public ImageBuffer getScaledImage()
     {
         final RawScale2x scaler = new RawScale2x(srcData, width, height);
-        final ImageBuffer image = EngineImpl.factoryGraphic.createCompatibleImage(width * 2, height * 2,
+        final ImageBuffer image = EngineImpl.factoryGraphic.createImageBuffer(width * 2, height * 2,
                 Transparency.OPAQUE);
         image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
         return image;

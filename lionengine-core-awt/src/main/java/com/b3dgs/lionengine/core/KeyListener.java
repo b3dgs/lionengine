@@ -17,27 +17,48 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Keyboard;
-import com.b3dgs.lionengine.Mouse;
+import java.awt.event.KeyEvent;
 
 /**
- * Represents the input factory.
+ * Keyboard listener implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface FactoryInput
+final class KeyListener
+        implements java.awt.event.KeyListener
 {
-    /**
-     * Create a keyboard.
-     * 
-     * @return The created keyboard.
-     */
-    Keyboard createKeyboard();
+    /** The original listener. */
+    private final InputDeviceKeyListener listener;
 
     /**
-     * Create a mouse.
+     * Constructor.
      * 
-     * @return The created mouse.
+     * @param listener The original listener.
      */
-    Mouse createMouse();
+    KeyListener(InputDeviceKeyListener listener)
+    {
+        this.listener = listener;
+    }
+
+    /*
+     * KeyListener
+     */
+
+    @Override
+    public void keyTyped(KeyEvent event)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void keyPressed(KeyEvent event)
+    {
+        listener.keyPressed(event.getKeyCode(), event.getKeyChar());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event)
+    {
+        listener.keyReleased(event.getKeyCode(), event.getKeyChar());
+    }
 }

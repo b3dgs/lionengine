@@ -32,19 +32,19 @@ public interface CollisionTile
      * 
      * @param function The collision function.
      */
-    public void addCollisionFunction(CollisionFunction function);
+    void addCollisionFunction(CollisionFunction function);
 
     /**
      * Remove a collision function.
      * 
      * @param function The collision function to remove.
      */
-    public void removeCollisionFunction(CollisionFunction function);
+    void removeCollisionFunction(CollisionFunction function);
 
     /**
      * Get the collision functions.
      * 
      * @return The collision function.
      */
-    public Set<CollisionFunction> getCollisionFunctions();
+    Set<CollisionFunction> getCollisionFunctions();
 }

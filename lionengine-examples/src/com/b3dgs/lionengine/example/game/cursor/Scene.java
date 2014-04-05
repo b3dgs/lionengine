@@ -20,8 +20,11 @@ package com.b3dgs.lionengine.example.game.cursor;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Click;
+import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Key;
+import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Cursor;
@@ -38,6 +41,11 @@ final class Scene
     /** Cursor. */
     private final Cursor cursor;
 
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Mouse reference. */
+    private final Mouse mouse;
+
     /**
      * Constructor.
      * 
@@ -46,9 +54,11 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        cursor = new Cursor(mouse, source, UtilityMedia.get("cursor", "cursor1.png"), UtilityMedia.get("cursor",
-                "cursor2.png"));
-        setMouseVisible(false);
+        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        mouse = getInputDevice(DeviceType.MOUSE);
+        cursor = new Cursor(mouse, getConfig().getSource(), UtilityMedia.get("cursor", "cursor1.png"),
+                UtilityMedia.get("cursor", "cursor2.png"));
+        setSystemCursorVisible(false);
     }
 
     /*
@@ -92,7 +102,7 @@ final class Scene
     @Override
     protected void render(Graphic g)
     {
-        g.clear(source);
+        g.clear(0, 0, getWidth(), getHeight());
         cursor.render(g);
     }
 }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.network.purview;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.core.KeyboardListener;
+import com.b3dgs.lionengine.core.InputDeviceKeyListener;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class NetworkedInput
-        implements Networkable, KeyboardListener
+        implements Networkable, InputDeviceKeyListener
 {
     /** Model reference. */
     private final NetworkableModel networkable;

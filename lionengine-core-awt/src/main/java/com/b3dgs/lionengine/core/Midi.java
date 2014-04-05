@@ -31,16 +31,44 @@ import javax.sound.midi.Synthesizer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.audio.Midi;
 
 /**
- * Default midi implementation.
+ * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a
+ * separated thread. It supports the following main controls:
+ * <ul>
+ * <li>Start index</li>
+ * <li>Loop (range setting)</li>
+ * <li>Volume</li>
+ * <li>Pause & resume</li>
+ * </ul>
+ * <p>
+ * The <code>tick</code> represents the position in the sound data.
+ * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * final Midi midi = AudioMidi.loadMidi(Media.get(&quot;music.mid&quot;));
+ * midi.play(false);
+ * 
+ * Thread.sleep(1000);
+ * midi.pause();
+ * Thread.sleep(1000);
+ * midi.resume();
+ * midi.pause();
+ * midi.stop();
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MidiPlayer
-        implements Midi
+public final class Midi
 {
+    /** Minimum volume value. */
+    public static int VOLUME_MIN = 0;
+    /** Maximum volume value. */
+    public static int VOLUME_MAX = 100;
+
     /**
      * Open the sequence from the media.
      * 
@@ -80,11 +108,11 @@ final class MidiPlayer
      * 
      * @param media The media midi to play.
      */
-    MidiPlayer(Media media)
+    Midi(Media media)
     {
         try
         {
-            sequence = MidiPlayer.openSequence(media);
+            sequence = Midi.openSequence(media);
             sequencer = MidiSystem.getSequencer(false);
             sequencer.open();
             sequencer.setSequence(sequence);
@@ -111,11 +139,17 @@ final class MidiPlayer
         paused = false;
     }
 
-    /*
-     * Midi
+    /**
+     * Play the music.
+     * <p>
+     * The music will be played from the beginning (can be set by {@link #setStart(long)}) until the end.
+     * </p>
+     * <p>
+     * In case of a loop, music will be played in loop between the set ticks using {@link #setLoop(long, long)}.
+     * </p>
+     * 
+     * @param loop The loop flag.
      */
-
-    @Override
     public void play(boolean loop)
     {
         if (loop)
@@ -129,7 +163,11 @@ final class MidiPlayer
         sequencer.start();
     }
 
-    @Override
+    /**
+     * Set starting tick (starting music position).
+     * 
+     * @param tick The starting tick <code>[0 - {@link #getTicks()}]</code>.
+     */
     public void setStart(long tick)
     {
         Check.argument(tick >= 0 && tick <= ticks, "Wrong tick value: ", String.valueOf(tick), " (total = )",
@@ -138,7 +176,12 @@ final class MidiPlayer
         sequencer.setTickPosition(tick);
     }
 
-    @Override
+    /**
+     * Set loop area in tick.
+     * 
+     * @param first The first tick <code>[0 - last}]</code>.
+     * @param last The last tick <code>[first - {@link #getTicks()}}]</code>.
+     */
     public void setLoop(long first, long last)
     {
         Check.argument(first >= 0 && first <= last, "Wrong first value: ", String.valueOf(first), " (total = )",
@@ -149,8 +192,12 @@ final class MidiPlayer
         sequencer.setLoopEndPoint(last);
     }
 
-    @Override
-    public void setVolume(final int volume)
+    /**
+     * Set the midi volume.
+     * 
+     * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     */
+    public void setVolume(int volume)
     {
         Check.argument(volume >= Midi.VOLUME_MIN && volume <= Midi.VOLUME_MAX, "Wrong volume value: ",
                 String.valueOf(volume), " [" + Midi.VOLUME_MIN + "-" + Midi.VOLUME_MAX + "]");
@@ -185,20 +232,28 @@ final class MidiPlayer
         }
     }
 
-    @Override
+    /**
+     * Get the total number of ticks.
+     * 
+     * @return The total number of ticks.
+     */
     public long getTicks()
     {
         return sequence.getTickLength();
     }
 
-    @Override
+    /**
+     * Stop the music.
+     */
     public void stop()
     {
         sequencer.close();
         synthesizer.close();
     }
 
-    @Override
+    /**
+     * Pause the music (can be resumed).
+     */
     public void pause()
     {
         if (!paused)
@@ -208,7 +263,9 @@ final class MidiPlayer
         }
     }
 
-    @Override
+    /**
+     * Resume the music (if paused).
+     */
     public void resume()
     {
         if (paused)
