@@ -67,23 +67,12 @@ final class FactoryGraphicImpl
     }
 
     /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static Image getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
-    }
-
-    /**
      * Get the image transparency equivalence.
      * 
      * @param transparency The transparency type.
      * @return The transparency value.
      */
-    private static int getTransparency(Transparency transparency)
+    static int getTransparency(Transparency transparency)
     {
         switch (transparency)
         {
@@ -96,6 +85,17 @@ final class FactoryGraphicImpl
             default:
                 return 0;
         }
+    }
+
+    /**
+     * Get the image buffer.
+     * 
+     * @param imageBuffer The image buffer.
+     * @return The buffer.
+     */
+    private static Image getBuffer(ImageBuffer imageBuffer)
+    {
+        return ((ImageBufferImpl) imageBuffer).getBuffer();
     }
 
     /**
@@ -176,9 +176,9 @@ final class FactoryGraphicImpl
             for (int x = 0; x < h; x++)
             {
                 images[frame] = new Image(ScreenImpl.display, width, height);
-                final GC g = new GC(images[frame]);
-                g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height);
-                g.dispose();
+                final GC gc = new GC(images[frame]);
+                gc.drawImage(image, x * width, y * height, width, height, 0, 0, width, height);
+                gc.dispose();
                 frame++;
             }
         }

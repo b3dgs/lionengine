@@ -81,6 +81,7 @@ final class Scene
         camera = new CameraStrategy(map);
         cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"));
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
+        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 
@@ -124,6 +125,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();

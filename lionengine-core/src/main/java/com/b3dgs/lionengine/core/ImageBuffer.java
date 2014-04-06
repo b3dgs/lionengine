@@ -57,7 +57,7 @@ public interface ImageBuffer
     void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize);
 
     /**
-     * Returns an array of integer pixels representing the image data.
+     * Returns a pixel a the specified coordinate.
      * 
      * @param x the starting X coordinate
      * @param y the starting Y coordinate

@@ -68,10 +68,11 @@ final class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(DeviceType.KEYBOARD);
         mouse = getInputDevice(DeviceType.MOUSE);
-        text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
+        text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);
         cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"));
+        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 
@@ -123,6 +124,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();

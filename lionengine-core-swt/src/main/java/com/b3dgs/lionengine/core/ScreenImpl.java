@@ -56,8 +56,6 @@ final class ScreenImpl
     private static final String ERROR_DISPLAY = "No available display !";
     /** Error message windowed. */
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
-    /** Error message unsupported fullscreen. */
-    private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
 
     /** Display. */
     static Display display;
@@ -76,8 +74,8 @@ final class ScreenImpl
     /** Configuration reference. */
     private final Config config;
     /** Active sequence reference. */
-    Sequence sequence;
-    /** Buffer strategy reference. */
+    private Sequence sequence;
+    /** Buffer reference. */
     private Canvas buf;
     /** Image buffer reference. */
     private ImageBuffer buffer;
@@ -85,11 +83,12 @@ final class ScreenImpl
     private Graphic gbuf;
     /** Windowed canvas. */
     private Canvas canvas;
+    /** Last GC used. */
+    private GC lastGc;
     /** Width. */
     private int width;
     /** Height. */
     private int height;
-    GC last;
 
     /**
      * Constructor.
@@ -260,7 +259,7 @@ final class ScreenImpl
      */
     private void addKeyboardListener(Keyboard keyboard)
     {
-        canvas.addKeyListener(keyboard);
+        frame.addKeyListener(keyboard);
         frame.forceFocus();
     }
 
@@ -274,7 +273,7 @@ final class ScreenImpl
         canvas.addMouseListener(mouse);
         canvas.addMouseMoveListener(mouse);
         canvas.addMouseWheelListener(mouse);
-        frame.forceFocus();
+        canvas.forceFocus();
     }
 
     /**
@@ -306,8 +305,8 @@ final class ScreenImpl
         buf.setVisible(true);
         buf.update();
         gbuf = buffer.createGraphic();
-        last = gbuf.getGraphic();
-        graphics.setGraphic(last);
+        lastGc = gbuf.getGraphic();
+        graphics.setGraphic(lastGc);
         frame.update();
         frame.setEnabled(true);
         frame.setVisible(true);
@@ -328,13 +327,13 @@ final class ScreenImpl
             final GC gc = new GC(canvas);
             gc.drawImage(((ImageBufferImpl) buffer).getBuffer(), 0, 0);
             gc.dispose();
-            if (last != null)
+            if (lastGc != null)
             {
-                last.dispose();
+                lastGc.dispose();
             }
             gbuf = buffer.createGraphic();
-            last = gbuf.getGraphic();
-            graphics.setGraphic(last);
+            lastGc = gbuf.getGraphic();
+            graphics.setGraphic(lastGc);
         }
     }
 

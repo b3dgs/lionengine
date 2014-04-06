@@ -63,6 +63,7 @@ final class World
     @Override
     public void render(Graphic g)
     {
+        g.clear(0, 0, width, height);
         text.draw(g, 10, 10, str);
     }
 

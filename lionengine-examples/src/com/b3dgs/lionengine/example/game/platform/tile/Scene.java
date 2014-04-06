@@ -62,6 +62,7 @@ final class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(DeviceType.KEYBOARD);
         mouse = getInputDevice(DeviceType.MOUSE);
+        mouse.setConfig(getConfig());
         camera = new CameraPlatform(getWidth(), getHeight());
         map = new Map();
         entityRef = new Entity(map);
@@ -95,6 +96,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         entity.updateMouse(mouse);
         entity.update(extrp);
         // Terminate

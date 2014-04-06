@@ -89,7 +89,7 @@ final class TextImpl
     TextImpl(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        font = new Font(ScreenImpl.display, fontName, TextImpl.getStyle(style), size);
+        font = new Font(ScreenImpl.display, fontName, Math.round(size / 1.5f), TextImpl.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }
@@ -108,6 +108,8 @@ final class TextImpl
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
         final GC gc = g.getGraphic();
+        gc.setTextAntialias(SWT.OFF);
+        gc.setFont(font);
         final Point textSize = gc.stringExtent(text);
         final int tx;
         final int ty;
@@ -116,23 +118,22 @@ final class TextImpl
         {
             case LEFT:
                 tx = x;
-                ty = textSize.y + y;
+                ty = y;
                 break;
             case CENTER:
                 tx = x - textSize.x / 2;
-                ty = textSize.y + y;
+                ty = y;
                 break;
             case RIGHT:
                 tx = x - textSize.x;
-                ty = textSize.y + y;
+                ty = y;
                 break;
             default:
                 throw new RuntimeException();
         }
         final Color c = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
         gc.setForeground(c);
-        gc.setFont(font);
-        gc.drawString(text, tx, ty - size, true);
+        gc.drawString(text, tx, ty, true);
         c.dispose();
     }
 

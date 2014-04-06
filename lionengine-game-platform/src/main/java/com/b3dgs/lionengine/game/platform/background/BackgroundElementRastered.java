@@ -136,14 +136,15 @@ public abstract class BackgroundElementRastered
     protected void addRaster(Sprite sprite, int fr, int fg, int fb)
     {
         final ImageBuffer buf = sprite.getSurface();
-        final ImageBuffer rasterBuf = UtilityImage.createImageBuffer(buf.getWidth(), buf.getHeight(),
-                buf.getTransparency());
+        final ImageBuffer rasterBuf = UtilityImage.getImageBuffer(buf);
 
         for (int i = 0; i < rasterBuf.getWidth(); i++)
         {
             for (int j = 0; j < rasterBuf.getHeight(); j++)
             {
-                rasterBuf.setRgb(i, j, BackgroundElementRastered.filterRGB(buf.getRgb(i, j), fr, fg, fb));
+                final int rgb = buf.getRgb(i, j);
+                final int filtered = BackgroundElementRastered.filterRGB(rgb, fr, fg, fb);
+                rasterBuf.setRgb(i, j, filtered);
             }
         }
 

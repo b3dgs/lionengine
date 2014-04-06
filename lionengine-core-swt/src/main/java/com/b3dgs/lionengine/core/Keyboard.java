@@ -33,13 +33,13 @@ public final class Keyboard
         implements InputDeviceDirectional, KeyListener
 {
     /** Arrow up key. */
-    public static final Integer UP = Integer.valueOf(SWT.KeyUp);
+    public static final Integer UP = Integer.valueOf(SWT.ARROW_UP);
     /** Arrow down key. */
-    public static final Integer DOWN = Integer.valueOf(SWT.KeyDown);
+    public static final Integer DOWN = Integer.valueOf(SWT.ARROW_DOWN);
     /** Arrow right key. */
-    public static final Integer RIGHT = Integer.valueOf(SWT.RIGHT);
+    public static final Integer RIGHT = Integer.valueOf(SWT.ARROW_RIGHT);
     /** Arrow left key. */
-    public static final Integer LEFT = Integer.valueOf(SWT.LEFT);
+    public static final Integer LEFT = Integer.valueOf(SWT.ARROW_LEFT);
     /** CTRL key. */
     public static final Integer CONTROL = Integer.valueOf(SWT.CONTROL);
     /** ALT key. */

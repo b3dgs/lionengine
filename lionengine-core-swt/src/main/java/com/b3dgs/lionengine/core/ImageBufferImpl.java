@@ -21,7 +21,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 
@@ -56,6 +59,8 @@ final class ImageBufferImpl
 
     /** Transparency. */
     private final Transparency transparency;
+    /** Last image data. */
+    private final ImageData data;
     /** Image. */
     private Image image;
     /** GC. */
@@ -69,7 +74,7 @@ final class ImageBufferImpl
     ImageBufferImpl(Image image)
     {
         this.image = image;
-        final ImageData data = image.getImageData();
+        data = image.getImageData();
         transparency = ImageBufferImpl.getTransparency(data.getTransparencyType());
     }
 
@@ -97,44 +102,48 @@ final class ImageBufferImpl
     @Override
     public void setRgb(int x, int y, int rgb)
     {
-        final ImageData data = image.getImageData();
-        data.setPixel(x, y, rgb);
+        final ColorRgba rgba = new ColorRgba(rgb);
+        final RGB color = new RGB(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
+        final int pixel = data.palette.getPixel(color);
+        data.setPixel(x, y, pixel);
         image.dispose();
-        image = new Image(image.getDevice(), data);
+        image = new Image(ScreenImpl.display, data);
     }
 
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        final ImageData data = image.getImageData();
         data.setPixels(startX, startY, w, rgbArray, offset);
         image.dispose();
-        image = new Image(image.getDevice(), data);
+        image = new Image(ScreenImpl.display, data);
     }
 
     @Override
     public int getRgb(int x, int y)
     {
-        return image.getImageData().getPixel(x, y);
+        final int pixel = data.getPixel(x, y);
+        final PaletteData palette = data.palette;
+        final RGB rgb = palette.getRGB(pixel);
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue).getRgba();
     }
 
     @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        image.getImageData().getPixels(startX, startY, w, rgbArray, offset);
+        data.getPixels(startX, startY, w, rgbArray, offset);
         return rgbArray;
     }
 
     @Override
     public int getWidth()
     {
-        return image.getBounds().width;
+        return data.width;
     }
 
     @Override
     public int getHeight()
     {
-        return image.getBounds().height;
+        return data.height;
     }
 
     @Override

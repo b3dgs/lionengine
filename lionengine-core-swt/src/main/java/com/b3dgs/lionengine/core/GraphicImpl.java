@@ -81,6 +81,8 @@ final class GraphicImpl
     {
         gc.setBackground(ScreenImpl.display.getSystemColor(SWT.COLOR_BLACK));
         gc.fillRectangle(0, 0, width, height);
+        gc.setBackground(ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE));
+        gc.setForeground(ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE));
     }
 
     @Override
@@ -113,9 +115,8 @@ final class GraphicImpl
     {
         if (sx2 < sx1)
         {
+            // TODO not working
             final org.eclipse.swt.graphics.Transform old = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);
-            gc.getTransform(old);
-
             final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(
                     ScreenImpl.display);
             transform.setElements(1, 0, 0, -1, 0, 0);
@@ -179,6 +180,7 @@ final class GraphicImpl
         }
         lastColor = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
         gc.setBackground(lastColor);
+        gc.setForeground(lastColor);
     }
 
     @Override

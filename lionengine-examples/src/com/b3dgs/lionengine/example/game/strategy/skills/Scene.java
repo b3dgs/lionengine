@@ -94,6 +94,7 @@ final class Scene
         factoryProduction = new FactoryProduction();
         factorySkill = new FactorySkill(factoryProduction, cursor);
         factoryEntity = new FactoryEntity(map, factorySkill, handlerEntity, getConfig().getSource().getRate());
+        mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
 
@@ -133,6 +134,7 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
+        mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
