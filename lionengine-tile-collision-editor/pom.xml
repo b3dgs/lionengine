@@ -8,16 +8,9 @@
 		<version>${lionengine.version}</version>
 	</parent>
 
-	<artifactId>lionengine-core-swt</artifactId>
-	<name>LionEngine Core SWT</name>
-
-	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
-
+	<artifactId>lionengine-tile-collision-editor</artifactId>
+	<name>LionEngine Tile Collision Editor</name>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
@@ -25,10 +18,19 @@
 			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${swt.groupId}</groupId>
-			<artifactId>${swt.artifactId}</artifactId>
-			<version>${swt.version}</version>
-			<scope>provided</scope>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-core-awt</artifactId>
+			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-game</artifactId>
+			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-game-platform</artifactId>
+			<version>${lionengine.version}</version>
 		</dependency>
 	</dependencies>
 </project>

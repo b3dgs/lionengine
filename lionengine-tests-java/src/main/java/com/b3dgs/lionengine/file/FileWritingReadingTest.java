@@ -22,6 +22,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityFile;
 
@@ -41,6 +43,7 @@ public class FileWritingReadingTest
     @Test
     public void testReaderWriter()
     {
+        Engine.start("FileTest", Version.create(1, 0, 0), "resources");
         fileData = Media.create("test.dat");
         try
         {

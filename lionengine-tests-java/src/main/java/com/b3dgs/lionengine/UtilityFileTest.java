@@ -120,7 +120,7 @@ public class UtilityFileTest
                 Assert.assertEquals(0, UtilityFile.getDirsList(UtilityMedia.get("null").getPath()).length);
 
                 final String[] files = UtilityFile.getFilesList("resources");
-                Assert.assertEquals(17, files.length);
+                Assert.assertEquals(18, files.length);
                 Assert.assertEquals(0, UtilityFile.getFilesList(UtilityMedia.get("null").getPath()).length);
                 Assert.assertEquals(0, UtilityFile.getFilesList(UtilityMedia.get("null").getPath(), "txt").length);
                 Assert.assertEquals(2, UtilityFile.getFilesList(UtilityMedia.get("resources").getPath(), "wav").length);
