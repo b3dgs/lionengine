@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>${lionengine.version}</version>
+		<version>6.2.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>lionengine-core-swt</artifactId>
@@ -22,12 +22,12 @@
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
+			<version>6.2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>${swt.groupId}</groupId>
 			<artifactId>${swt.artifactId}</artifactId>
-			<version>${swt.version}</version>
+			<version>3.7.2</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

@@ -5,16 +5,15 @@
 
 	<properties>
 		<working.dir>${project.basedir}</working.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jna.version>3.0.9</jna.version>
-		<swt.version>3.7.2</swt.version>
-		<android.version>2.3.3</android.version>
-		<lionengine.version>6.2.0-SNAPSHOT</lionengine.version>
 	</properties>
 
 	<groupId>com.b3dgs.lionengine</groupId>
 	<artifactId>lionengine</artifactId>
 	<packaging>pom</packaging>
-	<version>${lionengine.version}</version>
+	<version>6.2.0-SNAPSHOT</version>
 
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
