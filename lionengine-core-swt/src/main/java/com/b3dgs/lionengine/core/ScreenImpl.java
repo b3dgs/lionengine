@@ -68,7 +68,7 @@ final class ScreenImpl
     /** Frame reference. */
     private final Shell frame;
     /** Input devices. */
-    private final HashMap<InputDeviceType, InputDevice> devices;
+    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Configuration reference. */
@@ -162,7 +162,7 @@ final class ScreenImpl
     {
         final Keyboard keyboard = new Keyboard();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getType(), keyboard);
+        devices.put(keyboard.getClass(), keyboard);
     }
 
     /**
@@ -172,7 +172,7 @@ final class ScreenImpl
     {
         final Mouse mouse = new Mouse(ScreenImpl.display);
         addMouseListener(mouse);
-        devices.put(mouse.getType(), mouse);
+        devices.put(mouse.getClass(), mouse);
     }
 
     /**
@@ -409,9 +409,9 @@ final class ScreenImpl
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
-        return (T) devices.get(type);
+        return type.cast(devices.get(type));
     }
 
     @Override

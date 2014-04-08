@@ -290,7 +290,7 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TilePlat
             function.setName(name);
             function.setRange(0, editor.world.map.getTileWidth() - 1);
             panel.setSelectedFunction(function);
-            editor.world.map.assignCollisionFunction((C) collisionCombo.getSelectedItem(), function);
+            editor.world.map.assignCollisionFunction(collisionClass.cast(collisionCombo.getSelectedItem()), function);
             editor.world.map.createCollisionDraw(collisionClass);
             editor.world.repaint();
 

@@ -107,7 +107,7 @@ interface Screen
      * @param type The input device type.
      * @return The input instance reference, <code>null</code> if not found.
      */
-    <T extends InputDevice> T getInputDevice(InputDeviceType type);
+    <T extends InputDevice> T getInputDevice(Class<T> type);
 
     /**
      * Get main frame location x.

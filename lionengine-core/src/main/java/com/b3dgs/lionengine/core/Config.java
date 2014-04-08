@@ -158,15 +158,16 @@ public final class Config
      * Get applet reference.
      * 
      * @param <A> The applet type used.
+     * @param appletClass The applet class.
      * @return The applet reference.
      */
-    public <A extends Applet<A>> A getApplet()
+    public <A extends Applet<A>> A getApplet(Class<A> appletClass)
     {
-        if (applet == null)
+        if (applet != null && appletClass != null)
         {
-            return null;
+            return appletClass.cast(applet.getApplet());
         }
-        return (A) applet.getApplet();
+        return null;
     }
 
     /**

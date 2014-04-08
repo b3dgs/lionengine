@@ -21,7 +21,6 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
@@ -56,7 +55,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        keyboard = sequence.getInputDevice(DeviceType.KEYBOARD);
+        keyboard = sequence.getInputDevice(Keyboard.class);
         camera = new CameraPlatform(width, height);
         map = new Map();
         factory = new FactoryEntity(map, source.getRate());

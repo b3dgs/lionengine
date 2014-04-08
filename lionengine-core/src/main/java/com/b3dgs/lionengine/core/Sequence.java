@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.Resolution;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
- * screen used, the current configuration, input references ({@link #getInputDevice(InputDeviceType)}), and it includes
+ * screen used, the current configuration, input references ({@link #getInputDevice(Class)}), and it includes
  * a standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronized to a
  * specified frame rate.
  * <p>
@@ -172,7 +172,7 @@ public abstract class Sequence
      * @param type The input device type.
      * @return The input instance reference, <code>null</code> if not found.
      */
-    public final <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return renderer.getInputDevice(type);
     }

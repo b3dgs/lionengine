@@ -65,8 +65,8 @@ public final class Loader
     {
         try
         {
-            final Constructor<Sequence> constructor = (Constructor<Sequence>) nextSequence
-                    .getDeclaredConstructor(Loader.getParamTypes(loader, arguments));
+            final Constructor<? extends Sequence> constructor = nextSequence.getDeclaredConstructor(Loader
+                    .getParamTypes(loader, arguments));
             final boolean accessible = constructor.isAccessible();
             if (!accessible)
             {

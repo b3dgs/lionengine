@@ -92,7 +92,7 @@ abstract class EngineImpl
             EngineImpl.started = true;
 
             // Load low level factory
-            EngineImpl.factoryGraphic = EngineImpl.getFactory(EngineImpl.FACTORY_GRAPHIC);
+            EngineImpl.factoryGraphic = EngineImpl.getFactory(FactoryGraphic.class, EngineImpl.FACTORY_GRAPHIC);
             UtilityImage.setGraphicFactory(EngineImpl.factoryGraphic);
         }
     }
@@ -147,16 +147,17 @@ abstract class EngineImpl
     /**
      * Load low level factory.
      * 
+     * @param factoryClass The factory class type.
      * @param <C> The factory type used.
      * @param name The factory name.
      * @return The factory instance.
      */
-    private static <C> C getFactory(String name)
+    private static <C> C getFactory(Class<C> factoryClass, String name)
     {
         final String factoryName = EngineImpl.FACTORY_BASE + name;
         try
         {
-            return (C) Class.forName(factoryName).newInstance();
+            return Class.forName(factoryName).asSubclass(factoryClass).newInstance();
         }
         catch (InstantiationException
                | IllegalAccessException

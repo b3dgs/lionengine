@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -82,8 +81,8 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(DeviceType.KEYBOARD);
-        mouse = getInputDevice(DeviceType.MOUSE);
+        keyboard = getInputDevice(Keyboard.class);
+        mouse = getInputDevice(Mouse.class);
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);

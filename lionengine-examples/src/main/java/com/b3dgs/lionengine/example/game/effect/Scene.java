@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.effect;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
@@ -54,8 +53,8 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        keyboard = getInputDevice(DeviceType.KEYBOARD);
-        mouse = getInputDevice(DeviceType.MOUSE);
+        keyboard = getInputDevice(Keyboard.class);
+        mouse = getInputDevice(Mouse.class);
         camera = new CameraGame();
         factoryEffect = new FactoryEffect();
         handlerEffect = new HandlerEffect(camera);

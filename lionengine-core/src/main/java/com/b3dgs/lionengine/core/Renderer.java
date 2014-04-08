@@ -314,7 +314,7 @@ abstract class Renderer
      * @param type The input device type.
      * @return The input instance reference, <code>null</code> if not found.
      */
-    final <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    final <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return screen.getInputDevice(type);
     }

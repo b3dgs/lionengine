@@ -81,9 +81,9 @@ public class ConfigTest
         Assert.assertEquals(output.getWidth(), config.getSource().getWidth());
 
         config.setApplet(null);
-        Assert.assertNull(config.getApplet());
+        Assert.assertNull(config.getApplet(null));
 
         config.setApplet(new AppletMock());
-        Assert.assertNotNull(config.getApplet());
+        Assert.assertNotNull(config.getApplet(AppletMock.class));
     }
 }

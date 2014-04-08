@@ -269,16 +269,6 @@ public final class Mouse
     }
 
     /*
-     * InputDevice
-     */
-
-    @Override
-    public InputDeviceType getType()
-    {
-        return DeviceType.MOUSE;
-    }
-
-    /*
      * InputDevicePointer
      */
 

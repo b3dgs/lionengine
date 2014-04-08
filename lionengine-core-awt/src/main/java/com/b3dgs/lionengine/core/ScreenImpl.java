@@ -38,7 +38,6 @@ import java.awt.image.BufferStrategy;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -99,11 +98,11 @@ final class ScreenImpl
     /** Graphic configuration reference. */
     private final GraphicsConfiguration conf;
     /** Input devices. */
-    private final HashMap<InputDeviceType, InputDevice> devices;
+    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
     /** Frame reference. */
     private final JFrame frame;
     /** Applet reference. */
-    private final JApplet applet;
+    private final AppletImpl applet;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Applet flag. */
@@ -151,7 +150,7 @@ final class ScreenImpl
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        applet = config.getApplet();
+        applet = config.getApplet(AppletImpl.class);
         graphics = UtilityImage.createGraphic();
         hasApplet = applet != null;
         devices = new HashMap<>(2);
@@ -205,7 +204,7 @@ final class ScreenImpl
     {
         final Keyboard keyboard = new Keyboard();
         addKeyboardListener(keyboard);
-        devices.put(keyboard.getType(), keyboard);
+        devices.put(keyboard.getClass(), keyboard);
     }
 
     /**
@@ -215,7 +214,7 @@ final class ScreenImpl
     {
         final Mouse mouse = new Mouse();
         addMouseListener(mouse);
-        devices.put(mouse.getType(), mouse);
+        devices.put(mouse.getClass(), mouse);
     }
 
     /**
@@ -552,9 +551,9 @@ final class ScreenImpl
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
-        return (T) devices.get(type);
+        return type.cast(devices.get(type));
     }
 
     @Override

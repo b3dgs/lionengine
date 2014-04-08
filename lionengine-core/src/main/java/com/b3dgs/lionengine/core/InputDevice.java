@@ -24,10 +24,5 @@ package com.b3dgs.lionengine.core;
  */
 public interface InputDevice
 {
-    /**
-     * Get the input device type.
-     * 
-     * @return The input device type.
-     */
-    InputDeviceType getType();
+    // Marker interface
 }

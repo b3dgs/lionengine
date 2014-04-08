@@ -17,38 +17,37 @@
  */
 package com.b3dgs.lionengine.core;
 
+import javax.swing.JApplet;
+
+import com.b3dgs.lionengine.Applet;
+
 /**
- * List of available input devices.
+ * Applet implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum DeviceType implements InputDeviceType
+public class AppletImpl
+        extends JApplet
+        implements Applet<AppletImpl>
 {
-    /** Mouse input device. */
-    MOUSE(Mouse.class),
-    /** Keyboard input device. */
-    KEYBOARD(Keyboard.class);
-
-    /** The target class. */
-    private final Class<? extends InputDevice> target;
+    /** UID. */
+    private static final long serialVersionUID = -7221935102778197564L;
 
     /**
      * Constructor.
-     * 
-     * @param target The target class.
      */
-    private DeviceType(Class<? extends InputDevice> target)
+    public AppletImpl()
     {
-        this.target = target;
+        super();
     }
 
     /*
-     * InputDeviceType
+     * Applet
      */
 
     @Override
-    public Class<? extends InputDevice> getTargetClass()
+    public AppletImpl getApplet()
     {
-        return target;
+        return this;
     }
 }

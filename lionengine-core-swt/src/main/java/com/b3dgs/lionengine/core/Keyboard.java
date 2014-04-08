@@ -144,16 +144,6 @@ public final class Keyboard
     }
 
     /*
-     * InputDevice
-     */
-
-    @Override
-    public InputDeviceType getType()
-    {
-        return DeviceType.KEYBOARD;
-    }
-
-    /*
      * InputDeviceDirectional
      */
 

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
@@ -49,7 +48,7 @@ final class Scene
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        keyboard = getInputDevice(Keyboard.class);
         world = new World(this);
     }
 

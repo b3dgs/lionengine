@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.DeviceType;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
@@ -72,7 +71,7 @@ final class Scene
         // Any call to Media.get(...) will load from ./resources/drawable/
 
         // Load keyboard
-        keyboard = getInputDevice(DeviceType.KEYBOARD);
+        keyboard = getInputDevice(Keyboard.class);
 
         // Load an image (./resources/drawable/image.png)
         image = Drawable.loadImage(UtilityMedia.get("image.png"));

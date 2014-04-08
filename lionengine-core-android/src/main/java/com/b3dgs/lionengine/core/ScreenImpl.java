@@ -57,7 +57,7 @@ public final class ScreenImpl
     }
 
     /** Input devices. */
-    private final HashMap<InputDeviceType, InputDevice> devices;
+    private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Configuration reference. */
@@ -80,7 +80,7 @@ public final class ScreenImpl
         Check.notNull(config, ScreenImpl.ERROR_CONFIG);
 
         this.config = config;
-        devices = new HashMap<InputDeviceType, InputDevice>(1);
+        devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
         graphics = UtilityImage.createGraphic();
 
         setResolution(config.getOutput());
@@ -95,7 +95,7 @@ public final class ScreenImpl
     {
         final Mouse mouse = new Mouse();
         ScreenImpl.view.setMouse(mouse);
-        devices.put(mouse.getType(), mouse);
+        devices.put(mouse.getClass(), mouse);
     }
 
     /**
@@ -203,7 +203,7 @@ public final class ScreenImpl
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(InputDeviceType type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type)
     {
         return null;
     }
