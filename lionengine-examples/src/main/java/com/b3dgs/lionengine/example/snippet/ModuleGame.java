@@ -35,8 +35,6 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.ObjectTypeUtility;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -48,36 +46,6 @@ import com.b3dgs.lionengine.utility.TileExtractor;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum EntityType implements ObjectType
-    {
-        ;
-
-        private final Class<?> target;
-        private final String pathName;
-
-        private EntityType(Class<?> target)
-        {
-            this.target = target;
-            pathName = ObjectTypeUtility.getPathName(this);
-        }
-
-        /*
-         * ObjectType
-         */
-
-        @Override
-        public Class<?> getTargetClass()
-        {
-            return target;
-        }
-
-        @Override
-        public String getPathName()
-        {
-            return pathName;
-        }
-    }
-
     enum TileCollision
     {
 
@@ -162,32 +130,30 @@ public class ModuleGame
     }
 
     public class Factory
-            extends FactoryGame<EntityType, SetupGame>
+            extends FactoryGame<SetupGame, ObjectGame>
     {
         public Factory()
         {
-            super(EntityType.class);
-            load();
+            super();
         }
 
         @Override
-        protected SetupGame createSetup(EntityType type)
+        protected SetupGame createSetup(Class<? extends ObjectGame> type)
         {
-            return new SetupGame(UtilityMedia.get(type.name() + ".xml"));
+            return new SetupGame(UtilityMedia.get(type.getSimpleName() + ".xml"));
         }
     }
 
     public class FactoryObject
-            extends FactoryObjectGame<EntityType, SetupGame, ObjectGame>
+            extends FactoryObjectGame<SetupGame, ObjectGame>
     {
         public FactoryObject()
         {
-            super(EntityType.class, "objects");
-            load();
+            super("objects");
         }
 
         @Override
-        protected SetupGame createSetup(EntityType type, Media config)
+        protected SetupGame createSetup(Class<? extends ObjectGame> type, Media config)
         {
             return new SetupGame(config);
         }

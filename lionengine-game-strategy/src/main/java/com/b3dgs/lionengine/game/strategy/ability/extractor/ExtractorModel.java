@@ -24,12 +24,11 @@ import com.b3dgs.lionengine.game.strategy.ability.AbilityModel;
  * This is the main implementation of the extract ability. This object can be used by any kind of unit which will
  * receive the ability of extraction.
  * 
- * @param <R> The resources enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ExtractorModel<R extends Enum<R>>
-        extends AbilityModel<ExtractorListener<R>, ExtractorUsedServices<R>>
-        implements ExtractorServices<R>, ExtractorListener<R>
+public class ExtractorModel
+        extends AbilityModel<ExtractorListener, ExtractorUsedServices>
+        implements ExtractorServices, ExtractorListener
 {
     /**
      * Extractor states.
@@ -55,7 +54,7 @@ public class ExtractorModel<R extends Enum<R>>
     /** Resources location. */
     private final ResourceLocation resourceLocation;
     /** Current resources type. */
-    private R resourceType;
+    private Enum<?> resourceType;
     /** Extraction state. */
     private State state;
     /** Extraction speed. */
@@ -75,7 +74,7 @@ public class ExtractorModel<R extends Enum<R>>
      * @param user The concerned worker reference.
      * @param desiredFps The the desired frame rate.
      */
-    public ExtractorModel(ExtractorUsedServices<R> user, int desiredFps)
+    public ExtractorModel(ExtractorUsedServices user, int desiredFps)
     {
         super(user);
         this.desiredFps = desiredFps;
@@ -182,8 +181,8 @@ public class ExtractorModel<R extends Enum<R>>
     @Override
     public void startExtraction()
     {
-        this.dropOffPerSecond = user.getDropOffSpeed();
-        this.quantityMax = user.getExtractionCapacity();
+        dropOffPerSecond = user.getDropOffSpeed();
+        quantityMax = user.getExtractionCapacity();
         state = State.GOTO_RESOURCES;
         speed = user.getExtractionSpeed() / desiredFps;
         progress = 0.0;
@@ -205,7 +204,7 @@ public class ExtractorModel<R extends Enum<R>>
     }
 
     @Override
-    public void setResource(Extractible<R> entity)
+    public void setResource(Extractible entity)
     {
         resourceLocation.setCoordinate(entity.getLocationInTileX(), entity.getLocationInTileY());
         resourceLocation.setSize(entity.getWidthInTile(), entity.getHeightInTile());
@@ -213,7 +212,7 @@ public class ExtractorModel<R extends Enum<R>>
     }
 
     @Override
-    public void setResource(R type, int tx, int ty, int tw, int th)
+    public void setResource(Enum<?> type, int tx, int ty, int tw, int th)
     {
         resourceLocation.setCoordinate(tx, ty);
         resourceLocation.setSize(tw, th);
@@ -227,7 +226,7 @@ public class ExtractorModel<R extends Enum<R>>
     }
 
     @Override
-    public R getResourceType()
+    public Enum<?> getResourceType()
     {
         return resourceType;
     }
@@ -237,54 +236,54 @@ public class ExtractorModel<R extends Enum<R>>
      */
 
     @Override
-    public void notifyStartGoToRessources(R type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyStartGoToRessources(type, resourceLocation);
         }
     }
 
     @Override
-    public void notifyStartExtraction(R type, Tiled resourceLocation)
+    public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyStartExtraction(type, resourceLocation);
         }
     }
 
     @Override
-    public void notifyExtracted(R type, int currentQuantity)
+    public void notifyExtracted(Enum<?> type, int currentQuantity)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyExtracted(type, currentQuantity);
         }
     }
 
     @Override
-    public void notifyStartCarry(R type, int totalQuantity)
+    public void notifyStartCarry(Enum<?> type, int totalQuantity)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyStartCarry(type, totalQuantity);
         }
     }
 
     @Override
-    public void notifyStartDropOff(R type, int totalQuantity)
+    public void notifyStartDropOff(Enum<?> type, int totalQuantity)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyStartDropOff(type, totalQuantity);
         }
     }
 
     @Override
-    public void notifyDroppedOff(R type, int droppedQuantity)
+    public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
     {
-        for (final ExtractorListener<R> listener : listeners)
+        for (final ExtractorListener listener : listeners)
         {
             listener.notifyDroppedOff(type, droppedQuantity);
         }

@@ -68,7 +68,6 @@ final class Scene
     @Override
     protected void load()
     {
-        factoryEffect.load();
         mouse.setConfig(getConfig());
     }
 
@@ -83,7 +82,7 @@ final class Scene
 
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            final Effect effect = factoryEffect.create(EffectType.EXPLODE);
+            final Effect effect = factoryEffect.create(Explode.class);
             effect.start(mouse.getX(), getHeight() - mouse.getY());
             handlerEffect.add(effect);
         }

@@ -22,10 +22,9 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * Extractor events listener.
  * 
- * @param <R> The resource enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ExtractorListener<R extends Enum<R>>
+public interface ExtractorListener
 {
     /**
      * Notify listener when extractor will start to move to resources (called once).
@@ -33,7 +32,7 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param resourceLocation The resource location.
      */
-    void notifyStartGoToRessources(R type, Tiled resourceLocation);
+    void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation);
 
     /**
      * Notify listener when extractor is going to start extraction (called once).
@@ -41,7 +40,7 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param resourceLocation The resource location.
      */
-    void notifyStartExtraction(R type, Tiled resourceLocation);
+    void notifyStartExtraction(Enum<?> type, Tiled resourceLocation);
 
     /**
      * Notify listener when extractor extracted one unit (called once when one quantity is extracted).
@@ -49,7 +48,7 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param currentQuantity The current quantity of extracted resources.
      */
-    void notifyExtracted(R type, int currentQuantity);
+    void notifyExtracted(Enum<?> type, int currentQuantity);
 
     /**
      * Notify listener when extractor is going to start carry (called once).
@@ -57,7 +56,7 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param totalQuantity The total resource quantity to carry.
      */
-    void notifyStartCarry(R type, int totalQuantity);
+    void notifyStartCarry(Enum<?> type, int totalQuantity);
 
     /**
      * Notify listener when extractor carried and will start to drop off resources (called once).
@@ -65,7 +64,7 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param totalQuantity The total resource quantity to drop.
      */
-    void notifyStartDropOff(R type, int totalQuantity);
+    void notifyStartDropOff(Enum<?> type, int totalQuantity);
 
     /**
      * Notify listener when extractor has dropped resources to warehouse.
@@ -73,5 +72,5 @@ public interface ExtractorListener<R extends Enum<R>>
      * @param type The resource type.
      * @param droppedQuantity The total resource quantity dropped off.
      */
-    void notifyDroppedOff(R type, int droppedQuantity);
+    void notifyDroppedOff(Enum<?> type, int droppedQuantity);
 }

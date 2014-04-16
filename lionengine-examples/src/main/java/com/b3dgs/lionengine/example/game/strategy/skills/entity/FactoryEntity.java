@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity, Entity>
 {
     /** Map reference. */
     public final Map map;
@@ -49,12 +49,11 @@ public class FactoryEntity
      */
     public FactoryEntity(Map map, FactorySkill factorySkill, HandlerEntity handlerEntity, int desiredFps)
     {
-        super(EntityType.class, "entities");
+        super("entities");
         this.map = map;
         this.factorySkill = factorySkill;
         this.handlerEntity = handlerEntity;
         this.desiredFps = desiredFps;
-        load();
     }
 
     /*
@@ -62,7 +61,7 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(EntityType type, Media config)
+    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
     {
         return new SetupEntity(config, type, map, this, factorySkill, handlerEntity, desiredFps);
     }

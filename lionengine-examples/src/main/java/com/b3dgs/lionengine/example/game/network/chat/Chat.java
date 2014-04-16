@@ -59,7 +59,7 @@ final class Chat
      */
     Chat(World<?> world)
     {
-        super(TypeMessage.MESSAGE_CHAT);
+        super(TypeMessage.MESSAGE_CHAT.getId());
         this.world = world;
         text = UtilityImage.createText(Text.DIALOG, 9, TextStyle.NORMAL);
         setKeyValidate(Keyboard.ENTER.intValue());

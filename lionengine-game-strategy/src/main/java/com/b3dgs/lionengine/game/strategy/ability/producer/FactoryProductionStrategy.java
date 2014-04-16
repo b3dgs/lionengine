@@ -19,26 +19,25 @@ package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
  * Represents the production factory. Designed to return a producible instance from its type.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryProductionStrategy<T extends Enum<T>, C extends ProductionCostStrategy, P extends Producible<T, C>>
-        extends FactoryGame<T, SetupGame>
+public abstract class FactoryProductionStrategy<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
+        extends FactoryGame<SetupGame, E>
 {
     /**
      * Constructor.
-     * 
-     * @param keyType The class of the enum type defined.
      */
-    public FactoryProductionStrategy(Class<T> keyType)
+    public FactoryProductionStrategy()
     {
-        super(keyType);
+        super();
     }
 
     /**
@@ -47,7 +46,7 @@ public abstract class FactoryProductionStrategy<T extends Enum<T>, C extends Pro
      * @param type The entity type.
      * @return The producible instance.
      */
-    public abstract P create(T type);
+    public abstract P create(Class<? extends E> type);
 
     /**
      * Create a new producible from the entity type.
@@ -57,5 +56,5 @@ public abstract class FactoryProductionStrategy<T extends Enum<T>, C extends Pro
      * @param ty The producible vertical tile.
      * @return The producible instance.
      */
-    public abstract P create(T type, int tx, int ty);
+    public abstract P create(Class<? extends E> type, int tx, int ty);
 }

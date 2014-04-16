@@ -29,8 +29,6 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 public abstract class Entity
         extends EntityStrategy
 {
-    /** Entity type. */
-    public final EntityType type;
     /** Entity life. */
     public final Alterable life;
     /** Map reference. */
@@ -44,7 +42,6 @@ public abstract class Entity
     protected Entity(SetupEntity setup)
     {
         super(setup, setup.map);
-        type = setup.type;
         map = setup.map;
         life = new Alterable(getDataInteger("life", "attributes"));
     }

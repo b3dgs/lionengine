@@ -37,7 +37,7 @@ public abstract class NetworkChat
     /** Networkable model. */
     private final NetworkableModel networkable;
     /** Message type. */
-    private final Enum<?> type;
+    private final byte type;
     /** List of received message. */
     private final ConcurrentLinkedQueue<String> messages;
     /** Current message. */
@@ -54,7 +54,7 @@ public abstract class NetworkChat
      * 
      * @param type The message type enum.
      */
-    public NetworkChat(Enum<?> type)
+    public NetworkChat(byte type)
     {
         this.type = type;
         networkable = new NetworkableModel();

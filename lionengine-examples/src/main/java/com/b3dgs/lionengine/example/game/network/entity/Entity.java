@@ -59,8 +59,6 @@ abstract class Entity
     private final Animation animWalk;
     /** Animation jump. */
     private final Animation animDie;
-    /** Entity type. */
-    private final EntityType type;
     /** Client flag. */
     protected final boolean server;
     /** Jump force. */
@@ -92,7 +90,6 @@ abstract class Entity
     Entity(SetupEntity setup)
     {
         super(setup);
-        type = setup.type;
         map = setup.map;
         desiredFps = setup.desiredFps;
         server = setup.server;
@@ -178,16 +175,6 @@ abstract class Entity
     public boolean isDead()
     {
         return dead;
-    }
-
-    /**
-     * Get the entity type.
-     * 
-     * @return The entity type.
-     */
-    public EntityType getType()
-    {
-        return type;
     }
 
     /**

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import com.b3dgs.lionengine.example.game.strategy.ability.weapon.WeaponType;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Axe;
 
 /**
  * Grunt implementation.
@@ -35,6 +35,6 @@ public final class Grunt
     public Grunt(SetupEntity setup)
     {
         super(setup);
-        addWeapon(setup.factoryWeapon.create(WeaponType.AXE), 0);
+        addWeapon(setup.factoryWeapon.create(Axe.class), 0);
     }
 }

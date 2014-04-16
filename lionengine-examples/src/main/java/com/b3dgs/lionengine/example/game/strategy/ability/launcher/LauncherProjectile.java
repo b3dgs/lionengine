@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Projectile;
-import com.b3dgs.lionengine.example.game.strategy.ability.projectile.ProjectileType;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
@@ -29,20 +28,21 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LauncherProjectile
-        extends LauncherProjectileGame<ProjectileType, Entity, Weapon, Projectile>
+        extends LauncherProjectileGame<Entity, Weapon, Projectile>
 {
     /** Type projectile. */
-    private final ProjectileType type;
+    private final Class<? extends Projectile> type;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param projectileType The projectile type used.
      */
-    public LauncherProjectile(SetupLauncher setup)
+    public LauncherProjectile(SetupLauncher setup, Class<? extends Projectile> projectileType)
     {
         super(setup, setup.factoryProjectile, setup.handlerProjectile);
-        type = setup.type;
+        type = projectileType;
     }
 
     /*

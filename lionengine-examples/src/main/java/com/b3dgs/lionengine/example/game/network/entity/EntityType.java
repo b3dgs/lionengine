@@ -17,15 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
-import com.b3dgs.lionengine.game.ObjectType;
-import com.b3dgs.lionengine.game.ObjectTypeUtility;
+import java.util.HashMap;
 
 /**
- * List of entity types. Lower case is preferred, as the name has to be the same with its corresponding files.
+ * List of entity types shared via the network.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityType implements ObjectType
+public enum EntityType
 {
     /** Mario. */
     MARIO(Mario.class),
@@ -36,45 +35,79 @@ enum EntityType implements ObjectType
     private static final EntityType[] VALUES = EntityType.values();
 
     /**
-     * Get the message type from its ordinal.
+     * Get the type from its id.
      * 
-     * @param ordinal The ordinal.
-     * @return The enum.
+     * @param id The entity type id.
+     * @return The entity id.
      */
-    public static EntityType fromOrdinal(int ordinal)
+    public static EntityType fromId(byte id)
     {
-        return EntityType.VALUES[ordinal];
+        return EntityType.VALUES[id];
     }
 
-    /** Class target. */
-    private final Class<?> target;
-    /** Path name. */
-    private final String path;
+    /**
+     * Get the entity type from its class.
+     * 
+     * @param clazz The entity class.
+     * @return The entity type.
+     */
+    public static EntityType fromClass(Class<? extends Entity> clazz)
+    {
+        return EntityTypeMap.fromClass(clazz);
+    }
+
+    /** Entity class. */
+    private final Class<? extends Entity> clazz;
 
     /**
      * Constructor.
      * 
-     * @param target The target class.
+     * @param clazz The entity class.
      */
-    private EntityType(Class<?> target)
+    private EntityType(Class<? extends Entity> clazz)
     {
-        this.target = target;
-        path = ObjectTypeUtility.getPathName(this);
+        this.clazz = clazz;
+        EntityTypeMap.link(clazz, this);
     }
 
-    /*
-     * ObjectType
+    /**
+     * Get the entity class.
+     * 
+     * @return The entity class.
      */
-
-    @Override
-    public Class<?> getTargetClass()
+    public Class<? extends Entity> getEntityClass()
     {
-        return target;
+        return clazz;
     }
 
-    @Override
-    public String getPathName()
+    /**
+     * Represents the link between entity class and their enum type.
+     */
+    private static final class EntityTypeMap
     {
-        return path;
+        /** Type class map. */
+        private static final HashMap<Class<? extends Entity>, EntityType> MAP = new HashMap<>(4);
+
+        /**
+         * Link the class and the type.
+         * 
+         * @param clazz The class to link to the type.
+         * @param type The entity type.
+         */
+        static void link(Class<? extends Entity> clazz, EntityType type)
+        {
+            EntityTypeMap.MAP.put(clazz, type);
+        }
+
+        /**
+         * Get the entity type from its class.
+         * 
+         * @param clazz The entity class.
+         * @return The entity type.
+         */
+        static EntityType fromClass(Class<? extends Entity> clazz)
+        {
+            return EntityTypeMap.MAP.get(clazz);
+        }
     }
 }

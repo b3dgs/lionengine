@@ -29,7 +29,7 @@ public class SetupEntity
         extends SetupSurfaceGame
 {
     /** Type. */
-    final EntityType type;
+    final Class<? extends Entity> type;
     /** Map. */
     final Map map;
     /** Desired fps. */
@@ -46,7 +46,7 @@ public class SetupEntity
      * @param desiredFps The desired fps.
      * @param server The server.
      */
-    public SetupEntity(Media config, EntityType type, Map map, int desiredFps, boolean server)
+    public SetupEntity(Media config, Class<? extends Entity> type, Map map, int desiredFps, boolean server)
     {
         super(config);
         this.type = type;

@@ -25,18 +25,18 @@ import com.b3dgs.lionengine.core.Media;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Factory
-        extends FactoryGame<Type, SetupGame>
+        extends FactoryGame<SetupGame, ObjectGame>
 {
     /**
      * Constructor.
      */
     Factory()
     {
-        super(Type.class);
+        super();
     }
 
     @Override
-    protected SetupGame createSetup(Type type)
+    protected SetupGame createSetup(Class<? extends ObjectGame> type)
     {
         return new SetupGame(Media.create("type.xml"));
     }

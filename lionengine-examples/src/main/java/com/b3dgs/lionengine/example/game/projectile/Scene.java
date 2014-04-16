@@ -71,8 +71,8 @@ final class Scene
         handlerEntity = new HandlerEntity(camera);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
-        canon1 = factoryLauncher.create(LauncherType.PULSE_CANNON);
-        canon2 = factoryLauncher.create(LauncherType.PULSE_CANNON);
+        canon1 = factoryLauncher.create(PulseCannon.class);
+        canon2 = factoryLauncher.create(PulseCannon.class);
         entity1 = new Entity();
         entity2 = new Entity();
     }
@@ -84,7 +84,6 @@ final class Scene
     @Override
     protected void load()
     {
-        factoryProjectile.load();
         camera.setView(0, 0, getWidth(), getHeight());
         canon1.setOwner(entity1);
         canon1.setAdaptative(true);

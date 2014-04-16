@@ -27,8 +27,6 @@ import com.b3dgs.lionengine.game.ObjectGame;
 abstract class TypeBase
         extends ObjectGame
 {
-    /** The type used. */
-    private final Type type;
     /** Object argument. */
     private final Object param;
 
@@ -40,18 +38,7 @@ abstract class TypeBase
     protected TypeBase(Setup setup)
     {
         super(setup);
-        type = setup.type;
         param = setup.param;
-    }
-
-    /**
-     * Get the type.
-     * 
-     * @return The type.
-     */
-    public Type getType()
-    {
-        return type;
     }
 
     /**

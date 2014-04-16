@@ -22,7 +22,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.SkillType;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
@@ -35,7 +34,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  */
 public abstract class Entity
         extends EntityStrategy
-        implements SkilledServices<SkillType, Skill>
+        implements SkilledServices<Skill>
 {
     /** Entity life. */
     public final Alterable life;
@@ -46,7 +45,7 @@ public abstract class Entity
     /** Factory skill. */
     private final FactorySkill factorySkill;
     /** Skilled model. */
-    private final SkilledModel<SkillType, Skill> skilled;
+    private final SkilledModel<Skill> skilled;
 
     /**
      * Constructor.
@@ -71,7 +70,7 @@ public abstract class Entity
      * @param type The skill type.
      * @param priority The position number.
      */
-    public void addSkill(FactoryEntity factory, int panel, SkillType type, int priority)
+    public void addSkill(FactoryEntity factory, int panel, Class<? extends Skill> type, int priority)
     {
         final Skill skill = factorySkill.create(type);
         skill.setOwner(this);
@@ -111,13 +110,13 @@ public abstract class Entity
     }
 
     @Override
-    public Skill getSkill(int panel, SkillType id)
+    public <S extends Skill> S getSkill(int panel, Class<S> id)
     {
         return skilled.getSkill(panel, id);
     }
 
     @Override
-    public void removeSkill(int panel, SkillType id)
+    public void removeSkill(int panel, Class<? extends Skill> id)
     {
         skilled.removeSkill(panel, id);
     }

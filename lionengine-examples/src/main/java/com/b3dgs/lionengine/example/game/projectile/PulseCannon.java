@@ -41,12 +41,12 @@ public final class PulseCannon
     @Override
     protected void launchProjectile(Entity owner)
     {
-        addProjectile(ProjectileType.PULSE, 1, 0, 7, 0, 0);
+        addProjectile(Pulse.class, 1, 0, 7, 0, 0);
     }
 
     @Override
     protected void launchProjectile(Entity owner, Entity target)
     {
-        addProjectile(ProjectileType.PULSE, 1, target, 4, 0, -12);
+        addProjectile(Pulse.class, 1, target, 4, 0, -12);
     }
 }

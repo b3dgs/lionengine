@@ -30,7 +30,7 @@ public class SetupWeapon
         extends SetupGame
 {
     /** Weapon type. */
-    final WeaponType type;
+    final Class<? extends Weapon> type;
     /** Factory projectile. */
     final FactoryLauncher factoryLauncher;
 
@@ -41,7 +41,7 @@ public class SetupWeapon
      * @param type The weapon type.
      * @param factoryLauncher The launcher factory.
      */
-    public SetupWeapon(Media config, WeaponType type, FactoryLauncher factoryLauncher)
+    public SetupWeapon(Media config, Class<? extends Weapon> type, FactoryLauncher factoryLauncher)
     {
         super(config);
         this.type = type;

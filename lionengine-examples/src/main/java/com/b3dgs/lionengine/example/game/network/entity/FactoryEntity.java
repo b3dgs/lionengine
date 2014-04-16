@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity, Entity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entities";
@@ -45,10 +45,9 @@ final class FactoryEntity
      */
     FactoryEntity(int desiredFps, Map map)
     {
-        super(EntityType.class, FactoryEntity.ENTITY_DIR);
+        super(FactoryEntity.ENTITY_DIR);
         this.desiredFps = desiredFps;
         this.map = map;
-        load();
     }
 
     /**
@@ -59,7 +58,6 @@ final class FactoryEntity
     public void setServer(boolean server)
     {
         this.server = server;
-        load();
     }
 
     /*
@@ -67,7 +65,7 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(EntityType type, Media config)
+    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
     {
         return new SetupEntity(config, type, map, desiredFps, server);
     }

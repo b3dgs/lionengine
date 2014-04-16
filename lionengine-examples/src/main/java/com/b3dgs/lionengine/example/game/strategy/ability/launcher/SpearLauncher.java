@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
+import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Spear;
+
 /**
  * Spear launcher implementation.
  * 
@@ -26,10 +28,12 @@ public class SpearLauncher
         extends LauncherProjectile
 {
     /**
-     * {@link LauncherProjectile#LauncherProjectile(SetupLauncher)}
+     * Constructor.
+     * 
+     * @param setup The setup reference.
      */
     public SpearLauncher(SetupLauncher setup)
     {
-        super(setup);
+        super(setup, Spear.class);
     }
 }

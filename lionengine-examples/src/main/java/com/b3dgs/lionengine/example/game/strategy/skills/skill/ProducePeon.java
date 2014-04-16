@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.BuildingProducer;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -56,7 +56,7 @@ public final class ProducePeon
     {
         if (owner instanceof BuildingProducer)
         {
-            final ProducibleEntity producible = factoryProduction.create(EntityType.PEON);
+            final ProducibleEntity producible = factoryProduction.create(Peon.class);
             ((BuildingProducer) owner).addToProductionQueue(producible);
         }
     }

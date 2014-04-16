@@ -18,19 +18,20 @@
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
  * Represents a producible entity.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity enum type used.
  * @param <C> The cost type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Producible<T extends Enum<T>, C extends ProductionCostStrategy>
+public class Producible<E extends EntityStrategy, C extends ProductionCostStrategy>
         implements Tiled
 {
     /** Entity id. */
-    private final T id;
+    private final Class<? extends E> id;
     /** Production cost. */
     private final C cost;
     /** Production width. */
@@ -50,7 +51,7 @@ public class Producible<T extends Enum<T>, C extends ProductionCostStrategy>
      * @param tw The production width.
      * @param th The production height.
      */
-    public Producible(T id, C cost, int tw, int th)
+    public Producible(Class<? extends E> id, C cost, int tw, int th)
     {
         this.id = id;
         this.cost = cost;
@@ -75,7 +76,7 @@ public class Producible<T extends Enum<T>, C extends ProductionCostStrategy>
      * 
      * @return The id.
      */
-    public T getId()
+    public Class<? extends E> getId()
     {
         return id;
     }

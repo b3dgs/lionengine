@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryLauncher
-        extends FactoryObjectGame<LauncherType, Setup, Launcher>
+        extends FactoryObjectGame<Setup, Launcher>
 {
     /** Factory projectile. */
     private final FactoryProjectile factory;
@@ -42,10 +42,9 @@ final class FactoryLauncher
      */
     FactoryLauncher(FactoryProjectile factory, HandlerProjectile handler)
     {
-        super(LauncherType.class, "");
+        super("");
         this.factory = factory;
         this.handler = handler;
-        load();
     }
 
     /*
@@ -53,7 +52,7 @@ final class FactoryLauncher
      */
 
     @Override
-    protected Setup createSetup(LauncherType type, Media config)
+    protected Setup createSetup(Class<? extends Launcher> type, Media config)
     {
         return new Setup(config, factory, handler);
     }

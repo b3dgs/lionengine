@@ -19,17 +19,15 @@ package com.b3dgs.lionengine.game.strategy.ability.skilled;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 
 /**
  * Define something that can used skills.
  * 
- * @param <T> Skill enum type used.
- * @param <S> Skill type used.
+ * @param <S> The skill type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface SkilledServices<T extends Enum<T> & ObjectType, S extends SkillStrategy<T>>
+public interface SkilledServices<S extends SkillStrategy>
 {
     /**
      * Main routine, has to be called in a game loop.
@@ -50,18 +48,18 @@ public interface SkilledServices<T extends Enum<T> & ObjectType, S extends Skill
      * Get a skill from its id.
      * 
      * @param panel The panel (>= 0).
-     * @param id The skill id.
+     * @param type The skill type.
      * @return The skill found.
      */
-    S getSkill(int panel, T id);
+    <SI extends S> SI getSkill(int panel, Class<SI> type);
 
     /**
      * Remove a skill.
      * 
      * @param panel The skill panel (>= 0).
-     * @param id The skill id.
+     * @param type The skill type.
      */
-    void removeSkill(int panel, T id);
+    void removeSkill(int panel, Class<? extends S> type);
 
     /**
      * Get all skills as collection (iterable) from a panel.

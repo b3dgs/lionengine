@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Arrays;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,12 +49,6 @@ public class FactoryGameTest
         Engine.start("FactoryGameTest", Version.create(1, 0, 0), "resources");
         final Factory factory = new Factory();
 
-        Assert.assertTrue(Arrays.equals(Type.values(), factory.getTypes()));
-        Assert.assertNull(factory.getSetup(Type.TYPE));
-
-        factory.load();
-
-        Assert.assertNotNull(factory.getSetup(Type.TYPE));
-        Assert.assertTrue(Arrays.equals(Type.values(), factory.getTypes()));
+        Assert.assertNotNull(factory.getSetup(TestObject.class));
     }
 }

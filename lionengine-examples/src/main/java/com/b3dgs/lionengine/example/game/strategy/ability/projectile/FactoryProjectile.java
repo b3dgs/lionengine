@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.projectile
  */
 public final class FactoryProjectile
-        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
+        extends FactoryObjectGame<SetupSurfaceGame, Projectile>
 {
     /** Directory name from our resources directory containing our entities. */
     private static final String PROJECTILE_PATH = "projectiles";
@@ -38,8 +38,7 @@ public final class FactoryProjectile
      */
     public FactoryProjectile()
     {
-        super(ProjectileType.class, FactoryProjectile.PROJECTILE_PATH);
-        load();
+        super(FactoryProjectile.PROJECTILE_PATH);
     }
 
     /*
@@ -47,7 +46,7 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
     {
         return new SetupSurfaceGame(config);
     }

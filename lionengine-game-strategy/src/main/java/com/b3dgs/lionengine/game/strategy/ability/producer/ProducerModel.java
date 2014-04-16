@@ -28,15 +28,14 @@ import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
 /**
  * Default and abstract model implementation.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
- * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, P extends Producible<T, C>, E extends EntityStrategy>
-        extends AbilityModel<ProducerListener<T, C, P, E>, ProducerUsedServices<T, C, P, E>>
-        implements ProducerServices<T, C, P>, ProducerListener<T, C, P, E>
+public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
+        extends AbilityModel<ProducerListener<E, C, P>, ProducerUsedServices<E, C, P>>
+        implements ProducerServices<E, C, P>, ProducerListener<E, C, P>
 {
     /**
      * Producer states.
@@ -83,8 +82,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
      * @param handler The handler reference.
      * @param desiredFps The the desired frame rate.
      */
-    public ProducerModel(ProducerUsedServices<T, C, P, E> user, HandlerEntityStrategy<?, ?, E, ?> handler,
-            int desiredFps)
+    public ProducerModel(ProducerUsedServices<E, C, P> user, HandlerEntityStrategy<?, ?, E, ?> handler, int desiredFps)
     {
         super(user);
         this.handler = handler;
@@ -266,7 +264,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
     }
 
     @Override
-    public T getProducingElement()
+    public Class<? extends E> getProducingElement()
     {
         if (cur == null)
         {
@@ -300,7 +298,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
     @Override
     public void notifyCanNotProduce(P producible)
     {
-        for (final ProducerListener<T, C, P, E> listener : listeners)
+        for (final ProducerListener<E, C, P> listener : listeners)
         {
             listener.notifyCanNotProduce(producible);
         }
@@ -309,7 +307,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
     @Override
     public void notifyStartProduction(P producible, E entity)
     {
-        for (final ProducerListener<T, C, P, E> listener : listeners)
+        for (final ProducerListener<E, C, P> listener : listeners)
         {
             listener.notifyStartProduction(producible, entity);
         }
@@ -318,7 +316,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
     @Override
     public void notifyProducing(P producible, E entity)
     {
-        for (final ProducerListener<T, C, P, E> listener : listeners)
+        for (final ProducerListener<E, C, P> listener : listeners)
         {
             listener.notifyProducing(producible, entity);
         }
@@ -327,7 +325,7 @@ public class ProducerModel<T extends Enum<T>, C extends ProductionCostStrategy, 
     @Override
     public void notifyProduced(P producible, E entity)
     {
-        for (final ProducerListener<T, C, P, E> listener : listeners)
+        for (final ProducerListener<E, C, P> listener : listeners)
         {
             listener.notifyProduced(producible, entity);
         }

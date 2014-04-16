@@ -23,14 +23,13 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 /**
  * List of services used by the producer.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
- * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ProducerUsedServices<T extends Enum<T>, C extends ProductionCostStrategy, P extends Producible<T, C>, E extends EntityStrategy>
-        extends ProducerListener<T, C, P, E>
+public interface ProducerUsedServices<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
+        extends ProducerListener<E, C, P>
 {
     /**
      * Condition to start production check (able to produce).
@@ -64,12 +63,12 @@ public interface ProducerUsedServices<T extends Enum<T>, C extends ProductionCos
 
     /**
      * Get entity to produce from its id. The common usage is to return a new entity instance by using the factory (
-     * {@link FactoryObjectGame#create(Enum)}.
+     * {@link FactoryObjectGame#create(Class)}.
      * 
      * @param id The entity id.
      * @return The entity reference.
      */
-    E getEntityToProduce(T id);
+    <EI extends E> EI getEntityToProduce(Class<EI> id);
 
     /**
      * Get the number of steps done per seconds (the production speed).

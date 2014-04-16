@@ -28,10 +28,10 @@ import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.EntityType;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
@@ -124,7 +124,7 @@ final class Scene
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final Entity peon = factoryEntity.create(EntityType.PEON);
+        final Entity peon = factoryEntity.create(Peon.class);
         peon.setPlayerId(0);
         peon.setLocation(7, 7);
         handlerEntity.add(peon);

@@ -29,15 +29,14 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStra
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryProduction
-        extends FactoryProductionStrategy<EntityType, ProductionCost, ProducibleEntity>
+        extends FactoryProductionStrategy<Entity, ProductionCost, ProducibleEntity>
 {
     /**
      * Constructor.
      */
     public FactoryProduction()
     {
-        super(EntityType.class);
-        load();
+        super();
     }
 
     /*
@@ -45,7 +44,7 @@ public final class FactoryProduction
      */
 
     @Override
-    public ProducibleEntity create(EntityType type)
+    public ProducibleEntity create(Class<? extends Entity> type)
     {
         final Configurable config = getSetup(type).configurable;
         final int step = config.getDataInteger("steps", "cost");
@@ -61,7 +60,7 @@ public final class FactoryProduction
     }
 
     @Override
-    public ProducibleEntity create(EntityType type, int tx, int ty)
+    public ProducibleEntity create(Class<? extends Entity> type, int tx, int ty)
     {
         final ProducibleEntity producible = create(type);
 
@@ -71,9 +70,9 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(EntityType type)
+    protected SetupGame createSetup(Class<? extends Entity> type)
     {
-        final Media config = UtilityMedia.get("entities", type.getPathName() + ".xml");
+        final Media config = UtilityMedia.get("entities", type.getSimpleName() + ".xml");
         return new SetupGame(config);
     }
 }

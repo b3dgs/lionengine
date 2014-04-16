@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.LauncherProjectile;
-import com.b3dgs.lionengine.example.game.strategy.ability.launcher.LauncherType;
+import com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher;
 
 /**
  * Spear weapon implementation.
@@ -40,7 +40,7 @@ public final class Spear
     public Spear(SetupWeapon setup)
     {
         super(setup);
-        launcher = setup.factoryLauncher.create(LauncherType.SPEAR_LAUNCHER);
+        launcher = setup.factoryLauncher.create(SpearLauncher.class);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

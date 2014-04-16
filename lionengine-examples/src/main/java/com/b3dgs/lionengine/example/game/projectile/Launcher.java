@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class Launcher
-        extends LauncherProjectileGame<ProjectileType, Entity, Entity, Projectile>
+        extends LauncherProjectileGame<Entity, Entity, Projectile>
 {
     /**
      * Constructor.

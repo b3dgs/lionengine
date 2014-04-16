@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.SkillType;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.ProducePeon;
 
 /**
  * Barracks building implementation. This building allows to create new grunt.
@@ -35,6 +35,6 @@ public final class BarracksOrc
     public BarracksOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(setup.factoryEntity, 0, SkillType.PRODUCE_PEON, 0);
+        addSkill(setup.factoryEntity, 0, ProducePeon.class, 0);
     }
 }

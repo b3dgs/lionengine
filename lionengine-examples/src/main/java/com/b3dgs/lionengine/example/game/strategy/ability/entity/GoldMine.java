@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
  */
 public final class GoldMine
         extends Building
-        implements Extractible<ResourceType>
+        implements Extractible
 {
     /** Gold amount. */
     private final Alterable gold;

@@ -18,58 +18,17 @@
 package com.b3dgs.lionengine.game;
 
 /**
- * Represents the list of object types that can be instantiated by a {@link FactoryObjectGame}.
- * <p>
- * Usage example:
- * </p>
+ * Represents the object type, aimed to link a class and an enum for an easy object mapping when saving and loading
+ * them.
  * 
- * <pre>
- * public enum Type implements ObjectType
- * {
- *     TYPE_ONE(TypeOne.class),
- *     TYPE_TWO(TypeTwo.class);
- * 
- *     private final Class&lt;?&gt; target;
- *     private final String pathName;
- * 
- *     private Type(Class&lt;?&gt; target)
- *     {
- *         this.target = target;
- *         pathName = ObjectTypeUtility.getPathName(this);
- *     }
- * 
- *     &#064;Override
- *     public Class&lt;?&gt; getTargetClass()
- *     {
- *         return target;
- *     }
- * 
- *     &#064;Override
- *     public String getPathName()
- *     {
- *         return pathName;
- *     }
- * }
- * </pre>
- * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see SetupGame
+ * @param <T> The primary object type used.
  */
-public interface ObjectType
+public interface ObjectType<T>
 {
     /**
-     * Get the target class (which can be instantiated by a {@link FactoryObjectGame}). The target class should have a
-     * constructor like the main one: {@link ObjectGame#ObjectGame(SetupGame)}.
+     * Get the object class type.
      * 
-     * @return The target class.
+     * @return The object class type.
      */
-    Class<?> getTargetClass();
-
-    /**
-     * Get the name as a path (which is used to point the XML data file). The method
-     * {@link ObjectTypeUtility#getPathName(Enum)} can provide a default implementation.
-     * 
-     * @return The path name.
-     */
-    String getPathName();
+    public Class<? extends T> getType();
 }

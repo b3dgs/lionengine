@@ -36,11 +36,11 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
  */
 public abstract class UnitWorker
         extends Unit
-        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<EntityType, ProductionCost, ProducibleEntity>
+        implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
+        ProducerServices<Entity, ProductionCost, ProducibleEntity>
 {
     /** Producer model. */
-    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Production step per second. */
@@ -127,7 +127,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType type)
+    public <E extends Entity> E getEntityToProduce(Class<E> type)
     {
         return factory.create(type);
     }
@@ -179,7 +179,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public EntityType getProducingElement()
+    public Class<? extends Entity> getProducingElement()
     {
         return producer.getProducingElement();
     }

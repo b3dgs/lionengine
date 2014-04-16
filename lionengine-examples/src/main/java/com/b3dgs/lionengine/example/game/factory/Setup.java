@@ -29,7 +29,7 @@ final class Setup
         extends SetupGame
 {
     /** Type. */
-    final Type type;
+    final Class<? extends TypeBase> type;
     /** Object parameter. */
     final Object param;
 
@@ -40,7 +40,7 @@ final class Setup
      * @param type The type.
      * @param param The parameter reference.
      */
-    Setup(Media config, Type type, Object param)
+    Setup(Media config, Class<? extends TypeBase> type, Object param)
     {
         super(config);
         this.type = type;

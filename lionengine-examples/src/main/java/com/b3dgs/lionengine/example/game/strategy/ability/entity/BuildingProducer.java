@@ -35,11 +35,11 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
  */
 public abstract class BuildingProducer
         extends Building
-        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<EntityType, ProductionCost, ProducibleEntity>
+        implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
+        ProducerServices<Entity, ProductionCost, ProducibleEntity>
 {
     /** Producer model. */
-    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Production step per second. */
@@ -113,9 +113,9 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType id)
+    public <EI extends Entity> EI getEntityToProduce(Class<EI> id)
     {
-        return factory.create(id);
+        return id.cast(factory.create(id));
     }
 
     @Override
@@ -165,7 +165,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public EntityType getProducingElement()
+    public Class<? extends Entity> getProducingElement()
     {
         return producer.getProducingElement();
     }

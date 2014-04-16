@@ -69,7 +69,7 @@ final class MessageEntity
      */
     MessageEntity(Byte clientId)
     {
-        super(TypeMessage.MESSAGE_ENTITY, clientId.byteValue());
+        super(TypeMessage.MESSAGE_ENTITY.getId(), clientId.byteValue());
     }
 
     /**
@@ -79,7 +79,7 @@ final class MessageEntity
      */
     MessageEntity(short entityId)
     {
-        super(TypeMessage.MESSAGE_ENTITY, entityId);
+        super(TypeMessage.MESSAGE_ENTITY.getId(), entityId);
     }
 
     /**
@@ -90,7 +90,7 @@ final class MessageEntity
      */
     MessageEntity(short entityId, byte destId)
     {
-        super(TypeMessage.MESSAGE_ENTITY, entityId, destId);
+        super(TypeMessage.MESSAGE_ENTITY.getId(), entityId, destId);
     }
 
     /*

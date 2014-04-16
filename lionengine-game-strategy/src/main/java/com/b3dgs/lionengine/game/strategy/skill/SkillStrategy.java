@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
@@ -30,10 +29,9 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
  * model has to be implemented in order to specify the action. To be created, it needs the filename containing the skill
  * data.
  * 
- * @param <T> Skill enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class SkillStrategy<T extends Enum<T> & ObjectType>
+public abstract class SkillStrategy
         extends ObjectGame
 {
     /** Name. */
@@ -133,13 +131,6 @@ public abstract class SkillStrategy<T extends Enum<T> & ObjectType>
      * @param panel The panel reference.
      */
     public abstract void onClicked(ControlPanelModel<?> panel);
-
-    /**
-     * Get the id.
-     * 
-     * @return The id.
-     */
-    public abstract T getType();
 
     /**
      * Update routine on panel.

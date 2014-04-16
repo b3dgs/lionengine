@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 
+import com.b3dgs.lionengine.core.Verbose;
+
 /**
  * Network message description.
  * 
@@ -31,21 +33,25 @@ import java.nio.charset.UnsupportedCharsetException;
 public abstract class NetworkMessage
 {
     /** Charset. */
-    public static final Charset CHARSET;
+    public static final Charset CHARSET = NetworkMessage.getCharset("UTF-8");
 
-    /** Init. */
-    static
+    /**
+     * Get the charset.
+     * 
+     * @param charset The charset value.
+     * @return The charset instance.
+     */
+    private static Charset getCharset(String charset)
     {
-        Charset charset;
         try
         {
-            charset = Charset.forName("UTF-8");
+            return Charset.forName(charset);
         }
         catch (final UnsupportedCharsetException exception)
         {
-            charset = Charset.defaultCharset();
+            Verbose.exception(NetworkMessage.class, "getCharset", exception);
+            return Charset.defaultCharset();
         }
-        CHARSET = charset;
     }
 
     /** The message type (should be an enum ordinal to make the id clean). */
@@ -69,7 +75,7 @@ public abstract class NetworkMessage
      * @param type The message type.
      * @param clientId The client id.
      */
-    public NetworkMessage(Enum<?> type, byte clientId)
+    public NetworkMessage(byte type, byte clientId)
     {
         this(type, clientId, (byte) -1);
     }
@@ -81,9 +87,9 @@ public abstract class NetworkMessage
      * @param clientId The client id.
      * @param clientDestId The client destination id (-1 if all).
      */
-    public NetworkMessage(Enum<?> type, byte clientId, byte clientDestId)
+    public NetworkMessage(byte type, byte clientId, byte clientDestId)
     {
-        this.type = (byte) type.ordinal();
+        this.type = type;
         this.clientId = clientId;
         this.clientDestId = clientDestId;
     }

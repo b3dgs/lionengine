@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.Arrays;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,24 +50,9 @@ public class FactoryObjectGameTest
         Engine.start("FactoryObjectGameTest", Version.create(1, 0, 0), "resources");
         final FactoryObject factory = new FactoryObject();
 
-        Assert.assertTrue(Arrays.equals(TypeObject.values(), factory.getTypes()));
-        Assert.assertNull(factory.getSetup(TypeObject.TYPE));
-
         try
         {
-            factory.create(TypeObject.TYPE);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        factory.load();
-
-        try
-        {
-            factory.create(TypeObject.TYPE_PACKAGE);
+            factory.create(TestObjectPackage.class);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -79,7 +62,7 @@ public class FactoryObjectGameTest
 
         try
         {
-            factory.create(TypeObject.TYPE_CONSTRUCTOR);
+            factory.create(TestObjectConstructor.class);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -87,8 +70,6 @@ public class FactoryObjectGameTest
             // Success
         }
 
-        Assert.assertNotNull(factory.getSetup(TypeObject.TYPE));
-        Assert.assertNotNull(factory.create(TypeObject.TYPE));
-        Assert.assertTrue(Arrays.equals(TypeObject.values(), factory.getTypes()));
+        Assert.assertNotNull(factory.getSetup(TestObject.class));
     }
 }

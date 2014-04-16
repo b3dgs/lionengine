@@ -25,48 +25,42 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
- * It performs a list of {@link SetupGame} considering an input enumeration. This way it is possible to create new
- * instances of {@link ObjectGame} related to their {@link ObjectType} by sharing the same data.
+ * It performs a list of {@link SetupGame} considering an input class type. This way it is possible to create new
+ * instances of {@link ObjectGame} related to their {@link Class} by sharing the same data.
  * <p>
  * Sample implementation:
  * </p>
  * 
  * <pre>
  * public class FactoryObject
- *         extends FactoryObjectGame&lt;EntityType, SetupGame, ObjectGame&gt;
+ *         extends FactoryObjectGame&lt;SetupGame, ObjectGame&gt;
  * {
  *     public FactoryObject()
  *     {
- *         super(EntityType.class, &quot;objects&quot;);
- *         load();
+ *         super(&quot;objects&quot;);
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(EntityType type, Media config)
+ *     protected SetupGame createSetup(Class&lt;? extends ObjectGame&gt; type, Media config)
  *     {
  *         return new SetupGame(config);
  *     }
  * }
  * </pre>
  * 
- * @param <T> The enum containing all types.
  * @param <S> The setup type used.
  * @param <O> The object type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extends SetupGame, O extends ObjectGame>
-        extends FactoryGame<T, S>
+public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGame>
+        extends FactoryGame<S, O>
 {
     /** Folder error. */
     private static final String ERROR_FOLDER = "Folder must not be null !";
     /** Type error. */
     private static final String ERROR_TYPE = "Type must not be null !";
-    /** Target error. */
-    private static final String ERROR_TARGET = "Target class must not be null !";
     /** Setup not found error. */
     private static final String ERROR_SETUP = "Setup not found fhe following type: ";
-    /** Path name error. */
-    private static final String ERROR_PATH_NAME = "Path name must not be null !";
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
     /** Constructor not found. */
@@ -76,17 +70,16 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
     private static final String FILE_DATA_EXTENSION = ".xml";
 
     /** Objects folder. */
-    private final String folder;
+    protected final String folder;
 
     /**
      * Constructor.
      * 
-     * @param enumType The class of the enum type defined.
      * @param folder The objects folder.
      */
-    public FactoryObjectGame(Class<T> enumType, String folder)
+    public FactoryObjectGame(String folder)
     {
-        super(enumType);
+        super();
         Check.notNull(folder, FactoryObjectGame.ERROR_FOLDER);
         this.folder = folder;
     }
@@ -98,7 +91,7 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      * @param config The setup media config file.
      * @return The setup instance.
      */
-    protected abstract S createSetup(T type, Media config);
+    protected abstract S createSetup(Class<? extends O> type, Media config);
 
     /**
      * Create an object from its type using a generic way. The concerned classes to instantiate and its
@@ -108,24 +101,23 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      * @param type The object type.
      * @return The object instance.
      */
-    public <E extends O> E create(T type)
+    public <E extends O> E create(Class<E> type)
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
-        final Class<?> objectClass = type.getTargetClass();
-        Check.notNull(objectClass, FactoryObjectGame.ERROR_TARGET, " (", type.name(), ")");
+
         final S setup = getSetup(type);
-        Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, type.name());
+        Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, type.getName());
+
         E instance = null;
-        for (final Constructor<?> constructor : objectClass.getConstructors())
+        for (final Constructor<?> constructor : type.getConstructors())
         {
             try
             {
-                instance = (E) constructor.newInstance(setup);
+                instance = type.cast(constructor.newInstance(setup));
             }
             catch (final InvocationTargetException exception)
             {
-                throw new LionEngineException(exception.getCause(), FactoryObjectGame.ERROR_CONSTRUCTOR
-                        + type.getTargetClass());
+                throw new LionEngineException(exception, FactoryObjectGame.ERROR_CONSTRUCTOR + type);
             }
             catch (InstantiationException
                    | IllegalArgumentException
@@ -136,9 +128,8 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
         }
         if (instance == null)
         {
-            throw new LionEngineException(new InstantiationException(objectClass
-                    + FactoryObjectGame.ERROR_CONSTRUCTOR_NOT_FOUND), FactoryObjectGame.ERROR_CONSTRUCTOR
-                    + type.getTargetClass());
+            throw new LionEngineException(new InstantiationException(type
+                    + FactoryObjectGame.ERROR_CONSTRUCTOR_NOT_FOUND), FactoryObjectGame.ERROR_CONSTRUCTOR + type);
         }
         return instance;
     }
@@ -148,11 +139,11 @@ public abstract class FactoryObjectGame<T extends Enum<T> & ObjectType, S extend
      */
 
     @Override
-    protected S createSetup(T type)
+    protected S createSetup(Class<? extends O> type)
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
-        Check.notNull(type.getPathName(), FactoryObjectGame.ERROR_PATH_NAME, " (", type.name(), ")");
-        final Media config = Media.create(Media.getPath(folder, type.getPathName()
+
+        final Media config = Media.create(Media.getPath(folder, type.getSimpleName()
                 + FactoryObjectGame.FILE_DATA_EXTENSION));
         return createSetup(type, config);
     }

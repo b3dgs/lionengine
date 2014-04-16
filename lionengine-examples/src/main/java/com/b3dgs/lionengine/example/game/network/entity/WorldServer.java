@@ -86,7 +86,7 @@ final class WorldServer
         // Create two goombas
         for (int i = 0; i < 2; i++)
         {
-            final Goomba goomba = factory.create(EntityType.GOOMBA);
+            final Goomba goomba = factory.create(Goomba.class);
             goomba.teleport(532 + i * 24, 25);
             goomba.setNetworkId(goomba.getId().shortValue());
             handler.add(goomba);
@@ -116,7 +116,7 @@ final class WorldServer
         for (final Entity entity : handler.list())
         {
             final MessageFactory messageFactory = new MessageFactory(entity.getId().shortValue(), id.byteValue());
-            messageFactory.addAction(entity.getType(), true);
+            messageFactory.addAction(EntityType.fromClass(entity.getClass()), true);
             addMessage(messageFactory);
 
             final MessageEntity messageEntity = new MessageEntity(entity.getId().shortValue(), id.byteValue());

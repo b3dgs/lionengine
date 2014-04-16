@@ -62,7 +62,7 @@ final class World
         camera = new CameraPlatform(width, height);
         map = new Map();
         factory = new FactoryEntity(map, source.getRate());
-        mario = factory.create(EntityType.MARIO);
+        mario = factory.create(Mario.class);
         handler = new HandlerEntity(camera, mario);
     }
 
@@ -109,7 +109,7 @@ final class World
         // Create two goombas
         for (int i = 0; i < 2; i++)
         {
-            final Goomba goomba = factory.create(EntityType.GOOMBA);
+            final Goomba goomba = factory.create(Goomba.class);
             goomba.setLocation(532 + i * 24, 32);
             handler.add(goomba);
         }

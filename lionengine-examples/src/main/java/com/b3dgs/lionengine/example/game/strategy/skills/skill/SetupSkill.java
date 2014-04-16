@@ -36,8 +36,6 @@ final class SetupSkill
 {
     /** Skill icon. */
     public final SpriteTiled icon;
-    /** Type. */
-    final SkillType type;
     /** Production factory. */
     final FactoryProduction factoryProduction;
     /** Cursor. */
@@ -47,14 +45,12 @@ final class SetupSkill
      * Constructor.
      * 
      * @param config The config media.
-     * @param type The skill type.
      * @param factoryProduction The production factory.
      * @param cursor The cursor reference.
      */
-    SetupSkill(Media config, SkillType type, FactoryProduction factoryProduction, Cursor cursor)
+    SetupSkill(Media config, FactoryProduction factoryProduction, Cursor cursor)
     {
         super(config);
-        this.type = type;
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
         icon = Drawable.loadSpriteTiled(UtilityMedia.get(FactorySkill.SKILL_PATH, configurable.getDataString("icon")),

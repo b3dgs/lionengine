@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
 import com.b3dgs.lionengine.example.game.strategy.skills.CursorType;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.EntityType;
+import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
@@ -55,7 +55,7 @@ public final class BuildBarracksOrc
         super(setup);
         cursor = setup.cursor;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getSetup(EntityType.BARRACKS_ORC).configurable;
+        final Configurable config = factoryProduction.getSetup(BarracksOrc.class).configurable;
         width = config.getDataInteger("widthInTile", "size");
         height = config.getDataInteger("heightInTile", "size");
         setOrder(true);
@@ -70,7 +70,7 @@ public final class BuildBarracksOrc
     {
         if (owner instanceof UnitWorker)
         {
-            final ProducibleEntity produce = factoryProduction.create(EntityType.BARRACKS_ORC, destX, destY);
+            final ProducibleEntity produce = factoryProduction.create(BarracksOrc.class, destX, destY);
             ((UnitWorker) owner).addToProductionQueue(produce);
         }
     }

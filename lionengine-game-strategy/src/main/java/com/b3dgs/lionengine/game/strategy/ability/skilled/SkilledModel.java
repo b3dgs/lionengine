@@ -24,21 +24,19 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 
 /**
  * Skilled model implementation.
  * 
- * @param <T> Skill enum type used.
- * @param <S> Skill type used.
+ * @param <S> The skill type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SkilledModel<T extends Enum<T> & ObjectType, S extends SkillStrategy<T>>
-        implements SkilledServices<T, S>
+public class SkilledModel<S extends SkillStrategy>
+        implements SkilledServices<S>
 {
     /** Skills list. */
-    private final Map<Integer, Map<T, S>> skills;
+    private final Map<Integer, Map<Class<? extends SkillStrategy>, S>> skills;
     /** Active skill panel. */
     private int currentSkillPanel;
     /** Next skill panel. */
@@ -73,38 +71,38 @@ public class SkilledModel<T extends Enum<T> & ObjectType, S extends SkillStrateg
 
         final Integer key = Integer.valueOf(panel);
 
-        Map<T, S> list = skills.get(key);
+        Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
         if (list == null)
         {
             list = new HashMap<>(1);
             skills.put(key, list);
         }
-        list.put(skill.getType(), skill);
+        list.put(skill.getClass(), skill);
     }
 
     @Override
-    public S getSkill(int panel, T id)
+    public <SI extends S> SI getSkill(int panel, Class<SI> id)
     {
         Check.argument(panel >= 0, "The skill panel id must be positive !");
 
         final Integer key = Integer.valueOf(panel);
-        final Map<T, S> list = skills.get(key);
+        final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
 
         if (list == null)
         {
             return null;
         }
 
-        return list.get(id);
+        return id.cast(list.get(id));
     }
 
     @Override
-    public void removeSkill(int panel, T id)
+    public void removeSkill(int panel, Class<? extends S> id)
     {
         Check.argument(panel >= 0, "The skill panel id must be positive !");
 
         final Integer key = Integer.valueOf(panel);
-        final Map<T, S> list = skills.get(key);
+        final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
 
         if (list != null)
         {
@@ -118,7 +116,7 @@ public class SkilledModel<T extends Enum<T> & ObjectType, S extends SkillStrateg
         Check.argument(panel >= 0, "The skill panel id must be positive !");
 
         final Integer key = Integer.valueOf(panel);
-        final Map<T, S> list = skills.get(key);
+        final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
 
         if (list == null)
         {

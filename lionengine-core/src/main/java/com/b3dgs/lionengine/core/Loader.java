@@ -88,6 +88,10 @@ public final class Loader
                | NoSuchMethodException
                | SecurityException exception)
         {
+            if (exception.getCause() != null && exception.getCause() instanceof RuntimeException)
+            {
+                throw (RuntimeException) exception.getCause();
+            }
             Verbose.exception(Loader.class, "createSequence", exception);
             return null;
         }

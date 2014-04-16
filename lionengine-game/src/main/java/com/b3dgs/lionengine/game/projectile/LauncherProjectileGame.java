@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.ObjectType;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
@@ -31,19 +30,18 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
 /**
  * Represents a projectile launcher. It allows to handle projectile shots from an entity.
  * 
- * @param <T> The enum containing all projectiles type.
  * @param <E> The entity type used.
  * @param <E2> The entity attacker type used.
  * @param <P> The projectile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
+public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
         extends ObjectGame
 {
     /** Launcher level. */
     public final Alterable level;
     /** The projectile factory reference. */
-    private final FactoryObjectGame<T, ? extends SetupSurfaceGame, P> factory;
+    private final FactoryObjectGame<? extends SetupSurfaceGame, P> factory;
     /** The projectile handler reference. */
     private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
@@ -68,7 +66,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param factory The projectiles factory.
      * @param handler The projectiles handler.
      */
-    public LauncherProjectileGame(SetupGame setup, FactoryObjectGame<T, ? extends SetupSurfaceGame, P> factory,
+    public LauncherProjectileGame(SetupGame setup, FactoryObjectGame<? extends SetupSurfaceGame, P> factory,
             HandlerProjectileGame<E, P> handler)
     {
         super(setup);
@@ -87,7 +85,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * Use theses functions to add projectiles:
      * </p>
      * <ul>
-     * <li>{@link #addProjectile(Enum, int, int, double, double, int, int)}</li>
+     * <li>{@link #addProjectile(Class, int, int, double, double, int, int)}</li>
      * </ul>
      * 
      * @param owner The owner reference.
@@ -228,7 +226,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected P addProjectile(T type, int dmg, E target, double speed, int offX, int offY)
+    protected <PI extends P> PI addProjectile(Class<PI> type, int dmg, E target, double speed, int offX, int offY)
     {
         if (target != null)
         {
@@ -265,7 +263,7 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected P addProjectile(T type, int dmg, double vecX, double vecY, int offX, int offY)
+    protected <PI extends P> PI addProjectile(Class<PI> type, int dmg, double vecX, double vecY, int offX, int offY)
     {
         return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, null);
     }
@@ -282,7 +280,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected P addProjectile(T type, int id, int dmg, double vecX, double vecY, int offX, int offY)
+    protected <PI extends P> PI addProjectile(Class<PI> type, int id, int dmg, double vecX, double vecY, int offX,
+            int offY)
     {
         return addProjectile(type, id, 0, dmg, vecX, vecY, offX, offY, null);
     }
@@ -299,7 +298,8 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected P addProjectile(T type, long delay, int dmg, double vecX, double vecY, int offX, int offY)
+    protected <PI extends P> PI addProjectile(Class<PI> type, long delay, int dmg, double vecX, double vecY, int offX,
+            int offY)
     {
         return addProjectile(type, -1, delay, dmg, vecX, vecY, offX, offY, null);
     }
@@ -318,9 +318,10 @@ public abstract class LauncherProjectileGame<T extends Enum<T> & ObjectType, E e
      * @param target The target reference.
      * @return The created projectile.
      */
-    private P addProjectile(T type, int id, long delay, int dmg, double vecX, double vecY, int offX, int offY, E target)
+    private <PI extends P> PI addProjectile(Class<PI> type, int id, long delay, int dmg, double vecX, double vecY,
+            int offX, int offY, E target)
     {
-        final P projectile = factory.create(type);
+        final PI projectile = factory.create(type);
 
         projectile.setOwner(owner);
         projectile.setId(id);

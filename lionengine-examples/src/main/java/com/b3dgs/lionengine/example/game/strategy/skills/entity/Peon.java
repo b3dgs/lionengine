@@ -17,7 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.SkillType;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildBarracksOrc;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildingStandardOrc;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.CancelOrc;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.MoveOrc;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.StopOrc;
 
 /**
  * Peon implementation.
@@ -35,10 +39,10 @@ public final class Peon
     public Peon(SetupEntity setup)
     {
         super(setup);
-        addSkill(setup.factoryEntity, 0, SkillType.MOVE_ORC, 0);
-        addSkill(setup.factoryEntity, 0, SkillType.STOP_ORC, 1);
-        addSkill(setup.factoryEntity, 0, SkillType.BUILDING_STANDARD_ORC, 2);
-        addSkill(setup.factoryEntity, 1, SkillType.BUILD_BARRACKS_ORC, 0);
-        addSkill(setup.factoryEntity, 1, SkillType.CANCEL_ORC, 1);
+        addSkill(setup.factoryEntity, 0, MoveOrc.class, 0);
+        addSkill(setup.factoryEntity, 0, StopOrc.class, 1);
+        addSkill(setup.factoryEntity, 0, BuildingStandardOrc.class, 2);
+        addSkill(setup.factoryEntity, 1, BuildBarracksOrc.class, 0);
+        addSkill(setup.factoryEntity, 1, CancelOrc.class, 1);
     }
 }

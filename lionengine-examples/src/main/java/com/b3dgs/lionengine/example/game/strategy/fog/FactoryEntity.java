@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity, Entity>
 {
     /** Map. */
     private final Map map;
@@ -39,9 +39,8 @@ final class FactoryEntity
      */
     FactoryEntity(Map map)
     {
-        super(EntityType.class, "");
+        super("");
         this.map = map;
-        load();
     }
 
     /*
@@ -49,7 +48,7 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(EntityType key, Media config)
+    protected SetupEntity createSetup(Class<? extends Entity> key, Media config)
     {
         return new SetupEntity(config, map);
     }

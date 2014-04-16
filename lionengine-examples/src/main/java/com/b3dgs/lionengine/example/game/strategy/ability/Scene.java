@@ -27,13 +27,18 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
-import com.b3dgs.lionengine.example.game.strategy.ability.entity.EntityType;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryProduction;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.FarmOrc;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.GoldMine;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.Grunt;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.HandlerEntity;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.Peon;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.Spearman;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.TownhallOrc;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitWorker;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
@@ -121,7 +126,7 @@ final class Scene
      * @param ty The vertical location.
      * @return The entity instance.
      */
-    private Entity createEntity(EntityType type, int tx, int ty)
+    private Entity createEntity(Class<? extends Entity> type, int tx, int ty)
     {
         final Entity entity = factoryEntity.create(type);
         entity.setPlayerId(0);
@@ -158,24 +163,24 @@ final class Scene
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final GoldMine goldMine = (GoldMine) createEntity(EntityType.GOLD_MINE, 20, 23);
+        final GoldMine goldMine = (GoldMine) createEntity(GoldMine.class, 20, 23);
 
-        UnitWorker peon = (UnitWorker) createEntity(EntityType.PEON, 25, 20);
+        UnitWorker peon = (UnitWorker) createEntity(Peon.class, 25, 20);
         peon.setResource(goldMine);
         peon.startExtraction();
 
-        peon = (UnitWorker) createEntity(EntityType.PEON, 23, 18);
-        peon.addToProductionQueue(factoryProduction.create(EntityType.BARRACKS_ORC, 17, 15));
-        peon.addToProductionQueue(factoryProduction.create(EntityType.FARM_ORC, 31, 19));
+        peon = (UnitWorker) createEntity(Peon.class, 23, 18);
+        peon.addToProductionQueue(factoryProduction.create(BarracksOrc.class, 17, 15));
+        peon.addToProductionQueue(factoryProduction.create(FarmOrc.class, 31, 19));
 
-        final UnitAttacker grunt = (UnitAttacker) createEntity(EntityType.GRUNT, 33, 25);
-        final UnitAttacker spearman = (UnitAttacker) createEntity(EntityType.SPEARMAN, 27, 22);
+        final UnitAttacker grunt = (UnitAttacker) createEntity(Grunt.class, 33, 25);
+        final UnitAttacker spearman = (UnitAttacker) createEntity(Spearman.class, 27, 22);
         spearman.attack(grunt);
         grunt.attack(spearman);
 
-        final BuildingProducer townHall = (BuildingProducer) createEntity(EntityType.TOWNHALL_ORC, 24, 15);
+        final BuildingProducer townHall = (BuildingProducer) createEntity(TownhallOrc.class, 24, 15);
         townHall.setFrame(2);
-        townHall.addToProductionQueue(factoryProduction.create(EntityType.PEON));
+        townHall.addToProductionQueue(factoryProduction.create(Peon.class));
     }
 
     @Override

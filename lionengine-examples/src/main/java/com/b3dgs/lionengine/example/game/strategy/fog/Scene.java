@@ -84,13 +84,12 @@ final class Scene
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
         fogOfWar.create(map);
-        factoryEntity.load();
 
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setSensibility(30, 30);
         camera.setBorders(map);
 
-        peon = factoryEntity.create(EntityType.PEON);
+        peon = factoryEntity.create(Peon.class);
         handlerEntity.add(peon);
         timer.start();
     }

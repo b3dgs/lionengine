@@ -369,13 +369,13 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
 
         if (entity instanceof SkilledServices)
         {
-            final SkilledServices<?, ?> skilled = (SkilledServices<?, ?>) entity;
+            final SkilledServices<?> skilled = (SkilledServices<?>) entity;
             final Collection<?> skills = skilled.getSkills();
             for (final Object skill : skills)
             {
                 if (skill instanceof SkillStrategy)
                 {
-                    final SkillStrategy<?> skillStrategy = (SkillStrategy<?>) skill;
+                    final SkillStrategy skillStrategy = (SkillStrategy) skill;
                     if (skillStrategy.isIgnored() || !skillStrategy.isActive())
                     {
                         continue;
@@ -566,14 +566,12 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     {
         try
         {
-            @SuppressWarnings("unchecked")
-            final ExtractorServices<R> extractor = (ExtractorServices<R>) entity;
+            final ExtractorServices extractor = (ExtractorServices) entity;
             final E resource = getEntityAt(tx, ty);
             // Resource location is a building
             if (resource instanceof Extractible)
             {
-                @SuppressWarnings("unchecked")
-                final Extractible<R> extractible = (Extractible<R>) resource;
+                final Extractible extractible = (Extractible) resource;
                 extractor.setResource(extractible);
                 extractor.startExtraction();
             }
@@ -589,8 +587,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             if (map.getRef(tx, ty).intValue() == 0 && tile.hasResources())
             {
                 final R type = tile.getResourceType();
-                @SuppressWarnings("unchecked")
-                final ExtractorServices<R> extractor = (ExtractorServices<R>) entity;
+                final ExtractorServices extractor = (ExtractorServices) entity;
                 extractor.setResource(type, tx, ty, 1, 1);
                 extractor.startExtraction();
             }
@@ -675,13 +672,13 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     {
         if (entity instanceof SkilledServices)
         {
-            final SkilledServices<?, ?> skilled = (SkilledServices<?, ?>) entity;
+            final SkilledServices<?> skilled = (SkilledServices<?>) entity;
             final Collection<?> skills = skilled.getSkills();
             for (final Object skill : skills)
             {
                 if (skill instanceof SkillStrategy)
                 {
-                    final SkillStrategy<?> skillStrategy = (SkillStrategy<?>) skill;
+                    final SkillStrategy skillStrategy = (SkillStrategy) skill;
                     if (skillStrategy.isIgnored())
                     {
                         continue;

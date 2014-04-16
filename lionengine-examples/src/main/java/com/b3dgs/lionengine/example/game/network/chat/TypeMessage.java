@@ -40,4 +40,14 @@ enum TypeMessage
     {
         return TypeMessage.VALUES[ordinal];
     }
+
+    /**
+     * Get the message id.
+     * 
+     * @return The message id.
+     */
+    public byte getId()
+    {
+        return (byte) ordinal();
+    }
 }

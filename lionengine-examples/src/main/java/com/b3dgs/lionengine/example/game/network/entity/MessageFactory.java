@@ -46,7 +46,7 @@ final class MessageFactory
      */
     MessageFactory(short entityId)
     {
-        super(TypeMessage.MESSAGE_FACTORY, entityId);
+        super(TypeMessage.MESSAGE_FACTORY.getId(), entityId);
     }
 
     /**
@@ -57,7 +57,7 @@ final class MessageFactory
      */
     MessageFactory(short entityId, byte destId)
     {
-        super(TypeMessage.MESSAGE_FACTORY, entityId, destId);
+        super(TypeMessage.MESSAGE_FACTORY.getId(), entityId, destId);
     }
 
     /*
@@ -73,7 +73,7 @@ final class MessageFactory
     @Override
     protected void decode(DataInputStream buffer, int i) throws IOException
     {
-        final EntityType type = EntityType.fromOrdinal(buffer.readByte());
+        final EntityType type = EntityType.fromId(buffer.readByte());
         addAction(type, true);
     }
 }

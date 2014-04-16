@@ -31,10 +31,8 @@ import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class Skill
-        extends SkillStrategy<SkillType>
+        extends SkillStrategy
 {
-    /** Id. */
-    private final SkillType type;
     /** Sprite. */
     private final SpriteTiled icon;
     /** Owner. */
@@ -52,7 +50,6 @@ public abstract class Skill
     protected Skill(SetupSkill setup)
     {
         super(setup);
-        type = setup.type;
         icon = setup.icon;
     }
 
@@ -110,11 +107,5 @@ public abstract class Skill
     {
         return cursor.getClick() > 0 && cursor.getScreenX() >= x && cursor.getScreenX() <= x + icon.getTileWidth()
                 && cursor.getScreenY() >= y && cursor.getScreenY() <= y + icon.getTileHeight();
-    }
-
-    @Override
-    public SkillType getType()
-    {
-        return type;
     }
 }

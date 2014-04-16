@@ -54,7 +54,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      * @param type The message type.
      * @param clientId The client id.
      */
-    public NetworkMessageEntity(Enum<?> type, byte clientId)
+    public NetworkMessageEntity(byte type, byte clientId)
     {
         super(type, clientId);
         this.entityId = -1;
@@ -66,7 +66,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      * @param type The message type.
      * @param entityId The entity id.
      */
-    public NetworkMessageEntity(Enum<?> type, short entityId)
+    public NetworkMessageEntity(byte type, short entityId)
     {
         super(type, (byte) -1);
         this.entityId = entityId;
@@ -79,7 +79,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
      * @param entityId The entity id.
      * @param destId The client destination.
      */
-    public NetworkMessageEntity(Enum<?> type, short entityId, byte destId)
+    public NetworkMessageEntity(byte type, short entityId, byte destId)
     {
         super(type, (byte) -1, destId);
         this.entityId = entityId;

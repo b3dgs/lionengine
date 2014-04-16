@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 public final class FactoryEntity
-        extends FactoryObjectGame<EntityType, SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entities";
@@ -57,12 +57,11 @@ public final class FactoryEntity
     public FactoryEntity(Map map, FactoryWeapon factoryWeapon, HandlerEntity handlerEntity,
             HandlerProjectile handlerProjectile, int desiredFps)
     {
-        super(EntityType.class, FactoryEntity.ENTITY_PATH);
+        super(FactoryEntity.ENTITY_PATH);
         this.map = map;
         this.factoryWeapon = factoryWeapon;
         this.handlerEntity = handlerEntity;
         this.desiredFps = desiredFps;
-        load();
     }
 
     /*
@@ -70,8 +69,8 @@ public final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(EntityType type, Media config)
+    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
     {
-        return new SetupEntity(config, type, map, this, factoryWeapon, handlerEntity, desiredFps);
+        return new SetupEntity(config, map, this, factoryWeapon, handlerEntity, desiredFps);
     }
 }

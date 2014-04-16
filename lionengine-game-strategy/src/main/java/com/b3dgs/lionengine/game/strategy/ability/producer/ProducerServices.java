@@ -19,15 +19,17 @@ package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
+
 /**
  * Represents an ability of creating new entity.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity enum type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ProducerServices<T extends Enum<T>, C extends ProductionCostStrategy, P extends Producible<T, C>>
+public interface ProducerServices<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
 {
     /**
      * Add an element to the production queue. It works as a FIFO (First In, First Out). Production will be stopped when
@@ -75,7 +77,7 @@ public interface ProducerServices<T extends Enum<T>, C extends ProductionCostStr
      * 
      * @return The id of current producing element.
      */
-    T getProducingElement();
+    Class<? extends E> getProducingElement();
 
     /**
      * Get production iterator.

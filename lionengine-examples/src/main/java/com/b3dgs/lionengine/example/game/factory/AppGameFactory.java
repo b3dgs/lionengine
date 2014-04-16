@@ -39,15 +39,14 @@ public final class AppGameFactory
         Engine.start("Game Factory", Version.create(1, 0, 0), Media.getPath("resources", "game"));
 
         final Factory factory = new Factory();
-        factory.load();
 
-        final TypeBase base = factory.create(Type.FLY_MACHINE);
-        final FlyMachine flyMachine = factory.create(Type.FLY_MACHINE);
-        final GroundTruck groundTruck = factory.create(Type.GROUND_TRUCK);
+        final TypeBase base = factory.create(FlyMachine.class);
+        final FlyMachine flyMachine = factory.create(FlyMachine.class);
+        final GroundTruck groundTruck = factory.create(GroundTruck.class);
 
-        System.out.println(base.getType());
-        System.out.println(flyMachine.getType());
-        System.out.println(groundTruck.getType());
+        System.out.println(base);
+        System.out.println(flyMachine);
+        System.out.println(groundTruck);
 
         // Parameters are the same
         System.out.println(flyMachine.getParam());

@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactoryObjectGame<SkillType, SetupSkill, Skill>
+        extends FactoryObjectGame<SetupSkill, Skill>
 {
     /** Directory name from our resources directory containing our skills. */
     public static final String SKILL_PATH = "skills";
@@ -45,10 +45,9 @@ public final class FactorySkill
      */
     public FactorySkill(FactoryProduction factoryProduction, Cursor cursor)
     {
-        super(SkillType.class, FactorySkill.SKILL_PATH);
+        super(FactorySkill.SKILL_PATH);
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
-        load();
     }
 
     /*
@@ -56,8 +55,8 @@ public final class FactorySkill
      */
 
     @Override
-    protected SetupSkill createSetup(SkillType type, Media config)
+    protected SetupSkill createSetup(Class<? extends Skill> type, Media config)
     {
-        return new SetupSkill(config, type, factoryProduction, cursor);
+        return new SetupSkill(config, factoryProduction, cursor);
     }
 }

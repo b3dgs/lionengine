@@ -28,14 +28,14 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryProjectile
-        extends FactoryObjectGame<ProjectileType, SetupSurfaceGame, Projectile>
+        extends FactoryObjectGame<SetupSurfaceGame, Projectile>
 {
     /**
      * Constructor.
      */
     FactoryProjectile()
     {
-        super(ProjectileType.class, "");
+        super("");
     }
 
     /*
@@ -43,7 +43,7 @@ final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(ProjectileType type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
     {
         return new SetupSurfaceGame(config);
     }

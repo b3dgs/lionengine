@@ -56,7 +56,7 @@ final class World
         camera = new CameraPlatform(width, height);
         map = new Map();
         factory = new FactoryEntity(map, source.getRate());
-        mario = factory.create(EntityType.MARIO);
+        mario = factory.create(Mario.class);
     }
 
     /*

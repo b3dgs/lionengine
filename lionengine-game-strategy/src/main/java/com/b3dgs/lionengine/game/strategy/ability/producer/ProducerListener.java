@@ -22,13 +22,12 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 /**
  * List of event linked to the production.
  * 
- * @param <T> The entity enum type used.
+ * @param <E> The entity type used.
  * @param <C> The cost type used.
  * @param <P> The producible type used.
- * @param <E> The entity type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ProducerListener<T extends Enum<T>, C extends ProductionCostStrategy, P extends Producible<T, C>, E extends EntityStrategy>
+public interface ProducerListener<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
 {
     /**
      * Notify listener that current element can not be produced.

@@ -19,7 +19,9 @@ package com.b3dgs.lionengine;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.b3dgs.lionengine.core.Media;
 
@@ -153,9 +155,31 @@ public final class LionEngineException
         {
             buffer.append(m);
         }
+
+        Throwable current = exception;
+        final Set<StackTraceElement> traces = new HashSet<>(1);
+        for (final StackTraceElement element : LionEngineException.getFilteredTraces(getStackTrace()))
+        {
+            traces.add(element);
+        }
+        while (current != null)
+        {
+            final String message = current.getMessage();
+            if (message != null)
+            {
+                buffer.append("\n\t\t").append(current.getMessage());
+            }
+            final StackTraceElement[] elements = LionEngineException.getFilteredTraces(current.getStackTrace());
+            for (final StackTraceElement element : elements)
+            {
+                traces.add(element);
+            }
+            current = current.getCause();
+        }
         message = buffer.toString();
         reason = exception;
-        stack = exception != null ? exception.getStackTrace() : new StackTraceElement[] {};
+        stack = new StackTraceElement[traces.size()];
+        traces.toArray(stack);
     }
 
     /*
@@ -163,43 +187,15 @@ public final class LionEngineException
      */
 
     @Override
-    public synchronized Throwable fillInStackTrace()
-    {
-        final Throwable throwable = super.fillInStackTrace();
-        throwable.setStackTrace(LionEngineException.getFilteredTraces(throwable.getStackTrace()));
-        return throwable;
-    }
-
-    @Override
     public void printStackTrace(PrintStream stream)
     {
         synchronized (stream)
         {
-            stream.print(this.getClass().getSimpleName());
-            final StackTraceElement[] trace = getStackTrace();
-            final int size = trace.length + stack.length;
-
-            final StackTraceElement[] allTrace = new StackTraceElement[size];
-
-            // Get all traces
-            int j = 0;
-            for (final StackTraceElement element : stack)
-            {
-                allTrace[j] = element;
-                j++;
-            }
-            for (final StackTraceElement element : trace)
-            {
-                allTrace[j] = element;
-                j++;
-            }
-
-            // Filter traces
-            final StackTraceElement[] neededTrace = LionEngineException.getFilteredTraces(allTrace);
+            stream.print(getClass().getSimpleName());
 
             // Display traces
             boolean first = true;
-            for (final StackTraceElement element : neededTrace)
+            for (final StackTraceElement element : stack)
             {
                 final boolean display = true;
                 if (display)

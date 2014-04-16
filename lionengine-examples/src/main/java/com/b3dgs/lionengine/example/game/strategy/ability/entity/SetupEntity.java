@@ -30,8 +30,6 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public class SetupEntity
         extends SetupSurfaceGame
 {
-    /** Type. */
-    public final EntityType type;
     /** Map. */
     public final Map map;
     /** Factory entity. */
@@ -47,18 +45,16 @@ public class SetupEntity
      * Constructor.
      * 
      * @param config The config file.
-     * @param type The entity type.
      * @param map The map reference.
      * @param factoryEntity The factory entity reference.
      * @param factoryWeapon The factory weapon reference.
      * @param handlerEntity The handler entity reference.
      * @param fps The desired fps.
      */
-    public SetupEntity(Media config, EntityType type, Map map, FactoryEntity factoryEntity,
-            FactoryWeapon factoryWeapon, HandlerEntity handlerEntity, int fps)
+    public SetupEntity(Media config, Map map, FactoryEntity factoryEntity, FactoryWeapon factoryWeapon,
+            HandlerEntity handlerEntity, int fps)
     {
         super(config);
-        this.type = type;
         this.map = map;
         this.factoryEntity = factoryEntity;
         this.factoryWeapon = factoryWeapon;

@@ -42,18 +42,17 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityNotFoundException;
  */
 public abstract class UnitWorker
         extends Unit
-        implements ProducerUsedServices<EntityType, ProductionCost, ProducibleEntity, Entity>,
-        ProducerServices<EntityType, ProductionCost, ProducibleEntity>, ExtractorUsedServices<ResourceType>,
-        ExtractorServices<ResourceType>
+        implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
+        ProducerServices<Entity, ProductionCost, ProducibleEntity>, ExtractorUsedServices, ExtractorServices
 {
     /** Producer model. */
-    private final ProducerModel<EntityType, ProductionCost, ProducibleEntity, Entity> producer;
+    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
     /** Factory reference. */
     private final FactoryEntity factory;
     /** Handler reference. */
     private final HandlerEntity handler;
     /** Extractor model. */
-    private final ExtractorModel<ResourceType> extractor;
+    private final ExtractorModel extractor;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Extraction speed. */
@@ -78,7 +77,7 @@ public abstract class UnitWorker
         factory = setup.factoryEntity;
         handler = setup.handlerEntity;
         producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        extractor = new ExtractorModel<>(this, setup.fps);
+        extractor = new ExtractorModel(this, setup.fps);
         stepsPerSecond = getDataInteger("steps_per_second", "production");
         extractionSpeed = getDataInteger("extraction_speed", "extraction");
         extractionCapacity = getDataInteger("extraction_capacity", "extraction");
@@ -153,7 +152,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public Entity getEntityToProduce(EntityType id)
+    public <EI extends Entity> EI getEntityToProduce(Class<EI> id)
     {
         return factory.create(id);
     }
@@ -264,7 +263,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public EntityType getProducingElement()
+    public Class<? extends Entity> getProducingElement()
     {
         return producer.getProducingElement();
     }
@@ -298,13 +297,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void setResource(Extractible<ResourceType> entity)
+    public void setResource(Extractible entity)
     {
         extractor.setResource(entity);
     }
 
     @Override
-    public void setResource(ResourceType type, int tx, int ty, int tw, int th)
+    public void setResource(Enum<?> type, int tx, int ty, int tw, int th)
     {
         extractor.setResource(type, tx, ty, tw, th);
     }
@@ -316,7 +315,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public ResourceType getResourceType()
+    public Enum<?> getResourceType()
     {
         return extractor.getResourceType();
     }
@@ -384,13 +383,13 @@ public abstract class UnitWorker
      */
 
     @Override
-    public void notifyStartGoToRessources(ResourceType type, Tiled resourceLocation)
+    public void notifyStartGoToRessources(Enum<?> type, Tiled resourceLocation)
     {
         setDestination(resourceLocation);
     }
 
     @Override
-    public void notifyStartExtraction(ResourceType type, Tiled resourceLocation)
+    public void notifyStartExtraction(Enum<?> type, Tiled resourceLocation)
     {
         setVisible(false);
         setActive(false);
@@ -398,13 +397,13 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyExtracted(ResourceType type, int currentQuantity)
+    public void notifyExtracted(Enum<?> type, int currentQuantity)
     {
         clearIgnoredId();
     }
 
     @Override
-    public void notifyStartCarry(ResourceType type, int totalQuantity)
+    public void notifyStartCarry(Enum<?> type, int totalQuantity)
     {
         setVisible(true);
         setActive(true);
@@ -425,14 +424,14 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void notifyStartDropOff(ResourceType type, int totalQuantity)
+    public void notifyStartDropOff(Enum<?> type, int totalQuantity)
     {
         setVisible(false);
         setActive(false);
     }
 
     @Override
-    public void notifyDroppedOff(ResourceType type, int droppedQuantity)
+    public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
     {
         final CoordTile out = map.getClosestAvailableTile(this, 16, getResourceLocation());
         if (out != null)

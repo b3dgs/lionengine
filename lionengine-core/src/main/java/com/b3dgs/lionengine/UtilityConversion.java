@@ -121,6 +121,30 @@ public final class UtilityConversion
     }
 
     /**
+     * Convert a string to title case.
+     * 
+     * @param string The string to convert.
+     * @return The string in title case.
+     */
+    public static String toTitleCase(String string)
+    {
+        String result = "";
+        for (int i = 0; i < string.length(); i++)
+        {
+            final String next = string.substring(i, i + 1);
+            if (i == 0)
+            {
+                result += next.toUpperCase();
+            }
+            else
+            {
+                result += next.toLowerCase();
+            }
+        }
+        return result;
+    }
+
+    /**
      * Private constructor.
      */
     private UtilityConversion()

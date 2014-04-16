@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import com.b3dgs.lionengine.example.game.strategy.ability.weapon.WeaponType;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Spear;
 
 /**
  * Spearman implementation.
@@ -35,6 +35,6 @@ public final class Spearman
     public Spearman(SetupEntity setup)
     {
         super(setup);
-        addWeapon(setup.factoryWeapon.create(WeaponType.SPEAR), 0);
+        addWeapon(setup.factoryWeapon.create(Spear.class), 0);
     }
 }

@@ -24,7 +24,6 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * Factory implementation example.
  * This factory will allow to create instances of type.
  * Each type should have one configuration file, in XML.
- * According to {@link Type} and {@link Type#getPathName()}, the configuration files should be as follow:
  * <p>
  * In 'factory' folder:
  * <ul>
@@ -36,7 +35,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Factory
-        extends FactoryObjectGame<Type, Setup, TypeBase>
+        extends FactoryObjectGame<Setup, TypeBase>
 {
     /** Parameter. Can be replaced by another type if needed. */
     private final Object param;
@@ -46,7 +45,7 @@ final class Factory
      */
     Factory()
     {
-        super(Type.class, "factory");
+        super("factory");
         param = new Object();
     }
 
@@ -55,7 +54,7 @@ final class Factory
      */
 
     @Override
-    protected Setup createSetup(Type type, Media config)
+    protected Setup createSetup(Class<? extends TypeBase> type, Media config)
     {
         return new Setup(config, type, param);
     }

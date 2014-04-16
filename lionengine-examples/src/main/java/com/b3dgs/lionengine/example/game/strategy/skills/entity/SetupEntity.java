@@ -31,7 +31,7 @@ public class SetupEntity
         extends SetupSurfaceGame
 {
     /** Type. */
-    public final EntityType type;
+    public final Class<? extends Entity> type;
     /** Map. */
     public final Map map;
     /** Factory entity. */
@@ -54,8 +54,8 @@ public class SetupEntity
      * @param handlerEntity The handler entity reference.
      * @param fps The desired fps.
      */
-    public SetupEntity(Media config, EntityType type, Map map, FactoryEntity factoryEntity, FactorySkill factorySkill,
-            HandlerEntity handlerEntity, int fps)
+    public SetupEntity(Media config, Class<? extends Entity> type, Map map, FactoryEntity factoryEntity,
+            FactorySkill factorySkill, HandlerEntity handlerEntity, int fps)
     {
         super(config);
         this.type = type;

@@ -22,10 +22,9 @@ import com.b3dgs.lionengine.game.Tiled;
 /**
  * This interface represents the ability of resource extraction. It is also possible to specify work time.
  * 
- * @param <R> The resource enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ExtractorServices<R extends Enum<R>>
+public interface ExtractorServices
 {
     /**
      * Update extraction (extract and go back).
@@ -39,7 +38,7 @@ public interface ExtractorServices<R extends Enum<R>>
      * 
      * @param extractible The extractible entity.
      */
-    void setResource(Extractible<R> extractible);
+    void setResource(Extractible extractible);
 
     /**
      * Set the resources location in tile.
@@ -50,7 +49,7 @@ public interface ExtractorServices<R extends Enum<R>>
      * @param tw The width in tile.
      * @param th The height in tile.
      */
-    void setResource(R type, int tx, int ty, int tw, int th);
+    void setResource(Enum<?> type, int tx, int ty, int tw, int th);
 
     /**
      * Start extraction.
@@ -74,7 +73,7 @@ public interface ExtractorServices<R extends Enum<R>>
      * 
      * @return The resource type.
      */
-    R getResourceType();
+    Enum<?> getResourceType();
 
     /**
      * Check if extractor is currently working on extraction.

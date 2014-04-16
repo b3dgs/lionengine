@@ -110,12 +110,12 @@ final class Scene
 
         handlerEntity.createLayers(map);
 
-        Entity peon = factoryEntity.create(EntityType.PEON);
+        Entity peon = factoryEntity.create(Peon.class);
         peon.setLocation(8, 22);
         peon.setOrientation(Orientation.EAST);
         handlerEntity.add(peon);
 
-        peon = factoryEntity.create(EntityType.PEON);
+        peon = factoryEntity.create(Peon.class);
         peon.setLocation(13, 18);
         peon.setOrientation(Orientation.NORTH_WEST);
         handlerEntity.add(peon);

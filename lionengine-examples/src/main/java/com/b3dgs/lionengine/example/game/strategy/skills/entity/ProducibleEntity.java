@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.strategy.ability.producer.Producible;
  * @see com.b3dgs.lionengine.example.game.strategy.ability
  */
 public final class ProducibleEntity
-        extends Producible<EntityType, ProductionCost>
+        extends Producible<Entity, ProductionCost>
 {
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public final class ProducibleEntity
      * @param tw The production width.
      * @param th The production height.
      */
-    ProducibleEntity(EntityType id, ProductionCost cost, int tw, int th)
+    ProducibleEntity(Class<? extends Entity> id, ProductionCost cost, int tw, int th)
     {
         super(id, cost, tw, th);
     }

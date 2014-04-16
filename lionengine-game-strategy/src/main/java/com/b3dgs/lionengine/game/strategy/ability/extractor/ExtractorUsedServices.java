@@ -20,11 +20,10 @@ package com.b3dgs.lionengine.game.strategy.ability.extractor;
 /**
  * List of services needed by the extractor.
  * 
- * @param <R> The resource enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ExtractorUsedServices<R extends Enum<R>>
-        extends ExtractorListener<R>
+public interface ExtractorUsedServices
+        extends ExtractorListener
 {
     /**
      * Check if extractor can extract (called while going to resources location).

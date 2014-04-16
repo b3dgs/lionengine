@@ -47,7 +47,7 @@ public class NetworkMessageChat
      * @param clientId The client id.
      * @param message The message content.
      */
-    public NetworkMessageChat(Enum<?> type, byte clientId, String message)
+    public NetworkMessageChat(byte type, byte clientId, String message)
     {
         this(type, clientId, (byte) -1, message);
     }
@@ -60,7 +60,7 @@ public class NetworkMessageChat
      * @param clientDestId The client destination.
      * @param message The message content.
      */
-    public NetworkMessageChat(Enum<?> type, byte clientId, byte clientDestId, String message)
+    public NetworkMessageChat(byte type, byte clientId, byte clientDestId, String message)
     {
         super(type, clientId, clientDestId);
         this.message = message;
