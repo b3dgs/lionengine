@@ -1,34 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
 		<version>6.2.0-SNAPSHOT</version>
+		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
 	<artifactId>lionengine-core-swt</artifactId>
 	<name>LionEngine Core SWT</name>
 
-	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>6.2.0-SNAPSHOT</version>
+			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${swt.groupId}</groupId>
 			<artifactId>${swt.artifactId}</artifactId>
-			<version>3.7.2</version>
-			<scope>provided</scope>
+			<version>${swt.version}</version>
 		</dependency>
 	</dependencies>
 </project>
