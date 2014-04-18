@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="lionengine-editor"
+            application="org.eclipse.e4.ui.workbench.swt.E4Application">
+         <property
+               name="applicationCSS"
+               value="platform:/plugin/lionengine-editor/css/default.css">
+         </property>
+         <property
+               name="appName"
+               value="lionengine-editor">
+         </property>
+         <property
+               name="lifeCycleURI"
+               value="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.Manager">
+         </property>
+      </product>
+   </extension>
+
+</plugin>

@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Lionengine Editor
+Bundle-SymbolicName: lionengine-editor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.b3dgs.lionengine.editor.Activator
+Bundle-Vendor: Byron 3D Games Studio
+Require-Bundle: javax.inject;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.9.100",
+ org.eclipse.swt;bundle-version="3.102.1",
+ org.eclipse.e4.ui.model.workbench;bundle-version="1.0.1",
+ org.eclipse.jface;bundle-version="3.9.1",
+ org.eclipse.e4.ui.services;bundle-version="1.0.1",
+ org.eclipse.e4.ui.workbench;bundle-version="1.0.2",
+ org.eclipse.e4.core.di;bundle-version="1.3.0",
+ org.eclipse.e4.ui.di;bundle-version="1.0.0",
+ org.eclipse.e4.core.contexts;bundle-version="1.3.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: javax.annotation;version="1.0.0",
+ org.osgi.framework;version="1.3.0"

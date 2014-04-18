@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_RgxMsMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ide.application" bindingContexts="_RgxMuccnEeO6QsMPtNpkHg">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_RgxMsccnEeO6QsMPtNpkHg" elementId="lionengine-editor.window" label="lionengine-editor" iconURI="platform:/plugin/lionengine-editor/icons/product.png" width="500" height="400">
+    <children xsi:type="advanced:PerspectiveStack" xmi:id="_RgxM0McnEeO6QsMPtNpkHg">
+      <children xsi:type="advanced:Perspective" xmi:id="_RgxM0ccnEeO6QsMPtNpkHg">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg">
+          <children xsi:type="basic:PartStack" xmi:id="_RgxM08cnEeO6QsMPtNpkHg">
+            <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.parts.SamplePart" label="Sample Part"/>
+          </children>
+        </children>
+      </children>
+    </children>
+    <mainMenu xmi:id="_RgxMyccnEeO6QsMPtNpkHg" elementId="menu:org.eclipse.ui.main.menu">
+      <children xsi:type="menu:Menu" xmi:id="_RgxMyscnEeO6QsMPtNpkHg" label="File">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMy8cnEeO6QsMPtNpkHg" label="Open" iconURI="platform:/plugin/lionengine-editor/icons/sample.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzMcnEeO6QsMPtNpkHg" label="Save" iconURI="platform:/plugin/lionengine-editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="Quit" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+      </children>
+      <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="Help">
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="About" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+      </children>
+    </mainMenu>
+    <trimBars xmi:id="_RgxM1ccnEeO6QsMPtNpkHg">
+      <children xsi:type="menu:ToolBar" xmi:id="_RgxM1scnEeO6QsMPtNpkHg" elementId="toolbar:org.eclipse.ui.main.toolbar">
+        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM18cnEeO6QsMPtNpkHg" iconURI="platform:/plugin/lionengine-editor/icons/sample.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM2McnEeO6QsMPtNpkHg" iconURI="platform:/plugin/lionengine-editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+      </children>
+    </trimBars>
+  </children>
+  <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.quitCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.QuitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMwccnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.openCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.OpenHandler" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.saveCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMx8cnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.aboutCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.AboutHandler" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+  <bindingTables xmi:id="_RgxMvscnEeO6QsMPtNpkHg" bindingContext="_RgxMuccnEeO6QsMPtNpkHg">
+    <bindings xmi:id="_RgxMv8cnEeO6QsMPtNpkHg" keySequence="M1+Q" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+    <bindings xmi:id="_RgxMwscnEeO6QsMPtNpkHg" keySequence="M1+O" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+    <bindings xmi:id="_RgxMxccnEeO6QsMPtNpkHg" keySequence="M1+S" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+    <bindings xmi:id="_RgxMyMcnEeO6QsMPtNpkHg" keySequence="M1+A" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+  </bindingTables>
+  <rootContext xmi:id="_RgxMuccnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
+    <children xmi:id="_RgxMuscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
+    <children xmi:id="_RgxMu8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
+  </rootContext>
+  <commands xmi:id="_RgxMvMcnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
+  <commands xmi:id="_RgxMwMcnEeO6QsMPtNpkHg" elementId="lionengine-editor.open" commandName="openCommand"/>
+  <commands xmi:id="_RgxMw8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
+  <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
+  <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
+  <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
+  <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
+  <addons xmi:id="_RgxMtccnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
+  <addons xmi:id="_RgxMtscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.workbench.handler.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_RgxMt8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
+  <addons xmi:id="_RgxMuMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
+</application:Application>

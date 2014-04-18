@@ -70,6 +70,7 @@
 		<module>../lionengine-tutorials</module>            
 		<module>../lionengine-tests-java</module>            
 		<module>../lionengine-tile-collision-editor</module>            
+		<module>../lionengine-tile-collision-editor</module>            
 	</modules>            
 	<build>            
 		<defaultGoal>install</defaultGoal>            
