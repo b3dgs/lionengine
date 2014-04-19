@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_RgxMsMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ide.application" bindingContexts="_RgxMuccnEeO6QsMPtNpkHg">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_RgxMsccnEeO6QsMPtNpkHg" elementId="lionengine-editor.window" label="lionengine-editor" iconURI="platform:/plugin/lionengine-editor/icons/product.png" width="500" height="400">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_RgxMsccnEeO6QsMPtNpkHg" elementId="lionengine-editor.window" label="LionEngine Editor" iconURI="platform:/plugin/lionengine-editor/icons/product.png" width="500" height="400">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_RgxM0McnEeO6QsMPtNpkHg">
       <children xsi:type="advanced:Perspective" xmi:id="_RgxM0ccnEeO6QsMPtNpkHg">
         <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg">

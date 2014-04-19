@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Lionengine Editor
+Bundle-Name: LionEngine Editor
 Bundle-SymbolicName: lionengine-editor;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 6.2.0.qualifier
 Bundle-Activator: com.b3dgs.lionengine.editor.Activator
 Bundle-Vendor: Byron 3D Games Studio
 Require-Bundle: javax.inject;bundle-version="1.0.0",
@@ -14,7 +14,17 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.e4.ui.workbench;bundle-version="1.0.2",
  org.eclipse.e4.core.di;bundle-version="1.3.0",
  org.eclipse.e4.ui.di;bundle-version="1.0.0",
- org.eclipse.e4.core.contexts;bundle-version="1.3.1"
+ org.eclipse.e4.core.contexts;bundle-version="1.3.1",
+ lionengine-core;bundle-version="6.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.annotation;version="1.0.0",
  org.osgi.framework;version="1.3.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: com.b3dgs.lionengine.editor,
+ com.b3dgs.lionengine.editor.handlers,
+ com.b3dgs.lionengine.editor.parts
+Bundle-ClassPath: .,
+ lionengine-game-6.2.0-SNAPSHOT.jar,
+ lionengine-game-pathfinding-6.2.0-SNAPSHOT.jar,
+ lionengine-game-platform-6.2.0-SNAPSHOT.jar,
+ lionengine-game-strategy-6.2.0-SNAPSHOT.jar

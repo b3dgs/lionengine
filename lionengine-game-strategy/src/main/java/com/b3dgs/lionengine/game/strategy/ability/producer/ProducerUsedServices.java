@@ -65,6 +65,7 @@ public interface ProducerUsedServices<E extends EntityStrategy, C extends Produc
      * Get entity to produce from its id. The common usage is to return a new entity instance by using the factory (
      * {@link FactoryObjectGame#create(Class)}.
      * 
+     * @param <EI> The entity type used.
      * @param id The entity id.
      * @return The entity reference.
      */

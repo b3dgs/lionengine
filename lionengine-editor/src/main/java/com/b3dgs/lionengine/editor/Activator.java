@@ -22,6 +22,9 @@ import java.io.IOException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -35,6 +38,8 @@ import com.b3dgs.lionengine.LionEngineException;
 public class Activator
         implements BundleActivator
 {
+    /** Plugin ID. */
+    public static final String PLUGIN_ID = "lionengine-editor";
     /** Context reference. */
     private static BundleContext context;
 
@@ -66,6 +71,21 @@ public class Activator
         {
             throw new LionEngineException(exception);
         }
+    }
+
+    /**
+     * Center the shell on screen.
+     * 
+     * @param shell The shell to center.
+     */
+    public static void center(Shell shell)
+    {
+        final Monitor primary = shell.getMonitor();
+        final Rectangle bounds = primary.getBounds();
+        final Rectangle rect = shell.getBounds();
+        final int x = bounds.x + (bounds.width - rect.width) / 2;
+        final int y = bounds.y + (bounds.height - rect.height) / 2;
+        shell.setLocation(x, y);
     }
 
     /*

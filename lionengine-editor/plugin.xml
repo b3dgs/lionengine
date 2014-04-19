@@ -13,7 +13,7 @@
          </property>
          <property
                name="appName"
-               value="lionengine-editor">
+               value="LionEngine Editor">
          </property>
          <property
                name="lifeCycleURI"

@@ -47,6 +47,7 @@ public interface SkilledServices<S extends SkillStrategy>
     /**
      * Get a skill from its id.
      * 
+     * @param <SI> The skill type used.
      * @param panel The panel (>= 0).
      * @param type The skill type.
      * @return The skill found.

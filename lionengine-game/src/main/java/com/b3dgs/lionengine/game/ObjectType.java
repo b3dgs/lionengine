@@ -30,5 +30,5 @@ public interface ObjectType<T>
      * 
      * @return The object class type.
      */
-    public Class<? extends T> getType();
+    Class<? extends T> getType();
 }

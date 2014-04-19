@@ -218,6 +218,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a projectile for the shoot.
      * 
+     * @param <PI> The projectile type used.
      * @param type The projectile type.
      * @param dmg The projectile damage.
      * @param target The target to reach.
@@ -255,6 +256,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a projectile for the shoot.
      * 
+     * @param <PI> The projectile type used.
      * @param type The projectile type.
      * @param dmg The projectile damage.
      * @param vecX The horizontal projectile move.
@@ -271,6 +273,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a linked projectile for the shoot.
      * 
+     * @param <PI> The projectile type used.
      * @param type The projectile type.
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param dmg The projectile damage.
@@ -289,6 +292,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a delayed projectile for the shoot.
      * 
+     * @param <PI> The projectile type used.
      * @param type The projectile type.
      * @param delay delay before be thrown.
      * @param dmg The projectile damage.
@@ -307,6 +311,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a linked projectile for the shoot.
      * 
+     * @param <PI> The projectile type used.
      * @param type The projectile type.
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param delay delay before be thrown.

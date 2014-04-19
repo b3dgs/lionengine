@@ -65,9 +65,9 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class Midi
 {
     /** Minimum volume value. */
-    public static int VOLUME_MIN = 0;
+    public static final int VOLUME_MIN = 0;
     /** Maximum volume value. */
-    public static int VOLUME_MAX = 100;
+    public static final int VOLUME_MAX = 100;
 
     /**
      * Open the sequence from the media.
