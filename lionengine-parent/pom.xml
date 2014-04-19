@@ -49,23 +49,36 @@
 	<prerequisites>
 		<maven>3.2.1</maven>
 	</prerequisites>
-	<modules>
-		<module>../lionengine-core</module>
-		<module>../lionengine-core-android</module>
-		<module>../lionengine-core-awt</module>
-		<module>../lionengine-core-swt</module>
-		<module>../lionengine-game</module>
-		<module>../lionengine-game-platform</module>
-		<module>../lionengine-game-pathfinding</module>
-		<module>../lionengine-game-strategy</module>
-		<module>../lionengine-network</module>
-		<module>../lionengine-sc68</module>
-		<module>../lionengine-examples</module>
-		<module>../lionengine-tutorials</module>
-		<module>../lionengine-tests-java</module>
-		<module>../lionengine-tile-collision-editor</module>
-		<module>../lionengine-editor</module>
-	</modules>
+	<profiles>
+		<profile>
+			<id>core</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>../lionengine-core</module>
+				<module>../lionengine-core-android</module>
+				<module>../lionengine-core-awt</module>
+				<module>../lionengine-core-swt</module>
+				<module>../lionengine-game</module>
+				<module>../lionengine-game-platform</module>
+				<module>../lionengine-game-pathfinding</module>
+				<module>../lionengine-game-strategy</module>
+				<module>../lionengine-network</module>
+				<module>../lionengine-sc68</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>extra</id>
+			<modules>
+				<module>../lionengine-examples</module>
+				<module>../lionengine-tutorials</module>
+				<module>../lionengine-tests-java</module>
+				<module>../lionengine-tile-collision-editor</module>
+				<module>../lionengine-editor</module>
+			</modules>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
