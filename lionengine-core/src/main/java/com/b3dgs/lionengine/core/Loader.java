@@ -146,7 +146,7 @@ public final class Loader
     public Loader(Config config)
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
-        renderer = EngineImpl.factoryGraphic.createRenderer(config);
+        renderer = EngineCore.factoryGraphic.createRenderer(config);
     }
 
     /**

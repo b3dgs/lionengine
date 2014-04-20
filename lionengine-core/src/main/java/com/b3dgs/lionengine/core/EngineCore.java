@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -26,7 +25,7 @@ import com.b3dgs.lionengine.Version;
  * 
  * @author Pierre-Alexandre
  */
-abstract class EngineImpl
+public abstract class EngineCore
 {
     /** Engine name. */
     public static final String NAME = "LionEngine";
@@ -46,18 +45,12 @@ abstract class EngineImpl
     private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message verbose. */
     private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
-    /** Error message load factory. */
-    private static final String ERROR_LOAD_FACTORY = "Unable to load the factory at: ";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
     private static final String ENGINE_TERMINATED = "LionEngine terminated";
-    /** Factory base name. */
-    private static final String FACTORY_BASE = EngineImpl.class.getPackage().getName() + ".";
-    /** Factory graphic name. */
-    private static final String FACTORY_GRAPHIC = "FactoryGraphicImpl";
     /** Started engine flag. */
-    static boolean started = false;
+    private static boolean started = false;
     /** Graphic factory. */
     static FactoryGraphic factoryGraphic;
     /** User program name. */
@@ -71,29 +64,30 @@ abstract class EngineImpl
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
+     * @param factoryGraphic The graphic factory (must not be <code>null</code>).
      */
-    protected static void start(String name, Version version, Verbose level)
+    protected static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic)
     {
-        Check.notNull(name, EngineImpl.ERROR_PROGRAM_NAME);
-        Check.notNull(version, EngineImpl.ERROR_PROGRAM_VERSION);
-        Check.notNull(level, EngineImpl.ERROR_VERBOSE_LEVEL);
+        Check.notNull(name, EngineCore.ERROR_PROGRAM_NAME);
+        Check.notNull(version, EngineCore.ERROR_PROGRAM_VERSION);
+        Check.notNull(level, EngineCore.ERROR_VERBOSE_LEVEL);
 
-        if (!EngineImpl.started)
+        if (!EngineCore.started)
         {
-            EngineImpl.init(name, version, level);
+            EngineCore.init(name, version, level);
 
             // LionEngine started
-            final StringBuilder message = new StringBuilder(EngineImpl.ENGINE_STARTING);
-            message.append(EngineImpl.VERSION).append("\" for \"");
-            message.append(EngineImpl.programName).append(" ");
-            message.append(EngineImpl.programVersion).append("\"");
+            final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
+            message.append(EngineCore.VERSION).append("\" for \"");
+            message.append(EngineCore.programName).append(" ");
+            message.append(EngineCore.programVersion).append("\"");
             Verbose.info(message.toString());
 
-            EngineImpl.started = true;
+            EngineCore.started = true;
 
             // Load low level factory
-            EngineImpl.factoryGraphic = EngineImpl.getFactory(FactoryGraphic.class, EngineImpl.FACTORY_GRAPHIC);
-            UtilityImage.setGraphicFactory(EngineImpl.factoryGraphic);
+            EngineCore.factoryGraphic = factoryGraphic;
+            UtilityImage.setGraphicFactory(EngineCore.factoryGraphic);
         }
     }
 
@@ -103,10 +97,10 @@ abstract class EngineImpl
      */
     protected static void terminate()
     {
-        EngineImpl.started = false;
-        EngineImpl.programName = null;
-        EngineImpl.programVersion = null;
-        Verbose.info(EngineImpl.ENGINE_TERMINATED);
+        EngineCore.started = false;
+        EngineCore.programName = null;
+        EngineCore.programVersion = null;
+        Verbose.info(EngineCore.ENGINE_TERMINATED);
     }
 
     /**
@@ -116,7 +110,7 @@ abstract class EngineImpl
      */
     public static String getProgramName()
     {
-        return EngineImpl.programName;
+        return EngineCore.programName;
     }
 
     /**
@@ -126,7 +120,17 @@ abstract class EngineImpl
      */
     public static String getProgramVersion()
     {
-        return EngineImpl.programVersion;
+        return EngineCore.programVersion;
+    }
+
+    /**
+     * Check if engine is started.
+     * 
+     * @return <code>true</code> if started, <code>false</code> else.
+     */
+    public static boolean isStarted()
+    {
+        return EngineCore.started;
     }
 
     /**
@@ -136,41 +140,18 @@ abstract class EngineImpl
      * @param version The program version.
      * @param level The verbose level.
      */
-    protected static void init(String name, Version version, Verbose level)
+    private static void init(String name, Version version, Verbose level)
     {
         Verbose.set(level);
         Verbose.prepareLogger();
-        EngineImpl.programName = name;
-        EngineImpl.programVersion = version.toString();
-    }
-
-    /**
-     * Load low level factory.
-     * 
-     * @param factoryClass The factory class type.
-     * @param <C> The factory type used.
-     * @param name The factory name.
-     * @return The factory instance.
-     */
-    private static <C> C getFactory(Class<C> factoryClass, String name)
-    {
-        final String factoryName = EngineImpl.FACTORY_BASE + name;
-        try
-        {
-            return Class.forName(factoryName).asSubclass(factoryClass).newInstance();
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception, EngineImpl.ERROR_LOAD_FACTORY + factoryName);
-        }
+        EngineCore.programName = name;
+        EngineCore.programVersion = version.toString();
     }
 
     /**
      * Constructor.
      */
-    EngineImpl()
+    protected EngineCore()
     {
         throw new RuntimeException();
     }

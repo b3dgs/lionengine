@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.TextStyle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextImpl
+final class TextSwt
         implements Text
 {
     /**
@@ -48,13 +48,13 @@ final class TextImpl
         switch (style)
         {
             case NORMAL:
-                return Font.TRUETYPE_FONT;
+                return SWT.NORMAL;
             case BOLD:
-                return Font.BOLD;
+                return SWT.BOLD;
             case ITALIC:
-                return Font.ITALIC;
+                return SWT.ITALIC;
             default:
-                return Font.TYPE1_FONT;
+                return SWT.NORMAL;
         }
     }
 
@@ -86,10 +86,10 @@ final class TextImpl
      * @param size The font size (in pixel).
      * @param style The font style.
      */
-    TextImpl(String fontName, int size, TextStyle style)
+    TextSwt(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        font = new Font(fontName, TextImpl.getStyle(style), size);
+        font = new Font(ScreenSwt.display, fontName, Math.round(size / 1.5f), TextSwt.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }
@@ -107,10 +107,10 @@ final class TextImpl
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        final Graphics2D g2d = g.getGraphic();
-        final FontRenderContext context = g2d.getFontRenderContext();
-        final GlyphVector glyphVector = font.createGlyphVector(context, text);
-        final Rectangle2D textSize = font.getStringBounds(text, context);
+        final GC gc = g.getGraphic();
+        gc.setTextAntialias(SWT.OFF);
+        gc.setFont(font);
+        final Point textSize = gc.stringExtent(text);
         final int tx;
         final int ty;
 
@@ -118,24 +118,23 @@ final class TextImpl
         {
             case LEFT:
                 tx = x;
-                ty = (int) textSize.getHeight() + y;
+                ty = y;
                 break;
             case CENTER:
-                tx = x - (int) textSize.getWidth() / 2;
-                ty = (int) textSize.getHeight() + y;
+                tx = x - textSize.x / 2;
+                ty = y;
                 break;
             case RIGHT:
-                tx = x - (int) textSize.getWidth();
-                ty = (int) textSize.getHeight() + y;
+                tx = x - textSize.x;
+                ty = y;
                 break;
             default:
                 throw new RuntimeException();
         }
-
-        final ColorRgba colorOld = g.getColor();
-        g.setColor(color);
-        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2);
-        g.setColor(colorOld);
+        final Color c = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        gc.setForeground(c);
+        gc.drawString(text, tx, ty, true);
+        c.dispose();
     }
 
     @Override
@@ -209,12 +208,12 @@ final class TextImpl
     @Override
     public int getStringWidth(Graphic g, String str)
     {
-        return (int) font.getStringBounds(str, ((Graphics2D) g.getGraphic()).getFontRenderContext()).getWidth();
+        return ((GC) g.getGraphic()).stringExtent(str).x;
     }
 
     @Override
     public int getStringHeight(Graphic g, String str)
     {
-        return (int) font.getStringBounds(str, ((Graphics2D) g.getGraphic()).getFontRenderContext()).getHeight();
+        return ((GC) g.getGraphic()).stringExtent(str).y;
     }
 }

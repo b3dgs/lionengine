@@ -17,61 +17,49 @@
  */
 package com.b3dgs.lionengine.core;
 
+import android.content.Context;
+import android.view.MotionEvent;
+import android.view.SurfaceView;
+
 /**
- * Transform implementation.
+ * Surface view implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformImpl
-        implements Transform
+final class ViewAndroid
+        extends SurfaceView
 {
-    /** Scale x. */
-    private double sx;
-    /** Scale y. */
-    private double sy;
-    /** Interpolation. */
-    private int interpolation;
+    /** Mouse. */
+    private Mouse mouse;
 
     /**
      * Constructor.
+     * 
+     * @param context The context reference.
      */
-    TransformImpl()
+    ViewAndroid(Context context)
     {
-        // Nothing to do
+        super(context);
+    }
+
+    /**
+     * Set the mouse reference.
+     * 
+     * @param mouse The mouse reference.
+     */
+    void setMouse(Mouse mouse)
+    {
+        this.mouse = mouse;
     }
 
     /*
-     * Transform
+     * SurfaceView
      */
 
     @Override
-    public void scale(double sx, double sy)
+    public boolean onTouchEvent(MotionEvent event)
     {
-        this.sx = sx;
-        this.sy = sy;
-    }
-
-    @Override
-    public void setInterpolation(boolean bilinear)
-    {
-        interpolation = bilinear ? 0 : 1;
-    }
-
-    @Override
-    public double getScaleX()
-    {
-        return sx;
-    }
-
-    @Override
-    public double getScaleY()
-    {
-        return sy;
-    }
-
-    @Override
-    public int getInterpolation()
-    {
-        return interpolation;
+        mouse.updateCoord(event);
+        return true;
     }
 }

@@ -71,7 +71,7 @@ import com.b3dgs.lionengine.Version;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine
-        extends EngineImpl
+        extends EngineCore
 {
     /** Error message resource directory. */
     private static final String ERROR_RESOURCES_DIR = "The resources directory must not be null !";
@@ -102,9 +102,9 @@ public final class Engine
     {
         Check.notNull(resourcesDir, Engine.ERROR_RESOURCES_DIR);
 
-        if (!EngineImpl.started)
+        if (!EngineCore.isStarted())
         {
-            EngineImpl.start(name, version, level);
+            EngineCore.start(name, version, level, new FactoryGraphicSwt());
             Engine.init(name, version, resourcesDir, level);
 
             // LionEngine started
@@ -126,7 +126,7 @@ public final class Engine
      */
     public static void terminate()
     {
-        EngineImpl.terminate();
+        EngineCore.terminate();
         UtilityMedia.setResourcesDirectory(null);
         UtilityFile.setTempDirectory("");
         UtilityMedia.setLoadFromJar(null, false);
@@ -142,7 +142,7 @@ public final class Engine
      */
     private static void init(String name, Version version, String resourcesDir, Verbose level)
     {
-        Media.setMediaImpl(MediaImpl.class);
+        Media.setMediaImpl(MediaSwt.class);
         UtilityFile.setTempDirectory(name);
         UtilityMedia.setResourcesDirectory(resourcesDir);
     }
@@ -161,7 +161,7 @@ public final class Engine
             try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename));)
             {
                 final String version = reader.readUTF();
-                if (EngineImpl.getProgramVersion().equals(version))
+                if (EngineCore.getProgramVersion().equals(version))
                 {
                     delete = false;
                 }
@@ -194,12 +194,12 @@ public final class Engine
         {
             try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename));)
             {
-                writer.writeUTF(EngineImpl.getProgramVersion());
+                writer.writeUTF(EngineCore.getProgramVersion());
                 writer.flush();
             }
             catch (final IOException exception)
             {
-                Verbose.exception(EngineImpl.class, "storeVersion", exception);
+                Verbose.exception(EngineCore.class, "storeVersion", exception);
             }
         }
     }

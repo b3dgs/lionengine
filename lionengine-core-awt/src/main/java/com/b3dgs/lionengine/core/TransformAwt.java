@@ -17,37 +17,63 @@
  */
 package com.b3dgs.lionengine.core;
 
-import javax.swing.JApplet;
-
-import com.b3dgs.lionengine.Applet;
+import java.awt.image.AffineTransformOp;
 
 /**
- * Applet implementation.
+ * Transform implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AppletImpl
-        extends JApplet
-        implements Applet<AppletImpl>
+final class TransformAwt
+        implements Transform
 {
-    /** UID. */
-    private static final long serialVersionUID = -7221935102778197564L;
+    /** Scale x. */
+    private double sx;
+    /** Scale y. */
+    private double sy;
+    /** Interpolation. */
+    private int interpolation;
 
     /**
      * Constructor.
      */
-    public AppletImpl()
+    TransformAwt()
     {
-        super();
+        // Nothing to do
     }
 
     /*
-     * Applet
+     * Transform
      */
 
     @Override
-    public AppletImpl getApplet()
+    public void scale(double sx, double sy)
     {
-        return this;
+        this.sx = sx;
+        this.sy = sy;
+    }
+
+    @Override
+    public void setInterpolation(boolean bilinear)
+    {
+        interpolation = bilinear ? AffineTransformOp.TYPE_BILINEAR : AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+    }
+
+    @Override
+    public double getScaleX()
+    {
+        return sx;
+    }
+
+    @Override
+    public double getScaleY()
+    {
+        return sy;
+    }
+
+    @Override
+    public int getInterpolation()
+    {
+        return interpolation;
     }
 }

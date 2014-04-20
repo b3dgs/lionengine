@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicImpl
+final class FactoryGraphicAwt
         implements FactoryGraphic
 {
     /** Bilinear filter. */
@@ -61,9 +61,9 @@ final class FactoryGraphicImpl
     /** Graphics environment. */
     private static final GraphicsEnvironment ENV = GraphicsEnvironment.getLocalGraphicsEnvironment();
     /** Graphics device. */
-    private static final GraphicsDevice DEV = FactoryGraphicImpl.ENV.getDefaultScreenDevice();
+    private static final GraphicsDevice DEV = FactoryGraphicAwt.ENV.getDefaultScreenDevice();
     /** Graphics configuration. */
-    private static final GraphicsConfiguration CONFIG = FactoryGraphicImpl.DEV.getDefaultConfiguration();
+    private static final GraphicsConfiguration CONFIG = FactoryGraphicAwt.DEV.getDefaultConfiguration();
 
     /**
      * Create a hidden cursor.
@@ -75,7 +75,7 @@ final class FactoryGraphicImpl
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension dim = toolkit.getBestCursorSize(1, 1);
         final ImageBuffer cursor = UtilityImage.createImageBuffer(dim.width, dim.height, Transparency.BITMASK);
-        final BufferedImage buffer = FactoryGraphicImpl.getBuffer(UtilityImage.applyMask(cursor, ColorRgba.BLACK));
+        final BufferedImage buffer = FactoryGraphicAwt.getBuffer(UtilityImage.applyMask(cursor, ColorRgba.BLACK));
         return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
     }
 
@@ -87,7 +87,7 @@ final class FactoryGraphicImpl
      */
     private static BufferedImage getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferAwt) imageBuffer).getBuffer();
     }
 
     /**
@@ -152,13 +152,13 @@ final class FactoryGraphicImpl
      */
     private static void optimizeGraphics(Graphics2D g)
     {
-        FactoryGraphicImpl.optimizeGraphicsSpeed(g);
+        FactoryGraphicAwt.optimizeGraphicsSpeed(g);
     }
 
     /**
      * Constructor.
      */
-    FactoryGraphicImpl()
+    FactoryGraphicAwt()
     {
         // Nothing to do
     }
@@ -170,33 +170,33 @@ final class FactoryGraphicImpl
     @Override
     public Renderer createRenderer(Config config)
     {
-        return new RendererImpl(config);
+        return new RendererAwt(config);
     }
 
     @Override
     public Screen createScreen(Renderer renderer, Config config)
     {
-        return new ScreenImpl(renderer, config);
+        return new ScreenAwt(renderer, config);
     }
 
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return new TextImpl(fontName, size, style);
+        return new TextAwt(fontName, size, style);
     }
 
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicImpl();
+        return new GraphicAwt();
     }
 
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        final BufferedImage buffer = FactoryGraphicImpl.CONFIG.createCompatibleImage(width, height,
-                FactoryGraphicImpl.getTransparency(transparency));
-        return new ImageBufferImpl(buffer);
+        final BufferedImage buffer = FactoryGraphicAwt.CONFIG.createCompatibleImage(width, height,
+                FactoryGraphicAwt.getTransparency(transparency));
+        return new ImageBufferAwt(buffer);
     }
 
     @Override
@@ -208,7 +208,7 @@ final class FactoryGraphicImpl
         {
             transparency = java.awt.Transparency.TRANSLUCENT;
         }
-        final BufferedImage image = FactoryGraphicImpl.CONFIG.createCompatibleImage(buffer.getWidth(),
+        final BufferedImage image = FactoryGraphicAwt.CONFIG.createCompatibleImage(buffer.getWidth(),
                 buffer.getHeight(), transparency);
         final Graphics2D g = image.createGraphics();
 
@@ -216,32 +216,32 @@ final class FactoryGraphicImpl
         g.drawImage(buffer, 0, 0, null);
         g.dispose();
 
-        return new ImageBufferImpl(image);
+        return new ImageBufferAwt(image);
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        final BufferedImage buffer = FactoryGraphicImpl.CONFIG.createCompatibleImage(imageBuffer.getWidth(),
-                imageBuffer.getHeight(), FactoryGraphicImpl.getTransparency(imageBuffer.getTransparency()));
+        final BufferedImage buffer = FactoryGraphicAwt.CONFIG.createCompatibleImage(imageBuffer.getWidth(),
+                imageBuffer.getHeight(), FactoryGraphicAwt.getTransparency(imageBuffer.getTransparency()));
         final Graphics2D g = buffer.createGraphics();
 
         g.setComposite(AlphaComposite.Src);
-        g.drawImage(FactoryGraphicImpl.getBuffer(imageBuffer), 0, 0, null);
+        g.drawImage(FactoryGraphicAwt.getBuffer(imageBuffer), 0, 0, null);
         g.dispose();
 
-        return new ImageBufferImpl(buffer);
+        return new ImageBufferAwt(buffer);
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        final BufferedImage alpha = FactoryGraphicImpl.CONFIG.createCompatibleImage(imageBuffer.getWidth(),
+        final BufferedImage alpha = FactoryGraphicAwt.CONFIG.createCompatibleImage(imageBuffer.getWidth(),
                 imageBuffer.getHeight(), java.awt.Transparency.BITMASK);
         final Graphics2D g = alpha.createGraphics();
 
         g.setComposite(AlphaComposite.Src);
-        g.drawImage(FactoryGraphicImpl.getBuffer(imageBuffer), 0, 0, null);
+        g.drawImage(FactoryGraphicAwt.getBuffer(imageBuffer), 0, 0, null);
         g.dispose();
 
         final int height = alpha.getHeight();
@@ -260,13 +260,13 @@ final class FactoryGraphicImpl
             }
         }
 
-        return new ImageBufferImpl(alpha);
+        return new ImageBufferAwt(alpha);
     }
 
     @Override
     public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final int total = h * v;
         final int width = image.getWidth() / h, height = image.getHeight() / v;
         final int transparency = image.getColorModel().getTransparency();
@@ -277,9 +277,9 @@ final class FactoryGraphicImpl
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = FactoryGraphicImpl.CONFIG.createCompatibleImage(width, height, transparency);
+                images[frame] = FactoryGraphicAwt.CONFIG.createCompatibleImage(width, height, transparency);
                 final Graphics2D g = images[frame].createGraphics();
-                FactoryGraphicImpl.optimizeGraphics(g);
+                FactoryGraphicAwt.optimizeGraphics(g);
                 g.drawImage(image, 0, 0, width, height, x * width, y * height, (x + 1) * width, (y + 1) * height, null);
                 g.dispose();
                 frame++;
@@ -288,7 +288,7 @@ final class FactoryGraphicImpl
         final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
         for (int i = 0; i < imageBuffers.length; i++)
         {
-            imageBuffers[i] = new ImageBufferImpl(images[i]);
+            imageBuffers[i] = new ImageBufferAwt(images[i]);
         }
 
         return imageBuffers;
@@ -297,88 +297,88 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final int w = image.getWidth(), h = image.getHeight();
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage rotated = FactoryGraphicImpl.CONFIG.createCompatibleImage(w, h, transparency);
+        final BufferedImage rotated = FactoryGraphicAwt.CONFIG.createCompatibleImage(w, h, transparency);
         final Graphics2D g = rotated.createGraphics();
 
-        FactoryGraphicImpl.optimizeGraphics(g);
+        FactoryGraphicAwt.optimizeGraphics(g);
         g.rotate(Math.toRadians(angle), w / 2.0, h / 2.0);
         g.drawImage(image, null, 0, 0);
         g.dispose();
 
-        return new ImageBufferImpl(rotated);
+        return new ImageBufferAwt(rotated);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final int transparency = image.getColorModel().getTransparency();
-        final BufferedImage resized = FactoryGraphicImpl.CONFIG.createCompatibleImage(width, height, transparency);
+        final BufferedImage resized = FactoryGraphicAwt.CONFIG.createCompatibleImage(width, height, transparency);
         final Graphics2D g = resized.createGraphics();
 
-        FactoryGraphicImpl.optimizeGraphics(g);
+        FactoryGraphicAwt.optimizeGraphics(g);
         g.drawImage(image, 0, 0, width, height, 0, 0, image.getWidth(), image.getHeight(), null);
         g.dispose();
 
-        return new ImageBufferImpl(resized);
+        return new ImageBufferAwt(resized);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = FactoryGraphicImpl.CONFIG.createCompatibleImage(w, h, image.getColorModel()
+        final BufferedImage flipped = FactoryGraphicAwt.CONFIG.createCompatibleImage(w, h, image.getColorModel()
                 .getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        FactoryGraphicImpl.optimizeGraphics(g);
+        FactoryGraphicAwt.optimizeGraphics(g);
         g.drawImage(image, 0, 0, w, h, w, 0, 0, h, null);
         g.dispose();
 
-        return new ImageBufferImpl(flipped);
+        return new ImageBufferAwt(flipped);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final int w = image.getWidth(), h = image.getHeight();
-        final BufferedImage flipped = FactoryGraphicImpl.CONFIG.createCompatibleImage(w, h, image.getColorModel()
+        final BufferedImage flipped = FactoryGraphicAwt.CONFIG.createCompatibleImage(w, h, image.getColorModel()
                 .getTransparency());
         final Graphics2D g = flipped.createGraphics();
 
-        FactoryGraphicImpl.optimizeGraphics(g);
+        FactoryGraphicAwt.optimizeGraphics(g);
         g.drawImage(image, 0, 0, w, h, 0, h, w, 0, null);
         g.dispose();
 
-        return new ImageBufferImpl(flipped);
+        return new ImageBufferAwt(flipped);
     }
 
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final Kernel kernel;
         switch (filter)
         {
             case BILINEAR:
-                kernel = new Kernel(3, 3, FactoryGraphicImpl.BILINEAR_FILTER);
+                kernel = new Kernel(3, 3, FactoryGraphicAwt.BILINEAR_FILTER);
                 break;
             default:
                 throw new LionEngineException("Unsupported filter: " + filter.name());
         }
         final ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
-        return new ImageBufferImpl(op.filter(image, null));
+        return new ImageBufferAwt(op.filter(image, null));
     }
 
     @Override
     public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         ImageIO.write(image, "png", outputStream);
     }
 
@@ -386,9 +386,9 @@ final class FactoryGraphicImpl
     public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
             int refSize)
     {
-        final BufferedImage image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
         final boolean method = true;
-        final BufferedImage raster = FactoryGraphicImpl.CONFIG.createCompatibleImage(image.getWidth(),
+        final BufferedImage raster = FactoryGraphicAwt.CONFIG.createCompatibleImage(image.getWidth(),
                 image.getHeight(), image.getTransparency());
 
         final double sr = -((er - fr) / 0x010000) / (double) refSize;
@@ -425,12 +425,12 @@ final class FactoryGraphicImpl
             }
         }
 
-        return new ImageBufferImpl(raster);
+        return new ImageBufferAwt(raster);
     }
 
     @Override
     public Transform createTransform()
     {
-        return new TransformImpl();
+        return new TransformAwt();
     }
 }

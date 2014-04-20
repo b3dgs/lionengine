@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.Graphic;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicImpl
+final class GraphicSwt
         implements Graphic
 {
     /**
@@ -42,7 +42,7 @@ final class GraphicImpl
      */
     private static Image getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferSwt) imageBuffer).getBuffer();
     }
 
     /** The graphic output. */
@@ -57,7 +57,7 @@ final class GraphicImpl
     /**
      * Constructor.
      */
-    GraphicImpl()
+    GraphicSwt()
     {
         // Nothing to do
     }
@@ -67,7 +67,7 @@ final class GraphicImpl
      * 
      * @param g The graphics output.
      */
-    GraphicImpl(GC g)
+    GraphicSwt(GC g)
     {
         gc = g;
     }
@@ -79,10 +79,10 @@ final class GraphicImpl
     @Override
     public void clear(int x, int y, int width, int height)
     {
-        gc.setBackground(ScreenImpl.display.getSystemColor(SWT.COLOR_BLACK));
+        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK));
         gc.fillRectangle(0, 0, width, height);
-        gc.setBackground(ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE));
-        gc.setForeground(ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE));
+        gc.setBackground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
+        gc.setForeground(ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE));
     }
 
     @Override
@@ -100,13 +100,13 @@ final class GraphicImpl
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
-        gc.drawImage(GraphicImpl.getBuffer(image), x, y);
+        gc.drawImage(GraphicSwt.getBuffer(image), x, y);
     }
 
     @Override
     public void drawImage(ImageBuffer image, Transform transform, int x, int y)
     {
-        gc.drawImage(GraphicImpl.getBuffer(image), x, y, image.getWidth(), image.getHeight(), x, y,
+        gc.drawImage(GraphicSwt.getBuffer(image), x, y, image.getWidth(), image.getHeight(), x, y,
                 (int) (image.getWidth() * transform.getScaleX()), (int) (image.getHeight() * transform.getScaleY()));
     }
 
@@ -116,18 +116,18 @@ final class GraphicImpl
         if (sx2 < sx1)
         {
             // TODO not working
-            final org.eclipse.swt.graphics.Transform old = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);
+            final org.eclipse.swt.graphics.Transform old = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
             final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(
-                    ScreenImpl.display);
+                    ScreenSwt.display);
             transform.setElements(1, 0, 0, -1, 0, 0);
             gc.setTransform(transform);
-            gc.drawImage(GraphicImpl.getBuffer(image), dx1, dy1);
+            gc.drawImage(GraphicSwt.getBuffer(image), dx1, dy1);
             transform.dispose();
             gc.setTransform(old);
         }
         else
         {
-            gc.drawImage(GraphicImpl.getBuffer(image), sx1, sy1, sx2 - sx1, sy2 - sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
+            gc.drawImage(GraphicSwt.getBuffer(image), sx1, sy1, sx2 - sx1, sy2 - sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
         }
     }
 
@@ -178,7 +178,7 @@ final class GraphicImpl
         {
             lastColor.dispose();
         }
-        lastColor = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
+        lastColor = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
         gc.setBackground(lastColor);
         gc.setForeground(lastColor);
     }
@@ -196,8 +196,8 @@ final class GraphicImpl
         {
             gradientColor1.dispose();
         }
-        gradientColor1 = new Color(ScreenImpl.display, color1.getRed(), color1.getGreen(), color1.getBlue());
-        gradientColor2 = new Color(ScreenImpl.display, color2.getRed(), color2.getGreen(), color2.getBlue());
+        gradientColor1 = new Color(ScreenSwt.display, color1.getRed(), color1.getGreen(), color1.getBlue());
+        gradientColor2 = new Color(ScreenSwt.display, color2.getRed(), color2.getGreen(), color2.getBlue());
     }
 
     @Override

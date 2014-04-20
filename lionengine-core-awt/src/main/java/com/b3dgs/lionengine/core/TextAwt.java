@@ -17,9 +17,11 @@
  */
 package com.b3dgs.lionengine.core;
 
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
@@ -32,32 +34,32 @@ import com.b3dgs.lionengine.TextStyle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextImpl
+final class TextAwt
         implements Text
 {
     /**
-     * Get the text style equivalence.
+     * Get the style equivalence.
      * 
-     * @param style The text style.
-     * @return The text style.
+     * @param style The font style.
+     * @return The equivalence.
      */
     private static int getStyle(TextStyle style)
     {
         switch (style)
         {
             case NORMAL:
-                return Typeface.NORMAL;
+                return Font.TRUETYPE_FONT;
             case BOLD:
-                return Typeface.BOLD;
+                return Font.BOLD;
             case ITALIC:
-                return Typeface.ITALIC;
+                return Font.ITALIC;
             default:
-                throw new RuntimeException("Unknown type: " + style);
+                return Font.TYPE1_FONT;
         }
     }
 
-    /** Paint. */
-    final Paint paint;
+    /** Text java font. */
+    private final Font font;
     /** Text size. */
     private final int size;
     /** Text location x. */
@@ -84,15 +86,12 @@ final class TextImpl
      * @param size The font size (in pixel).
      * @param style The font style.
      */
-    TextImpl(String fontName, int size, TextStyle style)
+    TextAwt(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        paint = new Paint();
+        font = new Font(fontName, TextAwt.getStyle(style), size);
         align = Align.LEFT;
         color = ColorRgba.WHITE;
-        paint.setTextSize(size);
-        paint.setColor(color.getRgba());
-        paint.setTypeface(Typeface.create(fontName, TextImpl.getStyle(style)));
     }
 
     /*
@@ -108,13 +107,40 @@ final class TextImpl
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        ((GraphicImpl) g).drawString(x, y + (int) (size * 0.8), alignment, text, paint);
+        final Graphics2D g2d = g.getGraphic();
+        final FontRenderContext context = g2d.getFontRenderContext();
+        final GlyphVector glyphVector = font.createGlyphVector(context, text);
+        final Rectangle2D textSize = font.getStringBounds(text, context);
+        final int tx;
+        final int ty;
+
+        switch (alignment)
+        {
+            case LEFT:
+                tx = x;
+                ty = (int) textSize.getHeight() + y;
+                break;
+            case CENTER:
+                tx = x - (int) textSize.getWidth() / 2;
+                ty = (int) textSize.getHeight() + y;
+                break;
+            case RIGHT:
+                tx = x - (int) textSize.getWidth();
+                ty = (int) textSize.getHeight() + y;
+                break;
+            default:
+                throw new RuntimeException();
+        }
+
+        final ColorRgba colorOld = g.getColor();
+        g.setColor(color);
+        g2d.drawGlyphVector(glyphVector, tx, ty - size / 2);
+        g.setColor(colorOld);
     }
 
     @Override
     public void render(Graphic g)
     {
-        g.setColor(color);
         draw(g, x, y, align, txt);
         if (txtChanged)
         {
@@ -148,7 +174,6 @@ final class TextImpl
     public void setColor(ColorRgba color)
     {
         this.color = color;
-        paint.setColor(color.getRgba());
     }
 
     @Override
@@ -184,16 +209,12 @@ final class TextImpl
     @Override
     public int getStringWidth(Graphic g, String str)
     {
-        final Rect bounds = new Rect();
-        paint.getTextBounds(str, 0, str.length(), bounds);
-        return bounds.right - bounds.left;
+        return (int) font.getStringBounds(str, ((Graphics2D) g.getGraphic()).getFontRenderContext()).getWidth();
     }
 
     @Override
     public int getStringHeight(Graphic g, String str)
     {
-        final Rect bounds = new Rect();
-        paint.getTextBounds(str, 0, str.length(), bounds);
-        return bounds.bottom - bounds.top;
+        return (int) font.getStringBounds(str, ((Graphics2D) g.getGraphic()).getFontRenderContext()).getHeight();
     }
 }

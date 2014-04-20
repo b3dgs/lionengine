@@ -17,8 +17,14 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.image.BufferedImage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 
@@ -27,7 +33,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageBufferImpl
+final class ImageBufferSwt
         implements ImageBuffer
 {
     /**
@@ -40,28 +46,36 @@ final class ImageBufferImpl
     {
         switch (transparency)
         {
-            case java.awt.Transparency.OPAQUE:
+            case SWT.TRANSPARENCY_NONE:
                 return Transparency.OPAQUE;
-            case java.awt.Transparency.BITMASK:
+            case SWT.TRANSPARENCY_MASK:
                 return Transparency.BITMASK;
-            case java.awt.Transparency.TRANSLUCENT:
+            case SWT.TRANSPARENCY_ALPHA:
                 return Transparency.TRANSLUCENT;
             default:
                 return Transparency.OPAQUE;
         }
     }
 
-    /** Buffered image. */
-    private final BufferedImage bufferedImage;
+    /** Transparency. */
+    private final Transparency transparency;
+    /** Last image data. */
+    private final ImageData data;
+    /** Image. */
+    private Image image;
+    /** GC. */
+    private GC gc;
 
     /**
      * Constructor.
      * 
-     * @param bufferedImage The buffered image.
+     * @param image The image.
      */
-    ImageBufferImpl(BufferedImage bufferedImage)
+    ImageBufferSwt(Image image)
     {
-        this.bufferedImage = bufferedImage;
+        this.image = image;
+        data = image.getImageData();
+        transparency = ImageBufferSwt.getTransparency(data.getTransparencyType());
     }
 
     /**
@@ -69,9 +83,9 @@ final class ImageBufferImpl
      * 
      * @return The image buffer.
      */
-    BufferedImage getBuffer()
+    Image getBuffer()
     {
-        return bufferedImage;
+        return image;
     }
 
     /*
@@ -81,48 +95,60 @@ final class ImageBufferImpl
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicImpl(bufferedImage.createGraphics());
+        gc = new GC(image);
+        return new GraphicSwt(gc);
     }
 
     @Override
     public void setRgb(int x, int y, int rgb)
     {
-        bufferedImage.setRGB(x, y, rgb);
+        final ColorRgba rgba = new ColorRgba(rgb);
+        final RGB color = new RGB(rgba.getRed(), rgba.getGreen(), rgba.getBlue());
+        final int pixel = data.palette.getPixel(color);
+        data.setPixel(x, y, pixel);
+        image.dispose();
+        image = new Image(ScreenSwt.display, data);
     }
 
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        bufferedImage.setRGB(startX, startY, w, h, rgbArray, offset, scansize);
+        data.setPixels(startX, startY, w, rgbArray, offset);
+        image.dispose();
+        image = new Image(ScreenSwt.display, data);
     }
 
     @Override
     public int getRgb(int x, int y)
     {
-        return bufferedImage.getRGB(x, y);
+        final int pixel = data.getPixel(x, y);
+        final PaletteData palette = data.palette;
+        final RGB rgb = palette.getRGB(pixel);
+        return new ColorRgba(rgb.red, rgb.green, rgb.blue).getRgba();
     }
 
     @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        return bufferedImage.getRGB(startX, startY, w, h, rgbArray, offset, scansize);
+        data.getPixels(startX, startY, w, rgbArray, offset);
+        return rgbArray;
     }
 
     @Override
     public int getWidth()
     {
-        return bufferedImage.getWidth();
+        return data.width;
     }
 
     @Override
     public int getHeight()
     {
-        return bufferedImage.getHeight();
+        return data.height;
     }
 
     @Override
     public Transparency getTransparency()
     {
-        return ImageBufferImpl.getTransparency(bufferedImage.getTransparency());
+        return transparency;
     }
 }

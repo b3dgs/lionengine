@@ -89,7 +89,7 @@ public final class UtilityMedia
     public static Media get(String... path)
     {
         Check.notNull(path);
-        return new MediaImpl(UtilityMedia.getPathSeparator(UtilityMedia.separator, path));
+        return new MediaAndroid(UtilityMedia.getPathSeparator(UtilityMedia.separator, path));
     }
 
     /**

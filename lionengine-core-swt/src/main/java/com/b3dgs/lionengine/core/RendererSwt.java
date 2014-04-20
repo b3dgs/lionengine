@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.core;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RendererImpl
+final class RendererSwt
         extends Renderer
 {
     /**
@@ -30,9 +30,9 @@ final class RendererImpl
      * 
      * @param config The config reference.
      */
-    RendererImpl(Config config)
+    RendererSwt(Config config)
     {
-        super(config, "AWT");
+        super(config, "SWT");
     }
 
     /*
@@ -42,14 +42,13 @@ final class RendererImpl
     @Override
     protected void asyncLoad(final Sequence nextSequence)
     {
-        final Thread thread = new Thread()
+        ScreenSwt.display.asyncExec(new Runnable()
         {
             @Override
             public void run()
             {
-                nextSequence.loadInternal();
+                nextSequence.load();
             }
-        };
-        thread.start();
+        });
     }
 }

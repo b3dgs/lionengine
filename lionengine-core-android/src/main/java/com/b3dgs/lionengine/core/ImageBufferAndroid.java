@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageBufferImpl
+final class ImageBufferAndroid
         implements ImageBuffer
 {
     /** Buffered image. */
@@ -39,7 +39,7 @@ final class ImageBufferImpl
      * 
      * @param bufferedImage The buffered image.
      */
-    ImageBufferImpl(Bitmap bufferedImage)
+    ImageBufferAndroid(Bitmap bufferedImage)
     {
         this.bufferedImage = bufferedImage;
     }
@@ -61,7 +61,7 @@ final class ImageBufferImpl
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicImpl(new Canvas(bufferedImage));
+        return new GraphicAndroid(new Canvas(bufferedImage));
     }
 
     @Override

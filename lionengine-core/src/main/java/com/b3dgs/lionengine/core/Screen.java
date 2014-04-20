@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.Graphic;
  * @see Graphic
  * @see Sequence
  */
-interface Screen
+public interface Screen
 {
     /**
      * Start the main frame if has.

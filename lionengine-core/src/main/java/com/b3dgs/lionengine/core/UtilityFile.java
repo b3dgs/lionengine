@@ -289,7 +289,7 @@ public final class UtilityFile
      * 
      * @param programName The program name.
      */
-    static void setTempDirectory(String programName)
+    public static void setTempDirectory(String programName)
     {
         final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
         UtilityFile.tmpDir = Media.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);

@@ -60,7 +60,7 @@ import com.b3dgs.lionengine.Version;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine
-        extends EngineImpl
+        extends EngineCore
 {
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
@@ -84,11 +84,11 @@ public final class Engine
      */
     public static void start(String name, Version version, Activity activity, Verbose level)
     {
-        if (!EngineImpl.started)
+        if (!EngineCore.isStarted())
         {
             Engine.createView(activity);
 
-            EngineImpl.start(name, version, level);
+            EngineCore.start(name, version, level, new FactoryGraphicAndroid());
             Engine.init(name, version, activity, level);
         }
     }
@@ -99,7 +99,7 @@ public final class Engine
      */
     public static void terminate()
     {
-        EngineImpl.terminate();
+        EngineCore.terminate();
     }
 
     /**
@@ -109,9 +109,9 @@ public final class Engine
      */
     private static void createView(Activity activity)
     {
-        final ViewImpl view = new ViewImpl(activity);
+        final ViewAndroid view = new ViewAndroid(activity);
         view.setWillNotDraw(false);
-        ScreenImpl.setView(view);
+        ScreenAndroid.setView(view);
         activity.setContentView(view);
     }
 
@@ -125,7 +125,7 @@ public final class Engine
      */
     private static void init(String name, Version version, Activity activity, Verbose level)
     {
-        Media.setMediaImpl(MediaImpl.class);
+        Media.setMediaImpl(MediaAndroid.class);
         UtilityMedia.setAssertManager(activity.getAssets());
         UtilityMedia.setContentResolver(activity.getContentResolver());
     }

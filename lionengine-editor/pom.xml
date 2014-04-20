@@ -13,18 +13,15 @@
 	<name>LionEngine Editor</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<repositories>
-		<repository>
-			<id>kepler</id>
-			<url>http://download.eclipse.org/releases/kepler</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
+			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-core-swt</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
@@ -48,4 +45,28 @@
 			<version>${lionengine.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-packaging-plugin</artifactId>
+				<version>${tycho.osgi.version}</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

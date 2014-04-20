@@ -15,20 +15,7 @@
 
 	<artifactId>lionengine-core-swt</artifactId>
 	<name>LionEngine Core SWT</name>
-	<version>6.2.0.qualifier</version>
 	<packaging>eclipse-plugin</packaging>
-
-	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
-		</repository>
-		<repository>
-			<id>kepler</id>
-			<url>http://download.eclipse.org/releases/kepler</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -42,4 +29,28 @@
 			<version>${swt.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-packaging-plugin</artifactId>
+				<version>${tycho.osgi.version}</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

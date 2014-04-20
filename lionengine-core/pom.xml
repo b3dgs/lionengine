@@ -11,6 +11,29 @@
 
 	<artifactId>lionengine-core</artifactId>
 	<name>LionEngine Core</name>
-	<version>6.2.0.qualifier</version>
 	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>maven-osgi-packaging-plugin</artifactId>
+				<version>${tycho.osgi.version}</version>
+				<configuration>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-jar-plugin</artifactId>
+	<configuration>
+		<archive>
+			<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+		</archive>
+	</configuration>
+</plugin>
+		</plugins>
+	</build>
 </project>

@@ -112,7 +112,7 @@ public final class UtilityMedia
     public static Media get(String... path)
     {
         Check.notNull(path);
-        return new MediaImpl(Media.getPath(path));
+        return new MediaAwt(Media.getPath(path));
     }
 
     /**

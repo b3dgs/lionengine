@@ -17,14 +17,12 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.image.AffineTransformOp;
-
 /**
  * Transform implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformImpl
+final class TransformSwt
         implements Transform
 {
     /** Scale x. */
@@ -37,7 +35,7 @@ final class TransformImpl
     /**
      * Constructor.
      */
-    TransformImpl()
+    TransformSwt()
     {
         // Nothing to do
     }
@@ -56,7 +54,7 @@ final class TransformImpl
     @Override
     public void setInterpolation(boolean bilinear)
     {
-        interpolation = bilinear ? AffineTransformOp.TYPE_BILINEAR : AffineTransformOp.TYPE_NEAREST_NEIGHBOR;
+        interpolation = bilinear ? 0 : 1;
     }
 
     @Override

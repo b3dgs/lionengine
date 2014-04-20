@@ -26,7 +26,7 @@ import java.io.OutputStream;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaImpl
+final class MediaSwt
         extends Media
 {
     /** Media path. */
@@ -37,10 +37,14 @@ final class MediaImpl
      * 
      * @param path The media path.
      */
-    public MediaImpl(String path)
+    public MediaSwt(String path)
     {
         this.path = path;
     }
+
+    /*
+     * Media
+     */
 
     @Override
     public String getPath()
@@ -51,18 +55,18 @@ final class MediaImpl
     @Override
     public File getFile()
     {
-        return new File(path);
+        return new File(Media.getPath(UtilityMedia.getRessourcesDir(), path));
     }
 
     @Override
     public InputStream getStream()
     {
-        return UtilityMedia.getStream(this, "MediaImpl", false);
+        return UtilityMedia.getStream(this, MediaSwt.class.getSimpleName(), false);
     }
 
     @Override
     public OutputStream getOutputStream()
     {
-        return UtilityMedia.getOutputStream(this, "MediaImpl", false);
+        return UtilityMedia.getOutputStream(this, MediaSwt.class.getSimpleName(), false);
     }
 }

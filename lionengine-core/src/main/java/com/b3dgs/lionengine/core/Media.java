@@ -74,6 +74,16 @@ public abstract class Media
     }
 
     /**
+     * Set the media implementation.
+     * 
+     * @param mediaImpl The media implementation.
+     */
+    public static void setMediaImpl(Class<? extends Media> mediaImpl)
+    {
+        Media.mediaImpl = mediaImpl;
+    }
+
+    /**
      * Set the file separator.
      * 
      * @param separator The file separator.
@@ -134,16 +144,6 @@ public abstract class Media
             }
         }
         return fullPath.toString();
-    }
-
-    /**
-     * Set the media implementation.
-     * 
-     * @param mediaImpl The media implementation.
-     */
-    static void setMediaImpl(Class<? extends Media> mediaImpl)
-    {
-        Media.mediaImpl = mediaImpl;
     }
 
     /**

@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.Graphic;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicImpl
+final class GraphicAndroid
         implements Graphic
 {
     /**
@@ -47,7 +47,7 @@ final class GraphicImpl
      */
     private static Bitmap getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferAndroid) imageBuffer).getBuffer();
     }
 
     /** Paint mode. */
@@ -66,7 +66,7 @@ final class GraphicImpl
     /**
      * Constructor.
      */
-    GraphicImpl()
+    GraphicAndroid()
     {
         this(null);
     }
@@ -76,7 +76,7 @@ final class GraphicImpl
      * 
      * @param g The graphics output.
      */
-    GraphicImpl(Canvas g)
+    GraphicAndroid(Canvas g)
     {
         paint = new Paint();
         scale = new Matrix();
@@ -128,7 +128,7 @@ final class GraphicImpl
     public void drawImage(ImageBuffer image, int x, int y)
     {
         paint.setAlpha(255);
-        g.drawBitmap(GraphicImpl.getBuffer(image), x, y, paint);
+        g.drawBitmap(GraphicAndroid.getBuffer(image), x, y, paint);
     }
 
     @Override
@@ -136,7 +136,7 @@ final class GraphicImpl
     {
         paint.setAlpha(255);
         scale.setScale((float) transform.getScaleX(), (float) transform.getScaleY());
-        g.drawBitmap(GraphicImpl.getBuffer(image), scale, paint);
+        g.drawBitmap(GraphicAndroid.getBuffer(image), scale, paint);
     }
 
     @Override
@@ -147,13 +147,13 @@ final class GraphicImpl
         final Rect src = new Rect(sx1, sy1, sx2, sy2);
         if (sx1 > sx2)
         {
-            final Bitmap part = Bitmap.createBitmap(GraphicImpl.getBuffer(image), sx2, sy1, sx1 - sx2, sy2 - sy1, flip,
-                    false);
+            final Bitmap part = Bitmap.createBitmap(GraphicAndroid.getBuffer(image), sx2, sy1, sx1 - sx2, sy2 - sy1,
+                    flip, false);
             g.drawBitmap(part, dx1, dy1, paint);
         }
         else
         {
-            g.drawBitmap(GraphicImpl.getBuffer(image), src, dest, paint);
+            g.drawBitmap(GraphicAndroid.getBuffer(image), src, dest, paint);
         }
     }
 

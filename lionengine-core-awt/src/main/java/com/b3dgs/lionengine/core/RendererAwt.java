@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.core;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RendererImpl
+final class RendererAwt
         extends Renderer
 {
     /**
@@ -30,9 +30,9 @@ final class RendererImpl
      * 
      * @param config The config reference.
      */
-    RendererImpl(Config config)
+    RendererAwt(Config config)
     {
-        super(config, "Android");
+        super(config, "AWT");
     }
 
     /*
@@ -47,7 +47,7 @@ final class RendererImpl
             @Override
             public void run()
             {
-                nextSequence.load();
+                nextSequence.loadInternal();
             }
         };
         thread.start();

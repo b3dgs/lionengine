@@ -17,38 +17,52 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
- * The renderer implementation.
+ * Media implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class RendererImpl
-        extends Renderer
+final class MediaAndroid
+        extends Media
 {
+    /** Media path. */
+    private final String path;
+
     /**
      * Constructor.
      * 
-     * @param config The config reference.
+     * @param path The media path.
      */
-    RendererImpl(Config config)
+    public MediaAndroid(String path)
     {
-        super(config, "SWT");
+        this.path = path;
     }
 
-    /*
-     * Renderer
-     */
+    @Override
+    public String getPath()
+    {
+        return path;
+    }
 
     @Override
-    protected void asyncLoad(final Sequence nextSequence)
+    public File getFile()
     {
-        ScreenImpl.display.asyncExec(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                nextSequence.load();
-            }
-        });
+        return new File(path);
+    }
+
+    @Override
+    public InputStream getStream()
+    {
+        return UtilityMedia.getStream(this, "MediaImpl", false);
+    }
+
+    @Override
+    public OutputStream getOutputStream()
+    {
+        return UtilityMedia.getOutputStream(this, "MediaImpl", false);
     }
 }

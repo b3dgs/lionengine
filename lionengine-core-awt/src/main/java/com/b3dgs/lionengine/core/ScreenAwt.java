@@ -54,7 +54,7 @@ import com.b3dgs.lionengine.Transparency;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenImpl
+final class ScreenAwt
         implements Screen, FocusListener
 {
     /** Error message config. */
@@ -68,7 +68,7 @@ final class ScreenImpl
     /** Error message unsupported fullscreen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
     /** Hidden cursor instance. */
-    private static final Cursor CURSOR_HIDDEN = ScreenImpl.createHiddenCursor();
+    private static final Cursor CURSOR_HIDDEN = ScreenAwt.createHiddenCursor();
     /** Default cursor instance. */
     private static final Cursor CURSOR_DEFAULT = Cursor.getDefaultCursor();
 
@@ -81,7 +81,7 @@ final class ScreenImpl
     {
         try
         {
-            return FactoryGraphicImpl.createHiddenCursor();
+            return FactoryGraphicAwt.createHiddenCursor();
         }
         catch (final AWTError
                      | HeadlessException
@@ -102,7 +102,7 @@ final class ScreenImpl
     /** Frame reference. */
     private final JFrame frame;
     /** Applet reference. */
-    private final AppletImpl applet;
+    private final AppletAwt applet;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Applet flag. */
@@ -138,19 +138,19 @@ final class ScreenImpl
      * @param renderer The renderer reference.
      * @param config The config reference.
      */
-    ScreenImpl(Renderer renderer, Config config)
+    ScreenAwt(Renderer renderer, Config config)
     {
-        Check.notNull(config, ScreenImpl.ERROR_CONFIG);
+        Check.notNull(config, ScreenAwt.ERROR_CONFIG);
         if (GraphicsEnvironment.isHeadless())
         {
-            throw new LionEngineException(ScreenImpl.ERROR_DISPLAY);
+            throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
 
         // Initialize environment
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         dev = env.getDefaultScreenDevice();
         conf = dev.getDefaultConfiguration();
-        applet = config.getApplet(AppletImpl.class);
+        applet = config.getApplet(AppletAwt.class);
         graphics = UtilityImage.createGraphic();
         hasApplet = applet != null;
         devices = new HashMap<>(2);
@@ -236,7 +236,7 @@ final class ScreenImpl
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, ScreenImpl.ERROR_APPLET);
+            throw new LionEngineException(exception, ScreenAwt.ERROR_APPLET);
         }
     }
 
@@ -284,7 +284,7 @@ final class ScreenImpl
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, ScreenImpl.ERROR_WINDOWED);
+            throw new LionEngineException(exception, ScreenAwt.ERROR_WINDOWED);
         }
     }
 
@@ -367,7 +367,7 @@ final class ScreenImpl
                     builder.append("\n");
                 }
             }
-            throw new LionEngineException(ScreenImpl.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()),
+            throw new LionEngineException(ScreenAwt.ERROR_UNSUPPORTED_FULLSCREEN, String.valueOf(output.getWidth()),
                     "*", String.valueOf(output.getHeight()), "*", String.valueOf(depth), " @", String.valueOf(output
                             .getRate()), "Hz", "\n", builder.toString());
         }
@@ -380,7 +380,7 @@ final class ScreenImpl
      */
     private JFrame initMainFrame()
     {
-        final JFrame frame = new JFrame(EngineImpl.getProgramName() + " " + EngineImpl.getProgramVersion(), conf);
+        final JFrame frame = new JFrame(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion(), conf);
 
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter()
@@ -466,7 +466,7 @@ final class ScreenImpl
     {
         if (hasApplet)
         {
-            applet.getGraphics().drawImage(((ImageBufferImpl) buffer).getBuffer(), 0, 0, null);
+            applet.getGraphics().drawImage(((ImageBufferAwt) buffer).getBuffer(), 0, 0, null);
             graphics.setGraphic(gbuf);
         }
         else
@@ -510,13 +510,13 @@ final class ScreenImpl
     @Override
     public void hideCursor()
     {
-        componentForCursor.setCursor(ScreenImpl.CURSOR_HIDDEN);
+        componentForCursor.setCursor(ScreenAwt.CURSOR_HIDDEN);
     }
 
     @Override
     public void showCursor()
     {
-        componentForCursor.setCursor(ScreenImpl.CURSOR_DEFAULT);
+        componentForCursor.setCursor(ScreenAwt.CURSOR_DEFAULT);
     }
 
     @Override

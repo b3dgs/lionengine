@@ -35,13 +35,13 @@ import com.b3dgs.lionengine.Resolution;
  * @see Keyboard
  * @see Mouse
  */
-public final class ScreenImpl
+public final class ScreenAndroid
         implements Screen, SurfaceHolder.Callback
 {
     /** Error message config. */
     private static final String ERROR_CONFIG = "The configuration must exists !";
     /** View. */
-    static ViewImpl view;
+    static ViewAndroid view;
     /** Holder. */
     static SurfaceHolder holder;
 
@@ -50,10 +50,10 @@ public final class ScreenImpl
      * 
      * @param view The view holder.
      */
-    public static void setView(ViewImpl view)
+    public static void setView(ViewAndroid view)
     {
-        ScreenImpl.view = view;
-        ScreenImpl.holder = view.getHolder();
+        ScreenAndroid.view = view;
+        ScreenAndroid.holder = view.getHolder();
     }
 
     /** Input devices. */
@@ -75,16 +75,16 @@ public final class ScreenImpl
      * @param renderer The renderer reference.
      * @param config The config reference.
      */
-    ScreenImpl(Renderer renderer, Config config)
+    ScreenAndroid(Renderer renderer, Config config)
     {
-        Check.notNull(config, ScreenImpl.ERROR_CONFIG);
+        Check.notNull(config, ScreenAndroid.ERROR_CONFIG);
 
         this.config = config;
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
         graphics = UtilityImage.createGraphic();
 
         setResolution(config.getOutput());
-        ScreenImpl.holder.addCallback(this);
+        ScreenAndroid.holder.addCallback(this);
         addDeviceMouse();
     }
 
@@ -94,7 +94,7 @@ public final class ScreenImpl
     private void addDeviceMouse()
     {
         final Mouse mouse = new Mouse();
-        ScreenImpl.view.setMouse(mouse);
+        ScreenAndroid.view.setMouse(mouse);
         devices.put(mouse.getClass(), mouse);
     }
 
@@ -108,7 +108,7 @@ public final class ScreenImpl
         // Create canvas
         if (canvas == null)
         {
-            ScreenImpl.holder.setFixedSize(output.getWidth(), output.getHeight());
+            ScreenAndroid.holder.setFixedSize(output.getWidth(), output.getHeight());
             canvas = new Canvas();
             canvas.drawColor(Color.RED);
             graphics.setGraphic(canvas);
@@ -138,20 +138,20 @@ public final class ScreenImpl
     @Override
     public void preUpdate()
     {
-        canvas = ScreenImpl.holder.lockCanvas();
+        canvas = ScreenAndroid.holder.lockCanvas();
         graphics.setGraphic(canvas);
     }
 
     @Override
     public void update()
     {
-        ScreenImpl.holder.unlockCanvasAndPost(canvas);
+        ScreenAndroid.holder.unlockCanvasAndPost(canvas);
     }
 
     @Override
     public void dispose()
     {
-        ScreenImpl.holder.removeCallback(this);
+        ScreenAndroid.holder.removeCallback(this);
     }
 
     @Override

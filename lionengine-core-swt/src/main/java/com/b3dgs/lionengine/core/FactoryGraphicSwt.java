@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicImpl
+final class FactoryGraphicSwt
         implements FactoryGraphic
 {
     /**
@@ -54,15 +54,15 @@ final class FactoryGraphicImpl
      */
     static Cursor createHiddenCursor()
     {
-        final Color white = ScreenImpl.display.getSystemColor(SWT.COLOR_WHITE);
-        final Color black = ScreenImpl.display.getSystemColor(SWT.COLOR_BLACK);
+        final Color white = ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE);
+        final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
         final PaletteData palette = new PaletteData(new RGB[]
         {
                 white.getRGB(), black.getRGB()
         });
         final ImageData sourceData = new ImageData(16, 16, 1, palette);
         sourceData.transparentPixel = 0;
-        final Cursor cursor = new Cursor(ScreenImpl.display, sourceData, 0, 0);
+        final Cursor cursor = new Cursor(ScreenSwt.display, sourceData, 0, 0);
         return cursor;
     }
 
@@ -95,13 +95,13 @@ final class FactoryGraphicImpl
      */
     private static Image getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferSwt) imageBuffer).getBuffer();
     }
 
     /**
      * Constructor.
      */
-    FactoryGraphicImpl()
+    FactoryGraphicSwt()
     {
         // Nothing to do
     }
@@ -113,46 +113,46 @@ final class FactoryGraphicImpl
     @Override
     public Renderer createRenderer(Config config)
     {
-        return new RendererImpl(config);
+        return new RendererSwt(config);
     }
 
     @Override
     public Screen createScreen(Renderer renderer, Config config)
     {
-        return new ScreenImpl(renderer, config);
+        return new ScreenSwt(renderer, config);
     }
 
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return new TextImpl(fontName, size, style);
+        return new TextSwt(fontName, size, style);
     }
 
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicImpl();
+        return new GraphicSwt();
     }
 
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        final Image buffer = new Image(ScreenImpl.display, width, height);
-        return new ImageBufferImpl(buffer);
+        final Image buffer = new Image(ScreenSwt.display, width, height);
+        return new ImageBufferSwt(buffer);
     }
 
     @Override
     public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
     {
-        final Image image = new Image(ScreenImpl.display, inputStream);
-        return new ImageBufferImpl(image);
+        final Image image = new Image(ScreenSwt.display, inputStream);
+        return new ImageBufferSwt(image);
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        final Image image = new Image(ScreenImpl.display, FactoryGraphicImpl.getBuffer(imageBuffer), SWT.IMAGE_COPY);
-        return new ImageBufferImpl(image);
+        final Image image = new Image(ScreenSwt.display, FactoryGraphicSwt.getBuffer(imageBuffer), SWT.IMAGE_COPY);
+        return new ImageBufferSwt(image);
     }
 
     @Override
@@ -165,7 +165,7 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
         final int total = h * v;
         final int width = imageBuffer.getWidth() / h, height = imageBuffer.getHeight() / v;
         final Image[] images = new Image[total];
@@ -175,7 +175,7 @@ final class FactoryGraphicImpl
         {
             for (int x = 0; x < h; x++)
             {
-                images[frame] = new Image(ScreenImpl.display, width, height);
+                images[frame] = new Image(ScreenSwt.display, width, height);
                 final GC gc = new GC(images[frame]);
                 gc.drawImage(image, x * width, y * height, width, height, 0, 0, width, height);
                 gc.dispose();
@@ -185,7 +185,7 @@ final class FactoryGraphicImpl
         final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
         for (int i = 0; i < imageBuffers.length; i++)
         {
-            imageBuffers[i] = new ImageBufferImpl(images[i]);
+            imageBuffers[i] = new ImageBufferSwt(images[i]);
         }
 
         return imageBuffers;
@@ -194,17 +194,17 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
         final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
 
         final ImageData sourceData = image.getImageData();
         final ImageData newData = new ImageData(w, h, sourceData.depth, sourceData.palette);
         newData.transparentPixel = sourceData.transparentPixel;
-        final Image rotated = new Image(ScreenImpl.display, newData);
+        final Image rotated = new Image(ScreenSwt.display, newData);
 
         final GC gc = new GC(rotated);
 
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);
+        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
         final float rotate = (float) Math.toRadians(angle);
         final float cos = (float) Math.cos(rotate);
         final float sin = (float) Math.sin(rotate);
@@ -214,50 +214,50 @@ final class FactoryGraphicImpl
         gc.drawImage(image, -w / 2, -h / 2);
         gc.dispose();
 
-        return new ImageBufferImpl(rotated);
+        return new ImageBufferSwt(rotated);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
-        final Image resized = new Image(ScreenImpl.display, image.getImageData().scaledTo(width, height));
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
+        final Image resized = new Image(ScreenSwt.display, image.getImageData().scaledTo(width, height));
 
-        return new ImageBufferImpl(resized);
+        return new ImageBufferSwt(resized);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
         final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-        final Image flipped = new Image(ScreenImpl.display, w, h);
+        final Image flipped = new Image(ScreenSwt.display, w, h);
         final GC gc = new GC(flipped);
 
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);
+        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
         transform.scale(-1.0f, 1.0f);
         gc.setTransform(transform);
         gc.drawImage(image, 0, 0);
         gc.dispose();
 
-        return new ImageBufferImpl(flipped);
+        return new ImageBufferSwt(flipped);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
         final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-        final Image flipped = new Image(ScreenImpl.display, w, h);
+        final Image flipped = new Image(ScreenSwt.display, w, h);
         final GC gc = new GC(flipped);
 
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenImpl.display);
+        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
         transform.scale(1.0f, -1.0f);
         gc.setTransform(transform);
         gc.drawImage(image, 0, 0);
         gc.dispose();
 
-        return new ImageBufferImpl(flipped);
+        return new ImageBufferSwt(flipped);
     }
 
     @Override
@@ -270,7 +270,7 @@ final class FactoryGraphicImpl
     @Override
     public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
     {
-        final Image image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
         final ImageLoader loader = new ImageLoader();
         loader.data = new ImageData[]
         {
@@ -290,6 +290,6 @@ final class FactoryGraphicImpl
     @Override
     public Transform createTransform()
     {
-        return new TransformImpl();
+        return new TransformSwt();
     }
 }

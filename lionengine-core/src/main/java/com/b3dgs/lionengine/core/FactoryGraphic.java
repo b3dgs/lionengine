@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-interface FactoryGraphic
+public interface FactoryGraphic
 {
     /**
      * Create a renderer.

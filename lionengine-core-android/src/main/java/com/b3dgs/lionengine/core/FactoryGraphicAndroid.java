@@ -43,7 +43,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FactoryGraphicImpl
+final class FactoryGraphicAndroid
         implements FactoryGraphic
 {
     /**
@@ -54,13 +54,13 @@ final class FactoryGraphicImpl
      */
     private static Bitmap getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferAndroid) imageBuffer).getBuffer();
     }
 
     /**
      * Constructor.
      */
-    FactoryGraphicImpl()
+    FactoryGraphicAndroid()
     {
         // Nothing to do
     }
@@ -72,61 +72,61 @@ final class FactoryGraphicImpl
     @Override
     public Renderer createRenderer(Config config)
     {
-        return new RendererImpl(config);
+        return new RendererAndroid(config);
     }
 
     @Override
     public Screen createScreen(Renderer renderer, Config config)
     {
-        return new ScreenImpl(renderer, config);
+        return new ScreenAndroid(renderer, config);
     }
 
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return new TextImpl(fontName, size, style);
+        return new TextAndroid(fontName, size, style);
     }
 
     @Override
     public Graphic createGraphic()
     {
-        return new GraphicImpl();
+        return new GraphicAndroid();
     }
 
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
         final Bitmap buffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        return new ImageBufferImpl(buffer);
+        return new ImageBufferAndroid(buffer);
     }
 
     @Override
     public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
     {
-        return new ImageBufferImpl(BitmapFactory.decodeStream(inputStream));
+        return new ImageBufferAndroid(BitmapFactory.decodeStream(inputStream));
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        return new ImageBufferImpl(Bitmap.createBitmap(FactoryGraphicImpl.getBuffer(imageBuffer)));
+        return new ImageBufferAndroid(Bitmap.createBitmap(FactoryGraphicAndroid.getBuffer(imageBuffer)));
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final Paint mask = new Paint();
         mask.setXfermode(new AvoidXfermode(maskColor.getRgba(), 0, AvoidXfermode.Mode.TARGET));
         final Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(bitmap, 0, 0, mask);
-        return new ImageBufferImpl(bitmap);
+        return new ImageBufferAndroid(bitmap);
     }
 
     @Override
     public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final ImageBuffer[] buffers = new ImageBuffer[h * v];
         final int width = bitmap.getWidth() / h;
         final int height = bitmap.getHeight() / v;
@@ -142,7 +142,7 @@ final class FactoryGraphicImpl
                 final Canvas canvas = new Canvas(part);
                 final Rect source = new Rect(r * width, c * height, r * width + width, c * height + height);
                 canvas.drawBitmap(bitmap, source, dest, paint);
-                buffers[i] = new ImageBufferImpl(part);
+                buffers[i] = new ImageBufferAndroid(part);
                 i++;
             }
         }
@@ -153,40 +153,40 @@ final class FactoryGraphicImpl
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, imageBuffer.getWidth(), imageBuffer.getHeight(),
                 matrix, false);
-        return new ImageBufferImpl(rotated);
+        return new ImageBufferAndroid(rotated);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final Bitmap resized = Bitmap.createScaledBitmap(bitmap, width, height, false);
-        return new ImageBufferImpl(resized);
+        return new ImageBufferAndroid(resized);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
         matrix.preScale(-1, 1);
         final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
-        return new ImageBufferImpl(rotated);
+        return new ImageBufferAndroid(rotated);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        final Bitmap bitmap = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final Matrix matrix = new Matrix();
         matrix.preScale(1, -1);
         final Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
-        return new ImageBufferImpl(rotated);
+        return new ImageBufferAndroid(rotated);
     }
 
     @Override
@@ -202,7 +202,7 @@ final class FactoryGraphicImpl
     @Override
     public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
     {
-        if (!FactoryGraphicImpl.getBuffer(imageBuffer).compress(CompressFormat.PNG, 100, outputStream))
+        if (!FactoryGraphicAndroid.getBuffer(imageBuffer).compress(CompressFormat.PNG, 100, outputStream))
         {
             throw new LionEngineException("Unable to save the file !");
         }
@@ -212,7 +212,7 @@ final class FactoryGraphicImpl
     public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
             int refSize)
     {
-        final Bitmap image = FactoryGraphicImpl.getBuffer(imageBuffer);
+        final Bitmap image = FactoryGraphicAndroid.getBuffer(imageBuffer);
         final boolean method = true;
         final Bitmap raster = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
 
@@ -252,12 +252,12 @@ final class FactoryGraphicImpl
             }
         }
 
-        return new ImageBufferImpl(raster);
+        return new ImageBufferAndroid(raster);
     }
 
     @Override
     public Transform createTransform()
     {
-        return new TransformImpl();
+        return new TransformAndroid();
     }
 }

@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.Graphic;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class GraphicImpl
+final class GraphicAwt
         implements Graphic
 {
     /**
@@ -44,7 +44,7 @@ final class GraphicImpl
      */
     private static BufferedImage getBuffer(ImageBuffer imageBuffer)
     {
-        return ((ImageBufferImpl) imageBuffer).getBuffer();
+        return ((ImageBufferAwt) imageBuffer).getBuffer();
     }
 
     /** The graphic output. */
@@ -59,7 +59,7 @@ final class GraphicImpl
     /**
      * Constructor.
      */
-    GraphicImpl()
+    GraphicAwt()
     {
         g = null;
     }
@@ -69,7 +69,7 @@ final class GraphicImpl
      * 
      * @param g The graphics output.
      */
-    GraphicImpl(Graphics2D g)
+    GraphicAwt(Graphics2D g)
     {
         this.g = g;
     }
@@ -99,7 +99,7 @@ final class GraphicImpl
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
-        g.drawImage(GraphicImpl.getBuffer(image), null, x, y);
+        g.drawImage(GraphicAwt.getBuffer(image), null, x, y);
     }
 
     @Override
@@ -112,13 +112,13 @@ final class GraphicImpl
             at.scale(transform.getScaleX(), transform.getScaleY());
             op = new AffineTransformOp(at, transform.getInterpolation());
         }
-        g.drawImage(GraphicImpl.getBuffer(image), op, x, y);
+        g.drawImage(GraphicAwt.getBuffer(image), op, x, y);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        g.drawImage(GraphicImpl.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+        g.drawImage(GraphicAwt.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
 
     @Override

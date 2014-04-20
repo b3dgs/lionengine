@@ -7,6 +7,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<tycho.version>0.20.0</tycho.version>
+		<tycho.osgi.version>0.11.1</tycho.osgi.version>
 		<junit.version>4.11</junit.version>
 		<jna.version>4.1.0</jna.version>
 		<lionengine.version>6.2.0-SNAPSHOT</lionengine.version>
@@ -79,6 +80,17 @@
 			</modules>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>swt-repo</id>
+			<url>https://swt-repo.googlecode.com/svn/repo/</url>
+		</repository>
+		<repository>
+			<id>kepler</id>
+			<url>http://download.eclipse.org/releases/kepler</url>
+			<layout>p2</layout>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -92,6 +104,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
 						<environment>
@@ -123,31 +136,43 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-					</archive>
-				</configuration>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.4.0</version>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-versions-plugin</artifactId>
+				<version>${tycho.version}</version>
 			</plugin>
 		</plugins>
 		<defaultGoal>install</defaultGoal>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.codehaus.tycho</groupId>
+					<artifactId>maven-osgi-packaging-plugin</artifactId>
+					<version>${tycho.osgi.version}</version>
+					<executions>
+						<execution>
+							<id>timestamp</id>
+							<phase>validate</phase>
+							<goals>
+								<goal>timestamp</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.3.2</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
@@ -216,11 +241,6 @@
 						<executable>${java.home}/../bin/javac</executable>
 						<fork>false</fork>
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>

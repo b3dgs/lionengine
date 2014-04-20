@@ -17,52 +17,61 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
- * Media implementation.
+ * Transform implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaImpl
-        extends Media
+final class TransformAndroid
+        implements Transform
 {
-    /** Media path. */
-    private final String path;
+    /** Scale x. */
+    private double sx;
+    /** Scale y. */
+    private double sy;
+    /** Interpolation. */
+    private int interpolation;
 
     /**
      * Constructor.
-     * 
-     * @param path The media path.
      */
-    public MediaImpl(String path)
+    TransformAndroid()
     {
-        this.path = path;
+        // Nothing to do
+    }
+
+    /*
+     * Transform
+     */
+
+    @Override
+    public void scale(double sx, double sy)
+    {
+        this.sx = sx;
+        this.sy = sy;
     }
 
     @Override
-    public String getPath()
+    public void setInterpolation(boolean bilinear)
     {
-        return path;
+        interpolation = bilinear ? 1 : 0;
     }
 
     @Override
-    public File getFile()
+    public double getScaleX()
     {
-        return new File(Media.getPath(UtilityMedia.getRessourcesDir(), path));
+        return sx;
     }
 
     @Override
-    public InputStream getStream()
+    public double getScaleY()
     {
-        return UtilityMedia.getStream(this, "MediaImpl", false);
+        return sy;
     }
 
     @Override
-    public OutputStream getOutputStream()
+    public int getInterpolation()
     {
-        return UtilityMedia.getOutputStream(this, "MediaImpl", false);
+        return interpolation;
     }
 }

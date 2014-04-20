@@ -17,49 +17,39 @@
  */
 package com.b3dgs.lionengine.core;
 
-import android.content.Context;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
-
 /**
- * Surface view implementation.
+ * The renderer implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ViewImpl
-        extends SurfaceView
+final class RendererAndroid
+        extends Renderer
 {
-    /** Mouse. */
-    private Mouse mouse;
-
     /**
      * Constructor.
      * 
-     * @param context The context reference.
+     * @param config The config reference.
      */
-    ViewImpl(Context context)
+    RendererAndroid(Config config)
     {
-        super(context);
-    }
-
-    /**
-     * Set the mouse reference.
-     * 
-     * @param mouse The mouse reference.
-     */
-    void setMouse(Mouse mouse)
-    {
-        this.mouse = mouse;
+        super(config, "Android");
     }
 
     /*
-     * SurfaceView
+     * Renderer
      */
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
+    protected void asyncLoad(final Sequence nextSequence)
     {
-        mouse.updateCoord(event);
-        return true;
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                nextSequence.load();
+            }
+        };
+        thread.start();
     }
 }

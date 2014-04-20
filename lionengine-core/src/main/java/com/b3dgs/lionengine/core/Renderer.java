@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.Transparency;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Renderer
+public abstract class Renderer
         extends Thread
 {
     /** Error message loader. */
@@ -116,7 +116,7 @@ abstract class Renderer
         {
             frameDelay = Renderer.TIME_LONG / output.getRate();
         }
-        graphic = EngineImpl.factoryGraphic.createGraphic();
+        graphic = EngineCore.factoryGraphic.createGraphic();
     }
 
     /**
@@ -218,7 +218,7 @@ abstract class Renderer
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = EngineImpl.factoryGraphic.createTransform();
+        Transform transform = EngineCore.factoryGraphic.createTransform();
 
         // Filter level
         switch (filter)
@@ -252,7 +252,7 @@ abstract class Renderer
         // Scaled rendering
         else
         {
-            buf = EngineImpl.factoryGraphic.createImageBuffer(width, height, Transparency.OPAQUE);
+            buf = EngineCore.factoryGraphic.createImageBuffer(width, height, Transparency.OPAQUE);
             gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
@@ -423,7 +423,7 @@ abstract class Renderer
                 currentFrameRate = Renderer.TIME_DOUBLE / (currentTime - lastTime);
                 updateFpsTimer = currentTime;
             }
-            if (!EngineImpl.started)
+            if (!EngineCore.isStarted())
             {
                 isRunning = false;
             }
@@ -490,7 +490,7 @@ abstract class Renderer
     public void run()
     {
         // First init
-        screen = EngineImpl.factoryGraphic.createScreen(this, config);
+        screen = EngineCore.factoryGraphic.createScreen(this, config);
         screen.start();
         nextSequence = Loader.createSequence(firstSequence, loader);
         waitForScreenReady();
@@ -511,6 +511,6 @@ abstract class Renderer
             Verbose.info("Ending sequence: ", sequenceName);
         }
         screen.dispose();
-        EngineImpl.terminate();
+        EngineCore.terminate();
     }
 }

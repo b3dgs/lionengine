@@ -17,11 +17,9 @@
  */
 package com.b3dgs.lionengine.core;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Point;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
@@ -34,32 +32,32 @@ import com.b3dgs.lionengine.TextStyle;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TextImpl
+final class TextAndroid
         implements Text
 {
     /**
-     * Get the style equivalence.
+     * Get the text style equivalence.
      * 
-     * @param style The font style.
-     * @return The equivalence.
+     * @param style The text style.
+     * @return The text style.
      */
     private static int getStyle(TextStyle style)
     {
         switch (style)
         {
             case NORMAL:
-                return SWT.NORMAL;
+                return Typeface.NORMAL;
             case BOLD:
-                return SWT.BOLD;
+                return Typeface.BOLD;
             case ITALIC:
-                return SWT.ITALIC;
+                return Typeface.ITALIC;
             default:
-                return SWT.NORMAL;
+                throw new RuntimeException("Unknown type: " + style);
         }
     }
 
-    /** Text java font. */
-    private final Font font;
+    /** Paint. */
+    final Paint paint;
     /** Text size. */
     private final int size;
     /** Text location x. */
@@ -86,12 +84,15 @@ final class TextImpl
      * @param size The font size (in pixel).
      * @param style The font style.
      */
-    TextImpl(String fontName, int size, TextStyle style)
+    TextAndroid(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        font = new Font(ScreenImpl.display, fontName, Math.round(size / 1.5f), TextImpl.getStyle(style));
+        paint = new Paint();
         align = Align.LEFT;
         color = ColorRgba.WHITE;
+        paint.setTextSize(size);
+        paint.setColor(color.getRgba());
+        paint.setTypeface(Typeface.create(fontName, TextAndroid.getStyle(style)));
     }
 
     /*
@@ -107,39 +108,13 @@ final class TextImpl
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        final GC gc = g.getGraphic();
-        gc.setTextAntialias(SWT.OFF);
-        gc.setFont(font);
-        final Point textSize = gc.stringExtent(text);
-        final int tx;
-        final int ty;
-
-        switch (alignment)
-        {
-            case LEFT:
-                tx = x;
-                ty = y;
-                break;
-            case CENTER:
-                tx = x - textSize.x / 2;
-                ty = y;
-                break;
-            case RIGHT:
-                tx = x - textSize.x;
-                ty = y;
-                break;
-            default:
-                throw new RuntimeException();
-        }
-        final Color c = new Color(ScreenImpl.display, color.getRed(), color.getGreen(), color.getBlue());
-        gc.setForeground(c);
-        gc.drawString(text, tx, ty, true);
-        c.dispose();
+        ((GraphicAndroid) g).drawString(x, y + (int) (size * 0.8), alignment, text, paint);
     }
 
     @Override
     public void render(Graphic g)
     {
+        g.setColor(color);
         draw(g, x, y, align, txt);
         if (txtChanged)
         {
@@ -173,6 +148,7 @@ final class TextImpl
     public void setColor(ColorRgba color)
     {
         this.color = color;
+        paint.setColor(color.getRgba());
     }
 
     @Override
@@ -208,12 +184,16 @@ final class TextImpl
     @Override
     public int getStringWidth(Graphic g, String str)
     {
-        return ((GC) g.getGraphic()).stringExtent(str).x;
+        final Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.right - bounds.left;
     }
 
     @Override
     public int getStringHeight(Graphic g, String str)
     {
-        return ((GC) g.getGraphic()).stringExtent(str).y;
+        final Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        return bounds.bottom - bounds.top;
     }
 }

@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.Transparency;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenImpl
+final class ScreenSwt
         implements Screen, FocusListener
 {
     /** Error message config. */
@@ -96,24 +96,24 @@ final class ScreenImpl
      * @param renderer The renderer reference.
      * @param config The config reference.
      */
-    ScreenImpl(Renderer renderer, Config config)
+    ScreenSwt(Renderer renderer, Config config)
     {
-        Check.notNull(config, ScreenImpl.ERROR_CONFIG);
+        Check.notNull(config, ScreenSwt.ERROR_CONFIG);
 
         // Initialize environment
         try
         {
-            ScreenImpl.display = new Display();
+            ScreenSwt.display = new Display();
         }
         catch (final SWTException exception)
         {
-            throw new LionEngineException(exception, ScreenImpl.ERROR_DISPLAY);
+            throw new LionEngineException(exception, ScreenSwt.ERROR_DISPLAY);
         }
         this.renderer = renderer;
         this.config = config;
 
-        cursorHidden = FactoryGraphicImpl.createHiddenCursor();
-        cursorDefault = ScreenImpl.display.getSystemCursor(0);
+        cursorHidden = FactoryGraphicSwt.createHiddenCursor();
+        cursorDefault = ScreenSwt.display.getSystemCursor(0);
         graphics = UtilityImage.createGraphic();
         devices = new HashMap<>(2);
 
@@ -136,14 +136,14 @@ final class ScreenImpl
         final Shell shell;
         if (windowed)
         {
-            shell = new Shell(ScreenImpl.display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
+            shell = new Shell(ScreenSwt.display, SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.NO_BACKGROUND);
         }
         else
         {
-            shell = new Shell(ScreenImpl.display, SWT.NO_TRIM | SWT.ON_TOP);
-            shell.setBounds(ScreenImpl.display.getPrimaryMonitor().getBounds());
+            shell = new Shell(ScreenSwt.display, SWT.NO_TRIM | SWT.ON_TOP);
+            shell.setBounds(ScreenSwt.display.getPrimaryMonitor().getBounds());
         }
-        shell.setText(EngineImpl.getProgramName() + " " + EngineImpl.getProgramVersion());
+        shell.setText(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion());
         shell.addDisposeListener(new DisposeListener()
         {
             @Override
@@ -170,7 +170,7 @@ final class ScreenImpl
      */
     private void addDeviceMouse()
     {
-        final Mouse mouse = new Mouse(ScreenImpl.display);
+        final Mouse mouse = new Mouse(ScreenSwt.display);
         addMouseListener(mouse);
         devices.put(mouse.getClass(), mouse);
     }
@@ -194,7 +194,7 @@ final class ScreenImpl
             buffer = UtilityImage.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             frame.pack();
 
-            final Monitor primary = ScreenImpl.display.getPrimaryMonitor();
+            final Monitor primary = ScreenSwt.display.getPrimaryMonitor();
             final Rectangle bounds = primary.getBounds();
             final Rectangle rect = frame.getBounds();
             final int x = bounds.x + (bounds.width - rect.width) / 2;
@@ -205,7 +205,7 @@ final class ScreenImpl
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, ScreenImpl.ERROR_WINDOWED);
+            throw new LionEngineException(exception, ScreenSwt.ERROR_WINDOWED);
         }
     }
 
@@ -233,7 +233,7 @@ final class ScreenImpl
         }
         catch (final Exception exception)
         {
-            throw new LionEngineException(exception, ScreenImpl.ERROR_WINDOWED);
+            throw new LionEngineException(exception, ScreenSwt.ERROR_WINDOWED);
         }
     }
 
@@ -321,11 +321,11 @@ final class ScreenImpl
     @Override
     public void update()
     {
-        ScreenImpl.display.readAndDispatch();
+        ScreenSwt.display.readAndDispatch();
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
-            gc.drawImage(((ImageBufferImpl) buffer).getBuffer(), 0, 0);
+            gc.drawImage(((ImageBufferSwt) buffer).getBuffer(), 0, 0);
             gc.dispose();
             if (lastGc != null)
             {
@@ -344,7 +344,7 @@ final class ScreenImpl
         update();
         buf.dispose();
         frame.dispose();
-        ScreenImpl.display.dispose();
+        ScreenSwt.display.dispose();
     }
 
     @Override
@@ -391,7 +391,7 @@ final class ScreenImpl
     {
         if (!frame.isDisposed())
         {
-            final Image icon = new Image(ScreenImpl.display, filename);
+            final Image icon = new Image(ScreenSwt.display, filename);
             frame.setImage(icon);
         }
     }

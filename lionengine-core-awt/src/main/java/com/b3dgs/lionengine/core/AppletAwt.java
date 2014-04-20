@@ -17,61 +17,37 @@
  */
 package com.b3dgs.lionengine.core;
 
+import javax.swing.JApplet;
+
+import com.b3dgs.lionengine.Applet;
+
 /**
- * Transform implementation.
+ * Applet implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class TransformImpl
-        implements Transform
+public class AppletAwt
+        extends JApplet
+        implements Applet<AppletAwt>
 {
-    /** Scale x. */
-    private double sx;
-    /** Scale y. */
-    private double sy;
-    /** Interpolation. */
-    private int interpolation;
+    /** UID. */
+    private static final long serialVersionUID = -7221935102778197564L;
 
     /**
      * Constructor.
      */
-    TransformImpl()
+    public AppletAwt()
     {
-        // Nothing to do
+        super();
     }
 
     /*
-     * Transform
+     * Applet
      */
 
     @Override
-    public void scale(double sx, double sy)
+    public AppletAwt getApplet()
     {
-        this.sx = sx;
-        this.sy = sy;
-    }
-
-    @Override
-    public void setInterpolation(boolean bilinear)
-    {
-        interpolation = bilinear ? 1 : 0;
-    }
-
-    @Override
-    public double getScaleX()
-    {
-        return sx;
-    }
-
-    @Override
-    public double getScaleY()
-    {
-        return sy;
-    }
-
-    @Override
-    public int getInterpolation()
-    {
-        return interpolation;
+        return this;
     }
 }

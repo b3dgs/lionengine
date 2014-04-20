@@ -26,7 +26,7 @@ import java.io.OutputStream;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MediaImpl
+final class MediaAwt
         extends Media
 {
     /** Media path. */
@@ -37,7 +37,7 @@ final class MediaImpl
      * 
      * @param path The media path.
      */
-    public MediaImpl(String path)
+    public MediaAwt(String path)
     {
         this.path = path;
     }
