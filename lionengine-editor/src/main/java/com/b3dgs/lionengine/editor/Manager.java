@@ -44,7 +44,7 @@ public class Manager
     {
         final Monitor monitor = display.getPrimaryMonitor();
         final Rectangle monitorRect = monitor.getBounds();
-        final MTrimmedWindow window = (MTrimmedWindow) modelService.find("lionengine-editor.window", app);
+        final MTrimmedWindow window = (MTrimmedWindow) modelService.find(Activator.PLUGIN_ID + ".window", app);
         final int windowx = window.getWidth();
         final int windowy = window.getHeight();
         final int x = monitorRect.x + (monitorRect.width - windowx) / 2;

@@ -21,5 +21,48 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="lionengine-editor.resourcesExplorerMusic">
+         <test
+               property="lionengine-editor.resourceExtensionTester.music">
+         </test>
+      </definition>
+      <definition
+            id="lionengine-editor.resourcesExplorerSound">
+         <test
+               property="lionengine-editor.resourceExtensionTester.sound">
+         </test>
+      </definition>
+      <definition
+            id="lionengine-editor.resourcesExplorerImage">
+         <test
+               property="lionengine-editor.resourceExtensionTester.image">
+         </test>
+      </definition>
+      <definition
+            id="lionengine-editor.resourcesExplorerData">
+         <test
+               property="lionengine-editor.resourceExtensionTester.data">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resourcesExplorerLevel">
+         <test
+               property="lionengine-editor.resourceExtensionTester.level">
+         </test>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.explorer.ResourceExtensionTester"
+            id="lionengine-editor.resourceExtensionTester"
+            namespace="lionengine-editor.resourceExtensionTester"
+            properties="music,sound,data,image,level"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
 
 </plugin>

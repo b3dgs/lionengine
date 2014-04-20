@@ -29,6 +29,9 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Plugin activator.
@@ -96,6 +99,7 @@ public class Activator
     public void start(BundleContext bundleContext) throws Exception
     {
         Activator.context = bundleContext;
+        Engine.start("LionEngine Editor", Version.create(6, 2, 0), "", Verbose.CRITICAL);
     }
 
     @Override

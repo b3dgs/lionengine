@@ -17,9 +17,16 @@
  */
 package com.b3dgs.lionengine.editor.handlers;
 
+import java.io.File;
+
+import org.eclipse.e4.core.contexts.Active;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
+
+import com.b3dgs.lionengine.editor.explorer.ResourcesExplorerModel;
+import com.b3dgs.lionengine.editor.explorer.ResourcesExplorerPart;
 
 /**
  * Open handler implementation.
@@ -32,11 +39,19 @@ public class OpenHandler
      * Execute the handler.
      * 
      * @param shell The shell reference.
+     * @param activePart The active part.
      */
     @Execute
-    public void execute(Shell shell)
+    public void execute(Shell shell, @Active MPart activePart)
     {
-        final FileDialog dialog = new FileDialog(shell);
-        dialog.open();
+        final DirectoryDialog dialog = new DirectoryDialog(shell);
+        final File folder = new File(dialog.open());
+
+        ResourcesExplorerModel.INSTANCE.setRoot(folder);
+        final Object part = activePart.getObject();
+        if (part instanceof ResourcesExplorerPart)
+        {
+            ((ResourcesExplorerPart) part).setInput(folder);
+        }
     }
 }
