@@ -42,6 +42,10 @@ final class MediaAwt
         this.path = path;
     }
 
+    /*
+     * Media
+     */
+
     @Override
     public String getPath()
     {

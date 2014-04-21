@@ -88,7 +88,7 @@ public final class Engine
         {
             Engine.createView(activity);
 
-            EngineCore.start(name, version, level, new FactoryGraphicAndroid());
+            EngineCore.start(name, version, level, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
             Engine.init(name, version, activity, level);
         }
     }
@@ -125,7 +125,6 @@ public final class Engine
      */
     private static void init(String name, Version version, Activity activity, Verbose level)
     {
-        Media.setMediaImpl(MediaAndroid.class);
         UtilityMedia.setAssertManager(activity.getAssets());
         UtilityMedia.setContentResolver(activity.getContentResolver());
     }

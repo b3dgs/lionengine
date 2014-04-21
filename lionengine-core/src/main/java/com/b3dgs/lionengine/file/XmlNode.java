@@ -128,7 +128,7 @@ public interface XmlNode
      * 
      * @param name The child name.
      * @return The child node reference.
-     * @throws XmlNodeNotFoundException If no node if found at this child name.
+     * @throws XmlNodeNotFoundException If no node is found at this child name.
      */
     XmlNode getChild(String name) throws XmlNodeNotFoundException;
 

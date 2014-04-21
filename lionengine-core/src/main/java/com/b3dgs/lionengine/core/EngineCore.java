@@ -53,6 +53,8 @@ public abstract class EngineCore
     private static boolean started = false;
     /** Graphic factory. */
     static FactoryGraphic factoryGraphic;
+    /** Media factory. */
+    static FactoryMedia factoryMedia;
     /** User program name. */
     private static String programName;
     /** User program version. */
@@ -65,8 +67,10 @@ public abstract class EngineCore
      * @param version The program version (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
      * @param factoryGraphic The graphic factory (must not be <code>null</code>).
+     * @param factoryMedia The media factory (must not be <code>null</code>).
      */
-    protected static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic)
+    public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
+            FactoryMedia factoryMedia)
     {
         Check.notNull(name, EngineCore.ERROR_PROGRAM_NAME);
         Check.notNull(version, EngineCore.ERROR_PROGRAM_VERSION);
@@ -87,7 +91,9 @@ public abstract class EngineCore
 
             // Load low level factory
             EngineCore.factoryGraphic = factoryGraphic;
+            EngineCore.factoryMedia = factoryMedia;
             UtilityImage.setGraphicFactory(EngineCore.factoryGraphic);
+            Media.setMediaFactory(factoryMedia);
         }
     }
 
@@ -95,7 +101,7 @@ public abstract class EngineCore
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
      * the same jvm execution.
      */
-    protected static void terminate()
+    public static void terminate()
     {
         EngineCore.started = false;
         EngineCore.programName = null;
@@ -146,13 +152,5 @@ public abstract class EngineCore
         Verbose.prepareLogger();
         EngineCore.programName = name;
         EngineCore.programVersion = version.toString();
-    }
-
-    /**
-     * Constructor.
-     */
-    protected EngineCore()
-    {
-        throw new RuntimeException();
     }
 }

@@ -65,14 +65,14 @@ final class ScreenSwt
     private final Cursor cursorHidden;
     /** Default cursor instance. */
     private final Cursor cursorDefault;
-    /** Frame reference. */
-    private final Shell frame;
     /** Input devices. */
     private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
     /** Configuration reference. */
     private final Config config;
+    /** Frame reference. */
+    private final Shell frame;
     /** Active sequence reference. */
     private Sequence sequence;
     /** Buffer reference. */

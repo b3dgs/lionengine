@@ -285,7 +285,7 @@ public abstract class Sequence
     /**
      * Called when sequence is focused (screen). Does nothing by default.
      */
-    protected void onFocusGained()
+    public void onFocusGained()
     {
         // Nothing by default
     }
@@ -293,7 +293,7 @@ public abstract class Sequence
     /**
      * Called when sequence lost focus (screen). Does nothing by default.
      */
-    protected void onLostFocus()
+    public void onLostFocus()
     {
         // Nothing by default
     }

@@ -11,3 +11,4 @@ Export-Package: com.b3dgs.lionengine,
  com.b3dgs.lionengine.geom
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
+Require-Bundle: org.junit;bundle-version="4.11.0";resolution:=optional

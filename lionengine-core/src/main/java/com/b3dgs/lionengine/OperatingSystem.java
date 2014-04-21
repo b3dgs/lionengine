@@ -51,16 +51,7 @@ public enum OperatingSystem
      */
     static
     {
-        String system;
-        try
-        {
-            system = System.getProperty("os.name").toLowerCase(Locale.getDefault());
-        }
-        catch (final SecurityException exception)
-        {
-            system = "";
-        }
-        SYSTEM_OS = system;
+        SYSTEM_OS = OperatingSystem.getSystemProperty("os.name").toLowerCase(Locale.getDefault());
 
         if (OperatingSystem.SYSTEM_OS.indexOf("win") >= 0)
         {
@@ -84,16 +75,7 @@ public enum OperatingSystem
             OS = OperatingSystem.UNKNOWN;
         }
 
-        String archi;
-        try
-        {
-            archi = System.getProperty("sun.arch.data.model");
-        }
-        catch (final SecurityException exception)
-        {
-            archi = "";
-        }
-        SYSTEM_ARCHI = archi;
+        SYSTEM_ARCHI = OperatingSystem.getSystemProperty("sun.arch.data.model");
 
         if (OperatingSystem.SYSTEM_ARCHI.contains("64"))
         {
@@ -127,5 +109,23 @@ public enum OperatingSystem
     public static Architecture getArchitecture()
     {
         return OperatingSystem.ARCHI;
+    }
+
+    /**
+     * Get a system property.
+     * 
+     * @param property The system property.
+     * @return The property value.
+     */
+    private static String getSystemProperty(String property)
+    {
+        try
+        {
+            return System.getProperty("os.name").toLowerCase(Locale.getDefault());
+        }
+        catch (final SecurityException exception)
+        {
+            return "";
+        }
     }
 }

@@ -115,15 +115,7 @@ final class PolygonImpl
     {
         if (npoints >= xpoints.length || npoints >= ypoints.length)
         {
-            int newLength = npoints * 2;
-            if (newLength < PolygonImpl.MIN)
-            {
-                newLength = PolygonImpl.MIN;
-            }
-            else if ((newLength & newLength - 1) != 0)
-            {
-                newLength = Integer.highestOneBit(newLength);
-            }
+            final int newLength = npoints * 2;
             xpoints = Arrays.copyOf(xpoints, newLength);
             ypoints = Arrays.copyOf(ypoints, newLength);
         }

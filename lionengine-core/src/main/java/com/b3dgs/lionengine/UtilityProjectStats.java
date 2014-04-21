@@ -112,7 +112,7 @@ public final class UtilityProjectStats
         }
         catch (final IOException exception)
         {
-            Verbose.warning(UtilityProjectStats.class, "countFileLines", exception.getMessage());
+            Verbose.exception(UtilityProjectStats.class, "countFileLines", exception);
         }
         UtilityProjectStats.numberOfFiles++;
     }

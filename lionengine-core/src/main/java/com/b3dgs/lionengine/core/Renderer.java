@@ -45,6 +45,10 @@ public abstract class Renderer
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
+    /** Next sequence pointer. */
+    Sequence nextSequence;
+    /** Started. */
+    boolean started;
     /** Config reference. */
     private final Config config;
     /** Filter reference. */
@@ -69,6 +73,8 @@ public abstract class Renderer
     private Screen screen;
     /** First sequence. */
     private Class<? extends Sequence> firstSequence;
+    /** First sequence arguments. */
+    private Object[] arguments;
     /** Current sequence. */
     private Sequence sequence;
     /** Image buffer. */
@@ -85,8 +91,6 @@ public abstract class Renderer
     private double currentFrameRate;
     /** Extrapolation flag. */
     private boolean extrapolated;
-    /** Next sequence pointer. */
-    private Sequence nextSequence;
     /** Async load. */
     private boolean asyncLoadFlag;
     /** Thread running flag. */
@@ -98,7 +102,7 @@ public abstract class Renderer
      * @param config The config reference.
      * @param name The renderer name.
      */
-    Renderer(Config config, String name)
+    protected Renderer(Config config, String name)
     {
         super("LionEngine " + name + " Renderer");
         this.config = config;
@@ -131,12 +135,14 @@ public abstract class Renderer
      * 
      * @param sequence The first sequence to start.
      * @param loader The loader reference.
+     * @param arguments The sequence arguments list if needed by its constructor.
      */
-    final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader)
+    final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader, Object... arguments)
     {
-        if (!isAlive())
+        if (!started)
         {
             this.loader = loader;
+            this.arguments = arguments;
             firstSequence = sequence;
             start();
         }
@@ -490,9 +496,10 @@ public abstract class Renderer
     public void run()
     {
         // First init
+        started = true;
         screen = EngineCore.factoryGraphic.createScreen(this, config);
         screen.start();
-        nextSequence = Loader.createSequence(firstSequence, loader);
+        nextSequence = Loader.createSequence(firstSequence, loader, arguments);
         waitForScreenReady();
         firstSequence = null;
 

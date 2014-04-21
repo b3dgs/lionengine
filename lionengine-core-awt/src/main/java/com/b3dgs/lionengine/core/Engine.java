@@ -104,7 +104,7 @@ public final class Engine
 
         if (!EngineCore.isStarted())
         {
-            EngineCore.start(name, version, level, new FactoryGraphicAwt());
+            EngineCore.start(name, version, level, new FactoryGraphicAwt(), new FactoryMediaAwt());
             Engine.init(name, version, resourcesDir, level);
 
             // LionEngine started
@@ -142,7 +142,6 @@ public final class Engine
      */
     private static void init(String name, Version version, String resourcesDir, Verbose level)
     {
-        Media.setMediaImpl(MediaAwt.class);
         UtilityFile.setTempDirectory(name);
         UtilityMedia.setResourcesDirectory(resourcesDir);
     }

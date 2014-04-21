@@ -207,7 +207,7 @@ public final class ImageInfo
                 }
                 height = ImageInfo.readInt(inputStream, 2, true);
                 width = ImageInfo.readInt(inputStream, 2, true);
-                format = "jpeg";
+                format = "jpg";
                 break;
             }
             final long skipped = inputStream.skip(len - 2);

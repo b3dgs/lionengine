@@ -106,7 +106,7 @@ public final class ColorRgba
     }
 
     /**
-     * Increase color.
+     * Get the increased color value. Current color not modified.
      * 
      * @param r The increase red value.
      * @param g The increase green value.

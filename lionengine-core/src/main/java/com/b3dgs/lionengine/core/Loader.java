@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Engine starter, need to be called only one time with the first {@link Sequence} to start, by using
- * {@link #start(Class)}.
+ * {@link #start(Class, Object[])}.
  * <p>
  * Example:
  * </p>
@@ -88,10 +88,6 @@ public final class Loader
                | NoSuchMethodException
                | SecurityException exception)
         {
-            if (exception.getCause() != null && exception.getCause() instanceof RuntimeException)
-            {
-                throw (RuntimeException) exception.getCause();
-            }
             Verbose.exception(Loader.class, "createSequence", exception);
             return null;
         }
@@ -153,13 +149,14 @@ public final class Loader
      * Start the loader with an initial sequence. Has to be called only one time.
      * 
      * @param sequence The the next sequence to start (must not be <code>null</code>).
+     * @param arguments The sequence arguments list if needed by its constructor.
      */
-    public void start(Class<? extends Sequence> sequence)
+    public void start(Class<? extends Sequence> sequence, Object... arguments)
     {
         Check.notNull(sequence, Loader.ERROR_SEQUENCE);
-        if (!renderer.isAlive())
+        if (!renderer.started)
         {
-            renderer.startFirstSequence(sequence, this);
+            renderer.startFirstSequence(sequence, this, arguments);
         }
         else
         {

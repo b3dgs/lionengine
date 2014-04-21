@@ -114,11 +114,7 @@ public final class UtilityFile
      */
     public static String getFilenameFromPath(String path)
     {
-        int i = path.lastIndexOf(Media.getSeparator());
-        if (i == -1)
-        {
-            i = path.lastIndexOf(Media.getSeparator());
-        }
+        final int i = path.lastIndexOf(Media.getSeparator());
         return path.substring(i + 1, path.length());
     }
 
@@ -291,8 +287,15 @@ public final class UtilityFile
      */
     public static void setTempDirectory(String programName)
     {
-        final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-        UtilityFile.tmpDir = Media.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
+        if (programName != null)
+        {
+            final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
+            UtilityFile.tmpDir = Media.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
+        }
+        else
+        {
+            UtilityFile.tmpDir = null;
+        }
     }
 
     /**

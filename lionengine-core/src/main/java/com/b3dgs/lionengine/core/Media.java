@@ -20,10 +20,8 @@ package com.b3dgs.lionengine.core;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -46,8 +44,8 @@ public abstract class Media
     private static final String ERROR_PATH = "Path must not be null !";
     /** System separator. */
     private static String separator = File.separator;
-    /** Media implementation. */
-    private static Class<? extends Media> mediaImpl;
+    /** Media factory implementation. */
+    private static FactoryMedia factoryMedia;
 
     /**
      * Create a media.
@@ -58,29 +56,17 @@ public abstract class Media
     public static Media create(String path)
     {
         Check.notNull(path, Media.ERROR_PATH);
-        try
-        {
-            return Media.mediaImpl.getConstructor(String.class).newInstance(path);
-        }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException exception)
-        {
-            throw new LionEngineException(exception, "Unable to load the media class !");
-        }
+        return Media.factoryMedia.createMedia(path);
     }
 
     /**
      * Set the media implementation.
      * 
-     * @param mediaImpl The media implementation.
+     * @param factoryMedia The media factory.
      */
-    public static void setMediaImpl(Class<? extends Media> mediaImpl)
+    public static void setMediaFactory(FactoryMedia factoryMedia)
     {
-        Media.mediaImpl = mediaImpl;
+        Media.factoryMedia = factoryMedia;
     }
 
     /**
