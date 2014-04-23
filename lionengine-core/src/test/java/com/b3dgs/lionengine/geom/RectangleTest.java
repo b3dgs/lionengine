@@ -40,6 +40,9 @@ public class RectangleTest
         final Rectangle rectangle4 = Geom.createRectangle(1.0, 4.0, 5.0, 5.0);
         final Rectangle rectangle5 = Geom.createRectangle(6.0, 6.0, 5.0, 5.0);
 
+        Assert.assertFalse(rectangle1.contains(null));
+        Assert.assertFalse(rectangle1.intersects(null));
+
         Assert.assertTrue(rectangle1.contains(rectangle2));
 
         Assert.assertTrue(rectangle2.intersects(rectangle1));
@@ -47,21 +50,44 @@ public class RectangleTest
         Assert.assertTrue(rectangle2.intersects(rectangle4));
         Assert.assertFalse(rectangle2.intersects(rectangle5));
 
+        Assert.assertTrue(rectangle3.intersects(rectangle1));
+        Assert.assertTrue(rectangle3.intersects(rectangle2));
+        Assert.assertTrue(rectangle3.intersects(rectangle4));
+        Assert.assertFalse(rectangle3.intersects(rectangle5));
+
+        Assert.assertTrue(rectangle5.intersects(rectangle1));
+        Assert.assertFalse(rectangle5.intersects(rectangle2));
+        Assert.assertFalse(rectangle5.intersects(rectangle3));
+        Assert.assertFalse(rectangle5.intersects(rectangle4));
+
         Assert.assertFalse(rectangle2.contains(rectangle1));
         Assert.assertFalse(rectangle2.contains(rectangle3));
         Assert.assertFalse(rectangle2.contains(rectangle4));
         Assert.assertFalse(rectangle2.contains(rectangle5));
 
-        Assert.assertEquals(1.0, rectangle2.getX(), 0.000000001);
-        Assert.assertEquals(1.0, rectangle2.getY(), 0.000000001);
+        Assert.assertFalse(rectangle4.contains(rectangle3));
+        Assert.assertFalse(rectangle4.contains(rectangle2));
+        Assert.assertTrue(rectangle4.contains(rectangle4));
+        Assert.assertFalse(rectangle4.contains(rectangle5));
 
-        Assert.assertEquals(1.0, rectangle2.getMinX(), 0.000000001);
-        Assert.assertEquals(1.0, rectangle2.getMinY(), 0.000000001);
-        Assert.assertEquals(6.0, rectangle2.getMaxX(), 0.000000001);
-        Assert.assertEquals(6.0, rectangle2.getMaxY(), 0.000000001);
-        Assert.assertEquals(5.0, rectangle2.getWidth(), 0.000000001);
-        Assert.assertEquals(5.0, rectangle2.getHeight(), 0.000000001);
+        final double precision = 0.000000001;
+        Assert.assertEquals(1.0, rectangle2.getX(), precision);
+        Assert.assertEquals(1.0, rectangle2.getY(), precision);
+
+        Assert.assertEquals(1.0, rectangle2.getMinX(), precision);
+        Assert.assertEquals(1.0, rectangle2.getMinY(), precision);
+        Assert.assertEquals(6.0, rectangle2.getMaxX(), precision);
+        Assert.assertEquals(6.0, rectangle2.getMaxY(), precision);
+        Assert.assertEquals(5.0, rectangle2.getWidth(), precision);
+        Assert.assertEquals(5.0, rectangle2.getHeight(), precision);
 
         Assert.assertTrue(rectangle1.contains(2, 3));
+
+        Assert.assertFalse(rectangle1.contains(-2, -3));
+        Assert.assertFalse(rectangle1.contains(-1, 11));
+        Assert.assertFalse(rectangle1.contains(0, 11));
+        Assert.assertFalse(rectangle1.contains(-1, 10));
+        Assert.assertFalse(rectangle1.contains(11, 12));
+        Assert.assertFalse(rectangle1.contains(11, -3));
     }
 }

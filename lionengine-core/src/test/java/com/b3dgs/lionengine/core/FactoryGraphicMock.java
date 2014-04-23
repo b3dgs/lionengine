@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
@@ -67,9 +67,10 @@ public class FactoryGraphicMock
     }
 
     @Override
-    public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
     {
-        return new ImageBufferMock(64, 32, Transparency.OPAQUE);
+        final ImageInfo info = ImageInfo.get(media);
+        return new ImageBufferMock(info.getWidth(), info.getHeight(), Transparency.OPAQUE);
     }
 
     @Override

@@ -25,14 +25,11 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.FactoryGraphicMock;
 import com.b3dgs.lionengine.core.FactoryMediaMock;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the image class.
@@ -52,8 +49,8 @@ public class ImageTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("DrawableTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
-                new FactoryMediaMock());
+        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
+        Media.setMediaFactory(new FactoryMediaMock());
         ImageTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
         ImageTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
@@ -64,14 +61,15 @@ public class ImageTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        UtilityImage.setGraphicFactory(null);
+        Media.setMediaFactory(null);
     }
 
     /**
-     * Test function around the image.
+     * Test function around the image failure.
      */
     @Test
-    public void testImage()
+    public void testImageFailure()
     {
         try
         {
@@ -91,7 +89,6 @@ public class ImageTest
         {
             // Success
         }
-
         // Load unexisting image
         try
         {
@@ -102,7 +99,14 @@ public class ImageTest
         {
             // Success
         }
+    }
 
+    /**
+     * Test function around the image.
+     */
+    @Test
+    public void testImage()
+    {
         final int width = 16;
         final int height = 16;
         final ImageBuffer surface = UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);

@@ -140,6 +140,25 @@ public abstract class EngineCore
     }
 
     /**
+     * Get the system property. If the property is not valid due to a {@link SecurityException}, an empty string is
+     * returned. A <code>null</code> if returned if there is not any corresponding property.
+     * 
+     * @param property The system property.
+     * @return The system property value.
+     */
+    public static String getSystemProperty(String property)
+    {
+        try
+        {
+            return System.getProperty(property);
+        }
+        catch (final SecurityException exception)
+        {
+            return "";
+        }
+    }
+
+    /**
      * Initialize engine.
      * 
      * @param name The program name.

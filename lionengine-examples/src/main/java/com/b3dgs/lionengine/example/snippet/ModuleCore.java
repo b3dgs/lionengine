@@ -80,7 +80,7 @@ public class ModuleCore
 
     void checksum()
     {
-        final Checksum checksum = Checksum.create();
+        final Checksum checksum = Checksum.createSha256();
         final int integer = 489464795;
         final String value = "keyToBeEncoded";
         final String other = "anotherKey";

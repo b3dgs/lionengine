@@ -36,4 +36,32 @@ public class AnimStateTest
         Assert.assertNotNull(AnimState.values());
         Assert.assertEquals(AnimState.valueOf(AnimState.FINISHED.name()), AnimState.FINISHED);
     }
+
+    /**
+     * Test the anim state enum switch.
+     */
+    @Test
+    public void testAnimStateEnumSwitch()
+    {
+        for (final AnimState animState : AnimState.values())
+        {
+            switch (animState)
+            {
+                case FINISHED:
+                    // Success
+                    break;
+                case PLAYING:
+                    // Success
+                    break;
+                case REVERSING:
+                    // Success
+                    break;
+                case STOPPED:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
+    }
 }

@@ -43,6 +43,7 @@ public class LionEngineExceptionTest
     {
         Media.setMediaFactory(new FactoryMediaMock());
         Media.setSeparator(java.io.File.separator);
+        Verbose.info("*** TEST EXPECTED EXCEPTION ***");
     }
 
     /**
@@ -51,6 +52,7 @@ public class LionEngineExceptionTest
     @AfterClass
     public static void cleanUp()
     {
+        Verbose.info("*************************");
         Media.setMediaFactory(null);
     }
 
@@ -58,9 +60,8 @@ public class LionEngineExceptionTest
      * Test the exception.
      */
     @Test
-    public void testLionEngineException()
+    public void testLionEngineExceptionWithCheck()
     {
-        Verbose.info("*** TEST EXPECTED EXCEPTION ***");
         try
         {
             Check.notNull(null);
@@ -69,7 +70,14 @@ public class LionEngineExceptionTest
         {
             exception.printStackTrace();
         }
+    }
 
+    /**
+     * Test the exception with a message as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithCheckMessage()
+    {
         final String message = "Exception test";
         try
         {
@@ -80,7 +88,15 @@ public class LionEngineExceptionTest
             Assert.assertEquals(message, exception.getMessage());
             exception.printStackTrace();
         }
+    }
 
+    /**
+     * Test the exception with a media as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithMedia()
+    {
+        final String message = "Exception test";
         try
         {
             throw new LionEngineException(Media.create("media"), message);
@@ -89,7 +105,14 @@ public class LionEngineExceptionTest
         {
             exception.printStackTrace();
         }
+    }
 
+    /**
+     * Test the exception with a throwable as argument.
+     */
+    @Test
+    public void testLionEngineExceptionWithThrowable()
+    {
         try
         {
             throw new LionEngineException(new IOException("error"));
@@ -98,6 +121,5 @@ public class LionEngineExceptionTest
         {
             exception.printStackTrace();
         }
-        Verbose.info("*************************");
     }
 }

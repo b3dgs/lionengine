@@ -200,23 +200,26 @@ final class FactoryGraphicAwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
     {
-        final BufferedImage buffer = ImageIO.read(inputStream);
-        int transparency = buffer.getTransparency();
-        if (alpha)
+        try (final InputStream inputStream = media.getStream();)
         {
-            transparency = java.awt.Transparency.TRANSLUCENT;
+            final BufferedImage buffer = ImageIO.read(inputStream);
+            int transparency = buffer.getTransparency();
+            if (alpha)
+            {
+                transparency = java.awt.Transparency.TRANSLUCENT;
+            }
+            final BufferedImage image = FactoryGraphicAwt.CONFIG.createCompatibleImage(buffer.getWidth(),
+                    buffer.getHeight(), transparency);
+            final Graphics2D g = image.createGraphics();
+
+            g.setComposite(AlphaComposite.Src);
+            g.drawImage(buffer, 0, 0, null);
+            g.dispose();
+
+            return new ImageBufferAwt(image);
         }
-        final BufferedImage image = FactoryGraphicAwt.CONFIG.createCompatibleImage(buffer.getWidth(),
-                buffer.getHeight(), transparency);
-        final Graphics2D g = image.createGraphics();
-
-        g.setComposite(AlphaComposite.Src);
-        g.drawImage(buffer, 0, 0, null);
-        g.dispose();
-
-        return new ImageBufferAwt(image);
     }
 
     @Override

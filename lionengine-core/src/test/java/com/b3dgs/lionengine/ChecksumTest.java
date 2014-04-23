@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,21 +30,62 @@ import org.junit.Test;
  */
 public class ChecksumTest
 {
+    /** Key to encode. */
+    private static final String STRING = "keyToBeEncoded";
+    /** Another key to encode. */
+    private static final String OTHER = "anotherKey";
+    /** A value to encode. */
+    private static final int VALUE = 489464795;
+
     /**
-     * Test checksum functions.
+     * Test the checksum constructor.
+     * 
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     * @throws InstantiationException If error.
+     * @throws SecurityException If error.
+     * @throws NoSuchMethodException If error.
      */
     @Test
-    public void testChecksum()
+    public void testChecksumConstructor() throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, NoSuchMethodException, SecurityException
     {
-        final Checksum checksum = Checksum.create();
-        final int integer = 489464795;
-        final String value = "keyToBeEncoded";
-        final String other = "anotherKey";
-        final String signature = checksum.getSha256(value);
-        final String test = checksum.getSha256(integer);
+        final Constructor<Checksum> checksum = Checksum.class.getDeclaredConstructor(String.class);
+        checksum.setAccessible(true);
+        try
+        {
+            final Checksum clazz = checksum.newInstance("null");
+            Assert.assertNotNull(clazz);
+            Assert.fail();
+        }
+        catch (final InvocationTargetException exception)
+        {
+            // Success
+        }
+    }
 
-        Assert.assertTrue(checksum.check(value, signature));
-        Assert.assertFalse(checksum.check(other, signature));
-        Assert.assertTrue(checksum.check(integer, test));
+    /**
+     * Test checksum creation.
+     */
+    @Test
+    public void testChecksumCreation()
+    {
+        final Checksum checksum = Checksum.createSha256();
+        Assert.assertNotNull(checksum);
+    }
+
+    /**
+     * Test checksum encoding.
+     */
+    @Test
+    public void testChecksumEncoding()
+    {
+        final Checksum checksum = Checksum.createSha256();
+        final String signature = checksum.getSha256(ChecksumTest.STRING);
+        final String test = checksum.getSha256(ChecksumTest.VALUE);
+
+        Assert.assertTrue(checksum.check(ChecksumTest.STRING, signature));
+        Assert.assertFalse(checksum.check(ChecksumTest.OTHER, signature));
+        Assert.assertTrue(checksum.check(ChecksumTest.VALUE, test));
     }
 }

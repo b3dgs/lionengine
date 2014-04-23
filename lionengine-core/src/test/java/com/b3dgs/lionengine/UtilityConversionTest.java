@@ -58,24 +58,43 @@ public class UtilityConversionTest
     }
 
     /**
-     * Test the utility conversion.
+     * Test the utility conversion short.
      */
     @Test
-    public void testUtilityConversion()
+    public void testUtilityConversionShort()
     {
         final short s = 12345;
         Assert.assertEquals(s, UtilityConversion.byteArrayToShort(UtilityConversion.shortToByteArray(s)));
+        Assert.assertEquals(s, UtilityConversion.fromUnsignedShort(UtilityConversion.toUnsignedShort(s)));
+    }
 
+    /**
+     * Test the utility conversion int.
+     */
+    @Test
+    public void testUtilityConversionInt()
+    {
         final int i = 123456789;
         Assert.assertEquals(i, UtilityConversion.byteArrayToInt(UtilityConversion.intToByteArray(i)));
+    }
 
-        Assert.assertEquals(s, UtilityConversion.fromUnsignedShort(UtilityConversion.toUnsignedShort(s)));
-
+    /**
+     * Test the utility conversion byte.
+     */
+    @Test
+    public void testUtilityConversionByte()
+    {
         final byte b = 123;
         Assert.assertEquals(b, UtilityConversion.fromUnsignedByte(UtilityConversion.toUnsignedByte(b)));
+    }
 
+    /**
+     * Test the utility conversion string.
+     */
+    @Test
+    public void testUtilityConversionString()
+    {
         final String title = UtilityConversion.toTitleCase("title");
         Assert.assertEquals("Title", title);
-
     }
 }

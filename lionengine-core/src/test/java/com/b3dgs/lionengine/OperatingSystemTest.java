@@ -44,4 +44,35 @@ public class OperatingSystemTest
         Assert.assertNotNull(OperatingSystem.values());
         Assert.assertEquals(OperatingSystem.WINDOWS, OperatingSystem.valueOf(OperatingSystem.WINDOWS.name()));
     }
+
+    /**
+     * Test the filter enum switch.
+     */
+    @Test
+    public void testOperatingSystemEnumSwitch()
+    {
+        for (final OperatingSystem os : OperatingSystem.values())
+        {
+            switch (os)
+            {
+                case WINDOWS:
+                    // Success
+                    break;
+                case UNIX:
+                    // Success
+                    break;
+                case MAC:
+                    // Success
+                    break;
+                case SOLARIS:
+                    // Success
+                    break;
+                case UNKNOWN:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
+    }
 }

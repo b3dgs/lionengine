@@ -28,7 +28,7 @@ import java.util.Locale;
 public final class UtilityFile
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = UtilityFile.assignSystemTempDirectory();
+    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir");
 
     /** Engine temporary directory. */
     private static String tmpDir;
@@ -295,23 +295,6 @@ public final class UtilityFile
         else
         {
             UtilityFile.tmpDir = null;
-        }
-    }
-
-    /**
-     * Get the system temp directory.
-     * 
-     * @return The system temp directory.
-     */
-    private static String assignSystemTempDirectory()
-    {
-        try
-        {
-            return System.getProperty("java.io.tmpdir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
         }
     }
 

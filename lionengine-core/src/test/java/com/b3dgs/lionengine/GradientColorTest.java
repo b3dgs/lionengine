@@ -33,13 +33,20 @@ public class GradientColorTest
     @Test
     public void testGradientColor()
     {
-        final GradientColor gradientColor = new GradientColor(1, 2, ColorRgba.BLACK, 3, 4, ColorRgba.WHITE);
-        Assert.assertEquals(1, gradientColor.getX1());
-        Assert.assertEquals(2, gradientColor.getY1());
-        Assert.assertEquals(ColorRgba.BLACK, gradientColor.getColor1());
+        final int x1 = 1;
+        final int y1 = 2;
+        final int x2 = 3;
+        final int y2 = 4;
+        final ColorRgba color1 = ColorRgba.BLACK;
+        final ColorRgba color2 = ColorRgba.WHITE;
 
-        Assert.assertEquals(3, gradientColor.getX2());
-        Assert.assertEquals(4, gradientColor.getY2());
-        Assert.assertEquals(ColorRgba.WHITE, gradientColor.getColor2());
+        final GradientColor gradientColor = new GradientColor(x1, y1, color1, x2, y2, color2);
+        Assert.assertEquals(x1, gradientColor.getX1());
+        Assert.assertEquals(y1, gradientColor.getY1());
+        Assert.assertEquals(color1, gradientColor.getColor1());
+
+        Assert.assertEquals(x2, gradientColor.getX2());
+        Assert.assertEquals(y2, gradientColor.getY2());
+        Assert.assertEquals(color2, gradientColor.getColor2());
     }
 }

@@ -28,14 +28,39 @@ import org.junit.Test;
 public class AlignTest
 {
     /**
-     * Test the align.
+     * Test the align enum.
      */
     @Test
-    public void testAlign()
+    public void testAlignEnum()
     {
         Assert.assertEquals(Align.CENTER, Align.CENTER);
         Assert.assertFalse(Align.LEFT.equals(Align.RIGHT));
         Assert.assertNotNull(Align.values());
         Assert.assertEquals(Align.CENTER, Align.valueOf(Align.CENTER.name()));
+    }
+
+    /**
+     * Test the align enum switch.
+     */
+    @Test
+    public void testAlignEnumSwitch()
+    {
+        for (final Align align : Align.values())
+        {
+            switch (align)
+            {
+                case CENTER:
+                    // Success
+                    break;
+                case LEFT:
+                    // Success
+                    break;
+                case RIGHT:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
     }
 }

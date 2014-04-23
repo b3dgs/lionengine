@@ -33,10 +33,15 @@ public class GeomTest
     /**
      * Test geom class.
      * 
-     * @throws Exception If error.
+     * @throws SecurityException If error.
+     * @throws NoSuchMethodException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     * @throws InstantiationException If error.
      */
     @Test
-    public void testGeomClass() throws Exception
+    public void testGeomClass() throws NoSuchMethodException, SecurityException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException
     {
         final Constructor<Geom> constructor = Geom.class.getDeclaredConstructor();
         constructor.setAccessible(true);
@@ -50,5 +55,24 @@ public class GeomTest
         {
             // Success
         }
+    }
+
+    /**
+     * Test geom.
+     * 
+     * @throws Exception If error.
+     */
+    @Test
+    public void testGeom() throws Exception
+    {
+        Assert.assertNotNull(Geom.createCoord());
+        Assert.assertNotNull(Geom.createCoord(0, 0));
+        Assert.assertNotNull(Geom.createLine());
+        Assert.assertNotNull(Geom.createLine(0.0, 0.0, 0.0, 0.0));
+        Assert.assertNotNull(Geom.createPoint());
+        Assert.assertNotNull(Geom.createPoint(0, 0));
+        Assert.assertNotNull(Geom.createPolygon());
+        Assert.assertNotNull(Geom.createRectangle());
+        Assert.assertNotNull(Geom.createRectangle(0.0, 0.0, 0.0, 0.0));
     }
 }

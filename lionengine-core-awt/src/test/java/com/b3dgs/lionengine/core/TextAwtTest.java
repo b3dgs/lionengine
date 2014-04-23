@@ -37,13 +37,20 @@ import com.b3dgs.lionengine.Version;
  */
 public class TextAwtTest
 {
+    /** Text value. */
+    private static final String VALUE = "test";
+    /** Graphic. */
+    private static Graphic g;
+
     /**
      * Setup test.
      */
     @BeforeClass
     public static void setUp()
     {
-        Engine.start("TextTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
+        Engine.start("TextAwtTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
+        final ImageBuffer buffer = UtilityImage.createImageBuffer(320, 240, Transparency.OPAQUE);
+        TextAwtTest.g = buffer.createGraphic();
     }
 
     /**
@@ -52,41 +59,53 @@ public class TextAwtTest
     @AfterClass
     public static void cleanUp()
     {
+        TextAwtTest.g.dispose();
         Engine.terminate();
     }
 
     /**
-     * Test the text class.
+     * Test the text normal.
      */
     @Test
-    public void testText()
+    public void testTextNormal()
     {
-        final ImageBuffer buffer = UtilityImage.createImageBuffer(320, 240, Transparency.OPAQUE);
-        final Graphic g = buffer.createGraphic();
-
         final Text text1 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.NORMAL);
-        final Text text2 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.BOLD);
-        final Text text3 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.ITALIC);
-        final String text = "test";
-
-        text1.draw(g, 0, 0, text);
-        text2.draw(g, 0, 0, text);
-        text3.draw(g, 0, 0, text);
-        text1.draw(g, 0, 0, Align.CENTER, text);
-        text1.draw(g, 0, 0, Align.LEFT, text);
-        text1.draw(g, 0, 0, Align.RIGHT, text);
+        text1.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
+        text1.draw(TextAwtTest.g, 0, 0, Align.CENTER, TextAwtTest.VALUE);
+        text1.draw(TextAwtTest.g, 0, 0, Align.LEFT, TextAwtTest.VALUE);
+        text1.draw(TextAwtTest.g, 0, 0, Align.RIGHT, TextAwtTest.VALUE);
         text1.setAlign(Align.CENTER);
         text1.setColor(ColorRgba.BLACK);
         text1.setLocation(1, 5);
-        text1.setText(text);
+        text1.setText(TextAwtTest.VALUE);
         Assert.assertEquals(12, text1.getSize());
         Assert.assertEquals(1, text1.getLocationX());
         Assert.assertEquals(5, text1.getLocationY());
         Assert.assertTrue(text1.getWidth() == 0);
         Assert.assertTrue(text1.getHeight() == 0);
-        text1.render(g);
-        text1.render(g);
+        text1.render(TextAwtTest.g);
+        text1.render(TextAwtTest.g);
         Assert.assertTrue(text1.getWidth() > 0);
         Assert.assertTrue(text1.getHeight() > 0);
+    }
+
+    /**
+     * Test the text bold.
+     */
+    @Test
+    public void testTextBold()
+    {
+        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.BOLD);
+        text.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
+    }
+
+    /**
+     * Test the text italic.
+     */
+    @Test
+    public void testTextItalic()
+    {
+        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.ITALIC);
+        text.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
     }
 }

@@ -26,13 +26,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.FactoryGraphicMock;
 import com.b3dgs.lionengine.core.FactoryMediaMock;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the drawable package.
@@ -52,8 +49,8 @@ public class DrawableTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("DrawableTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
-                new FactoryMediaMock());
+        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
+        Media.setMediaFactory(new FactoryMediaMock());
         DrawableTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
         DrawableTest.font = Media.create(Media.getPath("src", "test", "resources", "drawable", "fontdata.xml"));
     }
@@ -64,7 +61,8 @@ public class DrawableTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        UtilityImage.setGraphicFactory(null);
+        Media.setMediaFactory(null);
     }
 
     /**

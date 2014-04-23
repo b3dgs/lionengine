@@ -57,9 +57,9 @@ public final class Checksum
      * 
      * @return The checksum instance.
      */
-    public static Checksum create()
+    public static Checksum createSha256()
     {
-        return new Checksum();
+        return new Checksum(Checksum.SHA);
     }
 
     /** Message digest instance. */
@@ -67,12 +67,14 @@ public final class Checksum
 
     /**
      * Constructor.
+     * 
+     * @param algorithm The algorithm name.
      */
-    private Checksum()
+    private Checksum(String algorithm)
     {
         try
         {
-            sha = MessageDigest.getInstance(Checksum.SHA);
+            sha = MessageDigest.getInstance(algorithm);
         }
         catch (final NoSuchAlgorithmException exception)
         {

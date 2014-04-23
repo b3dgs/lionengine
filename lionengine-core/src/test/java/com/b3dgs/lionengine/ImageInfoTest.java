@@ -56,6 +56,24 @@ public class ImageInfoTest
     }
 
     /**
+     * Test the image failure
+     * 
+     * @param media The image media.
+     */
+    private static void testImageInfoFailure(Media media)
+    {
+        try
+        {
+            ImageInfo.get(media);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
      * Test the image info from its type.
      * 
      * @param type The expected image type.
@@ -74,35 +92,27 @@ public class ImageInfoTest
     @Test
     public void testImageFailure()
     {
-        try
-        {
-            ImageInfo.get(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        try
-        {
-            ImageInfo.get(Media.create(""));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        try
-        {
-            ImageInfoTest.testImageInfo("tga");
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        ImageInfoTest.testImageInfoFailure(null);
+        ImageInfoTest.testImageInfoFailure(Media.create(""));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image.tga")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.gif")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.gif")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.jpg")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.jpg")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error3.jpg")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error4.jpg")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error5.jpg")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.png")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.png")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.bmp")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error3.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error4.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error5.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error6.tiff")));
+        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error7.tiff")));
     }
 
     /**
@@ -116,5 +126,13 @@ public class ImageInfoTest
         ImageInfoTest.testImageInfo("bmp");
         ImageInfoTest.testImageInfo("jpg");
         ImageInfoTest.testImageInfo("tiff");
+
+        final ImageInfo info = ImageInfo.get(Media.create(Media.getPath(ImageInfoTest.PATH, "image.tif")));
+        Assert.assertEquals(64, info.getWidth());
+        Assert.assertEquals(32, info.getHeight());
+        Assert.assertEquals("tiff", info.getFormat());
+
+        final ImageInfo info2 = ImageInfo.get(Media.create(Media.getPath(ImageInfoTest.PATH, "image2.tiff")));
+        Assert.assertNotNull(info2);
     }
 }

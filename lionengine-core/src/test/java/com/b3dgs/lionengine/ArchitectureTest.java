@@ -28,10 +28,10 @@ import org.junit.Test;
 public class ArchitectureTest
 {
     /**
-     * Test the architecture class.
+     * Test the architecture enum.
      */
     @Test
-    public void testOperatingSystem()
+    public void testArchitectureEnum()
     {
         Assert.assertNotNull(Architecture.X64);
         Assert.assertNotNull(Architecture.X86);
@@ -39,5 +39,30 @@ public class ArchitectureTest
 
         Assert.assertNotNull(Architecture.values());
         Assert.assertEquals(Architecture.X64, Architecture.valueOf(Architecture.X64.name()));
+    }
+
+    /**
+     * Test the architecture enum switch.
+     */
+    @Test
+    public void testArchitectureEnumSwitch()
+    {
+        for (final Architecture architecture : Architecture.values())
+        {
+            switch (architecture)
+            {
+                case X64:
+                    // Success
+                    break;
+                case X86:
+                    // Success
+                    break;
+                case UNKNOWN:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
     }
 }

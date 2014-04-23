@@ -91,12 +91,10 @@ public class UtilityFileTest
     }
 
     /**
-     * Test the utility file.
-     * 
-     * @throws IOException If error.
+     * Test the utility file check.
      */
     @Test
-    public void testUtilityFile() throws IOException
+    public void testUtilityFileCheck()
     {
         final String file = "file1.txt";
         final String path = Media.getPath(UtilityFileTest.PATH, file);
@@ -114,7 +112,14 @@ public class UtilityFileTest
         Assert.assertFalse(UtilityFile.isFile(null));
         Assert.assertFalse(UtilityFile.isDir(path));
         Assert.assertFalse(UtilityFile.isDir(null));
+    }
 
+    /**
+     * Test the utility file directory manipulation.
+     */
+    @Test
+    public void testUtilityFileDirectory()
+    {
         final File fileDir = new File(Media.getPath(UtilityFileTest.PATH, "directory"));
         if (fileDir.mkdir())
         {
@@ -144,7 +149,16 @@ public class UtilityFileTest
         {
             Assert.fail();
         }
+    }
 
+    /**
+     * Test the utility file creation.
+     * 
+     * @throws IOException If error.
+     */
+    @Test
+    public void testUtilityFileCreation() throws IOException
+    {
         final String dir = Media.getPath("temp");
         final String test = Media.getPath("temp", "test");
         final File tempDir = new File(dir);

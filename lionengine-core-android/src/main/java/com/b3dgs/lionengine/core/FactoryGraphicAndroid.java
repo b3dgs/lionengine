@@ -101,9 +101,12 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
     {
-        return new ImageBufferAndroid(BitmapFactory.decodeStream(inputStream));
+        final InputStream inputStream = media.getStream();
+        final ImageBufferAndroid image = new ImageBufferAndroid(BitmapFactory.decodeStream(inputStream));
+        inputStream.close();
+        return image;
     }
 
     @Override

@@ -117,8 +117,9 @@ public final class ImageInfo
             else
             {
                 final int byte4 = inputStream.read();
-                final boolean tiff = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4 || 'I' == byte1
-                        && 'I' == byte2 && 42 == byte3 && 0 == byte4;
+                final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;
+                final boolean tiff2 = 'I' == byte1 && 'I' == byte2 && 42 == byte3 && 0 == byte4;
+                final boolean tiff = tiff1 || tiff2;
 
                 if (tiff)
                 {
@@ -193,6 +194,7 @@ public final class ImageInfo
      */
     private void readJpg(InputStream inputStream, int byte3) throws IOException
     {
+        boolean success = false;
         int current = byte3;
         while (255 == current)
         {
@@ -208,6 +210,7 @@ public final class ImageInfo
                 height = ImageInfo.readInt(inputStream, 2, true);
                 width = ImageInfo.readInt(inputStream, 2, true);
                 format = "jpg";
+                success = true;
                 break;
             }
             final long skipped = inputStream.skip(len - 2);
@@ -216,6 +219,10 @@ public final class ImageInfo
                 throw new IOException("Skipped " + skipped + " bytes instead of " + (len - 2));
             }
             current = inputStream.read();
+        }
+        if (!success)
+        {
+            throw new IOException("Invalid JPG file !");
         }
     }
 

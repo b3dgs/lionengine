@@ -46,7 +46,7 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class UtilityMedia
 {
     /** Engine working directory. */
-    public static final String WORKING_DIR = UtilityMedia.assignWorkingDirectory();
+    public static final String WORKING_DIR = EngineCore.getSystemProperty("user.dir");
     /** Error message internal. */
     private static final String ERROR_MEDIA = "The media does not exist !";
     /** Resources directory. */
@@ -326,23 +326,6 @@ public final class UtilityMedia
         else
         {
             UtilityMedia.resourcesDir = dir + Media.getSeparator();
-        }
-    }
-
-    /**
-     * Get the working directory.
-     * 
-     * @return The working directory.
-     */
-    private static String assignWorkingDirectory()
-    {
-        try
-        {
-            return System.getProperty("user.dir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
         }
     }
 

@@ -142,10 +142,13 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
     {
-        final Image image = new Image(ScreenSwt.display, inputStream);
-        return new ImageBufferSwt(image);
+        try (final InputStream inputStream = media.getStream();)
+        {
+            final Image image = new Image(ScreenSwt.display, inputStream);
+            return new ImageBufferSwt(image);
+        }
     }
 
     @Override

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -32,12 +33,22 @@ import com.b3dgs.lionengine.Version;
 public class VerboseTest
 {
     /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        Verbose.info("********************************** EXPECTED EXCEPTIONS **********************************");
+    }
+
+    /**
      * Clean up test.
      */
     @AfterClass
     public static void cleanUp()
     {
         EngineCore.terminate();
+        Verbose.info("****************************************************************************************");
     }
 
     /**
@@ -51,9 +62,7 @@ public class VerboseTest
         Verbose.info("info");
         Verbose.warning(VerboseTest.class, "testVerbose", "warning");
         Verbose.critical(VerboseTest.class, "testVerbose", "critical");
-        Verbose.info("*** EXPECTED EXCEPTION ***");
         Verbose.exception(VerboseTest.class, "testVerbose", new LionEngineException("exception"), "exception");
-        Verbose.info("*************************");
     }
 
     /**
@@ -62,7 +71,7 @@ public class VerboseTest
     @Test
     public void testVerbose()
     {
-        EngineCore.start("VerboseTest", Version.create(1, 0, 0), Verbose.NONE, null, null);
+        EngineCore.start("VerboseTest", Version.create(1, 0, 0), Verbose.CRITICAL, null, null);
         VerboseTest.testVerbose(Verbose.NONE);
         VerboseTest.testVerbose(Verbose.INFORMATION);
         VerboseTest.testVerbose(Verbose.WARNING);

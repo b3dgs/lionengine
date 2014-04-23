@@ -27,13 +27,10 @@ import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.FactoryGraphicMock;
 import com.b3dgs.lionengine.core.FactoryMediaMock;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the parallaxed sprite class.
@@ -42,6 +39,8 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public class SpriteParallaxedTest
 {
+    /** Lines number. */
+    private static final int LINES = 8;
     /** Image media. */
     private static Media media;
     /** Graphic test output. */
@@ -53,8 +52,8 @@ public class SpriteParallaxedTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("DrawableTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
-                new FactoryMediaMock());
+        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
+        Media.setMediaFactory(new FactoryMediaMock());
         SpriteParallaxedTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
         SpriteParallaxedTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
@@ -65,7 +64,8 @@ public class SpriteParallaxedTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        UtilityImage.setGraphicFactory(null);
+        Media.setMediaFactory(null);
     }
 
     /**
@@ -75,8 +75,8 @@ public class SpriteParallaxedTest
     public void testParallax()
     {
         final ImageInfo info = ImageInfo.get(SpriteParallaxedTest.media);
-        final int lines = 8;
-        final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media, lines, 60, 100);
+        final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media,
+                SpriteParallaxedTest.LINES, 60, 100);
 
         Assert.assertEquals(0, spriteA.getWidthOriginal());
         Assert.assertEquals(0, spriteA.getHeightOriginal());
@@ -85,9 +85,9 @@ public class SpriteParallaxedTest
         Assert.assertTrue(spriteA.equals(spriteA));
         Assert.assertEquals((int) (spriteA.getWidthOriginal() * 0.6), spriteA.getWidth());
         Assert.assertEquals(info.getWidth(), spriteA.getWidthOriginal());
-        Assert.assertEquals(info.getHeight() / lines, spriteA.getHeight());
+        Assert.assertEquals(info.getHeight() / SpriteParallaxedTest.LINES, spriteA.getHeight());
 
-        for (int i = 0; i < lines; i++)
+        for (int i = 0; i < SpriteParallaxedTest.LINES; i++)
         {
             Assert.assertNotNull(spriteA.getLine(i));
             spriteA.render(SpriteParallaxedTest.g, i, 0, 0);
@@ -106,15 +106,22 @@ public class SpriteParallaxedTest
         spriteA.render(SpriteParallaxedTest.g, 0, 0);
 
         // Resize
-        final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media, lines, 60, 100);
+        final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media,
+                SpriteParallaxedTest.LINES, 60, 100);
         spriteB.scale(200);
         spriteB.prepare(Filter.BILINEAR);
         Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
         Assert.assertFalse(spriteA.equals(SpriteParallaxedTest.media));
+    }
 
-        // Error case
+    /**
+     * Test parallax sprite failure.
+     */
+    @Test
+    public void testParallaxFailure()
+    {
         try
         {
             final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media, 0, 60, 100);
@@ -127,7 +134,8 @@ public class SpriteParallaxedTest
         }
         try
         {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media, lines, 60, 0);
+            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media,
+                    SpriteParallaxedTest.LINES, 60, 0);
             Assert.assertNotNull(spriteC);
             Assert.fail();
         }
@@ -137,7 +145,8 @@ public class SpriteParallaxedTest
         }
         try
         {
-            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media, lines, 0, 60);
+            final SpriteParallaxed spriteC = Drawable.loadSpriteParallaxed(SpriteParallaxedTest.media,
+                    SpriteParallaxedTest.LINES, 0, 60);
             Assert.assertNotNull(spriteC);
             Assert.fail();
         }

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.Check;
@@ -95,9 +94,9 @@ public final class UtilityImage
     {
         Check.notNull(media, UtilityImage.ERROR_IMAGE_NULL);
 
-        try (InputStream inputStream = media.getStream();)
+        try
         {
-            return UtilityImage.graphicFactory.getImageBuffer(inputStream, alpha);
+            return UtilityImage.graphicFactory.getImageBuffer(media, alpha);
         }
         catch (final IOException exception)
         {
@@ -366,7 +365,7 @@ public final class UtilityImage
      * 
      * @param graphicFactory The graphic factory context.
      */
-    static void setGraphicFactory(FactoryGraphic graphicFactory)
+    public static void setGraphicFactory(FactoryGraphic graphicFactory)
     {
         UtilityImage.graphicFactory = graphicFactory;
     }

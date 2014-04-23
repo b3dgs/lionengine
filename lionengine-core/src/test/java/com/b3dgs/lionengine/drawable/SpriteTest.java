@@ -25,14 +25,11 @@ import org.junit.Test;
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.FactoryGraphicMock;
 import com.b3dgs.lionengine.core.FactoryMediaMock;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the sprite class.
@@ -52,8 +49,8 @@ public class SpriteTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("DrawableTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
-                new FactoryMediaMock());
+        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
+        Media.setMediaFactory(new FactoryMediaMock());
         SpriteTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
         SpriteTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
@@ -64,7 +61,8 @@ public class SpriteTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        UtilityImage.setGraphicFactory(null);
+        Media.setMediaFactory(null);
     }
 
     /**
@@ -73,17 +71,6 @@ public class SpriteTest
     @Test
     public void testSprite()
     {
-        // Load unexisting sprite
-        try
-        {
-            Drawable.loadSprite(Media.create("void"));
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
         // Sprite with existing surface
         final ImageBuffer surface = UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
@@ -105,5 +92,22 @@ public class SpriteTest
 
         // Hash code
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
+    }
+
+    /**
+     * Test function around the sprite.
+     */
+    @Test
+    public void testSpriteFailure()
+    {
+        try
+        {
+            Drawable.loadSprite(Media.create("void"));
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
     }
 }

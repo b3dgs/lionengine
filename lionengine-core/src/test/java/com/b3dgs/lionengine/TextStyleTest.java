@@ -36,4 +36,29 @@ public class TextStyleTest
         Assert.assertNotNull(TextStyle.values());
         Assert.assertEquals(TextStyle.BOLD, TextStyle.valueOf(TextStyle.BOLD.name()));
     }
+
+    /**
+     * Test the text style enum switch.
+     */
+    @Test
+    public void testTextStyleEnumSwitch()
+    {
+        for (final TextStyle style : TextStyle.values())
+        {
+            switch (style)
+            {
+                case BOLD:
+                    // Success
+                    break;
+                case ITALIC:
+                    // Success
+                    break;
+                case NORMAL:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
+    }
 }

@@ -131,10 +131,13 @@ public class LoaderAwtTest
     public void testLoader() throws InterruptedException
     {
         Engine.start("LoaderTest", Version.create(1, 0, 0), "resources");
+
         final Config config = new Config(new Resolution(320, 240, 60), 32, true);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
         loader.renderer.join();
+
+        Engine.terminate();
     }
 
     /**
@@ -146,10 +149,13 @@ public class LoaderAwtTest
     public void testLoaderBilinear() throws InterruptedException
     {
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
+
         final Config config = new Config(new Resolution(640, 480, 0), 16, true, Filter.BILINEAR);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
         loader.renderer.join();
+
+        Engine.terminate();
     }
 
     /**
@@ -161,9 +167,11 @@ public class LoaderAwtTest
     public void testLoaderHq2x() throws InterruptedException
     {
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
+
         final Config config = new Config(new Resolution(613, 273, 0), 16, true, Filter.HQ2X);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
+
         loader.renderer.join();
     }
 
@@ -176,10 +184,13 @@ public class LoaderAwtTest
     public void testLoaderHq3x() throws InterruptedException
     {
         Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
+
         final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
         loader.renderer.join();
+
+        Engine.terminate();
     }
 
     /**
@@ -199,6 +210,8 @@ public class LoaderAwtTest
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock3.class);
         loader.renderer.join();
+
+        Engine.terminate();
     }
 
     /**
@@ -214,5 +227,7 @@ public class LoaderAwtTest
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
         loader.renderer.join();
+
+        Engine.terminate();
     }
 }

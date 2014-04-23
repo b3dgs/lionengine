@@ -38,4 +38,29 @@ public class TransparencyTest
         Assert.assertEquals(Transparency.OPAQUE, Transparency.valueOf(Transparency.OPAQUE.name()));
         Assert.assertEquals(Transparency.TRANSLUCENT, Transparency.valueOf(Transparency.TRANSLUCENT.name()));
     }
+
+    /**
+     * Test the transparency enum switch.
+     */
+    @Test
+    public void testTransparencyEnumSwitch()
+    {
+        for (final Transparency transparency : Transparency.values())
+        {
+            switch (transparency)
+            {
+                case BITMASK:
+                    // Success
+                    break;
+                case OPAQUE:
+                    // Success
+                    break;
+                case TRANSLUCENT:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
+    }
 }

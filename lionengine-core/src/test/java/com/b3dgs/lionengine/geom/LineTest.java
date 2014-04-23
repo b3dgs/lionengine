@@ -42,15 +42,5 @@ public class LineTest
         final Coord intersect = UtilityMath.intersection(line1, line2);
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
         Assert.assertEquals(point.getX(), intersect.getX(), 0.000000001);
-
-        try
-        {
-            UtilityMath.intersection(line1, line1);
-            Assert.fail();
-        }
-        catch (final IllegalStateException exception)
-        {
-            // Success
-        }
     }
 }

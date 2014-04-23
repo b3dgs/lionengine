@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -82,12 +81,12 @@ public interface FactoryGraphic
     /**
      * Get an image buffer from an image file.
      * 
-     * @param inputStream The input stream.
+     * @param media The image media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
      * @throws IOException If error on loading image.
      */
-    ImageBuffer getImageBuffer(InputStream inputStream, boolean alpha) throws IOException;
+    ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException;
 
     /**
      * Get an image buffer from an image buffer.

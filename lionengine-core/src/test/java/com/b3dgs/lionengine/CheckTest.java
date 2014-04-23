@@ -31,12 +31,17 @@ import org.junit.Test;
 public class CheckTest
 {
     /**
-     * Test check class.
+     * Test check constructor.
      * 
-     * @throws Exception If error.
+     * @throws SecurityException If error.
+     * @throws NoSuchMethodException If error.
+     * @throws IllegalArgumentException If error.
+     * @throws IllegalAccessException If error.
+     * @throws InstantiationException If error.
      */
     @Test
-    public void testCheckClass() throws Exception
+    public void testCheckConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException
     {
         final Constructor<Check> constructor = Check.class.getDeclaredConstructor();
         constructor.setAccessible(true);

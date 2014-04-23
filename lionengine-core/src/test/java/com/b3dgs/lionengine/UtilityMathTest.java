@@ -23,6 +23,10 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.geom.Coord;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Line;
+
 /**
  * Test the utility math class.
  * 
@@ -155,5 +159,27 @@ public class UtilityMathTest
         {
             // Success
         }
+    }
+
+    /**
+     * Test the coord intersection function.
+     */
+    @Test
+    public void testCoordIntersection()
+    {
+        try
+        {
+            final Coord coord = UtilityMath.intersection(Geom.createLine(), Geom.createLine());
+            Assert.assertNotNull(coord);
+        }
+        catch (final IllegalStateException exception)
+        {
+            // Success
+        }
+
+        final Line line1 = Geom.createLine(1, 2, 3, 4);
+        final Line line2 = Geom.createLine(-1, 2, -3, 4);
+        final Coord coord = UtilityMath.intersection(line1, line2);
+        Assert.assertNotNull(coord);
     }
 }

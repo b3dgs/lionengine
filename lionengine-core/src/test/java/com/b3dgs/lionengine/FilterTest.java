@@ -28,14 +28,42 @@ import org.junit.Test;
 public class FilterTest
 {
     /**
-     * Test the align.
+     * Test the filter enum.
      */
     @Test
-    public void testFilter()
+    public void testFilterEnum()
     {
         Assert.assertEquals(Filter.BILINEAR, Filter.BILINEAR);
         Assert.assertFalse(Filter.HQ2X.equals(Filter.HQ3X));
         Assert.assertNotNull(Filter.values());
         Assert.assertEquals(Filter.NONE, Filter.valueOf(Filter.NONE.name()));
+    }
+
+    /**
+     * Test the filter enum switch.
+     */
+    @Test
+    public void testFilterEnumSwitch()
+    {
+        for (final Filter filter : Filter.values())
+        {
+            switch (filter)
+            {
+                case NONE:
+                    // Success
+                    break;
+                case BILINEAR:
+                    // Success
+                    break;
+                case HQ2X:
+                    // Success
+                    break;
+                case HQ3X:
+                    // Success
+                    break;
+                default:
+                    Assert.fail();
+            }
+        }
     }
 }

@@ -57,5 +57,7 @@ public class EngineTest
 
         EngineCore.start("EngineTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
         Assert.assertTrue(EngineCore.isStarted());
+
+        Assert.assertNull(EngineCore.getSystemProperty("null"));
     }
 }

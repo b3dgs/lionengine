@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.anim;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Test the animation class.
  * 
@@ -34,7 +36,7 @@ public class AnimationTest
     public void testAnimation()
     {
         final int first = 1;
-        final int last = 2;
+        final int last = first + 1;
         final double speed = 1.5;
         final boolean reverse = true;
         final boolean repeat = false;
@@ -46,5 +48,39 @@ public class AnimationTest
         Assert.assertEquals(speed, animation.getSpeed(), 0.01);
         Assert.assertTrue(reverse == animation.getReverse());
         Assert.assertTrue(repeat == animation.getRepeat());
+    }
+
+    /**
+     * Test the animation failure.
+     */
+    @Test
+    public void testAnimationFailure()
+    {
+        try
+        {
+            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false,
+                    false));
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false,
+                    false));
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
     }
 }

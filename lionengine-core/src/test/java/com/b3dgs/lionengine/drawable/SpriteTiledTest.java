@@ -24,13 +24,10 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.FactoryGraphicMock;
 import com.b3dgs.lionengine.core.FactoryMediaMock;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the sprite tiled class.
@@ -50,8 +47,8 @@ public class SpriteTiledTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("DrawableTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
-                new FactoryMediaMock());
+        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
+        Media.setMediaFactory(new FactoryMediaMock());
         SpriteTiledTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
         SpriteTiledTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
@@ -62,7 +59,8 @@ public class SpriteTiledTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        UtilityImage.setGraphicFactory(null);
+        Media.setMediaFactory(null);
     }
 
     /**

@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class UtilityMedia
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = UtilityMedia.assignSystemTempDirectory();
+    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir");
     /** Error message internal. */
     private static final String ERROR_MEDIA = "The media does not exist !";
     /** System separator. */
@@ -251,23 +251,6 @@ public final class UtilityMedia
     static void setContentResolver(ContentResolver contentResolver)
     {
         UtilityMedia.contentResolver = contentResolver;
-    }
-
-    /**
-     * Get the system temp directory.
-     * 
-     * @return The system temp directory.
-     */
-    private static String assignSystemTempDirectory()
-    {
-        try
-        {
-            return System.getProperty("java.io.tmpdir");
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
-        }
     }
 
     /**

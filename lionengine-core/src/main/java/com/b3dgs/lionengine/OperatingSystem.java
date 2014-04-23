@@ -19,6 +19,8 @@ package com.b3dgs.lionengine;
 
 import java.util.Locale;
 
+import com.b3dgs.lionengine.core.EngineCore;
+
 /**
  * List of available operating systems.
  * 
@@ -51,7 +53,7 @@ public enum OperatingSystem
      */
     static
     {
-        SYSTEM_OS = OperatingSystem.getSystemProperty("os.name").toLowerCase(Locale.getDefault());
+        SYSTEM_OS = EngineCore.getSystemProperty("os.name").toLowerCase(Locale.getDefault());
 
         if (OperatingSystem.SYSTEM_OS.indexOf("win") >= 0)
         {
@@ -62,7 +64,7 @@ public enum OperatingSystem
             OS = OperatingSystem.MAC;
         }
         else if (OperatingSystem.SYSTEM_OS.indexOf("nix") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("nux") >= 0
-                || OperatingSystem.SYSTEM_OS.indexOf("bsd") >= 0)
+                || OperatingSystem.SYSTEM_OS.indexOf("bsd") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("aix") >= 0)
         {
             OS = OperatingSystem.UNIX;
         }
@@ -75,13 +77,12 @@ public enum OperatingSystem
             OS = OperatingSystem.UNKNOWN;
         }
 
-        SYSTEM_ARCHI = OperatingSystem.getSystemProperty("sun.arch.data.model");
-
+        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model");
         if (OperatingSystem.SYSTEM_ARCHI.contains("64"))
         {
             ARCHI = Architecture.X64;
         }
-        else if (OperatingSystem.SYSTEM_ARCHI.contains("32"))
+        else if (OperatingSystem.SYSTEM_ARCHI.contains("32") || OperatingSystem.SYSTEM_ARCHI.contains("86"))
         {
             ARCHI = Architecture.X86;
         }
@@ -109,23 +110,5 @@ public enum OperatingSystem
     public static Architecture getArchitecture()
     {
         return OperatingSystem.ARCHI;
-    }
-
-    /**
-     * Get a system property.
-     * 
-     * @param property The system property.
-     * @return The property value.
-     */
-    private static String getSystemProperty(String property)
-    {
-        try
-        {
-            return System.getProperty("os.name").toLowerCase(Locale.getDefault());
-        }
-        catch (final SecurityException exception)
-        {
-            return "";
-        }
     }
 }

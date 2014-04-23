@@ -50,54 +50,80 @@ public class ColorRgbaTest
     }
 
     /**
-     * Test the color.
+     * Test the color negative value.
      */
     @Test
-    public void testColorRgba()
+    public void testColorRgbaNegative()
     {
-        final ColorRgba color = new ColorRgba(0);
-        Assert.assertEquals(color.getRgba(), 0);
+        ColorRgbaTest.testColorFailure(-1, 0, 0, 0);
+        ColorRgbaTest.testColorFailure(0, -1, 0, 0);
+        ColorRgbaTest.testColorFailure(0, 0, -1, 0);
+        ColorRgbaTest.testColorFailure(0, 0, 0, -1);
+    }
+
+    /**
+     * Test the color out of range value.
+     */
+    @Test
+    public void testColorRgbaFailures()
+    {
+        ColorRgbaTest.testColorFailure(256, 0, 0, 0);
+        ColorRgbaTest.testColorFailure(0, 256, 0, 0);
+        ColorRgbaTest.testColorFailure(0, 0, 256, 0);
+        ColorRgbaTest.testColorFailure(0, 0, 0, 256);
+    }
+
+    /**
+     * Test the color rgba value constructor.
+     */
+    @Test
+    public void testColorRgbaValueConstructor()
+    {
+        final ColorRgba color1 = new ColorRgba(0);
+        Assert.assertEquals(color1.getRgba(), 0);
 
         final ColorRgba color2 = new ColorRgba(255, 0, 0);
         Assert.assertEquals(ColorRgba.RED.getRgba(), color2.getRgba());
 
         final ColorRgba color3 = new ColorRgba(0, 255, 0, 255);
         Assert.assertEquals(ColorRgba.GREEN.getRgba(), color3.getRgba());
-
-        final ColorRgba color4 = new ColorRgba(100, 75, 50, 25);
-        Assert.assertEquals(100, color4.getRed());
-        Assert.assertEquals(75, color4.getGreen());
-        Assert.assertEquals(50, color4.getBlue());
-        Assert.assertEquals(25, color4.getAlpha());
-
-        Assert.assertTrue(color.inc(1, 1, 1) == color.getRgba());
-        Assert.assertEquals(0, color.getRed());
-        Assert.assertEquals(0, color.getGreen());
-        Assert.assertEquals(0, color.getBlue());
-        Assert.assertEquals(0, color.getAlpha());
-
-        Assert.assertTrue(color4.inc(1, 1, 1) != color4.getRgba());
-        Assert.assertEquals(100, color4.getRed());
-        Assert.assertEquals(75, color4.getGreen());
-        Assert.assertEquals(50, color4.getBlue());
-        Assert.assertEquals(25, color4.getAlpha());
     }
 
     /**
-     * Test the color failures.
+     * Test the color rgb value equality.
      */
     @Test
-    public void testColorRgbaFailures()
+    public void testColorRgbValueEquality()
     {
-        ColorRgbaTest.testColorFailure(-1, 0, 0, 0);
-        ColorRgbaTest.testColorFailure(0, -1, 0, 0);
-        ColorRgbaTest.testColorFailure(0, 0, -1, 0);
+        final ColorRgba color = new ColorRgba(255, 0, 0);
+        Assert.assertTrue(color.inc(1, 1, 1) != color.getRgba());
+        Assert.assertEquals(255, color.getRed());
+        Assert.assertEquals(0, color.getGreen());
+        Assert.assertEquals(0, color.getBlue());
+        Assert.assertEquals(255, color.getAlpha());
+    }
 
-        ColorRgbaTest.testColorFailure(256, 0, 0, 0);
-        ColorRgbaTest.testColorFailure(0, 256, 0, 0);
-        ColorRgbaTest.testColorFailure(0, 0, 256, 0);
+    /**
+     * Test the color with alpha value equality.
+     */
+    @Test
+    public void testColorWithAlphaValueEquality()
+    {
+        final int r = 100;
+        final int g = 75;
+        final int b = 50;
+        final int a = 0;
 
-        ColorRgbaTest.testColorFailure(0, 0, 0, -1);
-        ColorRgbaTest.testColorFailure(0, 0, 0, 256);
+        final ColorRgba color = new ColorRgba(r, g, b, a);
+        Assert.assertEquals(r, color.getRed());
+        Assert.assertEquals(g, color.getGreen());
+        Assert.assertEquals(b, color.getBlue());
+        Assert.assertEquals(a, color.getAlpha());
+
+        Assert.assertTrue(color.inc(1, 1, 1) != color.getRgba());
+        Assert.assertEquals(r, color.getRed());
+        Assert.assertEquals(g, color.getGreen());
+        Assert.assertEquals(b, color.getBlue());
+        Assert.assertEquals(a, color.getAlpha());
     }
 }
