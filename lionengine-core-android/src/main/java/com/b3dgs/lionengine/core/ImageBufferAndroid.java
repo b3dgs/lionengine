@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 
 /**

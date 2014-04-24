@@ -22,10 +22,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.WorldGame;

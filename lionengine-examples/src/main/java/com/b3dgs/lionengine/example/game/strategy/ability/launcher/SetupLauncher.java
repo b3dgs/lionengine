@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.game.SetupGame;

@@ -31,10 +31,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -101,11 +101,19 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         final InputStream inputStream = media.getStream();
-        final ImageBufferAndroid image = new ImageBufferAndroid(BitmapFactory.decodeStream(inputStream));
-        inputStream.close();
+        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        final ImageBufferAndroid image = new ImageBufferAndroid(bitmap);
+        try
+        {
+            inputStream.close();
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
         return image;
     }
 
@@ -203,11 +211,21 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
+    public void saveImage(ImageBuffer imageBuffer, Media media)
     {
-        if (!FactoryGraphicAndroid.getBuffer(imageBuffer).compress(CompressFormat.PNG, 100, outputStream))
+        final OutputStream outputStream = media.getOutputStream();
+        final Bitmap bitmap = FactoryGraphicAndroid.getBuffer(imageBuffer);
+        if (!bitmap.compress(CompressFormat.PNG, 100, outputStream))
         {
             throw new LionEngineException("Unable to save the file !");
+        }
+        try
+        {
+            outputStream.close();
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
         }
     }
 
@@ -233,7 +251,7 @@ final class FactoryGraphicAndroid
                     final int g = (int) (sg * (j % refSize)) * 0x000100;
                     final int b = (int) (sb * (j % refSize)) * 0x000001;
 
-                    raster.setPixel(i, j, UtilityImage.filterRGB(image.getPixel(i, j), fr + r, fg + g, fb + b));
+                    raster.setPixel(i, j, ColorRgba.filterRgb(image.getPixel(i, j), fr + r, fg + g, fb + b));
                 }
             }
         }
@@ -250,12 +268,18 @@ final class FactoryGraphicAndroid
             {
                 for (int i = 0; i < width; i++)
                 {
-                    pixels[j * width + i] = UtilityImage.filterRGB(org[j * width + i], fr, fg, fb);
+                    pixels[j * width + i] = ColorRgba.filterRgb(org[j * width + i], fr, fg, fb);
                 }
             }
         }
 
         return new ImageBufferAndroid(raster);
+    }
+
+    @Override
+    public int[][] loadRaster(Media media)
+    {
+        return Core.GRAPHIC.loadRaster(media);
     }
 
     @Override

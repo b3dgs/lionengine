@@ -25,12 +25,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.file.File;
@@ -169,7 +169,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     {
         if (minimap == null)
         {
-            minimap = UtilityImage.createImageBuffer(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
+            minimap = Core.GRAPHIC.createImageBuffer(getWidthInTile(), getHeightInTile(), Transparency.OPAQUE);
         }
         final Graphic g = minimap.createGraphic();
         final int vert = getHeightInTile();
@@ -283,7 +283,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
      */
     public void load(FileReading file) throws IOException
     {
-        patternsDirectory = Media.create(file.readString());
+        patternsDirectory = Core.MEDIA.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
@@ -292,7 +292,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         create(width, height);
         loadPatterns(patternsDirectory);
 
-        final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), "collisions.xml"));
+        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), "collisions.xml");
         final XmlParser xml = File.createXmlParser();
         final XmlNode root = xml.load(media);
         final List<XmlNode> nodes = root.getChildren();
@@ -651,7 +651,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
 
         // Retrieve patterns list
         final XmlParser xml = File.createXmlParser();
-        final Media mediaPatterns = Media.create(Media.getPath(patternsDirectory.getPath(), "patterns.xml"));
+        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), "patterns.xml");
         final XmlNode root = xml.load(mediaPatterns);
         final List<XmlNode> children = root.getChildren();
         files = new String[children.size()];
@@ -665,7 +665,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         // Load patterns from list
         for (final String file : files)
         {
-            final Media media = Media.create(Media.getPath(patternsDirectory.getPath(), file));
+            final Media media = Core.MEDIA.create(patternsDirectory.getPath(), file);
             try
             {
                 final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));

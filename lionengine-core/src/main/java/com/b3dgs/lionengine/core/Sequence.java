@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.core;
 
 import java.util.concurrent.Semaphore;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -299,9 +299,9 @@ public abstract class Sequence
     }
 
     /**
-     * Start the sequence and load it.
+     * Start the sequence and load it. Must only be called by {@link Renderer#asyncLoad(Sequence)}.
      */
-    final void start()
+    public final void start()
     {
         if (!loaded)
         {
@@ -314,7 +314,7 @@ public abstract class Sequence
      * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
      * to synchronize loading process when it is called asynchronously.
      */
-    final void loadInternal()
+    public final void loadInternal()
     {
         if (!loaded)
         {
@@ -330,9 +330,10 @@ public abstract class Sequence
      * @param width The new screen width.
      * @param height The new screen height.
      */
-    final void setResolution(int width, int height)
+    public final void setResolution(int width, int height)
     {
         this.width = width;
         this.height = height;
+        onResolutionChanged(width, height, renderer.getConfig().getSource().getRate());
     }
 }

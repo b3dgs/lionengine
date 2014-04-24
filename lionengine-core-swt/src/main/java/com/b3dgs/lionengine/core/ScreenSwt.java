@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
@@ -114,7 +114,7 @@ final class ScreenSwt
 
         cursorHidden = FactoryGraphicSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);
-        graphics = UtilityImage.createGraphic();
+        graphics = Core.GRAPHIC.createGraphic();
         devices = new HashMap<>(2);
 
         // Prepare main frame
@@ -191,7 +191,7 @@ final class ScreenSwt
                 canvas.setVisible(true);
             }
             canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = UtilityImage.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
+            buffer = Core.GRAPHIC.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
             frame.pack();
 
             final Monitor primary = ScreenSwt.display.getPrimaryMonitor();

@@ -15,45 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Applet;
 
 /**
- * Mock sequence.
+ * Applet mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceArgumentsMock
-        extends Sequence
+public class AppletMock
+        implements Applet<AppletMock>
 {
-    /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
-     * @param argument The argument reference.
-     */
-    public SequenceArgumentsMock(Loader loader, Object argument)
-    {
-        super(loader, new Resolution(320, 240, 60));
-    }
-
     @Override
-    protected void load()
+    public AppletMock getApplet()
     {
-        // Mock
-    }
-
-    @Override
-    protected void update(double extrp)
-    {
-        end(SequenceAsyncMock.class);
-    }
-
-    @Override
-    protected void render(Graphic g)
-    {
-        // Mock
+        return new AppletMock();
     }
 }

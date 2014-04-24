@@ -23,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the sc68 player.
@@ -40,9 +42,8 @@ public class Sc68Test
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        Sc68Test.MUSIC = Media.create(Media.getPath("src", "test", "resources", "music.sc68"));
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        Sc68Test.MUSIC = Core.MEDIA.create("src", "test", "resources", "music.sc68");
     }
 
     /**
@@ -51,7 +52,7 @@ public class Sc68Test
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**

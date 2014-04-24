@@ -20,9 +20,10 @@ package com.b3dgs.lionengine.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.purview.Configurable;
@@ -100,7 +101,7 @@ public class SetupSurfaceRasteredGame
      */
     private void loadRasters()
     {
-        final int[][] rasters = UtilityImage.loadRaster(rasterFile);
+        final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
         final int max = smoothRaster ? 2 : 1;
@@ -115,20 +116,20 @@ public class SetupSurfaceRasteredGame
                     {
                         if (m == 0)
                         {
-                            color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
-                            colorNext[c] = UtilityImage.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
+                            color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                            colorNext[c] = ColorRgba.getRasterColor(i + 1, rasters[c], Rasterable.MAX_RASTERS);
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
+                            color[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i, rasters[c],
                                     Rasterable.MAX_RASTERS);
-                            colorNext[c] = UtilityImage.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
+                            colorNext[c] = ColorRgba.getRasterColor(Rasterable.MAX_RASTERS - i - 1, rasters[c],
                                     Rasterable.MAX_RASTERS);
                         }
                     }
                     else
                     {
-                        color[c] = UtilityImage.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
+                        color[c] = ColorRgba.getRasterColor(i, rasters[c], Rasterable.MAX_RASTERS);
                         colorNext[c] = color[c];
                     }
                 }
@@ -149,7 +150,7 @@ public class SetupSurfaceRasteredGame
      */
     private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
     {
-        final ImageBuffer rasterBuf = UtilityImage.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
+        final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);
         rastersAnim.add(raster);
     }

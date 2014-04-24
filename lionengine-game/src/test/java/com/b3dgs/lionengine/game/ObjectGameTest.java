@@ -22,8 +22,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the object game class.
@@ -38,7 +40,7 @@ public class ObjectGameTest
     @BeforeClass
     public static void setUp()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
     }
 
     /**
@@ -47,7 +49,7 @@ public class ObjectGameTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -56,7 +58,7 @@ public class ObjectGameTest
     @Test
     public void testObjectGame()
     {
-        final Media media = Media.create(Media.getPath("src", "test", "resources", "type.xml"));
+        final Media media = Core.MEDIA.create("src", "test", "resources", "type.xml");
         final ObjectGame object = new TestObject(new SetupGame(media));
         Assert.assertTrue(object.getDataBoolean("flag"));
         Assert.assertTrue(object.getDataInteger("index") == 1);

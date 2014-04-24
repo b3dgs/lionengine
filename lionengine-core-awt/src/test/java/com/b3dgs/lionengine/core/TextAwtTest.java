@@ -24,10 +24,9 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -48,8 +47,8 @@ public class TextAwtTest
     @BeforeClass
     public static void setUp()
     {
-        Engine.start("TextAwtTest", Version.create(1, 0, 0), Media.getPath("src", "test", "resources"));
-        final ImageBuffer buffer = UtilityImage.createImageBuffer(320, 240, Transparency.OPAQUE);
+        Engine.start("TextAwtTest", Version.create(1, 0, 0), UtilityFile.getPath("src", "test", "resources"));
+        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.OPAQUE);
         TextAwtTest.g = buffer.createGraphic();
     }
 
@@ -69,7 +68,7 @@ public class TextAwtTest
     @Test
     public void testTextNormal()
     {
-        final Text text1 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.NORMAL);
+        final Text text1 = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.NORMAL);
         text1.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
         text1.draw(TextAwtTest.g, 0, 0, Align.CENTER, TextAwtTest.VALUE);
         text1.draw(TextAwtTest.g, 0, 0, Align.LEFT, TextAwtTest.VALUE);
@@ -95,7 +94,7 @@ public class TextAwtTest
     @Test
     public void testTextBold()
     {
-        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.BOLD);
+        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.BOLD);
         text.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
     }
 
@@ -105,7 +104,7 @@ public class TextAwtTest
     @Test
     public void testTextItalic()
     {
-        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.ITALIC);
+        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.ITALIC);
         text.draw(TextAwtTest.g, 0, 0, TextAwtTest.VALUE);
     }
 }

@@ -32,10 +32,10 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -142,12 +142,16 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         try (final InputStream inputStream = media.getStream();)
         {
             final Image image = new Image(ScreenSwt.display, inputStream);
             return new ImageBufferSwt(image);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
         }
     }
 
@@ -271,15 +275,22 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
+    public void saveImage(ImageBuffer imageBuffer, Media media)
     {
         final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final ImageLoader loader = new ImageLoader();
-        loader.data = new ImageData[]
+        final ImageLoader imageLoader = new ImageLoader();
+        imageLoader.data = new ImageData[]
         {
             image.getImageData()
         };
-        loader.save(outputStream, SWT.IMAGE_PNG);
+        try (final OutputStream outputStream = media.getOutputStream())
+        {
+            imageLoader.save(outputStream, SWT.IMAGE_PNG);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     @Override
@@ -288,6 +299,12 @@ final class FactoryGraphicSwt
     {
         // TODO To be implemented
         throw new LionEngineException("Not implemented yet !");
+    }
+
+    @Override
+    public int[][] loadRaster(Media media)
+    {
+        return Core.GRAPHIC.loadRaster(media);
     }
 
     @Override

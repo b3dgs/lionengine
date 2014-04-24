@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.example.game.strategy.cursor;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -70,7 +70,7 @@ final class Scene
         text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);
-        cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"));
+        cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, Core.MEDIA.create("cursor.png"));
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
@@ -107,8 +107,8 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
-        map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
+        rip.start(Core.MEDIA.create("level.png"), map, Core.MEDIA.create("tiles"));
+        map.loadCollisions(Core.MEDIA.create("tiles", "collisions.xml"));
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

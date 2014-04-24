@@ -26,10 +26,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the drawable package.
@@ -49,10 +51,10 @@ public class DrawableTest
     @BeforeClass
     public static void setUp()
     {
-        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
-        Media.setMediaFactory(new FactoryMediaMock());
-        DrawableTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
-        DrawableTest.font = Media.create(Media.getPath("src", "test", "resources", "drawable", "fontdata.xml"));
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        DrawableTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        DrawableTest.font = Core.MEDIA.create("src", "test", "resources", "drawable", "fontdata.xml");
     }
 
     /**
@@ -61,8 +63,8 @@ public class DrawableTest
     @AfterClass
     public static void cleanUp()
     {
-        UtilityImage.setGraphicFactory(null);
-        Media.setMediaFactory(null);
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -76,13 +78,13 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadImage(Media.create("void")));
+                Assert.assertNotNull(Drawable.loadImage(Core.MEDIA.create("void")));
                 Assert.fail();
             }
             else
             {
                 Assert.assertNotNull(Drawable.loadImage(DrawableTest.media));
-                Assert.assertNotNull(Drawable.loadImage(UtilityImage.getImageBuffer(DrawableTest.media, false)));
+                Assert.assertNotNull(Drawable.loadImage(Core.GRAPHIC.getImageBuffer(DrawableTest.media, false)));
             }
         }
         catch (final LionEngineException exception)
@@ -105,13 +107,13 @@ public class DrawableTest
         {
             if (fail)
             {
-                Assert.assertNotNull(Drawable.loadSprite(Media.create("void")));
+                Assert.assertNotNull(Drawable.loadSprite(Core.MEDIA.create("void")));
                 Assert.fail();
             }
             else
             {
                 Assert.assertNotNull(Drawable.loadSprite(DrawableTest.media));
-                Assert.assertNotNull(Drawable.loadSprite(UtilityImage.getImageBuffer(DrawableTest.media, false)));
+                Assert.assertNotNull(Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(DrawableTest.media, false)));
             }
         }
         catch (final LionEngineException exception)
@@ -143,7 +145,7 @@ public class DrawableTest
             {
                 Assert.assertNotNull(Drawable.loadSpriteAnimated(DrawableTest.media, width, height));
                 Assert.assertNotNull(Drawable.loadSpriteAnimated(
-                        UtilityImage.getImageBuffer(DrawableTest.media, false), width, height));
+                        Core.GRAPHIC.getImageBuffer(DrawableTest.media, false), width, height));
             }
         }
         catch (final LionEngineException exception)
@@ -174,7 +176,7 @@ public class DrawableTest
             else
             {
                 Assert.assertNotNull(Drawable.loadSpriteTiled(DrawableTest.media, width, height));
-                Assert.assertNotNull(Drawable.loadSpriteTiled(UtilityImage.getImageBuffer(DrawableTest.media, false),
+                Assert.assertNotNull(Drawable.loadSpriteTiled(Core.GRAPHIC.getImageBuffer(DrawableTest.media, false),
                         width, height));
             }
         }

@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Animated sprite implementation.
@@ -207,7 +207,7 @@ final class SpriteAnimatedImpl
     @Override
     public ImageBuffer getFrame(int frame)
     {
-        final ImageBuffer buf = UtilityImage.createImageBuffer(getWidth(), getHeight(), Transparency.BITMASK);
+        final ImageBuffer buf = Core.GRAPHIC.createImageBuffer(getWidth(), getHeight(), Transparency.BITMASK);
         final Graphic g = buf.createGraphic();
         final int cx = frame % getFramesHorizontal();
         final int cy = (int) Math.floor(frame / (double) getFramesHorizontal());

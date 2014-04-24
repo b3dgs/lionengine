@@ -21,8 +21,8 @@ import java.util.EnumMap;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Keyboard;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -68,7 +68,7 @@ final class Mario
      */
     Mario(int desiredFps)
     {
-        super(new SetupSurfaceGame(UtilityMedia.get("mario.xml")));
+        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();

@@ -25,7 +25,9 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
+import com.b3dgs.lionengine.UtilityFile;
 import com.sun.jna.Native;
 
 /**
@@ -107,7 +109,7 @@ public final class AudioSc68
         final String name = "sc68_player_" + arch.toLowerCase(Locale.getDefault()) + ext;
         try
         {
-            final Media media = Media.create(Media.getPath(UtilityFile.getTempDir(), name));
+            final Media media = Core.MEDIA.create(UtilityFile.getTempDir(), name);
             final File lib = AudioSc68.getFile(media.getPath(), getClass().getResourceAsStream(name));
             bind = (Sc68Binding) Native.loadLibrary(lib.getAbsolutePath(), Sc68Binding.class);
             Verbose.info("Library ", name, " loaded");

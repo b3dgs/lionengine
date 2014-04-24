@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Core;
 
 /**
  * Factory implementation for test.
@@ -42,6 +42,6 @@ final class Factory
     @Override
     protected SetupGame createSetup(Class<? extends ObjectGame> type)
     {
-        return new SetupGame(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
+        return new SetupGame(Core.MEDIA.create("src", "test", "resources", "type.xml"));
     }
 }

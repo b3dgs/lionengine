@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.cursor;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Cursor;
 
 /**
@@ -53,8 +53,8 @@ final class Scene
         super(loader, new Resolution(320, 240, 60));
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, getConfig().getSource(), UtilityMedia.get("cursor", "cursor1.png"),
-                UtilityMedia.get("cursor", "cursor2.png"));
+        cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor", "cursor1.png"),
+                Core.MEDIA.create("cursor", "cursor2.png"));
         setSystemCursorVisible(false);
     }
 

@@ -15,23 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
- * HQ3X implementation.
+ * HQ2X implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Hq3x
+public final class Hq2x
 {
     /**
      * The raw scale implementation.
      * 
      * @author Pierre-Alexandre (contact@b3dgs.com)
      */
-    private static final class RawScale3x
+    private static final class RawScale2x
     {
         /** Source data array. */
         private final int[] srcImage;
@@ -49,12 +50,12 @@ public final class Hq3x
          * @param dataWidth The data width.
          * @param dataHeight The data height.
          */
-        RawScale3x(int[] imageData, int dataWidth, int dataHeight)
+        RawScale2x(int[] imageData, int dataWidth, int dataHeight)
         {
             width = dataWidth;
             height = dataHeight;
             srcImage = imageData;
-            dstImage = new int[imageData.length * 9];
+            dstImage = new int[imageData.length * 4];
         }
 
         /**
@@ -72,13 +73,13 @@ public final class Hq3x
         /**
          * Set destination pixel.
          * 
-         * @param x location x.
-         * @param y location y.
-         * @param p pixel destination value.
+         * @param x The location x.
+         * @param y The location y.
+         * @param p The pixel destination value.
          */
         private void setDestPixel(int x, int y, int p)
         {
-            dstImage[x + y * width * 3] = p;
+            dstImage[x + y * width * 2] = p;
         }
 
         /**
@@ -106,51 +107,27 @@ public final class Hq3x
          */
         private void process(int x, int y)
         {
-            final int a = getSourcePixel(x - 1, y - 1);
             final int b = getSourcePixel(x, y - 1);
-            final int c = getSourcePixel(x + 1, y - 1);
             final int d = getSourcePixel(x - 1, y);
             final int e = getSourcePixel(x, y);
             final int f = getSourcePixel(x + 1, y);
-            final int g = getSourcePixel(x - 1, y + 1);
             final int h = getSourcePixel(x, y + 1);
-            final int i = getSourcePixel(x + 1, y + 1);
             int e0 = e;
             int e1 = e;
             int e2 = e;
             int e3 = e;
-            int e4 = e;
-            int e5 = e;
-            int e6 = e;
-            int e7 = e;
-            int e8 = e;
-
-            if (RawScale3x.different(b, h) && RawScale3x.different(d, f))
+            if (RawScale2x.different(b, h) && RawScale2x.different(d, f))
             {
-                e0 = !RawScale3x.different(d, b) ? d : e;
-                e1 = !RawScale3x.different(d, b) && RawScale3x.different(e, c) || !RawScale3x.different(b, f)
-                        && RawScale3x.different(e, a) ? b : e;
-                e2 = !RawScale3x.different(b, f) ? f : e;
-                e3 = !RawScale3x.different(d, b) && RawScale3x.different(e, g) || !RawScale3x.different(d, h)
-                        && RawScale3x.different(e, a) ? d : e;
-                e4 = e;
-                e5 = !RawScale3x.different(b, f) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                        && RawScale3x.different(e, c) ? f : e;
-                e6 = !RawScale3x.different(d, h) ? d : e;
-                e7 = !RawScale3x.different(d, h) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                        && RawScale3x.different(e, g) ? h : e;
-                e8 = !RawScale3x.different(h, f) ? f : e;
+                e0 = !RawScale2x.different(d, b) ? d : e;
+                e1 = !RawScale2x.different(b, f) ? f : e;
+                e2 = !RawScale2x.different(d, h) ? d : e;
+                e3 = !RawScale2x.different(h, f) ? f : e;
             }
 
-            setDestPixel(x * 3, y * 3, e0);
-            setDestPixel(x * 3 + 1, y * 3, e1);
-            setDestPixel(x * 3 + 2, y * 3, e2);
-            setDestPixel(x * 3, y * 3 + 1, e3);
-            setDestPixel(x * 3 + 1, y * 3 + 1, e4);
-            setDestPixel(x * 3 + 2, y * 3 + 1, e5);
-            setDestPixel(x * 3, y * 3 + 2, e6);
-            setDestPixel(x * 3 + 1, y * 3 + 2, e7);
-            setDestPixel(x * 3 + 2, y * 3 + 2, e8);
+            setDestPixel(x * 2, y * 2, e0);
+            setDestPixel(x * 2 + 1, y * 2, e1);
+            setDestPixel(x * 2, y * 2 + 1, e2);
+            setDestPixel(x * 2 + 1, y * 2 + 1, e3);
         }
 
         /**
@@ -184,7 +161,7 @@ public final class Hq3x
      * 
      * @param srcImage The buffer source.
      */
-    public Hq3x(ImageBuffer srcImage)
+    public Hq2x(ImageBuffer srcImage)
     {
         width = srcImage.getWidth();
         height = srcImage.getHeight();
@@ -199,10 +176,9 @@ public final class Hq3x
      */
     public ImageBuffer getScaledImage()
     {
-        final RawScale3x scaler = new RawScale3x(srcData, width, height);
-        final ImageBuffer image = EngineCore.factoryGraphic.createImageBuffer(width * 3, height * 3,
-                Transparency.OPAQUE);
-        image.setRgb(0, 0, width * 3, height * 3, scaler.getScaledData(), 0, width * 3);
+        final RawScale2x scaler = new RawScale2x(srcData, width, height);
+        final ImageBuffer image = Core.GRAPHIC.createImageBuffer(width * 2, height * 2, Transparency.OPAQUE);
+        image.setRgb(0, 0, width * 2, height * 2, scaler.getScaledData(), 0, width * 2);
         return image;
     }
 }

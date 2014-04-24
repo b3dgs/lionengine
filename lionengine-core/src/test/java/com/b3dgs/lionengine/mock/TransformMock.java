@@ -15,21 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
+
+import com.b3dgs.lionengine.core.Transform;
 
 /**
- * Engine mock.
+ * Mock transform.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EngineMock
-        extends EngineCore
+public class TransformMock
+        implements Transform
 {
-    /**
-     * Constructor.
-     */
-    public EngineMock()
+    @Override
+    public void scale(double sx, double sy)
     {
-        super();
+        // Mock
+    }
+
+    @Override
+    public void setInterpolation(boolean bilinear)
+    {
+        // Mock
+    }
+
+    @Override
+    public double getScaleX()
+    {
+        return 0;
+    }
+
+    @Override
+    public double getScaleY()
+    {
+        return 0;
+    }
+
+    @Override
+    public int getInterpolation()
+    {
+        return 0;
     }
 }

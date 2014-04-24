@@ -18,14 +18,14 @@
 package com.b3dgs.lionengine.example.core.drawable;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
@@ -74,13 +74,13 @@ final class Scene
         keyboard = getInputDevice(Keyboard.class);
 
         // Load an image (./resources/drawable/image.png)
-        image = Drawable.loadImage(UtilityMedia.get("image.png"));
+        image = Drawable.loadImage(Core.MEDIA.create("image.png"));
         // Load a sprite (./resources/drawable/sprite.png)
-        sprite = Drawable.loadSprite(UtilityMedia.get("sprite.png"));
+        sprite = Drawable.loadSprite(Core.MEDIA.create("sprite.png"));
         // Load an animated sprite, with 7 horizontal frames only
-        animation = Drawable.loadSpriteAnimated(UtilityMedia.get("animation.png"), 7, 1);
+        animation = Drawable.loadSpriteAnimated(Core.MEDIA.create("animation.png"), 7, 1);
         // Load a tile in 16*16
-        tilesheet = Drawable.loadSpriteTiled(UtilityMedia.get("tilesheet.png"), 16, 16);
+        tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
         // Set animation data (frames between 4-6, at a speed of 0.125, looped)
         anim = Anim.createAnimation(4, 6, 0.125, false, true);
     }

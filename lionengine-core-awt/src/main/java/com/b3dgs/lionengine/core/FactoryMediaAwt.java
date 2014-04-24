@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.io.File;
+
+import com.b3dgs.lionengine.Media;
+
 /**
  * Media factory implementation.
  * 
@@ -25,6 +29,9 @@ package com.b3dgs.lionengine.core;
 final class FactoryMediaAwt
         implements FactoryMedia
 {
+    /** Path separator. */
+    private String separator = File.separator;
+
     /**
      * Constructor.
      */
@@ -38,8 +45,26 @@ final class FactoryMediaAwt
      */
 
     @Override
-    public Media createMedia(String path)
+    public Media create(String path)
     {
         return new MediaAwt(path);
+    }
+
+    @Override
+    public Media create(String... path)
+    {
+        return Core.MEDIA.create(path);
+    }
+
+    @Override
+    public String getSeparator()
+    {
+        return separator;
+    }
+
+    @Override
+    public void setSeparator(String separator)
+    {
+        this.separator = separator;
     }
 }

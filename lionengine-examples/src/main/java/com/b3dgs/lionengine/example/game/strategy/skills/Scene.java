@@ -18,15 +18,15 @@
 package com.b3dgs.lionengine.example.game.strategy.skills;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
@@ -86,8 +86,8 @@ final class Scene
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         camera = new CameraStrategy(map);
-        cursor = new Cursor(mouse, camera, getConfig().getSource(), map, UtilityMedia.get("cursor.png"),
-                UtilityMedia.get("cursor_over.png"), UtilityMedia.get("cursor_order.png"));
+        cursor = new Cursor(mouse, camera, getConfig().getSource(), map, Core.MEDIA.create("cursor.png"),
+                Core.MEDIA.create("cursor_over.png"), Core.MEDIA.create("cursor_order.png"));
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         factoryProduction = new FactoryProduction();
@@ -105,7 +105,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
+        rip.start(Core.MEDIA.create("level.png"), map, Core.MEDIA.create("tiles"));
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

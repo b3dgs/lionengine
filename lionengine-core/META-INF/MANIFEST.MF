@@ -8,7 +8,8 @@ Export-Package: com.b3dgs.lionengine,
  com.b3dgs.lionengine.core,
  com.b3dgs.lionengine.drawable,
  com.b3dgs.lionengine.file,
- com.b3dgs.lionengine.geom
+ com.b3dgs.lionengine.geom,
+ com.b3dgs.lionengine.mock
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
 Require-Bundle: org.junit;bundle-version="4.11.0";resolution:=optional

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 

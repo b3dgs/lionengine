@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;

@@ -21,13 +21,15 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Media;
+
 /**
  * Media implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MediaAndroid
-        extends Media
+        implements Media
 {
     /** Media path. */
     private final String path;
@@ -41,6 +43,10 @@ final class MediaAndroid
     {
         this.path = path;
     }
+
+    /*
+     * Media
+     */
 
     @Override
     public String getPath()

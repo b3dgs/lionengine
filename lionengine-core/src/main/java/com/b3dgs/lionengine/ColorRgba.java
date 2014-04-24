@@ -47,6 +47,72 @@ public final class ColorRgba
     /** Black color. */
     public static final ColorRgba BLACK = new ColorRgba(0, 0, 0);
 
+    /**
+     * Apply a filter rgb.
+     * 
+     * @param rgb The original rgb.
+     * @param fr The red filter.
+     * @param fg The green filter.
+     * @param fb The blue filter.
+     * @return The filtered rgb.
+     */
+    public static int filterRgb(int rgb, int fr, int fg, int fb)
+    {
+        if (-16711423 == rgb || 0 == rgb || 16711935 == rgb)
+        {
+            return rgb;
+        }
+
+        final int a = rgb & 0xFF000000;
+        int r = (rgb & 0xFF0000) + fr;
+        int g = (rgb & 0x00FF00) + fg;
+        int b = (rgb & 0x0000FF) + fb;
+
+        if (r < 0x000000)
+        {
+            r = 0x000000;
+        }
+        if (r > 0xFF0000)
+        {
+            r = 0xFF0000;
+        }
+        if (g < 0x000000)
+        {
+            g = 0x000000;
+        }
+        if (g > 0x00FF00)
+        {
+            g = 0x00FF00;
+        }
+        if (b < 0x000000)
+        {
+            b = 0x000000;
+        }
+        if (b > 0x0000FF)
+        {
+            b = 0x0000FF;
+        }
+
+        return a | r | g | b;
+    }
+
+    /**
+     * Get raster color.
+     * 
+     * @param i The color offset.
+     * @param data The raster data.
+     * @param max The max offset.
+     * @return The rastered color.
+     */
+    public static int getRasterColor(int i, int[] data, int max)
+    {
+        if (0 == data[5])
+        {
+            return data[0] + data[1] * (int) (data[2] * UtilityMath.sin(i * (data[3] / (double) max) - data[4]));
+        }
+        return data[0] + data[1] * (int) (data[2] * UtilityMath.cos(i * (data[3] / (double) max) - data[4]));
+    }
+
     /** Color value. */
     private final int value;
     /** Red. */

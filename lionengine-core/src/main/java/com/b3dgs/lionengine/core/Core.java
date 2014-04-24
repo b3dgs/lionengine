@@ -18,40 +18,22 @@
 package com.b3dgs.lionengine.core;
 
 /**
- * Mock transform.
+ * Main core creation utility.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TransformMock
-        implements Transform
+public final class Core
 {
-    @Override
-    public void scale(double sx, double sy)
-    {
-        // Mock
-    }
+    /** Graphic factory. */
+    public static final FactoryGraphic GRAPHIC = new FactoryGraphicProvider();
+    /** Media factory. */
+    public static final FactoryMedia MEDIA = new FactoryMediaProvider();
 
-    @Override
-    public void setInterpolation(boolean bilinear)
+    /**
+     * Private constructor.
+     */
+    private Core()
     {
-        // Mock
-    }
-
-    @Override
-    public double getScaleX()
-    {
-        return 0;
-    }
-
-    @Override
-    public double getScaleY()
-    {
-        return 0;
-    }
-
-    @Override
-    public int getInterpolation()
-    {
-        return 0;
+        throw new RuntimeException();
     }
 }

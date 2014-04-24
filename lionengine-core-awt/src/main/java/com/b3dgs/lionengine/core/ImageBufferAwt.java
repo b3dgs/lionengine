@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import java.awt.image.BufferedImage;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 
 /**

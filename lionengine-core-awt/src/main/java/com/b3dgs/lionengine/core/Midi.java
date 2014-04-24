@@ -31,6 +31,7 @@ import javax.sound.midi.Synthesizer;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Handle midi routine. A midi is a light sound, designed to be played as a background music. Midi are played in a

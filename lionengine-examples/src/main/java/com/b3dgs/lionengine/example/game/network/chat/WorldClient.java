@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.WorldGame;

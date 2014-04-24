@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
@@ -58,8 +58,8 @@ public class SetupSurfaceGame
     {
         super(configurable, config);
         final String conf = config.getPath();
-        surfaceFile = Media.create(conf.substring(0, conf.lastIndexOf(Media.getSeparator()) + 1)
-                + this.configurable.getDataString("surface"));
-        surface = UtilityImage.getImageBuffer(surfaceFile, alpha);
+        surfaceFile = Core.MEDIA.create(conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1)
+                + configurable.getDataString("surface"));
+        surface = Core.GRAPHIC.getImageBuffer(surfaceFile, alpha);
     }
 }

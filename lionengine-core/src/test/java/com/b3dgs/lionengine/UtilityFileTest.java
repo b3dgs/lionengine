@@ -27,9 +27,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityFile;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the utility file class.
@@ -47,9 +46,8 @@ public class UtilityFileTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        UtilityFileTest.PATH = Media.getPath("src", "test", "resources", "utilityfile");
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        UtilityFileTest.PATH = UtilityFile.getPath("src", "test", "resources", "utilityfile");
         UtilityFile.setTempDirectory("temp");
     }
 
@@ -59,7 +57,7 @@ public class UtilityFileTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
         UtilityFile.setTempDirectory(null);
     }
 
@@ -97,7 +95,7 @@ public class UtilityFileTest
     public void testUtilityFileCheck()
     {
         final String file = "file1.txt";
-        final String path = Media.getPath(UtilityFileTest.PATH, file);
+        final String path = UtilityFile.getPath(UtilityFileTest.PATH, file);
         final File descriptor = new File(path);
 
         Assert.assertTrue(UtilityFile.getTempDir().contains("temp"));
@@ -120,7 +118,7 @@ public class UtilityFileTest
     @Test
     public void testUtilityFileDirectory()
     {
-        final File fileDir = new File(Media.getPath(UtilityFileTest.PATH, "directory"));
+        final File fileDir = new File(UtilityFile.getPath(UtilityFileTest.PATH, "directory"));
         if (fileDir.mkdir())
         {
             try
@@ -128,12 +126,12 @@ public class UtilityFileTest
                 final String[] dirs = UtilityFile.getDirsList(UtilityFileTest.PATH);
                 Assert.assertEquals(1, dirs.length);
                 Assert.assertEquals("directory", dirs[0]);
-                Assert.assertEquals(0, UtilityFile.getDirsList(Media.getPath("null")).length);
+                Assert.assertEquals(0, UtilityFile.getDirsList(UtilityFile.getPath("null")).length);
 
                 final String[] files = UtilityFile.getFilesList(UtilityFileTest.PATH);
                 Assert.assertEquals(3, files.length);
-                Assert.assertEquals(0, UtilityFile.getFilesList(Media.getPath("null")).length);
-                Assert.assertEquals(0, UtilityFile.getFilesList(Media.getPath("null"), "txt").length);
+                Assert.assertEquals(0, UtilityFile.getFilesList(UtilityFile.getPath("null")).length);
+                Assert.assertEquals(0, UtilityFile.getFilesList(UtilityFile.getPath("null"), "txt").length);
                 Assert.assertEquals(2, UtilityFile.getFilesList(UtilityFileTest.PATH, "txt").length);
             }
             catch (final LionEngineException exception)
@@ -159,8 +157,8 @@ public class UtilityFileTest
     @Test
     public void testUtilityFileCreation() throws IOException
     {
-        final String dir = Media.getPath("temp");
-        final String test = Media.getPath("temp", "test");
+        final String dir = UtilityFile.getPath("temp");
+        final String test = UtilityFile.getPath("temp", "test");
         final File tempDir = new File(dir);
         final File testFile = new File(test);
         Assert.assertTrue(tempDir.mkdirs());
@@ -174,10 +172,10 @@ public class UtilityFileTest
         }
         UtilityFile.deleteDirectory(tempDir);
 
-        final File fileTest = new File(Media.getPath(UtilityFileTest.PATH, "create"));
+        final File fileTest = new File(UtilityFile.getPath(UtilityFileTest.PATH, "create"));
         Assert.assertTrue(fileTest.createNewFile());
         Assert.assertTrue(fileTest.delete());
 
-        Assert.assertEquals("path" + File.separator + "test", Media.getPath("path", "test"));
+        Assert.assertEquals("path" + File.separator + "test", UtilityFile.getPath("path", "test"));
     }
 }

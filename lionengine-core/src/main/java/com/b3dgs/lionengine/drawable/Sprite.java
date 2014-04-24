@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final Sprite sprite = Drawable.loadSprite(UtilityMedia.get(&quot;sprite.png&quot;));
+ * final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create(&quot;sprite.png&quot;));
  * sprite.load(false);
  * 
  * // Render

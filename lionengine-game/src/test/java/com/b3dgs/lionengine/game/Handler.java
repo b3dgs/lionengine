@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import org.junit.Assert;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 
 /**
  * Handler test.

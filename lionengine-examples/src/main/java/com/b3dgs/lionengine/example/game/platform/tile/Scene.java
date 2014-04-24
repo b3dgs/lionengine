@@ -17,13 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.platform.tile;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
@@ -77,14 +77,14 @@ final class Scene
     protected void load()
     {
         map.create(20, 15);
-        map.loadPatterns(UtilityMedia.get("tiles"));
+        map.loadPatterns(Core.MEDIA.create("tiles"));
         map.createBlock(5, 7);
         map.createBlock(5, 8);
         map.createBlock(5, 9);
         map.createBlock(6, 7);
         map.createBlock(7, 7);
         map.createBlock(6, 8);
-        map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
+        map.loadCollisions(Core.MEDIA.create("tiles", "collisions.xml"));
 
         entityRef.setLocation(192, 112);
         camera.setLimits(map);

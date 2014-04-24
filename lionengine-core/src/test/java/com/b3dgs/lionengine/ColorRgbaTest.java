@@ -17,8 +17,16 @@
  */
 package com.b3dgs.lionengine;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the color class.
@@ -27,6 +35,30 @@ import org.junit.Test;
  */
 public class ColorRgbaTest
 {
+    /** Raster. */
+    private static Media RASTER;
+
+    /**
+     * Prepare test.
+     */
+    @BeforeClass
+    public static void setUp()
+    {
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        ColorRgbaTest.RASTER = Core.MEDIA.create("src", "test", "resources", "utilityimage", "raster.xml");
+    }
+
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
+    {
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
+    }
+
     /**
      * Test the color failure cases.
      * 
@@ -125,5 +157,32 @@ public class ColorRgbaTest
         Assert.assertEquals(g, color.getGreen());
         Assert.assertEquals(b, color.getBlue());
         Assert.assertEquals(a, color.getAlpha());
+    }
+
+    /**
+     * Test the color utility.
+     */
+    @Test
+    public void testColorUtility()
+    {
+        final int[][] raster = Core.GRAPHIC.loadRaster(ColorRgbaTest.RASTER);
+        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) > 0);
+        raster[0][5] = 1;
+        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(-16711423, 0, 0, 0) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(0, 0, 0, 0) == 0);
+        Assert.assertTrue(ColorRgba.filterRgb(16711935, 0, 0, 0) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(5000, 0, 0, 0) > 0);
+        Assert.assertFalse(ColorRgba.filterRgb(0, 5000, 0, 0) > 0);
+        Assert.assertFalse(ColorRgba.filterRgb(0, 0, 5000, 0) > 0);
+        Assert.assertFalse(ColorRgba.filterRgb(0, 0, 0, 5000) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(-10000, 0, -10000000, 0) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(5000, -100, -100, -100) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(500000, -100, -10000, -100) > 0);
+
+        final int filterRgb1 = ColorRgba.filterRgb(0, -1, -1, -1);
+        Assert.assertTrue(filterRgb1 >= 0);
+        final int filterRgb2 = ColorRgba.filterRgb(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
+        Assert.assertTrue(filterRgb2 >= 0);
     }
 }

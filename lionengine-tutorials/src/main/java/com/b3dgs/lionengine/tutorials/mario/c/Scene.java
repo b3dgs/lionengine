@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.c;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 
 /**
  * Game loop designed to handle our little world.
@@ -59,7 +59,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(UtilityMedia.get("smb_level1-1.lvl"));
+        world.loadFromFile(Core.MEDIA.create("smb_level1-1.lvl"));
     }
 
     @Override

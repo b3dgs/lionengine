@@ -23,10 +23,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
@@ -130,18 +131,18 @@ public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile,
                     {
                         if (m == 0)
                         {
-                            color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
-                            colorNext[c] = UtilityImage.getRasterColor(i + 1, data, maxRasters);
+                            color[c] = ColorRgba.getRasterColor(i, data, maxRasters);
+                            colorNext[c] = ColorRgba.getRasterColor(i + 1, data, maxRasters);
                         }
                         else
                         {
-                            color[c] = UtilityImage.getRasterColor(maxRasters - i, data, maxRasters);
-                            colorNext[c] = UtilityImage.getRasterColor(maxRasters - i - 1, data, maxRasters);
+                            color[c] = ColorRgba.getRasterColor(maxRasters - i, data, maxRasters);
+                            colorNext[c] = ColorRgba.getRasterColor(maxRasters - i - 1, data, maxRasters);
                         }
                     }
                     else
                     {
-                        color[c] = UtilityImage.getRasterColor(i, data, maxRasters);
+                        color[c] = ColorRgba.getRasterColor(i, data, maxRasters);
                         colorNext[c] = color[c];
                     }
                 }
@@ -169,7 +170,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile,
     {
         final SpriteTiled original = super.getPattern(pattern);
         final ImageBuffer buf = original.getSurface();
-        final ImageBuffer rasterBuf = UtilityImage.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
+        final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
 
         addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
     }
@@ -209,7 +210,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile,
             {
                 final Set<Integer> patterns = getPatterns();
                 final Iterator<Integer> itr = patterns.iterator();
-                final int[][] rasters = UtilityImage.loadRaster(rasterFile);
+                final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
 
                 while (itr.hasNext())
                 {

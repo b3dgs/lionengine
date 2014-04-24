@@ -15,13 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine;
 
-import com.b3dgs.lionengine.Applet;
-import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Ratio;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Applet;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Describe the engine screen configuration. It allows to define different parameters:
@@ -205,7 +202,7 @@ public final class Config
      * 
      * @param source The source resolution (native).
      */
-    void setSource(Resolution source)
+    public void setSource(Resolution source)
     {
         Check.notNull(source, Config.ERROR_SOURCE);
 

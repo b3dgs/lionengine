@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;

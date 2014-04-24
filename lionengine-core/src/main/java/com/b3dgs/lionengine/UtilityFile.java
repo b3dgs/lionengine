@@ -15,10 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.util.Locale;
+
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.EngineCore;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Static functions giving informations related to files and directory.
@@ -79,6 +83,46 @@ public final class UtilityFile
     }
 
     /**
+     * Construct a usable path using a list of string, automatically separated by the portable separator. The
+     * constructed path will use local system file separator.
+     * 
+     * @param path The list of folders (if has) and file.
+     * @return The full media path.
+     */
+    public static String getPath(String... path)
+    {
+        return UtilityFile.getPathSeparator(File.separator, path);
+    }
+
+    /**
+     * Construct a usable path using a list of string, automatically separated by the portable separator.
+     * 
+     * @param separator The separator to use.
+     * @param path The list of folders (if has) and file.
+     * @return The full media path.
+     */
+    public static String getPathSeparator(String separator, String... path)
+    {
+        final StringBuilder fullPath = new StringBuilder(path.length);
+        for (int i = 0; i < path.length; i++)
+        {
+            if (i == path.length - 1)
+            {
+                fullPath.append(path[i]);
+            }
+            else if (path[i] != null && path[i].length() > 0)
+            {
+                fullPath.append(path[i]);
+                if (!fullPath.substring(fullPath.length() - 1, fullPath.length()).equals(separator))
+                {
+                    fullPath.append(separator);
+                }
+            }
+        }
+        return fullPath.toString();
+    }
+
+    /**
      * Get a file extension.
      * 
      * @param file The file.
@@ -114,7 +158,7 @@ public final class UtilityFile
      */
     public static String getFilenameFromPath(String path)
     {
-        final int i = path.lastIndexOf(Media.getSeparator());
+        final int i = path.lastIndexOf(Core.MEDIA.getSeparator());
         return path.substring(i + 1, path.length());
     }
 
@@ -290,7 +334,7 @@ public final class UtilityFile
         if (programName != null)
         {
             final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-            UtilityFile.tmpDir = Media.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
+            UtilityFile.tmpDir = UtilityFile.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
         }
         else
         {

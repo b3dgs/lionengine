@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.core.minimal;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 

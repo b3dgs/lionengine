@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -29,7 +27,9 @@ import org.junit.Test;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -55,11 +55,11 @@ public class UtilityImageAwtTest
     public static void setUp()
     {
         Engine.start("UtilityImage Test", Version.create(1, 0, 0),
-                Media.getPath("src", "test", "resources", "utilityimage"));
-        UtilityImageAwtTest.IMAGE = UtilityMedia.get("image.png");
-        UtilityImageAwtTest.SAVE = UtilityMedia.get("save.png");
-        UtilityImageAwtTest.RASTER = UtilityMedia.get("raster.xml");
-        UtilityImageAwtTest.RASTER_ERROR = UtilityMedia.get("raster_error.xml");
+                UtilityFile.getPath("src", "test", "resources", "utilityimage"));
+        UtilityImageAwtTest.IMAGE = Core.MEDIA.create("image.png");
+        UtilityImageAwtTest.SAVE = Core.MEDIA.create("save.png");
+        UtilityImageAwtTest.RASTER = Core.MEDIA.create("raster.xml");
+        UtilityImageAwtTest.RASTER_ERROR = Core.MEDIA.create("raster_error.xml");
     }
 
     /**
@@ -81,37 +81,13 @@ public class UtilityImageAwtTest
     {
         try
         {
-            UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);
+            Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final IllegalArgumentException exception)
         {
             // Success
         }
-    }
-
-    /**
-     * Test utility image class.
-     * 
-     * @throws Exception If error.
-     */
-    @Test
-    public void testCheckClass() throws Exception
-    {
-        final Constructor<UtilityImage> constructor = UtilityImage.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        try
-        {
-            final UtilityImage check = constructor.newInstance();
-            Assert.assertNotNull(check);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
-
-        Assert.assertNotNull(UtilityImage.createGraphic());
     }
 
     /**
@@ -123,16 +99,16 @@ public class UtilityImageAwtTest
         UtilityImageAwtTest.testCreateBufferedImageFail(0, 1);
         UtilityImageAwtTest.testCreateBufferedImageFail(1, 0);
 
-        final ImageBuffer bufferedImage = UtilityImage.createImageBuffer(16, 32, Transparency.OPAQUE);
+        final ImageBuffer bufferedImage = Core.GRAPHIC.createImageBuffer(16, 32, Transparency.OPAQUE);
 
         Assert.assertEquals(bufferedImage.getWidth(), 16);
         Assert.assertEquals(bufferedImage.getHeight(), 32);
 
-        final ImageBuffer image0 = UtilityImage.getImageBuffer(UtilityImageAwtTest.IMAGE, true);
-        final ImageBuffer image1 = UtilityImage.getImageBuffer(UtilityImageAwtTest.IMAGE, false);
+        final ImageBuffer image0 = Core.GRAPHIC.getImageBuffer(UtilityImageAwtTest.IMAGE, true);
+        final ImageBuffer image1 = Core.GRAPHIC.getImageBuffer(UtilityImageAwtTest.IMAGE, false);
         try
         {
-            UtilityImage.getImageBuffer(Media.create("null"), false);
+            Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("null"), false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -142,7 +118,7 @@ public class UtilityImageAwtTest
 
         try
         {
-            UtilityImage.getImageBuffer(Media.create("wrong_image.png"), false);
+            Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("wrong_image.png"), false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -153,24 +129,24 @@ public class UtilityImageAwtTest
         Assert.assertEquals(image1.getWidth(), image0.getWidth());
         Assert.assertEquals(image1.getHeight(), image0.getHeight());
 
-        final ImageBuffer image4 = UtilityImage.applyMask(image1, ColorRgba.BLACK);
+        final ImageBuffer image4 = Core.GRAPHIC.applyMask(image1, ColorRgba.BLACK);
         Assert.assertEquals(image1.getWidth(), image4.getWidth());
         Assert.assertEquals(image1.getHeight(), image4.getHeight());
 
-        UtilityImage.rotate(image1, 90);
-        final ImageBuffer resized = UtilityImage.resize(image1, 1, 2);
+        Core.GRAPHIC.rotate(image1, 90);
+        final ImageBuffer resized = Core.GRAPHIC.resize(image1, 1, 2);
         Assert.assertEquals(1, resized.getWidth());
         Assert.assertEquals(2, resized.getHeight());
 
-        final ImageBuffer flipH = UtilityImage.flipHorizontal(image1);
+        final ImageBuffer flipH = Core.GRAPHIC.flipHorizontal(image1);
         Assert.assertEquals(image1.getWidth(), flipH.getWidth());
         Assert.assertEquals(image1.getHeight(), flipH.getHeight());
 
-        final ImageBuffer flipV = UtilityImage.flipVertical(image1);
+        final ImageBuffer flipV = Core.GRAPHIC.flipVertical(image1);
         Assert.assertEquals(image1.getWidth(), flipV.getWidth());
         Assert.assertEquals(image1.getHeight(), flipV.getHeight());
 
-        final ImageBuffer[] split = UtilityImage.splitImage(image1, 2, 2);
+        final ImageBuffer[] split = Core.GRAPHIC.splitImage(image1, 2, 2);
         for (final ImageBuffer img1 : split)
         {
             for (final ImageBuffer img2 : split)
@@ -182,51 +158,51 @@ public class UtilityImageAwtTest
         Assert.assertEquals(image1.getWidth() / 2, split[0].getWidth());
         Assert.assertEquals(image1.getHeight() / 2, split[0].getHeight());
 
-        final int filterRgb1 = UtilityImage.filterRGB(0, -1, -1, -1);
+        final int filterRgb1 = ColorRgba.filterRgb(0, -1, -1, -1);
         Assert.assertTrue(filterRgb1 >= 0);
-        final int filterRgb2 = UtilityImage.filterRGB(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
+        final int filterRgb2 = ColorRgba.filterRgb(65535, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
         Assert.assertTrue(filterRgb2 >= 0);
 
         try
         {
-            UtilityImage.applyFilter(image1, null);
+            Core.GRAPHIC.applyFilter(image1, null);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }
-        UtilityImage.applyFilter(image1, Filter.BILINEAR);
+        Core.GRAPHIC.applyFilter(image1, Filter.BILINEAR);
 
-        UtilityImage.saveImage(image1, UtilityImageAwtTest.SAVE);
-        final ImageBuffer loaded = UtilityImage.getImageBuffer(UtilityImageAwtTest.SAVE, false);
+        Core.GRAPHIC.saveImage(image1, UtilityImageAwtTest.SAVE);
+        final ImageBuffer loaded = Core.GRAPHIC.getImageBuffer(UtilityImageAwtTest.SAVE, false);
         Assert.assertEquals(image1.getWidth(), loaded.getWidth());
         Assert.assertEquals(image1.getHeight(), loaded.getHeight());
         final File file = UtilityImageAwtTest.SAVE.getFile();
         Assert.assertTrue(file.delete());
 
-        UtilityImage.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
+        Core.GRAPHIC.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5);
 
-        final int[][] raster = UtilityImage.loadRaster(UtilityImageAwtTest.RASTER);
+        final int[][] raster = Core.GRAPHIC.loadRaster(UtilityImageAwtTest.RASTER);
         Assert.assertNotNull(raster);
         try
         {
-            UtilityImage.loadRaster(UtilityImageAwtTest.RASTER_ERROR);
+            Core.GRAPHIC.loadRaster(UtilityImageAwtTest.RASTER_ERROR);
             Assert.fail();
         }
         catch (final LionEngineException exception)
         {
             // Success
         }
-        Assert.assertTrue(UtilityImage.getRasterColor(0, raster[0], 2) > 0);
+        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) > 0);
         raster[0][5] = 1;
-        Assert.assertTrue(UtilityImage.getRasterColor(0, raster[0], 2) < 0);
-        Assert.assertTrue(UtilityImage.filterRGB(-16711423, 0, 0, 0) < 0);
-        Assert.assertTrue(UtilityImage.filterRGB(0, 0, 0, 0) == 0);
-        Assert.assertTrue(UtilityImage.filterRGB(16711935, 0, 0, 0) > 0);
-        Assert.assertTrue(UtilityImage.filterRGB(5000, 0, 0, 0) > 0);
-        Assert.assertTrue(UtilityImage.filterRGB(-10000, 0, -10000000, 0) < 0);
-        Assert.assertTrue(UtilityImage.filterRGB(5000, -100, -100, -100) > 0);
-        Assert.assertTrue(UtilityImage.filterRGB(500000, -100, -10000, -100) > 0);
+        Assert.assertTrue(ColorRgba.getRasterColor(0, raster[0], 2) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(-16711423, 0, 0, 0) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(0, 0, 0, 0) == 0);
+        Assert.assertTrue(ColorRgba.filterRgb(16711935, 0, 0, 0) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(5000, 0, 0, 0) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(-10000, 0, -10000000, 0) < 0);
+        Assert.assertTrue(ColorRgba.filterRgb(5000, -100, -100, -100) > 0);
+        Assert.assertTrue(ColorRgba.filterRgb(500000, -100, -10000, -100) > 0);
     }
 }

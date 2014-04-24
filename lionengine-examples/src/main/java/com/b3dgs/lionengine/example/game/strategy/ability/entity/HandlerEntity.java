@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.game.strategy.ability.ControlPanel;
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
 import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;

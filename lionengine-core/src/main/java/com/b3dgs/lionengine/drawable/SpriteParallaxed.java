@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * ParallaxedSprites are used for parallax effect (2.5D perspective). It cuts a sprite surface into an array of lines.

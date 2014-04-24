@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.tutorials.mario.b;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -69,8 +69,8 @@ final class Scene
     private void importAndSave()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(UtilityMedia.get("smb_level1-1.png"), map, UtilityMedia.get("tiles"));
-        try (FileWriting file = File.createFileWriting(UtilityMedia.get("smb_level1-1.lvl"));)
+        rip.start(Core.MEDIA.create("smb_level1-1.png"), map, Core.MEDIA.create("tiles"));
+        try (FileWriting file = File.createFileWriting(Core.MEDIA.create("smb_level1-1.lvl"));)
         {
             map.save(file);
         }
@@ -88,7 +88,7 @@ final class Scene
     protected void load()
     {
         importAndSave();
-        try (FileReading reading = File.createFileReading(UtilityMedia.get("smb_level1-1.lvl"));)
+        try (FileReading reading = File.createFileReading(Core.MEDIA.create("smb_level1-1.lvl"));)
         {
             map.load(reading);
         }

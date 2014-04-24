@@ -22,18 +22,20 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the animated sprite class.
@@ -53,10 +55,10 @@ public class SpriteAnimatedTest
     @BeforeClass
     public static void setUp()
     {
-        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
-        Media.setMediaFactory(new FactoryMediaMock());
-        SpriteAnimatedTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
-        SpriteAnimatedTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        SpriteAnimatedTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        SpriteAnimatedTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -65,8 +67,8 @@ public class SpriteAnimatedTest
     @AfterClass
     public static void cleanUp()
     {
-        UtilityImage.setGraphicFactory(null);
-        Media.setMediaFactory(null);
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -76,7 +78,7 @@ public class SpriteAnimatedTest
     public void testSpriteAnimated()
     {
         final SpriteAnimated spriteA = Drawable.loadSpriteAnimated(
-                UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
+                Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), 1, 1);
 
         Assert.assertNotNull(spriteA.getSurface());
 

@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Transform;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.GradientColor;
 
 /**
  * Graphic interface representing the screen buffer.

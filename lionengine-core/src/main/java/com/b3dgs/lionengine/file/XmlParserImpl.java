@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * XML parser implementation.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.explorer;
 
 import java.io.File;
 
-import com.b3dgs.lionengine.core.UtilityFile;
+import com.b3dgs.lionengine.UtilityFile;
 
 /**
  * @author Pierre-Alexandre (contact@b3dgs.com)

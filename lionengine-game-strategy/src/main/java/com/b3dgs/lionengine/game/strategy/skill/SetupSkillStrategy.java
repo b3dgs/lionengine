@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.skill;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 
 /**

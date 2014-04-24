@@ -24,9 +24,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the exception.
@@ -41,8 +42,7 @@ public class LionEngineExceptionTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
         Verbose.info("*** TEST EXPECTED EXCEPTION ***");
     }
 
@@ -53,7 +53,7 @@ public class LionEngineExceptionTest
     public static void cleanUp()
     {
         Verbose.info("*************************");
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -99,7 +99,7 @@ public class LionEngineExceptionTest
         final String message = "Exception test";
         try
         {
-            throw new LionEngineException(Media.create("media"), message);
+            throw new LionEngineException(Core.MEDIA.create("media"), message);
         }
         catch (final LionEngineException exception)
         {

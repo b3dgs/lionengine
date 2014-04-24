@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;

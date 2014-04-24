@@ -21,6 +21,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -45,9 +46,9 @@ public class EngineAwtTest
     @Test
     public void testEngine()
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), Media.getPath("src", "test", "resources"));
+        Engine.start("EngineTest", Version.create(0, 0, 0), UtilityFile.getPath("src", "test", "resources"));
         Assert.assertTrue(EngineCore.isStarted());
-        Engine.start("EngineTest", Version.create(0, 1, 0), Media.getPath("src", "test", "resources"));
+        Engine.start("EngineTest", Version.create(0, 1, 0), UtilityFile.getPath("src", "test", "resources"));
         Assert.assertEquals("EngineTest", EngineCore.getProgramName());
         Assert.assertEquals("0.0.0", EngineCore.getProgramVersion());
     }

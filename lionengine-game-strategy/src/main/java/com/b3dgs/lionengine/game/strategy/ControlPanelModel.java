@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.lionengine.geom.Geom;

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;

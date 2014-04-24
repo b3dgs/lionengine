@@ -17,13 +17,10 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.IOException;
-import java.io.OutputStream;
-
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -84,9 +81,8 @@ public interface FactoryGraphic
      * @param media The image media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
-     * @throws IOException If error on loading image.
      */
-    ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException;
+    ImageBuffer getImageBuffer(Media media, boolean alpha);
 
     /**
      * Get an image buffer from an image buffer.
@@ -163,10 +159,9 @@ public interface FactoryGraphic
      * Save an image into a file.
      * 
      * @param image The image to save.
-     * @param outputStream The output stream.
-     * @throws IOException If error on saving.
+     * @param media The output media.
      */
-    void saveImage(ImageBuffer image, OutputStream outputStream) throws IOException;
+    void saveImage(ImageBuffer image, Media media);
 
     /**
      * Get raster buffer from data.
@@ -182,6 +177,14 @@ public interface FactoryGraphic
      * @return The rastered image.
      */
     ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize);
+
+    /**
+     * Load a raster data from a file.
+     * 
+     * @param media The raster media path.
+     * @return The raster data.
+     */
+    int[][] loadRaster(Media media);
 
     /**
      * Create a transform.

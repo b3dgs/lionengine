@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.WorldGame;

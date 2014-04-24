@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.core.drawable;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Main class.
@@ -39,7 +39,7 @@ public final class AppDrawable
      */
     public static void main(String[] args)
     {
-        Engine.start("Drawable", Version.create(1, 0, 0), Media.getPath("resources", "drawable"));
+        Engine.start("Drawable", Version.create(1, 0, 0), UtilityFile.getPath("resources", "drawable"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

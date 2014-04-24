@@ -23,8 +23,6 @@ import android.graphics.Typeface;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 
 /**

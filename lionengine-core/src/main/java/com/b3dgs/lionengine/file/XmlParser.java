@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.file;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Describe an XML parser, which is able to perform save and load operations.
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.core.Media;
  * node1.add(node2);
  * 
  * // Save the tree
- * final Media file = UtilityMedia.get(&quot;file.xml&quot;);
+ * final Media file = Core.MEDIA.create(&quot;file.xml&quot;);
  * final XmlParser parser = File.createXmlParser();
  * parser.save(node1, file);
  * 

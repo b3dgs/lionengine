@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final SpriteAnimated animation = Drawable.loadSpriteAnimated(UtilityMedia.get(&quot;animation.png&quot;), 7, 1);
+ * final SpriteAnimated animation = Drawable.loadSpriteAnimated(Core.MEDIA.create(&quot;animation.png&quot;), 7, 1);
  * animation.load(false);
  * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
  * animation.play(anim);

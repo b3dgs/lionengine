@@ -27,9 +27,9 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilityMath;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
@@ -243,7 +243,7 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
     @Override
     public void paintComponent(Graphics gd)
     {
-        final Graphic g = UtilityImage.createGraphic();
+        final Graphic g = Core.GRAPHIC.createGraphic();
         g.setGraphic((Graphics2D) gd);
         render(g);
     }

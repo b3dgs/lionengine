@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.core;
 import java.io.File;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
 
 /**
  * SC68 player implementation.
@@ -51,10 +53,10 @@ final class Sc68Player
     public void play(Media media)
     {
         Check.notNull(media);
-        final String str = media.getPath().replace(Media.getSeparator().charAt(0), ';');
+        final String str = media.getPath().replace(Core.MEDIA.getSeparator().charAt(0), ';');
         final String[] slp = str.split(";");
         final String n = slp[slp.length - 1];
-        final String file = Media.getPath(UtilityFile.getTempDir(), n);
+        final String file = UtilityFile.getPath(UtilityFile.getTempDir(), n);
         final File music;
         if (!UtilityFile.exists(file))
         {

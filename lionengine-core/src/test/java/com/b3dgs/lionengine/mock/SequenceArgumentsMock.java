@@ -15,29 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Mock sequence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceStartMock
+public class SequenceArgumentsMock
         extends Sequence
 {
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
+     * @param argument The argument reference.
      */
-    public SequenceStartMock(Loader loader)
+    public SequenceArgumentsMock(Loader loader, Object argument)
     {
         super(loader, new Resolution(320, 240, 60));
-        setExtrapolated(false);
-        setSystemCursorVisible(false);
     }
 
     @Override
@@ -49,8 +50,7 @@ public class SequenceStartMock
     @Override
     protected void update(double extrp)
     {
-        start(false, SequenceAsyncMock.class);
-        getFps();
+        end(SequenceAsyncMock.class);
     }
 
     @Override

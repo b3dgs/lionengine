@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final Image image = Drawable.loadImage(UtilityMedia.get(&quot;image.png&quot;));
+ * final Image image = Drawable.loadImage(Core.MEDIA.create(&quot;image.png&quot;));
  * 
  * // Render
  * image.render(g, 0, 0);

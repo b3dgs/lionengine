@@ -17,14 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -82,7 +82,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
+        rip.start(Core.MEDIA.create("level.png"), map, Core.MEDIA.create("tiles"));
         fogOfWar.create(map);
 
         camera.setView(0, 0, getWidth(), getHeight());

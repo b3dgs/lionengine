@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -142,7 +143,7 @@ public final class Loader
     public Loader(Config config)
     {
         Check.notNull(config, Loader.ERROR_CONFIG);
-        renderer = EngineCore.factoryGraphic.createRenderer(config);
+        renderer = Core.GRAPHIC.createRenderer(config);
     }
 
     /**

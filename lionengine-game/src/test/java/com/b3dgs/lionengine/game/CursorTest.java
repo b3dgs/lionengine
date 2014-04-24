@@ -22,17 +22,16 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the cursor class.
@@ -66,7 +65,7 @@ public class CursorTest
     @Test
     public void testCursor()
     {
-        final Graphic g = UtilityImage.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
+        final Graphic g = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
         final MouseMock mouse = new MouseMock();
 
         final Resolution output0 = new Resolution(320, 240, 60);
@@ -81,8 +80,7 @@ public class CursorTest
             // Success
         }
 
-        final Cursor cursor = new Cursor(mouse, output0, Media.create(Media.getPath("src", "test", "resources",
-                "cursor.png")));
+        final Cursor cursor = new Cursor(mouse, output0, Core.MEDIA.create("src", "test", "resources", "cursor.png"));
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);

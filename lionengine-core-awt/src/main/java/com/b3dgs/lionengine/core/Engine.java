@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -108,13 +109,13 @@ public final class Engine
             Engine.init(name, version, resourcesDir, level);
 
             // LionEngine started
-            Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Media.getSeparator());
+            Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
             Verbose.info("Resources directory = ",
-                    Media.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
-            Verbose.info("Temporary directory = ", UtilityFile.getTempDir() + Media.getSeparator());
+                    UtilityFile.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
+            Verbose.info("Temporary directory = ", UtilityFile.getTempDir() + Core.MEDIA.getSeparator());
 
             // Check version (clear temporary directory if version is different)
-            final String versionFilename = Media.getPath(UtilityFile.getTempDir(), "version");
+            final String versionFilename = UtilityFile.getPath(UtilityFile.getTempDir(), "version");
             Engine.checkVersion(versionFilename);
             Engine.storeVersion(versionFilename);
         }

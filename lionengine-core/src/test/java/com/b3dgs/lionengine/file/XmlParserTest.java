@@ -23,9 +23,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityFile;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the XML parser.
@@ -43,9 +45,8 @@ public class XmlParserTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        XmlParserTest.PATH = Media.getPath("src", "test", "resources", "file");
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        XmlParserTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -54,7 +55,7 @@ public class XmlParserTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /** Default test file xml. */
@@ -68,7 +69,7 @@ public class XmlParserTest
     @Test
     public void testXmlWriteRead() throws XmlNodeNotFoundException
     {
-        fileXml = Media.create(Media.getPath(XmlParserTest.PATH, "test.xml"));
+        fileXml = Core.MEDIA.create(XmlParserTest.PATH, "test.xml");
         try
         {
             testWriteXml();
@@ -116,7 +117,7 @@ public class XmlParserTest
         final XmlParser parserSave = File.createXmlParser();
         try
         {
-            parserSave.save(File.createXmlNode("child"), Media.create(""));
+            parserSave.save(File.createXmlNode("child"), Core.MEDIA.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -125,12 +126,12 @@ public class XmlParserTest
         }
 
         parserSave.save(new XmlNodeMock(), fileXml);
-        final java.io.File file = new java.io.File(Media.getPath(XmlParserTest.PATH, "foo"));
+        final java.io.File file = new java.io.File(UtilityFile.getPath(XmlParserTest.PATH, "foo"));
         if (file.mkdir())
         {
             try
             {
-                parserSave.save(File.createXmlNode("child"), Media.create(file.getPath()));
+                parserSave.save(File.createXmlNode("child"), Core.MEDIA.create(file.getPath()));
                 Assert.fail();
             }
             catch (final LionEngineException exception)
@@ -195,7 +196,7 @@ public class XmlParserTest
         try
         {
             final XmlParser parser = File.createXmlParser();
-            parser.load(Media.create(Media.getPath(XmlParserTest.PATH, "malformed.xml")));
+            parser.load(Core.MEDIA.create(XmlParserTest.PATH, "malformed.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

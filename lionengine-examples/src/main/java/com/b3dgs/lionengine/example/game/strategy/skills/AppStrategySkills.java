@@ -17,12 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Config;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 
 /**
  * Main class.
@@ -40,7 +40,7 @@ public final class AppStrategySkills
     public static void main(String[] args)
     {
         Engine.start("Strategy Skills", Version.create(1, 0, 0),
-                Media.getPath("resources", "game", "strategy", "skill"));
+                UtilityFile.getPath("resources", "game", "strategy", "skill"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

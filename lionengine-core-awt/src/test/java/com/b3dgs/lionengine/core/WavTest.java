@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Test wav player.
@@ -41,9 +42,8 @@ public class WavTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaAwt());
-        Media.setSeparator(java.io.File.separator);
-        WavTest.SOUND = Media.create(Media.getPath("src", "test", "resources", "audio", "sound.wav"));
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaAwt());
+        WavTest.SOUND = Core.MEDIA.create("src", "test", "resources", "audio", "sound.wav");
     }
 
     /**
@@ -52,7 +52,7 @@ public class WavTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**

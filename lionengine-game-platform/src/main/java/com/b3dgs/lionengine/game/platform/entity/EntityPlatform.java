@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.platform.entity;
 
 import java.util.HashMap;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CoordTile;

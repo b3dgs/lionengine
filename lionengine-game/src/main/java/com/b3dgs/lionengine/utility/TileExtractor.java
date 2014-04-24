@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.utility;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
@@ -110,7 +110,7 @@ public final class TileExtractor
         imageMapTilesInX = imageMap.getWidthOriginal() / this.tilew;
         startX = 0;
         endX = imageMapTilesInX;
-        pattern = UtilityImage.createImageBuffer(destW, destH, Transparency.BITMASK);
+        pattern = Core.GRAPHIC.createImageBuffer(destW, destH, Transparency.BITMASK);
         g = pattern.createGraphic();
         cx = 0;
         cy = 0;
@@ -154,7 +154,7 @@ public final class TileExtractor
             }
         }
         g.dispose();
-        UtilityImage.saveImage(pattern, fileout);
+        Core.GRAPHIC.saveImage(pattern, fileout);
     }
 
     /**

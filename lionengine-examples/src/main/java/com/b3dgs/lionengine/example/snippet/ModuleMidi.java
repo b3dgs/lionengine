@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.snippet;
 
 import com.b3dgs.lionengine.core.AudioMidi;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Midi;
-import com.b3dgs.lionengine.core.UtilityMedia;
 
 @SuppressWarnings("all")
 public class ModuleMidi
@@ -30,7 +30,7 @@ public class ModuleMidi
 
     void midi() throws InterruptedException
     {
-        final Midi midi = AudioMidi.loadMidi(UtilityMedia.get("music.mid"));
+        final Midi midi = AudioMidi.loadMidi(Core.MEDIA.create("music.mid"));
         midi.play(false);
 
         Thread.sleep(1000);

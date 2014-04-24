@@ -20,8 +20,6 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.b3dgs.lionengine.core.Media;
-
 /**
  * Get quick information from an image without reading all data.
  * <p>
@@ -29,7 +27,7 @@ import com.b3dgs.lionengine.core.Media;
  * </p>
  * 
  * <pre>
- * final ImageInfo info = ImageInfo.get(UtilityMedia.get(&quot;dot.png&quot;));
+ * final ImageInfo info = ImageInfo.get(Core.MEDIA.create(&quot;dot.png&quot;));
  * Assert.assertEquals(64, info.getWidth());
  * Assert.assertEquals(32, info.getHeight());
  * Assert.assertEquals(&quot;png&quot;, info.getFormat());
@@ -39,6 +37,27 @@ import com.b3dgs.lionengine.core.Media;
  */
 public final class ImageInfo
 {
+    /** Unsupported format. */
+    private static final String ERROR_FORMAT = "Unsupported image format";
+    /** Read error. */
+    private static final String ERROR_READ = "Can not read image information";
+    /** Invalid Jpg. */
+    private static final String ERROR_JPG = "Invalid JPG file !";
+    /** Message skipped. */
+    private static final String MESSAGE_SKIPPED = "Skipped ";
+    /** Message bytes instead of. */
+    private static final String MESSAGE_BYTES_INSTEAD_OF = " bytes instead of ";
+    /** Bmp format. */
+    private static final String FORMAT_BMP = "bmp";
+    /** Png format. */
+    private static final String FORMAT_PNG = "png";
+    /** Gif format. */
+    private static final String FORMAT_GIF = "gif";
+    /** Jpg format. */
+    private static final String FORMAT_JPG = "jpg";
+    /** Tiff format. */
+    private static final String FORMAT_TIFF = "tiff";
+
     /**
      * Get the image info of the specified image media.
      * 
@@ -70,6 +89,18 @@ public final class ImageInfo
             sv += cnt;
         }
         return ret;
+    }
+
+    /**
+     * Skipped message error.
+     * 
+     * @param skipped The skipped value.
+     * @param instead The instead value.
+     * @return The message error.
+     */
+    private static String skippedError(long skipped, int instead)
+    {
+        return ImageInfo.MESSAGE_SKIPPED + skipped + ImageInfo.MESSAGE_BYTES_INSTEAD_OF + instead;
     }
 
     /** Image width. */
@@ -127,13 +158,13 @@ public final class ImageInfo
                 }
                 else
                 {
-                    throw new LionEngineException("Unsupported image format");
+                    throw new LionEngineException(ImageInfo.ERROR_FORMAT);
                 }
             }
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, "Can not read image information");
+            throw new LionEngineException(exception, ImageInfo.ERROR_READ);
         }
     }
 
@@ -178,11 +209,11 @@ public final class ImageInfo
         final long skipped = inputStream.skip(3);
         if (skipped != 3)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of 3");
+            throw new IOException(ImageInfo.skippedError(skipped, 3));
         }
         width = ImageInfo.readInt(inputStream, 2, false);
         height = ImageInfo.readInt(inputStream, 2, false);
-        format = "gif";
+        format = ImageInfo.FORMAT_GIF;
     }
 
     /**
@@ -205,24 +236,24 @@ public final class ImageInfo
                 final long skipped = inputStream.skip(1);
                 if (skipped != 1)
                 {
-                    throw new IOException("Skipped " + skipped + " bytes instead of 1");
+                    throw new IOException(ImageInfo.skippedError(skipped, 1));
                 }
                 height = ImageInfo.readInt(inputStream, 2, true);
                 width = ImageInfo.readInt(inputStream, 2, true);
-                format = "jpg";
+                format = ImageInfo.FORMAT_JPG;
                 success = true;
                 break;
             }
             final long skipped = inputStream.skip(len - 2);
             if (skipped != len - 2)
             {
-                throw new IOException("Skipped " + skipped + " bytes instead of " + (len - 2));
+                throw new IOException(ImageInfo.skippedError(skipped, len - 2));
             }
             current = inputStream.read();
         }
         if (!success)
         {
-            throw new IOException("Invalid JPG file !");
+            throw new IOException(ImageInfo.ERROR_JPG);
         }
     }
 
@@ -238,16 +269,16 @@ public final class ImageInfo
         long skipped = inputStream.skip(toSkip);
         if (skipped != toSkip)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of 15");
+            throw new IOException(ImageInfo.skippedError(skipped, 15));
         }
         width = ImageInfo.readInt(inputStream, 2, true);
         skipped = inputStream.skip(2);
         if (skipped != 2)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of 2");
+            throw new IOException(ImageInfo.skippedError(skipped, 2));
         }
         height = ImageInfo.readInt(inputStream, 2, true);
-        format = "png";
+        format = ImageInfo.FORMAT_PNG;
     }
 
     /**
@@ -262,16 +293,16 @@ public final class ImageInfo
         long skipped = inputStream.skip(toSkip);
         if (skipped != toSkip)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of 15");
+            throw new IOException(ImageInfo.skippedError(skipped, 15));
         }
         width = ImageInfo.readInt(inputStream, 2, false);
         skipped = inputStream.skip(2);
         if (skipped != 2)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of 2");
+            throw new IOException(ImageInfo.skippedError(skipped, 2));
         }
         height = ImageInfo.readInt(inputStream, 2, false);
-        format = "bmp";
+        format = ImageInfo.FORMAT_BMP;
     }
 
     /**
@@ -290,7 +321,7 @@ public final class ImageInfo
         long skipped = inputStream.skip(ifd - toSkip);
         if (skipped != ifd - toSkip)
         {
-            throw new IOException("Skipped " + skipped + " bytes instead of " + (ifd - toSkip));
+            throw new IOException(ImageInfo.skippedError(skipped, ifd - toSkip));
         }
         final int entries = ImageInfo.readInt(inputStream, 2, bigEndian);
 
@@ -306,7 +337,7 @@ public final class ImageInfo
                 skipped = inputStream.skip(2);
                 if (skipped != 2)
                 {
-                    throw new IOException("Skipped " + skipped + " bytes instead of 2");
+                    throw new IOException(ImageInfo.skippedError(skipped, 2));
                 }
             }
             else
@@ -325,7 +356,7 @@ public final class ImageInfo
             {
                 width = w;
                 height = h;
-                format = "tiff";
+                format = ImageInfo.FORMAT_TIFF;
                 break;
             }
         }

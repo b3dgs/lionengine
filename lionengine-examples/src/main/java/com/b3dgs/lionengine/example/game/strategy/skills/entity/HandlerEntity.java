@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.game.strategy.skills.ControlPanel;
 import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
 import com.b3dgs.lionengine.example.game.strategy.skills.CursorType;

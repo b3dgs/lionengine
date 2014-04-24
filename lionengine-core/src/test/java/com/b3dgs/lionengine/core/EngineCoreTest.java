@@ -22,13 +22,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.mock.EngineMock;
 
 /**
- * Test the engine class.
+ * Test the engine core class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EngineTest
+public class EngineCoreTest
 {
     /**
      * Clean up test.
@@ -49,13 +50,13 @@ public class EngineTest
         Assert.assertEquals(null, EngineCore.getProgramName());
         Assert.assertEquals(null, EngineCore.getProgramVersion());
 
-        EngineCore.start("EngineTest", Version.create(0, 0, 0), Verbose.NONE, null, null);
-        EngineCore.start("EngineTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
-        Assert.assertEquals("EngineTest", EngineCore.getProgramName());
+        EngineCore.start("EngineCoreTest", Version.create(0, 0, 0), Verbose.NONE, null, null);
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
+        Assert.assertEquals("EngineCoreTest", EngineCore.getProgramName());
         Assert.assertEquals("0.0.0", EngineCore.getProgramVersion());
         EngineCore.terminate();
 
-        EngineCore.start("EngineTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
         Assert.assertTrue(EngineCore.isStarted());
 
         Assert.assertNull(EngineCore.getSystemProperty("null"));

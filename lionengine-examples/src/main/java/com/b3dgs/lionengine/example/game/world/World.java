@@ -19,11 +19,11 @@ package com.b3dgs.lionengine.example.game.world;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -47,7 +47,7 @@ final class World
     World(Sequence sequence)
     {
         super(sequence);
-        text = UtilityImage.createText(Text.SERIF, 12, TextStyle.NORMAL);
+        text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
     }
 
     /*

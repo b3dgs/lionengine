@@ -17,7 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
 
 /**
  * Factory implementation for test.
@@ -32,7 +33,7 @@ final class FactoryObject
      */
     FactoryObject()
     {
-        super(Media.getPath("src", "test", "resources"));
+        super(UtilityFile.getPath("src", "test", "resources"));
     }
 
     /*

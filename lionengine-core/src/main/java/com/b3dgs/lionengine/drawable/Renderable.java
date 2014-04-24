@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 
 /**
  * Represents an element that can be rendered on screen.

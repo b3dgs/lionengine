@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * 
  * <pre>
  * // Load
- * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(UtilityMedia.get(&quot;tilesheet.png&quot;), 16, 16);
+ * final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create(&quot;tilesheet.png&quot;), 16, 16);
  * tilesheet.load(false);
  * 
  * // Render

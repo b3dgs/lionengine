@@ -26,7 +26,6 @@ import java.awt.image.BufferedImage;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.GradientColor;
-import com.b3dgs.lionengine.Graphic;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.

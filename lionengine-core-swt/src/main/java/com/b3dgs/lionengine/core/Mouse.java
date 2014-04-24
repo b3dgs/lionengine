@@ -23,6 +23,8 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.widgets.Display;
 
+import com.b3dgs.lionengine.Config;
+
 /**
  * Mouse input implementation.
  * 

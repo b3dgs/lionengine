@@ -21,13 +21,16 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
+
 /**
  * Media implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MediaSwt
-        extends Media
+        implements Media
 {
     /** Media path. */
     private final String path;
@@ -55,13 +58,13 @@ final class MediaSwt
     @Override
     public File getFile()
     {
-        return new File(Media.getPath(UtilityMedia.getRessourcesDir(), path));
+        return new File(UtilityFile.getPath(UtilityMedia.getRessourcesDir(), path));
     }
 
     @Override
     public InputStream getStream()
     {
-        return UtilityMedia.getStream(this, MediaSwt.class.getSimpleName(), false);
+        return UtilityMedia.getInputStream(this, MediaSwt.class.getSimpleName(), false);
     }
 
     @Override

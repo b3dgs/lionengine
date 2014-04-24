@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 
@@ -136,7 +136,7 @@ public abstract class BackgroundElementRastered
     protected void addRaster(Sprite sprite, int fr, int fg, int fb)
     {
         final ImageBuffer buf = sprite.getSurface();
-        final ImageBuffer rasterBuf = UtilityImage.getImageBuffer(buf);
+        final ImageBuffer rasterBuf = Core.GRAPHIC.getImageBuffer(buf);
 
         for (int i = 0; i < rasterBuf.getWidth(); i++)
         {

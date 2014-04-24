@@ -22,14 +22,16 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the image class.
@@ -49,10 +51,10 @@ public class ImageTest
     @BeforeClass
     public static void setUp()
     {
-        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
-        Media.setMediaFactory(new FactoryMediaMock());
-        ImageTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
-        ImageTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        ImageTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        ImageTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -61,8 +63,8 @@ public class ImageTest
     @AfterClass
     public static void cleanUp()
     {
-        UtilityImage.setGraphicFactory(null);
-        Media.setMediaFactory(null);
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -73,26 +75,26 @@ public class ImageTest
     {
         try
         {
-            UtilityImage.createImageBuffer(-16, 16, Transparency.OPAQUE);
+            Core.GRAPHIC.createImageBuffer(-16, 16, Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NegativeArraySizeException exception)
         {
             // Success
         }
         try
         {
-            UtilityImage.createImageBuffer(16, -16, Transparency.OPAQUE);
+            Core.GRAPHIC.createImageBuffer(16, -16, Transparency.OPAQUE);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NegativeArraySizeException exception)
         {
             // Success
         }
         // Load unexisting image
         try
         {
-            Drawable.loadImage(Media.create("void"));
+            Drawable.loadImage(Core.MEDIA.create("void"));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -109,7 +111,7 @@ public class ImageTest
     {
         final int width = 16;
         final int height = 16;
-        final ImageBuffer surface = UtilityImage.createImageBuffer(width, height, Transparency.OPAQUE);
+        final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
         final Image imageA = Drawable.loadImage(surface);
 
         Assert.assertNotNull(imageA);
@@ -130,11 +132,11 @@ public class ImageTest
         Assert.assertFalse(imageC.equals(Drawable.loadImage(ImageTest.media)));
 
         // Equals
-        final ImageBuffer surfaceA = UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceA = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Image imageD = Drawable.loadImage(surfaceA);
-        final ImageBuffer surfaceB = UtilityImage.createImageBuffer(16, 20, Transparency.OPAQUE);
+        final ImageBuffer surfaceB = Core.GRAPHIC.createImageBuffer(16, 20, Transparency.OPAQUE);
         final Image imageE = Drawable.loadImage(surfaceB);
-        final ImageBuffer surfaceC = UtilityImage.createImageBuffer(20, 16, Transparency.OPAQUE);
+        final ImageBuffer surfaceC = Core.GRAPHIC.createImageBuffer(20, 16, Transparency.OPAQUE);
         final Image imageF = Drawable.loadImage(surfaceC);
         Assert.assertTrue(imageD.equals(imageD));
         Assert.assertFalse(imageD.equals(imageE));

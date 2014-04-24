@@ -27,9 +27,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityFile;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the file package.
@@ -47,9 +49,8 @@ public class FileTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        FileTest.PATH = Media.getPath("src", "test", "resources", "file");
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        FileTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -58,7 +59,7 @@ public class FileTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -132,11 +133,11 @@ public class FileTest
 
         FileTest.testFailures();
         Assert.assertNotNull(File.createXmlNode("test"));
-        try (FileReading reading = File.createFileReading(Media.create(Media.getPath(FileTest.PATH, "malformed.xml")));)
+        try (FileReading reading = File.createFileReading(Core.MEDIA.create(FileTest.PATH, "malformed.xml"));)
         {
             Assert.assertNotNull(reading);
         }
-        final Media media = Media.create(Media.getPath(FileTest.PATH, "test"));
+        final Media media = Core.MEDIA.create(FileTest.PATH, "test");
         try (FileWriting writing = File.createFileWriting(media);)
         {
             Assert.assertNotNull(writing);

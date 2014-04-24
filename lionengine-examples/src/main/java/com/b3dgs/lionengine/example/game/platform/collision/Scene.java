@@ -18,12 +18,12 @@
 package com.b3dgs.lionengine.example.game.platform.collision;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -72,8 +72,8 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(UtilityMedia.get("level.png"), map, UtilityMedia.get("tiles"));
-        map.loadCollisions(UtilityMedia.get("tiles", "collisions.xml"));
+        rip.start(Core.MEDIA.create("level.png"), map, Core.MEDIA.create("tiles"));
+        map.loadCollisions(Core.MEDIA.create("tiles", "collisions.xml"));
 
         camera.setLimits(map);
         camera.setIntervals(16, 0);

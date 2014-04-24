@@ -22,11 +22,11 @@ import java.util.Arrays;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Sprite implementation.
@@ -36,6 +36,13 @@ import com.b3dgs.lionengine.core.UtilityImage;
 class SpriteImpl
         implements Sprite
 {
+    /** Width error. */
+    private static final String ERROR_WIDTH = "Width percent must be strictly positive !";
+    /** Height error. */
+    private static final String ERROR_HEIGHT = "Height percent must be strictly positive !";
+    /** Alpha error. */
+    private static final String ERROR_ALPHA = "Alpha must be >= 0 and <= 255 !";
+
     /** Sprite original width. */
     protected final int widthOriginal;
     /** Sprite original height. */
@@ -91,7 +98,7 @@ class SpriteImpl
     {
         width = newWidth;
         height = newHeight;
-        surface = UtilityImage.resize(surfaceOriginal, newWidth, newHeight);
+        surface = Core.GRAPHIC.resize(surfaceOriginal, newWidth, newHeight);
     }
 
     /**
@@ -101,7 +108,7 @@ class SpriteImpl
     {
         if (surfaceOriginal == null)
         {
-            surfaceOriginal = UtilityImage.getImageBuffer(surface);
+            surfaceOriginal = Core.GRAPHIC.getImageBuffer(surface);
         }
     }
 
@@ -114,7 +121,7 @@ class SpriteImpl
     {
         if (surface == null)
         {
-            surface = UtilityImage.getImageBuffer(media, alpha);
+            surface = Core.GRAPHIC.getImageBuffer(media, alpha);
         }
     }
 
@@ -127,8 +134,8 @@ class SpriteImpl
     @Override
     public void stretch(int widthPercent, int heightPercent)
     {
-        Check.argument(widthPercent > 0, "Width percent must be strictly positive !");
-        Check.argument(heightPercent > 0, "Height percent must be strictly positive !");
+        Check.argument(widthPercent > 0, SpriteImpl.ERROR_WIDTH);
+        Check.argument(heightPercent > 0, SpriteImpl.ERROR_HEIGHT);
 
         if (widthPercent != 100 || heightPercent != 100)
         {
@@ -143,41 +150,41 @@ class SpriteImpl
     public void rotate(int angle)
     {
         lazySurfaceBackup();
-        surface = UtilityImage.rotate(surfaceOriginal, angle);
+        surface = Core.GRAPHIC.rotate(surfaceOriginal, angle);
     }
 
     @Override
     public void flipHorizontal()
     {
         lazySurfaceBackup();
-        surface = UtilityImage.flipHorizontal(surfaceOriginal);
+        surface = Core.GRAPHIC.flipHorizontal(surfaceOriginal);
     }
 
     @Override
     public void flipVertical()
     {
         lazySurfaceBackup();
-        surface = UtilityImage.flipVertical(surfaceOriginal);
+        surface = Core.GRAPHIC.flipVertical(surfaceOriginal);
     }
 
     @Override
     public void filter(Filter filter)
     {
         lazySurfaceBackup();
-        surface = UtilityImage.applyFilter(surfaceOriginal, filter);
+        surface = Core.GRAPHIC.applyFilter(surfaceOriginal, filter);
     }
 
     @Override
     public void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
-        surface = UtilityImage.applyMask(surfaceOriginal, mask);
+        surface = Core.GRAPHIC.applyMask(surfaceOriginal, mask);
     }
 
     @Override
     public void setAlpha(int alpha)
     {
-        Check.argument(alpha >= 0 && alpha <= 255, "Alpha must be >= 0 and <= 255 !");
+        Check.argument(alpha >= 0 && alpha <= 255, SpriteImpl.ERROR_ALPHA);
         setFade(alpha, -255);
     }
 

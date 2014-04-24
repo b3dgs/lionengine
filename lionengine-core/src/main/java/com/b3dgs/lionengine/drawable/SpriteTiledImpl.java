@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Tiled sprite implementation.
@@ -126,7 +126,7 @@ final class SpriteTiledImpl
     @Override
     public ImageBuffer getTile(int tile)
     {
-        final ImageBuffer buffer = UtilityImage
+        final ImageBuffer buffer = Core.GRAPHIC
                 .createImageBuffer(getTileWidth(), getTileHeight(), Transparency.BITMASK);
         final Graphic g = buffer.createGraphic();
         final int cx = tile % getTilesHorizontal();

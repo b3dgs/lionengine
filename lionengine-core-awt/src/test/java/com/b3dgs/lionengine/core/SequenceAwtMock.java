@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilityRandom;
 

@@ -22,19 +22,19 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the world class.
@@ -68,14 +68,14 @@ public class WorldTest
     @Test
     public void testWorld()
     {
-        final Graphic g = UtilityImage.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
+        final Graphic g = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         final Scene scene = new Scene(loader);
         final World world = new World(scene);
 
-        final Media media = Media.create(Media.getPath("src", "test", "resources", "test"));
+        final Media media = Core.MEDIA.create("src", "test", "resources", "test");
         try
         {
             world.saveToFile(media);
@@ -85,7 +85,7 @@ public class WorldTest
             Assert.assertTrue(media.getFile().delete());
         }
 
-        world.loadFromFile(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
+        world.loadFromFile(Core.MEDIA.create("src", "test", "resources", "type.xml"));
         world.update(0);
         world.render(g);
     }
@@ -112,7 +112,7 @@ public class WorldTest
             // Success
         }
 
-        final Media media = Media.create(Media.getPath("src", "test", "resources", "test"));
+        final Media media = Core.MEDIA.create("src", "test", "resources", "test");
         try
         {
             world.saveToFile(media);
@@ -129,7 +129,7 @@ public class WorldTest
 
         try
         {
-            world.loadFromFile(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
+            world.loadFromFile(Core.MEDIA.create("src", "test", "resources", "type.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

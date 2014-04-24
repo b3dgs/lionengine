@@ -39,7 +39,7 @@ import java.util.Map;
  *     &#064;Override
  *     protected SetupGame createSetup(Class&lt;? extends ObjectGame&gt; type)
  *     {
- *         return new SetupGame(UtilityMedia.get(type.getSimpleName() + &quot;.xml&quot;));
+ *         return new SetupGame(Core.MEDIA.create(type.getSimpleName() + &quot;.xml&quot;));
  *     }
  * }
  * </pre>

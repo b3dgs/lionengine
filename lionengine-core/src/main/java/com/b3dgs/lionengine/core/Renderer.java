@@ -18,8 +18,10 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Hq2x;
+import com.b3dgs.lionengine.Hq3x;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Transparency;
@@ -120,7 +122,7 @@ public abstract class Renderer
         {
             frameDelay = Renderer.TIME_LONG / output.getRate();
         }
-        graphic = EngineCore.factoryGraphic.createGraphic();
+        graphic = Core.GRAPHIC.createGraphic();
     }
 
     /**
@@ -224,7 +226,7 @@ public abstract class Renderer
         // Scale factor
         final double scaleX = output.getWidth() / (double) source.getWidth();
         final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = EngineCore.factoryGraphic.createTransform();
+        Transform transform = Core.GRAPHIC.createTransform();
 
         // Filter level
         switch (filter)
@@ -258,7 +260,7 @@ public abstract class Renderer
         // Scaled rendering
         else
         {
-            buf = EngineCore.factoryGraphic.createImageBuffer(width, height, Transparency.OPAQUE);
+            buf = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
             gbuf = buf.createGraphic();
             if (hqx > 1 || filter == Filter.NONE)
             {
@@ -273,7 +275,6 @@ public abstract class Renderer
         op = transform;
         directRendering = hqx == 0 && (op == null || buf == null);
         sequence.setResolution(width, height);
-        sequence.onResolutionChanged(width, height, source.getRate());
     }
 
     /**
@@ -497,7 +498,7 @@ public abstract class Renderer
     {
         // First init
         started = true;
-        screen = EngineCore.factoryGraphic.createScreen(this, config);
+        screen = Core.GRAPHIC.createScreen(this, config);
         screen.start();
         nextSequence = Loader.createSequence(firstSequence, loader, arguments);
         waitForScreenReady();

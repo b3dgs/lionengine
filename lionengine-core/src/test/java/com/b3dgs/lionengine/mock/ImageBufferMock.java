@@ -15,10 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * Mock image buffer.
@@ -32,6 +33,8 @@ public class ImageBufferMock
     private final int width;
     /** Height. */
     private final int height;
+    /** Rgba. */
+    private final int[] rgba;
     /** Transparency. */
     private final Transparency transparency;
 
@@ -47,6 +50,7 @@ public class ImageBufferMock
         this.width = width;
         this.height = height;
         this.transparency = transparency;
+        rgba = new int[width * height];
     }
 
     @Override
@@ -58,25 +62,26 @@ public class ImageBufferMock
     @Override
     public void setRgb(int x, int y, int rgb)
     {
-        // Mock
+        rgba[x % width + y * width] = rgb;
     }
 
     @Override
     public void setRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        // Mock
+        System.arraycopy(rgbArray, 0, rgba, 0, w * h);
     }
 
     @Override
     public int getRgb(int x, int y)
     {
-        return 0;
+        return rgba[x % width + y * width];
     }
 
     @Override
     public int[] getRgb(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
     {
-        return new int[width * height];
+        System.arraycopy(rgba, 0, rgbArray, 0, w * h);
+        return rgbArray;
     }
 
     @Override

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Media mock.
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class MediaMock
-        extends Media
+        implements Media
 {
     /** Media path. */
     private final String path;

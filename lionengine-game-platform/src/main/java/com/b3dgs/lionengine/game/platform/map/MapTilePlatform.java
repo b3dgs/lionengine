@@ -23,11 +23,11 @@ import java.util.List;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlParser;
@@ -118,7 +118,7 @@ public abstract class MapTilePlatform<C extends Enum<C> & CollisionTile, T exten
             final Set<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
-                final ImageBuffer buffer = UtilityImage.createImageBuffer(getTileWidth(), getTileHeight(),
+                final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(getTileWidth(), getTileHeight(),
                         Transparency.TRANSLUCENT);
                 final Graphic g = buffer.createGraphic();
                 g.setColor(new ColorRgba(0, 0, 0, 0));

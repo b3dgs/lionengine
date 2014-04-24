@@ -36,7 +36,8 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;
@@ -222,7 +223,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
         }
 
         final XmlParser parser = File.createXmlParser();
-        parser.save(root, UtilityMedia.get("collisions.xml"));
+        parser.save(root, Core.MEDIA.create("collisions.xml"));
     }
 
     /**
@@ -284,7 +285,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         try
         {
-            rip.start(media, map, UtilityMedia.get(mediaTiles.getPath()));
+            rip.start(media, map, Core.MEDIA.create(mediaTiles.getPath()));
             final int errors = rip.getErrors();
             if (errors == 0)
             {
@@ -292,14 +293,14 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
                 {
                     UtilitySwing.terminateDialog(dialog);
                 }
-                map.loadCollisions(UtilityMedia.get(mediaTiles.getPath(), "collisions.xml"));
+                map.loadCollisions(Core.MEDIA.create(mediaTiles.getPath(), "collisions.xml"));
                 map.createCollisionDraw(collisionClass);
                 editor.world.camera.setLimits(map);
                 editor.repaint();
                 items.get("Import Map").setEnabled(false);
                 return true;
             }
-            UtilityMessageBox.error("Import Map", errors + " tiles were not found.\nLevelrip: " + media.getPath()
+            UtilityMessageBox.error("Import Map", errors + " tiles were not found.\nLevelrip: " + Core.MEDIA.create()
                     + "\nImport interrupted !");
         }
         catch (final LionEngineException exception)

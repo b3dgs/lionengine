@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.Config;
+
 /**
  * The renderer implementation.
  * 
@@ -47,7 +49,7 @@ final class RendererSwt
             @Override
             public void run()
             {
-                nextSequence.load();
+                nextSequence.loadInternal();
             }
         });
     }

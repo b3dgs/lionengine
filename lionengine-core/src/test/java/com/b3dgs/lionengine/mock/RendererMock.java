@@ -15,44 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Mock sequence.
+ * Mock renderer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceAsyncMock
-        extends Sequence
+public class RendererMock
+        extends Renderer
 {
     /**
      * Constructor.
      * 
-     * @param loader The loader reference.
+     * @param config The config reference.
      */
-    public SequenceAsyncMock(Loader loader)
+    public RendererMock(Config config)
     {
-        super(loader, new Resolution(320, 240, 60));
+        super(config, "Mock");
     }
 
-    @Override
-    protected void load()
-    {
-        // Mock
-    }
+    /*
+     * Renderer
+     */
 
     @Override
-    protected void update(double extrp)
+    protected void asyncLoad(final Sequence nextSequence)
     {
-        end();
-    }
-
-    @Override
-    protected void render(Graphic g)
-    {
-        // Mock
+        final Thread thread = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                nextSequence.loadInternal();
+            }
+        };
+        thread.start();
     }
 }

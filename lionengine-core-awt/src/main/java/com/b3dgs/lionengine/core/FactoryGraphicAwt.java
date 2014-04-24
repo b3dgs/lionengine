@@ -38,10 +38,10 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -53,6 +53,10 @@ import com.b3dgs.lionengine.Transparency;
 final class FactoryGraphicAwt
         implements FactoryGraphic
 {
+    /** Reading image message. */
+    private static final String ERROR_IMAGE_READING = "Error on reading image !";
+    /** Save image message. */
+    private static final String ERROR_IMAGE_SAVE = "Unable to save image: ";
     /** Bilinear filter. */
     private static final float[] BILINEAR_FILTER = new float[]
     {
@@ -74,8 +78,8 @@ final class FactoryGraphicAwt
     {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension dim = toolkit.getBestCursorSize(1, 1);
-        final ImageBuffer cursor = UtilityImage.createImageBuffer(dim.width, dim.height, Transparency.BITMASK);
-        final BufferedImage buffer = FactoryGraphicAwt.getBuffer(UtilityImage.applyMask(cursor, ColorRgba.BLACK));
+        final ImageBuffer cursor = Core.GRAPHIC.createImageBuffer(dim.width, dim.height, Transparency.BITMASK);
+        final BufferedImage buffer = FactoryGraphicAwt.getBuffer(Core.GRAPHIC.applyMask(cursor, ColorRgba.BLACK));
         return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
     }
 
@@ -200,7 +204,7 @@ final class FactoryGraphicAwt
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         try (final InputStream inputStream = media.getStream();)
         {
@@ -219,6 +223,10 @@ final class FactoryGraphicAwt
             g.dispose();
 
             return new ImageBufferAwt(image);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, FactoryGraphicAwt.ERROR_IMAGE_READING);
         }
     }
 
@@ -379,10 +387,17 @@ final class FactoryGraphicAwt
     }
 
     @Override
-    public void saveImage(ImageBuffer imageBuffer, OutputStream outputStream) throws IOException
+    public void saveImage(ImageBuffer imageBuffer, Media media)
     {
         final BufferedImage image = FactoryGraphicAwt.getBuffer(imageBuffer);
-        ImageIO.write(image, "png", outputStream);
+        try (final OutputStream outputStream = media.getOutputStream())
+        {
+            ImageIO.write(image, "png", outputStream);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, FactoryGraphicAwt.ERROR_IMAGE_SAVE);
+        }
     }
 
     @Override
@@ -408,7 +423,7 @@ final class FactoryGraphicAwt
                     final int g = (int) (sg * (j % refSize)) * 0x000100;
                     final int b = (int) (sb * (j % refSize)) * 0x000001;
 
-                    raster.setRGB(i, j, UtilityImage.filterRGB(image.getRGB(i, j), fr + r, fg + g, fb + b));
+                    raster.setRGB(i, j, ColorRgba.filterRgb(image.getRGB(i, j), fr + r, fg + g, fb + b));
                 }
             }
         }
@@ -423,12 +438,18 @@ final class FactoryGraphicAwt
             {
                 for (int i = 0; i < width; i++)
                 {
-                    pixels[j * width + i] = UtilityImage.filterRGB(org[j * width + i], fr, fg, fb);
+                    pixels[j * width + i] = ColorRgba.filterRgb(org[j * width + i], fr, fg, fb);
                 }
             }
         }
 
         return new ImageBufferAwt(raster);
+    }
+
+    @Override
+    public int[][] loadRaster(Media media)
+    {
+        return Core.GRAPHIC.loadRaster(media);
     }
 
     @Override

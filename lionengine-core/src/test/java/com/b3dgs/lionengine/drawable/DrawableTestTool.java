@@ -21,13 +21,13 @@ import org.junit.Assert;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Test tools set for image testing.
@@ -184,11 +184,11 @@ public class DrawableTestTool
         spriteB.stretch(90, 110);
         Assert.assertFalse(spriteB.equals(sprite));
 
-        final Sprite spriteC = Drawable.loadSprite(UtilityImage.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteC = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
         spriteC.stretch(100, 110);
         Assert.assertFalse(spriteC.equals(sprite));
 
-        final Sprite spriteD = Drawable.loadSprite(UtilityImage.getImageBuffer(sprite.getSurface()));
+        final Sprite spriteD = Drawable.loadSprite(Core.GRAPHIC.getImageBuffer(sprite.getSurface()));
         spriteD.stretch(90, 100);
         Assert.assertFalse(spriteC.equals(sprite));
     }
@@ -226,11 +226,11 @@ public class DrawableTestTool
      */
     public static void testSpriteTiledLoadError(int tw, int th)
     {
-        final Media media = Media.create("dot.png");
+        final Media media = Core.MEDIA.create("dot.png");
         try
         {
             final SpriteTiled sprite = Drawable.loadSpriteTiled(
-                    UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
+                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), tw, th);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }
@@ -258,11 +258,11 @@ public class DrawableTestTool
      */
     public static void testSpriteAnimatedLoadError(int hf, int vf)
     {
-        final Media media = Media.create("dot.png");
+        final Media media = Core.MEDIA.create("dot.png");
         try
         {
             final SpriteAnimated sprite = Drawable.loadSpriteAnimated(
-                    UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
+                    Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE), hf, vf);
             Assert.assertNotNull(sprite);
             Assert.fail();
         }

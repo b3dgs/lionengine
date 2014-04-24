@@ -15,18 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
-import com.b3dgs.lionengine.Text;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphic;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Renderer;
+import com.b3dgs.lionengine.core.Screen;
+import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.Transform;
 
 /**
  * Factory graphic mock
@@ -67,7 +75,7 @@ public class FactoryGraphicMock
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws IOException
+    public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
         final ImageInfo info = ImageInfo.get(media);
         return new ImageBufferMock(info.getWidth(), info.getHeight(), Transparency.OPAQUE);
@@ -123,13 +131,26 @@ public class FactoryGraphicMock
     @Override
     public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
     {
+        switch (filter)
+        {
+            default:
+                // Nothing
+                break;
+        }
         return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
     }
 
     @Override
-    public void saveImage(ImageBuffer image, OutputStream outputStream) throws IOException
+    public void saveImage(ImageBuffer image, Media media)
     {
-        // Mock
+        try
+        {
+            media.getFile().createNewFile();
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     @Override
@@ -142,5 +163,11 @@ public class FactoryGraphicMock
     public Transform createTransform()
     {
         return new TransformMock();
+    }
+
+    @Override
+    public int[][] loadRaster(Media media)
+    {
+        return Core.GRAPHIC.loadRaster(media);
     }
 }

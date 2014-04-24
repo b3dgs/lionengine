@@ -15,19 +15,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
+
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Media mock implementation.
+ * Mock sequence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FactoryMediaMock
-        implements FactoryMedia
+public class SequenceFailMock
+        extends Sequence
 {
-    @Override
-    public Media createMedia(String path)
+    /**
+     * Constructor.
+     */
+    public SequenceFailMock()
     {
-        return new MediaMock(path);
+        super(null, new Resolution(320, 240, 60));
+    }
+
+    @Override
+    protected void load()
+    {
+        // Mock
+    }
+
+    @Override
+    protected void update(double extrp)
+    {
+        // Mock
+    }
+
+    @Override
+    protected void render(Graphic g)
+    {
+        // Mock
     }
 }

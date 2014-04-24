@@ -20,10 +20,12 @@ package com.b3dgs.lionengine.core;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.mock.AppletMock;
 
 /**
  * Test the config class.

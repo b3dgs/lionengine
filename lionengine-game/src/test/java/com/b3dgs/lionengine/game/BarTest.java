@@ -23,14 +23,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the bar class.
@@ -64,7 +64,7 @@ public class BarTest
     @Test
     public void testBar()
     {
-        final Graphic g = UtilityImage.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
+        final Graphic g = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.BITMASK).createGraphic();
         final Bar bar = new Bar(10, 20);
         bar.setBorderSize(1, 1);
         bar.setColorBackground(ColorRgba.WHITE);

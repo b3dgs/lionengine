@@ -24,9 +24,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityFile;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the file writing and reading.
@@ -44,9 +46,8 @@ public class FileWritingReadingTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        FileWritingReadingTest.PATH = Media.getPath("src", "test", "resources", "file");
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        FileWritingReadingTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -55,7 +56,7 @@ public class FileWritingReadingTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /** Default test file data. */
@@ -67,7 +68,7 @@ public class FileWritingReadingTest
     @Test
     public void testReaderWriter()
     {
-        fileData = Media.create(Media.getPath(FileWritingReadingTest.PATH, "test.dat"));
+        fileData = Core.MEDIA.create(FileWritingReadingTest.PATH, "test.dat");
         try
         {
             testFileWriting();

@@ -15,49 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.GradientColor;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Transform;
 
 /**
- * Screen mock.
+ * Mock graphic.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ScreenMock
-        implements Screen
+public class GraphicMock
+        implements Graphic
 {
-    /** Config. */
-    private final Config config;
-
-    /**
-     * Constructor.
-     * 
-     * @param config The config reference.
-     */
-    public ScreenMock(Config config)
-    {
-        this.config = config;
-    }
-
-    /*
-     * Screen
-     */
-
     @Override
-    public void start()
-    {
-        // Mock
-    }
-
-    @Override
-    public void preUpdate()
-    {
-        // Mock
-    }
-
-    @Override
-    public void update()
+    public void clear(int x, int y, int width, int height)
     {
         // Mock
     }
@@ -69,75 +44,82 @@ public class ScreenMock
     }
 
     @Override
-    public void requestFocus()
+    public void copyArea(int x, int y, int width, int height, int dx, int dy)
     {
         // Mock
     }
 
     @Override
-    public void hideCursor()
+    public void drawImage(ImageBuffer image, int x, int y)
     {
         // Mock
     }
 
     @Override
-    public void showCursor()
+    public void drawImage(ImageBuffer image, Transform op, int x, int y)
     {
         // Mock
     }
 
     @Override
-    public void addKeyListener(InputDeviceKeyListener listener)
+    public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
         // Mock
     }
 
     @Override
-    public void setSequence(Sequence sequence)
-    {
-        sequence.onFocusGained();
-        sequence.onLostFocus();
-    }
-
-    @Override
-    public void setIcon(String filename)
+    public void drawRect(int x, int y, int width, int height, boolean fill)
     {
         // Mock
     }
 
     @Override
-    public Graphic getGraphic()
+    public void drawGradient(int x, int y, int width, int height)
     {
-        return new GraphicMock();
+        // Mock
     }
 
     @Override
-    public Config getConfig()
+    public void drawLine(int x1, int y1, int x2, int y2)
     {
-        return config;
+        // Mock
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public void drawOval(int x, int y, int width, int height, boolean fill)
     {
-        return null;
+        // Mock
     }
 
     @Override
-    public int getX()
+    public void setColor(ColorRgba color)
     {
-        return 0;
+        // Mock
     }
 
     @Override
-    public int getY()
+    public void setColorGradient(GradientColor gradientColor)
     {
-        return 0;
+        // Mock
     }
 
     @Override
-    public boolean isReady()
+    public <G> void setGraphic(G graphic)
     {
-        return true;
+        // Mock
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <G> G getGraphic()
+    {
+        return (G) new GraphicMock();
+    }
+
+    @Override
+    public ColorRgba getColor()
+    {
+        return new ColorRgba(0);
+    }
+
 }

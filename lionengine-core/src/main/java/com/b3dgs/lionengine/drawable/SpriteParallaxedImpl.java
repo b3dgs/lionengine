@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Parallaxed sprite implementation.
@@ -100,30 +100,30 @@ final class SpriteParallaxedImpl
     @Override
     public void prepare(Filter filter)
     {
-        ImageBuffer surface = UtilityImage.getImageBuffer(media, false);
+        ImageBuffer surface = Core.GRAPHIC.getImageBuffer(media, false);
         widthOriginal = surface.getWidth();
         heightOriginal = surface.getHeight();
 
         if (0 != Double.compare(factorH, 1.0) || 0 != Double.compare(factorV, 1.0))
         {
-            surface = UtilityImage.resize(surface, (int) (surface.getWidth() * factorH),
+            surface = Core.GRAPHIC.resize(surface, (int) (surface.getWidth() * factorH),
                     (int) (surface.getHeight() * factorV));
         }
         if (Filter.BILINEAR == filter)
         {
-            surface = UtilityImage.applyFilter(surface, filter);
+            surface = Core.GRAPHIC.applyFilter(surface, filter);
         }
 
         lineWidth = (int) Math.floor(surface.getWidth() * sx / 100.0);
         lineHeight = (int) Math.floor(surface.getHeight() / linesNumber * sy / 100.0);
-        lines = UtilityImage.splitImage(surface, 1, linesNumber);
+        lines = Core.GRAPHIC.splitImage(surface, 1, linesNumber);
         final double factH = sx / 100.0 / 0.6;
 
         for (int i = 0; i < linesNumber; i++)
         {
             final int width = (int) Math.ceil(lines[i].getWidth() * (sx + i * 2 * factH) / 100);
             final int height = lines[i].getHeight() * sy / 100;
-            lines[i] = UtilityImage.resize(lines[i], width, height);
+            lines[i] = Core.GRAPHIC.resize(lines[i], width, height);
         }
     }
 

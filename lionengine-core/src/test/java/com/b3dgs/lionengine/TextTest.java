@@ -22,12 +22,14 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the text class.
@@ -49,7 +51,7 @@ public class TextTest
     {
         EngineCore.start("TextTest", Version.create(1, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
                 new FactoryMediaMock());
-        final ImageBuffer buffer = UtilityImage.createImageBuffer(320, 240, Transparency.OPAQUE);
+        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.OPAQUE);
         TextTest.g = buffer.createGraphic();
     }
 
@@ -69,7 +71,7 @@ public class TextTest
     @Test
     public void testTextNormal()
     {
-        final Text text1 = UtilityImage.createText(Text.DIALOG, 12, TextStyle.NORMAL);
+        final Text text1 = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.NORMAL);
         text1.draw(TextTest.g, 0, 0, TextTest.VALUE);
         text1.draw(TextTest.g, 0, 0, Align.CENTER, TextTest.VALUE);
         text1.draw(TextTest.g, 0, 0, Align.LEFT, TextTest.VALUE);
@@ -95,7 +97,7 @@ public class TextTest
     @Test
     public void testTextBold()
     {
-        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.BOLD);
+        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.BOLD);
         text.draw(TextTest.g, 0, 0, TextTest.VALUE);
     }
 
@@ -105,7 +107,7 @@ public class TextTest
     @Test
     public void testTextItalic()
     {
-        final Text text = UtilityImage.createText(Text.DIALOG, 12, TextStyle.ITALIC);
+        final Text text = Core.GRAPHIC.createText(Text.DIALOG, 12, TextStyle.ITALIC);
         text.draw(TextTest.g, 0, 0, TextTest.VALUE);
     }
 }

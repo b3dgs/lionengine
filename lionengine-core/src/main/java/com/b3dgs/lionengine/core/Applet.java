@@ -17,19 +17,18 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Applet;
-
 /**
- * Applet mock.
+ * Represents the interface for a web applet compatible.
  * 
+ * @param <A> The applet type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AppletMock
-        implements Applet<AppletMock>
+public interface Applet<A>
 {
-    @Override
-    public AppletMock getApplet()
-    {
-        return new AppletMock();
-    }
+    /**
+     * Get applet reference.
+     * 
+     * @return The applet reference.
+     */
+    A getApplet();
 }

@@ -20,9 +20,10 @@ package com.b3dgs.lionengine.game.platform.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilityMath;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 
@@ -75,7 +76,7 @@ public abstract class BackgroundPlatform
      */
     public BackgroundElement createElement(String name, int x, int y, boolean alpha)
     {
-        return new BackgroundElement(x, y, createSprite(Media.create(name), alpha));
+        return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(name), alpha));
     }
 
     /**
@@ -90,7 +91,7 @@ public abstract class BackgroundPlatform
      */
     public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
     {
-        return new BackgroundElement(x, y, createSprite(Media.create(Media.getPath(path, name)), alpha));
+        return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(path, name), alpha));
     }
 
     /**

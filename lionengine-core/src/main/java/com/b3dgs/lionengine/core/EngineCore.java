@@ -51,10 +51,6 @@ public abstract class EngineCore
     private static final String ENGINE_TERMINATED = "LionEngine terminated";
     /** Started engine flag. */
     private static boolean started = false;
-    /** Graphic factory. */
-    static FactoryGraphic factoryGraphic;
-    /** Media factory. */
-    static FactoryMedia factoryMedia;
     /** User program name. */
     private static String programName;
     /** User program version. */
@@ -80,6 +76,9 @@ public abstract class EngineCore
         {
             EngineCore.init(name, version, level);
 
+            FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
+            FactoryMediaProvider.setFactoryMedia(factoryMedia);
+
             // LionEngine started
             final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
             message.append(EngineCore.VERSION).append("\" for \"");
@@ -88,12 +87,6 @@ public abstract class EngineCore
             Verbose.info(message.toString());
 
             EngineCore.started = true;
-
-            // Load low level factory
-            EngineCore.factoryGraphic = factoryGraphic;
-            EngineCore.factoryMedia = factoryMedia;
-            UtilityImage.setGraphicFactory(EngineCore.factoryGraphic);
-            Media.setMediaFactory(factoryMedia);
         }
     }
 

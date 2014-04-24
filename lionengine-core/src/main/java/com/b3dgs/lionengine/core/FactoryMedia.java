@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.Media;
+
 /**
  * Represents the media context factory.
  * 
@@ -30,5 +32,27 @@ public interface FactoryMedia
      * @param path The media path.
      * @return The media instance.
      */
-    Media createMedia(String path);
+    Media create(String path);
+
+    /**
+     * Create a media from an abstract path.
+     * 
+     * @param path The media path.
+     * @return The media instance.
+     */
+    Media create(String... path);
+
+    /**
+     * Get the path separator.
+     * 
+     * @return The path separator.
+     */
+    String getSeparator();
+
+    /**
+     * Set the path separator.
+     * 
+     * @param separator The path separator.
+     */
+    void setSeparator(String separator);
 }

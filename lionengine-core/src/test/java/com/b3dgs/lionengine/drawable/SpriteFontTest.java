@@ -23,13 +23,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the font sprite class.
@@ -49,10 +51,10 @@ public class SpriteFontTest
     @BeforeClass
     public static void setUp()
     {
-        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
-        Media.setMediaFactory(new FactoryMediaMock());
-        SpriteFontTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
-        SpriteFontTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        SpriteFontTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        SpriteFontTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -61,8 +63,8 @@ public class SpriteFontTest
     @AfterClass
     public static void cleanUp()
     {
-        UtilityImage.setGraphicFactory(null);
-        Media.setMediaFactory(null);
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -71,7 +73,7 @@ public class SpriteFontTest
     @Test
     public void testSpriteFont()
     {
-        final Media fontData = Media.create(Media.getPath("src", "test", "resources", "drawable", "fontdata.xml"));
+        final Media fontData = Core.MEDIA.create("src", "test", "resources", "drawable", "fontdata.xml");
         final String text = "a%z";
         final SpriteFont sprite = Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7);
         Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7)));

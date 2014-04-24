@@ -28,6 +28,7 @@ import android.net.Uri;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of

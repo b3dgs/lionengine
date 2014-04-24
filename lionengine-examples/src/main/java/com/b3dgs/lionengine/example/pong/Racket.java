@@ -18,11 +18,11 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -68,7 +68,7 @@ final class Racket
      */
     Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
     {
-        super(new SetupGame(UtilityMedia.get("sample.xml")));
+        super(new SetupGame(Core.MEDIA.create("sample.xml")));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.automatic = automatic;

@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 
 /**
  * Test the midi class.
@@ -42,10 +43,9 @@ public class MidiTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaAwt());
-        Media.setSeparator(java.io.File.separator);
-        MidiTest.MUSIC = Media.create(Media.getPath("src", "test", "resources", "audio", "music.mid"));
-        MidiTest.FAIL = Media.create(Media.getPath("src", "test", "resources", "audio", "fail.mid"));
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaAwt());
+        MidiTest.MUSIC = Core.MEDIA.create("src", "test", "resources", "audio", "music.mid");
+        MidiTest.FAIL = Core.MEDIA.create("src", "test", "resources", "audio", "fail.mid");
     }
 
     /**
@@ -54,7 +54,7 @@ public class MidiTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -97,7 +97,7 @@ public class MidiTest
 
         try
         {
-            AudioMidi.loadMidi(Media.create(""));
+            AudioMidi.loadMidi(Core.MEDIA.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)

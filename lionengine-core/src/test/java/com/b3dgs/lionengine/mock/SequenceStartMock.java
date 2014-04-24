@@ -15,65 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
  * Mock sequence.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceMock
+public class SequenceStartMock
         extends Sequence
 {
-    /** Width. */
-    private int width;
-    /** Height. */
-    private int height;
-    /** Config. */
-    private Config config;
-    /** Device. */
-    private Object device;
-
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public SequenceMock(Loader loader)
+    public SequenceStartMock(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
-        setExtrapolated(true);
-        addKeyListener(null);
-        setSystemCursorVisible(true);
+        setExtrapolated(false);
+        setSystemCursorVisible(false);
     }
 
     @Override
     protected void load()
     {
-        width = getWidth();
-        height = getHeight();
-        config = getConfig();
-        setResolution(new Resolution(640, 480, 60));
-        device = getInputDevice(null);
+        // Mock
     }
 
     @Override
     protected void update(double extrp)
     {
-        loadInternal();
-        start(true, SequenceStartMock.class);
+        start(false, SequenceAsyncMock.class);
+        getFps();
     }
 
     @Override
     protected void render(Graphic g)
     {
-        Verbose.info("Sequence mock info");
-        Verbose.info(String.valueOf(width));
-        Verbose.info(String.valueOf(height));
-        Verbose.info(String.valueOf(config));
-        Verbose.info(String.valueOf(device));
+        // Mock
     }
 }

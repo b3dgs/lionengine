@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.platform.collision;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Keyboard;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -62,7 +62,7 @@ final class Mario
      */
     Mario(Map map, int desiredFps)
     {
-        super(new SetupSurfaceGame(UtilityMedia.get("mario.xml")));
+        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
         this.map = map;
         this.desiredFps = desiredFps;
         movement = new Movement();

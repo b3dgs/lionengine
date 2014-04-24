@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.example.snippet;
 import org.junit.Assert;
 
 import com.b3dgs.lionengine.core.AudioSc68;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Sc68;
-import com.b3dgs.lionengine.core.UtilityMedia;
 
 @SuppressWarnings("all")
 public class ModuleSc68
@@ -34,7 +34,7 @@ public class ModuleSc68
     {
         final Sc68 sc68 = AudioSc68.createSc68Player();
         sc68.setVolume(25);
-        sc68.play(UtilityMedia.get("music.sc68"));
+        sc68.play(Core.MEDIA.create("music.sc68"));
 
         Thread.sleep(1000);
         sc68.pause();

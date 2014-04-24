@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Force;
@@ -51,7 +51,7 @@ final class Ball
      */
     Ball(int screenWidth, int screenHeight)
     {
-        super(new SetupGame(UtilityMedia.get("sample.xml")));
+        super(new SetupGame(Core.MEDIA.create("sample.xml")));
         force = new Force();
         speedInit = 2.5;
         setSize(Ball.SIZE, Ball.SIZE);

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Transparency;
 
 /**

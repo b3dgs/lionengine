@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import javax.swing.JApplet;
 
-import com.b3dgs.lionengine.Applet;
-
 /**
  * Applet implementation.
  * 

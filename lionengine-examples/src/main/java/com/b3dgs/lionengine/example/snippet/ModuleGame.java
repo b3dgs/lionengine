@@ -19,12 +19,12 @@ package com.b3dgs.lionengine.example.snippet;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.FileReading;
@@ -140,7 +140,7 @@ public class ModuleGame
         @Override
         protected SetupGame createSetup(Class<? extends ObjectGame> type)
         {
-            return new SetupGame(UtilityMedia.get(type.getSimpleName() + ".xml"));
+            return new SetupGame(Core.MEDIA.create(type.getSimpleName() + ".xml"));
         }
     }
 
@@ -215,6 +215,6 @@ public class ModuleGame
 
     private void utilityTileExtractor()
     {
-        TileExtractor.start(UtilityMedia.get("level.png"), UtilityMedia.get("sheet.png"), 16, 16, 256, 256);
+        TileExtractor.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheet.png"), 16, 16, 256, 256);
     }
 }

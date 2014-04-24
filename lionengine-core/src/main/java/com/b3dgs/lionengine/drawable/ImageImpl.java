@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
 
 /**
  * Image implementation.
@@ -31,6 +31,9 @@ import com.b3dgs.lionengine.core.UtilityImage;
 final class ImageImpl
         implements Image
 {
+    /** Surface null error. */
+    private static final String ERROR_SURFACE = "Surface must not be null !";
+
     /** Image surface. */
     private final ImageBuffer surface;
 
@@ -41,7 +44,7 @@ final class ImageImpl
      */
     ImageImpl(Media media)
     {
-        this(UtilityImage.getImageBuffer(media, false));
+        this(Core.GRAPHIC.getImageBuffer(media, false));
     }
 
     /**
@@ -51,7 +54,7 @@ final class ImageImpl
      */
     ImageImpl(ImageBuffer surface)
     {
-        Check.notNull(surface, "Surface must not be null !");
+        Check.notNull(surface, ImageImpl.ERROR_SURFACE);
         this.surface = surface;
     }
 

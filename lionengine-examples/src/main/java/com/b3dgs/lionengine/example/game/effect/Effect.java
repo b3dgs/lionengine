@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.UtilityRandom;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;

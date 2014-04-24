@@ -23,11 +23,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the handler object game.
@@ -61,7 +61,7 @@ public class HandlerObjectGameTest
     @Test
     public void testHandlerObjectGame()
     {
-        final SetupGame setup = new SetupGame(Media.create(Media.getPath("src", "test", "resources", "type.xml")));
+        final SetupGame setup = new SetupGame(Core.MEDIA.create("src", "test", "resources", "type.xml"));
 
         final Handler handler = new Handler();
         Assert.assertTrue(handler.size() == 0);

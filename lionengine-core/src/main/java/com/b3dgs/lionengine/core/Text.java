@@ -15,7 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.core;
+
+import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.TextStyle;
 
 /**
  * The text allows to render any {@link String} on screen, at a specified location, using a specified font.

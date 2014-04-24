@@ -24,24 +24,23 @@ import org.junit.Assert;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Checksum;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Strings;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Config;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.UtilityImage;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
@@ -100,7 +99,7 @@ public class ModuleCore
 
     void imageInfo()
     {
-        final ImageInfo info = ImageInfo.get(UtilityMedia.get("dot.png"));
+        final ImageInfo info = ImageInfo.get(Core.MEDIA.create("dot.png"));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals("png", info.getFormat());
@@ -118,8 +117,8 @@ public class ModuleCore
     void media()
     {
         Engine.start("First Code", Version.create(1, 0, 0), "resources");
-        final Media media = UtilityMedia.get("img", "image.png");
-        System.out.println(media.getPath()); // print: resources/img/image.png
+        Core.MEDIA.create("img", "image.png");
+        System.out.println(Core.MEDIA.create()); // print: resources/img/image.png
     }
 
     final class Scene
@@ -169,7 +168,7 @@ public class ModuleCore
     void text()
     {
         // Create the text
-        final Text text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+        final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
 
         // Rendering type 1
         text.setText("Hello");
@@ -259,7 +258,7 @@ public class ModuleCore
 
     void fileReading()
     {
-        final Media file = UtilityMedia.get("test.txt");
+        final Media file = Core.MEDIA.create("test.txt");
         try (FileReading reading = File.createFileReading(file);)
         {
             reading.readBoolean();
@@ -279,7 +278,7 @@ public class ModuleCore
 
     void fileWriting()
     {
-        final Media file = UtilityMedia.get("test.txt");
+        final Media file = Core.MEDIA.create("test.txt");
         try (FileWriting writing = File.createFileWriting(file);)
         {
             writing.writeBoolean(true);
@@ -312,7 +311,7 @@ public class ModuleCore
         node1.add(node2);
 
         // Save the tree
-        final Media file = UtilityMedia.get("file.xml");
+        final Media file = Core.MEDIA.create("file.xml");
         final XmlParser parser = File.createXmlParser();
         parser.save(node1, file);
 
@@ -325,7 +324,7 @@ public class ModuleCore
     void image()
     {
         // Load
-        final Image image = Drawable.loadImage(UtilityMedia.get("image.png"));
+        final Image image = Drawable.loadImage(Core.MEDIA.create("image.png"));
 
         // Render
         image.render(g, 0, 0);
@@ -334,7 +333,7 @@ public class ModuleCore
     void sprite()
     {
         // Load
-        final Sprite sprite = Drawable.loadSprite(UtilityMedia.get("sprite.png"));
+        final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create("sprite.png"));
         sprite.load(false);
 
         // Render
@@ -344,7 +343,7 @@ public class ModuleCore
     void spriteTiled()
     {
         // Load
-        final SpriteTiled tilesheet = Drawable.loadSpriteTiled(UtilityMedia.get("tilesheet.png"), 16, 16);
+        final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
         tilesheet.load(false);
 
         // Render
@@ -355,7 +354,7 @@ public class ModuleCore
     void spriteAnimated()
     {
         // Load
-        final SpriteAnimated animation = Drawable.loadSpriteAnimated(UtilityMedia.get("animation.png"), 7, 1);
+        final SpriteAnimated animation = Drawable.loadSpriteAnimated(Core.MEDIA.create("animation.png"), 7, 1);
         animation.load(false);
         final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
         animation.play(anim);

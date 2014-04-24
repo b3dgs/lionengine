@@ -22,14 +22,16 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.core.FactoryGraphicMock;
-import com.b3dgs.lionengine.core.FactoryMediaMock;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryGraphicProvider;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the sprite class.
@@ -49,10 +51,10 @@ public class SpriteTest
     @BeforeClass
     public static void setUp()
     {
-        UtilityImage.setGraphicFactory(new FactoryGraphicMock());
-        Media.setMediaFactory(new FactoryMediaMock());
-        SpriteTest.media = Media.create(Media.getPath("src", "test", "resources", "drawable", "image.png"));
-        SpriteTest.g = UtilityImage.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
+        FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        SpriteTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        SpriteTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
     /**
@@ -61,8 +63,8 @@ public class SpriteTest
     @AfterClass
     public static void cleanUp()
     {
-        UtilityImage.setGraphicFactory(null);
-        Media.setMediaFactory(null);
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -72,7 +74,7 @@ public class SpriteTest
     public void testSprite()
     {
         // Sprite with existing surface
-        final ImageBuffer surface = UtilityImage.createImageBuffer(16, 16, Transparency.OPAQUE);
+        final ImageBuffer surface = Core.GRAPHIC.createImageBuffer(16, 16, Transparency.OPAQUE);
         final Sprite spriteA = Drawable.loadSprite(surface);
 
         Assert.assertNotNull(spriteA.getSurface());
@@ -102,7 +104,7 @@ public class SpriteTest
     {
         try
         {
-            Drawable.loadSprite(Media.create("void"));
+            Drawable.loadSprite(Core.MEDIA.create("void"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

@@ -15,20 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine;
+package com.b3dgs.lionengine.mock;
+
+import com.b3dgs.lionengine.core.EngineCore;
 
 /**
- * Represents the interface for a web applet compatible.
+ * Engine mock.
  * 
- * @param <A> The applet type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Applet<A>
+public class EngineMock
+        extends EngineCore
 {
     /**
-     * Get applet reference.
-     * 
-     * @return The applet reference.
+     * Constructor.
      */
-    A getApplet();
+    public EngineMock()
+    {
+        super();
+    }
 }

@@ -22,8 +22,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.FactoryMediaMock;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
  * Test the image info class.
@@ -41,9 +42,8 @@ public class ImageInfoTest
     @BeforeClass
     public static void prepareTest()
     {
-        Media.setMediaFactory(new FactoryMediaMock());
-        Media.setSeparator(java.io.File.separator);
-        ImageInfoTest.PATH = Media.getPath("src", "test", "resources", "imageinfo");
+        FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
+        ImageInfoTest.PATH = UtilityFile.getPath("src", "test", "resources", "imageinfo");
     }
 
     /**
@@ -52,7 +52,7 @@ public class ImageInfoTest
     @AfterClass
     public static void cleanUp()
     {
-        Media.setMediaFactory(null);
+        FactoryMediaProvider.setFactoryMedia(null);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ImageInfoTest
      */
     private static void testImageInfo(String type)
     {
-        final ImageInfo info = ImageInfo.get(Media.create(Media.getPath(ImageInfoTest.PATH, "image." + type)));
+        final ImageInfo info = ImageInfo.get(Core.MEDIA.create(ImageInfoTest.PATH, "image." + type));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals(type, info.getFormat());
@@ -93,26 +93,26 @@ public class ImageInfoTest
     public void testImageFailure()
     {
         ImageInfoTest.testImageInfoFailure(null);
-        ImageInfoTest.testImageInfoFailure(Media.create(""));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image.tga")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.gif")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.gif")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.jpg")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.jpg")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error3.jpg")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error4.jpg")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error5.jpg")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.png")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.png")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.bmp")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error1.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error2.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error3.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error4.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error5.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error6.tiff")));
-        ImageInfoTest.testImageInfoFailure(Media.create(Media.getPath(ImageInfoTest.PATH, "image_error7.tiff")));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(""));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image.tga"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error1.gif"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error2.gif"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error1.jpg"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error2.jpg"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error3.jpg"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error4.jpg"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error5.jpg"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error1.png"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error2.png"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error1.bmp"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error1.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error2.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error3.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error4.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error5.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error6.tiff"));
+        ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error7.tiff"));
     }
 
     /**
@@ -127,12 +127,12 @@ public class ImageInfoTest
         ImageInfoTest.testImageInfo("jpg");
         ImageInfoTest.testImageInfo("tiff");
 
-        final ImageInfo info = ImageInfo.get(Media.create(Media.getPath(ImageInfoTest.PATH, "image.tif")));
+        final ImageInfo info = ImageInfo.get(Core.MEDIA.create(ImageInfoTest.PATH, "image.tif"));
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals("tiff", info.getFormat());
 
-        final ImageInfo info2 = ImageInfo.get(Media.create(Media.getPath(ImageInfoTest.PATH, "image2.tiff")));
+        final ImageInfo info2 = ImageInfo.get(Core.MEDIA.create(ImageInfoTest.PATH, "image2.tiff"));
         Assert.assertNotNull(info2);
     }
 }

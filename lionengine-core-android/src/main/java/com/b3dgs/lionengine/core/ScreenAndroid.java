@@ -25,7 +25,7 @@ import android.inputmethodservice.Keyboard;
 import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Graphic;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -81,7 +81,7 @@ public final class ScreenAndroid
 
         this.config = config;
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
-        graphics = UtilityImage.createGraphic();
+        graphics = Core.GRAPHIC.createGraphic();
 
         setResolution(config.getOutput());
         ScreenAndroid.holder.addCallback(this);

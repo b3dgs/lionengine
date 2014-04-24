@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Graphic;
-import com.b3dgs.lionengine.Text;
 import com.b3dgs.lionengine.TextStyle;
-import com.b3dgs.lionengine.core.UtilityImage;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
@@ -57,7 +57,7 @@ public class TextGame
      */
     public TextGame(String fontName, int size, TextStyle style)
     {
-        text = UtilityImage.createText(fontName, size, style);
+        text = Core.GRAPHIC.createText(fontName, size, style);
     }
 
     /**

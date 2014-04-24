@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
@@ -72,7 +72,7 @@ public final class FactoryProduction
     @Override
     protected SetupGame createSetup(Class<? extends Entity> type)
     {
-        final Media config = UtilityMedia.get("entities", type.getSimpleName() + ".xml");
+        final Media config = Core.MEDIA.create("entities", type.getSimpleName() + ".xml");
         return new SetupGame(config);
     }
 }

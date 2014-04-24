@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import org.junit.Assert;
 
-import com.b3dgs.lionengine.Graphic;
 import com.b3dgs.lionengine.Resolution;
 
 /**

@@ -22,10 +22,16 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
+import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
+import com.b3dgs.lionengine.mock.SequenceFailMock;
+import com.b3dgs.lionengine.mock.SequenceMock;
 
 /**
  * Test the loader class.

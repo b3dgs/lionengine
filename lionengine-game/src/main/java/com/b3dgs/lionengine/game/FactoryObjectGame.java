@@ -22,7 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Core;
 
 /**
  * It performs a list of {@link SetupGame} considering an input class type. This way it is possible to create new
@@ -143,8 +144,7 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
 
-        final Media config = Media.create(Media.getPath(folder, type.getSimpleName()
-                + FactoryObjectGame.FILE_DATA_EXTENSION));
+        final Media config = Core.MEDIA.create(folder, type.getSimpleName() + FactoryObjectGame.FILE_DATA_EXTENSION);
         return createSetup(type, config);
     }
 }
