@@ -63,21 +63,27 @@ public final class FactoryGraphicProvider
     }
 
     @Override
-    public Screen createScreen(Renderer renderer, Config config)
+    public Screen createScreen(Renderer renderer)
     {
-        return FactoryGraphicProvider.factoryGraphic.createScreen(renderer, config);
-    }
-
-    @Override
-    public Text createText(String fontName, int size, TextStyle style)
-    {
-        return FactoryGraphicProvider.factoryGraphic.createText(fontName, size, style);
+        return FactoryGraphicProvider.factoryGraphic.createScreen(renderer);
     }
 
     @Override
     public Graphic createGraphic()
     {
         return FactoryGraphicProvider.factoryGraphic.createGraphic();
+    }
+
+    @Override
+    public Transform createTransform()
+    {
+        return FactoryGraphicProvider.factoryGraphic.createTransform();
+    }
+
+    @Override
+    public Text createText(String fontName, int size, TextStyle style)
+    {
+        return FactoryGraphicProvider.factoryGraphic.createText(fontName, size, style);
     }
 
     @Override
@@ -180,11 +186,5 @@ public final class FactoryGraphicProvider
             }
         }
         return rasters;
-    }
-
-    @Override
-    public Transform createTransform()
-    {
-        return FactoryGraphicProvider.factoryGraphic.createTransform();
     }
 }

@@ -18,10 +18,12 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 
 /**
- * Engine base implementation.
+ * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
+ * library used (as it is done for AWT, SWT and Android engine implementation).
  * 
  * @author Pierre-Alexandre
  */
@@ -45,6 +47,16 @@ public abstract class EngineCore
     private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
     /** Error message verbose. */
     private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
+    /** Error message graphic factory. */
+    private static final String ERROR_FACTORY_GRAPHIC = "The graphic factory must not be null !";
+    /** Error message media factory. */
+    private static final String ERROR_FACTORY_MEDIA = "The media factory must not be null !";
+    /** Error message engine already started. */
+    private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
+    /** Error message engine not started. */
+    private static final String ERROR_STARTED_NOT = "The engine has not been started !";
+    /** Empty property. */
+    private static final String EMPTY_PROPERTY = "";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
@@ -54,7 +66,7 @@ public abstract class EngineCore
     /** User program name. */
     private static String programName;
     /** User program version. */
-    private static String programVersion;
+    private static Version programVersion;
 
     /**
      * Start engine. Has to be called before anything and only one time, in the main.
@@ -64,22 +76,28 @@ public abstract class EngineCore
      * @param level The verbose level (must not be <code>null</code>).
      * @param factoryGraphic The graphic factory (must not be <code>null</code>).
      * @param factoryMedia The media factory (must not be <code>null</code>).
+     * @throws LionEngineException If the engine has already been started.
      */
     public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
             FactoryMedia factoryMedia)
     {
-        Check.notNull(name, EngineCore.ERROR_PROGRAM_NAME);
-        Check.notNull(version, EngineCore.ERROR_PROGRAM_VERSION);
-        Check.notNull(level, EngineCore.ERROR_VERBOSE_LEVEL);
-
         if (!EngineCore.started)
         {
-            EngineCore.init(name, version, level);
+            Check.notNull(name, EngineCore.ERROR_PROGRAM_NAME);
+            Check.notNull(version, EngineCore.ERROR_PROGRAM_VERSION);
+            Check.notNull(level, EngineCore.ERROR_VERBOSE_LEVEL);
+            Check.notNull(factoryGraphic, EngineCore.ERROR_FACTORY_GRAPHIC);
+            Check.notNull(factoryMedia, EngineCore.ERROR_FACTORY_MEDIA);
+
+            Verbose.set(level);
+            Verbose.prepareLogger();
+
+            EngineCore.programName = name;
+            EngineCore.programVersion = version;
 
             FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
             FactoryMediaProvider.setFactoryMedia(factoryMedia);
 
-            // LionEngine started
             final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
             message.append(EngineCore.VERSION).append("\" for \"");
             message.append(EngineCore.programName).append(" ");
@@ -88,37 +106,62 @@ public abstract class EngineCore
 
             EngineCore.started = true;
         }
+        else
+        {
+            throw new LionEngineException(EngineCore.ERROR_STARTED_ALREADY);
+        }
     }
 
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
-     * the same jvm execution.
+     * the same jvm execution. This function is automatically called when the program life cycle reach the end.
+     * 
+     * @throws LionEngineException If the engine has not been started.
      */
     public static void terminate()
     {
-        EngineCore.started = false;
-        EngineCore.programName = null;
-        EngineCore.programVersion = null;
-        Verbose.info(EngineCore.ENGINE_TERMINATED);
+        if (EngineCore.started)
+        {
+            EngineCore.started = false;
+            EngineCore.programName = null;
+            EngineCore.programVersion = null;
+            FactoryGraphicProvider.setFactoryGraphic(null);
+            FactoryMediaProvider.setFactoryMedia(null);
+            Verbose.info(EngineCore.ENGINE_TERMINATED);
+        }
+        else
+        {
+            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+        }
     }
 
     /**
-     * Get the program name (Engine must have been started).
+     * Get the program name.
      * 
      * @return The program name.
+     * @throws LionEngineException If the engine has not been started.
      */
     public static String getProgramName()
     {
+        if (!EngineCore.started)
+        {
+            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+        }
         return EngineCore.programName;
     }
 
     /**
-     * Get the program version (Engine must have been started).
+     * Get the program version.
      * 
      * @return The program version.
+     * @throws LionEngineException If the engine has not been started.
      */
-    public static String getProgramVersion()
+    public static Version getProgramVersion()
     {
+        if (!EngineCore.started)
+        {
+            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+        }
         return EngineCore.programVersion;
     }
 
@@ -134,10 +177,10 @@ public abstract class EngineCore
 
     /**
      * Get the system property. If the property is not valid due to a {@link SecurityException}, an empty string is
-     * returned. A <code>null</code> if returned if there is not any corresponding property.
+     * returned.
      * 
      * @param property The system property.
-     * @return The system property value.
+     * @return The system property value (<code>null</code> if there is not any corresponding property).
      */
     public static String getSystemProperty(String property)
     {
@@ -147,22 +190,7 @@ public abstract class EngineCore
         }
         catch (final SecurityException exception)
         {
-            return "";
+            return EngineCore.EMPTY_PROPERTY;
         }
-    }
-
-    /**
-     * Initialize engine.
-     * 
-     * @param name The program name.
-     * @param version The program version.
-     * @param level The verbose level.
-     */
-    private static void init(String name, Version version, Verbose level)
-    {
-        Verbose.set(level);
-        Verbose.prepareLogger();
-        EngineCore.programName = name;
-        EngineCore.programVersion = version.toString();
     }
 }

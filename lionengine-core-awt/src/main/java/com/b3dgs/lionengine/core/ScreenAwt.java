@@ -57,8 +57,8 @@ import com.b3dgs.lionengine.Transparency;
 final class ScreenAwt
         implements Screen, FocusListener
 {
-    /** Error message config. */
-    private static final String ERROR_CONFIG = "The configuration must exists !";
+    /** Error message renderer. */
+    private static final String ERROR_RENDERER = "The renderer must not be null !";
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
     /** Error message applet. */
@@ -136,15 +136,16 @@ final class ScreenAwt
      * Constructor.
      * 
      * @param renderer The renderer reference.
-     * @param config The config reference.
      */
-    ScreenAwt(Renderer renderer, Config config)
+    ScreenAwt(Renderer renderer)
     {
-        Check.notNull(config, ScreenAwt.ERROR_CONFIG);
+        Check.notNull(renderer, ScreenAwt.ERROR_RENDERER);
         if (GraphicsEnvironment.isHeadless())
         {
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
+        this.renderer = renderer;
+        config = renderer.getConfig();
 
         // Initialize environment
         final GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -154,8 +155,6 @@ final class ScreenAwt
         graphics = Core.GRAPHIC.createGraphic();
         hasApplet = applet != null;
         devices = new HashMap<>(2);
-        this.renderer = renderer;
-        this.config = config;
 
         // Prepare main frame
         frame = hasApplet ? null : initMainFrame();

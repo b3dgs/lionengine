@@ -107,7 +107,7 @@ public class FactoryGraphicProviderTest
         final Config config = new Config(new Resolution(320, 240, 60), 32, true);
         final Renderer renderer = Core.GRAPHIC.createRenderer(config);
         Assert.assertNotNull(renderer);
-        Assert.assertNotNull(Core.GRAPHIC.createScreen(renderer, config));
+        Assert.assertNotNull(Core.GRAPHIC.createScreen(renderer));
         Assert.assertNotNull(Core.GRAPHIC.createTransform());
 
         final ImageBuffer imageBuffer = Core.GRAPHIC.createImageBuffer(16, 32, Transparency.OPAQUE);

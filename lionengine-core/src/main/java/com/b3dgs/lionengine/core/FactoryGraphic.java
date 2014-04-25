@@ -20,13 +20,20 @@ package com.b3dgs.lionengine.core;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
 /**
- * Represents the graphic context factory.
+ * Represents the graphic factory.
  * 
+ * @see Renderer
+ * @see Screen
+ * @see Graphic
+ * @see Text
+ * @see ImageBuffer
+ * @see Transform
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface FactoryGraphic
@@ -43,10 +50,23 @@ public interface FactoryGraphic
      * Create a screen.
      * 
      * @param renderer The renderer reference.
-     * @param config The config reference.
      * @return The screen instance.
      */
-    Screen createScreen(Renderer renderer, Config config);
+    Screen createScreen(Renderer renderer);
+
+    /**
+     * Create a graphic context.
+     * 
+     * @return The graphic context.
+     */
+    Graphic createGraphic();
+
+    /**
+     * Create a transform.
+     * 
+     * @return The created transform.
+     */
+    Transform createTransform();
 
     /**
      * Crate a text.
@@ -57,13 +77,6 @@ public interface FactoryGraphic
      * @return The created text.
      */
     Text createText(String fontName, int size, TextStyle style);
-
-    /**
-     * Create a graphic context.
-     * 
-     * @return The graphic context.
-     */
-    Graphic createGraphic();
 
     /**
      * Create an image buffer.
@@ -81,6 +94,7 @@ public interface FactoryGraphic
      * @param media The image media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
+     * @throws LionEngineException If an error occurs when reading the image.
      */
     ImageBuffer getImageBuffer(Media media, boolean alpha);
 
@@ -93,7 +107,7 @@ public interface FactoryGraphic
     ImageBuffer getImageBuffer(ImageBuffer imageBuffer);
 
     /**
-     * Apply color mask to image.
+     * Apply color mask to the image.
      * 
      * @param imageBuffer The image reference.
      * @param maskColor The color mask.
@@ -102,12 +116,12 @@ public interface FactoryGraphic
     ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor);
 
     /**
-     * Split an image into an array of sub image (data not shared).
+     * Split an image into an array of sub image.
      * 
      * @param image The image to split.
-     * @param h The number of horizontal divisions.
-     * @param v The number of vertical divisions.
-     * @return The splited images.
+     * @param h The number of horizontal divisions (> 0).
+     * @param v The number of vertical divisions (> 0).
+     * @return The splited images array (can not be empty).
      */
     ImageBuffer[] splitImage(ImageBuffer image, int h, int v);
 
@@ -152,6 +166,7 @@ public interface FactoryGraphic
      * @param image The input image.
      * @param filter The filter to use.
      * @return The filtered image as a new instance.
+     * @throws LionEngineException If the filter is not supported.
      */
     ImageBuffer applyFilter(ImageBuffer image, Filter filter);
 
@@ -160,6 +175,7 @@ public interface FactoryGraphic
      * 
      * @param image The image to save.
      * @param media The output media.
+     * @throws LionEngineException If an error occurs when saving the image.
      */
     void saveImage(ImageBuffer image, Media media);
 
@@ -181,15 +197,9 @@ public interface FactoryGraphic
     /**
      * Load a raster data from a file.
      * 
-     * @param media The raster media path.
-     * @return The raster data.
+     * @param media The raster media.
+     * @return The raster data (can not be empty).
+     * @throws LionEngineException If the raster data from the media are invalid.
      */
     int[][] loadRaster(Media media);
-
-    /**
-     * Create a transform.
-     * 
-     * @return The created transform.
-     */
-    Transform createTransform();
 }

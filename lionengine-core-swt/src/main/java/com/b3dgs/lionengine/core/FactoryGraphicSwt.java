@@ -117,21 +117,27 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public Screen createScreen(Renderer renderer, Config config)
+    public Screen createScreen(Renderer renderer)
     {
-        return new ScreenSwt(renderer, config);
-    }
-
-    @Override
-    public Text createText(String fontName, int size, TextStyle style)
-    {
-        return new TextSwt(fontName, size, style);
+        return new ScreenSwt(renderer);
     }
 
     @Override
     public Graphic createGraphic()
     {
         return new GraphicSwt();
+    }
+
+    @Override
+    public Transform createTransform()
+    {
+        return new TransformSwt();
+    }
+
+    @Override
+    public Text createText(String fontName, int size, TextStyle style)
+    {
+        return new TextSwt(fontName, size, style);
     }
 
     @Override
@@ -305,11 +311,5 @@ final class FactoryGraphicSwt
     public int[][] loadRaster(Media media)
     {
         return Core.GRAPHIC.loadRaster(media);
-    }
-
-    @Override
-    public Transform createTransform()
-    {
-        return new TransformSwt();
     }
 }

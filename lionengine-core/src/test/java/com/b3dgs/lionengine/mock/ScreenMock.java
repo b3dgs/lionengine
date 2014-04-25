@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
+import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
 import com.b3dgs.lionengine.core.Sequence;
 
@@ -32,17 +33,17 @@ import com.b3dgs.lionengine.core.Sequence;
 public class ScreenMock
         implements Screen
 {
-    /** Config. */
-    private final Config config;
+    /** Renderer. */
+    private final Renderer renderer;
 
     /**
      * Constructor.
      * 
-     * @param config The config reference.
+     * @param renderer The renderer reference.
      */
-    public ScreenMock(Config config)
+    public ScreenMock(Renderer renderer)
     {
-        this.config = config;
+        this.renderer = renderer;
     }
 
     /*
@@ -119,7 +120,7 @@ public class ScreenMock
     @Override
     public Config getConfig()
     {
-        return config;
+        return renderer.getConfig();
     }
 
     @Override

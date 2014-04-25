@@ -105,7 +105,7 @@ final class TextAwt
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        final Graphics2D g2d = g.getGraphic();
+        final Graphics2D g2d = (Graphics2D) g.getGraphic();
         final FontRenderContext context = g2d.getFontRenderContext();
         final GlyphVector glyphVector = font.createGlyphVector(context, text);
         final Rectangle2D textSize = font.getStringBounds(text, context);

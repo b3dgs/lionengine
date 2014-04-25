@@ -130,7 +130,7 @@ public enum Verbose
      * 
      * @param verbose Verbosity level.
      */
-    static void set(Verbose verbose)
+    public static void set(Verbose verbose)
     {
         Verbose.level = verbose;
     }
@@ -194,13 +194,12 @@ public enum Verbose
      */
     private static void verbose(Verbose level, Class<?> clazz, String function, Throwable thrown, String... message)
     {
-        String verbose = null;
         final StringBuilder builder = new StringBuilder("");
         for (final String element : message)
         {
             builder.append(element);
         }
-        verbose = builder.toString();
+        final String verbose = builder.toString();
         switch (level)
         {
             case INFORMATION:

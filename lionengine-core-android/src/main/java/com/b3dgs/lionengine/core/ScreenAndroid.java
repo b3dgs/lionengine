@@ -38,8 +38,8 @@ import com.b3dgs.lionengine.Resolution;
 public final class ScreenAndroid
         implements Screen, SurfaceHolder.Callback
 {
-    /** Error message config. */
-    private static final String ERROR_CONFIG = "The configuration must exists !";
+    /** Error message renderer. */
+    private static final String ERROR_RENDERER = "The renderer must not be null !";
     /** View. */
     static ViewAndroid view;
     /** Holder. */
@@ -73,13 +73,12 @@ public final class ScreenAndroid
      * Constructor.
      * 
      * @param renderer The renderer reference.
-     * @param config The config reference.
      */
-    ScreenAndroid(Renderer renderer, Config config)
+    ScreenAndroid(Renderer renderer)
     {
-        Check.notNull(config, ScreenAndroid.ERROR_CONFIG);
+        Check.notNull(renderer, ScreenAndroid.ERROR_RENDERER);
 
-        this.config = config;
+        this.config = renderer.getConfig();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
         graphics = Core.GRAPHIC.createGraphic();
 

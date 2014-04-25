@@ -22,7 +22,7 @@ package com.b3dgs.lionengine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class GradientColor
+public final class ColorGradient
 {
     /** First horizontal point. */
     private final int x1;
@@ -47,7 +47,7 @@ public final class GradientColor
      * @param y2 The last vertical location.
      * @param color2 The last color.
      */
-    public GradientColor(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
+    public ColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
     {
         this.x1 = x1;
         this.y1 = y1;

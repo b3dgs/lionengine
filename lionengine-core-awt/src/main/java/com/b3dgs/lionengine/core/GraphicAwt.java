@@ -24,8 +24,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -167,23 +167,22 @@ final class GraphicAwt
     }
 
     @Override
-    public void setColorGradient(GradientColor gc)
+    public void setColorGradient(ColorGradient gc)
     {
         gradientPaint = new GradientPaint(gc.getX1(), gc.getY1(), new Color(gc.getColor1().getRgba()), gc.getX2(),
                 gc.getY2(), new Color(gc.getColor2().getRgba()));
     }
 
     @Override
-    public <G> void setGraphic(G graphic)
+    public void setGraphic(Object graphic)
     {
         g = (Graphics2D) graphic;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <G> G getGraphic()
+    public Object getGraphic()
     {
-        return (G) g;
+        return g;
     }
 
     @Override

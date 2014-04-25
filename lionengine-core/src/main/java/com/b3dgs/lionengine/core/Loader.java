@@ -133,7 +133,7 @@ public final class Loader
     }
 
     /** Renderer instance. */
-    final Renderer renderer;
+    private final Renderer renderer;
 
     /**
      * Constructor.
@@ -163,5 +163,15 @@ public final class Loader
         {
             throw new LionEngineException(Loader.ERROR_STARTED);
         }
+    }
+
+    /**
+     * Get the renderer used.
+     * 
+     * @return The renderer used.
+     */
+    Renderer getRenderer()
+    {
+        return renderer;
     }
 }

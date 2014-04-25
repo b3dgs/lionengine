@@ -105,7 +105,7 @@ final class TextSwt
     @Override
     public void draw(Graphic g, int x, int y, Align alignment, String text)
     {
-        final GC gc = g.getGraphic();
+        final GC gc = (GC) g.getGraphic();
         gc.setTextAntialias(SWT.OFF);
         gc.setFont(font);
         final Point textSize = gc.stringExtent(text);

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.core.Graphic;
 
@@ -50,7 +50,7 @@ public class Bar
     /** Foreground color. */
     private ColorRgba foreground;
     /** Gradient color. */
-    private GradientColor gradientColor;
+    private ColorGradient gradientColor;
     /** Left-Right referential. */
     private boolean leftRight;
     /** Up-Down referential. */
@@ -193,7 +193,7 @@ public class Bar
      */
     public void setColorGradient(int x1, int y1, ColorRgba color1, int x2, int y2, ColorRgba color2)
     {
-        gradientColor = new GradientColor(x1, y1, color1, x2, y2, color2);
+        gradientColor = new ColorGradient(x1, y1, color1, x2, y2, color2);
     }
 
     /**

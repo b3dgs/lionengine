@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
 
 /**
  * Graphic interface representing the screen buffer.
@@ -108,7 +108,7 @@ public interface Graphic
      * <code>x&nbsp;+&nbsp;width&nbsp;-&nbsp;1</code>. The top and bottom edges are at <code>y</code> and
      * <code>y&nbsp;+&nbsp;height&nbsp;-&nbsp;1</code>. The resulting rectangle covers an area <code>width</code> pixels
      * wide by <code>height</code> pixels tall.
-     * The gradient is defined by {@link #setColorGradient(GradientColor)}.
+     * The gradient is defined by {@link #setColorGradient(ColorGradient)}.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
@@ -151,23 +151,21 @@ public interface Graphic
      * 
      * @param gradientColor The gradient color.
      */
-    void setColorGradient(GradientColor gradientColor);
+    void setColorGradient(ColorGradient gradientColor);
 
     /**
      * Set the graphic context.
      * 
-     * @param <G> The graphic type used.
      * @param graphic The graphic context.
      */
-    <G> void setGraphic(G graphic);
+    void setGraphic(Object graphic);
 
     /**
      * Get the graphic context.
      * 
-     * @param <G> The graphic type used.
      * @return The graphic context.
      */
-    <G> G getGraphic();
+    Object getGraphic();
 
     /**
      * Get the current color.

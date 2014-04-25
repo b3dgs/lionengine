@@ -93,10 +93,10 @@ public class LoaderTest
         final Loader loader = new Loader(config);
         Verbose.info("********* EXCEPTED EXCEPTION *********");
         loader.start(SequenceFailMock.class);
-        Assert.assertNull(loader.renderer.nextSequence);
+        Assert.assertNull(loader.getRenderer().nextSequence);
         try
         {
-            loader.renderer.join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -117,7 +117,7 @@ public class LoaderTest
         loader.start(SequenceMock.class);
         try
         {
-            loader.renderer.join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -128,7 +128,7 @@ public class LoaderTest
         loader2.start(SequenceArgumentsMock.class, new Object());
         try
         {
-            loader2.renderer.join();
+            loader2.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -151,7 +151,7 @@ public class LoaderTest
         loader3.start(SequenceMock.class);
         try
         {
-            loader3.renderer.join();
+            loader3.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -164,7 +164,7 @@ public class LoaderTest
         loader4.start(SequenceMock.class);
         try
         {
-            loader4.renderer.join();
+            loader4.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -177,7 +177,7 @@ public class LoaderTest
         loader5.start(SequenceMock.class);
         try
         {
-            loader5.renderer.join();
+            loader5.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {

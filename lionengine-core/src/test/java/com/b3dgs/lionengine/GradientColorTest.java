@@ -40,7 +40,7 @@ public class GradientColorTest
         final ColorRgba color1 = ColorRgba.BLACK;
         final ColorRgba color2 = ColorRgba.WHITE;
 
-        final GradientColor gradientColor = new GradientColor(x1, y1, color1, x2, y2, color2);
+        final ColorGradient gradientColor = new ColorGradient(x1, y1, color1, x2, y2, color2);
         Assert.assertEquals(x1, gradientColor.getX1());
         Assert.assertEquals(y1, gradientColor.getY1());
         Assert.assertEquals(color1, gradientColor.getColor1());

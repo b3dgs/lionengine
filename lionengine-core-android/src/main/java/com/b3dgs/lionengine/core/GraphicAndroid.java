@@ -27,8 +27,8 @@ import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -58,7 +58,7 @@ final class GraphicAndroid
     /** The graphic output. */
     private Canvas g;
     /** Last gradient. */
-    private GradientColor gradientColor;
+    private ColorGradient gradientColor;
     /** Linear gradient. */
     private LinearGradient linearGradient;
 
@@ -206,7 +206,7 @@ final class GraphicAndroid
     }
 
     @Override
-    public void setColorGradient(GradientColor gc)
+    public void setColorGradient(ColorGradient gc)
     {
         if (gc != gradientColor)
         {
@@ -216,16 +216,15 @@ final class GraphicAndroid
     }
 
     @Override
-    public <G> void setGraphic(G graphic)
+    public void setGraphic(Object graphic)
     {
         g = (Canvas) graphic;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <G> G getGraphic()
+    public Object getGraphic()
     {
-        return (G) g;
+        return g;
     }
 
     @Override

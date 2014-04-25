@@ -255,7 +255,7 @@ public abstract class Renderer
             buf = null;
             gbuf = null;
             transform = null;
-            graphic.setGraphic(gbuf);
+            graphic.setGraphic(null);
         }
         // Scaled rendering
         else
@@ -299,7 +299,7 @@ public abstract class Renderer
      * 
      * @return The configuration.
      */
-    final Config getConfig()
+    public final Config getConfig()
     {
         return config;
     }
@@ -498,7 +498,7 @@ public abstract class Renderer
     {
         // First init
         started = true;
-        screen = Core.GRAPHIC.createScreen(this, config);
+        screen = Core.GRAPHIC.createScreen(this);
         screen.start();
         nextSequence = Loader.createSequence(firstSequence, loader, arguments);
         waitForScreenReady();

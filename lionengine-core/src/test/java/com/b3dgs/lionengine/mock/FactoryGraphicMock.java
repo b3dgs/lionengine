@@ -51,9 +51,9 @@ public class FactoryGraphicMock
     }
 
     @Override
-    public Screen createScreen(Renderer renderer, Config config)
+    public Screen createScreen(Renderer renderer)
     {
-        return new ScreenMock(config);
+        return new ScreenMock(renderer);
     }
 
     @Override

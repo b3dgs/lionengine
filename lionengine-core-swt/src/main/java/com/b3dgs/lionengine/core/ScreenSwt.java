@@ -50,8 +50,8 @@ import com.b3dgs.lionengine.Transparency;
 final class ScreenSwt
         implements Screen, FocusListener
 {
-    /** Error message config. */
-    private static final String ERROR_CONFIG = "The configuration must exists !";
+    /** Error message renderer. */
+    private static final String ERROR_RENDERER = "The renderer must not be null !";
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
     /** Error message windowed. */
@@ -94,11 +94,10 @@ final class ScreenSwt
      * Constructor.
      * 
      * @param renderer The renderer reference.
-     * @param config The config reference.
      */
-    ScreenSwt(Renderer renderer, Config config)
+    ScreenSwt(Renderer renderer)
     {
-        Check.notNull(config, ScreenSwt.ERROR_CONFIG);
+        Check.notNull(renderer, ScreenSwt.ERROR_RENDERER);
 
         // Initialize environment
         try
@@ -110,7 +109,7 @@ final class ScreenSwt
             throw new LionEngineException(exception, ScreenSwt.ERROR_DISPLAY);
         }
         this.renderer = renderer;
-        this.config = config;
+        this.config = renderer.getConfig();
 
         cursorHidden = FactoryGraphicSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);
@@ -305,7 +304,7 @@ final class ScreenSwt
         buf.setVisible(true);
         buf.update();
         gbuf = buffer.createGraphic();
-        lastGc = gbuf.getGraphic();
+        lastGc = (GC) gbuf.getGraphic();
         graphics.setGraphic(lastGc);
         frame.update();
         frame.setEnabled(true);
@@ -332,7 +331,7 @@ final class ScreenSwt
                 lastGc.dispose();
             }
             gbuf = buffer.createGraphic();
-            lastGc = gbuf.getGraphic();
+            lastGc = (GC) gbuf.getGraphic();
             graphics.setGraphic(lastGc);
         }
     }

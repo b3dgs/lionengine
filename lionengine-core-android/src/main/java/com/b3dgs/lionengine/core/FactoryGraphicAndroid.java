@@ -76,21 +76,27 @@ final class FactoryGraphicAndroid
     }
 
     @Override
-    public Screen createScreen(Renderer renderer, Config config)
+    public Screen createScreen(Renderer renderer)
     {
-        return new ScreenAndroid(renderer, config);
-    }
-
-    @Override
-    public Text createText(String fontName, int size, TextStyle style)
-    {
-        return new TextAndroid(fontName, size, style);
+        return new ScreenAndroid(renderer);
     }
 
     @Override
     public Graphic createGraphic()
     {
         return new GraphicAndroid();
+    }
+
+    @Override
+    public Transform createTransform()
+    {
+        return new TransformAndroid();
+    }
+
+    @Override
+    public Text createText(String fontName, int size, TextStyle style)
+    {
+        return new TextAndroid(fontName, size, style);
     }
 
     @Override
@@ -280,11 +286,5 @@ final class FactoryGraphicAndroid
     public int[][] loadRaster(Media media)
     {
         return Core.GRAPHIC.loadRaster(media);
-    }
-
-    @Override
-    public Transform createTransform()
-    {
-        return new TransformAndroid();
     }
 }

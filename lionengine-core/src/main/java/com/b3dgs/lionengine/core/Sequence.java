@@ -95,7 +95,7 @@ public abstract class Sequence
         this.loader = loader;
         this.resolution = resolution;
         loadedSemaphore = new Semaphore(0);
-        renderer = loader.renderer;
+        renderer = loader.getRenderer();
         renderer.getConfig().setSource(resolution);
         width = resolution.getWidth();
         height = resolution.getHeight();

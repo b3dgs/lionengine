@@ -22,8 +22,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
 
 /**
  * Main interface with the graphic output, representing the screen buffer.
@@ -183,7 +183,7 @@ final class GraphicSwt
     }
 
     @Override
-    public void setColorGradient(GradientColor gc)
+    public void setColorGradient(ColorGradient gc)
     {
         final ColorRgba color1 = gc.getColor1();
         final ColorRgba color2 = gc.getColor2();
@@ -200,7 +200,7 @@ final class GraphicSwt
     }
 
     @Override
-    public <G> void setGraphic(G graphic)
+    public void setGraphic(Object graphic)
     {
         if (gc != null)
         {
@@ -209,11 +209,10 @@ final class GraphicSwt
         gc = (GC) graphic;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <G> G getGraphic()
+    public Object getGraphic()
     {
-        return (G) gc;
+        return gc;
     }
 
     @Override

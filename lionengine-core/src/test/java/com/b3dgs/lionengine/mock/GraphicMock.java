@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.mock;
 
+import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.GradientColor;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Transform;
@@ -98,22 +98,21 @@ public class GraphicMock
     }
 
     @Override
-    public void setColorGradient(GradientColor gradientColor)
+    public void setColorGradient(ColorGradient gradientColor)
     {
         // Mock
     }
 
     @Override
-    public <G> void setGraphic(G graphic)
+    public void setGraphic(Object graphic)
     {
         // Mock
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <G> G getGraphic()
+    public Object getGraphic()
     {
-        return (G) new GraphicMock();
+        return new GraphicMock();
     }
 
     @Override

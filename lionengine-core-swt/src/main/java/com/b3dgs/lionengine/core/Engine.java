@@ -194,7 +194,7 @@ public final class Engine
         {
             try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename));)
             {
-                writer.writeUTF(EngineCore.getProgramVersion());
+                writer.writeUTF(EngineCore.getProgramVersion().toString());
                 writer.flush();
             }
             catch (final IOException exception)

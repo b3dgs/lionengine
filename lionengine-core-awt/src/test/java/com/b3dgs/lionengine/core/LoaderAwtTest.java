@@ -100,10 +100,10 @@ public class LoaderAwtTest
         final Loader loader2 = new Loader(config2);
         Assert.assertFalse(error);
         loader2.start(SequenceAwtMock.class);
-        loader2.renderer.setUncaughtExceptionHandler(handler);
+        loader2.getRenderer().setUncaughtExceptionHandler(handler);
         try
         {
-            loader2.renderer.join();
+            loader2.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
@@ -136,7 +136,7 @@ public class LoaderAwtTest
         final Config config = new Config(new Resolution(320, 240, 60), 32, true);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
-        loader.renderer.join();
+        loader.getRenderer().join();
 
         Engine.terminate();
     }
@@ -154,7 +154,7 @@ public class LoaderAwtTest
         final Config config = new Config(new Resolution(640, 480, 0), 16, true, Filter.BILINEAR);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
-        loader.renderer.join();
+        loader.getRenderer().join();
 
         Engine.terminate();
     }
@@ -173,7 +173,7 @@ public class LoaderAwtTest
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
 
-        loader.renderer.join();
+        loader.getRenderer().join();
     }
 
     /**
@@ -189,7 +189,7 @@ public class LoaderAwtTest
         final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
-        loader.renderer.join();
+        loader.getRenderer().join();
 
         Engine.terminate();
     }
@@ -210,7 +210,7 @@ public class LoaderAwtTest
         final Config config = new Config(new Resolution((int) size.getWidth(), (int) size.getHeight(), 60), 16, false);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock3.class);
-        loader.renderer.join();
+        loader.getRenderer().join();
 
         Engine.terminate();
     }
@@ -227,7 +227,7 @@ public class LoaderAwtTest
         final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
         final Loader loader = new Loader(config);
         loader.start(SequenceAwtMock.class);
-        loader.renderer.join();
+        loader.getRenderer().join();
 
         Engine.terminate();
     }
