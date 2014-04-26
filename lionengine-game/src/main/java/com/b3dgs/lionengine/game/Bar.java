@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.ColorGradient;
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilityMath;
 import com.b3dgs.lionengine.core.Graphic;
 

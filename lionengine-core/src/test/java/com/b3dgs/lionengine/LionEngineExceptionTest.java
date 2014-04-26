@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
@@ -43,7 +42,8 @@ public class LionEngineExceptionTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        Verbose.info("*** TEST EXPECTED EXCEPTION ***");
+        System.out.println("*********************************** EXPECTED VERBOSE ***********************************");
+        System.out.flush();
     }
 
     /**
@@ -52,8 +52,9 @@ public class LionEngineExceptionTest
     @AfterClass
     public static void cleanUp()
     {
-        Verbose.info("*************************");
         FactoryMediaProvider.setFactoryMedia(null);
+        System.out.println("****************************************************************************************");
+        System.out.flush();
     }
 
     /**

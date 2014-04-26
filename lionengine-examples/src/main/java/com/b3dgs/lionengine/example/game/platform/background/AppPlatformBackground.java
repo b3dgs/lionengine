@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Main class.
@@ -39,7 +40,7 @@ public final class AppPlatformBackground
      */
     public static void main(String[] args)
     {
-        Engine.start("Platform Background", Version.create(1, 0, 0),
+        Engine.start("Platform Background", Version.create(1, 0, 0), Verbose.CRITICAL,
                 UtilityFile.getPath("resources", "game", "platform", "background"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);

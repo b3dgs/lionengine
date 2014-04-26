@@ -53,11 +53,11 @@ public interface Media
     File getFile();
 
     /**
-     * Get the media stream.
+     * Get the media input stream.
      * 
-     * @return The media stream.
+     * @return The media input stream.
      */
-    InputStream getStream();
+    InputStream getInputStream();
 
     /**
      * Get the media output stream.

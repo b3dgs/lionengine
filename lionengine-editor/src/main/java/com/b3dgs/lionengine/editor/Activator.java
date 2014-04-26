@@ -99,7 +99,7 @@ public class Activator
     public void start(BundleContext bundleContext) throws Exception
     {
         Activator.context = bundleContext;
-        Engine.start("LionEngine Editor", Version.create(6, 2, 0), "", Verbose.CRITICAL);
+        Engine.start("LionEngine Editor", Version.create(6, 2, 0), Verbose.CRITICAL, "");
     }
 
     @Override

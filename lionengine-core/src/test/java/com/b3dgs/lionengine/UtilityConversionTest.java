@@ -31,30 +31,21 @@ import org.junit.Test;
 public class UtilityConversionTest
 {
     /**
-     * Test the utility conversion class.
+     * Test the core class.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testUtilityConversionClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testUtilityConversionClass() throws NoSuchMethodException, InstantiationException,
+            IllegalAccessException, InvocationTargetException
     {
         final Constructor<UtilityConversion> utilityConversion = UtilityConversion.class.getDeclaredConstructor();
         utilityConversion.setAccessible(true);
-        try
-        {
-            final UtilityConversion clazz = utilityConversion.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final UtilityConversion clazz = utilityConversion.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

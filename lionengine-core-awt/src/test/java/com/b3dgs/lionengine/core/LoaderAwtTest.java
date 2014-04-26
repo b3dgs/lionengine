@@ -17,18 +17,11 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -37,198 +30,45 @@ import com.b3dgs.lionengine.Version;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class LoaderAwtTest
+        extends LoaderTest
 {
+    /**
+     * Prepare the test.
+     */
+    @BeforeClass
+    public static void prepareTest()
+    {
+        Engine.start("LoaderTest", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
+        System.out.flush();
+    }
+
     /**
      * Clean up test.
      */
     @AfterClass
     public static void cleanUp()
     {
-        Engine.terminate();
+        EngineCore.terminate();
+        System.out.println("****************************************************************************************");
+        System.out.flush();
     }
 
     /**
-     * Wait after each test.
+     * Wait between each test.
+     * 
+     * @throws InterruptedException If error.
      */
     @After
-    public void waitAfterTest()
+    public void waitBetweenTest() throws InterruptedException
     {
-        try
-        {
-            Thread.sleep(100);
-        }
-        catch (final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-        }
-        Engine.terminate();
+        Thread.sleep(100);
     }
 
-    /** Check for uncaught exception. */
-    volatile boolean error = false;
-
-    /**
-     * Test the loader.
-     */
     @Test
-    public void testLoaderFail()
+    @Override
+    public void testLoaderSequenceFailLoadInternal()
     {
-        Engine.start("LoaderTest", Version.create(1, 0, 0), "resources");
-        final Config config = new Config(new Resolution(320, 240, 60), 32, true);
-        final Loader loader = new Loader(config);
-        try
-        {
-            loader.start(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        Engine.terminate();
-
-        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
-        {
-            @Override
-            public void uncaughtException(Thread thread, Throwable throwable)
-            {
-                error = true;
-            }
-        };
-
-        final Config config2 = new Config(new Resolution(10000, 10000, 100), 32, false);
-        final Loader loader2 = new Loader(config2);
-        Assert.assertFalse(error);
-        loader2.start(SequenceAwtMock.class);
-        loader2.getRenderer().setUncaughtExceptionHandler(handler);
-        try
-        {
-            loader2.getRenderer().join();
-        }
-        catch (final InterruptedException exception)
-        {
-            Assert.fail();
-        }
-        Assert.assertTrue(error);
-        Engine.terminate();
-
-        try
-        {
-            loader.start(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-    }
-
-    /**
-     * Test the loader.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoader() throws InterruptedException
-    {
-        Engine.start("LoaderTest", Version.create(1, 0, 0), "resources");
-
-        final Config config = new Config(new Resolution(320, 240, 60), 32, true);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock.class);
-        loader.getRenderer().join();
-
-        Engine.terminate();
-    }
-
-    /**
-     * Test the loader with bilinear.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoaderBilinear() throws InterruptedException
-    {
-        Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
-
-        final Config config = new Config(new Resolution(640, 480, 0), 16, true, Filter.BILINEAR);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock.class);
-        loader.getRenderer().join();
-
-        Engine.terminate();
-    }
-
-    /**
-     * Test the loader with hq2x.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoaderHq2x() throws InterruptedException
-    {
-        Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
-
-        final Config config = new Config(new Resolution(613, 273, 0), 16, true, Filter.HQ2X);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock.class);
-
-        loader.getRenderer().join();
-    }
-
-    /**
-     * Test the loader with hq3x.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoaderHq3x() throws InterruptedException
-    {
-        Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
-
-        final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock.class);
-        loader.getRenderer().join();
-
-        Engine.terminate();
-    }
-
-    /**
-     * Test the loader with fullscreen.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoaderFullScreen() throws InterruptedException
-    {
-        Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
-
-        final Toolkit toolkit = Toolkit.getDefaultToolkit();
-        final Dimension size = toolkit.getScreenSize();
-
-        final Config config = new Config(new Resolution((int) size.getWidth(), (int) size.getHeight(), 60), 16, false);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock3.class);
-        loader.getRenderer().join();
-
-        Engine.terminate();
-    }
-
-    /**
-     * Test the loader with hq3x.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test
-    public void testLoaderInterrupt() throws InterruptedException
-    {
-        Engine.start("LoaderFilterTest", Version.create(1, 0, 0), "resources");
-        final Config config = new Config(new Resolution(533, 189, 0), 16, true, Filter.HQ3X);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceAwtMock.class);
-        loader.getRenderer().join();
-
-        Engine.terminate();
+        // Skip
     }
 }

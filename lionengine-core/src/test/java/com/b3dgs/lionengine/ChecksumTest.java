@@ -38,30 +38,21 @@ public class ChecksumTest
     private static final int VALUE = 489464795;
 
     /**
-     * Test the checksum constructor.
+     * Test the core class.
      * 
-     * @throws IllegalArgumentException If error.
+     * @throws NoSuchMethodException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
-     * @throws SecurityException If error.
-     * @throws NoSuchMethodException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testChecksumConstructor() throws InstantiationException, IllegalAccessException,
-            IllegalArgumentException, NoSuchMethodException, SecurityException
+    @Test(expected = InvocationTargetException.class)
+    public void testChecksumConstructor() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<Checksum> checksum = Checksum.class.getDeclaredConstructor(String.class);
         checksum.setAccessible(true);
-        try
-        {
-            final Checksum clazz = checksum.newInstance("null");
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Checksum clazz = checksum.newInstance("null");
+        Assert.assertNotNull(clazz);
     }
 
     /**

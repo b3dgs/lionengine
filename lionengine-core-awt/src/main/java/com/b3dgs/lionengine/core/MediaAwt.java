@@ -62,7 +62,7 @@ final class MediaAwt
     }
 
     @Override
-    public InputStream getStream()
+    public InputStream getInputStream()
     {
         return UtilityMedia.getInputStream(this, "MediaAwt", false);
     }

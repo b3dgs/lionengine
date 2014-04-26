@@ -104,7 +104,7 @@ final class XmlParserImpl
         {
             final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
             constructeur.setErrorHandler(null);
-            final Document document = constructeur.parse(media.getStream());
+            final Document document = constructeur.parse(media.getInputStream());
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(root);
         }

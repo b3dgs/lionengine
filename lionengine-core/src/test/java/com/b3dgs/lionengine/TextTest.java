@@ -41,7 +41,7 @@ public class TextTest
     /** Text value. */
     private static final String VALUE = "test";
     /** Graphic. */
-    private static Graphic g;
+    protected static Graphic g;
 
     /**
      * Setup test.

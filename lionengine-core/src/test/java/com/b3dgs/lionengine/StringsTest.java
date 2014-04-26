@@ -31,30 +31,21 @@ import org.junit.Test;
 public class StringsTest
 {
     /**
-     * Test the strings class.
+     * Test the core class.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testStringsClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testStringsClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<Strings> strings = Strings.class.getDeclaredConstructor();
         strings.setAccessible(true);
-        try
-        {
-            final Strings clazz = strings.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Strings clazz = strings.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

@@ -36,7 +36,7 @@ public class RendererMock
      */
     public RendererMock(Config config)
     {
-        super(config, "Mock");
+        super(config, "Renderer Mock");
     }
 
     /*

@@ -33,35 +33,26 @@ public class CoreTest
     /**
      * Test the core class.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testCoreClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<Core> strings = Core.class.getDeclaredConstructor();
         strings.setAccessible(true);
-        try
-        {
-            final Core clazz = strings.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Core clazz = strings.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**
      * Test the core fields.
      */
     @Test
-    public void testCore()
+    public void testFields()
     {
         Assert.assertNotNull(Core.GRAPHIC);
         Assert.assertNotNull(Core.MEDIA);

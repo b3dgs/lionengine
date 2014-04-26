@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.core.Sequence;
 public class ScreenMock
         implements Screen
 {
+    /** Wait for screen ready. */
+    public static boolean wait = false;
     /** Renderer. */
     private final Renderer renderer;
 
@@ -144,6 +146,10 @@ public class ScreenMock
     @Override
     public boolean isReady()
     {
+        if (ScreenMock.wait)
+        {
+            return false;
+        }
         return true;
     }
 }

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.entity;
 import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Main class.
@@ -36,7 +37,7 @@ public final class AppGameEntity
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Entity", Version.create(1, 0, 0), UtilityFile.getPath("resources", "game"));
+        Engine.start("Game Entity", Version.create(1, 0, 0), Verbose.CRITICAL, UtilityFile.getPath("resources", "game"));
 
         final Factory factory = new Factory();
         final Handler handler = new Handler();

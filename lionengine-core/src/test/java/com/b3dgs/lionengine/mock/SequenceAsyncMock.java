@@ -49,7 +49,7 @@ public class SequenceAsyncMock
     @Override
     protected void update(double extrp)
     {
-        end();
+        end(SequenceSingleMock.class);
     }
 
     @Override

@@ -31,7 +31,9 @@ import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 import com.b3dgs.lionengine.mock.SequenceArgumentsMock;
 import com.b3dgs.lionengine.mock.SequenceFailMock;
-import com.b3dgs.lionengine.mock.SequenceMock;
+import com.b3dgs.lionengine.mock.SequenceSingleMock;
+import com.b3dgs.lionengine.mock.SequenceStartMock;
+import com.b3dgs.lionengine.mock.SequenceWaitMock;
 
 /**
  * Test the loader class.
@@ -40,6 +42,13 @@ import com.b3dgs.lionengine.mock.SequenceMock;
  */
 public class LoaderTest
 {
+    /** Uncaught flag. */
+    static boolean uncaught = false;
+    /** Output. */
+    private static final Resolution OUTPUT = new Resolution(640, 480, 60);
+    /** Config. */
+    private static final Config CONFIG = new Config(LoaderTest.OUTPUT, 16, true);
+
     /**
      * Prepare the test.
      */
@@ -48,6 +57,8 @@ public class LoaderTest
     {
         EngineCore.start("Test", Version.create(1, 0, 0), Verbose.CRITICAL, new FactoryGraphicMock(),
                 new FactoryMediaMock());
+        System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
+        System.out.flush();
     }
 
     /**
@@ -57,43 +68,48 @@ public class LoaderTest
     public static void cleanUp()
     {
         EngineCore.terminate();
+        System.out.println("****************************************************************************************");
+        System.out.flush();
     }
 
     /**
-     * Test the loader failure cases.
+     * Test the loader with no config.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoaderFailConfig()
+    {
+        Assert.assertNotNull(new Loader(null));
+    }
+
+    /**
+     * Test the loader with no sequence.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoaderFailSequence()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(null);
+    }
+
+    /**
+     * Test the loader with wrong sequence.
      */
     @Test
-    public void testLoaderFail()
+    public void testLoaderFailSequenceConstructor()
     {
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(LoaderTest.CONFIG);
 
-        try
+        final Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler()
         {
-            final Loader loader = new Loader(null);
-            Assert.assertNotNull(loader);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        try
-        {
-            final Loader loader = new Loader(config);
-            loader.start(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        final Loader loader = new Loader(config);
-        Verbose.info("********* EXCEPTED EXCEPTION *********");
+            @Override
+            public void uncaughtException(Thread t, Throwable exception)
+            {
+                LoaderTest.uncaught = true;
+            }
+        };
+        loader.getRenderer().setUncaughtExceptionHandler(handler);
         loader.start(SequenceFailMock.class);
-        Assert.assertNull(loader.getRenderer().nextSequence);
+        Assert.assertNull(loader.getRenderer().getNextSequence());
         try
         {
             loader.getRenderer().join();
@@ -102,19 +118,41 @@ public class LoaderTest
         {
             Assert.fail();
         }
-        Verbose.info("**************************************");
+        Assert.assertTrue(LoaderTest.uncaught);
+        LoaderTest.uncaught = false;
     }
 
     /**
-     * Test the loader.
+     * Test the loader already started.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoaderStarted()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(SequenceSingleMock.class);
+        loader.start(SequenceSingleMock.class);
+    }
+
+    /**
+     * Test the loader with a sequence that fail during the load internal.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoaderSequenceFailLoadInternal()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        final Sequence sequence = Loader.createSequence(SequenceSingleMock.class, loader);
+        sequence.loadInternal();
+        sequence.loadInternal();
+    }
+
+    /**
+     * Test the loader with a single sequence.
      */
     @Test
-    public void testLoader()
+    public void testLoaderSequenceSingle()
     {
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceMock.class);
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(SequenceSingleMock.class);
         try
         {
             loader.getRenderer().join();
@@ -123,66 +161,119 @@ public class LoaderTest
         {
             Assert.fail();
         }
+    }
 
-        final Loader loader2 = new Loader(config);
-        loader2.start(SequenceArgumentsMock.class, new Object());
+    /**
+     * Test the loader with a sequence that have arguments.
+     */
+    @Test
+    public void testLoaderSequenceArgument()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(SequenceArgumentsMock.class, new Object());
         try
         {
-            loader2.getRenderer().join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
             Assert.fail();
         }
+    }
 
+    /**
+     * Test the loader with a single sequence.
+     */
+    @Test
+    public void testLoaderSequenceWait()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(SequenceWaitMock.class);
         try
         {
-            loader2.start(SequenceArgumentsMock.class, new Object());
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        final Resolution output3 = new Resolution(640, 480, 0);
-        final Config config3 = new Config(output3, 16, false, Filter.HQ2X);
-        final Loader loader3 = new Loader(config3);
-        loader3.start(SequenceMock.class);
-        try
-        {
-            loader3.getRenderer().join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
             Assert.fail();
         }
+    }
 
-        final Resolution output4 = new Resolution(960, 720, 60);
-        final Config config4 = new Config(output4, 16, false, Filter.HQ3X);
-        final Loader loader4 = new Loader(config4);
-        loader4.start(SequenceMock.class);
+    /**
+     * Test the loader with linked sequences.
+     */
+    @Test
+    public void testLoaderSequenceLinked()
+    {
+        final Loader loader = new Loader(LoaderTest.CONFIG);
+        loader.start(SequenceStartMock.class);
         try
         {
-            loader4.getRenderer().join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
             Assert.fail();
         }
+    }
 
-        final Resolution output5 = new Resolution(320, 240, 0);
-        final Config config5 = new Config(output5, 16, true, Filter.BILINEAR);
-        final Loader loader5 = new Loader(config5);
-        loader5.start(SequenceMock.class);
+    /**
+     * Test the loader with a bilinear filter.
+     */
+    @Test
+    public void testLoaderFilterBilinear()
+    {
+        final Resolution output = new Resolution(320, 240, 0);
+        final Config config = new Config(output, 16, true, Filter.BILINEAR);
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
         try
         {
-            loader5.getRenderer().join();
+            loader.getRenderer().join();
         }
         catch (final InterruptedException exception)
         {
             Assert.fail();
         }
+    }
 
+    /**
+     * Test the loader with a hq2x filter.
+     */
+    @Test
+    public void testLoaderFilterHq2x()
+    {
+        final Resolution output = new Resolution(640, 480, 0);
+        final Config config = new Config(output, 16, false, Filter.HQ2X);
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
+        try
+        {
+            loader.getRenderer().join();
+        }
+        catch (final InterruptedException exception)
+        {
+            Assert.fail();
+        }
+    }
+
+    /**
+     * Test the loader with a hq3x filter.
+     */
+    @Test
+    public void testLoaderFilterHq3x()
+    {
+        final Resolution output = new Resolution(960, 720, 60);
+        final Config config = new Config(output, 16, false, Filter.HQ3X);
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
+        try
+        {
+            loader.getRenderer().join();
+        }
+        catch (final InterruptedException exception)
+        {
+            Assert.fail();
+        }
     }
 }

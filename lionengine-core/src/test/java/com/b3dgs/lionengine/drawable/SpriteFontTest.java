@@ -41,9 +41,11 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class SpriteFontTest
 {
     /** Image media. */
-    private static Media media;
+    protected static Media media;
+    /** Font data. */
+    protected static Media font;
     /** Graphic test output. */
-    private static Graphic g;
+    protected static Graphic g;
 
     /**
      * Prepare test.
@@ -54,6 +56,7 @@ public class SpriteFontTest
         FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
         SpriteFontTest.media = Core.MEDIA.create("src", "test", "resources", "drawable", "image.png");
+        SpriteFontTest.font = Core.MEDIA.create("src", "test", "resources", "drawable", "fontdata.xml");
         SpriteFontTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
@@ -73,10 +76,9 @@ public class SpriteFontTest
     @Test
     public void testSpriteFont()
     {
-        final Media fontData = Core.MEDIA.create("src", "test", "resources", "drawable", "fontdata.xml");
         final String text = "a%z";
-        final SpriteFont sprite = Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7);
-        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7)));
+        final SpriteFont sprite = Drawable.loadSpriteFont(SpriteFontTest.media, SpriteFontTest.font, 6, 7);
+        Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, SpriteFontTest.font, 6, 7)));
 
         final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(SpriteFontTest.media, sprite);
         Assert.assertEquals(info.getWidth(), sprite.getWidthOriginal());
@@ -95,9 +97,9 @@ public class SpriteFontTest
         Assert.assertTrue(sprite.getTextWidth(text) >= 1);
         Assert.assertTrue(sprite.getTextHeight(text) >= 0);
 
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, SpriteFontTest.font, 6, 7)));
 
         sprite.stretch(90, 110);
-        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, fontData, 6, 7)));
+        Assert.assertFalse(sprite.equals(Drawable.loadSpriteFont(SpriteFontTest.media, SpriteFontTest.font, 6, 7)));
     }
 }

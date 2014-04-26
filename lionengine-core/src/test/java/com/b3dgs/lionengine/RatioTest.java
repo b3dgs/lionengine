@@ -31,31 +31,29 @@ import org.junit.Test;
 public class RatioTest
 {
     /**
-     * Test the ratio constructor.
+     * Test the core class.
      * 
      * @throws NoSuchMethodException If error.
-     * @throws SecurityException If error.
-     * @throws InstantiationException If error.
      * @throws IllegalAccessException If error.
-     * @throws IllegalArgumentException If error.
+     * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testRatioClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testRatioClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<Ratio> constructor = Ratio.class.getDeclaredConstructor();
         constructor.setAccessible(true);
-        try
-        {
-            final Ratio ratio = constructor.newInstance();
-            Assert.assertNotNull(ratio);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Ratio ratio = constructor.newInstance();
+        Assert.assertNotNull(ratio);
+    }
 
+    /**
+     * Test the ratio.
+     */
+    @Test
+    public void testRatio()
+    {
         Assert.assertFalse(Ratio.equals(Ratio.R16_10, Ratio.R16_9));
         Assert.assertTrue(Ratio.equals(Ratio.R4_3, Ratio.R4_3));
         Assert.assertFalse(Ratio.equals(Ratio.R16_9, Ratio.R4_3));

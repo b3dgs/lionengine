@@ -38,30 +38,21 @@ public class UtilityMathTest
     private static final double PRECISION = 0.000001;
 
     /**
-     * Test the utility math class.
+     * Test the core class.
      * 
      * @throws NoSuchMethodException If error.
-     * @throws SecurityException If error.
-     * @throws InstantiationException If error.
      * @throws IllegalAccessException If error.
-     * @throws IllegalArgumentException If error.
+     * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testUtilityMathClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testUtilityMathClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<UtilityMath> utilityMath = UtilityMath.class.getDeclaredConstructor();
         utilityMath.setAccessible(true);
-        try
-        {
-            final UtilityMath clazz = utilityMath.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final UtilityMath clazz = utilityMath.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

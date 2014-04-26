@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.File;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -32,24 +30,32 @@ import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
- * Test the utility image class.
+ * Test the factory graphic provider class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryGraphicProviderTest
 {
+    /** Resources path. */
+    protected static final String PATH = UtilityFile.getPath("src", "test", "resources", "graphic");
+    /** Config. */
+    protected static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
+
     /** Image. */
-    private static Media IMAGE;
+    protected static Media MEDIA_IMAGE;
     /** Save image. */
-    private static Media SAVE;
+    protected static Media MEDIA_SAVE;
     /** Raster. */
-    private static Media RASTER;
+    protected static Media MEDIA_RASTER;
     /** Raster error. */
-    private static Media RASTER_ERROR;
+    protected static Media RASTER_ERROR;
+    /** Image. */
+    protected static ImageBuffer IMAGE;
 
     /**
      * Prepare test.
@@ -59,11 +65,14 @@ public class FactoryGraphicProviderTest
     {
         FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        FactoryGraphicProviderTest.IMAGE = Core.MEDIA.create("src", "test", "resources", "utilityimage", "image.png");
-        FactoryGraphicProviderTest.SAVE = Core.MEDIA.create("src", "test", "resources", "utilityimage", "save.png");
-        FactoryGraphicProviderTest.RASTER = Core.MEDIA.create("src", "test", "resources", "utilityimage", "raster.xml");
-        FactoryGraphicProviderTest.RASTER_ERROR = Core.MEDIA.create("src", "test", "resources", "utilityimage",
-                "raster_error.xml");
+
+        FactoryGraphicProviderTest.MEDIA_IMAGE = Core.MEDIA.create(FactoryGraphicProviderTest.PATH, "image.png");
+        FactoryGraphicProviderTest.MEDIA_SAVE = Core.MEDIA.create(FactoryGraphicProviderTest.PATH, "save.png");
+        FactoryGraphicProviderTest.MEDIA_RASTER = Core.MEDIA.create(FactoryGraphicProviderTest.PATH, "raster.xml");
+        FactoryGraphicProviderTest.RASTER_ERROR = Core.MEDIA
+                .create(FactoryGraphicProviderTest.PATH, "raster_error.xml");
+
+        FactoryGraphicProviderTest.IMAGE = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.MEDIA_IMAGE, true);
     }
 
     /**
@@ -77,72 +86,185 @@ public class FactoryGraphicProviderTest
     }
 
     /**
-     * Test creation of a wrong image buffer.
-     * 
-     * @param width The image width.
-     * @param height The image height.
+     * Test negative image width.
      */
-    private static void testCreateImageBufferFail(int width, int height)
+    @Test(expected = NegativeArraySizeException.class)
+    public void testNegativeImageWidth()
     {
-        try
-        {
-            Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
-            Assert.fail();
-        }
-        catch (final NegativeArraySizeException exception)
-        {
-            // Success
-        }
+        Core.GRAPHIC.createImageBuffer(-1, 1, Transparency.OPAQUE);
     }
 
     /**
-     * Test testUtilityImage functions.
+     * Test negative image height.
+     */
+    @Test(expected = NegativeArraySizeException.class)
+    public void testNegativeImageHeight()
+    {
+        Core.GRAPHIC.createImageBuffer(1, -1, Transparency.OPAQUE);
+    }
+
+    /**
+     * Test create renderer.
      */
     @Test
-    public void testUtilityImage()
+    public void testCreateRenderer()
     {
-        FactoryGraphicProviderTest.testCreateImageBufferFail(-1, 1);
-        FactoryGraphicProviderTest.testCreateImageBufferFail(1, -1);
+        Assert.assertNotNull(Core.GRAPHIC.createRenderer(FactoryGraphicProviderTest.CONFIG));
+    }
 
-        final Config config = new Config(new Resolution(320, 240, 60), 32, true);
-        final Renderer renderer = Core.GRAPHIC.createRenderer(config);
-        Assert.assertNotNull(renderer);
+    /**
+     * Test create screen.
+     */
+    @Test
+    public void testCreateScreen()
+    {
+        final Renderer renderer = Core.GRAPHIC.createRenderer(FactoryGraphicProviderTest.CONFIG);
         Assert.assertNotNull(Core.GRAPHIC.createScreen(renderer));
-        Assert.assertNotNull(Core.GRAPHIC.createTransform());
+    }
 
+    /**
+     * Test create text.
+     */
+    @Test
+    public void testCreateText()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.createText("test", 10, TextStyle.NORMAL));
+    }
+
+    /**
+     * Test create transform.
+     */
+    @Test
+    public void testCreateTransform()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.createTransform());
+    }
+
+    /**
+     * Test create image buffer.
+     */
+    @Test
+    public void testCreateImageBuffer()
+    {
         final ImageBuffer imageBuffer = Core.GRAPHIC.createImageBuffer(16, 32, Transparency.OPAQUE);
 
         Assert.assertEquals(imageBuffer.getWidth(), 16);
         Assert.assertEquals(imageBuffer.getHeight(), 32);
+    }
 
-        final ImageBuffer clone = Core.GRAPHIC.getImageBuffer(imageBuffer);
-        Assert.assertEquals(imageBuffer.getWidth(), clone.getWidth());
-        Assert.assertEquals(imageBuffer.getHeight(), clone.getHeight());
+    /**
+     * Test get image buffer from image.
+     */
+    @Test
+    public void testGetImageBufferFromImage()
+    {
+        final ImageBuffer imageBuffer = Core.GRAPHIC.createImageBuffer(16, 32, Transparency.OPAQUE);
+        final ImageBuffer copy = Core.GRAPHIC.getImageBuffer(imageBuffer);
 
-        final ImageBuffer image0 = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.IMAGE, true);
-        final ImageBuffer image1 = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.IMAGE, false);
+        Assert.assertEquals(imageBuffer.getWidth(), copy.getWidth());
+        Assert.assertEquals(imageBuffer.getHeight(), copy.getHeight());
+    }
 
-        Assert.assertEquals(image1.getWidth(), image0.getWidth());
-        Assert.assertEquals(image1.getHeight(), image0.getHeight());
+    /**
+     * Test get image buffer from media.
+     */
+    @Test
+    public void testGetImageBufferFromMedia()
+    {
+        final ImageBuffer imageA = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.MEDIA_IMAGE, true);
+        final ImageBuffer imageB = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.MEDIA_IMAGE, false);
 
-        final ImageBuffer image4 = Core.GRAPHIC.applyMask(image1, ColorRgba.BLACK);
-        Assert.assertEquals(image1.getWidth(), image4.getWidth());
-        Assert.assertEquals(image1.getHeight(), image4.getHeight());
+        Assert.assertNotEquals(imageA, imageB);
+        Assert.assertEquals(imageB.getWidth(), imageA.getWidth());
+        Assert.assertEquals(imageB.getHeight(), imageA.getHeight());
+    }
 
-        Core.GRAPHIC.rotate(image1, 90);
-        final ImageBuffer resized = Core.GRAPHIC.resize(image1, 1, 2);
+    /**
+     * Test get image buffer failure with not existing media.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetImageBufferFailureMedia()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("null"), false));
+    }
+
+    /**
+     * Test get image buffer failure with wrong image.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testGetImageBufferFailureWrongImage()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("wrong_image.png"), false));
+    }
+
+    /**
+     * Test apply mask.
+     */
+    @Test
+    public void testApplyMask()
+    {
+        final ImageBuffer mask = Core.GRAPHIC.applyMask(FactoryGraphicProviderTest.IMAGE, ColorRgba.BLACK);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, mask);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), mask.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), mask.getHeight());
+    }
+
+    /**
+     * Test rotate.
+     */
+    @Test
+    public void testRotate()
+    {
+        final ImageBuffer rotate = Core.GRAPHIC.rotate(FactoryGraphicProviderTest.IMAGE, 90);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, rotate);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), rotate.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), rotate.getHeight());
+
+    }
+
+    /**
+     * Test resize.
+     */
+    @Test
+    public void testResize()
+    {
+        final ImageBuffer resized = Core.GRAPHIC.resize(FactoryGraphicProviderTest.IMAGE, 1, 2);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, resized);
         Assert.assertEquals(1, resized.getWidth());
         Assert.assertEquals(2, resized.getHeight());
+    }
 
-        final ImageBuffer flipH = Core.GRAPHIC.flipHorizontal(image1);
-        Assert.assertEquals(image1.getWidth(), flipH.getWidth());
-        Assert.assertEquals(image1.getHeight(), flipH.getHeight());
+    /**
+     * Test flip horizontal.
+     */
+    @Test
+    public void testFlipHorizontal()
+    {
+        final ImageBuffer horizontal = Core.GRAPHIC.flipHorizontal(FactoryGraphicProviderTest.IMAGE);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, horizontal);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), horizontal.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), horizontal.getHeight());
+    }
 
-        final ImageBuffer flipV = Core.GRAPHIC.flipVertical(image1);
-        Assert.assertEquals(image1.getWidth(), flipV.getWidth());
-        Assert.assertEquals(image1.getHeight(), flipV.getHeight());
+    /**
+     * Test flip vertical.
+     */
+    @Test
+    public void testFlipVertical()
+    {
+        final ImageBuffer vertical = Core.GRAPHIC.flipVertical(FactoryGraphicProviderTest.IMAGE);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, vertical);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), vertical.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), vertical.getHeight());
+    }
 
-        final ImageBuffer[] split = Core.GRAPHIC.splitImage(image1, 2, 2);
+    /**
+     * Test split image.
+     */
+    @Test
+    public void testSplitImage()
+    {
+        final ImageBuffer[] split = Core.GRAPHIC.splitImage(FactoryGraphicProviderTest.IMAGE, 2, 2);
         for (final ImageBuffer img1 : split)
         {
             for (final ImageBuffer img2 : split)
@@ -151,77 +273,60 @@ public class FactoryGraphicProviderTest
                 Assert.assertEquals(img1.getHeight(), img2.getHeight());
             }
         }
-        Assert.assertEquals(image1.getWidth() / 2, split[0].getWidth());
-        Assert.assertEquals(image1.getHeight() / 2, split[0].getHeight());
-
-        Core.GRAPHIC.applyFilter(image1, Filter.BILINEAR);
-
-        Core.GRAPHIC.saveImage(image1, FactoryGraphicProviderTest.SAVE);
-        final ImageBuffer loaded = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.IMAGE, false);
-        Assert.assertEquals(image1.getWidth(), loaded.getWidth());
-        Assert.assertEquals(image1.getHeight(), loaded.getHeight());
-        final File file = FactoryGraphicProviderTest.SAVE.getFile();
-        Assert.assertTrue(file.delete());
-
-        Assert.assertNotNull(Core.GRAPHIC.getRasterBuffer(image1, 0, 0, 0, 255, 255, 255, 5));
-
-        Assert.assertNotNull(Core.GRAPHIC.createText("test", 10, TextStyle.NORMAL));
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth() / 2, split[0].getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight() / 2, split[0].getHeight());
     }
 
     /**
-     * Test testUtilityImage failure.
+     * Test apply filter.
      */
     @Test
-    public void testUtilityImageFailure()
+    public void testApplyFilter()
     {
-        try
-        {
-            Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("null"), false);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        try
-        {
-            Core.GRAPHIC.getImageBuffer(Core.MEDIA.create("wrong_image.png"), false);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
-        final ImageBuffer image = Core.GRAPHIC.getImageBuffer(FactoryGraphicProviderTest.IMAGE, false);
-        try
-        {
-            Core.GRAPHIC.applyFilter(image, null);
-            Assert.fail();
-        }
-        catch (final NullPointerException exception)
-        {
-            // Success
-        }
+        final ImageBuffer filtered = Core.GRAPHIC.applyFilter(FactoryGraphicProviderTest.IMAGE, Filter.BILINEAR);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, filtered);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), filtered.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), filtered.getHeight());
     }
 
     /**
-     * Test testUtilityImage raster functions.
+     * Test save image.
      */
     @Test
-    public void testUtilityImageRaster()
+    public void testSaveImage()
     {
-        final int[][] raster = Core.GRAPHIC.loadRaster(FactoryGraphicProviderTest.RASTER);
-        Assert.assertNotNull(raster);
-        try
-        {
-            Core.GRAPHIC.loadRaster(FactoryGraphicProviderTest.RASTER_ERROR);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Core.GRAPHIC.saveImage(FactoryGraphicProviderTest.IMAGE, FactoryGraphicProviderTest.MEDIA_SAVE);
+        Assert.assertTrue(FactoryGraphicProviderTest.MEDIA_SAVE.getFile().delete());
+    }
+
+    /**
+     * Test save image.
+     */
+    @Test
+    public void testGetRasterBuffer()
+    {
+        final ImageBuffer raster = Core.GRAPHIC.getRasterBuffer(FactoryGraphicProviderTest.IMAGE, 0, 0, 0, 255, 255,
+                255, 5);
+        Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, raster);
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), raster.getWidth());
+        Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), raster.getHeight());
+    }
+
+    /**
+     * Test load raster.
+     */
+    @Test
+    public void testLoadRaster()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.loadRaster(FactoryGraphicProviderTest.MEDIA_RASTER));
+    }
+
+    /**
+     * Test load raster failure.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testLoadRasterFailure()
+    {
+        Assert.assertNotNull(Core.GRAPHIC.loadRaster(FactoryGraphicProviderTest.RASTER_ERROR));
     }
 }

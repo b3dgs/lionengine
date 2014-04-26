@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Main class.
@@ -39,7 +40,7 @@ public final class AppNetworkChat
      */
     public static void main(String[] args)
     {
-        Engine.start("Network Chat", Version.create(1, 0, 0), UtilityFile.getPath("resources"));
+        Engine.start("Network Chat", Version.create(1, 0, 0), Verbose.CRITICAL, UtilityFile.getPath("resources"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

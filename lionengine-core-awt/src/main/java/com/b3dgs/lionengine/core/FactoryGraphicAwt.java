@@ -84,38 +84,6 @@ final class FactoryGraphicAwt
     }
 
     /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static BufferedImage getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferAwt) imageBuffer).getBuffer();
-    }
-
-    /**
-     * Get the image transparency equivalence.
-     * 
-     * @param transparency The transparency type.
-     * @return The transparency value.
-     */
-    private static int getTransparency(Transparency transparency)
-    {
-        switch (transparency)
-        {
-            case OPAQUE:
-                return java.awt.Transparency.OPAQUE;
-            case BITMASK:
-                return java.awt.Transparency.BITMASK;
-            case TRANSLUCENT:
-                return java.awt.Transparency.TRANSLUCENT;
-            default:
-                return 0;
-        }
-    }
-
-    /**
      * Enable all graphics improvement. May decrease overall performances.
      * 
      * @param g The graphic context.
@@ -147,6 +115,38 @@ final class FactoryGraphicAwt
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    }
+
+    /**
+     * Get the image buffer.
+     * 
+     * @param imageBuffer The image buffer.
+     * @return The buffer.
+     */
+    private static BufferedImage getBuffer(ImageBuffer imageBuffer)
+    {
+        return ((ImageBufferAwt) imageBuffer).getBuffer();
+    }
+
+    /**
+     * Get the image transparency equivalence.
+     * 
+     * @param transparency The transparency type.
+     * @return The transparency value.
+     */
+    private static int getTransparency(Transparency transparency)
+    {
+        switch (transparency)
+        {
+            case OPAQUE:
+                return java.awt.Transparency.OPAQUE;
+            case BITMASK:
+                return java.awt.Transparency.BITMASK;
+            case TRANSLUCENT:
+                return java.awt.Transparency.TRANSLUCENT;
+            default:
+                return 0;
+        }
     }
 
     /**
@@ -212,7 +212,7 @@ final class FactoryGraphicAwt
     @Override
     public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
-        try (final InputStream inputStream = media.getStream();)
+        try (final InputStream inputStream = media.getInputStream();)
         {
             final BufferedImage buffer = ImageIO.read(inputStream);
             int transparency = buffer.getTransparency();

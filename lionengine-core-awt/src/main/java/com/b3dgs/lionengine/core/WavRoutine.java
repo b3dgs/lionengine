@@ -213,7 +213,7 @@ final class WavRoutine
                     }
 
                     // Open stream
-                    audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getStream()));
+                    audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
                     final AudioFormat audioFormat = audioInputStream.getFormat();
                     final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
 

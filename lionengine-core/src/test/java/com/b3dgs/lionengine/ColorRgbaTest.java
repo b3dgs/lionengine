@@ -46,7 +46,7 @@ public class ColorRgbaTest
     {
         FactoryGraphicProvider.setFactoryGraphic(new FactoryGraphicMock());
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        ColorRgbaTest.RASTER = Core.MEDIA.create("src", "test", "resources", "utilityimage", "raster.xml");
+        ColorRgbaTest.RASTER = Core.MEDIA.create("src", "test", "resources", "graphic", "raster.xml");
     }
 
     /**

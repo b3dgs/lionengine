@@ -74,8 +74,10 @@ import com.b3dgs.lionengine.Version;
 public final class Engine
         extends EngineCore
 {
-    /** Error message resource directory. */
-    private static final String ERROR_RESOURCES_DIR = "The resources directory must not be null !";
+    /** Error resource directory. */
+    private static final String ERROR_RESOURCE_DIR = "The resource directory must not be null !";
+    /** Error resource class. */
+    private static final String ERROR_RESOURCE_CLASS = "The resource class must not be null !";
     /** Error message temp directory. */
     private static final String ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
 
@@ -84,11 +86,13 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
+     * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, String resourcesDir)
+    public static void start(String name, Version version, Verbose level, String resourcesDir)
     {
-        Engine.start(name, version, resourcesDir, Verbose.CRITICAL);
+        Check.notNull(resourcesDir, Engine.ERROR_RESOURCE_DIR);
+        Engine.start(name, version, level, resourcesDir, null);
     }
 
     /**
@@ -96,17 +100,33 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
+     * @param classResource The class loader reference (resources entry point).
      */
-    public static void start(String name, Version version, String resourcesDir, Verbose level)
+    public static void start(String name, Version version, Verbose level, Class<?> classResource)
     {
-        Check.notNull(resourcesDir, Engine.ERROR_RESOURCES_DIR);
+        Check.notNull(classResource, Engine.ERROR_RESOURCE_CLASS);
+        Engine.start(name, version, level, null, classResource);
+    }
 
+    /**
+     * Start engine. Has to be called before anything and only one time, in the main.
+     * 
+     * @param name The program name (must not be <code>null</code>).
+     * @param version The program version (must not be <code>null</code>).
+     * @param level The verbose level (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory (must not be <code>null</code>).
+     * @param classResource The class loader reference (resources entry point).
+     */
+    private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)
+    {
         if (!EngineCore.isStarted())
         {
             EngineCore.start(name, version, level, new FactoryGraphicSwt(), new FactoryMediaSwt());
-            Engine.init(name, version, resourcesDir, level);
+
+            UtilityFile.setTempDirectory(name);
+            UtilityMedia.setLoadFromJar(classResource);
+            UtilityMedia.setResourcesDirectory(resourcesDir);
 
             // LionEngine started
             Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
@@ -130,21 +150,7 @@ public final class Engine
         EngineCore.terminate();
         UtilityMedia.setResourcesDirectory(null);
         UtilityFile.setTempDirectory("");
-        UtilityMedia.setLoadFromJar(null, false);
-    }
-
-    /**
-     * Initialize engine.
-     * 
-     * @param name The program name.
-     * @param version The program version.
-     * @param resourcesDir The main resources directory.
-     * @param level The verbose level.
-     */
-    private static void init(String name, Version version, String resourcesDir, Verbose level)
-    {
-        UtilityFile.setTempDirectory(name);
-        UtilityMedia.setResourcesDirectory(resourcesDir);
+        UtilityMedia.setLoadFromJar(null);
     }
 
     /**

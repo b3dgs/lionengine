@@ -109,7 +109,7 @@ final class FactoryGraphicAndroid
     @Override
     public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
-        final InputStream inputStream = media.getStream();
+        final InputStream inputStream = media.getInputStream();
         final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         final ImageBufferAndroid image = new ImageBufferAndroid(bitmap);
         try

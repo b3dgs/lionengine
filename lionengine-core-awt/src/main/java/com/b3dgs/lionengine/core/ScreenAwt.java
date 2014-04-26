@@ -67,6 +67,10 @@ final class ScreenAwt
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
     /** Error message unsupported fullscreen. */
     private static final String ERROR_UNSUPPORTED_FULLSCREEN = "Unsupported fullscreen mode: ";
+    /** Error transversal keys. */
+    private static final String ERROR_TRANSVERSAL_KEYS = "Transversal keys are not available !";
+    /** Error mouse focus listener. */
+    private static final String ERROR_MOUSE_FOCUS_LISTENER = "Mouse focus listener can not be added !";
     /** Hidden cursor instance. */
     private static final Cursor CURSOR_HIDDEN = ScreenAwt.createHiddenCursor();
     /** Default cursor instance. */
@@ -91,8 +95,6 @@ final class ScreenAwt
         }
     }
 
-    /** Renderer reference. */
-    final Renderer renderer;
     /** Graphics device reference. */
     private final GraphicsDevice dev;
     /** Graphic configuration reference. */
@@ -144,7 +146,6 @@ final class ScreenAwt
         {
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
         }
-        this.renderer = renderer;
         config = renderer.getConfig();
 
         // Initialize environment
@@ -157,7 +158,7 @@ final class ScreenAwt
         devices = new HashMap<>(2);
 
         // Prepare main frame
-        frame = hasApplet ? null : initMainFrame();
+        frame = hasApplet ? null : initMainFrame(renderer);
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
@@ -179,7 +180,7 @@ final class ScreenAwt
         }
         catch (final Exception exception)
         {
-            Verbose.info("Transversal keys are not available !");
+            Verbose.info(ScreenAwt.ERROR_TRANSVERSAL_KEYS);
         }
     }
 
@@ -375,9 +376,10 @@ final class ScreenAwt
     /**
      * Initialize the main frame.
      * 
+     * @param renderer The renderer reference.
      * @return The created main frame.
      */
-    private JFrame initMainFrame()
+    private JFrame initMainFrame(final Renderer renderer)
     {
         final JFrame frame = new JFrame(EngineCore.getProgramName() + " " + EngineCore.getProgramVersion(), conf);
 
@@ -387,7 +389,7 @@ final class ScreenAwt
             @Override
             public void windowClosing(WindowEvent event)
             {
-                renderer.end(null);
+                renderer.end();
             }
         });
         frame.setResizable(false);
@@ -407,7 +409,7 @@ final class ScreenAwt
         }
         catch (final Exception exception)
         {
-            Verbose.critical(Screen.class, "constructor", "Mouse focus listener can not be added !");
+            Verbose.critical(Screen.class, "constructor", ScreenAwt.ERROR_MOUSE_FOCUS_LISTENER);
         }
     }
 

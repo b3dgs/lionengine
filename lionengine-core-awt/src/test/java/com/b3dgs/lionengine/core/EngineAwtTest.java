@@ -46,10 +46,12 @@ public class EngineAwtTest
     @Test
     public void testEngine()
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), UtilityFile.getPath("src", "test", "resources"));
+        Engine.start("EngineTest", Version.create(0, 0, 0), Verbose.CRITICAL,
+                UtilityFile.getPath("src", "test", "resources"));
         Assert.assertTrue(EngineCore.isStarted());
-        Engine.start("EngineTest", Version.create(0, 1, 0), UtilityFile.getPath("src", "test", "resources"));
+        Engine.start("EngineTest", Version.create(0, 1, 0), Verbose.CRITICAL,
+                UtilityFile.getPath("src", "test", "resources"));
         Assert.assertEquals("EngineTest", EngineCore.getProgramName());
-        Assert.assertEquals("0.0.0", EngineCore.getProgramVersion());
+        Assert.assertEquals("0.0.0", EngineCore.getProgramVersion().toString());
     }
 }

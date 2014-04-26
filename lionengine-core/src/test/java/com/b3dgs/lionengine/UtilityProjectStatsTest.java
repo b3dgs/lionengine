@@ -31,30 +31,21 @@ import org.junit.Test;
 public class UtilityProjectStatsTest
 {
     /**
-     * Test the project stats class.
+     * Test the core class.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testProjectStatsClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testProjectStatsClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<UtilityProjectStats> utilityProjectStats = UtilityProjectStats.class.getDeclaredConstructor();
         utilityProjectStats.setAccessible(true);
-        try
-        {
-            final UtilityProjectStats clazz = utilityProjectStats.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final UtilityProjectStats clazz = utilityProjectStats.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

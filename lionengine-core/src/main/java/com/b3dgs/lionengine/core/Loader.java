@@ -60,7 +60,8 @@ public final class Loader
      * @param nextSequence The next sequence class.
      * @param loader The loader reference.
      * @param arguments The arguments list.
-     * @return The sequence instance, <code>null</code> if none.
+     * @return The sequence instance.
+     * @throws LionEngineException If not able to create the sequence for any reason.
      */
     static Sequence createSequence(Class<? extends Sequence> nextSequence, Loader loader, Object... arguments)
     {
@@ -89,8 +90,7 @@ public final class Loader
                | NoSuchMethodException
                | SecurityException exception)
         {
-            Verbose.exception(Loader.class, "createSequence", exception);
-            return null;
+            throw new LionEngineException(exception);
         }
     }
 
@@ -134,11 +134,13 @@ public final class Loader
 
     /** Renderer instance. */
     private final Renderer renderer;
+    /** Started state. */
+    private boolean started;
 
     /**
      * Constructor.
      * 
-     * @param config The configuration used (must not be null).
+     * @param config The configuration used (must not be <code>null</code>).
      */
     public Loader(Config config)
     {
@@ -149,15 +151,17 @@ public final class Loader
     /**
      * Start the loader with an initial sequence. Has to be called only one time.
      * 
-     * @param sequence The the next sequence to start (must not be <code>null</code>).
+     * @param sequenceClass The the next sequence to start (must not be <code>null</code>).
      * @param arguments The sequence arguments list if needed by its constructor.
+     * @throws LionEngineException If the loader has already been started.
      */
-    public void start(Class<? extends Sequence> sequence, Object... arguments)
+    public void start(Class<? extends Sequence> sequenceClass, Object... arguments)
     {
-        Check.notNull(sequence, Loader.ERROR_SEQUENCE);
-        if (!renderer.started)
+        Check.notNull(sequenceClass, Loader.ERROR_SEQUENCE);
+        if (!started)
         {
-            renderer.startFirstSequence(sequence, this, arguments);
+            started = true;
+            renderer.startFirstSequence(sequenceClass, this, arguments);
         }
         else
         {

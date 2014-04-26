@@ -69,6 +69,12 @@ public class FactoryGraphicMock
     }
 
     @Override
+    public Transform createTransform()
+    {
+        return new TransformMock();
+    }
+
+    @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
         return new ImageBufferMock(width, height, transparency);
@@ -157,12 +163,6 @@ public class FactoryGraphicMock
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
         return new ImageBufferMock(image.getWidth(), image.getHeight(), image.getTransparency());
-    }
-
-    @Override
-    public Transform createTransform()
-    {
-        return new TransformMock();
     }
 
     @Override

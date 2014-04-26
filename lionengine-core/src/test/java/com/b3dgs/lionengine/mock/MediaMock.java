@@ -65,7 +65,7 @@ public final class MediaMock
     }
 
     @Override
-    public InputStream getStream()
+    public InputStream getInputStream()
     {
         try
         {

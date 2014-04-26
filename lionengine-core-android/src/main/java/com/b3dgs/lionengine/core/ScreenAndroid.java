@@ -78,7 +78,7 @@ public final class ScreenAndroid
     {
         Check.notNull(renderer, ScreenAndroid.ERROR_RENDERER);
 
-        this.config = renderer.getConfig();
+        config = renderer.getConfig();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);
         graphics = Core.GRAPHIC.createGraphic();
 

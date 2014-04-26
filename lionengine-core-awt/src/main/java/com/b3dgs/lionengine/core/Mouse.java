@@ -47,6 +47,10 @@ public final class Mouse
     public static final int MIDDLE = MouseEvent.BUTTON2;
     /** Right click. */
     public static final int RIGHT = MouseEvent.BUTTON3;
+    /** Robot error. */
+    private static final String ERROR_ROBOT = "No mouse robot available !";
+    /** Button error. */
+    private static final String ERROR_BUTTON = "Button out of range: ";
 
     /** Clicks flags. */
     private final boolean[] clicks;
@@ -118,7 +122,7 @@ public final class Mouse
         }
         catch (final AWTException exception)
         {
-            Verbose.critical(Mouse.class, "constructor", "No mouse robot available !");
+            Verbose.critical(Mouse.class, "constructor", Mouse.ERROR_ROBOT);
         }
         robot = r;
     }
@@ -345,7 +349,7 @@ public final class Mouse
         }
         catch (final ArrayIndexOutOfBoundsException exception)
         {
-            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(lastClick));
+            Verbose.warning(Mouse.class, "mouseReleased", Mouse.ERROR_BUTTON, String.valueOf(lastClick));
         }
     }
 
@@ -361,7 +365,7 @@ public final class Mouse
         }
         catch (final ArrayIndexOutOfBoundsException exception)
         {
-            Verbose.warning(Mouse.class, "mouseReleased", "Button out of range: ", String.valueOf(button));
+            Verbose.warning(Mouse.class, "mouseReleased", Mouse.ERROR_BUTTON, String.valueOf(button));
         }
     }
 

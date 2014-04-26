@@ -63,8 +63,10 @@ public enum Verbose
 
     /** Logger. */
     private static final Logger LOGGER = Logger.getAnonymousLogger();
+    /** Error formatter. */
+    private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Verbose flag. */
-    private static Verbose level;
+    private static Verbose level = Verbose.CRITICAL;
 
     /**
      * Display an informative verbose message to standard output.
@@ -145,41 +147,12 @@ public enum Verbose
             final Handler[] handlers = Logger.getLogger("").getHandlers();
             for (final Handler handler : handlers)
             {
-                handler.setFormatter(new Formatter()
-                {
-                    @Override
-                    public String format(LogRecord event)
-                    {
-                        final String clazz = event.getSourceClassName();
-                        final String function = event.getSourceMethodName();
-                        final Throwable thrown = event.getThrown();
-                        final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(": ");
-
-                        if (clazz != null)
-                        {
-                            message.append("in ").append(clazz);
-                        }
-                        if (function != null)
-                        {
-                            message.append(" at ").append(function).append(": ");
-                        }
-                        message.append(event.getMessage()).append("\n");
-                        if (thrown != null)
-                        {
-                            final StringWriter sw = new StringWriter();
-                            thrown.printStackTrace(new PrintWriter(sw));
-                            message.append(sw.toString());
-                        }
-
-                        return message.toString();
-                    }
-                });
+                handler.setFormatter(new VerboseFormatter());
             }
         }
-        catch (final SecurityException
-                     | NullPointerException exception)
+        catch (final SecurityException exception)
         {
-            Verbose.critical(Verbose.class, "start", exception.getMessage());
+            Verbose.critical(Verbose.class, "start", Verbose.ERROR_FORMATTER);
         }
     }
 
@@ -216,6 +189,50 @@ public enum Verbose
                 break;
             default:
                 throw new LionEngineException("Unknown level: " + level);
+        }
+    }
+
+    /**
+     * Verbose formatter.
+     * 
+     * @author Pierre-Alexandre
+     */
+    private static class VerboseFormatter
+            extends Formatter
+    {
+        /**
+         * Constructor.
+         */
+        public VerboseFormatter()
+        {
+            super();
+        }
+
+        @Override
+        public String format(LogRecord event)
+        {
+            final String clazz = event.getSourceClassName();
+            final String function = event.getSourceMethodName();
+            final Throwable thrown = event.getThrown();
+            final StringBuilder message = new StringBuilder(event.getLevel().getName()).append(": ");
+
+            if (clazz != null)
+            {
+                message.append("in ").append(clazz);
+            }
+            if (function != null)
+            {
+                message.append(" at ").append(function).append(": ");
+            }
+            message.append(event.getMessage()).append("\n");
+            if (thrown != null)
+            {
+                final StringWriter sw = new StringWriter();
+                thrown.printStackTrace(new PrintWriter(sw));
+                message.append(sw.toString());
+            }
+
+            return message.toString();
         }
     }
 }

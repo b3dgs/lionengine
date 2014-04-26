@@ -60,7 +60,7 @@ final class Sc68Player
         final File music;
         if (!UtilityFile.exists(file))
         {
-            music = AudioSc68.getFile(file, media.getStream());
+            music = AudioSc68.getFile(file, media.getInputStream());
         }
         else
         {

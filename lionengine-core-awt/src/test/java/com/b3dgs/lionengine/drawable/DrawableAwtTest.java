@@ -15,50 +15,43 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.drawable;
 
-import org.junit.Assert;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
-import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
- * Sequence mock.
+ * Test the drawable package.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceAwtMock2
-        extends Sequence
+public class DrawableAwtTest
+        extends DrawableTest
 {
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * Setup test.
      */
-    public SequenceAwtMock2(Loader loader)
+    @BeforeClass
+    public static void setUp()
     {
-        super(loader, new Resolution(320, 240, 60));
-        setResolution(new Resolution(100, 100, 60));
-        setExtrapolated(true);
-        setSystemCursorVisible(false);
+        Engine.start("DrawableAwtTest", Version.create(1, 0, 0), Verbose.CRITICAL,
+                UtilityFile.getPath("src", "test", "resources", "drawable"));
+        DrawableTest.media = Core.MEDIA.create("image.png");
+        DrawableTest.font = Core.MEDIA.create("fontdata.xml");
     }
 
-    @Override
-    protected void load()
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
     {
-        Assert.assertTrue(getFps() >= 0);
-        Assert.assertNotNull(getConfig());
-    }
-
-    @Override
-    protected void update(double extrp)
-    {
-        start(false, SequenceAwtMock3.class);
-        end();
-    }
-
-    @Override
-    protected void render(Graphic g)
-    {
-        g.clear(0, 0, getWidth(), getHeight());
+        Engine.terminate();
     }
 }

@@ -15,45 +15,44 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Resolution;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
+import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Engine;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
- * Sequence mock.
+ * Test the sprite class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceAwtMock3
-        extends Sequence
+public class SpriteAwtTest
+        extends SpriteTest
 {
     /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
+     * Prepare test.
      */
-    public SequenceAwtMock3(Loader loader)
+    @BeforeClass
+    public static void setUp()
     {
-        super(loader, new Resolution(640, 480, 60));
-        setExtrapolated(true);
-        setSystemCursorVisible(true);
+        Engine.start("SpriteAwtTest", Version.create(1, 0, 0), Verbose.CRITICAL,
+                UtilityFile.getPath("src", "test", "resources", "drawable"));
+        SpriteTest.media = Core.MEDIA.create("image.png");
+        SpriteTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }
 
-    @Override
-    protected void load()
+    /**
+     * Clean up test.
+     */
+    @AfterClass
+    public static void cleanUp()
     {
-        // Load
-    }
-
-    @Override
-    protected void update(double extrp)
-    {
-        end();
-    }
-
-    @Override
-    protected void render(Graphic g)
-    {
-        // Render
+        Engine.terminate();
     }
 }

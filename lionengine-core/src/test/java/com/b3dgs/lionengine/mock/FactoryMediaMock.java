@@ -31,6 +31,13 @@ import com.b3dgs.lionengine.core.FactoryMedia;
 public class FactoryMediaMock
         implements FactoryMedia
 {
+    /** Separator. */
+    private String separator = File.separator;
+
+    /*
+     * FactoryMedia
+     */
+
     @Override
     public Media create(String path)
     {
@@ -46,12 +53,12 @@ public class FactoryMediaMock
     @Override
     public String getSeparator()
     {
-        return File.separator;
+        return separator;
     }
 
     @Override
     public void setSeparator(String separator)
     {
-        // Nothing to do
+        this.separator = separator;
     }
 }

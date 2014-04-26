@@ -41,9 +41,9 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class DrawableTest
 {
     /** Surface. */
-    private static Media media;
+    protected static Media media;
     /** Surface. */
-    private static Media font;
+    protected static Media font;
 
     /**
      * Setup test.
@@ -245,28 +245,19 @@ public class DrawableTest
     /**
      * Test the drawable factory.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testDrawableFactory() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testDrawableFactory() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<Drawable> constructor = Drawable.class.getDeclaredConstructor();
         constructor.setAccessible(true);
-        try
-        {
-            final Drawable drawable = constructor.newInstance();
-            Assert.assertNotNull(drawable);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Drawable drawable = constructor.newInstance();
+        Assert.assertNotNull(drawable);
     }
 
     /**

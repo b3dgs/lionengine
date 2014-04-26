@@ -62,7 +62,7 @@ final class MediaSwt
     }
 
     @Override
-    public InputStream getStream()
+    public InputStream getInputStream()
     {
         return UtilityMedia.getInputStream(this, MediaSwt.class.getSimpleName(), false);
     }

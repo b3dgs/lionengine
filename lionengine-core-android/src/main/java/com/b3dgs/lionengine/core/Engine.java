@@ -67,29 +67,22 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param activity The activity reference (must not be <code>null</code>).
-     */
-    public static void start(String name, Version version, Activity activity)
-    {
-        Engine.start(name, version, activity, Verbose.CRITICAL);
-    }
-
-    /**
-     * Start engine. Has to be called before anything and only one time, in the main.
-     * 
-     * @param name The program name (must not be <code>null</code>).
-     * @param version The program version (must not be <code>null</code>).
-     * @param activity The activity reference (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
+     * @param activity The activity reference (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, Activity activity, Verbose level)
+    public static void start(String name, Version version, Verbose level, Activity activity)
     {
         if (!EngineCore.isStarted())
         {
-            Engine.createView(activity);
-
             EngineCore.start(name, version, level, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
-            Engine.init(name, version, activity, level);
+
+            final ViewAndroid view = new ViewAndroid(activity);
+            view.setWillNotDraw(false);
+            ScreenAndroid.setView(view);
+            activity.setContentView(view);
+
+            UtilityMedia.setAssertManager(activity.getAssets());
+            UtilityMedia.setContentResolver(activity.getContentResolver());
         }
     }
 
@@ -100,32 +93,5 @@ public final class Engine
     public static void terminate()
     {
         EngineCore.terminate();
-    }
-
-    /**
-     * Create the view.
-     * 
-     * @param activity The activity reference.
-     */
-    private static void createView(Activity activity)
-    {
-        final ViewAndroid view = new ViewAndroid(activity);
-        view.setWillNotDraw(false);
-        ScreenAndroid.setView(view);
-        activity.setContentView(view);
-    }
-
-    /**
-     * Initialize engine.
-     * 
-     * @param name The program name.
-     * @param version The program version.
-     * @param activity The activity reference.
-     * @param level The verbose level.
-     */
-    private static void init(String name, Version version, Activity activity, Verbose level)
-    {
-        UtilityMedia.setAssertManager(activity.getAssets());
-        UtilityMedia.setContentResolver(activity.getContentResolver());
     }
 }

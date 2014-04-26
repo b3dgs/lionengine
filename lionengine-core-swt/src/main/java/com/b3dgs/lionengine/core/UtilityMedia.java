@@ -55,14 +55,75 @@ public final class UtilityMedia
     private static Class<?> loader = null;
 
     /**
-     * Get stream of specified path.
+     * Get a media from an existing file descriptor.
+     * 
+     * @param file The file descriptor.
+     * @return The media instance.
+     */
+    public static Media get(File file)
+    {
+        final String filename = file.getPath();
+        final String localFile = filename.substring(UtilityMedia.getRessourcesDir().length()
+                + filename.lastIndexOf(UtilityMedia.getRessourcesDir()));
+        return Core.MEDIA.create(localFile);
+    }
+
+    /**
+     * Get current resource directory.
+     * 
+     * @return The resource directory.
+     */
+    public static String getRessourcesDir()
+    {
+        return UtilityMedia.resourcesDir;
+    }
+
+    /**
+     * Activate or no the resources loading from *.jar.
+     * 
+     * @param clazz The class loader reference (resources entry point).
+     */
+    static void setLoadFromJar(Class<?> clazz)
+    {
+        UtilityMedia.fromJar = clazz != null;
+        if (UtilityMedia.fromJar)
+        {
+            UtilityMedia.loader = clazz;
+            Core.MEDIA.setSeparator("/");
+        }
+        else
+        {
+            UtilityMedia.loader = null;
+            Core.MEDIA.setSeparator(File.separator);
+        }
+    }
+
+    /**
+     * Define resources directory. Root for all game medias.
+     * 
+     * @param dir The main root directory.
+     */
+    static void setResourcesDirectory(String dir)
+    {
+        if (dir == null)
+        {
+            UtilityMedia.resourcesDir = "";
+        }
+        else
+        {
+            UtilityMedia.resourcesDir = dir + Core.MEDIA.getSeparator();
+        }
+    }
+
+    /**
+     * Get input stream of specified path.
      * 
      * @param media The input media path, pointing to a file.
      * @param from The from function.
      * @param logger The logger flag.
      * @return The opened input stream.
      */
-    public static InputStream getInputStream(Media media, String from, boolean logger)
+    static InputStream getInputStream(Media media, String from, boolean logger)
     {
         final String path = UtilityFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
@@ -95,7 +156,7 @@ public final class UtilityMedia
      * @param logger The logger flag.
      * @return The opened input stream.
      */
-    public static OutputStream getOutputStream(Media media, String from, boolean logger)
+    static OutputStream getOutputStream(Media media, String from, boolean logger)
     {
         final String path = UtilityFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
@@ -109,54 +170,6 @@ public final class UtilityMedia
         catch (final FileNotFoundException exception)
         {
             throw new LionEngineException("Cannot open the file: \"", path, "\"");
-        }
-    }
-
-    /**
-     * Get current resource directory.
-     * 
-     * @return The resource directory.
-     */
-    public static String getRessourcesDir()
-    {
-        return UtilityMedia.resourcesDir;
-    }
-
-    /**
-     * Activate or no the resources loading from *.jar.
-     * 
-     * @param clazz The class loader reference (resources entry point).
-     * @param enabled The activation state (<code>true</code> to enable, <code>false</code> to disable).
-     */
-    static void setLoadFromJar(Class<?> clazz, boolean enabled)
-    {
-        UtilityMedia.fromJar = enabled;
-        if (enabled)
-        {
-            UtilityMedia.loader = clazz;
-            Core.MEDIA.setSeparator("/");
-        }
-        else
-        {
-            UtilityMedia.loader = null;
-            Core.MEDIA.setSeparator(File.separator);
-        }
-    }
-
-    /**
-     * Define resources directory. Root for all game medias.
-     * 
-     * @param dir The main root directory.
-     */
-    static void setResourcesDirectory(String dir)
-    {
-        if (dir == null)
-        {
-            UtilityMedia.resourcesDir = "";
-        }
-        else
-        {
-            UtilityMedia.resourcesDir = dir + Core.MEDIA.getSeparator();
         }
     }
 

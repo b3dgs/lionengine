@@ -62,30 +62,21 @@ public class UtilityFileTest
     }
 
     /**
-     * Test the utility file class.
+     * Test the core class.
      * 
-     * @throws IllegalArgumentException If error.
+     * @throws NoSuchMethodException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
-     * @throws SecurityException If error.
-     * @throws NoSuchMethodException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testUtilityFileClass() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-            NoSuchMethodException, SecurityException
+    @Test(expected = InvocationTargetException.class)
+    public void testUtilityFileClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<UtilityFile> utilityFile = UtilityFile.class.getDeclaredConstructor();
         utilityFile.setAccessible(true);
-        try
-        {
-            final UtilityFile clazz = utilityFile.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final UtilityFile clazz = utilityFile.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

@@ -81,7 +81,7 @@ public final class Midi
         Check.notNull(media, "Midi file must exists !");
         try
         {
-            return MidiSystem.getSequence(new BufferedInputStream(media.getStream()));
+            return MidiSystem.getSequence(new BufferedInputStream(media.getInputStream()));
         }
         catch (final IOException exception)
         {

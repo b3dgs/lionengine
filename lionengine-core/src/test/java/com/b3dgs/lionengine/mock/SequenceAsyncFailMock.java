@@ -15,65 +15,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.core;
+package com.b3dgs.lionengine.mock;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
 
 /**
- * Sequence mock.
+ * Start async failure sequence mock.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceAwtMock
+public class SequenceAsyncFailMock
         extends Sequence
 {
-    /** First. */
-    private int count;
-
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public SequenceAwtMock(Loader loader)
+    public SequenceAsyncFailMock(Loader loader)
     {
-        super(loader, new Resolution(100, 100, 60));
-        setExtrapolated(false);
+        super(loader, new Resolution(320, 240, 60));
     }
 
     @Override
     protected void load()
     {
-        count = 0;
+        // Mock
     }
 
     @Override
     protected void update(double extrp)
     {
-        if (count > 30)
-        {
-            start(true, SequenceAwtMock2.class);
-            end();
-        }
-        count++;
+        start(false, SequenceAsyncInterruptMock.class);
+        end();
     }
 
     @Override
     protected void render(Graphic g)
     {
-        if (count > 5)
-        {
-            for (int x = 0; x < getWidth(); x++)
-            {
-                for (int y = 0; y < getHeight(); y++)
-                {
-                    g.setColor(new ColorRgba(UtilityRandom.getRandomInteger(255), UtilityRandom.getRandomInteger(255),
-                            UtilityRandom.getRandomInteger(255)));
-                    g.drawRect(x, y, 1, y, false);
-                }
-            }
-        }
+        // Mock
     }
 }

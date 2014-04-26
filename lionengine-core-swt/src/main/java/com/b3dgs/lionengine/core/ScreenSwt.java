@@ -109,7 +109,7 @@ final class ScreenSwt
             throw new LionEngineException(exception, ScreenSwt.ERROR_DISPLAY);
         }
         this.renderer = renderer;
-        this.config = renderer.getConfig();
+        config = renderer.getConfig();
 
         cursorHidden = FactoryGraphicSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);

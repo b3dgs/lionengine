@@ -30,10 +30,10 @@ import com.b3dgs.lionengine.LionEngineException;
 public class AnimationTest
 {
     /**
-     * Test the animation.
+     * Test the animation getter.
      */
     @Test
-    public void testAnimation()
+    public void testGetter()
     {
         final int first = 1;
         final int last = first + 1;
@@ -51,36 +51,29 @@ public class AnimationTest
     }
 
     /**
-     * Test the animation failure.
+     * Test the animation failure minimum frame.
      */
-    @Test
-    public void testAnimationFailure()
+    @Test(expected = LionEngineException.class)
+    public void testFailureMinimumFrame()
     {
-        try
-        {
-            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false,
-                    false));
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-        try
-        {
-            Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false,
-                    false));
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
+    }
+
+    /**
+     * Test the animation failure maximum frame.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureMaximumFrame()
+    {
+        Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false, false));
+    }
+
+    /**
+     * Test the animation failure speed.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureSpeed()
+    {
+        Assert.assertNotNull(new AnimationImpl(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false, false));
     }
 }

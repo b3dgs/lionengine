@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Program starts here.
@@ -45,7 +46,7 @@ public final class AppMario
      */
     public static void main(String[] args)
     {
-        Engine.start(AppMario.NAME, AppMario.VERSION, AppMario.RESOURCES);
+        Engine.start(AppMario.NAME, AppMario.VERSION, Verbose.CRITICAL, AppMario.RESOURCES);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

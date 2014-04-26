@@ -31,30 +31,21 @@ import org.junit.Test;
 public class UtilityRandomTest
 {
     /**
-     * Test the utility random class.
+     * Test the core class.
      * 
-     * @throws SecurityException If error.
      * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
      * @throws IllegalAccessException If error.
      * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
      */
-    @Test
-    public void testUtilityRandomClass() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testUtilityRandomClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
     {
         final Constructor<UtilityRandom> utilityRandom = UtilityRandom.class.getDeclaredConstructor();
         utilityRandom.setAccessible(true);
-        try
-        {
-            final UtilityRandom clazz = utilityRandom.newInstance();
-            Assert.assertNotNull(clazz);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final UtilityRandom clazz = utilityRandom.newInstance();
+        Assert.assertNotNull(clazz);
     }
 
     /**

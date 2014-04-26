@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.core;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.mock.EngineMock;
+import com.b3dgs.lionengine.mock.FactoryGraphicMock;
+import com.b3dgs.lionengine.mock.FactoryMediaMock;
+import com.b3dgs.lionengine.mock.SecurityManagerMock;
 
 /**
  * Test the engine core class.
@@ -32,33 +36,120 @@ import com.b3dgs.lionengine.mock.EngineMock;
 public class EngineCoreTest
 {
     /**
-     * Clean up test.
+     * Reestablish the engine start state.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void afterTest()
+    {
+        if (EngineCore.isStarted())
+        {
+            EngineCore.terminate();
+        }
+        System.setSecurityManager(null);
+    }
+
+    /**
+     * Test the engine mock.
+     */
+    @Test
+    public void testMock()
+    {
+        Assert.assertNotNull(new EngineMock());
+    }
+
+    /**
+     * Test the engine not started on get program name.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNotStartedGetProgramName()
+    {
+        Assert.assertNull(EngineCore.getProgramName());
+    }
+
+    /**
+     * Test the engine not started on get program version.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testNotStartedGetProgramVersion()
+    {
+        Assert.assertNull(EngineCore.getProgramVersion());
+    }
+
+    /**
+     * Test the engine already started.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testAlreadyStarted()
+    {
+        EngineCore.start("EngineCoreTest", Version.create(0, 0, 0), Verbose.NONE, new FactoryGraphicMock(),
+                new FactoryMediaMock());
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(),
+                new FactoryMediaMock());
+        EngineCore.terminate();
+    }
+
+    /**
+     * Test the engine terminate.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testTerminate()
     {
         EngineCore.terminate();
     }
 
     /**
-     * Test the engine.
+     * Test the engine factory graphic error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFactoryGraphicError()
+    {
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, null, new FactoryMediaMock());
+    }
+
+    /**
+     * Test the engine factory media error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFactoryMediaError()
+    {
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(), null);
+    }
+
+    /**
+     * Test the engine started flag.
      */
     @Test
-    public void testEngine()
+    public void testStarted()
     {
-        Assert.assertNotNull(new EngineMock());
-        Assert.assertEquals(null, EngineCore.getProgramName());
-        Assert.assertEquals(null, EngineCore.getProgramVersion());
-
-        EngineCore.start("EngineCoreTest", Version.create(0, 0, 0), Verbose.NONE, null, null);
-        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
-        Assert.assertEquals("EngineCoreTest", EngineCore.getProgramName());
-        Assert.assertEquals("0.0.0", EngineCore.getProgramVersion());
-        EngineCore.terminate();
-
-        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, null, null);
+        Assert.assertFalse(EngineCore.isStarted());
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(),
+                new FactoryMediaMock());
         Assert.assertTrue(EngineCore.isStarted());
+        EngineCore.terminate();
+        Assert.assertFalse(EngineCore.isStarted());
+    }
 
-        Assert.assertNull(EngineCore.getSystemProperty("null"));
+    /**
+     * Test the engine getter.
+     */
+    @Test
+    public void testGetter()
+    {
+        EngineCore.start("EngineCoreTest", Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(),
+                new FactoryMediaMock());
+        Assert.assertEquals("EngineCoreTest", EngineCore.getProgramName());
+        Assert.assertEquals("0.1.0", EngineCore.getProgramVersion().toString());
+        EngineCore.terminate();
+    }
+
+    /**
+     * Test the engine system property.
+     */
+    @Test
+    public void testSystemProperty()
+    {
+        Assert.assertEquals(null, EngineCore.getSystemProperty("null"));
+        System.setSecurityManager(new SecurityManagerMock(false));
+        Assert.assertEquals("", EngineCore.getSystemProperty("security"));
     }
 }

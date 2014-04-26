@@ -44,7 +44,7 @@ final class FileReadingImpl
     FileReadingImpl(Media media) throws IOException
     {
         Check.notNull(media);
-        in = new DataInputStream(new BufferedInputStream(media.getStream()));
+        in = new DataInputStream(new BufferedInputStream(media.getInputStream()));
     }
 
     /*

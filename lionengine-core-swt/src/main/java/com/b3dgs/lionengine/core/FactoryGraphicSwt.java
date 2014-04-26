@@ -150,7 +150,7 @@ final class FactoryGraphicSwt
     @Override
     public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
-        try (final InputStream inputStream = media.getStream();)
+        try (final InputStream inputStream = media.getInputStream();)
         {
             final Image image = new Image(ScreenSwt.display, inputStream);
             return new ImageBufferSwt(image);

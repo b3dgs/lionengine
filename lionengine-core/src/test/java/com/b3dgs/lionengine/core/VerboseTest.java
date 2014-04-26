@@ -17,13 +17,15 @@
  */
 package com.b3dgs.lionengine.core;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.mock.SecurityManagerMock;
 
 /**
  * Test the verbose class.
@@ -38,7 +40,9 @@ public class VerboseTest
     @BeforeClass
     public static void setUp()
     {
-        Verbose.info("********************************** EXPECTED EXCEPTIONS **********************************");
+        Verbose.prepareLogger();
+        System.out.println("*********************************** EXPECTED VERBOSE ***********************************");
+        System.out.flush();
     }
 
     /**
@@ -47,8 +51,27 @@ public class VerboseTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
-        Verbose.info("****************************************************************************************");
+        System.out.println("****************************************************************************************");
+        System.out.flush();
+    }
+
+    /**
+     * Prepare the test.
+     */
+    @Before
+    public void prepareTest()
+    {
+        System.setSecurityManager(null);
+        Verbose.prepareLogger();
+    }
+
+    /**
+     * Clean test.
+     */
+    @After
+    public void afterTest()
+    {
+        System.setSecurityManager(null);
     }
 
     /**
@@ -71,12 +94,21 @@ public class VerboseTest
     @Test
     public void testVerbose()
     {
-        EngineCore.start("VerboseTest", Version.create(1, 0, 0), Verbose.CRITICAL, null, null);
         VerboseTest.testVerbose(Verbose.NONE);
         VerboseTest.testVerbose(Verbose.INFORMATION);
         VerboseTest.testVerbose(Verbose.WARNING);
         VerboseTest.testVerbose(Verbose.CRITICAL);
         Assert.assertNotNull(Verbose.values());
         Assert.assertEquals(Verbose.NONE, Verbose.valueOf(Verbose.NONE.name()));
+    }
+
+    /**
+     * Test the verbose security.
+     */
+    @Test
+    public void testVerboseSecurity()
+    {
+        System.setSecurityManager(new SecurityManagerMock(false));
+        Verbose.prepareLogger();
     }
 }

@@ -20,13 +20,13 @@ package com.b3dgs.lionengine.core;
 import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 
 /**
  * Sequence class is used for each derived sequence, such as Introduction, Menu, Scene... It contains a reference to the
  * screen used, the current configuration, input references ({@link #getInputDevice(Class)}), and it includes
- * a standard game loop ({@link Sequence#update(double)} and {@link Sequence#render(Graphic)}), synchronized to a
- * specified frame rate.
+ * a standard game loop ({@link #update(double)} and {@link #render(Graphic)}), synchronized to a specified frame rate.
  * <p>
  * Here a blank sequence implementation:
  * </p>
@@ -68,13 +68,15 @@ import com.b3dgs.lionengine.Resolution;
  * @see InputDevice
  */
 public abstract class Sequence
+        implements Sequencable
 {
+    /** Sequence already started. */
+    private static final String ERROR_LOADED = "Sequence has already been loaded !";
+
     /** Async loaded semaphore. */
     final Semaphore loadedSemaphore;
     /** Native resolution. */
     final Resolution resolution;
-    /** Loader reference. Must be used only to create new sequence by giving it as argument. */
-    private final Loader loader;
     /** Renderer. */
     private final Renderer renderer;
     /** Rendering width. */
@@ -92,7 +94,6 @@ public abstract class Sequence
      */
     public Sequence(Loader loader, Resolution resolution)
     {
-        this.loader = loader;
         this.resolution = resolution;
         loadedSemaphore = new Semaphore(0);
         renderer = loader.getRenderer();
@@ -101,90 +102,48 @@ public abstract class Sequence
         height = resolution.getHeight();
     }
 
-    /**
-     * Start the next sequence and wait for current sequence to end before next sequence continues. This function should
-     * be used to synchronize two sequences (eg: load a next sequence while being in a menu). Do not forget to call
-     * {@link #end()} in order to give control to the next sequence. The next sequence should override
-     * {@link #onLoaded(double, Graphic)} for special load just before enter in the loop.
-     * 
-     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
-     * @param nextSequence The next sequence reference (must not be <code>null</code>).
-     * @param arguments The arguments list.
+    /*
+     * Sequencable
      */
-    public final void start(boolean wait, Class<? extends Sequence> nextSequence, Object... arguments)
-    {
-        renderer.start(Loader.createSequence(nextSequence, loader, arguments), wait);
-    }
 
     /**
-     * Terminate sequence.
+     * Loading sequence data.
      */
-    public final void end()
-    {
-        renderer.end();
-    }
+    protected abstract void load();
 
     /**
-     * Terminate sequence, and set the next sequence.
+     * Update sequence.
      * 
-     * @param nextSequence The next sequence reference.
-     * @param arguments The sequence arguments list if needed by its constructor.
+     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation.
+     *            Example: <code>x += 5.0 * extrp</code>
      */
-    public final void end(Class<? extends Sequence> nextSequence, Object... arguments)
-    {
-        renderer.end(Loader.createSequence(nextSequence, loader, arguments));
-    }
+    protected abstract void update(double extrp);
 
     /**
-     * Add a key listener.
+     * Render sequence.
      * 
-     * @param listener The listener to add.
+     * @param g The graphic output.
      */
-    public final void addKeyListener(InputDeviceKeyListener listener)
-    {
-        renderer.addKeyListener(listener);
-    }
+    protected abstract void render(Graphic g);
 
     /**
-     * Set the system cursor visibility.
+     * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
+     * to synchronize loading process when it is called asynchronously.
      * 
-     * @param visible <code>true</code> if visible, <code>false</code> else.
+     * @throws LionEngineException If the sequence has already been loaded.
      */
-    public final void setSystemCursorVisible(boolean visible)
+    public final void loadInternal()
     {
-        renderer.setSystemCursorVisible(visible);
-    }
-
-    /**
-     * Set the extrapolation flag.
-     * 
-     * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
-     */
-    public final void setExtrapolated(boolean extrapolated)
-    {
-        renderer.setExtrapolated(extrapolated);
-    }
-
-    /**
-     * Get the input device instance from its type.
-     * 
-     * @param <T> The input device.
-     * @param type The input device type.
-     * @return The input instance reference, <code>null</code> if not found.
-     */
-    public final <T extends InputDevice> T getInputDevice(Class<T> type)
-    {
-        return renderer.getInputDevice(type);
-    }
-
-    /**
-     * Get the configuration.
-     * 
-     * @return The configuration.
-     */
-    public final Config getConfig()
-    {
-        return renderer.getConfig();
+        if (!loaded)
+        {
+            load();
+            loaded = true;
+            loadedSemaphore.release();
+        }
+        else
+        {
+            throw new LionEngineException(Sequence.ERROR_LOADED);
+        }
     }
 
     /**
@@ -208,44 +167,30 @@ public abstract class Sequence
     }
 
     /**
-     * Get current frame rate (number of image per second).
+     * Check if the sequence has been loaded.
      * 
-     * @return The current number of image per second.
+     * @return <code>true</code> if loaded, <code>false</code> else.
      */
-    public final int getFps()
+    public final boolean isLoaded()
     {
-        return renderer.getFps();
+        return loaded;
     }
 
     /**
-     * Set the new resolution used by the sequence.
-     * 
-     * @param newSource The new resolution used.
+     * Called when sequence is focused (screen). Does nothing by default.
      */
-    protected final void setResolution(Resolution newSource)
+    public void onFocusGained()
     {
-        renderer.setResolution(newSource);
+        // Nothing by default
     }
 
     /**
-     * Loading sequence data.
+     * Called when sequence lost focus (screen). Does nothing by default.
      */
-    protected abstract void load();
-
-    /**
-     * Update sequence.
-     * 
-     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation.
-     *            Example: x += 5.0 * extrp
-     */
-    protected abstract void update(double extrp);
-
-    /**
-     * Render sequence.
-     * 
-     * @param g The graphic output.
-     */
-    protected abstract void render(Graphic g);
+    public void onLostFocus()
+    {
+        // Nothing by default
+    }
 
     /**
      * Called when the sequence has been loaded. Does nothing by default.
@@ -283,45 +228,12 @@ public abstract class Sequence
     }
 
     /**
-     * Called when sequence is focused (screen). Does nothing by default.
+     * Start the sequence and load it.
      */
-    public void onFocusGained()
+    final void start()
     {
-        // Nothing by default
-    }
-
-    /**
-     * Called when sequence lost focus (screen). Does nothing by default.
-     */
-    public void onLostFocus()
-    {
-        // Nothing by default
-    }
-
-    /**
-     * Start the sequence and load it. Must only be called by {@link Renderer#asyncLoad(Sequence)}.
-     */
-    public final void start()
-    {
-        if (!loaded)
-        {
-            load();
-            loaded = true;
-        }
-    }
-
-    /**
-     * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order
-     * to synchronize loading process when it is called asynchronously.
-     */
-    public final void loadInternal()
-    {
-        if (!loaded)
-        {
-            load();
-            loaded = true;
-            loadedSemaphore.release();
-        }
+        load();
+        loaded = true;
     }
 
     /**
@@ -330,10 +242,74 @@ public abstract class Sequence
      * @param width The new screen width.
      * @param height The new screen height.
      */
-    public final void setResolution(int width, int height)
+    final void setResolution(int width, int height)
     {
         this.width = width;
         this.height = height;
         onResolutionChanged(width, height, renderer.getConfig().getSource().getRate());
+    }
+
+    /*
+     * Sequencable
+     */
+
+    @Override
+    public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    {
+        renderer.start(wait, nextSequenceClass, arguments);
+    }
+
+    @Override
+    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    {
+        renderer.end(nextSequenceClass, arguments);
+    }
+
+    @Override
+    public final void end()
+    {
+        renderer.end();
+    }
+
+    @Override
+    public final void addKeyListener(InputDeviceKeyListener listener)
+    {
+        renderer.addKeyListener(listener);
+    }
+
+    @Override
+    public final void setSystemCursorVisible(boolean visible)
+    {
+        renderer.setSystemCursorVisible(visible);
+    }
+
+    @Override
+    public final void setExtrapolated(boolean extrapolated)
+    {
+        renderer.setExtrapolated(extrapolated);
+    }
+
+    @Override
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    {
+        return renderer.getInputDevice(type);
+    }
+
+    @Override
+    public final Config getConfig()
+    {
+        return renderer.getConfig();
+    }
+
+    @Override
+    public final int getFps()
+    {
+        return renderer.getFps();
+    }
+
+    @Override
+    public final void setResolution(Resolution newSource)
+    {
+        renderer.setResolution(newSource);
     }
 }

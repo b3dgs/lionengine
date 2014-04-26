@@ -61,7 +61,7 @@ final class MediaAndroid
     }
 
     @Override
-    public InputStream getStream()
+    public InputStream getInputStream()
     {
         return UtilityMedia.getStream(this, "MediaImpl", false);
     }

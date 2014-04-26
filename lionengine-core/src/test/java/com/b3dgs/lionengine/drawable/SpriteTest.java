@@ -41,9 +41,9 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class SpriteTest
 {
     /** Image media. */
-    private static Media media;
+    protected static Media media;
     /** Graphic test output. */
-    private static Graphic g;
+    protected static Graphic g;
 
     /**
      * Prepare test.

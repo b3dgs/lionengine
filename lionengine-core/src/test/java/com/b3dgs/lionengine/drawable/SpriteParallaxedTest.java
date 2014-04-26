@@ -44,9 +44,9 @@ public class SpriteParallaxedTest
     /** Lines number. */
     private static final int LINES = 8;
     /** Image media. */
-    private static Media media;
+    protected static Media media;
     /** Graphic test output. */
-    private static Graphic g;
+    protected static Graphic g;
 
     /**
      * Prepare test.

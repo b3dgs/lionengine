@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.mock;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Mock sequence.
@@ -30,6 +32,13 @@ import com.b3dgs.lionengine.core.Sequence;
 public class SequenceArgumentsMock
         extends Sequence
 {
+    /** Width. */
+    private int width;
+    /** Height. */
+    private int height;
+    /** Config. */
+    private Config config;
+
     /**
      * Constructor.
      * 
@@ -39,23 +48,33 @@ public class SequenceArgumentsMock
     public SequenceArgumentsMock(Loader loader, Object argument)
     {
         super(loader, new Resolution(320, 240, 60));
+        setExtrapolated(true);
+        addKeyListener(null);
+        setSystemCursorVisible(true);
     }
 
     @Override
     protected void load()
     {
-        // Mock
+        width = getWidth();
+        height = getHeight();
+        config = getConfig();
+        setResolution(new Resolution(640, 480, 60));
     }
 
     @Override
     protected void update(double extrp)
     {
-        end(SequenceAsyncMock.class);
+        end();
     }
 
     @Override
     protected void render(Graphic g)
     {
-        // Mock
+        Verbose.info("Sequence single mock info");
+        Verbose.info(String.valueOf(width));
+        Verbose.info(String.valueOf(height));
+        Verbose.info(String.valueOf(config));
+        Verbose.info(String.valueOf(getFps()));
     }
 }

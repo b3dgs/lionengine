@@ -34,70 +34,95 @@ import com.b3dgs.lionengine.mock.AppletMock;
  */
 public class ConfigTest
 {
+    /** Resolution. */
+    private static final Resolution OUTPUT = new Resolution(320, 240, 60);
+    /** Config. */
+    private static final Config CONFIG = new Config(ConfigTest.OUTPUT, 32, true);
+
     /**
-     * Test the config failures.
-     * 
-     * @param resolution The resolution.
-     * @param depth The depth.
-     * @param filter The filter.
+     * Test the config failure resolution.
      */
-    private static void testConfigFailure(Resolution resolution, int depth, Filter filter)
+    @Test(expected = LionEngineException.class)
+    public void testFailureResolution()
     {
-        try
-        {
-            final Config config = new Config(resolution, depth, true, filter);
-            Assert.assertNotNull(config);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Assert.assertNotNull(new Config(null, 1, true, Filter.NONE));
     }
 
     /**
-     * Test the config.
+     * Test the config failure depth.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureDepth()
+    {
+        Assert.assertNotNull(new Config(ConfigTest.OUTPUT, 0, true, Filter.NONE));
+    }
+
+    /**
+     * Test the config failure filter.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureFilter()
+    {
+        Assert.assertNotNull(new Config(ConfigTest.OUTPUT, 1, true, null));
+    }
+
+    /**
+     * Test the config failure ratio.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testFailureRatio()
+    {
+        ConfigTest.CONFIG.setRatio(0);
+    }
+
+    /**
+     * Test the config getter.
      */
     @Test
-    public void testConfig()
+    public void testGetter()
     {
-        ConfigTest.testConfigFailure(null, 1, Filter.NONE);
-        ConfigTest.testConfigFailure(new Resolution(320, 240, 60), 0, Filter.NONE);
-        ConfigTest.testConfigFailure(new Resolution(320, 240, 60), 1, null);
+        Assert.assertEquals(32, ConfigTest.CONFIG.getDepth());
+        Assert.assertTrue(ConfigTest.CONFIG.isWindowed());
+        Assert.assertEquals(Filter.NONE, ConfigTest.CONFIG.getFilter());
+        Assert.assertEquals(ConfigTest.OUTPUT, ConfigTest.CONFIG.getOutput());
+    }
 
-        final Resolution output = new Resolution(320, 240, 60);
-        final Config config = new Config(output, 32, true);
-        Assert.assertEquals(32, config.getDepth());
-        Assert.assertTrue(config.isWindowed());
-        Assert.assertEquals(Filter.NONE, config.getFilter());
-        Assert.assertEquals(output, config.getOutput());
+    /**
+     * Test the config source.
+     */
+    @Test
+    public void testSource()
+    {
+        ConfigTest.CONFIG.setSource(ConfigTest.OUTPUT);
+        Assert.assertEquals(ConfigTest.OUTPUT.getWidth(), ConfigTest.CONFIG.getSource().getWidth());
+        Assert.assertEquals(ConfigTest.OUTPUT.getHeight(), ConfigTest.CONFIG.getSource().getHeight());
+        Assert.assertEquals(ConfigTest.OUTPUT.getRate(), ConfigTest.CONFIG.getSource().getRate());
+    }
 
-        config.setSource(output);
-        Assert.assertEquals(output.getWidth(), config.getSource().getWidth());
+    /**
+     * Test the config ratio.
+     */
+    @Test
+    public void testRatio()
+    {
+        ConfigTest.CONFIG.setRatio(Ratio.R16_10);
+        Assert.assertEquals(384, ConfigTest.CONFIG.getOutput().getWidth());
+        Assert.assertEquals(240, ConfigTest.CONFIG.getOutput().getHeight());
+        Assert.assertEquals(Ratio.R16_10, ConfigTest.CONFIG.getOutput().getRatio(), 0.00000000001);
+    }
 
-        config.setRatio(Ratio.R16_10);
-        Assert.assertEquals(384, config.getOutput().getWidth());
-        Assert.assertEquals(240, config.getOutput().getHeight());
+    /**
+     * Test the config applet.
+     */
+    @Test
+    public void testApplet()
+    {
+        ConfigTest.CONFIG.setApplet(null);
+        Assert.assertNull(ConfigTest.CONFIG.getApplet(null));
+        Assert.assertNull(ConfigTest.CONFIG.getApplet(AppletMock.class));
 
-        config.setSource(output);
-        Assert.assertEquals(output.getWidth(), config.getSource().getWidth());
-
-        config.setApplet(null);
-        Assert.assertNull(config.getApplet(null));
-        Assert.assertNull(config.getApplet(AppletMock.class));
-
-        config.setApplet(new AppletMock());
-        Assert.assertNull(config.getApplet(null));
-        Assert.assertNotNull(config.getApplet(AppletMock.class));
-
-        try
-        {
-            config.setRatio(0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        ConfigTest.CONFIG.setApplet(new AppletMock());
+        Assert.assertNull(ConfigTest.CONFIG.getApplet(null));
+        Assert.assertNotNull(ConfigTest.CONFIG.getApplet(AppletMock.class));
     }
 }

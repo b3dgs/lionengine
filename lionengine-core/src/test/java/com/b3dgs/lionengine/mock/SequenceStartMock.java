@@ -52,7 +52,7 @@ public class SequenceStartMock
     protected void update(double extrp)
     {
         start(false, SequenceAsyncMock.class);
-        getFps();
+        end();
     }
 
     @Override

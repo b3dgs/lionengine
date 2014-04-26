@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Hq2x;
 import com.b3dgs.lionengine.Hq3x;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.Transparency;
@@ -33,11 +34,14 @@ import com.b3dgs.lionengine.Transparency;
  */
 public abstract class Renderer
         extends Thread
+        implements Sequencable
 {
     /** Error message loader. */
     private static final String ERROR_SEQUENCE = "Sequence must not be null !";
     /** Error message loader. */
     private static final String ERROR_RESOLUTION = "Resolution must not be null !";
+    /** Error message already started. */
+    private static final String ERROR_STARTED = "Renderer has already been started !";
     /** One nano second. */
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
@@ -47,10 +51,6 @@ public abstract class Renderer
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
-    /** Next sequence pointer. */
-    Sequence nextSequence;
-    /** Started. */
-    boolean started;
     /** Config reference. */
     private final Config config;
     /** Filter reference. */
@@ -79,6 +79,10 @@ public abstract class Renderer
     private Object[] arguments;
     /** Current sequence. */
     private Sequence sequence;
+    /** Next sequence pointer. */
+    private Sequence nextSequence;
+    /** Started. */
+    private boolean started;
     /** Image buffer. */
     private ImageBuffer buf;
     /** Graphic buffer. */
@@ -138,192 +142,42 @@ public abstract class Renderer
      * @param sequence The first sequence to start.
      * @param loader The loader reference.
      * @param arguments The sequence arguments list if needed by its constructor.
+     * @throws LionEngineException If the renderer has already been started.
      */
-    final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader, Object... arguments)
+    public final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader, Object... arguments)
     {
         if (!started)
         {
             this.loader = loader;
             this.arguments = arguments;
             firstSequence = sequence;
+            started = true;
             start();
         }
-    }
-
-    /**
-     * Start a new sequence and can wait for it to be loaded before continuing.
-     * 
-     * @param nextSequence The next sequence reference (must not be <code>null</code>).
-     * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
-     */
-    final void start(Sequence nextSequence, boolean wait)
-    {
-        Check.notNull(nextSequence, Renderer.ERROR_SEQUENCE);
-
-        this.nextSequence = nextSequence;
-        if (wait)
-        {
-            nextSequence.start();
-        }
         else
         {
-            asyncLoad(nextSequence);
-            asyncLoadFlag = true;
+            throw new LionEngineException(Renderer.ERROR_STARTED);
         }
     }
 
     /**
-     * Terminate sequence.
+     * Check if the renderer is started.
+     * 
+     * @return <code>true</code> if started, <code>false</code> else.
      */
-    final void end()
+    public final boolean isStarted()
     {
-        end(nextSequence);
+        return started;
     }
 
     /**
-     * Terminate sequence, and set the next sequence.
+     * Get the next sequence pointer.
      * 
-     * @param nextSequence The next sequence reference.
+     * @return The next sequence pointer.
      */
-    final void end(Sequence nextSequence)
+    final Sequence getNextSequence()
     {
-        this.nextSequence = nextSequence;
-        isRunning = false;
-    }
-
-    /**
-     * Add a key listener.
-     * 
-     * @param listener The listener to add.
-     */
-    final void addKeyListener(InputDeviceKeyListener listener)
-    {
-        screen.addKeyListener(listener);
-    }
-
-    /**
-     * Set the extrapolation flag.
-     * 
-     * @param extrapolated <code>true</code> will activate it, <code>false</code> will disable it.
-     */
-    final void setExtrapolated(boolean extrapolated)
-    {
-        this.extrapolated = extrapolated;
-    }
-
-    /**
-     * Set the new resolution used by the sequence.
-     * 
-     * @param newSource The new resolution used.
-     */
-    final void setResolution(Resolution newSource)
-    {
-        Check.notNull(newSource, Renderer.ERROR_RESOLUTION);
-
-        config.setSource(newSource);
-        source = config.getSource();
-
-        // Scale factor
-        final double scaleX = output.getWidth() / (double) source.getWidth();
-        final double scaleY = output.getHeight() / (double) source.getHeight();
-        Transform transform = Core.GRAPHIC.createTransform();
-
-        // Filter level
-        switch (filter)
-        {
-            case HQ2X:
-                hqx = 2;
-                transform.scale(scaleX / 2, scaleY / 2);
-                break;
-            case HQ3X:
-                hqx = 3;
-                transform.scale(scaleX / 3, scaleY / 3);
-                break;
-            default:
-                hqx = 0;
-                transform.scale(scaleX, scaleY);
-                break;
-        }
-
-        // Store source size
-        width = source.getWidth();
-        height = source.getHeight();
-
-        // Standard rendering
-        if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
-        {
-            buf = null;
-            gbuf = null;
-            transform = null;
-            graphic.setGraphic(null);
-        }
-        // Scaled rendering
-        else
-        {
-            buf = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
-            gbuf = buf.createGraphic();
-            if (hqx > 1 || filter == Filter.NONE)
-            {
-                transform.setInterpolation(false);
-            }
-            else
-            {
-                transform.setInterpolation(true);
-            }
-            graphic.setGraphic(gbuf.getGraphic());
-        }
-        op = transform;
-        directRendering = hqx == 0 && (op == null || buf == null);
-        sequence.setResolution(width, height);
-    }
-
-    /**
-     * Set the system cursor visibility.
-     * 
-     * @param visible <code>true</code> if visible, <code>false</code> else.
-     */
-    final void setSystemCursorVisible(boolean visible)
-    {
-        if (visible)
-        {
-            screen.showCursor();
-        }
-        else
-        {
-            screen.hideCursor();
-        }
-    }
-
-    /**
-     * Get the configuration.
-     * 
-     * @return The configuration.
-     */
-    public final Config getConfig()
-    {
-        return config;
-    }
-
-    /**
-     * Get current frame rate (number of image per second).
-     * 
-     * @return The current number of image per second.
-     */
-    final int getFps()
-    {
-        return (int) currentFrameRate;
-    }
-
-    /**
-     * Get the input device instance from its type.
-     * 
-     * @param <T> The input device.
-     * @param type The input device type.
-     * @return The input instance reference, <code>null</code> if not found.
-     */
-    final <T extends InputDevice> T getInputDevice(Class<T> type)
-    {
-        return screen.getInputDevice(type);
+        return nextSequence;
     }
 
     /**
@@ -390,7 +244,11 @@ public abstract class Renderer
         this.sequence = sequence;
         nextSequence = null;
         screen.setSequence(sequence);
-        sequence.start();
+        // Sequence may have already been loaded in case of async load or if started from another sequence
+        if (!sequence.isLoaded())
+        {
+            sequence.start();
+        }
         setResolution(sequence.resolution);
 
         // Prepare sequence to be started
@@ -490,17 +348,159 @@ public abstract class Renderer
     }
 
     /*
+     * Sequencable
+     */
+
+    @Override
+    public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    {
+        Check.notNull(nextSequenceClass, Renderer.ERROR_SEQUENCE);
+
+        nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
+        if (wait)
+        {
+            nextSequence.start();
+        }
+        else
+        {
+            asyncLoad(nextSequence);
+            asyncLoadFlag = true;
+        }
+    }
+
+    @Override
+    public final void end()
+    {
+        isRunning = false;
+    }
+
+    @Override
+    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    {
+        Check.notNull(nextSequenceClass, Renderer.ERROR_SEQUENCE);
+
+        nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
+        isRunning = false;
+    }
+
+    @Override
+    public final void addKeyListener(InputDeviceKeyListener listener)
+    {
+        screen.addKeyListener(listener);
+    }
+
+    @Override
+    public final void setExtrapolated(boolean extrapolated)
+    {
+        this.extrapolated = extrapolated;
+    }
+
+    @Override
+    public final void setResolution(Resolution newSource)
+    {
+        Check.notNull(newSource, Renderer.ERROR_RESOLUTION);
+
+        config.setSource(newSource);
+        source = config.getSource();
+
+        // Scale factor
+        final double scaleX = output.getWidth() / (double) source.getWidth();
+        final double scaleY = output.getHeight() / (double) source.getHeight();
+        Transform transform = Core.GRAPHIC.createTransform();
+
+        // Filter level
+        switch (filter)
+        {
+            case HQ2X:
+                hqx = 2;
+                transform.scale(scaleX / 2, scaleY / 2);
+                break;
+            case HQ3X:
+                hqx = 3;
+                transform.scale(scaleX / 3, scaleY / 3);
+                break;
+            default:
+                hqx = 0;
+                transform.scale(scaleX, scaleY);
+                break;
+        }
+
+        // Store source size
+        width = source.getWidth();
+        height = source.getHeight();
+
+        // Standard rendering
+        if (hqx == 0 && source.getWidth() == output.getWidth() && source.getHeight() == output.getHeight())
+        {
+            buf = null;
+            gbuf = null;
+            transform = null;
+            graphic.setGraphic(null);
+        }
+        // Scaled rendering
+        else
+        {
+            buf = Core.GRAPHIC.createImageBuffer(width, height, Transparency.OPAQUE);
+            gbuf = buf.createGraphic();
+            if (hqx > 1 || filter == Filter.NONE)
+            {
+                transform.setInterpolation(false);
+            }
+            else
+            {
+                transform.setInterpolation(true);
+            }
+            graphic.setGraphic(gbuf.getGraphic());
+        }
+        op = transform;
+        directRendering = hqx == 0 && (op == null || buf == null);
+        sequence.setResolution(width, height);
+    }
+
+    @Override
+    public final void setSystemCursorVisible(boolean visible)
+    {
+        if (visible)
+        {
+            screen.showCursor();
+        }
+        else
+        {
+            screen.hideCursor();
+        }
+    }
+
+    @Override
+    public final Config getConfig()
+    {
+        return config;
+    }
+
+    @Override
+    public final int getFps()
+    {
+        return (int) currentFrameRate;
+    }
+
+    @Override
+    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    {
+        return screen.getInputDevice(type);
+    }
+
+    /*
      * Thread
      */
 
     @Override
-    public void run()
+    public final void run()
     {
         // First init
         started = true;
         screen = Core.GRAPHIC.createScreen(this);
         screen.start();
-        nextSequence = Loader.createSequence(firstSequence, loader, arguments);
+        sequence = Loader.createSequence(firstSequence, loader, arguments);
+        nextSequence = sequence;
         waitForScreenReady();
         firstSequence = null;
 
@@ -519,6 +519,5 @@ public abstract class Renderer
             Verbose.info("Ending sequence: ", sequenceName);
         }
         screen.dispose();
-        EngineCore.terminate();
     }
 }
