@@ -220,7 +220,7 @@ final class FactoryGraphicSwt
         final float rotate = (float) Math.toRadians(angle);
         final float cos = (float) Math.cos(rotate);
         final float sin = (float) Math.sin(rotate);
-        transform.setElements(cos, sin, -sin, cos, w / 2, h / 2);
+        transform.setElements(cos, sin, -sin, cos, w / 2.0f, h / 2.0f);
 
         gc.setTransform(transform);
         gc.drawImage(image, -w / 2, -h / 2);

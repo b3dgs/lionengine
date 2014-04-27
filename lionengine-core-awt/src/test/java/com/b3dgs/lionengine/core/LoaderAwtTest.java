@@ -49,7 +49,7 @@ public class LoaderAwtTest
     @AfterClass
     public static void cleanUp()
     {
-        EngineCore.terminate();
+        Engine.terminate();
         System.out.println("****************************************************************************************");
         System.out.flush();
     }

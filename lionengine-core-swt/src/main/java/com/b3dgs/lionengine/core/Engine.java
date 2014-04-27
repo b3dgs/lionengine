@@ -167,7 +167,7 @@ public final class Engine
             try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename));)
             {
                 final String version = reader.readUTF();
-                if (EngineCore.getProgramVersion().equals(version))
+                if (EngineCore.getProgramVersion().toString().equals(version))
                 {
                     delete = false;
                 }

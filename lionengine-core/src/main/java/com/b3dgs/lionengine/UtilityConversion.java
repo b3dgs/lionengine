@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import java.nio.ByteBuffer;
+import java.util.Locale;
 
 /**
  * Conversion class utility.
@@ -134,11 +135,11 @@ public final class UtilityConversion
             final String next = string.substring(i, i + 1);
             if (i == 0)
             {
-                result += next.toUpperCase();
+                result += next.toUpperCase(Locale.ENGLISH);
             }
             else
             {
-                result += next.toLowerCase();
+                result += next.toLowerCase(Locale.ENGLISH);
             }
         }
         return result;
