@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Parallaxed sprite implementation.

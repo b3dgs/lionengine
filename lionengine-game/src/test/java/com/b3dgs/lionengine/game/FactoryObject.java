@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Factory implementation for test.

@@ -24,7 +24,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.Version;
@@ -32,6 +31,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;

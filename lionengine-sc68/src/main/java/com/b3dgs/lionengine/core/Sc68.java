@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.core;
 
-import com.b3dgs.lionengine.Media;
-
 /**
  * Allows to play SonicArranger musics (original Amiga player).
  * <p>

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.game.FactoryObjectGame;

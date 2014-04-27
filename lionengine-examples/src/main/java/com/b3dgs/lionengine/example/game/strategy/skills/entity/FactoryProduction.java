@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTileGame;

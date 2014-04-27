@@ -25,7 +25,6 @@ import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
 
 /**
  * Handle sound fx routine. The sound is expected to be short, as it has to be played quickly. It supports the following

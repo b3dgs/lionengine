@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;

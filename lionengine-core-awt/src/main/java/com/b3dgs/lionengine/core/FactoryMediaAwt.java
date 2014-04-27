@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.core;
 
 import java.io.File;
 
-import com.b3dgs.lionengine.Media;
-
 /**
  * Media factory implementation.
  * 

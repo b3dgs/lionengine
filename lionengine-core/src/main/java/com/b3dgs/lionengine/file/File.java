@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.file;
 
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * File factory. Can create the following elements:

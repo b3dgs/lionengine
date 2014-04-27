@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 

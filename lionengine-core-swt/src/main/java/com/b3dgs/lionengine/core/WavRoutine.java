@@ -32,7 +32,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.UtilityMath;
 
 /**

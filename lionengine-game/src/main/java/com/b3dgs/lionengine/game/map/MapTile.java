@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 
 /**

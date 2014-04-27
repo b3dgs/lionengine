@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Media mock.

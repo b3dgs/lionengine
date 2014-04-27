@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.utility;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;

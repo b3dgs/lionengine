@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.CollisionData;
 

@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.b3dgs.lionengine.core.Media;
+
 /**
  * Special engine exception implementation which limit the trace to the user side.
  * 

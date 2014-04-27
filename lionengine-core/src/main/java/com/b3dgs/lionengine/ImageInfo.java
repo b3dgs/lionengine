@@ -20,6 +20,8 @@ package com.b3dgs.lionengine;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.b3dgs.lionengine.core.Media;
+
 /**
  * Get quick information from an image without reading all data.
  * <p>

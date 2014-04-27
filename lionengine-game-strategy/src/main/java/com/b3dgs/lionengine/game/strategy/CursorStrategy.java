@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.strategy;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;

@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.Media;
 
 /**
  * Sound routine implementation. One sound represents one thread.

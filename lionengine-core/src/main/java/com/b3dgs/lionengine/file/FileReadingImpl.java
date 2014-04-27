@@ -22,7 +22,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.Media;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * File reading implementation.

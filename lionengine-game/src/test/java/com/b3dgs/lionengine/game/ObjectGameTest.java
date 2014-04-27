@@ -22,9 +22,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**

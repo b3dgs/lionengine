@@ -25,7 +25,6 @@ import java.io.OutputStream;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.OperatingSystem;
 import com.b3dgs.lionengine.UtilityFile;
 import com.sun.jna.Native;

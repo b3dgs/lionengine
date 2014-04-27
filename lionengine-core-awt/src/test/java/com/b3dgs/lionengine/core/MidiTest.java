@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 
 /**
  * Test the midi class.

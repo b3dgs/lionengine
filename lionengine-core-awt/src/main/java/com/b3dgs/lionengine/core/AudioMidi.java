@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 
 /**
  * Audio factory. Allows to create audio player.

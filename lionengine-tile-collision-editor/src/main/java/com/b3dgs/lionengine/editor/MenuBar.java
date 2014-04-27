@@ -36,8 +36,8 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.file.File;
 import com.b3dgs.lionengine.file.XmlNode;

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 

@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.mock;
 
 import java.io.File;
 
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMedia;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Media mock implementation.

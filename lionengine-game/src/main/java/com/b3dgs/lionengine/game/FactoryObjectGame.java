@@ -22,8 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Media;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * It performs a list of {@link SetupGame} considering an input class type. This way it is possible to create new
