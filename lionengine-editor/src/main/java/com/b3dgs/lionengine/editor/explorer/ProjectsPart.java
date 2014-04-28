@@ -53,24 +53,24 @@ import com.b3dgs.lionengine.editor.Activator;
  * 
  * @author Pierre-Alexandre
  */
-public class ResourcesExplorerPart
+public class ProjectsPart
 {
     /** Main folder icon. */
-    static final Image ICON_MAIN = Activator.getIcon("resources-explorer/main.png");
+    static final Image ICON_MAIN = Activator.getIcon("resources/main.png");
     /** Folder icon. */
-    static final Image ICON_FOLDER = Activator.getIcon("resources-explorer/folder.png");
+    static final Image ICON_FOLDER = Activator.getIcon("resources/folder.png");
     /** File icon. */
-    static final Image ICON_FILE = Activator.getIcon("resources-explorer/file.png");
+    static final Image ICON_FILE = Activator.getIcon("resources/file.png");
     /** Sound file icon. */
-    static final Image ICON_SOUND = Activator.getIcon("resources-explorer/sound.png");
+    static final Image ICON_SOUND = Activator.getIcon("resources/sound.png");
     /** Music file icon. */
-    static final Image ICON_MUSIC = Activator.getIcon("resources-explorer/music.png");
+    static final Image ICON_MUSIC = Activator.getIcon("resources/music.png");
     /** Image file icon. */
-    static final Image ICON_IMAGE = Activator.getIcon("resources-explorer/image.png");
+    static final Image ICON_IMAGE = Activator.getIcon("resources/image.png");
     /** Data file icon. */
-    static final Image ICON_DATA = Activator.getIcon("resources-explorer/data.png");
+    static final Image ICON_DATA = Activator.getIcon("resources/data.png");
     /** Level file icon. */
-    static final Image ICON_LEVEL = Activator.getIcon("resources-explorer/level.png");
+    static final Image ICON_LEVEL = Activator.getIcon("resources/level.png");
 
     /** Tree viewer. */
     Tree tree;
@@ -88,7 +88,7 @@ public class ResourcesExplorerPart
 
         tree = new Tree(parent, SWT.NONE);
         tree.setLayoutData(new GridData(GridData.FILL_BOTH));
-        menuService.registerContextMenu(tree, Activator.PLUGIN_ID + ".resources-explorer.menu");
+        menuService.registerContextMenu(tree, Activator.PLUGIN_ID + ".view.projects.menu");
 
         parent.pack(true);
     }
@@ -115,12 +115,12 @@ public class ResourcesExplorerPart
                     if (parent == null)
                     {
                         item = new TreeItem(tree, SWT.NONE);
-                        item.setImage(ResourcesExplorerPart.ICON_MAIN);
+                        item.setImage(ProjectsPart.ICON_MAIN);
                     }
                     else
                     {
                         item = new TreeItem(parent, SWT.NONE);
-                        item.setImage(ResourcesExplorerPart.ICON_FOLDER);
+                        item.setImage(ProjectsPart.ICON_FOLDER);
                     }
                     item.setText(dir.getFileName().toString());
                     item.setData(dir.toFile());
@@ -160,27 +160,27 @@ public class ResourcesExplorerPart
                 item.setData(child);
                 if (Property.SOUND.is(child))
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_SOUND);
+                    item.setImage(ProjectsPart.ICON_SOUND);
                 }
                 else if (Property.MUSIC.is(child))
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_MUSIC);
+                    item.setImage(ProjectsPart.ICON_MUSIC);
                 }
                 else if (Property.IMAGE.is(child))
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_IMAGE);
+                    item.setImage(ProjectsPart.ICON_IMAGE);
                 }
                 else if (Property.DATA.is(child))
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_DATA);
+                    item.setImage(ProjectsPart.ICON_DATA);
                 }
                 else if (Property.LEVEL.is(child))
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_LEVEL);
+                    item.setImage(ProjectsPart.ICON_LEVEL);
                 }
                 else
                 {
-                    item.setImage(ResourcesExplorerPart.ICON_FILE);
+                    item.setImage(ProjectsPart.ICON_FILE);
                 }
             }
 
@@ -199,7 +199,7 @@ public class ResourcesExplorerPart
                     final TreeItem item = (TreeItem) data;
                     if (item.getData() instanceof File)
                     {
-                        ResourcesExplorerModel.INSTANCE.setSelection((File) item.getData());
+                        ProjectsModel.INSTANCE.setSelection((File) item.getData());
                     }
                 }
             }

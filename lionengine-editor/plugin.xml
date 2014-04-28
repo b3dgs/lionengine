@@ -24,31 +24,31 @@
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
-            id="lionengine-editor.resourcesExplorerMusic">
+            id="lionengine-editor.resource.music">
          <test
                property="lionengine-editor.resourceExtensionTester.music">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resourcesExplorerSound">
+            id="lionengine-editor.resource.sound">
          <test
                property="lionengine-editor.resourceExtensionTester.sound">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resourcesExplorerImage">
+            id="lionengine-editor.resource.image">
          <test
                property="lionengine-editor.resourceExtensionTester.image">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resourcesExplorerData">
+            id="lionengine-editor.resource.data">
          <test
                property="lionengine-editor.resourceExtensionTester.data">
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.resourcesExplorerLevel">
+            id="lionengine-editor.resource.level">
          <test
                property="lionengine-editor.resourceExtensionTester.level">
          </test>

@@ -40,7 +40,7 @@ public class Manager
      * @param display The display reference.
      */
     @ProcessAdditions
-    void processAdditions(MApplication app, EModelService modelService, Display display)
+    public void processAdditions(MApplication app, EModelService modelService, Display display)
     {
         final Monitor monitor = display.getPrimaryMonitor();
         final Rectangle monitorRect = monitor.getBounds();

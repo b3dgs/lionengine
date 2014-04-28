@@ -13,6 +13,7 @@
 
    <windowImages/>
 
+
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="javax.annotation"/>
@@ -21,6 +22,7 @@
       <plugin id="lionengine-core"/>
       <plugin id="lionengine-core-swt"/>
       <plugin id="lionengine-editor"/>
+      <plugin id="lionengine-game"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.batik.util.gui"/>

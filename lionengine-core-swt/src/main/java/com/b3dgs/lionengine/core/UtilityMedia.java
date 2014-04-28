@@ -78,11 +78,11 @@ public final class UtilityMedia
     }
 
     /**
-     * Activate or no the resources loading from *.jar.
+     * Activate or no the resources loading from *.jar. A <code>null</code> value will disable load from jar.
      * 
      * @param clazz The class loader reference (resources entry point).
      */
-    static void setLoadFromJar(Class<?> clazz)
+    public static void setLoadFromJar(Class<?> clazz)
     {
         UtilityMedia.fromJar = clazz != null;
         if (UtilityMedia.fromJar)
@@ -102,7 +102,7 @@ public final class UtilityMedia
      * 
      * @param dir The main root directory.
      */
-    static void setResourcesDirectory(String dir)
+    public static void setResourcesDirectory(String dir)
     {
         if (dir == null)
         {

@@ -24,7 +24,7 @@ import java.io.File;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum ResourcesExplorerModel
+public enum ProjectsModel
 {
     /** Resources explorer model. */
     INSTANCE;

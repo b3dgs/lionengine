@@ -33,7 +33,7 @@ public class ResourceExtensionTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final File selection = ResourcesExplorerModel.INSTANCE.getSelection();
+        final File selection = ProjectsModel.INSTANCE.getSelection();
         try
         {
             final Property type = Property.valueOf(property.toUpperCase(Locale.ENGLISH));

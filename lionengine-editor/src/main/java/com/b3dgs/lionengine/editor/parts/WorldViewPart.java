@@ -19,8 +19,11 @@ package com.b3dgs.lionengine.editor.parts;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
 
 /**
  * Represents the world view, where the global map is displayed.
@@ -38,5 +41,10 @@ public class WorldViewPart
     public void createComposite(Composite parent)
     {
         parent.setLayout(new GridLayout(1, false));
+        final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+        final WorldViewRenderer worldViewRenderer = new WorldViewRenderer();
+        composite.addPaintListener(worldViewRenderer);
+        composite.addMouseListener(worldViewRenderer);
+        composite.addMouseMoveListener(worldViewRenderer);
     }
 }

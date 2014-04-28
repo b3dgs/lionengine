@@ -5,13 +5,13 @@
       <children xsi:type="advanced:Perspective" xmi:id="_RgxM0ccnEeO6QsMPtNpkHg" elementId="lionengine-editor.perspective" label="">
         <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg" elementId="lionengine-editor.container" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="lionengine-editor.statck.resources-explorer">
-            <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="lionengine-editor.part.resources-explorer" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.explorer.ResourcesExplorerPart" label="Resources Explorer" iconURI="platform:/plugin/lionengine-editor/icons/part/resources-explorer.png">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="lionengine-editor.resources-explorer.menu">
+            <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="lionengine-editor.part.projects" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.explorer.ProjectsPart" label="Projects" iconURI="platform:/plugin/lionengine-editor/icons/part/projects.png">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="lionengine-editor.view.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="lionengine-editor.handledmenuitem.0" label="Load Music">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="lionengine-editor.resourcesExplorerMusic"/>
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="lionengine-editor.resource.music"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="lionengine-editor.handledmenuitem.1" label="Load Level">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="com.b3dgs.lionengine.editor.resourcesExplorerLevel"/>
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="lionengine-editor.resource.level"/>
                 </children>
               </menus>
             </children>

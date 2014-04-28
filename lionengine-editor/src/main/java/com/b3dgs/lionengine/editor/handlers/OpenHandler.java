@@ -25,8 +25,9 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.explorer.ResourcesExplorerModel;
-import com.b3dgs.lionengine.editor.explorer.ResourcesExplorerPart;
+import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.editor.explorer.ProjectsModel;
+import com.b3dgs.lionengine.editor.explorer.ProjectsPart;
 
 /**
  * Open handler implementation.
@@ -47,11 +48,12 @@ public class OpenHandler
         final DirectoryDialog dialog = new DirectoryDialog(shell);
         final File folder = new File(dialog.open());
 
-        ResourcesExplorerModel.INSTANCE.setRoot(folder);
+        ProjectsModel.INSTANCE.setRoot(folder);
         final Object part = activePart.getObject();
-        if (part instanceof ResourcesExplorerPart)
+        if (part instanceof ProjectsPart)
         {
-            ((ResourcesExplorerPart) part).setInput(folder);
+            ((ProjectsPart) part).setInput(folder);
         }
+        UtilityMedia.setResourcesDirectory(folder.getAbsolutePath());
     }
 }
