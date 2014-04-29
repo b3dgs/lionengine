@@ -17,24 +17,19 @@
  */
 package com.b3dgs.lionengine.editor.handlers;
 
-import java.io.File;
-
 import org.eclipse.e4.core.contexts.Active;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.explorer.ProjectsModel;
-import com.b3dgs.lionengine.editor.explorer.ProjectsPart;
+import com.b3dgs.lionengine.editor.dialogs.NewProjectDialog;
 
 /**
- * Open handler implementation.
+ * New project handler implementation.
  * 
  * @author Pierre-Alexandre
  */
-public class OpenHandler
+public class NewProjectHandler
 {
     /**
      * Execute the handler.
@@ -45,15 +40,7 @@ public class OpenHandler
     @Execute
     public void execute(Shell shell, @Active MPart activePart)
     {
-        final DirectoryDialog dialog = new DirectoryDialog(shell);
-        final File folder = new File(dialog.open());
-
-        ProjectsModel.INSTANCE.setRoot(folder);
-        final Object part = activePart.getObject();
-        if (part instanceof ProjectsPart)
-        {
-            ((ProjectsPart) part).setInput(folder);
-        }
-        UtilityMedia.setResourcesDirectory(folder.getAbsolutePath());
+        final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
+        newProjectDialog.open();
     }
 }

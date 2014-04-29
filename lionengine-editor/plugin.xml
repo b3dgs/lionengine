@@ -5,11 +5,11 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            name="LionEngine Editor"
+            name="%product.name"
             application="org.eclipse.e4.ui.workbench.swt.E4Application">
          <property
                name="applicationCSS"
-               value="platform:/plugin/lionengine-editor/css/default.css">
+               value="platform:/plugin/com.b3dgs.lionengine.editor/css/default.css">
          </property>
          <property
                name="appName"
@@ -17,49 +17,49 @@
          </property>
          <property
                name="lifeCycleURI"
-               value="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.Manager">
+               value="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.Manager">
          </property>
       </product>
    </extension>
    <extension
          point="org.eclipse.core.expressions.definitions">
       <definition
-            id="lionengine-editor.resource.music">
+            id="com.b3dgs.lionengine.editor.resource.music">
          <test
-               property="lionengine-editor.resourceExtensionTester.music">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.music">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resource.sound">
+            id="com.b3dgs.lionengine.editor.resource.sound">
          <test
-               property="lionengine-editor.resourceExtensionTester.sound">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.sound">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resource.image">
+            id="com.b3dgs.lionengine.editor.resource.image">
          <test
-               property="lionengine-editor.resourceExtensionTester.image">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.image">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resource.data">
+            id="com.b3dgs.lionengine.editor.resource.data">
          <test
-               property="lionengine-editor.resourceExtensionTester.data">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.data">
          </test>
       </definition>
       <definition
-            id="lionengine-editor.resource.level">
+            id="com.b3dgs.lionengine.editor.resource.level">
          <test
-               property="lionengine-editor.resourceExtensionTester.level">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.level">
          </test>
       </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="com.b3dgs.lionengine.editor.explorer.ResourceExtensionTester"
-            id="lionengine-editor.resourceExtensionTester"
-            namespace="lionengine-editor.resourceExtensionTester"
+            class="com.b3dgs.lionengine.editor.project.ResourceExtensionTester"
+            id="com.b3dgs.lionengine.editor.resourceExtensionTester"
+            namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
             properties="music,sound,data,image,level"
             type="java.lang.Object">
       </propertyTester>

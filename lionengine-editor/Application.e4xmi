@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmlns:ui="http://www.eclipse.org/ui/2010/UIModel/application/ui" xmi:id="_RgxMsMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ide.application" bindingContexts="_RgxMuccnEeO6QsMPtNpkHg">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_RgxMsccnEeO6QsMPtNpkHg" elementId="lionengine-editor.window" label="LionEngine Editor" iconURI="platform:/plugin/lionengine-editor/icons/product.png" x="0" y="0" width="1024" height="768">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_RgxMsccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.window" label="LionEngine Editor" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/product.png" x="0" y="0" width="1024" height="768">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_RgxM0McnEeO6QsMPtNpkHg">
-      <children xsi:type="advanced:Perspective" xmi:id="_RgxM0ccnEeO6QsMPtNpkHg" elementId="lionengine-editor.perspective" label="">
-        <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg" elementId="lionengine-editor.container" horizontal="true">
-          <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="lionengine-editor.statck.resources-explorer">
-            <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="lionengine-editor.part.projects" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.explorer.ProjectsPart" label="Projects" iconURI="platform:/plugin/lionengine-editor/icons/part/projects.png">
-              <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="lionengine-editor.view.projects.menu">
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="lionengine-editor.handledmenuitem.0" label="Load Music">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="lionengine-editor.resource.music"/>
+      <children xsi:type="advanced:Perspective" xmi:id="_RgxM0ccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.perspective" label="">
+        <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.container" horizontal="true">
+          <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.statck.resources-explorer">
+            <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="Projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
+              <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.view.projects.menu">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.handledmenuitem.0" label="Load Music">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="com.b3dgs.lionengine.editor.resource.music"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="lionengine-editor.handledmenuitem.1" label="Load Level">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="lionengine-editor.resource.level"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="com.b3dgs.lionengine.editor.handledmenuitem.1" label="Load Level">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="com.b3dgs.lionengine.editor.resource.level"/>
                 </children>
               </menus>
             </children>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_ql9Q8MgCEeOw0Z9_W5LnUQ" elementId="lionengine-editor.stack.world-view" containerData="30000">
-            <children xsi:type="basic:Part" xmi:id="_N1FYgMgAEeOw0Z9_W5LnUQ" elementId="lionengine-editor.part.world-view" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.parts.WorldViewPart" label="World View" iconURI="platform:/plugin/lionengine-editor/icons/part/world-view.png"/>
+          <children xsi:type="basic:PartStack" xmi:id="_ql9Q8MgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.stack.world-view" containerData="30000">
+            <children xsi:type="basic:Part" xmi:id="_N1FYgMgAEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.world-view" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.parts.WorldViewPart" label="World View" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/world-view.png"/>
           </children>
         </children>
       </children>
     </children>
     <mainMenu xmi:id="_RgxMyccnEeO6QsMPtNpkHg" elementId="menu:org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_RgxMyscnEeO6QsMPtNpkHg" label="File">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMy8cnEeO6QsMPtNpkHg" label="Open" iconURI="platform:/plugin/lionengine-editor/icons/sample.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzMcnEeO6QsMPtNpkHg" label="Save" iconURI="platform:/plugin/lionengine-editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="Quit" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_NTAaEM7uEeOpIazmfaA1Jw" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMy8cnEeO6QsMPtNpkHg" label="%menu.open-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-opened.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzMcnEeO6QsMPtNpkHg" label="Save" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="%menu.exit" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="Help">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="About" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="%menu.about" command="_RgxMxscnEeO6QsMPtNpkHg"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_RgxM1ccnEeO6QsMPtNpkHg">
       <children xsi:type="menu:ToolBar" xmi:id="_RgxM1scnEeO6QsMPtNpkHg" elementId="toolbar:org.eclipse.ui.main.toolbar">
-        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM18cnEeO6QsMPtNpkHg" iconURI="platform:/plugin/lionengine-editor/icons/sample.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM2McnEeO6QsMPtNpkHg" iconURI="platform:/plugin/lionengine-editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM18cnEeO6QsMPtNpkHg" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/sample.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_RgxM2McnEeO6QsMPtNpkHg" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
       </children>
     </trimBars>
   </children>
-  <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.quitCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.QuitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
-  <handlers xmi:id="_RgxMwccnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.openCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.OpenHandler" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
-  <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.saveCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
-  <handlers xmi:id="_RgxMx8cnEeO6QsMPtNpkHg" elementId="lionengine-editor.handler.aboutCommand" contributionURI="bundleclass://lionengine-editor/com.b3dgs.lionengine.editor.handlers.AboutHandler" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_ZID8gM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.handler.new-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.NewProjectHandler" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
+  <handlers xmi:id="_RgxMwccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.open-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.OpenProjectHandler" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.quit" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.QuitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.saveCommand" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMx8cnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.about" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AboutHandler" command="_RgxMxscnEeO6QsMPtNpkHg"/>
   <bindingTables xmi:id="_RgxMvscnEeO6QsMPtNpkHg" bindingContext="_RgxMuccnEeO6QsMPtNpkHg">
     <bindings xmi:id="_RgxMv8cnEeO6QsMPtNpkHg" keySequence="M1+Q" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
     <bindings xmi:id="_RgxMwscnEeO6QsMPtNpkHg" keySequence="M1+O" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
@@ -53,8 +55,9 @@
     <children xmi:id="_RgxMuscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_RgxMu8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
+  <commands xmi:id="_W_8ZcM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.command.new-project" commandName="newProjectCommand"/>
+  <commands xmi:id="_RgxMwMcnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.command.open-project" commandName="openProjectCommand"/>
   <commands xmi:id="_RgxMvMcnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
-  <commands xmi:id="_RgxMwMcnEeO6QsMPtNpkHg" elementId="lionengine-editor.open" commandName="openCommand"/>
   <commands xmi:id="_RgxMw8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>

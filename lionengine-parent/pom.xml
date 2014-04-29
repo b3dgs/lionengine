@@ -82,17 +82,12 @@
 			<modules>
 				<module>../lionengine-examples</module>
 				<module>../lionengine-tutorials</module>
-				<module>../lionengine-tests-java</module>
 				<module>../lionengine-tile-collision-editor</module>
 				<module>../lionengine-editor</module>
 			</modules>
 		</profile>
 	</profiles>
 	<repositories>
-		<repository>
-			<id>swt-repo</id>
-			<url>https://swt-repo.googlecode.com/svn/repo/</url>
-		</repository>
 		<repository>
 			<id>kepler</id>
 			<url>http://download.eclipse.org/releases/kepler</url>

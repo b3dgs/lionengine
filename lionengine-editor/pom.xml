@@ -9,7 +9,7 @@
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
-	<artifactId>lionengine-editor</artifactId>
+	<artifactId>com.b3dgs.lionengine.editor</artifactId>
 	<name>LionEngine Editor</name>
 	<packaging>eclipse-plugin</packaging>
 

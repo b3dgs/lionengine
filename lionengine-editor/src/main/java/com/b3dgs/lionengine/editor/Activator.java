@@ -42,7 +42,7 @@ public class Activator
         implements BundleActivator
 {
     /** Plugin ID. */
-    public static final String PLUGIN_ID = "lionengine-editor";
+    public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
     /** Context reference. */
     private static BundleContext context;
 

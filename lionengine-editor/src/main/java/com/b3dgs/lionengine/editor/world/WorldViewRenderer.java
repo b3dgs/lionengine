@@ -75,8 +75,6 @@ public final class WorldViewRenderer
     private int mouseY;
     /** Selecting flag. */
     private boolean selecting;
-    /** Clicking flag. */
-    private boolean clicking;
     /** Moving entity flag. */
     private boolean moving;
 
@@ -193,7 +191,6 @@ public final class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        clicking = true;
         updateMouse(mx, my);
     }
 
@@ -203,7 +200,6 @@ public final class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        clicking = false;
         moving = false;
         updateMouse(mx, my);
     }
