@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Pierre-Alexandre
  */
-public class QuitHandler
+public class ExitHandler
 {
     /**
      * Execute the handler.

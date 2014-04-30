@@ -42,7 +42,7 @@
   </children>
   <handlers xmi:id="_ZID8gM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.handler.new-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.NewProjectHandler" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
   <handlers xmi:id="_RgxMwccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.open-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.OpenProjectHandler" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
-  <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.quit" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.QuitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+  <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.quit" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ExitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
   <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.saveCommand" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
   <handlers xmi:id="_RgxMx8cnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.about" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AboutHandler" command="_RgxMxscnEeO6QsMPtNpkHg"/>
   <bindingTables xmi:id="_RgxMvscnEeO6QsMPtNpkHg" bindingContext="_RgxMuccnEeO6QsMPtNpkHg">
