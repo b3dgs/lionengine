@@ -26,6 +26,15 @@ import java.io.File;
  */
 public class Project
 {
+    /** Properties file. */
+    public static final String PROPERTIES_FILE = ".lionengine";
+    /** Properties file description. */
+    public static final String PROPERTIES_FILE_DESCRIPTION = "LionEngine project properties";
+    /** Property project sources folder. */
+    public static final String PROPERTY_PROJECT_SOURCES = "SourcesFolder";
+    /** Property project resources folder. */
+    public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
+
     /** Project name. */
     private String name;
     /** Source folder (represents the main source folder, such as <code>project/src/</code>). */

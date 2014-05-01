@@ -74,8 +74,6 @@ import com.b3dgs.lionengine.Version;
 public final class Engine
         extends EngineCore
 {
-    /** Error resource directory. */
-    private static final String ERROR_RESOURCE_DIR = "The resource directory must not be null !";
     /** Error resource class. */
     private static final String ERROR_RESOURCE_CLASS = "The resource class must not be null !";
     /** Error message temp directory. */
@@ -91,7 +89,6 @@ public final class Engine
      */
     public static void start(String name, Version version, Verbose level, String resourcesDir)
     {
-        Check.notNull(resourcesDir, Engine.ERROR_RESOURCE_DIR);
         Engine.start(name, version, level, resourcesDir, null);
     }
 
@@ -115,7 +112,7 @@ public final class Engine
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
-     * @param resourcesDir The main resources directory (must not be <code>null</code>).
+     * @param resourcesDir The main resources directory.
      * @param classResource The class loader reference (resources entry point).
      */
     private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)

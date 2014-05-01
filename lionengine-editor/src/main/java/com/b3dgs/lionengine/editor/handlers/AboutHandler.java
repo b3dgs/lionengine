@@ -17,22 +17,10 @@
  */
 package com.b3dgs.lionengine.editor.handlers;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.dialogs.AboutDialog;
 
 /**
  * About handler implementation.
@@ -41,9 +29,6 @@ import com.b3dgs.lionengine.editor.Activator;
  */
 public class AboutHandler
 {
-    /** About icon. */
-    private static final Image ICON_ABOUT = Activator.getIcon("about.png");
-
     /**
      * Execute the handler.
      * 
@@ -52,45 +37,7 @@ public class AboutHandler
     @Execute
     public void execute(Shell shell)
     {
-        final Shell popup = new Shell(shell, SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-        popup.setLayout(new GridLayout(1, false));
-        popup.setText("About");
-
-        final Composite composite = new Composite(popup, SWT.NONE);
-        composite.setLayout(new GridLayout(2, false));
-
-        final Label aboutIcon = new Label(composite, SWT.NONE);
-        aboutIcon.setImage(AboutHandler.ICON_ABOUT);
-
-        final Label aboutText = new Label(composite, SWT.NONE);
-        final String version = Platform.getBundle(Activator.PLUGIN_ID).getHeaders().get("Bundle-Version");
-        aboutText.setText("LionEngine Editor " + version + "\nByron 3D Games Studio\nwww.b3dgs.com");
-
-        final Composite bottom = new Composite(popup, SWT.NONE);
-        bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        bottom.setLayout(new FormLayout());
-        final Button okButton = new Button(bottom, SWT.NONE);
-        final FormData data = new FormData();
-        data.width = 96;
-        okButton.setLayoutData(data);
-        okButton.setText("OK");
-        okButton.addSelectionListener(new SelectionListener()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent e)
-            {
-                popup.dispose();
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e)
-            {
-                // Nothing to do
-            }
-        });
-
-        popup.pack();
-        Activator.center(popup);
-        popup.open();
+        final AboutDialog aboutDialog = new AboutDialog(shell);
+        aboutDialog.open();
     }
 }

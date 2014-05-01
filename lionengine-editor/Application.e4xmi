@@ -7,6 +7,8 @@
           <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.statck.resources-explorer">
             <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="Projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.view.projects.menu">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_aIgbkNEMEeOtCYM_ydUyzA" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_aZrrINEMEeOtCYM_ydUyzA" label="%menu.open-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-opened.png" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.handledmenuitem.0" label="Load Music">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="com.b3dgs.lionengine.editor.resource.music"/>
                 </children>
@@ -50,6 +52,7 @@
     <bindings xmi:id="_RgxMwscnEeO6QsMPtNpkHg" keySequence="M1+O" command="_RgxMwMcnEeO6QsMPtNpkHg"/>
     <bindings xmi:id="_RgxMxccnEeO6QsMPtNpkHg" keySequence="M1+S" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
     <bindings xmi:id="_RgxMyMcnEeO6QsMPtNpkHg" keySequence="M1+A" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+    <bindings xmi:id="_o6xWANEMEeOtCYM_ydUyzA" keySequence="M1+N" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
   </bindingTables>
   <rootContext xmi:id="_RgxMuccnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_RgxMuscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>

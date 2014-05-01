@@ -56,21 +56,21 @@ import com.b3dgs.lionengine.editor.Activator;
 public class ProjectsPart
 {
     /** Main folder icon. */
-    static final Image ICON_MAIN = Activator.getIcon("resources/main.png");
+    static final Image ICON_MAIN = Activator.getIcon("resources", "main.png");
     /** Folder icon. */
-    static final Image ICON_FOLDER = Activator.getIcon("resources/folder.png");
+    static final Image ICON_FOLDER = Activator.getIcon("resources", "folder.png");
     /** File icon. */
-    static final Image ICON_FILE = Activator.getIcon("resources/file.png");
+    static final Image ICON_FILE = Activator.getIcon("resources", "file.png");
     /** Sound file icon. */
-    static final Image ICON_SOUND = Activator.getIcon("resources/sound.png");
+    static final Image ICON_SOUND = Activator.getIcon("resources", "sound.png");
     /** Music file icon. */
-    static final Image ICON_MUSIC = Activator.getIcon("resources/music.png");
+    static final Image ICON_MUSIC = Activator.getIcon("resources", "music.png");
     /** Image file icon. */
-    static final Image ICON_IMAGE = Activator.getIcon("resources/image.png");
+    static final Image ICON_IMAGE = Activator.getIcon("resources", "image.png");
     /** Data file icon. */
-    static final Image ICON_DATA = Activator.getIcon("resources/data.png");
+    static final Image ICON_DATA = Activator.getIcon("resources", "data.png");
     /** Level file icon. */
-    static final Image ICON_LEVEL = Activator.getIcon("resources/level.png");
+    static final Image ICON_LEVEL = Activator.getIcon("resources", "level.png");
 
     /** Tree viewer. */
     Tree tree;

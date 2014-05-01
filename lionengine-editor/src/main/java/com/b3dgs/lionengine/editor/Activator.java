@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -29,6 +30,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
@@ -41,6 +43,12 @@ import com.b3dgs.lionengine.core.Verbose;
 public class Activator
         implements BundleActivator
 {
+    /** Plugin name. */
+    public static final String PLUGIN_NAME = "LionEngine Editor";
+    /** Plugin version. */
+    public static final Version PLUGIN_VERSION = Version.create(6, 2, 0);
+    /** Plugin website. */
+    public static final String PLUGIN_WEBSITE = "www.b3dgs.com";
     /** Plugin ID. */
     public static final String PLUGIN_ID = "com.b3dgs.lionengine.editor";
     /** Context reference. */
@@ -67,7 +75,47 @@ public class Activator
         try
         {
             final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry("icons/" + icon)));
+                    .getBundle().getEntry(UtilityFile.getPath("icons", icon))));
+            return image.createImage();
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+    }
+
+    /**
+     * Get the file from its name.
+     * 
+     * @param file The file name.
+     * @return The file instance.
+     */
+    public static File getFile(String file)
+    {
+        try
+        {
+            final File root = FileLocator.getBundleFile(Activator.getContext().getBundle());
+            return new File(root, file);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+    }
+
+    /**
+     * Get the icon from its name.
+     * 
+     * @param root The icon root.
+     * @param icon The icon name.
+     * @return The icon instance.
+     */
+    public static Image getIcon(String root, String icon)
+    {
+        try
+        {
+            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
+                    .getBundle().getEntry(UtilityFile.getPath("icons", root, icon))));
             return image.createImage();
         }
         catch (final IOException exception)
@@ -99,7 +147,7 @@ public class Activator
     public void start(BundleContext bundleContext) throws Exception
     {
         Activator.context = bundleContext;
-        Engine.start("LionEngine Editor", Version.create(6, 2, 1), Verbose.CRITICAL, "");
+        Engine.start(Activator.PLUGIN_NAME, Activator.PLUGIN_VERSION, Verbose.CRITICAL, (String) null);
     }
 
     @Override

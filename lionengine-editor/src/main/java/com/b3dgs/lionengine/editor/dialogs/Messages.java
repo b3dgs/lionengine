@@ -41,10 +41,24 @@ public class Messages
     public static String NewProjectDialog_4;
     /** Finish button. */
     public static String NewProjectDialog_5;
-    /** Project resources. */
+    /** Folders */
     public static String NewProjectDialog_6;
-    /** Browse... */
+    /** Sources. */
     public static String NewProjectDialog_7;
+    /** Resources */
+    public static String NewProjectDialog_8;
+    /** Location */
+    public static String NewProjectDialog_9;
+    /** Browse */
+    public static String NewProjectDialog_10;
+    /** Generate base code */
+    public static String NewProjectDialog_11;
+    /** Project package. */
+    public static String NewProjectDialog_12;
+    /** Invalid package name. */
+    public static String NewProjectDialog_13;
+    /** About */
+    public static String AboutDialog_0;
 
     /**
      * Initialize.
