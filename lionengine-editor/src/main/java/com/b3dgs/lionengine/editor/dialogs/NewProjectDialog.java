@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.CreateProject;
+import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 
 /**
  * Represents the new project dialog.
@@ -419,7 +419,7 @@ public class NewProjectDialog
                 final String sources = projectSourcesText.getText();
                 final String resources = projectResourcesText.getText();
                 final boolean generate = generateCheck.getSelection();
-                final CreateProject createProject = new CreateProject(name, location, sources, resources);
+                final ProjectGenerator createProject = new ProjectGenerator(name, location, sources, resources);
                 createProject.create();
                 if (generate)
                 {

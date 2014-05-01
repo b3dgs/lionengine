@@ -1,0 +1,45 @@
+package %PROJECT_PACKAGE%;
+
+import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Sequence;
+
+public final class Scene
+        extends Sequence
+{
+    /** Native resolution. */
+    private static final Resolution NATIVE = new Resolution(320, 240, 60);
+
+    /**
+     * Constructor.
+     * 
+     * @param loader The loader reference.
+     */
+    public Scene(Loader loader)
+    {
+        super(loader, Scene.NATIVE);
+    }
+
+    /*
+     * Sequence
+     */
+
+    @Override
+    protected void load()
+    {
+        // Load
+    }
+
+    @Override
+    protected void update(double extrp)
+    {
+        // Update
+    }
+
+    @Override
+    protected void render(Graphic g)
+    {
+        // Render
+    }
+}
