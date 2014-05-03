@@ -22,17 +22,17 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.dialogs.NewProjectDialog;
+import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
 
 /**
- * New project handler implementation.
+ * Import project handler implementation.
  * 
  * @author Pierre-Alexandre
  */
-public class NewProjectHandler
+public class ImportProjectHandler
 {
     /**
      * Execute the handler.
@@ -43,8 +43,8 @@ public class NewProjectHandler
     @Execute
     public void execute(Shell shell, EPartService partService)
     {
-        final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
-        final Project project = newProjectDialog.open();
+        final ImportProjectDialog importProjectDialog = new ImportProjectDialog(shell);
+        final Project project = importProjectDialog.open();
         if (project != null)
         {
             final MPart part = partService.findPart(ProjectsPart.ID);

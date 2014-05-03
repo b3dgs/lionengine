@@ -25,7 +25,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
 
@@ -46,14 +46,17 @@ public class OpenProjectHandler
     public void execute(Shell shell, @Active MPart activePart)
     {
         final DirectoryDialog dialog = new DirectoryDialog(shell);
-        final File folder = new File(dialog.open());
-
-        ProjectsModel.INSTANCE.setRoot(folder);
-        final Object part = activePart.getObject();
-        if (part instanceof ProjectsPart)
+        final String path = dialog.open();
+        if (path != null)
         {
-            ((ProjectsPart) part).setInput(folder);
+            final File projectPath = new File(path);
+            final Object part = activePart.getObject();
+            if (part instanceof ProjectsPart)
+            {
+                final Project project = Project.create(projectPath);
+                ProjectsModel.INSTANCE.setRoot(project.getPath());
+                ((ProjectsPart) part).setInput(project);
+            }
         }
-        UtilityMedia.setResourcesDirectory(folder.getAbsolutePath());
     }
 }

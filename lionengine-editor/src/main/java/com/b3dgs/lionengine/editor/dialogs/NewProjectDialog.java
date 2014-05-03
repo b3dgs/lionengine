@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.dialogs;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -36,15 +35,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 
 /**
@@ -53,9 +52,16 @@ import com.b3dgs.lionengine.editor.project.ProjectGenerator;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class NewProjectDialog
+        extends AbstractProjectDialog
 {
+    /** Info icon. */
+    static final Image ICON_INFO = Activator.getIcon("dialog", "info.png");
+    /** Warning icon. */
+    static final Image ICON_WARNING = Activator.getIcon("dialog", "warning.png");
     /** Error icon. */
     static final Image ICON_ERROR = Activator.getIcon("dialog", "error.png");
+    /** Icon. */
+    private static final Image ICON = Activator.getIcon("dialog", "new-project.png");
     /** Project name regex. */
     private static final String REGEX_PROJECT_NAME = "[a-zA-Z0-9_\\-\\s]*";
     /** Package regex. */
@@ -68,17 +74,33 @@ public class NewProjectDialog
     private static final String DEFAULT_RESOURCES = "resources";
     /** Default package. */
     private static final String DEFAULT_PACKAGE = "com.company." + NewProjectDialog.DEFAULT_NAME;
-    /** Maximum characters input. */
-    private static final int MAX_CHAR = 64;
-    /** Bottom button width. */
-    private static final int BOTTOM_BUTTON_WIDTH = 96;
+
+    /** Generate base code. */
+    Button generateCheck;
+    /*** Project package. */
+    Text packageText;
+    /** Already exists. */
+    boolean hasProject;
+    /** Sources exist. */
+    boolean hasSources;
+    /** Resources exist. */
+    boolean hasResources;
 
     /**
-     * Create the header part of the dialog.
+     * Constructor.
      * 
-     * @param header The header composite.
+     * @param parent The parent reference.
      */
-    private static void createHeader(Composite header)
+    public NewProjectDialog(Shell parent)
+    {
+        super(parent, Messages.NewProjectDialog_Title);
+        createDialog();
+        projectNameText.forceFocus();
+        projectLocationText.setText(UtilityMedia.WORKING_DIR);
+    }
+
+    @Override
+    protected void createHeader(Composite header)
     {
         final Composite titleArea = new Composite(header, SWT.NONE);
         titleArea.setLayout(new GridLayout(1, false));
@@ -91,131 +113,94 @@ public class NewProjectDialog
         data.setStyle(SWT.BOLD);
         title.setFont(new Font(title.getDisplay(), data));
         title.setBackground(title.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        title.setText(Messages.NewProjectDialog_1);
+        title.setText(Messages.NewProjectDialog_HeaderTitle);
 
         final Label text = new Label(titleArea, SWT.NONE);
         text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        text.setText(Messages.NewProjectDialog_2);
+        text.setText(Messages.NewProjectDialog_HeaderDesc);
 
         final Label icon = new Label(header, SWT.NONE);
-        icon.setImage(Activator.getIcon("dialog", "new-project.png")); //$NON-NLS-1$
+        icon.setImage(NewProjectDialog.ICON);
         icon.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
         icon.setBackground(icon.getDisplay().getSystemColor(SWT.COLOR_WHITE));
     }
 
-    /** Dialog shell. */
-    final Shell dialog;
-    /** Project name. */
-    Text projectNameText;
-    /** Project location. */
-    Text projectLocationText;
-    /** Project sources. */
-    Text projectSourcesText;
-    /** Project resources. */
-    Text projectResourcesText;
-    /** Generate base code. */
-    Button generateCheck;
-    /*** Project package. */
-    Text packageText;
-    /** Finish button. */
-    Button finish;
-    /** Error label. */
-    CLabel error;
-
     /**
-     * Constructor.
-     * 
-     * @param parent The parent reference.
+     * Check if the project is not already existing.
      */
-    public NewProjectDialog(Shell parent)
+    void checkProjectExistence()
     {
-        dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-        dialog.setMinimumSize(500, 300);
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        dialog.setLayout(dialogLayout);
-        dialog.setText(Messages.NewProjectDialog_0);
-        dialog.setImage(Activator.getIcon("product.png")); //$NON-NLS-1$
-        createDialog();
+        final File projectPath = new File(UtilityFile.getPath(projectLocationText.getText(), projectNameText.getText()));
+        final File projectProperties = new File(projectPath, Project.PROPERTIES_FILE);
+        hasProject = projectProperties.isFile();
+        if (hasProject)
+        {
+            finish.setEnabled(false);
+        }
+        else
+        {
+            finish.setEnabled(true);
+        }
+        checkSourcesExistence();
+        checkResourcesExistence();
     }
 
     /**
-     * Open the dialog.
+     * Check if the sources folder already exists.
      */
-    public void open()
+    void checkSourcesExistence()
     {
-        dialog.pack(true);
-        Activator.center(dialog);
-        dialog.open();
+        final File sourcePath = new File(UtilityFile.getPath(projectLocationText.getText(), projectNameText.getText(),
+                projectSourcesText.getText()));
+        hasSources = sourcePath.exists();
     }
 
     /**
-     * Create the dialog.
+     * Check if the resources folder already exists.
      */
-    private void createDialog()
+    void checkResourcesExistence()
     {
-        final Composite header = new Composite(dialog, SWT.NONE);
-        header.setLayout(new GridLayout(2, false));
-        header.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        NewProjectDialog.createHeader(header);
-        header.setBackground(header.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final Label separatorHeader = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Composite content = new Composite(dialog, SWT.NONE);
-        content.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        content.setLayout(new GridLayout(1, false));
-        createContent(content);
-
-        final Label separatorContent = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorContent.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Composite bottom = new Composite(dialog, SWT.NONE);
-        bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        bottom.setLayout(new GridLayout(2, false));
-        createBottom(bottom);
+        final File resourcePath = new File(UtilityFile.getPath(projectLocationText.getText(),
+                projectNameText.getText(), projectResourcesText.getText()));
+        hasResources = resourcePath.exists();
     }
 
     /**
-     * Create the content part of the dialog.
-     * 
-     * @param content The content composite.
+     * Update the tips label.
      */
-    private void createContent(Composite content)
+    void updateTipsLabel()
     {
-        createProjectNameArea(content);
-        createProjectLocationArea(content);
+        tipsLabel.setVisible(false);
+        if (hasProject)
+        {
+            setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorProjectExists);
+        }
+        else if (hasSources && hasResources)
+        {
+            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoBoth);
+        }
+        else if (hasSources)
+        {
+            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoSources);
+        }
+        else if (hasResources)
+        {
+            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoResources);
+        }
+    }
 
-        final Group folders = new Group(content, SWT.SHADOW_NONE);
-        folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        folders.setLayout(new GridLayout(1, false));
-        folders.setText(Messages.NewProjectDialog_6);
-        createProjectSourcesArea(folders);
-        createProjectResourcesArea(folders);
-
+    @Override
+    protected void createContent(Composite content)
+    {
+        super.createContent(content);
         createGenerateBox(content);
     }
 
-    /**
-     * Create the project name area.
-     * 
-     * @param content The content composite.
-     */
-    private void createProjectNameArea(Composite content)
+    @Override
+    protected void createProjectNameArea(Composite content)
     {
-        final Composite nameArea = new Composite(content, SWT.NONE);
-        nameArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        nameArea.setLayout(new GridLayout(2, false));
-
-        final Label nameLabel = new Label(nameArea, SWT.NONE);
-        nameLabel.setText(Messages.NewProjectDialog_3);
-
-        projectNameText = new Text(nameArea, SWT.BORDER);
-        projectNameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectNameText.setTextLimit(NewProjectDialog.MAX_CHAR);
+        super.createProjectNameArea(content);
+        projectNameText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
         projectNameText.setText(NewProjectDialog.DEFAULT_NAME);
         projectNameText.forceFocus();
         projectNameText.addFocusListener(new FocusAdapter()
@@ -234,91 +219,60 @@ public class NewProjectDialog
                 verifyEvent.doit = verifyEvent.text.matches(NewProjectDialog.REGEX_PROJECT_NAME);
             }
         });
-    }
-
-    /**
-     * Create the project location area.
-     * 
-     * @param content The content composite.
-     */
-    private void createProjectLocationArea(Composite content)
-    {
-        final Composite nameArea = new Composite(content, SWT.NONE);
-        nameArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        nameArea.setLayout(new GridLayout(3, false));
-
-        final Label locationLabel = new Label(nameArea, SWT.NONE);
-        locationLabel.setText(Messages.NewProjectDialog_9);
-
-        projectLocationText = new Text(nameArea, SWT.BORDER);
-        projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        projectLocationText.setText(UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
-        projectLocationText.setEditable(false);
-
-        final Button browse = new Button(nameArea, SWT.PUSH);
-        final GridData browseData = new GridData();
-        browseData.widthHint = 64;
-        browse.setLayoutData(browseData);
-        browse.setText(Messages.NewProjectDialog_10);
-        browse.addSelectionListener(new SelectionAdapter()
+        projectNameText.addModifyListener(new ModifyListener()
         {
             @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
+            public void modifyText(ModifyEvent modifyEvent)
             {
-                final DirectoryDialog directoryDialog = new DirectoryDialog(dialog, SWT.APPLICATION_MODAL);
-                final String path = directoryDialog.open();
-                if (path != null)
-                {
-                    projectLocationText.setText(path + Core.MEDIA.getSeparator());
-                }
+                checkProjectExistence();
+                updateTipsLabel();
             }
         });
     }
 
-    /**
-     * Create the project sources area chooser.
-     * 
-     * @param content The content composite.
-     */
-    private void createProjectSourcesArea(Composite content)
+    @Override
+    protected void onLocationSelected(String path)
     {
-        final Composite sourcesArea = new Composite(content, SWT.NONE);
-        sourcesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sourcesArea.setLayout(new GridLayout(3, false));
-
-        final Label sourcesLabel = new Label(sourcesArea, SWT.NONE);
-        final GridData sourcesData = new GridData();
-        sourcesData.widthHint = 64;
-        sourcesLabel.setLayoutData(sourcesData);
-        sourcesLabel.setText(Messages.NewProjectDialog_7);
-
-        projectSourcesText = new Text(sourcesArea, SWT.BORDER);
-        projectSourcesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectSourcesText.setTextLimit(NewProjectDialog.MAX_CHAR);
-        projectSourcesText.setText(NewProjectDialog.DEFAULT_SOURCES);
+        if (path != null)
+        {
+            projectLocationText.setText(path + Core.MEDIA.getSeparator());
+        }
+        checkProjectExistence();
+        updateTipsLabel();
     }
 
-    /**
-     * Create the project resources area chooser.
-     * 
-     * @param content The content composite.
-     */
-    private void createProjectResourcesArea(Composite content)
+    @Override
+    protected void createProjectSourcesArea(Composite content)
     {
-        final Composite resourcesArea = new Composite(content, SWT.NONE);
-        resourcesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        resourcesArea.setLayout(new GridLayout(3, false));
+        super.createProjectSourcesArea(content);
 
-        final Label resourcesLabel = new Label(resourcesArea, SWT.NONE);
-        final GridData resourcesData = new GridData();
-        resourcesData.widthHint = 64;
-        resourcesLabel.setLayoutData(resourcesData);
-        resourcesLabel.setText(Messages.NewProjectDialog_8);
+        projectSourcesText.setText(NewProjectDialog.DEFAULT_SOURCES);
+        projectSourcesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkSourcesExistence();
+                updateTipsLabel();
+            }
+        });
+    }
 
-        projectResourcesText = new Text(resourcesArea, SWT.BORDER);
-        projectResourcesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectResourcesText.setTextLimit(NewProjectDialog.MAX_CHAR);
+    @Override
+    protected void createProjectResourcesArea(Composite content)
+    {
+        super.createProjectResourcesArea(content);
+
         projectResourcesText.setText(NewProjectDialog.DEFAULT_RESOURCES);
+        projectResourcesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkResourcesExistence();
+                updateTipsLabel();
+            }
+        });
     }
 
     /**
@@ -333,11 +287,11 @@ public class NewProjectDialog
         generateArea.setLayout(new GridLayout(3, false));
 
         generateCheck = new Button(generateArea, SWT.CHECK);
-        generateCheck.setText(Messages.NewProjectDialog_11);
+        generateCheck.setText(Messages.NewProjectDialog_Generate);
 
         final Label packageLabel = new Label(generateArea, SWT.NONE);
         packageLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-        packageLabel.setText(Messages.NewProjectDialog_12);
+        packageLabel.setText(Messages.NewProjectDialog_Package);
         packageLabel.setVisible(false);
 
         packageText = new Text(generateArea, SWT.BORDER);
@@ -362,11 +316,9 @@ public class NewProjectDialog
                 finish.setEnabled(match);
                 if (!match)
                 {
-                    error.setText(Messages.NewProjectDialog_13);
-                    error.setImage(NewProjectDialog.ICON_ERROR);
-                    error.pack(true);
+                    setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorPackage);
                 }
-                error.setVisible(!match);
+                tipsLabel.setVisible(!match);
             }
         });
         packageText.setVisible(false);
@@ -380,7 +332,7 @@ public class NewProjectDialog
                 packageLabel.setVisible(visible);
                 packageText.setVisible(visible);
                 packageText.forceFocus();
-                error.setVisible(visible);
+                tipsLabel.setVisible(visible);
                 if (!visible)
                 {
                     finish.setEnabled(true);
@@ -389,58 +341,19 @@ public class NewProjectDialog
         });
     }
 
-    /**
-     * Create the bottom part of the dialog.
-     * 
-     * @param bottom The bottom composite.
-     */
-    private void createBottom(Composite bottom)
+    @Override
+    protected void onFinish()
     {
-        error = new CLabel(bottom, SWT.LEFT_TO_RIGHT);
-        error.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        error.setVisible(false);
-
-        final Composite buttonArea = new Composite(bottom, SWT.NONE);
-        buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-        buttonArea.setLayout(new GridLayout(2, false));
-
-        finish = new Button(buttonArea, SWT.PUSH);
-        final GridData finishData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        finishData.widthHint = NewProjectDialog.BOTTOM_BUTTON_WIDTH;
-        finish.setLayoutData(finishData);
-        finish.setText(Messages.NewProjectDialog_5);
-        finish.addSelectionListener(new SelectionAdapter()
+        final String name = projectNameText.getText();
+        final File location = new File(projectLocationText.getText());
+        final String sources = projectSourcesText.getText();
+        final String resources = projectResourcesText.getText();
+        final boolean generate = generateCheck.getSelection();
+        final ProjectGenerator createProject = new ProjectGenerator(name, location, sources, resources);
+        project = Project.create(createProject.create());
+        if (generate)
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final String name = projectNameText.getText();
-                final File location = new File(projectLocationText.getText());
-                final String sources = projectSourcesText.getText();
-                final String resources = projectResourcesText.getText();
-                final boolean generate = generateCheck.getSelection();
-                final ProjectGenerator createProject = new ProjectGenerator(name, location, sources, resources);
-                createProject.create();
-                if (generate)
-                {
-                    createProject.generate(packageText.getText());
-                }
-                dialog.dispose();
-            }
-        });
-
-        final Button cancel = new Button(buttonArea, SWT.PUSH);
-        final GridData cancelData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        cancelData.widthHint = NewProjectDialog.BOTTOM_BUTTON_WIDTH;
-        cancel.setLayoutData(cancelData);
-        cancel.setText(Messages.NewProjectDialog_4);
-        cancel.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                dialog.dispose();
-            }
-        });
+            createProject.generate(packageText.getText());
+        }
     }
 }

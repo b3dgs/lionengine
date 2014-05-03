@@ -15,15 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.parts;
+package com.b3dgs.lionengine.editor.world;
 
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-
-import com.b3dgs.lionengine.editor.world.WorldViewRenderer;
 
 /**
  * Represents the world view, where the global map is displayed.

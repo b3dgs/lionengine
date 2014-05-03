@@ -18,6 +18,12 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Represents a project and its data.
@@ -34,21 +40,58 @@ public class Project
     public static final String PROPERTY_PROJECT_SOURCES = "SourcesFolder";
     /** Property project resources folder. */
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
+    /** Create project error. */
+    private static final String ERROR_CREATE_PROJECT = "Unable to create the project: ";
 
+    /**
+     * Open a project from its path.
+     * 
+     * @param projectPath The project path.
+     * @return The created project.
+     * @throws LionEngineException If not able to create the project.
+     */
+    public static Project create(File projectPath) throws LionEngineException
+    {
+        try (InputStream inputStream = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE));)
+        {
+            final Properties properties = new Properties();
+            properties.load(inputStream);
+
+            final String sources = properties.getProperty(Project.PROPERTY_PROJECT_SOURCES);
+            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
+
+            final Project project = new Project(projectPath);
+            project.setName(projectPath.getName());
+            project.setSources(sources);
+            project.setResources(resources);
+
+            return project;
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception, Project.ERROR_CREATE_PROJECT, projectPath.getPath());
+        }
+    }
+
+    /** Project path. */
+    private final File path;
     /** Project name. */
     private String name;
-    /** Source folder (represents the main source folder, such as <code>project/src/</code>). */
-    private File sources;
-    /** Resources folder (represents the main resources folder, such as <code>project/resources/</code>. */
-    private File resources;
+    /** Source folder (represents the main source folder, such as <code>src/</code>). */
+    private String sources;
+    /** Resources folder (represents the main resources folder, such as <code>resources/</code>. */
+    private String resources;
     /** Opened state. */
     private boolean opened;
 
     /**
      * Constructor.
+     * 
+     * @param path The project path.
      */
-    public Project()
+    private Project(File path)
     {
+        this.path = path;
         opened = true;
     }
 
@@ -83,7 +126,7 @@ public class Project
      * 
      * @param folder The source folder.
      */
-    public void setSources(File folder)
+    public void setSources(String folder)
     {
         sources = folder;
     }
@@ -93,9 +136,19 @@ public class Project
      * 
      * @param folder The resource folder.
      */
-    public void setResources(File folder)
+    public void setResources(String folder)
     {
         resources = folder;
+    }
+
+    /**
+     * Get the project path.
+     * 
+     * @return The project path.
+     */
+    public File getPath()
+    {
+        return path;
     }
 
     /**
@@ -113,7 +166,7 @@ public class Project
      * 
      * @return The sources folder.
      */
-    public File getSources()
+    public String getSources()
     {
         return sources;
     }
@@ -123,7 +176,7 @@ public class Project
      * 
      * @return The resources folder.
      */
-    public File getResources()
+    public String getResources()
     {
         return resources;
     }

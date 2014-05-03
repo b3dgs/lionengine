@@ -136,7 +136,7 @@ public class AboutDialog
         dialogLayout.marginWidth = 0;
         dialogLayout.verticalSpacing = 0;
         dialog.setLayout(dialogLayout);
-        dialog.setText(Messages.AboutDialog_0);
+        dialog.setText(Messages.AboutDialog_Title);
 
         AboutDialog.create(dialog);
 

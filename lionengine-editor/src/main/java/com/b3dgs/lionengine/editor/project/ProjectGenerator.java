@@ -39,7 +39,7 @@ public class ProjectGenerator
     /** Regex java package. */
     private static final String REGEX_JAVA_PACKAGE = "\\.";
     /** Regex non special character. */
-    private static final String REGEX_NON_SPECIAL_CHAR = "[^\\s\\w]+";
+    public static final String REGEX_NON_SPECIAL_CHAR = "[^\\s\\w]+";
     /** Template project package. */
     private static final String TEMPLATE_PROJECT_PACKAGE = "%PROJECT_PACKAGE%";
     /** Template class name. */
@@ -84,9 +84,12 @@ public class ProjectGenerator
         for (final String currentResource : path.split(ProjectGenerator.REGEX_NON_SPECIAL_CHAR))
         {
             final File folder = new File(parent, currentResource);
-            if (!folder.mkdir())
+            if (!folder.exists())
             {
-                throw new LionEngineException(error, folder.getPath());
+                if (!folder.mkdir())
+                {
+                    throw new LionEngineException(error, folder.getPath());
+                }
             }
             parent = folder;
         }
@@ -105,9 +108,12 @@ public class ProjectGenerator
         for (final String currentPackage : projectPackage.split(ProjectGenerator.REGEX_JAVA_PACKAGE))
         {
             final File folder = new File(parent, currentPackage);
-            if (!folder.mkdir())
+            if (!folder.exists())
             {
-                throw new LionEngineException(ProjectGenerator.ERROR_PROJECT_SOURCES, folder.getPath());
+                if (!folder.mkdir())
+                {
+                    throw new LionEngineException(ProjectGenerator.ERROR_PROJECT_SOURCES, folder.getPath());
+                }
             }
             parent = folder;
         }
@@ -159,9 +165,10 @@ public class ProjectGenerator
     /**
      * Create the project and its folders. Generate code if required.
      * 
+     * @return The project path.
      * @throws LionEngineException If not able to create the project.
      */
-    public void create() throws LionEngineException
+    public File create() throws LionEngineException
     {
         if (!location.isDirectory())
         {
@@ -170,6 +177,7 @@ public class ProjectGenerator
         final File projectPath = new File(location, name);
         createFolders(projectPath);
         createProperties(projectPath);
+        return projectPath;
     }
 
     /**
@@ -250,9 +258,12 @@ public class ProjectGenerator
      */
     private void createFolders(File projectPath) throws LionEngineException
     {
-        if (!projectPath.mkdir())
+        if (!projectPath.exists())
         {
-            throw new LionEngineException(ProjectGenerator.ERROR_PROJECT_FOLDER, projectPath.getPath());
+            if (!projectPath.mkdir())
+            {
+                throw new LionEngineException(ProjectGenerator.ERROR_PROJECT_FOLDER, projectPath.getPath());
+            }
         }
         ProjectGenerator.createAllFolders(projectPath, sources, ProjectGenerator.ERROR_PROJECT_SOURCES);
         ProjectGenerator.createAllFolders(projectPath, resources, ProjectGenerator.ERROR_PROJECT_RESOURCES);
@@ -264,7 +275,7 @@ public class ProjectGenerator
      * @param projectPath The project path.
      * @throws LionEngineException If not able to create the project properties file.
      */
-    private void createProperties(File projectPath) throws LionEngineException
+    public void createProperties(File projectPath) throws LionEngineException
     {
         final File propertiesFile = new File(projectPath, Project.PROPERTIES_FILE);
         final Properties properties = new Properties();

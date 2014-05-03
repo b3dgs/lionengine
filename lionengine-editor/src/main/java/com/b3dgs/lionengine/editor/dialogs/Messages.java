@@ -29,36 +29,52 @@ public class Messages
 {
     /** Bundle name. */
     private static final String BUNDLE_NAME = "com.b3dgs.lionengine.editor.dialogs.messages"; //$NON-NLS-1$
-    /** Dialog title. */
-    public static String NewProjectDialog_0;
-    /** Title header. */
-    public static String NewProjectDialog_1;
-    /** Description header. */
-    public static String NewProjectDialog_2;
-    /** Project name. */
-    public static String NewProjectDialog_3;
     /** Cancel button. */
-    public static String NewProjectDialog_4;
+    public static String AbstractProjectDialog_Cancel;
     /** Finish button. */
-    public static String NewProjectDialog_5;
-    /** Folders */
-    public static String NewProjectDialog_6;
+    public static String AbstractProjectDialog_Finish;
     /** Sources. */
-    public static String NewProjectDialog_7;
+    public static String AbstractProjectDialog_Sources;
     /** Resources */
-    public static String NewProjectDialog_8;
-    /** Location */
-    public static String NewProjectDialog_9;
-    /** Browse */
-    public static String NewProjectDialog_10;
-    /** Generate base code */
-    public static String NewProjectDialog_11;
+    public static String AbstractProjectDialog_Resources;
+    /** Browse. */
+    public static String AbstractProjectDialog_Browse;
+    /** Project name. */
+    public static String AbstractProjectDialog_Name;
+    /** Location. */
+    public static String AbstractProjectDialog_Location;
+    /** Folders. */
+    public static String AbstractProjectDialog_Folders;
+    /** New project dialog title. */
+    public static String NewProjectDialog_Title;
+    /** Title header. */
+    public static String NewProjectDialog_HeaderTitle;
+    /** Description header. */
+    public static String NewProjectDialog_HeaderDesc;
+    /** Generate base code. */
+    public static String NewProjectDialog_Generate;
     /** Project package. */
-    public static String NewProjectDialog_12;
+    public static String NewProjectDialog_Package;
     /** Invalid package name. */
-    public static String NewProjectDialog_13;
-    /** About */
-    public static String AboutDialog_0;
+    public static String NewProjectDialog_ErrorPackage;
+    /** Project already exists. */
+    public static String NewProjectDialog_ErrorProjectExists;
+    /** Sources folder existence. */
+    public static String NewProjectDialog_InfoSources;
+    /** Resources folder existence. */
+    public static String NewProjectDialog_InfoResources;
+    /** Sources and resources folder existence. */
+    public static String NewProjectDialog_InfoBoth;
+    /** Invalid import. */
+    public static String ImportProjectDialog_InvalidImport;
+    /** Import project dialog title. */
+    public static String ImportProjectDialogTitle;
+    /** Title header. */
+    public static String ImportProjectDialog_HeaderTitle;
+    /** Description header. */
+    public static String ImportProjectDialog_HeaderDesc;
+    /** About. */
+    public static String AboutDialog_Title;
 
     /**
      * Initialize.
