@@ -99,32 +99,6 @@ public class NewProjectDialog
         projectLocationText.setText(UtilityMedia.WORKING_DIR);
     }
 
-    @Override
-    protected void createHeader(Composite header)
-    {
-        final Composite titleArea = new Composite(header, SWT.NONE);
-        titleArea.setLayout(new GridLayout(1, false));
-        titleArea.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        titleArea.setBackground(titleArea.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final Label title = new Label(titleArea, SWT.NONE);
-        final FontData data = title.getFont().getFontData()[0];
-        data.setHeight(10);
-        data.setStyle(SWT.BOLD);
-        title.setFont(new Font(title.getDisplay(), data));
-        title.setBackground(title.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        title.setText(Messages.NewProjectDialog_HeaderTitle);
-
-        final Label text = new Label(titleArea, SWT.NONE);
-        text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        text.setText(Messages.NewProjectDialog_HeaderDesc);
-
-        final Label icon = new Label(header, SWT.NONE);
-        icon.setImage(NewProjectDialog.ICON);
-        icon.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-        icon.setBackground(icon.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-    }
-
     /**
      * Check if the project is not already existing.
      */
@@ -187,92 +161,6 @@ public class NewProjectDialog
         {
             setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoResources);
         }
-    }
-
-    @Override
-    protected void createContent(Composite content)
-    {
-        super.createContent(content);
-        createGenerateBox(content);
-    }
-
-    @Override
-    protected void createProjectNameArea(Composite content)
-    {
-        super.createProjectNameArea(content);
-        projectNameText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
-        projectNameText.setText(NewProjectDialog.DEFAULT_NAME);
-        projectNameText.forceFocus();
-        projectNameText.addFocusListener(new FocusAdapter()
-        {
-            @Override
-            public void focusGained(FocusEvent focusEvent)
-            {
-                projectNameText.selectAll();
-            }
-        });
-        projectNameText.addVerifyListener(new VerifyListener()
-        {
-            @Override
-            public void verifyText(VerifyEvent verifyEvent)
-            {
-                verifyEvent.doit = verifyEvent.text.matches(NewProjectDialog.REGEX_PROJECT_NAME);
-            }
-        });
-        projectNameText.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkProjectExistence();
-                updateTipsLabel();
-            }
-        });
-    }
-
-    @Override
-    protected void onLocationSelected(String path)
-    {
-        if (path != null)
-        {
-            projectLocationText.setText(path + Core.MEDIA.getSeparator());
-        }
-        checkProjectExistence();
-        updateTipsLabel();
-    }
-
-    @Override
-    protected void createProjectSourcesArea(Composite content)
-    {
-        super.createProjectSourcesArea(content);
-
-        projectSourcesText.setText(NewProjectDialog.DEFAULT_SOURCES);
-        projectSourcesText.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkSourcesExistence();
-                updateTipsLabel();
-            }
-        });
-    }
-
-    @Override
-    protected void createProjectResourcesArea(Composite content)
-    {
-        super.createProjectResourcesArea(content);
-
-        projectResourcesText.setText(NewProjectDialog.DEFAULT_RESOURCES);
-        projectResourcesText.addModifyListener(new ModifyListener()
-        {
-            @Override
-            public void modifyText(ModifyEvent modifyEvent)
-            {
-                checkResourcesExistence();
-                updateTipsLabel();
-            }
-        });
     }
 
     /**
@@ -341,6 +229,47 @@ public class NewProjectDialog
         });
     }
 
+    /*
+     * AbstractProjectDialog
+     */
+
+    @Override
+    protected void createHeader(Composite header)
+    {
+        final Composite titleArea = new Composite(header, SWT.NONE);
+        titleArea.setLayout(new GridLayout(1, false));
+        titleArea.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        titleArea.setBackground(titleArea.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+
+        final Label title = new Label(titleArea, SWT.NONE);
+        final FontData data = title.getFont().getFontData()[0];
+        data.setHeight(10);
+        data.setStyle(SWT.BOLD);
+        title.setFont(new Font(title.getDisplay(), data));
+        title.setBackground(title.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        title.setText(Messages.NewProjectDialog_HeaderTitle);
+
+        final Label text = new Label(titleArea, SWT.NONE);
+        text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+        text.setText(Messages.NewProjectDialog_HeaderDesc);
+
+        final Label icon = new Label(header, SWT.NONE);
+        icon.setImage(NewProjectDialog.ICON);
+        icon.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+        icon.setBackground(icon.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+    }
+
+    @Override
+    protected void onLocationSelected(String path)
+    {
+        if (path != null)
+        {
+            projectLocationText.setText(path + Core.MEDIA.getSeparator());
+        }
+        checkProjectExistence();
+        updateTipsLabel();
+    }
+
     @Override
     protected void onFinish()
     {
@@ -355,5 +284,80 @@ public class NewProjectDialog
         {
             createProject.generate(packageText.getText());
         }
+    }
+
+    @Override
+    protected void createContent(Composite content)
+    {
+        super.createContent(content);
+        createGenerateBox(content);
+    }
+
+    @Override
+    protected void createProjectNameArea(Composite content)
+    {
+        super.createProjectNameArea(content);
+        projectNameText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
+        projectNameText.setText(NewProjectDialog.DEFAULT_NAME);
+        projectNameText.forceFocus();
+        projectNameText.addFocusListener(new FocusAdapter()
+        {
+            @Override
+            public void focusGained(FocusEvent focusEvent)
+            {
+                projectNameText.selectAll();
+            }
+        });
+        projectNameText.addVerifyListener(new VerifyListener()
+        {
+            @Override
+            public void verifyText(VerifyEvent verifyEvent)
+            {
+                verifyEvent.doit = verifyEvent.text.matches(NewProjectDialog.REGEX_PROJECT_NAME);
+            }
+        });
+        projectNameText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkProjectExistence();
+                updateTipsLabel();
+            }
+        });
+    }
+
+    @Override
+    protected void createProjectSourcesArea(Composite content)
+    {
+        super.createProjectSourcesArea(content);
+
+        projectSourcesText.setText(NewProjectDialog.DEFAULT_SOURCES);
+        projectSourcesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkSourcesExistence();
+                updateTipsLabel();
+            }
+        });
+    }
+
+    @Override
+    protected void createProjectResourcesArea(Composite content)
+    {
+        super.createProjectResourcesArea(content);
+
+        projectResourcesText.setText(NewProjectDialog.DEFAULT_RESOURCES);
+        projectResourcesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkResourcesExistence();
+                updateTipsLabel();
+            }
+        });
     }
 }

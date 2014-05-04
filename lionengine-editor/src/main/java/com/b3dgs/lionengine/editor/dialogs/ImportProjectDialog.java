@@ -60,6 +60,10 @@ public class ImportProjectDialog
         projectResourcesText.setEditable(false);
     }
 
+    /*
+     * AbstractProjectDialog
+     */
+
     @Override
     protected void createHeader(Composite header)
     {
