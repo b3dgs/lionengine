@@ -53,6 +53,12 @@
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.level">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.java_map_impl">
+         <test
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.java_map_impl">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -60,7 +66,7 @@
             class="com.b3dgs.lionengine.editor.project.ResourceExtensionTester"
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"
             namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
-            properties="music,sound,data,image,level"
+            properties="music,sound,data,image,level,java_map_impl"
             type="java.lang.Object">
       </propertyTester>
    </extension>

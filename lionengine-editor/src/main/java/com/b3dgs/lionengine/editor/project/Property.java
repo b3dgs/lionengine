@@ -17,9 +17,10 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
-
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -29,7 +30,7 @@ import com.b3dgs.lionengine.UtilityFile;
  * 
  * @author Pierre-Alexandre
  */
-enum Property
+public enum Property
 {
     /** Music property. */
     MUSIC("midi", "mp3", "ogg", "sc68"),
@@ -40,10 +41,36 @@ enum Property
     /** Data property. */
     DATA("xml"),
     /** Level property. */
-    LEVEL("lrm");
+    LEVEL("lrm"),
+    /** Map implementation property. */
+    JAVA_MAP_IMPL(MapTile.class);
+
+    /**
+     * Get the class from its file.
+     * 
+     * @param clazz The class to cast to.
+     * @param file The class file.
+     * @return The class instance.
+     * @throws LionEngineException If not able to create the class.
+     */
+    public static <C> C getClass(Class<C> clazz, Media file) throws LionEngineException
+    {
+        final String name = file.getPath().replace(".java", "").replace(java.io.File.separator, ".");
+        try
+        {
+            final Class<?> clazzRef = Class.forName(name);
+            return clazz.cast(clazzRef);
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+    }
 
     /** Extension list. */
     private final String[] extensions;
+    /** Class parent. */
+    private final Class<?> parent;
 
     /**
      * Constructor.
@@ -52,6 +79,28 @@ enum Property
      */
     private Property(String... extensions)
     {
+        this(null, extensions);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param parent The excepted parent class.
+     */
+    private Property(Class<?> parent)
+    {
+        this(parent, "java");
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param extensions The extensions list associated to the property.
+     * @param parent The excepted parent class.
+     */
+    private Property(Class<?> parent, String... extensions)
+    {
+        this.parent = parent;
         this.extensions = extensions;
     }
 
@@ -61,9 +110,24 @@ enum Property
      * @param file The file to test.
      * @return <code>true</code> if this is this type, <code>false</code> else.
      */
-    public boolean is(File file)
+    public boolean is(Media file)
     {
-        final String extension = UtilityFile.getExtension(file);
+        if (parent == null)
+        {
+            return isExtension(file);
+        }
+        return isParent(file);
+    }
+
+    /**
+     * Check if the file is this type.
+     * 
+     * @param file The file to test.
+     * @return <code>true</code> if this is this type, <code>false</code> else.
+     */
+    private boolean isExtension(Media file)
+    {
+        final String extension = UtilityFile.getExtension(file.getPath());
         for (final String value : extensions)
         {
             if (extension.equals(value))
@@ -72,5 +136,26 @@ enum Property
             }
         }
         return false;
+    }
+
+    /**
+     * Check if the file is this parent.
+     * 
+     * @param file The file to test.
+     * @return <code>true</code> if this is parent, <code>false</code> else.
+     */
+    private boolean isParent(Media file)
+    {
+        try
+        {
+            final String name = file.getPath().replace(".java", "").replace(java.io.File.separator, ".");
+            final Class<?> clazz = Class.forName(name);
+            return clazz.isAssignableFrom(parent);
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            // TODO: Load into classpath the loaded project classes
+            return false;
+        }
     }
 }

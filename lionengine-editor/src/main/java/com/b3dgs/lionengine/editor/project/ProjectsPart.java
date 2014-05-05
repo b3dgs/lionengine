@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -72,7 +73,7 @@ public class ProjectsPart
      * @param file The child file.
      * @param item The child item.
      */
-    private static void setFileIcon(File file, TreeItem item)
+    private static void setFileIcon(Media file, TreeItem item)
     {
         if (Property.SOUND.is(file))
         {
@@ -125,9 +126,9 @@ public class ProjectsPart
                 if (data instanceof TreeItem)
                 {
                     final TreeItem item = (TreeItem) data;
-                    if (item.getData() instanceof File)
+                    if (item.getData() instanceof Media)
                     {
-                        ProjectsModel.INSTANCE.setSelection((File) item.getData());
+                        ProjectsModel.INSTANCE.setSelection((Media) item.getData());
                     }
                 }
             }
@@ -153,7 +154,7 @@ public class ProjectsPart
      * @return The children list.
      * @throws IOException If error while reading project children.
      */
-    private Map<TreeItem, List<File>> getChildren(Project project) throws IOException
+    private Map<TreeItem, List<Media>> getChildren(Project project) throws IOException
     {
         final File projectPath = project.getPath();
         final Path path = FileSystems.getDefault().getPath(projectPath.getAbsolutePath());
@@ -175,13 +176,13 @@ public class ProjectsPart
         try
         {
             tree.removeAll();
-            final Map<TreeItem, List<File>> children = getChildren(project);
+            final Map<TreeItem, List<Media>> children = getChildren(project);
             for (final TreeItem parent : children.keySet())
             {
-                for (final File child : children.get(parent))
+                for (final Media child : children.get(parent))
                 {
                     final TreeItem item = new TreeItem(parent, SWT.NONE);
-                    item.setText(child.getName());
+                    item.setText(child.getFile().getName());
                     item.setData(child);
                     ProjectsPart.setFileIcon(child, item);
                 }

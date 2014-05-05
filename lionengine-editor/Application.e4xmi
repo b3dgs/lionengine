@@ -9,11 +9,14 @@
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.view.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_aIgbkNEMEeOtCYM_ydUyzA" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_Hq5ykNHiEeOPNLckoIbRFw" label="%menu.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.handledmenuitem.0" label="Load Music">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_IUjbQMgYEeOw0Z9_W5LnUQ" elementId="" label="Load Music">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VFMfYMgcEeOw0Z9_W5LnUQ" coreExpressionId="com.b3dgs.lionengine.editor.resource.music"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="com.b3dgs.lionengine.editor.handledmenuitem.1" label="Load Level">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="" label="Load Level">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="com.b3dgs.lionengine.editor.resource.level"/>
+                </children>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assignmapimpl">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.java_map_impl"/>
                 </children>
               </menus>
             </children>

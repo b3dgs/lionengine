@@ -83,7 +83,7 @@ public final class WorldViewRenderer
      */
     public WorldViewRenderer()
     {
-        model = new WorldViewModel();
+        model = WorldViewModel.INSTANCE;
     }
 
     /**
@@ -172,6 +172,10 @@ public final class WorldViewRenderer
         if (model.getMap() != null)
         {
             render(g, paintEvent.width, paintEvent.height);
+        }
+        else
+        {
+            gc.drawString("No map implementation defined, select it from the project view !", 0, 0, true);
         }
     }
 

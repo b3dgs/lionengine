@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -33,7 +33,7 @@ public class ResourceExtensionTester
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final File selection = ProjectsModel.INSTANCE.getSelection();
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
         try
         {
             final Property type = Property.valueOf(property.toUpperCase(Locale.ENGLISH));

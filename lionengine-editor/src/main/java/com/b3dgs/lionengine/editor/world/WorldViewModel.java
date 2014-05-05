@@ -25,8 +25,11 @@ import com.b3dgs.lionengine.game.map.MapTile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class WorldViewModel
+public enum WorldViewModel
 {
+    /** Instance. */
+    INSTANCE;
+
     /** Camera reference. */
     private final CameraGame camera;
     /** Map reference. */
@@ -35,7 +38,7 @@ public final class WorldViewModel
     /**
      * Constructor.
      */
-    public WorldViewModel()
+    private WorldViewModel()
     {
         camera = new CameraGame();
     }

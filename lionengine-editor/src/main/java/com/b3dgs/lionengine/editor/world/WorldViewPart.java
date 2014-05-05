@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.world;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -40,6 +41,7 @@ public class WorldViewPart
     {
         parent.setLayout(new GridLayout(1, false));
         final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         final WorldViewRenderer worldViewRenderer = new WorldViewRenderer();
         composite.addPaintListener(worldViewRenderer);
         composite.addMouseListener(worldViewRenderer);

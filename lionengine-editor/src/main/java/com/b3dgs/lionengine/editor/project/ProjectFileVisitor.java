@@ -32,6 +32,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -47,14 +49,48 @@ public final class ProjectFileVisitor
     /** Folder icon. */
     private static final Image ICON_FOLDER = Activator.getIcon("resources", "folder.png");
 
+    /**
+     * Get the media from the path.
+     * 
+     * @param projectPath The project path.
+     * @param sourcesPath The sources path.
+     * @param resourcesPath The resources path.
+     * @param dir The directory.
+     * @return The media instance.
+     */
+    private static Media getMedia(File projectPath, File sourcesPath, File resourcesPath, Path dir)
+    {
+        String relative;
+        final String dirPath = dir.toString();
+        if (dirPath.startsWith(sourcesPath.getPath()))
+        {
+            relative = dirPath.replace(sourcesPath.getPath(), "");
+        }
+        else if (dirPath.startsWith(resourcesPath.getPath()))
+        {
+            relative = dirPath.replace(resourcesPath.getPath(), "");
+        }
+        else
+        {
+            relative = dirPath.replace(projectPath.getPath(), "");
+        }
+        if (!relative.isEmpty())
+        {
+            relative = relative.substring(1);
+        }
+        return Core.MEDIA.create(relative);
+    }
+
     /** Tree viewer. */
     private final Tree tree;
     /** The nodes list. */
     private final Map<String, TreeItem> nodes = new HashMap<>();
     /** The children list. */
-    private final Map<TreeItem, List<File>> children = new HashMap<>();
+    private final Map<TreeItem, List<Media>> children = new HashMap<>();
     /** The project reference. */
     private final Project project;
+    /** Main item. */
+    private TreeItem main;
 
     /**
      * Constructor.
@@ -73,7 +109,7 @@ public final class ProjectFileVisitor
      * 
      * @return The children list.
      */
-    public Map<TreeItem, List<File>> getChildren()
+    public Map<TreeItem, List<Media>> getChildren()
     {
         return children;
     }
@@ -89,27 +125,51 @@ public final class ProjectFileVisitor
     {
         final String path = dir.toFile().getPath();
         final File projectPath = project.getPath();
+        final File sourcesPath = new File(projectPath, project.getSources());
         final File resourcesPath = new File(projectPath, project.getResources());
-        if (dir.getParent().toFile().equals(projectPath) && !path.contains(resourcesPath.getPath()))
-        {
-            return FileVisitResult.SKIP_SUBTREE;
-        }
-        final TreeItem parent = nodes.get(dir.getParent().toString());
-        TreeItem item = null;
-        if (parent == null)
-        {
-            item = new TreeItem(tree, SWT.NONE);
-            item.setImage(ProjectFileVisitor.ICON_MAIN);
-        }
-        else
-        {
-            item = new TreeItem(parent, SWT.NONE);
-            item.setImage(ProjectFileVisitor.ICON_FOLDER);
-        }
-        item.setText(dir.getFileName().toString());
-        item.setData(dir.toFile());
+        final String dirName = dir.getFileName().toString();
 
-        nodes.put(dir.toString(), item);
+        if (path.endsWith(project.getName()) || path.startsWith(sourcesPath.getPath())
+                || path.startsWith(resourcesPath.getPath()))
+        {
+            TreeItem parent = nodes.get(dir.getParent().toString());
+            TreeItem item = null;
+            if (main != null && parent == null)
+            {
+                parent = main;
+            }
+            if (main == null)
+            {
+                item = new TreeItem(tree, SWT.NONE);
+                item.setImage(ProjectFileVisitor.ICON_MAIN);
+                main = item;
+                parent = item;
+            }
+            else if (!dirName.equals(project.getName()))
+            {
+                item = new TreeItem(parent, SWT.NONE);
+                item.setImage(ProjectFileVisitor.ICON_FOLDER);
+            }
+            if (item != null)
+            {
+                if (sourcesPath.getPath().endsWith(dirName))
+                {
+                    item.setText("sources");
+                }
+                else if (resourcesPath.getPath().endsWith(dirName))
+                {
+                    item.setText("resources");
+                }
+                else
+                {
+                    item.setText(dirName);
+                }
+
+                item.setData(ProjectFileVisitor.getMedia(projectPath, sourcesPath, resourcesPath, dir));
+            }
+
+            nodes.put(dir.toString(), item);
+        }
 
         return FileVisitResult.CONTINUE;
     }
@@ -127,16 +187,22 @@ public final class ProjectFileVisitor
     @Override
     public FileVisitResult visitFile(Path dir, BasicFileAttributes attrs)
     {
-        if (!dir.getParent().toFile().equals(project.getPath()))
+        final String path = dir.getParent().toFile().getPath();
+        final File projectPath = project.getPath();
+        final File sourcesPath = new File(projectPath, project.getSources());
+        final File resourcesPath = new File(projectPath, project.getResources());
+
+        if (path.startsWith(sourcesPath.getPath()) || path.startsWith(resourcesPath.getPath()))
         {
             final TreeItem parent = nodes.get(dir.getParent().toString());
-
-            if (children.get(parent) == null)
+            if (parent != null && parent.getText() != project.getName())
             {
-                children.put(parent, new ArrayList<File>());
+                if (children.get(parent) == null)
+                {
+                    children.put(parent, new ArrayList<Media>());
+                }
+                children.get(parent).add(ProjectFileVisitor.getMedia(projectPath, sourcesPath, resourcesPath, dir));
             }
-
-            children.get(parent).add(dir.toFile());
         }
         return FileVisitResult.CONTINUE;
     }
