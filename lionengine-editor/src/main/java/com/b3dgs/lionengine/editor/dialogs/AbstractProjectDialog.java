@@ -56,8 +56,8 @@ public abstract class AbstractProjectDialog
     protected Text projectNameText;
     /** Project location. */
     protected Text projectLocationText;
-    /** Project sources. */
-    protected Text projectSourcesText;
+    /** Project classes. */
+    protected Text projectClassesText;
     /** Project resources. */
     protected Text projectResourcesText;
     /** Finish button. */
@@ -184,7 +184,7 @@ public abstract class AbstractProjectDialog
         folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
         folders.setLayout(new GridLayout(1, false));
         folders.setText(Messages.AbstractProjectDialog_Folders);
-        createProjectSourcesArea(folders);
+        createProjectClassesArea(folders);
         createProjectResourcesArea(folders);
     }
 
@@ -242,25 +242,25 @@ public abstract class AbstractProjectDialog
     }
 
     /**
-     * Create the project sources area chooser.
+     * Create the project classes area chooser.
      * 
      * @param content The content composite.
      */
-    protected void createProjectSourcesArea(Composite content)
+    protected void createProjectClassesArea(Composite content)
     {
-        final Composite sourcesArea = new Composite(content, SWT.NONE);
-        sourcesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        sourcesArea.setLayout(new GridLayout(3, false));
+        final Composite classesArea = new Composite(content, SWT.NONE);
+        classesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        classesArea.setLayout(new GridLayout(3, false));
 
-        final Label sourcesLabel = new Label(sourcesArea, SWT.NONE);
-        final GridData sourcesData = new GridData();
-        sourcesData.widthHint = 64;
-        sourcesLabel.setLayoutData(sourcesData);
-        sourcesLabel.setText(Messages.AbstractProjectDialog_Sources);
+        final Label classesLabel = new Label(classesArea, SWT.NONE);
+        final GridData classesData = new GridData();
+        classesData.widthHint = 64;
+        classesLabel.setLayoutData(classesData);
+        classesLabel.setText(Messages.AbstractProjectDialog_Classes);
 
-        projectSourcesText = new Text(sourcesArea, SWT.BORDER);
-        projectSourcesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectSourcesText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
+        projectClassesText = new Text(classesArea, SWT.BORDER);
+        projectClassesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        projectClassesText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
     }
 
     /**

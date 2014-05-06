@@ -33,8 +33,8 @@ public class Messages
     public static String AbstractProjectDialog_Cancel;
     /** Finish button. */
     public static String AbstractProjectDialog_Finish;
-    /** Sources. */
-    public static String AbstractProjectDialog_Sources;
+    /** Classes. */
+    public static String AbstractProjectDialog_Classes;
     /** Resources */
     public static String AbstractProjectDialog_Resources;
     /** Browse. */
@@ -59,11 +59,11 @@ public class Messages
     public static String NewProjectDialog_ErrorPackage;
     /** Project already exists. */
     public static String NewProjectDialog_ErrorProjectExists;
-    /** Sources folder existence. */
-    public static String NewProjectDialog_InfoSources;
+    /** Classes folder existence. */
+    public static String NewProjectDialog_InfoClasses;
     /** Resources folder existence. */
     public static String NewProjectDialog_InfoResources;
-    /** Sources and resources folder existence. */
+    /** Classes and resources folder existence. */
     public static String NewProjectDialog_InfoBoth;
     /** Invalid import. */
     public static String ImportProjectDialog_InvalidImport;

@@ -23,6 +23,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilityMath;
@@ -67,6 +68,8 @@ public final class WorldViewRenderer
         }
     }
 
+    /** The parent. */
+    private final Composite parent;
     /** The view model. */
     private final WorldViewModel model;
     /** Current horizontal mouse location. */
@@ -80,9 +83,12 @@ public final class WorldViewRenderer
 
     /**
      * Constructor.
+     * 
+     * @param parent The parent container.
      */
-    public WorldViewRenderer()
+    public WorldViewRenderer(Composite parent)
     {
+        this.parent = parent;
         model = WorldViewModel.INSTANCE;
     }
 
@@ -157,6 +163,11 @@ public final class WorldViewRenderer
     {
         mouseX = mx;
         mouseY = my;
+        if (!parent.isDisposed())
+        {
+            parent.redraw();
+        }
+
     }
 
     /*

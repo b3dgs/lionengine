@@ -56,7 +56,7 @@ public class ImportProjectDialog
         createDialog();
         projectNameText.setEditable(false);
         projectLocationText.setEditable(false);
-        projectSourcesText.setEditable(false);
+        projectClassesText.setEditable(false);
         projectResourcesText.setEditable(false);
     }
 
@@ -100,7 +100,7 @@ public class ImportProjectDialog
             try
             {
                 final Project project = Project.create(new File(path));
-                projectSourcesText.setText(project.getSources());
+                projectClassesText.setText(project.getClasses());
                 projectResourcesText.setText(project.getResources());
                 tipsLabel.setVisible(false);
                 finish.setEnabled(true);
@@ -119,9 +119,9 @@ public class ImportProjectDialog
     {
         final String name = projectNameText.getText();
         final File location = new File(projectLocationText.getText());
-        final String sources = projectSourcesText.getText();
+        final String classes = projectClassesText.getText();
         final String resources = projectResourcesText.getText();
-        final ProjectGenerator createProject = new ProjectGenerator(name, location, sources, resources);
+        final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, resources);
         createProject.createProperties(location);
         project = Project.create(location);
     }

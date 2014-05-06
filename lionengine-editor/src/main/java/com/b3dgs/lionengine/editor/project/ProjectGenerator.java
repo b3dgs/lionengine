@@ -67,7 +67,7 @@ public class ProjectGenerator
     /** Error properties file. */
     private static final String ERROR_PROJECT_PROPERTIES = "Unable to create the project properties file !";
     /** Error access project folder. */
-    private static final String ERROR_ACCESS_PROJECT_SOURCES = "Unable to access to the project sources !";
+    private static final String ERROR_ACCESS_PROJECT_CLASSES = "Unable to access to the project classes !";
     /** Error generate project. */
     private static final String ERROR_GENERATE_PROJECT = "Error when generating project !";
 
@@ -96,15 +96,15 @@ public class ProjectGenerator
     }
 
     /**
-     * Generate the full source folder from the package.
+     * Generate the full classes folder from the package.
      * 
-     * @param sourcesPath The main sources path.
+     * @param classesPath The main sources path.
      * @param projectPackage The project package.
      * @return The last source folder.
      */
-    private static File generateSourcePackageFolder(File sourcesPath, String projectPackage)
+    private static File generateSourcePackageFolder(File classesPath, String projectPackage)
     {
-        File parent = sourcesPath;
+        File parent = classesPath;
         for (final String currentPackage : projectPackage.split(ProjectGenerator.REGEX_JAVA_PACKAGE))
         {
             final File folder = new File(parent, currentPackage);
@@ -141,8 +141,8 @@ public class ProjectGenerator
     private final String name;
     /** Project location. */
     private final File location;
-    /** Sources folder. */
-    private final String sources;
+    /** Classes folder. */
+    private final String classes;
     /** Resources folder. */
     private final String resources;
 
@@ -151,14 +151,14 @@ public class ProjectGenerator
      * 
      * @param name The project name.
      * @param location The project location.
-     * @param sources The source code folder.
+     * @param classes The classes code folder.
      * @param resources The resources folder.
      */
-    public ProjectGenerator(String name, File location, String sources, String resources)
+    public ProjectGenerator(String name, File location, String classes, String resources)
     {
         this.name = name;
         this.location = location;
-        this.sources = sources;
+        this.classes = classes;
         this.resources = resources;
     }
 
@@ -189,13 +189,13 @@ public class ProjectGenerator
     public void generate(String projectPackage) throws LionEngineException
     {
         final File projectPath = new File(location, name);
-        final File sourcesPath = new File(projectPath, sources);
-        if (!sourcesPath.isDirectory())
+        final File classesPath = new File(projectPath, classes);
+        if (!classesPath.isDirectory())
         {
-            throw new LionEngineException(ProjectGenerator.ERROR_ACCESS_PROJECT_SOURCES, sourcesPath.getPath());
+            throw new LionEngineException(ProjectGenerator.ERROR_ACCESS_PROJECT_CLASSES, classesPath.getPath());
         }
 
-        final File parent = ProjectGenerator.generateSourcePackageFolder(sourcesPath, projectPackage);
+        final File parent = ProjectGenerator.generateSourcePackageFolder(classesPath, projectPackage);
         try
         {
             generateMainFromTemplate(parent, projectPackage);
@@ -265,7 +265,7 @@ public class ProjectGenerator
                 throw new LionEngineException(ProjectGenerator.ERROR_PROJECT_FOLDER, projectPath.getPath());
             }
         }
-        ProjectGenerator.createAllFolders(projectPath, sources, ProjectGenerator.ERROR_PROJECT_SOURCES);
+        ProjectGenerator.createAllFolders(projectPath, classes, ProjectGenerator.ERROR_PROJECT_SOURCES);
         ProjectGenerator.createAllFolders(projectPath, resources, ProjectGenerator.ERROR_PROJECT_RESOURCES);
     }
 
@@ -279,7 +279,7 @@ public class ProjectGenerator
     {
         final File propertiesFile = new File(projectPath, Project.PROPERTIES_FILE);
         final Properties properties = new Properties();
-        properties.put(Project.PROPERTY_PROJECT_SOURCES, sources);
+        properties.put(Project.PROPERTY_PROJECT_CLASSES, classes);
         properties.put(Project.PROPERTY_PROJECT_RESOURCES, resources);
         try
         {

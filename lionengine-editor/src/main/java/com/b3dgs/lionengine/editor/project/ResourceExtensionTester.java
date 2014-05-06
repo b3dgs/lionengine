@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
+ * Test the resources extension.
+ * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ResourceExtensionTester

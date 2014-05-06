@@ -68,8 +68,8 @@ public class NewProjectDialog
     private static final String REGEX_PROJECT_PACKAGE = "([\\p{L}_$][\\p{L}\\p{N}_$]*\\.)*[\\p{L}_$][\\p{L}\\p{N}_$]*";
     /** Default project name. */
     private static final String DEFAULT_NAME = "myproject";
-    /** Default sources folder. */
-    private static final String DEFAULT_SOURCES = "src";
+    /** Default classes folder. */
+    private static final String DEFAULT_CLASSES = "bin";
     /** Default resources folder. */
     private static final String DEFAULT_RESOURCES = "resources";
     /** Default package. */
@@ -81,8 +81,8 @@ public class NewProjectDialog
     Text packageText;
     /** Already exists. */
     boolean hasProject;
-    /** Sources exist. */
-    boolean hasSources;
+    /** Classes exist. */
+    boolean hasClasses;
     /** Resources exist. */
     boolean hasResources;
 
@@ -115,18 +115,18 @@ public class NewProjectDialog
         {
             finish.setEnabled(true);
         }
-        checkSourcesExistence();
+        checkClassesExistence();
         checkResourcesExistence();
     }
 
     /**
      * Check if the sources folder already exists.
      */
-    void checkSourcesExistence()
+    void checkClassesExistence()
     {
         final File sourcePath = new File(UtilityFile.getPath(projectLocationText.getText(), projectNameText.getText(),
-                projectSourcesText.getText()));
-        hasSources = sourcePath.exists();
+                projectClassesText.getText()));
+        hasClasses = sourcePath.exists();
     }
 
     /**
@@ -149,13 +149,13 @@ public class NewProjectDialog
         {
             setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorProjectExists);
         }
-        else if (hasSources && hasResources)
+        else if (hasClasses && hasResources)
         {
             setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoBoth);
         }
-        else if (hasSources)
+        else if (hasClasses)
         {
-            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoSources);
+            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoClasses);
         }
         else if (hasResources)
         {
@@ -275,10 +275,10 @@ public class NewProjectDialog
     {
         final String name = projectNameText.getText();
         final File location = new File(projectLocationText.getText());
-        final String sources = projectSourcesText.getText();
+        final String classes = projectClassesText.getText();
         final String resources = projectResourcesText.getText();
         final boolean generate = generateCheck.getSelection();
-        final ProjectGenerator createProject = new ProjectGenerator(name, location, sources, resources);
+        final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, resources);
         project = Project.create(createProject.create());
         if (generate)
         {
@@ -328,17 +328,17 @@ public class NewProjectDialog
     }
 
     @Override
-    protected void createProjectSourcesArea(Composite content)
+    protected void createProjectClassesArea(Composite content)
     {
-        super.createProjectSourcesArea(content);
+        super.createProjectClassesArea(content);
 
-        projectSourcesText.setText(NewProjectDialog.DEFAULT_SOURCES);
-        projectSourcesText.addModifyListener(new ModifyListener()
+        projectClassesText.setText(NewProjectDialog.DEFAULT_CLASSES);
+        projectClassesText.addModifyListener(new ModifyListener()
         {
             @Override
             public void modifyText(ModifyEvent modifyEvent)
             {
-                checkSourcesExistence();
+                checkClassesExistence();
                 updateTipsLabel();
             }
         });

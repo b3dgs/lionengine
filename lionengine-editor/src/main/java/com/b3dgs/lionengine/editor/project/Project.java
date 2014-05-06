@@ -21,9 +21,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleWiring;
+
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Represents a project and its data.
@@ -36,12 +44,26 @@ public class Project
     public static final String PROPERTIES_FILE = ".lionengine";
     /** Properties file description. */
     public static final String PROPERTIES_FILE_DESCRIPTION = "LionEngine project properties";
-    /** Property project sources folder. */
-    public static final String PROPERTY_PROJECT_SOURCES = "SourcesFolder";
+    /** Property project classes folder. */
+    public static final String PROPERTY_PROJECT_CLASSES = "ClassesFolder";
     /** Property project resources folder. */
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
     /** Create project error. */
     private static final String ERROR_CREATE_PROJECT = "Unable to create the project: ";
+    /** Load class error. */
+    private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
+    /** Active project. */
+    private static Project activeProject;
+
+    /**
+     * Get the current active project.
+     * 
+     * @return The current active project.
+     */
+    public static Project getActive()
+    {
+        return Project.activeProject;
+    }
 
     /**
      * Open a project from its path.
@@ -57,13 +79,15 @@ public class Project
             final Properties properties = new Properties();
             properties.load(inputStream);
 
-            final String sources = properties.getProperty(Project.PROPERTY_PROJECT_SOURCES);
+            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
             final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
 
             final Project project = new Project(projectPath);
             project.setName(projectPath.getName());
-            project.setSources(sources);
+            project.setClasses(classes);
             project.setResources(resources);
+
+            Project.activeProject = project;
 
             return project;
         }
@@ -77,10 +101,12 @@ public class Project
     private final File path;
     /** Project name. */
     private String name;
-    /** Source folder (represents the main source folder, such as <code>src/</code>). */
-    private String sources;
+    /** Classes folder (represents the main classes folder, such as <code>bin/</code>). */
+    private String classes;
     /** Resources folder (represents the main resources folder, such as <code>resources/</code>. */
     private String resources;
+    /** Class loader. */
+    private ClassLoader classLoader;
     /** Opened state. */
     private boolean opened;
 
@@ -122,13 +148,23 @@ public class Project
     }
 
     /**
-     * Set the sources folder.
+     * Set the classes folder.
      * 
-     * @param folder The source folder.
+     * @param folder The classes folder.
+     * @throws MalformedURLException If error on the path.
      */
-    public void setSources(String folder)
+    public void setClasses(String folder) throws MalformedURLException
     {
-        sources = folder;
+        classes = folder;
+        final URL url = new File(path, folder).toURI().toURL();
+        final URL[] urls = new URL[]
+        {
+            url
+        };
+        final Bundle bundle = Activator.getContext().getBundle();
+        final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+        final ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
+        classLoader = new URLClassLoader(urls, bundleClassLoader);
     }
 
     /**
@@ -162,13 +198,13 @@ public class Project
     }
 
     /**
-     * Get the sources folder.
+     * Get the classes folder.
      * 
-     * @return The sources folder.
+     * @return The classes folder.
      */
-    public String getSources()
+    public String getClasses()
     {
-        return sources;
+        return classes;
     }
 
     /**
@@ -179,6 +215,49 @@ public class Project
     public String getResources()
     {
         return resources;
+    }
+
+    /**
+     * Get a class from its name depending of the project class loader.
+     * 
+     * @param name The full class name.
+     * @return The loaded class.
+     * @throws LionEngineException If error when loading the class.
+     */
+    public Class<?> getClass(String name) throws LionEngineException
+    {
+        try
+        {
+            return classLoader.loadClass(name);
+        }
+        catch (final ClassNotFoundException exception)
+        {
+            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+        }
+    }
+
+    /**
+     * Get the class from its file.
+     * 
+     * @param clazz The class to cast to.
+     * @param file The class file.
+     * @return The class instance.
+     * @throws LionEngineException If not able to create the class.
+     */
+    public <C> C getClass(Class<C> clazz, Media file) throws LionEngineException
+    {
+        final String name = file.getPath().replace(".class", "").replace(java.io.File.separator, ".");
+        final Class<?> clazzRef = getClass(name);
+        try
+        {
+            final Object object = clazzRef.newInstance();
+            return clazz.cast(object);
+        }
+        catch (InstantiationException
+               | IllegalAccessException exception)
+        {
+            throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
+        }
     }
 
     /**

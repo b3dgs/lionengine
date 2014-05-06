@@ -24,6 +24,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import com.b3dgs.lionengine.editor.Activator;
+
 /**
  * Represents the world view, where the global map is displayed.
  * 
@@ -31,6 +33,12 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class WorldViewPart
 {
+    /** ID. */
+    public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
+
+    /** Composite. */
+    private Composite composite;
+
     /**
      * Create the composite.
      * 
@@ -40,11 +48,22 @@ public class WorldViewPart
     public void createComposite(Composite parent)
     {
         parent.setLayout(new GridLayout(1, false));
-        final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+        composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        final WorldViewRenderer worldViewRenderer = new WorldViewRenderer();
+        final WorldViewRenderer worldViewRenderer = new WorldViewRenderer(composite);
         composite.addPaintListener(worldViewRenderer);
         composite.addMouseListener(worldViewRenderer);
         composite.addMouseMoveListener(worldViewRenderer);
+    }
+
+    /**
+     * Update the view.
+     */
+    public void update()
+    {
+        if (!composite.isDisposed())
+        {
+            composite.redraw();
+        }
     }
 }

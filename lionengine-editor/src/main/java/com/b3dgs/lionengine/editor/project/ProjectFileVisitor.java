@@ -125,7 +125,7 @@ public final class ProjectFileVisitor
     {
         final String path = dir.toFile().getPath();
         final File projectPath = project.getPath();
-        final File sourcesPath = new File(projectPath, project.getSources());
+        final File sourcesPath = new File(projectPath, project.getClasses());
         final File resourcesPath = new File(projectPath, project.getResources());
         final String dirName = dir.getFileName().toString();
 
@@ -154,7 +154,7 @@ public final class ProjectFileVisitor
             {
                 if (sourcesPath.getPath().endsWith(dirName))
                 {
-                    item.setText("sources");
+                    item.setText("classes");
                 }
                 else if (resourcesPath.getPath().endsWith(dirName))
                 {
@@ -189,7 +189,7 @@ public final class ProjectFileVisitor
     {
         final String path = dir.getParent().toFile().getPath();
         final File projectPath = project.getPath();
-        final File sourcesPath = new File(projectPath, project.getSources());
+        final File sourcesPath = new File(projectPath, project.getClasses());
         final File resourcesPath = new File(projectPath, project.getResources());
 
         if (path.startsWith(sourcesPath.getPath()) || path.startsWith(resourcesPath.getPath()))

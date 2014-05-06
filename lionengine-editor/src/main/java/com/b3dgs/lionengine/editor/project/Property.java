@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -45,28 +44,6 @@ public enum Property
     /** Map implementation property. */
     JAVA_MAP_IMPL(MapTile.class);
 
-    /**
-     * Get the class from its file.
-     * 
-     * @param clazz The class to cast to.
-     * @param file The class file.
-     * @return The class instance.
-     * @throws LionEngineException If not able to create the class.
-     */
-    public static <C> C getClass(Class<C> clazz, Media file) throws LionEngineException
-    {
-        final String name = file.getPath().replace(".java", "").replace(java.io.File.separator, ".");
-        try
-        {
-            final Class<?> clazzRef = Class.forName(name);
-            return clazz.cast(clazzRef);
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
     /** Extension list. */
     private final String[] extensions;
     /** Class parent. */
@@ -89,7 +66,7 @@ public enum Property
      */
     private Property(Class<?> parent)
     {
-        this(parent, "java");
+        this(parent, "class");
     }
 
     /**
@@ -146,16 +123,8 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        try
-        {
-            final String name = file.getPath().replace(".java", "").replace(java.io.File.separator, ".");
-            final Class<?> clazz = Class.forName(name);
-            return clazz.isAssignableFrom(parent);
-        }
-        catch (final ClassNotFoundException exception)
-        {
-            // TODO: Load into classpath the loaded project classes
-            return false;
-        }
+        final String name = file.getPath().replace(".class", "").replace(java.io.File.separator, ".");
+        final Class<?> clazz = Project.getActive().getClass(name);
+        return parent.isAssignableFrom(clazz);
     }
 }
