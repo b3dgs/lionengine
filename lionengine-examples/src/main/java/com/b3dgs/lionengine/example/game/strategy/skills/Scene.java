@@ -105,7 +105,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), map, Core.MEDIA.create("tiles"));
+        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tiles"), map);
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

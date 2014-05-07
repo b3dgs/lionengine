@@ -202,7 +202,7 @@ public class ModuleGame
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(levelrip, map, tilesheet);
+        rip.start(levelrip, tilesheet, map);
         try (FileWriting file = File.createFileWriting(output);)
         {
             map.save(file);

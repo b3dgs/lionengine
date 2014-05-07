@@ -285,7 +285,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         try
         {
-            rip.start(media, map, Core.MEDIA.create(mediaTiles.getPath()));
+            rip.start(media, Core.MEDIA.create(mediaTiles.getPath()), map);
             final int errors = rip.getErrors();
             if (errors == 0)
             {

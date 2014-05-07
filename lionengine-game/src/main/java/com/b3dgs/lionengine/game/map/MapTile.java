@@ -17,8 +17,14 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.io.IOException;
+import java.util.Set;
+
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.CameraGame;
 
 /**
@@ -43,20 +49,17 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
     void create(int widthInTile, int heightInTile);
 
     /**
-     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
-     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
-     * the new map at the top-right.
-     * 
-     * @param map The map to append.
-     * @param offsetX The horizontal offset in tile (>= 0).
-     * @param offsetY The vertical offset in tile (>= 0).
+     * Generate the minimap from the current map.
      */
-    void append(MapTile<C, T> map, int offsetX, int offsetY);
+    void createMiniMap();
 
     /**
-     * Remove all tiles from map.
+     * Load a map from a level rip and the associated tiles directory.
+     * 
+     * @param levelrip The file containing the levelrip as an image.
+     * @param patternsDirectory The directory containing tiles themes.
      */
-    void clear();
+    void load(Media levelrip, Media patternsDirectory);
 
     /**
      * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
@@ -73,12 +76,65 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
     void loadPatterns(Media directory);
 
     /**
+     * Load map collision from an external file.
+     * 
+     * @param media The collision container.
+     */
+    void loadCollisions(Media media);
+
+    /**
+     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
+     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
+     * the new map at the top-right.
+     * 
+     * @param map The map to append.
+     * @param offsetX The horizontal offset in tile (>= 0).
+     * @param offsetY The vertical offset in tile (>= 0).
+     */
+    void append(MapTile<C, T> map, int offsetX, int offsetY);
+
+    /**
+     * Remove all tiles from map.
+     */
+    void clear();
+
+    /**
+     * Save map to specified file as binary data.
+     * 
+     * @param file The output file.
+     * @throws IOException If error on writing.
+     */
+    void save(FileWriting file) throws IOException;
+
+    /**
+     * Load a map from a specified file as binary data.
+     * 
+     * @param file The input file.
+     * @throws IOException If error on reading.
+     */
+    void load(FileReading file) throws IOException;
+
+    /**
      * Render map from camera viewpoint, showing a specified area.
      * 
      * @param g The graphic output.
      * @param camera The camera viewpoint.
      */
     void render(Graphic g, CameraGame camera);
+
+    /**
+     * Get map theme.
+     * 
+     * @return The map tiles directory.
+     */
+    Media getPatternsDirectory();
+
+    /**
+     * Get list of patterns id.
+     * 
+     * @return The set of patterns id.
+     */
+    Set<Integer> getPatterns();
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -131,6 +187,13 @@ public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
      * @return The number of vertical tiles.
      */
     int getHeightInTile();
+
+    /**
+     * Get minimap surface reference.
+     * 
+     * @return The minimap surface reference.
+     */
+    ImageBuffer getMiniMap();
 
     /**
      * Check if map has been created.

@@ -69,7 +69,7 @@ final class Scene
     private void importAndSave()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("smb_level1-1.png"), map, Core.MEDIA.create("tiles"));
+        rip.start(Core.MEDIA.create("smb_level1-1.png"), Core.MEDIA.create("tiles"), map);
         try (FileWriting file = File.createFileWriting(Core.MEDIA.create("smb_level1-1.lvl"));)
         {
             map.save(file);

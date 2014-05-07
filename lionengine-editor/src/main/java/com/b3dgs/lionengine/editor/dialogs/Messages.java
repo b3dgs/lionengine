@@ -73,6 +73,18 @@ public class Messages
     public static String ImportProjectDialog_HeaderTitle;
     /** Description header. */
     public static String ImportProjectDialog_HeaderDesc;
+    /** Import map dialog title. */
+    public static String ImportMapDialog_Title;
+    /** Import map title header. */
+    public static String ImportMapDialog_HeaderTitle;
+    /** Import map description header. */
+    public static String ImportMapDialog_HeaderDesc;
+    /** Level rip location. */
+    public static String ImportMapDialog_LevelRipLocation;
+    /** Patterns location. */
+    public static String ImportMapDialog_PatternsLocation;
+    /** Level rip file filter. */
+    public static String ImportMapDialog_FileFilter;
     /** About. */
     public static String AboutDialog_Title;
 

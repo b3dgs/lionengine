@@ -59,6 +59,12 @@
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.java_map_impl">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.map-implementation.test">
+         <test
+               property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -67,6 +73,13 @@
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"
             namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
             properties="music,sound,data,image,level,java_map_impl"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.MapImplementationTester"
+            id="com.b3dgs.lionengine.editor.mapImplementationTester"
+            namespace="com.b3dgs.lionengine.editor.mapImplementationTester"
+            properties="test"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -6,6 +6,10 @@
         <children xsi:type="basic:PartSashContainer" xmi:id="_RgxM0scnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.container" horizontal="true">
           <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.statck.projects">
             <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="Projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
+              <handlers xmi:id="_1aj2cNHbEeOJV5_CmxbhRw" elementId="com.b3dgs.lionengine.editor.handler.import-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ImportProjectHandler" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
+              <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
+              <handlers xmi:id="_ZID8gM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.handler.new-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.NewProjectHandler" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
+              <handlers xmi:id="_g5Iq8NYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.handler.import-map" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.ImportMapHandler" command="_eZdjgNYnEeOeyYQS2e8NDg"/>
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.view.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_aIgbkNEMEeOtCYM_ydUyzA" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_Hq5ykNHiEeOPNLckoIbRFw" label="%menu.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
@@ -17,6 +21,9 @@
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" command="_KK_5cNVTEeObvtSGPT134w">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.java_map_impl"/>
+                </children>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_UMpKMNYnEeOeyYQS2e8NDg" elementId="" label="%menu.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_eZdjgNYnEeOeyYQS2e8NDg">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_oZCRYNYvEeOeyYQS2e8NDg" coreExpressionId="com.b3dgs.lionengine.editor.map-implementation.test"/>
                 </children>
               </menus>
             </children>
@@ -44,12 +51,9 @@
       </children>
     </trimBars>
   </children>
-  <handlers xmi:id="_ZID8gM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.handler.new-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.NewProjectHandler" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
-  <handlers xmi:id="_1aj2cNHbEeOJV5_CmxbhRw" elementId="com.b3dgs.lionengine.editor.handler.import-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ImportProjectHandler" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
   <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.quit" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ExitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
   <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.saveCommand" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
   <handlers xmi:id="_RgxMx8cnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.about" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AboutHandler" command="_RgxMxscnEeO6QsMPtNpkHg"/>
-  <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
   <bindingTables xmi:id="_RgxMvscnEeO6QsMPtNpkHg" bindingContext="_RgxMuccnEeO6QsMPtNpkHg">
     <bindings xmi:id="_RgxMv8cnEeO6QsMPtNpkHg" keySequence="M1+Q" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
     <bindings xmi:id="_pFbQUNHcEeOJV5_CmxbhRw" keySequence="M1+I" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
@@ -67,6 +71,7 @@
   <commands xmi:id="_RgxMw8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <commands xmi:id="_KK_5cNVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.command.assign-map-impl" commandName="assignMapImplementationCommand"/>
+  <commands xmi:id="_eZdjgNYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.command.import-map" commandName="importMapCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

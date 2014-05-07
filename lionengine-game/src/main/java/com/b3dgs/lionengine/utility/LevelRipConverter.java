@@ -111,10 +111,10 @@ public final class LevelRipConverter<T extends TileGame<?>>
      * Must be called to start conversion.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param map The destination map reference.
      * @param patternsDirectory The directory containing tiles themes.
+     * @param map The destination map reference.
      */
-    public void start(Media levelrip, MapTileGame<?, T> map, Media patternsDirectory)
+    public void start(Media levelrip, Media patternsDirectory, MapTileGame<?, T> map)
     {
         final int threadsNum = Runtime.getRuntime().availableProcessors();
         final Sprite levelRip = Drawable.loadSprite(levelrip);
