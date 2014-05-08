@@ -28,8 +28,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -54,12 +52,6 @@ import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 public class NewProjectDialog
         extends AbstractProjectDialog
 {
-    /** Info icon. */
-    static final Image ICON_INFO = Activator.getIcon("dialog", "info.png");
-    /** Warning icon. */
-    static final Image ICON_WARNING = Activator.getIcon("dialog", "warning.png");
-    /** Error icon. */
-    static final Image ICON_ERROR = Activator.getIcon("dialog", "error.png");
     /** Icon. */
     private static final Image ICON = Activator.getIcon("dialog", "new-project.png");
     /** Project name regex. */
@@ -93,10 +85,12 @@ public class NewProjectDialog
      */
     public NewProjectDialog(Shell parent)
     {
-        super(parent, Messages.NewProjectDialog_Title);
+        super(parent, Messages.NewProjectDialog_Title, Messages.NewProjectDialog_HeaderTitle,
+                Messages.NewProjectDialog_HeaderDesc, NewProjectDialog.ICON);
         createDialog();
         projectNameText.forceFocus();
         projectLocationText.setText(UtilityMedia.WORKING_DIR);
+        finish.setEnabled(true);
     }
 
     /**
@@ -147,19 +141,28 @@ public class NewProjectDialog
         tipsLabel.setVisible(false);
         if (hasProject)
         {
-            setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorProjectExists);
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorProjectExists);
         }
         else if (hasClasses && hasResources)
         {
-            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoBoth);
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoBoth);
         }
         else if (hasClasses)
         {
-            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoClasses);
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoClasses);
         }
         else if (hasResources)
         {
-            setTipsMessage(NewProjectDialog.ICON_INFO, Messages.NewProjectDialog_InfoResources);
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoResources);
+        }
+        if (projectNameText.getText().isEmpty() || projectClassesText.getText().isEmpty()
+                || projectResourcesText.getText().isEmpty())
+        {
+            finish.setEnabled(false);
+        }
+        else
+        {
+            finish.setEnabled(!tipsLabel.isVisible());
         }
     }
 
@@ -204,7 +207,7 @@ public class NewProjectDialog
                 finish.setEnabled(match);
                 if (!match)
                 {
-                    setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorPackage);
+                    setTipsMessage(AbstractDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorPackage);
                 }
                 tipsLabel.setVisible(!match);
             }
@@ -232,32 +235,6 @@ public class NewProjectDialog
     /*
      * AbstractProjectDialog
      */
-
-    @Override
-    protected void createHeader(Composite header)
-    {
-        final Composite titleArea = new Composite(header, SWT.NONE);
-        titleArea.setLayout(new GridLayout(1, false));
-        titleArea.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        titleArea.setBackground(titleArea.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final Label title = new Label(titleArea, SWT.NONE);
-        final FontData data = title.getFont().getFontData()[0];
-        data.setHeight(10);
-        data.setStyle(SWT.BOLD);
-        title.setFont(new Font(title.getDisplay(), data));
-        title.setBackground(title.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        title.setText(Messages.NewProjectDialog_HeaderTitle);
-
-        final Label text = new Label(titleArea, SWT.NONE);
-        text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        text.setText(Messages.NewProjectDialog_HeaderDesc);
-
-        final Label icon = new Label(header, SWT.NONE);
-        icon.setImage(NewProjectDialog.ICON);
-        icon.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-        icon.setBackground(icon.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-    }
 
     @Override
     protected void onLocationSelected(String path)
@@ -297,7 +274,7 @@ public class NewProjectDialog
     protected void createProjectNameArea(Composite content)
     {
         super.createProjectNameArea(content);
-        projectNameText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
+        projectNameText.setTextLimit(AbstractDialog.MAX_CHAR);
         projectNameText.setText(NewProjectDialog.DEFAULT_NAME);
         projectNameText.forceFocus();
         projectNameText.addFocusListener(new FocusAdapter()

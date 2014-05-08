@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.dialogs;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -26,15 +25,12 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 
 /**
@@ -43,15 +39,8 @@ import com.b3dgs.lionengine.editor.project.Project;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class AbstractProjectDialog
-        extends Dialog
+        extends AbstractDialog
 {
-    /** Maximum characters input. */
-    protected static final int MAX_CHAR = 64;
-    /** Bottom button width. */
-    protected static final int BOTTOM_BUTTON_WIDTH = 96;
-
-    /** Dialog shell. */
-    protected final Shell dialog;
     /** Project name. */
     protected Text projectNameText;
     /** Project location. */
@@ -60,10 +49,6 @@ public abstract class AbstractProjectDialog
     protected Text projectClassesText;
     /** Project resources. */
     protected Text projectResourcesText;
-    /** Finish button. */
-    protected Button finish;
-    /** Tips label. */
-    protected CLabel tipsLabel;
     /** Project imported. */
     protected Project project;
 
@@ -72,27 +57,14 @@ public abstract class AbstractProjectDialog
      * 
      * @param parent The parent reference.
      * @param title The dialog title.
+     * @param headerTitle The header title.
+     * @param headerDesc The header description.
+     * @param headerIcon The header icon.
      */
-    public AbstractProjectDialog(Shell parent, String title)
+    public AbstractProjectDialog(Shell parent, String title, String headerTitle, String headerDesc, Image headerIcon)
     {
-        super(parent);
-        dialog = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-        dialog.setMinimumSize(500, 300);
-        final GridLayout dialogLayout = new GridLayout(1, false);
-        dialogLayout.marginHeight = 0;
-        dialogLayout.marginWidth = 0;
-        dialogLayout.verticalSpacing = 0;
-        dialog.setLayout(dialogLayout);
-        dialog.setText(title);
-        dialog.setImage(Activator.getIcon("product.png")); //$NON-NLS-1$
+        super(parent, title, headerTitle, headerDesc, headerIcon);
     }
-
-    /**
-     * Create the header part of the dialog.
-     * 
-     * @param header The header composite.
-     */
-    protected abstract void createHeader(Composite header);
 
     /**
      * Called when the project location has been selected.
@@ -102,90 +74,13 @@ public abstract class AbstractProjectDialog
     protected abstract void onLocationSelected(String path);
 
     /**
-     * Called when click on finish button.
-     */
-    protected abstract void onFinish();
-
-    /**
-     * Open the dialog.
+     * Get the opened project.
      * 
-     * @return The project opened, <code>null</code> if none.
+     * @return The opened project, <code>null</code> if none.
      */
-    public Project open()
+    public Project getProject()
     {
-        dialog.pack(true);
-        Activator.center(dialog);
-        dialog.open();
-
-        final Display display = dialog.getDisplay();
-        while (!dialog.isDisposed())
-        {
-            if (!display.readAndDispatch())
-            {
-                display.sleep();
-            }
-        }
         return project;
-    }
-
-    /**
-     * Set the error message.
-     * 
-     * @param icon The message icon.
-     * @param message The error message.
-     */
-    protected void setTipsMessage(Image icon, String message)
-    {
-        tipsLabel.setText(message);
-        tipsLabel.setImage(icon);
-        tipsLabel.pack(true);
-        tipsLabel.setVisible(true);
-    }
-
-    /**
-     * Create the dialog.
-     */
-    protected void createDialog()
-    {
-        final Composite header = new Composite(dialog, SWT.NONE);
-        header.setLayout(new GridLayout(2, false));
-        header.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        createHeader(header);
-        header.setBackground(header.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final Label separatorHeader = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Composite content = new Composite(dialog, SWT.NONE);
-        content.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        content.setLayout(new GridLayout(1, false));
-        createContent(content);
-
-        final Label separatorContent = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorContent.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Composite bottom = new Composite(dialog, SWT.NONE);
-        bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        bottom.setLayout(new GridLayout(2, false));
-        createBottom(bottom);
-    }
-
-    /**
-     * Create the content part of the dialog.
-     * 
-     * @param content The content composite.
-     */
-    protected void createContent(Composite content)
-    {
-        createProjectNameArea(content);
-        createProjectLocationArea(content);
-
-        final Group folders = new Group(content, SWT.SHADOW_NONE);
-        folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        folders.setLayout(new GridLayout(1, false));
-        folders.setText(Messages.AbstractProjectDialog_Folders);
-        createProjectClassesArea(folders);
-        createProjectResourcesArea(folders);
     }
 
     /**
@@ -260,7 +155,7 @@ public abstract class AbstractProjectDialog
 
         projectClassesText = new Text(classesArea, SWT.BORDER);
         projectClassesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectClassesText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
+        projectClassesText.setTextLimit(AbstractDialog.MAX_CHAR);
     }
 
     /**
@@ -282,52 +177,24 @@ public abstract class AbstractProjectDialog
 
         projectResourcesText = new Text(resourcesArea, SWT.BORDER);
         projectResourcesText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        projectResourcesText.setTextLimit(AbstractProjectDialog.MAX_CHAR);
+        projectResourcesText.setTextLimit(AbstractDialog.MAX_CHAR);
     }
 
-    /**
-     * Create the bottom part of the dialog.
-     * 
-     * @param bottom The bottom composite.
+    /*
+     * AbstractDialog
      */
-    protected void createBottom(Composite bottom)
+
+    @Override
+    protected void createContent(Composite content)
     {
-        tipsLabel = new CLabel(bottom, SWT.LEFT_TO_RIGHT);
-        tipsLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        tipsLabel.setVisible(false);
+        createProjectNameArea(content);
+        createProjectLocationArea(content);
 
-        final Composite buttonArea = new Composite(bottom, SWT.NONE);
-        buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
-        buttonArea.setLayout(new GridLayout(2, false));
-
-        finish = new Button(buttonArea, SWT.PUSH);
-        final GridData finishData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        finishData.widthHint = AbstractProjectDialog.BOTTOM_BUTTON_WIDTH;
-        finish.setLayoutData(finishData);
-        finish.setText(Messages.AbstractProjectDialog_Finish);
-        finish.setEnabled(false);
-        finish.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                onFinish();
-                dialog.dispose();
-            }
-        });
-
-        final Button cancel = new Button(buttonArea, SWT.PUSH);
-        final GridData cancelData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        cancelData.widthHint = AbstractProjectDialog.BOTTOM_BUTTON_WIDTH;
-        cancel.setLayoutData(cancelData);
-        cancel.setText(Messages.AbstractProjectDialog_Cancel);
-        cancel.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                dialog.dispose();
-            }
-        });
+        final Group folders = new Group(content, SWT.SHADOW_NONE);
+        folders.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        folders.setLayout(new GridLayout(1, false));
+        folders.setText(Messages.AbstractProjectDialog_Folders);
+        createProjectClassesArea(folders);
+        createProjectResourcesArea(folders);
     }
 }

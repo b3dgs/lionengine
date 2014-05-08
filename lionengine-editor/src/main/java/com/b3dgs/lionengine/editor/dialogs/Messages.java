@@ -85,6 +85,8 @@ public class Messages
     public static String ImportMapDialog_PatternsLocation;
     /** Level rip file filter. */
     public static String ImportMapDialog_FileFilter;
+    /** Error patterns. */
+    public static String ImportMapDialog_ErrorPatterns;
     /** About. */
     public static String AboutDialog_Title;
 

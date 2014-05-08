@@ -19,14 +19,7 @@ package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -52,7 +45,8 @@ public class ImportProjectDialog
      */
     public ImportProjectDialog(Shell parent)
     {
-        super(parent, Messages.ImportProjectDialogTitle);
+        super(parent, Messages.ImportProjectDialogTitle, Messages.ImportProjectDialog_HeaderTitle,
+                Messages.ImportProjectDialog_HeaderDesc, ImportProjectDialog.ICON);
         createDialog();
         projectNameText.setEditable(false);
         projectLocationText.setEditable(false);
@@ -63,32 +57,6 @@ public class ImportProjectDialog
     /*
      * AbstractProjectDialog
      */
-
-    @Override
-    protected void createHeader(Composite header)
-    {
-        final Composite titleArea = new Composite(header, SWT.NONE);
-        titleArea.setLayout(new GridLayout(1, false));
-        titleArea.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-        titleArea.setBackground(titleArea.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-        final Label title = new Label(titleArea, SWT.NONE);
-        final FontData data = title.getFont().getFontData()[0];
-        data.setHeight(10);
-        data.setStyle(SWT.BOLD);
-        title.setFont(new Font(title.getDisplay(), data));
-        title.setBackground(title.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        title.setText(Messages.ImportProjectDialog_HeaderTitle);
-
-        final Label text = new Label(titleArea, SWT.NONE);
-        text.setBackground(text.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-        text.setText(Messages.ImportProjectDialog_HeaderDesc);
-
-        final Label iconLabel = new Label(header, SWT.NONE);
-        iconLabel.setImage(ImportProjectDialog.ICON);
-        iconLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-        iconLabel.setBackground(iconLabel.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-    }
 
     @Override
     protected void onLocationSelected(String path)
@@ -107,7 +75,7 @@ public class ImportProjectDialog
             }
             catch (final LionEngineException exception)
             {
-                setTipsMessage(NewProjectDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
+                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
                 tipsLabel.setVisible(true);
                 finish.setEnabled(false);
             }

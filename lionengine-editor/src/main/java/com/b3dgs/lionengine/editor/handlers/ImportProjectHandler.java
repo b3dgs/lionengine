@@ -44,7 +44,8 @@ public class ImportProjectHandler
     public void execute(Shell shell, EPartService partService)
     {
         final ImportProjectDialog importProjectDialog = new ImportProjectDialog(shell);
-        final Project project = importProjectDialog.open();
+        importProjectDialog.open();
+        final Project project = importProjectDialog.getProject();
         if (project != null)
         {
             final MPart part = partService.findPart(ProjectsPart.ID);

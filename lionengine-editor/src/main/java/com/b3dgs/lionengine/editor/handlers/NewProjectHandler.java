@@ -44,7 +44,8 @@ public class NewProjectHandler
     public void execute(Shell shell, EPartService partService)
     {
         final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
-        final Project project = newProjectDialog.open();
+        newProjectDialog.open();
+        final Project project = newProjectDialog.getProject();
         if (project != null)
         {
             final MPart part = partService.findPart(ProjectsPart.ID);

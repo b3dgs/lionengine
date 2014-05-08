@@ -44,7 +44,8 @@ public class ImportMapHandler
     public void execute(Shell shell, EPartService partService)
     {
         final ImportMapDialog importMapDialog = new ImportMapDialog(shell);
-        if (importMapDialog.open())
+        importMapDialog.open();
+        if (importMapDialog.isFound())
         {
             final Media levelRip = Core.MEDIA.create(importMapDialog.getLevelRipLocation());
             final Media patternsDirectory = Core.MEDIA.create(importMapDialog.getPatternsLocation());
