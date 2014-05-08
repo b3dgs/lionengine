@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.world;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -54,6 +55,7 @@ public class WorldViewPart
         composite.addPaintListener(worldViewRenderer);
         composite.addMouseListener(worldViewRenderer);
         composite.addMouseMoveListener(worldViewRenderer);
+        composite.addKeyListener(worldViewRenderer);
     }
 
     /**
@@ -65,5 +67,14 @@ public class WorldViewPart
         {
             composite.redraw();
         }
+    }
+
+    /**
+     * Force focus.
+     */
+    @Focus
+    public void focus()
+    {
+        composite.forceFocus();
     }
 }

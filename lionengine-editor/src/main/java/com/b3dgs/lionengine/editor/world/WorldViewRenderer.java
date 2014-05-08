@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -38,12 +41,14 @@ import com.b3dgs.lionengine.game.map.MapTile;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class WorldViewRenderer
-        implements PaintListener, MouseListener, MouseMoveListener
+        implements PaintListener, MouseListener, MouseMoveListener, KeyListener
 {
     /** Color of the grid. */
     private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
+    /** Grid movement sensibility. */
+    private static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
     /**
      * Draw the grid.
@@ -65,6 +70,33 @@ public final class WorldViewRenderer
         for (int h = 0; h <= areaX; h += th)
         {
             g.drawLine(h, 0, h, areaY);
+        }
+    }
+
+    /**
+     * Set the camera limits.
+     * 
+     * @param camera The camera reference.
+     * @param maxX The maximum horizontal location.
+     * @param maxY The maximum vertical location.
+     */
+    private static void setCameraLimits(CameraGame camera, int maxX, int maxY)
+    {
+        if (camera.getLocationX() < 0.0)
+        {
+            camera.teleportX(0.0);
+        }
+        else if (camera.getLocationX() > maxX)
+        {
+            camera.teleportX(maxX);
+        }
+        if (camera.getLocationY() < 0.0)
+        {
+            camera.teleportY(0.0);
+        }
+        else if (camera.getLocationY() > maxY)
+        {
+            camera.teleportY(maxY);
         }
     }
 
@@ -163,11 +195,40 @@ public final class WorldViewRenderer
     {
         mouseX = mx;
         mouseY = my;
+        updateRender();
+    }
+
+    /**
+     * Update the keyboard.
+     * 
+     * @param vx The keyboard horizontal movement.
+     * @param vy The keyboard vertical movement.
+     */
+    private void updateKeyboard(int vx, int vy)
+    {
+        final CameraGame camera = model.getCamera();
+        final MapTile<?, ?> map = model.getMap();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        camera.moveLocation(1.0, vx * tw * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY, vy * th
+                * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY);
+
+        final int maxX = (map.getWidthInTile() - 1) * tw - camera.getViewWidth();
+        final int maxY = map.getHeightInTile() * th - camera.getViewHeight();
+        WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
+
+        updateRender();
+    }
+
+    /**
+     * Update the rendering.
+     */
+    private void updateRender()
+    {
         if (!parent.isDisposed())
         {
             parent.redraw();
         }
-
     }
 
     /*
@@ -230,5 +291,48 @@ public final class WorldViewRenderer
         final int my = mouseEvent.y;
 
         updateMouse(mx, my);
+    }
+
+    /*
+     * KeyListener
+     */
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent)
+    {
+        final int vx;
+        final int vy;
+        final int code = keyEvent.keyCode;
+        if (code == SWT.ARROW_LEFT)
+        {
+            vx = -1;
+        }
+        else if (code == SWT.ARROW_RIGHT)
+        {
+            vx = 1;
+        }
+        else
+        {
+            vx = 0;
+        }
+        if (code == SWT.ARROW_DOWN)
+        {
+            vy = -1;
+        }
+        else if (code == SWT.ARROW_UP)
+        {
+            vy = 1;
+        }
+        else
+        {
+            vy = 0;
+        }
+        updateKeyboard(vx, vy);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent)
+    {
+        // Nothing to do
     }
 }
