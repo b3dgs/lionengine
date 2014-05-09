@@ -42,7 +42,9 @@ public enum Property
     /** Level property. */
     LEVEL("lrm"),
     /** Map implementation property. */
-    JAVA_MAP_IMPL(MapTile.class);
+    JAVA_MAP_IMPL(MapTile.class),
+    /** Class file. */
+    CLASS("class");
 
     /** Extension list. */
     private final String[] extensions;

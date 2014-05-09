@@ -125,12 +125,13 @@ public final class ProjectFileVisitor
     {
         final String path = dir.toFile().getPath();
         final File projectPath = project.getPath();
-        final File sourcesPath = new File(projectPath, project.getClasses());
+        final File classesPath = new File(projectPath, project.getClasses());
         final File resourcesPath = new File(projectPath, project.getResources());
         final String dirName = dir.getFileName().toString();
 
-        if (path.endsWith(project.getName()) || path.startsWith(sourcesPath.getPath())
-                || path.startsWith(resourcesPath.getPath()))
+        if (!path.contains("META-INF")
+                && (path.endsWith(project.getName()) || path.startsWith(classesPath.getPath()) || path
+                        .startsWith(resourcesPath.getPath())))
         {
             TreeItem parent = nodes.get(dir.getParent().toString());
             TreeItem item = null;
@@ -152,7 +153,7 @@ public final class ProjectFileVisitor
             }
             if (item != null)
             {
-                if (sourcesPath.getPath().endsWith(dirName))
+                if (classesPath.getPath().endsWith(dirName))
                 {
                     item.setText("classes");
                 }
@@ -165,7 +166,7 @@ public final class ProjectFileVisitor
                     item.setText(dirName);
                 }
 
-                item.setData(ProjectFileVisitor.getMedia(projectPath, sourcesPath, resourcesPath, dir));
+                item.setData(ProjectFileVisitor.getMedia(projectPath, classesPath, resourcesPath, dir));
             }
 
             nodes.put(dir.toString(), item);

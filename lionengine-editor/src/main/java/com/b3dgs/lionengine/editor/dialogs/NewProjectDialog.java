@@ -91,6 +91,8 @@ public class NewProjectDialog
         projectNameText.forceFocus();
         projectLocationText.setText(UtilityMedia.WORKING_DIR);
         finish.setEnabled(true);
+        checkProjectExistence();
+        updateTipsLabel();
     }
 
     /**
@@ -139,30 +141,36 @@ public class NewProjectDialog
     void updateTipsLabel()
     {
         tipsLabel.setVisible(false);
+        boolean visible = false;
         if (hasProject)
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.NewProjectDialog_ErrorProjectExists);
+            visible = true;
         }
         else if (hasClasses && hasResources)
         {
             setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoBoth);
+            visible = true;
         }
         else if (hasClasses)
         {
             setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoClasses);
+            visible = true;
         }
         else if (hasResources)
         {
             setTipsMessage(AbstractDialog.ICON_INFO, Messages.NewProjectDialog_InfoResources);
+            visible = true;
         }
         if (projectNameText.getText().isEmpty() || projectClassesText.getText().isEmpty()
                 || projectResourcesText.getText().isEmpty())
         {
             finish.setEnabled(false);
+            visible = true;
         }
         else
         {
-            finish.setEnabled(!tipsLabel.isVisible());
+            finish.setEnabled(!visible);
         }
     }
 

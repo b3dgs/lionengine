@@ -66,6 +66,8 @@ public class ProjectsPart
     private static final Image ICON_DATA = Activator.getIcon("resources", "data.png");
     /** Level file icon. */
     private static final Image ICON_LEVEL = Activator.getIcon("resources", "level.png");
+    /** Class file icon. */
+    private static final Image ICON_CLASS = Activator.getIcon("resources", "class.png");
 
     /**
      * Set the file icon.
@@ -94,6 +96,11 @@ public class ProjectsPart
         else if (Property.LEVEL.is(file))
         {
             item.setImage(ProjectsPart.ICON_LEVEL);
+        }
+        else if (Property.CLASS.is(file))
+        {
+            item.setText(item.getText().replaceAll(".class", ""));
+            item.setImage(ProjectsPart.ICON_CLASS);
         }
         else
         {

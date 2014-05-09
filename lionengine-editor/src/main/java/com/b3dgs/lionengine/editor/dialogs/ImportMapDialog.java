@@ -46,7 +46,7 @@ public class ImportMapDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Activator.getIcon("dialog", "import-project.png");
+    private static final Image ICON = Activator.getIcon("dialog", "import-map.png");
 
     /** Level rip location. */
     Text levelRipLocationText;

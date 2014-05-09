@@ -19,10 +19,10 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_whAkkMh6EeOe2K-BXkfQew" elementId="" label="Load Level">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_whAkkch6EeOe2K-BXkfQew" coreExpressionId="com.b3dgs.lionengine.editor.resource.level"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" command="_KK_5cNVTEeObvtSGPT134w">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-map-implementation.png" command="_KK_5cNVTEeObvtSGPT134w">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.java_map_impl"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_UMpKMNYnEeOeyYQS2e8NDg" elementId="" label="%menu.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_eZdjgNYnEeOeyYQS2e8NDg">
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_UMpKMNYnEeOeyYQS2e8NDg" elementId="" label="%menu.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/import-map.png" command="_eZdjgNYnEeOeyYQS2e8NDg">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_oZCRYNYvEeOeyYQS2e8NDg" coreExpressionId="com.b3dgs.lionengine.editor.map-implementation.test"/>
                 </children>
               </menus>
