@@ -215,7 +215,7 @@ public abstract class AbstractDialog
         final GridData finishData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
         finishData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
         finish.setLayoutData(finishData);
-        finish.setText(Messages.AbstractProjectDialog_Finish);
+        finish.setText(Messages.AbstractDialog_Finish);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
         {
@@ -231,7 +231,7 @@ public abstract class AbstractDialog
         final GridData cancelData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
         cancelData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
         cancel.setLayoutData(cancelData);
-        cancel.setText(Messages.AbstractProjectDialog_Cancel);
+        cancel.setText(Messages.AbstractDialog_Cancel);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override

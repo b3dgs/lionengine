@@ -30,15 +30,15 @@ public class Messages
     /** Bundle name. */
     private static final String BUNDLE_NAME = "com.b3dgs.lionengine.editor.dialogs.messages"; //$NON-NLS-1$
     /** Cancel button. */
-    public static String AbstractProjectDialog_Cancel;
+    public static String AbstractDialog_Cancel;
     /** Finish button. */
-    public static String AbstractProjectDialog_Finish;
+    public static String AbstractDialog_Finish;
+    /** Browse. */
+    public static String AbstractDialog_Browse;
     /** Classes. */
     public static String AbstractProjectDialog_Classes;
     /** Resources */
     public static String AbstractProjectDialog_Resources;
-    /** Browse. */
-    public static String AbstractProjectDialog_Browse;
     /** Project name. */
     public static String AbstractProjectDialog_Name;
     /** Location. */

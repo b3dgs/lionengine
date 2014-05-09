@@ -122,7 +122,7 @@ public abstract class AbstractProjectDialog
         final GridData browseData = new GridData();
         browseData.widthHint = 64;
         browse.setLayoutData(browseData);
-        browse.setText(Messages.AbstractProjectDialog_Browse);
+        browse.setText(Messages.AbstractDialog_Browse);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {

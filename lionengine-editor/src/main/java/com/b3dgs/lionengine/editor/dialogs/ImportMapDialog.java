@@ -131,7 +131,7 @@ public class ImportMapDialog
         final GridData browseData = new GridData();
         browseData.widthHint = 64;
         browse.setLayoutData(browseData);
-        browse.setText(Messages.AbstractProjectDialog_Browse);
+        browse.setText(Messages.AbstractDialog_Browse);
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -182,7 +182,7 @@ public class ImportMapDialog
         final GridData browseData = new GridData();
         browseData.widthHint = 64;
         browse.setLayoutData(browseData);
-        browse.setText(Messages.AbstractProjectDialog_Browse);
+        browse.setText(Messages.AbstractDialog_Browse);
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
