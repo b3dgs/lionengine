@@ -42,9 +42,9 @@ public class UtilityProjectStatsTest
     public void testProjectStatsClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
             InvocationTargetException
     {
-        final Constructor<UtilityProjectStats> utilityProjectStats = UtilityProjectStats.class.getDeclaredConstructor();
+        final Constructor<UtilProjectStats> utilityProjectStats = UtilProjectStats.class.getDeclaredConstructor();
         utilityProjectStats.setAccessible(true);
-        final UtilityProjectStats clazz = utilityProjectStats.newInstance();
+        final UtilProjectStats clazz = utilityProjectStats.newInstance();
         Assert.assertNotNull(clazz);
     }
 
@@ -54,6 +54,6 @@ public class UtilityProjectStatsTest
     @Test
     public void testProjectStats()
     {
-        UtilityProjectStats.start("src");
+        UtilProjectStats.start("src");
     }
 }

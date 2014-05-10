@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
@@ -141,7 +141,7 @@ final class Racket
         {
             if (timerRandomMovement.elapsed(200))
             {
-                speedLastRandom = (0.5 - UtilityRandom.getRandomDouble()) * 1.5 * this.speed;
+                speedLastRandom = (0.5 - UtilRandom.getRandomDouble()) * 1.5 * this.speed;
                 timerRandomMovement.start();
             }
             speed = speedLastRandom;

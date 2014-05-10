@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.strategy.entity;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
@@ -232,7 +232,7 @@ public abstract class EntityStrategy
         if (!layerChanged)
         {
             layerOld = layer;
-            this.layer = UtilityMath.fixBetween(layer, 0, HandlerEntityStrategy.LAYERS);
+            this.layer = UtilMath.fixBetween(layer, 0, HandlerEntityStrategy.LAYERS);
             layerChanged = true;
         }
     }
@@ -335,7 +335,7 @@ public abstract class EntityStrategy
     {
         if (fromCenter)
         {
-            return UtilityMath.getDistance(getLocationInTileX() + getWidthInTile() / 2, getLocationInTileY()
+            return UtilMath.getDistance(getLocationInTileX() + getWidthInTile() / 2, getLocationInTileY()
                     + getHeightInTile() / 2, tx + tw / 2, ty + th / 2);
         }
         int min = Integer.MAX_VALUE;
@@ -343,7 +343,7 @@ public abstract class EntityStrategy
         {
             for (int v = ty; v < ty + th; v++)
             {
-                final int dist = UtilityMath.getDistance(getLocationInTileX(), getLocationInTileY(), h, v);
+                final int dist = UtilMath.getDistance(getLocationInTileX(), getLocationInTileY(), h, v);
                 if (dist < min)
                 {
                     min = dist;
@@ -569,7 +569,7 @@ public abstract class EntityStrategy
         if (!mapLayerChanged)
         {
             mapLayerOld = layer;
-            mapLayer = UtilityMath.fixBetween(layer, 0, map.getHeightInTile());
+            mapLayer = UtilMath.fixBetween(layer, 0, map.getHeightInTile());
             mapLayerChanged = true;
         }
     }

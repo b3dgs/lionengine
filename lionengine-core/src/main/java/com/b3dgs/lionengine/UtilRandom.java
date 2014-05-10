@@ -22,7 +22,7 @@ package com.b3dgs.lionengine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class UtilityRandom
+public final class UtilRandom
 {
     /** The random utility instance. */
     private static final java.util.Random RANDOM = new java.util.Random();
@@ -34,7 +34,7 @@ public final class UtilityRandom
      */
     public static void setSeed(long seed)
     {
-        UtilityRandom.RANDOM.setSeed(seed);
+        UtilRandom.RANDOM.setSeed(seed);
     }
 
     /**
@@ -44,7 +44,7 @@ public final class UtilityRandom
      */
     public static int getRandomInteger()
     {
-        return UtilityRandom.RANDOM.nextInt();
+        return UtilRandom.RANDOM.nextInt();
     }
 
     /**
@@ -55,7 +55,7 @@ public final class UtilityRandom
      */
     public static int getRandomInteger(int max)
     {
-        return UtilityRandom.RANDOM.nextInt(max + 1);
+        return UtilRandom.RANDOM.nextInt(max + 1);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class UtilityRandom
      */
     public static int getRandomInteger(int min, int max)
     {
-        return min + UtilityRandom.RANDOM.nextInt(max + 1 - min);
+        return min + UtilRandom.RANDOM.nextInt(max + 1 - min);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class UtilityRandom
      */
     public static boolean getRandomBoolean()
     {
-        return UtilityRandom.RANDOM.nextBoolean();
+        return UtilRandom.RANDOM.nextBoolean();
     }
 
     /**
@@ -87,13 +87,13 @@ public final class UtilityRandom
      */
     public static double getRandomDouble()
     {
-        return UtilityRandom.RANDOM.nextDouble();
+        return UtilRandom.RANDOM.nextDouble();
     }
 
     /**
      * Private constructor.
      */
-    private UtilityRandom()
+    private UtilRandom()
     {
         throw new RuntimeException();
     }

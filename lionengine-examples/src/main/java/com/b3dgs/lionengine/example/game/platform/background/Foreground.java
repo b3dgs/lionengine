@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.platform.background;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
@@ -307,7 +307,7 @@ final class Foreground
             final int oy = py + (int) water.getHeight();
             for (int y = screenHeight - 32 + getNominal() - 210 + oy; y < screenHeight; y++)
             {
-                final double inside = Math.cos(UtilityMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
+                final double inside = Math.cos(UtilMath.wrapDouble(y + wx * frequency, 0.0, 360.0)) * amplitude;
                 final double outside = Math.cos(wx) * offsetForce;
                 g.copyArea(0, y, screenWidth, 1, (int) (inside + outside), 0);
             }
@@ -323,11 +323,11 @@ final class Foreground
             anim.updateAnimation(extrp);
 
             data.setOffsetX(data.getOffsetX() + speed);
-            data.setOffsetX(UtilityMath.wrapDouble(data.getOffsetX(), 0.0, anim.getFrameWidth()));
+            data.setOffsetX(UtilMath.wrapDouble(data.getOffsetX(), 0.0, anim.getFrameWidth()));
             data.setOffsetY(y);
 
             height += water.getSpeed() * extrp;
-            height = UtilityMath.wrapDouble(height, 0.0, 360.0);
+            height = UtilMath.wrapDouble(height, 0.0, 360.0);
             water.setHeight(Math.sin(height) * water.getDepth());
             py = y;
             wx += 0.06 * extrp;

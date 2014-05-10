@@ -133,7 +133,7 @@ public final class Checksum
      */
     public String getSha256(int i)
     {
-        return getSha256(UtilityConversion.intToByteArray(i));
+        return getSha256(UtilConversion.intToByteArray(i));
     }
 
     /**

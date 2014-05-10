@@ -21,7 +21,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Filter the map file format.
@@ -60,7 +60,7 @@ final class MapFilter
             return true;
         }
 
-        final String ext = UtilityFile.getExtension(f);
+        final String ext = UtilFile.getExtension(f);
         if (ext != null)
         {
             for (final String extension : extensions)

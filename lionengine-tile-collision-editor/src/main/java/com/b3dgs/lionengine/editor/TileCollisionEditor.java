@@ -30,7 +30,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
@@ -185,8 +185,8 @@ public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends Ti
         final int th = world.map.getTileHeight();
         final int hOffsetMax = Math.max(world.map.getWidthInTile() - world.camera.getViewWidth() / tw - 1, 0);
         final int vOffsetMax = Math.max(world.map.getHeightInTile() - world.camera.getViewHeight() / th, 0);
-        hOffset = UtilityMath.fixBetween(hOffset, 0, hOffsetMax);
-        vOffset = UtilityMath.fixBetween(vOffset, 0, vOffsetMax);
+        hOffset = UtilMath.fixBetween(hOffset, 0, hOffsetMax);
+        vOffset = UtilMath.fixBetween(vOffset, 0, vOffsetMax);
         final int mh = hOffset - hOffsetOld;
         final int mv = vOffset - vOffsetOld;
 
@@ -212,8 +212,8 @@ public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends Ti
             @Override
             public void componentResized(ComponentEvent event)
             {
-                final int areaX = UtilityMath.getRounded(world.getWidth(), world.map.getTileWidth());
-                final int areaY = UtilityMath.getRounded(world.getHeight(), world.map.getTileHeight());
+                final int areaX = UtilMath.getRounded(world.getWidth(), world.map.getTileWidth());
+                final int areaY = UtilMath.getRounded(world.getHeight(), world.map.getTileHeight());
                 world.camera.setView(0, 0, areaX, areaY);
                 updateWorldLocation(getOffsetViewInTileH(), getOffsetViewInTileV());
             }

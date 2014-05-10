@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
@@ -358,7 +358,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      */
     protected int computeSelectionWidth(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
-        return UtilityMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
+        return UtilMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
                 camera.getViewX() + camera.getLocationIntX() - sx + camera.getViewWidth());
     }
 
@@ -373,7 +373,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      */
     protected int computeSelectionHeight(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
-        return UtilityMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
+        return UtilMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
                 camera.getViewY() + camera.getLocationIntY() + camera.getViewHeight() + sy);
     }
 

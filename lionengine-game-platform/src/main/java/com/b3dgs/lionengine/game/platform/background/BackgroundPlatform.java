@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.platform.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -175,7 +175,7 @@ public abstract class BackgroundPlatform
         }
         else
         {
-            final double currentY = UtilityMath.fixBetween(y, minY, maxY);
+            final double currentY = UtilMath.fixBetween(y, minY, maxY);
             py = (int) (currentY / maxY * lowest) - lowest + offsetY;
             if (py > 0)
             {

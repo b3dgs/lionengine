@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -109,7 +109,7 @@ public enum Property
      */
     private boolean isExtension(Media file)
     {
-        final String extension = UtilityFile.getExtension(file.getPath());
+        final String extension = UtilFile.getExtension(file.getPath());
         for (final String value : extensions)
         {
             if (extension.equals(value))

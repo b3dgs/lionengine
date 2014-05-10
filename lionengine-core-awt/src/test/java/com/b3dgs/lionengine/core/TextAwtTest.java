@@ -22,7 +22,7 @@ import org.junit.BeforeClass;
 
 import com.b3dgs.lionengine.TextTest;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -40,7 +40,7 @@ public class TextAwtTest
     public static void setUp()
     {
         Engine.start("TextAwtTest", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("src", "test", "resources"));
+                UtilFile.getPath("src", "test", "resources"));
         final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(320, 240, Transparency.OPAQUE);
         TextTest.g = buffer.createGraphic();
     }

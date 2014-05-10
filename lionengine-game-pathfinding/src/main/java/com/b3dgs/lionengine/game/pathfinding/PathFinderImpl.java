@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.pathfinding;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.pathfinding.heuristic.HeuristicClosest;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
@@ -218,7 +218,7 @@ final class PathFinderImpl
     @Override
     public Path findPath(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef)
     {
-        if (map.isBlocked(mover, dx, dy, false) && UtilityMath.getDistance(sx, sy, dx, dy) <= 1)
+        if (map.isBlocked(mover, dx, dy, false) && UtilMath.getDistance(sx, sy, dx, dy) <= 1)
         {
             return null;
         }

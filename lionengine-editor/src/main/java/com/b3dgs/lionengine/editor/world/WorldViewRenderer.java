@@ -29,7 +29,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -138,8 +138,8 @@ public final class WorldViewRenderer
 
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int areaX = UtilityMath.getRounded(width, tw);
-        final int areaY = UtilityMath.getRounded(height, th);
+        final int areaX = UtilMath.getRounded(width, tw);
+        final int areaY = UtilMath.getRounded(height, th);
 
         camera.setView(0, 0, areaX - tw, areaY);
 
@@ -176,8 +176,8 @@ public final class WorldViewRenderer
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
-                final int mx = UtilityMath.getRounded(mouseX, tw);
-                final int my = UtilityMath.getRounded(mouseY, th);
+                final int mx = UtilMath.getRounded(mouseX, tw);
+                final int my = UtilMath.getRounded(mouseY, th);
 
                 g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
                 g.drawRect(mx, my, tw, th, true);

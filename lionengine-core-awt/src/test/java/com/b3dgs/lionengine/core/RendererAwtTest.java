@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.core;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.mock.ScreenMock;
 
@@ -38,7 +38,7 @@ public class RendererAwtTest
     @BeforeClass
     public static void prepareTest()
     {
-        Engine.start("Test", Version.create(1, 0, 0), Verbose.CRITICAL, UtilityFile.getPath("src", "test", "resources"));
+        Engine.start("Test", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("src", "test", "resources"));
         System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
         System.out.flush();
     }

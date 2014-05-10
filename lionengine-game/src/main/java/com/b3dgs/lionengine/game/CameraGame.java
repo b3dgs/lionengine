@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
@@ -152,8 +152,8 @@ public class CameraGame
     {
         this.x = x;
         this.y = y;
-        this.width = UtilityMath.fixBetween(width, 0, Integer.MAX_VALUE);
-        this.height = UtilityMath.fixBetween(height, 0, Integer.MAX_VALUE);
+        this.width = UtilMath.fixBetween(width, 0, Integer.MAX_VALUE);
+        this.height = UtilMath.fixBetween(height, 0, Integer.MAX_VALUE);
     }
 
     /**

@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Engine;
@@ -45,7 +45,7 @@ public class ImageAwtTest
     public static void setUp()
     {
         Engine.start("ImageAwtTest", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("src", "test", "resources", "drawable"));
+                UtilFile.getPath("src", "test", "resources", "drawable"));
         ImageTest.media = Core.MEDIA.create("image.png");
         ImageTest.g = Core.GRAPHIC.createImageBuffer(100, 100, Transparency.OPAQUE).createGraphic();
     }

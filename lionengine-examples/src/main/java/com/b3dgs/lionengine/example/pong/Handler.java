@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.pong;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.UtilityMath;
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.game.Force;
 
@@ -90,7 +90,7 @@ final class Handler
      */
     public void engage()
     {
-        final int side = UtilityRandom.getRandomBoolean() ? 1 : -1;
+        final int side = UtilRandom.getRandomBoolean() ? 1 : -1;
         ball.setSpeed(ball.getSpeedInit());
         ball.setForces(ball.getSpeed() * side, 0.0);
         ball.setLocation(screenWidth / 2.0, screenHeight / 2.0);
@@ -136,8 +136,7 @@ final class Handler
                     ball.setSpeed(ball.getSpeed() + 0.3);
                 }
 
-                force.setForce(ball.getSpeed() * UtilityMath.cos(angle) * side,
-                        ball.getSpeed() * UtilityMath.sin(angle));
+                force.setForce(ball.getSpeed() * UtilMath.cos(angle) * side, ball.getSpeed() * UtilMath.sin(angle));
             }
         }
 

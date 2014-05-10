@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.Media;
@@ -50,7 +50,7 @@ public class FileTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        FileTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
+        FileTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -143,6 +143,6 @@ public class FileTest
             Assert.assertNotNull(writing);
         }
         Assert.assertTrue(media.getFile().delete());
-        UtilityFile.deleteFile(media.getFile());
+        UtilFile.deleteFile(media.getFile());
     }
 }

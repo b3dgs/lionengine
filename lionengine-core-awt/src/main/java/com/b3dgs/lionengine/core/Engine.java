@@ -26,7 +26,7 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 
 /**
@@ -128,18 +128,18 @@ public final class Engine
         {
             EngineCore.start(name, version, level, new FactoryGraphicAwt(), new FactoryMediaAwt());
 
-            UtilityFile.setTempDirectory(name);
+            UtilFile.setTempDirectory(name);
             UtilityMedia.setLoadFromJar(classResource);
             UtilityMedia.setResourcesDirectory(resourcesDir);
 
             // LionEngine started
             Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
             Verbose.info("Resources directory = ",
-                    UtilityFile.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
-            Verbose.info("Temporary directory = ", UtilityFile.getTempDir() + Core.MEDIA.getSeparator());
+                    UtilFile.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
+            Verbose.info("Temporary directory = ", UtilFile.getTempDir() + Core.MEDIA.getSeparator());
 
             // Check version (clear temporary directory if version is different)
-            final String versionFilename = UtilityFile.getPath(UtilityFile.getTempDir(), "version");
+            final String versionFilename = UtilFile.getPath(UtilFile.getTempDir(), "version");
             Engine.checkVersion(versionFilename);
             Engine.storeVersion(versionFilename);
         }
@@ -154,7 +154,7 @@ public final class Engine
     public static void terminate()
     {
         UtilityMedia.setResourcesDirectory(null);
-        UtilityFile.setTempDirectory("");
+        UtilFile.setTempDirectory("");
         UtilityMedia.setLoadFromJar(null);
         EngineCore.terminate();
     }
@@ -166,7 +166,7 @@ public final class Engine
      */
     private static void checkVersion(String versionFilename)
     {
-        final File tempDir = new File(UtilityFile.getTempDir());
+        final File tempDir = new File(UtilFile.getTempDir());
         if (tempDir.exists())
         {
             boolean delete = true;
@@ -184,7 +184,7 @@ public final class Engine
             }
             if (delete)
             {
-                UtilityFile.deleteDirectory(tempDir);
+                UtilFile.deleteDirectory(tempDir);
             }
         }
 
@@ -202,7 +202,7 @@ public final class Engine
      */
     private static void storeVersion(String versionFilename)
     {
-        if (!UtilityFile.exists(versionFilename))
+        if (!UtilFile.exists(versionFilename))
         {
             try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename));)
             {

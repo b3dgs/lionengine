@@ -44,7 +44,7 @@ public class ImageInfoTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        ImageInfoTest.PATH = UtilityFile.getPath("src", "test", "resources", "imageinfo");
+        ImageInfoTest.PATH = UtilFile.getPath("src", "test", "resources", "imageinfo");
     }
 
     /**

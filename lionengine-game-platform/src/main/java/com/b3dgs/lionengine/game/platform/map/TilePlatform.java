@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.platform.map;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionRefential;
@@ -138,9 +138,9 @@ public class TilePlatform<C extends Enum<C> & CollisionTile>
         switch (input)
         {
             case X:
-                return UtilityMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
+                return UtilMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
             case Y:
-                return UtilityMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
+                return UtilMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
             default:
                 throw new RuntimeException("Unknow type: " + input);
         }

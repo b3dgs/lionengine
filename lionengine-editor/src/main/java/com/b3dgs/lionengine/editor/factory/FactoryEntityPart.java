@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -172,7 +172,7 @@ public class FactoryEntityPart
         {
             for (final File element : elements)
             {
-                if (element.isFile() && UtilityFile.isType(element, FactoryObjectGame.FILE_DATA_EXTENSION))
+                if (element.isFile() && UtilFile.isType(element, FactoryObjectGame.FILE_DATA_EXTENSION))
                 {
                     loadEntity(factoryEntity, element, composite);
                 }
@@ -197,10 +197,10 @@ public class FactoryEntityPart
         final File classesPath = project.getClassesPath();
 
         final Label entityLabel = new Label(composite, SWT.NONE);
-        final String name = UtilityFile.removeExtension(file.getName());
+        final String name = UtilFile.removeExtension(file.getName());
         entityLabel.setText(name);
 
-        final List<File> classNames = UtilityFile.getFilesByName(classesPath, entityLabel.getText() + ".class");
+        final List<File> classNames = UtilFile.getFilesByName(classesPath, entityLabel.getText() + ".class");
 
         // TODO handle the case when there is multiple class with the same name
         if (classNames.size() == 1)

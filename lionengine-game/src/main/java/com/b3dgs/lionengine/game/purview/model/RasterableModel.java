@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.purview.model;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
 import com.b3dgs.lionengine.game.purview.Rasterable;
@@ -70,7 +70,7 @@ public class RasterableModel
         {
             index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);
         }
-        return UtilityMath.fixBetween(index, 0, Rasterable.MAX_RASTERS);
+        return UtilMath.fixBetween(index, 0, Rasterable.MAX_RASTERS);
     }
 
     @Override

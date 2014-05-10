@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 
 /**
@@ -227,7 +227,7 @@ public class Bar
      */
     public void setWidthPercent(int widthPercent)
     {
-        pWidth = UtilityMath.fixBetween(widthPercent, 0, 100);
+        pWidth = UtilMath.fixBetween(widthPercent, 0, 100);
     }
 
     /**
@@ -237,7 +237,7 @@ public class Bar
      */
     public void setHeightPercent(int heightPercent)
     {
-        pHeight = UtilityMath.fixBetween(heightPercent, 0, 100);
+        pHeight = UtilMath.fixBetween(heightPercent, 0, 100);
     }
 
     /**

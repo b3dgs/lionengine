@@ -32,7 +32,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Sound routine implementation. One sound represents one thread.
@@ -245,7 +245,7 @@ final class WavRoutine
                     {
                         final FloatControl gainControl = (FloatControl) sourceDataLine
                                 .getControl(FloatControl.Type.MASTER_GAIN);
-                        final double gain = UtilityMath.fixBetween(volume / 100.0, 0.0, 100.0);
+                        final double gain = UtilMath.fixBetween(volume / 100.0, 0.0, 100.0);
                         final double dB = Math.log(gain) / Math.log(10.0) * 20.0;
                         gainControl.setValue((float) dB);
                     }

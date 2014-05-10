@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.mock.FactoryGraphicMock;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class FactoryGraphicProviderTest
 {
     /** Resources path. */
-    protected static final String PATH = UtilityFile.getPath("src", "test", "resources", "graphic");
+    protected static final String PATH = UtilFile.getPath("src", "test", "resources", "graphic");
     /** Config. */
     protected static final Config CONFIG = new Config(new Resolution(320, 240, 60), 32, true);
 

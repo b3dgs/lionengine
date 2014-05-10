@@ -23,7 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.Media;
@@ -46,7 +46,7 @@ public class XmlParserTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        XmlParserTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
+        XmlParserTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -79,7 +79,7 @@ public class XmlParserTest
         }
         finally
         {
-            UtilityFile.deleteFile(new java.io.File(fileXml.getPath()));
+            UtilFile.deleteFile(new java.io.File(fileXml.getPath()));
         }
     }
 
@@ -126,7 +126,7 @@ public class XmlParserTest
         }
 
         parserSave.save(new XmlNodeMock(), fileXml);
-        final java.io.File file = new java.io.File(UtilityFile.getPath(XmlParserTest.PATH, "foo"));
+        final java.io.File file = new java.io.File(UtilFile.getPath(XmlParserTest.PATH, "foo"));
         if (file.mkdir())
         {
             try
@@ -140,7 +140,7 @@ public class XmlParserTest
             }
             finally
             {
-                UtilityFile.deleteDirectory(file);
+                UtilFile.deleteDirectory(file);
             }
         }
     }

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -94,7 +94,7 @@ public class CameraStrategy
      */
     public void update(InputDeviceDirectional inputDevice)
     {
-        final long time = UtilityMath.time();
+        final long time = UtilMath.time();
         final int x = inputDevice.getHorizontalDirection();
         final int y = inputDevice.getVerticalDirection();
         if (time - hTime > hSens)
@@ -107,8 +107,8 @@ public class CameraStrategy
             vTime = time;
             moveLocation(1.0, 0, vStep * y);
         }
-        location.setLocationX(UtilityMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
-        location.setLocationY(UtilityMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
+        location.setLocationX(UtilMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
+        location.setLocationY(UtilMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
     }
 
     /**
@@ -119,8 +119,8 @@ public class CameraStrategy
      */
     public void setSensibility(int hSens, int vSens)
     {
-        this.hSens = UtilityMath.fixBetween(hSens, 0, Integer.MAX_VALUE);
-        this.vSens = UtilityMath.fixBetween(vSens, 0, Integer.MAX_VALUE);
+        this.hSens = UtilMath.fixBetween(hSens, 0, Integer.MAX_VALUE);
+        this.vSens = UtilMath.fixBetween(vSens, 0, Integer.MAX_VALUE);
     }
 
     /**
@@ -206,8 +206,8 @@ public class CameraStrategy
     public void moveLocation(double extrp, double vx, double vy)
     {
         super.moveLocation(extrp, vx, vy);
-        location.setLocationX(UtilityMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
-        location.setLocationY(UtilityMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
+        location.setLocationX(UtilMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
+        location.setLocationY(UtilMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
     }
 
     @Override

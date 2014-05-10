@@ -108,9 +108,9 @@ public final class ColorRgba
     {
         if (0 == data[5])
         {
-            return data[0] + data[1] * (int) (data[2] * UtilityMath.sin(i * (data[3] / (double) max) - data[4]));
+            return data[0] + data[1] * (int) (data[2] * UtilMath.sin(i * (data[3] / (double) max) - data[4]));
         }
-        return data[0] + data[1] * (int) (data[2] * UtilityMath.cos(i * (data[3] / (double) max) - data[4]));
+        return data[0] + data[1] * (int) (data[2] * UtilMath.cos(i * (data[3] / (double) max) - data[4]));
     }
 
     /** Color value. */
@@ -185,9 +185,9 @@ public final class ColorRgba
         {
             return 0;
         }
-        return (255 & 0xFF) << 24 | (UtilityMath.fixBetween(red + r, 0, 255) & 0xFF) << 16
-                | (UtilityMath.fixBetween(green + g, 0, 255) & 0xFF) << 8
-                | (UtilityMath.fixBetween(blue + b, 0, 255) & 0xFF) << 0;
+        return (255 & 0xFF) << 24 | (UtilMath.fixBetween(red + r, 0, 255) & 0xFF) << 16
+                | (UtilMath.fixBetween(green + g, 0, 255) & 0xFF) << 8
+                | (UtilMath.fixBetween(blue + b, 0, 255) & 0xFF) << 0;
     }
 
     /**

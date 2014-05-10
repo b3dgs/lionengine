@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
@@ -97,7 +97,7 @@ public abstract class MapTileStrategy<C extends Enum<C>, R extends Enum<R>, T ex
                 {
                     if (collision == getTile(x, y).getCollision())
                     {
-                        final int d = UtilityMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
+                        final int d = UtilMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
                         if (d < dist)
                         {
                             dist = d;
@@ -146,7 +146,7 @@ public abstract class MapTileStrategy<C extends Enum<C>, R extends Enum<R>, T ex
                 {
                     if (isAreaAvailable(x, y, sw, sh, 0))
                     {
-                        final int d = UtilityMath.getDistance(x, y, sw, sh, dx, dy, dw, dh);
+                        final int d = UtilMath.getDistance(x, y, sw, sh, dx, dy, dw, dh);
                         if (d < dist)
                         {
                             dist = d;

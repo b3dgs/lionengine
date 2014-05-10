@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.drawable;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Engine;
@@ -41,7 +41,7 @@ public class DrawableAwtTest
     public static void setUp()
     {
         Engine.start("DrawableAwtTest", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("src", "test", "resources", "drawable"));
+                UtilFile.getPath("src", "test", "resources", "drawable"));
         DrawableTest.media = Core.MEDIA.create("image.png");
         DrawableTest.font = Core.MEDIA.create("fontdata.xml");
     }

@@ -49,9 +49,9 @@ public class UtilityMathTest
     public void testUtilityMathClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
             InvocationTargetException
     {
-        final Constructor<UtilityMath> utilityMath = UtilityMath.class.getDeclaredConstructor();
+        final Constructor<UtilMath> utilityMath = UtilMath.class.getDeclaredConstructor();
         utilityMath.setAccessible(true);
-        final UtilityMath clazz = utilityMath.newInstance();
+        final UtilMath clazz = utilityMath.newInstance();
         Assert.assertNotNull(clazz);
     }
 
@@ -61,15 +61,15 @@ public class UtilityMathTest
     @Test
     public void testFixBetween()
     {
-        Assert.assertEquals(0, UtilityMath.fixBetween(-10, 0, 10));
-        Assert.assertEquals(10, UtilityMath.fixBetween(50, 0, 10));
-        Assert.assertEquals(10, UtilityMath.fixBetween(10, 0, 10));
-        Assert.assertEquals(0, UtilityMath.fixBetween(0, 0, 10));
+        Assert.assertEquals(0, UtilMath.fixBetween(-10, 0, 10));
+        Assert.assertEquals(10, UtilMath.fixBetween(50, 0, 10));
+        Assert.assertEquals(10, UtilMath.fixBetween(10, 0, 10));
+        Assert.assertEquals(0, UtilMath.fixBetween(0, 0, 10));
 
-        Assert.assertEquals(0.0, UtilityMath.fixBetween(-10.0, 0.0, 10.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(10.0, UtilityMath.fixBetween(50.0, 0.0, 10.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(10.0, UtilityMath.fixBetween(10.0, 0.0, 10.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(0.0, UtilityMath.fixBetween(0.0, 0.0, 10.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.fixBetween(-10.0, 0.0, 10.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.fixBetween(50.0, 0.0, 10.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(10.0, UtilMath.fixBetween(10.0, 0.0, 10.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.fixBetween(0.0, 0.0, 10.0), UtilityMathTest.PRECISION);
     }
 
     /**
@@ -78,7 +78,7 @@ public class UtilityMathTest
     @Test
     public void testRounded()
     {
-        Assert.assertEquals(100, UtilityMath.getRounded(105, 100));
+        Assert.assertEquals(100, UtilMath.getRounded(105, 100));
     }
 
     /**
@@ -87,8 +87,8 @@ public class UtilityMathTest
     @Test
     public void testCurveValue()
     {
-        Assert.assertTrue(UtilityMath.curveValue(0.0, 1.0, 0.5) > 0.0);
-        Assert.assertTrue(UtilityMath.curveValue(0.0, -1.0, 0.5) < 0.0);
+        Assert.assertTrue(UtilMath.curveValue(0.0, 1.0, 0.5) > 0.0);
+        Assert.assertTrue(UtilMath.curveValue(0.0, -1.0, 0.5) < 0.0);
     }
 
     /**
@@ -97,9 +97,9 @@ public class UtilityMathTest
     @Test
     public void testDistance()
     {
-        Assert.assertEquals(2, UtilityMath.getDistance(4, 6, 6, 6));
-        Assert.assertEquals(2.0, UtilityMath.getDistance(4.0, 6.0, 6.0, 6.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(2, UtilityMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2));
+        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 6, 6));
+        Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2));
     }
 
     /**
@@ -108,9 +108,9 @@ public class UtilityMathTest
     @Test
     public void testWrapDouble()
     {
-        Assert.assertEquals(0.0, UtilityMath.wrapDouble(360.0, 0.0, 360.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(359.0, UtilityMath.wrapDouble(-1.0, 0.0, 360.0), UtilityMathTest.PRECISION);
-        Assert.assertEquals(180.0, UtilityMath.wrapDouble(180.0, 0.0, 360.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.wrapDouble(360.0, 0.0, 360.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(359.0, UtilMath.wrapDouble(-1.0, 0.0, 360.0), UtilityMathTest.PRECISION);
+        Assert.assertEquals(180.0, UtilMath.wrapDouble(180.0, 0.0, 360.0), UtilityMathTest.PRECISION);
     }
 
     /**
@@ -119,8 +119,8 @@ public class UtilityMathTest
     @Test
     public void testSinCos()
     {
-        Assert.assertEquals(-1.0, UtilityMath.cos(180), UtilityMathTest.PRECISION);
-        Assert.assertEquals(0.0, UtilityMath.sin(180), UtilityMathTest.PRECISION);
+        Assert.assertEquals(-1.0, UtilMath.cos(180), UtilityMathTest.PRECISION);
+        Assert.assertEquals(0.0, UtilMath.sin(180), UtilityMathTest.PRECISION);
     }
 
     /**
@@ -129,8 +129,8 @@ public class UtilityMathTest
     @Test
     public void testTime()
     {
-        Assert.assertTrue(UtilityMath.time() > 0);
-        Assert.assertTrue(UtilityMath.nano() > 0);
+        Assert.assertTrue(UtilMath.time() > 0);
+        Assert.assertTrue(UtilMath.nano() > 0);
     }
 
     /**
@@ -139,11 +139,11 @@ public class UtilityMathTest
     @Test
     public void testSign()
     {
-        Assert.assertTrue(UtilityMath.getSign(-1) < 0);
-        Assert.assertTrue(UtilityMath.getSign(1) > 0);
+        Assert.assertTrue(UtilMath.getSign(-1) < 0);
+        Assert.assertTrue(UtilMath.getSign(1) > 0);
         try
         {
-            Assert.assertFalse(UtilityMath.getSign(0) == 0);
+            Assert.assertFalse(UtilMath.getSign(0) == 0);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -160,7 +160,7 @@ public class UtilityMathTest
     {
         try
         {
-            final Coord coord = UtilityMath.intersection(Geom.createLine(), Geom.createLine());
+            final Coord coord = UtilMath.intersection(Geom.createLine(), Geom.createLine());
             Assert.assertNotNull(coord);
         }
         catch (final IllegalStateException exception)
@@ -170,7 +170,7 @@ public class UtilityMathTest
 
         final Line line1 = Geom.createLine(1, 2, 3, 4);
         final Line line2 = Geom.createLine(-1, 2, -3, 4);
-        final Coord coord = UtilityMath.intersection(line1, line2);
+        final Coord coord = UtilMath.intersection(line1, line2);
         Assert.assertNotNull(coord);
     }
 }

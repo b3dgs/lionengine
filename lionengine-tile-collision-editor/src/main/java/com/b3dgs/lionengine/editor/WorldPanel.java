@@ -26,7 +26,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -154,8 +154,8 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
-                final int mx = UtilityMath.getRounded(mouseX, tw);
-                final int my = UtilityMath.getRounded(mouseY, th);
+                final int mx = UtilMath.getRounded(mouseX, tw);
+                final int my = UtilMath.getRounded(mouseY, th);
 
                 g.setColor(WorldPanel.COLOR_MOUSE_SELECTION);
                 g.drawRect(mx, my, tw, th, true);
@@ -187,8 +187,8 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
         final int height = getHeight();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int areaX = UtilityMath.getRounded(width, tw);
-        final int areaY = UtilityMath.getRounded(height, th);
+        final int areaX = UtilMath.getRounded(width, tw);
+        final int areaY = UtilMath.getRounded(height, th);
         camera.setView(0, 0, areaX - tw, areaY);
 
         // Background
@@ -276,9 +276,9 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
         final int my = event.getY();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int h = UtilityMath.getRounded(getHeight(), th) - map.getTileHeight();
-        final int tx = (editor.getOffsetViewH() + UtilityMath.getRounded(mx, tw)) / tw;
-        final int ty = (editor.getOffsetViewV() - UtilityMath.getRounded(my, th) + h) / th;
+        final int h = UtilMath.getRounded(getHeight(), th) - map.getTileHeight();
+        final int tx = (editor.getOffsetViewH() + UtilMath.getRounded(mx, tw)) / tw;
+        final int ty = (editor.getOffsetViewV() - UtilMath.getRounded(my, th) + h) / th;
 
         if (map.isCreated())
         {

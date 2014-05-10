@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Activator;
@@ -100,7 +100,7 @@ public class NewProjectDialog
      */
     void checkProjectExistence()
     {
-        final File projectPath = new File(UtilityFile.getPath(projectLocationText.getText(), projectNameText.getText()));
+        final File projectPath = new File(UtilFile.getPath(projectLocationText.getText(), projectNameText.getText()));
         final File projectProperties = new File(projectPath, Project.PROPERTIES_FILE);
         hasProject = projectProperties.isFile();
         if (hasProject)
@@ -120,7 +120,7 @@ public class NewProjectDialog
      */
     void checkClassesExistence()
     {
-        final File sourcePath = new File(UtilityFile.getPath(projectLocationText.getText(), projectNameText.getText(),
+        final File sourcePath = new File(UtilFile.getPath(projectLocationText.getText(), projectNameText.getText(),
                 projectClassesText.getText()));
         hasClasses = sourcePath.exists();
     }
@@ -130,8 +130,8 @@ public class NewProjectDialog
      */
     void checkResourcesExistence()
     {
-        final File resourcePath = new File(UtilityFile.getPath(projectLocationText.getText(),
-                projectNameText.getText(), projectResourcesText.getText()));
+        final File resourcePath = new File(UtilFile.getPath(projectLocationText.getText(), projectNameText.getText(),
+                projectResourcesText.getText()));
         hasResources = resourcePath.exists();
     }
 

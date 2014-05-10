@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 
 /**
  * Media implementation.
@@ -57,7 +57,7 @@ final class MediaSwt
     @Override
     public File getFile()
     {
-        return new File(UtilityFile.getPath(UtilityMedia.getRessourcesDir(), path));
+        return new File(UtilFile.getPath(UtilityMedia.getRessourcesDir(), path));
     }
 
     @Override

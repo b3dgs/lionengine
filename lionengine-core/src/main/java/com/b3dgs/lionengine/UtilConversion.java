@@ -25,7 +25,7 @@ import java.util.Locale;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class UtilityConversion
+public final class UtilConversion
 {
     /**
      * Convert an integer to an array of byte.
@@ -148,7 +148,7 @@ public final class UtilityConversion
     /**
      * Private constructor.
      */
-    private UtilityConversion()
+    private UtilConversion()
     {
         throw new RuntimeException();
     }

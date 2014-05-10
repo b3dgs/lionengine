@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.entity;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
@@ -78,7 +78,7 @@ public abstract class EntityGame
      */
     public double getDistance(EntityGame entity)
     {
-        return UtilityMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
+        return UtilMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
     }
 
     /*

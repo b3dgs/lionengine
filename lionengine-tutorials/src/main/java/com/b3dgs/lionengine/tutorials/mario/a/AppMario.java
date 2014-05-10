@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.a;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
@@ -37,7 +37,7 @@ public final class AppMario
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
-    private static final String RESOURCES = UtilityFile.getPath("resources", "mario", "a");
+    private static final String RESOURCES = UtilFile.getPath("resources", "mario", "a");
 
     /**
      * Main function.

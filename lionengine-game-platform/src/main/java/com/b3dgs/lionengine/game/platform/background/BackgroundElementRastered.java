@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.platform.background;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -122,7 +122,7 @@ public abstract class BackgroundElementRastered
      */
     public Sprite getRaster(int id)
     {
-        return rasters.get(UtilityMath.fixBetween(id, 0, rasters.size() - 1));
+        return rasters.get(UtilMath.fixBetween(id, 0, rasters.size() - 1));
     }
 
     /**

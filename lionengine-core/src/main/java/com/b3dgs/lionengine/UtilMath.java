@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.geom.Line;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class UtilityMath
+public final class UtilMath
 {
     /**
      * Fix a value between an interval.
@@ -165,7 +165,7 @@ public final class UtilityMath
         {
             for (int v = ty2; v < ty2 + th2; v++)
             {
-                final int dist = UtilityMath.getDistance(tx1, ty1, h, v);
+                final int dist = UtilMath.getDistance(tx1, ty1, h, v);
                 if (dist < min)
                 {
                     min = dist;
@@ -275,7 +275,7 @@ public final class UtilityMath
     /**
      * Private constructor.
      */
-    private UtilityMath()
+    private UtilMath()
     {
         throw new RuntimeException();
     }

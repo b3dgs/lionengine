@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.file.FileReading;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Force;
@@ -101,7 +101,7 @@ public class CameraPlatform
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        final int top = UtilityMath.fixBetween(map.getHeightInTile() * th - screenHeight, 0, Integer.MAX_VALUE);
+        final int top = UtilMath.fixBetween(map.getHeightInTile() * th - screenHeight, 0, Integer.MAX_VALUE);
         final int right = map.getWidthInTile() * tw - screenWidth;
         mapUpLimit = top;
         mapLeftLimit = 0;

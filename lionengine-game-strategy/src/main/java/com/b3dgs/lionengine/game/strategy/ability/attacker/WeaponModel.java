@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.strategy.ability.attacker;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.ObjectGame;
@@ -153,13 +153,13 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
                         state = State.ATTACKING;
                     }
                 }
-                else if (UtilityMath.time() - timer > attackPause)
+                else if (UtilMath.time() - timer > attackPause)
                 {
                     notifyReachingTarget(target);
                 }
                 break;
             case ATTACKING:
-                if (UtilityMath.time() - timer > attackPause)
+                if (UtilMath.time() - timer > attackPause)
                 {
                     if (!attacking)
                     {
@@ -177,7 +177,7 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
                         }
                         notifyAttackEnded(damages.getRandom(), target);
                         attacked = true;
-                        timer = UtilityMath.time();
+                        timer = UtilMath.time();
                     }
                 }
                 else if (attacked)

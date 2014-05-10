@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
@@ -38,7 +38,7 @@ public final class AppGameHandler
     public static void main(String[] args)
     {
         Engine.start("Game Handler", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("resources", "game", "handler"));
+                UtilFile.getPath("resources", "game", "handler"));
 
         final Handler handler = new Handler();
         handler.add(new MyObject());

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.UtilRandom;
 
 /**
  * Represents a container designed to return a random value between a range.
@@ -72,7 +72,7 @@ public class Damages
      */
     public int getRandom()
     {
-        last = UtilityRandom.getRandomInteger(getMin(), getMax());
+        last = UtilRandom.getRandomInteger(getMin(), getMax());
         return last;
     }
 

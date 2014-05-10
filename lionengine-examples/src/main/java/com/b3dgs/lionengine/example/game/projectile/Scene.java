@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
@@ -102,8 +102,8 @@ final class Scene
 
         location += 1.0;
 
-        entity1.setLocation(100 + UtilityMath.cos(location * 1.5) * 70, 180 + UtilityMath.sin(location * 2) * 40);
-        entity2.setLocation(100 + UtilityMath.cos(location) * 90, 60 + UtilityMath.sin(location * 1.3) * 30);
+        entity1.setLocation(100 + UtilMath.cos(location * 1.5) * 70, 180 + UtilMath.sin(location * 2) * 40);
+        entity2.setLocation(100 + UtilMath.cos(location) * 90, 60 + UtilMath.sin(location * 1.3) * 30);
 
         canon1.launch(entity2);
         canon2.launch(entity1);

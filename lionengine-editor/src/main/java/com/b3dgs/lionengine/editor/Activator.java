@@ -30,7 +30,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
@@ -75,7 +75,7 @@ public class Activator
         try
         {
             final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilityFile.getPath("icons", icon))));
+                    .getBundle().getEntry(UtilFile.getPath("icons", icon))));
             return image.createImage();
         }
         catch (final IOException exception)
@@ -115,7 +115,7 @@ public class Activator
         try
         {
             final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilityFile.getPath("icons", root, icon))));
+                    .getBundle().getEntry(UtilFile.getPath("icons", root, icon))));
             return image.createImage();
         }
         catch (final IOException exception)

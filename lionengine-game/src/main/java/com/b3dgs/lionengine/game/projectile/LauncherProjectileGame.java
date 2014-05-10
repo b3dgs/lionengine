@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
@@ -202,7 +202,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     public int getRatePercent()
     {
         final int percent = (int) (timer.elapsed() * 100.0 / rate);
-        return UtilityMath.fixBetween(percent, 0, 100);
+        return UtilMath.fixBetween(percent, 0, 100);
     }
 
     /**
@@ -239,7 +239,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
 
             if (adaptative)
             {
-                final int ray = UtilityMath.getDistance(owner.getLocationIntX(), owner.getLocationIntY(),
+                final int ray = UtilMath.getDistance(owner.getLocationIntX(), owner.getLocationIntY(),
                         target.getLocationIntX(), target.getLocationIntY());
                 dx += (int) ((target.getLocationX() - target.getLocationOldX()) / speed * ray);
                 dy += (int) ((target.getLocationY() - target.getLocationOldY()) / speed * ray);

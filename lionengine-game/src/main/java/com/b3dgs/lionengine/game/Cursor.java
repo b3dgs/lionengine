@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
@@ -152,8 +152,8 @@ public class Cursor
             y += pointer.getMoveY() * sensibilityVertical * extrp;
         }
 
-        x = UtilityMath.fixBetween(x, minX, maxX);
-        y = UtilityMath.fixBetween(y, minY, maxY);
+        x = UtilMath.fixBetween(x, minX, maxX);
+        y = UtilMath.fixBetween(y, minY, maxY);
         click = pointer.getClick();
     }
 
@@ -197,8 +197,8 @@ public class Cursor
      */
     public void setLocation(int x, int y)
     {
-        this.x = UtilityMath.fixBetween(x, minX, maxX);
-        this.y = UtilityMath.fixBetween(y, minY, maxY);
+        this.x = UtilMath.fixBetween(x, minX, maxX);
+        this.y = UtilMath.fixBetween(y, minY, maxY);
     }
 
     /**

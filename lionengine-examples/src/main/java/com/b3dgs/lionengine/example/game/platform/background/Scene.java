@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.platform.background;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
@@ -77,9 +77,9 @@ final class Scene
     @Override
     protected void update(double extrp)
     {
-        y = UtilityMath.wrapDouble(y + 1, 0.0, 360.0);
+        y = UtilMath.wrapDouble(y + 1, 0.0, 360.0);
         camera.moveLocation(extrp, 1.0, 0.0);
-        camera.teleportY(UtilityMath.sin(y) * 100 + 100);
+        camera.teleportY(UtilMath.sin(y) * 100 + 100);
         background.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
         foreground.update(extrp, camera.getMovementHorizontal(), camera.getLocationY());
 

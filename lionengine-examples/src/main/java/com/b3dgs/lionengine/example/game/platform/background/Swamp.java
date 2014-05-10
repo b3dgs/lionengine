@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.platform.background;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -139,7 +139,7 @@ final class Swamp
         {
             backcolor.setOffsetY(y);
             moon.setOffsetY(-20 - moonOffset + getOffsetY());
-            mountain.setOffsetX(UtilityMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
+            mountain.setOffsetX(UtilMath.wrapDouble(mountain.getOffsetX() + speed * 0.24, 0.0,
                     mountainSprite.getWidth()));
             mountain.setOffsetY(y);
         }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.platform.background;
 
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -119,7 +119,7 @@ public class Parallax
         data.setOffsetY(y);
         // This will avoid bug on huge speed (lines out of screen)
         final double speedWrap = 2.56 * factH / 0.0084;
-        final double wrapedSpeed = UtilityMath.wrapDouble(speed, -speedWrap, speedWrap);
+        final double wrapedSpeed = UtilMath.wrapDouble(speed, -speedWrap, speedWrap);
 
         // Move each line, depending of its id and size
         for (int i = 0; i < parallaxsNumber; i++)

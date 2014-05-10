@@ -42,9 +42,9 @@ public class UtilityRandomTest
     public void testUtilityRandomClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
             InvocationTargetException
     {
-        final Constructor<UtilityRandom> utilityRandom = UtilityRandom.class.getDeclaredConstructor();
+        final Constructor<UtilRandom> utilityRandom = UtilRandom.class.getDeclaredConstructor();
         utilityRandom.setAccessible(true);
-        final UtilityRandom clazz = utilityRandom.newInstance();
+        final UtilRandom clazz = utilityRandom.newInstance();
         Assert.assertNotNull(clazz);
     }
 
@@ -54,11 +54,11 @@ public class UtilityRandomTest
     @Test
     public void testRandom()
     {
-        UtilityRandom.setSeed(4894516L);
-        Assert.assertNotNull(Boolean.valueOf(UtilityRandom.getRandomBoolean()));
-        Assert.assertNotNull(Integer.valueOf(UtilityRandom.getRandomInteger()));
-        Assert.assertNotNull(Double.valueOf(UtilityRandom.getRandomDouble()));
-        Assert.assertTrue(UtilityRandom.getRandomInteger(100) <= 100);
-        Assert.assertTrue(UtilityRandom.getRandomInteger(-100, 100) <= 100);
+        UtilRandom.setSeed(4894516L);
+        Assert.assertNotNull(Boolean.valueOf(UtilRandom.getRandomBoolean()));
+        Assert.assertNotNull(Integer.valueOf(UtilRandom.getRandomInteger()));
+        Assert.assertNotNull(Double.valueOf(UtilRandom.getRandomDouble()));
+        Assert.assertTrue(UtilRandom.getRandomInteger(100) <= 100);
+        Assert.assertTrue(UtilRandom.getRandomInteger(-100, 100) <= 100);
     }
 }

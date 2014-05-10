@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
@@ -124,7 +124,7 @@ public final class UtilityMedia
      */
     static InputStream getInputStream(Media media, String from, boolean logger)
     {
-        final String path = UtilityFile.getPath(UtilityMedia.resourcesDir, media.getPath());
+        final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
         {
             if (UtilityMedia.fromJar)
@@ -157,7 +157,7 @@ public final class UtilityMedia
      */
     static OutputStream getOutputStream(Media media, String from, boolean logger)
     {
-        final String path = UtilityFile.getPath(UtilityMedia.resourcesDir, media.getPath());
+        final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
         {
             if (logger)

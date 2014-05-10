@@ -42,9 +42,9 @@ public class UtilityConversionTest
     public void testUtilityConversionClass() throws NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException
     {
-        final Constructor<UtilityConversion> utilityConversion = UtilityConversion.class.getDeclaredConstructor();
+        final Constructor<UtilConversion> utilityConversion = UtilConversion.class.getDeclaredConstructor();
         utilityConversion.setAccessible(true);
-        final UtilityConversion clazz = utilityConversion.newInstance();
+        final UtilConversion clazz = utilityConversion.newInstance();
         Assert.assertNotNull(clazz);
     }
 
@@ -55,8 +55,8 @@ public class UtilityConversionTest
     public void testUtilityConversionShort()
     {
         final short s = 12345;
-        Assert.assertEquals(s, UtilityConversion.byteArrayToShort(UtilityConversion.shortToByteArray(s)));
-        Assert.assertEquals(s, UtilityConversion.fromUnsignedShort(UtilityConversion.toUnsignedShort(s)));
+        Assert.assertEquals(s, UtilConversion.byteArrayToShort(UtilConversion.shortToByteArray(s)));
+        Assert.assertEquals(s, UtilConversion.fromUnsignedShort(UtilConversion.toUnsignedShort(s)));
     }
 
     /**
@@ -66,7 +66,7 @@ public class UtilityConversionTest
     public void testUtilityConversionInt()
     {
         final int i = 123456789;
-        Assert.assertEquals(i, UtilityConversion.byteArrayToInt(UtilityConversion.intToByteArray(i)));
+        Assert.assertEquals(i, UtilConversion.byteArrayToInt(UtilConversion.intToByteArray(i)));
     }
 
     /**
@@ -76,7 +76,7 @@ public class UtilityConversionTest
     public void testUtilityConversionByte()
     {
         final byte b = 123;
-        Assert.assertEquals(b, UtilityConversion.fromUnsignedByte(UtilityConversion.toUnsignedByte(b)));
+        Assert.assertEquals(b, UtilConversion.fromUnsignedByte(UtilConversion.toUnsignedByte(b)));
     }
 
     /**
@@ -85,7 +85,7 @@ public class UtilityConversionTest
     @Test
     public void testUtilityConversionString()
     {
-        final String title = UtilityConversion.toTitleCase("title");
+        final String title = UtilConversion.toTitleCase("title");
         Assert.assertEquals("Title", title);
     }
 }

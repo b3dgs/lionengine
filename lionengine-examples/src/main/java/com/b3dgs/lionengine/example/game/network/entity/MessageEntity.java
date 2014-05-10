@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.UtilityConversion;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.network.message.NetworkMessageEntity;
 
 /**
@@ -110,7 +110,7 @@ final class MessageEntity
         // Location correction
         if (key == MessageEntityElement.LOCATION_X || key == MessageEntityElement.LOCATION_Y)
         {
-            buffer.write(UtilityConversion.intToByteArray(getActionInteger(key)));
+            buffer.write(UtilConversion.intToByteArray(getActionInteger(key)));
         }
     }
 

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform.background;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -123,7 +123,7 @@ public abstract class CloudsPlatform
         for (int i = 0; i < cloudsNumber; i++)
         {
             this.x[i] += this.speed[i] * extrp;
-            this.x[i] = UtilityMath.wrapDouble(this.x[i], 0.0, sprite.getWidth());
+            this.x[i] = UtilMath.wrapDouble(this.x[i], 0.0, sprite.getWidth());
         }
     }
 

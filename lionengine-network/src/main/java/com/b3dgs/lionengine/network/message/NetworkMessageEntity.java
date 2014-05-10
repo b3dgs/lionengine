@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.b3dgs.lionengine.UtilityConversion;
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Standard entity message.
@@ -270,7 +270,7 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
     @Override
     protected void encode(ByteArrayOutputStream buffer) throws IOException
     {
-        buffer.write(UtilityConversion.shortToByteArray(entityId));
+        buffer.write(UtilConversion.shortToByteArray(entityId));
         final Set<M> keys = actions.keySet();
 
         // Fill the data

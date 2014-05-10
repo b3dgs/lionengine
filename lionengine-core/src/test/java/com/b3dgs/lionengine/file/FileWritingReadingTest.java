@@ -24,7 +24,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
 import com.b3dgs.lionengine.core.Media;
@@ -47,7 +47,7 @@ public class FileWritingReadingTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        FileWritingReadingTest.PATH = UtilityFile.getPath("src", "test", "resources", "file");
+        FileWritingReadingTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -76,7 +76,7 @@ public class FileWritingReadingTest
         }
         finally
         {
-            UtilityFile.deleteFile(new java.io.File(fileData.getPath()));
+            UtilFile.deleteFile(new java.io.File(fileData.getPath()));
         }
     }
 

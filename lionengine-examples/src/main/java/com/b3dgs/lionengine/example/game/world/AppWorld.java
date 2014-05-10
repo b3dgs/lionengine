@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.world;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
@@ -40,8 +40,7 @@ public final class AppWorld
      */
     public static void main(String[] args)
     {
-        Engine.start("World", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("resources", "game", "world"));
+        Engine.start("World", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "game", "world"));
         final Resolution output = new Resolution(320, 100, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

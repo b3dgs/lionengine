@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
@@ -105,7 +105,7 @@ final class Scene
         handlerEntity.update(extrp);
         if (timer.elapsed(500))
         {
-            peon.teleport(UtilityRandom.getRandomInteger(250), UtilityRandom.getRandomInteger(200));
+            peon.teleport(UtilRandom.getRandomInteger(250), UtilRandom.getRandomInteger(200));
             fogOfWar.update(handlerEntity.list());
             timer.restart();
         }

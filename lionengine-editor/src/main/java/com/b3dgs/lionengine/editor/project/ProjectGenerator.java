@@ -25,8 +25,8 @@ import java.nio.file.Files;
 import java.util.Properties;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilityConversion;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.Activator;
 
 /**
@@ -51,9 +51,9 @@ public class ProjectGenerator
     /** Template main prefix. */
     private static final String TEMPLATE_MAIN_PREFIX = "App";
     /** Template main file. */
-    private static final String TEMPLATE_MAIN_FILE = UtilityFile.getPath("templates", "main.template");
+    private static final String TEMPLATE_MAIN_FILE = UtilFile.getPath("templates", "main.template");
     /** Template scene file. */
-    private static final String TEMPLATE_SCENE_FILE = UtilityFile.getPath("templates", "scene.template");
+    private static final String TEMPLATE_SCENE_FILE = UtilFile.getPath("templates", "scene.template");
     /** Template get path function. */
     private static final String TEMPLATE_GET_PATH_FUNCTION = "UtilityFile.getPath";
     /** Error project location. */
@@ -220,7 +220,7 @@ public class ProjectGenerator
         String content = new String(Files.readAllBytes(template.toPath()), StandardCharsets.UTF_8);
         content = content.replace(ProjectGenerator.TEMPLATE_PROJECT_PACKAGE, projectPackage);
 
-        final String className = UtilityConversion.toTitleCase(name);
+        final String className = UtilConversion.toTitleCase(name);
         content = content.replace(ProjectGenerator.TEMPLATE_CLASS_NAME, className);
         content = content.replace(ProjectGenerator.TEMPLATE_PROJECT_NAME, name);
 
@@ -246,7 +246,7 @@ public class ProjectGenerator
 
         content = content.replace(ProjectGenerator.TEMPLATE_PROJECT_RESOURCES, stringResources.toString());
 
-        final String filename = ProjectGenerator.TEMPLATE_MAIN_PREFIX + UtilityConversion.toTitleCase(name) + ".java";
+        final String filename = ProjectGenerator.TEMPLATE_MAIN_PREFIX + UtilConversion.toTitleCase(name) + ".java";
         Files.write(new File(parent, filename).toPath(), content.getBytes(StandardCharsets.UTF_8));
     }
 

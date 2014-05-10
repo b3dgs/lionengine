@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class UtilityFile
+public final class UtilFile
 {
     /** System temp directory. */
     public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir");
@@ -93,7 +93,7 @@ public final class UtilityFile
      */
     public static String getPath(String... path)
     {
-        return UtilityFile.getPathSeparator(File.separator, path);
+        return UtilFile.getPathSeparator(File.separator, path);
     }
 
     /**
@@ -132,7 +132,7 @@ public final class UtilityFile
      */
     public static String getExtension(File file)
     {
-        return UtilityFile.getExtension(file.getName());
+        return UtilFile.getExtension(file.getName());
     }
 
     /**
@@ -144,7 +144,7 @@ public final class UtilityFile
      */
     public static boolean isType(File file, String extension)
     {
-        return UtilityFile.getExtension(file).equals(extension);
+        return UtilFile.getExtension(file).equals(extension);
     }
 
     /**
@@ -270,7 +270,7 @@ public final class UtilityFile
         int numberOfFiles = 0;
         for (final File file2 : files)
         {
-            if (file2.isFile() && UtilityFile.getExtension(file2).equals(extension))
+            if (file2.isFile() && UtilFile.getExtension(file2).equals(extension))
             {
                 numberOfFiles++;
             }
@@ -279,7 +279,7 @@ public final class UtilityFile
         final String[] filesList = new String[numberOfFiles];
         for (int i = 0, id = 0; i < files.length; i++)
         {
-            if (files[i].isFile() && UtilityFile.getExtension(files[i]).equals(extension))
+            if (files[i].isFile() && UtilFile.getExtension(files[i]).equals(extension))
             {
                 filesList[id] = files[i].getName();
                 id++;
@@ -299,7 +299,7 @@ public final class UtilityFile
     public static List<File> getFilesByName(File path, String name)
     {
         final List<File> filesList = new ArrayList<>(1);
-        UtilityFile.getFilesByNameRecursive(filesList, path, name);
+        UtilFile.getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }
 
@@ -320,7 +320,7 @@ public final class UtilityFile
             }
             else if (file.isDirectory())
             {
-                UtilityFile.getFilesByNameRecursive(filesList, file, name);
+                UtilFile.getFilesByNameRecursive(filesList, file, name);
             }
         }
     }
@@ -348,16 +348,16 @@ public final class UtilityFile
             final String[] children = directory.list();
             for (final String element : children)
             {
-                UtilityFile.deleteDirectory(new File(directory, element));
+                UtilFile.deleteDirectory(new File(directory, element));
             }
             if (!directory.delete())
             {
-                Verbose.warning(UtilityFile.class, "deleteDirectory", "Directory not deleted: " + directory);
+                Verbose.warning(UtilFile.class, "deleteDirectory", "Directory not deleted: " + directory);
             }
         }
         else if (directory.isFile())
         {
-            UtilityFile.deleteFile(directory);
+            UtilFile.deleteFile(directory);
             Verbose.info("File deleted: " + directory);
         }
     }
@@ -371,7 +371,7 @@ public final class UtilityFile
     {
         if (file.isFile() && !file.delete())
         {
-            Verbose.warning(UtilityFile.class, "deleteDir", "File not deleted: " + file);
+            Verbose.warning(UtilFile.class, "deleteDir", "File not deleted: " + file);
         }
     }
 
@@ -382,7 +382,7 @@ public final class UtilityFile
      */
     public static String getTempDir()
     {
-        return UtilityFile.tmpDir;
+        return UtilFile.tmpDir;
     }
 
     /**
@@ -395,18 +395,18 @@ public final class UtilityFile
         if (programName != null)
         {
             final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-            UtilityFile.tmpDir = UtilityFile.getPath(UtilityFile.SYSTEM_TEMP_DIR, dir);
+            UtilFile.tmpDir = UtilFile.getPath(UtilFile.SYSTEM_TEMP_DIR, dir);
         }
         else
         {
-            UtilityFile.tmpDir = null;
+            UtilFile.tmpDir = null;
         }
     }
 
     /**
      * Private constructor.
      */
-    private UtilityFile()
+    private UtilFile()
     {
         throw new RuntimeException();
     }

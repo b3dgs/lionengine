@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.platform.collision;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
@@ -41,7 +41,7 @@ public final class AppPlatformCollision
     public static void main(String[] args)
     {
         Engine.start("Platform Collision", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilityFile.getPath("resources", "game", "platform", "collision"));
+                UtilFile.getPath("resources", "game", "platform", "collision"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

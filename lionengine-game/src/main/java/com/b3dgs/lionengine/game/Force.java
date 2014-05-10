@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.UtilityMath;
+import com.b3dgs.lionengine.UtilMath;
 
 /**
  * Represents a 2D vector force, using double precision. This can be used to describe a vectorial force, on 2 axis
@@ -263,7 +263,7 @@ public final class Force
             maxH = forceMax.getForceHorizontal();
             maxV = forceMax.getForceVertical();
         }
-        fh = UtilityMath.fixBetween(fh, minH, maxH);
-        fv = UtilityMath.fixBetween(fv, minV, maxV);
+        fh = UtilMath.fixBetween(fh, minH, maxH);
+        fv = UtilMath.fixBetween(fv, minV, maxV);
     }
 }

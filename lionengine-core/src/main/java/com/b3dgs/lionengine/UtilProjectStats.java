@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class UtilityProjectStats
+public final class UtilProjectStats
 {
     /** Number of files. */
     private static int numberOfFiles;
@@ -45,15 +45,15 @@ public final class UtilityProjectStats
      */
     public static void start(String sourcesDir)
     {
-        UtilityProjectStats.numberOfFiles = 0;
-        UtilityProjectStats.numberOfLines = 0;
+        UtilProjectStats.numberOfFiles = 0;
+        UtilProjectStats.numberOfLines = 0;
 
         final File mainDir = new File(sourcesDir + java.io.File.separator);
-        UtilityProjectStats.exploreDir(mainDir.getAbsolutePath());
+        UtilProjectStats.exploreDir(mainDir.getAbsolutePath());
 
         final StringBuilder builder = new StringBuilder("Project statistics:\n");
-        builder.append("Number of files: ").append(UtilityProjectStats.numberOfFiles).append("\n");
-        builder.append("Number of lines: ").append(UtilityProjectStats.numberOfLines).append("\n");
+        builder.append("Number of files: ").append(UtilProjectStats.numberOfFiles).append("\n");
+        builder.append("Number of lines: ").append(UtilProjectStats.numberOfLines).append("\n");
         Verbose.info(builder.toString());
     }
 
@@ -71,14 +71,14 @@ public final class UtilityProjectStats
         {
             if (current.isDirectory())
             {
-                UtilityProjectStats.exploreDir(current.getAbsolutePath());
+                UtilProjectStats.exploreDir(current.getAbsolutePath());
             }
             else if (current.isFile())
             {
                 final String filename = current.getAbsolutePath();
-                if (UtilityProjectStats.getExtension(filename).equals("java"))
+                if (UtilProjectStats.getExtension(filename).equals("java"))
                 {
-                    UtilityProjectStats.countFileLines(filename);
+                    UtilProjectStats.countFileLines(filename);
                 }
             }
         }
@@ -102,7 +102,7 @@ public final class UtilityProjectStats
                 s = in.readLine();
                 if (s != null)
                 {
-                    UtilityProjectStats.numberOfLines++;
+                    UtilProjectStats.numberOfLines++;
                 }
                 else
                 {
@@ -112,9 +112,9 @@ public final class UtilityProjectStats
         }
         catch (final IOException exception)
         {
-            Verbose.exception(UtilityProjectStats.class, "countFileLines", exception);
+            Verbose.exception(UtilProjectStats.class, "countFileLines", exception);
         }
-        UtilityProjectStats.numberOfFiles++;
+        UtilProjectStats.numberOfFiles++;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class UtilityProjectStats
     /**
      * Private constructor.
      */
-    private UtilityProjectStats()
+    private UtilProjectStats()
     {
         throw new RuntimeException();
     }

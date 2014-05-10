@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
-import com.b3dgs.lionengine.UtilityRandom;
+import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -50,7 +50,7 @@ abstract class Effect
         final int framesVertical = getDataInteger("vertical", "frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesHorizontal, framesVertical);
         sprite.load(false);
-        sprite.scale(UtilityRandom.getRandomInteger(75) + 50);
+        sprite.scale(UtilRandom.getRandomInteger(75) + 50);
         setSize(sprite.getFrameWidth(), sprite.getFrameHeight());
     }
 

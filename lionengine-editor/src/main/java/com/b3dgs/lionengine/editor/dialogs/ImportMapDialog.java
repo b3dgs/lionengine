@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 
@@ -139,7 +139,7 @@ public class ImportMapDialog
             {
                 final FileDialog fileDialog = new FileDialog(dialog, SWT.APPLICATION_MODAL);
                 final Project project = Project.getActive();
-                fileDialog.setFilterPath(UtilityFile.getPath(project.getPath().getPath(), project.getResources()));
+                fileDialog.setFilterPath(UtilFile.getPath(project.getPath().getPath(), project.getResources()));
                 fileDialog.setFilterNames(new String[]
                 {
                     Messages.ImportMapDialog_FileFilter
@@ -190,7 +190,7 @@ public class ImportMapDialog
             {
                 final DirectoryDialog directoryDialog = new DirectoryDialog(dialog, SWT.APPLICATION_MODAL);
                 final Project project = Project.getActive();
-                directoryDialog.setFilterPath(UtilityFile.getPath(project.getPath().getPath(), project.getResources()));
+                directoryDialog.setFilterPath(UtilFile.getPath(project.getPath().getPath(), project.getResources()));
                 final String path = directoryDialog.open();
                 if (path != null)
                 {

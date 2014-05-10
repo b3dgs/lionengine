@@ -22,7 +22,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.UtilityFile;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class FactoryMediaProviderTest
 {
     /** Resources path. */
-    private static final String PATH = UtilityFile.getPath("src", "test", "resources", "graphic");
+    private static final String PATH = UtilFile.getPath("src", "test", "resources", "graphic");
 
     /**
      * Prepare test.
