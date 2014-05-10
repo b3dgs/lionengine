@@ -45,6 +45,7 @@ public class NewProjectHandler
     {
         final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
         newProjectDialog.open();
+
         final Project project = newProjectDialog.getProject();
         if (project != null)
         {

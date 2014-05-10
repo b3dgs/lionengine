@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.project;
 
 import com.b3dgs.lionengine.UtilityFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -42,7 +43,9 @@ public enum Property
     /** Level property. */
     LEVEL("lrm"),
     /** Map implementation property. */
-    JAVA_MAP_IMPL(MapTile.class),
+    MAP_IMPL(MapTile.class),
+    /** Factory entity implementation property. */
+    FACTORY_ENTITY_IMPL(FactoryObjectGame.class),
     /** Class file. */
     CLASS("class");
 

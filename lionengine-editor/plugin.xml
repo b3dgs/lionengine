@@ -54,15 +54,21 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.resource.java_map_impl">
+            id="com.b3dgs.lionengine.editor.resource.map_impl">
          <test
-               property="com.b3dgs.lionengine.editor.resourceExtensionTester.java_map_impl">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.map_impl">
          </test>
       </definition>
       <definition
             id="com.b3dgs.lionengine.editor.map-implementation.test">
          <test
                property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.resource.factory_entity_impl">
+         <test
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.factory_entity_impl">
          </test>
       </definition>
    </extension>
@@ -72,7 +78,7 @@
             class="com.b3dgs.lionengine.editor.project.ResourceExtensionTester"
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"
             namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
-            properties="music,sound,data,image,level,java_map_impl"
+            properties="music,sound,data,image,level,map_impl,factory_entity_impl"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

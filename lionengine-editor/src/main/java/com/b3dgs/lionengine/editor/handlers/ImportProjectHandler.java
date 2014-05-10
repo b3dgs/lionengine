@@ -45,6 +45,7 @@ public class ImportProjectHandler
     {
         final ImportProjectDialog importProjectDialog = new ImportProjectDialog(shell);
         importProjectDialog.open();
+
         final Project project = importProjectDialog.getProject();
         if (project != null)
         {

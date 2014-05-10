@@ -91,6 +91,10 @@ public final class ProjectFileVisitor
     private final Project project;
     /** Main item. */
     private TreeItem main;
+    /** Solo child. */
+    private int soloChildCount;
+    /** Solo text. */
+    private String soloChildText;
 
     /**
      * Constructor.
@@ -133,7 +137,29 @@ public final class ProjectFileVisitor
                 && (path.endsWith(project.getName()) || path.startsWith(classesPath.getPath()) || path
                         .startsWith(resourcesPath.getPath())))
         {
-            TreeItem parent = nodes.get(dir.getParent().toString());
+            TreeItem parent;
+            final File[] content = dir.getParent().toFile().listFiles();
+            if (content != null && content.length == 1 && content[0].isDirectory())
+            {
+                Path parentPath = dir.getParent();
+                soloChildText = dirName;
+                for (int i = 0; i <= soloChildCount; i++)
+                {
+                    nodes.get(parentPath.toString()).dispose();
+                    soloChildText = parentPath.getFileName().toString() + "/" + soloChildText;
+                    parentPath = parentPath.getParent();
+                }
+
+                parent = nodes.get(parentPath.toString());
+                soloChildCount++;
+            }
+            else
+            {
+                parent = nodes.get(dir.getParent().toString());
+                soloChildText = dirName;
+                soloChildCount = 0;
+            }
+
             TreeItem item = null;
             if (main != null && parent == null)
             {
@@ -163,7 +189,7 @@ public final class ProjectFileVisitor
                 }
                 else
                 {
-                    item.setText(dirName);
+                    item.setText(soloChildText);
                 }
 
                 item.setData(ProjectFileVisitor.getMedia(projectPath, classesPath, resourcesPath, dir));

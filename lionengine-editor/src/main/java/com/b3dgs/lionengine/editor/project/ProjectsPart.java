@@ -54,6 +54,8 @@ public class ProjectsPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.projects";
+    /** Menu ID. */
+    public static final String MENU_ID = ProjectsPart.ID + ".menu";
     /** File icon. */
     private static final Image ICON_FILE = Activator.getIcon("resources", "file.png");
     /** Sound file icon. */
@@ -149,7 +151,7 @@ public class ProjectsPart
                 tree.update();
             }
         });
-        menuService.registerContextMenu(tree, Activator.PLUGIN_ID + ".view.projects.menu");
+        menuService.registerContextMenu(tree, ProjectsPart.MENU_ID);
 
         parent.pack(true);
     }
@@ -173,7 +175,7 @@ public class ProjectsPart
     }
 
     /**
-     * Set the resources main folder.
+     * Set the project main folders.
      * 
      * @param project The project reference.
      * @throws LionEngineException If error while reading project children.

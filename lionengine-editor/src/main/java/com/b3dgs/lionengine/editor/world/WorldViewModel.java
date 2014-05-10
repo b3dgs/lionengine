@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -34,6 +35,8 @@ public enum WorldViewModel
     private final CameraGame camera;
     /** Map reference. */
     private MapTile<?, ?> map;
+    /** Factory entity reference. */
+    private FactoryObjectGame<?, ?> factoryEntity;
 
     /**
      * Constructor.
@@ -54,6 +57,16 @@ public enum WorldViewModel
     }
 
     /**
+     * Set the factory entity reference.
+     * 
+     * @param factoryEntity The factory entity reference.
+     */
+    public void setFactoryEntity(FactoryObjectGame<?, ?> factoryEntity)
+    {
+        this.factoryEntity = factoryEntity;
+    }
+
+    /**
      * Get the camera reference.
      * 
      * @return The camera reference.
@@ -71,5 +84,15 @@ public enum WorldViewModel
     public MapTile<?, ?> getMap()
     {
         return map;
+    }
+
+    /**
+     * Get the factory entity reference.
+     * 
+     * @return The factory entity reference.
+     */
+    public FactoryObjectGame<?, ?> getFactoryEntity()
+    {
+        return factoryEntity;
     }
 }

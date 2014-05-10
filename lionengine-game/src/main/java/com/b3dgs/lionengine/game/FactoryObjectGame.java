@@ -135,6 +135,16 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
         return instance;
     }
 
+    /**
+     * Get the main folder where are stored objects properties.
+     * 
+     * @return The main objects folder.
+     */
+    public String getFolder()
+    {
+        return folder;
+    }
+
     /*
      * FactoryGame
      */

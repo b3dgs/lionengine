@@ -47,6 +47,7 @@ public class ImportMapHandler
     {
         final ImportMapDialog importMapDialog = new ImportMapDialog(shell);
         importMapDialog.open();
+
         if (importMapDialog.isFound())
         {
             final Media levelRip = Core.MEDIA.create(importMapDialog.getLevelRipLocation());

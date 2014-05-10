@@ -26,14 +26,14 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
- * Assign the map implementation handler.
+ * Assign the factory entity implementation handler.
  * 
  * @author Pierre-Alexandre
  */
-public class AssignMapImplementationHandler
+public class AssignFactoryEntityImplementationHandler
 {
     /**
      * Execute the handler.
@@ -44,8 +44,8 @@ public class AssignMapImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?, ?> map = Project.getActive().getClass(MapTile.class, selection);
-        WorldViewModel.INSTANCE.setMap(map);
+        final FactoryObjectGame<?, ?> factoryEntity = Project.getActive().getClass(FactoryObjectGame.class, selection);
+        WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
 
         final MPart part = partService.findPart(WorldViewPart.ID);
         if (part != null && part.getObject() instanceof WorldViewPart)
