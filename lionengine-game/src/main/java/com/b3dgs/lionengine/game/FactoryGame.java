@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * It performs a list of {@link SetupGame} considering an input enumeration. This way it is possible to create new
  * instances of object related to their type by sharing the same data.
@@ -50,6 +52,9 @@ import java.util.Map;
  */
 public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
 {
+    /** Cast error. */
+    private static final String ERROR_CAST = "Unable to cast ";
+
     /** Setups list. */
     private final Map<Class<? extends O>, S> setups;
 
@@ -68,6 +73,29 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
      * @return The setup instance.
      */
     protected abstract S createSetup(Class<? extends O> type);
+
+    /**
+     * Get a setup reference from its type. Must only be used if not possible to use {@link #getSetup(Class)} instead.
+     * 
+     * @param type The reference type.
+     * @param parent The parent class type.
+     * @return The setup reference.
+     * @throws LionEngineException If not a valid type, related to the parent.
+     */
+    public S getSetup(Class<?> type, Class<? extends ObjectGame> parent) throws LionEngineException
+    {
+        final Class<? extends ObjectGame> subType = type.asSubclass(parent);
+        try
+        {
+            @SuppressWarnings("unchecked")
+            final Class<? extends O> castedType = (Class<? extends O>) subType;
+            return getSetup(castedType);
+        }
+        catch (final ClassCastException exception)
+        {
+            throw new LionEngineException(exception, FactoryGame.ERROR_CAST, type.getName(), " to ", parent.getName());
+        }
+    }
 
     /**
      * Get a setup reference from its type.

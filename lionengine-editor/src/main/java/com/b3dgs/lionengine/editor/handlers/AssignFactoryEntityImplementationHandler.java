@@ -22,10 +22,10 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.factory.FactoryEntityPart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
@@ -44,13 +44,14 @@ public class AssignFactoryEntityImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final FactoryObjectGame<?, ?> factoryEntity = Project.getActive().getClass(FactoryObjectGame.class, selection);
+        final FactoryObjectGame<?, ?> factoryEntity = Project.getActive().getInstance(FactoryObjectGame.class,
+                selection);
         WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
 
-        final MPart part = partService.findPart(WorldViewPart.ID);
-        if (part != null && part.getObject() instanceof WorldViewPart)
+        final MPart part = partService.findPart(FactoryEntityPart.ID);
+        if (part != null && part.getObject() instanceof FactoryEntityPart)
         {
-            ((WorldViewPart) part.getObject()).update();
+            ((FactoryEntityPart) part.getObject()).update();
         }
     }
 }

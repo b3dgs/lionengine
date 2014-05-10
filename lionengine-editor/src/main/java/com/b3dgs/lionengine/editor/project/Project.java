@@ -208,6 +208,16 @@ public class Project
     }
 
     /**
+     * Get the classes path.
+     * 
+     * @return The classes path.
+     */
+    public File getClassesPath()
+    {
+        return new File(path, classes);
+    }
+
+    /**
      * Get the resources folder.
      * 
      * @return The resources folder.
@@ -215,6 +225,16 @@ public class Project
     public String getResources()
     {
         return resources;
+    }
+
+    /**
+     * Get the resources path.
+     * 
+     * @return The resources path.
+     */
+    public File getResourcesPath()
+    {
+        return new File(path, resources);
     }
 
     /**
@@ -237,17 +257,31 @@ public class Project
     }
 
     /**
-     * Get the class from its file.
+     * Get the class reference from its file.
      * 
      * @param clazz The class to cast to.
      * @param file The class file.
      * @return The class instance.
      * @throws LionEngineException If not able to create the class.
      */
-    public <C> C getClass(Class<C> clazz, Media file) throws LionEngineException
+    public <C> Class<? extends C> getClass(Class<C> clazz, Media file) throws LionEngineException
     {
         final String name = file.getPath().replace(".class", "").replace(java.io.File.separator, ".");
         final Class<?> clazzRef = getClass(name);
+        return clazzRef.asSubclass(clazz);
+    }
+
+    /**
+     * Get the class instance from its file.
+     * 
+     * @param clazz The class to cast to.
+     * @param file The class file.
+     * @return The class instance.
+     * @throws LionEngineException If not able to create the class.
+     */
+    public <C> C getInstance(Class<C> clazz, Media file) throws LionEngineException
+    {
+        final Class<? extends C> clazzRef = getClass(clazz, file);
         try
         {
             final Object object = clazzRef.newInstance();

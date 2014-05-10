@@ -56,6 +56,8 @@ import com.b3dgs.lionengine.core.Media;
 public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGame>
         extends FactoryGame<S, O>
 {
+    /** Data file extension. */
+    public static final String FILE_DATA_EXTENSION = "xml";
     /** Folder error. */
     private static final String ERROR_FOLDER = "Folder must not be null !";
     /** Type error. */
@@ -67,8 +69,6 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
     /** Constructor not found. */
     private static final String ERROR_CONSTRUCTOR_NOT_FOUND = " must have a public constructor\n"
             + "\t\twith a single argument compatible with " + SetupGame.class + " !";
-    /** Data file extension. */
-    private static final String FILE_DATA_EXTENSION = ".xml";
 
     /** Objects folder. */
     protected final String folder;
@@ -154,7 +154,8 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
 
-        final Media config = Core.MEDIA.create(folder, type.getSimpleName() + FactoryObjectGame.FILE_DATA_EXTENSION);
+        final String name = type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION;
+        final Media config = Core.MEDIA.create(folder, name);
         return createSetup(type, config);
     }
 }

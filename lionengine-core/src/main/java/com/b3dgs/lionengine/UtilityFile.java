@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.core.Core;
@@ -134,6 +136,18 @@ public final class UtilityFile
     }
 
     /**
+     * Check if the following type is the expected type.
+     * 
+     * @param file The file to check.
+     * @param extension The expected extension.
+     * @return <code>true</code> if correct, <code>false</code> else.
+     */
+    public static boolean isType(File file, String extension)
+    {
+        return UtilityFile.getExtension(file).equals(extension);
+    }
+
+    /**
      * Get extension from a string (search first dot).
      * 
      * @param file The filename.
@@ -238,13 +252,13 @@ public final class UtilityFile
     }
 
     /**
-     * Get all files existing in the path.
+     * Get all files existing in the path considering the extension.
      * 
      * @param path The path to check.
      * @param extension The extension (without dot; eg: png).
      * @return The files list.
      */
-    public static String[] getFilesList(String path, String extension)
+    public static String[] getFilesByExtension(String path, String extension)
     {
         final File file = new File(path);
         if (!file.exists())
@@ -273,6 +287,53 @@ public final class UtilityFile
         }
 
         return filesList;
+    }
+
+    /**
+     * Get all files existing in the path with the specified name.
+     * 
+     * @param path The path to check.
+     * @param name The file name.
+     * @return The files list (empty array if none).
+     */
+    public static List<File> getFilesByName(File path, String name)
+    {
+        final List<File> filesList = new ArrayList<>(1);
+        UtilityFile.getFilesByNameRecursive(filesList, path, name);
+        return filesList;
+    }
+
+    /**
+     * Get all files existing in the path with the specified name.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param name The file name.
+     */
+    private static void getFilesByNameRecursive(List<File> filesList, File path, String name)
+    {
+        for (final File file : path.listFiles())
+        {
+            if (file.isFile() && file.getName().equals(name))
+            {
+                filesList.add(file);
+            }
+            else if (file.isDirectory())
+            {
+                UtilityFile.getFilesByNameRecursive(filesList, file, name);
+            }
+        }
+    }
+
+    /**
+     * Get the file name without its extension.
+     * 
+     * @param file The file name.
+     * @return The file name without its extension.
+     */
+    public static String removeExtension(String file)
+    {
+        return file.substring(0, file.lastIndexOf('.'));
     }
 
     /**

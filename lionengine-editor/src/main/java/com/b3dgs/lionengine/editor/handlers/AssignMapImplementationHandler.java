@@ -44,7 +44,7 @@ public class AssignMapImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?, ?> map = Project.getActive().getClass(MapTile.class, selection);
+        final MapTile<?, ?> map = Project.getActive().getInstance(MapTile.class, selection);
         WorldViewModel.INSTANCE.setMap(map);
 
         final MPart part = partService.findPart(WorldViewPart.ID);

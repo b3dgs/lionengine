@@ -122,8 +122,8 @@ public class UtilityFileTest
                 final String[] files = UtilityFile.getFilesList(UtilityFileTest.PATH);
                 Assert.assertEquals(3, files.length);
                 Assert.assertEquals(0, UtilityFile.getFilesList(UtilityFile.getPath("null")).length);
-                Assert.assertEquals(0, UtilityFile.getFilesList(UtilityFile.getPath("null"), "txt").length);
-                Assert.assertEquals(2, UtilityFile.getFilesList(UtilityFileTest.PATH, "txt").length);
+                Assert.assertEquals(0, UtilityFile.getFilesByExtension(UtilityFile.getPath("null"), "txt").length);
+                Assert.assertEquals(2, UtilityFile.getFilesByExtension(UtilityFileTest.PATH, "txt").length);
             }
             catch (final LionEngineException exception)
             {

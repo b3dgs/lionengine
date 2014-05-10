@@ -22,6 +22,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
@@ -49,6 +50,8 @@ public class ImportProjectHandler
         final Project project = importProjectDialog.getProject();
         if (project != null)
         {
+            UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
+
             final MPart part = partService.findPart(ProjectsPart.ID);
             if (part != null && part.getObject() instanceof ProjectsPart)
             {
