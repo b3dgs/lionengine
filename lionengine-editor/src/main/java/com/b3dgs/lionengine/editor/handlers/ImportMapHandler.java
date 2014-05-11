@@ -22,8 +22,6 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
@@ -50,11 +48,8 @@ public class ImportMapHandler
 
         if (importMapDialog.isFound())
         {
-            final Media levelRip = Core.MEDIA.create(importMapDialog.getLevelRipLocation());
-            final Media patternsDirectory = Core.MEDIA.create(importMapDialog.getPatternsLocation());
-
             final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
-            map.load(levelRip, patternsDirectory);
+            map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
 
             final MPart part = partService.findPart(WorldViewPart.ID);
             if (part != null && part.getObject() instanceof WorldViewPart)

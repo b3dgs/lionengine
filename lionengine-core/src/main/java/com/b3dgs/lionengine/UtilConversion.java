@@ -146,6 +146,27 @@ public final class UtilConversion
     }
 
     /**
+     * Convert a string to a pure title case for each word, replacing special characters by space.
+     * 
+     * @param string The string to convert.
+     * @return The string in title case.
+     */
+    public static String toTitleCaseWord(String string)
+    {
+        final String[] words = string.replaceAll("\\W|_", " ").split(" ");
+        final StringBuilder title = new StringBuilder();
+        for (int i = 0; i < words.length; i++)
+        {
+            title.append(UtilConversion.toTitleCase(words[i]));
+            if (i < words.length - 1)
+            {
+                title.append(" ");
+            }
+        }
+        return title.toString();
+    }
+
+    /**
      * Private constructor.
      */
     private UtilConversion()

@@ -26,16 +26,17 @@ import javax.annotation.PostConstruct;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
@@ -92,20 +93,7 @@ public class FactoryEntityPart
     @PostConstruct
     public void createComposite(Composite parent)
     {
-        final GridLayout parentLayout = new GridLayout(1, false);
-        parentLayout.marginHeight = 0;
-        parentLayout.marginWidth = 0;
-        parent.setLayout(parentLayout);
-
-        composite = new Composite(parent, SWT.NONE);
-        final GridLayout compositeLayout = new GridLayout(1, false);
-        compositeLayout.marginHeight = 0;
-        compositeLayout.marginWidth = 0;
-        composite.setLayout(compositeLayout);
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        entityTab = new TabFolder(composite, SWT.TOP);
-        entityTab.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        composite = parent;
     }
 
     /**
@@ -113,6 +101,12 @@ public class FactoryEntityPart
      */
     public void update()
     {
+        if (entityTab != null)
+        {
+            entityTab.dispose();
+        }
+        entityTab = new TabFolder(composite, SWT.NONE);
+
         final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
         final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
 
@@ -120,8 +114,15 @@ public class FactoryEntityPart
 
         if (!composite.isDisposed())
         {
-            composite.pack(true);
+            composite.pack();
         }
+
+        // Hack to avoid a layout problem with RowLayout (fill only one row...)
+        final Point point = composite.getShell().getSize();
+        composite.getShell().setSize(point.x + 10, point.y);
+        composite.getShell().layout(true);
+        composite.getShell().setSize(point.x, point.y);
+        composite.getShell().layout(true);
     }
 
     /**
@@ -147,13 +148,13 @@ public class FactoryEntityPart
             for (final File element : elements)
             {
                 final TabItem category = new TabItem(entityTab, SWT.NONE);
-                category.setText(element.getName());
+                category.setText(UtilConversion.toTitleCaseWord(element.getName()));
 
                 final Composite composite = new Composite(entityTab, SWT.NONE);
-                composite.setLayout(new GridLayout(1, false));
-                category.setControl(composite);
+                composite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 loadEntities(factoryEntity, element, composite);
+                category.setControl(composite);
             }
         }
     }
@@ -205,10 +206,9 @@ public class FactoryEntityPart
         // TODO handle the case when there is multiple class with the same name
         if (classNames.size() == 1)
         {
-            final String path = classNames.get(0).getPath(); // Absolute path
-            final int projectPrefix = project.getClassesPath().getPath().length() + 1;
-            final String classPath = path.substring(projectPrefix); // Project relative path
-            final Class<?> type = project.getClass(ObjectGame.class, Core.MEDIA.create(classPath));
+            final String path = classNames.get(0).getPath();
+            final Media classPath = project.getClassMedia(path);
+            final Class<?> type = project.getClass(ObjectGame.class, classPath);
             final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
 
             FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);

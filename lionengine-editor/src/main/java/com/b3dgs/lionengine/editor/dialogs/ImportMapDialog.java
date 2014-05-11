@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.project.Project;
 
@@ -53,9 +54,9 @@ public class ImportMapDialog
     /** Patterns location. */
     Text patternsLocationText;
     /** Level rip file. */
-    String levelRip;
+    Media levelRip;
     /** Patterns directory. */
-    String patternsDirectory;
+    Media patternsDirectory;
     /** Found. */
     private boolean found;
 
@@ -76,7 +77,7 @@ public class ImportMapDialog
      * 
      * @return The level rip location.
      */
-    public String getLevelRipLocation()
+    public Media getLevelRipLocation()
     {
         return levelRip;
     }
@@ -86,7 +87,7 @@ public class ImportMapDialog
      * 
      * @return The patterns location.
      */
-    public String getPatternsLocation()
+    public Media getPatternsLocation()
     {
         return patternsDirectory;
     }
@@ -152,7 +153,7 @@ public class ImportMapDialog
                 if (path != null)
                 {
                     levelRipLocationText.setText(path);
-                    levelRip = levelRipLocationText.getText();
+                    levelRip = project.getResourceMedia(levelRipLocationText.getText());
                     updateTipsLabel();
                     finish.setEnabled(levelRip != null && patternsDirectory != null);
                 }
@@ -195,9 +196,9 @@ public class ImportMapDialog
                 if (path != null)
                 {
                     patternsLocationText.setText(path);
-                    patternsDirectory = patternsLocationText.getText();
+                    patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
                     updateTipsLabel();
-                    final File patterns = new File(patternsDirectory, "patterns.xml");
+                    final File patterns = new File(patternsDirectory.getFile(), "patterns.xml");
                     if (!patterns.isFile())
                     {
                         setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);

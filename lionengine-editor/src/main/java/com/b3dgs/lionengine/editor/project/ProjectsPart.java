@@ -152,8 +152,6 @@ public class ProjectsPart
             }
         });
         menuService.registerContextMenu(tree, ProjectsPart.MENU_ID);
-
-        parent.pack(true);
     }
 
     /**

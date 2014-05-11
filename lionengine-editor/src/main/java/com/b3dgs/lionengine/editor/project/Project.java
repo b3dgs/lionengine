@@ -30,6 +30,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 
@@ -135,6 +136,32 @@ public class Project
     public void close()
     {
         opened = false;
+    }
+
+    /**
+     * Get a media relative to the classes path.
+     * 
+     * @param path The absolute path.
+     * @return The relative media.
+     */
+    public Media getClassMedia(String path)
+    {
+        final int projectPrefix = getClassesPath().getPath().length() + 1;
+        final String relativePath = path.substring(projectPrefix);
+        return Core.MEDIA.create(relativePath);
+    }
+
+    /**
+     * Get a media relative to the resources path.
+     * 
+     * @param path The absolute path.
+     * @return The relative media.
+     */
+    public Media getResourceMedia(String path)
+    {
+        final int projectPrefix = getResourcesPath().getPath().length() + 1;
+        final String relativePath = path.substring(projectPrefix);
+        return Core.MEDIA.create(relativePath);
     }
 
     /**
