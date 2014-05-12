@@ -19,19 +19,20 @@ package com.b3dgs.lionengine.editor.factory;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
@@ -80,10 +81,18 @@ public class FactoryEntityPart
         }
     }
 
-    /** Composite. */
-    private Composite composite;
-    /** Entity tabs. */
-    private TabFolder entityTab;
+    /** Palette combo. */
+    Combo paletteCombo;
+    /** Race combo. */
+    Combo raceCombo;
+    /** Category combo. */
+    Combo categoryCombo;
+    /** Theme combo. */
+    Combo themeCombo;
+    /** Bottom composite. */
+    Composite bottom;
+    /** Entities composite. */
+    Composite entitiesComposite;
 
     /**
      * Create the composite.
@@ -93,69 +102,202 @@ public class FactoryEntityPart
     @PostConstruct
     public void createComposite(Composite parent)
     {
-        composite = parent;
+        parent.setLayout(new GridLayout(1, false));
+
+        createTop(parent);
+
+        final Label separatorHeader = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        createMiddle(parent);
+
+        final Label separatorMiddle = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separatorMiddle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        createBottom(parent);
     }
 
     /**
-     * Update the view.
+     * Create the top part, almost dedicated to palette selection.
+     * 
+     * @param parent The composite parent.
      */
-    public void update()
+    private void createTop(Composite parent)
     {
-        if (entityTab != null)
-        {
-            entityTab.dispose();
-        }
-        entityTab = new TabFolder(composite, SWT.NONE);
+        final Composite top = new Composite(parent, SWT.NONE);
+        top.setLayout(new GridLayout(2, false));
 
-        final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
-        final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
+        final Label paletteLabel = new Label(top, SWT.NONE);
+        paletteLabel.setText("Palette");
 
-        loadFolder(factoryEntity, entitiesPath);
-
-        if (!composite.isDisposed())
-        {
-            composite.pack();
-        }
-
-        // Hack to avoid a layout problem with RowLayout (fill only one row...)
-        final Point point = composite.getShell().getSize();
-        composite.getShell().setSize(point.x + 10, point.y);
-        composite.getShell().layout(true);
-        composite.getShell().setSize(point.x, point.y);
-        composite.getShell().layout(true);
+        paletteCombo = new Combo(top, SWT.NONE);
     }
 
     /**
-     * Force focus.
+     * Create the race selection.
+     * 
+     * @param middle The composite parent.
      */
-    @Focus
-    public void focus()
+    private void createRaceSelection(Composite middle)
     {
-        composite.forceFocus();
+        final Composite raceComposite = new Composite(middle, SWT.NONE);
+        raceComposite.setLayout(new GridLayout(2, false));
+        final Label raceLabel = new Label(raceComposite, SWT.NONE);
+        raceLabel.setText("Race");
+        raceCombo = new Combo(raceComposite, SWT.NONE);
+        raceCombo.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final String selection = raceCombo.getItem(raceCombo.getSelectionIndex());
+                final Object data = raceCombo.getData(selection);
+                if (data instanceof File)
+                {
+                    FactoryEntityPart.load((File) data, categoryCombo);
+                }
+            }
+        });
     }
 
     /**
-     * Load an entities folder. If this folder contains sub folder, they will be loaded in sub tabs.
+     * Create the category selection.
+     * 
+     * @param middle The composite parent.
+     */
+    private void createCategorySelection(Composite middle)
+    {
+        final Composite categoryComposite = new Composite(middle, SWT.NONE);
+        categoryComposite.setLayout(new GridLayout(2, false));
+        final Label categoryLabel = new Label(categoryComposite, SWT.NONE);
+        categoryLabel.setText("Category");
+        categoryCombo = new Combo(categoryComposite, SWT.NONE);
+        categoryCombo.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final String selection = categoryCombo.getItem(categoryCombo.getSelectionIndex());
+                final Object data = categoryCombo.getData(selection);
+                if (data instanceof File)
+                {
+                    FactoryEntityPart.load((File) data, themeCombo);
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the theme selection.
+     * 
+     * @param middle The composite parent.
+     */
+    private void createThemeSelection(Composite middle)
+    {
+        final Composite themeComposite = new Composite(middle, SWT.NONE);
+        themeComposite.setLayout(new GridLayout(2, false));
+        final Label themeLabel = new Label(themeComposite, SWT.NONE);
+        themeLabel.setText("Theme");
+        themeCombo = new Combo(themeComposite, SWT.NONE);
+        themeCombo.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final String selection = themeCombo.getItem(themeCombo.getSelectionIndex());
+                final Object data = themeCombo.getData(selection);
+                if (data instanceof File)
+                {
+                    if (entitiesComposite != null)
+                    {
+                        entitiesComposite.dispose();
+                    }
+                    entitiesComposite = new Composite(bottom, SWT.NONE);
+                    entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+                    entitiesComposite.setLayout(new GridLayout(4, true));
+
+                    final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
+                    loadEntities(factoryEntity, (File) data);
+
+                    if (!bottom.isDisposed())
+                    {
+                        bottom.pack();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the middle part, dedicated to entity group selection.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createMiddle(Composite parent)
+    {
+        final Composite middle = new Composite(parent, SWT.NONE);
+        middle.setLayout(new GridLayout(1, false));
+
+        createRaceSelection(middle);
+        createCategorySelection(middle);
+        createThemeSelection(middle);
+    }
+
+    /**
+     * Create the bottom part, dedicated to the entity list.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createBottom(Composite parent)
+    {
+        bottom = new Composite(parent, SWT.NONE);
+        bottom.setLayout(new GridLayout(1, false));
+    }
+
+    /**
+     * Set the factory entity used.
      * 
      * @param factoryEntity The factory entity reference.
-     * @param entitiesPath The entities folder path.
      */
-    private void loadFolder(FactoryObjectGame<?, ?> factoryEntity, File entitiesPath)
+    public void setFactoryEntity(FactoryObjectGame<?, ?> factoryEntity)
     {
-        final File[] elements = entitiesPath.listFiles();
-        if (elements != null)
+        final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
+        FactoryEntityPart.load(entitiesPath, raceCombo);
+
+        if (!bottom.isDisposed())
         {
-            for (final File element : elements)
+            bottom.update();
+        }
+    }
+
+    /**
+     * Load elements from root folder.
+     * 
+     * @param path The folder path.
+     * @param combo The combo reference.
+     */
+    static void load(File path, Combo combo)
+    {
+        final File[] folders = path.listFiles();
+        if (folders != null)
+        {
+            final List<File> elements = new ArrayList<>(1);
+            for (final File folder : folders)
             {
-                final TabItem category = new TabItem(entityTab, SWT.NONE);
-                category.setText(UtilConversion.toTitleCaseWord(element.getName()));
-
-                final Composite composite = new Composite(entityTab, SWT.NONE);
-                composite.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-                loadEntities(factoryEntity, element, composite);
-                category.setControl(composite);
+                if (folder.isDirectory())
+                {
+                    elements.add(folder);
+                }
             }
+            final File[] items = elements.toArray(new File[elements.size()]);
+            final String[] names = new String[items.length];
+            for (int i = 0; i < items.length; i++)
+            {
+                final String name = UtilConversion.toTitleCaseWord(items[i].getName());
+                combo.setData(name, items[i]);
+                names[i] = name;
+            }
+            combo.setItems(names);
         }
     }
 
@@ -163,23 +305,18 @@ public class FactoryEntityPart
      * Load all entities from their folder (filter them by extension, <code>*.xml</code> expected).
      * 
      * @param factoryEntity The factory entity reference.
-     * @param folder The entity folder.
-     * @param composite The composite category reference.
+     * @param themePath The theme folder path.
      */
-    private void loadEntities(FactoryObjectGame<?, ?> factoryEntity, File folder, Composite composite)
+    void loadEntities(FactoryObjectGame<?, ?> factoryEntity, File themePath)
     {
-        final File[] elements = folder.listFiles();
-        if (elements != null)
+        final File[] entityFiles = themePath.listFiles();
+        if (entityFiles != null)
         {
-            for (final File element : elements)
+            for (final File entityFile : entityFiles)
             {
-                if (element.isFile() && UtilFile.isType(element, FactoryObjectGame.FILE_DATA_EXTENSION))
+                if (entityFile.isFile() && UtilFile.isType(entityFile, FactoryObjectGame.FILE_DATA_EXTENSION))
                 {
-                    loadEntity(factoryEntity, element, composite);
-                }
-                else if (element.isDirectory())
-                {
-                    loadFolder(factoryEntity, element);
+                    loadEntity(factoryEntity, entityFile);
                 }
             }
         }
@@ -190,14 +327,13 @@ public class FactoryEntityPart
      * 
      * @param factoryEntity The factory entity reference.
      * @param file The entity data file.
-     * @param composite The composite category reference.
      */
-    private void loadEntity(FactoryObjectGame<?, ?> factoryEntity, File file, Composite composite)
+    private void loadEntity(FactoryObjectGame<?, ?> factoryEntity, File file)
     {
         final Project project = Project.getActive();
         final File classesPath = project.getClassesPath();
 
-        final Label entityLabel = new Label(composite, SWT.NONE);
+        final Label entityLabel = new Label(entitiesComposite, SWT.NONE);
         final String name = UtilFile.removeExtension(file.getName());
         entityLabel.setText(name);
 

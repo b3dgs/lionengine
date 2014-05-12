@@ -51,7 +51,7 @@ public class AssignFactoryEntityImplementationHandler
         final MPart part = partService.findPart(FactoryEntityPart.ID);
         if (part != null && part.getObject() instanceof FactoryEntityPart)
         {
-            ((FactoryEntityPart) part.getObject()).update();
+            ((FactoryEntityPart) part.getObject()).setFactoryEntity(factoryEntity);
         }
     }
 }
