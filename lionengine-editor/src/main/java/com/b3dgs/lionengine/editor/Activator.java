@@ -155,5 +155,4 @@ public class Activator
     {
         Activator.context = null;
     }
-
 }
