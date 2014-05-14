@@ -55,6 +55,7 @@ import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
  * Represents the factory entity view, where the entities list is displayed.
@@ -221,9 +222,9 @@ public class FactoryEntityPart
             composite.setLayout(new GridLayout(1, false));
             final Combo typeCombo = FactoryEntityPart.createCombo(typeName, composite);
             FactoryEntityPart.fillCombo(typeCombo, folders);
-    
+
             middle.getShell().layout(true, true);
-    
+
             typeCombo.addSelectionListener(new SelectionAdapter()
             {
                 @Override
@@ -255,7 +256,7 @@ public class FactoryEntityPart
                             entitiesComposite = new Composite(bottom, SWT.BORDER);
                             entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
                             entitiesComposite.setLayout(new RowLayout());
-    
+
                             final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
                             loadEntities(factoryEntity, typeFolder);
                         }
@@ -300,9 +301,6 @@ public class FactoryEntityPart
      */
     private void loadEntity(FactoryObjectGame<?, ?> factoryEntity, File file)
     {
-        final Project project = Project.getActive();
-        final File classesPath = project.getClassesPath();
-
         final Label entityLabel = new Label(entitiesComposite, SWT.NONE);
         entityLabel.setLayoutData(new RowData(34, 34));
         entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
@@ -334,7 +332,7 @@ public class FactoryEntityPart
             @Override
             public void mouseUp(MouseEvent mouseEvent)
             {
-                // Nothing to do
+                WorldViewModel.INSTANCE.setSelectedEntity(getSelectedEntityClass(entityLabel.getText()));
             }
 
             @Override
@@ -350,20 +348,35 @@ public class FactoryEntityPart
             }
         });
 
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, entityLabel.getText() + ".class");
+        final Class<? extends ObjectGame> type = getSelectedEntityClass(entityLabel.getText());
+        final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
+
+        FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
+        entityLabel.setToolTipText(name);
+        entityLabel.setData(type);
+    }
+
+    /**
+     * Get the selected entity class from its name.
+     * 
+     * @param name The entity name.
+     * @return The entity class reference.
+     */
+    Class<? extends EntityGame> getSelectedEntityClass(String name)
+    {
+        final Project project = Project.getActive();
+        final File classesPath = project.getClassesPath();
+        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
 
         // TODO handle the case when there is multiple class with the same name
         if (classNames.size() == 1)
         {
             final String path = classNames.get(0).getPath();
             final Media classPath = project.getClassMedia(path);
-            final Class<?> type = project.getClass(ObjectGame.class, classPath);
-            final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
-
-            FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
-            entityLabel.setToolTipText(name);
-            entityLabel.setData(type);
+            final Class<? extends EntityGame> type = project.getClass(EntityGame.class, classPath);
+            return type;
         }
+        return null;
     }
 
     /**

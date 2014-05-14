@@ -33,6 +33,8 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -104,6 +106,8 @@ public final class WorldViewRenderer
     private final Composite parent;
     /** The view model. */
     private final WorldViewModel model;
+    /** Handler entity. */
+    private final HandlerEntity handlerEntity;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -122,6 +126,7 @@ public final class WorldViewRenderer
     {
         this.parent = parent;
         model = WorldViewModel.INSTANCE;
+        handlerEntity = new HandlerEntity(model.getCamera());
     }
 
     /**
@@ -156,6 +161,8 @@ public final class WorldViewRenderer
         {
             map.render(g, camera);
         }
+        handlerEntity.update(1.0);
+        handlerEntity.render(g);
 
         drawCursor(g, tw, th, areaX, areaY);
         WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
@@ -231,6 +238,23 @@ public final class WorldViewRenderer
         }
     }
 
+    /**
+     * Set the entity location.
+     * 
+     * @param entity The entity reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @param side 1 for place, -1 for move.
+     */
+    private void setEntityLocation(EntityGame entity, int x, int y, int side)
+    {
+        final MapTile<?, ?> map = model.getMap();
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        entity.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
+                * entity.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
+    }
+
     /*
      * PaintListener
      */
@@ -278,6 +302,23 @@ public final class WorldViewRenderer
 
         moving = false;
         updateMouse(mx, my);
+
+        final Class<? extends EntityGame> type = WorldViewModel.INSTANCE.getSelectedEntity();
+        if (type != null)
+        {
+            final MapTile<?, ?> map = model.getMap();
+            final CameraGame camera = model.getCamera();
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
+            final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
+            final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
+
+            final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
+            final EntityGame entity = factoryEntity.createUnsafe(type);
+            setEntityLocation(entity, x, y, 1);
+            handlerEntity.add(entity);
+        }
     }
 
     /*

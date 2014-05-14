@@ -95,6 +95,18 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
     protected abstract S createSetup(Class<? extends O> type, Media config);
 
     /**
+     * Should not be used, prefer {@link #create(Class)} instead.
+     * 
+     * @param type The object type.
+     * @return The object instance.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends ObjectGame> T createUnsafe(Class<T> type)
+    {
+        return type.cast(create((Class<? extends O>) type));
+    }
+
+    /**
      * Create an object from its type using a generic way. The concerned classes to instantiate and its
      * constructor must be public, and must be as the main one: {@link ObjectGame#ObjectGame(SetupGame)}.
      * 
