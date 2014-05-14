@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.example.game.platform.tile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
 /**
@@ -76,7 +76,7 @@ final class Entity
      */
 
     @Override
-    public void render(Graphic g, CameraPlatform camera)
+    public void render(Graphic g, CameraGame camera)
     {
         super.render(g, camera);
         renderCollision(g, camera);

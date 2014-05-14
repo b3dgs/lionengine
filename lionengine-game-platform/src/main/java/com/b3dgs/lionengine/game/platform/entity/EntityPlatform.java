@@ -25,10 +25,10 @@ import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
@@ -151,17 +151,6 @@ public abstract class EntityPlatform
     protected abstract void handleAnimations(final double extrp);
 
     /**
-     * Render on screen.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera viewpoint.
-     */
-    public void render(Graphic g, CameraPlatform camera)
-    {
-        renderAnim(g, sprite, camera);
-    }
-
-    /**
      * Set frame offsets (offsets on rendering).
      * 
      * @param frameOffsetX The horizontal offset.
@@ -254,7 +243,7 @@ public abstract class EntityPlatform
      * @param sprite The sprite to render.
      * @param camera The camera reference.
      */
-    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera)
+    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraGame camera)
     {
         renderAnim(g, sprite, camera, 0, 0);
     }
@@ -268,7 +257,7 @@ public abstract class EntityPlatform
      * @param rx The horizontal rendering offset.
      * @param ry The vertical rendering offset.
      */
-    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraPlatform camera, int rx, int ry)
+    public void renderAnim(Graphic g, SpriteAnimated sprite, CameraGame camera, int rx, int ry)
     {
         final int x = camera.getViewpointX(getLocationIntX() - sprite.getFrameWidth() / 2 - frameOffsetX);
         final int y = camera.getViewpointY(getLocationIntY() + sprite.getFrameHeight() + frameOffsetY);
@@ -351,6 +340,12 @@ public abstract class EntityPlatform
         collOffY = 0;
         updateCollision();
         handleAnimations(extrp);
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        renderAnim(g, sprite, camera);
     }
 
     @Override

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.platform.entity;
 
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
@@ -61,7 +62,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     protected abstract void updatingEntity(E entity, double extrp);
 
     /**
-     * Render this entity ({@link EntityPlatform#render(Graphic, CameraPlatform)} is already called before).
+     * Render this entity ({@link EntityPlatform#render(Graphic, CameraGame)} is already called before).
      * 
      * @param entity The current rendering entity.
      * @param g The graphic output.

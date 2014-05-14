@@ -103,20 +103,6 @@ final class Racket
     }
 
     /**
-     * Render the racket on screen.
-     * 
-     * @param g The graphics output.
-     * @param camera The camera reference.
-     */
-    public void render(Graphic g, CameraGame camera)
-    {
-        final int x = camera.getViewpointX(getLocationIntX() - getWidth() / 2);
-        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - getHeight() / 2);
-        g.setColor(ColorRgba.CYAN);
-        g.drawRect(x, y, getWidth(), getHeight(), true);
-    }
-
-    /**
      * Set the racket movement speed.
      * 
      * @param speed The movement speed.
@@ -204,5 +190,14 @@ final class Racket
 
         // Update collisions
         updateCollision();
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        final int x = camera.getViewpointX(getLocationIntX() - getWidth() / 2);
+        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - getHeight() / 2);
+        g.setColor(ColorRgba.CYAN);
+        g.drawRect(x, y, getWidth(), getHeight(), true);
     }
 }

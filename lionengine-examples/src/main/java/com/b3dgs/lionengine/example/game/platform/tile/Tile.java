@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.platform.tile;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
@@ -43,7 +43,7 @@ final class Tile
      * @param g The graphic output.
      * @param camera The camera reference.
      */
-    public void renderCollision(Graphic g, CameraPlatform camera)
+    public void renderCollision(Graphic g, CameraGame camera)
     {
         final int x = camera.getViewpointX(getX());
         final int y = camera.getViewpointY(getY() + getHeight());

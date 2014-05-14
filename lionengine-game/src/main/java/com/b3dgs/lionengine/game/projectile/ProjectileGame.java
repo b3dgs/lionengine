@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
@@ -84,14 +82,6 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
         owner = null;
         delay = new Timing();
     }
-
-    /**
-     * Render the projectile.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera reference.
-     */
-    public abstract void render(Graphic g, CameraGame camera);
 
     /**
      * Action called when projectile hit an entity.

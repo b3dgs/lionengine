@@ -49,17 +49,6 @@ final class Entity
         setCollision(new CollisionData(getWidth() / 2, -getHeight(), getWidth(), getHeight(), false));
     }
 
-    /**
-     * Render the entity.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera reference.
-     */
-    public void render(Graphic g, CameraGame camera)
-    {
-        sprite.render(g, 2, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
-    }
-
     /*
      * EntityGame
      */
@@ -68,5 +57,11 @@ final class Entity
     public void update(double extrp)
     {
         updateCollision();
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        sprite.render(g, 2, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
     }
 }

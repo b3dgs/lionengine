@@ -43,6 +43,6 @@ final class Handler
     @Override
     protected void render(Graphic g, Entity entity)
     {
-        entity.render(g);
+        entity.render(g, null);
     }
 }

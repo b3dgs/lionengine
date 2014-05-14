@@ -71,6 +71,14 @@ public abstract class EntityGame
     public abstract void update(double extrp);
 
     /**
+     * Render the entity.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
+     */
+    public abstract void render(Graphic g, CameraGame camera);
+
+    /**
      * Get the distance between the entity and the specified other entity.
      * 
      * @param entity The entity to compare to.

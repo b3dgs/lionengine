@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.entity;
 
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
@@ -41,16 +42,6 @@ abstract class Entity
         setCollision(getDataCollision("default"));
     }
 
-    /**
-     * Render the object.
-     * 
-     * @param g The graphic output.
-     */
-    public void render(Graphic g)
-    {
-        System.out.println("I am rendering: " + this);
-    }
-
     /*
      * EntityGame
      */
@@ -59,5 +50,11 @@ abstract class Entity
     public void update(double extrp)
     {
         System.out.println("I am updating: " + this);
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        System.out.println("I am rendering: " + this);
     }
 }

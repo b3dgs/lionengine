@@ -23,9 +23,9 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorModel;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorServices;
@@ -99,7 +99,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void render(Graphic g, CameraStrategy camera)
+    public void render(Graphic g, CameraGame camera)
     {
         super.render(g, camera);
         if (isProducing() && getProductionProgress() > 0)

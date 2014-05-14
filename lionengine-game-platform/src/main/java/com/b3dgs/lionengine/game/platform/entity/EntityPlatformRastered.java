@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.platform.entity;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.purview.Rasterable;
 import com.b3dgs.lionengine.game.purview.model.RasterableModel;
 
@@ -71,7 +71,7 @@ public abstract class EntityPlatformRastered
     }
 
     @Override
-    public void render(Graphic g, CameraPlatform camera)
+    public void render(Graphic g, CameraGame camera)
     {
         if (rasterable.isRastered())
         {

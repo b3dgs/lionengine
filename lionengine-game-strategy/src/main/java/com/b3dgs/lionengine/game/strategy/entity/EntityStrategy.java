@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -150,38 +150,6 @@ public abstract class EntityStrategy
      * Stop any action.
      */
     public abstract void stop();
-
-    /**
-     * Render entity on screen depending of the camera.
-     * 
-     * @param g The graphic output.
-     * @param camera The camera viewpoint.
-     */
-    public void render(Graphic g, CameraStrategy camera)
-    {
-        if (visible)
-        {
-            int offset = 0;
-            final int frame;
-            if (animationCurrent != null)
-            {
-                if (getMirror())
-                {
-                    offset = getOrientation().ordinal() - Orientation.ORIENTATIONS_NUMBER_HALF;
-                }
-                frame = getFrame() + (getOrientation().ordinal() - offset * 2)
-                        * (animationCurrent.getLast() - animationCurrent.getFirst() + 1);
-            }
-            else
-            {
-                frame = getFrame();
-            }
-
-            final int x = camera.getViewpointX(getLocationIntX() - getOffsetX());
-            final int y = camera.getViewpointY(getLocationIntY() + getOffsetY() + getHeight());
-            sprite.render(g, frame, x, y);
-        }
-    }
 
     /**
      * Set location in tile.
@@ -515,7 +483,7 @@ public abstract class EntityStrategy
      * @param offsetX The horizontal offset.
      * @param offsetY The vertical offset.
      */
-    protected void render(Graphic g, Sprite sprite, CameraStrategy camera, int offsetX, int offsetY)
+    protected void render(Graphic g, Sprite sprite, CameraGame camera, int offsetX, int offsetY)
     {
         final int x = camera.getViewpointX(getLocationIntX() - offsetX);
         final int y = camera.getViewpointY(getLocationIntY() + offsetY + getHeight());
@@ -636,6 +604,33 @@ public abstract class EntityStrategy
         sprite.setMirror(getMirror());
         updateCollision();
         sprite.updateAnimation(extrp);
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        if (visible)
+        {
+            int offset = 0;
+            final int frame;
+            if (animationCurrent != null)
+            {
+                if (getMirror())
+                {
+                    offset = getOrientation().ordinal() - Orientation.ORIENTATIONS_NUMBER_HALF;
+                }
+                frame = getFrame() + (getOrientation().ordinal() - offset * 2)
+                        * (animationCurrent.getLast() - animationCurrent.getFirst() + 1);
+            }
+            else
+            {
+                frame = getFrame();
+            }
+
+            final int x = camera.getViewpointX(getLocationIntX() - getOffsetX());
+            final int y = camera.getViewpointY(getLocationIntY() + getOffsetY() + getHeight());
+            sprite.render(g, frame, x, y);
+        }
     }
 
     @Override

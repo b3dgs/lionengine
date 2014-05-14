@@ -22,8 +22,8 @@ import java.util.Iterator;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Bar;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
@@ -74,7 +74,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public void render(Graphic g, CameraStrategy camera)
+    public void render(Graphic g, CameraGame camera)
     {
         super.render(g, camera);
         if (getProductionProgress() > 0)

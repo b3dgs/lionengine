@@ -59,20 +59,6 @@ final class Ball
     }
 
     /**
-     * Render the racket on screen.
-     * 
-     * @param g The graphics output.
-     * @param camera The camera reference.
-     */
-    public void render(Graphic g, CameraGame camera)
-    {
-        final int x = camera.getViewpointX(getLocationIntX() - Ball.SIZE / 2);
-        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - Ball.SIZE / 2);
-        g.setColor(ColorRgba.YELLOW);
-        g.drawOval(x, y, Ball.SIZE, Ball.SIZE, true);
-    }
-
-    /**
      * Set the ball speed.
      * 
      * @param speed The ball speed.
@@ -132,5 +118,14 @@ final class Ball
     {
         moveLocation(extrp, force);
         updateCollision();
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        final int x = camera.getViewpointX(getLocationIntX() - Ball.SIZE / 2);
+        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - Ball.SIZE / 2);
+        g.setColor(ColorRgba.YELLOW);
+        g.drawOval(x, y, Ball.SIZE, Ball.SIZE, true);
     }
 }
