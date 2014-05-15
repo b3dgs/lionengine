@@ -36,6 +36,8 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * World view paint listener, rendering the current world.
@@ -255,6 +257,84 @@ public final class WorldViewRenderer
                 * entity.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
     }
 
+    /**
+     * Add a new entity at the mouse location.
+     * 
+     * @param mx The mouse horizontal position.
+     * @param my The mouse vertical position.
+     */
+    private void placeEntity(int mx, int my)
+    {
+        final Class<? extends EntityGame> type = WorldViewModel.INSTANCE.getSelectedEntity();
+        if (type != null)
+        {
+            final MapTile<?, ?> map = model.getMap();
+            final CameraGame camera = model.getCamera();
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
+            final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
+            final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
+
+            final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
+            final EntityGame entity = factoryEntity.createUnsafe(type);
+            setEntityLocation(entity, x, y, 1);
+            handlerEntity.add(entity);
+        }
+    }
+
+    /**
+     * Get the entity at the specified mouse location.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return The entity reference, <code>null</code> if none.
+     */
+    private EntityGame getEntity(int x, int y)
+    {
+        final MapTile<?, ?> map = model.getMap();
+        final CameraGame camera = model.getCamera();
+        final int mx = UtilMath.getRounded(x, map.getTileWidth());
+        final int my = UtilMath.getRounded(camera.getViewHeight() - y - 1, map.getTileHeight());
+        for (final EntityGame entity : handlerEntity.list())
+        {
+            if (hitEntity(entity, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
+            {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check if entity is hit.
+     * 
+     * @param entity The entity to check.
+     * @param x1 First point x.
+     * @param y1 First point y.
+     * @param x2 Second point x.
+     * @param y2 Second point y.
+     * @return <code>true</code> if hit, <code>false</code> else.
+     */
+    private boolean hitEntity(EntityGame entity, int x1, int y1, int x2, int y2)
+    {
+        final MapTile<?, ?> map = model.getMap();
+        final CameraGame camera = model.getCamera();
+        if (entity != null)
+        {
+            final int x = UtilMath.getRounded(entity.getLocationIntX() - entity.getWidth() / 2, map.getTileWidth())
+                    - camera.getLocationIntX();
+            final int y = UtilMath.getRounded(entity.getLocationIntY(), map.getTileHeight()) - camera.getLocationIntY();
+            final Rectangle r1 = Geom.createRectangle(x1, y1, x2 - x1, y2 - y1);
+            final Rectangle r2 = Geom.createRectangle(x, y, entity.getWidth(), entity.getHeight());
+            if (r1.intersects(r2))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /*
      * PaintListener
      */
@@ -292,6 +372,12 @@ public final class WorldViewRenderer
         final int my = mouseEvent.y;
 
         updateMouse(mx, my);
+
+        final EntityGame entity = getEntity(mx, my);
+        if (entity != null)
+        {
+            entity.destroy();
+        }
     }
 
     @Override
@@ -302,23 +388,7 @@ public final class WorldViewRenderer
 
         moving = false;
         updateMouse(mx, my);
-
-        final Class<? extends EntityGame> type = WorldViewModel.INSTANCE.getSelectedEntity();
-        if (type != null)
-        {
-            final MapTile<?, ?> map = model.getMap();
-            final CameraGame camera = model.getCamera();
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
-            final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
-            final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
-
-            final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
-            final EntityGame entity = factoryEntity.createUnsafe(type);
-            setEntityLocation(entity, x, y, 1);
-            handlerEntity.add(entity);
-        }
+        placeEntity(mx, my);
     }
 
     /*

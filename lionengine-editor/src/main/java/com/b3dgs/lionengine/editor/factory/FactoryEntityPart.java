@@ -169,6 +169,8 @@ public class FactoryEntityPart
     Composite bottom;
     /** Entities composite. */
     Composite entitiesComposite;
+    /** Last selected entity. */
+    Label lastEntity;
 
     /**
      * Create the composite.
@@ -230,6 +232,8 @@ public class FactoryEntityPart
                 @Override
                 public void widgetSelected(SelectionEvent selectionEvent)
                 {
+                    WorldViewModel.INSTANCE.setSelectedEntity(null);
+                    lastEntity = null;
                     final Object data = typeCombo.getData(typeCombo.getItem(typeCombo.getSelectionIndex()));
                     if (data instanceof File)
                     {
@@ -294,6 +298,29 @@ public class FactoryEntityPart
     }
 
     /**
+     * Get the selected entity class from its name.
+     * 
+     * @param name The entity name.
+     * @return The entity class reference.
+     */
+    Class<? extends EntityGame> getSelectedEntityClass(String name)
+    {
+        final Project project = Project.getActive();
+        final File classesPath = project.getClassesPath();
+        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
+    
+        // TODO handle the case when there is multiple class with the same name
+        if (classNames.size() == 1)
+        {
+            final String path = classNames.get(0).getPath();
+            final Media classPath = project.getClassMedia(path);
+            final Class<? extends EntityGame> type = project.getClass(EntityGame.class, classPath);
+            return type;
+        }
+        return null;
+    }
+
+    /**
      * Load an entity from its file data, and add it to the tab.
      * 
      * @param factoryEntity The factory entity reference.
@@ -318,7 +345,10 @@ public class FactoryEntityPart
             @Override
             public void mouseExit(MouseEvent e)
             {
-                entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+                if (lastEntity != entityLabel)
+                {
+                    entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+                }
             }
 
             @Override
@@ -332,7 +362,21 @@ public class FactoryEntityPart
             @Override
             public void mouseUp(MouseEvent mouseEvent)
             {
-                WorldViewModel.INSTANCE.setSelectedEntity(getSelectedEntityClass(entityLabel.getText()));
+                if (lastEntity != null)
+                {
+                    lastEntity.setBackground(lastEntity.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+                }
+                if (lastEntity == entityLabel)
+                {
+                    WorldViewModel.INSTANCE.setSelectedEntity(null);
+                    lastEntity = null;
+                }
+                else
+                {
+                    WorldViewModel.INSTANCE.setSelectedEntity(getSelectedEntityClass(entityLabel.getText()));
+                    entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+                    lastEntity = entityLabel;
+                }
             }
 
             @Override
@@ -354,29 +398,6 @@ public class FactoryEntityPart
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
         entityLabel.setToolTipText(name);
         entityLabel.setData(type);
-    }
-
-    /**
-     * Get the selected entity class from its name.
-     * 
-     * @param name The entity name.
-     * @return The entity class reference.
-     */
-    Class<? extends EntityGame> getSelectedEntityClass(String name)
-    {
-        final Project project = Project.getActive();
-        final File classesPath = project.getClassesPath();
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
-
-        // TODO handle the case when there is multiple class with the same name
-        if (classNames.size() == 1)
-        {
-            final String path = classNames.get(0).getPath();
-            final Media classPath = project.getClassMedia(path);
-            final Class<? extends EntityGame> type = project.getClass(EntityGame.class, classPath);
-            return type;
-        }
-        return null;
     }
 
     /**
