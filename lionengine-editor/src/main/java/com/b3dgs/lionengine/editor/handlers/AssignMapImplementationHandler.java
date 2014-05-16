@@ -50,7 +50,9 @@ public class AssignMapImplementationHandler
         final MPart part = partService.findPart(WorldViewPart.ID);
         if (part != null && part.getObject() instanceof WorldViewPart)
         {
-            ((WorldViewPart) part.getObject()).update();
+            final WorldViewPart worldViewPart = (WorldViewPart) part.getObject();
+            worldViewPart.addListeners();
+            worldViewPart.update();
         }
     }
 }

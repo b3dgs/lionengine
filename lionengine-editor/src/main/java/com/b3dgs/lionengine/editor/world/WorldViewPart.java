@@ -39,6 +39,8 @@ public class WorldViewPart
 
     /** Composite. */
     private Composite composite;
+    /** Renderer. */
+    private WorldViewRenderer worldViewRenderer;
 
     /**
      * Create the composite.
@@ -51,11 +53,8 @@ public class WorldViewPart
         parent.setLayout(new GridLayout(1, false));
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        final WorldViewRenderer worldViewRenderer = new WorldViewRenderer(composite);
+        worldViewRenderer = new WorldViewRenderer(composite);
         composite.addPaintListener(worldViewRenderer);
-        composite.addMouseListener(worldViewRenderer);
-        composite.addMouseMoveListener(worldViewRenderer);
-        composite.addKeyListener(worldViewRenderer);
     }
 
     /**
@@ -67,6 +66,16 @@ public class WorldViewPart
         {
             composite.redraw();
         }
+    }
+
+    /**
+     * Add mouse and keyboard listeners.
+     */
+    public void addListeners()
+    {
+        composite.addMouseListener(worldViewRenderer);
+        composite.addMouseMoveListener(worldViewRenderer);
+        composite.addKeyListener(worldViewRenderer);
     }
 
     /**

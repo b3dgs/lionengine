@@ -32,12 +32,10 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.geom.Geom;
-import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
  * World view paint listener, rendering the current world.
@@ -51,6 +49,8 @@ public final class WorldViewRenderer
     private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
+    /** Color of the box around the selected entity. */
+    private static final ColorRgba COLOR_ENTITY_SELECTION = new ColorRgba(128, 240, 128, 192);
     /** Grid movement sensibility. */
     private static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
@@ -110,14 +110,18 @@ public final class WorldViewRenderer
     private final WorldViewModel model;
     /** Handler entity. */
     private final HandlerEntity handlerEntity;
+    /** Selection handler. */
+    private final Selection selection;
+    /** Entity controller. */
+    private final EntityControl entityControl;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
     private int mouseY;
-    /** Selecting flag. */
-    private boolean selecting;
     /** Moving entity flag. */
     private boolean moving;
+    /** Mouse click. */
+    private int click;
 
     /**
      * Constructor.
@@ -129,69 +133,8 @@ public final class WorldViewRenderer
         this.parent = parent;
         model = WorldViewModel.INSTANCE;
         handlerEntity = new HandlerEntity(model.getCamera());
-    }
-
-    /**
-     * Render the world.
-     * 
-     * @param g The graphic output.
-     * @param width The view width.
-     * @param height The view height.
-     */
-    private void render(Graphic g, int width, int height)
-    {
-        final CameraGame camera = model.getCamera();
-        final MapTile<?, ?> map = model.getMap();
-
-        final int tw = map.getTileWidth();
-        final int th = map.getTileHeight();
-        final int areaX = UtilMath.getRounded(width, tw);
-        final int areaY = UtilMath.getRounded(height, th);
-
-        camera.setView(0, 0, areaX - tw, areaY);
-
-        // Background
-        g.setColor(ColorRgba.GRAY_LIGHT);
-        g.drawRect(0, 0, width, height, true);
-
-        // Map area
-        g.setColor(ColorRgba.BLUE);
-        g.drawRect(0, 0, areaX, areaY, true);
-
-        // Renders
-        if (map.getNumberPatterns() > 0)
-        {
-            map.render(g, camera);
-        }
-        handlerEntity.update(1.0);
-        handlerEntity.render(g);
-
-        drawCursor(g, tw, th, areaX, areaY);
-        WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
-    }
-
-    /**
-     * Draw the cursor.
-     * 
-     * @param g The graphic output.
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @param areaX Maximum width.
-     * @param areaY Maximum height.
-     */
-    private void drawCursor(Graphic g, int tw, int th, int areaX, int areaY)
-    {
-        if (!selecting && !moving)
-        {
-            if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
-            {
-                final int mx = UtilMath.getRounded(mouseX, tw);
-                final int my = UtilMath.getRounded(mouseY, th);
-
-                g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
-                g.drawRect(mx, my, tw, th, true);
-            }
-        }
+        selection = new Selection();
+        entityControl = new EntityControl(handlerEntity);
     }
 
     /**
@@ -241,98 +184,95 @@ public final class WorldViewRenderer
     }
 
     /**
-     * Set the entity location.
+     * Render the world.
      * 
-     * @param entity The entity reference.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param side 1 for place, -1 for move.
+     * @param g The graphic output.
+     * @param width The view width.
+     * @param height The view height.
      */
-    private void setEntityLocation(EntityGame entity, int x, int y, int side)
+    private void render(Graphic g, int width, int height)
     {
+        final CameraGame camera = model.getCamera();
         final MapTile<?, ?> map = model.getMap();
+
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        entity.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
-                * entity.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
-    }
+        final int areaX = UtilMath.getRounded(width, tw);
+        final int areaY = UtilMath.getRounded(height, th);
 
-    /**
-     * Add a new entity at the mouse location.
-     * 
-     * @param mx The mouse horizontal position.
-     * @param my The mouse vertical position.
-     */
-    private void placeEntity(int mx, int my)
-    {
-        final Class<? extends EntityGame> type = WorldViewModel.INSTANCE.getSelectedEntity();
-        if (type != null)
+        camera.setView(0, 0, areaX - tw, areaY);
+
+        // Background
+        g.setColor(ColorRgba.GRAY_LIGHT);
+        g.drawRect(0, 0, width, height, true);
+
+        // Map area
+        g.setColor(ColorRgba.BLUE);
+        g.drawRect(0, 0, areaX, areaY, true);
+
+        // Renders
+        if (map.getNumberPatterns() > 0)
         {
-            final MapTile<?, ?> map = model.getMap();
-            final CameraGame camera = model.getCamera();
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
-            final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
-            final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
-
-            final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
-            final EntityGame entity = factoryEntity.createUnsafe(type);
-            setEntityLocation(entity, x, y, 1);
-            handlerEntity.add(entity);
+            map.render(g, camera);
         }
+        handlerEntity.update(1.0);
+        handlerEntity.render(g);
+        renderOverAndSelectedEntities(g);
+
+        selection.render(g, WorldViewRenderer.COLOR_MOUSE_SELECTION);
+
+        renderCursor(g, tw, th, areaX, areaY);
+        WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
     }
 
     /**
-     * Get the entity at the specified mouse location.
+     * Render the entity over and selection flag.
      * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @return The entity reference, <code>null</code> if none.
+     * @param g The graphic output.
      */
-    private EntityGame getEntity(int x, int y)
+    private void renderOverAndSelectedEntities(Graphic g)
     {
-        final MapTile<?, ?> map = model.getMap();
         final CameraGame camera = model.getCamera();
-        final int mx = UtilMath.getRounded(x, map.getTileWidth());
-        final int my = UtilMath.getRounded(camera.getViewHeight() - y - 1, map.getTileHeight());
+        final MapTile<?, ?> map = model.getMap();
+        final int th = map.getTileHeight();
+
         for (final EntityGame entity : handlerEntity.list())
         {
-            if (hitEntity(entity, mx, my, mx + map.getTileWidth(), my + map.getTileHeight()))
+            final int sx = entity.getLocationIntX();
+            final int sy = entity.getLocationIntY();
+
+            if (entityControl.isOver(entity) || entityControl.isSelected(entity))
             {
-                return entity;
+                g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
+                g.drawRect(sx - camera.getLocationIntX() - entity.getWidth() / 2, -sy + camera.getLocationIntY()
+                        - entity.getHeight() + UtilMath.getRounded(camera.getViewHeight(), th), entity.getWidth(),
+                        entity.getHeight(), true);
             }
         }
-        return null;
     }
 
     /**
-     * Check if entity is hit.
+     * Render the cursor.
      * 
-     * @param entity The entity to check.
-     * @param x1 First point x.
-     * @param y1 First point y.
-     * @param x2 Second point x.
-     * @param y2 Second point y.
-     * @return <code>true</code> if hit, <code>false</code> else.
+     * @param g The graphic output.
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param areaX Maximum width.
+     * @param areaY Maximum height.
      */
-    private boolean hitEntity(EntityGame entity, int x1, int y1, int x2, int y2)
+    private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY)
     {
-        final MapTile<?, ?> map = model.getMap();
-        final CameraGame camera = model.getCamera();
-        if (entity != null)
+        if (!selection.isSelecting() && !moving)
         {
-            final int x = UtilMath.getRounded(entity.getLocationIntX() - entity.getWidth() / 2, map.getTileWidth())
-                    - camera.getLocationIntX();
-            final int y = UtilMath.getRounded(entity.getLocationIntY(), map.getTileHeight()) - camera.getLocationIntY();
-            final Rectangle r1 = Geom.createRectangle(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle r2 = Geom.createRectangle(x, y, entity.getWidth(), entity.getHeight());
-            if (r1.intersects(r2))
+            if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
-                return true;
+                final int mx = UtilMath.getRounded(mouseX, tw);
+                final int my = UtilMath.getRounded(mouseY, th);
+
+                g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
+                g.drawRect(mx, my, tw, th, true);
             }
         }
-        return false;
     }
 
     /*
@@ -370,13 +310,26 @@ public final class WorldViewRenderer
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
+        click = mouseEvent.button;
 
         updateMouse(mx, my);
 
-        final EntityGame entity = getEntity(mx, my);
+        final EntityGame entity = entityControl.getEntity(mx, my);
+        if (!entityControl.getSelectedEnties(true).isEmpty())
+        {
+            if (entity == null)
+            {
+                entityControl.unSelectEntities();
+            }
+        }
         if (entity != null)
         {
-            entity.destroy();
+            entityControl.setEntitySelection(entity, true);
+        }
+        else if (entityControl.getSelectedEnties(true).isEmpty())
+        {
+            selection.reset();
+            selection.start(mx, my);
         }
     }
 
@@ -388,7 +341,19 @@ public final class WorldViewRenderer
 
         moving = false;
         updateMouse(mx, my);
-        placeEntity(mx, my);
+
+        entityControl.addEntity(mx, my);
+
+        selection.end(mx, my);
+        if (selection.isSelected())
+        {
+            entityControl.selectEntities(selection.getArea());
+        }
+        for (final EntityGame entity : entityControl.getSelectedEnties(false))
+        {
+            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
+        }
+        click = 0;
     }
 
     /*
@@ -401,6 +366,15 @@ public final class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
+        entityControl.updateMouseOver(mx, my);
+        if (entityControl.getSelectedEnties(true).isEmpty())
+        {
+            selection.update(mx, my);
+        }
+        if (click == Mouse.LEFT)
+        {
+            entityControl.updateDragging(mouseX, mouseY, mx, my);
+        }
         updateMouse(mx, my);
     }
 
