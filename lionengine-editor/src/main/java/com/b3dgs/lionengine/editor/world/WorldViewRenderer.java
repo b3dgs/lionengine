@@ -118,8 +118,6 @@ public final class WorldViewRenderer
     private int mouseX;
     /** Current vertical mouse location. */
     private int mouseY;
-    /** Moving entity flag. */
-    private boolean moving;
     /** Mouse click. */
     private int click;
 
@@ -170,6 +168,54 @@ public final class WorldViewRenderer
         WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
 
         updateRender();
+    }
+
+    /**
+     * Update the selection when clicking (select single entity, or unselect all previous).
+     * 
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    private void updateSelectionBefore(int mx, int my)
+    {
+        final EntityGame entity = entityControl.getEntity(mx, my);
+        final boolean empty = entityControl.getSelectedEnties().isEmpty();
+        selection.reset();
+
+        if (!empty && entity == null)
+        {
+            entityControl.unSelectEntities();
+            selection.start(mx, my);
+        }
+        else if (empty && entity != null)
+        {
+            entityControl.setEntitySelection(entity, true);
+            selection.start(mx, my);
+            selection.end(mx, my);
+        }
+        else
+        {
+            selection.start(mx, my);
+        }
+    }
+
+    /**
+     * Update the selection when releasing click (update the entities flags).
+     * 
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    private void updateSelectionAfter(int mx, int my)
+    {
+        selection.end(mx, my);
+        if (selection.isSelected())
+        {
+            entityControl.selectEntities(selection.getArea());
+        }
+        for (final EntityGame entity : entityControl.getSelectedEnties())
+        {
+            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
+        }
     }
 
     /**
@@ -262,7 +308,7 @@ public final class WorldViewRenderer
      */
     private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY)
     {
-        if (!selection.isSelecting() && !moving)
+        if (!selection.isSelecting() && !entityControl.isDragging())
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
@@ -312,25 +358,8 @@ public final class WorldViewRenderer
         final int my = mouseEvent.y;
         click = mouseEvent.button;
 
+        updateSelectionBefore(mx, my);
         updateMouse(mx, my);
-
-        final EntityGame entity = entityControl.getEntity(mx, my);
-        if (!entityControl.getSelectedEnties(true).isEmpty())
-        {
-            if (entity == null)
-            {
-                entityControl.unSelectEntities();
-            }
-        }
-        if (entity != null)
-        {
-            entityControl.setEntitySelection(entity, true);
-        }
-        else if (entityControl.getSelectedEnties(true).isEmpty())
-        {
-            selection.reset();
-            selection.start(mx, my);
-        }
     }
 
     @Override
@@ -339,20 +368,22 @@ public final class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        moving = false;
+        updateSelectionAfter(mx, my);
+
+        if (!selection.isSelected() && !entityControl.isDragging())
+        {
+            if (click == Mouse.LEFT)
+            {
+                entityControl.addEntity(mx, my);
+            }
+            else if (click == Mouse.RIGHT)
+            {
+                entityControl.removeEntity(mx, my);
+            }
+        }
+
         updateMouse(mx, my);
-
-        entityControl.addEntity(mx, my);
-
-        selection.end(mx, my);
-        if (selection.isSelected())
-        {
-            entityControl.selectEntities(selection.getArea());
-        }
-        for (final EntityGame entity : entityControl.getSelectedEnties(false))
-        {
-            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
-        }
+        entityControl.stopDragging();
         click = 0;
     }
 
@@ -367,13 +398,16 @@ public final class WorldViewRenderer
         final int my = mouseEvent.y;
 
         entityControl.updateMouseOver(mx, my);
-        if (entityControl.getSelectedEnties(true).isEmpty())
-        {
-            selection.update(mx, my);
-        }
         if (click == Mouse.LEFT)
         {
-            entityControl.updateDragging(mouseX, mouseY, mx, my);
+            if (entityControl.getSelectedEnties().isEmpty())
+            {
+                selection.update(mx, my);
+            }
+            if (!selection.isSelecting())
+            {
+                entityControl.updateDragging(mouseX, mouseY, mx, my);
+            }
         }
         updateMouse(mx, my);
     }

@@ -124,6 +124,14 @@ public class EntityControl
     }
 
     /**
+     * Stop the dragging.
+     */
+    public void stopDragging()
+    {
+        dragging = false;
+    }
+
+    /**
      * Add a new entity at the mouse location.
      * 
      * @param mx The mouse horizontal location.
@@ -184,7 +192,6 @@ public class EntityControl
             final int ex = UtilMath.getRounded((int) selectionArea.getMaxX(), map.getTileWidth());
             final int ey = UtilMath.getRounded(height - (int) selectionArea.getMaxY() - offy, th);
 
-            setEntitySelection(entity, false);
             if (hitEntity(entity, sx, sy, ex, ey))
             {
                 setEntitySelection(entity, true);
@@ -252,29 +259,26 @@ public class EntityControl
     public EntityGame getEntity(int mx, int my)
     {
         final MapTile<?, ?> map = model.getMap();
-        if (map != null)
+        final CameraGame camera = model.getCamera();
+        final int x = UtilMath.getRounded(mx, map.getTileWidth());
+        final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
+        for (final EntityGame entity : handlerEntity.list())
         {
-            final CameraGame camera = model.getCamera();
-            final int x = UtilMath.getRounded(mx, map.getTileWidth());
-            final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
-            for (final EntityGame entity : handlerEntity.list())
+            if (hitEntity(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
-                if (hitEntity(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
-                {
-                    return entity;
-                }
+                return entity;
             }
         }
+
         return null;
     }
 
     /**
      * Get the list of selected entities.
      * 
-     * @param first Get only the first element.
      * @return The selected entities.
      */
-    public List<EntityGame> getSelectedEnties(boolean first)
+    public List<EntityGame> getSelectedEnties()
     {
         final List<EntityGame> list = new ArrayList<>(0);
         for (final EntityGame entity : handlerEntity.list())
@@ -282,10 +286,6 @@ public class EntityControl
             if (isSelected(entity))
             {
                 list.add(entity);
-                if (first)
-                {
-                    return list;
-                }
             }
         }
         return list;

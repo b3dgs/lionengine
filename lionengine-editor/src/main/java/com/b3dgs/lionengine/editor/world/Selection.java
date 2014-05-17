@@ -43,6 +43,8 @@ public class Selection
     private int endX;
     /** Selection ending vertical location. */
     private int endY;
+    /** Selection started. */
+    private boolean started;
     /** Selecting flag. */
     private boolean selecting;
     /** Selected flag. */
@@ -64,20 +66,18 @@ public class Selection
      */
     public void start(int mx, int my)
     {
-        if (!isSelecting())
+        if (!isStarted())
         {
             final MapTile<?, ?> map = model.getMap();
-            if (map != null)
-            {
-                final int sx = UtilMath.getRounded(mx, map.getTileWidth());
-                final int sy = UtilMath.getRounded(my, map.getTileHeight());
-                startX = sx;
-                startY = sy;
-                endX = sx;
-                endY = sy;
-                selecting = true;
-                selected = false;
-            }
+            final int sx = UtilMath.getRounded(mx, map.getTileWidth());
+            final int sy = UtilMath.getRounded(my, map.getTileHeight());
+            startX = sx;
+            startY = sy;
+            endX = sx;
+            endY = sy;
+            started = true;
+            selecting = false;
+            selected = false;
         }
     }
 
@@ -89,11 +89,12 @@ public class Selection
      */
     public void update(int mx, int my)
     {
-        if (isSelecting())
+        if (isStarted())
         {
             final MapTile<?, ?> map = model.getMap();
             endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
             endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
+            started = true;
             selecting = true;
             selected = false;
         }
@@ -133,6 +134,7 @@ public class Selection
             endX = ex;
             endY = ey;
             selectionArea.set(startX, startY, endX - startX, endY - startY);
+            started = false;
             selecting = false;
             selected = true;
         }
@@ -148,7 +150,9 @@ public class Selection
         endX = -1;
         endY = -1;
         selectionArea.set(startX, startY, 0, 0);
+        started = false;
         selecting = false;
+        selected = false;
     }
 
     /**
@@ -178,6 +182,16 @@ public class Selection
     public Rectangle getArea()
     {
         return selectionArea;
+    }
+
+    /**
+     * Check if selection has been started.
+     * 
+     * @return <code>true</code> if started, <code>false</code> else.
+     */
+    public boolean isStarted()
+    {
+        return started;
     }
 
     /**
