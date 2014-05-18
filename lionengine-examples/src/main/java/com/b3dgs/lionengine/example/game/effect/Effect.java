@@ -46,8 +46,8 @@ abstract class Effect
     {
         super(setup);
         // Data are loaded from the XML file, depending of the type
-        final int framesHorizontal = getDataInteger("horizontal", "frames");
-        final int framesVertical = getDataInteger("vertical", "frames");
+        final int framesHorizontal = getDataInteger("horizontal", "lionengine:frames");
+        final int framesVertical = getDataInteger("vertical", "lionengine:frames");
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesHorizontal, framesVertical);
         sprite.load(false);
         sprite.scale(UtilRandom.getRandomInteger(75) + 50);

@@ -34,7 +34,7 @@ public final class FactoryEntity
         extends FactoryObjectGame<SetupSurfaceGame, Entity>
 {
     /** Directory name from our resources directory containing our entities. */
-    public static final String ENTITY_PATH = "entities";
+    public static final String ENTITY_PATH = "entity";
 
     /** Map reference. */
     public final Map map;

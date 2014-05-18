@@ -31,7 +31,7 @@ public final class FactoryProjectile
         extends FactoryObjectGame<SetupSurfaceGame, Projectile>
 {
     /** Directory name from our resources directory containing our entities. */
-    private static final String PROJECTILE_PATH = "projectiles";
+    private static final String PROJECTILE_PATH = "projectile";
 
     /**
      * Constructor.

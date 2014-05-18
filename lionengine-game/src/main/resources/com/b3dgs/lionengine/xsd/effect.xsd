@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+	<include schemaLocation="lionengine.xsd"></include>
+
+	<complexType name="effect">
+		<sequence>
+			<element ref="lionengine:surface" minOccurs="1" maxOccurs="1"></element>
+            <element ref="lionengine:frames" minOccurs="0" maxOccurs="1"></element>
+            <element ref="lionengine:animation" minOccurs="0" maxOccurs="unbounded"></element>
+			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
+		</sequence>
+	</complexType>
+
+	<element name="effect" type="lionengine:effect"></element>
+</schema>

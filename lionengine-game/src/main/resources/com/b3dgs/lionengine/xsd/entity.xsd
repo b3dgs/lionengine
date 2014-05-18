@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+	<include schemaLocation="lionengine.xsd"></include>
+
+	<complexType name="entity">
+		<sequence minOccurs="1" maxOccurs="1">
+			<element ref="lionengine:surface" minOccurs="1" maxOccurs="1"></element>
+			<element ref="lionengine:frames" minOccurs="0" maxOccurs="1"></element>
+			<choice minOccurs="0" maxOccurs="1"><element ref="lionengine:size" minOccurs="0" maxOccurs="1"></element><element ref="lionengine:tileSize" minOccurs="0" maxOccurs="1"></element></choice>
+			<element ref="lionengine:collision" minOccurs="0" maxOccurs="unbounded"></element>
+			<element ref="lionengine:animation" minOccurs="0" maxOccurs="unbounded"></element>
+			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
+        </sequence>
+
+	</complexType>
+
+	<complexType name="tileSize">
+		<attribute name="widthInTile" type="int" use="required"></attribute>
+		<attribute name="heightInTile" type="int" use="required"></attribute>
+	</complexType>
+
+	<element name="entity" type="lionengine:entity"></element>
+
+	<element name="tileSize" type="lionengine:tileSize"></element>
+</schema>

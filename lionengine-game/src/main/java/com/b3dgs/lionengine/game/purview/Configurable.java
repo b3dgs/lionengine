@@ -45,6 +45,14 @@ public interface Configurable
     XmlNode getDataRoot();
 
     /**
+     * Get the node text value.
+     * 
+     * @param path The node path.
+     * @return The node text value.
+     */
+    String getText(String... path);
+
+    /**
      * Get a string in the xml tree.
      * 
      * @param attribute The attribute to get as string.

@@ -69,8 +69,8 @@ final class Scene
     private void importAndSave()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("smb_level1-1.png"), Core.MEDIA.create("tiles"), map);
-        try (FileWriting file = File.createFileWriting(Core.MEDIA.create("smb_level1-1.lvl"));)
+        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
+        try (FileWriting file = File.createFileWriting(Core.MEDIA.create("level.lvl"));)
         {
             map.save(file);
         }
@@ -88,7 +88,7 @@ final class Scene
     protected void load()
     {
         importAndSave();
-        try (FileReading reading = File.createFileReading(Core.MEDIA.create("smb_level1-1.lvl"));)
+        try (FileReading reading = File.createFileReading(Core.MEDIA.create("level.lvl"));)
         {
             map.load(reading);
         }

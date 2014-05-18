@@ -82,8 +82,8 @@ public class SetupSurfaceRasteredGame
         if (rasterFile != null)
         {
             rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
-            hf = configurable.getDataInteger("horizontal", "frames");
-            vf = configurable.getDataInteger("vertical", "frames");
+            hf = configurable.getDataInteger("horizontal", "lionengine:frames");
+            vf = configurable.getDataInteger("vertical", "lionengine:frames");
             frameHeight = surface.getHeight() / vf;
             loadRasters();
         }

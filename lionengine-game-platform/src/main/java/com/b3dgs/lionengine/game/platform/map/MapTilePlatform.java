@@ -396,11 +396,11 @@ public abstract class MapTilePlatform<C extends Enum<C> & CollisionTile, T exten
 
         final XmlParser xml = File.createXmlParser();
         final XmlNode root = xml.load(media);
-        final List<XmlNode> collisions = root.getChildren("collision");
+        final List<XmlNode> collisions = root.getChildren("lionengine:tileCollision");
         for (final XmlNode node : collisions)
         {
             final C collision = getCollisionFrom(node.readString("name"));
-            for (final XmlNode functionNode : node.getChildren("function"))
+            for (final XmlNode functionNode : node.getChildren("lionengine:function"))
             {
                 loadCollisionFunction(collision, functionNode);
             }

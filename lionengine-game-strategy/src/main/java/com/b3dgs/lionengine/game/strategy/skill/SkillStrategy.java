@@ -74,8 +74,8 @@ public abstract class SkillStrategy
     public SkillStrategy(SetupGame setup)
     {
         super(setup);
-        name = getDataString("name");
-        description = getDataString("description");
+        name = getText("name");
+        description = getText("description");
         level = 1;
         priority = 0;
         ignore = false;

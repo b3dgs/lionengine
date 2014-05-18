@@ -109,21 +109,21 @@ public abstract class EntityStrategy
         final String configFile = setup.configFile.getPath();
 
         // Horizontal frames
-        final int hf = getDataInteger("horizontal", "frames");
+        final int hf = getDataInteger("horizontal", "lionengine:frames");
         Check.argument(hf > 0, "The horizontal frames number is missing: \"", configFile, "\"");
 
         // Vertical frames
-        final int vf = getDataInteger("vertical", "frames");
+        final int vf = getDataInteger("vertical", "lionengine:frames");
         Check.argument(vf > 0, "The vertical frames number is missing: \"", configFile, "\"");
 
         // Size
-        final int width = getDataInteger("widthInTile", "size") * map.getTileWidth();
-        final int height = getDataInteger("heightInTile", "size") * map.getTileHeight();
+        final int width = getDataInteger("widthInTile", "lionengine:tileSize") * map.getTileWidth();
+        final int height = getDataInteger("heightInTile", "lionengine:tileSize") * map.getTileHeight();
         Check.argument(width > 0 && height > 0, "The surface size is missing: \"", configFile, "\"");
 
         // Offset
-        offsetX = getDataInteger("x", "offset");
-        offsetY = getDataInteger("y", "offset");
+        offsetX = getDataInteger("x", "lionengine:offset");
+        offsetY = getDataInteger("y", "lionengine:offset");
 
         // Surface
         Check.notNull(setup.surface, "Missing surface file from the setup: \"", setup.surfaceFile.getPath(), "\"");

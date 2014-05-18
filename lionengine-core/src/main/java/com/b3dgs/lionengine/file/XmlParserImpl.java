@@ -127,6 +127,7 @@ final class XmlParserImpl
             final Transformer transformer = XmlParserImpl.getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
             {
+                root.writeString("xmlns:lionengine", "http://lionengine.b3dgs.com");
                 final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");

@@ -29,7 +29,7 @@ final class FactoryEntity
         extends FactoryObjectGame<SetupEntity, Entity>
 {
     /** Main entity directory name. */
-    private static final String ENTITY_DIR = "entities";
+    private static final String ENTITY_DIR = "entity";
 
     /** Map. */
     private final Map map;

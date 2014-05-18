@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+	<icon>ProducePeon.png</icon>
+	<name>Produce Peon</name>
+	<description>Produce a Peon</description>
+</lionengine:skill>

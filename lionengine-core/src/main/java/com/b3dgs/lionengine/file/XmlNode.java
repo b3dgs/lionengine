@@ -53,6 +53,13 @@ public interface XmlNode
     void add(XmlNode node);
 
     /**
+     * Set the text inside the node.
+     * 
+     * @param text The text content.
+     */
+    void setText(String text);
+
+    /**
      * Write a byte.
      * 
      * @param attribute The attribute name.

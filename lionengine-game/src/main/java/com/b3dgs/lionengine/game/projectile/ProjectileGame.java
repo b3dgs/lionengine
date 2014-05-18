@@ -75,10 +75,10 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     {
         super(setup);
         damages = new Damages();
-        final int width = setup.configurable.getDataInteger("width", "size");
-        final int height = setup.configurable.getDataInteger("height", "size");
+        final int width = setup.configurable.getDataInteger("width", "lionengine:size");
+        final int height = setup.configurable.getDataInteger("height", "lionengine:size");
         setSize(width, height);
-        this.id = -1;
+        id = -1;
         owner = null;
         delay = new Timing();
     }

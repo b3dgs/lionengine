@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:surface image="GoldMine.png"/>
+	<lionengine:frames horizontal="1" vertical="1"/>
+	<lionengine:tileSize widthInTile="3" heightInTile="3"/>
+	<lionengine:offset x="0" y="0"/>
+	<attributes life="1000" fov="3"/>
+	<cost steps="5" gold="500" wood="100"/>
+</lionengine:entity>

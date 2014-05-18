@@ -35,7 +35,7 @@ final class MyObject
      */
     MyObject()
     {
-        super(new SetupGame(Core.MEDIA.create("my_object.xml")));
+        super(new SetupGame(Core.MEDIA.create("MyObject.xml")));
     }
 
     /**

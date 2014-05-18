@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
  * Setup skill implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @author Pierre-Alexandre
  */
 final class SetupSkill
         extends SetupSkillStrategy
@@ -53,8 +52,8 @@ final class SetupSkill
         super(config);
         this.factoryProduction = factoryProduction;
         this.cursor = cursor;
-        icon = Drawable.loadSpriteTiled(Core.MEDIA.create(FactorySkill.SKILL_PATH, configurable.getDataString("icon")),
-                27, 19);
+        final Media media = Core.MEDIA.create(FactorySkill.SKILL_PATH, configurable.getText("icon"));
+        icon = Drawable.loadSpriteTiled(media, 27, 19);
         icon.load(false);
     }
 }

@@ -18,9 +18,22 @@
 package com.b3dgs.lionengine;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import javax.xml.XMLConstants;
+import javax.xml.bind.ValidationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.xml.sax.SAXException;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -258,35 +271,41 @@ public final class UtilFile
      * @param extension The extension (without dot; eg: png).
      * @return The files list.
      */
-    public static String[] getFilesByExtension(String path, String extension)
+    public static List<File> getFilesByExtension(String path, String extension)
+    {
+        final List<File> filesList = new ArrayList<>(1);
+        UtilFile.getFilesByExtensionRecursive(filesList, path, extension);
+        return filesList;
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     */
+    private static void getFilesByExtensionRecursive(List<File> filesList, String path, String extension)
     {
         final File file = new File(path);
-        if (!file.exists())
+        if (file.exists())
         {
-            return new String[0];
-        }
-
-        final File[] files = file.listFiles();
-        int numberOfFiles = 0;
-        for (final File file2 : files)
-        {
-            if (file2.isFile() && UtilFile.getExtension(file2).equals(extension))
+            final File[] files = file.listFiles();
+            if (files != null)
             {
-                numberOfFiles++;
+                for (final File content : files)
+                {
+                    if (content.isDirectory())
+                    {
+                        UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                    }
+                    if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
+                    {
+                        filesList.add(content);
+                    }
+                }
             }
         }
-
-        final String[] filesList = new String[numberOfFiles];
-        for (int i = 0, id = 0; i < files.length; i++)
-        {
-            if (files[i].isFile() && UtilFile.getExtension(files[i]).equals(extension))
-            {
-                filesList[id] = files[i].getName();
-                id++;
-            }
-        }
-
-        return filesList;
     }
 
     /**
@@ -400,6 +419,31 @@ public final class UtilFile
         else
         {
             UtilFile.tmpDir = null;
+        }
+    }
+
+    /**
+     * Check if the XML is valid, regarding the XSD file.
+     * 
+     * @param xsd The XSD file.
+     * @param xml The XML file.
+     * @throws ValidationException If an error occurred when validating the XML.
+     */
+    public static void validateXml(URI xsd, File xml) throws ValidationException
+    {
+        try
+        {
+            final URL schemaFile = xsd.toURL();
+            final Source xmlFile = new StreamSource(xml);
+            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final Schema schema = schemaFactory.newSchema(schemaFile);
+            final Validator validator = schema.newValidator();
+            validator.validate(xmlFile);
+        }
+        catch (final SAXException
+                     | IOException exception)
+        {
+            throw new ValidationException(exception);
         }
     }
 

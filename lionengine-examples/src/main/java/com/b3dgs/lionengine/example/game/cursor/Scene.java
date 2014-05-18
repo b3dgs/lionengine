@@ -53,6 +53,7 @@ final class Scene
         super(loader, new Resolution(320, 240, 60));
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
+        mouse.setConfig(getConfig());
         cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor", "cursor1.png"),
                 Core.MEDIA.create("cursor", "cursor2.png"));
         setSystemCursorVisible(false);

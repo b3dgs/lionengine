@@ -31,7 +31,7 @@ public final class FactorySkill
         extends FactoryObjectGame<SetupSkill, Skill>
 {
     /** Directory name from our resources directory containing our skills. */
-    public static final String SKILL_PATH = "skills";
+    public static final String SKILL_PATH = "skill";
     /** Production factory. */
     private final FactoryProduction factoryProduction;
     /** Cursor cursor. */

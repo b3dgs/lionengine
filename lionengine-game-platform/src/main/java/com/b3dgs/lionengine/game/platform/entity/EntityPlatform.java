@@ -81,10 +81,10 @@ public abstract class EntityPlatform
     {
         super(setup);
         tileCollisions = new HashMap<>(1);
-        final int hf = setup.configurable.getDataInteger("horizontal", "frames");
-        final int vf = setup.configurable.getDataInteger("vertical", "frames");
-        final int width = setup.configurable.getDataInteger("width", "size");
-        final int height = setup.configurable.getDataInteger("height", "size");
+        final int hf = setup.configurable.getDataInteger("horizontal", "lionengine:frames");
+        final int vf = setup.configurable.getDataInteger("vertical", "lionengine:frames");
+        final int width = setup.configurable.getDataInteger("width", "lionengine:size");
+        final int height = setup.configurable.getDataInteger("height", "lionengine:size");
         sprite = Drawable.loadSpriteAnimated(setup.surface, hf, vf);
         frameOffsetX = 0;
         frameOffsetY = 0;

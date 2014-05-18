@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+	<include schemaLocation="lionengine.xsd"></include>
+
+	<complexType name="tileCollisions">
+		<sequence>
+			<element ref="lionengine:tileCollision" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="tileCollision">
+		<sequence>
+			<choice>
+				<element ref="lionengine:tile" minOccurs="0" maxOccurs="1"></element>
+				<element ref="lionengine:tiles" minOccurs="0" maxOccurs="1"></element>
+			</choice>
+			<element ref="lionengine:function" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+		<attribute name="name" type="string" use="required"></attribute>
+	</complexType>
+
+	<element name="tileCollision" type="lionengine:tileCollision"></element>
+
+    <element name="tileCollisions" type="lionengine:tileCollisions"></element>
+
+    <complexType name="tile">
+    	<attribute name="number" type="int" use="required"></attribute>
+    	<attribute name="pattern" type="int" use="required"></attribute>
+    </complexType>
+
+    <complexType name="function">
+        <attribute name="name" type="string" use="required"></attribute>
+        <attribute name="axis" type="lionengine:axis" use="required"></attribute>
+    	<attribute name="input" type="lionengine:input" use="required"></attribute>
+    	<attribute name="min" type="int" use="required"></attribute>
+    	<attribute name="max" type="int" use="required"></attribute>
+    	<attribute name="offset" type="int" use="required"></attribute>
+    	<attribute name="value" type="double" use="required"></attribute>
+    </complexType>
+
+    <simpleType name="axis">
+    	<restriction base="string">
+    		<enumeration value="X"></enumeration>
+    		<enumeration value="Y"></enumeration>
+    	</restriction>
+    </simpleType>
+
+    <simpleType name="input">
+    	<restriction base="string">
+    		<enumeration value="X"></enumeration>
+    		<enumeration value="Y"></enumeration>
+    	</restriction>
+    </simpleType>
+
+    <complexType name="tiles">
+    	<attribute name="pattern" type="int" use="required"></attribute>
+    	<attribute name="start" type="int" use="required"></attribute>
+    	<attribute name="end" type="int" use="required"></attribute>
+    </complexType>
+
+    <element name="tile" type="lionengine:tile"></element>
+
+    <element name="tiles" type="lionengine:tiles"></element>
+
+    <element name="axis" type="lionengine:axis"></element>
+
+    <element name="input" type="lionengine:input"></element>
+
+    <element name="function" type="lionengine:function"></element>
+</schema>

@@ -39,7 +39,7 @@ public final class FactoryWeapon
      */
     public FactoryWeapon(FactoryLauncher factoryLauncher)
     {
-        super("weapons");
+        super("weapon");
         this.factoryLauncher = factoryLauncher;
     }
 

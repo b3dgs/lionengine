@@ -72,8 +72,8 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tiles"), map);
-        map.loadCollisions(Core.MEDIA.create("tiles", "collisions.xml"));
+        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
+        map.loadCollisions(Core.MEDIA.create("tile", "collisions.xml"));
 
         camera.setLimits(map);
         camera.setIntervals(16, 0);

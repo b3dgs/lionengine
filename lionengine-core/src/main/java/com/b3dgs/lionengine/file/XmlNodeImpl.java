@@ -144,6 +144,12 @@ final class XmlNodeImpl
     }
 
     @Override
+    public void setText(String text)
+    {
+        root.setTextContent(text);
+    }
+
+    @Override
     public void writeBoolean(String attribute, boolean content)
     {
         Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);

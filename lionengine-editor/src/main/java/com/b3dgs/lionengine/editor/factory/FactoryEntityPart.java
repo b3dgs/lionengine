@@ -308,7 +308,7 @@ public class FactoryEntityPart
         final Project project = Project.getActive();
         final File classesPath = project.getClassesPath();
         final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
-    
+
         // TODO handle the case when there is multiple class with the same name
         if (classNames.size() == 1)
         {

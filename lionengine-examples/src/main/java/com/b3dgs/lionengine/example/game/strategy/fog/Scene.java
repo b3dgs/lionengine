@@ -82,7 +82,7 @@ final class Scene
     protected void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tiles"), map);
+        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
         fogOfWar.create(map);
 
         camera.setView(0, 0, getWidth(), getHeight());

@@ -126,6 +126,12 @@ public abstract class ObjectGame
     }
 
     @Override
+    public String getText(String... path)
+    {
+        return configurable.getText(path);
+    }
+
+    @Override
     public String getDataString(String attribute, String... path)
     {
         return configurable.getDataString(attribute, path);

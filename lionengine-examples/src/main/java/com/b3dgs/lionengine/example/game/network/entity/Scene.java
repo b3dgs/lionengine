@@ -51,7 +51,7 @@ final class Scene
         keyboard = getInputDevice(Keyboard.class);
         setExtrapolated(true); // Recommended for network game
 
-        final boolean server = false;
+        final boolean server = true;
 
         if (server)
         {
@@ -75,7 +75,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Core.MEDIA.create("smb_level1-1.lvl"));
+        world.loadFromFile(Core.MEDIA.create("level.lvl"));
     }
 
     @Override

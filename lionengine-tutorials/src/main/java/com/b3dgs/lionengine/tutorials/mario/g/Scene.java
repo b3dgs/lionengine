@@ -54,7 +54,7 @@ final class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         world = new World(this);
-        music = AudioMidi.loadMidi(Core.MEDIA.create("musics", "music.mid"));
+        music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
     }
 
     /*
@@ -64,7 +64,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Core.MEDIA.create("smb_level1-1.lvl"));
+        world.loadFromFile(Core.MEDIA.create("level.lvl"));
         music.play(true);
     }
 

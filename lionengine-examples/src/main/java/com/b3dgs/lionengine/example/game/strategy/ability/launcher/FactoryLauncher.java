@@ -43,7 +43,7 @@ public final class FactoryLauncher
      */
     public FactoryLauncher(FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
     {
-        super("launchers");
+        super("launcher");
         this.factoryProjectile = factoryProjectile;
         this.handlerProjectile = handlerProjectile;
     }

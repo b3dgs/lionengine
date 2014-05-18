@@ -108,14 +108,14 @@ public class ConfigurableModel
     {
         final XmlParser parser = File.createXmlParser();
         root = parser.load(media);
-        for (final XmlNode node : root.getChildren("animation"))
+        for (final XmlNode node : root.getChildren("lionengine:animation"))
         {
             final String anim = node.readString("name");
             final Animation animation = Anim.createAnimation(node.readInteger("start"), node.readInteger("end"),
                     node.readDouble("speed"), node.readBoolean("reversed"), node.readBoolean("repeat"));
             animations.put(anim, animation);
         }
-        for (final XmlNode node : root.getChildren("collision"))
+        for (final XmlNode node : root.getChildren("lionengine:collision"))
         {
             final String coll = node.readString("name");
             final CollisionData collision = new CollisionData(node.readInteger("offsetX"), node.readInteger("offsetY"),
@@ -128,6 +128,24 @@ public class ConfigurableModel
     public XmlNode getDataRoot()
     {
         return root;
+    }
+
+    @Override
+    public String getText(String... path)
+    {
+        XmlNode node = root;
+        for (final String element : path)
+        {
+            try
+            {
+                node = node.getChild(element);
+            }
+            catch (final XmlNodeNotFoundException exception)
+            {
+                throw new LionEngineException(exception, "The following node was not found: ", element);
+            }
+        }
+        return node.getText();
     }
 
     /**

@@ -86,13 +86,12 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
             final int pattern = tile.readInteger("pattern");
             int start = -1;
             int end = -1;
-
-            if ("tiles".equals(category))
+            if ("lionengine:tiles".equals(category))
             {
                 start = tile.readInteger("start");
                 end = tile.readInteger("end");
             }
-            else if ("tile".equals(category))
+            else if ("lionengine:tile".equals(category))
             {
                 start = tile.readInteger("number");
                 end = start;
@@ -245,13 +244,13 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         {
             final String name = collision.readString("name");
 
-            String found = MapTileGame.searchCollision(collision, name, "tiles", tilePattern, tileNumber);
+            String found = MapTileGame.searchCollision(collision, name, "lionengine:tiles", tilePattern, tileNumber);
             if (found != null)
             {
                 return found;
             }
 
-            found = MapTileGame.searchCollision(collision, name, "tile", tilePattern, tileNumber);
+            found = MapTileGame.searchCollision(collision, name, "lionengine:tile", tilePattern, tileNumber);
             if (found != null)
             {
                 return found;

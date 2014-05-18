@@ -49,7 +49,7 @@ public class FactoryEntity
      */
     public FactoryEntity(Map map, FactorySkill factorySkill, HandlerEntity handlerEntity, int desiredFps)
     {
-        super("entities");
+        super("entity");
         this.map = map;
         this.factorySkill = factorySkill;
         this.handlerEntity = handlerEntity;

@@ -69,7 +69,7 @@ public enum ProjectsModel
     /**
      * Get the selected resource.
      * 
-     * @return The selected resource.
+     * @return The selected resource, <code>null</code> if none.
      */
     public Media getSelection()
     {

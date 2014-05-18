@@ -71,6 +71,12 @@
                property="com.b3dgs.lionengine.editor.resourceExtensionTester.factory_entity_impl">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.entities-folder.test">
+         <test
+               property="com.b3dgs.lionengine.editor.entitiesFolderTester.test">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -85,6 +91,13 @@
             class="com.b3dgs.lionengine.editor.project.MapImplementationTester"
             id="com.b3dgs.lionengine.editor.mapImplementationTester"
             namespace="com.b3dgs.lionengine.editor.mapImplementationTester"
+            properties="test"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
+            id="com.b3dgs.lionengine.editor.entitiesFolderTester"
+            namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
             properties="test"
             type="java.lang.Object">
       </propertyTester>

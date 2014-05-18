@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+	<include schemaLocation="lionengine.xsd"></include>
+
+
+
+	<complexType name="patterns">
+		<sequence>
+			<element name="pattern" type="string" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<element name="patterns" type="lionengine:patterns"></element>
+</schema>

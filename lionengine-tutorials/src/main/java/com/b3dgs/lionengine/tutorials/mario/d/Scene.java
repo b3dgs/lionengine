@@ -59,7 +59,7 @@ final class Scene
     @Override
     protected void load()
     {
-        world.loadFromFile(Core.MEDIA.create("smb_level1-1.lvl"));
+        world.loadFromFile(Core.MEDIA.create("level.lvl"));
     }
 
     @Override

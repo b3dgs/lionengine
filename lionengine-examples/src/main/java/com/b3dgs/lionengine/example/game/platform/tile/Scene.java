@@ -77,14 +77,14 @@ final class Scene
     protected void load()
     {
         map.create(20, 15);
-        map.loadPatterns(Core.MEDIA.create("tiles"));
+        map.loadPatterns(Core.MEDIA.create("tile"));
         map.createBlock(5, 7);
         map.createBlock(5, 8);
         map.createBlock(5, 9);
         map.createBlock(6, 7);
         map.createBlock(7, 7);
         map.createBlock(6, 8);
-        map.loadCollisions(Core.MEDIA.create("tiles", "collisions.xml"));
+        map.loadCollisions(Core.MEDIA.create("tile", "collisions.xml"));
 
         entityRef.setLocation(192, 112);
         camera.setLimits(map);

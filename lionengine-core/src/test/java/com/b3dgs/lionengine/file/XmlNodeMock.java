@@ -60,6 +60,12 @@ final class XmlNodeMock
     }
 
     @Override
+    public void setText(String text)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public boolean readBoolean(String attribute)
     {
         return false;

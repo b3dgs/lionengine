@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+	<icon>StopOrc.png</icon>
+	<name>Stop</name>
+	<description>Stop any action</description>
+</lionengine:skill>

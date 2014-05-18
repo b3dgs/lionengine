@@ -44,8 +44,8 @@ abstract class Projectile
     Projectile(SetupSurfaceGame setup)
     {
         super(setup);
-        final int width = getDataInteger("width", "size");
-        final int height = getDataInteger("height", "size");
+        final int width = getDataInteger("width", "lionengine:size");
+        final int height = getDataInteger("height", "lionengine:size");
         sprite = Drawable.loadSprite(setup.surface);
         setSize(width, height);
         setCollision(new CollisionData(getWidth(), -getHeight() / 2, 1, 1, false));
