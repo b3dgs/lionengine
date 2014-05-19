@@ -30,13 +30,18 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.xsd.XsdLoader;
 
 /**
- * Test is the folder contains entities.
+ * Test if the folder contains entities.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EntitiesFolderTester
         extends PropertyTester
 {
+    /** Can edit category property. */
+    private static final String PROPERTY_CATEGORY = "category";
+    /** Can add entity property. */
+    private static final String PROPERTY_ADD_ENTITY = "addEntity";
+
     /**
      * Check if the file is an entity descriptor.
      * 
@@ -56,6 +61,54 @@ public class EntitiesFolderTester
         }
     }
 
+    /**
+     * Check if can edit property folder.
+     * 
+     * @param selection The selected folder.
+     * @return <code>true</code> if can edit, <code>false</code> else.
+     */
+    private static boolean canEditProperty(Media selection)
+    {
+        final boolean hasFolders = UtilFile.getDirsList(selection.getFile().getPath()).length != 0;
+        if (hasFolders)
+        {
+            final List<File> files = UtilFile.getFilesByExtension(selection.getFile().getPath(),
+                    FactoryObjectGame.FILE_DATA_EXTENSION);
+            for (final File file : files)
+            {
+
+                if (EntitiesFolderTester.isEntityFile(file))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if can add entity in the selected folder.
+     * 
+     * @param selection The selected folder.
+     * @return <code>true</code> if can add entity, <code>false</code> else.
+     */
+    private static boolean canAddEntity(Media selection)
+    {
+        final File file = selection.getFile();
+        if (file.isDirectory())
+        {
+            final File parent = file.getParentFile();
+            for (final File current : parent.listFiles())
+            {
+                if (current.isFile() && "type.xml".equals(current.getName()))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /*
      * PropertyTester
      */
@@ -69,19 +122,13 @@ public class EntitiesFolderTester
             final Media selection = ProjectsModel.INSTANCE.getSelection();
             if (selection != null)
             {
-                final boolean hasFolders = UtilFile.getDirsList(selection.getFile().getPath()).length != 0;
-                if (hasFolders)
+                if (EntitiesFolderTester.PROPERTY_CATEGORY.equals(property))
                 {
-                    final List<File> files = UtilFile.getFilesByExtension(selection.getFile().getPath(),
-                            FactoryObjectGame.FILE_DATA_EXTENSION);
-                    for (final File file : files)
-                    {
-
-                        if (EntitiesFolderTester.isEntityFile(file))
-                        {
-                            return true;
-                        }
-                    }
+                    return EntitiesFolderTester.canEditProperty(selection);
+                }
+                else if (EntitiesFolderTester.PROPERTY_ADD_ENTITY.equals(property))
+                {
+                    return EntitiesFolderTester.canAddEntity(selection);
                 }
             }
         }

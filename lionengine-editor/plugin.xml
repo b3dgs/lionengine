@@ -72,9 +72,15 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.entities-folder.test">
+            id="com.b3dgs.lionengine.editor.entities-folder.category">
          <test
-               property="com.b3dgs.lionengine.editor.entitiesFolderTester.test">
+               property="com.b3dgs.lionengine.editor.entitiesFolderTester.category">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.entities-folder.addEntity">
+         <test
+               property="com.b3dgs.lionengine.editor.entitiesFolderTester.addEntity">
          </test>
       </definition>
    </extension>
@@ -98,7 +104,7 @@
             class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
             namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            properties="test"
+            properties="category,addEntity"
             type="java.lang.Object">
       </propertyTester>
    </extension>

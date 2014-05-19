@@ -10,6 +10,7 @@
               <handlers xmi:id="_g5Iq8NYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.handler.import-map" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ImportMapHandler" command="_eZdjgNYnEeOeyYQS2e8NDg"/>
               <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-entity-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AssignFactoryEntityImplementationHandler" command="_N5Z3INe_EeOk36N_MMz9Rw"/>
               <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-entities-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntitiesFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
+              <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-map-impl.png" command="_KK_5cNVTEeObvtSGPT134w">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
@@ -20,8 +21,11 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_VJ2l8Ne_EeOk36N_MMz9Rw" elementId="" label="%menu.assign-factory-entity-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-factory-entity-impl.png" command="_N5Z3INe_EeOk36N_MMz9Rw">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VJ2l8de_EeOk36N_MMz9Rw" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_entity_impl"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_DGxNwN3PEeO_c9lVVTo_Qg" elementId="" label="%menu.edit-entities-folder-type" iconURI="" command="_Qh1EsN3PEeO_c9lVVTo_Qg">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_DGxNwd3PEeO_c9lVVTo_Qg" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.test"/>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_DGxNwN3PEeO_c9lVVTo_Qg" elementId="" label="%menu.edit-entities-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-type-folder.png" command="_Qh1EsN3PEeO_c9lVVTo_Qg">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_DGxNwd3PEeO_c9lVVTo_Qg" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.category"/>
+                </children>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_cFI5gN7EEeOqxIeqTKywZw" elementId="" label="%menu.add-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/add-entity.png" command="_ifUHoN7EEeOqxIeqTKywZw">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_QtbvgN7GEeOqxIeqTKywZw" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.addEntity"/>
                 </children>
               </menus>
             </children>
@@ -77,6 +81,7 @@
   <commands xmi:id="_eZdjgNYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.command.import-map" commandName="importMapCommand"/>
   <commands xmi:id="_N5Z3INe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.command.assign-factory-entity-impl" commandName="assignFactoryEntityImplementationCommand"/>
   <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-entities-folder-type" commandName="editEntitiesFolderTypeCommand"/>
+  <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
