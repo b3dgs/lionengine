@@ -41,6 +41,8 @@ public class EntitiesFolderTester
     private static final String PROPERTY_CATEGORY = "category";
     /** Can add entity property. */
     private static final String PROPERTY_ADD_ENTITY = "addEntity";
+    /** Is entity property. */
+    private static final String PROPERTY_IS_ENTITY = "isEntity";
 
     /**
      * Check if the file is an entity descriptor.
@@ -76,7 +78,6 @@ public class EntitiesFolderTester
                     FactoryObjectGame.FILE_DATA_EXTENSION);
             for (final File file : files)
             {
-
                 if (EntitiesFolderTester.isEntityFile(file))
                 {
                     return true;
@@ -109,6 +110,18 @@ public class EntitiesFolderTester
         return false;
     }
 
+    /**
+     * Check if is entity in the selected folder.
+     * 
+     * @param selection The selected folder.
+     * @return <code>true</code> if can add entity, <code>false</code> else.
+     */
+    private static boolean isEntity(Media selection)
+    {
+        final File file = selection.getFile();
+        return EntitiesFolderTester.isEntityFile(file);
+    }
+
     /*
      * PropertyTester
      */
@@ -129,6 +142,10 @@ public class EntitiesFolderTester
                 else if (EntitiesFolderTester.PROPERTY_ADD_ENTITY.equals(property))
                 {
                     return EntitiesFolderTester.canAddEntity(selection);
+                }
+                else if (EntitiesFolderTester.PROPERTY_IS_ENTITY.equals(property))
+                {
+                    return EntitiesFolderTester.isEntity(selection);
                 }
             }
         }

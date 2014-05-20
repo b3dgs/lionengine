@@ -5,7 +5,7 @@
 
 	<complexType name="entity">
 		<sequence minOccurs="1" maxOccurs="1">
-			<element ref="lionengine:surface" minOccurs="1" maxOccurs="1"></element>
+			<element ref="lionengine:surface" minOccurs="0" maxOccurs="1"></element>
 			<element ref="lionengine:frames" minOccurs="0" maxOccurs="1"></element>
 			<choice minOccurs="0" maxOccurs="1"><element ref="lionengine:size" minOccurs="0" maxOccurs="1"></element><element ref="lionengine:tileSize" minOccurs="0" maxOccurs="1"></element></choice>
 			<element ref="lionengine:collision" minOccurs="0" maxOccurs="unbounded"></element>
