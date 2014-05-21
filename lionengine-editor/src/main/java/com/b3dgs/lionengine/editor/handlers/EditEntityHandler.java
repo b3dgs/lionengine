@@ -22,6 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.dialogs.EntityEditDialog;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 
 /**
@@ -41,6 +42,7 @@ public class EditEntityHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        // TODO edit the entity, animation editor...
+        final EntityEditDialog entityEditDialog = new EntityEditDialog(parent, selection);
+        entityEditDialog.open();
     }
 }

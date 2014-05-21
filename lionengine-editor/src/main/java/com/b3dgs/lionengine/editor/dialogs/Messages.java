@@ -87,6 +87,12 @@ public class Messages
     public static String ImportMapDialog_FileFilter;
     /** Error patterns. */
     public static String ImportMapDialog_ErrorPatterns;
+    /** Edit entity dialog title. */
+    public static String EditEntityDialog_Title;
+    /** Edit entity dialog title header. */
+    public static String EditEntityDialog_HeaderTitle;
+    /** Edit entity dialog description header. */
+    public static String EditEntityDialog_HeaderDesc;
     /** About. */
     public static String AboutDialog_Title;
 
