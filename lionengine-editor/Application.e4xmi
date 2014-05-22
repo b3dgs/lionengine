@@ -30,7 +30,7 @@
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_QtbvgN7GEeOqxIeqTKywZw" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.addEntity"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_pBAAoN9AEeOIN7-STHd0gQ" elementId="" label="%menu.edit-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-entity.png" command="_mRrToN9AEeOIN7-STHd0gQ">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pBAAod9AEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.isEntity"/>
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pBAAod9AEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.editEntity"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_W93V4N9BEeOIN7-STHd0gQ" elementId="" label="%menu.remove-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/remove-entity.png" command="_kUCs0N9BEeOIN7-STHd0gQ">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_W93V4d9BEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.isEntity"/>

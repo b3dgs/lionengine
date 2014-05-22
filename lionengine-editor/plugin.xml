@@ -89,6 +89,12 @@
                property="com.b3dgs.lionengine.editor.entitiesFolderTester.isEntity">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.entities-folder.editEntity">
+         <test
+               property="com.b3dgs.lionengine.editor.entitiesFolderTester.editEntity">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -110,7 +116,7 @@
             class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
             namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            properties="category,addEntity,isEntity"
+            properties="category,addEntity,isEntity,editEntity"
             type="java.lang.Object">
       </propertyTester>
    </extension>

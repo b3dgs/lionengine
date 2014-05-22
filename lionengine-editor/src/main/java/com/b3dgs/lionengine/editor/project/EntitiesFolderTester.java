@@ -26,6 +26,7 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.xsd.XsdLoader;
 
@@ -43,6 +44,8 @@ public class EntitiesFolderTester
     private static final String PROPERTY_ADD_ENTITY = "addEntity";
     /** Is entity property. */
     private static final String PROPERTY_IS_ENTITY = "isEntity";
+    /** Can edit entity property. */
+    private static final String PROPERTY_EDIT_ENTITY = "editEntity";
 
     /**
      * Check if the file is an entity descriptor.
@@ -122,6 +125,17 @@ public class EntitiesFolderTester
         return EntitiesFolderTester.isEntityFile(file);
     }
 
+    /**
+     * Check if is entity in the selected folder.
+     * 
+     * @param selection The selected folder.
+     * @return <code>true</code> if can add entity, <code>false</code> else.
+     */
+    private static boolean canEditEntity(Media selection)
+    {
+        return WorldViewModel.INSTANCE.getFactoryEntity() != null && EntitiesFolderTester.isEntity(selection);
+    }
+
     /*
      * PropertyTester
      */
@@ -146,6 +160,10 @@ public class EntitiesFolderTester
                 else if (EntitiesFolderTester.PROPERTY_IS_ENTITY.equals(property))
                 {
                     return EntitiesFolderTester.isEntity(selection);
+                }
+                else if (EntitiesFolderTester.PROPERTY_EDIT_ENTITY.equals(property))
+                {
+                    return EntitiesFolderTester.canEditEntity(selection);
                 }
             }
         }

@@ -17,12 +17,26 @@
  */
 package com.b3dgs.lionengine.editor.dialogs;
 
+import java.io.File;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilConversion;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.factory.FactoryEntityPart;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Represents the entity edition dialog.
@@ -49,8 +63,56 @@ public class EntityEditDialog
         super(parent, Messages.EditEntityDialog_Title, Messages.EditEntityDialog_HeaderTitle,
                 Messages.EditEntityDialog_HeaderDesc, EntityEditDialog.ICON);
         this.entity = entity;
-        finish.setEnabled(true);
         createDialog();
+        finish.setEnabled(true);
+    }
+
+    /**
+     * Create the entity header.
+     * 
+     * @param parent The composite parent.
+     * @param entity The entity media.
+     */
+    private void createEntityHeader(Composite parent, Media entity)
+    {
+        final Composite entityHeader = new Composite(parent, SWT.BORDER);
+        entityHeader.setLayout(new GridLayout(2, false));
+        entityHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final Label entityIcon = new Label(entityHeader, SWT.NONE);
+        entityIcon.setImage(getEntityIcon(parent, entity));
+
+        final Label entityName = new Label(entityHeader, SWT.NONE);
+        entityName.setText(UtilConversion.toTitleCase(UtilFile.removeExtension(entity.getFile().getName())));
+    }
+
+    /**
+     * Get the entity icon.
+     * 
+     * @param parent The composite parent.
+     * @param entity The entity media.
+     * @return The entity real icon, or an extract from its image if has, else <code>null</code>.
+     */
+    private Image getEntityIcon(Composite parent, Media entity)
+    {
+        final String entityName = entity.getFile().getName().replace("." + FactoryObjectGame.FILE_DATA_EXTENSION, "");
+        final Class<?> entityClass = FactoryEntityPart.getSelectedEntityClass(entityName);
+        final FactoryObjectGame<?, ?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
+        final SetupGame setup = factory.getSetup(entityClass, ObjectGame.class);
+        try
+        {
+            final String iconName = setup.configurable.getDataString("icon", "lionengine:surface");
+            final File iconFile = new File(entity.getFile().getParent(), iconName);
+            if (iconFile.isFile())
+            {
+                return new Image(parent.getDisplay(), iconFile.getPath());
+            }
+        }
+        catch (final LionEngineException exception)
+        {
+            return null;
+        }
+        return null;
     }
 
     /*
@@ -60,7 +122,7 @@ public class EntityEditDialog
     @Override
     protected void createContent(Composite content)
     {
-        // Nothing to do
+        createEntityHeader(content, entity);
     }
 
     @Override

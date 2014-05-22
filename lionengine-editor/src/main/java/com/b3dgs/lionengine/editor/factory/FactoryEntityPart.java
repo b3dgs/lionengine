@@ -303,7 +303,7 @@ public class FactoryEntityPart
      * @param name The entity name.
      * @return The entity class reference.
      */
-    Class<? extends EntityGame> getSelectedEntityClass(String name)
+    public static Class<? extends EntityGame> getSelectedEntityClass(String name)
     {
         final Project project = Project.getActive();
         final File classesPath = project.getClassesPath();
@@ -373,7 +373,8 @@ public class FactoryEntityPart
                 }
                 else
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(getSelectedEntityClass(entityLabel.getText()));
+                    WorldViewModel.INSTANCE.setSelectedEntity(FactoryEntityPart.getSelectedEntityClass(entityLabel
+                            .getText()));
                     entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
                     lastEntity = entityLabel;
                 }
@@ -392,7 +393,7 @@ public class FactoryEntityPart
             }
         });
 
-        final Class<? extends ObjectGame> type = getSelectedEntityClass(entityLabel.getText());
+        final Class<? extends ObjectGame> type = FactoryEntityPart.getSelectedEntityClass(entityLabel.getText());
         final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
 
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
