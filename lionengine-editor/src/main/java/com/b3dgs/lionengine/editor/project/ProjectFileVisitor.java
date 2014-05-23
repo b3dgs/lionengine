@@ -145,7 +145,11 @@ public final class ProjectFileVisitor
                 soloChildText = dirName;
                 for (int i = 0; i <= soloChildCount; i++)
                 {
-                    nodes.get(parentPath.toString()).dispose();
+                    final TreeItem item = nodes.get(parentPath.toString());
+                    if (item != null)
+                    {
+                        item.dispose();
+                    }
                     soloChildText = parentPath.getFileName().toString() + "/" + soloChildText;
                     parentPath = parentPath.getParent();
                 }
