@@ -145,7 +145,7 @@ public class FactoryEntityPart
     {
         try
         {
-            final String icon = setup.configurable.getDataString("icon");
+            final String icon = setup.getConfigurable().getString("icon");
             final File iconPath = new File(file.getParentFile(), icon);
             if (iconPath.isFile())
             {

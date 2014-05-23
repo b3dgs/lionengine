@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -43,7 +44,8 @@ public abstract class Entity
     {
         super(setup, setup.map);
         map = setup.map;
-        life = new Alterable(getDataInteger("life", "attributes"));
+        final Configurable configurable = setup.getConfigurable();
+        life = new Alterable(configurable.getInteger("life", "attributes"));
     }
 
     /**

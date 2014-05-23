@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.strategy.skill;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -74,8 +75,9 @@ public abstract class SkillStrategy
     public SkillStrategy(SetupGame setup)
     {
         super(setup);
-        name = getText("name");
-        description = getText("description");
+        final Configurable configurable = setup.getConfigurable();
+        name = configurable.getText("name");
+        description = configurable.getText("description");
         level = 1;
         priority = 0;
         ignore = false;

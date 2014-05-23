@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Implementation of our controllable entity.
@@ -36,6 +37,8 @@ import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 final class Mario
         extends EntityPlatform
 {
+    /** Setup. */
+    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"));
     /** Ground location y. */
     private static final int GROUND = 32;
     /** Desired fps value. */
@@ -73,13 +76,14 @@ final class Mario
         movement = new Movement();
         jumpForce = new Force();
         animations = new EnumMap<>(EntityState.class);
-        movementSpeed = getDataDouble("movementSpeed", "data");
-        jumpSpeed = getDataDouble("jumpSpeed", "data");
+        final Configurable configurable = SETUP.getConfigurable();
+        movementSpeed = configurable.getDouble("movementSpeed", "data");
+        jumpSpeed = configurable.getDouble("jumpSpeed", "data");
         state = EntityState.IDLE;
         stateOld = state;
         setLocation(100, 32);
-        setMass(getDataDouble("mass", "data"));
-        loadAnimations();
+        setMass(configurable.getDouble("mass", "data"));
+        loadAnimations(configurable);
     }
 
     /**
@@ -116,14 +120,16 @@ final class Mario
 
     /**
      * Load all existing animations defined in the xml file.
+     * 
+     * @param configurable The configurable reference.
      */
-    private void loadAnimations()
+    private void loadAnimations(Configurable configurable)
     {
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, getDataAnimation(state.getAnimationName()));
+                animations.put(state, configurable.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

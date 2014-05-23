@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -81,10 +82,11 @@ public abstract class EntityPlatform
     {
         super(setup);
         tileCollisions = new HashMap<>(1);
-        final int hf = setup.configurable.getDataInteger("horizontal", "lionengine:frames");
-        final int vf = setup.configurable.getDataInteger("vertical", "lionengine:frames");
-        final int width = setup.configurable.getDataInteger("width", "lionengine:size");
-        final int height = setup.configurable.getDataInteger("height", "lionengine:size");
+        final Configurable configurable = setup.getConfigurable();
+        final int hf = configurable.getInteger("horizontal", "lionengine:frames");
+        final int vf = configurable.getInteger("vertical", "lionengine:frames");
+        final int width = configurable.getInteger("width", "lionengine:size");
+        final int height = configurable.getInteger("height", "lionengine:size");
         sprite = Drawable.loadSpriteAnimated(setup.surface, hf, vf);
         frameOffsetX = 0;
         frameOffsetY = 0;

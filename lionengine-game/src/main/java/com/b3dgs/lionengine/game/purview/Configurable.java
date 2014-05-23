@@ -59,7 +59,7 @@ public interface Configurable
      * @param path The node path (child list)
      * @return The string value.
      */
-    String getDataString(String attribute, String... path);
+    String getString(String attribute, String... path);
 
     /**
      * Get an integer in the xml tree.
@@ -68,7 +68,7 @@ public interface Configurable
      * @param path The node path (child list)
      * @return The integer value.
      */
-    int getDataInteger(String attribute, String... path);
+    int getInteger(String attribute, String... path);
 
     /**
      * Get a boolean in the xml tree.
@@ -77,7 +77,7 @@ public interface Configurable
      * @param path The node path (child list)
      * @return The boolean value.
      */
-    boolean getDataBoolean(String attribute, String... path);
+    boolean getBoolean(String attribute, String... path);
 
     /**
      * Get a double in the xml tree.
@@ -86,7 +86,7 @@ public interface Configurable
      * @param path The node path (child list)
      * @return The double value.
      */
-    double getDataDouble(String attribute, String... path);
+    double getDouble(String attribute, String... path);
 
     /**
      * Get an animation data from its name.
@@ -94,7 +94,7 @@ public interface Configurable
      * @param name The animation name.
      * @return The animation reference.
      */
-    Animation getDataAnimation(String name);
+    Animation getAnimation(String name);
 
     /**
      * Get a collision data from its name.
@@ -102,5 +102,5 @@ public interface Configurable
      * @param name The collision name.
      * @return The collision reference.
      */
-    CollisionData getDataCollision(String name);
+    CollisionData getCollision(String name);
 }

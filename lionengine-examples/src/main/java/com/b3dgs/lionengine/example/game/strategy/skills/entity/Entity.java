@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
@@ -58,8 +59,9 @@ public abstract class Entity
         map = setup.map;
         factorySkill = setup.factorySkill;
         skilled = new SkilledModel<>();
-        life = new Alterable(getDataInteger("life", "attributes"));
-        name = getDataString("name");
+        final Configurable configurable = setup.getConfigurable();
+        life = new Alterable(configurable.getInteger("life", "attributes"));
+        name = configurable.getString("name");
     }
 
     /**

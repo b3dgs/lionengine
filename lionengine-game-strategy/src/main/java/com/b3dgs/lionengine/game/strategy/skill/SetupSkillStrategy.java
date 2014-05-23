@@ -48,7 +48,7 @@ public abstract class SetupSkillStrategy
     public SetupSkillStrategy(Media config)
     {
         super(config);
-        name = configurable.getDataString("name");
-        description = configurable.getDataString("description");
+        name = configurable.getString("name");
+        description = configurable.getString("description");
     }
 }

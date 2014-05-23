@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorModel;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorServices;
@@ -78,10 +79,11 @@ public abstract class UnitWorker
         handler = setup.handlerEntity;
         producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
         extractor = new ExtractorModel(this, setup.fps);
-        stepsPerSecond = getDataInteger("steps_per_second", "production");
-        extractionSpeed = getDataInteger("extraction_speed", "extraction");
-        extractionCapacity = getDataInteger("extraction_capacity", "extraction");
-        dropOffSpeed = getDataInteger("drop_off_speed", "extraction");
+        final Configurable configurable = setup.getConfigurable();
+        stepsPerSecond = configurable.getInteger("steps_per_second", "production");
+        extractionSpeed = configurable.getInteger("extraction_speed", "extraction");
+        extractionCapacity = configurable.getInteger("extraction_capacity", "extraction");
+        dropOffSpeed = configurable.getInteger("drop_off_speed", "extraction");
         barProgress = new Bar(0, 0);
         barProgress.setBorderSize(1, 1);
     }

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CollisionData;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Projectile base implementation.
@@ -44,8 +45,9 @@ abstract class Projectile
     Projectile(SetupSurfaceGame setup)
     {
         super(setup);
-        final int width = getDataInteger("width", "lionengine:size");
-        final int height = getDataInteger("height", "lionengine:size");
+        final Configurable configurable = setup.getConfigurable();
+        final int width = configurable.getInteger("width", "lionengine:size");
+        final int height = configurable.getInteger("height", "lionengine:size");
         sprite = Drawable.loadSprite(setup.surface);
         setSize(width, height);
         setCollision(new CollisionData(getWidth(), -getHeight() / 2, 1, 1, false));

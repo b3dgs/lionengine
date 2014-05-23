@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -44,7 +45,8 @@ abstract class Entity
     {
         super(setup, setup.map);
         map = setup.map;
-        animIdle = getDataAnimation("idle");
+        final Configurable configurable = setup.getConfigurable();
+        animIdle = configurable.getAnimation("idle");
         play(animIdle);
     }
 

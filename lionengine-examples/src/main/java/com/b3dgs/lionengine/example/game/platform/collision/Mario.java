@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Implementation of our controllable entity.
@@ -33,6 +34,8 @@ import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 final class Mario
         extends EntityPlatform
 {
+    /** Setup. */
+    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"));
     /** Map reference. */
     private final Map map;
     /** Desired fps value. */
@@ -62,14 +65,15 @@ final class Mario
      */
     Mario(Map map, int desiredFps)
     {
-        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
+        super(SETUP);
         this.map = map;
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();
-        jumpSpeed = getDataDouble("jumpSpeed", "data");
-        movementSpeed = getDataDouble("movementSpeed", "data");
-        setMass(getDataDouble("mass", "data"));
+        final Configurable configurable = SETUP.getConfigurable();
+        jumpSpeed = configurable.getDouble("jumpSpeed", "data");
+        movementSpeed = configurable.getDouble("movementSpeed", "data");
+        setMass(configurable.getDouble("mass", "data"));
         setFrameOffsets(0, 1);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);

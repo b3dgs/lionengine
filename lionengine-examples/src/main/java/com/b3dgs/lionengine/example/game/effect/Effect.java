@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.example.game.effect;
 
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.effect.EffectGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Effect base implementation.
@@ -36,6 +38,8 @@ abstract class Effect
 {
     /** Surface. */
     private final SpriteAnimated sprite;
+    /** Explode animation. */
+    private final Animation animExplode;
 
     /**
      * Constructor.
@@ -46,8 +50,10 @@ abstract class Effect
     {
         super(setup);
         // Data are loaded from the XML file, depending of the type
-        final int framesHorizontal = getDataInteger("horizontal", "lionengine:frames");
-        final int framesVertical = getDataInteger("vertical", "lionengine:frames");
+        final Configurable configurable = setup.getConfigurable();
+        final int framesHorizontal = configurable.getInteger("horizontal", "lionengine:frames");
+        final int framesVertical = configurable.getInteger("vertical", "lionengine:frames");
+        animExplode = configurable.getAnimation("explode");
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesHorizontal, framesVertical);
         sprite.load(false);
         sprite.scale(UtilRandom.getRandomInteger(75) + 50);
@@ -63,7 +69,7 @@ abstract class Effect
     public void start(int x, int y)
     {
         setLocation(x - getWidth() / 2, y + getHeight() / 2);
-        sprite.play(getDataAnimation("explode"));
+        sprite.play(animExplode);
     }
 
     /*

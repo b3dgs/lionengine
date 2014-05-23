@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Standard projectile implementation, including collision and moves handling.
@@ -75,8 +76,9 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
     {
         super(setup);
         damages = new Damages();
-        final int width = setup.configurable.getDataInteger("width", "lionengine:size");
-        final int height = setup.configurable.getDataInteger("height", "lionengine:size");
+        final Configurable configurable = setup.getConfigurable();
+        final int width = configurable.getInteger("width", "lionengine:size");
+        final int height = configurable.getInteger("height", "lionengine:size");
         setSize(width, height);
         id = -1;
         owner = null;

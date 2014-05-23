@@ -82,7 +82,7 @@ public class ConfigurableModel
      * @param path The attribute node path.
      * @return The string found.
      */
-    private String getString(String attribute, String... path)
+    private String getNodeString(String attribute, String... path)
     {
         XmlNode node = root;
         for (final String element : path)
@@ -152,31 +152,31 @@ public class ConfigurableModel
      * {@inheritDoc} A LionEngineException is thrown if there is a path error.
      */
     @Override
-    public String getDataString(String attribute, String... path)
+    public String getString(String attribute, String... path)
     {
-        return getString(attribute, path);
+        return getNodeString(attribute, path);
     }
 
     @Override
-    public int getDataInteger(String attribute, String... path)
+    public int getInteger(String attribute, String... path)
     {
-        return Integer.parseInt(getString(attribute, path));
+        return Integer.parseInt(getNodeString(attribute, path));
     }
 
     @Override
-    public boolean getDataBoolean(String attribute, String... path)
+    public boolean getBoolean(String attribute, String... path)
     {
-        return Boolean.parseBoolean(getString(attribute, path));
+        return Boolean.parseBoolean(getNodeString(attribute, path));
     }
 
     @Override
-    public double getDataDouble(String attribute, String... path)
+    public double getDouble(String attribute, String... path)
     {
-        return Double.parseDouble(getString(attribute, path));
+        return Double.parseDouble(getNodeString(attribute, path));
     }
 
     @Override
-    public Animation getDataAnimation(String name)
+    public Animation getAnimation(String name)
     {
         final Animation animation = animations.get(name);
         Check.notNull(animation, "Animation does not exist: ", name);
@@ -184,7 +184,7 @@ public class ConfigurableModel
     }
 
     @Override
-    public CollisionData getDataCollision(String name)
+    public CollisionData getCollision(String name)
     {
         final CollisionData collision = collisions.get(name);
         Check.notNull(collision, "Collision does not exist: ", name);

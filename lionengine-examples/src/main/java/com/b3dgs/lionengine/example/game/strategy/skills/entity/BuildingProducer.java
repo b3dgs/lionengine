@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
@@ -58,7 +59,8 @@ public abstract class BuildingProducer
         super(setup);
         factory = setup.factoryEntity;
         producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        stepsPerSecond = getDataInteger("steps_per_second", "production");
+        final Configurable configurable = setup.getConfigurable();
+        stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         barProgress = new Bar(0, 0);
         barProgress.setBorderSize(1, 1);
     }

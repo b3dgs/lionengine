@@ -55,9 +55,9 @@ public final class BuildBarracksOrc
         super(setup);
         cursor = setup.cursor;
         factoryProduction = setup.factoryProduction;
-        final Configurable config = factoryProduction.getSetup(BarracksOrc.class).configurable;
-        width = config.getDataInteger("widthInTile", "lionengine:tileSize");
-        height = config.getDataInteger("heightInTile", "lionengine:tileSize");
+        final Configurable configurable = factoryProduction.getSetup(BarracksOrc.class).getConfigurable();
+        width = configurable.getInteger("widthInTile", "lionengine:tileSize");
+        height = configurable.getInteger("heightInTile", "lionengine:tileSize");
         setOrder(true);
     }
 

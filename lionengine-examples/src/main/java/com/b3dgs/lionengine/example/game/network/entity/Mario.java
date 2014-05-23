@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.network.entity;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
@@ -51,8 +52,9 @@ public final class Mario
     public Mario(SetupEntity setup)
     {
         super(setup);
-        animTurn = getDataAnimation("turn");
-        animJump = getDataAnimation("jump");
+        final Configurable configurable = setup.getConfigurable();
+        animTurn = configurable.getAnimation("turn");
+        animJump = configurable.getAnimation("jump");
         timerDie = new Timing();
         jumpForceValue = 8.0;
         movementSpeedValue = 3.0;

@@ -21,9 +21,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
@@ -36,7 +33,6 @@ import com.b3dgs.lionengine.game.purview.Configurable;
  * @see HandlerObjectGame
  */
 public abstract class ObjectGame
-        implements Configurable
 {
     /** Setup error. */
     private static final String ERROR_SETUP = "Setup must not be null !";
@@ -59,8 +55,6 @@ public abstract class ObjectGame
         return Integer.valueOf(ObjectGame.lastId);
     }
 
-    /** Configurable object reference. */
-    private final Configurable configurable;
     /** Entity id. */
     private final Integer id;
     /** Destroyed flag; true will remove it from the handler. */
@@ -74,7 +68,6 @@ public abstract class ObjectGame
     public ObjectGame(SetupGame setup)
     {
         Check.notNull(setup, ObjectGame.ERROR_SETUP);
-        configurable = setup.configurable;
         destroy = false;
         id = ObjectGame.getFreeId();
         ObjectGame.IDS.add(id);
@@ -107,63 +100,5 @@ public abstract class ObjectGame
     public boolean isDestroyed()
     {
         return destroy;
-    }
-
-    /*
-     * Configurable
-     */
-
-    @Override
-    public void loadData(Media media)
-    {
-        configurable.loadData(media);
-    }
-
-    @Override
-    public XmlNode getDataRoot()
-    {
-        return configurable.getDataRoot();
-    }
-
-    @Override
-    public String getText(String... path)
-    {
-        return configurable.getText(path);
-    }
-
-    @Override
-    public String getDataString(String attribute, String... path)
-    {
-        return configurable.getDataString(attribute, path);
-    }
-
-    @Override
-    public int getDataInteger(String attribute, String... path)
-    {
-        return configurable.getDataInteger(attribute, path);
-    }
-
-    @Override
-    public boolean getDataBoolean(String attribute, String... path)
-    {
-        return configurable.getDataBoolean(attribute, path);
-    }
-
-    @Override
-    public double getDataDouble(String attribute, String... path)
-    {
-        return configurable.getDataDouble(attribute, path);
-    }
-
-    @Override
-    public Animation getDataAnimation(String name)
-    {
-        return configurable.getDataAnimation(name);
-    }
-
-    @Override
-    public CollisionData getDataCollision(String name)
-    {
-        return configurable.getDataCollision(name);
     }
 }

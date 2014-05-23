@@ -92,7 +92,7 @@ public class EntityEditDialog
         final Class<?> entityClass = FactoryEntityPart.getEntityClass(entityName);
         final FactoryObjectGame<?, ?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
         final SetupGame setup = factory.getSetup(entityClass, ObjectGame.class);
-        return setup.configurable;
+        return setup.getConfigurable();
     }
 
     /**
@@ -220,7 +220,7 @@ public class EntityEditDialog
     {
         try
         {
-            final String iconName = configurable.getDataString("icon", "lionengine:surface");
+            final String iconName = configurable.getString("icon", "lionengine:surface");
             final File iconFile = new File(entity.getFile().getParent(), iconName);
             if (iconFile.isFile())
             {

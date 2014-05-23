@@ -34,9 +34,9 @@ public class SetupGame
     private static final String ERROR_CONFIGURABLE = "The configurable must not be null !";
 
     /** Configurable reference. */
-    public final Configurable configurable;
+    protected final Configurable configurable;
     /** Config file name. */
-    public final Media configFile;
+    protected final Media configFile;
 
     /**
      * Constructor.
@@ -60,5 +60,25 @@ public class SetupGame
         this.configurable = configurable;
         this.configurable.loadData(config);
         configFile = config;
+    }
+
+    /**
+     * Get the configurable reference.
+     * 
+     * @return The configurable reference.
+     */
+    public Configurable getConfigurable()
+    {
+        return configurable;
+    }
+
+    /**
+     * Get the configuration file.
+     * 
+     * @return The configuration file.
+     */
+    public Media getConfigFile()
+    {
+        return configFile;
     }
 }

@@ -42,16 +42,16 @@ public abstract class Weapon
     {
         super(setup);
 
-        final Configurable config = setup.configurable;
-        setAttackFrame(config.getDataInteger("attackFrame"));
-        setAttackTimer(config.getDataInteger("attackTimer"));
+        final Configurable configurable = setup.getConfigurable();
+        setAttackFrame(configurable.getInteger("attackFrame"));
+        setAttackTimer(configurable.getInteger("attackTimer"));
 
-        final int distMin = config.getDataInteger("min", "distance");
-        final int distMax = config.getDataInteger("max", "distance");
+        final int distMin = configurable.getInteger("min", "distance");
+        final int distMax = configurable.getInteger("max", "distance");
         setAttackDistance(distMin, distMax);
 
-        final int dmgMin = config.getDataInteger("min", "damages");
-        final int dmgMax = config.getDataInteger("max", "damages");
+        final int dmgMin = configurable.getInteger("min", "damages");
+        final int dmgMax = configurable.getInteger("max", "damages");
         setAttackDamages(dmgMin, dmgMax);
     }
 

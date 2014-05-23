@@ -32,6 +32,7 @@ import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -106,24 +107,25 @@ public abstract class EntityStrategy
     {
         super(setup);
         this.map = map;
-        final String configFile = setup.configFile.getPath();
+        final String configFile = setup.getConfigFile().getPath();
+        final Configurable configurable = setup.getConfigurable();
 
         // Horizontal frames
-        final int hf = getDataInteger("horizontal", "lionengine:frames");
+        final int hf = configurable.getInteger("horizontal", "lionengine:frames");
         Check.argument(hf > 0, "The horizontal frames number is missing: \"", configFile, "\"");
 
         // Vertical frames
-        final int vf = getDataInteger("vertical", "lionengine:frames");
+        final int vf = configurable.getInteger("vertical", "lionengine:frames");
         Check.argument(vf > 0, "The vertical frames number is missing: \"", configFile, "\"");
 
         // Size
-        final int width = getDataInteger("widthInTile", "lionengine:tileSize") * map.getTileWidth();
-        final int height = getDataInteger("heightInTile", "lionengine:tileSize") * map.getTileHeight();
+        final int width = configurable.getInteger("widthInTile", "lionengine:tileSize") * map.getTileWidth();
+        final int height = configurable.getInteger("heightInTile", "lionengine:tileSize") * map.getTileHeight();
         Check.argument(width > 0 && height > 0, "The surface size is missing: \"", configFile, "\"");
 
         // Offset
-        offsetX = getDataInteger("x", "lionengine:offset");
-        offsetY = getDataInteger("y", "lionengine:offset");
+        offsetX = configurable.getInteger("x", "lionengine:offset");
+        offsetY = configurable.getInteger("y", "lionengine:offset");
 
         // Surface
         Check.notNull(setup.surface, "Missing surface file from the setup: \"", setup.surfaceFile.getPath(), "\"");

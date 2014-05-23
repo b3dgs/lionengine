@@ -22,6 +22,7 @@ import java.util.Set;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverUsedServices;
@@ -50,8 +51,9 @@ public abstract class Unit
     protected Unit(SetupEntity setup)
     {
         super(setup);
-        animIdle = getDataAnimation("idle");
-        animWalk = getDataAnimation("walk");
+        final Configurable configurable = setup.getConfigurable();
+        animIdle = configurable.getAnimation("idle");
+        animWalk = configurable.getAnimation("walk");
         mover = new MoverModel(this, setup.map);
         play(animIdle);
     }

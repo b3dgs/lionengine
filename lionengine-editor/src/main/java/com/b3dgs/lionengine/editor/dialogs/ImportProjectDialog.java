@@ -52,6 +52,8 @@ public class ImportProjectDialog
         projectLocationText.setEditable(false);
         projectClassesText.setEditable(false);
         projectResourcesText.setEditable(false);
+
+        onLocationSelected("C:\\Users\\CharlineC\\workspace\\lionheart-remake");
     }
 
     /*

@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Abstract entity base implementation.
@@ -71,14 +72,15 @@ abstract class Entity
         map = setup.map;
         desiredFps = setup.desiredFps;
         animations = new EnumMap<>(EntityState.class);
-        jumpForceValue = getDataDouble("jumpSpeed", "data");
-        movementSpeedValue = getDataDouble("movementSpeed", "data");
+        final Configurable configurable = setup.getConfigurable();
+        jumpForceValue = configurable.getDouble("jumpSpeed", "data");
+        movementSpeedValue = configurable.getDouble("movementSpeed", "data");
         movement = new Movement();
         jumpForce = new Force();
         state = EntityState.IDLE;
-        setMass(getDataDouble("mass", "data"));
+        setMass(configurable.getDouble("mass", "data"));
         setFrameOffsets(0, 1);
-        loadAnimations();
+        loadAnimations(configurable);
     }
 
     /**
@@ -123,14 +125,16 @@ abstract class Entity
 
     /**
      * Load all existing animations defined in the xml file.
+     * 
+     * @param configurable The configurable reference.
      */
-    private void loadAnimations()
+    private void loadAnimations(Configurable configurable)
     {
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, getDataAnimation(state.getAnimationName()));
+                animations.put(state, configurable.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Entity implementation.
@@ -38,8 +39,9 @@ abstract class Entity
     protected Entity(SetupSurfaceGame setup)
     {
         super(setup);
-        setMass(getDataDouble("mass", "data"));
-        setCollision(getDataCollision("default"));
+        final Configurable configurable = setup.getConfigurable();
+        setMass(configurable.getDouble("mass", "data"));
+        setCollision(configurable.getCollision("default"));
     }
 
     /*

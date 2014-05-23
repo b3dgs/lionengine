@@ -60,14 +60,6 @@ public class ObjectGameTest
     {
         final Media media = Core.MEDIA.create("src", "test", "resources", "type.xml");
         final ObjectGame object = new TestObject(new SetupGame(media));
-        Assert.assertTrue(object.getDataBoolean("flag"));
-        Assert.assertTrue(object.getDataInteger("index") == 1);
-        Assert.assertTrue(object.getDataDouble("index") == 1.0);
-        Assert.assertNotNull(object.getDataString("flag"));
-        Assert.assertNotNull(object.getDataCollision("default"));
-        Assert.assertNotNull(object.getDataAnimation("idle"));
-
-        object.loadData(media);
-        Assert.assertNotNull(object.getDataRoot());
+        Assert.assertNotNull(object);
     }
 }

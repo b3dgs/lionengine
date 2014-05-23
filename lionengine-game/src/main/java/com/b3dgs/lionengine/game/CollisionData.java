@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link Configurable#getDataCollision(String)} and {@link Collidable#setCollision(CollisionData)}.
+ * {@link Configurable#getCollision(String)} and {@link Collidable#setCollision(CollisionData)}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurable

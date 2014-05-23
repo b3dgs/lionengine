@@ -46,12 +46,12 @@ public final class FactoryProduction
     @Override
     public ProducibleEntity create(Class<? extends Entity> type)
     {
-        final Configurable config = getSetup(type).configurable;
-        final int step = config.getDataInteger("steps", "cost");
-        final int gold = config.getDataInteger("gold", "cost");
-        final int wood = config.getDataInteger("wood", "cost");
-        final int width = config.getDataInteger("widthInTile", "lionengine:tileSize");
-        final int height = config.getDataInteger("heightInTile", "lionengine:tileSize");
+        final Configurable configurable = getSetup(type).getConfigurable();
+        final int step = configurable.getInteger("steps", "cost");
+        final int gold = configurable.getInteger("gold", "cost");
+        final int wood = configurable.getInteger("wood", "cost");
+        final int width = configurable.getInteger("widthInTile", "lionengine:tileSize");
+        final int height = configurable.getInteger("heightInTile", "lionengine:tileSize");
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
         final ProducibleEntity producible = new ProducibleEntity(type, cost, height, width);

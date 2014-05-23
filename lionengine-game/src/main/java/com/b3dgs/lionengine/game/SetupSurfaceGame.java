@@ -59,7 +59,7 @@ public class SetupSurfaceGame
         super(configurable, config);
         final String conf = config.getPath();
         surfaceFile = Core.MEDIA.create(conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1)
-                + configurable.getDataString("image", "lionengine:surface"));
+                + configurable.getString("image", "lionengine:surface"));
         surface = Core.GRAPHIC.getImageBuffer(surfaceFile, alpha);
     }
 }
