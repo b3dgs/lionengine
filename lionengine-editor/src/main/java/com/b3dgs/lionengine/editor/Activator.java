@@ -17,20 +17,9 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Monitor;
-import org.eclipse.swt.widgets.Shell;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
@@ -62,81 +51,6 @@ public class Activator
     public static BundleContext getContext()
     {
         return Activator.context;
-    }
-
-    /**
-     * Get the icon from its name.
-     * 
-     * @param icon The icon name.
-     * @return The icon instance.
-     */
-    public static Image getIcon(String icon)
-    {
-        try
-        {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", icon))));
-            return image.createImage();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the file from its name.
-     * 
-     * @param file The file name.
-     * @return The file instance.
-     */
-    public static File getFile(String file)
-    {
-        try
-        {
-            final File root = FileLocator.getBundleFile(Activator.getContext().getBundle());
-            return new File(root, file);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the icon from its name.
-     * 
-     * @param root The icon root.
-     * @param icon The icon name.
-     * @return The icon instance.
-     */
-    public static Image getIcon(String root, String icon)
-    {
-        try
-        {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", root, icon))));
-            return image.createImage();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Center the shell on screen.
-     * 
-     * @param shell The shell to center.
-     */
-    public static void center(Shell shell)
-    {
-        final Monitor primary = shell.getMonitor();
-        final Rectangle bounds = primary.getBounds();
-        final Rectangle rect = shell.getBounds();
-        final int x = bounds.x + (bounds.width - rect.width) / 2;
-        final int y = bounds.y + (bounds.height - rect.height) / 2;
-        shell.setLocation(x, y);
     }
 
     /*

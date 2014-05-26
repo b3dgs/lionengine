@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Text;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 
@@ -53,7 +53,7 @@ public class NewProjectDialog
         extends AbstractProjectDialog
 {
     /** Icon. */
-    private static final Image ICON = Activator.getIcon("dialog", "new-project.png");
+    private static final Image ICON = Tools.getIcon("dialog", "new-project.png");
     /** Project name regex. */
     private static final String REGEX_PROJECT_NAME = "[a-zA-Z0-9_\\-\\s]*";
     /** Package regex. */

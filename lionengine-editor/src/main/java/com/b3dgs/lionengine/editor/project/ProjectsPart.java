@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Represents the resources explorer, depending of the opened project.
@@ -57,19 +58,19 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
     /** File icon. */
-    private static final Image ICON_FILE = Activator.getIcon("resources", "file.png");
+    private static final Image ICON_FILE = Tools.getIcon("resources", "file.png");
     /** Sound file icon. */
-    private static final Image ICON_SOUND = Activator.getIcon("resources", "sound.png");
+    private static final Image ICON_SOUND = Tools.getIcon("resources", "sound.png");
     /** Music file icon. */
-    private static final Image ICON_MUSIC = Activator.getIcon("resources", "music.png");
+    private static final Image ICON_MUSIC = Tools.getIcon("resources", "music.png");
     /** Image file icon. */
-    private static final Image ICON_IMAGE = Activator.getIcon("resources", "image.png");
+    private static final Image ICON_IMAGE = Tools.getIcon("resources", "image.png");
     /** Data file icon. */
-    private static final Image ICON_DATA = Activator.getIcon("resources", "data.png");
+    private static final Image ICON_DATA = Tools.getIcon("resources", "data.png");
     /** Level file icon. */
-    private static final Image ICON_LEVEL = Activator.getIcon("resources", "level.png");
+    private static final Image ICON_LEVEL = Tools.getIcon("resources", "level.png");
     /** Class file icon. */
-    private static final Image ICON_CLASS = Activator.getIcon("resources", "class.png");
+    private static final Image ICON_CLASS = Tools.getIcon("resources", "class.png");
 
     /**
      * Set the file icon.

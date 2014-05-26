@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 
@@ -36,7 +36,7 @@ public class ImportProjectDialog
         extends AbstractProjectDialog
 {
     /** Icon. */
-    private static final Image ICON = Activator.getIcon("dialog", "import-project.png");
+    private static final Image ICON = Tools.getIcon("dialog", "import-project.png");
 
     /**
      * Constructor.

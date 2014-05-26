@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
@@ -59,7 +59,7 @@ public class AddEntityHandler
         {
             final String name = inputDialog.getValue();
             final File entity = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-            final File template = Activator.getFile(UtilFile.getPath("templates", "entity.template"));
+            final File template = Tools.getFile(UtilFile.getPath("templates", "entity.template"));
             try
             {
                 Files.copy(template.toPath(), entity.toPath());

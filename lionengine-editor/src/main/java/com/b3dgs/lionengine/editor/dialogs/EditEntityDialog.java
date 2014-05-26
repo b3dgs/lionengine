@@ -38,14 +38,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.factory.FactoryEntityPart;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.file.XmlNode;
 import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
@@ -53,11 +48,11 @@ import com.b3dgs.lionengine.game.purview.Configurable;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityEditDialog
+public class EditEntityDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Activator.getIcon("dialog", "edit-entity.png");
+    private static final Image ICON = Tools.getIcon("dialog", "edit-entity.png");
 
     /** Entity media. */
     final Media entity;
@@ -70,29 +65,14 @@ public class EntityEditDialog
      * @param parent The parent shell.
      * @param entity The entity media.
      */
-    public EntityEditDialog(Shell parent, Media entity)
+    public EditEntityDialog(Shell parent, Media entity)
     {
         super(parent, Messages.EditEntityDialog_Title, Messages.EditEntityDialog_HeaderTitle,
-                Messages.EditEntityDialog_HeaderDesc, EntityEditDialog.ICON);
+                Messages.EditEntityDialog_HeaderDesc, EditEntityDialog.ICON);
         this.entity = entity;
-        configurable = EntityEditDialog.getConfigurable(entity);
+        configurable = Tools.getConfigurable(entity);
         createDialog();
         finish.setEnabled(true);
-    }
-
-    /**
-     * Get the configurable from the entity descriptor.
-     * 
-     * @param entity The entity descriptor.
-     * @return The entity configurable reference.
-     */
-    private static Configurable getConfigurable(Media entity)
-    {
-        final String entityName = entity.getFile().getName().replace("." + FactoryObjectGame.FILE_DATA_EXTENSION, "");
-        final Class<?> entityClass = FactoryEntityPart.getEntityClass(entityName);
-        final FactoryObjectGame<?, ?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
-        final SetupGame setup = factory.getSetup(entityClass, ObjectGame.class);
-        return setup.getConfigurable();
     }
 
     /**

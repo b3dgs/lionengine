@@ -44,18 +44,13 @@ import org.eclipse.swt.widgets.Label;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
  * Represents the factory entity view, where the entities list is displayed.
@@ -66,28 +61,6 @@ public class FactoryEntityPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.factory-entity";
-
-    /**
-     * Get the folder type name.
-     * 
-     * @param path The type folder.
-     * @return The type name.
-     * @throws LionEngineException If get name error, and so, this is not a type folder.
-     */
-    static String getTypeName(File path) throws LionEngineException
-    {
-        final File typeFile = new File(path, "type.xml");
-        final XmlParser xmlParser = com.b3dgs.lionengine.file.File.createXmlParser();
-        final XmlNode typeNode = xmlParser.load(UtilityMedia.get(typeFile));
-        try
-        {
-            return typeNode.getChild("name").getText();
-        }
-        catch (final XmlNodeNotFoundException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
 
     /**
      * Fill the combo items with its folder list.
@@ -219,7 +192,7 @@ public class FactoryEntityPart
         final File[] folders = path.listFiles();
         if (folders != null)
         {
-            final String typeName = FactoryEntityPart.getTypeName(path);
+            final String typeName = Tools.getEntitiesFolderTypeName(path);
             final Composite composite = new Composite(parent, SWT.NONE);
             composite.setLayout(new GridLayout(1, false));
             final Combo typeCombo = FactoryEntityPart.createCombo(typeName, composite);
@@ -298,29 +271,6 @@ public class FactoryEntityPart
     }
 
     /**
-     * Get the entity class from its name.
-     * 
-     * @param name The entity name.
-     * @return The entity class reference.
-     */
-    public static Class<? extends EntityGame> getEntityClass(String name)
-    {
-        final Project project = Project.getActive();
-        final File classesPath = project.getClassesPath();
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
-
-        // TODO handle the case when there is multiple class with the same name
-        if (classNames.size() == 1)
-        {
-            final String path = classNames.get(0).getPath();
-            final Media classPath = project.getClassMedia(path);
-            final Class<? extends EntityGame> type = project.getClass(EntityGame.class, classPath);
-            return type;
-        }
-        return null;
-    }
-
-    /**
      * Load an entity from its file data, and add it to the tab.
      * 
      * @param factoryEntity The factory entity reference.
@@ -373,7 +323,7 @@ public class FactoryEntityPart
                 }
                 else
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(FactoryEntityPart.getEntityClass(entityLabel.getText()));
+                    WorldViewModel.INSTANCE.setSelectedEntity(Tools.getEntityClass(entityLabel.getText()));
                     entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
                     lastEntity = entityLabel;
                 }
@@ -392,7 +342,7 @@ public class FactoryEntityPart
             }
         });
 
-        final Class<? extends ObjectGame> type = FactoryEntityPart.getEntityClass(entityLabel.getText());
+        final Class<? extends ObjectGame> type = Tools.getEntityClass(entityLabel.getText());
         final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
 
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);

@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 
 /**
@@ -47,7 +47,7 @@ public class ImportMapDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Activator.getIcon("dialog", "import-map.png");
+    private static final Image ICON = Tools.getIcon("dialog", "import-map.png");
 
     /** Level rip location. */
     Text levelRipLocationText;

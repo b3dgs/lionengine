@@ -27,7 +27,7 @@ import java.util.Properties;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Generate a project from scratch, designed to be used from the new project dialog.
@@ -129,7 +129,7 @@ public class ProjectGenerator
      */
     private static void generateSceneFromTemplate(File parent, String projectPackage) throws IOException
     {
-        final File template = Activator.getFile(ProjectGenerator.TEMPLATE_SCENE_FILE);
+        final File template = Tools.getFile(ProjectGenerator.TEMPLATE_SCENE_FILE);
         String content = new String(Files.readAllBytes(template.toPath()), StandardCharsets.UTF_8);
         content = content.replace(ProjectGenerator.TEMPLATE_PROJECT_PACKAGE, projectPackage);
 
@@ -216,7 +216,7 @@ public class ProjectGenerator
      */
     private void generateMainFromTemplate(File parent, String projectPackage) throws IOException
     {
-        final File template = Activator.getFile(ProjectGenerator.TEMPLATE_MAIN_FILE);
+        final File template = Tools.getFile(ProjectGenerator.TEMPLATE_MAIN_FILE);
         String content = new String(Files.readAllBytes(template.toPath()), StandardCharsets.UTF_8);
         content = content.replace(ProjectGenerator.TEMPLATE_PROJECT_PACKAGE, projectPackage);
 

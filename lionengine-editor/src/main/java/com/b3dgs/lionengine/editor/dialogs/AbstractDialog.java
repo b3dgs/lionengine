@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Represents the abstract dialog.
@@ -44,11 +44,11 @@ public abstract class AbstractDialog
         extends Dialog
 {
     /** Info icon. */
-    protected static final Image ICON_INFO = Activator.getIcon("dialog", "info.png");
+    protected static final Image ICON_INFO = Tools.getIcon("dialog", "info.png");
     /** Warning icon. */
-    protected static final Image ICON_WARNING = Activator.getIcon("dialog", "warning.png");
+    protected static final Image ICON_WARNING = Tools.getIcon("dialog", "warning.png");
     /** Error icon. */
-    protected static final Image ICON_ERROR = Activator.getIcon("dialog", "error.png");
+    protected static final Image ICON_ERROR = Tools.getIcon("dialog", "error.png");
     /** Maximum characters input. */
     protected static final int MAX_CHAR = 64;
     /** Bottom button width. */
@@ -90,7 +90,7 @@ public abstract class AbstractDialog
         dialogLayout.verticalSpacing = 0;
         dialog.setLayout(dialogLayout);
         dialog.setText(title);
-        dialog.setImage(Activator.getIcon("product.png")); //$NON-NLS-1$
+        dialog.setImage(Tools.getIcon("product.png")); //$NON-NLS-1$
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class AbstractDialog
     public void open()
     {
         dialog.pack(true);
-        Activator.center(dialog);
+        Tools.center(dialog);
         dialog.open();
 
         final Display display = dialog.getDisplay();
