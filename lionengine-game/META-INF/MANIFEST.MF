@@ -4,6 +4,7 @@ Bundle-Name: LionEngine Game
 Bundle-SymbolicName: lionengine-game;singleton:=true
 Bundle-Version: 6.2.0.qualifier
 Export-Package: com.b3dgs.lionengine.game,
+ com.b3dgs.lionengine.game.configurable,
  com.b3dgs.lionengine.game.effect,
  com.b3dgs.lionengine.game.entity,
  com.b3dgs.lionengine.game.map,

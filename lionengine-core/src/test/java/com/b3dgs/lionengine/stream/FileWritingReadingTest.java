@@ -15,8 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.AfterClass;
@@ -76,7 +77,7 @@ public class FileWritingReadingTest
         }
         finally
         {
-            UtilFile.deleteFile(new java.io.File(fileData.getPath()));
+            UtilFile.deleteFile(new File(fileData.getPath()));
         }
     }
 
@@ -85,7 +86,7 @@ public class FileWritingReadingTest
      */
     private void testFileWriting()
     {
-        try (FileWriting writing = File.createFileWriting(fileData);)
+        try (FileWriting writing = Stream.createFileWriting(fileData);)
         {
             writing.writeBoolean(XmlNodeMock.BOOL_VALUE);
             writing.writeByte(XmlNodeMock.BYTE_VALUE);
@@ -108,7 +109,7 @@ public class FileWritingReadingTest
      */
     private void testFileReading()
     {
-        try (FileReading reading = File.createFileReading(fileData);)
+        try (FileReading reading = Stream.createFileReading(fileData);)
         {
             Assert.assertEquals(Boolean.valueOf(XmlNodeMock.BOOL_VALUE), Boolean.valueOf(reading.readBoolean()));
             Assert.assertEquals(XmlNodeMock.BYTE_VALUE, reading.readByte());

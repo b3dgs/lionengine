@@ -15,24 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.io.IOException;
 
 import com.b3dgs.lionengine.core.Media;
 
 /**
- * File factory. Can create the following elements:
+ * Stream factory. Can create the following elements:
  * <ul>
  * <li>{@link FileReading}</li>
  * <li>{@link FileWriting}</li>
- * <li>{@link XmlParser}</li>
  * <li>{@link XmlNode}</li>
  * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class File
+public final class Stream
 {
     /**
      * Open a binary file as read only.
@@ -59,13 +58,25 @@ public final class File
     }
 
     /**
-     * Create an XML parser, in order to load an XML node from a file.
+     * Load an XML file.
      * 
-     * @return The created parser.
+     * @param media The XML media path.
+     * @return The XML root node.
      */
-    public static XmlParser createXmlParser()
+    public static XmlNode loadXml(Media media)
     {
-        return new XmlParserImpl();
+        return XmlFactory.load(media);
+    }
+
+    /**
+     * Save an XML tree to a file.
+     * 
+     * @param root The XML root node.
+     * @param media The output media path.
+     */
+    public static void saveXml(XmlNode root, Media media)
+    {
+        XmlFactory.save(root, media);
     }
 
     /**
@@ -82,7 +93,7 @@ public final class File
     /**
      * Private constructor.
      */
-    private File()
+    private Stream()
     {
         throw new RuntimeException();
     }

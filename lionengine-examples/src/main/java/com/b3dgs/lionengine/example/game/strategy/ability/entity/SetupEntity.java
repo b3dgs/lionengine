@@ -54,7 +54,7 @@ public class SetupEntity
     public SetupEntity(Media config, Map map, FactoryEntity factoryEntity, FactoryWeapon factoryWeapon,
             HandlerEntity handlerEntity, int fps)
     {
-        super(config);
+        super(config, false);
         this.map = map;
         this.factoryEntity = factoryEntity;
         this.factoryWeapon = factoryWeapon;

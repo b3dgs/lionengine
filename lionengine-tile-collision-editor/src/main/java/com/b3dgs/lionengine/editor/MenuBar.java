@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +40,13 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -77,7 +77,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
         final boolean added;
         if (numbers.size() == 1)
         {
-            final XmlNode tile = File.createXmlNode("tile");
+            final XmlNode tile = Stream.createXmlNode("tile");
             node.add(tile);
             tile.writeInteger("pattern", pattern.intValue());
             tile.writeInteger("number", numbers.get(0).intValue());
@@ -85,7 +85,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
         }
         else if (numbers.size() > 1)
         {
-            final XmlNode tile = File.createXmlNode("tiles");
+            final XmlNode tile = Stream.createXmlNode("tiles");
             node.add(tile);
             tile.writeInteger("pattern", pattern.intValue());
             tile.writeInteger("start", numbers.get(0).intValue());
@@ -195,10 +195,10 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
     void fileSave(C[] collisions)
     {
         final MapTileGame<C, T> map = editor.world.map;
-        final XmlNode root = File.createXmlNode("collisions");
+        final XmlNode root = Stream.createXmlNode("collisions");
         for (final C collision : collisions)
         {
-            final XmlNode node = File.createXmlNode("collision");
+            final XmlNode node = Stream.createXmlNode("collision");
             node.writeString("name", collision.name());
             if (saveTilesCollisions(map, node, collision))
             {
@@ -209,7 +209,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
             {
                 for (final CollisionFunction function : functions)
                 {
-                    final XmlNode functionNode = File.createXmlNode("function");
+                    final XmlNode functionNode = Stream.createXmlNode("function");
                     functionNode.writeString("name", function.getName());
                     functionNode.writeString("axis", function.getAxis().name());
                     functionNode.writeString("input", function.getInput().name());
@@ -222,8 +222,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
             }
         }
 
-        final XmlParser parser = File.createXmlParser();
-        parser.save(root, Core.MEDIA.create("collisions.xml"));
+        Stream.saveXml(root, Core.MEDIA.create("collisions.xml"));
     }
 
     /**
@@ -244,8 +243,8 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
     boolean toolsImportMap(JDialog dialog, Class<C> collisionClass)
     {
         final MapFilter filter = new MapFilter("Map Image Rip", "png", "bmp");
-        final java.io.File file = UtilitySwing.createOpenFileChooser("Select level rip",
-                UtilityMedia.getRessourcesDir(), editor.getContentPane(), filter);
+        final File file = UtilitySwing.createOpenFileChooser("Select level rip", UtilityMedia.getRessourcesDir(),
+                editor.getContentPane(), filter);
         if (file == null)
         {
             return false;
@@ -256,7 +255,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
             return false;
         }
 
-        final java.io.File tilesDir = UtilitySwing.createOpenDirectoryChooser("Select tiles directory",
+        final File tilesDir = UtilitySwing.createOpenDirectoryChooser("Select tiles directory",
                 UtilityMedia.getRessourcesDir(), editor.getContentPane(), new FileFilter()
                 {
                     @Override
@@ -266,7 +265,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
                     }
 
                     @Override
-                    public boolean accept(java.io.File file)
+                    public boolean accept(File file)
                     {
                         return file.isDirectory();
                     }

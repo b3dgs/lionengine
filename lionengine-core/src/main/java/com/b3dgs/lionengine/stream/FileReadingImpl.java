@@ -15,25 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
 
 /**
- * File writing implementation.
+ * File reading implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class FileWritingImpl
-        implements FileWriting
+final class FileReadingImpl
+        implements FileReading
 {
-    /** Output stream reference. */
-    private final DataOutputStream out;
+    /** Input stream reference. */
+    private final DataInputStream in;
 
     /**
      * Constructor.
@@ -41,74 +40,72 @@ final class FileWritingImpl
      * @param media The media path.
      * @throws IOException If open failed.
      */
-    FileWritingImpl(Media media) throws IOException
+    FileReadingImpl(Media media) throws IOException
     {
-        Check.notNull(media);
-        out = new DataOutputStream(new BufferedOutputStream(media.getOutputStream()));
+        in = new DataInputStream(new BufferedInputStream(media.getInputStream()));
     }
 
     /*
-     * FileWriter
+     * FileReadering
      */
 
     @Override
-    public void writeBoolean(boolean b) throws IOException
+    public boolean readBoolean() throws IOException
     {
-        out.writeBoolean(b);
+        return in.readBoolean();
     }
 
     @Override
-    public void writeByte(byte b) throws IOException
+    public byte readByte() throws IOException
     {
-        out.writeByte(b);
-
+        return in.readByte();
     }
 
     @Override
-    public void writeChar(char c) throws IOException
+    public char readChar() throws IOException
     {
-        out.writeChar(c);
+        return in.readChar();
     }
 
     @Override
-    public void writeShort(short s) throws IOException
+    public short readShort() throws IOException
     {
-        out.writeShort(s);
+        return in.readShort();
     }
 
     @Override
-    public void writeInteger(int i) throws IOException
+    public int readInteger() throws IOException
     {
-        out.writeInt(i);
+        return in.readInt();
     }
 
     @Override
-    public void writeFloat(float f) throws IOException
+    public float readFloat() throws IOException
     {
-        out.writeFloat(f);
+        return in.readFloat();
     }
 
     @Override
-    public void writeLong(long l) throws IOException
+    public long readLong() throws IOException
     {
-        out.writeLong(l);
+        return in.readLong();
     }
 
     @Override
-    public void writeDouble(double f) throws IOException
+    public double readDouble() throws IOException
     {
-        out.writeDouble(f);
+        return in.readDouble();
     }
 
     @Override
-    public void writeString(String s) throws IOException
+    public String readString() throws IOException
     {
-        out.writeUTF(s);
+        return in.readUTF();
     }
 
     @Override
     public void close() throws IOException
     {
-        out.close();
+        in.close();
     }
 }

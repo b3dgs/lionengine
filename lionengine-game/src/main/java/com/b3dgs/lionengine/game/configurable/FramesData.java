@@ -15,36 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.projectile;
-
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+package com.b3dgs.lionengine.game.configurable;
 
 /**
- * Projectile factory.
+ * Represents the frames data from a configurable node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.game.factory
  */
-final class FactoryProjectile
-        extends FactoryObjectGame<SetupSurfaceGame, Projectile>
+public class FramesData
 {
+    /** The number of horizontal frames. */
+    private final int horizontalFrames;
+    /** The number of vertical frames. */
+    private final int verticalFrames;
+
     /**
      * Constructor.
+     * 
+     * @param horizontalFrames The horizontal frames value.
+     * @param verticalFrames The vertical frames value.
      */
-    FactoryProjectile()
+    public FramesData(int horizontalFrames, int verticalFrames)
     {
-        super("");
+        this.horizontalFrames = horizontalFrames;
+        this.verticalFrames = verticalFrames;
     }
 
-    /*
-     * FactoryObjectGame
+    /**
+     * Get the number of horizontal frames.
+     * 
+     * @return The number of horizontal frames.
      */
-
-    @Override
-    protected SetupSurfaceGame createSetup(Class<? extends Projectile> type, Media config)
+    public int getHorizontal()
     {
-        return new SetupSurfaceGame(config, false);
+        return horizontalFrames;
+    }
+
+    /**
+     * Get the number of vertical frames.
+     * 
+     * @return The number of vertical frames.
+     */
+    public int getVertical()
+    {
+        return verticalFrames;
     }
 }

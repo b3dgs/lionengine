@@ -39,9 +39,9 @@ import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the entity edition dialog.
@@ -117,15 +117,15 @@ public class EditEntityDialog
                 final String file = selectFile(parent.getShell(), entity.getFile().getParentFile().getPath());
                 if (file != null)
                 {
-                    final XmlNode root = configurable.getDataRoot();
+                    final XmlNode root = configurable.getRoot();
                     XmlNode surfaceNode;
                     try
                     {
-                        surfaceNode = root.getChild("lionengine:surface");
+                        surfaceNode = root.getChild(Configurable.SURFACE);
                     }
-                    catch (final XmlNodeNotFoundException exception)
+                    catch (final LionEngineException exception)
                     {
-                        surfaceNode = com.b3dgs.lionengine.file.File.createXmlNode("lionengine:surface");
+                        surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
                         root.add(surfaceNode);
                     }
                     surfaceNode.writeString("image", file);
@@ -172,15 +172,15 @@ public class EditEntityDialog
                 final String file = selectFile(parent.getShell(), entity.getFile().getParentFile().getPath());
                 if (file != null)
                 {
-                    final XmlNode root = configurable.getDataRoot();
+                    final XmlNode root = configurable.getRoot();
                     XmlNode surfaceNode;
                     try
                     {
-                        surfaceNode = root.getChild("lionengine:surface");
+                        surfaceNode = root.getChild(Configurable.SURFACE);
                     }
-                    catch (final XmlNodeNotFoundException exception)
+                    catch (final LionEngineException exception)
                     {
-                        surfaceNode = com.b3dgs.lionengine.file.File.createXmlNode("lionengine:surface");
+                        surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
                         root.add(surfaceNode);
                     }
                     surfaceNode.writeString("icon", file);
@@ -200,7 +200,7 @@ public class EditEntityDialog
     {
         try
         {
-            final String iconName = configurable.getString("icon", "lionengine:surface");
+            final String iconName = configurable.getString("icon", Configurable.SURFACE);
             final File iconFile = new File(entity.getFile().getParent(), iconName);
             if (iconFile.isFile())
             {

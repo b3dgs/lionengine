@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;

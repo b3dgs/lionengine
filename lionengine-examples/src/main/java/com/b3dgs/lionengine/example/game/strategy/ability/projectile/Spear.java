@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -38,7 +38,7 @@ public final class Spear
     public Spear(SetupSurfaceGame setup)
     {
         super(setup);
-        setCollision(new CollisionData(0, 1, 0, 1, false));
+        setCollision(new Collision(0, 1, 0, 1, false));
     }
 
     /*

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
+import java.io.File;
+
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -128,7 +130,7 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        final String name = file.getPath().replace(".class", "").replace(java.io.File.separator, ".");
+        final String name = file.getPath().replace(".class", "").replace(File.separator, ".");
         final Class<?> clazz = Project.getActive().getClass(name);
         return parent.isAssignableFrom(clazz);
     }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -34,11 +34,11 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
- * Test the file package.
+ * Test the stream package.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FileTest
+public class StreamTest
 {
     /** Resources path. */
     private static String PATH;
@@ -50,7 +50,7 @@ public class FileTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        FileTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
+        StreamTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -71,37 +71,33 @@ public class FileTest
     {
         try
         {
-            File.createFileWriting(null);
+            Stream.createFileWriting(null);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }
 
         try
         {
-            File.createFileReading(null);
+            Stream.createFileReading(null);
             Assert.fail();
         }
-        catch (LionEngineException
-               | IOException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }
 
         try
         {
-            File.createXmlNode(null);
+            Stream.createXmlNode(null);
             Assert.fail();
         }
         catch (final LionEngineException exception)
         {
             // Success
         }
-
-        final XmlParser parser = File.createXmlParser();
-        Assert.assertNotNull(parser);
     }
 
     /**
@@ -118,11 +114,11 @@ public class FileTest
     public void testFactory() throws NoSuchMethodException, SecurityException, InstantiationException,
             IllegalAccessException, IllegalArgumentException, IOException
     {
-        final Constructor<File> constructor = File.class.getDeclaredConstructor();
+        final Constructor<Stream> constructor = Stream.class.getDeclaredConstructor();
         constructor.setAccessible(true);
         try
         {
-            final File file = constructor.newInstance();
+            final Stream file = constructor.newInstance();
             Assert.assertNotNull(file);
             Assert.fail();
         }
@@ -131,14 +127,14 @@ public class FileTest
             // Success
         }
 
-        FileTest.testFailures();
-        Assert.assertNotNull(File.createXmlNode("test"));
-        try (FileReading reading = File.createFileReading(Core.MEDIA.create(FileTest.PATH, "malformed.xml"));)
+        StreamTest.testFailures();
+        Assert.assertNotNull(Stream.createXmlNode("test"));
+        try (FileReading reading = Stream.createFileReading(Core.MEDIA.create(StreamTest.PATH, "malformed.xml"));)
         {
             Assert.assertNotNull(reading);
         }
-        final Media media = Core.MEDIA.create(FileTest.PATH, "test");
-        try (FileWriting writing = File.createFileWriting(media);)
+        final Media media = Core.MEDIA.create(StreamTest.PATH, "test");
+        try (FileWriting writing = Stream.createFileWriting(media);)
         {
             Assert.assertNotNull(writing);
         }

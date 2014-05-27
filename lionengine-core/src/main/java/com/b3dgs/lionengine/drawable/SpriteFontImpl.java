@@ -26,9 +26,8 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Font sprite implementation.
@@ -122,8 +121,7 @@ final class SpriteFontImpl
         lineHeight = surface.getTileHeight();
 
         // Load data for each characters
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode letters = xml.load(mediaData);
+        final XmlNode letters = Stream.loadXml(mediaData);
         final List<XmlNode> children = letters.getChildren();
         int id = 0;
 

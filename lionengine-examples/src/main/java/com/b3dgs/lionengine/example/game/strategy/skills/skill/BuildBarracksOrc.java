@@ -24,7 +24,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.TileSizeData;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
@@ -56,8 +57,9 @@ public final class BuildBarracksOrc
         cursor = setup.cursor;
         factoryProduction = setup.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(BarracksOrc.class).getConfigurable();
-        width = configurable.getInteger("widthInTile", "lionengine:tileSize");
-        height = configurable.getInteger("heightInTile", "lionengine:tileSize");
+        final TileSizeData tileSizeData = configurable.getTileSize();
+        width = tileSizeData.getWidthInTile();
+        height = tileSizeData.getHeightInTile();
         setOrder(true);
     }
 

@@ -42,7 +42,7 @@ final class SetupEntity
      */
     SetupEntity(Media config, Map map, int desiredFps)
     {
-        super(config);
+        super(config, false);
         this.map = map;
         this.desiredFps = desiredFps;
     }

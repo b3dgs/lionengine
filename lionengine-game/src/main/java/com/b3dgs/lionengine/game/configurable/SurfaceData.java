@@ -15,29 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
-
-import org.junit.Assert;
-import org.junit.Test;
+package com.b3dgs.lionengine.game.configurable;
 
 /**
- * Test collision data class.
+ * Represents the surface data from a configurable node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionDataTest
+public class SurfaceData
 {
+    /** The image descriptor. */
+    private final String image;
+    /** The icon descriptor (can be <code>null</code>). */
+    private final String icon;
+
     /**
-     * Test collision data functions.
+     * Constructor.
+     * 
+     * @param image The image file path.
+     * @param icon The icon file path (can be <code>null</code>).
      */
-    @Test
-    public void testCollisionData()
+    public SurfaceData(String image, String icon)
     {
-        final Collision collisionData = new Collision(1, 2, 3, 4, true);
-        Assert.assertTrue(collisionData.getOffsetX() == 1);
-        Assert.assertTrue(collisionData.getOffsetY() == 2);
-        Assert.assertTrue(collisionData.getWidth() == 3);
-        Assert.assertTrue(collisionData.getHeight() == 4);
-        Assert.assertTrue(collisionData.hasMirror());
+        this.image = image;
+        this.icon = icon;
+    }
+
+    /**
+     * Get the image descriptor.
+     * 
+     * @return The image descriptor.
+     */
+    public String getImage()
+    {
+        return image;
+    }
+
+    /**
+     * Get the icon descriptor.
+     * 
+     * @return The icon descriptor (<code>null</code> if none).
+     */
+    public String getIcon()
+    {
+        return icon;
     }
 }

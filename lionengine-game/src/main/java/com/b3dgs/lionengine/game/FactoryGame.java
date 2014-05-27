@@ -75,6 +75,18 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
     protected abstract S createSetup(Class<? extends O> type);
 
     /**
+     * Clear all loaded setup and their configuration.
+     */
+    public void clear()
+    {
+        for (final S setup : setups.values())
+        {
+            setup.configurable.clear();
+        }
+        setups.clear();
+    }
+
+    /**
      * Get a setup reference from its type. Must only be used if not possible to use {@link #getSetup(Class)} instead.
      * 
      * @param type The reference type.

@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Implementation of our controllable entity.
@@ -38,7 +38,7 @@ final class Mario
         extends EntityPlatform
 {
     /** Setup. */
-    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"));
+    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"), false);
     /** Ground location y. */
     private static final int GROUND = 32;
     /** Desired fps value. */
@@ -71,12 +71,12 @@ final class Mario
      */
     Mario(int desiredFps)
     {
-        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
+        super(Mario.SETUP);
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();
         animations = new EnumMap<>(EntityState.class);
-        final Configurable configurable = SETUP.getConfigurable();
+        final Configurable configurable = Mario.SETUP.getConfigurable();
         movementSpeed = configurable.getDouble("movementSpeed", "data");
         jumpSpeed = configurable.getDouble("jumpSpeed", "data");
         state = EntityState.IDLE;

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.strategy.entity;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -27,12 +26,15 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.lionengine.game.configurable.OffsetData;
+import com.b3dgs.lionengine.game.configurable.TileSizeData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -107,35 +109,22 @@ public abstract class EntityStrategy
     {
         super(setup);
         this.map = map;
-        final String configFile = setup.getConfigFile().getPath();
         final Configurable configurable = setup.getConfigurable();
 
-        // Horizontal frames
-        final int hf = configurable.getInteger("horizontal", "lionengine:frames");
-        Check.argument(hf > 0, "The horizontal frames number is missing: \"", configFile, "\"");
+        final OffsetData offsetData = configurable.getOffset();
+        offsetX = offsetData.getX();
+        offsetY = offsetData.getY();
 
-        // Vertical frames
-        final int vf = configurable.getInteger("vertical", "lionengine:frames");
-        Check.argument(vf > 0, "The vertical frames number is missing: \"", configFile, "\"");
+        final FramesData framesData = configurable.getFrames();
+        sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
 
-        // Size
-        final int width = configurable.getInteger("widthInTile", "lionengine:tileSize") * map.getTileWidth();
-        final int height = configurable.getInteger("heightInTile", "lionengine:tileSize") * map.getTileHeight();
-        Check.argument(width > 0 && height > 0, "The surface size is missing: \"", configFile, "\"");
+        final TileSizeData tileSizeData = configurable.getTileSize();
+        setSize(tileSizeData.getWidthInTile() * map.getTileWidth(),
+                tileSizeData.getHeightInTile() * map.getTileHeight());
 
-        // Offset
-        offsetX = configurable.getInteger("x", "lionengine:offset");
-        offsetY = configurable.getInteger("y", "lionengine:offset");
-
-        // Surface
-        Check.notNull(setup.surface, "Missing surface file from the setup: \"", setup.surfaceFile.getPath(), "\"");
-        sprite = Drawable.loadSpriteAnimated(setup.surface, hf, vf);
-
-        // Setup
-        setSize(width, height);
         sprite.setFrame(1);
         orientation = Orientation.SOUTH;
-        setCollision(new CollisionData(0, 0, getWidth(), getHeight(), false));
+        setCollision(new Collision(0, 0, getWidth(), getHeight(), false));
         animationCurrent = null;
         active = true;
         visible = true;

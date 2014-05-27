@@ -45,6 +45,6 @@ final class FactoryEffect
     @Override
     protected SetupSurfaceGame createSetup(Class<? extends Effect> type, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurfaceGame(config, false);
     }
 }

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.util.List;
 import java.util.Map;
@@ -174,7 +174,7 @@ final class XmlNodeMock
     }
 
     @Override
-    public XmlNode getChild(String name) throws XmlNodeNotFoundException
+    public XmlNode getChild(String name)
     {
         return null;
     }

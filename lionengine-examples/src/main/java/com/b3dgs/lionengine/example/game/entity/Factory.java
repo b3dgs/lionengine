@@ -45,6 +45,6 @@ final class Factory
     @Override
     protected SetupSurfaceGame createSetup(Class<? extends Entity> types, Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurfaceGame(config, false);
     }
 }

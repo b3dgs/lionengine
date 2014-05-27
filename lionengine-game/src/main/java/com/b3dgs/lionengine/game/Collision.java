@@ -17,18 +17,18 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.purview.Collidable;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link Configurable#getCollision(String)} and {@link Collidable#setCollision(CollisionData)}.
+ * {@link Configurable#getCollision(String)} and {@link Collidable#setCollision(Collision)}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurable
  * @see Collidable
  */
-public class CollisionData
+public class Collision
 {
     /** Horizontal offset. */
     private final int offsetX;
@@ -50,7 +50,7 @@ public class CollisionData
      * @param height The collision height.
      * @param mirror The mirror flag.
      */
-    public CollisionData(int offsetX, int offsetY, int width, int height, boolean mirror)
+    public Collision(int offsetX, int offsetY, int width, int height, boolean mirror)
     {
         this.offsetX = offsetX;
         this.offsetY = offsetY;

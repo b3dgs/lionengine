@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
@@ -46,7 +46,7 @@ final class Entity
         sprite = Drawable.loadSpriteTiled(Core.MEDIA.create("entity.png"), 24, 28);
         sprite.load(false);
         setSize(24, 28);
-        setCollision(new CollisionData(getWidth() / 2, -getHeight(), getWidth(), getHeight(), false));
+        setCollision(new Collision(getWidth() / 2, -getHeight(), getWidth(), getHeight(), false));
     }
 
     /*

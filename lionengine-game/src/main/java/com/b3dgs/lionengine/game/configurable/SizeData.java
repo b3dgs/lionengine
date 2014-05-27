@@ -15,29 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
-
-import org.junit.Assert;
-import org.junit.Test;
+package com.b3dgs.lionengine.game.configurable;
 
 /**
- * Test collision data class.
+ * Represents the size data from a configurable node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionDataTest
+public class SizeData
 {
+    /** The width value. */
+    private final int width;
+    /** The height value. */
+    private final int height;
+
     /**
-     * Test collision data functions.
+     * Constructor.
+     * 
+     * @param width The width value.
+     * @param height The height value.
      */
-    @Test
-    public void testCollisionData()
+    public SizeData(int width, int height)
     {
-        final Collision collisionData = new Collision(1, 2, 3, 4, true);
-        Assert.assertTrue(collisionData.getOffsetX() == 1);
-        Assert.assertTrue(collisionData.getOffsetY() == 2);
-        Assert.assertTrue(collisionData.getWidth() == 3);
-        Assert.assertTrue(collisionData.getHeight() == 4);
-        Assert.assertTrue(collisionData.hasMirror());
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
+     * Get the width value.
+     * 
+     * @return The width value.
+     */
+    public int getWidth()
+    {
+        return width;
+    }
+
+    /**
+     * Get the height value.
+     * 
+     * @return The height value.
+     */
+    public int getHeight()
+    {
+        return height;
     }
 }

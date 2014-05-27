@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.purview.Rasterable;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
@@ -56,34 +56,21 @@ public class SetupSurfaceRasteredGame
      * Constructor.
      * 
      * @param config The config media.
-     * @param rasterFile The raster media.
-     * @param smoothRaster The raster smooth flag.
-     */
-    public SetupSurfaceRasteredGame(Media config, Media rasterFile, boolean smoothRaster)
-    {
-        this(new ConfigurableModel(), config, false, rasterFile, smoothRaster);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param configurable The configurable reference.
-     * @param config The config media.
      * @param alpha The alpha use flag.
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
      */
-    public SetupSurfaceRasteredGame(Configurable configurable, Media config, boolean alpha, Media rasterFile,
-            boolean smoothRaster)
+    public SetupSurfaceRasteredGame(Media config, boolean alpha, Media rasterFile, boolean smoothRaster)
     {
-        super(configurable, config, alpha);
+        super(config, alpha);
         this.rasterFile = rasterFile;
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)
         {
             rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
-            hf = configurable.getInteger("horizontal", "lionengine:frames");
-            vf = configurable.getInteger("vertical", "lionengine:frames");
+            final FramesData framesData = configurable.getFrames();
+            hf = framesData.getHorizontal();
+            vf = framesData.getVertical();
             frameHeight = surface.getHeight() / vf;
             loadRasters();
         }

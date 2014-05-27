@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.purview;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.geom.Line;
 import com.b3dgs.lionengine.geom.Rectangle;
 
@@ -41,14 +41,14 @@ public interface Collidable
      * 
      * @param collision The collision to use (<code>null</code> if none).
      */
-    void setCollision(CollisionData collision);
+    void setCollision(Collision collision);
 
     /**
      * Get the current collision used.
      * 
      * @return The collision data.
      */
-    CollisionData getCollisionData();
+    Collision getCollisionData();
 
     /**
      * Check if the entity entered in collision with another one.

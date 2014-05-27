@@ -39,7 +39,7 @@ final class SetupEntity
      */
     SetupEntity(Media config, Map map)
     {
-        super(config);
+        super(config, false);
         this.map = map;
     }
 }

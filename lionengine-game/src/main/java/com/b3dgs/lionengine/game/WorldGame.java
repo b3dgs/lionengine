@@ -26,12 +26,12 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerEntityGame},
@@ -155,7 +155,7 @@ public abstract class WorldGame
      */
     public final void saveToFile(Media media)
     {
-        try (FileWriting writing = File.createFileWriting(media);)
+        try (FileWriting writing = Stream.createFileWriting(media);)
         {
             saving(writing);
         }
@@ -172,7 +172,7 @@ public abstract class WorldGame
      */
     public final void loadFromFile(Media media)
     {
-        try (FileReading reading = File.createFileReading(media);)
+        try (FileReading reading = Stream.createFileReading(media);)
         {
             loading(reading);
         }

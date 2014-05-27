@@ -26,9 +26,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
@@ -40,6 +37,9 @@ import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 import com.b3dgs.lionengine.utility.TileExtractor;
 
@@ -203,7 +203,7 @@ public class ModuleGame
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, tilesheet, map);
-        try (FileWriting file = File.createFileWriting(output);)
+        try (FileWriting file = Stream.createFileWriting(output);)
         {
             map.save(file);
         }

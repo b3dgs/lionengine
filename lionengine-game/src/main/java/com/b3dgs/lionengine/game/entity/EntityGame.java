@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.entity;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -252,7 +252,7 @@ public abstract class EntityGame
     }
 
     @Override
-    public void setCollision(CollisionData collision)
+    public void setCollision(Collision collision)
     {
         collidable.setCollision(collision);
     }
@@ -276,7 +276,7 @@ public abstract class EntityGame
     }
 
     @Override
-    public CollisionData getCollisionData()
+    public Collision getCollisionData()
     {
         return collidable.getCollisionData();
     }

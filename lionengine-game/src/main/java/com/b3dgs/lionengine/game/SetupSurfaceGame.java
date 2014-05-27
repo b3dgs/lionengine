@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.game;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.purview.Configurable;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.SurfaceData;
 
 /**
  * Define a structure used to create multiple entity, sharing the same data and {@link ImageBuffer}.
@@ -41,25 +41,15 @@ public class SetupSurfaceGame
      * Constructor.
      * 
      * @param config The config media.
-     */
-    public SetupSurfaceGame(Media config)
-    {
-        this(new ConfigurableModel(), config, false);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param configurable The configurable reference.
-     * @param config The config media.
      * @param alpha The alpha use flag.
      */
-    public SetupSurfaceGame(Configurable configurable, Media config, boolean alpha)
+    public SetupSurfaceGame(Media config, boolean alpha)
     {
-        super(configurable, config);
+        super(config);
         final String conf = config.getPath();
-        surfaceFile = Core.MEDIA.create(conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1)
-                + configurable.getString("image", "lionengine:surface"));
+        final SurfaceData surfaceData = configurable.getSurface();
+        final String prefix = conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1);
+        surfaceFile = Core.MEDIA.create(prefix + surfaceData.getImage());
         surface = Core.GRAPHIC.getImageBuffer(surfaceFile, alpha);
     }
 }

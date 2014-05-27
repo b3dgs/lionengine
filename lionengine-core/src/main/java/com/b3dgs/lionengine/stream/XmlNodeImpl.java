@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,12 +44,10 @@ final class XmlNodeImpl
 {
     /** Node name error. */
     private static final String ERROR_NODE_NAME = "The node name must not be null !";
-    /** Child name error. */
-    private static final String ERROR_CHILD_NAME = "The child name must not be null !";
-    /** Root node error. */
-    private static final String ERROR_ROOT_NODE = "The root node must not be null !";
+    /** Node error. */
+    private static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
-    private static final String ERROR_ATTRIBUTE = "The attribute must not be null !";
+    private static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
     /** Document. */
     private static Document document;
 
@@ -66,7 +64,7 @@ final class XmlNodeImpl
         Check.notNull(name, XmlNodeImpl.ERROR_NODE_NAME);
         try
         {
-            final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
+            final DocumentBuilder constructeur = XmlFactory.getDocumentFactory().newDocumentBuilder();
             synchronized (XmlNodeImpl.class)
             {
                 if (XmlNodeImpl.document == null)
@@ -89,7 +87,6 @@ final class XmlNodeImpl
      */
     XmlNodeImpl(Element root)
     {
-        Check.notNull(root, XmlNodeImpl.ERROR_ROOT_NODE);
         this.root = root;
     }
 
@@ -108,14 +105,15 @@ final class XmlNodeImpl
      * 
      * @param attribute The attribute name.
      * @return The attribute value.
+     * @throws LionEngineException If attribute is not valid or does not exist.
      */
-    private String getAttributeValue(String attribute)
+    private String getValue(String attribute) throws LionEngineException
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        final String value = root.getAttribute(attribute);
-
-        Check.notNull(value, "Can not read the attribute value for: \"", attribute, "\"");
-        return value;
+        if (root.hasAttribute(attribute))
+        {
+            return root.getAttribute(attribute);
+        }
+        throw new LionEngineException(XmlNodeImpl.ERROR_ATTRIBUTE, attribute);
     }
 
     /**
@@ -126,7 +124,6 @@ final class XmlNodeImpl
      */
     private void write(String attribute, String content)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         root.setAttribute(attribute, content);
     }
 
@@ -137,10 +134,7 @@ final class XmlNodeImpl
     @Override
     public void add(XmlNode node)
     {
-        if (node instanceof XmlNodeImpl)
-        {
-            root.appendChild(((XmlNodeImpl) node).getElement());
-        }
+        root.appendChild(XmlNodeImpl.class.cast(node).getElement());
     }
 
     @Override
@@ -152,8 +146,7 @@ final class XmlNodeImpl
     @Override
     public void writeBoolean(String attribute, boolean content)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        root.setAttribute(attribute, String.valueOf(content));
+        write(attribute, String.valueOf(content));
     }
 
     @Override
@@ -195,71 +188,62 @@ final class XmlNodeImpl
     @Override
     public void writeString(String attribute, String content)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
         if (content == null)
         {
-            root.setAttribute(attribute, XmlNode.NULL);
+            write(attribute, XmlNode.NULL);
         }
         else
         {
-            root.setAttribute(attribute, content);
+            write(attribute, content);
         }
     }
 
     @Override
     public boolean readBoolean(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Boolean.parseBoolean(getAttributeValue(attribute));
+        return Boolean.parseBoolean(getValue(attribute));
     }
 
     @Override
     public byte readByte(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Byte.parseByte(getAttributeValue(attribute));
+        return Byte.parseByte(getValue(attribute));
     }
 
     @Override
     public short readShort(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Short.parseShort(getAttributeValue(attribute));
+        return Short.parseShort(getValue(attribute));
     }
 
     @Override
     public int readInteger(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Integer.parseInt(getAttributeValue(attribute));
+        return Integer.parseInt(getValue(attribute));
     }
 
     @Override
     public long readLong(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Long.parseLong(getAttributeValue(attribute));
+        return Long.parseLong(getValue(attribute));
     }
 
     @Override
     public float readFloat(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Float.parseFloat(getAttributeValue(attribute));
+        return Float.parseFloat(getValue(attribute));
     }
 
     @Override
     public double readDouble(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        return Double.parseDouble(getAttributeValue(attribute));
+        return Double.parseDouble(getValue(attribute));
     }
 
     @Override
     public String readString(String attribute)
     {
-        Check.notNull(attribute, XmlNodeImpl.ERROR_ATTRIBUTE);
-        final String value = getAttributeValue(attribute);
+        final String value = getValue(attribute);
         if (XmlNode.NULL.equals(value))
         {
             return null;
@@ -274,21 +258,18 @@ final class XmlNodeImpl
     }
 
     @Override
-    public XmlNode getChild(String name) throws XmlNodeNotFoundException
+    public XmlNode getChild(String name) throws LionEngineException
     {
-        Check.notNull(name, XmlNodeImpl.ERROR_CHILD_NAME);
-
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {
             final Node node = list.item(i);
-            if (node instanceof Element && name.equals(node.getNodeName()))
+            if (node instanceof Element && node.getNodeName().equals(name))
             {
                 return new XmlNodeImpl((Element) node);
             }
         }
-
-        throw new XmlNodeNotFoundException("The node \"" + name + "\" was not found !");
+        throw new LionEngineException(XmlNodeImpl.ERROR_NODE, name);
     }
 
     @Override
@@ -330,8 +311,8 @@ final class XmlNodeImpl
         final NamedNodeMap map = root.getAttributes();
         for (int i = 0; i < map.getLength(); i++)
         {
-            final String key = map.item(i).getNodeName();
-            attributes.put(key, map.item(i).getNodeValue());
+            final Node node = map.item(i);
+            attributes.put(node.getNodeName(), node.getNodeValue());
         }
         return attributes;
     }

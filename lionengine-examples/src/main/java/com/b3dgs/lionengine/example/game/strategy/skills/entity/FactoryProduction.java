@@ -20,7 +20,8 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.TileSizeData;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 
 /**
@@ -50,11 +51,11 @@ public final class FactoryProduction
         final int step = configurable.getInteger("steps", "cost");
         final int gold = configurable.getInteger("gold", "cost");
         final int wood = configurable.getInteger("wood", "cost");
-        final int width = configurable.getInteger("widthInTile", "lionengine:tileSize");
-        final int height = configurable.getInteger("heightInTile", "lionengine:tileSize");
+        final TileSizeData tileSizeData = configurable.getTileSize();
 
         final ProductionCost cost = new ProductionCost(step, gold, wood);
-        final ProducibleEntity producible = new ProducibleEntity(type, cost, height, width);
+        final ProducibleEntity producible = new ProducibleEntity(type, cost, tileSizeData.getWidthInTile(),
+                tileSizeData.getHeightInTile());
 
         return producible;
     }

@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.purview.Configurable;
-import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
  * Define a structure used to create configurable objects.
@@ -30,9 +28,6 @@ import com.b3dgs.lionengine.game.purview.model.ConfigurableModel;
  */
 public class SetupGame
 {
-    /** Error configurable. */
-    private static final String ERROR_CONFIGURABLE = "The configurable must not be null !";
-
     /** Configurable reference. */
     protected final Configurable configurable;
     /** Config file name. */
@@ -45,20 +40,8 @@ public class SetupGame
      */
     public SetupGame(Media config)
     {
-        this(new ConfigurableModel(), config);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param configurable The configurable reference.
-     * @param config The config media.
-     */
-    public SetupGame(Configurable configurable, Media config)
-    {
-        Check.notNull(configurable, SetupGame.ERROR_CONFIGURABLE);
-        this.configurable = configurable;
-        this.configurable.loadData(config);
+        configurable = new Configurable();
+        configurable.load(config);
         configFile = config;
     }
 

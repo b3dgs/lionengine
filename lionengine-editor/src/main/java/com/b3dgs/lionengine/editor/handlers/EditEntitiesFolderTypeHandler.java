@@ -24,13 +24,11 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Edit the type entity folder properties.
@@ -45,21 +43,20 @@ public class EditEntitiesFolderTypeHandler
     /**
      * Get the root node from the type file.
      * 
-     * @param xmlParser The XML parser.
      * @param media The type media.
      * @return The type root node.
      */
-    private static XmlNode getRoot(XmlParser xmlParser, Media media)
+    private static XmlNode getRoot(Media media)
     {
         final XmlNode root;
         if (media.getFile().isFile())
         {
-            root = xmlParser.load(media);
+            root = Stream.loadXml(media);
         }
         else
         {
-            root = com.b3dgs.lionengine.file.File.createXmlNode("lionengine:type");
-            final XmlNode typeName = com.b3dgs.lionengine.file.File.createXmlNode("name");
+            root = Stream.createXmlNode("lionengine:type");
+            final XmlNode typeName = Stream.createXmlNode("name");
             typeName.setText(EditEntitiesFolderTypeHandler.DEFAULT_NAME);
             root.add(typeName);
         }
@@ -70,28 +67,20 @@ public class EditEntitiesFolderTypeHandler
      * Enter the new type name.
      * 
      * @param parent The shell parent.
-     * @param xmlParser The XML parser.
      * @param media The type media.
      * @param root The root node.
      */
-    private static void enterName(Shell parent, XmlParser xmlParser, Media media, XmlNode root)
+    private static void enterName(Shell parent, Media media, XmlNode root)
     {
-        try
+        final XmlNode typeName = root.getChild("name");
+        final InputDialog inputDialog = new InputDialog(parent, "Entities folder naming",
+                "Enter the entities folder name", typeName.getText(), null);
+        inputDialog.open();
+        final String value = inputDialog.getValue();
+        if (value != null)
         {
-            final XmlNode typeName = root.getChild("name");
-            final InputDialog inputDialog = new InputDialog(parent, "Entities folder naming",
-                    "Enter the entities folder name", typeName.getText(), null);
-            inputDialog.open();
-            final String value = inputDialog.getValue();
-            if (value != null)
-            {
-                typeName.setText(value);
-                xmlParser.save(root, media);
-            }
-        }
-        catch (final XmlNodeNotFoundException exception)
-        {
-            throw new LionEngineException(exception);
+            typeName.setText(value);
+            Stream.saveXml(root, media);
         }
     }
 
@@ -108,9 +97,7 @@ public class EditEntitiesFolderTypeHandler
         final Project project = Project.getActive();
         final File type = new File(selection.getFile(), "type.xml");
         final Media media = project.getResourceMedia(type.getPath());
-        final XmlParser xmlParser = com.b3dgs.lionengine.file.File.createXmlParser();
-
-        final XmlNode root = EditEntitiesFolderTypeHandler.getRoot(xmlParser, media);
-        EditEntitiesFolderTypeHandler.enterName(parent, xmlParser, media, root);
+        final XmlNode root = EditEntitiesFolderTypeHandler.getRoot(media);
+        EditEntitiesFolderTypeHandler.enterName(parent, media, root);
     }
 }

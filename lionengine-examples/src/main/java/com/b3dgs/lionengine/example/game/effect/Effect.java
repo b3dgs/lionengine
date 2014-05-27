@@ -25,8 +25,9 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.effect.EffectGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Effect base implementation.
@@ -51,10 +52,9 @@ abstract class Effect
         super(setup);
         // Data are loaded from the XML file, depending of the type
         final Configurable configurable = setup.getConfigurable();
-        final int framesHorizontal = configurable.getInteger("horizontal", "lionengine:frames");
-        final int framesVertical = configurable.getInteger("vertical", "lionengine:frames");
+        final FramesData framesData = configurable.getFrames();
         animExplode = configurable.getAnimation("explode");
-        sprite = Drawable.loadSpriteAnimated(setup.surface, framesHorizontal, framesVertical);
+        sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
         sprite.load(false);
         sprite.scale(UtilRandom.getRandomInteger(75) + 50);
         setSize(sprite.getFrameWidth(), sprite.getFrameHeight());

@@ -33,12 +33,11 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
@@ -430,9 +429,8 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         String[] files;
 
         // Retrieve patterns list
-        final XmlParser xml = File.createXmlParser();
         final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), "patterns.xml");
-        final XmlNode root = xml.load(mediaPatterns);
+        final XmlNode root = Stream.loadXml(mediaPatterns);
         final List<XmlNode> children = root.getChildren();
         files = new String[children.size()];
         int i = 0;
@@ -465,8 +463,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
     @Override
     public void loadCollisions(Media media)
     {
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode root = xml.load(media);
+        final XmlNode root = Stream.loadXml(media);
         final List<XmlNode> collisions = root.getChildren();
         for (int i = 0; i < heightInTile; i++)
         {
@@ -640,8 +637,7 @@ public abstract class MapTileGame<C extends Enum<C>, T extends TileGame<C>>
         loadPatterns(patternsDirectory);
 
         final Media media = Core.MEDIA.create(patternsDirectory.getPath(), "collisions.xml");
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode root = xml.load(media);
+        final XmlNode root = Stream.loadXml(media);
         final List<XmlNode> nodes = root.getChildren();
 
         final int t = file.readShort();

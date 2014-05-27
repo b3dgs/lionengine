@@ -57,7 +57,7 @@ public class SetupEntity
     public SetupEntity(Media config, Class<? extends Entity> type, Map map, FactoryEntity factoryEntity,
             FactorySkill factorySkill, HandlerEntity handlerEntity, int fps)
     {
-        super(config);
+        super(config, false);
         this.type = type;
         this.map = map;
         this.factoryEntity = factoryEntity;

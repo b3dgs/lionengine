@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.purview.model;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.purview.Collidable;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
@@ -43,7 +43,7 @@ public class CollidableModel
     /** Ray cast representation. */
     private final Line ray;
     /** The collision used. */
-    private CollisionData collision;
+    private Collision collision;
     /** Temp entity bounding box from polygon. */
     private Rectangle box;
 
@@ -106,7 +106,7 @@ public class CollidableModel
     }
 
     @Override
-    public void setCollision(CollisionData collision)
+    public void setCollision(Collision collision)
     {
         if (collision == null)
         {
@@ -147,7 +147,7 @@ public class CollidableModel
     }
 
     @Override
-    public CollisionData getCollisionData()
+    public Collision getCollisionData()
     {
         return collision;
     }

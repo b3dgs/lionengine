@@ -15,26 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.game.configurable;
 
 /**
- * Thrown when an {@link XmlNode} is not found.
+ * Represents the size in tile data from a configurable node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class XmlNodeNotFoundException
-        extends Exception
+public class TileSizeData
 {
-    /** Serial uid. */
-    private static final long serialVersionUID = 553335854614950463L;
+    /** The width in tile value. */
+    private final int widthInTile;
+    /** The height in tile value. */
+    private final int heightInTile;
 
     /**
      * Constructor.
      * 
-     * @param message The message
+     * @param widthInTile The width in tile value.
+     * @param heightInTile The height in tile value.
      */
-    public XmlNodeNotFoundException(String message)
+    public TileSizeData(int widthInTile, int heightInTile)
     {
-        super(message);
+        this.widthInTile = widthInTile;
+        this.heightInTile = heightInTile;
+    }
+
+    /**
+     * Get the width in tile value.
+     * 
+     * @return The width in tile value.
+     */
+    public int getWidthInTile()
+    {
+        return widthInTile;
+    }
+
+    /**
+     * Get the height in tile value.
+     * 
+     * @return The height in tile value.
+     */
+    public int getHeightInTile()
+    {
+        return heightInTile;
     }
 }

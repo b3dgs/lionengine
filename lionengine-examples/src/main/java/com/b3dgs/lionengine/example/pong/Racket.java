@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 
@@ -77,7 +77,7 @@ final class Racket
         increase = Keyboard.DOWN;
         setSize(Racket.WIDTH, Racket.HEIGHT);
         teleport(x, y);
-        setCollision(new CollisionData(0, -getHeight() / 2, getWidth(), getHeight(), false));
+        setCollision(new Collision(0, -getHeight() / 2, getWidth(), getHeight(), false));
         timerRandomMovement.start();
     }
 

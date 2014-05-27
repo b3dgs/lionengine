@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitAttacker;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 
 /**

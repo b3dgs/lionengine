@@ -28,15 +28,14 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.platform.CollisionFunction;
 import com.b3dgs.lionengine.game.platform.CollisionRefential;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Default platform map implementation.
@@ -394,8 +393,7 @@ public abstract class MapTilePlatform<C extends Enum<C> & CollisionTile, T exten
     {
         super.loadCollisions(media);
 
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode root = xml.load(media);
+        final XmlNode root = Stream.loadXml(media);
         final List<XmlNode> collisions = root.getChildren("lionengine:tileCollision");
         for (final XmlNode node : collisions)
         {

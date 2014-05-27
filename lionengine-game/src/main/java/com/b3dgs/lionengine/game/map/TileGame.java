@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.List;
 
-import com.b3dgs.lionengine.file.FileReading;
+import com.b3dgs.lionengine.stream.FileReading;
 
 /**
  * Default class tile; containing following data:

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**

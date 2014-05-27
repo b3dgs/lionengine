@@ -28,12 +28,14 @@ import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
 import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
 import com.b3dgs.lionengine.game.platform.map.TilePlatform;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -83,14 +85,12 @@ public abstract class EntityPlatform
         super(setup);
         tileCollisions = new HashMap<>(1);
         final Configurable configurable = setup.getConfigurable();
-        final int hf = configurable.getInteger("horizontal", "lionengine:frames");
-        final int vf = configurable.getInteger("vertical", "lionengine:frames");
-        final int width = configurable.getInteger("width", "lionengine:size");
-        final int height = configurable.getInteger("height", "lionengine:size");
-        sprite = Drawable.loadSpriteAnimated(setup.surface, hf, vf);
+        final FramesData framesData = configurable.getFrames();
+        final SizeData sizeData = configurable.getSize();
+        sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
         frameOffsetX = 0;
         frameOffsetY = 0;
-        setSize(width, height);
+        setSize(sizeData.getWidth(), sizeData.getHeight());
     }
 
     /**

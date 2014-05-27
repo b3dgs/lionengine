@@ -48,7 +48,7 @@ public final class UtilProjectStats
         UtilProjectStats.numberOfFiles = 0;
         UtilProjectStats.numberOfLines = 0;
 
-        final File mainDir = new File(sourcesDir + java.io.File.separator);
+        final File mainDir = new File(sourcesDir + File.separator);
         UtilProjectStats.exploreDir(mainDir.getAbsolutePath());
 
         final StringBuilder builder = new StringBuilder("Project statistics:\n");

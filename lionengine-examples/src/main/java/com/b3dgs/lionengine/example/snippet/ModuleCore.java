@@ -47,12 +47,10 @@ import com.b3dgs.lionengine.drawable.Image;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 @SuppressWarnings("all")
 public class ModuleCore
@@ -259,7 +257,7 @@ public class ModuleCore
     void fileReading()
     {
         final Media file = Core.MEDIA.create("test.txt");
-        try (FileReading reading = File.createFileReading(file);)
+        try (FileReading reading = Stream.createFileReading(file);)
         {
             reading.readBoolean();
             reading.readByte();
@@ -279,7 +277,7 @@ public class ModuleCore
     void fileWriting()
     {
         final Media file = Core.MEDIA.create("test.txt");
-        try (FileWriting writing = File.createFileWriting(file);)
+        try (FileWriting writing = Stream.createFileWriting(file);)
         {
             writing.writeBoolean(true);
             writing.writeByte((byte) 1);
@@ -298,25 +296,24 @@ public class ModuleCore
 
     void xmlNode()
     {
-        final XmlNode node = File.createXmlNode("node");
+        final XmlNode node = Stream.createXmlNode("node");
         node.writeBoolean("value", true);
     }
 
-    void xmlParser() throws XmlNodeNotFoundException
+    void xmlParser()
     {
         // Create a tree and its nodes
-        final XmlNode node1 = File.createXmlNode("root");
-        final XmlNode node2 = File.createXmlNode("foo");
+        final XmlNode node1 = Stream.createXmlNode("root");
+        final XmlNode node2 = Stream.createXmlNode("foo");
         node2.writeBoolean("myBoolean", true);
         node1.add(node2);
 
         // Save the tree
         final Media file = Core.MEDIA.create("file.xml");
-        final XmlParser parser = File.createXmlParser();
-        parser.save(node1, file);
+        Stream.saveXml(node1, file);
 
         // Load and read the tree
-        final XmlNode root = parser.load(file);
+        final XmlNode root = Stream.loadXml(file);
         final XmlNode foo = root.getChild("foo");
         Assert.assertTrue(foo.readBoolean("myBoolean"));
     }

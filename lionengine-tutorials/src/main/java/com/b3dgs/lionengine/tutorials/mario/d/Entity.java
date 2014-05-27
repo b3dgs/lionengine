@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.game.purview.Configurable;
 
 /**
  * Abstract entity base implementation.

@@ -34,14 +34,13 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.file.XmlParser;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Series of tool functions around the editor.
@@ -173,16 +172,8 @@ public final class Tools
     public static String getEntitiesFolderTypeName(File path) throws LionEngineException
     {
         final File typeFile = new File(path, "type.xml");
-        final XmlParser xmlParser = com.b3dgs.lionengine.file.File.createXmlParser();
-        final XmlNode typeNode = xmlParser.load(UtilityMedia.get(typeFile));
-        try
-        {
-            return typeNode.getChild("name").getText();
-        }
-        catch (final XmlNodeNotFoundException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));
+        return typeNode.getChild("name").getText();
     }
 
     /**

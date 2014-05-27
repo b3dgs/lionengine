@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;

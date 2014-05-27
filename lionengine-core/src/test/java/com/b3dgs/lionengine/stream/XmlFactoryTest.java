@@ -15,7 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
+
+import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -34,7 +36,7 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class XmlParserTest
+public class XmlFactoryTest
 {
     /** Resources path. */
     private static String PATH;
@@ -46,7 +48,7 @@ public class XmlParserTest
     public static void prepareTest()
     {
         FactoryMediaProvider.setFactoryMedia(new FactoryMediaMock());
-        XmlParserTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
+        XmlFactoryTest.PATH = UtilFile.getPath("src", "test", "resources", "file");
     }
 
     /**
@@ -64,12 +66,12 @@ public class XmlParserTest
     /**
      * Test the write and read in XML with parser.
      * 
-     * @throws XmlNodeNotFoundException If error.
+     * @throws LionEngineException If error.
      */
     @Test
-    public void testXmlWriteRead() throws XmlNodeNotFoundException
+    public void testXmlWriteRead() throws LionEngineException
     {
-        fileXml = Core.MEDIA.create(XmlParserTest.PATH, "test.xml");
+        fileXml = Core.MEDIA.create(XmlFactoryTest.PATH, "test.xml");
         try
         {
             testWriteXml();
@@ -79,7 +81,7 @@ public class XmlParserTest
         }
         finally
         {
-            UtilFile.deleteFile(new java.io.File(fileXml.getPath()));
+            UtilFile.deleteFile(new File(fileXml.getPath()));
         }
     }
 
@@ -88,8 +90,8 @@ public class XmlParserTest
      */
     private void testWriteXml()
     {
-        final XmlNode root = File.createXmlNode("root");
-        final XmlNode child = File.createXmlNode("child");
+        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode child = Stream.createXmlNode("child");
         root.add(child);
 
         child.writeBoolean("boolean", XmlNodeMock.BOOL_VALUE);
@@ -102,11 +104,10 @@ public class XmlParserTest
         child.writeString("string", XmlNodeMock.STRING_VALUE);
         child.writeString("null", null);
 
-        final XmlParser parserSave = File.createXmlParser();
-        parserSave.save(root, fileXml);
+        Stream.saveXml(root, fileXml);
 
-        root.add(new XmlNodeMock());
-        parserSave.save(root, fileXml);
+        root.add(new XmlNodeImpl("test"));
+        Stream.saveXml(root, fileXml);
     }
 
     /**
@@ -114,10 +115,9 @@ public class XmlParserTest
      */
     private void testWrongWriteXml()
     {
-        final XmlParser parserSave = File.createXmlParser();
         try
         {
-            parserSave.save(File.createXmlNode("child"), Core.MEDIA.create(""));
+            Stream.saveXml(Stream.createXmlNode("child"), Core.MEDIA.create(""));
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -125,13 +125,13 @@ public class XmlParserTest
             // Success
         }
 
-        parserSave.save(new XmlNodeMock(), fileXml);
-        final java.io.File file = new java.io.File(UtilFile.getPath(XmlParserTest.PATH, "foo"));
+        Stream.saveXml(new XmlNodeMock(), fileXml);
+        final File file = new File(UtilFile.getPath(XmlFactoryTest.PATH, "foo"));
         if (file.mkdir())
         {
             try
             {
-                parserSave.save(File.createXmlNode("child"), Core.MEDIA.create(file.getPath()));
+                Stream.saveXml(Stream.createXmlNode("child"), Core.MEDIA.create(file.getPath()));
                 Assert.fail();
             }
             catch (final LionEngineException exception)
@@ -148,12 +148,11 @@ public class XmlParserTest
     /**
      * Test read in xml file.
      * 
-     * @throws XmlNodeNotFoundException If node note found, error case.
+     * @throws LionEngineException If node note found, error case.
      */
-    private void testReadXml() throws XmlNodeNotFoundException
+    private void testReadXml() throws LionEngineException
     {
-        final XmlParser parserLoad = File.createXmlParser();
-        final XmlNode root = parserLoad.load(fileXml);
+        final XmlNode root = Stream.loadXml(fileXml);
         final XmlNode child = root.getChild("child");
 
         Assert.assertEquals(Boolean.valueOf(XmlNodeMock.BOOL_VALUE), Boolean.valueOf(child.readBoolean("boolean")));
@@ -172,14 +171,13 @@ public class XmlParserTest
      */
     private void testWrongReadXml()
     {
-        final XmlParser parserLoad = File.createXmlParser();
-        final XmlNode root = parserLoad.load(fileXml);
+        final XmlNode root = Stream.loadXml(fileXml);
         try
         {
             root.getChild("none");
             Assert.fail();
         }
-        catch (final XmlNodeNotFoundException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -188,15 +186,14 @@ public class XmlParserTest
             root.readInteger("wrong");
             Assert.fail();
         }
-        catch (final NumberFormatException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
 
         try
         {
-            final XmlParser parser = File.createXmlParser();
-            parser.load(Core.MEDIA.create(XmlParserTest.PATH, "malformed.xml"));
+            Stream.loadXml(Core.MEDIA.create(XmlFactoryTest.PATH, "malformed.xml"));
             Assert.fail();
         }
         catch (final LionEngineException exception)

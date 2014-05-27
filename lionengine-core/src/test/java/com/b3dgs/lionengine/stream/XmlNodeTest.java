@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Test the XML node.
@@ -55,9 +57,9 @@ public class XmlNodeTest
     @Test
     public void testXmlnode()
     {
-        final XmlNode root = File.createXmlNode("root");
-        final XmlNode child1 = File.createXmlNode("child1");
-        final XmlNode child2 = File.createXmlNode("child2");
+        final XmlNode root = Stream.createXmlNode("root");
+        final XmlNode child1 = Stream.createXmlNode("child1");
+        final XmlNode child2 = Stream.createXmlNode("child2");
 
         child1.writeString("str", "str");
 
@@ -68,7 +70,7 @@ public class XmlNodeTest
         {
             Assert.assertEquals(child1.readString("str"), root.getChild("child1").readString("str"));
         }
-        catch (final XmlNodeNotFoundException exception)
+        catch (final LionEngineException exception)
         {
             Assert.fail();
         }
@@ -91,14 +93,14 @@ public class XmlNodeTest
     @Test
     public void testXmlNodeWriteRead()
     {
-        final XmlNode node = File.createXmlNode("node");
-        node.add(new XmlNodeMock());
+        final XmlNode node = Stream.createXmlNode("node");
+        node.add(new XmlNodeImpl("test"));
         try
         {
             node.getChild("void");
             Assert.fail();
         }
-        catch (final XmlNodeNotFoundException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }

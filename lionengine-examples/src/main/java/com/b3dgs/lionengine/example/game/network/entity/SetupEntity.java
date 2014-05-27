@@ -48,7 +48,7 @@ public class SetupEntity
      */
     public SetupEntity(Media config, Class<? extends Entity> type, Map map, int desiredFps, boolean server)
     {
-        super(config);
+        super(config, false);
         this.type = type;
         this.map = map;
         this.desiredFps = desiredFps;

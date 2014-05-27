@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.util.List;
 import java.util.Map;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Describe an XML node, which can be modified (reading & writing). All primitive types are written as string inside any
@@ -37,7 +39,6 @@ import java.util.Map;
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see XmlParser
  */
 public interface XmlNode
         extends XmlNodeReader
@@ -135,9 +136,9 @@ public interface XmlNode
      * 
      * @param name The child name.
      * @return The child node reference.
-     * @throws XmlNodeNotFoundException If no node is found at this child name.
+     * @throws LionEngineException If no node is found at this child name.
      */
-    XmlNode getChild(String name) throws XmlNodeNotFoundException;
+    XmlNode getChild(String name) throws LionEngineException;
 
     /**
      * Get the list of all children with this name.

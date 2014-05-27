@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -50,11 +50,11 @@ final class Entity
      */
     Entity(Map map)
     {
-        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
+        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml"), false));
         this.map = map;
         mouseX = 64;
         mouseY = 180;
-        setCollision(new CollisionData(0, 0, 16, 16, false));
+        setCollision(new Collision(0, 0, 16, 16, false));
     }
 
     /**

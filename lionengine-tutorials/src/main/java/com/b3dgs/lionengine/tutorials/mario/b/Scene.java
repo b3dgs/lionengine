@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.FileReading;
-import com.b3dgs.lionengine.file.FileWriting;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.stream.FileReading;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
@@ -70,7 +70,7 @@ final class Scene
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
-        try (FileWriting file = File.createFileWriting(Core.MEDIA.create("level.lvl"));)
+        try (FileWriting file = Stream.createFileWriting(Core.MEDIA.create("level.lvl"));)
         {
             map.save(file);
         }
@@ -88,7 +88,7 @@ final class Scene
     protected void load()
     {
         importAndSave();
-        try (FileReading reading = File.createFileReading(Core.MEDIA.create("level.lvl"));)
+        try (FileReading reading = Stream.createFileReading(Core.MEDIA.create("level.lvl"));)
         {
             map.load(reading);
         }

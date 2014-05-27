@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.game.purview.Configurable;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a

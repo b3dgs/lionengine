@@ -20,13 +20,10 @@ package com.b3dgs.lionengine.core;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
-import com.b3dgs.lionengine.file.File;
-import com.b3dgs.lionengine.file.XmlNode;
-import com.b3dgs.lionengine.file.XmlNodeNotFoundException;
-import com.b3dgs.lionengine.file.XmlParser;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Implementation provider for the {@link FactoryGraphic}.
@@ -36,8 +33,6 @@ import com.b3dgs.lionengine.file.XmlParser;
 public final class FactoryGraphicProvider
         implements FactoryGraphic
 {
-    /** Load raster message. */
-    private static final String ERROR_RASTER_LOAD = "Error on loading raster data of ";
     /** Factory graphic implementation. */
     private static FactoryGraphic factoryGraphic;
 
@@ -160,8 +155,7 @@ public final class FactoryGraphicProvider
     @Override
     public int[][] loadRaster(Media media)
     {
-        final XmlParser xml = File.createXmlParser();
-        final XmlNode raster = xml.load(media);
+        final XmlNode raster = Stream.loadXml(media);
         final String[] colors =
         {
                 "Red", "Green", "Blue"
@@ -169,20 +163,13 @@ public final class FactoryGraphicProvider
         final int[][] rasters = new int[colors.length][6];
         for (int c = 0; c < colors.length; c++)
         {
-            try
-            {
-                final XmlNode color = raster.getChild(colors[c]);
-                rasters[c][0] = Integer.decode(color.readString("start")).intValue();
-                rasters[c][1] = Integer.decode(color.readString("step")).intValue();
-                rasters[c][2] = color.readInteger("force");
-                rasters[c][3] = color.readInteger("amplitude");
-                rasters[c][4] = color.readInteger("offset");
-                rasters[c][5] = color.readInteger("type");
-            }
-            catch (final XmlNodeNotFoundException exception)
-            {
-                throw new LionEngineException(exception, FactoryGraphicProvider.ERROR_RASTER_LOAD, media.getPath());
-            }
+            final XmlNode color = raster.getChild(colors[c]);
+            rasters[c][0] = Integer.decode(color.readString("start")).intValue();
+            rasters[c][1] = Integer.decode(color.readString("step")).intValue();
+            rasters[c][2] = color.readInteger("force");
+            rasters[c][3] = color.readInteger("amplitude");
+            rasters[c][4] = color.readInteger("offset");
+            rasters[c][5] = color.readInteger("type");
         }
         return rasters;
     }

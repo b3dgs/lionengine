@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.file;
+package com.b3dgs.lionengine.stream;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,69 +42,36 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class XmlParserImpl
-        implements XmlParser
+final class XmlFactory
 {
+    /** Error when reading the file. */
+    private static final String ERROR_READING = "An error occured while reading the following file: ";
+    /** Error when writing into file. */
+    private static final String ERROR_WRITING = "An error occured while writing the following file: ";
+    /** Header attribute. */
+    private static final String HEADER_ATTRIBUTE = "xmlns:lionengine";
+    /** Header value. */
+    private static final String HEADER_VALUE = "http://lionengine.b3dgs.com";
+
     /** Load factory. */
     private static DocumentBuilderFactory documentFactory;
     /** Save factory. */
     private static TransformerFactory transformerFactory;
 
     /**
-     * Get the document factory.
+     * Load an XML file.
      * 
-     * @return The document factory.
+     * @param media The XML media path.
+     * @return The XML root node.
      */
-    static DocumentBuilderFactory getDocumentFactory()
-    {
-        synchronized (XmlParserImpl.class)
-        {
-            if (XmlParserImpl.documentFactory == null)
-            {
-                XmlParserImpl.documentFactory = DocumentBuilderFactory.newInstance();
-            }
-        }
-        return XmlParserImpl.documentFactory;
-    }
-
-    /**
-     * Get the transformer factory.
-     * 
-     * @return The transformer factory.
-     */
-    static TransformerFactory getTransformerFactory()
-    {
-        synchronized (XmlParserImpl.class)
-        {
-            if (XmlParserImpl.transformerFactory == null)
-            {
-                XmlParserImpl.transformerFactory = TransformerFactory.newInstance();
-            }
-        }
-        return XmlParserImpl.transformerFactory;
-    }
-
-    /**
-     * Constructor.
-     */
-    XmlParserImpl()
-    {
-        // Nothing to do
-    }
-
-    /*
-     * XmlParser
-     */
-
-    @Override
-    public XmlNode load(Media media)
+    public static XmlNode load(Media media)
     {
         final String file = media.getPath();
         try
         {
-            final DocumentBuilder constructeur = XmlParserImpl.getDocumentFactory().newDocumentBuilder();
-            constructeur.setErrorHandler(null);
-            final Document document = constructeur.parse(media.getInputStream());
+            final DocumentBuilder builder = XmlFactory.getDocumentFactory().newDocumentBuilder();
+            builder.setErrorHandler(null);
+            final Document document = builder.parse(media.getInputStream());
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(root);
         }
@@ -113,21 +80,25 @@ final class XmlParserImpl
                      | IllegalArgumentException
                      | ParserConfigurationException exception)
         {
-            throw new LionEngineException(exception, "An error occured while reading the following file: \"", file,
-                    "\"");
+            throw new LionEngineException(exception, XmlFactory.ERROR_READING, "\"", file, "\"");
         }
     }
 
-    @Override
-    public void save(XmlNode root, Media media)
+    /**
+     * Save an XML tree to a file.
+     * 
+     * @param root The XML root node.
+     * @param media The output media path.
+     */
+    public static void save(XmlNode root, Media media)
     {
         final String file = media.getPath();
         try (OutputStream outputStream = media.getOutputStream();)
         {
-            final Transformer transformer = XmlParserImpl.getTransformerFactory().newTransformer();
+            final Transformer transformer = XmlFactory.getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
             {
-                root.writeString("xmlns:lionengine", "http://lionengine.b3dgs.com");
+                root.writeString(XmlFactory.HEADER_ATTRIBUTE, XmlFactory.HEADER_VALUE);
                 final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -139,8 +110,49 @@ final class XmlParserImpl
         catch (final IOException
                      | TransformerException exception)
         {
-            throw new LionEngineException(exception, "An error occured while writing the following file: \"", file,
-                    "\"");
+            throw new LionEngineException(exception, XmlFactory.ERROR_WRITING, "\"", file, "\"");
         }
+    }
+
+    /**
+     * Get the document factory.
+     * 
+     * @return The document factory.
+     */
+    static DocumentBuilderFactory getDocumentFactory()
+    {
+        synchronized (XmlFactory.class)
+        {
+            if (XmlFactory.documentFactory == null)
+            {
+                XmlFactory.documentFactory = DocumentBuilderFactory.newInstance();
+            }
+        }
+        return XmlFactory.documentFactory;
+    }
+
+    /**
+     * Get the transformer factory.
+     * 
+     * @return The transformer factory.
+     */
+    private static TransformerFactory getTransformerFactory()
+    {
+        synchronized (XmlFactory.class)
+        {
+            if (XmlFactory.transformerFactory == null)
+            {
+                XmlFactory.transformerFactory = TransformerFactory.newInstance();
+            }
+        }
+        return XmlFactory.transformerFactory;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private XmlFactory()
+    {
+        throw new RuntimeException();
     }
 }

@@ -15,29 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
-
-import org.junit.Assert;
-import org.junit.Test;
+package com.b3dgs.lionengine.game.configurable;
 
 /**
- * Test collision data class.
+ * Represents the offset data from a configurable node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionDataTest
+public class OffsetData
 {
+    /** The x value. */
+    private final int x;
+    /** The y value. */
+    private final int y;
+
     /**
-     * Test collision data functions.
+     * Constructor.
+     * 
+     * @param x The x value.
+     * @param y The y value.
      */
-    @Test
-    public void testCollisionData()
+    public OffsetData(int x, int y)
     {
-        final Collision collisionData = new Collision(1, 2, 3, 4, true);
-        Assert.assertTrue(collisionData.getOffsetX() == 1);
-        Assert.assertTrue(collisionData.getOffsetY() == 2);
-        Assert.assertTrue(collisionData.getWidth() == 3);
-        Assert.assertTrue(collisionData.getHeight() == 4);
-        Assert.assertTrue(collisionData.hasMirror());
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Get the x value.
+     * 
+     * @return The x value.
+     */
+    public int getX()
+    {
+        return x;
+    }
+
+    /**
+     * Get the y value.
+     * 
+     * @return The y value.
+     */
+    public int getY()
+    {
+        return y;
     }
 }

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.CollisionData;
+import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
@@ -55,7 +55,7 @@ final class Ball
         force = new Force();
         speedInit = 2.5;
         setSize(Ball.SIZE, Ball.SIZE);
-        setCollision(new CollisionData(0, -getHeight() / 2, getWidth() / 2, getHeight() / 2, false));
+        setCollision(new Collision(0, -getHeight() / 2, getWidth() / 2, getHeight() / 2, false));
     }
 
     /**
