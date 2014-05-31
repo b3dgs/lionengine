@@ -28,6 +28,11 @@ import com.b3dgs.lionengine.core.Media;
  * <li>{@link FileWriting}</li>
  * <li>{@link XmlNode}</li>
  * </ul>
+ * It can also performs the following operations:
+ * <ul>
+ * <li>{@link #saveXml(XmlNode, Media)}</li>
+ * <li>{@link #loadXml(Media)}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
