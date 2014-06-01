@@ -43,6 +43,8 @@ import com.b3dgs.lionengine.editor.Tools;
 public abstract class AbstractDialog
         extends Dialog
 {
+    /** Bottom button width. */
+    public static final int BOTTOM_BUTTON_WIDTH = 96;
     /** Info icon. */
     protected static final Image ICON_INFO = Tools.getIcon("dialog", "info.png");
     /** Warning icon. */
@@ -51,8 +53,6 @@ public abstract class AbstractDialog
     protected static final Image ICON_ERROR = Tools.getIcon("dialog", "error.png");
     /** Maximum characters input. */
     protected static final int MAX_CHAR = 64;
-    /** Bottom button width. */
-    protected static final int BOTTOM_BUTTON_WIDTH = 96;
 
     /** Dialog shell. */
     protected final Shell dialog;

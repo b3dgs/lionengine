@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.animation.AnimationEditor;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -58,6 +59,8 @@ public class EditEntityDialog
     final Media entity;
     /** Entity configurable. */
     final Configurable configurable;
+    /** Entity icon. */
+    Label entityIcon;
 
     /**
      * Constructor.
@@ -71,67 +74,9 @@ public class EditEntityDialog
                 Messages.EditEntityDialog_HeaderDesc, EditEntityDialog.ICON);
         this.entity = entity;
         configurable = Tools.getConfigurable(entity);
+        configurable.load(entity);
         createDialog();
         finish.setEnabled(true);
-    }
-
-    /**
-     * Create the entity header.
-     * 
-     * @param parent The composite parent.
-     * @param entity The entity media.
-     */
-    private void createEntityHeader(Composite parent, Media entity)
-    {
-        final Composite entityHeader = new Composite(parent, SWT.BORDER);
-        entityHeader.setLayout(new GridLayout(3, false));
-        entityHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        final Label entityIcon = new Label(entityHeader, SWT.NONE);
-        entityIcon.setImage(getEntityIcon(parent, entity));
-
-        final Label entityName = new Label(entityHeader, SWT.NONE);
-        entityName.setText(UtilConversion.toTitleCase(UtilFile.removeExtension(entity.getFile().getName())));
-
-        final Group assignArea = new Group(entityHeader, SWT.SHADOW_IN);
-        assignArea.setLayout(new GridLayout(2, true));
-        assignArea.setText("Attributes");
-        createEntityAssignSurface(assignArea);
-        createEntityAssignIcon(assignArea);
-    }
-
-    /**
-     * Create the assign surface area.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createEntityAssignSurface(final Composite parent)
-    {
-        final Button assignSurface = new Button(parent, SWT.PUSH);
-        assignSurface.setText("Assign surface");
-        assignSurface.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final String file = selectFile(parent.getShell(), entity.getFile().getParentFile().getPath());
-                if (file != null)
-                {
-                    final XmlNode root = configurable.getRoot();
-                    XmlNode surfaceNode;
-                    try
-                    {
-                        surfaceNode = root.getChild(Configurable.SURFACE);
-                    }
-                    catch (final LionEngineException exception)
-                    {
-                        surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
-                        root.add(surfaceNode);
-                    }
-                    surfaceNode.writeString("image", file);
-                }
-            }
-        });
     }
 
     /**
@@ -156,37 +101,29 @@ public class EditEntityDialog
     }
 
     /**
-     * Create the assign icon area.
+     * Update the element node.
      * 
-     * @param parent The composite parent.
+     * @param parent The parent shell.
+     * @param element The element node name.
      */
-    private void createEntityAssignIcon(final Composite parent)
+    void updateElement(Shell parent, String element)
     {
-        final Button assignIcon = new Button(parent, SWT.PUSH);
-        assignIcon.setText("Assign icon");
-        assignIcon.addSelectionListener(new SelectionAdapter()
+        final String file = selectFile(parent, entity.getFile().getParentFile().getPath());
+        if (file != null)
         {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
+            final XmlNode root = configurable.getRoot();
+            XmlNode surfaceNode;
+            try
             {
-                final String file = selectFile(parent.getShell(), entity.getFile().getParentFile().getPath());
-                if (file != null)
-                {
-                    final XmlNode root = configurable.getRoot();
-                    XmlNode surfaceNode;
-                    try
-                    {
-                        surfaceNode = root.getChild(Configurable.SURFACE);
-                    }
-                    catch (final LionEngineException exception)
-                    {
-                        surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
-                        root.add(surfaceNode);
-                    }
-                    surfaceNode.writeString("icon", file);
-                }
+                surfaceNode = root.getChild(Configurable.SURFACE);
             }
-        });
+            catch (final LionEngineException exception)
+            {
+                surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
+                root.add(surfaceNode);
+            }
+            surfaceNode.writeString(element, file);
+        }
     }
 
     /**
@@ -196,7 +133,7 @@ public class EditEntityDialog
      * @param entity The entity media.
      * @return The entity real icon, or an extract from its image if has, else <code>null</code>.
      */
-    private Image getEntityIcon(Composite parent, Media entity)
+    Image getEntityIcon(Composite parent, Media entity)
     {
         try
         {
@@ -206,12 +143,96 @@ public class EditEntityDialog
             {
                 return new Image(parent.getDisplay(), iconFile.getPath());
             }
+            return null;
         }
         catch (final LionEngineException exception)
         {
             return null;
         }
-        return null;
+    }
+
+    /**
+     * Create the entity header.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createEntityHeader(Composite parent)
+    {
+        final Composite entityHeader = new Composite(parent, SWT.BORDER);
+        entityHeader.setLayout(new GridLayout(2, true));
+        entityHeader.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+
+        entityIcon = new Label(entityHeader, SWT.NONE);
+        entityIcon.setImage(getEntityIcon(parent, entity));
+
+        final Label entityName = new Label(entityHeader, SWT.NONE);
+        entityName.setText(UtilConversion.toTitleCase(UtilFile.removeExtension(entity.getFile().getName())));
+    }
+
+    /**
+     * Create the entity actions.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createActions(final Composite parent)
+    {
+        final Composite actions = new Group(parent, SWT.NONE);
+        actions.setLayout(new GridLayout(4, false));
+
+        createAssignButton(actions, "Assign surface", "image");
+        createAssignButton(actions, "Assign icon", "icon");
+
+        final Button editAnimations = new Button(actions, SWT.PUSH);
+        editAnimations.setText("Animations Editor");
+        editAnimations.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final AnimationEditor animationEditor = new AnimationEditor(parent);
+                animationEditor.open();
+            }
+        });
+
+        final Button editCollisions = new Button(actions, SWT.PUSH);
+        editCollisions.setText("Collisions Editor");
+        editCollisions.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                // TODO collisions editor dialog
+            }
+        });
+    }
+
+    /**
+     * Create an assign button to an element.
+     * 
+     * @param parent The composite parent.
+     * @param name The button name.
+     * @param element The element node name.
+     */
+    private void createAssignButton(final Composite parent, final String name, final String element)
+    {
+        final Button assign = new Button(parent, SWT.PUSH);
+        assign.setText(name);
+        assign.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                updateElement(parent.getShell(), element);
+                if ("icon".equals(element))
+                {
+                    if (entityIcon.getImage() != null)
+                    {
+                        entityIcon.getImage().dispose();
+                    }
+                    entityIcon.setImage(getEntityIcon(parent, entity));
+                }
+            }
+        });
     }
 
     /*
@@ -221,12 +242,13 @@ public class EditEntityDialog
     @Override
     protected void createContent(Composite content)
     {
-        createEntityHeader(content, entity);
+        createEntityHeader(content);
+        createActions(content);
     }
 
     @Override
     protected void onFinish()
     {
-        // Nothing to do
+        Stream.saveXml(configurable.getRoot(), entity);
     }
 }
