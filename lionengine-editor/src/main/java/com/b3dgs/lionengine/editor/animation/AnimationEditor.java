@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.animation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -36,6 +39,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.anim.Anim;
+import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 
@@ -82,6 +87,21 @@ public class AnimationEditor
         return text;
     }
 
+    /**
+     * Create a button with a name and an icon.
+     * 
+     * @param parent The button parent.
+     * @param name The button name.
+     * @param icon The button icon.
+     * @return The button instance.
+     */
+    private static Button createButton(Composite parent, String name, Image icon)
+    {
+        final Button button = new Button(parent, SWT.PUSH);
+        button.setImage(icon);
+        return button;
+    }
+
     /** Shell reference. */
     final Shell shell;
     /** Animation list. */
@@ -96,6 +116,10 @@ public class AnimationEditor
     Button reverseAnim;
     /** Animation repeat. */
     Button repeatAnim;
+    /** Animations data. */
+    Map<TreeItem, Animation> animationsData;
+    /** Selected data. */
+    Animation selectedData;
     /** Animation renderer. */
     private AnimationRenderer animationRenderer;
 
@@ -111,6 +135,8 @@ public class AnimationEditor
         shell.setImage(AnimationEditor.ICON_DIALOG);
         shell.setText("Animations Editor");
 
+        animationsData = new HashMap<>();
+
         final Composite content = new Composite(shell, SWT.NONE);
         content.setLayout(new GridLayout(3, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -120,6 +146,21 @@ public class AnimationEditor
         createAnimationProperties(content);
 
         createBottom(shell);
+    }
+
+    /**
+     * Set the selected animation, and update the properties fields.
+     * 
+     * @param animation The selected animation.
+     */
+    void setSelectedAnimation(Animation animation)
+    {
+        selectedData = animation;
+        firstFrame.setText(String.valueOf(animation.getFirst()));
+        lastFrame.setText(String.valueOf(animation.getLast()));
+        speed.setText(String.valueOf(animation.getSpeed()));
+        reverseAnim.setSelection(Boolean.valueOf(animation.getReverse()).booleanValue());
+        repeatAnim.setSelection(Boolean.valueOf(animation.getRepeat()).booleanValue());
     }
 
     /**
@@ -152,21 +193,6 @@ public class AnimationEditor
         parent.addMouseListener(animationRenderer);
         parent.addMouseMoveListener(animationRenderer);
         parent.addKeyListener(animationRenderer);
-    }
-
-    /**
-     * Create a button with a name and an icon.
-     * 
-     * @param parent The button parent.
-     * @param name The button name.
-     * @param icon The button icon.
-     * @return The button instance.
-     */
-    private static Button createButton(Composite parent, String name, Image icon)
-    {
-        final Button button = new Button(parent, SWT.PUSH);
-        button.setImage(icon);
-        return button;
     }
 
     /**
@@ -281,7 +307,19 @@ public class AnimationEditor
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                // TODO update current animation data
+                final TreeItem selection = animationTree.getSelection()[0];
+                final Object data = selection.getData();
+                if (data instanceof Animation)
+                {
+                    setSelectedAnimation((Animation) data);
+                }
+                else
+                {
+                    final Animation animation = Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME,
+                            0.0, false, false);
+                    animationsData.put(selection, animation);
+                    setSelectedAnimation(animation);
+                }
             }
         });
     }
