@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.animation;
 
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -28,8 +30,16 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
+import com.b3dgs.lionengine.anim.AnimState;
+import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurable.FramesData;
 
 /**
  * Animation paint listener, rendering the current animation.
@@ -40,7 +50,14 @@ public final class AnimationRenderer
         implements PaintListener, MouseListener, MouseMoveListener, KeyListener
 {
     /** The parent. */
-    private final Composite parent;
+    final Composite parent;
+    /** The animated surface. */
+    final SpriteAnimated surface;
+
+    /** Paused flag. */
+    boolean paused;
+    /** Last played frame */
+    int lastPlayedFrame;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -52,10 +69,85 @@ public final class AnimationRenderer
      * Constructor.
      * 
      * @param parent The parent container.
+     * @param configurable The configurable reference.
      */
-    public AnimationRenderer(Composite parent)
+    public AnimationRenderer(Composite parent, Configurable configurable)
     {
         this.parent = parent;
+        final Media media = UtilityMedia.get(new File(configurable.getPath(), configurable.getSurface().getImage()));
+        final FramesData framesData = configurable.getFrames();
+        surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
+        surface.load(false);
+    }
+
+    /**
+     * Set the animation to play.
+     * 
+     * @param animation The animation to play.
+     */
+    public void setAnimation(Animation animation)
+    {
+        surface.stopAnimation();
+        surface.play(animation);
+        update();
+    }
+
+    /**
+     * Pause the animation.
+     * 
+     * @param paused <code>true</code> if paused, <code>false</code> else.
+     */
+    public void setPause(boolean paused)
+    {
+        this.paused = paused;
+    }
+
+    /**
+     * Stop the animation.
+     */
+    public void stopAnimation()
+    {
+        surface.stopAnimation();
+    }
+
+    /**
+     * Update the rendering periodically.
+     */
+    void update()
+    {
+        parent.getDisplay().asyncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (!parent.isDisposed())
+                {
+                    if (!paused)
+                    {
+                        lastPlayedFrame = surface.getFrame();
+                        surface.updateAnimation(1.0);
+                    }
+                    if (lastPlayedFrame != surface.getFrame())
+                    {
+                        parent.redraw();
+                    }
+                    try
+                    {
+                        Thread.sleep(17);
+                        final AnimState state = surface.getAnimState();
+                        if (state == AnimState.PLAYING || state == AnimState.REVERSING)
+                        {
+                            update();
+                        }
+                    }
+                    catch (final InterruptedException exception)
+                    {
+                        Thread.interrupted();
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -102,7 +194,7 @@ public final class AnimationRenderer
      */
     private void render(Graphic g, int width, int height)
     {
-        // TODO render animation
+        surface.render(g, width / 2 - surface.getFrameWidth() / 2, height / 2 - surface.getFrameHeight() / 2);
     }
 
     /*

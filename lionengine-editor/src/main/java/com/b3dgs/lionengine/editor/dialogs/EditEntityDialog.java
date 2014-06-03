@@ -189,7 +189,7 @@ public class EditEntityDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final AnimationEditor animationEditor = new AnimationEditor(parent);
+                final AnimationEditor animationEditor = new AnimationEditor(parent, configurable);
                 animationEditor.open();
             }
         });

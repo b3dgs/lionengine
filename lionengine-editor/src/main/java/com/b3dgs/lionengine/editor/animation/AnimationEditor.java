@@ -43,6 +43,7 @@ import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
  * Animation editor dialog.
@@ -120,16 +121,21 @@ public class AnimationEditor
     Map<TreeItem, Animation> animationsData;
     /** Selected data. */
     Animation selectedData;
+    /** Configurable reference. */
+    private final Configurable configurable;
     /** Animation renderer. */
-    private AnimationRenderer animationRenderer;
+    AnimationRenderer animationRenderer;
 
     /**
      * Constructor.
      * 
      * @param parent The parent reference.
+     * @param configurable The entity configurable reference.
      */
-    public AnimationEditor(Composite parent)
+    public AnimationEditor(Composite parent, Configurable configurable)
     {
+        this.configurable = configurable;
+
         shell = new Shell(parent.getDisplay(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
         shell.setLayout(new GridLayout(1, false));
         shell.setImage(AnimationEditor.ICON_DIALOG);
@@ -164,6 +170,51 @@ public class AnimationEditor
     }
 
     /**
+     * Set the next selected item from the current one.
+     * 
+     * @param side -1 for the previous, +1 for the next one.
+     */
+    void setNextSelection(int side)
+    {
+        TreeItem[] items = animationTree.getSelection();
+        if (items.length == 0)
+        {
+            animationTree.forceFocus();
+            animationTree.selectAll();
+            animationTree.update();
+        }
+        items = animationTree.getSelection();
+        if (items.length > 0)
+        {
+            final int index = getItemIndex(items[0]) + side;
+            final int next = Math.max(0, Math.min(index, animationTree.getItemCount() - 1));
+            final TreeItem previous = animationTree.getItem(next);
+            animationTree.setSelection(previous);
+            animationTree.forceFocus();
+        }
+    }
+
+    /**
+     * Get the selected item number from the tree.
+     * 
+     * @param item The item to search.
+     * @return The item index.
+     */
+    int getItemIndex(TreeItem item)
+    {
+        int i = 0;
+        for (final TreeItem current : animationTree.getItems())
+        {
+            if (current.equals(item))
+            {
+                break;
+            }
+            i++;
+        }
+        return i;
+    }
+
+    /**
      * Create the animator area, where the animation is played and controlled.
      * 
      * @param parent The composite parent.
@@ -188,11 +239,105 @@ public class AnimationEditor
     {
         final Composite renderer = new Composite(parent, SWT.BORDER);
         renderer.setLayoutData(new GridData(256, 256));
-        animationRenderer = new AnimationRenderer(renderer);
-        parent.addPaintListener(animationRenderer);
-        parent.addMouseListener(animationRenderer);
-        parent.addMouseMoveListener(animationRenderer);
-        parent.addKeyListener(animationRenderer);
+
+        animationRenderer = new AnimationRenderer(renderer, configurable);
+
+        renderer.addPaintListener(animationRenderer);
+        renderer.addMouseListener(animationRenderer);
+        renderer.addMouseMoveListener(animationRenderer);
+        renderer.addKeyListener(animationRenderer);
+    }
+
+    /**
+     * Create the previous animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonPreviousAnim(Composite parent)
+    {
+        final Button previousAnim = AnimationEditor
+                .createButton(parent, "Previous", AnimationEditor.ICON_ANIM_PREVIOUS);
+        previousAnim.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                setNextSelection(-1);
+            }
+        });
+    }
+
+    /**
+     * Create the play animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonPlayAnim(Composite parent)
+    {
+        final Button playAnim = AnimationEditor.createButton(parent, "Play", AnimationEditor.ICON_ANIM_PLAY);
+        playAnim.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                animationRenderer.setAnimation(selectedData);
+                animationRenderer.setPause(false);
+            }
+        });
+    }
+
+    /**
+     * Create the pause animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonPauseAnim(Composite parent)
+    {
+        final Button pauseAnim = AnimationEditor.createButton(parent, "Pause", AnimationEditor.ICON_ANIM_PAUSE);
+        pauseAnim.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                animationRenderer.setPause(true);
+            }
+        });
+    }
+
+    /**
+     * Create the stop animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonStopAnim(Composite parent)
+    {
+        final Button stopAnim = AnimationEditor.createButton(parent, "Stop", AnimationEditor.ICON_ANIM_STOP);
+        stopAnim.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                animationRenderer.stopAnimation();
+            }
+        });
+    }
+
+    /**
+     * Create the next animation button.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonNextAnim(Composite parent)
+    {
+        final Button nextAnim = AnimationEditor.createButton(parent, "Next", AnimationEditor.ICON_ANIM_NEXT);
+        nextAnim.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                setNextSelection(1);
+            }
+        });
     }
 
     /**
@@ -206,52 +351,11 @@ public class AnimationEditor
         animatorPlayer.setLayout(new GridLayout(5, true));
         animatorPlayer.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
-        final Button previousAnim = AnimationEditor.createButton(animatorPlayer, "Previous",
-                AnimationEditor.ICON_ANIM_PREVIOUS);
-        previousAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                // TODO previous animation
-            }
-        });
-        final Button playAnim = AnimationEditor.createButton(animatorPlayer, "Play", AnimationEditor.ICON_ANIM_PLAY);
-        playAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                // TODO play animation
-            }
-        });
-        final Button pauseAnim = AnimationEditor.createButton(animatorPlayer, "Pause", AnimationEditor.ICON_ANIM_PAUSE);
-        pauseAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                // TODO pause animation
-            }
-        });
-        final Button stopAnim = AnimationEditor.createButton(animatorPlayer, "Stop", AnimationEditor.ICON_ANIM_STOP);
-        stopAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                // TODO stop animation
-            }
-        });
-        final Button nextAnim = AnimationEditor.createButton(animatorPlayer, "Next", AnimationEditor.ICON_ANIM_NEXT);
-        nextAnim.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                // TODO next animation
-            }
-        });
+        createButtonPreviousAnim(animatorPlayer);
+        createButtonPlayAnim(animatorPlayer);
+        createButtonPauseAnim(animatorPlayer);
+        createButtonStopAnim(animatorPlayer);
+        createButtonNextAnim(animatorPlayer);
     }
 
     /**
@@ -307,18 +411,22 @@ public class AnimationEditor
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TreeItem selection = animationTree.getSelection()[0];
-                final Object data = selection.getData();
-                if (data instanceof Animation)
+                final TreeItem[] items = animationTree.getSelection();
+                if (items.length > 0)
                 {
-                    setSelectedAnimation((Animation) data);
-                }
-                else
-                {
-                    final Animation animation = Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME,
-                            0.0, false, false);
-                    animationsData.put(selection, animation);
-                    setSelectedAnimation(animation);
+                    final TreeItem selection = items[0];
+                    final Object data = selection.getData();
+                    if (data instanceof Animation)
+                    {
+                        setSelectedAnimation((Animation) data);
+                    }
+                    else
+                    {
+                        final Animation animation = Anim.createAnimation(Animation.MINIMUM_FRAME,
+                                Animation.MINIMUM_FRAME + 1, 0.05, false, true);
+                        animationsData.put(selection, animation);
+                        setSelectedAnimation(animation);
+                    }
                 }
             }
         });

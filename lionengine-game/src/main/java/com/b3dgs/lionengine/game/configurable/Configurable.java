@@ -60,6 +60,8 @@ public class Configurable
     private final Map<String, Animation> animations;
     /** Collisions map. */
     private final Map<String, Collision> collisions;
+    /** Root path. */
+    private String path;
     /** Root node. */
     private XmlNode root;
 
@@ -79,6 +81,7 @@ public class Configurable
      */
     public void load(Media media)
     {
+        path = media.getFile().getParent();
         root = Stream.loadXml(media);
         loadAnimations();
         loadCollisions();
@@ -102,6 +105,16 @@ public class Configurable
     public XmlNode getRoot()
     {
         return root;
+    }
+
+    /**
+     * Get the configuration directory path.
+     * 
+     * @return The configuration directory path.
+     */
+    public String getPath()
+    {
+        return path;
     }
 
     /**
