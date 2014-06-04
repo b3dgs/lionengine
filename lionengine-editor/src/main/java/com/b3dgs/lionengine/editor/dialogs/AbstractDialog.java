@@ -190,32 +190,29 @@ public abstract class AbstractDialog
         final Label separatorContent = new Label(dialog, SWT.SEPARATOR | SWT.HORIZONTAL);
         separatorContent.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Composite bottom = new Composite(dialog, SWT.NONE);
-        bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        bottom.setLayout(new GridLayout(2, false));
-        createBottom(bottom);
+        createBottom(dialog);
     }
 
     /**
      * Create the bottom part of the dialog.
      * 
-     * @param bottom The bottom composite.
+     * @param dialog The dialog composite.
      */
-    protected void createBottom(Composite bottom)
+    protected void createBottom(final Composite dialog)
     {
+        final Composite bottom = new Composite(dialog, SWT.NONE);
+        bottom.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        bottom.setLayout(new GridLayout(2, false));
+
         tipsLabel = new CLabel(bottom, SWT.LEFT_TO_RIGHT);
-        tipsLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+        tipsLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
         tipsLabel.setVisible(false);
 
         final Composite buttonArea = new Composite(bottom, SWT.NONE);
-        buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
+        buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         buttonArea.setLayout(new GridLayout(2, false));
 
-        finish = new Button(buttonArea, SWT.PUSH);
-        final GridData finishData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        finishData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
-        finish.setLayoutData(finishData);
-        finish.setText(Messages.AbstractDialog_Finish);
+        finish = Tools.createButton(buttonArea, Messages.AbstractDialog_Finish, null, true);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
         {
@@ -227,11 +224,7 @@ public abstract class AbstractDialog
             }
         });
 
-        final Button cancel = new Button(buttonArea, SWT.PUSH);
-        final GridData cancelData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        cancelData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
-        cancel.setLayoutData(cancelData);
-        cancel.setText(Messages.AbstractDialog_Cancel);
+        final Button cancel = Tools.createButton(buttonArea, Messages.AbstractDialog_Cancel, null, true);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override

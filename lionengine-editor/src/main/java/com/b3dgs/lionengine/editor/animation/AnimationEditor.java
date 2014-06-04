@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
@@ -88,21 +87,6 @@ public class AnimationEditor
         return text;
     }
 
-    /**
-     * Create a button with a name and an icon.
-     * 
-     * @param parent The button parent.
-     * @param name The button name.
-     * @param icon The button icon.
-     * @return The button instance.
-     */
-    private static Button createButton(Composite parent, String name, Image icon)
-    {
-        final Button button = new Button(parent, SWT.PUSH);
-        button.setImage(icon);
-        return button;
-    }
-
     /** Shell reference. */
     final Shell shell;
     /** Animation list. */
@@ -120,7 +104,9 @@ public class AnimationEditor
     /** Animations data. */
     Map<TreeItem, Animation> animationsData;
     /** Selected data. */
-    Animation selectedData;
+    Animation selectedAnimation;
+    /** Selected data backup. */
+    Animation selectedAnimationBackup;
     /** Configurable reference. */
     private final Configurable configurable;
     /** Animation renderer. */
@@ -161,7 +147,9 @@ public class AnimationEditor
      */
     void setSelectedAnimation(Animation animation)
     {
-        selectedData = animation;
+        selectedAnimation = animation;
+        selectedAnimationBackup = Anim.createAnimation(animation.getFirst(), animation.getLast(), animation.getSpeed(),
+                animation.getReverse(), animation.getRepeat());
         firstFrame.setText(String.valueOf(animation.getFirst()));
         lastFrame.setText(String.valueOf(animation.getLast()));
         speed.setText(String.valueOf(animation.getSpeed()));
@@ -255,8 +243,7 @@ public class AnimationEditor
      */
     private void createButtonPreviousAnim(Composite parent)
     {
-        final Button previousAnim = AnimationEditor
-                .createButton(parent, "Previous", AnimationEditor.ICON_ANIM_PREVIOUS);
+        final Button previousAnim = Tools.createButton(parent, null, AnimationEditor.ICON_ANIM_PREVIOUS, false);
         previousAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -274,13 +261,13 @@ public class AnimationEditor
      */
     private void createButtonPlayAnim(Composite parent)
     {
-        final Button playAnim = AnimationEditor.createButton(parent, "Play", AnimationEditor.ICON_ANIM_PLAY);
+        final Button playAnim = Tools.createButton(parent, null, AnimationEditor.ICON_ANIM_PLAY, false);
         playAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                animationRenderer.setAnimation(selectedData);
+                animationRenderer.setAnimation(selectedAnimation);
                 animationRenderer.setPause(false);
             }
         });
@@ -293,7 +280,7 @@ public class AnimationEditor
      */
     private void createButtonPauseAnim(Composite parent)
     {
-        final Button pauseAnim = AnimationEditor.createButton(parent, "Pause", AnimationEditor.ICON_ANIM_PAUSE);
+        final Button pauseAnim = Tools.createButton(parent, null, AnimationEditor.ICON_ANIM_PAUSE, false);
         pauseAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -311,7 +298,7 @@ public class AnimationEditor
      */
     private void createButtonStopAnim(Composite parent)
     {
-        final Button stopAnim = AnimationEditor.createButton(parent, "Stop", AnimationEditor.ICON_ANIM_STOP);
+        final Button stopAnim = Tools.createButton(parent, null, AnimationEditor.ICON_ANIM_STOP, false);
         stopAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -329,7 +316,7 @@ public class AnimationEditor
      */
     private void createButtonNextAnim(Composite parent)
     {
-        final Button nextAnim = AnimationEditor.createButton(parent, "Next", AnimationEditor.ICON_ANIM_NEXT);
+        final Button nextAnim = Tools.createButton(parent, null, AnimationEditor.ICON_ANIM_NEXT, false);
         nextAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -455,6 +442,36 @@ public class AnimationEditor
         reverseAnim.setText("Reverse");
         repeatAnim = new Button(animationData, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         repeatAnim.setText("Repeat");
+
+        final Composite animationButtons = new Composite(animationProperties, SWT.NONE);
+        animationButtons.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        animationButtons.setLayout(new GridLayout(2, true));
+
+        final Button cancel = Tools.createButton(animationButtons, "Reset", null, true);
+        cancel.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                if (selectedAnimation != null)
+                {
+                    setSelectedAnimation(selectedAnimationBackup);
+                }
+            }
+        });
+
+        final Button accept = Tools.createButton(animationButtons, "Confirm", null, true);
+        accept.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                if (selectedAnimation != null)
+                {
+                    // TODO modify animation
+                }
+            }
+        });
     }
 
     /**
@@ -468,12 +485,8 @@ public class AnimationEditor
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button accept = new Button(bottom, SWT.PUSH);
-        final GridData acceptData = new GridData(SWT.RIGHT, SWT.CENTER, false, false);
-        acceptData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
-        accept.setLayoutData(acceptData);
-        accept.setText("Accept");
-        accept.addSelectionListener(new SelectionAdapter()
+        final Button exit = Tools.createButton(bottom, "Exit", null, true);
+        exit.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)

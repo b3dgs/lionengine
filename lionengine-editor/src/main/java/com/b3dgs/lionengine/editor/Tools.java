@@ -23,8 +23,12 @@ import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -32,6 +36,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -174,6 +179,32 @@ public final class Tools
         final File typeFile = new File(path, "type.xml");
         final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));
         return typeNode.getChild("name").getText();
+    }
+
+    /**
+     * Create a button with a text and an icon at a fixed width.
+     * 
+     * @param parent The composite parent.
+     * @param name The button name.
+     * @param icon The button icon.
+     * @param forceWidth <code>true</code> to force the button width, <code>false</code> else.
+     * @return The button instance.
+     */
+    public static Button createButton(Composite parent, String name, Image icon, boolean forceWidth)
+    {
+        final Button button = new Button(parent, SWT.PUSH);
+        final GridData buttonData = new GridData();
+        if (forceWidth)
+        {
+            buttonData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
+        }
+        button.setLayoutData(buttonData);
+        if (name != null)
+        {
+            button.setText(name);
+        }
+        button.setImage(icon);
+        return button;
     }
 
     /**

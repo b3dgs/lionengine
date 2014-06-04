@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 
 /**
@@ -118,11 +119,7 @@ public abstract class AbstractProjectDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = new Button(nameArea, SWT.PUSH);
-        final GridData browseData = new GridData();
-        browseData.widthHint = 64;
-        browse.setLayoutData(browseData);
-        browse.setText(Messages.AbstractDialog_Browse);
+        final Button browse = Tools.createButton(nameArea, Messages.AbstractDialog_Browse, null, true);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {

@@ -43,8 +43,6 @@ public class AboutDialog
 {
     /** About icon. */
     private static final Image ICON_ABOUT = Tools.getIcon("about.png");
-    /** Bottom button width. */
-    private static final int BOTTOM_BUTTON_WIDTH = 96;
 
     /**
      * Create the dialog content.
@@ -106,11 +104,7 @@ public class AboutDialog
      */
     private static void createBottom(final Shell dialog, Composite bottom)
     {
-        final Button okButton = new Button(bottom, SWT.NONE);
-        final GridData okData = new GridData();
-        okData.widthHint = AboutDialog.BOTTOM_BUTTON_WIDTH;
-        okButton.setLayoutData(okData);
-        okButton.setText("OK");
+        final Button okButton = Tools.createButton(bottom, "OK", null, true);
         okButton.addSelectionListener(new SelectionAdapter()
         {
             @Override
