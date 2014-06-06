@@ -53,7 +53,7 @@ public class ImportProjectDialog
         projectClassesText.setEditable(false);
         projectResourcesText.setEditable(false);
 
-        onLocationSelected("C:\\Users\\CharlineC\\workspace\\lionheart-remake");
+        onLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake");
     }
 
     /*
