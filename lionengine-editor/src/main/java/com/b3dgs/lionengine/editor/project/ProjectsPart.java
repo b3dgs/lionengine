@@ -69,6 +69,12 @@ public class ProjectsPart
     private static final Image ICON_DATA = Tools.getIcon("resources", "data.png");
     /** Level file icon. */
     private static final Image ICON_LEVEL = Tools.getIcon("resources", "level.png");
+    /** Map file icon. */
+    private static final Image ICON_MAP = Tools.getIcon("resources", "assign-map-impl.png");
+    /** Factory entity file icon. */
+    private static final Image ICON_FACTORY_ENTITTY = Tools.getIcon("resources", "assign-factory-entity-impl.png");
+    /** Entity file icon. */
+    private static final Image ICON_ENTITTY = Tools.getIcon("resources", "entity.png");
     /** Class file icon. */
     private static final Image ICON_CLASS = Tools.getIcon("resources", "class.png");
 
@@ -92,18 +98,36 @@ public class ProjectsPart
         {
             item.setImage(ProjectsPart.ICON_IMAGE);
         }
-        else if (Property.DATA.is(file))
-        {
-            item.setImage(ProjectsPart.ICON_DATA);
-        }
         else if (Property.LEVEL.is(file))
         {
             item.setImage(ProjectsPart.ICON_LEVEL);
         }
+        else if (Property.DATA.is(file))
+        {
+            if (EntitiesFolderTester.isEntityFile(file.getFile()))
+            {
+                item.setImage(ProjectsPart.ICON_ENTITTY);
+            }
+            else
+            {
+                item.setImage(ProjectsPart.ICON_DATA);
+            }
+        }
         else if (Property.CLASS.is(file))
         {
             item.setText(item.getText().replaceAll(".class", ""));
-            item.setImage(ProjectsPart.ICON_CLASS);
+            if (Property.MAP_IMPL.is(file))
+            {
+                item.setImage(ProjectsPart.ICON_MAP);
+            }
+            else if (Property.FACTORY_ENTITY_IMPL.is(file))
+            {
+                item.setImage(ProjectsPart.ICON_FACTORY_ENTITTY);
+            }
+            else
+            {
+                item.setImage(ProjectsPart.ICON_CLASS);
+            }
         }
         else
         {

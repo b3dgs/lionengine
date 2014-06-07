@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 
 /**
  * Represents the animation properties edition view.
@@ -157,7 +158,8 @@ public class AnimationProperties
      */
     private void createConfirmButton(Composite parent)
     {
-        final Button confirm = Tools.createButton(parent, "Confirm", null, true);
+        final Button confirm = Tools.createButton(parent, "Confirm", null);
+        confirm.setImage(AbstractDialog.ICON_OK);
         confirm.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -190,7 +192,8 @@ public class AnimationProperties
      */
     private void createResetButton(Composite parent)
     {
-        final Button reset = Tools.createButton(parent, "Reset", null, true);
+        final Button reset = Tools.createButton(parent, "Reset", null);
+        reset.setImage(AbstractDialog.ICON_CANCEL);
         reset.addSelectionListener(new SelectionAdapter()
         {
             @Override

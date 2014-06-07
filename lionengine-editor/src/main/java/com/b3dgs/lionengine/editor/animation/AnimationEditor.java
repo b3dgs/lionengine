@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
@@ -39,7 +40,7 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
 public class AnimationEditor
 {
     /** Dialog icon. */
-    private static final Image ICON_DIALOG = Tools.getIcon("animation-editor", "dialog.png");
+    public static final Image ICON_DIALOG = Tools.getIcon("animation-editor", "dialog.png");
 
     /** Shell reference. */
     final Shell shell;
@@ -135,7 +136,8 @@ public class AnimationEditor
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = Tools.createButton(bottom, "Exit", null, true);
+        final Button exit = Tools.createButton(bottom, "Exit", null);
+        exit.setImage(AbstractDialog.ICON_EXIT);
         exit.addSelectionListener(new SelectionAdapter()
         {
             @Override

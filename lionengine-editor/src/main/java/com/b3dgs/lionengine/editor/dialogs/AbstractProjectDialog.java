@@ -119,7 +119,8 @@ public abstract class AbstractProjectDialog
         projectLocationText = new Text(nameArea, SWT.BORDER);
         projectLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
-        final Button browse = Tools.createButton(nameArea, Messages.AbstractDialog_Browse, null, true);
+        final Button browse = Tools.createButton(nameArea, Messages.AbstractDialog_Browse, null);
+        browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.forceFocus();
         browse.addSelectionListener(new SelectionAdapter()
         {

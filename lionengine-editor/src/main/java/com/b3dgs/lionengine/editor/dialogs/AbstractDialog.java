@@ -43,8 +43,14 @@ import com.b3dgs.lionengine.editor.Tools;
 public abstract class AbstractDialog
         extends Dialog
 {
-    /** Bottom button width. */
-    public static final int BOTTOM_BUTTON_WIDTH = 96;
+    /** OK icon. */
+    public static final Image ICON_OK = Tools.getIcon("dialog", "ok.png");
+    /** Cancel icon. */
+    public static final Image ICON_CANCEL = Tools.getIcon("dialog", "cancel.png");
+    /** Exit icon. */
+    public static final Image ICON_EXIT = Tools.getIcon("dialog", "exit.png");
+    /** Browse icon. */
+    public static final Image ICON_BROWSE = Tools.getIcon("dialog", "browse.png");
     /** Info icon. */
     protected static final Image ICON_INFO = Tools.getIcon("dialog", "info.png");
     /** Warning icon. */
@@ -210,9 +216,10 @@ public abstract class AbstractDialog
 
         final Composite buttonArea = new Composite(bottom, SWT.NONE);
         buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        buttonArea.setLayout(new GridLayout(2, false));
+        buttonArea.setLayout(new GridLayout(2, true));
 
-        finish = Tools.createButton(buttonArea, Messages.AbstractDialog_Finish, null, true);
+        finish = Tools.createButton(buttonArea, Messages.AbstractDialog_Finish, null);
+        finish.setImage(AbstractDialog.ICON_OK);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
         {
@@ -224,7 +231,8 @@ public abstract class AbstractDialog
             }
         });
 
-        final Button cancel = Tools.createButton(buttonArea, Messages.AbstractDialog_Cancel, null, true);
+        final Button cancel = Tools.createButton(buttonArea, Messages.AbstractDialog_Cancel, null);
+        cancel.setImage(AbstractDialog.ICON_CANCEL);
         cancel.addSelectionListener(new SelectionAdapter()
         {
             @Override

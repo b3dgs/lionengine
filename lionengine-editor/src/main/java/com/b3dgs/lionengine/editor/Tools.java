@@ -36,7 +36,6 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -187,18 +186,12 @@ public final class Tools
      * @param parent The composite parent.
      * @param name The button name.
      * @param icon The button icon.
-     * @param forceWidth <code>true</code> to force the button width, <code>false</code> else.
      * @return The button instance.
      */
-    public static Button createButton(Composite parent, String name, Image icon, boolean forceWidth)
+    public static Button createButton(Composite parent, String name, Image icon)
     {
         final Button button = new Button(parent, SWT.PUSH);
-        final GridData buttonData = new GridData();
-        if (forceWidth)
-        {
-            buttonData.widthHint = AbstractDialog.BOTTOM_BUTTON_WIDTH;
-        }
-        button.setLayoutData(buttonData);
+        button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
         if (name != null)
         {
             button.setText(name);

@@ -100,7 +100,7 @@ public enum Property
         {
             return isExtension(file);
         }
-        return isParent(file);
+        return isExtension(file) && isParent(file);
     }
 
     /**
@@ -131,7 +131,14 @@ public enum Property
     private boolean isParent(Media file)
     {
         final String name = file.getPath().replace(".class", "").replace(File.separator, ".");
-        final Class<?> clazz = Project.getActive().getClass(name);
-        return parent.isAssignableFrom(clazz);
+        try
+        {
+            final Class<?> clazz = Project.getActive().getClass(name);
+            return parent.isAssignableFrom(clazz);
+        }
+        catch (final NoClassDefFoundError exception)
+        {
+            return false;
+        }
     }
 }

@@ -88,7 +88,7 @@ public class AnimationPlayer
      */
     private void createButtonPreviousAnim(Composite parent)
     {
-        final Button previousAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS, false);
+        final Button previousAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
         previousAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -106,7 +106,7 @@ public class AnimationPlayer
      */
     private void createButtonPlayAnim(Composite parent)
     {
-        final Button playAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PLAY, false);
+        final Button playAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
         playAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -125,7 +125,7 @@ public class AnimationPlayer
      */
     private void createButtonPauseAnim(Composite parent)
     {
-        final Button pauseAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PAUSE, false);
+        final Button pauseAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
         pauseAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -143,7 +143,7 @@ public class AnimationPlayer
      */
     private void createButtonStopAnim(Composite parent)
     {
-        final Button stopAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_STOP, false);
+        final Button stopAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_STOP);
         stopAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -161,7 +161,7 @@ public class AnimationPlayer
      */
     private void createButtonNextAnim(Composite parent)
     {
-        final Button nextAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_NEXT, false);
+        final Button nextAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
         nextAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override

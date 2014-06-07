@@ -182,7 +182,8 @@ public class EditEntityDialog
         createAssignButton(actions, "Assign surface", "image");
         createAssignButton(actions, "Assign icon", "icon");
 
-        final Button editAnimations = Tools.createButton(actions, "Animation Editor", null, false);
+        final Button editAnimations = Tools.createButton(actions, "Animation Editor", null);
+        editAnimations.setImage(AnimationEditor.ICON_DIALOG);
         editAnimations.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -193,7 +194,7 @@ public class EditEntityDialog
             }
         });
 
-        final Button editCollisions = Tools.createButton(actions, "Collision Editor", null, false);
+        final Button editCollisions = Tools.createButton(actions, "Collision Editor", null);
         editCollisions.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -213,7 +214,7 @@ public class EditEntityDialog
      */
     private void createAssignButton(final Composite parent, final String name, final String element)
     {
-        final Button assign = Tools.createButton(parent, name, null, false);
+        final Button assign = Tools.createButton(parent, name, null);
         assign.addSelectionListener(new SelectionAdapter()
         {
             @Override

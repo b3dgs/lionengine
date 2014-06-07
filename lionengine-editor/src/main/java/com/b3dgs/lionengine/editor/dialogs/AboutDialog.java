@@ -104,7 +104,11 @@ public class AboutDialog
      */
     private static void createBottom(final Shell dialog, Composite bottom)
     {
-        final Button okButton = Tools.createButton(bottom, "OK", null, true);
+        final Button okButton = Tools.createButton(bottom, "OK", null);
+        final GridData data = new GridData();
+        data.widthHint = 72;
+        okButton.setLayoutData(data);
+        okButton.setImage(AbstractDialog.ICON_EXIT);
         okButton.addSelectionListener(new SelectionAdapter()
         {
             @Override

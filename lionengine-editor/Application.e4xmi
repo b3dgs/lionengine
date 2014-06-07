@@ -52,7 +52,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_NTAaEM7uEeOpIazmfaA1Jw" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_hLbDoNHbEeOJV5_CmxbhRw" label="%menu.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzMcnEeO6QsMPtNpkHg" label="Save" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="%menu.exit" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="%menu.exit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/exit.png" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="Help">
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="%menu.about" command="_RgxMxscnEeO6QsMPtNpkHg"/>

@@ -53,7 +53,7 @@ public class EntitiesFolderTester
      * @param file The file to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    private static boolean isEntityFile(File file)
+    public static boolean isEntityFile(File file)
     {
         try
         {

@@ -128,7 +128,8 @@ public class ImportMapDialog
         levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         levelRipLocationText.setEditable(false);
 
-        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null, true);
+        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
+        browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -175,7 +176,8 @@ public class ImportMapDialog
         patternsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         patternsLocationText.setEditable(false);
 
-        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null, true);
+        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
+        browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
             @Override
