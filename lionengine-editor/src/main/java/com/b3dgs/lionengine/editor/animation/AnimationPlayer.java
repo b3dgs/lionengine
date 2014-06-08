@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
 
 /**
@@ -112,8 +113,12 @@ public class AnimationPlayer
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                animationRenderer.setAnimation(animationList.getSelectedAnimation());
-                animationRenderer.setPause(false);
+                final Animation animation = animationList.getSelectedAnimation();
+                if (animation != null)
+                {
+                    animationRenderer.setAnimation(animation);
+                    animationRenderer.setPause(false);
+                }
             }
         });
     }

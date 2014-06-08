@@ -55,7 +55,7 @@
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="%menu.exit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/exit.png" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
       </children>
       <children xsi:type="menu:Menu" xmi:id="_RgxMzscnEeO6QsMPtNpkHg" label="Help">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="%menu.about" command="_RgxMxscnEeO6QsMPtNpkHg"/>
+        <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMz8cnEeO6QsMPtNpkHg" label="%menu.about" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/info.png" command="_RgxMxscnEeO6QsMPtNpkHg"/>
       </children>
     </mainMenu>
     <trimBars xmi:id="_RgxM1ccnEeO6QsMPtNpkHg">

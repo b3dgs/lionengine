@@ -96,7 +96,7 @@ public abstract class AbstractDialog
         dialogLayout.verticalSpacing = 0;
         dialog.setLayout(dialogLayout);
         dialog.setText(title);
-        dialog.setImage(Tools.getIcon("product.png")); //$NON-NLS-1$
+        dialog.setImage(headerIcon);
     }
 
     /**

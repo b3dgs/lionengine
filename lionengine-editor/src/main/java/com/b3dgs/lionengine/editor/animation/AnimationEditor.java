@@ -71,8 +71,8 @@ public class AnimationEditor
         shell.setText("Animations Editor");
 
         final Composite content = new Composite(shell, SWT.NONE);
-        content.setLayout(new GridLayout(3, false));
-        content.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        content.setLayout(new GridLayout(2, false));
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Composite animatorArea = createAnimator(content);
 
@@ -83,8 +83,13 @@ public class AnimationEditor
         animationProperties.setAnimationList(animationList);
 
         animationPlayer.createAnimationPlayer(animatorArea);
-        animationList.createAnimationsList(content);
-        animationProperties.createAnimationProperties(content);
+
+        final Composite properties = new Composite(content, SWT.NONE);
+        properties.setLayout(new GridLayout(1, false));
+        properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        animationList.createAnimationsList(properties);
+        animationProperties.createAnimationProperties(properties);
 
         createBottom(shell);
     }
@@ -97,8 +102,12 @@ public class AnimationEditor
      */
     private Composite createAnimator(Composite parent)
     {
-        final Group animatorArea = new Group(parent, SWT.NONE);
-        animatorArea.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, true));
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayout(new GridLayout(1, false));
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        final Group animatorArea = new Group(content, SWT.NONE);
+        animatorArea.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
         animatorArea.setLayout(new GridLayout(1, false));
         animatorArea.setText("Animation");
 

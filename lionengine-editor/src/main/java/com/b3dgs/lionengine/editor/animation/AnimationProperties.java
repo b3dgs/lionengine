@@ -118,7 +118,7 @@ public class AnimationProperties
     {
         final Group animationProperties = new Group(parent, SWT.NONE);
         animationProperties.setLayout(new GridLayout(1, false));
-        animationProperties.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, true));
+        animationProperties.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
         animationProperties.setText("Properties");
 
         final Composite animationData = new Composite(animationProperties, SWT.NONE);
@@ -142,12 +142,21 @@ public class AnimationProperties
      */
     private void createTextFields(Composite parent)
     {
-        firstFrame = AnimationProperties.createTextField(parent, "First Frame:");
-        lastFrame = AnimationProperties.createTextField(parent, "Last Frame:");
-        speed = AnimationProperties.createTextField(parent, "Animation Speed:");
-        reverseAnim = new Button(parent, SWT.CHECK | SWT.RIGHT_TO_LEFT);
+        final Composite frames = new Composite(parent, SWT.NONE);
+        frames.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+        frames.setLayout(new GridLayout(1, false));
+
+        firstFrame = AnimationProperties.createTextField(frames, "First Frame:");
+        lastFrame = AnimationProperties.createTextField(frames, "Last Frame:");
+        speed = AnimationProperties.createTextField(frames, "Animation Speed:");
+
+        final Composite flags = new Composite(parent, SWT.NONE);
+        flags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+        flags.setLayout(new GridLayout(2, true));
+
+        reverseAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         reverseAnim.setText("Reverse");
-        repeatAnim = new Button(parent, SWT.CHECK | SWT.RIGHT_TO_LEFT);
+        repeatAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         repeatAnim.setText("Repeat");
     }
 

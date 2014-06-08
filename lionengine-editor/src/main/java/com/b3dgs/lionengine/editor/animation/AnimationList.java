@@ -153,8 +153,10 @@ public class AnimationList
     public void createAnimationsList(final Composite parent)
     {
         final Group animations = new Group(parent, SWT.NONE);
-        animations.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        animations.setLayout(new GridLayout(1, false));
+        animations.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        final GridLayout gridLayout = new GridLayout(1, false);
+        gridLayout.verticalSpacing = 1;
+        animations.setLayout(gridLayout);
         animations.setText("List");
 
         createToolBar(animations);
