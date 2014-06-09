@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.animation;
 
+import java.util.Map;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -35,6 +37,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
  * Represents the animation list, allowing to add and remove animations.
@@ -48,6 +51,8 @@ public class AnimationList
     /** Stop icon. */
     private static final Image ICON_ANIM_REMOVE = Tools.getIcon("animation-editor", "anim-remove.png");
 
+    /** Configurable reference. */
+    private final Configurable configurable;
     /** Animation properties. */
     private final AnimationProperties animationProperties;
     /** Animation list. */
@@ -60,10 +65,12 @@ public class AnimationList
     /**
      * Constructor.
      * 
+     * @param configurable The configurable reference.
      * @param animationProperties The animation properties reference.
      */
-    public AnimationList(AnimationProperties animationProperties)
+    public AnimationList(Configurable configurable, AnimationProperties animationProperties)
     {
+        this.configurable = configurable;
         this.animationProperties = animationProperties;
     }
 
@@ -161,6 +168,21 @@ public class AnimationList
 
         createToolBar(animations);
         createTree(animations);
+        loadAnimations();
+    }
+
+    /**
+     * Load the existing animations from the entity configurable.
+     */
+    private void loadAnimations()
+    {
+        final Map<String, Animation> animations = configurable.getAnimations();
+        for (final String name : animations.keySet())
+        {
+            final TreeItem item = new TreeItem(animationTree, SWT.NONE);
+            item.setText(name);
+            item.setData(animations.get(name));
+        }
     }
 
     /**

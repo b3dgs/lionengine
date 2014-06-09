@@ -244,6 +244,16 @@ public class Configurable
     }
 
     /**
+     * Get all animations.
+     * 
+     * @return The animations list.
+     */
+    public Map<String, Animation> getAnimations()
+    {
+        return animations;
+    }
+
+    /**
      * Get a collision data from its name.
      * 
      * @param name The collision name.

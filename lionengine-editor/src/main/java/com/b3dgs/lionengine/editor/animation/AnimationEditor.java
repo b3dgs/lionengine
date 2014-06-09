@@ -77,7 +77,7 @@ public class AnimationEditor
         final Composite animatorArea = createAnimator(content);
 
         animationProperties = new AnimationProperties(animationRenderer);
-        animationList = new AnimationList(animationProperties);
+        animationList = new AnimationList(configurable, animationProperties);
         animationPlayer = new AnimationPlayer(animationList, animationRenderer);
 
         animationProperties.setAnimationList(animationList);
