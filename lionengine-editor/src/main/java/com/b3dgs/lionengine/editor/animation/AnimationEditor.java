@@ -25,8 +25,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
@@ -74,7 +75,18 @@ public class AnimationEditor
         content.setLayout(new GridLayout(2, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        final Composite animatorArea = createAnimator(content);
+        final TabFolder animationTabs = new TabFolder(content, SWT.TOP);
+        final TabItem sheetTab = new TabItem(animationTabs, SWT.NONE);
+        sheetTab.setText("Animation sheet");
+
+        final Composite sheet = new Composite(animationTabs, SWT.DOUBLE_BUFFERED);
+        sheetTab.setControl(sheet);
+
+        final Composite animatorArea = createAnimator(animationTabs);
+
+        final TabItem animatorTab = new TabItem(animationTabs, SWT.NONE);
+        animatorTab.setText("Animator");
+        animatorTab.setControl(animatorArea);
 
         animationProperties = new AnimationProperties(animationRenderer);
         animationList = new AnimationList(configurable, animationProperties);
@@ -106,32 +118,13 @@ public class AnimationEditor
         content.setLayout(new GridLayout(1, false));
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        final Group animatorArea = new Group(content, SWT.NONE);
-        animatorArea.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        animatorArea.setLayout(new GridLayout(1, false));
-        animatorArea.setText("Animation");
-
-        createAnimationRenderer(animatorArea);
-
-        return animatorArea;
-    }
-
-    /**
-     * Create the animation renderer, where the animation is displayed.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createAnimationRenderer(Composite parent)
-    {
-        final Composite renderer = new Composite(parent, SWT.BORDER);
+        final Composite renderer = new Composite(content, SWT.BORDER | SWT.DOUBLE_BUFFERED);
         renderer.setLayoutData(new GridData(256, 256));
 
         animationRenderer = new AnimationRenderer(renderer, configurable);
-
         renderer.addPaintListener(animationRenderer);
-        renderer.addMouseListener(animationRenderer);
-        renderer.addMouseMoveListener(animationRenderer);
-        renderer.addKeyListener(animationRenderer);
+
+        return content;
     }
 
     /**

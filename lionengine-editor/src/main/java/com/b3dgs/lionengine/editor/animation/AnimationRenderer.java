@@ -19,12 +19,6 @@ package com.b3dgs.lionengine.editor.animation;
 
 import java.io.File;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
@@ -47,23 +41,19 @@ import com.b3dgs.lionengine.game.configurable.FramesData;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class AnimationRenderer
-        implements PaintListener, MouseListener, MouseMoveListener, KeyListener
+        implements PaintListener
 {
     /** The parent. */
     final Composite parent;
     /** The animated surface. */
     final SpriteAnimated surface;
 
+    /** Graphic reference. */
+    private final Graphic g;
     /** Paused flag. */
     boolean paused;
     /** Last played frame */
     int lastPlayedFrame;
-    /** Current horizontal mouse location. */
-    private int mouseX;
-    /** Current vertical mouse location. */
-    private int mouseY;
-    /** Mouse click. */
-    private int click;
 
     /**
      * Constructor.
@@ -74,6 +64,7 @@ public final class AnimationRenderer
     public AnimationRenderer(Composite parent, Configurable configurable)
     {
         this.parent = parent;
+        g = Core.GRAPHIC.createGraphic();
         final Media media = UtilityMedia.get(new File(configurable.getPath(), configurable.getSurface().getImage()));
         final FramesData framesData = configurable.getFrames();
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
@@ -151,41 +142,6 @@ public final class AnimationRenderer
     }
 
     /**
-     * Update the mouse.
-     * 
-     * @param mx The mouse horizontal location.
-     * @param my The mouse vertical location.
-     */
-    private void updateMouse(int mx, int my)
-    {
-        mouseX = mx;
-        mouseY = my;
-        updateRender();
-    }
-
-    /**
-     * Update the keyboard.
-     * 
-     * @param vx The keyboard horizontal movement.
-     * @param vy The keyboard vertical movement.
-     */
-    private void updateKeyboard(int vx, int vy)
-    {
-        updateRender();
-    }
-
-    /**
-     * Update the rendering.
-     */
-    private void updateRender()
-    {
-        if (!parent.isDisposed())
-        {
-            parent.redraw();
-        }
-    }
-
-    /**
      * Render the world.
      * 
      * @param g The graphic output.
@@ -205,94 +161,7 @@ public final class AnimationRenderer
     public void paintControl(PaintEvent paintEvent)
     {
         final GC gc = paintEvent.gc;
-        final Graphic g = Core.GRAPHIC.createGraphic();
         g.setGraphic(gc);
         render(g, paintEvent.width, paintEvent.height);
-    }
-
-    /*
-     * MouseListener
-     */
-
-    @Override
-    public void mouseDoubleClick(MouseEvent mouseEvent)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    public void mouseDown(MouseEvent mouseEvent)
-    {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-        click = mouseEvent.button;
-
-        updateMouse(mx, my);
-    }
-
-    @Override
-    public void mouseUp(MouseEvent mouseEvent)
-    {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-
-        updateMouse(mx, my);
-        click = 0;
-    }
-
-    /*
-     * MouseMoveListener
-     */
-
-    @Override
-    public void mouseMove(MouseEvent mouseEvent)
-    {
-        final int mx = mouseEvent.x;
-        final int my = mouseEvent.y;
-
-        updateMouse(mx, my);
-    }
-
-    /*
-     * KeyListener
-     */
-
-    @Override
-    public void keyPressed(KeyEvent keyEvent)
-    {
-        final int vx;
-        final int vy;
-        final int code = keyEvent.keyCode;
-        if (code == SWT.ARROW_LEFT)
-        {
-            vx = -1;
-        }
-        else if (code == SWT.ARROW_RIGHT)
-        {
-            vx = 1;
-        }
-        else
-        {
-            vx = 0;
-        }
-        if (code == SWT.ARROW_DOWN)
-        {
-            vy = -1;
-        }
-        else if (code == SWT.ARROW_UP)
-        {
-            vy = 1;
-        }
-        else
-        {
-            vy = 0;
-        }
-        updateKeyboard(vx, vy);
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent)
-    {
-        // Nothing to do
     }
 }
