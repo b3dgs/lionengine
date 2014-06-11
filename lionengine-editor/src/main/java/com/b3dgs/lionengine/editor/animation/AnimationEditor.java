@@ -82,6 +82,11 @@ public class AnimationEditor
         final Composite sheet = new Composite(animationTabs, SWT.DOUBLE_BUFFERED);
         sheetTab.setControl(sheet);
 
+        final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(sheet, configurable);
+        sheet.addPaintListener(animationFrameSelector);
+        sheet.addMouseListener(animationFrameSelector);
+        sheet.addMouseMoveListener(animationFrameSelector);
+
         final Composite animatorArea = createAnimator(animationTabs);
 
         final TabItem animatorTab = new TabItem(animationTabs, SWT.NONE);
