@@ -28,6 +28,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -47,6 +48,8 @@ public final class AnimationFrameSelector
 {
     /** Frame color. */
     private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 128);
+    /** Frame over color. */
+    private static final ColorRgba COLOR_FRAME_OVER = new ColorRgba(192, 192, 240, 192);
 
     /** The parent. */
     final Composite parent;
@@ -63,12 +66,16 @@ public final class AnimationFrameSelector
     private final int frameWidth;
     /** Frame height. */
     private final int frameHeight;
+    /** Animation properties. */
+    private AnimationProperties animationProperties;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
     private int mouseY;
     /** Mouse click. */
     private int click;
+    /** Mouse clicked. */
+    private boolean clicked;
 
     /**
      * Constructor.
@@ -88,6 +95,16 @@ public final class AnimationFrameSelector
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;
         surface.load(false);
+    }
+
+    /**
+     * Set the animation list.
+     * 
+     * @param animationProperties The animation properties reference.
+     */
+    public void setAnimationProperties(AnimationProperties animationProperties)
+    {
+        this.animationProperties = animationProperties;
     }
 
     /**
@@ -135,7 +152,41 @@ public final class AnimationFrameSelector
             }
         }
 
+        if (mouseX >= x && mouseX < x + surface.getWidth() && mouseY >= y && mouseY < y + surface.getHeight())
+        {
+            g.setColor(AnimationFrameSelector.COLOR_FRAME_OVER);
+            final int offsetX = getOffset(x, frameWidth);
+            final int offsetY = getOffset(y, frameHeight);
+
+            final int rx = UtilMath.getRounded(mouseX - offsetX, frameWidth) + offsetX;
+            final int ry = UtilMath.getRounded(mouseY - offsetY, frameHeight) + offsetY;
+            g.drawRect(rx, ry, frameWidth, frameHeight, true);
+
+            final int fx = (rx - x) / frameWidth;
+            final int fy = (ry - y) / frameHeight;
+            final int frame = fx + fy * horizontalFrames + 1;
+            System.out.println(fx + " " + fy + " " + frame);
+            if (click > 0 && !clicked)
+            {
+                animationProperties.setSelectedFrame(frame);
+                clicked = true;
+            }
+        }
+
         surface.render(g, x, y);
+    }
+
+    /**
+     * Get the offset rounded value to ensure it fit in the grid.
+     * 
+     * @param value The input value.
+     * @param round The round reference.
+     * @return The rounded value.
+     */
+    private int getOffset(int value, int round)
+    {
+        final double offset = value / (double) round;
+        return (int) ((offset - Math.floor(offset)) * round);
     }
 
     /*
@@ -178,6 +229,7 @@ public final class AnimationFrameSelector
 
         updateMouse(mx, my);
         click = 0;
+        clicked = false;
     }
 
     /*

@@ -79,13 +79,18 @@ public class AnimationEditor
         final TabItem sheetTab = new TabItem(animationTabs, SWT.NONE);
         sheetTab.setText("Animation sheet");
 
-        final Composite sheet = new Composite(animationTabs, SWT.DOUBLE_BUFFERED);
+        final Composite sheet = new Composite(animationTabs, SWT.NONE);
+        sheet.setLayout(new GridLayout(1, false));
+        sheet.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         sheetTab.setControl(sheet);
 
-        final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(sheet, configurable);
-        sheet.addPaintListener(animationFrameSelector);
-        sheet.addMouseListener(animationFrameSelector);
-        sheet.addMouseMoveListener(animationFrameSelector);
+        final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
+        renderer.setLayoutData(new GridData(256, 256));
+
+        final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(renderer, configurable);
+        renderer.addPaintListener(animationFrameSelector);
+        renderer.addMouseListener(animationFrameSelector);
+        renderer.addMouseMoveListener(animationFrameSelector);
 
         final Composite animatorArea = createAnimator(animationTabs);
 
@@ -97,6 +102,7 @@ public class AnimationEditor
         animationList = new AnimationList(configurable, animationProperties);
         animationPlayer = new AnimationPlayer(animationList, animationRenderer);
 
+        animationFrameSelector.setAnimationProperties(animationProperties);
         animationProperties.setAnimationList(animationList);
 
         animationPlayer.createAnimationPlayer(animatorArea);
@@ -109,6 +115,17 @@ public class AnimationEditor
         animationProperties.createAnimationProperties(properties);
 
         createBottom(shell);
+    }
+
+    /**
+     * Open the dialog.
+     */
+    public void open()
+    {
+        shell.pack(true);
+        shell.layout(true, true);
+        Tools.center(shell);
+        shell.setVisible(true);
     }
 
     /**
@@ -153,16 +170,5 @@ public class AnimationEditor
                 shell.dispose();
             }
         });
-    }
-
-    /**
-     * Open the dialog.
-     */
-    public void open()
-    {
-        shell.pack(true);
-        shell.layout(true, true);
-        Tools.center(shell);
-        shell.setVisible(true);
     }
 }

@@ -86,6 +86,23 @@ public class AnimationProperties
     }
 
     /**
+     * Set the selected frame to the current selected frame text.
+     * 
+     * @param frame The selected frame number.
+     */
+    public void setSelectedFrame(int frame)
+    {
+        if (firstFrame.isFocusControl())
+        {
+            firstFrame.setText(String.valueOf(frame));
+        }
+        else if (lastFrame.isFocusControl())
+        {
+            lastFrame.setText(String.valueOf(frame));
+        }
+    }
+
+    /**
      * Set the animation list.
      * 
      * @param animationList The animation list reference.
