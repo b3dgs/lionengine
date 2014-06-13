@@ -142,7 +142,7 @@ public class AnimationList
     /**
      * Set the selected animation, and update the properties fields.
      * 
-     * @param animation The selected animation.
+     * @param animation The selected animation, <code>null</code> if none.
      */
     void setSelectedAnimation(Animation animation)
     {

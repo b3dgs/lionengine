@@ -60,10 +60,40 @@ public class AnimationProperties
         return text;
     }
 
+    /**
+     * Set the text value by checking if it is not disposed.
+     * 
+     * @param text The text reference.
+     * @param value The text value.
+     */
+    private static void setTextValue(Text text, String value)
+    {
+        if (!text.isDisposed())
+        {
+            text.setText(value);
+        }
+    }
+
+    /**
+     * Set the button selection by checking if it is not disposed.
+     * 
+     * @param button The button reference.
+     * @param selected The selected state.
+     */
+    private static void setButtonSelection(Button button, boolean selected)
+    {
+        if (!button.isDisposed())
+        {
+            button.setSelection(selected);
+        }
+    }
+
     /** Maximum frame */
     final int maxFrame;
     /** Animation list. */
     AnimationList animationList;
+    /** Animation frame selector. */
+    AnimationFrameSelector animationFrameSelector;
     /** First frame. */
     Text firstFrame;
     /** Last frame. */
@@ -86,23 +116,6 @@ public class AnimationProperties
     }
 
     /**
-     * Set the selected frame to the current selected frame text.
-     * 
-     * @param frame The selected frame number.
-     */
-    public void setSelectedFrame(int frame)
-    {
-        if (firstFrame.isFocusControl())
-        {
-            firstFrame.setText(String.valueOf(frame));
-        }
-        else if (lastFrame.isFocusControl())
-        {
-            lastFrame.setText(String.valueOf(frame));
-        }
-    }
-
-    /**
      * Set the animation list.
      * 
      * @param animationList The animation list reference.
@@ -113,17 +126,41 @@ public class AnimationProperties
     }
 
     /**
+     * Set the animation frame selector.
+     * 
+     * @param animationFrameSelector The animation frame selector reference.
+     */
+    public void setAnimationFrameSelector(AnimationFrameSelector animationFrameSelector)
+    {
+        this.animationFrameSelector = animationFrameSelector;
+    }
+
+    /**
      * Set the selected animation, and update the properties fields.
      * 
      * @param animation The selected animation.
      */
     public void setSelectedAnimation(Animation animation)
     {
-        firstFrame.setText(String.valueOf(animation.getFirst()));
-        lastFrame.setText(String.valueOf(animation.getLast()));
-        speed.setText(String.valueOf(animation.getSpeed()));
-        reverseAnim.setSelection(animation.getReverse());
-        repeatAnim.setSelection(animation.getRepeat());
+        AnimationProperties.setTextValue(firstFrame, String.valueOf(animation.getFirst()));
+        AnimationProperties.setTextValue(lastFrame, String.valueOf(animation.getLast()));
+        AnimationProperties.setTextValue(speed, String.valueOf(animation.getSpeed()));
+        AnimationProperties.setButtonSelection(reverseAnim, animation.getReverse());
+        AnimationProperties.setButtonSelection(repeatAnim, animation.getRepeat());
+
+        animationFrameSelector.setSelectedFrames(animation.getFirst(), animation.getLast());
+    }
+
+    /**
+     * Set the animation range.
+     * 
+     * @param first The first frame.
+     * @param last The last frame.
+     */
+    public void setAnimationRange(int first, int last)
+    {
+        AnimationProperties.setTextValue(firstFrame, String.valueOf(first));
+        AnimationProperties.setTextValue(lastFrame, String.valueOf(last));
     }
 
     /**

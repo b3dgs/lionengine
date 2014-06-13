@@ -86,6 +86,8 @@ public class AnimationEditor
 
         final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
         renderer.setLayoutData(new GridData(256, 256));
+        renderer.setSize(256, 256);
+        renderer.layout(true, true);
 
         final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(renderer, configurable);
         renderer.addPaintListener(animationFrameSelector);
@@ -102,8 +104,10 @@ public class AnimationEditor
         animationList = new AnimationList(configurable, animationProperties);
         animationPlayer = new AnimationPlayer(animationList, animationRenderer);
 
+        animationFrameSelector.setAnimationList(animationList);
         animationFrameSelector.setAnimationProperties(animationProperties);
         animationProperties.setAnimationList(animationList);
+        animationProperties.setAnimationFrameSelector(animationFrameSelector);
 
         animationPlayer.createAnimationPlayer(animatorArea);
 
