@@ -51,6 +51,16 @@ public class AnimationPlayer
     final AnimationList animationList;
     /** Animation renderer. */
     final AnimationRenderer animationRenderer;
+    /** Previous anim. */
+    Button previousAnim;
+    /** Play anim. */
+    Button playAnim;
+    /** Pause anim. */
+    Button pauseAnim;
+    /** Stop anim. */
+    Button stopAnim;
+    /** Next anim. */
+    Button nextAnim;
 
     /**
      * Constructor.
@@ -83,13 +93,25 @@ public class AnimationPlayer
     }
 
     /**
+     * Called when animation is finished.
+     */
+    public void notifyAnimationFinished()
+    {
+        previousAnim.setEnabled(true);
+        playAnim.setEnabled(true);
+        pauseAnim.setEnabled(false);
+        stopAnim.setEnabled(false);
+        nextAnim.setEnabled(true);
+    }
+
+    /**
      * Create the previous animation button.
      * 
      * @param parent The composite parent.
      */
     private void createButtonPreviousAnim(Composite parent)
     {
-        final Button previousAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
+        previousAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PREVIOUS);
         previousAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -107,7 +129,7 @@ public class AnimationPlayer
      */
     private void createButtonPlayAnim(Composite parent)
     {
-        final Button playAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
+        playAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PLAY);
         playAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -118,6 +140,11 @@ public class AnimationPlayer
                 {
                     animationRenderer.setAnimation(animation);
                     animationRenderer.setPause(false);
+                    previousAnim.setEnabled(false);
+                    playAnim.setEnabled(false);
+                    pauseAnim.setEnabled(true);
+                    stopAnim.setEnabled(true);
+                    nextAnim.setEnabled(false);
                 }
             }
         });
@@ -130,13 +157,18 @@ public class AnimationPlayer
      */
     private void createButtonPauseAnim(Composite parent)
     {
-        final Button pauseAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
+        pauseAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_PAUSE);
+        pauseAnim.setEnabled(false);
         pauseAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 animationRenderer.setPause(true);
+                previousAnim.setEnabled(false);
+                playAnim.setEnabled(true);
+                pauseAnim.setEnabled(false);
+                nextAnim.setEnabled(false);
             }
         });
     }
@@ -148,13 +180,19 @@ public class AnimationPlayer
      */
     private void createButtonStopAnim(Composite parent)
     {
-        final Button stopAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_STOP);
+        stopAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_STOP);
+        stopAnim.setEnabled(false);
         stopAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 animationRenderer.stopAnimation();
+                previousAnim.setEnabled(true);
+                playAnim.setEnabled(true);
+                pauseAnim.setEnabled(false);
+                stopAnim.setEnabled(false);
+                nextAnim.setEnabled(true);
             }
         });
     }
@@ -166,7 +204,7 @@ public class AnimationPlayer
      */
     private void createButtonNextAnim(Composite parent)
     {
-        final Button nextAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
+        nextAnim = Tools.createButton(parent, null, AnimationPlayer.ICON_ANIM_NEXT);
         nextAnim.addSelectionListener(new SelectionAdapter()
         {
             @Override

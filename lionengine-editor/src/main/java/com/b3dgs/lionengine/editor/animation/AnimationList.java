@@ -75,6 +75,25 @@ public class AnimationList
     }
 
     /**
+     * Create the animations list area.
+     * 
+     * @param parent The composite parent.
+     */
+    public void createAnimationsList(final Composite parent)
+    {
+        final Group animations = new Group(parent, SWT.NONE);
+        animations.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        final GridLayout gridLayout = new GridLayout(1, false);
+        gridLayout.verticalSpacing = 1;
+        animations.setLayout(gridLayout);
+        animations.setText("List");
+
+        createToolBar(animations);
+        createTree(animations);
+        loadAnimations();
+    }
+
+    /**
      * Update the selected animation with its new values.
      * 
      * @param selection The selected item.
@@ -116,6 +135,11 @@ public class AnimationList
             final TreeItem previous = animationTree.getItem(next);
             animationTree.setSelection(previous);
             animationTree.forceFocus();
+            final Object animation = previous.getData();
+            if (animation instanceof Animation)
+            {
+                setSelectedAnimation((Animation) animation);
+            }
         }
     }
 
@@ -150,25 +174,6 @@ public class AnimationList
         selectedAnimationBackup = Anim.createAnimation(animation.getFirst(), animation.getLast(), animation.getSpeed(),
                 animation.getReverse(), animation.getRepeat());
         animationProperties.setSelectedAnimation(animation);
-    }
-
-    /**
-     * Create the animations list area.
-     * 
-     * @param parent The composite parent.
-     */
-    public void createAnimationsList(final Composite parent)
-    {
-        final Group animations = new Group(parent, SWT.NONE);
-        animations.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        final GridLayout gridLayout = new GridLayout(1, false);
-        gridLayout.verticalSpacing = 1;
-        animations.setLayout(gridLayout);
-        animations.setText("List");
-
-        createToolBar(animations);
-        createTree(animations);
-        loadAnimations();
     }
 
     /**

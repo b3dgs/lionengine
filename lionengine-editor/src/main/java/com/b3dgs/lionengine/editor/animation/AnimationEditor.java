@@ -110,6 +110,7 @@ public class AnimationEditor
         animationProperties.setAnimationFrameSelector(animationFrameSelector);
 
         animationPlayer.createAnimationPlayer(animatorArea);
+        animationRenderer.setAnimationPlayer(animationPlayer);
 
         final Composite properties = new Composite(content, SWT.NONE);
         properties.setLayout(new GridLayout(1, false));

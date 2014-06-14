@@ -158,6 +158,37 @@ public final class AnimationFrameSelector
     }
 
     /**
+     * Start the frame selection.
+     */
+    private void startFrameSelection()
+    {
+        if (!clicked && isOverSurface() && animationList.getSelectedAnimation() != null)
+        {
+            selectedInitialFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            selectedFirstFrame = selectedInitialFrame;
+            selectedLastFrame = selectedFirstFrame;
+            clicked = true;
+        }
+    }
+
+    /**
+     * Update the frame selection and keep order valid.
+     */
+    private void updateFrameSelection()
+    {
+        if (clicked)
+        {
+            selectedLastFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
+            if (selectedInitialFrame > selectedLastFrame)
+            {
+                selectedFirstFrame = selectedLastFrame;
+                selectedLastFrame = selectedInitialFrame;
+            }
+            animationProperties.setAnimationRange(selectedFirstFrame, selectedLastFrame);
+        }
+    }
+
+    /**
      * Update the mouse.
      * 
      * @param mx The mouse horizontal location.
@@ -239,17 +270,6 @@ public final class AnimationFrameSelector
     }
 
     /**
-     * Check if mouse is over animation surface.
-     * 
-     * @return <code>true</code> if is over, <code>false</code> else.
-     */
-    private boolean isOverSurface()
-    {
-        return mouseX >= renderX && mouseX < renderX + surface.getWidth() && mouseY >= renderY
-                && mouseY < renderX + surface.getHeight();
-    }
-
-    /**
      * Render the frame where the mouse is over.
      * 
      * @param g The graphic output.
@@ -292,34 +312,14 @@ public final class AnimationFrameSelector
     }
 
     /**
-     * Start the frame selection.
+     * Check if mouse is over animation surface.
+     * 
+     * @return <code>true</code> if is over, <code>false</code> else.
      */
-    private void startFrameSelection()
+    private boolean isOverSurface()
     {
-        if (!clicked && isOverSurface() && animationList.getSelectedAnimation() != null)
-        {
-            selectedInitialFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
-            selectedFirstFrame = selectedInitialFrame;
-            selectedLastFrame = selectedFirstFrame;
-            clicked = true;
-        }
-    }
-
-    /**
-     * Update the frame selection and keep order valid.
-     */
-    private void updateFrameSelection()
-    {
-        if (clicked)
-        {
-            selectedLastFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
-            if (selectedInitialFrame > selectedLastFrame)
-            {
-                selectedFirstFrame = selectedLastFrame;
-                selectedLastFrame = selectedInitialFrame;
-            }
-            animationProperties.setAnimationRange(selectedFirstFrame, selectedLastFrame);
-        }
+        return mouseX >= renderX && mouseX < renderX + surface.getWidth() && mouseY >= renderY
+                && mouseY < renderX + surface.getHeight();
     }
 
     /*

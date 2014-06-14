@@ -23,6 +23,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -43,17 +44,74 @@ import com.b3dgs.lionengine.game.configurable.FramesData;
 public final class AnimationRenderer
         implements PaintListener
 {
+    /** Animation update rate. */
+    private static final int TIMER_INTERVAL_MILLI = 16;
+
     /** The parent. */
     final Composite parent;
     /** The animated surface. */
     final SpriteAnimated surface;
 
+    /** Animator thread. */
+    private final class AnimationRunner
+            implements Runnable
+    {
+        /** Display reference. */
+        private final Display display;
+
+        /**
+         * Constructor.
+         * 
+         * @param display The display reference.
+         */
+        public AnimationRunner(Display display)
+        {
+            this.display = display;
+        }
+
+        /*
+         * Runnable
+         */
+
+        @Override
+        public void run()
+        {
+            if (!parent.isDisposed())
+            {
+                if (!paused)
+                {
+                    lastPlayedFrame = surface.getFrame();
+                    surface.updateAnimation(1.0);
+                }
+                final AnimState state = surface.getAnimState();
+                if (lastPlayedFrame != surface.getFrame())
+                {
+                    parent.redraw();
+                }
+                if (state == AnimState.PLAYING || state == AnimState.REVERSING)
+                {
+                    display.timerExec(AnimationRenderer.TIMER_INTERVAL_MILLI, this);
+                }
+                if (state == AnimState.FINISHED)
+                {
+                    animationPlayer.notifyAnimationFinished();
+                }
+            }
+        }
+    }
+
+    /** Animation runner. */
+    private final AnimationRunner animationRunner;
     /** Graphic reference. */
     private final Graphic g;
+    /** Animation player. */
+    AnimationPlayer animationPlayer;
     /** Paused flag. */
     boolean paused;
     /** Last played frame */
     int lastPlayedFrame;
+    /** Last first frame. */
+    private int lastFirstFrame;
 
     /**
      * Constructor.
@@ -64,11 +122,33 @@ public final class AnimationRenderer
     public AnimationRenderer(Composite parent, Configurable configurable)
     {
         this.parent = parent;
+        animationRunner = new AnimationRunner(parent.getDisplay());
         g = Core.GRAPHIC.createGraphic();
         final Media media = UtilityMedia.get(new File(configurable.getPath(), configurable.getSurface().getImage()));
         final FramesData framesData = configurable.getFrames();
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
         surface.load(false);
+    }
+
+    /**
+     * Stop the animation.
+     */
+    public void stopAnimation()
+    {
+        surface.stopAnimation();
+        surface.setFrame(lastFirstFrame);
+        parent.redraw();
+        paused = false;
+    }
+
+    /**
+     * Set the animation list.
+     * 
+     * @param animationPlayer The animation player reference.
+     */
+    public void setAnimationPlayer(AnimationPlayer animationPlayer)
+    {
+        this.animationPlayer = animationPlayer;
     }
 
     /**
@@ -78,9 +158,15 @@ public final class AnimationRenderer
      */
     public void setAnimation(Animation animation)
     {
-        surface.stopAnimation();
-        surface.play(animation);
-        update();
+        if (!paused)
+        {
+            surface.stopAnimation();
+            surface.updateAnimation(1.0);
+            surface.play(animation);
+            lastFirstFrame = animation.getFirst();
+            parent.redraw();
+        }
+        parent.getDisplay().timerExec(AnimationRenderer.TIMER_INTERVAL_MILLI, animationRunner);
     }
 
     /**
@@ -91,54 +177,6 @@ public final class AnimationRenderer
     public void setPause(boolean paused)
     {
         this.paused = paused;
-    }
-
-    /**
-     * Stop the animation.
-     */
-    public void stopAnimation()
-    {
-        surface.stopAnimation();
-    }
-
-    /**
-     * Update the rendering periodically.
-     */
-    void update()
-    {
-        parent.getDisplay().asyncExec(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if (!parent.isDisposed())
-                {
-                    if (!paused)
-                    {
-                        lastPlayedFrame = surface.getFrame();
-                        surface.updateAnimation(1.0);
-                    }
-                    if (lastPlayedFrame != surface.getFrame())
-                    {
-                        parent.redraw();
-                    }
-                    try
-                    {
-                        Thread.sleep(17);
-                        final AnimState state = surface.getAnimState();
-                        if (state == AnimState.PLAYING || state == AnimState.REVERSING)
-                        {
-                            update();
-                        }
-                    }
-                    catch (final InterruptedException exception)
-                    {
-                        Thread.interrupted();
-                        return;
-                    }
-                }
-            }
-        });
     }
 
     /**
