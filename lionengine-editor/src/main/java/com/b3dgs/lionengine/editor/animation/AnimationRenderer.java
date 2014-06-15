@@ -180,6 +180,16 @@ public final class AnimationRenderer
     }
 
     /**
+     * Get the composite parent.
+     * 
+     * @return The composite parent.
+     */
+    public Composite getParent()
+    {
+        return parent;
+    }
+
+    /**
      * Render the world.
      * 
      * @param g The graphic output.

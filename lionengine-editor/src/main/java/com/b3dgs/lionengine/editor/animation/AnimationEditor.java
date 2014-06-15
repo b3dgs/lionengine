@@ -18,19 +18,16 @@
 package com.b3dgs.lionengine.editor.animation;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
+import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
@@ -39,22 +36,15 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationEditor
+        extends AbstractEditor
 {
+    /** Dialog title. */
+    public static final String DIALOG_TITLE = "Animations Editor";
     /** Dialog icon. */
-    public static final Image ICON_DIALOG = Tools.getIcon("animation-editor", "dialog.png");
+    public static final Image DIALOG_ICON = Tools.getIcon("animation-editor", "dialog.png");
 
-    /** Shell reference. */
-    final Shell shell;
-    /** Animation list. */
-    final AnimationList animationList;
     /** Configurable reference. */
     private final Configurable configurable;
-    /** Animation player. */
-    private final AnimationPlayer animationPlayer;
-    /** Animation properties. */
-    private final AnimationProperties animationProperties;
-    /** Animation renderer. */
-    AnimationRenderer animationRenderer;
 
     /**
      * Constructor.
@@ -64,24 +54,24 @@ public class AnimationEditor
      */
     public AnimationEditor(Composite parent, Configurable configurable)
     {
+        super(AnimationEditor.DIALOG_TITLE, AnimationEditor.DIALOG_ICON, parent);
         this.configurable = configurable;
+    }
 
-        shell = new Shell(parent.getDisplay(), SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
-        shell.setLayout(new GridLayout(1, false));
-        shell.setImage(AnimationEditor.ICON_DIALOG);
-        shell.setText("Animations Editor");
-
-        final Composite content = new Composite(shell, SWT.NONE);
-        content.setLayout(new GridLayout(2, false));
-        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        final TabFolder animationTabs = new TabFolder(content, SWT.TOP);
-        final TabItem sheetTab = new TabItem(animationTabs, SWT.NONE);
-        sheetTab.setText("Animation sheet");
-
-        final Composite sheet = new Composite(animationTabs, SWT.NONE);
+    /**
+     * Create the animation frame selector.
+     * 
+     * @param parent The composite parent.
+     * @return The created frame selector.
+     */
+    private AnimationFrameSelector createAnimationFrameSelector(TabFolder parent)
+    {
+        final Composite sheet = new Composite(parent, SWT.NONE);
         sheet.setLayout(new GridLayout(1, false));
         sheet.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        final TabItem sheetTab = new TabItem(parent, SWT.NONE);
+        sheetTab.setText("Sheet");
         sheetTab.setControl(sheet);
 
         final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
@@ -94,43 +84,7 @@ public class AnimationEditor
         renderer.addMouseListener(animationFrameSelector);
         renderer.addMouseMoveListener(animationFrameSelector);
 
-        final Composite animatorArea = createAnimator(animationTabs);
-
-        final TabItem animatorTab = new TabItem(animationTabs, SWT.NONE);
-        animatorTab.setText("Animator");
-        animatorTab.setControl(animatorArea);
-
-        animationProperties = new AnimationProperties(animationRenderer);
-        animationList = new AnimationList(configurable, animationProperties);
-        animationPlayer = new AnimationPlayer(animationList, animationRenderer);
-
-        animationFrameSelector.setAnimationList(animationList);
-        animationFrameSelector.setAnimationProperties(animationProperties);
-        animationProperties.setAnimationList(animationList);
-        animationProperties.setAnimationFrameSelector(animationFrameSelector);
-
-        animationPlayer.createAnimationPlayer(animatorArea);
-        animationRenderer.setAnimationPlayer(animationPlayer);
-
-        final Composite properties = new Composite(content, SWT.NONE);
-        properties.setLayout(new GridLayout(1, false));
-        properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        animationList.createAnimationsList(properties);
-        animationProperties.createAnimationProperties(properties);
-
-        createBottom(shell);
-    }
-
-    /**
-     * Open the dialog.
-     */
-    public void open()
-    {
-        shell.pack(true);
-        shell.layout(true, true);
-        Tools.center(shell);
-        shell.setVisible(true);
+        return animationFrameSelector;
     }
 
     /**
@@ -139,7 +93,7 @@ public class AnimationEditor
      * @param parent The composite parent.
      * @return The created composite.
      */
-    private Composite createAnimator(Composite parent)
+    private AnimationRenderer createAnimationRenderer(TabFolder parent)
     {
         final Composite content = new Composite(parent, SWT.NONE);
         content.setLayout(new GridLayout(1, false));
@@ -148,32 +102,52 @@ public class AnimationEditor
         final Composite renderer = new Composite(content, SWT.BORDER | SWT.DOUBLE_BUFFERED);
         renderer.setLayoutData(new GridData(256, 256));
 
-        animationRenderer = new AnimationRenderer(renderer, configurable);
+        final AnimationRenderer animationRenderer = new AnimationRenderer(renderer, configurable);
         renderer.addPaintListener(animationRenderer);
 
-        return content;
+        final TabItem animatorTab = new TabItem(parent, SWT.NONE);
+        animatorTab.setText("Animator");
+        animatorTab.setControl(content);
+
+        return animationRenderer;
     }
 
-    /**
-     * Create the bottom part.
-     * 
-     * @param parent The parent reference.
+    /*
+     * AbstractEditor
      */
-    private void createBottom(Composite parent)
-    {
-        final Composite bottom = new Composite(parent, SWT.NONE);
-        bottom.setLayout(new GridLayout(1, false));
-        bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = Tools.createButton(bottom, "Exit", null);
-        exit.setImage(AbstractDialog.ICON_EXIT);
-        exit.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                shell.dispose();
-            }
-        });
+    @Override
+    protected void createContent(Composite parent)
+    {
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayout(new GridLayout(2, false));
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        final Group animGroup = new Group(content, SWT.NONE);
+        animGroup.setLayout(new GridLayout(1, false));
+        animGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        animGroup.setText("Animation");
+
+        final TabFolder animationTabs = new TabFolder(animGroup, SWT.TOP);
+        final AnimationFrameSelector animationFrameSelector = createAnimationFrameSelector(animationTabs);
+        final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
+
+        final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
+        final AnimationList animationList = new AnimationList(configurable, animationProperties);
+        final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
+        animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
+
+        animationFrameSelector.setAnimationList(animationList);
+        animationFrameSelector.setAnimationProperties(animationProperties);
+        animationProperties.setAnimationList(animationList);
+        animationProperties.setAnimationFrameSelector(animationFrameSelector);
+        animationRenderer.setAnimationPlayer(animationPlayer);
+
+        final Composite properties = new Composite(content, SWT.NONE);
+        properties.setLayout(new GridLayout(1, false));
+        properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        animationList.createAnimationsList(properties);
+        animationProperties.createAnimationProperties(properties);
     }
 }

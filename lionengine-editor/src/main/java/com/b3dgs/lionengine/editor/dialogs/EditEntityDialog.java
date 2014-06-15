@@ -40,6 +40,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
+import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -182,8 +183,8 @@ public class EditEntityDialog
         createAssignButton(actions, "Assign surface", "image");
         createAssignButton(actions, "Assign icon", "icon");
 
-        final Button editAnimations = Tools.createButton(actions, "Animation Editor", null);
-        editAnimations.setImage(AnimationEditor.ICON_DIALOG);
+        final Button editAnimations = Tools.createButton(actions, AnimationEditor.DIALOG_TITLE, null);
+        editAnimations.setImage(AnimationEditor.DIALOG_ICON);
         editAnimations.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -194,13 +195,15 @@ public class EditEntityDialog
             }
         });
 
-        final Button editCollisions = Tools.createButton(actions, "Collision Editor", null);
+        final Button editCollisions = Tools.createButton(actions, EntityCollisionEditor.DIALOG_TITLE, null);
+        editCollisions.setImage(EntityCollisionEditor.DIALOG_ICON);
         editCollisions.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                // TODO collisions editor dialog
+                final EntityCollisionEditor entityCollisionEditor = new EntityCollisionEditor(parent, configurable);
+                entityCollisionEditor.open();
             }
         });
     }

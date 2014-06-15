@@ -352,6 +352,7 @@ public final class AnimationFrameSelector
 
         startFrameSelection();
         updateMouse(mx, my);
+        updateFrameSelection();
     }
 
     @Override
