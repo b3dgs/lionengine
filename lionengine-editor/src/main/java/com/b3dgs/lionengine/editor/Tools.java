@@ -31,6 +31,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -198,6 +200,27 @@ public final class Tools
         }
         button.setImage(icon);
         return button;
+    }
+
+    /**
+     * Get the selected item number from the tree.
+     * 
+     * @param tree The tree reference.
+     * @param item The item to search.
+     * @return The item index.
+     */
+    public static int getItemIndex(Tree tree, TreeItem item)
+    {
+        int i = 0;
+        for (final TreeItem current : tree.getItems())
+        {
+            if (current.equals(item))
+            {
+                break;
+            }
+            i++;
+        }
+        return i;
     }
 
     /**

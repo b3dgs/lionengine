@@ -47,9 +47,9 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
 public class AnimationList
 {
     /** Stop icon. */
-    private static final Image ICON_ANIM_ADD = Tools.getIcon("animation-editor", "anim-add.png");
+    private static final Image ICON_ANIMATION_ADD = Tools.getIcon("animation-editor", "animation-add.png");
     /** Stop icon. */
-    private static final Image ICON_ANIM_REMOVE = Tools.getIcon("animation-editor", "anim-remove.png");
+    private static final Image ICON_ANIMATION_REMOVE = Tools.getIcon("animation-editor", "animation-remove.png");
 
     /** Configurable reference. */
     private final Configurable configurable;
@@ -75,6 +75,29 @@ public class AnimationList
     }
 
     /**
+     * Load the existing animations from the entity configurable.
+     */
+    public void loadAnimations()
+    {
+        final Map<String, Animation> animations = configurable.getAnimations();
+        boolean selected = false;
+        for (final String name : animations.keySet())
+        {
+            final Animation animation = animations.get(name);
+            final TreeItem item = new TreeItem(animationTree, SWT.NONE);
+            item.setText(name);
+            item.setData(animation);
+            if (!selected)
+            {
+                animationTree.setSelection(item);
+                animationTree.forceFocus();
+                setSelectedAnimation(animation);
+                selected = true;
+            }
+        }
+    }
+
+    /**
      * Create the animations list area.
      * 
      * @param parent The composite parent.
@@ -90,7 +113,6 @@ public class AnimationList
 
         createToolBar(animations);
         createTree(animations);
-        loadAnimations();
     }
 
     /**
@@ -130,7 +152,7 @@ public class AnimationList
         items = animationTree.getSelection();
         if (items.length > 0)
         {
-            final int index = getItemIndex(items[0]) + side;
+            final int index = Tools.getItemIndex(animationTree, items[0]) + side;
             final int next = Math.max(0, Math.min(index, animationTree.getItemCount() - 1));
             final TreeItem previous = animationTree.getItem(next);
             animationTree.setSelection(previous);
@@ -177,20 +199,6 @@ public class AnimationList
     }
 
     /**
-     * Load the existing animations from the entity configurable.
-     */
-    private void loadAnimations()
-    {
-        final Map<String, Animation> animations = configurable.getAnimations();
-        for (final String name : animations.keySet())
-        {
-            final TreeItem item = new TreeItem(animationTree, SWT.NONE);
-            item.setText(name);
-            item.setData(animations.get(name));
-        }
-    }
-
-    /**
      * Create the tool bar.
      * 
      * @param parent The composite parent.
@@ -212,7 +220,7 @@ public class AnimationList
     private void createAddAnimationToolItem(final ToolBar toolbar)
     {
         final ToolItem addAnimation = new ToolItem(toolbar, SWT.PUSH);
-        addAnimation.setImage(AnimationList.ICON_ANIM_ADD);
+        addAnimation.setImage(AnimationList.ICON_ANIMATION_ADD);
         addAnimation.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -238,7 +246,7 @@ public class AnimationList
     private void createRemoveAnimationToolItem(ToolBar toolbar)
     {
         final ToolItem removeAnimation = new ToolItem(toolbar, SWT.PUSH);
-        removeAnimation.setImage(AnimationList.ICON_ANIM_REMOVE);
+        removeAnimation.setImage(AnimationList.ICON_ANIMATION_REMOVE);
         removeAnimation.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -286,25 +294,5 @@ public class AnimationList
                 }
             }
         });
-    }
-
-    /**
-     * Get the selected item number from the tree.
-     * 
-     * @param item The item to search.
-     * @return The item index.
-     */
-    private int getItemIndex(TreeItem item)
-    {
-        int i = 0;
-        for (final TreeItem current : animationTree.getItems())
-        {
-            if (current.equals(item))
-            {
-                break;
-            }
-            i++;
-        }
-        return i;
     }
 }

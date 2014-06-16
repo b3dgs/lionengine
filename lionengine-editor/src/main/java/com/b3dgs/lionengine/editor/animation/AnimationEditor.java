@@ -149,5 +149,6 @@ public class AnimationEditor
 
         animationList.createAnimationsList(properties);
         animationProperties.createAnimationProperties(properties);
+        animationList.loadAnimations();
     }
 }
