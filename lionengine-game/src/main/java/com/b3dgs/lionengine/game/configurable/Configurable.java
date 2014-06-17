@@ -268,6 +268,16 @@ public class Configurable
     }
 
     /**
+     * Get all collisions.
+     * 
+     * @return The collisions list.
+     */
+    public Map<String, Collision> getCollisions()
+    {
+        return collisions;
+    }
+
+    /**
      * Load all animations.
      */
     private void loadAnimations()

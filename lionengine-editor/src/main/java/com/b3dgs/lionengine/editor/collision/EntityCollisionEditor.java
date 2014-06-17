@@ -59,6 +59,12 @@ public class EntityCollisionEditor
     @Override
     protected void createContent(Composite parent)
     {
-        // TODO create editor
+        final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
+        final EntityCollisionList entityCollisionList = new EntityCollisionList(configurable, entityCollisionProperties);
+
+        entityCollisionList.createEntityCollisionList(parent);
+        entityCollisionProperties.createAnimationProperties(parent);
+
+        entityCollisionList.loadCollisions();
     }
 }
