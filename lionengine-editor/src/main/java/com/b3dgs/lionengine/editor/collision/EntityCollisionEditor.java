@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.collision;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.editor.Tools;
@@ -59,11 +61,14 @@ public class EntityCollisionEditor
     @Override
     protected void createContent(Composite parent)
     {
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayout(new GridLayout(2, false));
+
         final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
         final EntityCollisionList entityCollisionList = new EntityCollisionList(configurable, entityCollisionProperties);
 
-        entityCollisionList.createEntityCollisionList(parent);
-        entityCollisionProperties.createAnimationProperties(parent);
+        entityCollisionList.createEntityCollisionList(content);
+        entityCollisionProperties.createAnimationProperties(content);
 
         entityCollisionList.loadCollisions();
     }

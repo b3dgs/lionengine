@@ -51,12 +51,16 @@ public class EntityCollisionProperties
     {
         final Composite field = new Composite(parent, SWT.NONE);
         field.setLayout(new GridLayout(2, false));
+        final GridData fieldData = new GridData(SWT.LEFT, SWT.CENTER, false, false);
+        field.setLayoutData(fieldData);
 
         final Label label = new Label(field, SWT.NONE);
         label.setText(title);
 
         final Text text = new Text(field, SWT.SINGLE);
-        text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final GridData data = new GridData(SWT.LEFT, SWT.CENTER, true, false);
+        data.minimumWidth = 32;
+        text.setLayoutData(data);
 
         return text;
     }
@@ -179,29 +183,17 @@ public class EntityCollisionProperties
      */
     private void createTextFields(Composite parent)
     {
-        final Composite frames = new Composite(parent, SWT.NONE);
-        frames.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        frames.setLayout(new GridLayout(1, false));
+        final Composite fields = new Composite(parent, SWT.NONE);
+        fields.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
+        fields.setLayout(new GridLayout(1, false));
 
-        final Composite offsets = new Composite(frames, SWT.NONE);
-        offsets.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        offsets.setLayout(new GridLayout(2, true));
+        offsetX = EntityCollisionProperties.createTextField(fields, "Offset X:");
+        offsetY = EntityCollisionProperties.createTextField(fields, "Offset Y:");
 
-        offsetX = EntityCollisionProperties.createTextField(offsets, "Offset X:");
-        offsetY = EntityCollisionProperties.createTextField(offsets, "Offset Y:");
+        width = EntityCollisionProperties.createTextField(fields, "Width:");
+        height = EntityCollisionProperties.createTextField(fields, "Height:");
 
-        final Composite sizes = new Composite(parent, SWT.NONE);
-        sizes.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        sizes.setLayout(new GridLayout(2, true));
-
-        width = EntityCollisionProperties.createTextField(sizes, "Width:");
-        height = EntityCollisionProperties.createTextField(sizes, "Height:");
-
-        final Composite flags = new Composite(parent, SWT.NONE);
-        flags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
-        flags.setLayout(new GridLayout(2, true));
-
-        mirror = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
+        mirror = new Button(fields, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         mirror.setText("Mirror");
     }
 

@@ -53,7 +53,7 @@ public class EntityCollisionList
     /** Configurable reference. */
     private final Configurable configurable;
     /** Animation properties. */
-    private final EntityCollisionProperties entityCollisionProperties;
+    final EntityCollisionProperties entityCollisionProperties;
     /** Collision list. */
     Tree collisionTree;
     /** Selected data. */
@@ -81,7 +81,8 @@ public class EntityCollisionList
     public void createEntityCollisionList(final Composite parent)
     {
         final Group collisions = new Group(parent, SWT.NONE);
-        collisions.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        collisions.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
         final GridLayout gridLayout = new GridLayout(1, false);
         gridLayout.verticalSpacing = 1;
         collisions.setLayout(gridLayout);
@@ -230,8 +231,14 @@ public class EntityCollisionList
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();
+                    final Collision collision = new Collision(0, 0, 0, 0, false);
                     final TreeItem item = new TreeItem(collisionTree, SWT.NONE);
                     item.setText(name);
+                    item.setData(collision);
+
+                    entityCollisionProperties.setSelectedCollision(collision);
+                    collisionTree.setSelection(item);
+                    collisionTree.forceFocus();
                 }
             }
         });

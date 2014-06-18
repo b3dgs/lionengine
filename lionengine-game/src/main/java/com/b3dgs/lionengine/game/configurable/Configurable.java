@@ -205,7 +205,7 @@ public class Configurable
      */
     public SizeData getSize()
     {
-        return new SizeData(getInteger("width", Configurable.SURFACE), getInteger("height", Configurable.SURFACE));
+        return new SizeData(getInteger("width", Configurable.SIZE), getInteger("height", Configurable.SIZE));
     }
 
     /**
