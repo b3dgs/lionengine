@@ -169,8 +169,8 @@ public class EntityCollisionProperties
         createTextFields(collisionData);
 
         final Composite collisionButtons = new Composite(collisionProperties, SWT.NONE);
-        collisionButtons.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        collisionButtons.setLayout(new GridLayout(2, true));
+        collisionButtons.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        collisionButtons.setLayout(new GridLayout(1, true));
 
         createResetButton(collisionButtons);
         createConfirmButton(collisionButtons);

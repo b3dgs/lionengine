@@ -275,7 +275,9 @@ public class EntityCollisionList
     private void createTree(final Composite parent)
     {
         collisionTree = new Tree(parent, SWT.SINGLE);
-        collisionTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.minimumWidth = 144;
+        collisionTree.setLayoutData(data);
         collisionTree.addSelectionListener(new SelectionAdapter()
         {
             @Override
