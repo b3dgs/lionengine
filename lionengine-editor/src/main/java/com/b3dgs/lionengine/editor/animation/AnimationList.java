@@ -19,24 +19,9 @@ package com.b3dgs.lionengine.editor.animation;
 
 import java.util.Map;
 
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
-
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
 /**
@@ -45,22 +30,12 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AnimationList
+        extends ObjectList<Animation>
 {
-    /** Stop icon. */
-    private static final Image ICON_ANIMATION_ADD = Tools.getIcon("animation-editor", "animation-add.png");
-    /** Stop icon. */
-    private static final Image ICON_ANIMATION_REMOVE = Tools.getIcon("animation-editor", "animation-remove.png");
-
     /** Configurable reference. */
     private final Configurable configurable;
     /** Animation properties. */
     private final AnimationProperties animationProperties;
-    /** Animation list. */
-    Tree animationTree;
-    /** Selected data. */
-    Animation selectedAnimation;
-    /** Selected data backup. */
-    Animation selectedAnimationBackup;
 
     /**
      * Constructor.
@@ -80,219 +55,42 @@ public class AnimationList
     public void loadAnimations()
     {
         final Map<String, Animation> animations = configurable.getAnimations();
-        boolean selected = false;
-        for (final String name : animations.keySet())
-        {
-            final Animation animation = animations.get(name);
-            final TreeItem item = new TreeItem(animationTree, SWT.NONE);
-            item.setText(name);
-            item.setData(animation);
-            if (!selected)
-            {
-                animationTree.setSelection(item);
-                animationTree.forceFocus();
-                setSelectedAnimation(animation);
-                selected = true;
-            }
-        }
+        loadObjects(animations);
     }
 
-    /**
-     * Create the animations list area.
-     * 
-     * @param parent The composite parent.
+    /*
+     * ObjectList
      */
-    public void createAnimationsList(final Composite parent)
-    {
-        final Group animations = new Group(parent, SWT.NONE);
-        animations.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
-        final GridLayout gridLayout = new GridLayout(1, false);
-        gridLayout.verticalSpacing = 1;
-        animations.setLayout(gridLayout);
-        animations.setText("List");
 
-        createToolBar(animations);
-        createTree(animations);
+    @Override
+    protected boolean instanceOf(Object object)
+    {
+        return object instanceof Animation;
     }
 
-    /**
-     * Update the selected animation with its new values.
-     * 
-     * @param selection The selected item.
-     * @param animation The new animation.
-     */
-    public void updateAnimation(TreeItem selection, Animation animation)
+    @Override
+    protected Animation cast(Object object)
     {
-        selection.setData(animation);
-        setSelectedAnimation(animation);
+        return Animation.class.cast(object);
     }
 
-    /**
-     * Restore the selected animation with the previous one.
-     */
-    public void restoreSelectedAnimation()
+    @Override
+    protected Animation copyObject(Animation animation)
     {
-        setSelectedAnimation(selectedAnimationBackup);
-    }
-
-    /**
-     * Set the next selected item from the current one.
-     * 
-     * @param side -1 for the previous, +1 for the next one.
-     */
-    public void setNextSelection(int side)
-    {
-        TreeItem[] items = animationTree.getSelection();
-        if (items.length == 0)
-        {
-            animationTree.forceFocus();
-            animationTree.selectAll();
-            animationTree.update();
-        }
-        items = animationTree.getSelection();
-        if (items.length > 0)
-        {
-            final int index = Tools.getItemIndex(animationTree, items[0]) + side;
-            final int next = Math.max(0, Math.min(index, animationTree.getItemCount() - 1));
-            final TreeItem previous = animationTree.getItem(next);
-            animationTree.setSelection(previous);
-            animationTree.forceFocus();
-            final Object animation = previous.getData();
-            if (animation instanceof Animation)
-            {
-                setSelectedAnimation((Animation) animation);
-            }
-        }
-    }
-
-    /**
-     * Get the selected animation.
-     * 
-     * @return The selected animation.
-     */
-    public Animation getSelectedAnimation()
-    {
-        return selectedAnimation;
-    }
-
-    /**
-     * Get the animation tree reference.
-     * 
-     * @return The animation tree reference.
-     */
-    public Tree getTree()
-    {
-        return animationTree;
-    }
-
-    /**
-     * Set the selected animation, and update the properties fields.
-     * 
-     * @param animation The selected animation, <code>null</code> if none.
-     */
-    void setSelectedAnimation(Animation animation)
-    {
-        selectedAnimation = animation;
-        selectedAnimationBackup = Anim.createAnimation(animation.getFirst(), animation.getLast(), animation.getSpeed(),
+        return Anim.createAnimation(animation.getFirst(), animation.getLast(), animation.getSpeed(),
                 animation.getReverse(), animation.getRepeat());
+    }
+
+    @Override
+    protected Animation createDefaultObject()
+    {
+        return Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1, false, false);
+    }
+
+    @Override
+    protected void setSelectedObject(Animation animation)
+    {
+        super.setSelectedObject(animation);
         animationProperties.setSelectedAnimation(animation);
-    }
-
-    /**
-     * Create the tool bar.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createToolBar(final Composite parent)
-    {
-        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
-        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-
-        createAddAnimationToolItem(toolbar);
-        createRemoveAnimationToolItem(toolbar);
-    }
-
-    /**
-     * Create the add animation tool item.
-     * 
-     * @param toolbar The tool bar reference.
-     */
-    private void createAddAnimationToolItem(final ToolBar toolbar)
-    {
-        final ToolItem addAnimation = new ToolItem(toolbar, SWT.PUSH);
-        addAnimation.setImage(AnimationList.ICON_ANIMATION_ADD);
-        addAnimation.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final InputDialog inputDialog = new InputDialog(toolbar.getShell(), "Animation name",
-                        "Enter the animation name", "newAnimation", null);
-                if (inputDialog.open() == Window.OK)
-                {
-                    final String name = inputDialog.getValue();
-                    final TreeItem item = new TreeItem(animationTree, SWT.NONE);
-                    item.setText(name);
-                }
-            }
-        });
-    }
-
-    /**
-     * Create the remove animation tool item.
-     * 
-     * @param toolbar The tool bar reference.
-     */
-    private void createRemoveAnimationToolItem(ToolBar toolbar)
-    {
-        final ToolItem removeAnimation = new ToolItem(toolbar, SWT.PUSH);
-        removeAnimation.setImage(AnimationList.ICON_ANIMATION_REMOVE);
-        removeAnimation.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                for (final TreeItem item : animationTree.getSelection())
-                {
-                    item.dispose();
-                }
-                animationTree.layout(true, true);
-            }
-        });
-    }
-
-    /**
-     * Create the animation tree.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createTree(final Composite parent)
-    {
-        animationTree = new Tree(parent, SWT.SINGLE);
-        animationTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        animationTree.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final TreeItem[] items = animationTree.getSelection();
-                if (items.length > 0)
-                {
-                    final TreeItem selection = items[0];
-                    final Object data = selection.getData();
-                    if (data instanceof Animation)
-                    {
-                        setSelectedAnimation((Animation) data);
-                    }
-                    else
-                    {
-                        final Animation animation = Anim.createAnimation(Animation.MINIMUM_FRAME,
-                                Animation.MINIMUM_FRAME + 1, 0.05, false, true);
-                        selection.setData(animation);
-                        setSelectedAnimation(animation);
-                    }
-                }
-            }
-        });
     }
 }

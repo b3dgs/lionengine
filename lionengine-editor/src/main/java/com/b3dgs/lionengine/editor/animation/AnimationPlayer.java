@@ -135,7 +135,7 @@ public class AnimationPlayer
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final Animation animation = animationList.getSelectedAnimation();
+                final Animation animation = animationList.getSelectedObject();
                 if (animation != null)
                 {
                     animationRenderer.setAnimation(animation);

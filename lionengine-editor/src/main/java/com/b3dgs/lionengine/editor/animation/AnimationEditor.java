@@ -147,7 +147,7 @@ public class AnimationEditor
         properties.setLayout(new GridLayout(1, false));
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        animationList.createAnimationsList(properties);
+        animationList.create(properties);
         animationProperties.createAnimationProperties(properties);
         animationList.loadAnimations();
     }

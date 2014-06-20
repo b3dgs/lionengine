@@ -162,7 +162,7 @@ public final class AnimationFrameSelector
      */
     private void startFrameSelection()
     {
-        if (!clicked && isOverSurface() && animationList.getSelectedAnimation() != null)
+        if (!clicked && isOverSurface() && animationList.getSelectedObject() != null)
         {
             selectedInitialFrame = UtilMath.fixBetween(getFrameOnMouse(), 1, horizontalFrames * verticalFrames);
             selectedFirstFrame = selectedInitialFrame;

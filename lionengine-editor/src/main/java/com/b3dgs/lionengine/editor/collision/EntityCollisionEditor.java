@@ -67,7 +67,7 @@ public class EntityCollisionEditor
         final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
         final EntityCollisionList entityCollisionList = new EntityCollisionList(configurable, entityCollisionProperties);
 
-        entityCollisionList.createEntityCollisionList(content);
+        entityCollisionList.create(content);
         entityCollisionProperties.createAnimationProperties(content);
 
         entityCollisionList.loadCollisions();

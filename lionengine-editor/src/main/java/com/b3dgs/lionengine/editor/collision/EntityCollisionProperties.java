@@ -211,7 +211,7 @@ public class EntityCollisionProperties
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                if (entityCollisionList.getSelectedCollision() != null)
+                if (entityCollisionList.getSelectedObject() != null)
                 {
                     final TreeItem[] items = entityCollisionList.getTree().getSelection();
                     if (items.length > 0)
@@ -220,7 +220,7 @@ public class EntityCollisionProperties
                         final Collision collision = new Collision(Integer.parseInt(offsetX.getText()), Integer
                                 .parseInt(offsetY.getText()), Integer.parseInt(width.getText()), Integer
                                 .parseInt(height.getText()), mirror.getSelection());
-                        entityCollisionList.updateCollision(selection, collision);
+                        entityCollisionList.update(selection, collision);
                     }
                 }
             }
@@ -241,9 +241,9 @@ public class EntityCollisionProperties
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                if (entityCollisionList.getSelectedCollision() != null)
+                if (entityCollisionList.getSelectedObject() != null)
                 {
-                    entityCollisionList.restoreSelectedCollision();
+                    entityCollisionList.restoreSelectedObject();
                 }
             }
         });

@@ -172,7 +172,7 @@ public class AnimationProperties
     {
         final Group animationProperties = new Group(parent, SWT.NONE);
         animationProperties.setLayout(new GridLayout(1, false));
-        animationProperties.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, true));
+        animationProperties.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true));
         animationProperties.setText("Properties");
 
         final Composite animationData = new Composite(animationProperties, SWT.NONE);
@@ -228,7 +228,7 @@ public class AnimationProperties
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                if (animationList.getSelectedAnimation() != null)
+                if (animationList.getSelectedObject() != null)
                 {
                     final TreeItem[] items = animationList.getTree().getSelection();
                     if (items.length > 0)
@@ -241,7 +241,7 @@ public class AnimationProperties
                         final Animation animation = Anim.createAnimation(Math.min(first, last), Math.max(first, last),
                                 Double.parseDouble(speed.getText()), reverseAnim.getSelection(),
                                 repeatAnim.getSelection());
-                        animationList.updateAnimation(selection, animation);
+                        animationList.update(selection, animation);
                     }
                 }
             }
@@ -262,9 +262,9 @@ public class AnimationProperties
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                if (animationList.getSelectedAnimation() != null)
+                if (animationList.getSelectedObject() != null)
                 {
-                    animationList.restoreSelectedAnimation();
+                    animationList.restoreSelectedObject();
                 }
             }
         });
