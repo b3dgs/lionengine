@@ -139,7 +139,7 @@ public class AnimationEditor
 
         animationFrameSelector.setAnimationList(animationList);
         animationFrameSelector.setAnimationProperties(animationProperties);
-        animationProperties.setAnimationList(animationList);
+        animationProperties.setObjectList(animationList);
         animationProperties.setAnimationFrameSelector(animationFrameSelector);
         animationRenderer.setAnimationPlayer(animationPlayer);
 
@@ -148,7 +148,7 @@ public class AnimationEditor
         properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         animationList.create(properties);
-        animationProperties.createAnimationProperties(properties);
+        animationProperties.create(properties);
         animationList.loadAnimations();
     }
 }
