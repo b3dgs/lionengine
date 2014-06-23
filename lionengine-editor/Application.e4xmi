@@ -13,6 +13,7 @@
               <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
               <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntityHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
               <handlers xmi:id="_XN4u4N9BEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.remove-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.RemoveEntityHandler" command="_kUCs0N9BEeOIN7-STHd0gQ"/>
+              <handlers xmi:id="_Lr600PpOEeObQ_qoQkhlyQ" elementId="com.b3dgs.lionengine.editor.handler.tile-collision-editor" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.TileCollisionEditorHandler" command="_topOcPpNEeObQ_qoQkhlyQ"/>
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-map-impl.png" command="_KK_5cNVTEeObvtSGPT134w">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
@@ -34,6 +35,9 @@
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_W93V4N9BEeOIN7-STHd0gQ" elementId="" label="%menu.remove-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/remove-entity.png" command="_kUCs0N9BEeOIN7-STHd0gQ">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_W93V4d9BEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.isEntity"/>
+                </children>
+                <children xsi:type="menu:HandledMenuItem" xmi:id="_LXq4kPpNEeObQ_qoQkhlyQ" elementId="" label="%menu.edit-tile-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-type-folder.png" command="_topOcPpNEeObQ_qoQkhlyQ">
+                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_LXq4kfpNEeObQ_qoQkhlyQ" coreExpressionId="com.b3dgs.lionengine.editor.tile-collision-editor.test"/>
                 </children>
               </menus>
             </children>
@@ -92,6 +96,7 @@
   <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
   <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-entity" commandName="editEntityCommand"/>
   <commands xmi:id="_kUCs0N9BEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.remove-entity" commandName="removeEntityCommand"/>
+  <commands xmi:id="_topOcPpNEeObQ_qoQkhlyQ" elementId="com.b3dgs.lionengine.editor.command.tile-collision-editor" commandName="tileCollisionEditorCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

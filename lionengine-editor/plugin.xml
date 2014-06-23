@@ -95,6 +95,12 @@
                property="com.b3dgs.lionengine.editor.entitiesFolderTester.editEntity">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.tile-collision-editor.test">
+         <test
+               property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
