@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.platform.tile;
 
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
  * Map implementation.
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
  * @see com.b3dgs.lionengine.example.game.map
  */
 final class Map
-        extends MapTilePlatform<TileCollision, Tile>
+        extends MapTileGame<TileCollision, Tile>
 {
     /**
      * Constructor.

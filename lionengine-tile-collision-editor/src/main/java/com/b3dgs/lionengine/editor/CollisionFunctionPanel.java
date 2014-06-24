@@ -29,10 +29,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionRefential;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionRefential;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.swing.UtilitySwing;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
+public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
         extends JPanel
 {
     /** Serial UID. */

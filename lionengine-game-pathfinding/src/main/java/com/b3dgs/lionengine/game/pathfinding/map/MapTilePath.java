@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.pathfinding.map;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
  * @param <T> The type of tile used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MapTilePath<C extends Enum<C>, T extends TilePath<C>>
+public interface MapTilePath<C extends Enum<C> & CollisionTile, T extends TilePath<C>>
         extends MapTile<C, T>
 {
     /**

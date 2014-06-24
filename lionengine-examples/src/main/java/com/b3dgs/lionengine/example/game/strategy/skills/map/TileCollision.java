@@ -17,14 +17,41 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.map;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+
 /**
  * List of collision types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.map
  */
-public enum TileCollision
+public enum TileCollision implements CollisionTile
 {
     /** No collision. */
     NONE;
+
+    /*
+     * CollisionTile
+     */
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return null;
+    }
 }

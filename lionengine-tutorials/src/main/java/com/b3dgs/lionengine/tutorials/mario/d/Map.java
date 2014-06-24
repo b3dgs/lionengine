@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.d;
 
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
  * Map implementation.
@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Map
-        extends MapTilePlatform<TileCollision, Tile>
+        extends MapTileGame<TileCollision, Tile>
 {
     /**
      * Constructor.

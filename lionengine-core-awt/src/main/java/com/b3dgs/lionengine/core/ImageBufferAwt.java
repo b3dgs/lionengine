@@ -84,6 +84,12 @@ final class ImageBufferAwt
     }
 
     @Override
+    public void dispose()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void setRgb(int x, int y, int rgb)
     {
         bufferedImage.setRGB(x, y, rgb);

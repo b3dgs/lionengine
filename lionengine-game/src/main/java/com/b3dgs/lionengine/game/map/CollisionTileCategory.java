@@ -15,17 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game.map;
+
+import java.util.EnumSet;
 
 /**
- * List of collision referential.
+ * Collision tile category.
  * 
+ * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum CollisionRefential
+public interface CollisionTileCategory<C extends Enum<C> & CollisionTile>
 {
-    /** Horizontal. */
-    X,
-    /** Vertical. */
-    Y;
+    /**
+     * Get the list of collisions to test.
+     * 
+     * @return The collisions list.
+     */
+    EnumSet<C> getCollisions();
 }

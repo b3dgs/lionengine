@@ -60,6 +60,12 @@ public class ImageBufferMock
     }
 
     @Override
+    public void dispose()
+    {
+        // Nothing to do
+    }
+
+    @Override
     public void setRgb(int x, int y, int rgb)
     {
         rgba[x % width + y * width] = rgb;

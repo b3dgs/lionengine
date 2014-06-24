@@ -15,22 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game.map;
 
-import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Collision tile category.
+ * Model implementation of the collision tile for fast inheritance.
  * 
- * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface CollisionTileCategory<C extends Enum<C> & CollisionTile>
+public class CollisionTileModel
+        implements CollisionTile
 {
+    /** Collision function X. */
+    private final Set<CollisionFunction> collisionFunctions;
+
     /**
-     * Get the list of collisions to test.
-     * 
-     * @return The collisions list.
+     * Constructor.
      */
-    EnumSet<C> getCollisions();
+    public CollisionTileModel()
+    {
+        collisionFunctions = new HashSet<>();
+    }
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.add(function);
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.remove(function);
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return collisionFunctions;
+    }
 }

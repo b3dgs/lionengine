@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.CollisionTileModel;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.CollisionTileModel;
 
 /**
  * List of tile collisions.

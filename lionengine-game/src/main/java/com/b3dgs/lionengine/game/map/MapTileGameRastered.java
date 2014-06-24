@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform.map;
+package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,18 +30,17 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
 import com.b3dgs.lionengine.game.purview.Rasterable;
 
 /**
- * Rastered version of a platform tile map.
+ * Rastered version of a map tile game.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <C> Collision type.
  * @param <T> Tile type used.
  */
-public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
-        extends MapTilePlatform<C, T>
+public abstract class MapTileGameRastered<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
+        extends MapTileGame<C, T>
 {
     /** List of rastered patterns. */
     private final TreeMap<Integer, List<SpriteTiled>> rasterPatterns;
@@ -58,7 +57,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile,
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public MapTilePlatformRastered(int tileWidth, int tileHeight)
+    public MapTileGameRastered(int tileWidth, int tileHeight)
     {
         super(tileWidth, tileHeight);
         rasterPatterns = new TreeMap<>();
@@ -196,7 +195,7 @@ public abstract class MapTilePlatformRastered<C extends Enum<C> & CollisionTile,
     }
 
     /*
-     * MapTilePlatform
+     * MapTileGame
      */
 
     @Override

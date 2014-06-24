@@ -29,10 +29,10 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
 
 /**
  * Represents the world scene, containing the map and the entities.
@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
+public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
         extends JPanel
         implements MouseListener, MouseMotionListener
 {
@@ -84,7 +84,7 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
     }
 
     /** The map reference. */
-    public final MapTilePlatform<C, T> map;
+    public final MapTileGame<C, T> map;
     /** The camera reference. */
     public final CameraPlatform camera;
     /** The editor reference. */
@@ -108,7 +108,7 @@ public final class WorldPanel<C extends Enum<C> & CollisionTile, T extends TileP
      * @param editor The editor reference.
      * @param map The map reference.
      */
-    public WorldPanel(TileCollisionEditor<C, T> editor, MapTilePlatform<C, T> map)
+    public WorldPanel(TileCollisionEditor<C, T> editor, MapTileGame<C, T> map)
     {
         super();
         this.editor = editor;

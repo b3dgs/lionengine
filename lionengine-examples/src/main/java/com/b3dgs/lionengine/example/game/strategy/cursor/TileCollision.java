@@ -17,12 +17,17 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.cursor;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+
 /**
  * List of collision types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TileCollision
+enum TileCollision implements CollisionTile
 {
     /** Ground collision. */
     GROUND0(TileCollisionGroup.GROUND),
@@ -76,5 +81,27 @@ enum TileCollision
     public TileCollisionGroup getGroup()
     {
         return group;
+    }
+
+    /*
+     * CollisionTile
+     */
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return null;
     }
 }

@@ -5,8 +5,7 @@ Bundle-SymbolicName: lionengine-game-platform;singleton:=true
 Bundle-Version: 6.2.0.qualifier
 Export-Package: com.b3dgs.lionengine.game.platform,
  com.b3dgs.lionengine.game.platform.background,
- com.b3dgs.lionengine.game.platform.entity,
- com.b3dgs.lionengine.game.platform.map
+ com.b3dgs.lionengine.game.platform.entity
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: lionengine-core;bundle-version="6.2.0",
  lionengine-game;bundle-version="6.2.0"

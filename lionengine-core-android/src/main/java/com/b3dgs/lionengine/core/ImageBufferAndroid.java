@@ -64,6 +64,12 @@ final class ImageBufferAndroid
     }
 
     @Override
+    public void dispose()
+    {
+        bufferedImage.recycle();
+    }
+
+    @Override
     public void setRgb(int x, int y, int rgb)
     {
         bufferedImage.setPixel(x, y, rgb);

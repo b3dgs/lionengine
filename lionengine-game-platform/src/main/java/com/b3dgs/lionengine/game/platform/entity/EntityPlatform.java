@@ -32,10 +32,10 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.CollisionTileCategory;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -109,7 +109,7 @@ public abstract class EntityPlatform
 
     /**
      * Update collisions, after movements. Should be used to call
-     * {@link #getCollisionTile(MapTilePlatform, CollisionTileCategory)} for each collision test.
+     * {@link #getCollisionTile(MapTileGame, CollisionTileCategory)} for each collision test.
      * <p>
      * Example:
      * </p>
@@ -302,7 +302,7 @@ public abstract class EntityPlatform
      * @param category The collision tile category.
      * @return The first tile hit, <code>null</code> if none.
      */
-    public <C extends Enum<C> & CollisionTile, T extends TilePlatform<C>, M extends MapTilePlatform<C, T>> T getCollisionTile(
+    public <C extends Enum<C> & CollisionTile, T extends TileGame<C>, M extends MapTileGame<C, T>> T getCollisionTile(
             M map, CollisionTileCategory<C> category)
     {
         final CoordTile offsets = tileCollisions.get(category);

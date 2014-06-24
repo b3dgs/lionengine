@@ -15,45 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
+package com.b3dgs.lionengine.game.map;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Model implementation of the collision tile for fast inheritance.
+ * Represents the collision tile.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionTileModel
  */
-public class CollisionTileModel
-        implements CollisionTile
+public interface CollisionTile
 {
-    /** Collision function X. */
-    private final Set<CollisionFunction> collisionFunctions;
+    /**
+     * Add a collision function.
+     * 
+     * @param function The collision function.
+     */
+    void addCollisionFunction(CollisionFunction function);
 
     /**
-     * Constructor.
+     * Remove a collision function.
+     * 
+     * @param function The collision function to remove.
      */
-    public CollisionTileModel()
-    {
-        collisionFunctions = new HashSet<>();
-    }
+    void removeCollisionFunction(CollisionFunction function);
 
-    @Override
-    public void addCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.add(function);
-    }
-
-    @Override
-    public void removeCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.remove(function);
-    }
-
-    @Override
-    public Set<CollisionFunction> getCollisionFunctions()
-    {
-        return collisionFunctions;
-    }
+    /**
+     * Get the collision functions.
+     * 
+     * @return The collision function.
+     */
+    Set<CollisionFunction> getCollisionFunctions();
 }

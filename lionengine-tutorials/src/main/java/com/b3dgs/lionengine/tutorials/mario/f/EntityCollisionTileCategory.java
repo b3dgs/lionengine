@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 
 import java.util.EnumSet;
 
-import com.b3dgs.lionengine.game.platform.CollisionTileCategory;
+import com.b3dgs.lionengine.game.map.CollisionTileCategory;
 
 /**
  * List of entity collision categories on tile.

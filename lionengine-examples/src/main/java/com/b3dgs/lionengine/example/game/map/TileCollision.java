@@ -17,13 +17,40 @@
  */
 package com.b3dgs.lionengine.example.game.map;
 
+import java.util.Set;
+
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+
 /**
  * List of tile collisions.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TileCollision
+enum TileCollision implements CollisionTile
 {
     /** No collision. */
     NONE;
+
+    /*
+     * CollisionTile
+     */
+
+    @Override
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public Set<CollisionFunction> getCollisionFunctions()
+    {
+        return null;
+    }
 }

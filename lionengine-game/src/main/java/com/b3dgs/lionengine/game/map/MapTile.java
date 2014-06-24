@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @see TileGame
  * @see MapTileGame
  */
-public interface MapTile<C extends Enum<C>, T extends TileGame<C>>
+public interface MapTile<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
 {
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.

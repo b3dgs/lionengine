@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class MapTileStrategy<C extends Enum<C>, R extends Enum<R>, T extends TileStrategy<C, R>>
+public abstract class MapTileStrategy<C extends Enum<C> & CollisionTile, R extends Enum<R>, T extends TileStrategy<C, R>>
         extends MapTileGame<C, T>
         implements MapTilePath<C, T>
 {

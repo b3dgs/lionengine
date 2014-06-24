@@ -33,9 +33,9 @@ import javax.swing.JFrame;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Little editor that allows to set the tile collision from a level rip and save them as collisions data.
@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
+public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
         extends JFrame
 {
     /** Editor version. */
@@ -74,7 +74,7 @@ public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends Ti
      * @param map The map reference.
      * @param collisionClass The collision class.
      */
-    public TileCollisionEditor(MapTilePlatform<C, T> map, Class<C> collisionClass)
+    public TileCollisionEditor(MapTileGame<C, T> map, Class<C> collisionClass)
     {
         super("Tile collision editor");
         world = new WorldPanel<>(this, map);

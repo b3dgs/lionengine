@@ -15,36 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.platform;
-
-import java.util.Set;
+package com.b3dgs.lionengine.game.map;
 
 /**
- * Represents the collision tile.
+ * List of collision referential.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see CollisionTileModel
  */
-public interface CollisionTile
+public enum CollisionRefential
 {
-    /**
-     * Add a collision function.
-     * 
-     * @param function The collision function.
-     */
-    void addCollisionFunction(CollisionFunction function);
-
-    /**
-     * Remove a collision function.
-     * 
-     * @param function The collision function to remove.
-     */
-    void removeCollisionFunction(CollisionFunction function);
-
-    /**
-     * Get the collision functions.
-     * 
-     * @return The collision function.
-     */
-    Set<CollisionFunction> getCollisionFunctions();
+    /** Horizontal. */
+    X,
+    /** Vertical. */
+    Y;
 }

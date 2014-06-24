@@ -99,6 +99,18 @@ final class ImageBufferSwt
     }
 
     @Override
+    public void dispose()
+    {
+        if (gc != null)
+        {
+            gc.dispose();
+            gc = null;
+        }
+        image.dispose();
+        image = null;
+    }
+
+    @Override
     public void setRgb(int x, int y, int rgb)
     {
         final ColorRgba rgba = new ColorRgba(rgb);

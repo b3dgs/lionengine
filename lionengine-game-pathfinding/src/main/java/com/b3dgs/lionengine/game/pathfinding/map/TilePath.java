@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.pathfinding.map;
 
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -25,7 +26,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @param <C> collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TilePath<C extends Enum<C>>
+public abstract class TilePath<C extends Enum<C> & CollisionTile>
         extends TileGame<C>
 {
     /** Blocked flag. */

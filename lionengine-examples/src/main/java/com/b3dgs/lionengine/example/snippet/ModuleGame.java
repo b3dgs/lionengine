@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.snippet;
 
 import java.io.IOException;
+import java.util.Set;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -46,9 +49,25 @@ import com.b3dgs.lionengine.utility.TileExtractor;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum TileCollision
+    enum TileCollision implements CollisionTile
     {
+        ;
 
+        @Override
+        public void addCollisionFunction(CollisionFunction function)
+        {
+        }
+
+        @Override
+        public void removeCollisionFunction(CollisionFunction function)
+        {
+        }
+
+        @Override
+        public Set<CollisionFunction> getCollisionFunctions()
+        {
+            return null;
+        }
     }
 
     class Tile

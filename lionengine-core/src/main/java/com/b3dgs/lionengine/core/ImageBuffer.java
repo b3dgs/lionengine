@@ -34,6 +34,11 @@ public interface ImageBuffer
     Graphic createGraphic();
 
     /**
+     * Dispose the associated resources if needed.
+     */
+    void dispose();
+
+    /**
      * Sets a pixel color.
      * 
      * @param x the X coordinate of the pixel to set

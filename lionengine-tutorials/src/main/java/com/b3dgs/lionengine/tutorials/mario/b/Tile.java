@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.b;
 
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Tile
-        extends TilePlatform<TileCollision>
+        extends TileGame<TileCollision>
 {
     /**
-     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
+     * @see TileGame#TileGame(int, int, Integer, int, Enum)
      */
     Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {

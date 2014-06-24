@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.platform.collision;
 
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Tile implementation.
@@ -26,10 +26,10 @@ import com.b3dgs.lionengine.game.platform.map.TilePlatform;
  * @see com.b3dgs.lionengine.example.game.platform.tile
  */
 final class Tile
-        extends TilePlatform<TileCollision>
+        extends TileGame<TileCollision>
 {
     /**
-     * @see TilePlatform#TilePlatform(int, int, Integer, int, Enum)
+     * @see TileGame#TileGame(int, int, Integer, int, Enum)
      */
     public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
     {

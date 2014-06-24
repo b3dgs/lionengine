@@ -40,11 +40,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.platform.CollisionFunction;
-import com.b3dgs.lionengine.game.platform.CollisionTile;
-import com.b3dgs.lionengine.game.platform.map.MapTilePlatform;
-import com.b3dgs.lionengine.game.platform.map.TilePlatform;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.swing.UtilityMessageBox;
@@ -58,7 +57,7 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C>>
+public class MenuBar<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
         extends JMenuBar
 {
     /** Uid. */
@@ -280,7 +279,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TilePlatform<C
             return false;
         }
 
-        final MapTilePlatform<C, T> map = editor.world.map;
+        final MapTileGame<C, T> map = editor.world.map;
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         try
         {

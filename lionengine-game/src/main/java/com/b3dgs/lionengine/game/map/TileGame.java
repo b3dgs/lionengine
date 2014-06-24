@@ -18,7 +18,10 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.List;
+import java.util.Set;
 
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.stream.FileReading;
 
 /**
@@ -33,7 +36,7 @@ import com.b3dgs.lionengine.stream.FileReading;
  * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileGame<C extends Enum<C>>
+public class TileGame<C extends Enum<C> & CollisionTile>
 {
     /** Tile width. */
     private final int width;
@@ -68,6 +71,123 @@ public class TileGame<C extends Enum<C>>
         this.collision = collision;
         x = 0;
         y = 0;
+    }
+
+    /**
+     * Set pattern number.
+     * 
+     * @param pattern The pattern number.
+     */
+    public void setPattern(Integer pattern)
+    {
+        this.pattern = pattern;
+    }
+
+    /**
+     * Set tile index inside pattern.
+     * 
+     * @param number The tile index.
+     */
+    public void setNumber(int number)
+    {
+        this.number = number;
+    }
+
+    /**
+     * Set collision name.
+     * 
+     * @param collision The collision name.
+     */
+    public void setCollision(C collision)
+    {
+        this.collision = collision;
+    }
+
+    /**
+     * Set tile location x. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * function.
+     * 
+     * @param x The tile location x.
+     */
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+
+    /**
+     * Set tile location y. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * function.
+     * 
+     * @param y The tile location y.
+     */
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+
+    /**
+     * Get the horizontal collision location between the tile and the localizable.
+     * 
+     * @param localizable The localizable object searching the collision.
+     * @return The collision x (<code>null</code> if none).
+     */
+    public Double getCollisionX(Localizable localizable)
+    {
+        final C collision = getCollision();
+        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+
+        for (final CollisionFunction function : collisionFunctions)
+        {
+            if (function.getAxis() == CollisionRefential.X)
+            {
+                final int min = function.getRange().getMin();
+                final int max = function.getRange().getMax();
+                final int x = getInputValue(function, localizable);
+                if (x >= min && x <= max)
+                {
+                    final double value = getX() + function.computeCollision(x);
+                    if (localizable.getLocationOldX() >= value && localizable.getLocationX() <= value
+                            || localizable.getLocationX() >= value && localizable.getLocationOldX() <= value)
+                    {
+                        return Double.valueOf(value);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the vertical collision location between the tile and the localizable.
+     * 
+     * @param localizable The localizable object searching the collision.
+     * @return The collision y (<code>null</code> if none).
+     */
+    public Double getCollisionY(Localizable localizable)
+    {
+        final C collision = getCollision();
+        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+
+        for (final CollisionFunction function : collisionFunctions)
+        {
+            if (function.getAxis() == CollisionRefential.Y)
+            {
+                final int min = function.getRange().getMin();
+                final int max = function.getRange().getMax();
+                final int x = getInputValue(function, localizable);
+                if (x >= min && x <= max)
+                {
+                    final double margin = Math.ceil(Math.abs((localizable.getLocationOldX() - localizable
+                            .getLocationX()) * function.getValue())) + 1;
+                    final double value = getY() + function.computeCollision(x);
+                    if (localizable.getLocationOldY() >= value - margin && localizable.getLocationY() <= value + margin)
+                    {
+                        return Double.valueOf(value);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -108,36 +228,6 @@ public class TileGame<C extends Enum<C>>
     public int getBottom()
     {
         return getY();
-    }
-
-    /**
-     * Set pattern number.
-     * 
-     * @param pattern The pattern number.
-     */
-    public void setPattern(Integer pattern)
-    {
-        this.pattern = pattern;
-    }
-
-    /**
-     * Set tile index inside pattern.
-     * 
-     * @param number The tile index.
-     */
-    public void setNumber(int number)
-    {
-        this.number = number;
-    }
-
-    /**
-     * Set collision name.
-     * 
-     * @param collision The collision name.
-     */
-    public void setCollision(C collision)
-    {
-        this.collision = collision;
     }
 
     /**
@@ -211,24 +301,34 @@ public class TileGame<C extends Enum<C>>
     }
 
     /**
-     * Set tile location x. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
-     * function.
+     * Check if there is a collision between the localizable and the tile.
      * 
-     * @param x The tile location x.
+     * @param localizable The localizable.
+     * @return <code>true</code> if collide, <code>false</code> else.
      */
-    public void setX(int x)
+    public boolean hasCollision(Localizable localizable)
     {
-        this.x = x;
+        return getCollision() != null && (getCollisionX(localizable) != null || getCollisionY(localizable) != null);
     }
 
     /**
-     * Set tile location y. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
-     * function.
+     * Get the input value from the function.
      * 
-     * @param y The tile location y.
+     * @param function The function used.
+     * @param localizable The localizable reference.
+     * @return The input value.
      */
-    public void setY(int y)
+    private int getInputValue(CollisionFunction function, Localizable localizable)
     {
-        this.y = y;
+        final CollisionRefential input = function.getInput();
+        switch (input)
+        {
+            case X:
+                return UtilMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
+            case Y:
+                return UtilMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
+            default:
+                throw new RuntimeException("Unknow type: " + input);
+        }
     }
 }

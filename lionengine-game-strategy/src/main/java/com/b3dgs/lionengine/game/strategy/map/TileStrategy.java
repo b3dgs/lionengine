@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
 
 /**
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
  * @param <R> The resource enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TileStrategy<C extends Enum<C>, R extends Enum<R>>
+public abstract class TileStrategy<C extends Enum<C> & CollisionTile, R extends Enum<R>>
         extends TilePath<C>
 {
     /** Resource type (<code>null</code> if none). */
