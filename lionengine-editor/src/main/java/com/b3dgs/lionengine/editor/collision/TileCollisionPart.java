@@ -15,31 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.collision;
 
-import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.widgets.Shell;
+import javax.annotation.PostConstruct;
 
-import com.b3dgs.lionengine.editor.collision.TileCollisionEditor;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+
+import com.b3dgs.lionengine.editor.Activator;
 
 /**
- * Start the tile collision editor.
+ * Represents the tile collision view, where the tile collision can be edited.
  * 
  * @author Pierre-Alexandre
  */
-public class TileCollisionEditorHandler
+public class TileCollisionPart
 {
+    /** ID. */
+    public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
+
     /**
-     * Execute the handler.
+     * Create the composite.
      * 
-     * @param partService The part service reference.
-     * @param parent The shell parent.
+     * @param parent The parent reference.
      */
-    @Execute
-    public void execute(EPartService partService, Shell parent)
+    @PostConstruct
+    public void createComposite(Composite parent)
     {
-        final TileCollisionEditor tileCollisionEditor = new TileCollisionEditor(parent);
-        tileCollisionEditor.open();
+        parent.setLayout(new GridLayout(1, false));
     }
 }

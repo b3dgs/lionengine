@@ -18,14 +18,25 @@
 package com.b3dgs.lionengine.editor.world;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the world view, where the global map is displayed.
@@ -36,7 +47,12 @@ public class WorldViewPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
+    /** Import map icon. */
+    private static final Image ICON_IMPORT_MAP = Tools.getIcon("import-map.png");
 
+    /** Part service. */
+    @Inject
+    EPartService partService;
     /** Composite. */
     private Composite composite;
     /** Renderer. */
@@ -51,6 +67,7 @@ public class WorldViewPart
     public void createComposite(Composite parent)
     {
         parent.setLayout(new GridLayout(1, false));
+        createToolBar(parent);
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         worldViewRenderer = new WorldViewRenderer(composite);
@@ -85,5 +102,43 @@ public class WorldViewPart
     public void focus()
     {
         composite.forceFocus();
+    }
+
+    /**
+     * Create the tool bar.
+     * 
+     * @param parent The parent reference.
+     */
+    private void createToolBar(final Composite parent)
+    {
+        final ToolBar toolBar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
+        toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+
+        final ToolItem importMap = new ToolItem(toolBar, SWT.PUSH);
+        importMap.setImage(WorldViewPart.ICON_IMPORT_MAP);
+        importMap.setText("Import Map From Level Rip");
+        importMap.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final ImportMapDialog importMapDialog = new ImportMapDialog(parent.getShell());
+                importMapDialog.open();
+
+                if (importMapDialog.isFound())
+                {
+                    final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
+                    map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
+
+                    final MPart part = partService.findPart(WorldViewPart.ID);
+                    if (part != null && part.getObject() instanceof WorldViewPart)
+                    {
+                        final WorldViewPart worldViewPart = (WorldViewPart) part.getObject();
+                        worldViewPart.update();
+                        worldViewPart.focus();
+                    }
+                }
+            }
+        });
     }
 }

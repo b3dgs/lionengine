@@ -7,19 +7,14 @@
           <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.stack.left" containerData="25">
             <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="%part.projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
               <handlers xmi:id="_LImjcNe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
-              <handlers xmi:id="_g5Iq8NYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.handler.import-map" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.ImportMapHandler" command="_eZdjgNYnEeOeyYQS2e8NDg"/>
               <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-entity-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AssignFactoryEntityImplementationHandler" command="_N5Z3INe_EeOk36N_MMz9Rw"/>
               <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-entities-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntitiesFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
               <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
               <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntityHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
               <handlers xmi:id="_XN4u4N9BEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.remove-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.RemoveEntityHandler" command="_kUCs0N9BEeOIN7-STHd0gQ"/>
-              <handlers xmi:id="_Lr600PpOEeObQ_qoQkhlyQ" elementId="com.b3dgs.lionengine.editor.handler.tile-collision-editor" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.TileCollisionEditorHandler" command="_topOcPpNEeObQ_qoQkhlyQ"/>
               <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-map-impl.png" command="_KK_5cNVTEeObvtSGPT134w">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
-                </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_UMpKMNYnEeOeyYQS2e8NDg" elementId="" label="%menu.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/import-map.png" command="_eZdjgNYnEeOeyYQS2e8NDg">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_oZCRYNYvEeOeyYQS2e8NDg" coreExpressionId="com.b3dgs.lionengine.editor.map-implementation.test"/>
                 </children>
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_VJ2l8Ne_EeOk36N_MMz9Rw" elementId="" label="%menu.assign-factory-entity-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-factory-entity-impl.png" command="_N5Z3INe_EeOk36N_MMz9Rw">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VJ2l8de_EeOk36N_MMz9Rw" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_entity_impl"/>
@@ -36,9 +31,6 @@
                 <children xsi:type="menu:HandledMenuItem" xmi:id="_W93V4N9BEeOIN7-STHd0gQ" elementId="" label="%menu.remove-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/remove-entity.png" command="_kUCs0N9BEeOIN7-STHd0gQ">
                   <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_W93V4d9BEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.isEntity"/>
                 </children>
-                <children xsi:type="menu:HandledMenuItem" xmi:id="_LXq4kPpNEeObQ_qoQkhlyQ" elementId="" label="%menu.edit-tile-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-type-folder.png" command="_topOcPpNEeObQ_qoQkhlyQ">
-                  <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_LXq4kfpNEeObQ_qoQkhlyQ" coreExpressionId="com.b3dgs.lionengine.editor.tile-collision-editor.test"/>
-                </children>
               </menus>
             </children>
           </children>
@@ -47,6 +39,7 @@
           </children>
           <children xsi:type="basic:PartStack" xmi:id="_0M0x8NfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.stack.right" containerData="20">
             <children xsi:type="basic:Part" xmi:id="_1W28INfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.part.factory-entity" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.factory.FactoryEntityPart" label="%part.factory-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-factory-entity-impl.png"/>
+            <children xsi:type="basic:Part" xmi:id="_dTRBsPvdEeOdtZng2xrvZA" elementId="com.b3dgs.lionengine.editor.part.tile-collision" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.collision.TileCollisionPart" label="%part.tile-collision" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/tile-collision.png"/>
           </children>
         </children>
       </children>
@@ -90,13 +83,11 @@
   <commands xmi:id="_RgxMw8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
   <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <commands xmi:id="_KK_5cNVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.command.assign-map-impl" commandName="assignMapImplementationCommand"/>
-  <commands xmi:id="_eZdjgNYnEeOeyYQS2e8NDg" elementId="com.b3dgs.lionengine.editor.command.import-map" commandName="importMapCommand"/>
   <commands xmi:id="_N5Z3INe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.command.assign-factory-entity-impl" commandName="assignFactoryEntityImplementationCommand"/>
   <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-entities-folder-type" commandName="editEntitiesFolderTypeCommand"/>
   <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
   <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-entity" commandName="editEntityCommand"/>
   <commands xmi:id="_kUCs0N9BEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.remove-entity" commandName="removeEntityCommand"/>
-  <commands xmi:id="_topOcPpNEeObQ_qoQkhlyQ" elementId="com.b3dgs.lionengine.editor.command.tile-collision-editor" commandName="tileCollisionEditorCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
