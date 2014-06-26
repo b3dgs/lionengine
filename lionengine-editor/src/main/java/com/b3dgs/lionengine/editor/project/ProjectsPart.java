@@ -115,7 +115,7 @@ public class ProjectsPart
         }
         else if (Property.CLASS.is(file))
         {
-            item.setText(item.getText().replaceAll(".class", ""));
+            item.setText(item.getText().replaceAll("." + Property.EXTENSION_CLASS, ""));
             if (Property.MAP_IMPL.is(file))
             {
                 item.setImage(ProjectsPart.ICON_MAP);

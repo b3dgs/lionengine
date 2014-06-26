@@ -293,7 +293,7 @@ public class Project
      */
     public <C> Class<? extends C> getClass(Class<C> clazz, Media file) throws LionEngineException
     {
-        final String name = file.getPath().replace(".class", "").replace(File.separator, ".");
+        final String name = file.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
         final Class<?> clazzRef = getClass(name);
         return clazzRef.asSubclass(clazz);
     }

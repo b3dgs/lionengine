@@ -18,10 +18,11 @@
 package com.b3dgs.lionengine.editor.handlers;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
@@ -47,12 +48,13 @@ public class AssignMapImplementationHandler
         final MapTile<?, ?> map = Project.getActive().getInstance(MapTile.class, selection);
         WorldViewModel.INSTANCE.setMap(map);
 
-        final MPart part = partService.findPart(WorldViewPart.ID);
-        if (part != null && part.getObject() instanceof WorldViewPart)
-        {
-            final WorldViewPart worldViewPart = (WorldViewPart) part.getObject();
-            worldViewPart.addListeners();
-            worldViewPart.update();
-        }
+        final WorldViewPart worldView = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        worldView.setToolBarEnabled(true);
+        worldView.addListeners();
+        worldView.update();
+
+        final TileCollisionPart tileCollision = Tools.getPart(partService, TileCollisionPart.ID,
+                TileCollisionPart.class);
+        tileCollision.setEnabled(true);
     }
 }

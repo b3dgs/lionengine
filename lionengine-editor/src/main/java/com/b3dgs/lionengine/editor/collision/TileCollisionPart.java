@@ -34,6 +34,9 @@ public class TileCollisionPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
 
+    /** Parent reference. */
+    private Composite parent;
+
     /**
      * Create the composite.
      * 
@@ -42,6 +45,18 @@ public class TileCollisionPart
     @PostConstruct
     public void createComposite(Composite parent)
     {
+        this.parent = parent;
         parent.setLayout(new GridLayout(1, false));
+        parent.setEnabled(false);
+    }
+
+    /**
+     * Set the enabled state.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setEnabled(boolean enabled)
+    {
+        parent.setEnabled(enabled);
     }
 }

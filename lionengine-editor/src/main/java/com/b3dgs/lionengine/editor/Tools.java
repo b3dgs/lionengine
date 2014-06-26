@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -39,6 +41,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
@@ -55,6 +58,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class Tools
 {
+    /** Part error. */
+    private static final String ERROR_PART = "Unable to find part: ";
+
     /**
      * Get the icon from its name.
      * 
@@ -155,7 +161,7 @@ public final class Tools
     {
         final Project project = Project.getActive();
         final File classesPath = project.getClassesPath();
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + ".class");
+        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + "." + Property.EXTENSION_CLASS);
 
         // TODO handle the case when there is multiple class with the same name
         if (classNames.size() == 1)
@@ -221,6 +227,30 @@ public final class Tools
             i++;
         }
         return i;
+    }
+
+    /**
+     * Get a part from its id.
+     * 
+     * @param partService The part service.
+     * @param id The part id.
+     * @param clazz The part class type.
+     * @return The part class instance.
+     * @throws LionEngineException If part can not be found.
+     */
+    public static <C> C getPart(EPartService partService, String id, Class<C> clazz) throws LionEngineException
+    {
+        final MPart part = partService.findPart(id);
+        if (part != null)
+        {
+            partService.bringToTop(part);
+            final Object object = part.getObject();
+            if (object != null && object.getClass().isAssignableFrom(clazz))
+            {
+                return clazz.cast(part.getObject());
+            }
+        }
+        throw new LionEngineException(Tools.ERROR_PART, id);
     }
 
     /**

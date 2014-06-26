@@ -49,7 +49,10 @@ public enum Property
     /** Factory entity implementation property. */
     FACTORY_ENTITY_IMPL(FactoryObjectGame.class),
     /** Class file. */
-    CLASS("class");
+    CLASS(Property.EXTENSION_CLASS);
+
+    /** Java class file extension. */
+    public static final String EXTENSION_CLASS = "class";
 
     /** Extension list. */
     private final String[] extensions;
@@ -130,7 +133,7 @@ public enum Property
      */
     private boolean isParent(Media file)
     {
-        final String name = file.getPath().replace(".class", "").replace(File.separator, ".");
+        final String name = file.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
         try
         {
             final Class<?> clazz = Project.getActive().getClass(name);

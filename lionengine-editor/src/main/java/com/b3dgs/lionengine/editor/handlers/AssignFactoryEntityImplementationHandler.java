@@ -18,10 +18,10 @@
 package com.b3dgs.lionengine.editor.handlers;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.factory.FactoryEntityPart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
@@ -48,10 +48,7 @@ public class AssignFactoryEntityImplementationHandler
                 selection);
         WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
 
-        final MPart part = partService.findPart(FactoryEntityPart.ID);
-        if (part != null && part.getObject() instanceof FactoryEntityPart)
-        {
-            ((FactoryEntityPart) part.getObject()).setFactoryEntity(factoryEntity);
-        }
+        final FactoryEntityPart part = Tools.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);
+        part.setFactoryEntity(factoryEntity);
     }
 }

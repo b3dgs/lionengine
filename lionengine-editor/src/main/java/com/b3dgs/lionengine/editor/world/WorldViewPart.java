@@ -21,7 +21,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -57,6 +57,8 @@ public class WorldViewPart
     private Composite composite;
     /** Renderer. */
     private WorldViewRenderer worldViewRenderer;
+    /** Tool bar. */
+    private ToolBar toolBar;
 
     /**
      * Create the composite.
@@ -67,7 +69,13 @@ public class WorldViewPart
     public void createComposite(Composite parent)
     {
         parent.setLayout(new GridLayout(1, false));
-        createToolBar(parent);
+
+        toolBar = createToolBar(parent);
+        toolBar.setEnabled(false);
+
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         worldViewRenderer = new WorldViewRenderer(composite);
@@ -96,6 +104,16 @@ public class WorldViewPart
     }
 
     /**
+     * Set the tool bar enabled state.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setToolBarEnabled(boolean enabled)
+    {
+        toolBar.setEnabled(enabled);
+    }
+
+    /**
      * Force focus.
      */
     @Focus
@@ -108,8 +126,9 @@ public class WorldViewPart
      * Create the tool bar.
      * 
      * @param parent The parent reference.
+     * @return The created tool bar.
      */
-    private void createToolBar(final Composite parent)
+    private ToolBar createToolBar(final Composite parent)
     {
         final ToolBar toolBar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
         toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
@@ -130,15 +149,12 @@ public class WorldViewPart
                     final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
                     map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
 
-                    final MPart part = partService.findPart(WorldViewPart.ID);
-                    if (part != null && part.getObject() instanceof WorldViewPart)
-                    {
-                        final WorldViewPart worldViewPart = (WorldViewPart) part.getObject();
-                        worldViewPart.update();
-                        worldViewPart.focus();
-                    }
+                    final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+                    part.update();
+                    part.focus();
                 }
             }
         });
+        return toolBar;
     }
 }
