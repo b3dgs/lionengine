@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.collision;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +39,8 @@ public class TileCollisionPart
 
     /** Parent reference. */
     private Composite parent;
+    /** Formula list. */
+    private List<TileCollisionComposite> formulas;
 
     /**
      * Create the composite.
@@ -46,8 +51,12 @@ public class TileCollisionPart
     public void createComposite(Composite parent)
     {
         this.parent = parent;
+        formulas = new ArrayList<>(1);
         parent.setLayout(new GridLayout(1, false));
         parent.setEnabled(false);
+
+        final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(parent);
+        formulas.add(tileCollisionComposite);
     }
 
     /**

@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.workbench.swt.modeling.EMenuService;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;

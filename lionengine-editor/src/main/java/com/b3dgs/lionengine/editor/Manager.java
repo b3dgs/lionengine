@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Monitor;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
+@SuppressWarnings("restriction")
 public class Manager
 {
     /**
