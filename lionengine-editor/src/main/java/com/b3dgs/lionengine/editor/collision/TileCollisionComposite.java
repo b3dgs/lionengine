@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Text;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileCollisionComposite
-        extends Composite
 {
     /**
      * Create the buttons area.
@@ -72,8 +71,6 @@ public class TileCollisionComposite
      */
     public TileCollisionComposite(Composite parent)
     {
-        super(parent, SWT.NONE);
-
         final Group referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
         referential.setText("Formula");

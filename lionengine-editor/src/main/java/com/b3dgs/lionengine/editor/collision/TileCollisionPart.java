@@ -22,8 +22,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 
@@ -40,7 +47,7 @@ public class TileCollisionPart
     /** Parent reference. */
     private Composite parent;
     /** Formula list. */
-    private List<TileCollisionComposite> formulas;
+    List<TileCollisionComposite> formulas;
 
     /**
      * Create the composite.
@@ -55,8 +62,37 @@ public class TileCollisionPart
         parent.setLayout(new GridLayout(1, false));
         parent.setEnabled(false);
 
+        createToolBar(parent);
+
         final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(parent);
         formulas.add(tileCollisionComposite);
+    }
+
+    /**
+     * Create the tool bar.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createToolBar(final Composite parent)
+    {
+        final ToolBar toolbar = new ToolBar(parent, SWT.RIGHT);
+        toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        final ToolItem add = new ToolItem(toolbar, SWT.PUSH);
+        add.setText("Add formula");
+        add.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(parent);
+                formulas.add(tileCollisionComposite);
+                parent.layout(true, true);
+            }
+        });
+
+        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
     /**
