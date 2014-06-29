@@ -51,6 +51,10 @@ public class TileCollisionComposite
         delete.setText("Delete");
     }
 
+    /** Minimum composite width. */
+    private final int minWidth;
+    /** Minimum composite height. */
+    private final int minHeight;
     /** Axis combo. */
     private Combo axis;
     /** Input combo. */
@@ -77,7 +81,32 @@ public class TileCollisionComposite
 
         createAxisChooser(referential);
         createFormulaEdition(referential);
-        createButtonsArea(referential);
+        TileCollisionComposite.createButtonsArea(referential);
+
+        referential.pack(true);
+
+        minWidth = referential.getSize().x;
+        minHeight = referential.getSize().y;
+    }
+
+    /**
+     * Get the minimum width.
+     * 
+     * @return The minimum width.
+     */
+    public int getMinWidth()
+    {
+        return minWidth;
+    }
+
+    /**
+     * Get the minimum height.
+     * 
+     * @return The minimum height.
+     */
+    public int getMinHeight()
+    {
+        return minHeight;
     }
 
     /**
@@ -94,6 +123,7 @@ public class TileCollisionComposite
         axisLabel.setText("Axis: ");
 
         axis = new Combo(axisComposite, SWT.READ_ONLY);
+        axis.setLayoutData(new GridData(16, 16));
         axis.setTextLimit(2);
     }
 
@@ -108,6 +138,7 @@ public class TileCollisionComposite
         formula.setLayout(new GridLayout(5, false));
 
         input = new Combo(formula, SWT.READ_ONLY);
+        input.setLayoutData(new GridData(16, 16));
         input.setTextLimit(2);
 
         final Label multiplicate = new Label(formula, SWT.NONE);
@@ -115,6 +146,7 @@ public class TileCollisionComposite
         multiplicate.setText("*");
 
         value = new Text(formula, SWT.SINGLE);
+        value.setLayoutData(new GridData(32, 16));
         value.setTextLimit(4);
 
         final Label add = new Label(formula, SWT.NONE);
@@ -122,6 +154,7 @@ public class TileCollisionComposite
         add.setText("+");
 
         offset = new Text(formula, SWT.SINGLE);
+        offset.setLayoutData(new GridData(32, 16));
         offset.setTextLimit(4);
 
         createRangeEdition(formula);
@@ -141,12 +174,14 @@ public class TileCollisionComposite
         rangeMin.setText("min");
 
         min = new Text(parent, SWT.SINGLE);
+        min.setLayoutData(new GridData(32, 16));
         min.setTextLimit(4);
 
         final Label rangeMax = new Label(parent, SWT.NONE);
         rangeMax.setText("max");
 
         max = new Text(parent, SWT.SINGLE);
+        max.setLayoutData(new GridData(32, 16));
         max.setTextLimit(4);
     }
 }

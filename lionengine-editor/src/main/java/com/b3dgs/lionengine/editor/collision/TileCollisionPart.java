@@ -23,16 +23,17 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Represents the tile collision view, where the tile collision can be edited.
@@ -46,6 +47,12 @@ public class TileCollisionPart
 
     /** Parent reference. */
     private Composite parent;
+    /** Scroll composite. */
+    ScrolledComposite scrolledComposite;
+    /** Formulas content. */
+    Composite content;
+    /** Single height. */
+    int singleHeight;
     /** Formula list. */
     List<TileCollisionComposite> formulas;
 
@@ -55,7 +62,7 @@ public class TileCollisionPart
      * @param parent The parent reference.
      */
     @PostConstruct
-    public void createComposite(Composite parent)
+    public void createComposite(final Composite parent)
     {
         this.parent = parent;
         formulas = new ArrayList<>(1);
@@ -64,7 +71,24 @@ public class TileCollisionPart
 
         createToolBar(parent);
 
-        final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(parent);
+        scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+        scrolledComposite.setLayout(new GridLayout(1, false));
+        scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        Tools.installMouseWheelScroll(scrolledComposite);
+
+        content = new Composite(scrolledComposite, SWT.NONE);
+        content.setLayout(new GridLayout(1, false));
+
+        scrolledComposite.setContent(content);
+        scrolledComposite.setExpandHorizontal(true);
+        scrolledComposite.setExpandVertical(true);
+        scrolledComposite.setAlwaysShowScrollBars(true);
+
+        final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(content);
+        scrolledComposite.setMinSize(content.computeSize(tileCollisionComposite.getMinWidth(),
+                tileCollisionComposite.getMinHeight()));
+        singleHeight = tileCollisionComposite.getMinHeight();
+
         formulas.add(tileCollisionComposite);
     }
 
@@ -75,8 +99,8 @@ public class TileCollisionPart
      */
     private void createToolBar(final Composite parent)
     {
-        final ToolBar toolbar = new ToolBar(parent, SWT.RIGHT);
-        toolbar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
+        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
 
         final ToolItem add = new ToolItem(toolbar, SWT.PUSH);
         add.setText("Add formula");
@@ -85,14 +109,12 @@ public class TileCollisionPart
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(parent);
+                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(content);
                 formulas.add(tileCollisionComposite);
+                scrolledComposite.setMinHeight((singleHeight + 5) * formulas.size());
                 parent.layout(true, true);
             }
         });
-
-        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
     }
 
     /**

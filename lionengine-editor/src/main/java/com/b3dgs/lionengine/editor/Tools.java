@@ -26,11 +26,16 @@ import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
@@ -251,6 +256,59 @@ public final class Tools
             }
         }
         throw new LionEngineException(Tools.ERROR_PART, id);
+    }
+
+    /**
+     * Install the mouse wheel scroll.
+     * 
+     * @param scrollable The scrollable component.
+     */
+    public static void installMouseWheelScroll(final ScrolledComposite scrollable)
+    {
+        final MouseWheelListener scroller = Tools.createMouseWheelScroller(scrollable);
+        if (scrollable.getParent() != null)
+        {
+            scrollable.getParent().addMouseWheelListener(scroller);
+        }
+        Tools.installMouseWheelScrollRecursively(scroller, scrollable);
+    }
+
+    /**
+     * Create the mouse wheel scroller.
+     * 
+     * @param scrollable The scrollable component.
+     * @return The scroller instance.
+     */
+    private static MouseWheelListener createMouseWheelScroller(final ScrolledComposite scrollable)
+    {
+        return new MouseWheelListener()
+        {
+            @Override
+            public void mouseScrolled(MouseEvent e)
+            {
+                final Point currentScroll = scrollable.getOrigin();
+                scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
+            }
+        };
+    }
+
+    /**
+     * Install the mouse wheel scroller for each sub component.
+     * 
+     * @param scroller The scroller listener.
+     * @param control The control reference.
+     */
+    private static void installMouseWheelScrollRecursively(MouseWheelListener scroller, Control control)
+    {
+        control.addMouseWheelListener(scroller);
+        if (control instanceof Composite)
+        {
+            final Composite comp = (Composite) control;
+            for (final Control child : comp.getChildren())
+            {
+                Tools.installMouseWheelScrollRecursively(scroller, child);
+            }
+        }
     }
 
     /**
