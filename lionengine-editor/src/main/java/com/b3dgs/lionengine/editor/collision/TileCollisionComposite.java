@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.editor.collision;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,6 +29,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.map.CollisionRefential;
+
 /**
  * Represents a tile collision composite, allowing to edit the tile collision data.
  * 
@@ -34,23 +39,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TileCollisionComposite
 {
-    /**
-     * Create the buttons area.
-     * 
-     * @param parent The composite parent.
-     */
-    private static void createButtonsArea(Composite parent)
-    {
-        final Composite buttons = new Composite(parent, SWT.NONE);
-        buttons.setLayout(new GridLayout(2, true));
-
-        final Button apply = new Button(buttons, SWT.PUSH);
-        apply.setText("Apply");
-
-        final Button delete = new Button(buttons, SWT.PUSH);
-        delete.setText("Delete");
-    }
-
+    /** Collision part. */
+    final TileCollisionPart tileCollisionPart;
     /** Minimum composite width. */
     private final int minWidth;
     /** Minimum composite height. */
@@ -71,17 +61,20 @@ public class TileCollisionComposite
     /**
      * Constructor.
      * 
+     * @param tileCollisionPart The collision part reference.
      * @param parent The composite parent.
      */
-    public TileCollisionComposite(Composite parent)
+    public TileCollisionComposite(TileCollisionPart tileCollisionPart, Composite parent)
     {
+        this.tileCollisionPart = tileCollisionPart;
+
         final Group referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
         referential.setText("Formula");
 
         createAxisChooser(referential);
         createFormulaEdition(referential);
-        TileCollisionComposite.createButtonsArea(referential);
+        createButtonsArea(referential);
 
         referential.pack(true);
 
@@ -122,7 +115,7 @@ public class TileCollisionComposite
         final Label axisLabel = new Label(axisComposite, SWT.NONE);
         axisLabel.setText("Axis: ");
 
-        axis = new Combo(axisComposite, SWT.READ_ONLY);
+        axis = Tools.createCombo(axisComposite, CollisionRefential.values());
         axis.setLayoutData(new GridData(16, 16));
         axis.setTextLimit(2);
     }
@@ -137,7 +130,7 @@ public class TileCollisionComposite
         final Composite formula = new Composite(parent, SWT.NONE);
         formula.setLayout(new GridLayout(5, false));
 
-        input = new Combo(formula, SWT.READ_ONLY);
+        input = Tools.createCombo(formula, CollisionRefential.values());
         input.setLayoutData(new GridData(16, 16));
         input.setTextLimit(2);
 
@@ -183,5 +176,30 @@ public class TileCollisionComposite
         max = new Text(parent, SWT.SINGLE);
         max.setLayoutData(new GridData(32, 16));
         max.setTextLimit(4);
+    }
+
+    /**
+     * Create the buttons area.
+     * 
+     * @param parent The composite parent.
+     */
+    private void createButtonsArea(final Composite parent)
+    {
+        final Composite buttons = new Composite(parent, SWT.NONE);
+        buttons.setLayout(new GridLayout(2, true));
+
+        final Button apply = new Button(buttons, SWT.PUSH);
+        apply.setText("Apply");
+
+        final Button delete = new Button(buttons, SWT.PUSH);
+        delete.setText("Delete");
+        delete.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                tileCollisionPart.removeFormula(parent);
+            }
+        });
     }
 }

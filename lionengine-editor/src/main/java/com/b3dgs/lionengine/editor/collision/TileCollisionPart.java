@@ -83,13 +83,18 @@ public class TileCollisionPart
         scrolledComposite.setExpandHorizontal(true);
         scrolledComposite.setExpandVertical(true);
         scrolledComposite.setAlwaysShowScrollBars(true);
+    }
 
-        final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(content);
-        scrolledComposite.setMinSize(content.computeSize(tileCollisionComposite.getMinWidth(),
-                tileCollisionComposite.getMinHeight()));
-        singleHeight = tileCollisionComposite.getMinHeight();
-
-        formulas.add(tileCollisionComposite);
+    /**
+     * Remove an existing formula from the list.
+     * 
+     * @param formula The formula to remove.
+     */
+    public void removeFormula(Composite formula)
+    {
+        formulas.remove(formula);
+        formula.dispose();
+        parent.layout(true, true);
     }
 
     /**
@@ -109,8 +114,12 @@ public class TileCollisionPart
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(content);
+                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(
+                        TileCollisionPart.this, content);
                 formulas.add(tileCollisionComposite);
+                singleHeight = tileCollisionComposite.getMinHeight();
+                scrolledComposite.setMinSize(content.computeSize(tileCollisionComposite.getMinWidth(),
+                        tileCollisionComposite.getMinHeight()));
                 scrolledComposite.setMinHeight((singleHeight + 5) * formulas.size());
                 parent.layout(true, true);
             }

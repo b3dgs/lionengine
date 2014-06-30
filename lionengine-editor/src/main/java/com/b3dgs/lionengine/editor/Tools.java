@@ -34,6 +34,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Monitor;
@@ -256,6 +257,25 @@ public final class Tools
             }
         }
         throw new LionEngineException(Tools.ERROR_PART, id);
+    }
+
+    /**
+     * Create a combo from an enumeration.
+     * 
+     * @param parent The parent reference.
+     * @param values The enumeration values.
+     * @return The combo instance.
+     */
+    public static Combo createCombo(Composite parent, Enum<?>[] values)
+    {
+        final String[] items = new String[values.length];
+        for (int i = 0; i < values.length; i++)
+        {
+            items[i] = values[i].name();
+        }
+        final Combo combo = new Combo(parent, SWT.READ_ONLY);
+        combo.setItems(items);
+        return combo;
     }
 
     /**
