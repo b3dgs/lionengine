@@ -23,11 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -144,15 +146,11 @@ public class EntityControl
         {
             final MapTile<?, ?> map = model.getMap();
             final CameraGame camera = model.getCamera();
-            final int tw = map.getTileWidth();
-            final int th = map.getTileHeight();
-            final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
-            final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
-            final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
-
+            final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final FactoryObjectGame<?, ?> factoryEntity = model.getFactoryEntity();
             final EntityGame entity = factoryEntity.createUnsafe(type);
-            setEntityLocation(entity, x, y, 1);
+
+            setEntityLocation(entity, tile.getX(), tile.getY(), 1);
             handlerEntity.add(entity);
         }
     }

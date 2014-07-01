@@ -34,6 +34,9 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
+import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Represents the tile collision view, where the tile collision can be edited.
@@ -45,16 +48,18 @@ public class TileCollisionPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
 
-    /** Parent reference. */
-    private Composite parent;
     /** Scroll composite. */
     ScrolledComposite scrolledComposite;
     /** Formulas content. */
     Composite content;
+    /** Tool bar. */
+    private ToolBar toolbar;
     /** Single height. */
     int singleHeight;
     /** Formula list. */
     List<TileCollisionComposite> formulas;
+    /** Parent reference. */
+    private Composite parent;
 
     /**
      * Create the composite.
@@ -67,7 +72,6 @@ public class TileCollisionPart
         this.parent = parent;
         formulas = new ArrayList<>(1);
         parent.setLayout(new GridLayout(1, false));
-        parent.setEnabled(false);
 
         createToolBar(parent);
 
@@ -86,6 +90,29 @@ public class TileCollisionPart
     }
 
     /**
+     * Set the selected tile.
+     * 
+     * @param tile The selected tile.
+     */
+    public void setSelectedTile(TileGame<?> tile)
+    {
+        for (final TileCollisionComposite formula : formulas)
+        {
+            formula.dispose();
+        }
+        formulas.clear();
+        if (tile != null)
+        {
+            final CollisionTile collision = tile.getCollision();
+            for (final CollisionFunction function : collision.getCollisionFunctions())
+            {
+                final TileCollisionComposite tileCollisionComposite = createFormula();
+                tileCollisionComposite.setSelectedFunction(function);
+            }
+        }
+    }
+
+    /**
      * Remove an existing formula from the list.
      * 
      * @param formula The formula to remove.
@@ -98,14 +125,44 @@ public class TileCollisionPart
     }
 
     /**
+     * Set the enabled state.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setEnabled(boolean enabled)
+    {
+        toolbar.setEnabled(enabled);
+        content.setEnabled(enabled);
+    }
+
+    /**
+     * Create a blank formula.
+     * 
+     * @return The formula instance.
+     */
+    TileCollisionComposite createFormula()
+    {
+        final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(this, content);
+        formulas.add(tileCollisionComposite);
+        singleHeight = tileCollisionComposite.getMinHeight();
+        scrolledComposite.setMinSize(content.computeSize(tileCollisionComposite.getMinWidth(),
+                tileCollisionComposite.getMinHeight()));
+        scrolledComposite.setMinHeight((singleHeight + 5) * formulas.size());
+        parent.layout(true, true);
+
+        return tileCollisionComposite;
+    }
+
+    /**
      * Create the tool bar.
      * 
      * @param parent The composite parent.
      */
     private void createToolBar(final Composite parent)
     {
-        final ToolBar toolbar = new ToolBar(parent, SWT.HORIZONTAL);
+        toolbar = new ToolBar(parent, SWT.HORIZONTAL);
         toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+        toolbar.setEnabled(false);
 
         final ToolItem add = new ToolItem(toolbar, SWT.PUSH);
         add.setText("Add formula");
@@ -114,25 +171,8 @@ public class TileCollisionPart
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TileCollisionComposite tileCollisionComposite = new TileCollisionComposite(
-                        TileCollisionPart.this, content);
-                formulas.add(tileCollisionComposite);
-                singleHeight = tileCollisionComposite.getMinHeight();
-                scrolledComposite.setMinSize(content.computeSize(tileCollisionComposite.getMinWidth(),
-                        tileCollisionComposite.getMinHeight()));
-                scrolledComposite.setMinHeight((singleHeight + 5) * formulas.size());
-                parent.layout(true, true);
+                createFormula();
             }
         });
-    }
-
-    /**
-     * Set the enabled state.
-     * 
-     * @param enabled <code>true</code> if enabled, <code>false</code> else.
-     */
-    public void setEnabled(boolean enabled)
-    {
-        parent.setEnabled(enabled);
     }
 }

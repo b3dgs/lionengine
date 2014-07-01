@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.collision;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
 
 /**
@@ -41,6 +43,8 @@ public class TileCollisionComposite
 {
     /** Collision part. */
     final TileCollisionPart tileCollisionPart;
+    /** Referential. */
+    private final Group referential;
     /** Minimum composite width. */
     private final int minWidth;
     /** Minimum composite height. */
@@ -68,7 +72,7 @@ public class TileCollisionComposite
     {
         this.tileCollisionPart = tileCollisionPart;
 
-        final Group referential = new Group(parent, SWT.NONE);
+        referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
         referential.setText("Formula");
 
@@ -78,8 +82,35 @@ public class TileCollisionComposite
 
         referential.pack(true);
 
-        minWidth = referential.getSize().x;
-        minHeight = referential.getSize().y;
+        final Point size = referential.getSize();
+        minWidth = size.x;
+        minHeight = size.y;
+    }
+
+    /**
+     * Set the selected tile function.
+     * 
+     * @param function The selected function.
+     */
+    public void setSelectedFunction(CollisionFunction function)
+    {
+        if (function != null)
+        {
+            axis.setText(function.getAxis().name());
+            input.setText(function.getInput().name());
+            value.setText(String.valueOf(function.getValue()));
+            offset.setText(String.valueOf(function.getOffset()));
+            min.setText(String.valueOf(function.getRange().getMin()));
+            max.setText(String.valueOf(function.getRange().getMax()));
+        }
+    }
+
+    /**
+     * Dispose the composite.
+     */
+    public void dispose()
+    {
+        referential.dispose();
     }
 
     /**

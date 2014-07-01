@@ -67,6 +67,8 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
 {
     /** Number of horizontal tiles to make a bloc. */
     public static final int BLOC_SIZE = 256;
+    /** Collisions file name. */
+    public static final String COLLISIONS_FILE_NAME = "collisions.xml";
 
     /**
      * Get the tile search speed value.
@@ -762,6 +764,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         clear();
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         rip.start(levelrip, patternsDirectory, this);
+        loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTileGame.COLLISIONS_FILE_NAME));
     }
 
     @Override
@@ -987,7 +990,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         create(width, height);
         loadPatterns(patternsDirectory);
 
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), "collisions.xml");
+        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTileGame.COLLISIONS_FILE_NAME);
         final XmlNode root = Stream.loadXml(media);
         final List<XmlNode> nodes = root.getChildren();
 

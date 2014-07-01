@@ -78,7 +78,7 @@ public class WorldViewPart
 
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        worldViewRenderer = new WorldViewRenderer(composite);
+        worldViewRenderer = new WorldViewRenderer(composite, partService);
         composite.addPaintListener(worldViewRenderer);
     }
 

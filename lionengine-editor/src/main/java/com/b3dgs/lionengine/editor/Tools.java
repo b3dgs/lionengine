@@ -30,7 +30,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -44,16 +43,21 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.geom.Geom;
+import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -294,6 +298,25 @@ public final class Tools
     }
 
     /**
+     * Get the tile over the mouse location.
+     * 
+     * @param map The map reference.
+     * @param camera The camera reference.
+     * @param mx The mouse X.
+     * @param my The mouse Y.
+     * @return The location in tile.
+     */
+    public static Point getMouseTile(MapTile<?, ?> map, CameraGame camera, int mx, int my)
+    {
+        final int tw = map.getTileWidth();
+        final int th = map.getTileHeight();
+        final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
+        final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
+        final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
+        return Geom.createPoint(x, y);
+    }
+
+    /**
      * Create the mouse wheel scroller.
      * 
      * @param scrollable The scrollable component.
@@ -306,7 +329,7 @@ public final class Tools
             @Override
             public void mouseScrolled(MouseEvent e)
             {
-                final Point currentScroll = scrollable.getOrigin();
+                final org.eclipse.swt.graphics.Point currentScroll = scrollable.getOrigin();
                 scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
             }
         };

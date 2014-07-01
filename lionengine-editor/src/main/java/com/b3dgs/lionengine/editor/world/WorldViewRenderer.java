@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -33,9 +34,13 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.geom.Point;
 
 /**
  * World view paint listener, rendering the current world.
@@ -104,6 +109,8 @@ public final class WorldViewRenderer
         }
     }
 
+    /** Part service. */
+    private final EPartService partService;
     /** The parent. */
     private final Composite parent;
     /** The view model. */
@@ -124,11 +131,13 @@ public final class WorldViewRenderer
     /**
      * Constructor.
      * 
+     * @param partService The part service.
      * @param parent The parent container.
      */
-    public WorldViewRenderer(Composite parent)
+    public WorldViewRenderer(Composite parent, EPartService partService)
     {
         this.parent = parent;
+        this.partService = partService;
         model = WorldViewModel.INSTANCE;
         handlerEntity = new HandlerEntity(model.getCamera());
         selection = new Selection();
@@ -372,6 +381,14 @@ public final class WorldViewRenderer
 
         if (!selection.isSelected() && !entityControl.isDragging())
         {
+            final MapTile<?, ?> map = model.getMap();
+            final CameraGame camera = model.getCamera();
+            final Point point = Tools.getMouseTile(map, camera, mx, my);
+            final TileGame<?> tile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
+
+            final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
+            part.setSelectedTile(tile);
+
             if (click == Mouse.LEFT)
             {
                 entityControl.addEntity(mx, my);
