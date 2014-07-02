@@ -292,7 +292,7 @@ public class MenuBar<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
                     UtilitySwing.terminateDialog(dialog);
                 }
                 map.loadCollisions(Core.MEDIA.create(mediaTiles.getPath(), "collisions.xml"));
-                map.createCollisionDraw(collisionClass);
+                map.createCollisionDraw();
                 editor.world.camera.setLimits(map);
                 editor.repaint();
                 items.get("Import Map").setEnabled(false);

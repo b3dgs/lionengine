@@ -33,7 +33,7 @@ public final class Map
      */
     public Map()
     {
-        super(16, 16);
+        super(TileCollision.values(), 16, 16);
     }
 
     /*

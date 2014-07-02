@@ -195,7 +195,7 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
 
                 tile.getCollision().addCollisionFunction(selectedFunction);
 
-                world.map.createCollisionDraw(collisionClass);
+                world.map.createCollisionDraw();
                 world.repaint();
             }
         }
@@ -227,9 +227,9 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
         @Override
         public void actionPerformed(ActionEvent event)
         {
-            editor.world.map.removeCollisionFunction(collisionClass, panel.selectedFunction);
+            editor.world.map.removeCollisionFunction(panel.selectedFunction);
             editor.toolBar.removeCollisionFunction(panel);
-            editor.world.map.createCollisionDraw(collisionClass);
+            editor.world.map.createCollisionDraw();
             editor.world.repaint();
         }
     }

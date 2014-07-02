@@ -54,12 +54,13 @@ public abstract class MapTileGameRastered<C extends Enum<C> & CollisionTile, T e
     /**
      * Constructor.
      * 
+     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public MapTileGameRastered(int tileWidth, int tileHeight)
+    public MapTileGameRastered(C[] collisions, int tileWidth, int tileHeight)
     {
-        super(tileWidth, tileHeight);
+        super(collisions, tileWidth, tileHeight);
         rasterPatterns = new TreeMap<>();
         rasterLoaded = false;
     }

@@ -99,6 +99,21 @@ public interface MapTile<C extends Enum<C> & CollisionTile, T extends TileGame<C
     void clear();
 
     /**
+     * Assign the collision function to all tiles with the same collision.
+     * 
+     * @param collision The current collision enum.
+     * @param function The function reference.
+     */
+    void assignCollisionFunction(C collision, CollisionFunction function);
+
+    /**
+     * Remove a collision function.
+     * 
+     * @param function The function to remove.
+     */
+    void removeCollisionFunction(CollisionFunction function);
+
+    /**
      * Save map to specified file as binary data.
      * 
      * @param file The output file.
@@ -187,6 +202,13 @@ public interface MapTile<C extends Enum<C> & CollisionTile, T extends TileGame<C
      * @return The number of vertical tiles.
      */
     int getHeightInTile();
+
+    /**
+     * Get the supported collisions list.
+     * 
+     * @return The supported collisions list.
+     */
+    C[] getCollisions();
 
     /**
      * Get minimap surface reference.

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.map;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +148,8 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         return null;
     }
 
+    /** Collisions. */
+    private final C[] collisions;
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
     /** Tiles directory. */
@@ -165,18 +166,19 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     protected ImageBuffer minimap;
     /** Tiles map. */
     private List<List<T>> tiles;
-
     /** Collision draw cache. */
-    private EnumMap<C, ImageBuffer> collisionCache;
+    private HashMap<C, ImageBuffer> collisionCache;
 
     /**
      * Constructor.
      * 
+     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public MapTileGame(int tileWidth, int tileHeight)
+    public MapTileGame(C[] collisions, int tileWidth, int tileHeight)
     {
+        this.collisions = collisions;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         patterns = new HashMap<>();
@@ -237,15 +239,13 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
 
     /**
      * Create the collision draw surface. Must be called after map creation to enable collision rendering.
-     * 
-     * @param collisionClass The collisionClass enumeration class.
      */
-    public void createCollisionDraw(Class<C> collisionClass)
+    public void createCollisionDraw()
     {
         clearCollisionDraw();
-        collisionCache = new EnumMap<>(collisionClass);
+        collisionCache = new HashMap<>(collisions.length);
 
-        for (final C collision : collisionClass.getEnumConstants())
+        for (final C collision : collisions)
         {
             final Set<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
@@ -268,7 +268,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     /**
-     * Clear the cached collision image created with {@link #createCollisionDraw(Class)}.
+     * Clear the cached collision image created with {@link #createCollisionDraw()}.
      */
     public void clearCollisionDraw()
     {
@@ -280,31 +280,6 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
             }
             collisionCache.clear();
             collisionCache = null;
-        }
-    }
-
-    /**
-     * Assign the collision function to all tiles with the same collision.
-     * 
-     * @param collision The current collision enum.
-     * @param function The function reference.
-     */
-    public void assignCollisionFunction(C collision, CollisionFunction function)
-    {
-        collision.addCollisionFunction(function);
-    }
-
-    /**
-     * Remove a collision function.
-     * 
-     * @param collisionClass The collision enum type.
-     * @param function The function to remove.
-     */
-    public void removeCollisionFunction(Class<C> collisionClass, CollisionFunction function)
-    {
-        for (final C collision : collisionClass.getEnumConstants())
-        {
-            collision.removeCollisionFunction(function);
         }
     }
 
@@ -890,6 +865,21 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         }
     }
 
+    @Override
+    public void assignCollisionFunction(C collision, CollisionFunction function)
+    {
+        collision.addCollisionFunction(function);
+    }
+
+    @Override
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        for (final C collision : collisions)
+        {
+            collision.removeCollisionFunction(function);
+        }
+    }
+
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
      * 
@@ -1089,6 +1079,12 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     public int getHeightInTile()
     {
         return heightInTile;
+    }
+
+    @Override
+    public C[] getCollisions()
+    {
+        return collisions;
     }
 
     @Override

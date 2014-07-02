@@ -89,7 +89,7 @@ final class Scene
         entityRef.setLocation(192, 112);
         camera.setLimits(map);
         camera.setView(0, 0, getWidth(), getHeight());
-        map.createCollisionDraw(TileCollision.class);
+        map.createCollisionDraw();
     }
 
     @Override

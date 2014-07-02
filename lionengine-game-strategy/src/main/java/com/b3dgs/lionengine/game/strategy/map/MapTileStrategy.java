@@ -45,12 +45,13 @@ public abstract class MapTileStrategy<C extends Enum<C> & CollisionTile, R exten
     /**
      * Constructor.
      * 
+     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      */
-    public MapTileStrategy(int tileWidth, int tileHeight)
+    public MapTileStrategy(C[] collisions, int tileWidth, int tileHeight)
     {
-        super(tileWidth, tileHeight);
+        super(collisions, tileWidth, tileHeight);
         minimap = null;
         ref = null;
     }

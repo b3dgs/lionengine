@@ -34,8 +34,10 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -49,15 +51,15 @@ public class TileCollisionPart
     public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
 
     /** Scroll composite. */
-    ScrolledComposite scrolledComposite;
+    private ScrolledComposite scrolledComposite;
     /** Formulas content. */
-    Composite content;
+    private Composite content;
+    /** Single height. */
+    private int singleHeight;
     /** Tool bar. */
     private ToolBar toolbar;
-    /** Single height. */
-    int singleHeight;
     /** Formula list. */
-    List<TileCollisionComposite> formulas;
+    private List<TileCollisionComposite> formulas;
     /** Parent reference. */
     private Composite parent;
 
@@ -117,8 +119,11 @@ public class TileCollisionPart
      * 
      * @param formula The formula to remove.
      */
-    public void removeFormula(Composite formula)
+    public void removeFormula(TileCollisionComposite formula)
     {
+        final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
+        map.removeCollisionFunction(formula.getCollisionFunction());
+
         formulas.remove(formula);
         formula.dispose();
         parent.layout(true, true);
@@ -171,7 +176,9 @@ public class TileCollisionPart
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                createFormula();
+                final TileCollisionComposite tileCollisionComposite = createFormula();
+                final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
+                // TODO map.assignCollisionFunction(collision, tileCollisionComposite.getCollisionFunction());
             }
         });
     }

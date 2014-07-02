@@ -61,6 +61,8 @@ public class TileCollisionComposite
     private Text min;
     /** Range max. */
     private Text max;
+    /** Selected function. */
+    private CollisionFunction selectedFunction;
 
     /**
      * Constructor.
@@ -103,6 +105,7 @@ public class TileCollisionComposite
             min.setText(String.valueOf(function.getRange().getMin()));
             max.setText(String.valueOf(function.getRange().getMax()));
         }
+        selectedFunction = function;
     }
 
     /**
@@ -131,6 +134,16 @@ public class TileCollisionComposite
     public int getMinHeight()
     {
         return minHeight;
+    }
+
+    /**
+     * Get the collision function associated to the composite.
+     * 
+     * @return The collision function.
+     */
+    public CollisionFunction getCollisionFunction()
+    {
+        return selectedFunction;
     }
 
     /**
@@ -214,7 +227,7 @@ public class TileCollisionComposite
      * 
      * @param parent The composite parent.
      */
-    private void createButtonsArea(final Composite parent)
+    private void createButtonsArea(Composite parent)
     {
         final Composite buttons = new Composite(parent, SWT.NONE);
         buttons.setLayout(new GridLayout(2, true));
@@ -229,7 +242,7 @@ public class TileCollisionComposite
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                tileCollisionPart.removeFormula(parent);
+                tileCollisionPart.removeFormula(TileCollisionComposite.this);
             }
         });
     }
