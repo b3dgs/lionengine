@@ -50,6 +50,8 @@ public class TileCollisionPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
 
+    /** Selected tile. */
+    TileGame tile;
     /** Scroll composite. */
     private ScrolledComposite scrolledComposite;
     /** Formulas content. */
@@ -96,8 +98,9 @@ public class TileCollisionPart
      * 
      * @param tile The selected tile.
      */
-    public void setSelectedTile(TileGame<?> tile)
+    public void setSelectedTile(TileGame tile)
     {
+        this.tile = tile;
         for (final TileCollisionComposite formula : formulas)
         {
             formula.dispose();
@@ -121,7 +124,7 @@ public class TileCollisionPart
      */
     public void removeFormula(TileCollisionComposite formula)
     {
-        final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
+        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
         map.removeCollisionFunction(formula.getCollisionFunction());
 
         formulas.remove(formula);
@@ -177,8 +180,8 @@ public class TileCollisionPart
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
-                final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
-                // TODO map.assignCollisionFunction(collision, tileCollisionComposite.getCollisionFunction());
+                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+                map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
             }
         });
     }

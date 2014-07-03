@@ -30,28 +30,26 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 /**
  * Abstract representation of a path based map, used for pathfinding.
  * 
- * @param <C> The collision enum type used.
  * @param <R> The resource enum type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class MapTileStrategy<C extends Enum<C> & CollisionTile, R extends Enum<R>, T extends TileStrategy<C, R>>
-        extends MapTileGame<C, T>
-        implements MapTilePath<C, T>
+public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<R>>
+        extends MapTileGame<T>
+        implements MapTilePath<T>
 {
     /** Reference entity id array. */
     private Integer[][] ref;
 
     /**
      * Constructor.
-     * 
-     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
+     * @param collisions The collisions list.
      */
-    public MapTileStrategy(C[] collisions, int tileWidth, int tileHeight)
+    public MapTileStrategy(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
-        super(collisions, tileWidth, tileHeight);
+        super(tileWidth, tileHeight, collisions);
         minimap = null;
         ref = null;
     }
@@ -77,7 +75,7 @@ public abstract class MapTileStrategy<C extends Enum<C> & CollisionTile, R exten
      * @param radius The search size.
      * @return The closest location found.
      */
-    public CoordTile getClosestTile(Tiled from, Tiled to, C collision, int radius)
+    public CoordTile getClosestTile(Tiled from, Tiled to, CollisionTile collision, int radius)
     {
         final int sx = to.getLocationInTileX();
         final int sy = to.getLocationInTileY();
@@ -199,11 +197,11 @@ public abstract class MapTileStrategy<C extends Enum<C> & CollisionTile, R exten
                 final T tile = getTile(h, v);
                 if (tile != null)
                 {
-                    final C collision = tile.getCollision();
+                    final CollisionTile collision = tile.getCollision();
                     if (collision != null)
                     {
-                        tile.setResourceType(tile.checkResourceType(collision));
-                        tile.setBlocking(tile.checkBlocking(collision));
+                        tile.setResourceType(tile.checkResourceType());
+                        tile.setBlocking(tile.checkBlocking());
                     }
                 }
             }

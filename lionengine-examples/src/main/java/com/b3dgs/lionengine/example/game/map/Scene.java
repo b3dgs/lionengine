@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
 /**
@@ -69,7 +70,7 @@ final class Scene
     @Override
     protected void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>();
         rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
         camera.setView(0, 0, getWidth(), getHeight());
         side = 3;

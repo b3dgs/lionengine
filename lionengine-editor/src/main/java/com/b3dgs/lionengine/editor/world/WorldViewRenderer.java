@@ -166,7 +166,7 @@ public final class WorldViewRenderer
     private void updateKeyboard(int vx, int vy)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         camera.moveLocation(1.0, vx * tw * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY, vy * th
@@ -248,7 +248,7 @@ public final class WorldViewRenderer
     private void render(Graphic g, int width, int height)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
 
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -288,7 +288,7 @@ public final class WorldViewRenderer
     private void renderOverAndSelectedEntities(Graphic g)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int th = map.getTileHeight();
 
         for (final EntityGame entity : handlerEntity.list())
@@ -381,10 +381,10 @@ public final class WorldViewRenderer
 
         if (!selection.isSelected() && !entityControl.isDragging())
         {
-            final MapTile<?, ?> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
             final Point point = Tools.getMouseTile(map, camera, mx, my);
-            final TileGame<?> tile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
+            final TileGame tile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
 
             final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
             part.setSelectedTile(tile);

@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.CollisionTileCategory;
-import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -49,7 +49,7 @@ public abstract class EntityPlatform
     /** Animation surface. */
     protected SpriteAnimated sprite;
     /** List of declared tile collision point. */
-    private final HashMap<CollisionTileCategory<?>, CoordTile> tileCollisions;
+    private final HashMap<CollisionTileCategory, CoordTile> tileCollisions;
     /** Collisions special offsets x. */
     private int collOffX;
     /** Collisions special offsets y. */
@@ -109,7 +109,7 @@ public abstract class EntityPlatform
 
     /**
      * Update collisions, after movements. Should be used to call
-     * {@link #getCollisionTile(MapTileGame, CollisionTileCategory)} for each collision test.
+     * {@link #getCollisionTile(MapTile, CollisionTileCategory)} for each collision test.
      * <p>
      * Example:
      * </p>
@@ -274,7 +274,7 @@ public abstract class EntityPlatform
      * @param offsetX The horizontal offset value.
      * @param offsetY The vertical offset value.
      */
-    protected <C extends Enum<C> & CollisionTile> void addCollisionTile(CollisionTileCategory<C> type, int offsetX,
+    protected <C extends Enum<C> & CollisionTile> void addCollisionTile(CollisionTileCategory type, int offsetX,
             int offsetY)
     {
         tileCollisions.put(type, new CoordTile(offsetX, offsetY));
@@ -287,7 +287,7 @@ public abstract class EntityPlatform
      * @param type The collision category.
      * @return The collision offset.
      */
-    protected <C extends Enum<C> & CollisionTile> CoordTile getCollisionTileOffset(CollisionTileCategory<C> type)
+    protected <C extends Enum<C> & CollisionTile> CoordTile getCollisionTileOffset(CollisionTileCategory type)
     {
         return tileCollisions.get(type);
     }
@@ -295,15 +295,13 @@ public abstract class EntityPlatform
     /**
      * Get the first tile hit for the specified collision tile category matching the collision list.
      * 
-     * @param <C> The collision type used.
      * @param <T> The tile type used.
      * @param <M> The map tile platform used.
      * @param map The map reference.
      * @param category The collision tile category.
      * @return The first tile hit, <code>null</code> if none.
      */
-    public <C extends Enum<C> & CollisionTile, T extends TileGame<C>, M extends MapTileGame<C, T>> T getCollisionTile(
-            M map, CollisionTileCategory<C> category)
+    public <T extends TileGame, M extends MapTile<T>> T getCollisionTile(M map, CollisionTileCategory category)
     {
         final CoordTile offsets = tileCollisions.get(category);
         if (offsets != null)

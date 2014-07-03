@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -54,14 +54,14 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class LevelRipConverter<T extends TileGame<?>>
+public final class LevelRipConverter<T extends TileGame>
         extends Thread
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /** Map reference. */
-    private MapTileGame<?, T> map;
+    private MapTile<T> map;
     /** Level rip image. */
     private Sprite imageMap;
     /** Level rip height in tile. */
@@ -91,7 +91,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
      * @param numberOfThread The number of used thread.
      * @param id The current thread id.
      */
-    private LevelRipConverter(MapTileGame<?, T> map, Sprite imageMap, int numberOfThread, int id)
+    private LevelRipConverter(MapTile<T> map, Sprite imageMap, int numberOfThread, int id)
     {
         super("LevelRip Converter");
         this.map = map;
@@ -114,7 +114,7 @@ public final class LevelRipConverter<T extends TileGame<?>>
      * @param patternsDirectory The directory containing tiles themes.
      * @param map The destination map reference.
      */
-    public void start(Media levelrip, Media patternsDirectory, MapTileGame<?, T> map)
+    public void start(Media levelrip, Media patternsDirectory, MapTile<T> map)
     {
         final int threadsNum = Runtime.getRuntime().availableProcessors();
         final Sprite levelRip = Drawable.loadSprite(levelrip);

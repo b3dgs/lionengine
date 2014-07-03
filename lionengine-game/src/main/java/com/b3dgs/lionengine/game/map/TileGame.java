@@ -33,10 +33,9 @@ import com.b3dgs.lionengine.stream.FileReading;
  * <li><code>collision</code> : collision type</li>
  * </ul>
  * 
- * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileGame<C extends Enum<C> & CollisionTile>
+public class TileGame
 {
     /** Tile width. */
     private final int width;
@@ -50,8 +49,8 @@ public class TileGame<C extends Enum<C> & CollisionTile>
     private int x;
     /** Tile y on map. */
     private int y;
-    /** Tile collision name. */
-    private C collision;
+    /** Tile collision. */
+    private CollisionTile collision;
 
     /**
      * Constructor.
@@ -62,7 +61,7 @@ public class TileGame<C extends Enum<C> & CollisionTile>
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public TileGame(int width, int height, Integer pattern, int number, C collision)
+    public TileGame(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         this.width = width;
         this.height = height;
@@ -94,17 +93,17 @@ public class TileGame<C extends Enum<C> & CollisionTile>
     }
 
     /**
-     * Set collision name.
+     * Set collision.
      * 
-     * @param collision The collision name.
+     * @param collision The collision.
      */
-    public void setCollision(C collision)
+    public void setCollision(CollisionTile collision)
     {
         this.collision = collision;
     }
 
     /**
-     * Set tile location x. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * Set tile location x. Should be used only when overriding the {@link MapTile#loadTile(List, FileReading, int)}
      * function.
      * 
      * @param x The tile location x.
@@ -115,7 +114,7 @@ public class TileGame<C extends Enum<C> & CollisionTile>
     }
 
     /**
-     * Set tile location y. Should be used only when overriding the {@link MapTileGame#loadTile(List, FileReading, int)}
+     * Set tile location y. Should be used only when overriding the {@link MapTile#loadTile(List, FileReading, int)}
      * function.
      * 
      * @param y The tile location y.
@@ -133,7 +132,7 @@ public class TileGame<C extends Enum<C> & CollisionTile>
      */
     public Double getCollisionX(Localizable localizable)
     {
-        final C collision = getCollision();
+        final CollisionTile collision = getCollision();
         final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
 
         for (final CollisionFunction function : collisionFunctions)
@@ -165,7 +164,7 @@ public class TileGame<C extends Enum<C> & CollisionTile>
      */
     public Double getCollisionY(Localizable localizable)
     {
-        final C collision = getCollision();
+        final CollisionTile collision = getCollision();
         final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
 
         for (final CollisionFunction function : collisionFunctions)
@@ -291,11 +290,11 @@ public class TileGame<C extends Enum<C> & CollisionTile>
     }
 
     /**
-     * Get tile collision name.
+     * Get tile collision.
      * 
-     * @return The tile collision name.
+     * @return The tile collision.
      */
-    public C getCollision()
+    public CollisionTile getCollision()
     {
         return collision;
     }

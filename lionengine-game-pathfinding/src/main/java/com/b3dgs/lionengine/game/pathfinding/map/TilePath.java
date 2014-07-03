@@ -23,11 +23,10 @@ import com.b3dgs.lionengine.game.map.TileGame;
 /**
  * Representation of a default tile, used for pathfinding.
  * 
- * @param <C> collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TilePath<C extends Enum<C> & CollisionTile>
-        extends TileGame<C>
+public abstract class TilePath
+        extends TileGame
 {
     /** Blocked flag. */
     private boolean blocking;
@@ -41,7 +40,7 @@ public abstract class TilePath<C extends Enum<C> & CollisionTile>
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public TilePath(int width, int height, Integer pattern, int number, C collision)
+    public TilePath(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         super(width, height, pattern, number, collision);
     }
@@ -49,10 +48,9 @@ public abstract class TilePath<C extends Enum<C> & CollisionTile>
     /**
      * Check if this collision is blocking.
      * 
-     * @param collision The tile collision.
      * @return <code>true</code> if blocking, <code>false</code> else.
      */
-    public abstract boolean checkBlocking(C collision);
+    public abstract boolean checkBlocking();
 
     /**
      * Check if current tile is blocking or not.

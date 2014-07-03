@@ -146,7 +146,7 @@ public class WorldViewPart
 
                 if (importMapDialog.isFound())
                 {
-                    final MapTile<?, ?> map = WorldViewModel.INSTANCE.getMap();
+                    final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                     map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
 
                     final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);

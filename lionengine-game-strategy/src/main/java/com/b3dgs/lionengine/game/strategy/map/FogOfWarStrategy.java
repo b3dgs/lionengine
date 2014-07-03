@@ -33,12 +33,12 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FogOfWarStrategy<T extends TileGame<?>>
+public abstract class FogOfWarStrategy<T extends TileGame>
 {
     /** Fog map. */
     private final Border20Map border20Map;
     /** Map reference. */
-    private MapTile<?, T> map;
+    private MapTile<T> map;
     /** Fog black tile. */
     private SpriteTiled hideTiles;
     /** Fog gray tiles. */
@@ -78,7 +78,7 @@ public abstract class FogOfWarStrategy<T extends TileGame<?>>
      * 
      * @param map The map reference.
      */
-    public void create(MapTile<?, T> map)
+    public void create(MapTile<T> map)
     {
         this.map = map;
         widthInTile = map.getWidthInTile();

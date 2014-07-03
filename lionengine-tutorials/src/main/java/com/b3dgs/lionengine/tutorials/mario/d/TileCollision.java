@@ -34,7 +34,7 @@ enum TileCollision implements CollisionTile
     NONE;
 
     /** Model. */
-    private final CollisionTileModel model = new CollisionTileModel();
+    private final CollisionTileModel model = new CollisionTileModel(this);
 
     /*
      * CollisionTile
@@ -56,5 +56,11 @@ enum TileCollision implements CollisionTile
     public Set<CollisionFunction> getCollisionFunctions()
     {
         return model.getCollisionFunctions();
+    }
+
+    @Override
+    public Enum<?> getValue()
+    {
+        return model.getValue();
     }
 }

@@ -17,20 +17,19 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Collision tile category.
  * 
- * @param <C> The collision type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface CollisionTileCategory<C extends Enum<C> & CollisionTile>
+public interface CollisionTileCategory
 {
     /**
      * Get the list of collisions to test.
      * 
      * @return The collisions list.
      */
-    EnumSet<C> getCollisions();
+    Set<CollisionTile> getCollisions();
 }

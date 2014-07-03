@@ -50,7 +50,7 @@ public class Border20Map
      * 
      * @param map The map reference.
      */
-    public void create(MapTile<?, ?> map)
+    public void create(MapTile<?> map)
     {
         safe = new boolean[map.getHeightInTile()][map.getWidthInTile()];
     }

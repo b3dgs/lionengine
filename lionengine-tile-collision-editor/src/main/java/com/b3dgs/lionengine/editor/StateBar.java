@@ -22,30 +22,28 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * State bar implementation (giving information on the current editor states).
  * 
- * @param <C> The collision type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class StateBar<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
+public final class StateBar<T extends TileGame>
         extends JPanel
 {
     /** Uid. */
     private static final long serialVersionUID = -1306034890537499369L;
     /** Editor reference. */
-    private final TileCollisionEditor<C, T> editor;
+    private final TileCollisionEditor<T> editor;
 
     /**
      * Constructor.
      * 
      * @param editor The editor reference.
      */
-    public StateBar(TileCollisionEditor<C, T> editor)
+    public StateBar(TileCollisionEditor<T> editor)
     {
         this.editor = editor;
         final Dimension size = new Dimension(getWidth(), 16);

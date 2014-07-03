@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.platform.tile;
 
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
@@ -26,14 +27,14 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
  * @see com.b3dgs.lionengine.example.game.map
  */
 final class Map
-        extends MapTileGame<TileCollision, Tile>
+        extends MapTileGame<Tile>
 {
     /**
      * Constructor.
      */
     Map()
     {
-        super(TileCollision.values(), 16, 16);
+        super(16, 16, TileCollision.values());
     }
 
     /**
@@ -49,11 +50,11 @@ final class Map
     }
 
     /*
-     * MapTilePlatform
+     * MapTileGame
      */
 
     @Override
-    public Tile createTile(int width, int height, Integer pattern, int number, TileCollision collision)
+    public Tile createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         return new Tile(width, height, pattern, number, collision);
     }

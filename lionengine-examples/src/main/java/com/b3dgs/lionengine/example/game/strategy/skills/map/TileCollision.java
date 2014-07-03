@@ -21,6 +21,7 @@ import java.util.Set;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.map.CollisionTileModel;
 
 /**
  * List of collision types.
@@ -33,6 +34,9 @@ public enum TileCollision implements CollisionTile
     /** No collision. */
     NONE;
 
+    /** Model. */
+    private final CollisionTileModel model = new CollisionTileModel(this);
+
     /*
      * CollisionTile
      */
@@ -40,18 +44,24 @@ public enum TileCollision implements CollisionTile
     @Override
     public void addCollisionFunction(CollisionFunction function)
     {
-        // Nothing to do
+        model.addCollisionFunction(function);
     }
 
     @Override
     public void removeCollisionFunction(CollisionFunction function)
     {
-        // Nothing to do
+        model.removeCollisionFunction(function);
     }
 
     @Override
     public Set<CollisionFunction> getCollisionFunctions()
     {
-        return null;
+        return model.getCollisionFunctions();
+    }
+
+    @Override
+    public Enum<?> getValue()
+    {
+        return model.getValue();
     }
 }

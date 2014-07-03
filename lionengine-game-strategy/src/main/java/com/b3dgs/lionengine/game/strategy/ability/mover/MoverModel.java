@@ -46,7 +46,7 @@ public class MoverModel
      * @param user The user reference.
      * @param map The map reference.
      */
-    public MoverModel(MoverUsedServices user, MapTileStrategy<?, ?, ?> map)
+    public MoverModel(MoverUsedServices user, MapTileStrategy<?, ?> map)
     {
         super(user);
         pathfindable = new PathfindableModel(map, user, user.getId());

@@ -37,7 +37,7 @@ public class PathfindableModel
     private static final double DIAGONAL_SPEED = 0.8;
 
     /** Map reference. */
-    protected final MapTilePath<?, ? extends TilePath<?>> map;
+    protected final MapTilePath<? extends TilePath> map;
     /** User reference. */
     private final Localizable user;
     /** Localizable model. */
@@ -88,7 +88,7 @@ public class PathfindableModel
      * @param user The pathfindable user.
      * @param id The id used.
      */
-    public PathfindableModel(MapTilePath<?, ? extends TilePath<?>> map, Localizable user, Integer id)
+    public PathfindableModel(MapTilePath<? extends TilePath> map, Localizable user, Integer id)
     {
         this.id = id;
         this.map = map;

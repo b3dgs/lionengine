@@ -47,7 +47,7 @@ public final class Cursor
     /**
      * {@link CursorStrategy#CursorStrategy(InputDevicePointer, CameraStrategy, Resolution, MapTile, Media...)}
      */
-    Cursor(InputDevicePointer mouse, CameraStrategy camera, Resolution source, MapTile<?, ?> map, Media... cursor)
+    Cursor(InputDevicePointer mouse, CameraStrategy camera, Resolution source, MapTile<?> map, Media... cursor)
     {
         super(mouse, camera, source, map, cursor);
         type = CursorType.POINTER;

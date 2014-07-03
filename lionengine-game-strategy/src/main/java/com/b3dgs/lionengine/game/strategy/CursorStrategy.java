@@ -66,7 +66,7 @@ public class CursorStrategy
      * @param cursor The cursor images media.
      * @param map The map reference.
      */
-    public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, MapTile<?, ?> map,
+    public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, MapTile<?> map,
             Media... cursor)
     {
         this(pointer, camera, source, map.getTileWidth(), map.getTileHeight(), cursor);

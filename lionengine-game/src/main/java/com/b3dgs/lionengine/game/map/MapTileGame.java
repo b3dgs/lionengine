@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.map;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,19 +55,13 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
  * 
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * 
- * @param <C> The collision type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  */
-public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
-        implements MapTile<C, T>
+public abstract class MapTileGame<T extends TileGame>
+        implements MapTile<T>
 {
-    /** Number of horizontal tiles to make a bloc. */
-    public static final int BLOC_SIZE = 256;
-    /** Collisions file name. */
-    public static final String COLLISIONS_FILE_NAME = "collisions.xml";
-
     /**
      * Get the tile search speed value.
      * 
@@ -149,7 +142,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     /** Collisions. */
-    private final C[] collisions;
+    private final CollisionTile[] collisions;
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
     /** Tiles directory. */
@@ -167,261 +160,21 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     /** Tiles map. */
     private List<List<T>> tiles;
     /** Collision draw cache. */
-    private HashMap<C, ImageBuffer> collisionCache;
+    private HashMap<CollisionTile, ImageBuffer> collisionCache;
 
     /**
      * Constructor.
-     * 
-     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
+     * @param collisions The collisions list.
      */
-    public MapTileGame(C[] collisions, int tileWidth, int tileHeight)
+    public MapTileGame(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
         this.collisions = collisions;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         patterns = new HashMap<>();
         patternsDirectory = null;
-    }
-
-    /**
-     * Create a tile.
-     * 
-     * @param width The tile width.
-     * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
-     * @return The created tile.
-     */
-    public abstract T createTile(int width, int height, Integer pattern, int number, C collision);
-
-    /**
-     * Get collision type from its name as string. The parameter value is read from the file describing the map
-     * collisions. The best way to store map collisions name is to use an enum with the same names.
-     * 
-     * @param collision The collision name.
-     * @return The collision type.
-     */
-    public abstract C getCollisionFrom(String collision);
-
-    /**
-     * Load tile. Data are loaded this way:
-     * 
-     * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
-     * (integer) tile location x
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param nodes The collision nodes.
-     * @param file The file reader reference.
-     * @param i The last loaded tile number.
-     * @return The loaded tile.
-     * @throws IOException If error on reading.
-     */
-    public T loadTile(List<XmlNode> nodes, FileReading file, int i) throws IOException
-    {
-        final int pattern = file.readInteger();
-        final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTileGame.BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final C collision = getCollisionFrom(getCollision(nodes, pattern, number));
-        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
-
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
-    }
-
-    /**
-     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
-     */
-    public void createCollisionDraw()
-    {
-        clearCollisionDraw();
-        collisionCache = new HashMap<>(collisions.length);
-
-        for (final C collision : collisions)
-        {
-            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
-            if (functions != null)
-            {
-                final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(getTileWidth(), getTileHeight(),
-                        Transparency.TRANSLUCENT);
-                final Graphic g = buffer.createGraphic();
-                g.setColor(new ColorRgba(0, 0, 0, 0));
-                g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
-                g.setColor(ColorRgba.PURPLE);
-
-                for (final CollisionFunction function : functions)
-                {
-                    createFunctionDraw(g, function);
-                }
-                g.dispose();
-                collisionCache.put(collision, buffer);
-            }
-        }
-    }
-
-    /**
-     * Clear the cached collision image created with {@link #createCollisionDraw()}.
-     */
-    public void clearCollisionDraw()
-    {
-        if (collisionCache != null)
-        {
-            for (final ImageBuffer buffer : collisionCache.values())
-            {
-                buffer.dispose();
-            }
-            collisionCache.clear();
-            collisionCache = null;
-        }
-    }
-
-    /**
-     * Render minimap on graphic output at specified location.
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    public void renderMiniMap(Graphic g, int x, int y)
-    {
-        g.drawImage(minimap, x, y);
-    }
-
-    /**
-     * Set a tile at specified map indexes.
-     * 
-     * @param v The vertical index.
-     * @param h The horizontal index.
-     * @param tile The tile reference.
-     */
-    public void setTile(int v, int h, T tile)
-    {
-        tile.setX(h * tileWidth);
-        tile.setY(v * tileHeight);
-        tiles.get(v).set(h, tile);
-    }
-
-    /**
-     * Get pattern (tilesheet) from its id.
-     * 
-     * @param pattern The pattern id.
-     * @return The pattern found.
-     */
-    public SpriteTiled getPattern(Integer pattern)
-    {
-        return patterns.get(pattern);
-    }
-
-    /**
-     * Get the tile at the localizable.
-     * 
-     * @param entity The entity.
-     * @param offsetX The horizontal offset search.
-     * @param offsetY The vertical offset search.
-     * @return The tile found at the entity.
-     */
-    public T getTile(Localizable entity, int offsetX, int offsetY)
-    {
-        final int tx = (entity.getLocationIntX() + offsetX) / getTileWidth();
-        final int ty = (entity.getLocationIntY() + offsetY) / getTileHeight();
-        return getTile(tx, ty);
-    }
-
-    /**
-     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
-     * to its current. This way, the localizable can not pass through a collidable tile.
-     * 
-     * @param localizable The localizable reference.
-     * @param collisions Collisions list to search for.
-     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
-     *            just return the first tile hit.
-     * @return The first tile hit, <code>null</code> if none found.
-     */
-    public T getFirstTileHit(Localizable localizable, EnumSet<C> collisions, boolean applyRayCast)
-    {
-        // Starting location
-        final int sv = (int) Math.floor(localizable.getLocationOldY());
-        final int sh = (int) Math.floor(localizable.getLocationOldX());
-
-        // Ending location
-        final int ev = (int) Math.floor(localizable.getLocationY());
-        final int eh = (int) Math.floor(localizable.getLocationX());
-
-        // Distance calculation
-        final int dv = ev - sv;
-        final int dh = eh - sh;
-
-        // Search vector and number of search steps
-        final double sx, sy;
-        final int stepMax;
-        if (Math.abs(dv) >= Math.abs(dh))
-        {
-            sy = MapTileGame.getTileSearchSpeed(dv);
-            sx = MapTileGame.getTileSearchSpeed(Math.abs(dv), dh);
-            stepMax = Math.abs(dv);
-        }
-        else
-        {
-            sx = MapTileGame.getTileSearchSpeed(dh);
-            sy = MapTileGame.getTileSearchSpeed(Math.abs(dh), dv);
-            stepMax = Math.abs(dh);
-        }
-
-        T t = null;
-        int step = 0;
-        for (double v = sv, h = sh; step <= stepMax;)
-        {
-            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()), applyRayCast);
-            if (t == null)
-            {
-                t = tile;
-            }
-            h += sx;
-
-            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()), applyRayCast);
-            if (t == null)
-            {
-                t = tile;
-            }
-            v += sy;
-
-            step++;
-            if (!applyRayCast && t != null)
-            {
-                return t;
-            }
-        }
-        return t;
-    }
-
-    /**
-     * Get location x relative to map referential as tile.
-     * 
-     * @param localizable The localizable reference.
-     * @return The location x relative to map referential as tile.
-     */
-    public int getInTileX(Localizable localizable)
-    {
-        return (int) Math.floor(localizable.getLocationX() / getTileWidth());
-    }
-
-    /**
-     * Get location y relative to map referential as tile.
-     * 
-     * @param localizable The localizable reference.
-     * @return The location y relative to map referential as tile.
-     */
-    public int getInTileY(Localizable localizable)
-    {
-        return (int) Math.floor(localizable.getLocationY() / getTileHeight());
     }
 
     /**
@@ -545,7 +298,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     {
         file.writeInteger(tile.getPattern().intValue());
         file.writeInteger(tile.getNumber());
-        file.writeInteger(tile.getX() / tileWidth % MapTileGame.BLOC_SIZE);
+        file.writeInteger(tile.getX() / tileWidth % MapTile.BLOC_SIZE);
         file.writeInteger(tile.getY() / tileHeight);
     }
 
@@ -626,7 +379,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
      * @param collision The current collision enum.
      * @param functionNode The function node reference.
      */
-    private void loadCollisionFunction(C collision, XmlNode functionNode)
+    private void loadCollisionFunction(CollisionTile collision, XmlNode functionNode)
     {
         final CollisionFunction function = new CollisionFunction();
         function.setName(functionNode.readString("name"));
@@ -650,7 +403,8 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
      *            just return the first tile hit.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    private T checkCollision(Localizable localizable, EnumSet<C> collisions, double h, int ty, boolean applyRayCast)
+    private T checkCollision(Localizable localizable, Set<CollisionTile> collisions, double h, int ty,
+            boolean applyRayCast)
     {
         final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
         if (tile != null && collisions.contains(tile.getCollision()))
@@ -704,6 +458,34 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
+    public void createCollisionDraw()
+    {
+        clearCollisionDraw();
+        collisionCache = new HashMap<>(collisions.length);
+
+        for (final CollisionTile collision : collisions)
+        {
+            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
+            if (functions != null)
+            {
+                final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(getTileWidth(), getTileHeight(),
+                        Transparency.TRANSLUCENT);
+                final Graphic g = buffer.createGraphic();
+                g.setColor(new ColorRgba(0, 0, 0, 0));
+                g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
+                g.setColor(ColorRgba.PURPLE);
+
+                for (final CollisionFunction function : functions)
+                {
+                    createFunctionDraw(g, function);
+                }
+                g.dispose();
+                collisionCache.put(collision, buffer);
+            }
+        }
+    }
+
+    @Override
     public void createMiniMap()
     {
         if (minimap == null)
@@ -734,12 +516,44 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
+    public void load(FileReading file) throws IOException
+    {
+        patternsDirectory = Core.MEDIA.create(file.readString());
+        final int width = file.readShort();
+        final int height = file.readShort();
+        tileWidth = file.readByte();
+        tileHeight = file.readByte();
+
+        create(width, height);
+        loadPatterns(patternsDirectory);
+
+        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        final XmlNode root = Stream.loadXml(media);
+        final List<XmlNode> nodes = root.getChildren();
+
+        final int t = file.readShort();
+        for (int i = 0; i < t; i++)
+        {
+            final int n = file.readShort();
+            for (int j = 0; j < n; j++)
+            {
+                final T tile = loadTile(nodes, file, i);
+                final int v = tile.getY() / getTileHeight();
+                final int h = tile.getX() / getTileWidth();
+                final List<T> list = tiles.get(v);
+                list.set(h, tile);
+            }
+        }
+        loadCollisions(media);
+    }
+
+    @Override
     public void load(Media levelrip, Media patternsDirectory)
     {
         clear();
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         rip.start(levelrip, patternsDirectory, this);
-        loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTileGame.COLLISIONS_FILE_NAME));
+        loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
     }
 
     @Override
@@ -801,7 +615,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         }
         for (final XmlNode node : collisions)
         {
-            final C collision = getCollisionFrom(node.readString("name"));
+            final CollisionTile collision = getCollisionFrom(node.readString("name"));
             for (final XmlNode functionNode : node.getChildren("lionengine:function"))
             {
                 loadCollisionFunction(collision, functionNode);
@@ -810,7 +624,23 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
-    public void append(MapTile<C, T> map, int offsetX, int offsetY)
+    public T loadTile(List<XmlNode> nodes, FileReading file, int i) throws IOException
+    {
+        final int pattern = file.readInteger();
+        final int number = file.readInteger();
+        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * tileHeight;
+        final CollisionTile collision = getCollisionFrom(getCollision(nodes, pattern, number));
+        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
+
+        tile.setX(x);
+        tile.setY(y);
+
+        return tile;
+    }
+
+    @Override
+    public void append(MapTile<T> map, int offsetX, int offsetY)
     {
         final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
         final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
@@ -866,7 +696,21 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
-    public void assignCollisionFunction(C collision, CollisionFunction function)
+    public void clearCollisionDraw()
+    {
+        if (collisionCache != null)
+        {
+            for (final ImageBuffer buffer : collisionCache.values())
+            {
+                buffer.dispose();
+            }
+            collisionCache.clear();
+            collisionCache = null;
+        }
+    }
+
+    @Override
+    public void assignCollisionFunction(CollisionTile collision, CollisionFunction function)
     {
         collision.addCollisionFunction(function);
     }
@@ -874,33 +718,12 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     @Override
     public void removeCollisionFunction(CollisionFunction function)
     {
-        for (final C collision : collisions)
+        for (final CollisionTile collision : collisions)
         {
             collision.removeCollisionFunction(function);
         }
     }
 
-    /**
-     * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
-     * 
-     * <pre>
-     * <code>(String)</code> theme
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width (use of byte because tile width &lt; 255)
-     * <code>(byte)</code> tile height (use of byte because tile height &lt; 255)
-     * <code>(short)</code> number of 256 horizontal blocs (widthInTile / 256)
-     * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
-     *   for each tile in this bloc
-     *     call tile.save(file)
-     * </pre>
-     * 
-     * Collisions are not saved, because it is possible to retrieve them from collisions.txt
-     * 
-     * @param file The output file.
-     * @throws IOException If error on writing.
-     */
     @Override
     public void save(FileWriting file) throws IOException
     {
@@ -911,7 +734,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         file.writeByte((byte) tileWidth);
         file.writeByte((byte) tileHeight);
 
-        final int step = MapTileGame.BLOC_SIZE;
+        final int step = MapTile.BLOC_SIZE;
         final int x = Math.min(step, widthInTile);
         final int t = (int) Math.ceil(widthInTile / (double) step);
 
@@ -944,68 +767,117 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
         }
     }
 
-    /**
-     * Load a map from a specified file as binary data.
-     * <p>
-     * Data are loaded this way (see save(file) order):
-     * </p>
-     * 
-     * <pre>
-     * <code>(String)</code> theme
-     * <code>(short)</code> width in tiles
-     * <code>(short)</code> height in tiles
-     * <code>(byte)</code> tile width
-     * <code>(byte)</code> tile height
-     * <code>(short)</code> number of 256 horizontal blocs (widthInTile / 256)
-     * for each blocs tile
-     *   <code>(short)</code> number of tiles in this bloc
-     *   for each tile in this bloc
-     *     create blank tile
-     *     call tile.load(file)
-     *     call this.setTile(...) to update map with this new tile
-     * </pre>
-     * 
-     * @param file The input file.
-     * @throws IOException If error on reading.
-     */
-    @Override
-    public void load(FileReading file) throws IOException
-    {
-        patternsDirectory = Core.MEDIA.create(file.readString());
-        final int width = file.readShort();
-        final int height = file.readShort();
-        tileWidth = file.readByte();
-        tileHeight = file.readByte();
-
-        create(width, height);
-        loadPatterns(patternsDirectory);
-
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTileGame.COLLISIONS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(media);
-        final List<XmlNode> nodes = root.getChildren();
-
-        final int t = file.readShort();
-        for (int i = 0; i < t; i++)
-        {
-            final int n = file.readShort();
-            for (int j = 0; j < n; j++)
-            {
-                final T tile = loadTile(nodes, file, i);
-                final int v = tile.getY() / getTileHeight();
-                final int h = tile.getX() / getTileWidth();
-                final List<T> list = tiles.get(v);
-                list.set(h, tile);
-            }
-        }
-        loadCollisions(media);
-    }
-
     @Override
     public void render(Graphic g, CameraGame camera)
     {
         render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
                 (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
                 (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+    }
+
+    @Override
+    public void renderMiniMap(Graphic g, int x, int y)
+    {
+        g.drawImage(minimap, x, y);
+    }
+
+    @Override
+    public void setTile(int v, int h, T tile)
+    {
+        tile.setX(h * tileWidth);
+        tile.setY(v * tileHeight);
+        tiles.get(v).set(h, tile);
+    }
+
+    @Override
+    public T getTile(int tx, int ty)
+    {
+        try
+        {
+            return tiles.get(ty).get(tx);
+        }
+        catch (final IndexOutOfBoundsException exception)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public T getTile(Localizable entity, int offsetX, int offsetY)
+    {
+        final int tx = (entity.getLocationIntX() + offsetX) / getTileWidth();
+        final int ty = (entity.getLocationIntY() + offsetY) / getTileHeight();
+        return getTile(tx, ty);
+    }
+
+    @Override
+    public T getFirstTileHit(Localizable localizable, Set<CollisionTile> collisions, boolean applyRayCast)
+    {
+        // Starting location
+        final int sv = (int) Math.floor(localizable.getLocationOldY());
+        final int sh = (int) Math.floor(localizable.getLocationOldX());
+
+        // Ending location
+        final int ev = (int) Math.floor(localizable.getLocationY());
+        final int eh = (int) Math.floor(localizable.getLocationX());
+
+        // Distance calculation
+        final int dv = ev - sv;
+        final int dh = eh - sh;
+
+        // Search vector and number of search steps
+        final double sx, sy;
+        final int stepMax;
+        if (Math.abs(dv) >= Math.abs(dh))
+        {
+            sy = MapTileGame.getTileSearchSpeed(dv);
+            sx = MapTileGame.getTileSearchSpeed(Math.abs(dv), dh);
+            stepMax = Math.abs(dv);
+        }
+        else
+        {
+            sx = MapTileGame.getTileSearchSpeed(dh);
+            sy = MapTileGame.getTileSearchSpeed(Math.abs(dh), dv);
+            stepMax = Math.abs(dh);
+        }
+
+        T t = null;
+        int step = 0;
+        for (double v = sv, h = sh; step <= stepMax;)
+        {
+            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()), applyRayCast);
+            if (t == null)
+            {
+                t = tile;
+            }
+            h += sx;
+
+            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()), applyRayCast);
+            if (t == null)
+            {
+                t = tile;
+            }
+            v += sy;
+
+            step++;
+            if (!applyRayCast && t != null)
+            {
+                return t;
+            }
+        }
+        return t;
+    }
+
+    @Override
+    public int getInTileX(Localizable localizable)
+    {
+        return (int) Math.floor(localizable.getLocationX() / getTileWidth());
+    }
+
+    @Override
+    public int getInTileY(Localizable localizable)
+    {
+        return (int) Math.floor(localizable.getLocationY() / getTileHeight());
     }
 
     @Override
@@ -1021,16 +893,9 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
-    public T getTile(int tx, int ty)
+    public SpriteTiled getPattern(Integer pattern)
     {
-        try
-        {
-            return tiles.get(ty).get(tx);
-        }
-        catch (final IndexOutOfBoundsException exception)
-        {
-            return null;
-        }
+        return patterns.get(pattern);
     }
 
     @Override
@@ -1082,7 +947,7 @@ public abstract class MapTileGame<C extends Enum<C> & CollisionTile, T extends T
     }
 
     @Override
-    public C[] getCollisions()
+    public CollisionTile[] getCollisions()
     {
         return collisions;
     }

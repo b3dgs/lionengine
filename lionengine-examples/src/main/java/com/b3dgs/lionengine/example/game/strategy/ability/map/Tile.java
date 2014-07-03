@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.map;
 
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 
 /**
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Tile
-        extends TileStrategy<TileCollision, ResourceType>
+        extends TileStrategy<ResourceType>
 {
     /**
      * Constructor.
@@ -37,7 +38,7 @@ public final class Tile
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+    public Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         super(width, height, pattern, number, collision);
     }
@@ -47,9 +48,9 @@ public final class Tile
      */
 
     @Override
-    public ResourceType checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType()
     {
-        switch (collision.getGroup())
+        switch (getCollision().getGroup())
         {
             case TREE:
                 return ResourceType.WOOD;
@@ -59,14 +60,20 @@ public final class Tile
     }
 
     @Override
-    public boolean checkBlocking(TileCollision collision)
+    public boolean checkBlocking()
     {
-        return TileCollisionGroup.GROUND != collision.getGroup();
+        return TileCollisionGroup.GROUND != getCollision().getGroup();
     }
 
     @Override
     public boolean hasResources()
     {
         return getResourceType() != ResourceType.NONE;
+    }
+
+    @Override
+    public TileCollision getCollision()
+    {
+        return (TileCollision) super.getCollision();
     }
 }

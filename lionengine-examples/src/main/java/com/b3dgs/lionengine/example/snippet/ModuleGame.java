@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -68,12 +68,18 @@ public class ModuleGame
         {
             return null;
         }
+
+        @Override
+        public Enum<?> getValue()
+        {
+            return null;
+        }
     }
 
     class Tile
-            extends TileGame<TileCollision>
+            extends TileGame
     {
-        public Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+        public Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
         {
             super(width, height, pattern, number, collision);
         }
@@ -108,7 +114,7 @@ public class ModuleGame
         }
     }
 
-    MapTileGame<TileCollision, Tile> map;
+    MapTile<Tile> map;
 
     /*
      * Snippet code

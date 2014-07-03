@@ -35,7 +35,7 @@ public enum WorldViewModel
     /** Camera reference. */
     private final CameraGame camera;
     /** Map reference. */
-    private MapTile<?, ?> map;
+    private MapTile<?> map;
     /** Factory entity reference. */
     private FactoryObjectGame<?, ?> factoryEntity;
     /** Selected entity class. */
@@ -54,7 +54,7 @@ public enum WorldViewModel
      * 
      * @param map The map reference.
      */
-    public void setMap(MapTile<?, ?> map)
+    public void setMap(MapTile<?> map)
     {
         this.map = map;
     }
@@ -94,7 +94,7 @@ public enum WorldViewModel
      * 
      * @return The map reference.
      */
-    public MapTile<?, ?> getMap()
+    public MapTile<?> getMap()
     {
         return map;
     }

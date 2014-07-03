@@ -68,7 +68,7 @@ public class Selection
     {
         if (!isStarted())
         {
-            final MapTile<?, ?> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             final int sx = UtilMath.getRounded(mx, map.getTileWidth());
             final int sy = UtilMath.getRounded(my, map.getTileHeight());
             startX = sx;
@@ -91,7 +91,7 @@ public class Selection
     {
         if (isStarted())
         {
-            final MapTile<?, ?> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             endX = UtilMath.getRounded(mx + map.getTileWidth() / 2, map.getTileWidth());
             endY = UtilMath.getRounded(my + map.getTileHeight() / 2, map.getTileHeight());
             started = true;
@@ -110,7 +110,7 @@ public class Selection
     {
         if (isSelecting())
         {
-            final MapTile<?, ?> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             int sx = startX;
             int sy = startY;
             int ex = UtilMath.getRounded(mx, map.getTileWidth());

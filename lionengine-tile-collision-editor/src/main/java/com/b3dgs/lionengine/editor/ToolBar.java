@@ -42,18 +42,17 @@ import com.b3dgs.lionengine.swing.UtilitySwing;
 /**
  * Tool bar implementation.
  * 
- * @param <C> The collision type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
+public final class ToolBar<T extends TileGame>
         extends JToolBar
 {
     /** Uid. */
     private static final long serialVersionUID = -3884748128028563357L;
 
     /** Collision combo. */
-    final JComboBox<C> collisionCombo;
+    final JComboBox<CollisionTile> collisionCombo;
     /** Palette panel. */
     final JPanel palettePanel;
     /** Formula panel. */
@@ -61,30 +60,26 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
     /** Formula panel. */
     final JPanel formulaPanel;
     /** Editor reference. */
-    private final TileCollisionEditor<C, T> editor;
-    /** Collision class used. */
-    private final Class<C> collisionClass;
+    private final TileCollisionEditor<T> editor;
     /** Collision type choice. */
     private final JPanel collisionTypeChoice;
 
     /**
      * Constructor.
      * 
-     * @param collisionClass The collision class.
      * @param editor The editor reference.
      * @param collisions The collisions list.
      */
-    public ToolBar(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
+    public ToolBar(TileCollisionEditor<T> editor, CollisionTile[] collisions)
     {
         super();
         this.editor = editor;
-        this.collisionClass = collisionClass;
 
         palettePanel = new JPanel();
         palettePanel.setLayout(new BoxLayout(palettePanel, BoxLayout.PAGE_AXIS));
 
         collisionCombo = new JComboBox<>(collisions);
-        collisionTypeChoice = createCollisionTypeChoice(editor, collisionClass, collisions);
+        collisionTypeChoice = createCollisionTypeChoice(editor, collisions);
         palettePanel.add(collisionTypeChoice);
 
         formulaPanel = new JPanel();
@@ -110,14 +105,13 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
         if (tile != null)
         {
             UtilitySwing.setEnabled(collisionTypeChoice.getComponents(), true);
-            final C collision = tile.getCollision();
+            final CollisionTile collision = tile.getCollision();
             collisionCombo.setSelectedItem(collision);
             collisionCombo.setEnabled(true);
 
             for (final CollisionFunction function : collision.getCollisionFunctions())
             {
-                final CollisionFunctionPanel<C, T> panel = new CollisionFunctionPanel<>(editor, collisionClass,
-                        function.getName());
+                final CollisionFunctionPanel<T> panel = new CollisionFunctionPanel<>(editor, function.getName());
                 panel.setSelectedFunction(function);
                 addToFormulaPanel(panel);
             }
@@ -145,7 +139,7 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
      * 
      * @param panel The panel to add.
      */
-    void addToFormulaPanel(CollisionFunctionPanel<C, T> panel)
+    void addToFormulaPanel(CollisionFunctionPanel<T> panel)
     {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -160,7 +154,7 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
      * 
      * @param panel The function to remove.
      */
-    void removeCollisionFunction(CollisionFunctionPanel<C, T> panel)
+    void removeCollisionFunction(CollisionFunctionPanel<T> panel)
     {
         formulaPanel.remove(panel);
         updateUI();
@@ -170,11 +164,10 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
      * Create the collision type choice.
      * 
      * @param editor The editor reference.
-     * @param collisionClass The collision class.
      * @param collisions The collisions list.
      * @return The created panel.
      */
-    private JPanel createCollisionTypeChoice(TileCollisionEditor<C, T> editor, Class<C> collisionClass, C[] collisions)
+    private JPanel createCollisionTypeChoice(TileCollisionEditor<T> editor, CollisionTile[] collisions)
     {
         final JPanel panel = UtilitySwing.createBorderedPanel("Collision", 1);
         panel.setLayout(new GridLayout(2, 1));
@@ -184,10 +177,10 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
 
         final JPanel buttons = new JPanel(new BorderLayout());
         final JButton assignLabel = new JButton("Assign");
-        assignLabel.addActionListener(new AssignCollisionListener(editor.world, collisionClass));
+        assignLabel.addActionListener(new AssignCollisionListener(editor.world));
         buttons.add(assignLabel, BorderLayout.WEST);
 
-        UtilitySwing.addButton("Add formula", buttons, new CreateFormulaListener(editor, collisionClass));
+        UtilitySwing.addButton("Add formula", buttons, new CreateFormulaListener(editor));
         panel.add(buttons, BorderLayout.EAST);
 
         return panel;
@@ -222,20 +215,16 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
             implements ActionListener
     {
         /** The world panel reference. */
-        private final WorldPanel<C, T> world;
-        /** Collision class. */
-        private final Class<C> collisionClass;
+        private final WorldPanel<T> world;
 
         /**
          * Constructor.
          * 
          * @param world The world reference.
-         * @param collisionClass The collision class reference.
          */
-        AssignCollisionListener(WorldPanel<C, T> world, Class<C> collisionClass)
+        AssignCollisionListener(WorldPanel<T> world)
         {
             this.world = world;
-            this.collisionClass = collisionClass;
         }
 
         @Override
@@ -245,9 +234,9 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
             if (tile != null)
             {
                 final Object selection = collisionCombo.getSelectedItem();
-                if (selection != null && selection.getClass().isAssignableFrom(collisionClass))
+                if (selection != null && selection.getClass().isAssignableFrom(CollisionTile.class))
                 {
-                    final C collision = collisionClass.cast(selection);
+                    final CollisionTile collision = CollisionTile.class.cast(selection);
                     tile.setCollision(collision);
                     world.repaint();
                     setSelectedTile(tile);
@@ -263,34 +252,31 @@ public final class ToolBar<C extends Enum<C> & CollisionTile, T extends TileGame
             implements ActionListener
     {
         /** The editor panel reference. */
-        private final TileCollisionEditor<C, T> editor;
-        /** The collision class. */
-        private final Class<C> collisionClass;
+        private final TileCollisionEditor<T> editor;
 
         /**
          * Create the formula creation listener.
          * 
          * @param editor The editor reference.
-         * @param collisionClass The collision class.
          */
-        CreateFormulaListener(TileCollisionEditor<C, T> editor, Class<C> collisionClass)
+        CreateFormulaListener(TileCollisionEditor<T> editor)
         {
             this.editor = editor;
-            this.collisionClass = collisionClass;
         }
 
         @Override
         public void actionPerformed(ActionEvent event)
         {
             final String name = JOptionPane.showInputDialog("Enter the name:");
-            final CollisionFunctionPanel<C, T> panel = new CollisionFunctionPanel<>(editor, collisionClass, name);
+            final CollisionFunctionPanel<T> panel = new CollisionFunctionPanel<>(editor, name);
             addToFormulaPanel(panel);
 
             final CollisionFunction function = new CollisionFunction();
             function.setName(name);
             function.setRange(0, editor.world.map.getTileWidth() - 1);
             panel.setSelectedFunction(function);
-            editor.world.map.assignCollisionFunction(collisionClass.cast(collisionCombo.getSelectedItem()), function);
+            editor.world.map.assignCollisionFunction(CollisionTile.class.cast(collisionCombo.getSelectedItem()),
+                    function);
             editor.world.map.createCollisionDraw();
             editor.world.repaint();
 

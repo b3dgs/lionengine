@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
@@ -84,7 +85,7 @@ final class Scene
         map.createBlock(6, 7);
         map.createBlock(7, 7);
         map.createBlock(6, 8);
-        map.loadCollisions(Core.MEDIA.create("tile", "collisions.xml"));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
 
         entityRef.setLocation(192, 112);
         camera.setLimits(map);

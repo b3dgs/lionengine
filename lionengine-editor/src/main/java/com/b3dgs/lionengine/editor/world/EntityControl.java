@@ -92,7 +92,7 @@ public class EntityControl
      */
     public void updateDragging(int oldMx, int oldMy, int mx, int my)
     {
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         if (!dragging)
         {
             final int th = map.getTileHeight();
@@ -144,7 +144,7 @@ public class EntityControl
         final Class<? extends EntityGame> type = model.getSelectedEntity();
         if (type != null)
         {
-            final MapTile<?, ?> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final FactoryObjectGame<?, ?> factoryEntity = model.getFactoryEntity();
@@ -177,7 +177,7 @@ public class EntityControl
      */
     public void selectEntities(Rectangle selectionArea)
     {
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
 
         for (final EntityGame entity : handlerEntity.list())
@@ -240,7 +240,7 @@ public class EntityControl
      */
     public void setEntityLocation(EntityGame entity, int x, int y, int side)
     {
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         entity.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
@@ -256,7 +256,7 @@ public class EntityControl
      */
     public EntityGame getEntity(int mx, int my)
     {
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
@@ -361,7 +361,7 @@ public class EntityControl
      */
     private boolean hitEntity(EntityGame entity, int x1, int y1, int x2, int y2)
     {
-        final MapTile<?, ?> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
         if (entity != null)
         {

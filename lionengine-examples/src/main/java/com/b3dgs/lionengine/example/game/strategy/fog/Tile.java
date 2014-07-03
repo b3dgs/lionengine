@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 
 /**
@@ -26,7 +27,7 @@ import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
  * @see com.b3dgs.lionengine.example.game.map
  */
 final class Tile
-        extends TileStrategy<TileCollision, ResourceType>
+        extends TileStrategy<ResourceType>
 {
     /**
      * Constructor.
@@ -37,7 +38,7 @@ final class Tile
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    Tile(int width, int height, Integer pattern, int number, TileCollision collision)
+    Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         super(width, height, pattern, number, collision);
     }
@@ -47,13 +48,13 @@ final class Tile
      */
 
     @Override
-    public ResourceType checkResourceType(TileCollision collision)
+    public ResourceType checkResourceType()
     {
         return ResourceType.NONE;
     }
 
     @Override
-    public boolean checkBlocking(TileCollision collision)
+    public boolean checkBlocking()
     {
         return true;
     }

@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -131,7 +130,7 @@ public abstract class WorldGame
 
     /**
      * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file
-     * as binary. Here should be called all saving functions, such as {@link MapTileGame#save(FileWriting)}...
+     * as binary. Here should be called all saving functions, such as {@link MapTile#save(FileWriting)}...
      * 
      * @param file The file writer reference.
      * @throws IOException If error on writing.
@@ -140,8 +139,8 @@ public abstract class WorldGame
 
     /**
      * Internal world loads; called from {@link WorldGame#loadFromFile(Media)} function. The world will be loaded from
-     * an existing binary file. Here should be called all loading functions, such as
-     * {@link MapTileGame#load(FileReading)} ...
+     * an existing binary file. Here should be called all loading functions, such as {@link MapTile#load(FileReading)}
+     * ...
      * 
      * @param file The file reader reference.
      * @throws IOException If error on reading.

@@ -23,12 +23,11 @@ import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
 /**
  * Representation of a default tile, used for pathfinding.
  * 
- * @param <C> The collision enum type used.
  * @param <R> The resource enum type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TileStrategy<C extends Enum<C> & CollisionTile, R extends Enum<R>>
-        extends TilePath<C>
+public abstract class TileStrategy<R extends Enum<R>>
+        extends TilePath
 {
     /** Resource type (<code>null</code> if none). */
     private R resourceType;
@@ -42,7 +41,7 @@ public abstract class TileStrategy<C extends Enum<C> & CollisionTile, R extends 
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public TileStrategy(int width, int height, Integer pattern, int number, C collision)
+    public TileStrategy(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
         super(width, height, pattern, number, collision);
     }
@@ -50,10 +49,9 @@ public abstract class TileStrategy<C extends Enum<C> & CollisionTile, R extends 
     /**
      * Check resource type from collision.
      * 
-     * @param collision The tile collision.
      * @return The resources found.
      */
-    public abstract R checkResourceType(C collision);
+    public abstract R checkResourceType();
 
     /**
      * Check if tile has resources.

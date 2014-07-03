@@ -48,6 +48,7 @@ import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProj
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -144,7 +145,7 @@ final class Scene
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
-        map.loadCollisions(Core.MEDIA.create("tile", "collisions.xml"));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

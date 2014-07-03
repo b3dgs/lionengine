@@ -36,11 +36,10 @@ import com.b3dgs.lionengine.game.purview.Rasterable;
  * Rastered version of a map tile game.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <C> Collision type.
  * @param <T> Tile type used.
  */
-public abstract class MapTileGameRastered<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
-        extends MapTileGame<C, T>
+public abstract class MapTileGameRastered<T extends TileGame>
+        extends MapTileGame<T>
 {
     /** List of rastered patterns. */
     private final TreeMap<Integer, List<SpriteTiled>> rasterPatterns;
@@ -53,14 +52,13 @@ public abstract class MapTileGameRastered<C extends Enum<C> & CollisionTile, T e
 
     /**
      * Constructor.
-     * 
-     * @param collisions The collisions list.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
+     * @param collisions The collisions list.
      */
-    public MapTileGameRastered(C[] collisions, int tileWidth, int tileHeight)
+    public MapTileGameRastered(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
-        super(collisions, tileWidth, tileHeight);
+        super(tileWidth, tileHeight, collisions);
         rasterPatterns = new TreeMap<>();
         rasterLoaded = false;
     }

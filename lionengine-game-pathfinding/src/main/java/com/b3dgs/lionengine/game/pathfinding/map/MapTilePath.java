@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.pathfinding.map;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 
@@ -28,12 +27,11 @@ import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
  * id can represent an entity which is over the map. This way, it is really easy and fast to search an entity at
  * specified location.
  * 
- * @param <C> The tile collision type.
  * @param <T> The type of tile used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MapTilePath<C extends Enum<C> & CollisionTile, T extends TilePath<C>>
-        extends MapTile<C, T>
+public interface MapTilePath<T extends TilePath>
+        extends MapTile<T>
 {
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this

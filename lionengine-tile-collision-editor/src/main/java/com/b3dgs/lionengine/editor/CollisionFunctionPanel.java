@@ -31,25 +31,21 @@ import javax.swing.SwingConstants;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.swing.UtilitySwing;
 
 /**
  * Represents the collision function panel control.
  * 
- * @param <C> The collision type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
+public final class CollisionFunctionPanel<T extends TileGame>
         extends JPanel
 {
     /** Serial UID. */
     private static final long serialVersionUID = 1L;
 
-    /** Collision class. */
-    final Class<C> collisionClass;
     /** Axis combo. */
     final JComboBox<CollisionRefential> axisCombo;
     /** Input combo. */
@@ -69,12 +65,10 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
      * Constructor.
      * 
      * @param editor The editor reference.
-     * @param collisionClass The collision class.
      * @param title The formula title.
      */
-    public CollisionFunctionPanel(TileCollisionEditor<C, T> editor, Class<C> collisionClass, String title)
+    public CollisionFunctionPanel(TileCollisionEditor<T> editor, String title)
     {
-        this.collisionClass = collisionClass;
         axisCombo = new JComboBox<>(CollisionRefential.values());
         inputCombo = new JComboBox<>(CollisionRefential.values());
         valueField = new JTextField("1");
@@ -114,7 +108,7 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
      * @param editor The editor reference.
      * @param title The formula title.
      */
-    private void createFormulaHandler(TileCollisionEditor<C, T> editor, String title)
+    private void createFormulaHandler(TileCollisionEditor<T> editor, String title)
     {
         UtilitySwing.setBorderedPanel(this, "Formula: " + title, 1);
         final JPanel panel = new JPanel();
@@ -162,14 +156,14 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
             implements ActionListener
     {
         /** The world panel reference. */
-        private final WorldPanel<C, T> world;
+        private final WorldPanel<T> world;
 
         /**
          * Constructor.
          * 
          * @param world The world reference.
          */
-        AssignFormulaListener(WorldPanel<C, T> world)
+        AssignFormulaListener(WorldPanel<T> world)
         {
             this.world = world;
         }
@@ -208,9 +202,9 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
             implements ActionListener
     {
         /** Editor reference. */
-        private final TileCollisionEditor<C, T> editor;
+        private final TileCollisionEditor<T> editor;
         /** Panel reference. */
-        private final CollisionFunctionPanel<C, T> panel;
+        private final CollisionFunctionPanel<T> panel;
 
         /**
          * Constructor.
@@ -218,7 +212,7 @@ public final class CollisionFunctionPanel<C extends Enum<C> & CollisionTile, T e
          * @param editor The editor reference.
          * @param panel The panel reference.
          */
-        DeleteFormulaListener(TileCollisionEditor<C, T> editor, CollisionFunctionPanel<C, T> panel)
+        DeleteFormulaListener(TileCollisionEditor<T> editor, CollisionFunctionPanel<T> panel)
         {
             this.editor = editor;
             this.panel = panel;

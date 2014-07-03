@@ -62,7 +62,7 @@ public class CameraStrategy
      * 
      * @param map The map reference (hStep and vStep will use the map tile size).
      */
-    public CameraStrategy(MapTile<?, ?> map)
+    public CameraStrategy(MapTile<?> map)
     {
         this(map.getTileWidth(), map.getTileHeight());
     }
@@ -128,7 +128,7 @@ public class CameraStrategy
      * 
      * @param map The map reference.
      */
-    public void setBorders(MapTile<?, ?> map)
+    public void setBorders(MapTile<?> map)
     {
         borderLeft = 0;
         borderRight = map.getWidthInTile() * map.getTileWidth() - getViewWidth();
@@ -144,7 +144,7 @@ public class CameraStrategy
      * @param tx The horizontal tile location.
      * @param ty The vertical tile location.
      */
-    public void setLocation(MapTile<?, ?> map, int tx, int ty)
+    public void setLocation(MapTile<?> map, int tx, int ty)
     {
         setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
     }
@@ -155,7 +155,7 @@ public class CameraStrategy
      * @param map The map reference.
      * @return The horizontal location in tile.
      */
-    public int getLocationInTileX(MapTile<?, ?> map)
+    public int getLocationInTileX(MapTile<?> map)
     {
         return getLocationIntX() / map.getTileWidth();
     }
@@ -166,7 +166,7 @@ public class CameraStrategy
      * @param map The map reference.
      * @return The vertical location in tile.
      */
-    public int getLocationInTileY(MapTile<?, ?> map)
+    public int getLocationInTileY(MapTile<?> map)
     {
         return getLocationIntY() / map.getTileHeight();
     }

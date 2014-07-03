@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -71,9 +73,9 @@ final class Scene
     @Override
     protected void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
+        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>();
         rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
-        map.loadCollisions(Core.MEDIA.create("tile", "collisions.xml"));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
 
         camera.setLimits(map);
         camera.setIntervals(16, 0);

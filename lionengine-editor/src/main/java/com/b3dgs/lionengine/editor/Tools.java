@@ -306,7 +306,7 @@ public final class Tools
      * @param my The mouse Y.
      * @return The location in tile.
      */
-    public static Point getMouseTile(MapTile<?, ?> map, CameraGame camera, int mx, int my)
+    public static Point getMouseTile(MapTile<?> map, CameraGame camera, int mx, int my)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();

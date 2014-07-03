@@ -39,7 +39,7 @@ final class PathFinderImpl
     /** Open list. */
     private final SortedList<Node> open = new SortedList<>();
     /** Map reference. */
-    private final MapTilePath<?, ? extends TilePath<?>> map;
+    private final MapTilePath<? extends TilePath> map;
     /** Max distance to search. */
     private final int maxSearchDistance;
     /** Nodes array. */
@@ -56,7 +56,7 @@ final class PathFinderImpl
      * @param maxSearchDistance The maximum depth we'll search before giving up.
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      */
-    PathFinderImpl(MapTilePath<?, ? extends TilePath<?>> map, int maxSearchDistance, boolean allowDiagMovement)
+    PathFinderImpl(MapTilePath<? extends TilePath> map, int maxSearchDistance, boolean allowDiagMovement)
     {
         this(map, maxSearchDistance, allowDiagMovement, new HeuristicClosest());
     }
@@ -69,7 +69,7 @@ final class PathFinderImpl
      * @param maxSearchDistance The maximum depth we'll search before giving up.
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      */
-    PathFinderImpl(MapTilePath<?, ? extends TilePath<?>> map, int maxSearchDistance, boolean allowDiagMovement,
+    PathFinderImpl(MapTilePath<? extends TilePath> map, int maxSearchDistance, boolean allowDiagMovement,
             Heuristic heuristic)
     {
         this.heuristic = heuristic;

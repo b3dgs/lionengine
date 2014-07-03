@@ -56,7 +56,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @param <C> Control panel type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<?, R>, E extends EntityStrategy, C extends ControlPanelModel<E>>
+public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<R>, E extends EntityStrategy, C extends ControlPanelModel<E>>
         extends HandlerEntityGame<E>
         implements ControlPanelListener
 {
@@ -74,7 +74,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     /** Current entity selection set. */
     private final Set<E> selectedEntity;
     /** Map reference. */
-    private final MapTileStrategy<?, R, T> map;
+    private final MapTileStrategy<R, T> map;
     /** Entity area buffer for selection check. */
     private final Rectangle entityArea;
     /** List of entities id that shared the same path. */
@@ -97,7 +97,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * @param panel The control panel reference.
      * @param map The map reference.
      */
-    public HandlerEntityStrategy(CameraStrategy camera, CursorStrategy cursor, C panel, MapTileStrategy<?, R, T> map)
+    public HandlerEntityStrategy(CameraStrategy camera, CursorStrategy cursor, C panel, MapTileStrategy<R, T> map)
     {
         super();
         this.camera = camera;
@@ -162,7 +162,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * 
      * @param map The map reference.
      */
-    public void createLayers(MapTile<?, T> map)
+    public void createLayers(MapTile<T> map)
     {
         layers = new ArrayList<>(HandlerEntityStrategy.LAYERS);
         for (int i = 0; i < HandlerEntityStrategy.LAYERS; i++)

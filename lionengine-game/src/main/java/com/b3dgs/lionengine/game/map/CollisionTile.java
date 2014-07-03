@@ -47,4 +47,11 @@ public interface CollisionTile
      * @return The collision function.
      */
     Set<CollisionFunction> getCollisionFunctions();
+
+    /**
+     * Get the collision enum value.
+     * 
+     * @return The collision enum value.
+     */
+    Enum<?> getValue();
 }

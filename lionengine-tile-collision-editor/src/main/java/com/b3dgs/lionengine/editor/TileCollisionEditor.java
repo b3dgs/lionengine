@@ -34,17 +34,16 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Little editor that allows to set the tile collision from a level rip and save them as collisions data.
  * 
- * @param <C> The collision type used.
  * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends TileGame<C>>
+public class TileCollisionEditor<T extends TileGame>
         extends JFrame
 {
     /** Editor version. */
@@ -56,31 +55,30 @@ public class TileCollisionEditor<C extends Enum<C> & CollisionTile, T extends Ti
     /** Vertical moving speed in tile. */
     private static final int STEP_TILE_V = 8;
     /** World panel reference. */
-    public final WorldPanel<C, T> world;
+    public final WorldPanel<T> world;
     /** Menu bar reference. */
-    public final ToolBar<C, T> toolBar;
+    public final ToolBar<T> toolBar;
     /** Current horizontal view offset in tile. */
     private int hOffset;
     /** Current vertical view offset in tile. */
     private int vOffset;
     /** Menu bar reference. */
-    private final MenuBar<C, T> menuBar;
+    private final MenuBar<T> menuBar;
     /** State bar reference. */
-    private final StateBar<C, T> stateBar;
+    private final StateBar<T> stateBar;
 
     /**
      * Constructor.
      * 
      * @param map The map reference.
-     * @param collisionClass The collision class.
+     * @param collisions The collisions list.
      */
-    public TileCollisionEditor(MapTileGame<C, T> map, Class<C> collisionClass)
+    public TileCollisionEditor(MapTile<T> map, CollisionTile[] collisions)
     {
         super("Tile collision editor");
         world = new WorldPanel<>(this, map);
-        final C[] collisions = collisionClass.getEnumConstants();
-        menuBar = new MenuBar<>(this, collisionClass, collisions);
-        toolBar = new ToolBar<>(this, collisionClass, collisions);
+        menuBar = new MenuBar<>(this, collisions);
+        toolBar = new ToolBar<>(this, collisions);
         stateBar = new StateBar<>(this);
         init();
     }

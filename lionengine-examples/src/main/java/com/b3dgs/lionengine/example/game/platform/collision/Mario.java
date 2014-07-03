@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
 /**
@@ -152,7 +153,7 @@ final class Mario
      */
     private void checkHorizontal(EntityCollisionTileCategory category)
     {
-        final Tile tile = getCollisionTile(map, category);
+        final TileGame tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);
@@ -170,7 +171,7 @@ final class Mario
      */
     private void checkVertical(EntityCollisionTileCategory category)
     {
-        final Tile tile = getCollisionTile(map, category);
+        final TileGame tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);

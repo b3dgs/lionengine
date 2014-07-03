@@ -97,7 +97,7 @@ public class CameraPlatform
      * 
      * @param map The map reference.
      */
-    public void setLimits(MapTile<?, ?> map)
+    public void setLimits(MapTile<?> map)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();

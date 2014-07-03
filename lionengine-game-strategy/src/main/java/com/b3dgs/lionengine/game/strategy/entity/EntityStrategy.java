@@ -55,7 +55,7 @@ public abstract class EntityStrategy
     /** Entity location offset y. */
     protected final int offsetY;
     /** Map reference. */
-    private final MapTileStrategy<?, ?, ?> map;
+    private final MapTileStrategy<?, ?> map;
     /** Current animation. */
     private Animation animationCurrent;
     /** Orientation value. */
@@ -105,7 +105,7 @@ public abstract class EntityStrategy
      * @param setup The entity setup.
      * @param map The map reference.
      */
-    public EntityStrategy(SetupSurfaceGame setup, MapTileStrategy<?, ?, ?> map)
+    public EntityStrategy(SetupSurfaceGame setup, MapTileStrategy<?, ?> map)
     {
         super(setup);
         this.map = map;

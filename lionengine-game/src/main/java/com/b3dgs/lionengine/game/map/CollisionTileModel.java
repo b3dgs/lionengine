@@ -28,14 +28,19 @@ import java.util.Set;
 public class CollisionTileModel
         implements CollisionTile
 {
+    /** Enum value. */
+    private final Enum<?> value;
     /** Collision function X. */
     private final Set<CollisionFunction> collisionFunctions;
 
     /**
      * Constructor.
+     * 
+     * @param value The collision enum value.
      */
-    public CollisionTileModel()
+    public CollisionTileModel(Enum<?> value)
     {
+        this.value = value;
         collisionFunctions = new HashSet<>();
     }
 
@@ -55,5 +60,11 @@ public class CollisionTileModel
     public Set<CollisionFunction> getCollisionFunctions()
     {
         return collisionFunctions;
+    }
+
+    @Override
+    public Enum<?> getValue()
+    {
+        return value;
     }
 }
