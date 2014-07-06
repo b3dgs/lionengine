@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Assign the map implementation handler.
@@ -45,7 +46,7 @@ public class AssignMapImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?> map = Project.getActive().getInstance(MapTile.class, selection);
+        final MapTile<? extends TileGame> map = Project.getActive().getInstance(MapTile.class, selection);
         WorldViewModel.INSTANCE.setMap(map);
 
         final WorldViewPart worldView = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);

@@ -56,6 +56,8 @@ public final class WorldViewRenderer
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
     /** Color of the box around the selected entity. */
     private static final ColorRgba COLOR_ENTITY_SELECTION = new ColorRgba(128, 240, 128, 192);
+    /** Color of the selected tile. */
+    private static final ColorRgba COLOR_TILE_SELECTED = new ColorRgba(192, 192, 192, 96);
     /** Grid movement sensibility. */
     private static final int GRID_MOVEMENT_SENSIBILITY = 8;
 
@@ -121,6 +123,8 @@ public final class WorldViewRenderer
     private final Selection selection;
     /** Entity controller. */
     private final EntityControl entityControl;
+    /** Selected tile. */
+    private TileGame selectedTile;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -166,7 +170,7 @@ public final class WorldViewRenderer
     private void updateKeyboard(int vx, int vy)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile<? extends TileGame> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         camera.moveLocation(1.0, vx * tw * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY, vy * th
@@ -248,7 +252,7 @@ public final class WorldViewRenderer
     private void render(Graphic g, int width, int height)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile<? extends TileGame> map = model.getMap();
 
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -273,6 +277,10 @@ public final class WorldViewRenderer
         handlerEntity.update(1.0);
         handlerEntity.render(g);
         renderOverAndSelectedEntities(g);
+        if (selectedTile != null)
+        {
+            renderSelectedCollisions(g, map, camera);
+        }
 
         selection.render(g, WorldViewRenderer.COLOR_MOUSE_SELECTION);
 
@@ -288,7 +296,7 @@ public final class WorldViewRenderer
     private void renderOverAndSelectedEntities(Graphic g)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<?> map = model.getMap();
+        final MapTile<? extends TileGame> map = model.getMap();
         final int th = map.getTileHeight();
 
         for (final EntityGame entity : handlerEntity.list())
@@ -304,6 +312,40 @@ public final class WorldViewRenderer
                         entity.getHeight(), true);
             }
         }
+    }
+
+    /**
+     * Render the selected tiles collision.
+     * 
+     * @param g The graphic output.
+     * @param map The map reference.
+     * @param camera The camera reference.
+     */
+    private void renderSelectedCollisions(Graphic g, MapTile<? extends TileGame> map, CameraGame camera)
+    {
+        // Render selected collision
+        g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
+        final int th = map.getTileHeight();
+        for (int ty = 0; ty < map.getHeightInTile(); ty++)
+        {
+            for (int tx = 0; tx < map.getWidthInTile(); tx++)
+            {
+                final TileGame tile = map.getTile(tx, ty);
+                if (tile != null)
+                {
+                    if (tile.getCollision() == selectedTile.getCollision())
+                    {
+                        g.drawRect(camera.getViewpointX(tile.getX()), camera.getViewpointY(tile.getY()) - th,
+                                tile.getWidth(), tile.getHeight(), true);
+                    }
+                }
+            }
+        }
+
+        // Render selected tile
+        g.setColor(WorldViewRenderer.COLOR_TILE_SELECTED);
+        g.drawRect(camera.getViewpointX(selectedTile.getX()), camera.getViewpointY(selectedTile.getY()) - th,
+                selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /**
@@ -381,13 +423,18 @@ public final class WorldViewRenderer
 
         if (!selection.isSelected() && !entityControl.isDragging())
         {
-            final MapTile<?> map = model.getMap();
+            final MapTile<? extends TileGame> map = model.getMap();
             final CameraGame camera = model.getCamera();
-            final Point point = Tools.getMouseTile(map, camera, mx, my);
-            final TileGame tile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
 
-            final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
-            part.setSelectedTile(tile);
+            if (map.isCreated())
+            {
+                final Point point = Tools.getMouseTile(map, camera, mx, my);
+                selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
+
+                final TileCollisionPart part = Tools
+                        .getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
+                part.setSelectedTile(selectedTile);
+            }
 
             if (click == Mouse.LEFT)
             {

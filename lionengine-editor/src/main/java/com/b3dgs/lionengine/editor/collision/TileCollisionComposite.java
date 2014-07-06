@@ -31,8 +31,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Represents a tile collision composite, allowing to edit the tile collision data.
@@ -50,19 +53,19 @@ public class TileCollisionComposite
     /** Minimum composite height. */
     private final int minHeight;
     /** Axis combo. */
-    private Combo axis;
+    Combo axis;
     /** Input combo. */
-    private Combo input;
+    Combo input;
     /** Value field. */
-    private Text value;
+    Text value;
     /** Offset field. */
-    private Text offset;
+    Text offset;
     /** Range min. */
-    private Text min;
+    Text min;
     /** Range max. */
-    private Text max;
+    Text max;
     /** Selected function. */
-    private CollisionFunction selectedFunction;
+    CollisionFunction selectedFunction;
 
     /**
      * Constructor.
@@ -234,6 +237,21 @@ public class TileCollisionComposite
 
         final Button apply = new Button(buttons, SWT.PUSH);
         apply.setText("Apply");
+        apply.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                selectedFunction.setAxis(CollisionRefential.valueOf(axis.getText()));
+                selectedFunction.setInput(CollisionRefential.valueOf(input.getText()));
+                selectedFunction.setValue(Double.parseDouble(value.getText()));
+                selectedFunction.setOffset(Integer.parseInt(offset.getText()));
+                selectedFunction.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
+                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+                map.createCollisionDraw();
+                tileCollisionPart.updateWorldView();
+            }
+        });
 
         final Button delete = new Button(buttons, SWT.PUSH);
         delete.setText("Delete");

@@ -147,7 +147,10 @@ public class ProjectsPart
     @PostConstruct
     public void createComposite(Composite parent, EMenuService menuService)
     {
-        parent.setLayout(new GridLayout(1, false));
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginWidth = 0;
+        layout.marginHeight = 0;
+        parent.setLayout(layout);
 
         tree = new Tree(parent, SWT.NONE);
         tree.setLayoutData(new GridData(GridData.FILL_BOTH));

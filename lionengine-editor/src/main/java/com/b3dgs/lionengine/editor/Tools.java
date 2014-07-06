@@ -56,6 +56,7 @@ import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Stream;
@@ -306,7 +307,7 @@ public final class Tools
      * @param my The mouse Y.
      * @return The location in tile.
      */
-    public static Point getMouseTile(MapTile<?> map, CameraGame camera, int mx, int my)
+    public static Point getMouseTile(MapTile<? extends TileGame> map, CameraGame camera, int mx, int my)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();

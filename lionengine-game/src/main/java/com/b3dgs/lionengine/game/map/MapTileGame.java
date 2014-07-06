@@ -164,6 +164,7 @@ public abstract class MapTileGame<T extends TileGame>
 
     /**
      * Constructor.
+     * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      * @param collisions The collisions list.
@@ -471,7 +472,7 @@ public abstract class MapTileGame<T extends TileGame>
                 final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(getTileWidth(), getTileHeight(),
                         Transparency.TRANSLUCENT);
                 final Graphic g = buffer.createGraphic();
-                g.setColor(new ColorRgba(0, 0, 0, 0));
+                g.setColor(ColorRgba.BLACK);
                 g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
                 g.setColor(ColorRgba.PURPLE);
 

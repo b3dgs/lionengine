@@ -133,13 +133,20 @@ final class GraphicSwt
     @Override
     public void drawRect(int x, int y, int width, int height, boolean fill)
     {
-        if (fill)
+        if (width == 0 && height == 0)
         {
-            gc.fillRectangle(x, y, width, height);
+            gc.drawPoint(x, y);
         }
         else
         {
-            gc.drawRectangle(x, y, width, height);
+            if (fill)
+            {
+                gc.fillRectangle(x, y, width, height);
+            }
+            else
+            {
+                gc.drawRectangle(x, y, width, height);
+            }
         }
     }
 
@@ -178,6 +185,7 @@ final class GraphicSwt
             lastColor.dispose();
         }
         lastColor = new Color(ScreenSwt.display, color.getRed(), color.getGreen(), color.getBlue());
+        gc.setAlpha(color.getAlpha());
         gc.setBackground(lastColor);
         gc.setForeground(lastColor);
     }
@@ -219,6 +227,6 @@ final class GraphicSwt
     public ColorRgba getColor()
     {
         final Color color = gc.getBackground();
-        return new ColorRgba(color.getRed(), color.getGreen(), color.getBlue());
+        return new ColorRgba(color.getRed(), color.getGreen(), color.getBlue(), gc.getAlpha());
     }
 }

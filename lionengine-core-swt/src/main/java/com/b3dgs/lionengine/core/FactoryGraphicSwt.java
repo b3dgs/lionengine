@@ -143,6 +143,12 @@ final class FactoryGraphicSwt
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
         final Image buffer = new Image(ScreenSwt.display, width, height);
+        if (transparency != Transparency.OPAQUE)
+        {
+            final ImageData data = buffer.getImageData();
+            data.transparentPixel = 0;
+            return new ImageBufferSwt(new Image(ScreenSwt.display, data));
+        }
         return new ImageBufferSwt(buffer);
     }
 

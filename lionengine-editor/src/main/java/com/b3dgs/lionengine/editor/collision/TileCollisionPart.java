@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,6 +37,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -50,6 +53,9 @@ public class TileCollisionPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
 
+    /** Part services. */
+    @Inject
+    EPartService partService;
     /** Selected tile. */
     TileGame tile;
     /** Scroll composite. */
@@ -60,6 +66,8 @@ public class TileCollisionPart
     private int singleHeight;
     /** Tool bar. */
     private ToolBar toolbar;
+    /** Add formula item. */
+    private ToolItem addFormula;
     /** Formula list. */
     private List<TileCollisionComposite> formulas;
     /** Parent reference. */
@@ -115,6 +123,7 @@ public class TileCollisionPart
                 tileCollisionComposite.setSelectedFunction(function);
             }
         }
+        addFormula.setEnabled(tile != null);
     }
 
     /**
@@ -124,7 +133,7 @@ public class TileCollisionPart
      */
     public void removeFormula(TileCollisionComposite formula)
     {
-        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+        final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
         map.removeCollisionFunction(formula.getCollisionFunction());
 
         formulas.remove(formula);
@@ -141,6 +150,15 @@ public class TileCollisionPart
     {
         toolbar.setEnabled(enabled);
         content.setEnabled(enabled);
+    }
+
+    /**
+     * Update the world view part.
+     */
+    public void updateWorldView()
+    {
+        final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        part.update();
     }
 
     /**
@@ -172,15 +190,16 @@ public class TileCollisionPart
         toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
         toolbar.setEnabled(false);
 
-        final ToolItem add = new ToolItem(toolbar, SWT.PUSH);
-        add.setText("Add formula");
-        add.addSelectionListener(new SelectionAdapter()
+        addFormula = new ToolItem(toolbar, SWT.PUSH);
+        addFormula.setText("Add formula");
+        addFormula.setEnabled(false);
+        addFormula.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
-                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
                 map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
             }
         });

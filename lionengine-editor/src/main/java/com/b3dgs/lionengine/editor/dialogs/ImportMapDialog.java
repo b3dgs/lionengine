@@ -70,6 +70,12 @@ public class ImportMapDialog
         super(parent, Messages.ImportMapDialog_Title, Messages.ImportMapDialog_HeaderTitle,
                 Messages.ImportMapDialog_HeaderDesc, ImportMapDialog.ICON);
         createDialog();
+
+        onLevelRipLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
+        onPatternLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\tile\\swamp\\");
+        finish.setEnabled(true);
+        found = true;
+        finish.forceFocus();
     }
 
     /**
@@ -111,6 +117,40 @@ public class ImportMapDialog
     }
 
     /**
+     * Called when the level rip location has been selected.
+     * 
+     * @param path The level rip location path.
+     */
+    void onLevelRipLocationSelected(String path)
+    {
+        final Project project = Project.getActive();
+        levelRipLocationText.setText(path);
+        levelRip = project.getResourceMedia(levelRipLocationText.getText());
+        updateTipsLabel();
+        finish.setEnabled(levelRip != null && patternsDirectory != null);
+    }
+
+    /**
+     * Called when the pattern location has been selected.
+     * 
+     * @param path The selected pattern location path.
+     */
+    void onPatternLocationSelected(String path)
+    {
+        final Project project = Project.getActive();
+        patternsLocationText.setText(path);
+        patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
+        updateTipsLabel();
+        final File patterns = new File(patternsDirectory.getFile(), "patterns.xml");
+        if (!patterns.isFile())
+        {
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
+        }
+        final boolean isValid = levelRip != null && patternsDirectory != null && patterns.isFile();
+        finish.setEnabled(isValid);
+    }
+
+    /**
      * Create the level rip location area.
      * 
      * @param content The content composite.
@@ -149,10 +189,7 @@ public class ImportMapDialog
                 final String path = fileDialog.open();
                 if (path != null)
                 {
-                    levelRipLocationText.setText(path);
-                    levelRip = project.getResourceMedia(levelRipLocationText.getText());
-                    updateTipsLabel();
-                    finish.setEnabled(levelRip != null && patternsDirectory != null);
+                    onLevelRipLocationSelected(path);
                 }
             }
         });
@@ -189,16 +226,7 @@ public class ImportMapDialog
                 final String path = directoryDialog.open();
                 if (path != null)
                 {
-                    patternsLocationText.setText(path);
-                    patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
-                    updateTipsLabel();
-                    final File patterns = new File(patternsDirectory.getFile(), "patterns.xml");
-                    if (!patterns.isFile())
-                    {
-                        setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
-                    }
-                    final boolean isValid = levelRip != null && patternsDirectory != null && patterns.isFile();
-                    finish.setEnabled(isValid);
+                    onPatternLocationSelected(path);
                 }
             }
         });

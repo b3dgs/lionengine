@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Represents the world view, where the global map is displayed.
@@ -146,8 +147,9 @@ public class WorldViewPart
 
                 if (importMapDialog.isFound())
                 {
-                    final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+                    final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
                     map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
+                    map.createCollisionDraw();
 
                     final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
                     part.update();
