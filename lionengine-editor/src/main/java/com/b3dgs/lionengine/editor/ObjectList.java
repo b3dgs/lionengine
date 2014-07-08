@@ -43,9 +43,9 @@ import org.eclipse.swt.widgets.TreeItem;
 public abstract class ObjectList<T>
 {
     /** Icon add. */
-    private static final Image ICON_ADD = Tools.getIcon("add.png");
+    public static final Image ICON_ADD = Tools.getIcon("add.png");
     /** Icon remove. */
-    private static final Image ICON_REMOVE = Tools.getIcon("remove.png");
+    public static final Image ICON_REMOVE = Tools.getIcon("remove.png");
     /** Animation list. */
     Tree objectsTree;
     /** Selected data. */

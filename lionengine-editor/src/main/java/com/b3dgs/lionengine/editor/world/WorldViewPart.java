@@ -29,7 +29,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
@@ -69,13 +68,13 @@ public class WorldViewPart
     @PostConstruct
     public void createComposite(Composite parent)
     {
-        parent.setLayout(new GridLayout(1, false));
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 1;
+        layout.verticalSpacing = 1;
+        parent.setLayout(layout);
 
         toolBar = createToolBar(parent);
         toolBar.setEnabled(false);
-
-        final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

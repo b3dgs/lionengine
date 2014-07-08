@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
@@ -83,7 +84,11 @@ public class TileCollisionPart
     {
         this.parent = parent;
         formulas = new ArrayList<>(1);
-        parent.setLayout(new GridLayout(1, false));
+
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 1;
+        layout.verticalSpacing = 1;
+        parent.setLayout(layout);
 
         createToolBar(parent);
 
@@ -186,12 +191,13 @@ public class TileCollisionPart
      */
     private void createToolBar(final Composite parent)
     {
-        toolbar = new ToolBar(parent, SWT.HORIZONTAL);
-        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
+        toolbar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
+        toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
         toolbar.setEnabled(false);
 
         addFormula = new ToolItem(toolbar, SWT.PUSH);
         addFormula.setText("Add formula");
+        addFormula.setImage(ObjectList.ICON_ADD);
         addFormula.setEnabled(false);
         addFormula.addSelectionListener(new SelectionAdapter()
         {

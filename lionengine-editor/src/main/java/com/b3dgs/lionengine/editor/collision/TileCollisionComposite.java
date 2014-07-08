@@ -30,7 +30,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
@@ -44,6 +46,9 @@ import com.b3dgs.lionengine.game.map.TileGame;
  */
 public class TileCollisionComposite
 {
+    /** Text formula. */
+    private static final String TEXT_FORMULA = "Formula: ";
+
     /** Collision part. */
     final TileCollisionPart tileCollisionPart;
     /** Referential. */
@@ -79,7 +84,7 @@ public class TileCollisionComposite
 
         referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
-        referential.setText("Formula");
+        referential.setText(TileCollisionComposite.TEXT_FORMULA);
 
         createAxisChooser(referential);
         createFormulaEdition(referential);
@@ -101,6 +106,7 @@ public class TileCollisionComposite
     {
         if (function != null)
         {
+            referential.setText(TileCollisionComposite.TEXT_FORMULA + function.getName());
             axis.setText(function.getAxis().name());
             input.setText(function.getInput().name());
             value.setText(String.valueOf(function.getValue()));
@@ -237,6 +243,7 @@ public class TileCollisionComposite
 
         final Button apply = new Button(buttons, SWT.PUSH);
         apply.setText("Apply");
+        apply.setImage(AbstractDialog.ICON_OK);
         apply.addSelectionListener(new SelectionAdapter()
         {
             @Override
@@ -255,6 +262,7 @@ public class TileCollisionComposite
 
         final Button delete = new Button(buttons, SWT.PUSH);
         delete.setText("Delete");
+        delete.setImage(ObjectList.ICON_REMOVE);
         delete.addSelectionListener(new SelectionAdapter()
         {
             @Override
