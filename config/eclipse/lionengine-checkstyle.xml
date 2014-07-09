@@ -57,6 +57,7 @@
     </module>
     <module name="NoWhitespaceAfter">
       <property name="severity" value="ignore"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="NoWhitespaceBefore">
       <property name="severity" value="ignore"/>
@@ -116,7 +117,9 @@
     </module>
     <module name="MissingSwitchDefault"/>
     <module name="RedundantThrows">
+      <property name="severity" value="ignore"/>
       <property name="suppressLoadErrors" value="true"/>
+      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
@@ -162,6 +165,14 @@
       <property name="severity" value="ignore"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
+    <module name="ClassFanOutComplexity"/>
+    <module name="NPathComplexity"/>
+    <module name="MissingDeprecated"/>
+    <module name="MissingOverride"/>
+    <module name="SuppressWarnings"/>
+    <module name="MethodCount"/>
+    <module name="BooleanExpressionComplexity"/>
+    <module name="CyclomaticComplexity"/>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>
@@ -186,5 +197,9 @@
   </module>
   <module name="Header">
     <property name="headerFile" value="C:\Users\Pierre-Alexandre\git\lionengine\config\eclipse\jautodoc_header.txt"/>
+  </module>
+  <module name="StrictDuplicateCode">
+    <property name="severity" value="ignore"/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
   </module>
 </module>

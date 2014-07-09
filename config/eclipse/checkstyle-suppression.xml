@@ -5,4 +5,6 @@
 <suppressions>
     <suppress checks="MethodName" files="Sc68Binding.java"/>
 	<suppress checks="[a-zA-Z0-9]*" files="BuildConfig.java"/>
+	<suppress checks="[a-zA-Z0-9]*" files="[\\/]test[\\/]"/>
+	<suppress checks="[a-zA-Z0-9]*" files="[\\/]resources[\\/]"/>
 </suppressions>
