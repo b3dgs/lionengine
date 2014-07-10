@@ -74,7 +74,9 @@
 				<module>../lionengine-game-pathfinding</module>
 				<module>../lionengine-game-strategy</module>
 				<module>../lionengine-network</module>
-				<module>../lionengine-sc68</module>
+				<module>../lionengine-audio-wav</module>
+				<module>../lionengine-audio-midi</module>
+				<module>../lionengine-audio-sc68</module>
 			</modules>
 		</profile>
 		<profile>

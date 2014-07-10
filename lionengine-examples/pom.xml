@@ -30,7 +30,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-sc68</artifactId>
+			<artifactId>lionengine-audio-wav</artifactId>
+			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-audio-midi</artifactId>
+			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-audio-sc68</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>

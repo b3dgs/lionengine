@@ -17,10 +17,10 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.g;
 
-import com.b3dgs.lionengine.core.AudioWav;
+import com.b3dgs.lionengine.audio.AudioWav;
+import com.b3dgs.lionengine.audio.Wav;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Wav;
 
 /**
  * Handle the SFX.

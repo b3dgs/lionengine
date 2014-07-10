@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.example.snippet;
 
-import com.b3dgs.lionengine.core.AudioMidi;
+import com.b3dgs.lionengine.audio.AudioMidi;
+import com.b3dgs.lionengine.audio.Midi;
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Midi;
 
 @SuppressWarnings("all")
 public class ModuleMidi

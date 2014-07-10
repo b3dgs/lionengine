@@ -25,12 +25,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-network</artifactId>
+			<artifactId>lionengine-audio-wav</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-sc68</artifactId>
+			<artifactId>lionengine-audio-midi</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
@@ -40,17 +40,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-pathfinding</artifactId>
-			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-platform</artifactId>
-			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-strategy</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
 	</dependencies>
