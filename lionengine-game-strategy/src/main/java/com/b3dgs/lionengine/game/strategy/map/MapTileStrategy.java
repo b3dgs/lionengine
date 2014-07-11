@@ -43,6 +43,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
 
     /**
      * Constructor.
+     * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      * @param collisions The collisions list.

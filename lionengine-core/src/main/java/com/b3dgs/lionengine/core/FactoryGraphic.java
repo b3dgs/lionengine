@@ -95,7 +95,7 @@ public interface FactoryGraphic
      * @return The created image buffer from file.
      * @throws LionEngineException If an error occurs when reading the image.
      */
-    ImageBuffer getImageBuffer(Media media, boolean alpha);
+    ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException;
 
     /**
      * Get an image buffer from an image buffer.
@@ -167,7 +167,7 @@ public interface FactoryGraphic
      * @return The filtered image as a new instance.
      * @throws LionEngineException If the filter is not supported.
      */
-    ImageBuffer applyFilter(ImageBuffer image, Filter filter);
+    ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException;
 
     /**
      * Save an image into a file.
@@ -176,7 +176,7 @@ public interface FactoryGraphic
      * @param media The output media.
      * @throws LionEngineException If an error occurs when saving the image.
      */
-    void saveImage(ImageBuffer image, Media media);
+    void saveImage(ImageBuffer image, Media media) throws LionEngineException;
 
     /**
      * Get raster buffer from data.
@@ -200,5 +200,5 @@ public interface FactoryGraphic
      * @return The raster data (can not be empty).
      * @throws LionEngineException If the raster data from the media are invalid.
      */
-    int[][] loadRaster(Media media);
+    int[][] loadRaster(Media media) throws LionEngineException;
 }

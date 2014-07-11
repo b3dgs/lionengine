@@ -92,6 +92,7 @@ public final class Engine
      * @throws LionEngineException If the engine has already been started.
      */
     public static void start(String name, Version version, Verbose level, String resourcesDir)
+            throws LionEngineException
     {
         Check.notNull(resourcesDir, Engine.ERROR_RESOURCE_DIR);
         Engine.start(name, version, level, resourcesDir, null);
@@ -107,6 +108,7 @@ public final class Engine
      * @throws LionEngineException If the engine has already been started.
      */
     public static void start(String name, Version version, Verbose level, Class<?> classResource)
+            throws LionEngineException
     {
         Check.notNull(classResource, Engine.ERROR_RESOURCE_CLASS);
         Engine.start(name, version, level, null, classResource);
@@ -123,6 +125,7 @@ public final class Engine
      * @throws LionEngineException If the engine has already been started.
      */
     private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)
+            throws LionEngineException
     {
         if (!EngineCore.isStarted())
         {
@@ -151,7 +154,7 @@ public final class Engine
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate()
+    public static void terminate() throws LionEngineException
     {
         UtilityMedia.setResourcesDirectory(null);
         UtilFile.setTempDirectory("");

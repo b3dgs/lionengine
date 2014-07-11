@@ -184,31 +184,41 @@ public class CameraPlatform
         // Case of map extremity
         else
         {
-            if (location.getLocationX() < getLimitMapLeft())
-            {
-                location.setLocationX(getLimitMapLeft());
-            }
-            else if (location.getLocationX() > getLimitMapRight())
-            {
-                location.setLocationX(getLimitMapRight());
-            }
-            else
-            {
-                location.moveLocation(1, Force.ZERO);
-            }
+            checkHorizontalExtremity(vx);
+        }
+    }
 
-            offset.moveLocation(1, vx, 0);
+    /**
+     * Check horizontal extremity on move.
+     * 
+     * @param vx The horizontal movement.
+     */
+    private void checkHorizontalExtremity(double vx)
+    {
+        if (location.getLocationX() < getLimitMapLeft())
+        {
+            location.setLocationX(getLimitMapLeft());
+        }
+        else if (location.getLocationX() > getLimitMapRight())
+        {
+            location.setLocationX(getLimitMapRight());
+        }
+        else
+        {
+            location.moveLocation(1, Force.ZERO);
+        }
 
-            if (location.getLocationIntX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
-            {
-                offset.setLocationX(intervalHorizontal);
-                location.moveLocation(1, vx, 0);
-            }
-            if (location.getLocationIntX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
-            {
-                offset.setLocationX(-intervalHorizontal);
-                location.moveLocation(1, vx, 0);
-            }
+        offset.moveLocation(1, vx, 0);
+
+        if (location.getLocationIntX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
+        {
+            offset.setLocationX(intervalHorizontal);
+            location.moveLocation(1, vx, 0);
+        }
+        if (location.getLocationIntX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
+        {
+            offset.setLocationX(-intervalHorizontal);
+            location.moveLocation(1, vx, 0);
         }
     }
 

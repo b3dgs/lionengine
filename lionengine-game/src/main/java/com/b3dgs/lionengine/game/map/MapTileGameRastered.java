@@ -52,6 +52,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
 
     /**
      * Constructor.
+     * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      * @param collisions The collisions list.

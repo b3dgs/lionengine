@@ -132,7 +132,7 @@ public abstract class Sequence
      * 
      * @throws LionEngineException If the sequence has already been loaded.
      */
-    public final void loadInternal()
+    public final void loadInternal() throws LionEngineException
     {
         if (!loaded)
         {

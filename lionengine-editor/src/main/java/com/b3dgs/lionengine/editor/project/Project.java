@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.Activator;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Project
+public final class Project
 {
     /** Properties file. */
     public static final String PROPERTIES_FILE = ".lionengine";
@@ -286,6 +286,7 @@ public class Project
     /**
      * Get the class reference from its file.
      * 
+     * @param <C> The class type.
      * @param clazz The class to cast to.
      * @param file The class file.
      * @return The class instance.
@@ -301,6 +302,7 @@ public class Project
     /**
      * Get the class instance from its file.
      * 
+     * @param <C> The class type.
      * @param clazz The class to cast to.
      * @param file The class file.
      * @return The class instance.

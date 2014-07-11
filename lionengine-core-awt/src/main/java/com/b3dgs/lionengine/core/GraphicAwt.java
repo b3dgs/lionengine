@@ -22,7 +22,6 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 
 import com.b3dgs.lionengine.ColorGradient;
 import com.b3dgs.lionengine.ColorRgba;
@@ -35,17 +34,6 @@ import com.b3dgs.lionengine.ColorRgba;
 final class GraphicAwt
         implements Graphic
 {
-    /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static BufferedImage getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferAwt) imageBuffer).getBuffer();
-    }
-
     /** The graphic output. */
     private Graphics2D g;
     /** Gradient paint. */
@@ -98,7 +86,7 @@ final class GraphicAwt
     @Override
     public void drawImage(ImageBuffer image, int x, int y)
     {
-        g.drawImage(GraphicAwt.getBuffer(image), null, x, y);
+        g.drawImage(UtilityImage.getBuffer(image), null, x, y);
     }
 
     @Override
@@ -111,13 +99,13 @@ final class GraphicAwt
             at.scale(transform.getScaleX(), transform.getScaleY());
             op = new AffineTransformOp(at, transform.getInterpolation());
         }
-        g.drawImage(GraphicAwt.getBuffer(image), op, x, y);
+        g.drawImage(UtilityImage.getBuffer(image), op, x, y);
     }
 
     @Override
     public void drawImage(ImageBuffer image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
     {
-        g.drawImage(GraphicAwt.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+        g.drawImage(UtilityImage.getBuffer(image), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }
 
     @Override

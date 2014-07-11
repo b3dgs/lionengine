@@ -34,6 +34,126 @@ public final class Hq3x
      */
     private static final class RawScale3x
     {
+        /**
+         * Compute E0 pixel.
+         * 
+         * @param b The b value.
+         * @param d The d value.
+         * @param e The e value.
+         * @return The computed value.
+         */
+        private static int computeE0(int b, int d, int e)
+        {
+            return !RawScale3x.different(d, b) ? d : e;
+        }
+
+        /**
+         * Compute E1 pixel.
+         * 
+         * @param a The a value.
+         * @param b The b value.
+         * @param c The c value.
+         * @param d The d value.
+         * @param e The e value.
+         * @param f The f value.
+         * @return The computed value.
+         */
+        private static int computeE1(int a, int b, int c, int d, int e, int f)
+        {
+            return !RawScale3x.different(d, b) && RawScale3x.different(e, c) || !RawScale3x.different(b, f)
+                    && RawScale3x.different(e, a) ? b : e;
+        }
+
+        /**
+         * Compute E2 pixel.
+         * 
+         * @param b The b value.
+         * @param e The e value.
+         * @param f The f value.
+         * @return The computed value.
+         */
+        private static int computeE2(int b, int e, int f)
+        {
+            return !RawScale3x.different(b, f) ? f : e;
+        }
+
+        /**
+         * Compute E3 pixel.
+         * 
+         * @param a The a value.
+         * @param b The b value.
+         * @param d The d value.
+         * @param e The e value.
+         * @param g The g value.
+         * @param h The h value.
+         * @return The computed value.
+         */
+        private static int computeE3(int a, int b, int d, int e, int g, int h)
+        {
+            return !RawScale3x.different(d, b) && RawScale3x.different(e, g) || !RawScale3x.different(d, h)
+                    && RawScale3x.different(e, a) ? d : e;
+        }
+
+        /**
+         * Compute E5 pixel.
+         * 
+         * @param b The b value.
+         * @param c The c value.
+         * @param e The e value.
+         * @param f The f value.
+         * @param h The h value.
+         * @param i The i value.
+         * @return The computed value.
+         */
+        private static int computeE5(int b, int c, int e, int f, int h, int i)
+        {
+            return !RawScale3x.different(b, f) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
+                    && RawScale3x.different(e, c) ? f : e;
+        }
+
+        /**
+         * Compute E6 pixel.
+         * 
+         * @param d The d value.
+         * @param e The e value.
+         * @param h The h value.
+         * @return The computed value.
+         */
+        private static int computeE6(int d, int e, int h)
+        {
+            return !RawScale3x.different(d, h) ? d : e;
+        }
+
+        /**
+         * Compute E7 pixel.
+         * 
+         * @param d The d value.
+         * @param e The e value.
+         * @param f The f value.
+         * @param g The g value.
+         * @param h The h value.
+         * @param i The i value.
+         * @return The computed value.
+         */
+        private static int computeE7(int d, int e, int f, int g, int h, int i)
+        {
+            return !RawScale3x.different(d, h) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
+                    && RawScale3x.different(e, g) ? h : e;
+        }
+
+        /**
+         * Compute E8 pixel.
+         * 
+         * @param e The e value.
+         * @param f The f value.
+         * @param h The h value.
+         * @return The computed value.
+         */
+        private static int computeE8(int e, int f, int h)
+        {
+            return !RawScale3x.different(h, f) ? f : e;
+        }
+
         /** Source data array. */
         private final int[] srcImage;
         /** Destination data array. */
@@ -128,19 +248,15 @@ public final class Hq3x
 
             if (RawScale3x.different(b, h) && RawScale3x.different(d, f))
             {
-                e0 = !RawScale3x.different(d, b) ? d : e;
-                e1 = !RawScale3x.different(d, b) && RawScale3x.different(e, c) || !RawScale3x.different(b, f)
-                        && RawScale3x.different(e, a) ? b : e;
-                e2 = !RawScale3x.different(b, f) ? f : e;
-                e3 = !RawScale3x.different(d, b) && RawScale3x.different(e, g) || !RawScale3x.different(d, h)
-                        && RawScale3x.different(e, a) ? d : e;
+                e0 = RawScale3x.computeE0(b, d, e);
+                e1 = RawScale3x.computeE1(a, b, c, d, e, f);
+                e2 = RawScale3x.computeE2(b, e, f);
+                e3 = RawScale3x.computeE3(a, b, d, e, g, h);
                 e4 = e;
-                e5 = !RawScale3x.different(b, f) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                        && RawScale3x.different(e, c) ? f : e;
-                e6 = !RawScale3x.different(d, h) ? d : e;
-                e7 = !RawScale3x.different(d, h) && RawScale3x.different(e, i) || !RawScale3x.different(h, f)
-                        && RawScale3x.different(e, g) ? h : e;
-                e8 = !RawScale3x.different(h, f) ? f : e;
+                e5 = RawScale3x.computeE5(b, c, e, f, h, i);
+                e6 = RawScale3x.computeE6(d, e, h);
+                e7 = RawScale3x.computeE7(d, e, f, g, h, i);
+                e8 = RawScale3x.computeE8(e, f, h);
             }
 
             setDestPixel(x * 3, y * 3, e0);

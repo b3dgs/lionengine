@@ -26,7 +26,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -34,12 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
@@ -183,54 +177,6 @@ public final class UtilitySwing
     }
 
     /**
-     * Create a menu.
-     * 
-     * @param bar The menu bar owner.
-     * @param name The menu name.
-     * @param icon The menu icon.
-     * @return The created menu.
-     */
-    public static JMenu addMenu(JMenuBar bar, String name, String icon)
-    {
-        JMenuBar menuBar = bar;
-        if (menuBar == null)
-        {
-            menuBar = new JMenuBar();
-        }
-        final JMenu menu = new JMenu(name);
-        if (icon != null)
-        {
-            menu.setIcon(new ImageIcon(icon));
-        }
-        menuBar.add(menu);
-        return menu;
-    }
-
-    /**
-     * Create a menu item.
-     * 
-     * @param menu The menu owner.
-     * @param name The item name.
-     * @param ico The item icon.
-     * @param action The item action.
-     * @return The created item.
-     */
-    public static JMenuItem addMenuItem(JMenu menu, String name, String ico, ActionListener action)
-    {
-        final JMenuItem item = new JMenuItem(name);
-        if (action != null)
-        {
-            item.addActionListener(action);
-        }
-        menu.add(item);
-        if (ico != null)
-        {
-            item.setIcon(new ImageIcon(ico));
-        }
-        return item;
-    }
-
-    /**
      * Create a check box.
      * 
      * @param name The check box name.
@@ -247,69 +193,6 @@ public final class UtilitySwing
         }
         panel.add(checkBox);
         return checkBox;
-    }
-
-    /**
-     * Create a radio button.
-     * 
-     * @param name The button name.
-     * @param panel The panel owner.
-     * @param action The button action.
-     * @return created radio button.
-     */
-    public static JRadioButton addRadioButton(String name, JPanel panel, ActionListener action)
-    {
-        return UtilitySwing.addRadioButton(name, panel, null, action);
-    }
-
-    /**
-     * Create a radio button.
-     * 
-     * @param name The button name.
-     * @param panel The panel owner.
-     * @param action The button action.
-     * @param tip The displayed tip.
-     * @return The created radio button.
-     */
-    public static JRadioButton addRadioButton(String name, JPanel panel, String tip, ActionListener action)
-    {
-        final JRadioButton radio = new JRadioButton(name);
-        radio.setToolTipText(tip);
-        if (action != null)
-        {
-            radio.addActionListener(action);
-        }
-        panel.add(radio);
-        return radio;
-    }
-
-    /**
-     * Create a text field.
-     * 
-     * @param name The field name.
-     * @param panel The panel owner.
-     * @param labelWidth The label field width.
-     * @param fieldWidth The field width.
-     * @param height The global height.
-     * @return The created text field.
-     */
-    public static JTextField createField(String name, JPanel panel, int labelWidth, int fieldWidth, int height)
-    {
-        final JPanel container = new JPanel();
-        final JTextField field = new JTextField(fieldWidth);
-        field.setMinimumSize(new Dimension(fieldWidth, height));
-        field.setMaximumSize(new Dimension(fieldWidth, height));
-        field.setEditable(false);
-        if (name != null)
-        {
-            final JLabel label = new JLabel(name + ":");
-            label.setLabelFor(field);
-            label.setPreferredSize(new Dimension(labelWidth, height));
-            container.add(label);
-        }
-        container.add(field);
-        panel.add(container);
-        return field;
     }
 
     /**

@@ -17,24 +17,9 @@
  */
 package com.b3dgs.lionengine.core;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.graphics.PaletteData;
-import org.eclipse.swt.graphics.RGB;
-
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -46,57 +31,6 @@ import com.b3dgs.lionengine.Transparency;
 final class FactoryGraphicSwt
         implements FactoryGraphic
 {
-    /**
-     * Create a hidden cursor.
-     * 
-     * @return Hidden cursor.
-     */
-    static Cursor createHiddenCursor()
-    {
-        final Color white = ScreenSwt.display.getSystemColor(SWT.COLOR_WHITE);
-        final Color black = ScreenSwt.display.getSystemColor(SWT.COLOR_BLACK);
-        final PaletteData palette = new PaletteData(new RGB[]
-        {
-                white.getRGB(), black.getRGB()
-        });
-        final ImageData sourceData = new ImageData(16, 16, 1, palette);
-        sourceData.transparentPixel = 0;
-        final Cursor cursor = new Cursor(ScreenSwt.display, sourceData, 0, 0);
-        return cursor;
-    }
-
-    /**
-     * Get the image transparency equivalence.
-     * 
-     * @param transparency The transparency type.
-     * @return The transparency value.
-     */
-    static int getTransparency(Transparency transparency)
-    {
-        switch (transparency)
-        {
-            case OPAQUE:
-                return SWT.TRANSPARENCY_NONE;
-            case BITMASK:
-                return SWT.TRANSPARENCY_MASK;
-            case TRANSLUCENT:
-                return SWT.TRANSPARENCY_ALPHA;
-            default:
-                return 0;
-        }
-    }
-
-    /**
-     * Get the image buffer.
-     * 
-     * @param imageBuffer The image buffer.
-     * @return The buffer.
-     */
-    private static Image getBuffer(ImageBuffer imageBuffer)
-    {
-        return ((ImageBufferSwt) imageBuffer).getBuffer();
-    }
-
     /**
      * Constructor.
      */
@@ -118,7 +52,12 @@ final class FactoryGraphicSwt
     @Override
     public Screen createScreen(Renderer renderer)
     {
-        return new ScreenSwt(renderer);
+        final Config config = renderer.getConfig();
+        if (config.isWindowed())
+        {
+            return new ScreenWindowedSwt(renderer);
+        }
+        return new ScreenFullSwt(renderer);
     }
 
     @Override
@@ -142,174 +81,74 @@ final class FactoryGraphicSwt
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        final Image buffer = new Image(ScreenSwt.display, width, height);
-        if (transparency != Transparency.OPAQUE)
-        {
-            final ImageData data = buffer.getImageData();
-            data.transparentPixel = 0;
-            return new ImageBufferSwt(new Image(ScreenSwt.display, data));
-        }
-        return new ImageBufferSwt(buffer);
+        return UtilityImage.createImage(width, height, transparency);
     }
 
     @Override
     public ImageBuffer getImageBuffer(Media media, boolean alpha)
     {
-        try (final InputStream inputStream = media.getInputStream();)
-        {
-            final Image image = new Image(ScreenSwt.display, inputStream);
-            return new ImageBufferSwt(image);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return UtilityImage.getImage(media, alpha);
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        final Image image = new Image(ScreenSwt.display, FactoryGraphicSwt.getBuffer(imageBuffer), SWT.IMAGE_COPY);
-        return new ImageBufferSwt(image);
+        return UtilityImage.getImage(imageBuffer);
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        return UtilityImage.applyMask(imageBuffer, maskColor);
     }
 
     @Override
     public ImageBuffer[] splitImage(ImageBuffer imageBuffer, int h, int v)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final int total = h * v;
-        final int width = imageBuffer.getWidth() / h, height = imageBuffer.getHeight() / v;
-        final Image[] images = new Image[total];
-        int frame = 0;
-
-        for (int y = 0; y < v; y++)
-        {
-            for (int x = 0; x < h; x++)
-            {
-                images[frame] = new Image(ScreenSwt.display, width, height);
-                final GC gc = new GC(images[frame]);
-                gc.drawImage(image, x * width, y * height, width, height, 0, 0, width, height);
-                gc.dispose();
-                frame++;
-            }
-        }
-        final ImageBuffer[] imageBuffers = new ImageBuffer[images.length];
-        for (int i = 0; i < imageBuffers.length; i++)
-        {
-            imageBuffers[i] = new ImageBufferSwt(images[i]);
-        }
-
-        return imageBuffers;
+        return UtilityImage.splitImage(imageBuffer, h, v);
     }
 
     @Override
     public ImageBuffer rotate(ImageBuffer imageBuffer, int angle)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-
-        final ImageData sourceData = image.getImageData();
-        final ImageData newData = new ImageData(w, h, sourceData.depth, sourceData.palette);
-        newData.transparentPixel = sourceData.transparentPixel;
-        final Image rotated = new Image(ScreenSwt.display, newData);
-
-        final GC gc = new GC(rotated);
-
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-        final float rotate = (float) Math.toRadians(angle);
-        final float cos = (float) Math.cos(rotate);
-        final float sin = (float) Math.sin(rotate);
-        transform.setElements(cos, sin, -sin, cos, w / 2.0f, h / 2.0f);
-
-        gc.setTransform(transform);
-        gc.drawImage(image, -w / 2, -h / 2);
-        gc.dispose();
-
-        return new ImageBufferSwt(rotated);
+        return UtilityImage.rotate(imageBuffer, angle);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer imageBuffer, int width, int height)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final Image resized = new Image(ScreenSwt.display, image.getImageData().scaledTo(width, height));
-
-        return new ImageBufferSwt(resized);
+        return UtilityImage.resize(imageBuffer, width, height);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer imageBuffer)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-        final Image flipped = new Image(ScreenSwt.display, w, h);
-        final GC gc = new GC(flipped);
-
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-        transform.scale(-1.0f, 1.0f);
-        gc.setTransform(transform);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-
-        return new ImageBufferSwt(flipped);
+        return UtilityImage.flipHorizontal(imageBuffer);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer imageBuffer)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final int w = imageBuffer.getWidth(), h = imageBuffer.getHeight();
-        final Image flipped = new Image(ScreenSwt.display, w, h);
-        final GC gc = new GC(flipped);
-
-        final org.eclipse.swt.graphics.Transform transform = new org.eclipse.swt.graphics.Transform(ScreenSwt.display);
-        transform.scale(1.0f, -1.0f);
-        gc.setTransform(transform);
-        gc.drawImage(image, 0, 0);
-        gc.dispose();
-
-        return new ImageBufferSwt(flipped);
+        return UtilityImage.flipVertical(imageBuffer);
     }
 
     @Override
     public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        return UtilityImage.applyFilter(imageBuffer, filter);
     }
 
     @Override
     public void saveImage(ImageBuffer imageBuffer, Media media)
     {
-        final Image image = FactoryGraphicSwt.getBuffer(imageBuffer);
-        final ImageLoader imageLoader = new ImageLoader();
-        imageLoader.data = new ImageData[]
-        {
-            image.getImageData()
-        };
-        try (final OutputStream outputStream = media.getOutputStream())
-        {
-            imageLoader.save(outputStream, SWT.IMAGE_PNG);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        UtilityImage.saveImage(imageBuffer, media);
     }
 
     @Override
     public ImageBuffer getRasterBuffer(ImageBuffer imageBuffer, int fr, int fg, int fb, int er, int eg, int eb,
             int refSize)
     {
-        // TODO To be implemented
-        throw new LionEngineException("Not implemented yet !");
+        return UtilityImage.getRasterBuffer(imageBuffer, fr, fg, fb, er, eg, eb, refSize);
     }
 
     @Override

@@ -44,9 +44,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public interface MapTile<T extends TileGame>
 {
     /** Number of horizontal tiles to make a bloc. */
-    public static final int BLOC_SIZE = 256;
+    int BLOC_SIZE = 256;
     /** Collisions file name. */
-    public static final String COLLISIONS_FILE_NAME = "collisions.xml";
+    String COLLISIONS_FILE_NAME = "collisions.xml";
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.

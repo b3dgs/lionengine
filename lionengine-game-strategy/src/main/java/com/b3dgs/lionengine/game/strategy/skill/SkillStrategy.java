@@ -161,25 +161,12 @@ public abstract class SkillStrategy
         // Released
         else
         {
-            if (isSelected())
-            {
-                if (!isOrder())
-                {
-                    action(panel, cursor);
-                }
-                else
-                {
-                    setActive(true);
-                    panel.ordered();
-                    onClicked(panel);
-                    clicked = false;
-                }
-                setSelected(false);
-            }
+            updateReleased(cursor, panel);
         }
 
         // Order case
-        if (isOrder() && isActive() && cursor.getClick() > 0 && !clicked && !panel.canClick(cursor))
+        final boolean okClick = cursor.getClick() > 0 && !clicked && !panel.canClick(cursor);
+        if (isOrder() && isActive() && okClick)
         {
             setActive(false);
             destX = cursor.getLocationInTileX();
@@ -338,5 +325,30 @@ public abstract class SkillStrategy
     public boolean isOver()
     {
         return over;
+    }
+
+    /**
+     * Update the released cursor case.
+     * 
+     * @param cursor The cursor reference.
+     * @param panel The control panel reference.
+     */
+    private void updateReleased(CursorStrategy cursor, ControlPanelModel<?> panel)
+    {
+        if (isSelected())
+        {
+            if (!isOrder())
+            {
+                action(panel, cursor);
+            }
+            else
+            {
+                setActive(true);
+                panel.ordered();
+                onClicked(panel);
+                clicked = false;
+            }
+            setSelected(false);
+        }
     }
 }

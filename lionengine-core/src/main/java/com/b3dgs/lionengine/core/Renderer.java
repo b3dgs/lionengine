@@ -145,6 +145,7 @@ public abstract class Renderer
      * @throws LionEngineException If the renderer has already been started.
      */
     public final void startFirstSequence(Class<? extends Sequence> sequence, Loader loader, Object... arguments)
+            throws LionEngineException
     {
         if (!started)
         {

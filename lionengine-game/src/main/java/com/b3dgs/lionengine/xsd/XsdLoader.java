@@ -58,4 +58,12 @@ public final class XsdLoader
             throw new LionEngineException(exception);
         }
     }
+
+    /**
+     * Private constructor.
+     */
+    private XsdLoader()
+    {
+        throw new RuntimeException();
+    }
 }

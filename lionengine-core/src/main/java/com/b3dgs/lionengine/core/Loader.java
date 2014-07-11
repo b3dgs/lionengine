@@ -64,6 +64,7 @@ public final class Loader
      * @throws LionEngineException If not able to create the sequence for any reason.
      */
     static Sequence createSequence(Class<? extends Sequence> nextSequence, Loader loader, Object... arguments)
+            throws LionEngineException
     {
         try
         {
@@ -155,7 +156,7 @@ public final class Loader
      * @param arguments The sequence arguments list if needed by its constructor.
      * @throws LionEngineException If the loader has already been started.
      */
-    public void start(Class<? extends Sequence> sequenceClass, Object... arguments)
+    public void start(Class<? extends Sequence> sequenceClass, Object... arguments) throws LionEngineException
     {
         Check.notNull(sequenceClass, Loader.ERROR_SEQUENCE);
         if (!started)

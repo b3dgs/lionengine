@@ -199,12 +199,19 @@ public class CursorStrategy
      */
     public boolean isOver(Tiled tiled, CameraStrategy camera)
     {
-        return getScreenX() >= camera.getViewX() && getScreenX() < camera.getViewX() + camera.getViewWidth()
-                && getScreenY() >= camera.getViewY() && getScreenY() < camera.getViewY() + camera.getViewHeight()
-                && getLocationInTileX() >= tiled.getLocationInTileX()
-                && getLocationInTileX() < tiled.getLocationInTileX() + tiled.getWidthInTile()
-                && getLocationInTileY() >= tiled.getLocationInTileY()
+        final boolean overX = getScreenX() >= camera.getViewX()
+                && getScreenX() < camera.getViewX() + camera.getViewWidth();
+
+        final boolean overY = getScreenY() >= camera.getViewY()
+                && getScreenY() < camera.getViewY() + camera.getViewHeight();
+
+        final boolean rangeX = getLocationInTileX() >= tiled.getLocationInTileX()
+                && getLocationInTileX() < tiled.getLocationInTileX() + tiled.getWidthInTile();
+
+        final boolean rangeY = getLocationInTileY() >= tiled.getLocationInTileY()
                 && getLocationInTileY() < tiled.getLocationInTileY() + tiled.getHeightInTile();
+
+        return overX && overY && rangeX && rangeY;
     }
 
     /*

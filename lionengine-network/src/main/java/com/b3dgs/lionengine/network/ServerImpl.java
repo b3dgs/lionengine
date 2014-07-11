@@ -363,6 +363,45 @@ final class ServerImpl
         }
     }
 
+    /**
+     * Update the message depending of its ID.
+     * 
+     * @param client The client socket.
+     * @param buffer The buffer input.
+     * @param messageSystemId The message system ID.
+     * @param from The source ID.
+     * @throws IOException If error when reading.
+     */
+    private void updateMessage(ClientSocket client, DataInputStream buffer, byte messageSystemId, byte from)
+            throws IOException
+    {
+        switch (messageSystemId)
+        {
+            case NetworkMessageSystemId.CONNECTING:
+                receiveConnecting(client, buffer, from, StateConnection.CONNECTING);
+                break;
+            case NetworkMessageSystemId.CONNECTED:
+                receiveConnected(client, from, StateConnection.CONNECTED);
+                break;
+            case NetworkMessageSystemId.PING:
+                client.getOut().writeByte(NetworkMessageSystemId.PING);
+                client.getOut().flush();
+                bandwidth += 1;
+                break;
+            case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
+                receiveDisconnected(client, from, StateConnection.CONNECTED);
+                break;
+            case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
+                receiveRenamed(client, buffer, from, StateConnection.CONNECTED);
+                break;
+            case NetworkMessageSystemId.USER_MESSAGE:
+                receiveMessage(client, buffer, from, StateConnection.CONNECTED);
+                break;
+            default:
+                break;
+        }
+    }
+
     /*
      * Server
      */
@@ -496,31 +535,7 @@ final class ServerImpl
                     continue;
                 }
                 // Check message header type
-                switch (messageSystemId)
-                {
-                    case NetworkMessageSystemId.CONNECTING:
-                        receiveConnecting(client, buffer, from, StateConnection.CONNECTING);
-                        break;
-                    case NetworkMessageSystemId.CONNECTED:
-                        receiveConnected(client, from, StateConnection.CONNECTED);
-                        break;
-                    case NetworkMessageSystemId.PING:
-                        client.getOut().writeByte(NetworkMessageSystemId.PING);
-                        client.getOut().flush();
-                        bandwidth += 1;
-                        break;
-                    case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
-                        receiveDisconnected(client, from, StateConnection.CONNECTED);
-                        break;
-                    case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
-                        receiveRenamed(client, buffer, from, StateConnection.CONNECTED);
-                        break;
-                    case NetworkMessageSystemId.USER_MESSAGE:
-                        receiveMessage(client, buffer, from, StateConnection.CONNECTED);
-                        break;
-                    default:
-                        break;
-                }
+                updateMessage(client, buffer, messageSystemId, from);
             }
             catch (final IOException exception)
             {

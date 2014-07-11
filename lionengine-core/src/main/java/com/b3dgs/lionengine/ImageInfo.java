@@ -126,43 +126,7 @@ public final class ImageInfo
             final int byte2 = inputStream.read();
             final int byte3 = inputStream.read();
 
-            final boolean gif = 'G' == byte1 && 'I' == byte2 && 'F' == byte3;
-            final boolean jpg = 0xFF == byte1 && 0xD8 == byte2;
-            final boolean png = 137 == byte1 && 80 == byte2 && 78 == byte3;
-            final boolean bmp = 66 == byte1 && 77 == byte2;
-
-            if (gif)
-            {
-                readGif(inputStream);
-            }
-            else if (jpg)
-            {
-                readJpg(inputStream, byte3);
-            }
-            else if (png)
-            {
-                readPng(inputStream);
-            }
-            else if (bmp)
-            {
-                readBmp(inputStream);
-            }
-            else
-            {
-                final int byte4 = inputStream.read();
-                final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;
-                final boolean tiff2 = 'I' == byte1 && 'I' == byte2 && 42 == byte3 && 0 == byte4;
-                final boolean tiff = tiff1 || tiff2;
-
-                if (tiff)
-                {
-                    readTiff(inputStream, byte1);
-                }
-                else
-                {
-                    throw new LionEngineException(ImageInfo.ERROR_FORMAT);
-                }
-            }
+            checkFormat(inputStream, byte1, byte2, byte3);
         }
         catch (final IOException exception)
         {
@@ -198,6 +162,138 @@ public final class ImageInfo
     public String getFormat()
     {
         return format;
+    }
+
+    /**
+     * Check the image format and read it.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @throws IOException If an error occurs.
+     */
+    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        if (!checkGif(inputStream, byte1, byte2, byte3))
+        {
+            if (!checkJpg(inputStream, byte1, byte2, byte3))
+            {
+                if (!checkPng(inputStream, byte1, byte2, byte3))
+                {
+                    if (!checkBmp(inputStream, byte1, byte2, byte3))
+                    {
+                        checkTiff(inputStream, byte1, byte2, byte3);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if can read as GIF.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @return <code>true</code> if read, <code>false</code> else.
+     * @throws IOException If an error occurs.
+     */
+    private boolean checkGif(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        final boolean gif = 'G' == byte1 && 'I' == byte2 && 'F' == byte3;
+        if (gif)
+        {
+            readGif(inputStream);
+        }
+        return gif;
+    }
+
+    /**
+     * Check if can read as JPG.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @return <code>true</code> if read, <code>false</code> else.
+     * @throws IOException If an error occurs.
+     */
+    private boolean checkJpg(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        final boolean jpg = 0xFF == byte1 && 0xD8 == byte2;
+        if (jpg)
+        {
+            readJpg(inputStream, byte3);
+        }
+        return jpg;
+    }
+
+    /**
+     * Check if can read as PNG.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @return <code>true</code> if read, <code>false</code> else.
+     * @throws IOException If an error occurs.
+     */
+    private boolean checkPng(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        final boolean png = 137 == byte1 && 80 == byte2 && 78 == byte3;
+        if (png)
+        {
+            readPng(inputStream);
+        }
+        return png;
+    }
+
+    /**
+     * Check if can read as BMP.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @return <code>true</code> if read, <code>false</code> else.
+     * @throws IOException If an error occurs.
+     */
+    private boolean checkBmp(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        final boolean bmp = 66 == byte1 && 77 == byte2;
+        if (bmp)
+        {
+            readBmp(inputStream);
+        }
+        return bmp;
+    }
+
+    /**
+     * Check if can read as TIFF.
+     * 
+     * @param inputStream The input stream.
+     * @param byte1 The first byte.
+     * @param byte2 The second byte.
+     * @param byte3 The third byte.
+     * @throws IOException If an error occurs.
+     */
+    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    {
+        final int byte4 = inputStream.read();
+        final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;
+        final boolean tiff2 = 'I' == byte1 && 'I' == byte2 && 42 == byte3 && 0 == byte4;
+        final boolean tiff = tiff1 || tiff2;
+
+        if (tiff)
+        {
+            readTiff(inputStream, byte1);
+        }
+        else
+        {
+            throw new LionEngineException(ImageInfo.ERROR_FORMAT);
+        }
     }
 
     /**

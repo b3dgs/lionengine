@@ -54,41 +54,59 @@ public enum OperatingSystem
     static
     {
         SYSTEM_OS = EngineCore.getSystemProperty("os.name").toLowerCase(Locale.getDefault());
+        OS = OperatingSystem.findOs();
+        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model");
+        ARCHI = OperatingSystem.findArchitecture();
+    }
 
+    /**
+     * Find the current OS.
+     * 
+     * @return The OS found.
+     */
+    private static OperatingSystem findOs()
+    {
         if (OperatingSystem.SYSTEM_OS.indexOf("win") >= 0)
         {
-            OS = OperatingSystem.WINDOWS;
+            return OperatingSystem.WINDOWS;
         }
         else if (OperatingSystem.SYSTEM_OS.indexOf("mac") >= 0)
         {
-            OS = OperatingSystem.MAC;
+            return OperatingSystem.MAC;
         }
         else if (OperatingSystem.SYSTEM_OS.indexOf("nix") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("nux") >= 0
                 || OperatingSystem.SYSTEM_OS.indexOf("bsd") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("aix") >= 0)
         {
-            OS = OperatingSystem.UNIX;
+            return OperatingSystem.UNIX;
         }
         else if (OperatingSystem.SYSTEM_OS.indexOf("sunos") >= 0)
         {
-            OS = OperatingSystem.SOLARIS;
+            return OperatingSystem.SOLARIS;
         }
         else
         {
-            OS = OperatingSystem.UNKNOWN;
+            return OperatingSystem.UNKNOWN;
         }
+    }
 
-        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model");
+    /**
+     * Find the current architecture.
+     * 
+     * @return The current architecture.
+     */
+    private static Architecture findArchitecture()
+    {
         if (OperatingSystem.SYSTEM_ARCHI.contains("64"))
         {
-            ARCHI = Architecture.X64;
+            return Architecture.X64;
         }
         else if (OperatingSystem.SYSTEM_ARCHI.contains("32") || OperatingSystem.SYSTEM_ARCHI.contains("86"))
         {
-            ARCHI = Architecture.X86;
+            return Architecture.X86;
         }
         else
         {
-            ARCHI = Architecture.UNKNOWN;
+            return Architecture.UNKNOWN;
         }
     }
 

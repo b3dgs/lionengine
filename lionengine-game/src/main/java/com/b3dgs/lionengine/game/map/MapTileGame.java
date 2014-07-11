@@ -328,49 +328,75 @@ public abstract class MapTileGame<T extends TileGame>
         switch (function.getAxis())
         {
             case X:
-                switch (function.getInput())
-                {
-                    case X:
-                        for (int x = min; x <= max; x++)
-                        {
-                            final int fx = (int) function.computeCollision(x);
-                            g.drawRect(fx, getTileHeight() - x, 0, 0, false);
-                        }
-                        break;
-                    case Y:
-                        for (int y = min; y <= max; y++)
-                        {
-                            final int fy = (int) function.computeCollision(y);
-                            g.drawRect(fy, y, 0, 0, false);
-                        }
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown type: " + function.getInput());
-                }
+                createFunctionDrawX(g, function, min, max);
                 break;
             case Y:
-                switch (function.getInput())
-                {
-                    case X:
-                        for (int x = min; x <= max; x++)
-                        {
-                            final int fx = (int) function.computeCollision(x);
-                            g.drawRect(x, getTileHeight() - 1 - fx, 0, 0, false);
-                        }
-                        break;
-                    case Y:
-                        for (int y = min; y <= max; y++)
-                        {
-                            final int fy = (int) function.computeCollision(y);
-                            g.drawRect(fy, y, 0, 0, false);
-                        }
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown type: " + function.getInput());
-                }
+                createFunctionDrawY(g, function, min, max);
                 break;
             default:
                 throw new RuntimeException("Unknown type: " + function.getAxis());
+        }
+    }
+
+    /**
+     * Create the function draw to buffer for the horizontal axis.
+     * 
+     * @param g The graphic buffer.
+     * @param function The function to draw.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     */
+    private void createFunctionDrawX(Graphic g, CollisionFunction function, int min, int max)
+    {
+        switch (function.getInput())
+        {
+            case X:
+                for (int x = min; x <= max; x++)
+                {
+                    final int fx = (int) function.computeCollision(x);
+                    g.drawRect(fx, getTileHeight() - x, 0, 0, false);
+                }
+                break;
+            case Y:
+                for (int y = min; y <= max; y++)
+                {
+                    final int fy = (int) function.computeCollision(y);
+                    g.drawRect(fy, y, 0, 0, false);
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + function.getInput());
+        }
+    }
+
+    /**
+     * Create the function draw to buffer for the vertical axis.
+     * 
+     * @param g The graphic buffer.
+     * @param function The function to draw.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     */
+    private void createFunctionDrawY(Graphic g, CollisionFunction function, int min, int max)
+    {
+        switch (function.getInput())
+        {
+            case X:
+                for (int x = min; x <= max; x++)
+                {
+                    final int fx = (int) function.computeCollision(x);
+                    g.drawRect(x, getTileHeight() - 1 - fx, 0, 0, false);
+                }
+                break;
+            case Y:
+                for (int y = min; y <= max; y++)
+                {
+                    final int fy = (int) function.computeCollision(y);
+                    g.drawRect(fy, y, 0, 0, false);
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + function.getInput());
         }
     }
 

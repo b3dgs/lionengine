@@ -79,7 +79,7 @@ public abstract class EngineCore
      * @throws LionEngineException If the engine has already been started.
      */
     public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
-            FactoryMedia factoryMedia)
+            FactoryMedia factoryMedia) throws LionEngineException
     {
         if (!EngineCore.started)
         {
@@ -118,7 +118,7 @@ public abstract class EngineCore
      * 
      * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate()
+    public static void terminate() throws LionEngineException
     {
         if (EngineCore.started)
         {
@@ -141,7 +141,7 @@ public abstract class EngineCore
      * @return The program name.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static String getProgramName()
+    public static String getProgramName() throws LionEngineException
     {
         if (!EngineCore.started)
         {
@@ -156,7 +156,7 @@ public abstract class EngineCore
      * @return The program version.
      * @throws LionEngineException If the engine has not been started.
      */
-    public static Version getProgramVersion()
+    public static Version getProgramVersion() throws LionEngineException
     {
         if (!EngineCore.started)
         {

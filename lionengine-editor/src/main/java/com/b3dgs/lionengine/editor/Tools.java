@@ -243,6 +243,7 @@ public final class Tools
     /**
      * Get a part from its id.
      * 
+     * @param <C> The class type.
      * @param partService The part service.
      * @param id The part id.
      * @param clazz The part class type.

@@ -97,6 +97,7 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
     /**
      * Should not be used, prefer {@link #create(Class)} instead.
      * 
+     * @param <T> The object game type.
      * @param type The object type.
      * @return The object instance.
      */

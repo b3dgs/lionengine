@@ -24,7 +24,7 @@ import org.eclipse.osgi.util.NLS;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Messages
+public final class Messages
         extends NLS
 {
     /** Bundle name. */

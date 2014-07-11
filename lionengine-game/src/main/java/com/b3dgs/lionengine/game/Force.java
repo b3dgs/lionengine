@@ -78,38 +78,12 @@ public final class Force
      */
     public void reachForce(double extrp, Force force, double speed, double sensibility)
     {
-        // Last force
-        if (Double.compare(lastFh, force.fh) != 0)
-        {
-            lastFh = force.fh;
-            arrivedH = false;
-        }
-        if (Double.compare(lastFv, force.fv) != 0)
-        {
-            lastFv = force.fv;
-            arrivedV = false;
-        }
+        updateLastForce(force);
+
         // Not arrived
         if (!arrivedH)
         {
-            if (fh < force.fh)
-            {
-                fh += speed * extrp;
-                if (fh > force.fh - sensibility)
-                {
-                    fh = force.fh;
-                    arrivedH = true;
-                }
-            }
-            else if (fh > force.fh)
-            {
-                fh -= speed * extrp;
-                if (fh < force.fh + sensibility)
-                {
-                    fh = force.fh;
-                    arrivedH = true;
-                }
-            }
+            updateNotArrivedH(extrp, force, speed, sensibility);
         }
         else
         {
@@ -117,24 +91,7 @@ public final class Force
         }
         if (!arrivedV)
         {
-            if (fv < force.fv)
-            {
-                fv += speed * extrp;
-                if (fv > force.fv - sensibility)
-                {
-                    fv = force.fv;
-                    arrivedV = true;
-                }
-            }
-            else if (fv > force.fv)
-            {
-                fv -= speed * extrp;
-                if (fv < force.fv + sensibility)
-                {
-                    fv = force.fv;
-                    arrivedV = true;
-                }
-            }
+            updateNotArrivedV(extrp, force, speed, sensibility);
         }
         else
         {
@@ -231,6 +188,85 @@ public final class Force
     public double getForceVertical()
     {
         return fv;
+    }
+
+    /**
+     * Update the last force.
+     * 
+     * @param force The force to reach.
+     */
+    private void updateLastForce(Force force)
+    {
+        if (Double.compare(lastFh, force.fh) != 0)
+        {
+            lastFh = force.fh;
+            arrivedH = false;
+        }
+        if (Double.compare(lastFv, force.fv) != 0)
+        {
+            lastFv = force.fv;
+            arrivedV = false;
+        }
+    }
+
+    /**
+     * Update the force if still not reached on horizontal axis.
+     * 
+     * @param extrp The extrapolation value.
+     * @param force The force to reach.
+     * @param speed The reach speed.
+     * @param sensibility The sensibility value.
+     */
+    private void updateNotArrivedH(double extrp, Force force, double speed, double sensibility)
+    {
+        if (fh < force.fh)
+        {
+            fh += speed * extrp;
+            if (fh > force.fh - sensibility)
+            {
+                fh = force.fh;
+                arrivedH = true;
+            }
+        }
+        else if (fh > force.fh)
+        {
+            fh -= speed * extrp;
+            if (fh < force.fh + sensibility)
+            {
+                fh = force.fh;
+                arrivedH = true;
+            }
+        }
+    }
+
+    /**
+     * Update the force if still not reached on vertical axis.
+     * 
+     * @param extrp The extrapolation value.
+     * @param force The force to reach.
+     * @param speed The reach speed.
+     * @param sensibility The sensibility value.
+     */
+    private void updateNotArrivedV(double extrp, Force force, double speed, double sensibility)
+    {
+        if (fv < force.fv)
+        {
+            fv += speed * extrp;
+            if (fv > force.fv - sensibility)
+            {
+                fv = force.fv;
+                arrivedV = true;
+            }
+        }
+        else if (fv > force.fv)
+        {
+            fv -= speed * extrp;
+            if (fv < force.fv + sensibility)
+            {
+                fv = force.fv;
+                arrivedV = true;
+            }
+        }
     }
 
     /**

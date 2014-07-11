@@ -211,6 +211,89 @@ final class PathFinderImpl
         closed.remove(node);
     }
 
+    /**
+     * Update the open and closed list to find the path.
+     * 
+     * @param mover The entity that will be moving along the path.
+     * @param sx The x coordinate of the start location.
+     * @param sy The y coordinate of the start location.
+     * @param dx The x coordinate of the destination location.
+     * @param dy The y coordinate of the destination location.
+     * @param ignoreRef The ignore map array reference checking (<code>true</code> to ignore references).
+     * @param current The current node.
+     * @param maxDepth The last max depth.
+     * @return The next max depth.
+     */
+    private int updateList(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef, Node current,
+            int maxDepth)
+    {
+        int nextDepth = maxDepth;
+        for (int y = -1; y < 2; y++)
+        {
+            for (int x = -1; x < 2; x++)
+            {
+                if (x == 0 && y == 0)
+                {
+                    continue;
+                }
+                if (!allowDiagMovement)
+                {
+                    if (x != 0 && y != 0)
+                    {
+                        continue;
+                    }
+                }
+                final int xp = x + current.getX();
+                final int yp = y + current.getY();
+
+                if (isValidLocation(mover, sx, sy, xp, yp, ignoreRef))
+                {
+                    nextDepth = updateNeighbour(mover, dx, dy, current, xp, yp, maxDepth);
+                }
+            }
+        }
+        return nextDepth;
+    }
+
+    /**
+     * Update the current neighbor on search.
+     * 
+     * @param mover The entity that will be moving along the path.
+     * @param dx The x coordinate of the destination location.
+     * @param dy The y coordinate of the destination location.
+     * @param current The current node.
+     * @param xp The x coordinate of the destination location.
+     * @param yp The y coordinate of the destination location.
+     * @param maxDepth The last max depth.
+     * @return The next max depth.
+     */
+    private int updateNeighbour(Pathfindable mover, int dx, int dy, Node current, int xp, int yp, int maxDepth)
+    {
+        int nextDepth = maxDepth;
+        final double nextStepCost = current.getCost() + getMovementCost(mover, current.getX(), current.getY(), xp, yp);
+        final Node neighbour = nodes[yp][xp];
+
+        if (nextStepCost < neighbour.getCost())
+        {
+            if (inOpenList(neighbour))
+            {
+                removeFromOpen(neighbour);
+            }
+            if (inClosedList(neighbour))
+            {
+                removeFromClosed(neighbour);
+            }
+        }
+        if (!inOpenList(neighbour) && !inClosedList(neighbour))
+        {
+            neighbour.setCost(nextStepCost);
+            neighbour.setHeuristic(getHeuristicCost(xp, yp, dx, dy));
+            nextDepth = Math.max(maxDepth, neighbour.setParent(current));
+            addToOpen(neighbour);
+        }
+        return nextDepth;
+    }
+
     /*
      * PathFinder
      */
@@ -248,52 +331,7 @@ final class PathFinderImpl
             }
             removeFromOpen(current);
             addToClosed(current);
-
-            for (int y = -1; y < 2; y++)
-            {
-                for (int x = -1; x < 2; x++)
-                {
-                    if (x == 0 && y == 0)
-                    {
-                        continue;
-                    }
-                    if (!allowDiagMovement)
-                    {
-                        if (x != 0 && y != 0)
-                        {
-                            continue;
-                        }
-                    }
-                    final int xp = x + current.getX();
-                    final int yp = y + current.getY();
-
-                    if (isValidLocation(mover, sx, sy, xp, yp, ignoreRef))
-                    {
-                        final double nextStepCost = current.getCost()
-                                + getMovementCost(mover, current.getX(), current.getY(), xp, yp);
-                        final Node neighbour = nodes[yp][xp];
-
-                        if (nextStepCost < neighbour.getCost())
-                        {
-                            if (inOpenList(neighbour))
-                            {
-                                removeFromOpen(neighbour);
-                            }
-                            if (inClosedList(neighbour))
-                            {
-                                removeFromClosed(neighbour);
-                            }
-                        }
-                        if (!inOpenList(neighbour) && !inClosedList(neighbour))
-                        {
-                            neighbour.setCost(nextStepCost);
-                            neighbour.setHeuristic(getHeuristicCost(xp, yp, dx, dy));
-                            maxDepth = Math.max(maxDepth, neighbour.setParent(current));
-                            addToOpen(neighbour);
-                        }
-                    }
-                }
-            }
+            maxDepth = updateList(mover, sx, sy, dx, dy, ignoreRef, current, maxDepth);
         }
         if (nodes[dy][dx].getParent() == null)
         {

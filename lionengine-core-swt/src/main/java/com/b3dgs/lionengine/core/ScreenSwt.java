@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.core;
 import java.util.HashMap;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -28,17 +27,12 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Transparency;
 
 /**
  * Screen implementation.
@@ -47,20 +41,18 @@ import com.b3dgs.lionengine.Transparency;
  * @see Keyboard
  * @see Mouse
  */
-final class ScreenSwt
+abstract class ScreenSwt
         implements Screen, FocusListener
 {
-    /** Error message renderer. */
-    private static final String ERROR_RENDERER = "The renderer must not be null !";
-    /** Error message display. */
-    private static final String ERROR_DISPLAY = "No available display !";
-    /** Error message windowed. */
-    private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
-
     /** Display. */
     static Display display;
+
     /** Renderer reference. */
     final Renderer renderer;
+    /** Configuration reference. */
+    protected final Config config;
+    /** Frame reference. */
+    protected final Shell frame;
     /** Hidden cursor instance. */
     private final Cursor cursorHidden;
     /** Default cursor instance. */
@@ -69,20 +61,16 @@ final class ScreenSwt
     private final HashMap<Class<? extends InputDevice>, InputDevice> devices;
     /** Active graphic buffer reference. */
     private final Graphic graphics;
-    /** Configuration reference. */
-    private final Config config;
-    /** Frame reference. */
-    private final Shell frame;
+    /** Buffer reference. */
+    protected Canvas buf;
+    /** Image buffer reference. */
+    protected ImageBuffer buffer;
+    /** Windowed canvas. */
+    protected Canvas canvas;
     /** Active sequence reference. */
     private Sequence sequence;
-    /** Buffer reference. */
-    private Canvas buf;
-    /** Image buffer reference. */
-    private ImageBuffer buffer;
     /** Graphic buffer reference. */
     private Graphic gbuf;
-    /** Windowed canvas. */
-    private Canvas canvas;
     /** Last GC used. */
     private GC lastGc;
     /** Width. */
@@ -95,29 +83,17 @@ final class ScreenSwt
      * 
      * @param renderer The renderer reference.
      */
-    ScreenSwt(Renderer renderer)
+    protected ScreenSwt(Renderer renderer)
     {
-        Check.notNull(renderer, ScreenSwt.ERROR_RENDERER);
-
-        // Initialize environment
-        try
-        {
-            ScreenSwt.display = new Display();
-        }
-        catch (final SWTException exception)
-        {
-            throw new LionEngineException(exception, ScreenSwt.ERROR_DISPLAY);
-        }
+        ScreenSwt.display = new Display();
         this.renderer = renderer;
         config = renderer.getConfig();
-
-        cursorHidden = FactoryGraphicSwt.createHiddenCursor();
+        cursorHidden = ToolsSwt.createHiddenCursor();
         cursorDefault = ScreenSwt.display.getSystemCursor(0);
         graphics = Core.GRAPHIC.createGraphic();
         devices = new HashMap<>(2);
-
-        // Prepare main frame
         frame = initMainFrame(config.isWindowed());
+
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
@@ -175,68 +151,6 @@ final class ScreenSwt
     }
 
     /**
-     * Prepare windowed mode.
-     * 
-     * @param output The output resolution
-     */
-    private void initWindowed(Resolution output)
-    {
-        try
-        {
-            if (canvas == null)
-            {
-                canvas = new Canvas(frame, SWT.DOUBLE_BUFFERED);
-                canvas.setEnabled(true);
-                canvas.setVisible(true);
-            }
-            canvas.setSize(output.getWidth(), output.getHeight());
-            buffer = Core.GRAPHIC.createImageBuffer(output.getWidth(), output.getHeight(), Transparency.OPAQUE);
-            frame.pack();
-
-            final Monitor primary = ScreenSwt.display.getPrimaryMonitor();
-            final Rectangle bounds = primary.getBounds();
-            final Rectangle rect = frame.getBounds();
-            final int x = bounds.x + (bounds.width - rect.width) / 2;
-            final int y = bounds.y + (bounds.height - rect.height) / 2;
-            frame.setLocation(x, y);
-
-            buf = canvas;
-        }
-        catch (final Exception exception)
-        {
-            throw new LionEngineException(exception, ScreenSwt.ERROR_WINDOWED);
-        }
-    }
-
-    /**
-     * Prepare fullscreen mode.
-     * 
-     * @param output The output resolution
-     * @param depth The bit depth color.
-     */
-    private void initFullscreen(Resolution output, int depth)
-    {
-        try
-        {
-            if (canvas == null)
-            {
-                canvas = new Canvas(frame, SWT.DOUBLE_BUFFERED);
-                canvas.setEnabled(true);
-                canvas.setVisible(true);
-            }
-            canvas.setSize(output.getWidth(), output.getHeight());
-            frame.pack();
-
-            buf = canvas;
-            frame.setFullScreen(true);
-        }
-        catch (final Exception exception)
-        {
-            throw new LionEngineException(exception, ScreenSwt.ERROR_WINDOWED);
-        }
-    }
-
-    /**
      * Prepare the focus listener.
      */
     private void prepareFocusListener()
@@ -280,16 +194,8 @@ final class ScreenSwt
      * 
      * @param output The output resolution
      */
-    private void setResolution(Resolution output)
+    protected void setResolution(Resolution output)
     {
-        if (config.isWindowed())
-        {
-            initWindowed(output);
-        }
-        else
-        {
-            initFullscreen(output, config.getDepth());
-        }
         width = output.getWidth();
         height = output.getHeight();
     }
@@ -324,7 +230,7 @@ final class ScreenSwt
         if (!canvas.isDisposed())
         {
             final GC gc = new GC(canvas);
-            gc.drawImage(((ImageBufferSwt) buffer).getBuffer(), 0, 0);
+            gc.drawImage(UtilityImage.getBuffer(buffer), 0, 0);
             gc.dispose();
             if (lastGc != null)
             {

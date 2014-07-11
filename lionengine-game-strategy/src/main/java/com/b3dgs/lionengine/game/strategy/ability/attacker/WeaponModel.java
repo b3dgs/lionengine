@@ -100,6 +100,80 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
         attacked = false;
     }
 
+    /**
+     * Update the attack check case.
+     */
+    private void updateAttackCheck()
+    {
+        attacking = false;
+        attacked = false;
+        // Check if target is valid; exit if invalid
+        if (target == null || !target.isAlive())
+        {
+            state = State.NONE;
+            attacking = false;
+        }
+        else
+        {
+            final int dist = user.getDistanceInTile(target, false);
+            final boolean validRange = dist >= distAttack.getMin() && dist <= distAttack.getMax();
+
+            // Target distance is correct
+            if (validRange)
+            {
+                if (user.canAttack())
+                {
+                    state = State.ATTACKING;
+                }
+            }
+            else if (UtilMath.time() - timer > attackPause)
+            {
+                notifyReachingTarget(target);
+            }
+        }
+    }
+
+    /**
+     * Update the attacking case.
+     */
+    private void updateAttacking()
+    {
+        if (UtilMath.time() - timer > attackPause)
+        {
+            if (!attacking)
+            {
+                notifyAttackStarted(target);
+                attacking = true;
+                attacked = false;
+            }
+            // Hit when frame attack reached
+            if (attacking && user.getFrame() >= frameAttack)
+            {
+                attacking = false;
+                for (final AttackerListener<E> listener : listeners)
+                {
+                    listener.notifyAttackEnded(damages.getRandom(), target);
+                }
+                notifyAttackEnded(damages.getRandom(), target);
+                attacked = true;
+                timer = UtilMath.time();
+            }
+        }
+        else if (attacked)
+        {
+            if (AnimState.FINISHED == user.getAnimState())
+            {
+                notifyAttackAnimEnded();
+                attacked = false;
+                state = State.CHECK;
+            }
+        }
+        else
+        {
+            notifyPreparingAttack();
+        }
+    }
+
     /*
      * AttackerServices
      */
@@ -132,67 +206,10 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
         switch (state)
         {
             case CHECK:
-                attacking = false;
-                attacked = false;
-                // Check if target is valid; exit if invalid
-                if (target == null || !target.isAlive())
-                {
-                    state = State.NONE;
-                    attacking = false;
-                    break;
-                }
-
-                final int dist = user.getDistanceInTile(target, false);
-                final boolean validRange = dist >= distAttack.getMin() && dist <= distAttack.getMax();
-
-                // Target distance is correct
-                if (validRange)
-                {
-                    if (user.canAttack())
-                    {
-                        state = State.ATTACKING;
-                    }
-                }
-                else if (UtilMath.time() - timer > attackPause)
-                {
-                    notifyReachingTarget(target);
-                }
+                updateAttackCheck();
                 break;
             case ATTACKING:
-                if (UtilMath.time() - timer > attackPause)
-                {
-                    if (!attacking)
-                    {
-                        notifyAttackStarted(target);
-                        attacking = true;
-                        attacked = false;
-                    }
-                    // Hit when frame attack reached
-                    if (attacking && user.getFrame() >= frameAttack)
-                    {
-                        attacking = false;
-                        for (final AttackerListener<E> listener : listeners)
-                        {
-                            listener.notifyAttackEnded(damages.getRandom(), target);
-                        }
-                        notifyAttackEnded(damages.getRandom(), target);
-                        attacked = true;
-                        timer = UtilMath.time();
-                    }
-                }
-                else if (attacked)
-                {
-                    if (AnimState.FINISHED == user.getAnimState())
-                    {
-                        notifyAttackAnimEnded();
-                        attacked = false;
-                        state = State.CHECK;
-                    }
-                }
-                else
-                {
-                    notifyPreparingAttack();
-                }
+                updateAttacking();
                 break;
             default:
                 break;

@@ -113,6 +113,17 @@ public final class ColorRgba
         return data[0] + data[1] * (int) (data[2] * UtilMath.cos(i * (data[3] / (double) max) - data[4]));
     }
 
+    /**
+     * Return the masked value by 0xFF.
+     * 
+     * @param value The input value.
+     * @return The masked value.
+     */
+    private static int mask(int value)
+    {
+        return value & 0xFF;
+    }
+
     /** Color value. */
     private final int value;
     /** Red. */
@@ -150,7 +161,8 @@ public final class ColorRgba
         Check.argument(g >= 0 && g <= 255, "Wrong green value !");
         Check.argument(b >= 0 && b <= 255, "Wrong blue value !");
         Check.argument(a >= 0 && a <= 255, "Wrong alpha value !");
-        value = (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) << 0;
+
+        value = ColorRgba.mask(a) << 24 | ColorRgba.mask(r) << 16 | ColorRgba.mask(g) << 8 | ColorRgba.mask(b) << 0;
         alpha = a;
         red = r;
         green = g;
@@ -165,10 +177,10 @@ public final class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        alpha = value >> 24 & 0xFF;
-        red = value >> 16 & 0xFF;
-        green = value >> 8 & 0xFF;
-        blue = value >> 0 & 0xFF;
+        alpha = ColorRgba.mask(value >> 24);
+        red = ColorRgba.mask(value >> 16);
+        green = ColorRgba.mask(value >> 8);
+        blue = ColorRgba.mask(value >> 0);
     }
 
     /**
@@ -185,9 +197,9 @@ public final class ColorRgba
         {
             return 0;
         }
-        return (255 & 0xFF) << 24 | (UtilMath.fixBetween(red + r, 0, 255) & 0xFF) << 16
-                | (UtilMath.fixBetween(green + g, 0, 255) & 0xFF) << 8
-                | (UtilMath.fixBetween(blue + b, 0, 255) & 0xFF) << 0;
+        return ColorRgba.mask(255) << 24 | ColorRgba.mask(UtilMath.fixBetween(red + r, 0, 255)) << 16
+                | ColorRgba.mask(UtilMath.fixBetween(green + g, 0, 255)) << 8
+                | ColorRgba.mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
     }
 
     /**

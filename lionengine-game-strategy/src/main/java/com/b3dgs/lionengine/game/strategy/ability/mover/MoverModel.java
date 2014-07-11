@@ -63,37 +63,40 @@ public class MoverModel
         final double mx = getMoveX();
         final double my = getMoveY();
 
-        if (my < 0.0 && mx == 0.0)
+        if (my > 0.0)
         {
-            return Orientation.SOUTH;
-        }
-        else if (my < 0.0 && mx > 0.0)
-        {
-            return Orientation.SOUTH_EAST;
-        }
-        else if (my == 0.0 && mx > 0.0)
-        {
-            return Orientation.EAST;
-        }
-        else if (my > 0.0 && mx > 0.0)
-        {
-            return Orientation.NORTH_EAST;
-        }
-        else if (my > 0.0 && mx == 0.0)
-        {
+            if (mx > 0.0)
+            {
+                return Orientation.NORTH_EAST;
+            }
+            else if (mx < 0.0)
+            {
+                return Orientation.NORTH_WEST;
+            }
             return Orientation.NORTH;
         }
-        else if (my > 0.0 && mx < 0.0)
+        else if (my < 0.0)
         {
-            return Orientation.NORTH_WEST;
+            if (mx < 0.0)
+            {
+                return Orientation.SOUTH_WEST;
+            }
+            else if (mx > 0.0)
+            {
+                return Orientation.SOUTH_EAST;
+            }
+            return Orientation.SOUTH;
         }
-        else if (my == 0.0 && mx < 0.0)
+        else
         {
-            return Orientation.WEST;
-        }
-        else if (my < 0.0 && mx < 0.0)
-        {
-            return Orientation.SOUTH_WEST;
+            if (mx > 0.0)
+            {
+                return Orientation.EAST;
+            }
+            else if (mx < 0.0)
+            {
+                return Orientation.WEST;
+            }
         }
         return user.getOrientation();
     }
@@ -108,37 +111,46 @@ public class MoverModel
     @Override
     public void pointTo(int dtx, int dty)
     {
-        if (getLocationInTileX() == dtx && getLocationInTileY() > dty)
+        if (getLocationInTileY() < dty)
         {
-            user.setOrientation(Orientation.SOUTH);
+            if (getLocationInTileX() < dtx)
+            {
+                user.setOrientation(Orientation.NORTH_EAST);
+            }
+            else if (getLocationInTileX() > dtx)
+            {
+                user.setOrientation(Orientation.NORTH_WEST);
+            }
+            else
+            {
+                user.setOrientation(Orientation.NORTH);
+            }
         }
-        else if (getLocationInTileX() > dtx && getLocationInTileY() > dty)
+        else if (getLocationInTileY() > dty)
         {
-            user.setOrientation(Orientation.SOUTH_WEST);
+            if (getLocationInTileX() > dtx)
+            {
+                user.setOrientation(Orientation.SOUTH_WEST);
+            }
+            else if (getLocationInTileX() < dtx)
+            {
+                user.setOrientation(Orientation.SOUTH_EAST);
+            }
+            else
+            {
+                user.setOrientation(Orientation.SOUTH);
+            }
         }
-        else if (getLocationInTileX() > dtx && getLocationInTileY() == dty)
+        else
         {
-            user.setOrientation(Orientation.WEST);
-        }
-        else if (getLocationInTileX() > dtx && getLocationInTileY() < dty)
-        {
-            user.setOrientation(Orientation.NORTH_WEST);
-        }
-        else if (getLocationInTileX() == dtx && getLocationInTileY() < dty)
-        {
-            user.setOrientation(Orientation.NORTH);
-        }
-        else if (getLocationInTileX() < dtx && getLocationInTileY() < dty)
-        {
-            user.setOrientation(Orientation.NORTH_EAST);
-        }
-        else if (getLocationInTileX() < dtx && getLocationInTileY() == dty)
-        {
-            user.setOrientation(Orientation.EAST);
-        }
-        else if (getLocationInTileX() < dtx && getLocationInTileY() > dty)
-        {
-            user.setOrientation(Orientation.SOUTH_EAST);
+            if (getLocationInTileX() < dtx)
+            {
+                user.setOrientation(Orientation.EAST);
+            }
+            else if (getLocationInTileX() > dtx)
+            {
+                user.setOrientation(Orientation.WEST);
+            }
         }
     }
 

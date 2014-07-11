@@ -123,7 +123,7 @@ public final class UtilityMedia
      * @return The opened input stream.
      * @throws LionEngineException If the class is not found.
      */
-    static InputStream getInputStream(Media media, String from, boolean logger)
+    static InputStream getInputStream(Media media, String from, boolean logger) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
@@ -157,7 +157,7 @@ public final class UtilityMedia
      * @return The opened input stream.
      * @throws LionEngineException If the file can not be openened.
      */
-    static OutputStream getOutputStream(Media media, String from, boolean logger)
+    static OutputStream getOutputStream(Media media, String from, boolean logger) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try

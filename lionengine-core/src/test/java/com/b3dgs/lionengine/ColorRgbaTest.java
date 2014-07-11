@@ -112,8 +112,9 @@ public class ColorRgbaTest
     @Test
     public void testColorRgbaValueConstructor()
     {
-        final ColorRgba color1 = new ColorRgba(0);
-        Assert.assertEquals(color1.getRgba(), 0);
+        final ColorRgba color1 = new ColorRgba(100);
+        Assert.assertEquals(100, color1.getRgba());
+        Assert.assertEquals(100, color1.getBlue());
 
         final ColorRgba color2 = new ColorRgba(255, 0, 0);
         Assert.assertEquals(ColorRgba.RED.getRgba(), color2.getRgba());

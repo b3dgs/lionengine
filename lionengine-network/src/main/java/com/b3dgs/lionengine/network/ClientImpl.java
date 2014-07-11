@@ -149,6 +149,197 @@ final class ClientImpl
         return null;
     }
 
+    /**
+     * Update the message from its id.
+     * 
+     * @param messageSystemId The message system ID.
+     * @throws IOException If error when writing data.
+     */
+    private void updateMessage(byte messageSystemId) throws IOException
+    {
+        switch (messageSystemId)
+        {
+            case NetworkMessageSystemId.CONNECTING:
+            {
+                updateConnecting();
+                break;
+            }
+            case NetworkMessageSystemId.CONNECTED:
+            {
+                updateConnected();
+                break;
+            }
+            case NetworkMessageSystemId.PING:
+            {
+                ping = (int) pingTimer.elapsed();
+                break;
+            }
+            case NetworkMessageSystemId.KICKED:
+            {
+                kick();
+                break;
+            }
+            case NetworkMessageSystemId.OTHER_CLIENT_CONNECTED:
+            {
+                updateOtherClientConnected();
+                break;
+            }
+            case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
+            {
+                updateOtherClientDisconnected();
+                break;
+            }
+            case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
+            {
+                updateOtherClientRenamed();
+                break;
+            }
+            case NetworkMessageSystemId.USER_MESSAGE:
+            {
+                updateUserMessage();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Update the connecting case.
+     * 
+     * @throws IOException If error when writing data.
+     */
+    private void updateConnecting() throws IOException
+    {
+        if (clientId == -1)
+        {
+            // Receive id
+            clientId = in.readByte();
+            // Send the name
+            out.writeByte(NetworkMessageSystemId.CONNECTING);
+            out.writeByte(clientId);
+            final byte[] data = name.getBytes(NetworkMessage.CHARSET);
+            out.writeByte(data.length);
+            out.write(data);
+            out.flush();
+            Verbose.info("Client: Performing connection to the server...");
+        }
+    }
+
+    /**
+     * Update the connected case.
+     *
+     * @throws IOException If error when writing data.
+     */
+    private void updateConnected() throws IOException
+    {
+        byte cid = in.readByte();
+        // Ensure the client id is the same
+        if (cid != clientId)
+        {
+            return;
+        }
+        for (final ConnectionListener listener : listeners)
+        {
+            listener.notifyConnectionEstablished(Byte.valueOf(clientId), name);
+        }
+        // Read the client list
+        final int clientsNumber = in.readByte();
+        for (int i = 0; i < clientsNumber; i++)
+        {
+            cid = in.readByte();
+            final String cname = readString(in);
+            for (final ConnectionListener listener : listeners)
+            {
+                listener.notifyClientConnected(Byte.valueOf(cid), cname);
+            }
+        }
+        // Message of the day if has
+        if (in.available() > 0)
+        {
+            final String motd = readString(in);
+            for (final ConnectionListener listener : listeners)
+            {
+                listener.notifyMessageOfTheDay(motd);
+            }
+        }
+        // Send the last answer
+        out.write(NetworkMessageSystemId.CONNECTED);
+        out.write(clientId);
+        out.flush();
+        Verbose.info("Client: Connected to the server !");
+    }
+
+    /**
+     * Update the other client connected case.
+     * 
+     * @throws IOException If error when writing data.
+     */
+    private void updateOtherClientConnected() throws IOException
+    {
+        final byte cid = in.readByte();
+        final String cname = readString(in);
+        for (final ConnectionListener listener : listeners)
+        {
+            listener.notifyClientConnected(Byte.valueOf(cid), cname);
+        }
+    }
+
+    /**
+     * Update the other client disconnected case.
+     * 
+     * @throws IOException If error when writing data.
+     */
+    private void updateOtherClientDisconnected() throws IOException
+    {
+        final byte cid = in.readByte();
+        final String cname = readString(in);
+        for (final ConnectionListener listener : listeners)
+        {
+            listener.notifyClientDisconnected(Byte.valueOf(cid), cname);
+        }
+    }
+
+    /**
+     * Update the other client renamed case.
+     * 
+     * @throws IOException If error when writing data.
+     */
+    private void updateOtherClientRenamed() throws IOException
+    {
+        final byte cid = in.readByte();
+        final String cname = readString(in);
+        for (final ConnectionListener listener : listeners)
+        {
+            listener.notifyClientNameChanged(Byte.valueOf(cid), cname);
+        }
+    }
+
+    /**
+     * Update the other client renamed case.
+     * 
+     * @throws IOException If error when writing data.
+     */
+    private void updateUserMessage() throws IOException
+    {
+        final byte from = in.readByte();
+        final byte dest = in.readByte();
+        final byte type = in.readByte();
+        final int size = in.readInt();
+        if (size > 0)
+        {
+            final byte[] data = new byte[size];
+            if (in.read(data) != -1)
+            {
+                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
+                {
+                    decodeMessage(type, from, dest, buffer);
+                }
+            }
+        }
+        bandwidth += 4 + size;
+    }
+
     /*
      * Client
      */
@@ -327,127 +518,7 @@ final class ClientImpl
                 return;
             }
             final byte messageSystemId = in.readByte();
-            switch (messageSystemId)
-            {
-                case NetworkMessageSystemId.CONNECTING:
-                {
-                    if (clientId == -1)
-                    {
-                        // Receive id
-                        clientId = in.readByte();
-                        // Send the name
-                        out.writeByte(NetworkMessageSystemId.CONNECTING);
-                        out.writeByte(clientId);
-                        final byte[] data = name.getBytes(NetworkMessage.CHARSET);
-                        out.writeByte(data.length);
-                        out.write(data);
-                        out.flush();
-                        Verbose.info("Client: Performing connection to the server...");
-                    }
-                    break;
-                }
-                case NetworkMessageSystemId.CONNECTED:
-                {
-                    byte cid = in.readByte();
-                    // Ensure the client id is the same
-                    if (cid != clientId)
-                    {
-                        break;
-                    }
-                    for (final ConnectionListener listener : listeners)
-                    {
-                        listener.notifyConnectionEstablished(Byte.valueOf(clientId), name);
-                    }
-                    // Read the client list
-                    final int clientsNumber = in.readByte();
-                    for (int i = 0; i < clientsNumber; i++)
-                    {
-                        cid = in.readByte();
-                        final String cname = readString(in);
-                        for (final ConnectionListener listener : listeners)
-                        {
-                            listener.notifyClientConnected(Byte.valueOf(cid), cname);
-                        }
-                    }
-                    // Message of the day if has
-                    if (in.available() > 0)
-                    {
-                        final String motd = readString(in);
-                        for (final ConnectionListener listener : listeners)
-                        {
-                            listener.notifyMessageOfTheDay(motd);
-                        }
-                    }
-                    // Send the last answer
-                    out.write(NetworkMessageSystemId.CONNECTED);
-                    out.write(clientId);
-                    out.flush();
-                    Verbose.info("Client: Connected to the server !");
-                    break;
-                }
-                case NetworkMessageSystemId.PING:
-                {
-                    ping = (int) pingTimer.elapsed();
-                    break;
-                }
-                case NetworkMessageSystemId.KICKED:
-                {
-                    kick();
-                    break;
-                }
-                case NetworkMessageSystemId.OTHER_CLIENT_CONNECTED:
-                {
-                    final byte cid = in.readByte();
-                    final String cname = readString(in);
-                    for (final ConnectionListener listener : listeners)
-                    {
-                        listener.notifyClientConnected(Byte.valueOf(cid), cname);
-                    }
-                    break;
-                }
-                case NetworkMessageSystemId.OTHER_CLIENT_DISCONNECTED:
-                {
-                    final byte cid = in.readByte();
-                    final String cname = readString(in);
-                    for (final ConnectionListener listener : listeners)
-                    {
-                        listener.notifyClientDisconnected(Byte.valueOf(cid), cname);
-                    }
-                    break;
-                }
-                case NetworkMessageSystemId.OTHER_CLIENT_RENAMED:
-                {
-                    final byte cid = in.readByte();
-                    final String cname = readString(in);
-                    for (final ConnectionListener listener : listeners)
-                    {
-                        listener.notifyClientNameChanged(Byte.valueOf(cid), cname);
-                    }
-                    break;
-                }
-                case NetworkMessageSystemId.USER_MESSAGE:
-                {
-                    final byte from = in.readByte();
-                    final byte dest = in.readByte();
-                    final byte type = in.readByte();
-                    final int size = in.readInt();
-                    if (size > 0)
-                    {
-                        final byte[] data = new byte[size];
-                        if (in.read(data) != -1)
-                        {
-                            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
-                            {
-                                decodeMessage(type, from, dest, buffer);
-                            }
-                        }
-                    }
-                    bandwidth += 4 + size;
-                    break;
-                }
-                default:
-                    break;
-            }
+            updateMessage(messageSystemId);
         }
         catch (final IOException exception)
         {
