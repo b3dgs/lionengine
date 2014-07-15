@@ -46,8 +46,6 @@ public final class Keyboard
     public static final Integer ALT = Integer.valueOf(SWT.ALT);
     /** Escape key. */
     public static final Integer ESCAPE = Integer.valueOf(SWT.ESC);
-    /** Space key. */
-    public static final Integer SPACE = Integer.valueOf(SWT.SPACE);
     /** Enter key. */
     public static final Integer ENTER = Integer.valueOf(SWT.LF);
     /** Back Space key. */

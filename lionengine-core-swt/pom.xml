@@ -2,6 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<properties>
+		<swt.version>3.5.1</swt.version>
+	</properties>
+
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
@@ -11,7 +15,13 @@
 
 	<artifactId>lionengine-core-swt</artifactId>
 	<name>LionEngine Core SWT</name>
-	<packaging>eclipse-plugin</packaging>
+
+	<repositories>
+		<repository>
+	        <id>swt-repo</id>
+	        <url>https://swt-repo.googlecode.com/svn/repo/</url>
+	    </repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -19,6 +29,42 @@
 			<artifactId>lionengine-core</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
+		<dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.cocoa.macosx</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.eclipse.swt</groupId>
+	        <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+	        <version>${swt.version}</version>
+	        <optional>true</optional>
+	    </dependency>
 	</dependencies>
 
 	<build>
@@ -38,7 +84,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>
