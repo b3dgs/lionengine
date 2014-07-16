@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
-		<android.version>2.3.3</android.version>
+		<android.version>1.5_r3</android.version>
 	</properties>
 
 	<parent>
