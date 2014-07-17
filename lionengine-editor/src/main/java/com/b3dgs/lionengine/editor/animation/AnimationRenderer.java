@@ -19,9 +19,11 @@ package com.b3dgs.lionengine.editor.animation;
 
 import java.io.File;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
@@ -128,6 +130,13 @@ public final class AnimationRenderer
         final FramesData framesData = configurable.getFrames();
         surface = Drawable.loadSpriteAnimated(media, framesData.getHorizontal(), framesData.getVertical());
         surface.load(false);
+
+        final GridData data = new GridData(surface.getWidth(), surface.getHeight());
+        data.horizontalAlignment = SWT.CENTER;
+        data.verticalAlignment = SWT.CENTER;
+        data.grabExcessHorizontalSpace = true;
+        data.grabExcessVerticalSpace = true;
+        parent.setLayoutData(data);
     }
 
     /**

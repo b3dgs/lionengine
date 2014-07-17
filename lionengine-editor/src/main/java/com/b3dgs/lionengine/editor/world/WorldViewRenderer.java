@@ -125,6 +125,8 @@ public final class WorldViewRenderer
     private final EntityControl entityControl;
     /** Selected tile. */
     private TileGame selectedTile;
+    /** Last selected tile. */
+    private TileGame lastSelectedTile;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -429,11 +431,15 @@ public final class WorldViewRenderer
             if (map.isCreated())
             {
                 final Point point = Tools.getMouseTile(map, camera, mx, my);
+                lastSelectedTile = selectedTile;
                 selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
 
-                final TileCollisionPart part = Tools
-                        .getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
-                part.setSelectedTile(selectedTile);
+                if (selectedTile != lastSelectedTile)
+                {
+                    final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID,
+                            TileCollisionPart.class);
+                    part.setSelectedTile(selectedTile);
+                }
             }
 
             if (click == Mouse.LEFT)

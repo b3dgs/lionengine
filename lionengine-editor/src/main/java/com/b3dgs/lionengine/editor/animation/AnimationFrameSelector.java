@@ -19,12 +19,14 @@ package com.b3dgs.lionengine.editor.animation;
 
 import java.io.File;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -47,24 +49,11 @@ public final class AnimationFrameSelector
         implements PaintListener, MouseListener, MouseMoveListener
 {
     /** Frame color. */
-    private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 128);
+    private static final ColorRgba COLOR_FRAME = new ColorRgba(128, 128, 192, 255);
     /** Frame over color. */
-    private static final ColorRgba COLOR_FRAME_OVER = new ColorRgba(192, 192, 240, 192);
+    private static final ColorRgba COLOR_FRAME_OVER = new ColorRgba(240, 192, 192, 192);
     /** Frame selected color. */
     private static final ColorRgba COLOR_FRAME_SELECTED = new ColorRgba(192, 240, 192, 192);
-
-    /**
-     * Get the offset rounded value to ensure it fit in the grid.
-     * 
-     * @param value The input value.
-     * @param round The round reference.
-     * @return The rounded value.
-     */
-    private static int getOffset(int value, int round)
-    {
-        final double offset = value / (double) round;
-        return (int) ((offset - Math.floor(offset)) * round);
-    }
 
     /** The parent. */
     final Composite parent;
@@ -81,10 +70,6 @@ public final class AnimationFrameSelector
     private final int frameWidth;
     /** Frame height. */
     private final int frameHeight;
-    /** Render horizontal start. */
-    private final int renderX;
-    /** Render vertical start. */
-    private final int renderY;
     /** Animation list reference. */
     private AnimationList animationList;
     /** Animation properties reference. */
@@ -120,8 +105,15 @@ public final class AnimationFrameSelector
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;
         surface.load(false);
-        renderX = parent.getSize().x / 2 - surface.getWidth() / 2;
-        renderY = parent.getSize().y / 2 - surface.getHeight() / 2;
+
+        final GridData data = new GridData(surface.getWidth(), surface.getHeight());
+        data.horizontalAlignment = SWT.CENTER;
+        data.verticalAlignment = SWT.CENTER;
+        data.grabExcessHorizontalSpace = true;
+        data.grabExcessVerticalSpace = true;
+        parent.setLayoutData(data);
+        parent.setSize(surface.getWidth(), surface.getHeight());
+        parent.layout(true, true);
     }
 
     /**
@@ -222,9 +214,9 @@ public final class AnimationFrameSelector
     private void render(Graphic g, int width, int height)
     {
         renderFramesBackground(g);
-        renderOverFrame(g);
         renderFramesSelected(g);
-        surface.render(g, renderX, renderY);
+        renderOverFrame(g);
+        surface.render(g, 0, 0);
     }
 
     /**
@@ -239,9 +231,9 @@ public final class AnimationFrameSelector
             for (int v = 0; v < verticalFrames; v++)
             {
                 g.setColor(AnimationFrameSelector.COLOR_FRAME);
-                g.drawRect(renderX + h * frameWidth, renderY + v * frameHeight, frameWidth, frameHeight, true);
+                g.drawRect(h * frameWidth, v * frameHeight, frameWidth, frameHeight, true);
                 g.setColor(ColorRgba.BLACK);
-                g.drawRect(renderX + h * frameWidth, renderY + v * frameHeight, frameWidth, frameHeight, false);
+                g.drawRect(h * frameWidth, v * frameHeight, frameWidth, frameHeight, false);
             }
         }
     }
@@ -261,9 +253,9 @@ public final class AnimationFrameSelector
                 if (frame >= selectedFirstFrame && frame <= selectedLastFrame)
                 {
                     g.setColor(AnimationFrameSelector.COLOR_FRAME_SELECTED);
-                    g.drawRect(renderX + h * frameWidth, renderY + v * frameHeight, frameWidth, frameHeight, true);
+                    g.drawRect(h * frameWidth, v * frameHeight, frameWidth, frameHeight, true);
                     g.setColor(ColorRgba.BLACK);
-                    g.drawRect(renderX + h * frameWidth, renderY + v * frameHeight, frameWidth, frameHeight, false);
+                    g.drawRect(h * frameWidth, v * frameHeight, frameWidth, frameHeight, false);
                 }
             }
         }
@@ -278,11 +270,8 @@ public final class AnimationFrameSelector
     {
         if (isOverSurface())
         {
-            final int offsetX = AnimationFrameSelector.getOffset(renderX, frameWidth);
-            final int offsetY = AnimationFrameSelector.getOffset(renderY, frameHeight);
-
-            final int rx = UtilMath.getRounded(mouseX - offsetX, frameWidth) + offsetX;
-            final int ry = UtilMath.getRounded(mouseY - offsetY, frameHeight) + offsetY;
+            final int rx = UtilMath.getRounded(mouseX, frameWidth);
+            final int ry = UtilMath.getRounded(mouseY, frameHeight);
 
             g.setColor(AnimationFrameSelector.COLOR_FRAME_OVER);
             g.drawRect(rx, ry, frameWidth, frameHeight, true);
@@ -298,17 +287,13 @@ public final class AnimationFrameSelector
      */
     private int getFrameOnMouse()
     {
-        final int offsetX = AnimationFrameSelector.getOffset(renderX, frameWidth);
-        final int offsetY = AnimationFrameSelector.getOffset(renderY, frameHeight);
+        final int rx = UtilMath.getRounded(mouseX, frameWidth);
+        final int ry = UtilMath.getRounded(mouseY, frameHeight);
 
-        final int rx = UtilMath.getRounded(mouseX - offsetX, frameWidth) + offsetX;
-        final int ry = UtilMath.getRounded(mouseY - offsetY + frameHeight, frameHeight) + offsetY;
+        final int fx = rx / frameWidth;
+        final int fy = ry / frameHeight;
 
-        final int fx = (rx - renderX) / frameWidth;
-        final int fy = (ry - renderX) / frameHeight;
-        final int frame = fx + fy * horizontalFrames + 1;
-
-        return frame;
+        return fx + fy * horizontalFrames + 1;
     }
 
     /**
@@ -318,8 +303,7 @@ public final class AnimationFrameSelector
      */
     private boolean isOverSurface()
     {
-        return mouseX >= renderX && mouseX < renderX + surface.getWidth() && mouseY >= renderY
-                && mouseY < renderX + surface.getHeight();
+        return mouseX >= 0 && mouseX < surface.getWidth() && mouseY >= 0 && mouseY < surface.getHeight();
     }
 
     /*
@@ -350,8 +334,8 @@ public final class AnimationFrameSelector
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        startFrameSelection();
         updateMouse(mx, my);
+        startFrameSelection();
         updateFrameSelection();
     }
 

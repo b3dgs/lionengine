@@ -54,7 +54,6 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Geom;
@@ -156,19 +155,21 @@ public final class Tools
     public static Configurable getConfigurable(Media entity)
     {
         final String entityName = entity.getFile().getName().replace("." + FactoryObjectGame.FILE_DATA_EXTENSION, "");
-        final Class<?> entityClass = Tools.getEntityClass(entityName);
+        final Class<? extends ObjectGame> entityClass = Tools.getObjectClass(ObjectGame.class, entityName);
         final FactoryObjectGame<?, ?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
         final SetupGame setup = factory.getSetup(entityClass, ObjectGame.class);
         return setup.getConfigurable();
     }
 
     /**
-     * Get the entity class from its name.
+     * Get the object class from its name.
      * 
+     * @param <O> The object class.
+     * @param objectType The object type.
      * @param name The entity name.
      * @return The entity class reference.
      */
-    public static Class<? extends EntityGame> getEntityClass(String name)
+    public static <O> Class<? extends O> getObjectClass(Class<O> objectType, String name)
     {
         final Project project = Project.getActive();
         final File classesPath = project.getClassesPath();
@@ -179,7 +180,7 @@ public final class Tools
         {
             final String path = classNames.get(0).getPath();
             final Media classPath = project.getClassMedia(path);
-            final Class<? extends EntityGame> type = project.getClass(EntityGame.class, classPath);
+            final Class<? extends O> type = project.getClass(objectType, classPath);
             return type;
         }
         return null;

@@ -254,6 +254,7 @@ public class TileCollisionComposite
                 selectedFunction.setValue(Double.parseDouble(value.getText()));
                 selectedFunction.setOffset(Integer.parseInt(offset.getText()));
                 selectedFunction.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
+
                 final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
                 map.createCollisionDraw();
                 tileCollisionPart.updateWorldView();

@@ -51,6 +51,7 @@ import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.entity.EntityGame;
 
 /**
  * Represents the factory entity view, where the entities list is displayed.
@@ -176,7 +177,14 @@ public class FactoryEntityPart
     public void setFactoryEntity(FactoryObjectGame<?, ?> factoryEntity)
     {
         final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
-        load(factoryEntity, entitiesPath, middle);
+        try
+        {
+            load(factoryEntity, entitiesPath, middle);
+        }
+        catch (final LionEngineException exception)
+        {
+            createObjects(entitiesPath.listFiles());
+        }
     }
 
     /**
@@ -230,12 +238,7 @@ public class FactoryEntityPart
                         }
                         catch (final LionEngineException exception)
                         {
-                            entitiesComposite = new Composite(bottom, SWT.BORDER);
-                            entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-                            entitiesComposite.setLayout(new RowLayout());
-
-                            final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
-                            loadEntities(factoryEntity, typeFolder);
+                            createObjects(typeFolder.listFiles());
                         }
                     }
                 }
@@ -246,14 +249,28 @@ public class FactoryEntityPart
     }
 
     /**
+     * Create the entities list from their file.
+     * 
+     * @param objectsFile The objects file.
+     */
+    void createObjects(File[] objectsFile)
+    {
+        entitiesComposite = new Composite(bottom, SWT.BORDER);
+        entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        entitiesComposite.setLayout(new RowLayout());
+
+        final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
+        loadEntities(factoryEntity, objectsFile);
+    }
+
+    /**
      * Load all entities from their folder (filter them by extension, <code>*.xml</code> expected).
      * 
      * @param factoryEntity The factory entity reference.
-     * @param themePath The theme folder path.
+     * @param entityFiles The entities path.
      */
-    void loadEntities(FactoryObjectGame<?, ?> factoryEntity, File themePath)
+    void loadEntities(FactoryObjectGame<?, ?> factoryEntity, File[] entityFiles)
     {
-        final File[] entityFiles = themePath.listFiles();
         if (entityFiles != null)
         {
             for (final File entityFile : entityFiles)
@@ -323,7 +340,8 @@ public class FactoryEntityPart
                 }
                 else
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(Tools.getEntityClass(entityLabel.getText()));
+                    WorldViewModel.INSTANCE.setSelectedEntity(Tools.getObjectClass(EntityGame.class,
+                            entityLabel.getText()));
                     entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
                     lastEntity = entityLabel;
                 }
@@ -342,7 +360,7 @@ public class FactoryEntityPart
             }
         });
 
-        final Class<? extends ObjectGame> type = Tools.getEntityClass(entityLabel.getText());
+        final Class<? extends ObjectGame> type = Tools.getObjectClass(EntityGame.class, entityLabel.getText());
         final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
 
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);

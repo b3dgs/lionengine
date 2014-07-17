@@ -69,6 +69,8 @@ public class TileCollisionPart
     private ToolBar toolbar;
     /** Add formula item. */
     private ToolItem addFormula;
+    /** Save collisions item. */
+    private ToolItem saveCollisions;
     /** Formula list. */
     private List<TileCollisionComposite> formulas;
     /** Parent reference. */
@@ -158,6 +160,16 @@ public class TileCollisionPart
     }
 
     /**
+     * Set the save button enabled.
+     * 
+     * @param enabled <code>true</code> if enabled, <code>false</code> else.
+     */
+    public void setSaveEnabled(boolean enabled)
+    {
+        saveCollisions.setEnabled(enabled);
+    }
+
+    /**
      * Update the world view part.
      */
     public void updateWorldView()
@@ -207,6 +219,21 @@ public class TileCollisionPart
                 final TileCollisionComposite tileCollisionComposite = createFormula();
                 final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
                 map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
+            }
+        });
+
+        saveCollisions = new ToolItem(toolbar, SWT.PUSH);
+        saveCollisions.setText("Save");
+        saveCollisions.setImage(ObjectList.ICON_SAVE);
+        saveCollisions.setEnabled(false);
+        saveCollisions.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent selectionEvent)
+            {
+                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+                map.saveCollisions();
+                map.createCollisionDraw();
             }
         });
     }

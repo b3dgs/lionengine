@@ -75,10 +75,6 @@ public class AnimationEditor
         sheetTab.setControl(sheet);
 
         final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-        renderer.setLayoutData(new GridData(256, 256));
-        renderer.setSize(256, 256);
-        renderer.layout(true, true);
-
         final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(renderer, configurable);
         renderer.addPaintListener(animationFrameSelector);
         renderer.addMouseListener(animationFrameSelector);
@@ -100,8 +96,6 @@ public class AnimationEditor
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Composite renderer = new Composite(content, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-        renderer.setLayoutData(new GridData(256, 256));
-
         final AnimationRenderer animationRenderer = new AnimationRenderer(renderer, configurable);
         renderer.addPaintListener(animationRenderer);
 

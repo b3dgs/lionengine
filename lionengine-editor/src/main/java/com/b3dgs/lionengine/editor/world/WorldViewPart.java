@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
@@ -150,9 +151,12 @@ public class WorldViewPart
                     map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
                     map.createCollisionDraw();
 
-                    final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
-                    part.update();
-                    part.focus();
+                    final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID,
+                            TileCollisionPart.class);
+                    part.setSaveEnabled(true);
+
+                    update();
+                    focus();
                 }
             }
         });

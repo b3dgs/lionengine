@@ -46,6 +46,8 @@ public abstract class ObjectList<T>
     public static final Image ICON_ADD = Tools.getIcon("add.png");
     /** Icon remove. */
     public static final Image ICON_REMOVE = Tools.getIcon("remove.png");
+    /** Icon save. */
+    public static final Image ICON_SAVE = Tools.getIcon("save.png");
     /** Animation list. */
     Tree objectsTree;
     /** Selected data. */
