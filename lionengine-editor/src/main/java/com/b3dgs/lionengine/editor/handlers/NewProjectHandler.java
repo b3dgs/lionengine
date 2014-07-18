@@ -51,7 +51,7 @@ public class NewProjectHandler
         {
             final ProjectsPart part = Tools.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
             ProjectsModel.INSTANCE.setRoot(project.getPath());
-            part.setInput(project);
+            part.setInput(project, partService);
         }
     }
 }

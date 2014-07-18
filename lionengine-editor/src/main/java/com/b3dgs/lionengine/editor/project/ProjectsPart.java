@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -45,6 +47,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
 
 /**
  * Represents the resources explorer, depending of the opened project.
@@ -79,59 +82,52 @@ public class ProjectsPart
     private static final Image ICON_CLASS = Tools.getIcon("resources", "class.png");
 
     /**
-     * Set the file icon.
+     * Get the file icon.
      * 
      * @param file The child file.
-     * @param item The child item.
+     * @return The icon image associated to the file type.
      */
-    private static void setFileIcon(Media file, TreeItem item)
+    private static Image getFileIcon(Media file)
     {
         if (Property.SOUND.is(file))
         {
-            item.setImage(ProjectsPart.ICON_SOUND);
+            return ProjectsPart.ICON_SOUND;
         }
         else if (Property.MUSIC.is(file))
         {
-            item.setImage(ProjectsPart.ICON_MUSIC);
+            return ProjectsPart.ICON_MUSIC;
         }
         else if (Property.IMAGE.is(file))
         {
-            item.setImage(ProjectsPart.ICON_IMAGE);
+            return ProjectsPart.ICON_IMAGE;
         }
         else if (Property.LEVEL.is(file))
         {
-            item.setImage(ProjectsPart.ICON_LEVEL);
+            return ProjectsPart.ICON_LEVEL;
         }
         else if (Property.DATA.is(file))
         {
             if (EntitiesFolderTester.isEntityFile(file.getFile()))
             {
-                item.setImage(ProjectsPart.ICON_ENTITTY);
+                return ProjectsPart.ICON_ENTITTY;
             }
-            else
-            {
-                item.setImage(ProjectsPart.ICON_DATA);
-            }
+            return ProjectsPart.ICON_DATA;
         }
         else if (Property.CLASS.is(file))
         {
-            item.setText(item.getText().replaceAll("." + Property.EXTENSION_CLASS, ""));
             if (Property.MAP_IMPL.is(file))
             {
-                item.setImage(ProjectsPart.ICON_MAP);
+                return ProjectsPart.ICON_MAP;
             }
             else if (Property.FACTORY_ENTITY_IMPL.is(file))
             {
-                item.setImage(ProjectsPart.ICON_FACTORY_ENTITTY);
+                return ProjectsPart.ICON_FACTORY_ENTITTY;
             }
-            else
-            {
-                item.setImage(ProjectsPart.ICON_CLASS);
-            }
+            return ProjectsPart.ICON_CLASS;
         }
         else
         {
-            item.setImage(ProjectsPart.ICON_FILE);
+            return ProjectsPart.ICON_FILE;
         }
     }
 
@@ -204,14 +200,16 @@ public class ProjectsPart
      * Set the project main folders.
      * 
      * @param project The project reference.
+     * @param partService The part service reference.
      * @throws LionEngineException If error while reading project children.
      */
-    public void setInput(Project project) throws LionEngineException
+    public void setInput(Project project, EPartService partService) throws LionEngineException
     {
         try
         {
             tree.removeAll();
             final Map<TreeItem, List<Media>> children = getChildren(project);
+            final List<TreeItem> quicks = new ArrayList<>();
             for (final TreeItem parent : children.keySet())
             {
                 for (final Media child : children.get(parent))
@@ -219,10 +217,20 @@ public class ProjectsPart
                     final TreeItem item = new TreeItem(parent, SWT.NONE);
                     item.setText(child.getFile().getName());
                     item.setData(child);
-                    ProjectsPart.setFileIcon(child, item);
+                    final Image icon = ProjectsPart.getFileIcon(child);
+                    item.setImage(icon);
+
+                    if (icon == ProjectsPart.ICON_FACTORY_ENTITTY || icon == ProjectsPart.ICON_MAP)
+                    {
+                        item.setText(item.getText().replace("." + Property.EXTENSION_CLASS, ""));
+                        quicks.add(item);
+                    }
                 }
             }
             tree.layout();
+
+            final QuickAccessPart part = Tools.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
+            part.setInput(quicks);
         }
         catch (final IOException exception)
         {
