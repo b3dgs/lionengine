@@ -94,7 +94,7 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
      * @return The setup reference.
      * @throws LionEngineException If not a valid type, related to the parent.
      */
-    public S getSetup(Class<?> type, Class<? extends ObjectGame> parent) throws LionEngineException
+    public S getSetup(Class<? extends ObjectGame> type, Class<? extends ObjectGame> parent) throws LionEngineException
     {
         final Class<? extends ObjectGame> subType = type.asSubclass(parent);
         try

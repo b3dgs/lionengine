@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
@@ -62,6 +64,73 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
 public abstract class MapTileGame<T extends TileGame>
         implements MapTile<T>
 {
+    /**
+     * Save the tile node depending of their consecutiveness.
+     * 
+     * @param node The XML node.
+     * @param pattern The pattern number.
+     * @param numbers The numbers list.
+     * @return <code>true</code> if stored, <code>false</code> else.
+     */
+    private static boolean saveTileNode(XmlNode node, Integer pattern, List<Integer> numbers)
+    {
+        final boolean added;
+        if (numbers.size() == 1)
+        {
+            final XmlNode tile = Stream.createXmlNode("lionengine:tile");
+            node.add(tile);
+            tile.writeInteger("pattern", pattern.intValue());
+            tile.writeInteger("number", numbers.get(0).intValue());
+            added = true;
+        }
+        else if (numbers.size() > 1)
+        {
+            final XmlNode tile = Stream.createXmlNode("lionengine:tiles");
+            node.add(tile);
+            tile.writeInteger("pattern", pattern.intValue());
+            tile.writeInteger("start", numbers.get(0).intValue());
+            tile.writeInteger("end", numbers.get(numbers.size() - 1).intValue());
+            added = true;
+        }
+        else
+        {
+            added = false;
+        }
+        return added;
+    }
+
+    /**
+     * Split non consecutive numbers per pattern into multiple list of numbers.
+     * 
+     * @param patterns The pattern set.
+     * @param pattern The current pattern.
+     * @return The splited numbers list.
+     */
+    private static List<List<Integer>> splitNonConsecutiveNumbers(Map<Integer, SortedSet<Integer>> patterns,
+            Integer pattern)
+    {
+        final SortedSet<Integer> numbers = patterns.get(pattern);
+        final List<List<Integer>> series = new ArrayList<>(8);
+
+        int lastValue = -2;
+        List<Integer> currentSerie = null;
+        for (final Integer number : numbers)
+        {
+            final int newValue = number.intValue();
+            if (newValue - lastValue != 1)
+            {
+                currentSerie = new ArrayList<>(8);
+                series.add(currentSerie);
+            }
+            lastValue = newValue;
+            if (currentSerie != null)
+            {
+                currentSerie.add(number);
+            }
+        }
+        return series;
+    }
+
     /**
      * Get the tile search speed value.
      * 
@@ -420,6 +489,28 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
+     * Save tiles collisions for all of the map tile.
+     * 
+     * @param node The XML node.
+     * @param collision The current collision.
+     * @return <code>true</code> if at least on tile stored, <code>false</code> else.
+     */
+    private boolean saveTilesCollisions(XmlNode node, CollisionTile collision)
+    {
+        final Map<Integer, SortedSet<Integer>> patterns = getCollisionsPattern(node, collision);
+        boolean added = false;
+        for (final Integer pattern : patterns.keySet())
+        {
+            final List<List<Integer>> elements = MapTileGame.splitNonConsecutiveNumbers(patterns, pattern);
+            for (final List<Integer> numbers : elements)
+            {
+                added = MapTileGame.saveTileNode(node, pattern, numbers);
+            }
+        }
+        return added;
+    }
+
+    /**
      * Check the collision at the specified location.
      * 
      * @param localizable The localizable reference.
@@ -461,6 +552,42 @@ public abstract class MapTileGame<T extends TileGame>
         {
             g.drawImage(buffer, x, y);
         }
+    }
+
+    /**
+     * Sort each tile number for each pattern for each collision in a map.
+     * 
+     * @param node The current node.
+     * @param collision The current collision.
+     * @return The values.
+     */
+    private Map<Integer, SortedSet<Integer>> getCollisionsPattern(XmlNode node, CollisionTile collision)
+    {
+        final Map<Integer, SortedSet<Integer>> patterns = new HashMap<>(8);
+        for (int ty = 0; ty < getHeightInTile(); ty++)
+        {
+            for (int tx = 0; tx < getWidthInTile(); tx++)
+            {
+                final TileGame tile = getTile(tx, ty);
+                if (tile != null && tile.getCollision() == collision)
+                {
+                    final Integer pattern = tile.getPattern();
+                    final SortedSet<Integer> numbers;
+
+                    if (!patterns.containsKey(pattern))
+                    {
+                        numbers = new TreeSet<>();
+                        patterns.put(pattern, numbers);
+                    }
+                    else
+                    {
+                        numbers = patterns.get(pattern);
+                    }
+                    numbers.add(Integer.valueOf(tile.getNumber() + 1));
+                }
+            }
+        }
+        return patterns;
     }
 
     /*
@@ -749,6 +876,38 @@ public abstract class MapTileGame<T extends TileGame>
         {
             collision.removeCollisionFunction(function);
         }
+    }
+
+    @Override
+    public void saveCollisions()
+    {
+        final XmlNode root = Stream.createXmlNode("lionengine:tileCollisions");
+        for (final CollisionTile collision : collisions)
+        {
+            final XmlNode node = Stream.createXmlNode("lionengine:tileCollision");
+            node.writeString("name", collision.getValue().name());
+            if (saveTilesCollisions(node, collision))
+            {
+                root.add(node);
+            }
+            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
+            if (functions != null)
+            {
+                for (final CollisionFunction function : functions)
+                {
+                    final XmlNode functionNode = Stream.createXmlNode("lionengine:function");
+                    functionNode.writeString("name", function.getName());
+                    functionNode.writeString("axis", function.getAxis().name());
+                    functionNode.writeString("input", function.getInput().name());
+                    functionNode.writeDouble("value", function.getValue());
+                    functionNode.writeInteger("offset", function.getOffset());
+                    functionNode.writeInteger("min", function.getRange().getMin());
+                    functionNode.writeInteger("max", function.getRange().getMax());
+                    node.add(functionNode);
+                }
+            }
+        }
+        Stream.saveXml(root, Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
     }
 
     @Override

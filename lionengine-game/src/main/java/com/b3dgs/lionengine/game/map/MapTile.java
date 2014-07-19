@@ -188,6 +188,11 @@ public interface MapTile<T extends TileGame>
     void removeCollisionFunction(CollisionFunction function);
 
     /**
+     * Save the current collisions to the collision file.
+     */
+    void saveCollisions();
+
+    /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
      * 
      * <pre>
