@@ -11,8 +11,7 @@
 
 	<artifactId>lionengine-core</artifactId>
 	<name>LionEngine Core</name>
-	<packaging>eclipse-plugin</packaging>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -28,9 +27,23 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+						<configuration>
+							<classifier>test-resources</classifier>
+							<includes>
+								<include>**/*.class</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
 				<configuration>
 					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

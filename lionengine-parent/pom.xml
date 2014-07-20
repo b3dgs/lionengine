@@ -89,13 +89,6 @@
 			</modules>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>kepler</id>
-			<url>http://download.eclipse.org/releases/kepler</url>
-			<layout>p2</layout>
-		</repository>
-	</repositories>
 	<build>
 		<plugins>
 			<plugin>

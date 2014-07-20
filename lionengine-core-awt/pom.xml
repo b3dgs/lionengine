@@ -11,13 +11,19 @@
 
 	<artifactId>lionengine-core-awt</artifactId>
 	<name>LionEngine Core AWT</name>
-	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
 			<version>${lionengine.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-core</artifactId>
+			<version>${lionengine.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -38,7 +44,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

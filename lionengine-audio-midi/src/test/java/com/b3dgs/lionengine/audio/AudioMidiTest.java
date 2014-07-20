@@ -23,8 +23,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.audio.AudioMidi;
-
 /**
  * Test the audio midi class.
  * 

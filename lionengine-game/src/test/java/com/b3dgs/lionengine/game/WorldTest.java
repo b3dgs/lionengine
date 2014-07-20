@@ -107,7 +107,7 @@ public class WorldTest
             world.saveToFile(null);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }
@@ -142,7 +142,7 @@ public class WorldTest
             world.loadFromFile(null);
             Assert.fail();
         }
-        catch (final LionEngineException exception)
+        catch (final NullPointerException exception)
         {
             // Success
         }

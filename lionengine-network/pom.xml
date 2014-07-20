@@ -11,7 +11,6 @@
 
 	<artifactId>lionengine-network</artifactId>
 	<name>LionEngine Network</name>
-	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>
@@ -38,7 +37,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>${basedir}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>

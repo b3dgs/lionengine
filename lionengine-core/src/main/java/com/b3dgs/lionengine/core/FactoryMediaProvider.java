@@ -54,7 +54,10 @@ public final class FactoryMediaProvider
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)
         {
-            fullPath.append(path[i]);
+            if (path[i] != null)
+            {
+                fullPath.append(path[i]);
+            }
             if (i < path.length - 1)
             {
                 fullPath.append(getSeparator());
