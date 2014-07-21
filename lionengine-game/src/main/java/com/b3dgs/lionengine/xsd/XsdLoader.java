@@ -39,6 +39,8 @@ public final class XsdLoader
     public static final String XSD_PROJECTILE = "projectile.xsd";
     /** XSD folder type. */
     public static final String XSD_FOLDER_TYPE = "entityFolderType.xsd";
+    /** XSD tile sheets. */
+    public static final String XSD_TILE_SHEETS = "tilesheets.xsd";
 
     /**
      * Get an XSD from its name.

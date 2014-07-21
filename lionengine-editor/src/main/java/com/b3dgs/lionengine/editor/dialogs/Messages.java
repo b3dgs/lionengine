@@ -93,6 +93,12 @@ public final class Messages
     public static String EditEntityDialog_HeaderTitle;
     /** Edit entity dialog description header. */
     public static String EditEntityDialog_HeaderDesc;
+    /** Edit tile sheets dialog title. */
+    public static String EditTilesheetsDialog_Title;
+    /** Edit tile sheets dialog title header. */
+    public static String EditTilesheetsDialog_HeaderTitle;
+    /** Edit tile sheets dialog description header. */
+    public static String EditTilesheetsDialog_HeaderDesc;
     /** About. */
     public static String AboutDialog_Title;
 

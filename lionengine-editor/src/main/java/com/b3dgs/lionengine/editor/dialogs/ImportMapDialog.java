@@ -74,7 +74,6 @@ public class ImportMapDialog
         onLevelRipLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
         onPatternLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\tile\\swamp\\");
         finish.setEnabled(true);
-        found = true;
         finish.forceFocus();
     }
 

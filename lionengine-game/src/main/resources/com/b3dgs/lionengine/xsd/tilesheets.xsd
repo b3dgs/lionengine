@@ -3,13 +3,11 @@
 	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
 	<include schemaLocation="lionengine.xsd"></include>
 
-
-
-	<complexType name="patterns">
-		<sequence>
-			<element name="pattern" type="string" minOccurs="1" maxOccurs="unbounded"></element>
-		</sequence>
-	</complexType>
-
-	<element name="patterns" type="lionengine:patterns"></element>
+	<element name="tilesheets" type="lionengine:tilesheets"></element>
+	
+    <complexType name="tilesheets">
+    	<sequence>
+    		<element name="tilesheet" type="string" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
 </schema>

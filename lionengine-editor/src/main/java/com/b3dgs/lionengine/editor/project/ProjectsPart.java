@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
@@ -215,14 +216,23 @@ public class ProjectsPart
                 for (final Media child : children.get(parent))
                 {
                     final TreeItem item = new TreeItem(parent, SWT.NONE);
-                    item.setText(child.getFile().getName());
-                    item.setData(child);
+                    final String childName = child.getFile().getName();
                     final Image icon = ProjectsPart.getFileIcon(child);
                     item.setImage(icon);
+                    item.setData(child);
+
+                    if (Property.CLASS.is(child))
+                    {
+                        final int beforeExtension = childName.indexOf(UtilFile.getExtension(childName)) - 1;
+                        item.setText(child.getFile().getName().substring(0, beforeExtension));
+                    }
+                    else
+                    {
+                        item.setText(child.getFile().getName());
+                    }
 
                     if (icon == ProjectsPart.ICON_FACTORY_ENTITTY || icon == ProjectsPart.ICON_MAP)
                     {
-                        item.setText(item.getText().replace("." + Property.EXTENSION_CLASS, ""));
                         quicks.add(item);
                     }
                 }

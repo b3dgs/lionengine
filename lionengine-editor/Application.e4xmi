@@ -12,6 +12,7 @@
                 <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-entities-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntitiesFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
                 <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
                 <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditEntityHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
+                <handlers xmi:id="_ur9w4A97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.handler.edit-tilesheets" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.handlers.EditTilesheetsHandler" command="_wm-FAA97EeS-BbtPUGIQSQ"/>
                 <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/assign-map-impl.png" command="_KK_5cNVTEeObvtSGPT134w">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
@@ -27,6 +28,9 @@
                   </children>
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_pBAAoN9AEeOIN7-STHd0gQ" elementId="" label="%menu.edit-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-entity.png" command="_mRrToN9AEeOIN7-STHd0gQ">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pBAAod9AEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.editEntity"/>
+                  </children>
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_ovJNIA97EeS-BbtPUGIQSQ" elementId="" label="%menu.edit-tilesheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/edit-entity.png" command="_wm-FAA97EeS-BbtPUGIQSQ">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_ovJNIQ97EeS-BbtPUGIQSQ" coreExpressionId="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets"/>
                   </children>
                 </menus>
               </children>
@@ -99,6 +103,7 @@
   <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-entities-folder-type" commandName="editEntitiesFolderTypeCommand"/>
   <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
   <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-entity" commandName="editEntityCommand"/>
+  <commands xmi:id="_wm-FAA97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.command.edit-tilesheets" commandName="editTilesheetsCommand"/>
   <addons xmi:id="_RgxMsscnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_RgxMs8cnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_RgxMtMcnEeO6QsMPtNpkHg" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>

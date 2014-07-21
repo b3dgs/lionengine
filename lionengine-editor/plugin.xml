@@ -101,6 +101,12 @@
                property="com.b3dgs.lionengine.editor.mapImplementationTester.test">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets">
+         <test
+               property="com.b3dgs.lionengine.editor.tilesheetsFolderTester.editTilesheets">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -123,6 +129,13 @@
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
             namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
             properties="category,addEntity,isEntity,editEntity"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.TilesheetsFolderTester"
+            id="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
+            namespace="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
+            properties="editTilesheets"
             type="java.lang.Object">
       </propertyTester>
    </extension>
