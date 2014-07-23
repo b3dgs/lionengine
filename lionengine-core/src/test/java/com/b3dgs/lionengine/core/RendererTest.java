@@ -187,7 +187,7 @@ public class RendererTest
      * 
      * @throws InterruptedException If error.
      */
-    @Test(timeout = 6000)
+    @Test(timeout = Renderer.SCREEN_READY_TIME_OUT + 1000)
     public void testWaitScreenTimeout() throws InterruptedException
     {
         final Loader loader = new Loader(RendererTest.CONFIG);

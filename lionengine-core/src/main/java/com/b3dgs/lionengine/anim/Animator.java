@@ -49,7 +49,7 @@ public interface Animator
 {
     /**
      * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} does the animation
-     * update.
+     * update. Must not be <code>null</code>.
      * 
      * @param animation The animation to play.
      */
@@ -61,8 +61,8 @@ public interface Animator
     void stopAnimation();
 
     /**
-     * Animation update routine. It will update the animation that have been defined with the last call of
-     * {@link #play(Animation)}.
+     * Animation update routine.
+     * It will update the animation that have been defined with the last call of {@link #play(Animation)}.
      * 
      * @param extrp The extrapolation value.
      */
@@ -73,6 +73,7 @@ public interface Animator
      * <p>
      * Can be used to synchronize the player movement speed to the walking animation speed.
      * </p>
+     * Must be greater or equal to 0.
      * 
      * @param speed The new animation speed.
      */
@@ -80,6 +81,7 @@ public interface Animator
 
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
+     * Must be greater or equal to {@link Animation#MINIMUM_FRAME}.
      * 
      * @param frame The frame to set.
      */

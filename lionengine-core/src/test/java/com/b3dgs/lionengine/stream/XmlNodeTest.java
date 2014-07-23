@@ -85,6 +85,10 @@ public class XmlNodeTest
         }
         Assert.assertEquals("str", child1.getAttributes().get("str"));
         Assert.assertEquals("", child1.getText());
+
+        final String text = "text";
+        root.setText(text);
+        Assert.assertEquals(text, root.getText());
     }
 
     /**

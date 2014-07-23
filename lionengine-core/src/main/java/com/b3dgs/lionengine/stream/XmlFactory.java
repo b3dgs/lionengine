@@ -108,7 +108,8 @@ final class XmlFactory
             }
         }
         catch (final IOException
-                     | TransformerException exception)
+                     | TransformerException
+                     | LionEngineException exception)
         {
             throw new LionEngineException(exception, XmlFactory.ERROR_WRITING, "\"", file, "\"");
         }

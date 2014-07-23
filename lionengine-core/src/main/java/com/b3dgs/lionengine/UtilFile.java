@@ -291,18 +291,15 @@ public final class UtilFile
         if (file.exists())
         {
             final File[] files = file.listFiles();
-            if (files != null)
+            for (final File content : files)
             {
-                for (final File content : files)
+                if (content.isDirectory())
                 {
-                    if (content.isDirectory())
-                    {
-                        UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
-                    }
-                    if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
-                    {
-                        filesList.add(content);
-                    }
+                    UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                }
+                if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
+                {
+                    filesList.add(content);
                 }
             }
         }

@@ -36,6 +36,8 @@ public abstract class Renderer
         extends Thread
         implements Sequencable
 {
+    /** Screen ready timeout in milli second. */
+    static final int SCREEN_READY_TIME_OUT = 5000;
     /** Error message loader. */
     private static final String ERROR_SEQUENCE = "Sequence must not be null !";
     /** Error message loader. */
@@ -309,7 +311,7 @@ public abstract class Renderer
             try
             {
                 Thread.sleep(100);
-                if (timeout.elapsed(5000))
+                if (timeout.elapsed(Renderer.SCREEN_READY_TIME_OUT))
                 {
                     Thread.currentThread().interrupt();
                 }

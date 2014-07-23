@@ -81,10 +81,12 @@ public class ImageInfoTest
      */
     private static void testImageInfo(String type)
     {
-        final ImageInfo info = ImageInfo.get(Core.MEDIA.create(ImageInfoTest.PATH, "image." + type));
+        final Media media = Core.MEDIA.create(ImageInfoTest.PATH, "image." + type);
+        final ImageInfo info = ImageInfo.get(media);
         Assert.assertEquals(64, info.getWidth());
         Assert.assertEquals(32, info.getHeight());
         Assert.assertEquals(type, info.getFormat());
+        Assert.assertTrue(ImageInfo.isImage(media));
     }
 
     /**
@@ -114,6 +116,7 @@ public class ImageInfoTest
         ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error5.tiff"));
         ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error6.tiff"));
         ImageInfoTest.testImageInfoFailure(Core.MEDIA.create(ImageInfoTest.PATH, "image_error7.tiff"));
+        Assert.assertFalse(ImageInfo.isImage(Core.MEDIA.create(ImageInfoTest.PATH, "image_error7.tiff")));
     }
 
     /**

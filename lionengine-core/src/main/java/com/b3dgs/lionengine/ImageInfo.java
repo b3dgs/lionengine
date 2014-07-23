@@ -72,6 +72,25 @@ public final class ImageInfo
     }
 
     /**
+     * Check if the media is a valid image.
+     * 
+     * @param media The media reference.
+     * @return <code>true</code> if is supported image, <code>false</code> else.
+     */
+    public static boolean isImage(Media media)
+    {
+        try
+        {
+            ImageInfo.get(media);
+            return true;
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
+    }
+
+    /**
      * Read integer in image data.
      * 
      * @param inputStream The stream.

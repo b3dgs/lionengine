@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.xml.bind.ValidationException;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -81,9 +83,11 @@ public class UtilityFileTest
 
     /**
      * Test the utility file check.
+     * 
+     * @throws ValidationException If error.
      */
     @Test
-    public void testUtilityFileCheck()
+    public void testUtilityFileCheck() throws ValidationException
     {
         final String file = "file1.txt";
         final String path = UtilFile.getPath(UtilityFileTest.PATH, file);
@@ -92,6 +96,7 @@ public class UtilityFileTest
         Assert.assertTrue(UtilFile.getTempDir().contains("temp"));
         Assert.assertTrue(UtilFile.exists(path));
         Assert.assertFalse(UtilFile.exists(null));
+        Assert.assertTrue(UtilFile.isFile(path));
         Assert.assertEquals("txt", UtilFile.getExtension(path));
         Assert.assertEquals("txt", UtilFile.getExtension(descriptor));
         Assert.assertEquals("", UtilFile.getExtension("noextension"));
@@ -101,6 +106,19 @@ public class UtilityFileTest
         Assert.assertFalse(UtilFile.isFile(null));
         Assert.assertFalse(UtilFile.isDir(path));
         Assert.assertFalse(UtilFile.isDir(null));
+        Assert.assertEquals("file1", UtilFile.removeExtension(file));
+        UtilFile.validateXml(new File(UtilFile.getPath(UtilityFileTest.PATH, "tilesheets.xsd")).toURI(), new File(
+                UtilFile.getPath(UtilityFileTest.PATH, "type.xml")));
+        try
+        {
+            UtilFile.validateXml(new File(UtilFile.getPath(UtilityFileTest.PATH, "tilesheets.xsd")).toURI(), new File(
+                    UtilFile.getPath(UtilityFileTest.PATH, "error.xml")));
+            Assert.fail();
+        }
+        catch (final ValidationException exception)
+        {
+            // Success
+        }
     }
 
     /**
@@ -120,10 +138,12 @@ public class UtilityFileTest
                 Assert.assertEquals(0, UtilFile.getDirsList(UtilFile.getPath("null")).length);
 
                 final String[] files = UtilFile.getFilesList(UtilityFileTest.PATH);
-                Assert.assertEquals(3, files.length);
+                Assert.assertEquals(7, files.length);
                 Assert.assertEquals(0, UtilFile.getFilesList(UtilFile.getPath("null")).length);
                 Assert.assertEquals(0, UtilFile.getFilesByExtension(UtilFile.getPath("null"), "txt").size());
                 Assert.assertEquals(2, UtilFile.getFilesByExtension(UtilityFileTest.PATH, "txt").size());
+                Assert.assertFalse(UtilFile.getFilesByName(new File(UtilityFileTest.PATH).getParentFile(), "file")
+                        .isEmpty());
             }
             catch (final LionEngineException exception)
             {

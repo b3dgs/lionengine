@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.stream;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -62,6 +64,24 @@ public class XmlFactoryTest
 
     /** Default test file xml. */
     private Media fileXml;
+
+    /**
+     * Test the factory class.
+     * 
+     * @throws NoSuchMethodException If error.
+     * @throws IllegalAccessException If error.
+     * @throws InstantiationException If error.
+     * @throws InvocationTargetException If success.
+     */
+    @Test(expected = InvocationTargetException.class)
+    public void testClass() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
+            InvocationTargetException
+    {
+        final Constructor<XmlFactory> factory = XmlFactory.class.getDeclaredConstructor();
+        factory.setAccessible(true);
+        final XmlFactory clazz = factory.newInstance();
+        Assert.assertNotNull(clazz);
+    }
 
     /**
      * Test the write and read in XML with parser.

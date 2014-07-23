@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * </p>
  * 
  * <pre>
- * final XmlNode node = File.createXmlNode(&quot;node&quot;);
+ * final XmlNode node = Stream.createXmlNode(&quot;node&quot;);
  * node.writeBoolean(&quot;value&quot;, true);
  * </pre>
  * 

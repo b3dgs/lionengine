@@ -169,6 +169,33 @@ public class AnimatorTest
     }
 
     /**
+     * Test the manipulation failures.
+     */
+    @Test
+    public void testAnimatorManipulationFailure()
+    {
+        final Animator animator = new AnimatorImpl();
+        try
+        {
+            animator.setAnimSpeed(-1.0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+        try
+        {
+            animator.setFrame(0);
+            Assert.fail();
+        }
+        catch (final LionEngineException exception)
+        {
+            // Success
+        }
+    }
+
+    /**
      * Test the manipulations.
      */
     @Test
@@ -182,32 +209,12 @@ public class AnimatorTest
 
         animator.play(animation);
 
-        try
-        {
-            animator.setAnimSpeed(-1.0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-
         animator.setAnimSpeed(speed - 1.0);
 
         animator.updateAnimation(1.0);
         AnimatorTest.testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
         animator.updateAnimation(1.0);
-
-        try
-        {
-            animator.setFrame(0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
 
         animator.setFrame(1);
 

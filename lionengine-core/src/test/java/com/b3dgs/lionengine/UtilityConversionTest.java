@@ -87,5 +87,8 @@ public class UtilityConversionTest
     {
         final String title = UtilConversion.toTitleCase("title");
         Assert.assertEquals("Title", title);
+
+        final String word = UtilConversion.toTitleCaseWord("title toto");
+        Assert.assertEquals("Title Toto", word);
     }
 }
