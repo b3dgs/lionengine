@@ -28,7 +28,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
-Since the version __6.0.0__, it supports __Android 2.3.3__ *(API10)*.
+Since the version __6.0.0__, it supports __Android 1.5__ *(API 3)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
@@ -45,16 +45,23 @@ Everything else is fully compatible and does not require any changes.
 >  * Utility classes (_Random, Conversions, Maths, File..._)
 >  * Verbosity control
 
-* #### __lionengine-java2d__
->  * Engine implementation using __java.awt__ (_for graphics_) and __javax__ (_for Midi & Wav_)
->  * Swing utility (_useful for quick level editor development_)
 
-* #### __lionengine-android__
->  * Engine implementation using __Android 2.3.3 (API10)__
+* #### __lionengine-core-awt__
+>  * Engine implementation using __AWT__ from _JDK 7_
+
+
+* #### __lionengine-core-swt__
+>  * Engine implementation by using SWT 3.5.1
+
+
+* #### __lionengine-core-android__
+>  * Engine implementation using __Android 1.5 (API 3)__
 
 
 * #### __lionengine-game__
 >  * Tile based map package (_with minimap support, native save & load function_)
+>    * Ray cast collision system
+>    * Compatibility with raster bar effect
 >  * Projectile system (_with a duo: launcher / projectile_)
 >  * Effect system (_and its handler_)
 >  * Entity base (_support external XML configuration, gravity and collision_)
@@ -68,7 +75,6 @@ Everything else is fully compatible and does not require any changes.
 * #### __lionengine-game-platform__
 >  * Background package (_for an easy background composition_)
 >  * Extended entity & map package (_including compatibility with raster bar effect_)
->    * Ray cast collision system
 >  * Extended camera system
   
 
@@ -77,7 +83,7 @@ Everything else is fully compatible and does not require any changes.
 >  * Compatible with game map system
 
 
-* #### __lionengine-game-rts__
+* #### __lionengine-game-strategy__
 >  * Extended map package (_adding support to pathfinding and fog of war_)
 >  * Extended entity package (_supporting separated ability:_ **_attacker_**, **_extractor_**, **_mover_**, **_producer_** _..._)
 >  * Entity skill system (_representing its actions, accessible from icons_)
@@ -91,32 +97,43 @@ Everything else is fully compatible and does not require any changes.
 >  * Integrated chat system
 
 
-* #### __lionengine-sc68__
+* #### __lionengine-audio-wav__
+>  * Support for Wav sound
+
+
+* #### __lionengine-audio-midi__
+>  * Support for Midi music
+
+
+* #### __lionengine-audio-sc68__
 >  * Support for Sc68 Atari music
 
 ## Download
 
 * [Go to website](http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
-* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.0.0_lib.zip)
+* [Last version](http://www.b3dgs.com/v6/projects/lionengine/files/LionEngine_6.2.0_lib.zip)
 
 ## Installation
 
 Steps to include the __LionEngine__ in your project:
 
 1. Install at least the [Java JDK 7] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Install the [Android SDK 2.3.3] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-android__)
+2. Install the [Android SDK 1.5] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-android__)
 3. Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
 4. Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-    * __lionengine-java2d__ _(required if you use the full_ **_JDK7_**, _target for computer)_
-    * __lionengine-android__ _(required if you use_ **_Android 2.3.3_**, _target for phones)_
+    * __lionengine-core-awt__ _(required if you use **_AWT_** as graphic renderer, _target for computer)_
+	* __lionengine-core-swt__ _(required if you use **_SWT_** as graphic renderer, _target for computer)_
+    * __lionengine-core-android__ _(required if you use_ **_Android 1.5_**, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-game-platform__ _(specialized for platform games)_
       * __lionengine-game-pathfinding__ _(support for pathfinding)_
         * __lionengine-game-rts__ _(specialized for strategy games)_
     * __lionengine-network__ _(support for network)_
-    * __lionengine-sc68__ _(support for Sc68 Atari musics)_
+	* __lionengine-audio-wav__ _(support for Wav sound)_
+	* __lionengine-audio-midi__ _(support for Midi music)_
+    * __lionengine-audio-sc68__ _(support for Sc68 Atari music)_
 6. Join (if you want) the javadoc for each library
 7. You are now ready to use the __LionEngine__ in your project
 
@@ -126,45 +143,45 @@ Once you installed the __LionEngine__ in your project, you may would like to kno
 
 #### Main class
 
-* Using **_lionengine-java2d_**
+* Using **_lionengine-core-awt_** or **_lionengine-core-swt_**
   ```java
-  public final class AppMinimal
-  {
-      public static void main(String[] args)
-      {
-          Engine.start("Minimal", Version.create(1, 0, 0), "resources");
-          final Resolution output = new Resolution(640, 480, 60);
-          final Config config = new Config(output, 16, true);
-          final Loader loader = new Loader(config);
-          loader.start(new Scene(loader));
-      }
-  }
+public final class AppJava
+{
+    public static void main(String[] args)
+    {
+        Engine.start("AppJava", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        final Resolution output = new Resolution(640, 480, 60);
+        final Config config = new Config(output, 16, true);
+        final Loader loader = new Loader(config);
+        loader.start(Scene.class);
+    }
+}
 ```
 
-* Using **_lionengine-android_**
+* Using **_lionengine-core-android_**
   ```java
-  public final class AppMinimal
-          extends Activity
-  {
-      @Override
-      protected void onPostCreate(Bundle savedInstanceState)
-      {
-          super.onPostCreate(savedInstanceState);
-
-          Engine.start("Minimal", Version.create(1, 0, 0), this);
-          final Resolution output = new Resolution(800, 480, 60);
-          final Config config = new Config(output, 32, false);
-          final Loader loader = new Loader(config);
-          loader.start(new Scene(loader));
-      }
-
-      @Override
-      public void finish()
-      {
-          super.finish();
-          Engine.terminate();
-      }
-  }
+public final class AppAndroid
+        extends Activity
+{
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+ 
+        Engine.start("AppAndroid", Version.create(1, 0, 0), Verbose.CRITICAL, this);
+        final Resolution output = new Resolution(800, 480, 60);
+        final Config config = new Config(output, 32, false);
+        final Loader loader = new Loader(config);
+        loader.start(Menu.class);
+    }
+ 
+    @Override
+    public void finish()
+    {
+        super.finish();
+        Engine.terminate();
+    }
+}
 ```
 
 #### Minimal sequence
@@ -174,23 +191,30 @@ final class Scene
 {
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
+    private final Keyboard keyboard;
+ 
     Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
+        keyboard = getInputDevice(Keyboard.class);
     }
-
+ 
     @Override
     protected void load()
     {
         // Load
     }
-
+ 
     @Override
     protected void update(double extrp)
     {
+        if (keyboard.isPressed(Keyboard.ESCAPE))
+        {
+            end();
+        }
         // Update
     }
-
+ 
     @Override
     protected void render(Graphic g)
     {
@@ -201,4 +225,4 @@ final class Scene
 
 ## Tutorials
 
-* [LionEngine Forum](http://www.b3dgs.com/v6/forum/)
+* [LionEngine WebSite](http://lionengine.b3dgs.com)
