@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.dialogs;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -27,7 +29,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -45,6 +49,8 @@ public class EditTilesheetsDialog
 
     /** Tile sheets media. */
     final Media tilesheets;
+    /** Buttons list. */
+    private final List<Button> buttons;
 
     /**
      * Constructor.
@@ -57,6 +63,7 @@ public class EditTilesheetsDialog
         super(parent, Messages.EditTilesheetsDialog_Title, Messages.EditTilesheetsDialog_HeaderTitle,
                 Messages.EditTilesheetsDialog_HeaderDesc, EditTilesheetsDialog.ICON);
         this.tilesheets = tilesheets;
+        buttons = new ArrayList<>();
         createDialog();
         finish.setEnabled(true);
     }
@@ -72,19 +79,51 @@ public class EditTilesheetsDialog
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         composite.setLayout(new GridLayout(1, false));
 
+        final File[] files = tilesheets.getFile().getParentFile().listFiles();
+        if (files != null)
+        {
+            for (final File file : files)
+            {
+                final Media media = UtilityMedia.get(file);
+                if (ImageInfo.isImage(media))
+                {
+                    final Button check = new Button(composite, SWT.CHECK);
+                    check.setText(file.getName());
+                    check.setSelection(false);
+                    buttons.add(check);
+                }
+            }
+        }
+
         final XmlNode node = Stream.loadXml(tilesheets);
         final List<XmlNode> sheets = node.getChildren();
-        for (final XmlNode sheet : sheets)
+        for (final Button button : buttons)
         {
-            final String name = sheet.getText();
-            final Button check = new Button(composite, SWT.CHECK);
-            check.setText(name);
+            for (final XmlNode sheet : sheets)
+            {
+                if (button.getText().equals(sheet.getText()))
+                {
+                    button.setSelection(true);
+                    break;
+                }
+            }
         }
     }
 
     @Override
     protected void onFinish()
     {
-        // TODO Save
+        final XmlNode root = Stream.createXmlNode("lionengine:tilesheets");
+        root.writeString("xmlns:lionengine", "http://lionengine.b3dgs.com");
+        for (final Button button : buttons)
+        {
+            if (button.getSelection())
+            {
+                final XmlNode node = Stream.createXmlNode("lionengine:tilesheet");
+                node.setText(button.getText());
+                root.add(node);
+            }
+        }
+        Stream.saveXml(root, tilesheets);
     }
 }
