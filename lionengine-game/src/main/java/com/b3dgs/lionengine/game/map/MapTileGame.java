@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
@@ -42,6 +40,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
+import com.b3dgs.lionengine.utility.UtilMapTile;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
@@ -64,151 +63,8 @@ import com.b3dgs.lionengine.utility.LevelRipConverter;
 public abstract class MapTileGame<T extends TileGame>
         implements MapTile<T>
 {
-    /**
-     * Save the tile node depending of their consecutiveness.
-     * 
-     * @param node The XML node.
-     * @param pattern The pattern number.
-     * @param numbers The numbers list.
-     * @return <code>true</code> if stored, <code>false</code> else.
-     */
-    private static boolean saveTileNode(XmlNode node, Integer pattern, List<Integer> numbers)
-    {
-        final boolean added;
-        if (numbers.size() == 1)
-        {
-            final XmlNode tile = Stream.createXmlNode("lionengine:tile");
-            node.add(tile);
-            tile.writeInteger("pattern", pattern.intValue());
-            tile.writeInteger("number", numbers.get(0).intValue());
-            added = true;
-        }
-        else if (numbers.size() > 1)
-        {
-            final XmlNode tile = Stream.createXmlNode("lionengine:tiles");
-            node.add(tile);
-            tile.writeInteger("pattern", pattern.intValue());
-            tile.writeInteger("start", numbers.get(0).intValue());
-            tile.writeInteger("end", numbers.get(numbers.size() - 1).intValue());
-            added = true;
-        }
-        else
-        {
-            added = false;
-        }
-        return added;
-    }
-
-    /**
-     * Split non consecutive numbers per pattern into multiple list of numbers.
-     * 
-     * @param patterns The pattern set.
-     * @param pattern The current pattern.
-     * @return The splited numbers list.
-     */
-    private static List<List<Integer>> splitNonConsecutiveNumbers(Map<Integer, SortedSet<Integer>> patterns,
-            Integer pattern)
-    {
-        final SortedSet<Integer> numbers = patterns.get(pattern);
-        final List<List<Integer>> series = new ArrayList<>(8);
-
-        int lastValue = -2;
-        List<Integer> currentSerie = null;
-        for (final Integer number : numbers)
-        {
-            final int newValue = number.intValue();
-            if (newValue - lastValue != 1)
-            {
-                currentSerie = new ArrayList<>(8);
-                series.add(currentSerie);
-            }
-            lastValue = newValue;
-            if (currentSerie != null)
-            {
-                currentSerie.add(number);
-            }
-        }
-        return series;
-    }
-
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param d The distance value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int d)
-    {
-        if (d < 0)
-        {
-            return -1;
-        }
-        else if (d > 0)
-        {
-            return 1;
-        }
-        return 0.0;
-    }
-
-    /**
-     * Get the tile search speed value.
-     * 
-     * @param dsup The distance superior value.
-     * @param dinf The distance inferior value.
-     * @return The speed value.
-     */
-    private static double getTileSearchSpeed(int dsup, int dinf)
-    {
-        if (0 == dsup)
-        {
-            return MapTileGame.getTileSearchSpeed(dinf);
-        }
-        return dinf / (double) dsup;
-    }
-
-    /**
-     * Search the collision correspondence depending of the category.
-     * 
-     * @param collision The collision node.
-     * @param name The collision name.
-     * @param category The collision search category.
-     * @param tilePattern The tile pattern number.
-     * @param tileNumber The tile number.
-     * @return The collision found.
-     */
-    private static String searchCollision(XmlNode collision, String name, String category, int tilePattern,
-            int tileNumber)
-    {
-        final List<XmlNode> tilesCollisions = collision.getChildren(category);
-
-        for (final XmlNode tile : tilesCollisions)
-        {
-            final int pattern = tile.readInteger("pattern");
-            int start = -1;
-            int end = -1;
-            if ("lionengine:tiles".equals(category))
-            {
-                start = tile.readInteger("start");
-                end = tile.readInteger("end");
-            }
-            else if ("lionengine:tile".equals(category))
-            {
-                start = tile.readInteger("number");
-                end = start;
-            }
-            if (tilePattern == pattern)
-            {
-                if (tileNumber + 1 >= start && tileNumber + 1 <= end)
-                {
-                    tilesCollisions.clear();
-                    return name;
-                }
-            }
-        }
-
-        tilesCollisions.clear();
-        return null;
-    }
+    /** Error pattern number message. */
+    private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
 
     /** Collisions. */
     private final CollisionTile[] collisions;
@@ -245,35 +101,6 @@ public abstract class MapTileGame<T extends TileGame>
         this.tileHeight = tileHeight;
         patterns = new HashMap<>();
         patternsDirectory = null;
-    }
-
-    /**
-     * Read collisions from external file.
-     * 
-     * @param collisions The collision nodes.
-     * @param tilePattern The tile pattern number.
-     * @param tileNumber The tile number.
-     * @return The collision found.
-     */
-    protected String getCollision(List<XmlNode> collisions, int tilePattern, int tileNumber)
-    {
-        for (final XmlNode collision : collisions)
-        {
-            final String name = collision.readString("name");
-
-            String found = MapTileGame.searchCollision(collision, name, "lionengine:tiles", tilePattern, tileNumber);
-            if (found != null)
-            {
-                return found;
-            }
-
-            found = MapTileGame.searchCollision(collision, name, "lionengine:tile", tilePattern, tileNumber);
-            if (found != null)
-            {
-                return found;
-            }
-        }
-        return null;
     }
 
     /**
@@ -373,8 +200,8 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
-     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile. This
-     * function is used when generating the minimap.
+     * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile.
+     * This function is used when generating the minimap.
      * 
      * @param tile The input tile.
      * @return The color representing the tile on minimap.
@@ -382,132 +209,6 @@ public abstract class MapTileGame<T extends TileGame>
     protected ColorRgba getTilePixelColor(T tile)
     {
         return ColorRgba.WHITE;
-    }
-
-    /**
-     * Create the function draw to buffer.
-     * 
-     * @param g The graphic buffer.
-     * @param function The function to draw.
-     */
-    private void createFunctionDraw(Graphic g, CollisionFunction function)
-    {
-        final int min = function.getRange().getMin();
-        final int max = function.getRange().getMax();
-        switch (function.getAxis())
-        {
-            case X:
-                createFunctionDrawX(g, function, min, max);
-                break;
-            case Y:
-                createFunctionDrawY(g, function, min, max);
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + function.getAxis());
-        }
-    }
-
-    /**
-     * Create the function draw to buffer for the horizontal axis.
-     * 
-     * @param g The graphic buffer.
-     * @param function The function to draw.
-     * @param min The minimum value.
-     * @param max The maximum value.
-     */
-    private void createFunctionDrawX(Graphic g, CollisionFunction function, int min, int max)
-    {
-        switch (function.getInput())
-        {
-            case X:
-                for (int x = min; x <= max; x++)
-                {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(fx, getTileHeight() - x, 0, 0, false);
-                }
-                break;
-            case Y:
-                for (int y = min; y <= max; y++)
-                {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + function.getInput());
-        }
-    }
-
-    /**
-     * Create the function draw to buffer for the vertical axis.
-     * 
-     * @param g The graphic buffer.
-     * @param function The function to draw.
-     * @param min The minimum value.
-     * @param max The maximum value.
-     */
-    private void createFunctionDrawY(Graphic g, CollisionFunction function, int min, int max)
-    {
-        switch (function.getInput())
-        {
-            case X:
-                for (int x = min; x <= max; x++)
-                {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(x, getTileHeight() - 1 - fx, 0, 0, false);
-                }
-                break;
-            case Y:
-                for (int y = min; y <= max; y++)
-                {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + function.getInput());
-        }
-    }
-
-    /**
-     * Load the collision function from the node.
-     * 
-     * @param collision The current collision enum.
-     * @param functionNode The function node reference.
-     */
-    private void loadCollisionFunction(CollisionTile collision, XmlNode functionNode)
-    {
-        final CollisionFunction function = new CollisionFunction();
-        function.setName(functionNode.readString("name"));
-        function.setAxis(CollisionRefential.valueOf(functionNode.readString("axis")));
-        function.setInput(CollisionRefential.valueOf(functionNode.readString("input")));
-        function.setValue(functionNode.readDouble("value"));
-        function.setOffset(functionNode.readInteger("offset"));
-        function.setRange(functionNode.readInteger("min"), functionNode.readInteger("max"));
-
-        assignCollisionFunction(collision, function);
-    }
-
-    /**
-     * Save tiles collisions for all of the map tile.
-     * 
-     * @param node The XML node.
-     * @param collision The current collision.
-     * @return <code>true</code> if at least on tile stored, <code>false</code> else.
-     */
-    private boolean saveTilesCollisions(XmlNode node, CollisionTile collision)
-    {
-        final Map<Integer, SortedSet<Integer>> patterns = getCollisionsPattern(node, collision);
-        boolean added = false;
-        for (final Integer pattern : patterns.keySet())
-        {
-            final List<List<Integer>> elements = MapTileGame.splitNonConsecutiveNumbers(patterns, pattern);
-            for (final List<Integer> numbers : elements)
-            {
-                added = MapTileGame.saveTileNode(node, pattern, numbers);
-            }
-        }
-        return added;
     }
 
     /**
@@ -554,42 +255,6 @@ public abstract class MapTileGame<T extends TileGame>
         }
     }
 
-    /**
-     * Sort each tile number for each pattern for each collision in a map.
-     * 
-     * @param node The current node.
-     * @param collision The current collision.
-     * @return The values.
-     */
-    private Map<Integer, SortedSet<Integer>> getCollisionsPattern(XmlNode node, CollisionTile collision)
-    {
-        final Map<Integer, SortedSet<Integer>> patterns = new HashMap<>(8);
-        for (int ty = 0; ty < getHeightInTile(); ty++)
-        {
-            for (int tx = 0; tx < getWidthInTile(); tx++)
-            {
-                final TileGame tile = getTile(tx, ty);
-                if (tile != null && tile.getCollision() == collision)
-                {
-                    final Integer pattern = tile.getPattern();
-                    final SortedSet<Integer> numbers;
-
-                    if (!patterns.containsKey(pattern))
-                    {
-                        numbers = new TreeSet<>();
-                        patterns.put(pattern, numbers);
-                    }
-                    else
-                    {
-                        numbers = patterns.get(pattern);
-                    }
-                    numbers.add(Integer.valueOf(tile.getNumber() + 1));
-                }
-            }
-        }
-        return patterns;
-    }
-
     /*
      * MapTile
      */
@@ -622,18 +287,7 @@ public abstract class MapTileGame<T extends TileGame>
             final Set<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
-                final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(getTileWidth(), getTileHeight(),
-                        Transparency.TRANSLUCENT);
-                final Graphic g = buffer.createGraphic();
-                g.setColor(ColorRgba.BLACK);
-                g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
-                g.setColor(ColorRgba.PURPLE);
-
-                for (final CollisionFunction function : functions)
-                {
-                    createFunctionDraw(g, function);
-                }
-                g.dispose();
+                final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
                 collisionCache.put(collision, buffer);
             }
         }
@@ -718,7 +372,7 @@ public abstract class MapTileGame<T extends TileGame>
         String[] files;
 
         // Retrieve patterns list
-        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), "patterns.xml");
+        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.TILE_SHEETS_FILE_NAME);
         final XmlNode root = Stream.loadXml(mediaPatterns);
         final List<XmlNode> children = root.getChildren();
         files = new String[children.size()];
@@ -743,8 +397,7 @@ public abstract class MapTileGame<T extends TileGame>
             }
             catch (final NumberFormatException exception)
             {
-                throw new LionEngineException(exception, media,
-                        "Error on getting pattern number (should be a name with a number only) !");
+                throw new LionEngineException(exception, media, MapTileGame.ERROR_PATTERN_NUMBER);
             }
         }
     }
@@ -762,17 +415,18 @@ public abstract class MapTileGame<T extends TileGame>
                 final T tile = list.get(j);
                 if (tile != null)
                 {
-                    tile.setCollision(getCollisionFrom(getCollision(collisions, tile.getPattern().intValue(),
-                            tile.getNumber())));
+                    tile.setCollision(getCollisionFrom(UtilMapTile.getCollision(collisions, tile.getPattern()
+                            .intValue(), tile.getNumber())));
                 }
             }
         }
         for (final XmlNode node : collisions)
         {
-            final CollisionTile collision = getCollisionFrom(node.readString("name"));
-            for (final XmlNode functionNode : node.getChildren("lionengine:function"))
+            final CollisionTile collision = getCollisionFrom(node.readString(UtilMapTile.ATT_TILE_COLLISION_NAME));
+            for (final XmlNode functionNode : node.getChildren(UtilMapTile.TAG_FUNCTION))
             {
-                loadCollisionFunction(collision, functionNode);
+                final CollisionFunction function = UtilMapTile.getCollisionFunction(collision, functionNode);
+                assignCollisionFunction(collision, function);
             }
         }
     }
@@ -784,7 +438,7 @@ public abstract class MapTileGame<T extends TileGame>
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
-        final CollisionTile collision = getCollisionFrom(getCollision(nodes, pattern, number));
+        final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
         final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
 
         tile.setX(x);
@@ -881,33 +535,8 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void saveCollisions()
     {
-        final XmlNode root = Stream.createXmlNode("lionengine:tileCollisions");
-        for (final CollisionTile collision : collisions)
-        {
-            final XmlNode node = Stream.createXmlNode("lionengine:tileCollision");
-            node.writeString("name", collision.getValue().name());
-            if (saveTilesCollisions(node, collision))
-            {
-                root.add(node);
-            }
-            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
-            if (functions != null)
-            {
-                for (final CollisionFunction function : functions)
-                {
-                    final XmlNode functionNode = Stream.createXmlNode("lionengine:function");
-                    functionNode.writeString("name", function.getName());
-                    functionNode.writeString("axis", function.getAxis().name());
-                    functionNode.writeString("input", function.getInput().name());
-                    functionNode.writeDouble("value", function.getValue());
-                    functionNode.writeInteger("offset", function.getOffset());
-                    functionNode.writeInteger("min", function.getRange().getMin());
-                    functionNode.writeInteger("max", function.getRange().getMax());
-                    node.add(functionNode);
-                }
-            }
-        }
-        Stream.saveXml(root, Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
+        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        UtilMapTile.saveCollisions(this, media);
     }
 
     @Override
@@ -1016,14 +645,14 @@ public abstract class MapTileGame<T extends TileGame>
         final int stepMax;
         if (Math.abs(dv) >= Math.abs(dh))
         {
-            sy = MapTileGame.getTileSearchSpeed(dv);
-            sx = MapTileGame.getTileSearchSpeed(Math.abs(dv), dh);
+            sy = UtilMapTile.getTileSearchSpeed(dv);
+            sx = UtilMapTile.getTileSearchSpeed(Math.abs(dv), dh);
             stepMax = Math.abs(dv);
         }
         else
         {
-            sx = MapTileGame.getTileSearchSpeed(dh);
-            sy = MapTileGame.getTileSearchSpeed(Math.abs(dh), dv);
+            sx = UtilMapTile.getTileSearchSpeed(dh);
+            sy = UtilMapTile.getTileSearchSpeed(Math.abs(dh), dv);
             stepMax = Math.abs(dh);
         }
 

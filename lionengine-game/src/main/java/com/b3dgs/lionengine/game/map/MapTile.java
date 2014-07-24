@@ -47,6 +47,8 @@ public interface MapTile<T extends TileGame>
     int BLOC_SIZE = 256;
     /** Collisions file name. */
     String COLLISIONS_FILE_NAME = "collisions.xml";
+    /** Tile sheets data file name. */
+    String TILE_SHEETS_FILE_NAME = "tilesheets.xml";
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
