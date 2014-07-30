@@ -18,11 +18,9 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
-import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
-import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory entity implementation.
@@ -31,37 +29,30 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 public final class FactoryEntity
-        extends FactoryObjectGame<SetupSurfaceGame, Entity>
+        extends FactoryObjectGame<SetupSurfaceGame>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String ENTITY_PATH = "entity";
 
-    /** Map reference. */
-    public final Map map;
-    /** The factory weapon. */
-    public final FactoryWeapon factoryWeapon;
-    /** Handler entity reference. */
-    public final HandlerEntity handlerEntity;
-    /** The desired fps. */
-    public final int desiredFps;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Constructor.
-     * 
-     * @param map The map reference.
-     * @param factoryWeapon The factory weapon reference.
-     * @param handlerEntity The handler entity reference.
-     * @param handlerProjectile The handler projectile reference.
-     * @param desiredFps The desired fps.
      */
-    public FactoryEntity(Map map, FactoryWeapon factoryWeapon, HandlerEntity handlerEntity,
-            HandlerProjectile handlerProjectile, int desiredFps)
+    public FactoryEntity()
     {
         super(FactoryEntity.ENTITY_PATH);
-        this.map = map;
-        this.factoryWeapon = factoryWeapon;
-        this.handlerEntity = handlerEntity;
-        this.desiredFps = desiredFps;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextEntity context)
+    {
+        this.context = context;
     }
 
     /*
@@ -69,8 +60,8 @@ public final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupEntity(config, map, this, factoryWeapon, handlerEntity, desiredFps);
+        return new SetupEntity(config, context);
     }
 }

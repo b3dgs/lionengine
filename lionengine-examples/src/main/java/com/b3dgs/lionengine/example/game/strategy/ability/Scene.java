@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BuildingProducer;
+import com.b3dgs.lionengine.example.game.strategy.ability.entity.ContextEntity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryProduction;
@@ -113,9 +114,13 @@ final class Scene
         factoryProjectile = new FactoryProjectile();
         factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
         factoryWeapon = new FactoryWeapon(factoryLauncher);
-        factoryEntity = new FactoryEntity(map, factoryWeapon, handlerEntity, handlerProjectile, getConfig().getSource()
-                .getRate());
+        factoryEntity = new FactoryEntity();
         factoryProduction = new FactoryProduction();
+
+        final ContextEntity contextEntity = new ContextEntity(map, factoryEntity, factoryWeapon, handlerEntity,
+                getConfig().getSource().getRate());
+        factoryEntity.setContext(contextEntity);
+
         setSystemCursorVisible(false);
     }
 

@@ -23,9 +23,9 @@ import java.util.Set;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.Range;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -36,8 +36,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUsedServices<E>>
-        extends ObjectGame
-        implements WeaponServices<E, A>, AttackerListener<E>
+        implements WeaponServices<E, A>, AttackerListener<E>, Fabricable
 {
     /**
      * Attack state.
@@ -86,7 +85,6 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
      */
     public WeaponModel(SetupGame setup)
     {
-        super(setup);
         listeners = new HashSet<>(1);
         damages = new Damages();
         target = null;

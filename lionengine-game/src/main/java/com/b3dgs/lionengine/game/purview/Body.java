@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.game.Force;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Body
-        extends Localizable
 {
     /**
      * Update gravity calculation.

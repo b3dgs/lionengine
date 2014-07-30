@@ -63,7 +63,7 @@ final class WorldClient
      */
     WorldClient(Sequence sequence)
     {
-        super(sequence);
+        super(sequence, false);
         textGame = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         input = new ClientInput();
         camera = new CameraPlatform(width, height);
@@ -72,7 +72,6 @@ final class WorldClient
         networkedWorld = new NetworkedWorldModelClient(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
-        factory.setServer(false);
         sequence.addKeyListener(input);
         sequence.addKeyListener(chat);
     }

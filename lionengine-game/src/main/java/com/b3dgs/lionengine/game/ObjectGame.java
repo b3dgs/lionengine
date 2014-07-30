@@ -17,88 +17,197 @@
  */
 package com.b3dgs.lionengine.game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.purview.Handlable;
+import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.purview.model.HandlableModel;
+import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 
 /**
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a
- * {@link HandlerObjectGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed. An object
- * can also be externally configured by using a {@link Configurable}, filled by an XML file.
+ * {@link HandlerGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed.
+ * <p>
+ * An object can also be externally configured by using a {@link Configurable}, filled by an XML file.
+ * </p>
+ * <p>
+ * Objects are also designed to be created by a {@link FactoryGame}. In that case, they must have at least a constructor
+ * with a single argument, which must be type of {@link SetupGame}.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurable
- * @see HandlerObjectGame
+ * @see HandlerGame
+ * @see FactoryGame
+ * @see FactoryObjectGame
  */
 public abstract class ObjectGame
+        implements Handlable, Fabricable, Localizable
 {
     /** Setup error. */
     private static final String ERROR_SETUP = "Setup must not be null !";
-    /** Id used. */
-    private static final Set<Integer> IDS = new HashSet<>(16);
-    /** Last id used. */
-    private static int lastId = 1;
 
-    /**
-     * Get the next unused id.
-     * 
-     * @return The next unused id.
-     */
-    private static Integer getFreeId()
-    {
-        while (ObjectGame.IDS.contains(Integer.valueOf(ObjectGame.lastId)))
-        {
-            ObjectGame.lastId++;
-        }
-        return Integer.valueOf(ObjectGame.lastId);
-    }
-
-    /** Entity id. */
-    private final Integer id;
-    /** Destroyed flag; true will remove it from the handler. */
-    private boolean destroy;
+    /** Handlable model. */
+    private final Handlable handlableModel;
+    /** Localizable object reference. */
+    private final Localizable localizable;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    public ObjectGame(SetupGame setup)
+    public ObjectGame(SetupGame setup) throws LionEngineException
     {
         Check.notNull(setup, ObjectGame.ERROR_SETUP);
-        destroy = false;
-        id = ObjectGame.getFreeId();
-        ObjectGame.IDS.add(id);
+        handlableModel = new HandlableModel();
+        localizable = new LocalizableModel();
     }
 
     /**
-     * Get the entity id (unique).
+     * Update the object.
      * 
-     * @return The entity id.
+     * @param extrp The extrapolation value.
      */
-    public final Integer getId()
-    {
-        return id;
-    }
+    public abstract void update(double extrp);
 
     /**
-     * Remove object from handler, and free memory.
+     * Render the object.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
      */
+    public abstract void render(Graphic g, CameraGame camera);
+
+    /*
+     * Handlable
+     */
+
+    @Override
+    public Integer getId()
+    {
+        return handlableModel.getId();
+    }
+
+    @Override
     public void destroy()
     {
-        destroy = true;
-        ObjectGame.IDS.remove(getId());
+        handlableModel.destroy();
     }
 
-    /**
-     * Check if entity is going to be removed.
-     * 
-     * @return <code>true</code> if going to be removed, <code>false</code> else.
-     */
+    @Override
     public boolean isDestroyed()
     {
-        return destroy;
+        return handlableModel.isDestroyed();
+    }
+
+    /*
+     * Localizable
+     */
+
+    @Override
+    public void teleport(double x, double y)
+    {
+        localizable.teleport(x, y);
+    }
+
+    @Override
+    public void teleportX(double x)
+    {
+        localizable.teleportX(x);
+    }
+
+    @Override
+    public void teleportY(double y)
+    {
+        localizable.teleportY(y);
+    }
+
+    @Override
+    public void moveLocation(double extrp, Force force, Force... forces)
+    {
+        localizable.moveLocation(extrp, force, forces);
+    }
+
+    @Override
+    public void moveLocation(double extrp, double vx, double vy)
+    {
+        localizable.moveLocation(extrp, vx, vy);
+    }
+
+    @Override
+    public void setLocation(double x, double y)
+    {
+        localizable.setLocation(x, y);
+    }
+
+    @Override
+    public void setLocationX(double x)
+    {
+        localizable.setLocationX(x);
+    }
+
+    @Override
+    public void setLocationY(double y)
+    {
+        localizable.setLocationY(y);
+    }
+
+    @Override
+    public void setSize(int width, int height)
+    {
+        localizable.setSize(width, height);
+    }
+
+    @Override
+    public double getLocationX()
+    {
+        return localizable.getLocationX();
+    }
+
+    @Override
+    public double getLocationY()
+    {
+        return localizable.getLocationY();
+    }
+
+    @Override
+    public int getLocationIntX()
+    {
+        return localizable.getLocationIntX();
+    }
+
+    @Override
+    public int getLocationIntY()
+    {
+        return localizable.getLocationIntY();
+    }
+
+    @Override
+    public double getLocationOldX()
+    {
+        return localizable.getLocationOldX();
+    }
+
+    @Override
+    public double getLocationOldY()
+    {
+        return localizable.getLocationOldY();
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return localizable.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return localizable.getHeight();
     }
 }

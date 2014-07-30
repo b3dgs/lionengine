@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryProductionStrategy<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
-        extends FactoryGame<SetupGame, E>
+        extends FactoryGame<SetupGame>
 {
     /**
      * Constructor.

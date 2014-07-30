@@ -79,18 +79,14 @@ final class ScreenWindowedAwt
     {
         try
         {
-            // Create canvas
-            if (canvas == null)
-            {
-                canvas = new Canvas(conf);
-                canvas.setBackground(Color.BLACK);
-                canvas.setEnabled(true);
-                canvas.setVisible(true);
-                canvas.setIgnoreRepaint(true);
+            canvas = new Canvas(conf);
+            canvas.setBackground(Color.BLACK);
+            canvas.setEnabled(true);
+            canvas.setVisible(true);
+            canvas.setIgnoreRepaint(true);
 
-                // Add to main frame
-                frame.add(canvas);
-            }
+            frame.add(canvas);
+
             canvas.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -112,7 +108,7 @@ final class ScreenWindowedAwt
             componentForCursor = frame;
             frame.validate();
         }
-        catch (final Exception exception)
+        catch (final IllegalStateException exception)
         {
             throw new LionEngineException(exception, ScreenWindowedAwt.ERROR_WINDOWED);
         }

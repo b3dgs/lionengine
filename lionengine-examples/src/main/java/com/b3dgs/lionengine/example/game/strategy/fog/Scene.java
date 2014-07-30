@@ -69,9 +69,12 @@ final class Scene
         map = new Map();
         fogOfWar = new FogOfWar();
         camera = new CameraStrategy(map);
-        factoryEntity = new FactoryEntity(map);
+        factoryEntity = new FactoryEntity();
         handlerEntity = new HandlerEntity(camera);
         timer = new Timing();
+
+        final ContextEntity contextEntity = new ContextEntity(map);
+        factoryEntity.setContext(contextEntity);
     }
 
     /*

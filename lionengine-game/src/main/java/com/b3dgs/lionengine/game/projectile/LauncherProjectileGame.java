@@ -20,12 +20,11 @@ package com.b3dgs.lionengine.game.projectile;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Surface;
-import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Represents a projectile launcher. It allows to handle projectile shots from an entity.
@@ -36,12 +35,12 @@ import com.b3dgs.lionengine.game.entity.EntityGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Surface, P extends ProjectileGame<E, E2>>
-        extends ObjectGame
+        implements Fabricable
 {
     /** Launcher level. */
     public final Alterable level;
     /** The projectile factory reference. */
-    private final FactoryObjectGame<? extends SetupSurfaceGame, P> factory;
+    private final FactoryObjectGame<?> factory;
     /** The projectile handler reference. */
     private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
@@ -66,10 +65,8 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param factory The projectiles factory.
      * @param handler The projectiles handler.
      */
-    public LauncherProjectileGame(SetupGame setup, FactoryObjectGame<? extends SetupSurfaceGame, P> factory,
-            HandlerProjectileGame<E, P> handler)
+    public LauncherProjectileGame(SetupGame setup, FactoryObjectGame<?> factory, HandlerProjectileGame<E, P> handler)
     {
-        super(setup);
         this.factory = factory;
         this.handler = handler;
         owner = null;

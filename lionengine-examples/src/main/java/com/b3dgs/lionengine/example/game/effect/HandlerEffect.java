@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.effect;
 
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.effect.HandlerEffectGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 
 /**
  * Handler effect implementation.
@@ -27,15 +28,34 @@ import com.b3dgs.lionengine.game.effect.HandlerEffectGame;
  * @see com.b3dgs.lionengine.example.game.handler
  */
 final class HandlerEffect
-        extends HandlerEffectGame<Effect>
+        extends HandlerGame<Effect>
 {
+    /** Camera reference. */
+    private final CameraGame camera;
+
     /**
      * Constructor.
      * 
      * @param camera The camera reference.
      */
-    HandlerEffect(CameraGame camera)
+    public HandlerEffect(CameraGame camera)
     {
-        super(camera);
+        super();
+        this.camera = camera;
+    }
+
+    @Override
+    protected void update(double extrp, Effect handlable)
+    {
+        handlable.update(extrp);
+    }
+
+    @Override
+    protected void render(Graphic g, Effect handlable)
+    {
+        if (camera.isVisible(handlable))
+        {
+            handlable.render(g, camera);
+        }
     }
 }

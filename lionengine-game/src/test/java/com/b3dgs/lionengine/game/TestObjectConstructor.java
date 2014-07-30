@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.core.Graphic;
+
 /**
  * Object game test.
  * 
@@ -33,5 +35,21 @@ public final class TestObjectConstructor
     public TestObjectConstructor(SetupGame setup)
     {
         super(null);
+    }
+
+    /*
+     * ObjectGame
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        // Update
+    }
+
+    @Override
+    public void render(Graphic g, CameraGame camera)
+    {
+        // Render
     }
 }

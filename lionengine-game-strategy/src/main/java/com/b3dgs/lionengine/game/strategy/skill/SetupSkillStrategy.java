@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
 /**
@@ -44,10 +45,11 @@ public abstract class SetupSkillStrategy
      * </pre>
      * 
      * @param config The config media.
+     * @param context The context reference.
      */
-    public SetupSkillStrategy(Media config)
+    public SetupSkillStrategy(Media config, ContextGame context)
     {
-        super(config);
+        super(config, context);
         name = configurable.getText("name");
         description = configurable.getText("description");
     }

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.platform.entity;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 
 /**
@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.platform.CameraPlatform;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityPlatform<E extends EntityPlatform>
-        extends HandlerEntityGame<E>
+        extends HandlerGame<E>
 {
     /** Camera reference. */
     private final CameraPlatform camera;

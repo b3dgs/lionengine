@@ -54,8 +54,9 @@ public final class BuildBarracksOrc
     public BuildBarracksOrc(SetupSkill setup)
     {
         super(setup);
-        cursor = setup.cursor;
-        factoryProduction = setup.factoryProduction;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        cursor = context.cursor;
+        factoryProduction = context.factoryProduction;
         final Configurable configurable = factoryProduction.getSetup(BarracksOrc.class).getConfigurable();
         final TileSizeData tileSizeData = configurable.getTileSize();
         width = tileSizeData.getWidthInTile();

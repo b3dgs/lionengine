@@ -32,6 +32,8 @@ public class SetupGame
     protected final Configurable configurable;
     /** Config file name. */
     protected final Media configFile;
+    /** The context reference. */
+    protected final ContextGame context;
 
     /**
      * Constructor.
@@ -40,6 +42,18 @@ public class SetupGame
      */
     public SetupGame(Media config)
     {
+        this(config, null);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param config The config media.
+     * @param context The context reference.
+     */
+    public SetupGame(Media config, ContextGame context)
+    {
+        this.context = context;
         configurable = new Configurable();
         configurable.load(config);
         configFile = config;
@@ -63,5 +77,16 @@ public class SetupGame
     public Media getConfigFile()
     {
         return configFile;
+    }
+
+    /**
+     * Get the setup context.
+     * 
+     * @param contextClass The context class type.
+     * @return The setup context.
+     */
+    public <C extends ContextGame> C getContext(Class<C> contextClass)
+    {
+        return contextClass.cast(context);
     }
 }

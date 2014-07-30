@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
-import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Type base implementation.
@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.ObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class TypeBase
-        extends ObjectGame
+        implements Fabricable
 {
     /** Object argument. */
     private final Object param;
@@ -37,7 +37,6 @@ abstract class TypeBase
      */
     protected TypeBase(Setup setup)
     {
-        super(setup);
         param = setup.param;
     }
 

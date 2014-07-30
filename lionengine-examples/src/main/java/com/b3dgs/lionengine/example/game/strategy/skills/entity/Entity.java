@@ -55,9 +55,10 @@ public abstract class Entity
      */
     protected Entity(SetupEntity setup)
     {
-        super(setup, setup.map);
-        map = setup.map;
-        factorySkill = setup.factorySkill;
+        super(setup, setup.getContext(ContextEntity.class).map);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        map = context.map;
+        factorySkill = context.factorySkill;
         skilled = new SkilledModel<>();
         final Configurable configurable = setup.getConfigurable();
         life = new Alterable(configurable.getInteger("life", "attributes"));

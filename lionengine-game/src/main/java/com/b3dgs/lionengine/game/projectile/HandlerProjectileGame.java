@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 
 /**
  * Handle all ship projectiles (the ship represents the main player). Entity projectiles are handled in a separate
@@ -31,12 +31,12 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGame<E, ?>>
-        extends HandlerEntityGame<P>
+        extends HandlerGame<P>
 {
     /** Camera reference. */
     protected final CameraGame camera;
     /** The entity handler reference. */
-    private final HandlerEntityGame<? extends E>[] handlerEntity;
+    private final HandlerGame<? extends E>[] handlerEntity;
 
     /**
      * Create a new player projectile handler.
@@ -45,7 +45,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
      * @param handlerEntity The entity handlers reference.
      */
     @SafeVarargs
-    public HandlerProjectileGame(CameraGame camera, HandlerEntityGame<? extends E>... handlerEntity)
+    public HandlerProjectileGame(CameraGame camera, HandlerGame<? extends E>... handlerEntity)
     {
         super();
         this.camera = camera;
@@ -79,7 +79,7 @@ public class HandlerProjectileGame<E extends EntityGame, P extends ProjectileGam
     protected void update(double extrp, P projectile)
     {
         projectile.update(extrp);
-        for (final HandlerEntityGame<? extends E> handler : handlerEntity)
+        for (final HandlerGame<? extends E> handler : handlerEntity)
         {
             for (final E entity : handler.list())
             {

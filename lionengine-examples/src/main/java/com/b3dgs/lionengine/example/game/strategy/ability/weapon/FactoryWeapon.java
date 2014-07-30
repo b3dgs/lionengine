@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Weapons factory.
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryWeapon
-        extends FactoryObjectGame<SetupWeapon, Weapon>
+        extends FactoryObjectGame<SetupWeapon>
 {
     /** Factory projectile. */
     private final FactoryLauncher factoryLauncher;
@@ -48,7 +49,7 @@ public final class FactoryWeapon
      */
 
     @Override
-    protected SetupWeapon createSetup(Class<? extends Weapon> type, Media config)
+    protected SetupWeapon createSetup(Class<? extends Fabricable> type, Media config)
     {
         return new SetupWeapon(config, type, factoryLauncher);
     }

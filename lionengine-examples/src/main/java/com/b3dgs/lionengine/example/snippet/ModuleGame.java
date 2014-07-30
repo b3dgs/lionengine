@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -40,6 +39,7 @@ import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -155,7 +155,7 @@ public class ModuleGame
     }
 
     public class Factory
-            extends FactoryGame<SetupGame, ObjectGame>
+            extends FactoryGame<SetupGame>
     {
         public Factory()
         {
@@ -163,14 +163,14 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupGame createSetup(Class<? extends ObjectGame> type)
+        protected SetupGame createSetup(Class<? extends Fabricable> type)
         {
             return new SetupGame(Core.MEDIA.create(type.getSimpleName() + ".xml"));
         }
     }
 
     public class FactoryObject
-            extends FactoryObjectGame<SetupGame, ObjectGame>
+            extends FactoryObjectGame<SetupGame>
     {
         public FactoryObject()
         {
@@ -178,7 +178,7 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupGame createSetup(Class<? extends ObjectGame> type, Media config)
+        protected SetupGame createSetup(Class<? extends Fabricable> type, Media config)
         {
             return new SetupGame(config);
         }

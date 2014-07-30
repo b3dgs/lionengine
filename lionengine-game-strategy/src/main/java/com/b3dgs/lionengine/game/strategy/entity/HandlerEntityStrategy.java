@@ -27,8 +27,8 @@ import java.util.Set;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.HandlerGame;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelListener;
@@ -57,7 +57,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<R>, E extends EntityStrategy, C extends ControlPanelModel<E>>
-        extends HandlerEntityGame<E>
+        extends HandlerGame<E>
         implements ControlPanelListener
 {
     /** Maximum number of layers. */

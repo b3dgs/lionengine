@@ -28,18 +28,14 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 final class SetupEntity
         extends SetupSurfaceGame
 {
-    /** Map. */
-    final Map map;
-
     /**
      * Constructor.
      * 
      * @param config The config reference.
-     * @param map The map reference.
+     * @param context The context reference.
      */
-    SetupEntity(Media config, Map map)
+    SetupEntity(Media config, ContextEntity context)
     {
-        super(config, false);
-        this.map = map;
+        super(config, context, false);
     }
 }

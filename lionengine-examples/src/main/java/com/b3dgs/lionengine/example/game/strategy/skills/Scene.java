@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.example.game.strategy.skills.entity.ContextEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Tile;
+import com.b3dgs.lionengine.example.game.strategy.skills.skill.ContextSkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
@@ -91,9 +93,17 @@ final class Scene
         controlPanel = new ControlPanel(cursor);
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         factoryProduction = new FactoryProduction();
-        factorySkill = new FactorySkill(factoryProduction, cursor);
-        factoryEntity = new FactoryEntity(map, factorySkill, handlerEntity, getConfig().getSource().getRate());
+        factorySkill = new FactorySkill();
+        factoryEntity = new FactoryEntity();
         mouse.setConfig(getConfig());
+
+        final ContextEntity contextEntity = new ContextEntity(map, factoryEntity, factorySkill, handlerEntity,
+                getConfig().getSource().getRate());
+        final ContextSkill contextSkill = new ContextSkill(factoryProduction, cursor);
+
+        factoryEntity.setContext(contextEntity);
+        factorySkill.setContext(contextSkill);
+
         setSystemCursorVisible(false);
     }
 

@@ -27,15 +27,18 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.configurable.SizeData;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.CollisionTileCategory;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.purview.Body;
+import com.b3dgs.lionengine.game.purview.model.BodyModel;
 
 /**
  * Abstract and standard entity used for platform games. It already supports gravity, animation and collisions.
@@ -44,10 +47,12 @@ import com.b3dgs.lionengine.game.map.TileGame;
  */
 public abstract class EntityPlatform
         extends EntityGame
-        implements Animator
+        implements Animator, Body
 {
     /** Animation surface. */
-    protected SpriteAnimated sprite;
+    protected final SpriteAnimated sprite;
+    /** Body object reference. */
+    private final Body body;
     /** List of declared tile collision point. */
     private final HashMap<CollisionTileCategory, CoordTile> tileCollisions;
     /** Collisions special offsets x. */
@@ -84,6 +89,7 @@ public abstract class EntityPlatform
     {
         super(setup);
         tileCollisions = new HashMap<>(1);
+        body = new BodyModel(this);
         final Configurable configurable = setup.getConfigurable();
         final FramesData framesData = configurable.getFrames();
         final SizeData sizeData = configurable.getSize();
@@ -459,5 +465,51 @@ public abstract class EntityPlatform
     public void setFrame(int frame)
     {
         sprite.setFrame(frame);
+    }
+
+    /*
+     * Body
+     */
+
+    @Override
+    public void updateGravity(double extrp, int desiredFps, Force... forces)
+    {
+        body.updateGravity(extrp, desiredFps, forces);
+    }
+
+    @Override
+    public void resetGravity()
+    {
+        body.resetGravity();
+    }
+
+    @Override
+    public void invertAxisY(boolean state)
+    {
+        body.invertAxisY(state);
+    }
+
+    @Override
+    public void setGravityMax(double max)
+    {
+        body.setGravityMax(max);
+    }
+
+    @Override
+    public void setMass(double mass)
+    {
+        body.setMass(mass);
+    }
+
+    @Override
+    public double getMass()
+    {
+        return body.getMass();
+    }
+
+    @Override
+    public double getWeight()
+    {
+        return body.getWeight();
     }
 }

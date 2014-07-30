@@ -18,9 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Skill factory implementation.
@@ -28,26 +27,30 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactoryObjectGame<SetupSkill, Skill>
+        extends FactoryObjectGame<SetupSkill>
 {
     /** Directory name from our resources directory containing our skills. */
     public static final String SKILL_PATH = "skill";
-    /** Production factory. */
-    private final FactoryProduction factoryProduction;
-    /** Cursor cursor. */
-    private final Cursor cursor;
+
+    /** Context skill reference. */
+    private ContextSkill context;
 
     /**
      * Create a new entity factory.
-     * 
-     * @param factoryProduction The production factory.
-     * @param cursor The cursor reference.
      */
-    public FactorySkill(FactoryProduction factoryProduction, Cursor cursor)
+    public FactorySkill()
     {
         super(FactorySkill.SKILL_PATH);
-        this.factoryProduction = factoryProduction;
-        this.cursor = cursor;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextSkill context)
+    {
+        this.context = context;
     }
 
     /*
@@ -55,8 +58,8 @@ public final class FactorySkill
      */
 
     @Override
-    protected SetupSkill createSetup(Class<? extends Skill> type, Media config)
+    protected SetupSkill createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupSkill(config, factoryProduction, cursor);
+        return new SetupSkill(config, context);
     }
 }

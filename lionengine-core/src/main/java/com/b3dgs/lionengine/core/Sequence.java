@@ -167,6 +167,26 @@ public abstract class Sequence
     }
 
     /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    public final int getX()
+    {
+        return renderer.getX();
+    }
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    public final int getY()
+    {
+        return renderer.getY();
+    }
+
+    /**
      * Check if the sequence has been loaded.
      * 
      * @return <code>true</code> if loaded, <code>false</code> else.

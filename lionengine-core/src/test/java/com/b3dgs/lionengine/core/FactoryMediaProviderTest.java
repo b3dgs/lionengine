@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.mock.FactoryMediaMock;
 public class FactoryMediaProviderTest
 {
     /** Resources path. */
-    private static final String PATH = UtilFile.getPath("src", "test", "resources", "graphic");
+    public static final String PATH = UtilFile.getPath("src", "test", "resources", "graphic");
 
     /**
      * Prepare test.

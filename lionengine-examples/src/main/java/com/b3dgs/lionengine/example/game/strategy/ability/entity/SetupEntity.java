@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
-import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -30,35 +28,14 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public class SetupEntity
         extends SetupSurfaceGame
 {
-    /** Map. */
-    public final Map map;
-    /** Factory entity. */
-    public final FactoryEntity factoryEntity;
-    /** Factory weapon. */
-    public final FactoryWeapon factoryWeapon;
-    /** Handler entity. */
-    public final HandlerEntity handlerEntity;
-    /** Desired fps. */
-    public final int fps;
-
     /**
      * Constructor.
      * 
-     * @param config The config file.
-     * @param map The map reference.
-     * @param factoryEntity The factory entity reference.
-     * @param factoryWeapon The factory weapon reference.
-     * @param handlerEntity The handler entity reference.
-     * @param fps The desired fps.
+     * @param config The config reference.
+     * @param context The context reference.
      */
-    public SetupEntity(Media config, Map map, FactoryEntity factoryEntity, FactoryWeapon factoryWeapon,
-            HandlerEntity handlerEntity, int fps)
+    public SetupEntity(Media config, ContextEntity context)
     {
-        super(config, false);
-        this.map = map;
-        this.factoryEntity = factoryEntity;
-        this.factoryWeapon = factoryWeapon;
-        this.handlerEntity = handlerEntity;
-        this.fps = fps;
+        super(config, context, false);
     }
 }

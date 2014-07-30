@@ -41,11 +41,22 @@ public class SetupSurfaceGame
      * Constructor.
      * 
      * @param config The config media.
+     */
+    public SetupSurfaceGame(Media config)
+    {
+        this(config, null, false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param config The config media.
+     * @param context The context reference.
      * @param alpha The alpha use flag.
      */
-    public SetupSurfaceGame(Media config, boolean alpha)
+    public SetupSurfaceGame(Media config, ContextGame context, boolean alpha)
     {
-        super(config);
+        super(config, context);
         final String conf = config.getPath();
         final SurfaceData surfaceData = configurable.getSurface();
         final String prefix = conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1);

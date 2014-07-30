@@ -34,8 +34,6 @@ import com.b3dgs.lionengine.core.Text;
  */
 public final class TimedMessage
 {
-    /** Text drawer reference. */
-    private final Text text;
     /** List of active messages. */
     private final Set<MessageData> messages;
     /** List of messages to delete. */
@@ -47,12 +45,9 @@ public final class TimedMessage
 
     /**
      * Constructor.
-     * 
-     * @param text The text drawer reference.
      */
-    public TimedMessage(Text text)
+    public TimedMessage()
     {
-        this.text = text;
         messages = new HashSet<>(1);
         delete = new ArrayList<>(1);
         deleted = false;
@@ -100,8 +95,9 @@ public final class TimedMessage
      * Render the list of active messages.
      * 
      * @param g The graphics output.
+     * @param text The text renderer.
      */
-    public void render(Graphic g)
+    public void render(Graphic g, Text text)
     {
         for (final MessageData messageData : messages)
         {

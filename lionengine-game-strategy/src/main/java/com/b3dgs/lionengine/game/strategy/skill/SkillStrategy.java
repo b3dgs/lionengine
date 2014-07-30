@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class SkillStrategy
-        extends ObjectGame
+        implements Fabricable
 {
     /** Name. */
     private final String name;
@@ -74,7 +74,6 @@ public abstract class SkillStrategy
      */
     public SkillStrategy(SetupGame setup)
     {
-        super(setup);
         final Configurable configurable = setup.getConfigurable();
         name = configurable.getText("name");
         description = configurable.getText("description");

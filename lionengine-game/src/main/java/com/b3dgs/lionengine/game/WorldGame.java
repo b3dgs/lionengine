@@ -26,14 +26,13 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 
 /**
- * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerEntityGame},
+ * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerGame},
  * {@link FactoryObjectGame}...).
  * <p>
  * It contains different elements, such as:

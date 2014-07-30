@@ -52,7 +52,7 @@ final class TextAwt
             case ITALIC:
                 return Font.ITALIC;
             default:
-                return Font.TYPE1_FONT;
+                throw new RuntimeException("Unsupported text style !");
         }
     }
 
@@ -127,7 +127,7 @@ final class TextAwt
                 ty = (int) textSize.getHeight() + y;
                 break;
             default:
-                throw new RuntimeException();
+                throw new RuntimeException("Unsupported alignment !");
         }
 
         final ColorRgba colorOld = g.getColor();

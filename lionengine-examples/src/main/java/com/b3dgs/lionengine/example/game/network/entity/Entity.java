@@ -21,9 +21,9 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -92,9 +92,10 @@ abstract class Entity
     Entity(SetupEntity setup)
     {
         super(setup);
-        map = setup.map;
-        desiredFps = setup.desiredFps;
-        server = setup.server;
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        map = context.map;
+        desiredFps = context.desiredFps;
+        server = context.server;
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");

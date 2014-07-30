@@ -15,14 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.swing;
+package com.b3dgs.lionengine.core;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Handle java theme selection.
@@ -40,19 +38,21 @@ public enum Theme
     /** Current system theme. */
     SYSTEM;
 
-    /** Error message theme. */
-    private static final String MESSAGE_ERROR_THEME = "Theme must not be null !";
     /** Error message theme set. */
     private static final String MESSAGE_ERROR_SET = "Error on setting theme !";
+    /** Motif look. */
+    private static final String LOOK_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    /** GTK look. */
+    private static final String LOOK_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 
     /**
      * Set the java frame theme.
      * 
      * @param theme The theme.
+     * @throws LionEngineException If an error occurred when setting the theme.
      */
-    public static void set(Theme theme)
+    public static void set(Theme theme) throws LionEngineException
     {
-        Check.notNull(theme, Theme.MESSAGE_ERROR_THEME);
         final String lookAndFeel;
         switch (theme)
         {
@@ -63,10 +63,10 @@ public enum Theme
                 lookAndFeel = UIManager.getSystemLookAndFeelClassName();
                 break;
             case MOTIF:
-                lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+                lookAndFeel = Theme.LOOK_MOTIF;
                 break;
             case GTK:
-                lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+                lookAndFeel = Theme.LOOK_GTK;
                 break;
             default:
                 Verbose.warning(Theme.class, "set", "Unknown theme: " + theme);

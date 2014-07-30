@@ -21,10 +21,10 @@ import java.util.EnumMap;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.entity.EntityGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -73,8 +73,9 @@ abstract class Entity
     protected Entity(SetupEntity setup)
     {
         super(setup);
-        map = setup.map;
-        desiredFps = setup.desiredFps;
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        map = context.map;
+        desiredFps = context.desiredFps;
         animations = new EnumMap<>(EntityState.class);
         final Configurable configurable = setup.getConfigurable();
         jumpForceValue = configurable.getDouble("jumpSpeed", "data");

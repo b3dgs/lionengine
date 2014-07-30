@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * It performs a list of {@link SetupGame} considering an input enumeration. This way it is possible to create new
@@ -47,16 +47,12 @@ import com.b3dgs.lionengine.LionEngineException;
  * </pre>
  * 
  * @param <S> The setup type used.
- * @param <O> The lower level class type representing the objects.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
+public abstract class FactoryGame<S extends SetupGame>
 {
-    /** Cast error. */
-    private static final String ERROR_CAST = "Unable to cast ";
-
     /** Setups list. */
-    private final Map<Class<? extends O>, S> setups;
+    private final Map<Class<? extends Fabricable>, S> setups;
 
     /**
      * Constructor.
@@ -72,7 +68,7 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
      * @param type The enum type.
      * @return The setup instance.
      */
-    protected abstract S createSetup(Class<? extends O> type);
+    protected abstract S createSetup(Class<? extends Fabricable> type);
 
     /**
      * Clear all loaded setup and their configuration.
@@ -87,35 +83,12 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
     }
 
     /**
-     * Get a setup reference from its type. Must only be used if not possible to use {@link #getSetup(Class)} instead.
-     * 
-     * @param type The reference type.
-     * @param parent The parent class type.
-     * @return The setup reference.
-     * @throws LionEngineException If not a valid type, related to the parent.
-     */
-    public S getSetup(Class<? extends ObjectGame> type, Class<? extends ObjectGame> parent) throws LionEngineException
-    {
-        final Class<? extends ObjectGame> subType = type.asSubclass(parent);
-        try
-        {
-            @SuppressWarnings("unchecked")
-            final Class<? extends O> castedType = (Class<? extends O>) subType;
-            return getSetup(castedType);
-        }
-        catch (final ClassCastException exception)
-        {
-            throw new LionEngineException(exception, FactoryGame.ERROR_CAST, type.getName(), " to ", parent.getName());
-        }
-    }
-
-    /**
      * Get a setup reference from its type.
      * 
      * @param type The reference type.
      * @return The setup reference.
      */
-    public S getSetup(Class<? extends O> type)
+    public S getSetup(Class<? extends Fabricable> type)
     {
         if (!setups.containsKey(type))
         {
@@ -130,7 +103,7 @@ public abstract class FactoryGame<S extends SetupGame, O extends ObjectGame>
      * @param type The class type.
      * @param setup The setup reference.
      */
-    protected void addSetup(Class<? extends O> type, S setup)
+    protected void addSetup(Class<? extends Fabricable> type, S setup)
     {
         setups.put(type, setup);
     }

@@ -43,7 +43,8 @@ public final class ProducePeon
     public ProducePeon(SetupSkill setup)
     {
         super(setup);
-        factoryProduction = setup.factoryProduction;
+        final ContextSkill context = setup.getContext(ContextSkill.class);
+        factoryProduction = context.factoryProduction;
         setOrder(false);
     }
 

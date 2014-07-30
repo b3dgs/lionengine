@@ -35,6 +35,7 @@ public final class Spearman
     public Spearman(SetupEntity setup)
     {
         super(setup);
-        addWeapon(setup.factoryWeapon.create(Spear.class), 0);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        addWeapon(context.factoryWeapon.create(Spear.class), 0);
     }
 }

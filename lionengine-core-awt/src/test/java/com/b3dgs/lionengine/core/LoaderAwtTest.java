@@ -39,6 +39,7 @@ public class LoaderAwtTest
     public static void prepareTest()
     {
         Engine.start("LoaderTest", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        LoaderTest.icon = Core.MEDIA.create(FactoryMediaProviderTest.PATH, "image.png");
         System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
         System.out.flush();
     }

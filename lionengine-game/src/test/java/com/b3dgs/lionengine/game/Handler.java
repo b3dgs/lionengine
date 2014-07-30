@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Graphic;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Handler
-        extends HandlerObjectGame<ObjectGame>
+        extends HandlerGame<ObjectGame>
 {
     @Override
     protected void update(double extrp, ObjectGame object)

@@ -54,7 +54,8 @@ public abstract class Unit
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");
-        mover = new MoverModel(this, setup.map);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        mover = new MoverModel(this, context.map);
         play(animIdle);
     }
 

@@ -37,6 +37,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the import map dialog.
@@ -140,7 +141,7 @@ public class ImportMapDialog
         patternsLocationText.setText(path);
         patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
         updateTipsLabel();
-        final File patterns = new File(patternsDirectory.getFile(), "patterns.xml");
+        final File patterns = new File(patternsDirectory.getFile(), MapTile.TILE_SHEETS_FILE_NAME);
         if (!patterns.isFile())
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);

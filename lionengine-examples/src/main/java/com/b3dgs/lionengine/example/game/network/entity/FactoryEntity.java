@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
@@ -26,38 +27,29 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
-        extends FactoryObjectGame<SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entity";
-    /** Entity desired fps. */
-    private final int desiredFps;
-    /** Map reference. */
-    private final Map map;
-    /** Server. */
-    private boolean server;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Standard constructor.
-     * 
-     * @param desiredFps The desired fps.
-     * @param map The map reference.
      */
-    FactoryEntity(int desiredFps, Map map)
+    FactoryEntity()
     {
         super(FactoryEntity.ENTITY_DIR);
-        this.desiredFps = desiredFps;
-        this.map = map;
     }
 
     /**
-     * Set the server flag.
+     * Set the factory context.
      * 
-     * @param server <code>true</code> if server, <code>false</code> else.
+     * @param context The factory context.
      */
-    public void setServer(boolean server)
+    public void setContext(ContextEntity context)
     {
-        this.server = server;
+        this.context = context;
     }
 
     /*
@@ -65,8 +57,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupEntity(config, type, map, desiredFps, server);
+        return new SetupEntity(config, context, type);
     }
 }

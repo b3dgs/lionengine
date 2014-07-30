@@ -149,6 +149,23 @@ public class FactoryGraphicProviderTest
 
         Assert.assertEquals(imageBuffer.getWidth(), 16);
         Assert.assertEquals(imageBuffer.getHeight(), 32);
+
+        imageBuffer.dispose();
+    }
+
+    /**
+     * Test create image buffer translucent.
+     */
+    @Test
+    public void testCreateImageBufferTranslucent()
+    {
+        final ImageBuffer imageBuffer = Core.GRAPHIC.createImageBuffer(16, 32, Transparency.TRANSLUCENT);
+
+        Assert.assertEquals(imageBuffer.getWidth(), 16);
+        Assert.assertEquals(imageBuffer.getHeight(), 32);
+        Assert.assertEquals(imageBuffer.getTransparency(), Transparency.TRANSLUCENT);
+
+        imageBuffer.dispose();
     }
 
     /**
@@ -162,6 +179,9 @@ public class FactoryGraphicProviderTest
 
         Assert.assertEquals(imageBuffer.getWidth(), copy.getWidth());
         Assert.assertEquals(imageBuffer.getHeight(), copy.getHeight());
+
+        imageBuffer.dispose();
+        copy.dispose();
     }
 
     /**
@@ -218,7 +238,6 @@ public class FactoryGraphicProviderTest
         Assert.assertNotEquals(FactoryGraphicProviderTest.IMAGE, rotate);
         Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getWidth(), rotate.getWidth());
         Assert.assertEquals(FactoryGraphicProviderTest.IMAGE.getHeight(), rotate.getHeight());
-
     }
 
     /**

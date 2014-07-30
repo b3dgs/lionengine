@@ -69,8 +69,9 @@ abstract class Entity
     protected Entity(SetupEntity setup)
     {
         super(setup);
-        map = setup.map;
-        desiredFps = setup.desiredFps;
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        map = context.map;
+        desiredFps = context.desiredFps;
         animations = new EnumMap<>(EntityState.class);
         final Configurable configurable = setup.getConfigurable();
         jumpForceValue = configurable.getDouble("jumpSpeed", "data");

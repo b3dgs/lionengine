@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Setup weapon implementation.
@@ -30,7 +31,7 @@ public class SetupWeapon
         extends SetupGame
 {
     /** Weapon type. */
-    final Class<? extends Weapon> type;
+    final Class<? extends Fabricable> type;
     /** Factory projectile. */
     final FactoryLauncher factoryLauncher;
 
@@ -41,7 +42,7 @@ public class SetupWeapon
      * @param type The weapon type.
      * @param factoryLauncher The launcher factory.
      */
-    public SetupWeapon(Media config, Class<? extends Weapon> type, FactoryLauncher factoryLauncher)
+    public SetupWeapon(Media config, Class<? extends Fabricable> type, FactoryLauncher factoryLauncher)
     {
         super(config);
         this.type = type;

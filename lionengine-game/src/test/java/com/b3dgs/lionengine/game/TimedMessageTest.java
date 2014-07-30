@@ -35,7 +35,7 @@ public class TimedMessageTest
     @Test
     public void testTimedMessage() throws InterruptedException
     {
-        final TimedMessage timedMessage = new TimedMessage(null);
+        final TimedMessage timedMessage = new TimedMessage();
         Assert.assertFalse(timedMessage.hasMessage());
         timedMessage.addMessage("test", 0, 0, 100);
         timedMessage.addMessage("test", 0, 0, 500);

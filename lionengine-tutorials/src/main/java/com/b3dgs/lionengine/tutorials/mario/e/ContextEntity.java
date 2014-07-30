@@ -15,51 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.effect;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.HandlerObjectGame;
+import com.b3dgs.lionengine.game.ContextGame;
 
 /**
- * Handle effects. Improve the default handler by not rendering effects that are outside the camera view.
+ * Represents the context related to entities.
  * 
- * @param <E> The effect type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class HandlerEffectGame<E extends EffectGame>
-        extends HandlerObjectGame<E>
+public class ContextEntity
+        implements ContextGame
 {
-    /** Camera reference. */
-    private final CameraGame camera;
+    /** Map. */
+    final Map map;
+    /** Desired fps. */
+    final int desiredFps;
 
     /**
      * Constructor.
      * 
-     * @param camera The camera reference.
+     * @param map The map reference.
+     * @param desiredFps The desired fps.
      */
-    public HandlerEffectGame(CameraGame camera)
+    public ContextEntity(Map map, int desiredFps)
     {
-        super();
-        this.camera = camera;
-    }
-
-    /*
-     * HandlerGame
-     */
-
-    @Override
-    protected void update(double extrp, E effect)
-    {
-        effect.update(extrp);
-    }
-
-    @Override
-    protected void render(Graphic g, E effect)
-    {
-        if (camera.isVisible(effect))
-        {
-            effect.render(g, camera);
-        }
+        this.map = map;
+        this.desiredFps = desiredFps;
     }
 }

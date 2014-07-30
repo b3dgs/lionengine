@@ -21,8 +21,6 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.game.strategy.skill.SetupSkillStrategy;
 
 /**
@@ -35,23 +33,16 @@ final class SetupSkill
 {
     /** Skill icon. */
     public final SpriteTiled icon;
-    /** Production factory. */
-    final FactoryProduction factoryProduction;
-    /** Cursor. */
-    final Cursor cursor;
 
     /**
      * Constructor.
      * 
      * @param config The config media.
-     * @param factoryProduction The production factory.
-     * @param cursor The cursor reference.
+     * @param context The context reference.
      */
-    SetupSkill(Media config, FactoryProduction factoryProduction, Cursor cursor)
+    SetupSkill(Media config, ContextSkill context)
     {
-        super(config);
-        this.factoryProduction = factoryProduction;
-        this.cursor = cursor;
+        super(config, context);
         final Media media = Core.MEDIA.create(FactorySkill.SKILL_PATH, configurable.getText("icon"));
         icon = Drawable.loadSpriteTiled(media, 27, 19);
         icon.load(false);

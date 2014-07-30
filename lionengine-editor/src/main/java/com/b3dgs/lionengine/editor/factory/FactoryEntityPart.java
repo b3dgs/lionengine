@@ -48,10 +48,10 @@ import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Represents the factory entity view, where the entities list is displayed.
@@ -174,7 +174,7 @@ public class FactoryEntityPart
      * 
      * @param factoryEntity The factory entity reference.
      */
-    public void setFactoryEntity(FactoryObjectGame<?, ?> factoryEntity)
+    public void setFactoryEntity(FactoryObjectGame<?> factoryEntity)
     {
         final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
         try
@@ -195,7 +195,7 @@ public class FactoryEntityPart
      * @param parent The composite parent.
      * @return The created child composite.
      */
-    Composite load(final FactoryObjectGame<?, ?> factoryEntity, File path, final Composite parent)
+    Composite load(final FactoryObjectGame<?> factoryEntity, File path, final Composite parent)
     {
         final File[] folders = path.listFiles();
         if (folders != null)
@@ -259,7 +259,7 @@ public class FactoryEntityPart
         entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         entitiesComposite.setLayout(new RowLayout());
 
-        final FactoryObjectGame<?, ?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
+        final FactoryObjectGame<?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
         loadEntities(factoryEntity, objectsFile);
     }
 
@@ -269,7 +269,7 @@ public class FactoryEntityPart
      * @param factoryEntity The factory entity reference.
      * @param entityFiles The entities path.
      */
-    void loadEntities(FactoryObjectGame<?, ?> factoryEntity, File[] entityFiles)
+    void loadEntities(FactoryObjectGame<?> factoryEntity, File[] entityFiles)
     {
         if (entityFiles != null)
         {
@@ -293,7 +293,7 @@ public class FactoryEntityPart
      * @param factoryEntity The factory entity reference.
      * @param file The entity data file.
      */
-    private void loadEntity(FactoryObjectGame<?, ?> factoryEntity, File file)
+    private void loadEntity(FactoryObjectGame<?> factoryEntity, File file)
     {
         final Label entityLabel = new Label(entitiesComposite, SWT.NONE);
         entityLabel.setLayoutData(new RowData(34, 34));
@@ -360,8 +360,8 @@ public class FactoryEntityPart
             }
         });
 
-        final Class<? extends ObjectGame> type = Tools.getObjectClass(EntityGame.class, entityLabel.getText());
-        final SetupGame setup = factoryEntity.getSetup(type, ObjectGame.class);
+        final Class<? extends Fabricable> type = Tools.getObjectClass(Fabricable.class, entityLabel.getText());
+        final SetupGame setup = factoryEntity.getSetup(type);
 
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
         entityLabel.setToolTipText(name);

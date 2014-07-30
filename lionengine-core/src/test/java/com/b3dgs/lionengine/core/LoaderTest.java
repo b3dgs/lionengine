@@ -48,6 +48,8 @@ public class LoaderTest
     private static final Resolution OUTPUT = new Resolution(640, 480, 60);
     /** Config. */
     private static final Config CONFIG = new Config(LoaderTest.OUTPUT, 16, true);
+    /** Icon. */
+    protected static Media icon;
 
     /**
      * Prepare the test.
@@ -57,6 +59,7 @@ public class LoaderTest
     {
         EngineCore.start("Test", Version.create(1, 0, 0), Verbose.CRITICAL, new FactoryGraphicMock(),
                 new FactoryMediaMock());
+        LoaderTest.icon = Core.MEDIA.create(FactoryMediaProviderTest.PATH, "image.png");
         System.out.println("*********************************** SEQUENCE VERBOSE ***********************************");
         System.out.flush();
     }
@@ -146,6 +149,32 @@ public class LoaderTest
     }
 
     /**
+     * Test the loader with an icon in windowed mode.
+     */
+    @Test
+    public void testLoaderIconWindowed()
+    {
+        final Config config = new Config(LoaderTest.OUTPUT, 16, true);
+        config.setIcon(LoaderTest.icon);
+
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
+    }
+
+    /**
+     * Test the loader with an icon in full screen mode.
+     */
+    @Test
+    public void testLoaderIconFullScreen()
+    {
+        final Config config = new Config(LoaderTest.OUTPUT, 16, false);
+        config.setIcon(LoaderTest.icon);
+
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
+    }
+
+    /**
      * Test the loader with a single sequence.
      */
     @Test
@@ -224,6 +253,26 @@ public class LoaderTest
     public void testLoaderFilterBilinear()
     {
         final Resolution output = new Resolution(320, 240, 0);
+        final Config config = new Config(output, 16, true, Filter.BILINEAR);
+        final Loader loader = new Loader(config);
+        loader.start(SequenceSingleMock.class);
+        try
+        {
+            loader.getRenderer().join();
+        }
+        catch (final InterruptedException exception)
+        {
+            Assert.fail();
+        }
+    }
+
+    /**
+     * Test the loader with a bilinear filter and screen scaled.
+     */
+    @Test
+    public void testLoaderFilterBilinearScaled()
+    {
+        final Resolution output = new Resolution(640, 480, 0);
         final Config config = new Config(output, 16, true, Filter.BILINEAR);
         final Loader loader = new Loader(config);
         loader.start(SequenceSingleMock.class);

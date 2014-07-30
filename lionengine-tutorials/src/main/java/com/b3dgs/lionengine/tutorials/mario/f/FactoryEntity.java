@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory entity implementation. Any entity instantiation has to be made using a factory instance.
@@ -26,27 +27,30 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class FactoryEntity
-        extends FactoryObjectGame<SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity>
 {
     /** Main entity directory name. */
     private static final String ENTITY_DIR = "entity";
 
-    /** Map. */
-    private final Map map;
-    /** Desired fps. */
-    private final int desiredFps;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Constructor.
-     * 
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
      */
-    FactoryEntity(Map map, int desiredFps)
+    FactoryEntity()
     {
         super(FactoryEntity.ENTITY_DIR);
-        this.map = map;
-        this.desiredFps = desiredFps;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextEntity context)
+    {
+        this.context = context;
     }
 
     /*
@@ -54,8 +58,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> key, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> key, Media config)
     {
-        return new SetupEntity(config, map, desiredFps);
+        return new SetupEntity(config, context);
     }
 }

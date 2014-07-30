@@ -37,20 +37,6 @@ public interface Mirrorable
     void updateMirror();
 
     /**
-     * Set cancel state for the mirror operation.
-     * 
-     * @param state The state.
-     */
-    void setMirrorCancel(boolean state);
-
-    /**
-     * Get mirror cancel state.
-     * 
-     * @return The mirror cancel state.
-     */
-    boolean getMirrorCancel();
-
-    /**
      * Get current mirror state.
      * 
      * @return The current mirror state.

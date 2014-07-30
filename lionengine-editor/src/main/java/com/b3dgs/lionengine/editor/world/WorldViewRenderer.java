@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Point;

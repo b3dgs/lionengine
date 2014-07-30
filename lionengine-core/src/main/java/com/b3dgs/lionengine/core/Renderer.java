@@ -164,6 +164,26 @@ public abstract class Renderer
     }
 
     /**
+     * Get main frame location x.
+     * 
+     * @return The main frame location x.
+     */
+    public final int getX()
+    {
+        return screen.getX();
+    }
+
+    /**
+     * Get main frame location y.
+     * 
+     * @return The main frame location y.
+     */
+    public final int getY()
+    {
+        return screen.getY();
+    }
+
+    /**
      * Check if the renderer is started.
      * 
      * @return <code>true</code> if started, <code>false</code> else.

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 
 /**
  * Handler implementation.
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
  * @see com.b3dgs.lionengine.example.game.handler
  */
 final class HandlerEntity
-        extends HandlerEntityGame<Entity>
+        extends HandlerGame<Entity>
 {
     /** Camera reference. */
     private final CameraGame camera;
@@ -46,6 +46,12 @@ final class HandlerEntity
     /*
      * HandlerEntityGame
      */
+
+    @Override
+    protected void update(double extrp, Entity entity)
+    {
+        entity.update(extrp);
+    }
 
     @Override
     protected void render(Graphic g, Entity entity)

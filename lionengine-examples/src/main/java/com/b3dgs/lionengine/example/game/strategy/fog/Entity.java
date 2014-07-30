@@ -43,8 +43,8 @@ abstract class Entity
      */
     protected Entity(SetupEntity setup)
     {
-        super(setup, setup.map);
-        map = setup.map;
+        super(setup, setup.getContext(ContextEntity.class).map);
+        map = setup.getContext(ContextEntity.class).map;
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         play(animIdle);

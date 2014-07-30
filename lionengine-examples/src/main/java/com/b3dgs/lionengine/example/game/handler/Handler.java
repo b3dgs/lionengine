@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.HandlerObjectGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 
 /**
  * Handler implementation.
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.HandlerObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Handler
-        extends HandlerObjectGame<MyObject>
+        extends HandlerGame<MyObject>
 {
     /**
      * Constructor.

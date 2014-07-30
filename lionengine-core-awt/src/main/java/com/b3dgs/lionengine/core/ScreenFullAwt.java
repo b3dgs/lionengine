@@ -83,16 +83,10 @@ final class ScreenFullAwt
     {
         try
         {
-            // Create window
-            if (window == null)
-            {
-                window = new java.awt.Window(frame, conf);
-                window.setBackground(Color.BLACK);
-                window.setIgnoreRepaint(true);
-
-                // Set display
-                frame.setUndecorated(true);
-            }
+            window = new java.awt.Window(frame, conf);
+            window.setBackground(Color.BLACK);
+            window.setIgnoreRepaint(true);
+            frame.setUndecorated(true);
             window.setPreferredSize(new Dimension(output.getWidth(), output.getHeight()));
 
             dev.setFullScreenWindow(window);

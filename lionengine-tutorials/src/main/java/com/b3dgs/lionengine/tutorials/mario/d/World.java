@@ -55,7 +55,11 @@ final class World
         keyboard = sequence.getInputDevice(Keyboard.class);
         camera = new CameraPlatform(width, height);
         map = new Map();
-        factory = new FactoryEntity(map, source.getRate());
+        factory = new FactoryEntity();
+
+        final ContextEntity contextEntity = new ContextEntity(map, source.getRate());
+        factory.setContext(contextEntity);
+
         mario = factory.create(Mario.class);
     }
 

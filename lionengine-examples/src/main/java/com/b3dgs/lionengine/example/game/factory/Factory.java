@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.factory;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory implementation example.
@@ -35,7 +36,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Factory
-        extends FactoryObjectGame<Setup, TypeBase>
+        extends FactoryObjectGame<Setup>
 {
     /** Parameter. Can be replaced by another type if needed. */
     private final Object param;
@@ -54,7 +55,7 @@ final class Factory
      */
 
     @Override
-    protected Setup createSetup(Class<? extends TypeBase> type, Media config)
+    protected Setup createSetup(Class<? extends Fabricable> type, Media config)
     {
         return new Setup(config, type, param);
     }

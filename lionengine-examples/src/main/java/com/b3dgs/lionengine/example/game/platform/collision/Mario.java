@@ -36,7 +36,7 @@ final class Mario
         extends EntityPlatform
 {
     /** Setup. */
-    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"), false);
+    private static final SetupSurfaceGame SETUP = new SetupSurfaceGame(Core.MEDIA.create("mario.xml"));
     /** Map reference. */
     private final Map map;
     /** Desired fps value. */

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Setup entity implementation.
@@ -29,29 +30,18 @@ public class SetupEntity
         extends SetupSurfaceGame
 {
     /** Type. */
-    final Class<? extends Entity> type;
-    /** Map. */
-    final Map map;
-    /** Desired fps. */
-    final int desiredFps;
-    /** Server. */
-    final boolean server;
+    final Class<? extends Fabricable> type;
 
     /**
      * Constructor.
      * 
      * @param config The config reference.
+     * @param context The context reference.
      * @param type The entity type.
-     * @param map The map reference.
-     * @param desiredFps The desired fps.
-     * @param server The server.
      */
-    public SetupEntity(Media config, Class<? extends Entity> type, Map map, int desiredFps, boolean server)
+    public SetupEntity(Media config, ContextEntity context, Class<? extends Fabricable> type)
     {
-        super(config, false);
+        super(config, context, false);
         this.type = type;
-        this.map = map;
-        this.desiredFps = desiredFps;
-        this.server = server;
     }
 }

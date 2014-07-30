@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory entity implementation.
@@ -27,20 +28,27 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryEntity
-        extends FactoryObjectGame<SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity>
 {
-    /** Map. */
-    private final Map map;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Constructor.
-     * 
-     * @param map The map reference.
      */
-    FactoryEntity(Map map)
+    FactoryEntity()
     {
         super("");
-        this.map = map;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextEntity context)
+    {
+        this.context = context;
     }
 
     /*
@@ -48,8 +56,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> key, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> key, Media config)
     {
-        return new SetupEntity(config, map);
+        return new SetupEntity(config, context);
     }
 }

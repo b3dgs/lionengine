@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.tutorials.mario.g;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.game.entity.EntityGame;
+import com.b3dgs.lionengine.game.EntityGame;
 
 /**
  * Goomba implementation.

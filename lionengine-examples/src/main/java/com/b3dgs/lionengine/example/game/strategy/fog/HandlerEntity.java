@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.HandlerObjectGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
 /**
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.strategy.CameraStrategy;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class HandlerEntity
-        extends HandlerObjectGame<Entity>
+        extends HandlerGame<Entity>
 {
     /** Camera reference. */
     private final CameraStrategy camera;

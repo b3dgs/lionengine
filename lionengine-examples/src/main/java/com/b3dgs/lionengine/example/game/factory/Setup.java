@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.factory;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Setup implementation.
@@ -29,7 +30,7 @@ final class Setup
         extends SetupGame
 {
     /** Type. */
-    final Class<? extends TypeBase> type;
+    final Class<? extends Fabricable> type;
     /** Object parameter. */
     final Object param;
 
@@ -40,7 +41,7 @@ final class Setup
      * @param type The type.
      * @param param The parameter reference.
      */
-    Setup(Media config, Class<? extends TypeBase> type, Object param)
+    Setup(Media config, Class<? extends Fabricable> type, Object param)
     {
         super(config);
         this.type = type;

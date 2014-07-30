@@ -203,6 +203,11 @@ abstract class ScreenAwt
         addDeviceMouse();
         buf.show();
         graphics.setGraphic(buf.getDrawGraphics());
+        final Media icon = config.getIcon();
+        if (icon != null)
+        {
+            setIcon(icon.getPath());
+        }
     }
 
     @Override

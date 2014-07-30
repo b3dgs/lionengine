@@ -18,9 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory entity implementation.
@@ -28,32 +27,27 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<SetupEntity, Entity>
+        extends FactoryObjectGame<SetupEntity>
 {
-    /** Map reference. */
-    public final Map map;
-    /** The factory skill. */
-    public final FactorySkill factorySkill;
-    /** Handler entity reference. */
-    public final HandlerEntity handlerEntity;
-    /** The desired fps. */
-    public final int desiredFps;
+    /** Context reference. */
+    private ContextEntity context;
 
     /**
      * Constructor.
-     * 
-     * @param map The map reference.
-     * @param factorySkill The factory skill reference.
-     * @param handlerEntity The handler entity reference.
-     * @param desiredFps The desired fps.
      */
-    public FactoryEntity(Map map, FactorySkill factorySkill, HandlerEntity handlerEntity, int desiredFps)
+    public FactoryEntity()
     {
         super("entity");
-        this.map = map;
-        this.factorySkill = factorySkill;
-        this.handlerEntity = handlerEntity;
-        this.desiredFps = desiredFps;
+    }
+
+    /**
+     * Set the factory context.
+     * 
+     * @param context The factory context.
+     */
+    public void setContext(ContextEntity context)
+    {
+        this.context = context;
     }
 
     /*
@@ -61,8 +55,8 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Entity> type, Media config)
+    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupEntity(config, type, map, this, factorySkill, handlerEntity, desiredFps);
+        return new SetupEntity(config, context, type);
     }
 }

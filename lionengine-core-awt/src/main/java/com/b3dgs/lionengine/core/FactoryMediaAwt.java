@@ -51,7 +51,19 @@ final class FactoryMediaAwt
     @Override
     public Media create(String... path)
     {
-        return Core.MEDIA.create(path);
+        final StringBuilder fullPath = new StringBuilder();
+        for (int i = 0; i < path.length; i++)
+        {
+            if (path[i] != null)
+            {
+                fullPath.append(path[i]);
+            }
+            if (i < path.length - 1)
+            {
+                fullPath.append(getSeparator());
+            }
+        }
+        return new MediaAwt(fullPath.toString());
     }
 
     @Override

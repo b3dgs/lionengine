@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.handler;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.purview.model.HandlableModel;
 
 /**
  * My object implementation.
@@ -28,14 +26,14 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class MyObject
-        extends ObjectGame
+        extends HandlableModel
 {
     /**
      * Constructor.
      */
     MyObject()
     {
-        super(new SetupGame(Core.MEDIA.create("MyObject.xml")));
+        super();
     }
 
     /**

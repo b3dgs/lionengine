@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * It performs a list of {@link SetupGame} considering an input class type. This way it is possible to create new
@@ -50,11 +51,10 @@ import com.b3dgs.lionengine.core.Media;
  * </pre>
  * 
  * @param <S> The setup type used.
- * @param <O> The object type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGame>
-        extends FactoryGame<S, O>
+public abstract class FactoryObjectGame<S extends SetupGame>
+        extends FactoryGame<S>
 {
     /** Data file extension. */
     public static final String FILE_DATA_EXTENSION = "xml";
@@ -92,20 +92,7 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
      * @param config The setup media config file.
      * @return The setup instance.
      */
-    protected abstract S createSetup(Class<? extends O> type, Media config);
-
-    /**
-     * Should not be used, prefer {@link #create(Class)} instead.
-     * 
-     * @param <T> The object game type.
-     * @param type The object type.
-     * @return The object instance.
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends ObjectGame> T createUnsafe(Class<T> type)
-    {
-        return type.cast(create((Class<? extends O>) type));
-    }
+    protected abstract S createSetup(Class<? extends Fabricable> type, Media config);
 
     /**
      * Create an object from its type using a generic way. The concerned classes to instantiate and its
@@ -115,7 +102,7 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
      * @param type The object type.
      * @return The object instance.
      */
-    public <E extends O> E create(Class<E> type)
+    public <E extends Fabricable> E create(Class<E> type)
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
 
@@ -163,7 +150,7 @@ public abstract class FactoryObjectGame<S extends SetupGame, O extends ObjectGam
      */
 
     @Override
-    protected S createSetup(Class<? extends O> type)
+    protected S createSetup(Class<? extends Fabricable> type)
     {
         Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
 

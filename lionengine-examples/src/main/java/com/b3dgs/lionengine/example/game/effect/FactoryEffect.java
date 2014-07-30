@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.effect;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Effect factory.
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryEffect
-        extends FactoryObjectGame<SetupSurfaceGame, Effect>
+        extends FactoryObjectGame<SetupSurfaceGame>
 {
     /**
      * Constructor.
@@ -43,8 +44,8 @@ final class FactoryEffect
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Class<? extends Effect> type, Media config)
+    protected SetupSurfaceGame createSetup(Class<? extends Fabricable> type, Media config)
     {
-        return new SetupSurfaceGame(config, false);
+        return new SetupSurfaceGame(config);
     }
 }

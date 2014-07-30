@@ -49,6 +49,8 @@ public class SequenceSingleMock
     @Override
     protected void update(double extrp)
     {
+        getX();
+        getY();
         end();
     }
 

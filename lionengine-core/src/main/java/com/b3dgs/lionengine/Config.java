@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import com.b3dgs.lionengine.core.Applet;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 
 /**
@@ -73,6 +74,8 @@ public final class Config
     private double ratio;
     /** Applet reference. */
     private Applet<?> applet;
+    /** Icon media. */
+    private Media icon;
 
     /**
      * Constructor.
@@ -132,6 +135,16 @@ public final class Config
     }
 
     /**
+     * Set the application icon.
+     * 
+     * @param icon The icon media.
+     */
+    public void setIcon(Media icon)
+    {
+        this.icon = icon;
+    }
+
+    /**
      * Get the resolution source.
      * 
      * @return The source resolution.
@@ -165,6 +178,16 @@ public final class Config
             return appletClass.cast(applet.getApplet());
         }
         return null;
+    }
+
+    /**
+     * Get the application icon.
+     * 
+     * @return The application icon.
+     */
+    public Media getIcon()
+    {
+        return icon;
     }
 
     /**

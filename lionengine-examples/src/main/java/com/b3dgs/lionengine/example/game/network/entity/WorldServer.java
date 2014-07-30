@@ -44,12 +44,11 @@ final class WorldServer
      */
     WorldServer(Sequence sequence)
     {
-        super(sequence);
+        super(sequence, true);
         handler = new HandlerEntity(new CameraPlatform(width, height), marioClients);
         networkedWorld = new NetworkedWorldModelServer(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);
-        factory.setServer(true);
     }
 
     /*

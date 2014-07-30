@@ -80,7 +80,7 @@ public interface Screen
     void setSequence(Sequence sequence);
 
     /**
-     * Set window icon from file.
+     * Set icon from file.
      * 
      * @param filename The icon file name.
      */

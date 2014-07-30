@@ -75,10 +75,11 @@ public abstract class UnitWorker
     protected UnitWorker(SetupEntity setup)
     {
         super(setup);
-        factory = setup.factoryEntity;
-        handler = setup.handlerEntity;
-        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
-        extractor = new ExtractorModel(this, setup.fps);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        factory = context.factoryEntity;
+        handler = context.handlerEntity;
+        producer = new ProducerModel<>(this, context.handlerEntity, context.fps);
+        extractor = new ExtractorModel(this, context.fps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         extractionSpeed = configurable.getInteger("extraction_speed", "extraction");

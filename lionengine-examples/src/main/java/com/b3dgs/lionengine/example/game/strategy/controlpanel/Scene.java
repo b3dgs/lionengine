@@ -77,11 +77,15 @@ final class Scene
         text = new TextGame(Text.SERIF, 10, TextStyle.NORMAL);
         map = new Map();
         controlPanel = new ControlPanel();
-        factoryEntity = new FactoryEntity(map);
+        factoryEntity = new FactoryEntity();
         camera = new CameraStrategy(map);
         cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, Core.MEDIA.create("cursor.png"));
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         mouse.setConfig(getConfig());
+
+        final ContextEntity contextEntity = new ContextEntity(map);
+        factoryEntity.setContext(contextEntity);
+
         setSystemCursorVisible(false);
     }
 

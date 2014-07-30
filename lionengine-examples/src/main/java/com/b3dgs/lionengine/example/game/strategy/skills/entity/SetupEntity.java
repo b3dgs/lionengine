@@ -18,9 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Setup entity implementation.
@@ -31,38 +30,18 @@ public class SetupEntity
         extends SetupSurfaceGame
 {
     /** Type. */
-    public final Class<? extends Entity> type;
-    /** Map. */
-    public final Map map;
-    /** Factory entity. */
-    public final FactoryEntity factoryEntity;
-    /** Factory entity. */
-    public final FactorySkill factorySkill;
-    /** Handler entity. */
-    public final HandlerEntity handlerEntity;
-    /** Desired fps. */
-    public final int fps;
+    public final Class<? extends Fabricable> type;
 
     /**
      * Constructor.
      * 
      * @param config The config file.
+     * @param context The context reference.
      * @param type The entity type.
-     * @param map The map reference.
-     * @param factoryEntity The factory entity reference.
-     * @param factorySkill The factory skill reference.
-     * @param handlerEntity The handler entity reference.
-     * @param fps The desired fps.
      */
-    public SetupEntity(Media config, Class<? extends Entity> type, Map map, FactoryEntity factoryEntity,
-            FactorySkill factorySkill, HandlerEntity handlerEntity, int fps)
+    public SetupEntity(Media config, ContextEntity context, Class<? extends Fabricable> type)
     {
-        super(config, false);
+        super(config, context, false);
         this.type = type;
-        this.map = map;
-        this.factoryEntity = factoryEntity;
-        this.factorySkill = factorySkill;
-        this.handlerEntity = handlerEntity;
-        this.fps = fps;
     }
 }

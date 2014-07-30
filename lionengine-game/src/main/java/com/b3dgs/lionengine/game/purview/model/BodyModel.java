@@ -45,10 +45,12 @@ public class BodyModel
 
     /**
      * Constructor.
+     * 
+     * @param localizable The localizable reference.
      */
-    public BodyModel()
+    public BodyModel(Localizable localizable)
     {
-        localizable = new LocalizableModel();
+        this.localizable = localizable;
         force = new Force();
         gravityMax = new Force();
         invertY = -1;
@@ -101,111 +103,5 @@ public class BodyModel
     public double getWeight()
     {
         return mass * BodyModel.GRAVITY;
-    }
-
-    /*
-     * Localizable
-     */
-
-    @Override
-    public void teleport(double x, double y)
-    {
-        localizable.teleport(x, y);
-    }
-
-    @Override
-    public void teleportX(double x)
-    {
-        localizable.teleportX(x);
-    }
-
-    @Override
-    public void teleportY(double y)
-    {
-        localizable.teleportY(y);
-    }
-
-    @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
-    {
-        localizable.moveLocation(extrp, force, forces);
-    }
-
-    @Override
-    public void moveLocation(double extrp, double vx, double vy)
-    {
-        localizable.moveLocation(extrp, vx, vy);
-    }
-
-    @Override
-    public void setLocation(double x, double y)
-    {
-        localizable.setLocation(x, y);
-    }
-
-    @Override
-    public void setLocationX(double x)
-    {
-        localizable.setLocationX(x);
-    }
-
-    @Override
-    public void setLocationY(double y)
-    {
-        localizable.setLocationY(y);
-    }
-
-    @Override
-    public void setSize(int width, int height)
-    {
-        localizable.setSize(width, height);
-    }
-
-    @Override
-    public double getLocationX()
-    {
-        return localizable.getLocationX();
-    }
-
-    @Override
-    public double getLocationY()
-    {
-        return localizable.getLocationY();
-    }
-
-    @Override
-    public int getLocationIntX()
-    {
-        return localizable.getLocationIntX();
-    }
-
-    @Override
-    public int getLocationIntY()
-    {
-        return localizable.getLocationIntY();
-    }
-
-    @Override
-    public double getLocationOldX()
-    {
-        return localizable.getLocationOldX();
-    }
-
-    @Override
-    public double getLocationOldY()
-    {
-        return localizable.getLocationOldY();
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return localizable.getWidth();
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return localizable.getHeight();
     }
 }

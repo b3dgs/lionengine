@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
-import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
 import com.b3dgs.lionengine.network.purview.NetworkableModel;
@@ -63,16 +62,19 @@ abstract class World<N extends NetworkedWorld>
 
     /**
      * @param sequence The sequence reference.
+     * @param server <code>true</code> if server, <code>false</code> else.
      */
-    World(final Sequence sequence)
+    World(final Sequence sequence, boolean server)
     {
         super(sequence);
         map = new Map();
         marioClients = new HashMap<>(1);
-        factory = new FactoryEntity(source.getRate(), map);
+        factory = new FactoryEntity();
         networkableModel = new NetworkableModel();
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
+        final ContextEntity contextEntity = new ContextEntity(map, source.getRate(), server);
+        factory.setContext(contextEntity);
     }
 
     /**
@@ -183,12 +185,6 @@ abstract class World<N extends NetworkedWorld>
     @Override
     public void notifyClientConnected(Byte id, String name)
     {
-        boolean server = false;
-        if (networkedWorld instanceof NetworkedWorldModelServer)
-        {
-            server = true;
-        }
-        factory.setServer(server);
         final Mario mario = factory.create(Mario.class);
         mario.respawn();
         mario.setName(name);

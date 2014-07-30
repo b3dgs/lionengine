@@ -33,8 +33,6 @@ public class MirrorableModel
     private boolean requested;
     /** Mirror next state flag. */
     private boolean nextState;
-    /** Mirror cancel flags. */
-    private boolean cancel;
 
     /**
      * Constructor.
@@ -44,7 +42,6 @@ public class MirrorableModel
         mirror = false;
         requested = false;
         nextState = false;
-        cancel = false;
     }
 
     /*
@@ -63,28 +60,9 @@ public class MirrorableModel
     {
         if (requested)
         {
-            if (!cancel)
-            {
-                mirror = nextState;
-                requested = false;
-            }
-            else
-            {
-                cancel = false;
-            }
+            mirror = nextState;
+            requested = false;
         }
-    }
-
-    @Override
-    public void setMirrorCancel(boolean state)
-    {
-        cancel = state;
-    }
-
-    @Override
-    public boolean getMirrorCancel()
-    {
-        return cancel;
     }
 
     @Override

@@ -39,10 +39,11 @@ public final class Peon
     public Peon(SetupEntity setup)
     {
         super(setup);
-        addSkill(setup.factoryEntity, 0, MoveOrc.class, 0);
-        addSkill(setup.factoryEntity, 0, StopOrc.class, 1);
-        addSkill(setup.factoryEntity, 0, BuildingStandardOrc.class, 2);
-        addSkill(setup.factoryEntity, 1, BuildBarracksOrc.class, 0);
-        addSkill(setup.factoryEntity, 1, CancelOrc.class, 1);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        addSkill(context.factoryEntity, 0, MoveOrc.class, 0);
+        addSkill(context.factoryEntity, 0, StopOrc.class, 1);
+        addSkill(context.factoryEntity, 0, BuildingStandardOrc.class, 2);
+        addSkill(context.factoryEntity, 1, BuildBarracksOrc.class, 0);
+        addSkill(context.factoryEntity, 1, CancelOrc.class, 1);
     }
 }

@@ -35,6 +35,7 @@ public final class Grunt
     public Grunt(SetupEntity setup)
     {
         super(setup);
-        addWeapon(setup.factoryWeapon.create(Axe.class), 0);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        addWeapon(context.factoryWeapon.create(Axe.class), 0);
     }
 }

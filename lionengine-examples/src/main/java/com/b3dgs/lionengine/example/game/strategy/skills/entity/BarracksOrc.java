@@ -35,6 +35,7 @@ public final class BarracksOrc
     public BarracksOrc(SetupEntity setup)
     {
         super(setup);
-        addSkill(setup.factoryEntity, 0, ProducePeon.class, 0);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        addSkill(context.factoryEntity, 0, ProducePeon.class, 0);
     }
 }

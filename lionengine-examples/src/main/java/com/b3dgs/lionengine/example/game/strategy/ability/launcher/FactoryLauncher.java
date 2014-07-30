@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory launcher projectile.
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryLauncher
-        extends FactoryObjectGame<SetupLauncher, LauncherProjectile>
+        extends FactoryObjectGame<SetupLauncher>
 {
     /** Factory projectile. */
     private final FactoryProjectile factoryProjectile;
@@ -53,7 +54,7 @@ public final class FactoryLauncher
      */
 
     @Override
-    protected SetupLauncher createSetup(Class<? extends LauncherProjectile> type, Media config)
+    protected SetupLauncher createSetup(Class<? extends Fabricable> type, Media config)
     {
         return new SetupLauncher(config, factoryProjectile, handlerProjectile);
     }

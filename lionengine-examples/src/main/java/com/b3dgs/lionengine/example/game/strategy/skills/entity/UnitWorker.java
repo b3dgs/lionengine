@@ -57,8 +57,9 @@ public abstract class UnitWorker
     protected UnitWorker(SetupEntity setup)
     {
         super(setup);
-        factory = setup.factoryEntity;
-        producer = new ProducerModel<>(this, setup.handlerEntity, setup.fps);
+        final ContextEntity context = setup.getContext(ContextEntity.class);
+        factory = context.factoryEntity;
+        producer = new ProducerModel<>(this, context.handlerEntity, context.desiredFps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         barProgress = new Bar(0, 0);

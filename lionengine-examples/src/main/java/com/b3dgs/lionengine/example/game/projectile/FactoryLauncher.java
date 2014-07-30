@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Launcher factory.
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryLauncher
-        extends FactoryObjectGame<Setup, Launcher>
+        extends FactoryObjectGame<Setup>
 {
     /** Factory projectile. */
     private final FactoryProjectile factory;
@@ -52,7 +53,7 @@ final class FactoryLauncher
      */
 
     @Override
-    protected Setup createSetup(Class<? extends Launcher> type, Media config)
+    protected Setup createSetup(Class<? extends Fabricable> type, Media config)
     {
         return new Setup(config, factory, handler);
     }

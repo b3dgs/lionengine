@@ -50,7 +50,7 @@ final class Entity
      */
     Entity(Map map)
     {
-        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml"), false));
+        super(new SetupSurfaceGame(Core.MEDIA.create("mario.xml")));
         this.map = map;
         mouseX = 64;
         mouseY = 180;

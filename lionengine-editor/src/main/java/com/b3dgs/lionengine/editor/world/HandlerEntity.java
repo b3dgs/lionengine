@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.entity.EntityGame;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
+import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.HandlerGame;
 
 /**
  * Handler entity implementation. Just used as a simple entity rendering.
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class HandlerEntity
-        extends HandlerEntityGame<EntityGame>
+        extends HandlerGame<EntityGame>
 {
     /** Camera. */
     private final CameraGame camera;

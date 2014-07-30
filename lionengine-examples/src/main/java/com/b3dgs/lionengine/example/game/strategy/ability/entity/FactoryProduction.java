@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.TileSizeData;
+import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 
 /**
@@ -71,7 +72,7 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(Class<? extends Entity> type)
+    protected SetupGame createSetup(Class<? extends Fabricable> type)
     {
         final Media config = Core.MEDIA.create("entity", type.getSimpleName() + ".xml");
         return new SetupGame(config);

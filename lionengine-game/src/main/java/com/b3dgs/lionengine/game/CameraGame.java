@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.entity.HandlerEntityGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 
@@ -135,8 +134,8 @@ public class CameraGame
      * (screen top-left).</li>
      * </ul>
      * <p>
-     * It is also compatible with entity rendering (by using an {@link HandlerEntityGame}). The entity which are outside
-     * the camera view will not be rendered. This avoid useless rendering.
+     * It is also compatible with entity rendering (by using an {@link HandlerGame}). The entity which are outside the
+     * camera view will not be rendered. This avoid useless rendering.
      * </p>
      * <p>
      * Note: The rendering view is from the camera location. So <code>x</code> and <code>y</code> are an offset from

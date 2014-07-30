@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.purview.Handlable;
 
 /**
  * Designed to handle objects. Maintain an objects list by updating and rendering them. Modifications on the list can be
@@ -32,13 +33,13 @@ import com.b3dgs.lionengine.core.Graphic;
  * @param <E> The object type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class HandlerObjectGame<E extends ObjectGame>
+public abstract class HandlerGame<E extends Handlable>
 {
-    /** List of entities handled. */
-    private final Map<Integer, E> objects;
-    /** List of entities to delete. */
+    /** List of handlables. */
+    private final Map<Integer, E> handlables;
+    /** To delete list. */
     private final List<E> toDelete;
-    /** List of entities to add. */
+    /** To add list. */
     private final List<E> toAdd;
     /** Will delete flag. */
     private boolean willDelete;
@@ -48,9 +49,9 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     /**
      * Constructor.
      */
-    public HandlerObjectGame()
+    public HandlerGame()
     {
-        objects = new HashMap<>(8);
+        handlables = new HashMap<>(8);
         toDelete = new ArrayList<>(1);
         toAdd = new ArrayList<>(1);
         willDelete = false;
@@ -58,62 +59,62 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Update the object; called by {@link #update(double)} for each object handled.
+     * Update the handlable. Called by {@link #update(double)} for each handlable.
      * 
      * @param extrp The extrapolation value.
-     * @param object The object to update.
+     * @param handlable The handlable to update.
      */
-    protected abstract void update(double extrp, E object);
+    protected abstract void update(double extrp, E handlable);
 
     /**
-     * Render the object; called by {@link #render(Graphic)} for each object handled.
+     * Render the object. Called by {@link #render(Graphic)} for each handlable.
      * 
      * @param g The graphics output.
-     * @param object The object to update.
+     * @param handlable The handlable to render.
      */
-    protected abstract void render(Graphic g, E object);
+    protected abstract void render(Graphic g, E handlable);
 
     /**
-     * Update the objects.
+     * Update the handlable.
      * 
      * @param extrp The extrapolation value.
      */
     public void update(double extrp)
     {
         updateAdd();
-        for (final E object : list())
+        for (final E handlable : list())
         {
-            update(extrp, object);
-            if (object.isDestroyed())
+            update(extrp, handlable);
+            if (handlable.isDestroyed())
             {
-                remove(object);
+                remove(handlable);
             }
         }
         updateRemove();
     }
 
     /**
-     * Render the objects.
+     * Render the handlables.
      * 
      * @param g The graphics output.
      */
     public void render(Graphic g)
     {
-        for (final E object : list())
+        for (final E handlable : list())
         {
-            render(g, object);
+            render(g, handlable);
         }
     }
 
     /**
-     * Add an object to the handler list. Don't forget to call {@link #updateAdd()} at the begin of the update to add
-     * them properly.
+     * Add a handlable to the list.
+     * Do not forget to call {@link #updateAdd()} at the begin of the update to add them properly.
      * 
-     * @param object The object to add.
+     * @param handlable The handlable to add.
      */
-    public void add(E object)
+    public void add(E handlable)
     {
-        toAdd.add(object);
+        toAdd.add(handlable);
         willAdd = true;
     }
 
@@ -125,22 +126,22 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
      */
     public E get(Integer key)
     {
-        return objects.get(key);
+        return handlables.get(key);
     }
 
     /**
-     * Add an object to the remove list. Modifications are applied at the end of the update.
+     * Add a handlable to the remove list. Modifications are applied at the end of the update.
      * 
-     * @param object The object to remove.
+     * @param handlable The handlable to remove.
      */
-    public void remove(E object)
+    public void remove(E handlable)
     {
-        toDelete.add(object);
+        toDelete.add(handlable);
         willDelete = true;
     }
 
     /**
-     * Remove all objects from the list. Modifications are applied at the end of the update.
+     * Remove all handlables from the list. Modifications are applied at the end of the update.
      */
     public void removeAll()
     {
@@ -149,45 +150,45 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     }
 
     /**
-     * Get the number of objects handled.
+     * Get the number of handlables.
      * 
-     * @return The number of objects handled.
+     * @return The number of handlables.
      */
     public int size()
     {
-        return objects.size();
+        return handlables.size();
     }
 
     /**
-     * Get the list reference of handled objects.
+     * Get the list reference of handlables.
      * 
-     * @return The list reference of handled objects.
+     * @return The list reference of handlables.
      */
     public Collection<E> list()
     {
-        return objects.values();
+        return handlables.values();
     }
 
     /**
-     * Check if object can be added.
+     * Check if handlable can be added.
      * 
-     * @param object The object to check.
+     * @param handlable The handlable to check.
      * @return <code>true</code> if can be added, <code>false</code> else.
      */
-    protected boolean canBeAdded(E object)
+    protected boolean canBeAdded(E handlable)
     {
         return true;
     }
 
     /**
-     * Get the object key.
+     * Get the handlable key.
      * 
-     * @param object The object reference.
-     * @return The object key.
+     * @param handlable The handlable reference.
+     * @return The handlable key.
      */
-    private Integer getKey(E object)
+    private Integer getKey(E handlable)
     {
-        return object.getId();
+        return handlable.getId();
     }
 
     /**
@@ -198,11 +199,11 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
         if (willAdd)
         {
             List<E> toKeep = null;
-            for (final E object : toAdd)
+            for (final E handlable : toAdd)
             {
-                if (canBeAdded(object))
+                if (canBeAdded(handlable))
                 {
-                    objects.put(getKey(object), object);
+                    handlables.put(getKey(handlable), handlable);
                 }
                 else
                 {
@@ -210,7 +211,7 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
                     {
                         toKeep = new ArrayList<>(0);
                     }
-                    toKeep.add(object);
+                    toKeep.add(handlable);
                 }
             }
             toAdd.clear();
@@ -231,9 +232,9 @@ public abstract class HandlerObjectGame<E extends ObjectGame>
     {
         if (willDelete)
         {
-            for (final E object : toDelete)
+            for (final E handlable : toDelete)
             {
-                objects.remove(getKey(object));
+                handlables.remove(getKey(handlable));
             }
             toDelete.clear();
             willDelete = false;
