@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.ProducePeon;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Barracks building implementation. This building allows to create new grunt.
@@ -27,15 +30,27 @@ import com.b3dgs.lionengine.example.game.strategy.skills.skill.ProducePeon;
 public final class BarracksOrc
         extends BuildingProducer
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(BarracksOrc.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public BarracksOrc(SetupEntity setup)
+    public BarracksOrc(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        addSkill(context.factoryEntity, 0, ProducePeon.class, 0);
+    }
+
+    /*
+     * BuildingProducer
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        addSkill(context.getService(FactoryEntity.class), 0, ProducePeon.MEDIA, 0);
     }
 }

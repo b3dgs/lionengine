@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
@@ -45,7 +46,7 @@ public abstract class UnitAttacker
      * 
      * @param setup The setup reference.
      */
-    protected UnitAttacker(SetupEntity setup)
+    protected UnitAttacker(SetupSurfaceGame setup)
     {
         super(setup);
         final Configurable configurable = setup.getConfigurable();

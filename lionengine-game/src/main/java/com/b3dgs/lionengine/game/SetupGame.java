@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
@@ -28,35 +29,36 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
  */
 public class SetupGame
 {
+    /** Class error. */
+    private static final String ERROR_CLASS = "Class not found for: ";
+
     /** Configurable reference. */
     protected final Configurable configurable;
     /** Config file name. */
     protected final Media configFile;
-    /** The context reference. */
-    protected final ContextGame context;
+    /** Class reference. */
+    private Class<?> clazz;
 
     /**
      * Constructor.
      * 
      * @param config The config media.
+     * @throws LionEngineException If there is not any corresponding class found.
      */
-    public SetupGame(Media config)
+    public SetupGame(Media config) throws LionEngineException
     {
-        this(config, null);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param config The config media.
-     * @param context The context reference.
-     */
-    public SetupGame(Media config, ContextGame context)
-    {
-        this.context = context;
         configurable = new Configurable();
         configurable.load(config);
         configFile = config;
+    }
+
+    /**
+     * Clear the setup and remove configurable data.
+     */
+    public void clear()
+    {
+        configurable.clear();
+        clazz = null;
     }
 
     /**
@@ -80,13 +82,25 @@ public class SetupGame
     }
 
     /**
-     * Get the setup context.
+     * Get the class mapped to the setup. Lazy call (load class only first time, and keep its reference after).
      * 
-     * @param contextClass The context class type.
-     * @return The setup context.
+     * @param classLoader The class loader used.
+     * @return The class mapped to the setup.
+     * @throws LionEngineException If the class was not found by the class loader.
      */
-    public <C extends ContextGame> C getContext(Class<C> contextClass)
+    public Class<?> getConfigClass(ClassLoader classLoader) throws LionEngineException
     {
-        return contextClass.cast(context);
+        if (clazz == null)
+        {
+            try
+            {
+                clazz = classLoader.loadClass(configurable.getClassName());
+            }
+            catch (final ClassNotFoundException exception)
+            {
+                throw new LionEngineException(exception, SetupGame.ERROR_CLASS, configFile.getPath());
+            }
+        }
+        return clazz;
     }
 }

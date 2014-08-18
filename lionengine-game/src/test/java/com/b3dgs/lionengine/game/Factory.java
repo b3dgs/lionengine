@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Factory implementation for test.
@@ -41,8 +40,8 @@ final class Factory
      */
 
     @Override
-    protected SetupGame createSetup(Class<? extends Fabricable> type)
+    protected SetupGame createSetup(Media config)
     {
-        return new SetupGame(Core.MEDIA.create("src", "test", "resources", "type.xml"));
+        return new SetupGame(config);
     }
 }

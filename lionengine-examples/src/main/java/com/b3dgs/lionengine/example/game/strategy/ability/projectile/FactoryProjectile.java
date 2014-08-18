@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Factory projectile implementation.
@@ -32,14 +31,14 @@ public final class FactoryProjectile
         extends FactoryObjectGame<SetupSurfaceGame>
 {
     /** Directory name from our resources directory containing our entities. */
-    private static final String PROJECTILE_PATH = "projectile";
+    public static final String PROJECTILE_DIR = "projectile";
 
     /**
      * Constructor.
      */
     public FactoryProjectile()
     {
-        super(FactoryProjectile.PROJECTILE_PATH);
+        super(FactoryProjectile.PROJECTILE_DIR);
     }
 
     /*
@@ -47,7 +46,7 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupSurfaceGame createSetup(Media config)
     {
         return new SetupSurfaceGame(config);
     }

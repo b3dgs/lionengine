@@ -55,7 +55,6 @@ import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.stream.Stream;
@@ -154,10 +153,8 @@ public final class Tools
      */
     public static Configurable getConfigurable(Media entity)
     {
-        final String entityName = entity.getFile().getName().replace("." + FactoryObjectGame.FILE_DATA_EXTENSION, "");
-        final Class<? extends Fabricable> entityClass = Tools.getObjectClass(Fabricable.class, entityName);
         final FactoryObjectGame<?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
-        final SetupGame setup = factory.getSetup(entityClass);
+        final SetupGame setup = factory.getSetup(entity);
         return setup.getConfigurable();
     }
 

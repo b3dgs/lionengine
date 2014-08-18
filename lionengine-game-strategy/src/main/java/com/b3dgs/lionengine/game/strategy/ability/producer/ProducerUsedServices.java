@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -62,14 +63,13 @@ public interface ProducerUsedServices<E extends EntityStrategy, C extends Produc
     boolean canBeProduced(P producible);
 
     /**
-     * Get entity to produce from its id. The common usage is to return a new entity instance by using the factory (
-     * {@link FactoryObjectGame#create(Class)}.
+     * Get entity to produce from its media. The common usage is to return a new entity instance by using the factory (
+     * {@link FactoryObjectGame#create(Media)}.
      * 
-     * @param <EI> The entity type used.
-     * @param id The entity id.
+     * @param media The entity media.
      * @return The entity reference.
      */
-    <EI extends E> EI getEntityToProduce(Class<EI> id);
+    E getEntityToProduce(Media media);
 
     /**
      * Get the number of steps done per seconds (the production speed).

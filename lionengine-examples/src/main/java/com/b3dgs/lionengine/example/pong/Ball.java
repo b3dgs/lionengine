@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -112,6 +113,12 @@ final class Ball
     /*
      * EntityGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void update(double extrp)

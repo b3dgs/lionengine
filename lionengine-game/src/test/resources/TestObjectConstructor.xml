@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<object index="1" flag="true" xmlns:lionengine="http://lionengine.b3dgs.com">
+<lionengine:entity index="1" flag="true" xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.game.TestObjectConstructor</lionengine:class>
 	<lionengine:collision name="default" offsetX="0" offsetY="0" width="32" height="32" mirror="false" />
 	<lionengine:animation name="idle" start="1" end="1" speed="0.25" reversed="false" repeat="false"/>
-</object>
+</lionengine:entity>

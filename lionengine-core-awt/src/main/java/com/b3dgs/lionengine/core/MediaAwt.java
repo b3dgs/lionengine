@@ -71,4 +71,24 @@ final class MediaAwt
     {
         return UtilityMedia.getOutputStream(this, "MediaAwt", false);
     }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (path == null ? 0 : path.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Media)
+        {
+            final Media media = (Media) obj;
+            return media.getPath().equals(path);
+        }
+        return false;
+    }
 }

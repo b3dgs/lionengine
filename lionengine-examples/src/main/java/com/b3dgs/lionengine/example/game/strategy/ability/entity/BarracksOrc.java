@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
+
 /**
  * Barracks building implementation. This building allows to create new grunt and spearman.
  * 
@@ -25,12 +28,15 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 public final class BarracksOrc
         extends BuildingProducer
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(BarracksOrc.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public BarracksOrc(SetupEntity setup)
+    public BarracksOrc(SetupSurfaceGame setup)
     {
         super(setup);
     }

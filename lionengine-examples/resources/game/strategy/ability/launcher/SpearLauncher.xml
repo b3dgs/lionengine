@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:launcher xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher</lionengine:class>
 </lionengine:launcher>

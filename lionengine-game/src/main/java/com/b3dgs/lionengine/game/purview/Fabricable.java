@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.FactoryGame;
 
 /**
@@ -26,5 +27,10 @@ import com.b3dgs.lionengine.game.FactoryGame;
  */
 public interface Fabricable
 {
-    // Marker interface
+    /**
+     * Prepare the fabricated object.
+     * 
+     * @param context The context reference.
+     */
+    void prepare(ContextGame context);
 }

@@ -17,9 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Projectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -30,8 +35,20 @@ import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 public class LauncherProjectile
         extends LauncherProjectileGame<Entity, Weapon, Projectile>
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends LauncherProjectile> type)
+    {
+        return Core.MEDIA.create(FactoryLauncher.LAUNCHER_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Type projectile. */
-    private final Class<? extends Projectile> type;
+    private final Media type;
 
     /**
      * Constructor.
@@ -39,15 +56,21 @@ public class LauncherProjectile
      * @param setup The setup reference.
      * @param projectileType The projectile type used.
      */
-    public LauncherProjectile(SetupLauncher setup, Class<? extends Projectile> projectileType)
+    public LauncherProjectile(SetupGame setup, Media projectileType)
     {
-        super(setup, setup.factoryProjectile, setup.handlerProjectile);
+        super(setup);
         type = projectileType;
     }
 
     /*
      * LauncherProjectileGame
      */
+
+    @Override
+    protected void prepareProjectile(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     protected void launchProjectile(Weapon owner)

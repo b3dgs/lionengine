@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -74,6 +75,12 @@ final class Entity
     /*
      * EntityPlatform
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void render(Graphic g, CameraGame camera)

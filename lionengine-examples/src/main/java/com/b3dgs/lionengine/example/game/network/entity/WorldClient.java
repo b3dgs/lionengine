@@ -178,7 +178,7 @@ final class WorldClient
     @Override
     public void notifyConnectionEstablished(Byte id, String name)
     {
-        final Mario mario = factory.create(Mario.class);
+        final Mario mario = factory.create(Mario.MEDIA);
         mario.respawn();
         mario.setName(name);
         marioClients.put(id, mario);
@@ -222,7 +222,7 @@ final class WorldClient
         final MessageFactory msg = (MessageFactory) message;
         if (msg.hasAction(EntityType.fromClass(Goomba.class)))
         {
-            final Goomba goomba = factory.create(Goomba.class);
+            final Goomba goomba = factory.create(Goomba.MEDIA);
             goomba.setNetworkId(msg.getEntityId());
             handler.add(goomba);
             addNetworkable(goomba);

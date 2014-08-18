@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
@@ -28,6 +29,9 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 public final class Pulse
         extends Projectile
 {
+    /** Class media. */
+    public static final Media MEDIA = Projectile.getConfig(Pulse.class);
+
     /**
      * {@link ProjectileGame#ProjectileGame(SetupSurfaceGame)}
      */

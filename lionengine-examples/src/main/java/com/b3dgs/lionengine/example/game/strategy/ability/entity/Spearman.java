@@ -17,7 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Spear;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Spearman implementation.
@@ -27,15 +32,28 @@ import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Spear;
 public final class Spearman
         extends UnitAttacker
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Spearman.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Spearman(SetupEntity setup)
+    public Spearman(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        addWeapon(context.factoryWeapon.create(Spear.class), 0);
+    }
+
+    /*
+     * UnitAttacker
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        final Weapon weapon = context.getService(FactoryWeapon.class).create(Spear.MEDIA);
+        addWeapon(weapon, 0);
     }
 }

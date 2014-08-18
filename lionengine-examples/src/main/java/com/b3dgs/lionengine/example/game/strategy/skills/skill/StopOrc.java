@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
@@ -28,6 +29,9 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 public final class StopOrc
         extends Skill
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(StopOrc.class);
+
     /**
      * Constructor.
      * 

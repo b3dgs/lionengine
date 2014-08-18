@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -31,7 +32,7 @@ public class Producible<E extends EntityStrategy, C extends ProductionCostStrate
         implements Tiled
 {
     /** Entity id. */
-    private final Class<? extends E> id;
+    private final Media media;
     /** Production cost. */
     private final C cost;
     /** Production width. */
@@ -46,14 +47,14 @@ public class Producible<E extends EntityStrategy, C extends ProductionCostStrate
     /**
      * Constructor.
      * 
-     * @param id The entity id.
+     * @param media The entity media.
      * @param cost The production cost.
      * @param tw The production width.
      * @param th The production height.
      */
-    public Producible(Class<? extends E> id, C cost, int tw, int th)
+    public Producible(Media media, C cost, int tw, int th)
     {
-        this.id = id;
+        this.media = media;
         this.cost = cost;
         this.tw = tw;
         this.th = th;
@@ -72,13 +73,13 @@ public class Producible<E extends EntityStrategy, C extends ProductionCostStrate
     }
 
     /**
-     * Get the id.
+     * Get the media.
      * 
-     * @return The id.
+     * @return The media.
      */
-    public Class<? extends E> getId()
+    public Media getMedia()
     {
-        return id;
+        return media;
     }
 
     /**

@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
+
 /**
  * Farm building implementation.
  * 
@@ -25,12 +28,15 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 public final class FarmOrc
         extends BuildingProducer
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(FarmOrc.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public FarmOrc(SetupEntity setup)
+    public FarmOrc(SetupSurfaceGame setup)
     {
         super(setup);
     }

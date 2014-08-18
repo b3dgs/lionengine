@@ -18,7 +18,12 @@
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -31,20 +36,28 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 abstract class Entity
         extends EntityStrategy
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Idle animation. */
     protected final Animation animIdle;
-    /** Map reference. */
-    protected final Map map;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupEntity setup)
+    protected Entity(SetupSurfaceGame setup)
     {
-        super(setup, setup.getContext(ContextEntity.class).map);
-        map = setup.getContext(ContextEntity.class).map;
+        super(setup);
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         play(animIdle);
@@ -53,6 +66,12 @@ abstract class Entity
     /*
      * EntityStrategy
      */
+
+    @Override
+    protected void prepareEntity(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void update(double extrp)

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -27,6 +28,9 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
 public final class Goomba
         extends Entity
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Goomba.class);
+
     /**
      * {@link Entity#Entity(SetupSurfaceGame)}
      */

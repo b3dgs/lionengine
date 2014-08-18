@@ -62,22 +62,7 @@ public class SetupSurfaceRasteredGame
      */
     public SetupSurfaceRasteredGame(Media config, boolean alpha, Media rasterFile, boolean smoothRaster)
     {
-        this(config, null, alpha, rasterFile, smoothRaster);
-    }
-
-    /**
-     * Constructor.
-     * 
-     * @param config The config media.
-     * @param context The context reference.
-     * @param alpha The alpha use flag.
-     * @param rasterFile The raster media.
-     * @param smoothRaster The raster smooth flag.
-     */
-    public SetupSurfaceRasteredGame(Media config, ContextGame context, boolean alpha, Media rasterFile,
-            boolean smoothRaster)
-    {
-        super(config, context, alpha);
+        super(config, alpha);
         this.rasterFile = rasterFile;
         this.smoothRaster = smoothRaster;
         if (rasterFile != null)

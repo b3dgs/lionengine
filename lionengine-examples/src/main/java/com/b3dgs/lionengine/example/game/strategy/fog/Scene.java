@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
 
@@ -73,7 +74,8 @@ final class Scene
         handlerEntity = new HandlerEntity(camera);
         timer = new Timing();
 
-        final ContextEntity contextEntity = new ContextEntity(map);
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
         factoryEntity.setContext(contextEntity);
     }
 
@@ -92,7 +94,7 @@ final class Scene
         camera.setSensibility(30, 30);
         camera.setBorders(map);
 
-        peon = factoryEntity.create(Peon.class);
+        peon = factoryEntity.create(Peon.MEDIA);
         handlerEntity.add(peon);
         timer.start();
     }

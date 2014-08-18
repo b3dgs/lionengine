@@ -21,9 +21,12 @@ import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
@@ -39,26 +42,24 @@ public abstract class BuildingProducer
         implements ProducerUsedServices<Entity, ProductionCost, ProducibleEntity>,
         ProducerServices<Entity, ProductionCost, ProducibleEntity>
 {
-    /** Producer model. */
-    private final ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
-    /** Factory reference. */
-    private final FactoryEntity factory;
     /** Production step per second. */
     private final int stepsPerSecond;
     /** Entity progress bar. */
     private final Bar barProgress;
+
+    /** Producer model. */
+    private ProducerModel<Entity, ProductionCost, ProducibleEntity> producer;
+    /** Factory reference. */
+    private FactoryEntity factory;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected BuildingProducer(SetupEntity setup)
+    protected BuildingProducer(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        factory = context.factoryEntity;
-        producer = new ProducerModel<>(this, context.handlerEntity, context.fps);
         final Configurable configurable = setup.getConfigurable();
         stepsPerSecond = configurable.getInteger("steps_per_second", "production");
         barProgress = new Bar(0, 0);
@@ -68,6 +69,15 @@ public abstract class BuildingProducer
     /*
      * Building
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        factory = context.getService(FactoryEntity.class);
+        producer = new ProducerModel<>(this, context.getService(HandlerEntity.class), context.getService(Integer.class)
+                .intValue());
+    }
 
     @Override
     public void update(double extrp)
@@ -116,9 +126,9 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public <EI extends Entity> EI getEntityToProduce(Class<EI> id)
+    public Entity getEntityToProduce(Media config)
     {
-        return id.cast(factory.create(id));
+        return factory.create(config);
     }
 
     @Override
@@ -168,7 +178,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public Class<? extends Entity> getProducingElement()
+    public Media getProducingElement()
     {
         return producer.getProducingElement();
     }

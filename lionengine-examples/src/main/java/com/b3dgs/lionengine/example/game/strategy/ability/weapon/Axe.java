@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Axe weapon implementation.
@@ -27,12 +29,15 @@ import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 public final class Axe
         extends Weapon
 {
+    /** Class media. */
+    public static final Media MEDIA = Weapon.getConfig(Axe.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Axe(SetupWeapon setup)
+    public Axe(SetupGame setup)
     {
         super(setup);
     }

@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
+
 /**
  * Ground truck implementation.
  * 
@@ -25,12 +28,15 @@ package com.b3dgs.lionengine.example.game.factory;
 public final class GroundTruck
         extends TypeBase
 {
+    /** Class media. */
+    public static final Media MEDIA = TypeBase.getConfig(GroundTruck.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public GroundTruck(Setup setup)
+    public GroundTruck(SetupGame setup)
     {
         super(setup);
     }

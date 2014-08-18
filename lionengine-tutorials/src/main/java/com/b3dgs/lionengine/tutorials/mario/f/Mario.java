@@ -19,8 +19,10 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Implementation of our controllable entity.
@@ -30,6 +32,9 @@ import com.b3dgs.lionengine.game.Force;
 public final class Mario
         extends Entity
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Mario.class);
+
     /** Dead timer. */
     private final Timing timerDie;
     /** Dead step. */
@@ -42,7 +47,7 @@ public final class Mario
      * 
      * @param setup setup reference.
      */
-    public Mario(SetupEntity setup)
+    public Mario(SetupSurfaceGame setup)
     {
         super(setup);
         timerDie = new Timing();

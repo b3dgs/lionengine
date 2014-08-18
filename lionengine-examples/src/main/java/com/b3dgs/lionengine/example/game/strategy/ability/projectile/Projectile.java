@@ -17,12 +17,16 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
@@ -35,6 +39,18 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 public abstract class Projectile
         extends ProjectileGame<Entity, Weapon>
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Projectile> type)
+    {
+        return Core.MEDIA.create(FactoryProjectile.PROJECTILE_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Surface. */
     private final SpriteTiled sprite;
     /** Frame. */
@@ -65,6 +81,12 @@ public abstract class Projectile
     /*
      * ProjectileGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void render(Graphic g, CameraGame camera)

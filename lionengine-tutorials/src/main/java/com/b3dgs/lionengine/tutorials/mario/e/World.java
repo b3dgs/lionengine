@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -60,10 +61,12 @@ final class World
         map = new Map();
         factory = new FactoryEntity();
 
-        final ContextEntity contextEntity = new ContextEntity(map, source.getRate());
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
+        contextEntity.addService(Integer.valueOf(source.getRate()));
         factory.setContext(contextEntity);
 
-        mario = factory.create(Mario.class);
+        mario = factory.create(Mario.MEDIA);
     }
 
     /*

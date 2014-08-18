@@ -65,7 +65,7 @@ public class FactoryObjectGameTest
 
         try
         {
-            factory.create(TestObjectPackage.class);
+            factory.create(TestObjectPackage.MEDIA);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -75,7 +75,7 @@ public class FactoryObjectGameTest
 
         try
         {
-            factory.create(TestObjectConstructor.class);
+            factory.create(TestObjectConstructor.MEDIA);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -83,6 +83,6 @@ public class FactoryObjectGameTest
             // Success
         }
 
-        Assert.assertNotNull(factory.getSetup(TestObject.class));
+        Assert.assertNotNull(factory.getSetup(TestObject.MEDIA));
     }
 }

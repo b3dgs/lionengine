@@ -85,7 +85,7 @@ public class WorldTest
             Assert.assertTrue(media.getFile().delete());
         }
 
-        world.loadFromFile(Core.MEDIA.create("src", "test", "resources", "type.xml"));
+        world.loadFromFile(TestObject.MEDIA);
         world.update(0);
         world.render(g);
     }

@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -163,9 +162,9 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupGame createSetup(Class<? extends Fabricable> type)
+        protected SetupGame createSetup(Media config)
         {
-            return new SetupGame(Core.MEDIA.create(type.getSimpleName() + ".xml"));
+            return new SetupGame(config);
         }
     }
 
@@ -178,7 +177,7 @@ public class ModuleGame
         }
 
         @Override
-        protected SetupGame createSetup(Class<? extends Fabricable> type, Media config)
+        protected SetupGame createSetup(Media config)
         {
             return new SetupGame(config);
         }

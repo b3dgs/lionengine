@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
+
 /**
  * Abstract building entity implementation.
  * 
@@ -30,7 +32,7 @@ abstract class Building
      * 
      * @param setup The setup reference.
      */
-    protected Building(SetupEntity setup)
+    protected Building(SetupSurfaceGame setup)
     {
         super(setup);
     }

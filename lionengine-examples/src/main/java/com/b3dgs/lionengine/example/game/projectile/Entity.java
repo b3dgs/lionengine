@@ -19,11 +19,14 @@ package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
 /**
@@ -34,6 +37,20 @@ import com.b3dgs.lionengine.game.SetupGame;
 final class Entity
         extends EntityGame
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Entity.class);
+
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Surface. */
     private final SpriteTiled sprite;
 
@@ -52,6 +69,12 @@ final class Entity
     /*
      * EntityGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void update(double extrp)

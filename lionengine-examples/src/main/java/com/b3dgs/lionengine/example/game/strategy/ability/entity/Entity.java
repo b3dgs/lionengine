@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -30,20 +35,31 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 public abstract class Entity
         extends EntityStrategy
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Entity life. */
     public final Alterable life;
     /** Map reference. */
-    protected final Map map;
+    protected Map map;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupEntity setup)
+    protected Entity(SetupSurfaceGame setup)
     {
-        super(setup, setup.getContext(ContextEntity.class).map);
-        map = setup.getContext(ContextEntity.class).map;
+        super(setup);
         final Configurable configurable = setup.getConfigurable();
         life = new Alterable(configurable.getInteger("life", "attributes"));
     }
@@ -56,5 +72,15 @@ public abstract class Entity
     public int getLife()
     {
         return life.getCurrent();
+    }
+
+    /*
+     * EntityStrategy
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        map = context.getService(Map.class);
     }
 }

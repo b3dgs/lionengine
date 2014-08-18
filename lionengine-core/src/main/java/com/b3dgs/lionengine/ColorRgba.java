@@ -46,6 +46,8 @@ public final class ColorRgba
     public static final ColorRgba GRAY_DARK = new ColorRgba(64, 64, 64);
     /** Black color. */
     public static final ColorRgba BLACK = new ColorRgba(0, 0, 0);
+    /** Transparent color. */
+    public static final ColorRgba TRANSPARENT = new ColorRgba(0, 0, 0, 0);
 
     /**
      * Apply a filter rgb.

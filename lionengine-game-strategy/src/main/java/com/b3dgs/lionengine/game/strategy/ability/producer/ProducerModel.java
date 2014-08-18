@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ability.AbilityModel;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
@@ -171,7 +172,7 @@ public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStr
      */
     private void startProduction(P producible)
     {
-        final E entity = user.getEntityToProduce(producible.getId());
+        final E entity = user.getEntityToProduce(producible.getMedia());
         entity.setLocation(producible.getLocationInTileX(), producible.getLocationInTileY());
         entity.setActive(true);
         handler.add(entity);
@@ -264,13 +265,13 @@ public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStr
     }
 
     @Override
-    public Class<? extends E> getProducingElement()
+    public Media getProducingElement()
     {
         if (cur == null)
         {
             return null;
         }
-        return cur.getId();
+        return cur.getMedia();
     }
 
     @Override

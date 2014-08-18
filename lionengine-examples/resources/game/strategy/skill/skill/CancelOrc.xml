@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:skill xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.strategy.skills.skill.CancelOrc</lionengine:class>
 	<icon>CancelOrc.png</icon>
 	<name>Cancel</name>
 	<description>Cancel</description>
+	<race>orc</race>
 </lionengine:skill>

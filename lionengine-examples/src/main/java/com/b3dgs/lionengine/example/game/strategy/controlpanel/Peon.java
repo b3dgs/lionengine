@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
+
 /**
  * Peon implementation.
  * 
@@ -25,12 +28,15 @@ package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 public final class Peon
         extends Entity
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Peon.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Peon(SetupEntity setup)
+    public Peon(SetupSurfaceGame setup)
     {
         super(setup);
         life.setMax(60);

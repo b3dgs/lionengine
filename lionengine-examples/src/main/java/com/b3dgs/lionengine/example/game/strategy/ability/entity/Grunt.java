@@ -17,7 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Axe;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
+import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Grunt implementation.
@@ -27,15 +32,28 @@ import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Axe;
 public final class Grunt
         extends UnitAttacker
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Grunt.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Grunt(SetupEntity setup)
+    public Grunt(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        addWeapon(context.factoryWeapon.create(Axe.class), 0);
+    }
+
+    /*
+     * UnitAttacker
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        final Weapon weapon = context.getService(FactoryWeapon.class).create(Axe.MEDIA);
+        addWeapon(weapon, 0);
     }
 }

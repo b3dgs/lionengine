@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.ContextGame;
 
 /**
  * Scene implementation.
@@ -70,9 +71,15 @@ final class Scene
         factoryProjectile = new FactoryProjectile();
         handlerEntity = new HandlerEntity(camera);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
-        canon1 = factoryLauncher.create(PulseCannon.class);
-        canon2 = factoryLauncher.create(PulseCannon.class);
+        factoryLauncher = new FactoryLauncher();
+
+        final ContextGame contextLauncher = new ContextGame();
+        contextLauncher.addService(factoryProjectile);
+        contextLauncher.addService(handlerProjectile);
+        factoryLauncher.setContext(contextLauncher);
+
+        canon1 = factoryLauncher.create(PulseCannon.MEDIA);
+        canon2 = factoryLauncher.create(PulseCannon.MEDIA);
         entity1 = new Entity();
         entity2 = new Entity();
     }

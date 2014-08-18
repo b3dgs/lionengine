@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <weapon attackTimer="1500" attackFrame="33">
+    <lionengine:class>com.b3dgs.lionengine.example.game.strategy.ability.weapon.Spear</lionengine:class>
 	<distance min="1" max="6"/>
 	<damages min="15" max="20"/>
 </weapon>

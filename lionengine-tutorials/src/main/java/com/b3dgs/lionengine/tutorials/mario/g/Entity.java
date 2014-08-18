@@ -21,9 +21,14 @@ import java.util.EnumMap;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -36,16 +41,28 @@ import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 abstract class Entity
         extends EntityPlatform
 {
-    /** Map reference. */
-    protected final Map map;
-    /** Desired fps value. */
-    protected final int desiredFps;
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Movement force. */
     protected final Movement movement;
     /** Movement jump force. */
     protected final Force jumpForce;
     /** Animations list. */
     private final EnumMap<EntityState, Animation> animations;
+    /** Map reference. */
+    protected Map map;
+    /** Desired fps value. */
+    protected int desiredFps;
     /** Jump force. */
     protected double jumpForceValue;
     /** Movement max speed. */
@@ -70,12 +87,9 @@ abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupEntity setup)
+    protected Entity(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        map = context.map;
-        desiredFps = context.desiredFps;
         animations = new EnumMap<>(EntityState.class);
         final Configurable configurable = setup.getConfigurable();
         jumpForceValue = configurable.getDouble("jumpSpeed", "data");
@@ -319,6 +333,13 @@ abstract class Entity
     /*
      * EntityPlatform
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        map = context.getService(Map.class);
+        desiredFps = context.getService(Integer.class).intValue();
+    }
 
     @Override
     protected void handleActions(double extrp)

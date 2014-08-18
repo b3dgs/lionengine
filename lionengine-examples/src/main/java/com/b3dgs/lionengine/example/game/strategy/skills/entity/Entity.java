@@ -19,10 +19,15 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
@@ -37,28 +42,37 @@ public abstract class Entity
         extends EntityStrategy
         implements SkilledServices<Skill>
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Entity life. */
     public final Alterable life;
-    /** Map reference. */
-    protected final Map map;
     /** Entity name. */
     private final String name;
-    /** Factory skill. */
-    private final FactorySkill factorySkill;
     /** Skilled model. */
     private final SkilledModel<Skill> skilled;
+    /** Map reference. */
+    protected Map map;
+    /** Factory skill. */
+    private FactorySkill factorySkill;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupEntity setup)
+    protected Entity(SetupSurfaceGame setup)
     {
-        super(setup, setup.getContext(ContextEntity.class).map);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        map = context.map;
-        factorySkill = context.factorySkill;
+        super(setup);
         skilled = new SkilledModel<>();
         final Configurable configurable = setup.getConfigurable();
         life = new Alterable(configurable.getInteger("life", "attributes"));
@@ -70,12 +84,12 @@ public abstract class Entity
      * 
      * @param factory The factory reference.
      * @param panel The skill panel.
-     * @param type The skill type.
+     * @param config The skill config.
      * @param priority The position number.
      */
-    public void addSkill(FactoryEntity factory, int panel, Class<? extends Skill> type, int priority)
+    public void addSkill(FactoryEntity factory, int panel, Media config, int priority)
     {
-        final Skill skill = factorySkill.create(type);
+        final Skill skill = factorySkill.create(config);
         skill.setOwner(this);
         skill.setPriority(priority);
         skill.prepare();
@@ -100,6 +114,17 @@ public abstract class Entity
     public String getName()
     {
         return name;
+    }
+
+    /*
+     * EntityStrategy
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        map = context.getService(Map.class);
+        factorySkill = context.getService(FactorySkill.class);
     }
 
     /*

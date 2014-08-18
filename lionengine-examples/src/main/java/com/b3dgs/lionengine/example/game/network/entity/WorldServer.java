@@ -85,7 +85,7 @@ final class WorldServer
         // Create two goombas
         for (int i = 0; i < 2; i++)
         {
-            final Goomba goomba = factory.create(Goomba.class);
+            final Goomba goomba = factory.create(Goomba.MEDIA);
             goomba.teleport(532 + i * 24, 25);
             goomba.setNetworkId(goomba.getId().shortValue());
             handler.add(goomba);

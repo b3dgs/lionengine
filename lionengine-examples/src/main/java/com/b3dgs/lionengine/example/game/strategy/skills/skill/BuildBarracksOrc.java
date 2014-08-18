@@ -18,14 +18,16 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.Cursor;
 import com.b3dgs.lionengine.example.game.strategy.skills.CursorType;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.TileSizeData;
+import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
@@ -37,14 +39,17 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 public final class BuildBarracksOrc
         extends Skill
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(BuildBarracksOrc.class);
+
     /** Production factory. */
-    private final FactoryProduction factoryProduction;
+    private FactoryProduction factoryProduction;
     /** Production width in tile. */
-    private final int width;
+    private int width;
     /** Production height in tile. */
-    private final int height;
+    private int height;
     /** Cursor reference. */
-    private final Cursor cursor;
+    private Cursor cursor;
 
     /**
      * Constructor.
@@ -54,13 +59,6 @@ public final class BuildBarracksOrc
     public BuildBarracksOrc(SetupSkill setup)
     {
         super(setup);
-        final ContextSkill context = setup.getContext(ContextSkill.class);
-        cursor = context.cursor;
-        factoryProduction = context.factoryProduction;
-        final Configurable configurable = factoryProduction.getSetup(BarracksOrc.class).getConfigurable();
-        final TileSizeData tileSizeData = configurable.getTileSize();
-        width = tileSizeData.getWidthInTile();
-        height = tileSizeData.getHeightInTile();
         setOrder(true);
     }
 
@@ -69,11 +67,23 @@ public final class BuildBarracksOrc
      */
 
     @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        cursor = context.getService(Cursor.class);
+        factoryProduction = context.getService(FactoryProduction.class);
+        final Configurable configurable = factoryProduction.getSetup(BarracksOrc.MEDIA).getConfigurable();
+        final SizeData sizeData = configurable.getSize();
+        width = sizeData.getWidth();
+        height = sizeData.getHeight();
+    }
+
+    @Override
     public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof UnitWorker)
         {
-            final ProducibleEntity produce = factoryProduction.create(BarracksOrc.class, destX, destY);
+            final ProducibleEntity produce = factoryProduction.create(BarracksOrc.MEDIA, destX, destY);
             ((UnitWorker) owner).addToProductionQueue(produce);
         }
     }

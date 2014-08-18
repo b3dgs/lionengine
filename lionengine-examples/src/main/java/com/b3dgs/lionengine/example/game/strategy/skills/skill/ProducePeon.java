@@ -17,10 +17,12 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.BuildingProducer;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
@@ -32,8 +34,11 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 public final class ProducePeon
         extends Skill
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(ProducePeon.class);
+
     /** Production factory. */
-    private final FactoryProduction factoryProduction;
+    private FactoryProduction factoryProduction;
 
     /**
      * Constructor.
@@ -43,8 +48,6 @@ public final class ProducePeon
     public ProducePeon(SetupSkill setup)
     {
         super(setup);
-        final ContextSkill context = setup.getContext(ContextSkill.class);
-        factoryProduction = context.factoryProduction;
         setOrder(false);
     }
 
@@ -53,11 +56,18 @@ public final class ProducePeon
      */
 
     @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        factoryProduction = context.getService(FactoryProduction.class);
+    }
+
+    @Override
     public void action(ControlPanelModel<?> panel, CursorStrategy cursor)
     {
         if (owner instanceof BuildingProducer)
         {
-            final ProducibleEntity producible = factoryProduction.create(Peon.class);
+            final ProducibleEntity producible = factoryProduction.create(Peon.MEDIA);
             ((BuildingProducer) owner).addToProductionQueue(producible);
         }
     }

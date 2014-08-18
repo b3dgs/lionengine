@@ -44,14 +44,14 @@ import org.eclipse.swt.widgets.Label;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Represents the factory entity view, where the entities list is displayed.
@@ -340,10 +340,13 @@ public class FactoryEntityPart
                 }
                 else
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(Tools.getObjectClass(EntityGame.class,
-                            entityLabel.getText()));
-                    entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-                    lastEntity = entityLabel;
+                    final Object data = entityLabel.getData();
+                    if (data instanceof Media)
+                    {
+                        WorldViewModel.INSTANCE.setSelectedEntity((Media) data);
+                        entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+                        lastEntity = entityLabel;
+                    }
                 }
             }
 
@@ -360,12 +363,12 @@ public class FactoryEntityPart
             }
         });
 
-        final Class<? extends Fabricable> type = Tools.getObjectClass(Fabricable.class, entityLabel.getText());
-        final SetupGame setup = factoryEntity.getSetup(type);
+        final Media media = UtilityMedia.get(file);
+        final SetupGame setup = factoryEntity.getSetup(media);
 
         FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
         entityLabel.setToolTipText(name);
-        entityLabel.setData(type);
+        entityLabel.setData(media);
     }
 
     /**

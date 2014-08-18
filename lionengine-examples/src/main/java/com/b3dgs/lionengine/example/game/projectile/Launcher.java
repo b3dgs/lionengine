@@ -17,6 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -28,12 +33,33 @@ abstract class Launcher
         extends LauncherProjectileGame<Entity, Entity, Projectile>
 {
     /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Launcher> type)
+    {
+        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
+    /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    Launcher(Setup setup)
+    Launcher(SetupGame setup)
     {
-        super(setup, setup.factory, setup.handler);
+        super(setup);
+    }
+
+    /*
+     * LauncherProjectileGame
+     */
+
+    @Override
+    protected void prepareProjectile(ContextGame context)
+    {
+        // Nothing to do
     }
 }

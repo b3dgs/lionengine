@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
  * Skill factory implementation.
@@ -30,27 +29,14 @@ public final class FactorySkill
         extends FactoryObjectGame<SetupSkill>
 {
     /** Directory name from our resources directory containing our skills. */
-    public static final String SKILL_PATH = "skill";
-
-    /** Context skill reference. */
-    private ContextSkill context;
+    public static final String SKILL_DIR = "skill";
 
     /**
      * Create a new entity factory.
      */
     public FactorySkill()
     {
-        super(FactorySkill.SKILL_PATH);
-    }
-
-    /**
-     * Set the factory context.
-     * 
-     * @param context The factory context.
-     */
-    public void setContext(ContextSkill context)
-    {
-        this.context = context;
+        super(FactorySkill.SKILL_DIR);
     }
 
     /*
@@ -58,8 +44,8 @@ public final class FactorySkill
      */
 
     @Override
-    protected SetupSkill createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupSkill createSetup(Media config)
     {
-        return new SetupSkill(config, context);
+        return new SetupSkill(config);
     }
 }

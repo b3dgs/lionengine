@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import java.util.Iterator;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -73,11 +74,11 @@ public interface ProducerServices<E extends EntityStrategy, C extends Production
     int getProductionProgressPercent();
 
     /**
-     * Get name of current producing element.
+     * Get media of current producing element.
      * 
-     * @return The id of current producing element.
+     * @return The media of current producing element.
      */
-    Class<? extends E> getProducingElement();
+    Media getProducingElement();
 
     /**
      * Get production iterator.

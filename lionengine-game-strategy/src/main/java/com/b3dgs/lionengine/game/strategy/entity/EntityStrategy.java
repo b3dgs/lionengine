@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -34,7 +35,7 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.FramesData;
 import com.b3dgs.lionengine.game.configurable.OffsetData;
-import com.b3dgs.lionengine.game.configurable.TileSizeData;
+import com.b3dgs.lionengine.game.configurable.SizeData;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -55,7 +56,7 @@ public abstract class EntityStrategy
     /** Entity location offset y. */
     protected final int offsetY;
     /** Map reference. */
-    private final MapTileStrategy<?, ?> map;
+    private MapTileStrategy<?, ?> map;
     /** Current animation. */
     private Animation animationCurrent;
     /** Orientation value. */
@@ -103,12 +104,10 @@ public abstract class EntityStrategy
      * </pre>
      * 
      * @param setup The entity setup.
-     * @param map The map reference.
      */
-    public EntityStrategy(SetupSurfaceGame setup, MapTileStrategy<?, ?> map)
+    public EntityStrategy(SetupSurfaceGame setup)
     {
         super(setup);
-        this.map = map;
         final Configurable configurable = setup.getConfigurable();
 
         final OffsetData offsetData = configurable.getOffset();
@@ -118,9 +117,8 @@ public abstract class EntityStrategy
         final FramesData framesData = configurable.getFrames();
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
 
-        final TileSizeData tileSizeData = configurable.getTileSize();
-        setSize(tileSizeData.getWidthInTile() * map.getTileWidth(),
-                tileSizeData.getHeightInTile() * map.getTileHeight());
+        final SizeData sizeData = configurable.getSize();
+        setSize(sizeData.getWidth(), sizeData.getHeight());
 
         sprite.setFrame(1);
         orientation = Orientation.SOUTH;
@@ -141,6 +139,13 @@ public abstract class EntityStrategy
      * Stop any action.
      */
     public abstract void stop();
+
+    /**
+     * Prepare the fabricated entity.
+     * 
+     * @param context The context reference.
+     */
+    protected abstract void prepareEntity(ContextGame context);
 
     /**
      * Set location in tile.
@@ -587,6 +592,13 @@ public abstract class EntityStrategy
     /*
      * EntityGame
      */
+
+    @Override
+    public final void prepare(ContextGame context)
+    {
+        map = context.getService(MapTileStrategy.class);
+        prepareEntity(context);
+    }
 
     @Override
     public void update(double extrp)

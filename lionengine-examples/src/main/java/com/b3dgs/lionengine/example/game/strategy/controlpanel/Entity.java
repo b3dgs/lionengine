@@ -18,8 +18,13 @@
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -32,22 +37,30 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 abstract class Entity
         extends EntityStrategy
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Entity life. */
     protected final Alterable life;
     /** Idle animation. */
     protected final Animation animIdle;
-    /** Map reference. */
-    protected final Map map;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    Entity(SetupEntity setup)
+    Entity(SetupSurfaceGame setup)
     {
-        super(setup, setup.getContext(ContextEntity.class).map);
-        map = setup.getContext(ContextEntity.class).map;
+        super(setup);
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         life = new Alterable(1);
@@ -67,6 +80,12 @@ abstract class Entity
     /*
      * EntityStrategy
      */
+
+    @Override
+    protected void prepareEntity(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void update(double extrp)

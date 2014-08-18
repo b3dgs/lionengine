@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BuildingProducer;
-import com.b3dgs.lionengine.example.game.strategy.ability.entity.ContextEntity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.FactoryProduction;
@@ -48,6 +48,7 @@ import com.b3dgs.lionengine.example.game.strategy.ability.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
@@ -112,14 +113,27 @@ final class Scene
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         handlerProjectile = new HandlerProjectile(camera, handlerEntity);
         factoryProjectile = new FactoryProjectile();
-        factoryLauncher = new FactoryLauncher(factoryProjectile, handlerProjectile);
-        factoryWeapon = new FactoryWeapon(factoryLauncher);
+        factoryLauncher = new FactoryLauncher();
+        factoryWeapon = new FactoryWeapon();
         factoryEntity = new FactoryEntity();
         factoryProduction = new FactoryProduction();
 
-        final ContextEntity contextEntity = new ContextEntity(map, factoryEntity, factoryWeapon, handlerEntity,
-                getConfig().getSource().getRate());
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
+        contextEntity.addService(factoryEntity);
+        contextEntity.addService(factoryWeapon);
+        contextEntity.addService(handlerEntity);
+        contextEntity.addService(Integer.valueOf(getConfig().getSource().getRate()));
         factoryEntity.setContext(contextEntity);
+
+        final ContextGame contextLauncher = new ContextGame();
+        contextLauncher.addService(factoryProjectile);
+        contextLauncher.addService(handlerProjectile);
+        factoryLauncher.setContext(contextLauncher);
+
+        final ContextGame contextWeapon = new ContextGame();
+        contextWeapon.addService(factoryLauncher);
+        factoryWeapon.setContext(contextWeapon);
 
         setSystemCursorVisible(false);
     }
@@ -127,14 +141,14 @@ final class Scene
     /**
      * Create an entity from its type.
      * 
-     * @param type The entity type.
+     * @param config The entity config.
      * @param tx The horizontal location.
      * @param ty The vertical location.
      * @return The entity instance.
      */
-    private Entity createEntity(Class<? extends Entity> type, int tx, int ty)
+    private Entity createEntity(Media config, int tx, int ty)
     {
-        final Entity entity = factoryEntity.create(type);
+        final Entity entity = factoryEntity.create(config);
         entity.setPlayerId(0);
         entity.setLocation(tx, ty);
         handlerEntity.add(entity);
@@ -169,24 +183,24 @@ final class Scene
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final GoldMine goldMine = (GoldMine) createEntity(GoldMine.class, 20, 23);
+        final GoldMine goldMine = (GoldMine) createEntity(GoldMine.MEDIA, 20, 23);
 
-        UnitWorker peon = (UnitWorker) createEntity(Peon.class, 25, 20);
+        UnitWorker peon = (UnitWorker) createEntity(Peon.MEDIA, 25, 20);
         peon.setResource(goldMine);
         peon.startExtraction();
 
-        peon = (UnitWorker) createEntity(Peon.class, 23, 18);
-        peon.addToProductionQueue(factoryProduction.create(BarracksOrc.class, 17, 15));
-        peon.addToProductionQueue(factoryProduction.create(FarmOrc.class, 31, 19));
+        peon = (UnitWorker) createEntity(Peon.MEDIA, 23, 18);
+        peon.addToProductionQueue(factoryProduction.create(BarracksOrc.MEDIA, 17, 15));
+        peon.addToProductionQueue(factoryProduction.create(FarmOrc.MEDIA, 31, 19));
 
-        final UnitAttacker grunt = (UnitAttacker) createEntity(Grunt.class, 33, 25);
-        final UnitAttacker spearman = (UnitAttacker) createEntity(Spearman.class, 27, 22);
+        final UnitAttacker grunt = (UnitAttacker) createEntity(Grunt.MEDIA, 33, 25);
+        final UnitAttacker spearman = (UnitAttacker) createEntity(Spearman.MEDIA, 27, 22);
         spearman.attack(grunt);
         grunt.attack(spearman);
 
-        final BuildingProducer townHall = (BuildingProducer) createEntity(TownhallOrc.class, 24, 15);
+        final BuildingProducer townHall = (BuildingProducer) createEntity(TownhallOrc.MEDIA, 24, 15);
         townHall.setFrame(2);
-        townHall.addToProductionQueue(factoryProduction.create(Peon.class));
+        townHall.addToProductionQueue(factoryProduction.create(Peon.MEDIA));
     }
 
     @Override

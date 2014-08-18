@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:projectile xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.strategy.ability.projectile.Spear</lionengine:class>
     <lionengine:surface image="Spear.png"/>
 	<lionengine:size width="10" height="10"/>
 	<lionengine:offset x="0" y="0"/>

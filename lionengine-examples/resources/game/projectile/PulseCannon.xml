@@ -1,3 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:launcher>
+    <lionengine:class>com.b3dgs.lionengine.example.game.projectile.PulseCannon</lionengine:class>
 </lionengine:launcher>

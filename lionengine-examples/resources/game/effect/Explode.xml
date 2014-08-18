@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <lionengine:effect xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:class>com.b3dgs.lionengine.example.game.effect.Explode</lionengine:class>
     <lionengine:surface image="explode.png"/>
 	<lionengine:frames horizontal="7" vertical="2"/>
 	<lionengine:animation name="explode" start="1" end="13" speed="0.5" reversed="false" repeat="false"/>

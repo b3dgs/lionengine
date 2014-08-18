@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
+
 /**
  * Fly machine implementation.
  * 
@@ -25,12 +28,15 @@ package com.b3dgs.lionengine.example.game.factory;
 public final class FlyMachine
         extends TypeBase
 {
+    /** Class media. */
+    public static final Media MEDIA = TypeBase.getConfig(FlyMachine.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public FlyMachine(Setup setup)
+    public FlyMachine(SetupGame setup)
     {
         super(setup);
     }

@@ -17,9 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
+import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.LauncherProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Spear weapon implementation.
@@ -29,25 +33,34 @@ import com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher
 public final class Spear
         extends Weapon
 {
+    /** Class media. */
+    public static final Media MEDIA = Weapon.getConfig(Spear.class);
+
     /** Launcher instance. */
-    private final LauncherProjectile launcher;
+    private LauncherProjectile launcher;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Spear(SetupWeapon setup)
+    public Spear(SetupGame setup)
     {
         super(setup);
-        launcher = setup.factoryLauncher.create(SpearLauncher.class);
-        launcher.setOwner(this);
-        launcher.setCanHitTargetOnly(true);
     }
 
     /*
      * Weapon
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        super.prepare(context);
+        launcher = context.getService(FactoryLauncher.class).create(SpearLauncher.MEDIA);
+        launcher.setOwner(this);
+        launcher.setCanHitTargetOnly(true);
+    }
 
     @Override
     public void notifyAttackEnded(int damages, Entity target)

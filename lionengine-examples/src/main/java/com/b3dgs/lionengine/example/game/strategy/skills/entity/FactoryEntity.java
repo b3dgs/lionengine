@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Factory entity implementation.
@@ -27,27 +27,17 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<SetupEntity>
+        extends FactoryObjectGame<SetupSurfaceGame>
 {
-    /** Context reference. */
-    private ContextEntity context;
+    /** Entities directory. */
+    public static final String ENTITY_DIR = "entity";
 
     /**
      * Constructor.
      */
     public FactoryEntity()
     {
-        super("entity");
-    }
-
-    /**
-     * Set the factory context.
-     * 
-     * @param context The factory context.
-     */
-    public void setContext(ContextEntity context)
-    {
-        this.context = context;
+        super(FactoryEntity.ENTITY_DIR);
     }
 
     /*
@@ -55,8 +45,8 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupEntity createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupSurfaceGame createSetup(Media config)
     {
-        return new SetupEntity(config, context, type);
+        return new SetupSurfaceGame(config);
     }
 }

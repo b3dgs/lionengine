@@ -17,11 +17,15 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.configurable.SizeData;
@@ -35,6 +39,17 @@ import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 abstract class Projectile
         extends ProjectileGame<Entity, Entity>
 {
+    /**
+     * Get a projectile configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Projectile> type)
+    {
+        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Projectile surface. */
     private final Sprite sprite;
 
@@ -56,6 +71,12 @@ abstract class Projectile
     /*
      * ProjectileGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void render(Graphic g, CameraGame camera)

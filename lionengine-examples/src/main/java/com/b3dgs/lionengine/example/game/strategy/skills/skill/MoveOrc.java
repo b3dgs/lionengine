@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
@@ -29,6 +30,9 @@ import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 public final class MoveOrc
         extends Skill
 {
+    /** Class media. */
+    public static final Media MEDIA = Skill.getConfig(MoveOrc.class);
+
     /**
      * Constructor.
      * 

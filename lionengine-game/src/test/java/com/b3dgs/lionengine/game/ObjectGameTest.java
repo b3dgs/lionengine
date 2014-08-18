@@ -22,9 +22,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryMediaProvider;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.mock.FactoryMediaMock;
 
 /**
@@ -58,8 +56,7 @@ public class ObjectGameTest
     @Test
     public void testObjectGame()
     {
-        final Media media = Core.MEDIA.create("src", "test", "resources", "type.xml");
-        final ObjectGame object = new TestObject(new SetupGame(media));
+        final ObjectGame object = new TestObject(new SetupGame(TestObject.MEDIA));
         Assert.assertNotNull(object);
     }
 }

@@ -17,11 +17,14 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildBarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildingStandardOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.CancelOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.MoveOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.StopOrc;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Peon implementation.
@@ -31,19 +34,32 @@ import com.b3dgs.lionengine.example.game.strategy.skills.skill.StopOrc;
 public final class Peon
         extends UnitWorker
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Peon.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public Peon(SetupEntity setup)
+    public Peon(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        addSkill(context.factoryEntity, 0, MoveOrc.class, 0);
-        addSkill(context.factoryEntity, 0, StopOrc.class, 1);
-        addSkill(context.factoryEntity, 0, BuildingStandardOrc.class, 2);
-        addSkill(context.factoryEntity, 1, BuildBarracksOrc.class, 0);
-        addSkill(context.factoryEntity, 1, CancelOrc.class, 1);
+    }
+
+    /*
+     * UnitWorker
+     */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        final FactoryEntity factoryEntity = context.getService(FactoryEntity.class);
+        addSkill(factoryEntity, 0, MoveOrc.MEDIA, 0);
+        addSkill(factoryEntity, 0, StopOrc.MEDIA, 1);
+        addSkill(factoryEntity, 0, BuildingStandardOrc.MEDIA, 2);
+        addSkill(factoryEntity, 1, BuildBarracksOrc.MEDIA, 0);
+        addSkill(factoryEntity, 1, CancelOrc.MEDIA, 1);
     }
 }

@@ -38,12 +38,11 @@ final class SetupSkill
      * Constructor.
      * 
      * @param config The config media.
-     * @param context The context reference.
      */
-    SetupSkill(Media config, ContextSkill context)
+    SetupSkill(Media config)
     {
-        super(config, context);
-        final Media media = Core.MEDIA.create(FactorySkill.SKILL_PATH, configurable.getText("icon"));
+        super(config);
+        final Media media = Core.MEDIA.create(FactorySkill.SKILL_DIR, configurable.getText("icon"));
         icon = Drawable.loadSpriteTiled(media, 27, 19);
         icon.load(false);
     }

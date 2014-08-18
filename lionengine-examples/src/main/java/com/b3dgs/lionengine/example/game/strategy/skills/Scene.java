@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.example.game.strategy.skills.entity.ContextEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
@@ -35,8 +34,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.HandlerEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Tile;
-import com.b3dgs.lionengine.example.game.strategy.skills.skill.ContextSkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.utility.LevelRipConverter;
@@ -97,11 +96,17 @@ final class Scene
         factoryEntity = new FactoryEntity();
         mouse.setConfig(getConfig());
 
-        final ContextEntity contextEntity = new ContextEntity(map, factoryEntity, factorySkill, handlerEntity,
-                getConfig().getSource().getRate());
-        final ContextSkill contextSkill = new ContextSkill(factoryProduction, cursor);
-
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
+        contextEntity.addService(factoryEntity);
+        contextEntity.addService(factorySkill);
+        contextEntity.addService(handlerEntity);
+        contextEntity.addService(Integer.valueOf(getConfig().getSource().getRate()));
         factoryEntity.setContext(contextEntity);
+
+        final ContextGame contextSkill = new ContextGame();
+        contextSkill.addService(factoryProduction);
+        contextSkill.addService(cursor);
         factorySkill.setContext(contextSkill);
 
         setSystemCursorVisible(false);
@@ -134,7 +139,7 @@ final class Scene
         handlerEntity.createLayers(map);
         handlerEntity.setClickAssignment(Mouse.RIGHT);
 
-        final Entity peon = factoryEntity.create(Peon.class);
+        final Entity peon = factoryEntity.create(Peon.MEDIA);
         peon.setPlayerId(0);
         peon.setLocation(7, 7);
         handlerEntity.add(peon);

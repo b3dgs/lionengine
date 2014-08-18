@@ -62,6 +62,6 @@ public class FactoryGameTest
     {
         final Factory factory = new Factory();
 
-        Assert.assertNotNull(factory.getSetup(TestObject.class));
+        Assert.assertNotNull(factory.getSetup(TestObject.MEDIA));
     }
 }

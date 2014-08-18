@@ -18,7 +18,9 @@
 package com.b3dgs.lionengine.tutorials.mario.g;
 
 import com.b3dgs.lionengine.Timing;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Goomba implementation.
@@ -28,6 +30,9 @@ import com.b3dgs.lionengine.game.EntityGame;
 public final class Goomba
         extends Entity
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Goomba.class);
+
     /** Die timer. */
     private final Timing timerDie;
 
@@ -36,7 +41,7 @@ public final class Goomba
      * 
      * @param setup setup reference.
      */
-    public Goomba(SetupEntity setup)
+    public Goomba(SetupSurfaceGame setup)
     {
         super(setup);
         timerDie = new Timing();

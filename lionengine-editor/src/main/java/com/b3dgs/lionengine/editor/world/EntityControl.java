@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.EntityGame;
@@ -142,14 +143,14 @@ public class EntityControl
      */
     public void addEntity(int mx, int my)
     {
-        final Class<? extends EntityGame> type = model.getSelectedEntity();
-        if (type != null)
+        final Media media = model.getSelectedEntity();
+        if (media != null)
         {
             final MapTile<? extends TileGame> map = model.getMap();
             final CameraGame camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final FactoryObjectGame<?> factoryEntity = model.getFactoryEntity();
-            final EntityGame entity = factoryEntity.create(type);
+            final EntityGame entity = factoryEntity.create(media);
 
             setEntityLocation(entity, tile.getX(), tile.getY(), 1);
             handlerEntity.add(entity);

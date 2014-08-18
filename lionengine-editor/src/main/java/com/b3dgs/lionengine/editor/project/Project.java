@@ -265,6 +265,16 @@ public final class Project
     }
 
     /**
+     * Get the class loader of this project.
+     * 
+     * @return The class loader of this project.
+     */
+    public ClassLoader getClassLoader()
+    {
+        return classLoader;
+    }
+
+    /**
      * Get a class from its name depending of the project class loader.
      * 
      * @param name The full class name.

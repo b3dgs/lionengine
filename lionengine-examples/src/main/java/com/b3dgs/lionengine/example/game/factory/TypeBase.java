@@ -17,6 +17,11 @@
  */
 package com.b3dgs.lionengine.example.game.factory;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
@@ -27,17 +32,29 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
 abstract class TypeBase
         implements Fabricable
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends TypeBase> type)
+    {
+        return Core.MEDIA
+                .create(Factory.ENTITY_DIR, type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Object argument. */
-    private final Object param;
+    private Object param;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected TypeBase(Setup setup)
+    protected TypeBase(SetupGame setup)
     {
-        param = setup.param;
+        // Nothing to do
     }
 
     /**
@@ -48,5 +65,15 @@ abstract class TypeBase
     public Object getParam()
     {
         return param;
+    }
+
+    /*
+     * Fabricable
+     */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        param = context.getService(Object.class);
     }
 }

@@ -38,14 +38,14 @@ public class Configurable
 {
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
+    /** Class node name. */
+    public static final String CLASS = Configurable.PREFIX + "class";
     /** Surface node name. */
     public static final String SURFACE = Configurable.PREFIX + "surface";
     /** Frames node name. */
     public static final String FRAMES = Configurable.PREFIX + "frames";
     /** Size node name. */
     public static final String SIZE = Configurable.PREFIX + "size";
-    /** Size in tile node name. */
-    public static final String TILE_SIZE = Configurable.PREFIX + "tileSize";
     /** Offset node name. */
     public static final String OFFSET = Configurable.PREFIX + "offset";
     /** Animation node name. */
@@ -178,6 +178,16 @@ public class Configurable
     }
 
     /**
+     * Get the class name node value.
+     * 
+     * @return The class name node value.
+     */
+    public String getClassName()
+    {
+        return getText(Configurable.CLASS);
+    }
+
+    /**
      * Get the surface node value.
      * 
      * @return The surface node value.
@@ -206,17 +216,6 @@ public class Configurable
     public SizeData getSize()
     {
         return new SizeData(getInteger("width", Configurable.SIZE), getInteger("height", Configurable.SIZE));
-    }
-
-    /**
-     * Get the size in tile node value.
-     * 
-     * @return The size in tile node value.
-     */
-    public TileSizeData getTileSize()
-    {
-        return new TileSizeData(getInteger("widthInTile", Configurable.TILE_SIZE), getInteger("heightInTile",
-                Configurable.TILE_SIZE));
     }
 
     /**

@@ -17,8 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitAttacker;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 
@@ -30,6 +35,18 @@ import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 public abstract class Weapon
         extends WeaponModel<Entity, UnitAttacker>
 {
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Weapon> type)
+    {
+        return Core.MEDIA.create(FactoryWeapon.WEAPON_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Frame. */
     private int frame;
 
@@ -38,7 +55,7 @@ public abstract class Weapon
      * 
      * @param setup The setup reference.
      */
-    protected Weapon(SetupWeapon setup)
+    protected Weapon(SetupGame setup)
     {
         super(setup);
 
@@ -73,5 +90,15 @@ public abstract class Weapon
     public int getFrame()
     {
         return frame;
+    }
+
+    /*
+     * WeaponModel
+     */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
     }
 }

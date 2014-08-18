@@ -82,7 +82,7 @@ final class Scene
 
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            final Effect effect = factoryEffect.create(Explode.class);
+            final Effect effect = factoryEffect.create(Explode.MEDIA);
             effect.start(mouse.getX(), getHeight() - mouse.getY());
             handlerEffect.add(effect);
         }

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -83,7 +84,8 @@ final class Scene
         handlerEntity = new HandlerEntity(camera, cursor, controlPanel, map, text);
         mouse.setConfig(getConfig());
 
-        final ContextEntity contextEntity = new ContextEntity(map);
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
         factoryEntity.setContext(contextEntity);
 
         setSystemCursorVisible(false);
@@ -115,12 +117,12 @@ final class Scene
 
         handlerEntity.createLayers(map);
 
-        Entity peon = factoryEntity.create(Peon.class);
+        Entity peon = factoryEntity.create(Peon.MEDIA);
         peon.setLocation(8, 22);
         peon.setOrientation(Orientation.EAST);
         handlerEntity.add(peon);
 
-        peon = factoryEntity.create(Peon.class);
+        peon = factoryEntity.create(Peon.MEDIA);
         peon.setLocation(13, 18);
         peon.setOrientation(Orientation.NORTH_WEST);
         handlerEntity.add(peon);

@@ -20,11 +20,12 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Media;
 
 /**
- * It performs a list of {@link SetupGame} considering an input enumeration. This way it is possible to create new
- * instances of object related to their type by sharing the same data.
+ * It performs a list of {@link SetupGame} considering their corresponding media. This way it is possible to create new
+ * instances of objects related to their {@link Media} by sharing the same resources.
  * <p>
  * Sample implementation:
  * </p>
@@ -51,8 +52,11 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
  */
 public abstract class FactoryGame<S extends SetupGame>
 {
+    /** Setup error. */
+    private static final String ERROR_SETUP = "Setup not found for: ";
+
     /** Setups list. */
-    private final Map<Class<? extends Fabricable>, S> setups;
+    private final Map<Media, S> setups;
 
     /**
      * Constructor.
@@ -63,12 +67,12 @@ public abstract class FactoryGame<S extends SetupGame>
     }
 
     /**
-     * Get setup instance from the type.
+     * Create setup instance from the media.
      * 
-     * @param type The enum type.
+     * @param media The setup media.
      * @return The setup instance.
      */
-    protected abstract S createSetup(Class<? extends Fabricable> type);
+    protected abstract S createSetup(Media media);
 
     /**
      * Clear all loaded setup and their configuration.
@@ -77,34 +81,30 @@ public abstract class FactoryGame<S extends SetupGame>
     {
         for (final S setup : setups.values())
         {
-            setup.configurable.clear();
+            setup.clear();
         }
         setups.clear();
     }
 
     /**
-     * Get a setup reference from its type.
+     * Get a setup reference from its media.
      * 
-     * @param type The reference type.
+     * @param media The setup media.
      * @return The setup reference.
+     * @throws LionEngineException If no setup found for the media ({@link #createSetup(Media)} may have returned
+     *             <code>null</code>).
      */
-    public S getSetup(Class<? extends Fabricable> type)
+    public S getSetup(Media media) throws LionEngineException
     {
-        if (!setups.containsKey(type))
+        if (!setups.containsKey(media))
         {
-            addSetup(type, createSetup(type));
+            setups.put(media, createSetup(media));
         }
-        return setups.get(type);
-    }
-
-    /**
-     * Add a setup reference for the specified type.
-     * 
-     * @param type The class type.
-     * @param setup The setup reference.
-     */
-    protected void addSetup(Class<? extends Fabricable> type, S setup)
-    {
-        setups.put(type, setup);
+        final S setup = setups.get(media);
+        if (setup == null)
+        {
+            throw new LionEngineException(FactoryGame.ERROR_SETUP, media.getPath());
+        }
+        return setup;
     }
 }

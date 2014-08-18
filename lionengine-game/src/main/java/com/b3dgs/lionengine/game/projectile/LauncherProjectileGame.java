@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.game.projectile;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -39,12 +41,12 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
 {
     /** Launcher level. */
     public final Alterable level;
-    /** The projectile factory reference. */
-    private final FactoryObjectGame<?> factory;
-    /** The projectile handler reference. */
-    private final HandlerProjectileGame<E, P> handler;
     /** The shoot timer. */
     private final Timing timer;
+    /** The projectile factory reference. */
+    private FactoryObjectGame<?> factory;
+    /** The projectile handler reference. */
+    private HandlerProjectileGame<E, P> handler;
     /** Adapt to target movement. */
     private boolean adaptative;
     /** Entity owner. */
@@ -62,13 +64,9 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param factory The projectiles factory.
-     * @param handler The projectiles handler.
      */
-    public LauncherProjectileGame(SetupGame setup, FactoryObjectGame<?> factory, HandlerProjectileGame<E, P> handler)
+    public LauncherProjectileGame(SetupGame setup)
     {
-        this.factory = factory;
-        this.handler = handler;
         owner = null;
         timer = new Timing();
         level = new Alterable(99);
@@ -77,12 +75,19 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     }
 
     /**
+     * Prepare the fabricated projectile.
+     * 
+     * @param context The context reference.
+     */
+    protected abstract void prepareProjectile(ContextGame context);
+
+    /**
      * Perform an attack from the owner (called when the launcher fired its projectile(s)).
      * <p>
      * Use theses functions to add projectiles:
      * </p>
      * <ul>
-     * <li>{@link #addProjectile(Class, int, int, double, double, int, int)}</li>
+     * <li>{@link #addProjectile(Media, int, int, double, double, int, int)}</li>
      * </ul>
      * 
      * @param owner The owner reference.
@@ -215,8 +220,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a projectile for the shoot.
      * 
-     * @param <PI> The projectile type used.
-     * @param type The projectile type.
+     * @param media The projectile media.
      * @param dmg The projectile damage.
      * @param target The target to reach.
      * @param speed The projectile speed.
@@ -224,7 +228,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected <PI extends P> PI addProjectile(Class<PI> type, int dmg, E target, double speed, int offX, int offY)
+    protected P addProjectile(Media media, int dmg, E target, double speed, int offX, int offY)
     {
         if (target != null)
         {
@@ -245,7 +249,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
             final double dist = Math.max(Math.abs(sx - dx), Math.abs(sy - dy));
             final double vecX = (dx - sx) / dist * speed;
             final double vecY = (dy - sy) / dist * speed;
-            return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, target);
+            return addProjectile(media, -1, 0, dmg, vecX, vecY, offX, offY, target);
         }
         return null;
     }
@@ -253,8 +257,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     /**
      * Add a projectile for the shoot.
      * 
-     * @param <PI> The projectile type used.
-     * @param type The projectile type.
+     * @param media The projectile media.
      * @param dmg The projectile damage.
      * @param vecX The horizontal projectile move.
      * @param vecY The vertical projectile move.
@@ -262,16 +265,15 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected <PI extends P> PI addProjectile(Class<PI> type, int dmg, double vecX, double vecY, int offX, int offY)
+    protected P addProjectile(Media media, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        return addProjectile(type, -1, 0, dmg, vecX, vecY, offX, offY, null);
+        return addProjectile(media, -1, 0, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
      * Add a linked projectile for the shoot.
      * 
-     * @param <PI> The projectile type used.
-     * @param type The projectile type.
+     * @param media The projectile media.
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param dmg The projectile damage.
      * @param vecX The horizontal projectile move.
@@ -280,17 +282,15 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected <PI extends P> PI addProjectile(Class<PI> type, int id, int dmg, double vecX, double vecY, int offX,
-            int offY)
+    protected P addProjectile(Media media, int id, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        return addProjectile(type, id, 0, dmg, vecX, vecY, offX, offY, null);
+        return addProjectile(media, id, 0, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
      * Add a delayed projectile for the shoot.
      * 
-     * @param <PI> The projectile type used.
-     * @param type The projectile type.
+     * @param media The projectile media.
      * @param delay delay before be thrown.
      * @param dmg The projectile damage.
      * @param vecX The horizontal projectile move.
@@ -299,17 +299,15 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
      */
-    protected <PI extends P> PI addProjectile(Class<PI> type, long delay, int dmg, double vecX, double vecY, int offX,
-            int offY)
+    protected P addProjectile(Media media, long delay, int dmg, double vecX, double vecY, int offX, int offY)
     {
-        return addProjectile(type, -1, delay, dmg, vecX, vecY, offX, offY, null);
+        return addProjectile(media, -1, delay, dmg, vecX, vecY, offX, offY, null);
     }
 
     /**
      * Add a linked projectile for the shoot.
      * 
-     * @param <PI> The projectile type used.
-     * @param type The projectile type.
+     * @param media The projectile media.
      * @param id projectile id (when a projectile is destroyed, all projectiles with this id are also destroyed).
      * @param delay delay before be thrown.
      * @param dmg The projectile damage.
@@ -320,10 +318,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param target The target reference.
      * @return The created projectile.
      */
-    private <PI extends P> PI addProjectile(Class<PI> type, int id, long delay, int dmg, double vecX, double vecY,
-            int offX, int offY, E target)
+    private P addProjectile(Media media, int id, long delay, int dmg, double vecX, double vecY, int offX, int offY,
+            E target)
     {
-        final PI projectile = factory.create(type);
+        final P projectile = factory.create(media);
 
         projectile.setOwner(owner);
         projectile.setId(id);
@@ -338,5 +336,17 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
 
         handler.add(projectile);
         return projectile;
+    }
+
+    /*
+     * Fabricable
+     */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        factory = context.getService(FactoryObjectGame.class);
+        handler = context.getService(HandlerProjectileGame.class);
+        prepareProjectile(context);
     }
 }

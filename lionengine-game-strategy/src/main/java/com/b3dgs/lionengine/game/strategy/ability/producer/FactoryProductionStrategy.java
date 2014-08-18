@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryGame;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
@@ -41,20 +42,20 @@ public abstract class FactoryProductionStrategy<E extends EntityStrategy, C exte
     }
 
     /**
-     * Create a new producible from the entity type.
+     * Create a new producible from the entity media.
      * 
-     * @param type The entity type.
+     * @param media The entity media.
      * @return The producible instance.
      */
-    public abstract P create(Class<? extends E> type);
+    public abstract P create(Media media);
 
     /**
-     * Create a new producible from the entity type.
+     * Create a new producible from the entity media.
      * 
-     * @param type The entity type.
+     * @param media The entity media.
      * @param tx The producible horizontal tile.
      * @param ty The producible vertical tile.
      * @return The producible instance.
      */
-    public abstract P create(Class<? extends E> type, int tx, int ty);
+    public abstract P create(Media media, int tx, int ty);
 }

@@ -22,13 +22,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.purview.Fabricable;
 
 /**
- * It performs a list of {@link SetupGame} considering an input class type. This way it is possible to create new
- * instances of {@link ObjectGame} related to their {@link Class} by sharing the same data.
+ * It performs a list of {@link SetupGame} considering their corresponding media. This way it is possible to create new
+ * instances of {@link Fabricable} related to their {@link Media} by sharing the same resources.
  * <p>
  * Sample implementation:
  * </p>
@@ -61,7 +60,7 @@ public abstract class FactoryObjectGame<S extends SetupGame>
     /** Folder error. */
     private static final String ERROR_FOLDER = "Folder must not be null !";
     /** Type error. */
-    private static final String ERROR_TYPE = "Type must not be null !";
+    private static final String ERROR_MEDIA = "Media must not be null !";
     /** Setup not found error. */
     private static final String ERROR_SETUP = "Setup not found fhe following type: ";
     /** Constructor error. */
@@ -72,6 +71,10 @@ public abstract class FactoryObjectGame<S extends SetupGame>
 
     /** Objects folder. */
     protected final String folder;
+    /** Context reference. */
+    private ContextGame context;
+    /** External class loader (<code>null</code> if none). */
+    private ClassLoader classLoader;
 
     /**
      * Constructor.
@@ -83,56 +86,53 @@ public abstract class FactoryObjectGame<S extends SetupGame>
         super();
         Check.notNull(folder, FactoryObjectGame.ERROR_FOLDER);
         this.folder = folder;
+        classLoader = ClassLoader.getSystemClassLoader();
     }
-
-    /**
-     * Create a setup from its media.
-     * 
-     * @param type The object type.
-     * @param config The setup media config file.
-     * @return The setup instance.
-     */
-    protected abstract S createSetup(Class<? extends Fabricable> type, Media config);
 
     /**
      * Create an object from its type using a generic way. The concerned classes to instantiate and its
      * constructor must be public, and must be as the main one: {@link ObjectGame#ObjectGame(SetupGame)}.
      * 
-     * @param <E> The object type used.
-     * @param type The object type.
+     * @param media The object media.
      * @return The object instance.
      */
-    public <E extends Fabricable> E create(Class<E> type)
+    public <E extends Fabricable> E create(Media media)
     {
-        Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
+        Check.notNull(media, FactoryObjectGame.ERROR_MEDIA);
 
-        final S setup = getSetup(type);
-        Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, type.getName());
+        final S setup = getSetup(media);
+        Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, media.getPath());
 
-        E instance = null;
-        for (final Constructor<?> constructor : type.getConstructors())
+        final E fabricable = create(setup);
+        if (context == null)
         {
-            try
-            {
-                instance = type.cast(constructor.newInstance(setup));
-            }
-            catch (final InvocationTargetException exception)
-            {
-                throw new LionEngineException(exception, FactoryObjectGame.ERROR_CONSTRUCTOR + type);
-            }
-            catch (InstantiationException
-                   | IllegalArgumentException
-                   | IllegalAccessException exception)
-            {
-                instance = null;
-            }
+            fabricable.prepare(new ContextGame());
         }
-        if (instance == null)
+        else
         {
-            throw new LionEngineException(new InstantiationException(type
-                    + FactoryObjectGame.ERROR_CONSTRUCTOR_NOT_FOUND), FactoryObjectGame.ERROR_CONSTRUCTOR + type);
+            fabricable.prepare(context);
         }
-        return instance;
+        return fabricable;
+    }
+
+    /**
+     * Set the context reference.
+     * 
+     * @param context The context reference.
+     */
+    public void setContext(ContextGame context)
+    {
+        this.context = context;
+    }
+
+    /**
+     * Set an external class loader.
+     * 
+     * @param classLoader The external class loader.
+     */
+    public void setClassLoader(ClassLoader classLoader)
+    {
+        this.classLoader = classLoader;
     }
 
     /**
@@ -145,17 +145,33 @@ public abstract class FactoryObjectGame<S extends SetupGame>
         return folder;
     }
 
-    /*
-     * FactoryGame
+    /**
+     * Create an object corresponding to the setup.
+     * 
+     * @param setup The setup reference.
+     * @return The fabricable instance.
      */
-
-    @Override
-    protected S createSetup(Class<? extends Fabricable> type)
+    @SuppressWarnings("unchecked")
+    private <E extends Fabricable> E create(S setup)
     {
-        Check.notNull(type, FactoryObjectGame.ERROR_TYPE);
-
-        final String name = type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION;
-        final Media config = Core.MEDIA.create(folder, name);
-        return createSetup(type, config);
+        final Class<?> type = setup.getConfigClass(classLoader);
+        try
+        {
+            final Constructor<?> constructor = type.getConstructor(setup.getClass());
+            return (E) constructor.newInstance(setup);
+        }
+        catch (final InvocationTargetException
+                     | ClassCastException exception)
+        {
+            throw new LionEngineException(exception, FactoryObjectGame.ERROR_CONSTRUCTOR + type);
+        }
+        catch (NoSuchMethodException
+               | InstantiationException
+               | IllegalArgumentException
+               | IllegalAccessException exception)
+        {
+            throw new LionEngineException(new InstantiationException(type
+                    + FactoryObjectGame.ERROR_CONSTRUCTOR_NOT_FOUND), FactoryObjectGame.ERROR_CONSTRUCTOR + type);
+        }
     }
 }

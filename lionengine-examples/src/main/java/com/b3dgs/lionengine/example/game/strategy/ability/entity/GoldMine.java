@@ -17,8 +17,10 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
 import com.b3dgs.lionengine.game.Alterable;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 
 /**
@@ -30,6 +32,9 @@ public final class GoldMine
         extends Building
         implements Extractible
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(GoldMine.class);
+
     /** Gold amount. */
     private final Alterable gold;
     /** Resource type. */
@@ -40,7 +45,7 @@ public final class GoldMine
      * 
      * @param setup The setup reference.
      */
-    public GoldMine(SetupEntity setup)
+    public GoldMine(SetupSurfaceGame setup)
     {
         super(setup);
         typeResource = ResourceType.GOLD;

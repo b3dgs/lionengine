@@ -18,10 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
-import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Factory launcher projectile.
@@ -29,24 +27,17 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryLauncher
-        extends FactoryObjectGame<SetupLauncher>
+        extends FactoryObjectGame<SetupGame>
 {
-    /** Factory projectile. */
-    private final FactoryProjectile factoryProjectile;
-    /** Handler projectile. */
-    private final HandlerProjectile handlerProjectile;
+    /** Directory name from our resources directory containing our launchers. */
+    public static final String LAUNCHER_DIR = "launcher";
 
     /**
      * Constructor.
-     * 
-     * @param factoryProjectile The factory projectile.
-     * @param handlerProjectile The handler projectile.
      */
-    public FactoryLauncher(FactoryProjectile factoryProjectile, HandlerProjectile handlerProjectile)
+    public FactoryLauncher()
     {
-        super("launcher");
-        this.factoryProjectile = factoryProjectile;
-        this.handlerProjectile = handlerProjectile;
+        super(FactoryLauncher.LAUNCHER_DIR);
     }
 
     /*
@@ -54,8 +45,8 @@ public final class FactoryLauncher
      */
 
     @Override
-    protected SetupLauncher createSetup(Class<? extends Fabricable> type, Media config)
+    protected SetupGame createSetup(Media config)
     {
-        return new SetupLauncher(config, factoryProjectile, handlerProjectile);
+        return new SetupGame(config);
     }
 }

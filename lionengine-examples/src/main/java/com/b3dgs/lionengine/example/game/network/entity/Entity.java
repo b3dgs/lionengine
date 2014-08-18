@@ -21,8 +21,13 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -39,8 +44,18 @@ abstract class Entity
         extends EntityPlatform
         implements Networkable
 {
-    /** Desired fps value. */
-    protected final int desiredFps;
+    /**
+     * Get an entity configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Entity> type)
+    {
+        return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Movement force force. */
     protected final Force movementForce;
     /** Movement force destination force. */
@@ -51,8 +66,6 @@ abstract class Entity
     protected final Timing timerExtraJump;
     /** Send correct location timer. */
     protected final Timing networkLocation;
-    /** Map reference. */
-    private final Map map;
     /** Network model. */
     private final NetworkableModel networkableModel;
     /** Animation idle. */
@@ -61,8 +74,10 @@ abstract class Entity
     private final Animation animWalk;
     /** Animation jump. */
     private final Animation animDie;
+    /** Desired fps value. */
+    protected int desiredFps;
     /** Client flag. */
-    protected final boolean server;
+    protected boolean server;
     /** Jump force. */
     protected double jumpForceValue;
     /** Movement max speed. */
@@ -83,19 +98,17 @@ abstract class Entity
     protected EntityCollision coll;
     /** Dead flag. */
     protected boolean dead;
+    /** Map reference. */
+    private Map map;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    Entity(SetupEntity setup)
+    Entity(SetupSurfaceGame setup)
     {
         super(setup);
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        map = context.map;
-        desiredFps = context.desiredFps;
-        server = context.server;
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");
@@ -358,6 +371,14 @@ abstract class Entity
     /*
      * EntityPlatform
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        map = context.getService(Map.class);
+        desiredFps = context.getService(Integer.class).intValue();
+        server = context.getService(Boolean.class).booleanValue();
+    }
 
     @Override
     protected void handleActions(double extrp)

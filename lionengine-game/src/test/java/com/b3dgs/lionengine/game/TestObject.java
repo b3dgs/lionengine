@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 
 /**
  * Object game test.
@@ -27,6 +29,9 @@ import com.b3dgs.lionengine.core.Graphic;
 public final class TestObject
         extends ObjectGame
 {
+    /** Media class. */
+    public static final Media MEDIA = Core.MEDIA.create("src", "test", "resources", "TestObject.xml");
+
     /**
      * Constructor.
      * 
@@ -40,6 +45,12 @@ public final class TestObject
     /*
      * ObjectGame
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Prepare
+    }
 
     @Override
     public void update(double extrp)

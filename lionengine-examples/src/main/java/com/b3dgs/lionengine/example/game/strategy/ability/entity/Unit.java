@@ -20,7 +20,10 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 import java.util.Set;
 
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.example.game.strategy.ability.map.Map;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
@@ -41,21 +44,19 @@ abstract class Unit
     /** Walk animation. */
     protected final Animation animWalk;
     /** Mover model. */
-    private final MoverModel mover;
+    private MoverModel mover;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    protected Unit(SetupEntity setup)
+    protected Unit(SetupSurfaceGame setup)
     {
         super(setup);
         final Configurable configurable = setup.getConfigurable();
         animIdle = configurable.getAnimation("idle");
         animWalk = configurable.getAnimation("walk");
-        final ContextEntity context = setup.getContext(ContextEntity.class);
-        mover = new MoverModel(this, context.map);
         setLayer(1);
         play(animIdle);
     }
@@ -63,6 +64,13 @@ abstract class Unit
     /*
      * Entity
      */
+
+    @Override
+    public void prepareEntity(ContextGame context)
+    {
+        super.prepareEntity(context);
+        mover = new MoverModel(this, context.getService(Map.class));
+    }
 
     @Override
     public void update(double extrp)

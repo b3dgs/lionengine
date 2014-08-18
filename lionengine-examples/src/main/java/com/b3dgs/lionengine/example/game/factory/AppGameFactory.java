@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.game.ContextGame;
 
 /**
  * Main class.
@@ -41,9 +42,17 @@ public final class AppGameFactory
 
         final Factory factory = new Factory();
 
-        final TypeBase base = factory.create(FlyMachine.class);
-        final FlyMachine flyMachine = factory.create(FlyMachine.class);
-        final GroundTruck groundTruck = factory.create(GroundTruck.class);
+        final Object param = new Object();
+
+        // Define the context and add the parameter as a service
+        final ContextGame context = new ContextGame();
+        context.addService(param);
+        factory.setContext(context);
+
+        // Create types
+        final TypeBase base = factory.create(FlyMachine.MEDIA);
+        final FlyMachine flyMachine = factory.create(FlyMachine.MEDIA);
+        final GroundTruck groundTruck = factory.create(GroundTruck.MEDIA);
 
         System.out.println(base);
         System.out.println(flyMachine);

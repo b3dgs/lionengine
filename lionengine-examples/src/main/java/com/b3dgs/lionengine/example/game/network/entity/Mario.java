@@ -19,7 +19,9 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
@@ -31,6 +33,9 @@ import com.b3dgs.lionengine.network.message.NetworkMessage;
 public final class Mario
         extends Entity
 {
+    /** Class media. */
+    public static final Media MEDIA = Entity.getConfig(Mario.class);
+
     /** Animation turn. */
     private final Animation animTurn;
     /** Animation jump. */
@@ -49,7 +54,7 @@ public final class Mario
      * 
      * @param setup setup reference.
      */
-    public Mario(SetupEntity setup)
+    public Mario(SetupSurfaceGame setup)
     {
         super(setup);
         final Configurable configurable = setup.getConfigurable();

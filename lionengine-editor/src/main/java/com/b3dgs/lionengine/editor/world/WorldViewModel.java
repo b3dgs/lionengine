@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
@@ -39,8 +39,8 @@ public enum WorldViewModel
     private MapTile<? extends TileGame> map;
     /** Factory entity reference. */
     private FactoryObjectGame<?> factoryEntity;
-    /** Selected entity class. */
-    private Class<? extends EntityGame> selectedEntity;
+    /** Selected entity media. */
+    private Media selectedEntity;
 
     /**
      * Constructor.
@@ -71,11 +71,11 @@ public enum WorldViewModel
     }
 
     /**
-     * Set the selected entity type.
+     * Set the selected entity media.
      * 
-     * @param selectedEntity The selected entity type.
+     * @param selectedEntity The selected entity media.
      */
-    public void setSelectedEntity(Class<? extends EntityGame> selectedEntity)
+    public void setSelectedEntity(Media selectedEntity)
     {
         this.selectedEntity = selectedEntity;
     }
@@ -111,11 +111,11 @@ public enum WorldViewModel
     }
 
     /**
-     * Get the selected entity type.
+     * Get the selected entity media.
      * 
-     * @return The selected entity type.
+     * @return The selected entity media.
      */
-    public Class<? extends EntityGame> getSelectedEntity()
+    public Media getSelectedEntity()
     {
         return selectedEntity;
     }

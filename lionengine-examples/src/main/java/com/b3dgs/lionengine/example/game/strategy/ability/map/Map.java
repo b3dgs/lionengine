@@ -29,12 +29,17 @@ import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 public final class Map
         extends MapTileStrategy<ResourceType, Tile>
 {
+    /** Tile width. */
+    public static final int TILE_WIDTH = 16;
+    /** Tile height. */
+    public static final int TILE_HEIGHT = 16;
+
     /**
      * Map constructor.
      */
     public Map()
     {
-        super(16, 16, TileCollision.values());
+        super(Map.TILE_WIDTH, Map.TILE_HEIGHT, TileCollision.values());
     }
 
     /*

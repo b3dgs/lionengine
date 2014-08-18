@@ -17,13 +17,59 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Represents an object designed to keep references on main game types, such as {@link FactoryGame}, {@link HandlerGame}
  * ... in order to access to them from the object instance (created by a {@link FactoryGame} with a {@link SetupGame}).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ContextGame
+public class ContextGame
 {
-    // Marker interface
+    /** Service error. */
+    private static final String ERROR_SERVICE = "Service not found: ";
+
+    /** Services list. */
+    private final List<Object> services;
+
+    /**
+     * Constructor.
+     */
+    public ContextGame()
+    {
+        services = new ArrayList<>();
+    }
+
+    /**
+     * Add a service.
+     * 
+     * @param service The service to add.
+     */
+    public void addService(Object service)
+    {
+        services.add(service);
+    }
+
+    /**
+     * Get a service from its class.
+     * 
+     * @param service The service type.
+     * @return The service found.
+     * @throws LionEngineException If service not found.
+     */
+    public <C> C getService(Class<C> service) throws LionEngineException
+    {
+        for (final Object object : services)
+        {
+            if (service.isAssignableFrom(object.getClass()))
+            {
+                return service.cast(object);
+            }
+        }
+        throw new LionEngineException(ContextGame.ERROR_SERVICE, service.getName());
+    }
 }

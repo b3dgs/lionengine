@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.strategy.ability.producer.Producible;
 
 /**
@@ -31,13 +32,13 @@ public final class ProducibleEntity
     /**
      * Constructor.
      * 
-     * @param id The entity id.
+     * @param config The entity config.
      * @param cost The production cost.
      * @param tw The production width.
      * @param th The production height.
      */
-    ProducibleEntity(Class<? extends Entity> id, ProductionCost cost, int tw, int th)
+    ProducibleEntity(Media config, ProductionCost cost, int tw, int th)
     {
-        super(id, cost, tw, th);
+        super(config, cost, tw, th);
     }
 }

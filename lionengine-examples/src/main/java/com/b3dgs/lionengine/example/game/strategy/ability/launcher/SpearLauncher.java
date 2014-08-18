@@ -17,7 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Spear;
+import com.b3dgs.lionengine.game.SetupGame;
 
 /**
  * Spear launcher implementation.
@@ -27,13 +29,16 @@ import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Spear;
 public class SpearLauncher
         extends LauncherProjectile
 {
+    /** Class media. */
+    public static final Media MEDIA = LauncherProjectile.getConfig(SpearLauncher.class);
+
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
      */
-    public SpearLauncher(SetupLauncher setup)
+    public SpearLauncher(SetupGame setup)
     {
-        super(setup, Spear.class);
+        super(setup, Spear.MEDIA);
     }
 }

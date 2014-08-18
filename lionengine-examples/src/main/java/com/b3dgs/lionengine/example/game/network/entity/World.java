@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -73,7 +74,12 @@ abstract class World<N extends NetworkedWorld>
         networkableModel = new NetworkableModel();
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
-        final ContextEntity contextEntity = new ContextEntity(map, source.getRate(), server);
+
+        final ContextGame contextEntity = new ContextGame();
+        contextEntity.addService(map);
+        contextEntity.addService(Integer.valueOf(source.getRate()));
+        contextEntity.addService(Boolean.valueOf(server));
+
         factory.setContext(contextEntity);
     }
 
@@ -185,7 +191,7 @@ abstract class World<N extends NetworkedWorld>
     @Override
     public void notifyClientConnected(Byte id, String name)
     {
-        final Mario mario = factory.create(Mario.class);
+        final Mario mario = factory.create(Mario.MEDIA);
         mario.respawn();
         mario.setName(name);
         mario.setClientId(id);

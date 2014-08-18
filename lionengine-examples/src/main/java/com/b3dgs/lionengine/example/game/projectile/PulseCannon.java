@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.SetupGame;
+
 /**
  * Pulse canon launcher implementation.
  * 
@@ -25,10 +28,13 @@ package com.b3dgs.lionengine.example.game.projectile;
 public final class PulseCannon
         extends Launcher
 {
+    /** Class media. */
+    public static final Media MEDIA = Launcher.getConfig(PulseCannon.class);
+
     /**
-     * {@link Launcher#Launcher(Setup)}
+     * {@link Launcher#Launcher(SetupGame)}
      */
-    public PulseCannon(Setup setup)
+    public PulseCannon(SetupGame setup)
     {
         super(setup);
         setRate(70);
@@ -41,12 +47,12 @@ public final class PulseCannon
     @Override
     protected void launchProjectile(Entity owner)
     {
-        addProjectile(Pulse.class, 1, 0, 7, 0, 0);
+        addProjectile(Pulse.MEDIA, 1, 0, 7, 0, 0);
     }
 
     @Override
     protected void launchProjectile(Entity owner, Entity target)
     {
-        addProjectile(Pulse.class, 1, target, 4, 0, -12);
+        addProjectile(Pulse.MEDIA, 1, target, 4, 0, -12);
     }
 }

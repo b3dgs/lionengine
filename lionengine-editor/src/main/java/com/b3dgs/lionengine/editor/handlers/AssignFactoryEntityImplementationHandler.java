@@ -45,6 +45,7 @@ public class AssignFactoryEntityImplementationHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final FactoryObjectGame<?> factoryEntity = Project.getActive().getInstance(FactoryObjectGame.class, selection);
+        factoryEntity.setClassLoader(Project.getActive().getClassLoader());
         WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
 
         final FactoryEntityPart part = Tools.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);

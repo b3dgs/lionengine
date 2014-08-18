@@ -17,9 +17,13 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
+import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -33,6 +37,18 @@ import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 public abstract class Skill
         extends SkillStrategy
 {
+    /**
+     * Get a skill configuration file.
+     * 
+     * @param type The config associated class.
+     * @return The media config.
+     */
+    protected static Media getConfig(Class<? extends Skill> type)
+    {
+        return Core.MEDIA.create(FactorySkill.SKILL_DIR, type.getSimpleName() + "."
+                + FactoryObjectGame.FILE_DATA_EXTENSION);
+    }
+
     /** Sprite. */
     private final SpriteTiled icon;
     /** Owner. */
@@ -76,6 +92,12 @@ public abstract class Skill
     /*
      * SkillStrategy
      */
+
+    @Override
+    public void prepare(ContextGame context)
+    {
+        // Nothing to do
+    }
 
     @Override
     public void updateOnMap(double extrp, CameraStrategy camera, CursorStrategy cursor)
