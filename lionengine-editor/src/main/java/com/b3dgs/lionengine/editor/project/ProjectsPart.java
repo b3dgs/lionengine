@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 
@@ -211,11 +212,11 @@ public class ProjectsPart
             tree.removeAll();
             final Map<TreeItem, List<Media>> children = getChildren(project);
             final List<TreeItem> quicks = new ArrayList<>();
-            for (final TreeItem parent : children.keySet())
+            for (final Entry<TreeItem, List<Media>> parent : children.entrySet())
             {
-                for (final Media child : children.get(parent))
+                for (final Media child : parent.getValue())
                 {
-                    final TreeItem item = new TreeItem(parent, SWT.NONE);
+                    final TreeItem item = new TreeItem(parent.getKey(), SWT.NONE);
                     final String childName = child.getFile().getName();
                     final Image icon = ProjectsPart.getFileIcon(child);
                     item.setImage(icon);

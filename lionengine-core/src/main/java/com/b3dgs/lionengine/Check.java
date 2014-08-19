@@ -34,12 +34,13 @@ package com.b3dgs.lionengine;
 public final class Check
 {
     /**
-     * Check if the condition if <code>true</code>. Throws a {@link LionEngineException} if <code>false</code>.
+     * Check if the condition if <code>true</code>.
      * 
      * @param condition The condition to check.
      * @param messages The messages to put in the exception.
+     * @throws LionEngineException If condition is <code>false</code>.
      */
-    public static void argument(boolean condition, String... messages)
+    public static void argument(boolean condition, String... messages) throws LionEngineException
     {
         if (!condition)
         {
@@ -48,12 +49,13 @@ public final class Check
     }
 
     /**
-     * Check if the object is not <code>null</code>. Throws a {@link LionEngineException} if <code>null</code>.
+     * Check if the object is not <code>null</code>.
      * 
      * @param object The object to check.
      * @param messages The messages to put in the exception.
+     * @throws LionEngineException If object is <code>null</code>.
      */
-    public static void notNull(Object object, String... messages)
+    public static void notNull(Object object, String... messages) throws LionEngineException
     {
         if (object == null)
         {

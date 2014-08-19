@@ -87,7 +87,7 @@ final class TextSwt
     TextSwt(String fontName, int size, TextStyle style)
     {
         this.size = size;
-        font = new Font(ScreenSwt.display, fontName, Math.round(size / 1.5f), TextSwt.getStyle(style));
+        font = new Font(ScreenSwt.display, fontName, (int) Math.round(size / 1.5), TextSwt.getStyle(style));
         align = Align.LEFT;
         color = ColorRgba.WHITE;
     }

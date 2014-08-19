@@ -129,20 +129,20 @@ public final class UtilConversion
      */
     public static String toTitleCase(String string)
     {
-        String result = "";
+        final StringBuilder result = new StringBuilder();
         for (int i = 0; i < string.length(); i++)
         {
             final String next = string.substring(i, i + 1);
             if (i == 0)
             {
-                result += next.toUpperCase(Locale.ENGLISH);
+                result.append(next.toUpperCase(Locale.ENGLISH));
             }
             else
             {
-                result += next.toLowerCase(Locale.ENGLISH);
+                result.append(next.toLowerCase(Locale.ENGLISH));
             }
         }
-        return result;
+        return result.toString();
     }
 
     /**

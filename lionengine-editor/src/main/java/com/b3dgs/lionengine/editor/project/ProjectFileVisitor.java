@@ -174,7 +174,6 @@ public final class ProjectFileVisitor
                 item = new TreeItem(tree, SWT.NONE);
                 item.setImage(ProjectFileVisitor.ICON_MAIN);
                 main = item;
-                parent = item;
             }
             else if (!dirName.equals(project.getName()))
             {
@@ -226,7 +225,7 @@ public final class ProjectFileVisitor
         if (path.startsWith(sourcesPath.getPath()) || path.startsWith(resourcesPath.getPath()))
         {
             final TreeItem parent = nodes.get(dir.getParent().toString());
-            if (parent != null && parent.getText() != project.getName())
+            if (parent != null && !parent.getText().equals(project.getName()))
             {
                 if (children.get(parent) == null)
                 {

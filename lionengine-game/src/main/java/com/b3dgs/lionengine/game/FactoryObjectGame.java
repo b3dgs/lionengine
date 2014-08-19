@@ -57,6 +57,8 @@ public abstract class FactoryObjectGame<S extends SetupGame>
 {
     /** Data file extension. */
     public static final String FILE_DATA_EXTENSION = "xml";
+    /** Empty context instance. */
+    private static final ContextGame EMPTY_CONTEXT = new ContextGame();
     /** Folder error. */
     private static final String ERROR_FOLDER = "Folder must not be null !";
     /** Type error. */
@@ -106,7 +108,7 @@ public abstract class FactoryObjectGame<S extends SetupGame>
         final E fabricable = create(setup);
         if (context == null)
         {
-            fabricable.prepare(new ContextGame());
+            fabricable.prepare(FactoryObjectGame.EMPTY_CONTEXT);
         }
         else
         {

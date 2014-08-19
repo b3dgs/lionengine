@@ -156,7 +156,8 @@ public final class ToolsSwt
     static Image rotate(Image image, int angle)
     {
         final ImageData sourceData = image.getImageData();
-        final int width = sourceData.width, height = sourceData.height;
+        final int width = sourceData.width;
+        final int height = sourceData.height;
         final ImageData newData = new ImageData(width, height, sourceData.depth, sourceData.palette);
         newData.transparentPixel = sourceData.transparentPixel;
 
@@ -167,7 +168,7 @@ public final class ToolsSwt
         final float cos = (float) Math.cos(rotate);
         final float sin = (float) Math.sin(rotate);
 
-        transform.setElements(cos, sin, -sin, cos, width / 2.0f, height / 2.0f);
+        transform.setElements(cos, sin, -sin, cos, (float) (width / 2.0), (float) (height / 2.0));
         gc.setTransform(transform);
         gc.drawImage(image, -width / 2, -height / 2);
         gc.dispose();

@@ -46,7 +46,25 @@
 		<Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
 	</Match>
 	<Match>
+		<Class name="com.b3dgs.lionengine.game.map.MapTileGame" />
+		<Bug pattern="EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.game.map.MapTileGame" />
+		<Bug pattern="EI_EXPOSE_REP" />
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.editor.project.Project" />
+		<Bug pattern="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" />
+	</Match>
+	<Match>
 		<Class name="~.*Test$"/>
+	</Match>
+	<Match>
+		<Package name="~com.b3dgs.lionengine.mock.*"/>
+	</Match>
+	<Match>
+		<Class name="com.b3dgs.lionengine.drawable.DrawableTestTool"/>
 	</Match>
 	<Match>
 		<Package name="~org.*"/>

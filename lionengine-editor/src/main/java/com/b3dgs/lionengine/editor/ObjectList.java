@@ -190,11 +190,11 @@ public abstract class ObjectList<T>
     protected void loadObjects(Map<String, T> objects)
     {
         boolean selected = false;
-        for (final String name : objects.keySet())
+        for (final Map.Entry<String, T> name : objects.entrySet())
         {
-            final T object = objects.get(name);
+            final T object = name.getValue();
             final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
-            item.setText(name);
+            item.setText(name.getKey());
             item.setData(object);
             if (!selected)
             {

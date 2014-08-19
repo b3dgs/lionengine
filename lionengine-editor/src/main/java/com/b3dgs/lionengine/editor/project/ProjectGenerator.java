@@ -281,9 +281,9 @@ public class ProjectGenerator
         final Properties properties = new Properties();
         properties.put(Project.PROPERTY_PROJECT_CLASSES, classes);
         properties.put(Project.PROPERTY_PROJECT_RESOURCES, resources);
-        try
+        try (FileOutputStream stream = new FileOutputStream(propertiesFile);)
         {
-            properties.store(new FileOutputStream(propertiesFile), Project.PROPERTIES_FILE_DESCRIPTION);
+            properties.store(stream, Project.PROPERTIES_FILE_DESCRIPTION);
         }
         catch (final IOException exception)
         {
