@@ -90,7 +90,15 @@ public final class UtilityImage
      */
     static ImageBuffer createImage(int width, int height, Transparency transparency)
     {
-        return new ImageBufferSwt(ToolsSwt.createImage(width, height, UtilityImage.getTransparency(transparency)));
+        final ImageBufferSwt buffer = new ImageBufferSwt(ToolsSwt.createImage(width, height,
+                UtilityImage.getTransparency(transparency)));
+
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.BLACK);
+        g.drawRect(0, 0, width, height, true);
+        g.dispose();
+
+        return buffer;
     }
 
     /**

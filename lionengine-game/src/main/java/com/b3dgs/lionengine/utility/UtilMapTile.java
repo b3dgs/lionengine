@@ -96,8 +96,6 @@ public class UtilMapTile
         final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(map.getTileWidth(), map.getTileHeight(),
                 Transparency.TRANSLUCENT);
         final Graphic g = buffer.createGraphic();
-        g.setColor(ColorRgba.TRANSPARENT);
-        g.drawRect(0, 0, buffer.getWidth(), buffer.getHeight(), true);
         g.setColor(ColorRgba.PURPLE);
 
         for (final CollisionFunction function : functions)
