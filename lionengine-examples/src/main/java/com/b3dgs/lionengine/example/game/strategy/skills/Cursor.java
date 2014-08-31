@@ -45,11 +45,12 @@ public final class Cursor
     private ColorRgba boxColor;
 
     /**
-     * {@link CursorStrategy#CursorStrategy(InputDevicePointer, CameraStrategy, Resolution, MapTile, Media...)}
+     * {@link CursorStrategy#CursorStrategy(InputDevicePointer, CameraStrategy, Resolution, MapTile, Media, Media...)}
      */
-    Cursor(InputDevicePointer mouse, CameraStrategy camera, Resolution source, MapTile<?> map, Media... cursor)
+    Cursor(InputDevicePointer mouse, CameraStrategy camera, Resolution source, MapTile<?> map, Media cursor,
+            Media... others)
     {
-        super(mouse, camera, source, map, cursor);
+        super(mouse, camera, source, map, cursor, others);
         type = CursorType.POINTER;
     }
 

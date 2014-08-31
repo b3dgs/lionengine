@@ -63,13 +63,14 @@ public class CursorStrategy
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
-     * @param cursor The cursor images media.
      * @param map The map reference.
+     * @param cursor The cursor images media.
+     * @param others The cursor images media.
      */
     public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, MapTile<?> map,
-            Media... cursor)
+            Media cursor, Media... others)
     {
-        this(pointer, camera, source, map.getTileWidth(), map.getTileHeight(), cursor);
+        this(pointer, camera, source, map.getTileWidth(), map.getTileHeight(), cursor, others);
     }
 
     /**
@@ -78,14 +79,15 @@ public class CursorStrategy
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
      * @param source The source display.
-     * @param cursor The cursor images media.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
+     * @param cursor The cursor images media.
+     * @param others The cursor other images media.
      */
     public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, int tileWidth,
-            int tileHeight, Media... cursor)
+            int tileHeight, Media cursor, Media... others)
     {
-        super(pointer, 0, 0, source.getWidth(), source.getHeight(), cursor);
+        super(pointer, 0, 0, source.getWidth(), source.getHeight(), cursor, others);
         Check.notNull(camera, "The camera must not be null !");
         this.camera = camera;
         setLocation(source.getWidth() / 2, source.getHeight() / 2);

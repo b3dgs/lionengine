@@ -71,7 +71,7 @@ public class CursorTest
         final Resolution output0 = new Resolution(320, 240, 60);
         try
         {
-            final Cursor cursor = new Cursor(mouse, output0);
+            final Cursor cursor = new Cursor(mouse, output0, null);
             Assert.assertNotNull(cursor);
             Assert.fail();
         }

@@ -640,7 +640,10 @@ public abstract class EntityStrategy
     public void destroy()
     {
         super.destroy();
-        removeRef();
+        if (map != null)
+        {
+            removeRef();
+        }
     }
 
     /*

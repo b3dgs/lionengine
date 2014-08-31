@@ -17,6 +17,10 @@
  */
 package com.b3dgs.lionengine.game;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
@@ -87,11 +91,12 @@ public class Cursor
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param resolution The resolution used to know the screen limits.
-     * @param medias The cursor media list (containing the different cursor surfaces path).
+     * @param media The cursor media.
+     * @param others The cursor medias list (containing the different cursor surfaces path).
      */
-    public Cursor(InputDevicePointer pointer, Resolution resolution, Media... medias)
+    public Cursor(InputDevicePointer pointer, Resolution resolution, Media media, Media... others)
     {
-        this(pointer, 0, 0, resolution.getWidth(), resolution.getHeight(), medias);
+        this(pointer, 0, 0, resolution.getWidth(), resolution.getHeight(), media, others);
     }
 
     /**
@@ -102,25 +107,29 @@ public class Cursor
      * @param minY The minimal y location on screen.
      * @param maxX The maximal x location on screen.
      * @param maxY The maximal y location on screen.
-     * @param medias The cursor media list (containing the different cursor surfaces path).
+     * @param media The cursor media.
+     * @param others The cursor media list (containing the different cursor surfaces path).
      */
-    public Cursor(InputDevicePointer pointer, int minX, int minY, int maxX, int maxY, Media... medias)
+    public Cursor(InputDevicePointer pointer, int minX, int minY, int maxX, int maxY, Media media, Media... others)
     {
         Check.notNull(pointer, "The pointer must not be null !");
-        Check.notNull(medias, "The cursor should have at least one image !");
-        Check.argument(medias.length > 0, "The cursor should have at least one image !");
+        Check.notNull(media, "The cursor should have at least one image !");
 
         this.pointer = pointer;
         x = 0.0;
         y = 0.0;
         sensibilityHorizontal = 1.0;
         sensibilityVertical = 1.0;
-        surface = new Image[medias.length];
+
+        final List<Media> images = new ArrayList<>(1 + others.length);
+        images.add(media);
+        images.addAll(Arrays.asList(others));
+        surface = new Image[images.size()];
 
         int i = 0;
-        for (final Media media : medias)
+        for (final Media current : images)
         {
-            surface[i] = Drawable.loadImage(media);
+            surface[i] = Drawable.loadImage(current);
             i++;
         }
 
