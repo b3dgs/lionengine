@@ -53,7 +53,7 @@ public class ImportProjectDialog
         projectClassesText.setEditable(false);
         projectResourcesText.setEditable(false);
 
-        onLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake");
+        onLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake");
         finish.forceFocus();
     }
 

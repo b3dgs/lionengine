@@ -72,8 +72,8 @@ public class ImportMapDialog
                 Messages.ImportMapDialog_HeaderDesc, ImportMapDialog.ICON);
         createDialog();
 
-        onLevelRipLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
-        onPatternLocationSelected("C:\\Users\\Pierre-Alexandre\\git\\lionheart-remake\\resources\\tile\\swamp\\");
+        onLevelRipLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
+        onPatternLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\tile\\swamp\\");
         finish.setEnabled(true);
         finish.forceFocus();
     }

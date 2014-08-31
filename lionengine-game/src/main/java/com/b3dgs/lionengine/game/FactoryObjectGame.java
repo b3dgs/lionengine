@@ -77,6 +77,8 @@ public abstract class FactoryObjectGame<S extends SetupGame>
     private ContextGame context;
     /** External class loader (<code>null</code> if none). */
     private ClassLoader classLoader;
+    /** Prepare flag. */
+    private boolean prepare;
 
     /**
      * Constructor.
@@ -89,6 +91,18 @@ public abstract class FactoryObjectGame<S extends SetupGame>
         Check.notNull(folder, FactoryObjectGame.ERROR_FOLDER);
         this.folder = folder;
         classLoader = ClassLoader.getSystemClassLoader();
+        prepare = true;
+    }
+
+    /**
+     * Set the prepare enabled state.
+     * 
+     * @param enabled <code>true</code> to allow to call {@link Fabricable#prepare(ContextGame)} when
+     *            object is created, <code>false</code> to not call it.
+     */
+    public void setPrepareEnabled(boolean enabled)
+    {
+        prepare = enabled;
     }
 
     /**
@@ -106,13 +120,16 @@ public abstract class FactoryObjectGame<S extends SetupGame>
         Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, media.getPath());
 
         final E fabricable = create(setup);
-        if (context == null)
+        if (prepare)
         {
-            fabricable.prepare(FactoryObjectGame.EMPTY_CONTEXT);
-        }
-        else
-        {
-            fabricable.prepare(context);
+            if (context == null)
+            {
+                fabricable.prepare(FactoryObjectGame.EMPTY_CONTEXT);
+            }
+            else
+            {
+                fabricable.prepare(context);
+            }
         }
         return fabricable;
     }
