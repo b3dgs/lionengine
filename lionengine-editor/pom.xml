@@ -29,21 +29,6 @@
 			<artifactId>lionengine-game</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-pathfinding</artifactId>
-			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-platform</artifactId>
-			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-strategy</artifactId>
-			<version>${lionengine.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>

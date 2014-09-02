@@ -47,6 +47,13 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<repositories>
+	    <repository>
+	      <id>luna</id>
+	      <url>http://download.eclipse.org/releases/luna</url>
+	      <layout>p2</layout>
+	    </repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
