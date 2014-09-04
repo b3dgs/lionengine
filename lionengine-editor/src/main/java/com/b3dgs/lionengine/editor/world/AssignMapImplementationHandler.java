@@ -15,43 +15,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.world;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.dialogs.NewProjectDialog;
+import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
- * New project handler implementation.
+ * Assign the map implementation handler.
  * 
  * @author Pierre-Alexandre
  */
-public class NewProjectHandler
+public class AssignMapImplementationHandler
 {
     /**
      * Execute the handler.
      * 
-     * @param shell The shell reference.
      * @param partService The part service reference.
      */
     @Execute
-    public void execute(Shell shell, EPartService partService)
+    public void execute(EPartService partService)
     {
-        final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
-        newProjectDialog.open();
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final MapTile<? extends TileGame> map = Project.getActive().getInstance(MapTile.class, selection);
+        WorldViewModel.INSTANCE.setMap(map);
 
-        final Project project = newProjectDialog.getProject();
-        if (project != null)
-        {
-            final ProjectsPart part = Tools.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            ProjectsModel.INSTANCE.setRoot(project.getPath());
-            part.setInput(project, partService);
-        }
+        final WorldViewPart worldView = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        worldView.setToolBarEnabled(true);
+        worldView.addListeners();
+        worldView.update();
+
+        final TileCollisionPart tileCollision = Tools.getPart(partService, TileCollisionPart.ID,
+                TileCollisionPart.class);
+        tileCollision.setEnabled(true);
     }
 }

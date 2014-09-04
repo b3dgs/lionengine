@@ -53,6 +53,7 @@ public class ImportProjectDialog
         projectClassesText.setEditable(false);
         projectResourcesText.setEditable(false);
 
+        // FIXME to be removed after tests
         onLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake");
         finish.forceFocus();
     }

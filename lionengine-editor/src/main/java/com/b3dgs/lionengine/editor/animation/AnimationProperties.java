@@ -110,18 +110,18 @@ public class AnimationProperties
         frames.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         frames.setLayout(new GridLayout(1, false));
 
-        firstFrame = ObjectProperties.createTextField(frames, "First Frame:");
-        lastFrame = ObjectProperties.createTextField(frames, "Last Frame:");
-        speed = ObjectProperties.createTextField(frames, "Animation Speed:");
+        firstFrame = ObjectProperties.createTextField(frames, Messages.AnimationProperties_FirstFrame);
+        lastFrame = ObjectProperties.createTextField(frames, Messages.AnimationProperties_LastFrame);
+        speed = ObjectProperties.createTextField(frames, Messages.AnimationProperties_AnimSpeed);
 
         final Composite flags = new Composite(parent, SWT.NONE);
         flags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false));
         flags.setLayout(new GridLayout(2, true));
 
         reverseAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
-        reverseAnim.setText("Reverse");
+        reverseAnim.setText(Messages.AnimationProperties_Reverse);
         repeatAnim = new Button(flags, SWT.CHECK | SWT.RIGHT_TO_LEFT);
-        repeatAnim.setText("Repeat");
+        repeatAnim.setText(Messages.AnimationProperties_Repeat);
     }
 
     @Override

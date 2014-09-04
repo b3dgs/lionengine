@@ -136,7 +136,7 @@ public class WorldViewPart
 
         final ToolItem importMap = new ToolItem(toolBar, SWT.PUSH);
         importMap.setImage(WorldViewPart.ICON_IMPORT_MAP);
-        importMap.setText("Import Map From Level Rip");
+        importMap.setText(Messages.WorldView_ImportMap);
         importMap.addSelectionListener(new SelectionAdapter()
         {
             @Override

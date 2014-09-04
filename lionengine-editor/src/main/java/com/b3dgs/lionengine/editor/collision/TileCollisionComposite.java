@@ -46,8 +46,10 @@ import com.b3dgs.lionengine.game.map.TileGame;
  */
 public class TileCollisionComposite
 {
-    /** Text formula. */
-    private static final String TEXT_FORMULA = "Formula: ";
+    /** Multiplication. */
+    private static final String MULT = "*";
+    /** Multiplication. */
+    private static final String ADD = "+";
 
     /** Collision part. */
     final TileCollisionPart tileCollisionPart;
@@ -84,7 +86,7 @@ public class TileCollisionComposite
 
         referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
-        referential.setText(TileCollisionComposite.TEXT_FORMULA);
+        referential.setText(Messages.TileCollisionComposite_Formula);
 
         createAxisChooser(referential);
         createFormulaEdition(referential);
@@ -106,7 +108,7 @@ public class TileCollisionComposite
     {
         if (function != null)
         {
-            referential.setText(TileCollisionComposite.TEXT_FORMULA + function.getName());
+            referential.setText(Messages.TileCollisionComposite_Formula + function.getName());
             axis.setText(function.getAxis().name());
             input.setText(function.getInput().name());
             value.setText(String.valueOf(function.getValue()));
@@ -166,7 +168,7 @@ public class TileCollisionComposite
         axisComposite.setLayout(new GridLayout(2, false));
 
         final Label axisLabel = new Label(axisComposite, SWT.NONE);
-        axisLabel.setText("Axis: ");
+        axisLabel.setText(Messages.TileCollisionComposite_Axis);
 
         axis = Tools.createCombo(axisComposite, CollisionRefential.values());
         axis.setLayoutData(new GridData(16, 16));
@@ -189,7 +191,7 @@ public class TileCollisionComposite
 
         final Label multiplicate = new Label(formula, SWT.NONE);
         multiplicate.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
-        multiplicate.setText("*");
+        multiplicate.setText(TileCollisionComposite.MULT);
 
         value = new Text(formula, SWT.SINGLE);
         value.setLayoutData(new GridData(32, 16));
@@ -197,7 +199,7 @@ public class TileCollisionComposite
 
         final Label add = new Label(formula, SWT.NONE);
         add.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
-        add.setText("+");
+        add.setText(TileCollisionComposite.ADD);
 
         offset = new Text(formula, SWT.SINGLE);
         offset.setLayoutData(new GridData(32, 16));
@@ -214,17 +216,17 @@ public class TileCollisionComposite
     private void createRangeEdition(Composite parent)
     {
         final Label range = new Label(parent, SWT.NONE);
-        range.setText("range");
+        range.setText(Messages.TileCollisionComposite_Range);
 
         final Label rangeMin = new Label(parent, SWT.NONE);
-        rangeMin.setText("min");
+        rangeMin.setText(Messages.TileCollisionComposite_Min);
 
         min = new Text(parent, SWT.SINGLE);
         min.setLayoutData(new GridData(32, 16));
         min.setTextLimit(4);
 
         final Label rangeMax = new Label(parent, SWT.NONE);
-        rangeMax.setText("max");
+        rangeMax.setText(Messages.TileCollisionComposite_Max);
 
         max = new Text(parent, SWT.SINGLE);
         max.setLayoutData(new GridData(32, 16));
@@ -242,7 +244,7 @@ public class TileCollisionComposite
         buttons.setLayout(new GridLayout(2, true));
 
         final Button apply = new Button(buttons, SWT.PUSH);
-        apply.setText("Apply");
+        apply.setText(Messages.TileCollisionComposite_Apply);
         apply.setImage(AbstractDialog.ICON_OK);
         apply.addSelectionListener(new SelectionAdapter()
         {
@@ -262,7 +264,7 @@ public class TileCollisionComposite
         });
 
         final Button delete = new Button(buttons, SWT.PUSH);
-        delete.setText("Delete");
+        delete.setText(Messages.TileCollisionComposite_Delete);
         delete.setImage(ObjectList.ICON_REMOVE);
         delete.addSelectionListener(new SelectionAdapter()
         {

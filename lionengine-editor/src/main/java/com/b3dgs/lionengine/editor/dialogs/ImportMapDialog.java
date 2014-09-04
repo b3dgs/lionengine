@@ -72,7 +72,9 @@ public class ImportMapDialog
                 Messages.ImportMapDialog_HeaderDesc, ImportMapDialog.ICON);
         createDialog();
 
+        // FIXME to be removed after tests
         onLevelRipLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
+        // FIXME to be removed after tests
         onPatternLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\tile\\swamp\\");
         finish.setEnabled(true);
         finish.forceFocus();

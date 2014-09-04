@@ -15,29 +15,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor;
 
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.workbench.IWorkbench;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.dialogs.AboutDialog;
-
 /**
- * About handler implementation.
+ * Exit handler implementation.
  * 
  * @author Pierre-Alexandre
  */
-public class AboutHandler
+public class ExitHandler
 {
     /**
      * Execute the handler.
      * 
+     * @param workbench The workbench reference.
      * @param shell The shell reference.
      */
     @Execute
-    public void execute(Shell shell)
+    public void execute(IWorkbench workbench, Shell shell)
     {
-        final AboutDialog aboutDialog = new AboutDialog(shell);
-        aboutDialog.open();
+        if (MessageDialog.openConfirm(shell, Messages.ExitHandler_Title, Messages.ExitHandler_Text))
+        {
+            workbench.close();
+        }
     }
 }

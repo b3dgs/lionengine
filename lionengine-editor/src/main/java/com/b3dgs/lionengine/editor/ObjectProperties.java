@@ -127,7 +127,7 @@ public abstract class ObjectProperties<T>
         final Group objectProperties = new Group(parent, SWT.NONE);
         objectProperties.setLayout(new GridLayout(1, false));
         objectProperties.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true));
-        objectProperties.setText("Properties");
+        objectProperties.setText(Messages.ObjectProperties_Properties);
 
         final Composite objectData = new Composite(objectProperties, SWT.NONE);
         objectData.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, true, true));
@@ -160,7 +160,7 @@ public abstract class ObjectProperties<T>
      */
     private void createConfirmButton(Composite parent)
     {
-        final Button confirm = Tools.createButton(parent, "Confirm", null);
+        final Button confirm = Tools.createButton(parent, Messages.ObjectProperties_Confirm, null);
         confirm.setImage(AbstractDialog.ICON_OK);
         confirm.addSelectionListener(new SelectionAdapter()
         {
@@ -188,7 +188,7 @@ public abstract class ObjectProperties<T>
      */
     private void createResetButton(Composite parent)
     {
-        final Button reset = Tools.createButton(parent, "Reset", null);
+        final Button reset = Tools.createButton(parent, Messages.ObjectProperties_Reset, null);
         reset.setImage(AbstractDialog.ICON_CANCEL);
         reset.addSelectionListener(new SelectionAdapter()
         {

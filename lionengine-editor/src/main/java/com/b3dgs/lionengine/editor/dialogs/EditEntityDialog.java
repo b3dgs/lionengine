@@ -180,8 +180,8 @@ public class EditEntityDialog
         final Composite actions = new Group(parent, SWT.NONE);
         actions.setLayout(new GridLayout(4, false));
 
-        createAssignButton(actions, "Assign surface", "image");
-        createAssignButton(actions, "Assign icon", "icon");
+        createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, "image");
+        createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, "icon");
 
         final Button editAnimations = Tools.createButton(actions, AnimationEditor.DIALOG_TITLE, null);
         editAnimations.setImage(AnimationEditor.DIALOG_ICON);

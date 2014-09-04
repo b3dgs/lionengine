@@ -15,32 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.project;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.workbench.IWorkbench;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.dialogs.NewProjectDialog;
+
 /**
- * Quit handler implementation.
+ * New project handler implementation.
  * 
  * @author Pierre-Alexandre
  */
-public class ExitHandler
+public class NewProjectHandler
 {
     /**
      * Execute the handler.
      * 
-     * @param workbench The workbench reference.
      * @param shell The shell reference.
+     * @param partService The part service reference.
      */
     @Execute
-    public void execute(IWorkbench workbench, Shell shell)
+    public void execute(Shell shell, EPartService partService)
     {
-        if (MessageDialog.openConfirm(shell, "Confirmation", "Do you want to exit?"))
+        final NewProjectDialog newProjectDialog = new NewProjectDialog(shell);
+        newProjectDialog.open();
+
+        final Project project = newProjectDialog.getProject();
+        if (project != null)
         {
-            workbench.close();
+            final ProjectsPart part = Tools.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+            ProjectsModel.INSTANCE.setRoot(project.getPath());
+            part.setInput(project, partService);
         }
     }
 }

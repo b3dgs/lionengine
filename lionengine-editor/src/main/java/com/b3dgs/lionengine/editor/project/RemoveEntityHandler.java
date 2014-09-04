@@ -15,33 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
- * Add an entity in the selected folder.
+ * Remove an entity in the selected folder.
  * 
  * @author Pierre-Alexandre
  */
-public class AddEntityHandler
+public class RemoveEntityHandler
 {
     /**
      * Execute the handler.
@@ -53,25 +44,23 @@ public class AddEntityHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, "Create entity", "Enter entity name", "entity", null);
-        final int code = inputDialog.open();
-        if (code == Window.OK)
+        final File file = selection.getFile();
+        if (file.isFile())
         {
-            final String name = inputDialog.getValue();
-            final File entity = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-            final File template = Tools.getFile(UtilFile.getPath("templates", "entity.template"));
-            try
+            if (file.delete())
             {
-                Files.copy(template.toPath(), entity.toPath());
+                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_INFORMATION);
+                messageBox.setMessage(Messages.RemoveEntity_Text + file);
+                messageBox.setText(Messages.RemoveEntity_Title);
+                messageBox.open();
+                // TODO refresh project resources
             }
-            catch (final FileAlreadyExistsException exception)
+            else
             {
-                MessageDialog.openError(parent, "Error", "File already exists !");
-                execute(partService, parent);
-            }
-            catch (final IOException exception)
-            {
-                throw new LionEngineException(exception);
+                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_ERROR);
+                messageBox.setMessage(Messages.RemoveEntity_Error_Text + file);
+                messageBox.setText(Messages.RemoveEntity_Error_Title);
+                messageBox.open();
             }
         }
     }

@@ -39,7 +39,7 @@ public class AnimationEditor
         extends AbstractEditor
 {
     /** Dialog title. */
-    public static final String DIALOG_TITLE = "Animations Editor";
+    public static final String DIALOG_TITLE = Messages.AnimationEditor_Title;
     /** Dialog icon. */
     public static final Image DIALOG_ICON = Tools.getIcon("animation-editor", "dialog.png");
 
@@ -71,7 +71,7 @@ public class AnimationEditor
         sheet.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final TabItem sheetTab = new TabItem(parent, SWT.NONE);
-        sheetTab.setText("Sheet");
+        sheetTab.setText(Messages.AnimationEditor_Sheet);
         sheetTab.setControl(sheet);
 
         final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
@@ -100,7 +100,7 @@ public class AnimationEditor
         renderer.addPaintListener(animationRenderer);
 
         final TabItem animatorTab = new TabItem(parent, SWT.NONE);
-        animatorTab.setText("Animator");
+        animatorTab.setText(Messages.AnimationEditor_Animator);
         animatorTab.setControl(content);
 
         return animationRenderer;
@@ -120,7 +120,7 @@ public class AnimationEditor
         final Group animGroup = new Group(content, SWT.NONE);
         animGroup.setLayout(new GridLayout(1, false));
         animGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        animGroup.setText("Animation");
+        animGroup.setText(Messages.AnimationEditor_Animation);
 
         final TabFolder animationTabs = new TabFolder(animGroup, SWT.TOP);
         final AnimationFrameSelector animationFrameSelector = createAnimationFrameSelector(animationTabs);

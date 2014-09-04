@@ -390,7 +390,7 @@ public final class WorldViewRenderer
         }
         else
         {
-            gc.drawString("No map implementation defined, select it from the project view !", 0, 0, true);
+            gc.drawString(Messages.WorldView_NoMapImpl, 0, 0, true);
         }
     }
 

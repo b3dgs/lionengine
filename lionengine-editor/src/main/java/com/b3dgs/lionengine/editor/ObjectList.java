@@ -48,6 +48,8 @@ public abstract class ObjectList<T>
     public static final Image ICON_REMOVE = Tools.getIcon("remove.png");
     /** Icon save. */
     public static final Image ICON_SAVE = Tools.getIcon("save.png");
+    /** Default new animation name. */
+    private static final String DEFAULT_NEW_ANIMATION_NAME = "newAnimation";
     /** Animation list. */
     Tree objectsTree;
     /** Selected data. */
@@ -106,7 +108,7 @@ public abstract class ObjectList<T>
         final GridLayout gridLayout = new GridLayout(1, false);
         gridLayout.verticalSpacing = 1;
         objects.setLayout(gridLayout);
-        objects.setText("List");
+        objects.setText(Messages.ObjectList_List);
 
         createToolBar(objects);
         createTree(objects);
@@ -245,8 +247,9 @@ public abstract class ObjectList<T>
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final InputDialog inputDialog = new InputDialog(toolbar.getShell(), "Animation name",
-                        "Enter the animation name", "newAnimation", null);
+                final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
+                        Messages.ObjectList_AddAnimation_Title, Messages.ObjectList_AddAnimation_Text,
+                        ObjectList.DEFAULT_NEW_ANIMATION_NAME, null);
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();

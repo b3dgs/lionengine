@@ -38,6 +38,8 @@ import com.b3dgs.lionengine.xsd.XsdLoader;
 public class EntitiesFolderTester
         extends PropertyTester
 {
+    /** Type file name. */
+    private static final String TYPE_FILE_NAME = "type.xml";
     /** Can edit category property. */
     private static final String PROPERTY_CATEGORY = "category";
     /** Can add entity property. */
@@ -104,7 +106,7 @@ public class EntitiesFolderTester
             final File parent = file.getParentFile();
             for (final File current : parent.listFiles())
             {
-                if (current.isFile() && "type.xml".equals(current.getName()))
+                if (current.isFile() && EntitiesFolderTester.TYPE_FILE_NAME.equals(current.getName()))
                 {
                     return true;
                 }

@@ -208,7 +208,7 @@ public class TileCollisionPart
         toolbar.setEnabled(false);
 
         addFormula = new ToolItem(toolbar, SWT.PUSH);
-        addFormula.setText("Add formula");
+        addFormula.setText(Messages.TileCollision_AddFormula);
         addFormula.setImage(ObjectList.ICON_ADD);
         addFormula.setEnabled(false);
         addFormula.addSelectionListener(new SelectionAdapter()
@@ -223,7 +223,7 @@ public class TileCollisionPart
         });
 
         saveCollisions = new ToolItem(toolbar, SWT.PUSH);
-        saveCollisions.setText("Save");
+        saveCollisions.setText(Messages.TileCollision_Save);
         saveCollisions.setImage(ObjectList.ICON_SAVE);
         saveCollisions.setEnabled(false);
         saveCollisions.addSelectionListener(new SelectionAdapter()

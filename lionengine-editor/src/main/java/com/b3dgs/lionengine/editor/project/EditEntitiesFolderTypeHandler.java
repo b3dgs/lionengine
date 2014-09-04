@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 
@@ -25,8 +25,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -73,8 +71,8 @@ public class EditEntitiesFolderTypeHandler
     private static void enterName(Shell parent, Media media, XmlNode root)
     {
         final XmlNode typeName = root.getChild("name");
-        final InputDialog inputDialog = new InputDialog(parent, "Entities folder naming",
-                "Enter the entities folder name", typeName.getText(), null);
+        final InputDialog inputDialog = new InputDialog(parent, Messages.EditEntitiesFolderType_Name_Title,
+                Messages.EditEntitiesFolderType_Name_Text, typeName.getText(), null);
         inputDialog.open();
         final String value = inputDialog.getValue();
         if (value != null)

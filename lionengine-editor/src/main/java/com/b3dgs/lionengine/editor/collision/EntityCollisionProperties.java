@@ -91,14 +91,14 @@ public class EntityCollisionProperties
         fields.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         fields.setLayout(new GridLayout(1, false));
 
-        offsetX = ObjectProperties.createTextField(fields, "Offset X:");
-        offsetY = ObjectProperties.createTextField(fields, "Offset Y:");
+        offsetX = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_OffsetX);
+        offsetY = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_OffsetY);
 
-        width = ObjectProperties.createTextField(fields, "Width:");
-        height = ObjectProperties.createTextField(fields, "Height:");
+        width = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_Width);
+        height = ObjectProperties.createTextField(fields, Messages.EntityCollisionProperties_Height);
 
         mirror = new Button(fields, SWT.CHECK | SWT.RIGHT_TO_LEFT);
-        mirror.setText("Mirror");
+        mirror.setText(Messages.EntityCollisionProperties_Mirror);
     }
 
     @Override

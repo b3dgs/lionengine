@@ -67,8 +67,25 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class Tools
 {
+    /** Templates extension. */
+    public static final String TEMPLATE_EXTENSION = "template";
+    /** Templates directory. */
+    public static final String TEMPLATES_DIR = "templates";
+    /** Template entity. */
+    public static final String TEMPLATE_ENTITY = "entity." + Tools.TEMPLATE_EXTENSION;
     /** Part error. */
     private static final String ERROR_PART = "Unable to find part: ";
+
+    /**
+     * Get a template file from it name.
+     * 
+     * @param template The template name.
+     * @return The template file.
+     */
+    public static File getTemplate(String template)
+    {
+        return Tools.getFile(UtilFile.getPath(Tools.TEMPLATES_DIR, template));
+    }
 
     /**
      * Get the icon from its name.

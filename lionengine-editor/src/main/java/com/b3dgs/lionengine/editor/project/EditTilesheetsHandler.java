@@ -15,46 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.handlers;
+package com.b3dgs.lionengine.editor.project;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.editor.project.ProjectsPart;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.dialogs.EditTilesheetsDialog;
 
 /**
- * Import project handler implementation.
+ * Edit a tile sheet in the selected folder.
  * 
  * @author Pierre-Alexandre
  */
-public class ImportProjectHandler
+public class EditTilesheetsHandler
 {
     /**
      * Execute the handler.
      * 
-     * @param shell The shell reference.
      * @param partService The part service reference.
+     * @param parent The shell parent.
      */
     @Execute
-    public void execute(Shell shell, EPartService partService)
+    public void execute(EPartService partService, Shell parent)
     {
-        final ImportProjectDialog importProjectDialog = new ImportProjectDialog(shell);
-        importProjectDialog.open();
-
-        final Project project = importProjectDialog.getProject();
-        if (project != null)
-        {
-            UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
-
-            final ProjectsPart part = Tools.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            ProjectsModel.INSTANCE.setRoot(project.getPath());
-            part.setInput(project, partService);
-        }
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final EditTilesheetsDialog editTilesheetsDialog = new EditTilesheetsDialog(parent, selection);
+        editTilesheetsDialog.open();
     }
 }
