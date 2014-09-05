@@ -16,9 +16,6 @@
 				<element ref="lionengine:size" minOccurs="0"
 					maxOccurs="1">
 				</element>
-				<element ref="lionengine:tileSize" minOccurs="0"
-					maxOccurs="1">
-				</element>
 			</choice>
 			<element ref="lionengine:collision" minOccurs="0"
 				maxOccurs="unbounded">
