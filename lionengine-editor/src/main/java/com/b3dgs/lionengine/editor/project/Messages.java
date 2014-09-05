@@ -28,7 +28,7 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = "com.b3dgs.lionengine.project.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.b3dgs.lionengine.editor.project.messages"; //$NON-NLS-1$
 
     /** Add entity title. */
     public static String AddEntity_Title;
