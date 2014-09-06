@@ -42,6 +42,8 @@ public abstract class NetworkChat
     private final ConcurrentLinkedQueue<String> messages;
     /** Current message. */
     private final StringBuilder message;
+    /** Message max queue. */
+    private int messageQueueMax;
     /** Writing message. */
     private String display;
     /** Validate key. */
@@ -60,6 +62,7 @@ public abstract class NetworkChat
         networkable = new NetworkableModel();
         message = new StringBuilder(16);
         messages = new ConcurrentLinkedQueue<>();
+        messageQueueMax = 4;
         display = "";
     }
 
@@ -116,6 +119,16 @@ public abstract class NetworkChat
     }
 
     /**
+     * Set the message queue max length.
+     * 
+     * @param max The maximum number of messages that can be kept.
+     */
+    public void setMessagesMax(int max)
+    {
+        messageQueueMax = max;
+    }
+
+    /**
      * Get the list of messages.
      * 
      * @return The list of messages.
@@ -143,7 +156,7 @@ public abstract class NetworkChat
     protected void addMessage(String message)
     {
         messages.add(message);
-        if (messages.size() > 4)
+        if (messages.size() > messageQueueMax)
         {
             messages.remove();
         }
