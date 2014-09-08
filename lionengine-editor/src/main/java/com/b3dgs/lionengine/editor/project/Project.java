@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 
 /**
  * Represents a project and its data.
@@ -53,6 +54,8 @@ public final class Project
     private static final String ERROR_CREATE_PROJECT = "Unable to create the project: ";
     /** Load class error. */
     private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
+    /** Create class path directory error. */
+    private static final String ERROR_CREATE_CLASSPATH_DIR = "Unable to create class path directory: ";
     /** Active project. */
     private static Project activeProject;
 
@@ -88,6 +91,8 @@ public final class Project
             project.setClasses(classes);
             project.setResources(resources);
 
+            Project.checkClassPath(project);
+
             Project.activeProject = project;
 
             return project;
@@ -95,6 +100,39 @@ public final class Project
         catch (final IOException exception)
         {
             throw new LionEngineException(exception, Project.ERROR_CREATE_PROJECT, projectPath.getPath());
+        }
+    }
+
+    /**
+     * Check the class path project, and extract from JAR if necessary.
+     * 
+     * @param project The project to check.
+     * @throws LionEngineException If error.
+     */
+    private static void checkClassPath(Project project) throws LionEngineException
+    {
+        final File classPath = project.getClassesPath();
+        if (classPath.isFile())
+        {
+            final String name = classPath.getName();
+            final String dirName = name.substring(0, name.lastIndexOf('.'));
+            final File dir = new File(classPath.getParentFile(), dirName);
+            if (!dir.exists())
+            {
+                if (!dir.mkdir())
+                {
+                    throw new LionEngineException(Project.ERROR_CREATE_CLASSPATH_DIR + dir.toString());
+                }
+            }
+            try
+            {
+                Tools.unzip(classPath.getAbsolutePath(), dir.getAbsolutePath());
+                project.setClasses(dir.getAbsolutePath().substring(project.getPath().getAbsolutePath().length()));
+            }
+            catch (final IOException exception)
+            {
+                throw new LionEngineException(exception);
+            }
         }
     }
 

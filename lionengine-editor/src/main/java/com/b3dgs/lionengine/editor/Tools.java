@@ -17,9 +17,14 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -75,6 +80,10 @@ public final class Tools
     public static final String TEMPLATE_ENTITY = "entity." + Tools.TEMPLATE_EXTENSION;
     /** Part error. */
     private static final String ERROR_PART = "Unable to find part: ";
+    /** Create directory error. */
+    private static final String CREATE_DIRECTORY_ERROR = "Unable to create the following directory: ";
+    /** Buffer size. */
+    private static final int BUFFER_SIZE = 4096;
 
     /**
      * Get a template file from it name.
@@ -331,6 +340,67 @@ public final class Tools
         final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
         final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
         return Geom.createPoint(x, y);
+    }
+
+    /**
+     * Extracts ZIP content to specified directory.
+     * 
+     * @param zipPath Path of the ZIP file.
+     * @param destinationPath Destination path to extract files.
+     * @throws IOException If an error occurred.
+     */
+    public static void unzip(String zipPath, String destinationPath) throws IOException
+    {
+        final File destDir = new File(destinationPath);
+        if (!destDir.exists())
+        {
+            if (!destDir.mkdir())
+            {
+                throw new IOException(Tools.CREATE_DIRECTORY_ERROR + destDir.toString());
+            }
+        }
+        try (final ZipInputStream zip = new ZipInputStream(new FileInputStream(zipPath));)
+        {
+            ZipEntry entry = zip.getNextEntry();
+            while (entry != null)
+            {
+                final String filePath = destinationPath + File.separator + entry.getName();
+                if (!entry.isDirectory())
+                {
+                    Tools.extractFile(zip, filePath);
+                }
+                else
+                {
+                    final File dir = new File(filePath);
+                    if (!dir.mkdir())
+                    {
+                        throw new IOException(Tools.CREATE_DIRECTORY_ERROR + dir.toString());
+                    }
+                }
+                zip.closeEntry();
+                entry = zip.getNextEntry();
+            }
+        }
+    }
+
+    /**
+     * Extracts a ZIP entry.
+     * 
+     * @param zip The ZIP stream.
+     * @param filePath The output file path.
+     * @throws IOException If an error occurred.
+     */
+    private static void extractFile(ZipInputStream zip, String filePath) throws IOException
+    {
+        try (final BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(filePath));)
+        {
+            final byte[] bytesIn = new byte[Tools.BUFFER_SIZE];
+            int read = 0;
+            while ((read = zip.read(bytesIn)) != -1)
+            {
+                output.write(bytesIn, 0, read);
+            }
+        }
     }
 
     /**

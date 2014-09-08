@@ -45,26 +45,6 @@ public final class Messages
     public static String AbstractProjectDialog_Location;
     /** Folders. */
     public static String AbstractProjectDialog_Folders;
-    /** New project dialog title. */
-    public static String NewProjectDialog_Title;
-    /** Title header. */
-    public static String NewProjectDialog_HeaderTitle;
-    /** Description header. */
-    public static String NewProjectDialog_HeaderDesc;
-    /** Generate base code. */
-    public static String NewProjectDialog_Generate;
-    /** Project package. */
-    public static String NewProjectDialog_Package;
-    /** Invalid package name. */
-    public static String NewProjectDialog_ErrorPackage;
-    /** Project already exists. */
-    public static String NewProjectDialog_ErrorProjectExists;
-    /** Classes folder existence. */
-    public static String NewProjectDialog_InfoClasses;
-    /** Resources folder existence. */
-    public static String NewProjectDialog_InfoResources;
-    /** Classes and resources folder existence. */
-    public static String NewProjectDialog_InfoBoth;
     /** Invalid import. */
     public static String ImportProjectDialog_InvalidImport;
     /** Import project dialog title. */
@@ -73,6 +53,12 @@ public final class Messages
     public static String ImportProjectDialog_HeaderTitle;
     /** Description header. */
     public static String ImportProjectDialog_HeaderDesc;
+    /** Classes folder existence. */
+    public static String ImportProjectDialog_InfoClasses;
+    /** Resources folder existence. */
+    public static String ImportProjectDialog_InfoResources;
+    /** Classes and resources folder existence. */
+    public static String ImportProjectDialog_InfoBoth;
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;
     /** Import map title header. */

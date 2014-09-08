@@ -19,10 +19,14 @@ package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
 
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
@@ -38,6 +42,13 @@ public class ImportProjectDialog
     /** Icon. */
     private static final Image ICON = Tools.getIcon("dialog", "import-project.png");
 
+    /** Already exists. */
+    private boolean hasProject;
+    /** Classes exist. */
+    private boolean hasClasses;
+    /** Resources exist. */
+    private boolean hasResources;
+
     /**
      * Constructor.
      * 
@@ -51,11 +62,95 @@ public class ImportProjectDialog
         projectNameText.setEditable(false);
         projectLocationText.setEditable(false);
         projectClassesText.setEditable(false);
+        projectClassesBrowseFolder.setEnabled(false);
         projectResourcesText.setEditable(false);
+        projectResourcesBrowse.setEnabled(false);
 
         // FIXME to be removed after tests
         onLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake");
+        checkClassesExistence();
+        checkResourcesExistence();
+        updateTipsLabel();
         finish.forceFocus();
+    }
+
+    /**
+     * Check if the sources folder already exists.
+     */
+    void checkClassesExistence()
+    {
+        final String text = projectClassesText.getText();
+        if (!text.isEmpty())
+        {
+            final File sourcePath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            hasClasses = sourcePath.exists();
+        }
+        else
+        {
+            hasClasses = false;
+        }
+    }
+
+    /**
+     * Check if the resources folder already exists.
+     */
+    void checkResourcesExistence()
+    {
+        final String text = projectResourcesText.getText();
+        if (!text.isEmpty())
+        {
+            final File resourcePath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            hasResources = resourcePath.exists();
+        }
+        else
+        {
+            hasResources = false;
+        }
+    }
+
+    /**
+     * Update the tips label.
+     */
+    void updateTipsLabel()
+    {
+        tipsLabel.setVisible(false);
+        boolean enabled = true;
+        if (!hasClasses && !hasResources)
+        {
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoBoth);
+            enabled = false;
+        }
+        else if (!hasClasses)
+        {
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoClasses);
+            enabled = false;
+        }
+        else if (!hasResources)
+        {
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoResources);
+            enabled = false;
+        }
+        finish.setEnabled(enabled);
+    }
+
+    /**
+     * Check if the project is not already existing.
+     */
+    private void checkProjectExistence()
+    {
+        final File projectPath = new File(UtilFile.getPath(projectLocationText.getText(), projectNameText.getText()));
+        final File projectProperties = new File(projectPath, Project.PROPERTIES_FILE);
+        hasProject = projectProperties.isFile();
+        if (hasProject)
+        {
+            finish.setEnabled(false);
+        }
+        else
+        {
+            finish.setEnabled(true);
+        }
+        checkClassesExistence();
+        checkResourcesExistence();
     }
 
     /*
@@ -68,14 +163,27 @@ public class ImportProjectDialog
         if (path != null)
         {
             projectLocationText.setText(path);
-            projectNameText.setText(new File(path).getName());
+            final File location = new File(path);
+            projectNameText.setText(location.getName());
+            checkProjectExistence();
+            updateTipsLabel();
             try
             {
-                final Project project = Project.create(new File(path));
-                projectClassesText.setText(project.getClasses());
-                projectResourcesText.setText(project.getResources());
-                tipsLabel.setVisible(false);
-                finish.setEnabled(true);
+                if (hasProject)
+                {
+                    final Project project = Project.create(location);
+                    projectClassesText.setText(project.getClasses());
+                    projectResourcesText.setText(project.getResources());
+                    tipsLabel.setVisible(false);
+                    finish.setEnabled(true);
+                }
+                else
+                {
+                    projectClassesText.setEditable(true);
+                    projectClassesBrowseFolder.setEnabled(true);
+                    projectResourcesText.setEditable(true);
+                    projectResourcesBrowse.setEnabled(true);
+                }
             }
             catch (final LionEngineException exception)
             {
@@ -87,14 +195,50 @@ public class ImportProjectDialog
     }
 
     @Override
+    protected void createProjectClassesArea(Composite content)
+    {
+        super.createProjectClassesArea(content);
+
+        projectClassesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkClassesExistence();
+                updateTipsLabel();
+            }
+        });
+    }
+
+    @Override
+    protected void createProjectResourcesArea(Composite content)
+    {
+        super.createProjectResourcesArea(content);
+
+        projectResourcesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkResourcesExistence();
+                updateTipsLabel();
+            }
+        });
+    }
+
+    @Override
     protected void onFinish()
     {
         final String name = projectNameText.getText();
         final File location = new File(projectLocationText.getText());
         final String classes = projectClassesText.getText();
         final String resources = projectResourcesText.getText();
-        final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, resources);
-        createProject.createProperties(location);
+
+        if (!hasProject)
+        {
+            final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, resources);
+            createProject.createProperties(location);
+        }
         project = Project.create(location);
     }
 }

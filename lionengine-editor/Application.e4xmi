@@ -62,7 +62,6 @@
     </children>
     <mainMenu xmi:id="_RgxMyccnEeO6QsMPtNpkHg" elementId="menu:org.eclipse.ui.main.menu">
       <children xsi:type="menu:Menu" xmi:id="_RgxMyscnEeO6QsMPtNpkHg" label="File">
-        <children xsi:type="menu:HandledMenuItem" xmi:id="_NTAaEM7uEeOpIazmfaA1Jw" label="%menu.new-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-new.png" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_hLbDoNHbEeOJV5_CmxbhRw" label="%menu.import-project" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/resources/project-import.png" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzMcnEeO6QsMPtNpkHg" label="Save" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/save_edit.png" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
         <children xsi:type="menu:HandledMenuItem" xmi:id="_RgxMzccnEeO6QsMPtNpkHg" label="%menu.exit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/dialog/exit.png" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
@@ -77,7 +76,6 @@
       </children>
     </trimBars>
   </children>
-  <handlers xmi:id="_ZID8gM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.handler.new-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.NewProjectHandler" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
   <handlers xmi:id="_1aj2cNHbEeOJV5_CmxbhRw" elementId="com.b3dgs.lionengine.editor.handler.import-project" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ImportProjectHandler" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
   <handlers xmi:id="_RgxMvccnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.quit" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.ExitHandler" command="_RgxMvMcnEeO6QsMPtNpkHg"/>
   <handlers xmi:id="_RgxMxMcnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.handler.saveCommand" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.SaveHandler" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
@@ -87,13 +85,11 @@
     <bindings xmi:id="_pFbQUNHcEeOJV5_CmxbhRw" keySequence="M1+I" command="_y_FSgNHbEeOJV5_CmxbhRw"/>
     <bindings xmi:id="_RgxMxccnEeO6QsMPtNpkHg" keySequence="M1+S" command="_RgxMw8cnEeO6QsMPtNpkHg"/>
     <bindings xmi:id="_RgxMyMcnEeO6QsMPtNpkHg" keySequence="M1+A" command="_RgxMxscnEeO6QsMPtNpkHg"/>
-    <bindings xmi:id="_o6xWANEMEeOtCYM_ydUyzA" keySequence="M1+N" command="_W_8ZcM7uEeOpIazmfaA1Jw"/>
   </bindingTables>
   <rootContext xmi:id="_RgxMuccnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialogAndWindow" name="In Dialog and Windows">
     <children xmi:id="_RgxMuscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.window" name="In Windows"/>
     <children xmi:id="_RgxMu8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.contexts.dialog" name="In Dialogs"/>
   </rootContext>
-  <commands xmi:id="_W_8ZcM7uEeOpIazmfaA1Jw" elementId="com.b3dgs.lionengine.editor.command.new-project" commandName="newProjectCommand"/>
   <commands xmi:id="_y_FSgNHbEeOJV5_CmxbhRw" elementId="com.b3dgs.lionengine.editor.command.import-project" commandName="importProjectCommand"/>
   <commands xmi:id="_RgxMvMcnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_RgxMw8cnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.save" commandName="saveCommand"/>
