@@ -1,20 +1,23 @@
-<div align="center"><a href="http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine"><img align=center src="http://www.b3dgs.com/v6/projects/lionengine/lionengine.jpg"/></a></div>
-
-<div align="right">
- <table><tr><td>
-  <h4 align="center">Summary</h4>
-  <div align="left">
-   <ul>
-    <li><a href="#presentation">Presentation</a></li>
-    <li><a href="#general-features">General features</a></li>
-    <li><a href="#download">Download</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#tutorials">Tutorials</a></li>
-   </ul>
-  </div>
- </td></tr></table>
-</div>
+<table>
+    <tr>
+        <td>
+            <a href="http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine"><img src="http://www.b3dgs.com/v6/projects/lionengine/lionengine.jpg"/></a>
+        </td>
+        <td>
+            <h4 align="center">Summary</h4>
+            <div align="left">
+                <ul>
+                    <li><a href="#presentation">Presentation</a></li>
+                    <li><a href="#general-features">General features</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#getting-started">Getting Started</a></li>
+                    <li><a href="#tutorials">Tutorials</a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</table>
 
 ## Presentation
 
@@ -28,7 +31,7 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
-Since the version __6.0.0__, it supports __Android 1.5__ *(API 3)*.
+Since the version __6__, it supports __Android 1.5__ *(API 3)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
@@ -39,8 +42,8 @@ Everything else is fully compatible and does not require any changes.
 >  * Extrapolation control (_machine speed independent_)
 >  * Advanced filtering capability (_Bilinear, HQ2X, HQ3X_)
 >  * Sequence control (_intro, menu, game part, credits..._)
->  * Easy resource management (_relative to resource directory, without caring of path separator_)
->  * Advanced image usage (_sprite, animated sprite, tile based sprite, image based font, parallax_)
+>  * Easy resource management (_relative to resource directory_)
+>  * Advanced image usage (_sprite, animation, tile, font, parallax_)
 >  * File I/O (_binary & XML reader & writer_)
 >  * Utility classes (_Random, Conversions, Maths, File..._)
 >  * Verbosity control
@@ -51,7 +54,7 @@ Everything else is fully compatible and does not require any changes.
 
 
 * #### __lionengine-core-swt__
->  * Engine implementation by using SWT 3.5.1
+>  * Engine implementation by using __SWT 3.5.1__
 
 
 * #### __lionengine-core-android__
@@ -67,7 +70,7 @@ Everything else is fully compatible and does not require any changes.
 >  * Entity base (_support external XML configuration, gravity and collision_)
 >  * Camera management (_view and movement_)
 >  * Cursor (_synced or not to system pointer_)
->  * General object factory system (_create instance of entity / effect / projectile from a simple enum_)
+>  * General object factory system (_create instance of entity / effect / projectile_)
 >  * Tile extractor (_generate tilesheet from a level rip image_)
 >  * Level rip converter (_generate a level data file from a tile sheet and a level rip image_)
   
@@ -79,13 +82,13 @@ Everything else is fully compatible and does not require any changes.
   
 
 * #### __lionengine-game-pathfinding__
->  * __A Star (A*)__ pathfinding implementation
+>  * __A Star (A star)__ pathfinding implementation
 >  * Compatible with game map system
 
 
 * #### __lionengine-game-strategy__
 >  * Extended map package (_adding support to pathfinding and fog of war_)
->  * Extended entity package (_supporting separated ability:_ **_attacker_**, **_extractor_**, **_mover_**, **_producer_** _..._)
+>  * Extended entity package (_attacker_, _extractor_, _mover_, _producer_ _..._)
 >  * Entity skill system (_representing its actions, accessible from icons_)
 >  * Control panel system (_map area for game action, HUD area for icons and more_)
 >  * Extended cursor (_can interact with entities on map and control panel_)
@@ -123,9 +126,9 @@ Steps to include the __LionEngine__ in your project:
 4. Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-    * __lionengine-core-awt__ _(required if you use **_AWT_** as graphic renderer, _target for computer)_
-	* __lionengine-core-swt__ _(required if you use **_SWT_** as graphic renderer, _target for computer)_
-    * __lionengine-core-android__ _(required if you use_ **_Android 1.5_**, _target for phones)_
+    * __lionengine-core-awt__ _(required if you use_ __AWT__ _as graphic renderer, target for computer)_
+	* __lionengine-core-swt__ _(required if you use_ __SWT__ _as graphic renderer, target for computer)_
+    * __lionengine-core-android__ _(required if you use_ __Android 1.5__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-game-platform__ _(specialized for platform games)_
       * __lionengine-game-pathfinding__ _(support for pathfinding)_
@@ -143,8 +146,8 @@ Once you installed the __LionEngine__ in your project, you may would like to kno
 
 #### Main class
 
-* Using **_lionengine-core-awt_** or **_lionengine-core-swt_**
-  ```java
+* Using __lionengine-core-awt__ or __lionengine-core-swt__
+```java
 public final class AppJava
 {
     public static void main(String[] args)
@@ -158,8 +161,8 @@ public final class AppJava
 }
 ```
 
-* Using **_lionengine-core-android_**
-  ```java
+* Using __lionengine-core-android__
+```java
 public final class AppAndroid
         extends Activity
 {
