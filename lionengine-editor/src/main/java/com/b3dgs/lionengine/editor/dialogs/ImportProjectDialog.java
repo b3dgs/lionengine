@@ -18,6 +18,10 @@
 package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -63,6 +67,7 @@ public class ImportProjectDialog
         projectLocationText.setEditable(false);
         projectClassesText.setEditable(false);
         projectClassesBrowseFolder.setEnabled(false);
+        projectClassesBrowseJar.setEnabled(false);
         projectResourcesText.setEditable(false);
         projectResourcesBrowse.setEnabled(false);
 
@@ -138,7 +143,7 @@ public class ImportProjectDialog
      */
     private void checkProjectExistence()
     {
-        final File projectPath = new File(UtilFile.getPath(projectLocationText.getText(), projectNameText.getText()));
+        final File projectPath = new File(projectLocationText.getText());
         final File projectProperties = new File(projectPath, Project.PROPERTIES_FILE);
         hasProject = projectProperties.isFile();
         if (hasProject)
@@ -151,6 +156,28 @@ public class ImportProjectDialog
         }
         checkClassesExistence();
         checkResourcesExistence();
+    }
+
+    /**
+     * Fill text fields with project properties.
+     * 
+     * @throws IOException If error when reading properties.
+     */
+    private void fillProjectProperties() throws IOException
+    {
+        try (InputStream inputStream = new FileInputStream(new File(projectLocationText.getText(),
+                Project.PROPERTIES_FILE));)
+        {
+            final Properties properties = new Properties();
+            properties.load(inputStream);
+
+            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
+            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
+            projectClassesText.setText(classes);
+            projectResourcesText.setText(resources);
+            tipsLabel.setVisible(false);
+            finish.setEnabled(true);
+        }
     }
 
     /*
@@ -171,21 +198,16 @@ public class ImportProjectDialog
             {
                 if (hasProject)
                 {
-                    final Project project = Project.create(location);
-                    projectClassesText.setText(project.getClasses());
-                    projectResourcesText.setText(project.getResources());
-                    tipsLabel.setVisible(false);
-                    finish.setEnabled(true);
+                    fillProjectProperties();
                 }
-                else
-                {
-                    projectClassesText.setEditable(true);
-                    projectClassesBrowseFolder.setEnabled(true);
-                    projectResourcesText.setEditable(true);
-                    projectResourcesBrowse.setEnabled(true);
-                }
+                projectClassesText.setEditable(true);
+                projectClassesBrowseFolder.setEnabled(true);
+                projectClassesBrowseJar.setEnabled(true);
+                projectResourcesText.setEditable(true);
+                projectResourcesBrowse.setEnabled(true);
             }
-            catch (final LionEngineException exception)
+            catch (final LionEngineException
+                         | IOException exception)
             {
                 setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportProjectDialog_InvalidImport);
                 tipsLabel.setVisible(true);

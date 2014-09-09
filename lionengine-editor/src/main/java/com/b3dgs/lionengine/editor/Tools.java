@@ -354,7 +354,7 @@ public final class Tools
         final File destDir = new File(destinationPath);
         if (!destDir.exists())
         {
-            if (!destDir.mkdir())
+            if (!destDir.exists() && !destDir.mkdir())
             {
                 throw new IOException(Tools.CREATE_DIRECTORY_ERROR + destDir.toString());
             }
@@ -372,7 +372,7 @@ public final class Tools
                 else
                 {
                     final File dir = new File(filePath);
-                    if (!dir.mkdir())
+                    if (!dir.exists() && !dir.mkdir())
                     {
                         throw new IOException(Tools.CREATE_DIRECTORY_ERROR + dir.toString());
                     }

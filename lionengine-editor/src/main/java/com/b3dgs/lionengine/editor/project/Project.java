@@ -92,7 +92,6 @@ public final class Project
             project.setResources(resources);
 
             Project.checkClassPath(project);
-
             Project.activeProject = project;
 
             return project;
