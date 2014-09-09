@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
@@ -43,6 +44,10 @@ import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 public class ImportProjectDialog
         extends AbstractProjectDialog
 {
+    /** Project imported verbose. */
+    private static final String VERBOSE_PROJECT_IMPORTED = "Project imported: ";
+    /** From verbose. */
+    private static final String VERBOSE_FROM = " from ";
     /** Icon. */
     private static final Image ICON = Tools.getIcon("dialog", "import-project.png");
 
@@ -262,5 +267,7 @@ public class ImportProjectDialog
             createProject.createProperties(location);
         }
         project = Project.create(location);
+        Verbose.info(ImportProjectDialog.VERBOSE_PROJECT_IMPORTED, name, ImportProjectDialog.VERBOSE_FROM,
+                location.getAbsolutePath());
     }
 }

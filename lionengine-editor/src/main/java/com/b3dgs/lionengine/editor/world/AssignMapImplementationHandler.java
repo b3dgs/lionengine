@@ -21,6 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -35,6 +36,9 @@ import com.b3dgs.lionengine.game.map.TileGame;
  */
 public class AssignMapImplementationHandler
 {
+    /** Map implementation assigned verbose. */
+    private static final String VERBOSE_MAP_IMPLEMENTATION = "Map implementation assigned with: ";
+
     /**
      * Execute the handler.
      * 
@@ -46,6 +50,7 @@ public class AssignMapImplementationHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final MapTile<? extends TileGame> map = Project.getActive().getInstance(MapTile.class, selection);
         WorldViewModel.INSTANCE.setMap(map);
+        Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());
 
         final WorldViewPart worldView = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
         worldView.setToolBarEnabled(true);

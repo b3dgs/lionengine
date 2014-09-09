@@ -32,6 +32,7 @@ import org.osgi.framework.wiring.BundleWiring;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 
@@ -56,6 +57,10 @@ public final class Project
     private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
     /** Create class path directory error. */
     private static final String ERROR_CREATE_CLASSPATH_DIR = "Unable to create class path directory: ";
+    /** Reading project properties verbose. */
+    private static final String VERBOSE_READ_PROJECT_PROPERTIES = "Reading project properties for: ";
+    /** Extract jar classes verbose. */
+    private static final String VERBOSE_EXTRACT_JAR = "Extract project classes from JAR at: ";
     /** Active project. */
     private static Project activeProject;
 
@@ -78,6 +83,7 @@ public final class Project
      */
     public static Project create(File projectPath) throws LionEngineException
     {
+        Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
         try (InputStream inputStream = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE));)
         {
             final Properties properties = new Properties();
@@ -125,7 +131,9 @@ public final class Project
             }
             try
             {
-                Tools.unzip(classPath.getAbsolutePath(), dir.getAbsolutePath());
+                final String classes = classPath.getAbsolutePath();
+                Verbose.info(Project.VERBOSE_EXTRACT_JAR, classes);
+                Tools.unzip(classes, dir.getAbsolutePath());
                 project.setClasses(dir.getAbsolutePath().substring(project.getPath().getAbsolutePath().length()));
             }
             catch (final IOException exception)

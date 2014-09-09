@@ -21,6 +21,7 @@ import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
@@ -34,6 +35,9 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  */
 public class AssignFactoryEntityImplementationHandler
 {
+    /** Factory implementation assigned verbose. */
+    private static final String VERBOSE_FACTORY_IMPLEMENTATION = "Factory implementation assigned with: ";
+
     /**
      * Execute the handler.
      * 
@@ -47,6 +51,9 @@ public class AssignFactoryEntityImplementationHandler
         factoryEntity.setClassLoader(Project.getActive().getClassLoader());
         factoryEntity.setPrepareEnabled(false);
         WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
+
+        Verbose.info(AssignFactoryEntityImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factoryEntity.getClass()
+                .getName());
 
         final FactoryEntityPart part = Tools.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);
         part.setFactoryEntity(factoryEntity);

@@ -32,8 +32,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -49,7 +51,11 @@ public class WorldViewPart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
     /** Import map icon. */
-    private static final Image ICON_IMPORT_MAP = Tools.getIcon("import-map.png");
+    private static final Image ICON_IMPORT_MAP = UtilEclipse.getIcon("import-map.png");
+    /** Import level verbose. */
+    private static final String VERBOSE_IMPORT_LEVEL = "Importing map from level rip: ";
+    /** Using tile sheet verbose. */
+    private static final String VERBOSE_USING_TILESHEETS = " using the following sheets: ";
 
     /** Part service. */
     @Inject
@@ -147,19 +153,34 @@ public class WorldViewPart
 
                 if (importMapDialog.isFound())
                 {
-                    final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
-                    map.load(importMapDialog.getLevelRipLocation(), importMapDialog.getPatternsLocation());
-                    map.createCollisionDraw();
-
-                    final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID,
-                            TileCollisionPart.class);
-                    part.setSaveEnabled(true);
-
-                    update();
-                    focus();
+                    final Media level = importMapDialog.getLevelRipLocation();
+                    final Media pattern = importMapDialog.getPatternsLocation();
+                    importMap(level, pattern);
                 }
             }
         });
         return toolBar;
+    }
+
+    /**
+     * Import map from its level rip and tile sheets.
+     * 
+     * @param level The level rip.
+     * @param pattern The tile sheets directory.
+     */
+    void importMap(Media level, Media pattern)
+    {
+        Verbose.info(WorldViewPart.VERBOSE_IMPORT_LEVEL, level.getPath(), WorldViewPart.VERBOSE_USING_TILESHEETS,
+                pattern.getPath());
+
+        final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+        map.load(level, pattern);
+        map.createCollisionDraw();
+
+        final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
+        part.setSaveEnabled(true);
+
+        update();
+        focus();
     }
 }
