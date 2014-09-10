@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectGenerator;
 
@@ -49,7 +49,7 @@ public class ImportProjectDialog
     /** From verbose. */
     private static final String VERBOSE_FROM = " from ";
     /** Icon. */
-    private static final Image ICON = Tools.getIcon("dialog", "import-project.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "import-project.png");
 
     /** Already exists. */
     private boolean hasProject;

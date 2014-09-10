@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
@@ -170,7 +170,7 @@ public class TileCollisionComposite
         final Label axisLabel = new Label(axisComposite, SWT.NONE);
         axisLabel.setText(Messages.TileCollisionComposite_Axis);
 
-        axis = Tools.createCombo(axisComposite, CollisionRefential.values());
+        axis = UtilSwt.createCombo(axisComposite, CollisionRefential.values());
         axis.setLayoutData(new GridData(16, 16));
         axis.setTextLimit(2);
     }
@@ -185,7 +185,7 @@ public class TileCollisionComposite
         final Composite formula = new Composite(parent, SWT.NONE);
         formula.setLayout(new GridLayout(5, false));
 
-        input = Tools.createCombo(formula, CollisionRefential.values());
+        input = UtilSwt.createCombo(formula, CollisionRefential.values());
         input.setLayoutData(new GridData(16, 16));
         input.setTextLimit(2);
 

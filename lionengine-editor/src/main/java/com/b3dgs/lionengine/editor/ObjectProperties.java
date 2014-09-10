@@ -160,7 +160,7 @@ public abstract class ObjectProperties<T>
      */
     private void createConfirmButton(Composite parent)
     {
-        final Button confirm = Tools.createButton(parent, Messages.ObjectProperties_Confirm, null);
+        final Button confirm = UtilSwt.createButton(parent, Messages.ObjectProperties_Confirm, null);
         confirm.setImage(AbstractDialog.ICON_OK);
         confirm.addSelectionListener(new SelectionAdapter()
         {
@@ -188,7 +188,7 @@ public abstract class ObjectProperties<T>
      */
     private void createResetButton(Composite parent)
     {
-        final Button reset = Tools.createButton(parent, Messages.ObjectProperties_Reset, null);
+        final Button reset = UtilSwt.createButton(parent, Messages.ObjectProperties_Reset, null);
         reset.setImage(AbstractDialog.ICON_CANCEL);
         reset.addSelectionListener(new SelectionAdapter()
         {

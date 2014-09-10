@@ -39,6 +39,8 @@ import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
 import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
 import com.b3dgs.lionengine.game.configurable.Configurable;
@@ -54,7 +56,7 @@ public class EditEntityDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Tools.getIcon("dialog", "edit-entity.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-entity.png");
 
     /** Entity media. */
     final Media entity;
@@ -183,7 +185,7 @@ public class EditEntityDialog
         createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, "image");
         createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, "icon");
 
-        final Button editAnimations = Tools.createButton(actions, AnimationEditor.DIALOG_TITLE, null);
+        final Button editAnimations = UtilSwt.createButton(actions, AnimationEditor.DIALOG_TITLE, null);
         editAnimations.setImage(AnimationEditor.DIALOG_ICON);
         editAnimations.addSelectionListener(new SelectionAdapter()
         {
@@ -195,7 +197,7 @@ public class EditEntityDialog
             }
         });
 
-        final Button editCollisions = Tools.createButton(actions, EntityCollisionEditor.DIALOG_TITLE, null);
+        final Button editCollisions = UtilSwt.createButton(actions, EntityCollisionEditor.DIALOG_TITLE, null);
         editCollisions.setImage(EntityCollisionEditor.DIALOG_ICON);
         editCollisions.addSelectionListener(new SelectionAdapter()
         {
@@ -217,7 +219,7 @@ public class EditEntityDialog
      */
     private void createAssignButton(final Composite parent, final String name, final String element)
     {
-        final Button assign = Tools.createButton(parent, name, null);
+        final Button assign = UtilSwt.createButton(parent, name, null);
         assign.addSelectionListener(new SelectionAdapter()
         {
             @Override

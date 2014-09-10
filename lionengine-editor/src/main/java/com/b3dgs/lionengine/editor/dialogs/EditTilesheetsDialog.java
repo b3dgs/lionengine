@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -45,7 +45,7 @@ public class EditTilesheetsDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Tools.getIcon("dialog", "edit-tilesheets.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "edit-tilesheets.png");
 
     /** Tile sheets media. */
     final Media tilesheets;

@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
@@ -55,7 +55,7 @@ public class AssignFactoryEntityImplementationHandler
         Verbose.info(AssignFactoryEntityImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factoryEntity.getClass()
                 .getName());
 
-        final FactoryEntityPart part = Tools.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);
+        final FactoryEntityPart part = UtilEclipse.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);
         part.setFactoryEntity(factoryEntity);
     }
 }

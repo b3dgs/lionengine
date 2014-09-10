@@ -36,7 +36,8 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
@@ -97,7 +98,7 @@ public class TileCollisionPart
         scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
         scrolledComposite.setLayout(new GridLayout(1, false));
         scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        Tools.installMouseWheelScroll(scrolledComposite);
+        UtilSwt.installMouseWheelScroll(scrolledComposite);
 
         content = new Composite(scrolledComposite, SWT.NONE);
         content.setLayout(new GridLayout(1, false));
@@ -174,7 +175,7 @@ public class TileCollisionPart
      */
     public void updateWorldView()
     {
-        final WorldViewPart part = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
         part.update();
     }
 

@@ -33,7 +33,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 
 /**
  * Represents the abstract dialog.
@@ -44,19 +45,19 @@ public abstract class AbstractDialog
         extends Dialog
 {
     /** OK icon. */
-    public static final Image ICON_OK = Tools.getIcon("dialog", "ok.png");
+    public static final Image ICON_OK = UtilEclipse.getIcon("dialog", "ok.png");
     /** Cancel icon. */
-    public static final Image ICON_CANCEL = Tools.getIcon("dialog", "cancel.png");
+    public static final Image ICON_CANCEL = UtilEclipse.getIcon("dialog", "cancel.png");
     /** Exit icon. */
-    public static final Image ICON_EXIT = Tools.getIcon("dialog", "exit.png");
+    public static final Image ICON_EXIT = UtilEclipse.getIcon("dialog", "exit.png");
     /** Browse icon. */
-    public static final Image ICON_BROWSE = Tools.getIcon("dialog", "browse.png");
+    public static final Image ICON_BROWSE = UtilEclipse.getIcon("dialog", "browse.png");
     /** Info icon. */
-    protected static final Image ICON_INFO = Tools.getIcon("dialog", "info.png");
+    protected static final Image ICON_INFO = UtilEclipse.getIcon("dialog", "info.png");
     /** Warning icon. */
-    protected static final Image ICON_WARNING = Tools.getIcon("dialog", "warning.png");
+    protected static final Image ICON_WARNING = UtilEclipse.getIcon("dialog", "warning.png");
     /** Error icon. */
-    protected static final Image ICON_ERROR = Tools.getIcon("dialog", "error.png");
+    protected static final Image ICON_ERROR = UtilEclipse.getIcon("dialog", "error.png");
     /** Maximum characters input. */
     protected static final int MAX_CHAR = 64;
 
@@ -117,7 +118,7 @@ public abstract class AbstractDialog
     public void open()
     {
         dialog.pack(true);
-        Tools.center(dialog);
+        UtilSwt.center(dialog);
         dialog.open();
 
         final Display display = dialog.getDisplay();
@@ -218,7 +219,7 @@ public abstract class AbstractDialog
         buttonArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         buttonArea.setLayout(new GridLayout(2, true));
 
-        finish = Tools.createButton(buttonArea, Messages.AbstractDialog_Finish, null);
+        finish = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Finish, null);
         finish.setImage(AbstractDialog.ICON_OK);
         finish.setEnabled(false);
         finish.addSelectionListener(new SelectionAdapter()
@@ -231,7 +232,7 @@ public abstract class AbstractDialog
             }
         });
 
-        final Button cancel = Tools.createButton(buttonArea, Messages.AbstractDialog_Cancel, null);
+        final Button cancel = UtilSwt.createButton(buttonArea, Messages.AbstractDialog_Cancel, null);
         cancel.setImage(AbstractDialog.ICON_CANCEL);
         cancel.addSelectionListener(new SelectionAdapter()
         {

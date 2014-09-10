@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 
 /**
  * File visitor implementation for project content analysis.
@@ -45,9 +45,9 @@ public final class ProjectFileVisitor
         extends SimpleFileVisitor<Path>
 {
     /** Project icon. */
-    private static final Image ICON_MAIN = Tools.getIcon("resources", "project.png");
+    private static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
     /** Folder icon. */
-    private static final Image ICON_FOLDER = Tools.getIcon("resources", "folder.png");
+    private static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
 
     /**
      * Get the media from the path.

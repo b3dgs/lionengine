@@ -35,6 +35,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.EntityGame;
@@ -436,7 +437,7 @@ public final class WorldViewRenderer
 
                 if (selectedTile != lastSelectedTile)
                 {
-                    final TileCollisionPart part = Tools.getPart(partService, TileCollisionPart.ID,
+                    final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID,
                             TileCollisionPart.class);
                     part.setSelectedTile(selectedTile);
                 }

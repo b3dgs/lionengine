@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
@@ -52,12 +52,12 @@ public class AssignMapImplementationHandler
         WorldViewModel.INSTANCE.setMap(map);
         Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());
 
-        final WorldViewPart worldView = Tools.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        final WorldViewPart worldView = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
         worldView.setToolBarEnabled(true);
         worldView.addListeners();
         worldView.update();
 
-        final TileCollisionPart tileCollision = Tools.getPart(partService, TileCollisionPart.ID,
+        final TileCollisionPart tileCollision = UtilEclipse.getPart(partService, TileCollisionPart.ID,
                 TileCollisionPart.class);
         tileCollision.setEnabled(true);
     }

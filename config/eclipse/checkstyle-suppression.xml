@@ -7,4 +7,6 @@
 	<suppress checks="[a-zA-Z0-9]*" files="BuildConfig.java"/>
 	<suppress checks="[a-zA-Z0-9]*" files="[\\/]test[\\/]"/>
 	<suppress checks="[a-zA-Z0-9]*" files="[\\/]resources[\\/]"/>
+	<suppress checks="[a-zA-Z0-9]*" files="messages.properties"/>
+	<suppress checks="StaticVariableName" files="Messages.java"/>
 </suppressions>

@@ -193,10 +193,10 @@
     <property name="message" value="Line has trailing spaces."/>
   </module>
   <module name="SuppressionFilter">
-    <property name="file" value="C:\Users\Pierre-Alexandre\git\lionengine\config\eclipse\checkstyle-suppression.xml"/>
+    <property name="file" value="C:\Users\DjThunder\git\lionengine\config\eclipse\checkstyle-suppression.xml"/>
   </module>
   <module name="Header">
-    <property name="headerFile" value="C:\Users\Pierre-Alexandre\git\lionengine\config\eclipse\jautodoc_header.txt"/>
+    <property name="headerFile" value="C:\Users\DjThunder\git\lionengine\config\eclipse\jautodoc_header.txt"/>
   </module>
   <module name="StrictDuplicateCode">
     <property name="severity" value="ignore"/>

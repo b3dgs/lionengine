@@ -26,26 +26,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Monitor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
-
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
@@ -78,8 +58,6 @@ public final class Tools
     public static final String TEMPLATES_DIR = "templates";
     /** Template entity. */
     public static final String TEMPLATE_ENTITY = "entity." + Tools.TEMPLATE_EXTENSION;
-    /** Part error. */
-    private static final String ERROR_PART = "Unable to find part: ";
     /** Create directory error. */
     private static final String CREATE_DIRECTORY_ERROR = "Unable to create the following directory: ";
     /** Buffer size. */
@@ -93,82 +71,7 @@ public final class Tools
      */
     public static File getTemplate(String template)
     {
-        return Tools.getFile(UtilFile.getPath(Tools.TEMPLATES_DIR, template));
-    }
-
-    /**
-     * Get the icon from its name.
-     * 
-     * @param icon The icon name.
-     * @return The icon instance.
-     */
-    public static Image getIcon(String icon)
-    {
-        try
-        {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", icon))));
-            return image.createImage();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Get the icon from its name.
-     * 
-     * @param root The icon root.
-     * @param icon The icon name.
-     * @return The icon instance.
-     */
-    public static Image getIcon(String root, String icon)
-    {
-        try
-        {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", root, icon))));
-            return image.createImage();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
-    }
-
-    /**
-     * Center the shell on screen.
-     * 
-     * @param shell The shell to center.
-     */
-    public static void center(Shell shell)
-    {
-        final Monitor primary = shell.getMonitor();
-        final Rectangle bounds = primary.getBounds();
-        final Rectangle rect = shell.getBounds();
-        final int x = bounds.x + (bounds.width - rect.width) / 2;
-        final int y = bounds.y + (bounds.height - rect.height) / 2;
-        shell.setLocation(x, y);
-    }
-
-    /**
-     * Get the file from its name, relative to the plugin path.
-     * 
-     * @param file The file name.
-     * @return The file instance.
-     */
-    public static File getFile(String file)
-    {
-        try
-        {
-            final File root = FileLocator.getBundleFile(Activator.getContext().getBundle());
-            return new File(root, file);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return UtilEclipse.getFile(UtilFile.getPath(Tools.TEMPLATES_DIR, template));
     }
 
     /**
@@ -221,106 +124,6 @@ public final class Tools
         final File typeFile = new File(path, "type.xml");
         final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));
         return typeNode.getChild("name").getText();
-    }
-
-    /**
-     * Create a button with a text and an icon at a fixed width.
-     * 
-     * @param parent The composite parent.
-     * @param name The button name.
-     * @param icon The button icon.
-     * @return The button instance.
-     */
-    public static Button createButton(Composite parent, String name, Image icon)
-    {
-        final Button button = new Button(parent, SWT.PUSH);
-        button.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-        if (name != null)
-        {
-            button.setText(name);
-        }
-        button.setImage(icon);
-        return button;
-    }
-
-    /**
-     * Get the selected item number from the tree.
-     * 
-     * @param tree The tree reference.
-     * @param item The item to search.
-     * @return The item index.
-     */
-    public static int getItemIndex(Tree tree, TreeItem item)
-    {
-        int i = 0;
-        for (final TreeItem current : tree.getItems())
-        {
-            if (current.equals(item))
-            {
-                break;
-            }
-            i++;
-        }
-        return i;
-    }
-
-    /**
-     * Get a part from its id.
-     * 
-     * @param <C> The class type.
-     * @param partService The part service.
-     * @param id The part id.
-     * @param clazz The part class type.
-     * @return The part class instance.
-     * @throws LionEngineException If part can not be found.
-     */
-    public static <C> C getPart(EPartService partService, String id, Class<C> clazz) throws LionEngineException
-    {
-        final MPart part = partService.findPart(id);
-        if (part != null)
-        {
-            partService.bringToTop(part);
-            final Object object = part.getObject();
-            if (object != null && object.getClass().isAssignableFrom(clazz))
-            {
-                return clazz.cast(part.getObject());
-            }
-        }
-        throw new LionEngineException(Tools.ERROR_PART, id);
-    }
-
-    /**
-     * Create a combo from an enumeration.
-     * 
-     * @param parent The parent reference.
-     * @param values The enumeration values.
-     * @return The combo instance.
-     */
-    public static Combo createCombo(Composite parent, Enum<?>[] values)
-    {
-        final String[] items = new String[values.length];
-        for (int i = 0; i < values.length; i++)
-        {
-            items[i] = values[i].name();
-        }
-        final Combo combo = new Combo(parent, SWT.READ_ONLY);
-        combo.setItems(items);
-        return combo;
-    }
-
-    /**
-     * Install the mouse wheel scroll.
-     * 
-     * @param scrollable The scrollable component.
-     */
-    public static void installMouseWheelScroll(final ScrolledComposite scrollable)
-    {
-        final MouseWheelListener scroller = Tools.createMouseWheelScroller(scrollable);
-        if (scrollable.getParent() != null)
-        {
-            scrollable.getParent().addMouseWheelListener(scroller);
-        }
-        Tools.installMouseWheelScrollRecursively(scroller, scrollable);
     }
 
     /**
@@ -399,44 +202,6 @@ public final class Tools
             while ((read = zip.read(bytesIn)) != -1)
             {
                 output.write(bytesIn, 0, read);
-            }
-        }
-    }
-
-    /**
-     * Create the mouse wheel scroller.
-     * 
-     * @param scrollable The scrollable component.
-     * @return The scroller instance.
-     */
-    private static MouseWheelListener createMouseWheelScroller(final ScrolledComposite scrollable)
-    {
-        return new MouseWheelListener()
-        {
-            @Override
-            public void mouseScrolled(MouseEvent e)
-            {
-                final org.eclipse.swt.graphics.Point currentScroll = scrollable.getOrigin();
-                scrollable.setOrigin(currentScroll.x, currentScroll.y - e.count * 5);
-            }
-        };
-    }
-
-    /**
-     * Install the mouse wheel scroller for each sub component.
-     * 
-     * @param scroller The scroller listener.
-     * @param control The control reference.
-     */
-    private static void installMouseWheelScrollRecursively(MouseWheelListener scroller, Control control)
-    {
-        control.addMouseWheelListener(scroller);
-        if (control instanceof Composite)
-        {
-            final Composite comp = (Composite) control;
-            for (final Control child : comp.getChildren())
-            {
-                Tools.installMouseWheelScrollRecursively(scroller, child);
             }
         }
     }

@@ -32,7 +32,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 
 /**
  * Represents the about dialog of the application.
@@ -42,7 +43,7 @@ import com.b3dgs.lionengine.editor.Tools;
 public class AboutDialog
 {
     /** About icon. */
-    private static final Image ICON_ABOUT = Tools.getIcon("about.png");
+    private static final Image ICON_ABOUT = UtilEclipse.getIcon("about.png");
 
     /**
      * Create the dialog content.
@@ -104,7 +105,7 @@ public class AboutDialog
      */
     private static void createBottom(final Shell dialog, Composite bottom)
     {
-        final Button okButton = Tools.createButton(bottom, "OK", null);
+        final Button okButton = UtilSwt.createButton(bottom, "OK", null);
         final GridData data = new GridData();
         data.widthHint = 72;
         okButton.setLayoutData(data);
@@ -140,7 +141,7 @@ public class AboutDialog
         AboutDialog.create(dialog);
 
         dialog.pack();
-        Tools.center(dialog);
+        UtilSwt.center(dialog);
     }
 
     /**

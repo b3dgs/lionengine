@@ -43,11 +43,11 @@ import org.eclipse.swt.widgets.TreeItem;
 public abstract class ObjectList<T>
 {
     /** Icon add. */
-    public static final Image ICON_ADD = Tools.getIcon("add.png");
+    public static final Image ICON_ADD = UtilEclipse.getIcon("add.png");
     /** Icon remove. */
-    public static final Image ICON_REMOVE = Tools.getIcon("remove.png");
+    public static final Image ICON_REMOVE = UtilEclipse.getIcon("remove.png");
     /** Icon save. */
-    public static final Image ICON_SAVE = Tools.getIcon("save.png");
+    public static final Image ICON_SAVE = UtilEclipse.getIcon("save.png");
     /** Default new animation name. */
     private static final String DEFAULT_NEW_ANIMATION_NAME = "newAnimation";
     /** Animation list. */
@@ -151,7 +151,7 @@ public abstract class ObjectList<T>
         items = objectsTree.getSelection();
         if (items.length > 0)
         {
-            final int index = Tools.getItemIndex(objectsTree, items[0]) + side;
+            final int index = UtilSwt.getItemIndex(objectsTree, items[0]) + side;
             final int next = Math.max(0, Math.min(index, objectsTree.getItemCount() - 1));
             final TreeItem previous = objectsTree.getItem(next);
             objectsTree.setSelection(previous);

@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
 
 /**
@@ -63,25 +63,25 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
     /** File icon. */
-    private static final Image ICON_FILE = Tools.getIcon("resources", "file.png");
+    private static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
     /** Sound file icon. */
-    private static final Image ICON_SOUND = Tools.getIcon("resources", "sound.png");
+    private static final Image ICON_SOUND = UtilEclipse.getIcon("resources", "sound.png");
     /** Music file icon. */
-    private static final Image ICON_MUSIC = Tools.getIcon("resources", "music.png");
+    private static final Image ICON_MUSIC = UtilEclipse.getIcon("resources", "music.png");
     /** Image file icon. */
-    private static final Image ICON_IMAGE = Tools.getIcon("resources", "image.png");
+    private static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
     /** Data file icon. */
-    private static final Image ICON_DATA = Tools.getIcon("resources", "data.png");
+    private static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
     /** Level file icon. */
-    private static final Image ICON_LEVEL = Tools.getIcon("resources", "level.png");
+    private static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
     /** Map file icon. */
-    private static final Image ICON_MAP = Tools.getIcon("resources", "assign-map-impl.png");
+    private static final Image ICON_MAP = UtilEclipse.getIcon("resources", "assign-map-impl.png");
     /** Factory entity file icon. */
-    private static final Image ICON_FACTORY_ENTITTY = Tools.getIcon("resources", "assign-factory-entity-impl.png");
+    private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "assign-factory-entity-impl.png");
     /** Entity file icon. */
-    private static final Image ICON_ENTITTY = Tools.getIcon("resources", "entity.png");
+    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
     /** Class file icon. */
-    private static final Image ICON_CLASS = Tools.getIcon("resources", "class.png");
+    private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
 
     /**
      * Get the file icon.
@@ -123,7 +123,7 @@ public class ProjectsPart
             }
             else if (Property.FACTORY_ENTITY_IMPL.is(file))
             {
-                return ProjectsPart.ICON_FACTORY_ENTITTY;
+                return ProjectsPart.ICON_FACTORY_ENTITY;
             }
             return ProjectsPart.ICON_CLASS;
         }
@@ -232,7 +232,7 @@ public class ProjectsPart
                         item.setText(child.getFile().getName());
                     }
 
-                    if (icon == ProjectsPart.ICON_FACTORY_ENTITTY || icon == ProjectsPart.ICON_MAP)
+                    if (icon == ProjectsPart.ICON_FACTORY_ENTITY || icon == ProjectsPart.ICON_MAP)
                     {
                         quicks.add(item);
                     }
@@ -240,7 +240,7 @@ public class ProjectsPart
             }
             tree.layout();
 
-            final QuickAccessPart part = Tools.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
+            final QuickAccessPart part = UtilEclipse.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
             part.setInput(quicks);
         }
         catch (final IOException exception)

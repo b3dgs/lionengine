@@ -22,7 +22,7 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
 
 /**
@@ -49,7 +49,7 @@ public class ImportProjectHandler
         {
             UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
 
-            final ProjectsPart part = Tools.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
             ProjectsModel.INSTANCE.setRoot(project.getPath());
             part.setInput(project, partService);
         }

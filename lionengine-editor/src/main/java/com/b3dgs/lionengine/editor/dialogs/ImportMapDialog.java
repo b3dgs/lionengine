@@ -35,7 +35,8 @@ import org.eclipse.swt.widgets.Text;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.game.map.MapTile;
 
@@ -48,7 +49,7 @@ public class ImportMapDialog
         extends AbstractDialog
 {
     /** Icon. */
-    private static final Image ICON = Tools.getIcon("dialog", "import-map.png");
+    private static final Image ICON = UtilEclipse.getIcon("dialog", "import-map.png");
 
     /** Level rip location. */
     Text levelRipLocationText;
@@ -170,7 +171,7 @@ public class ImportMapDialog
         levelRipLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         levelRipLocationText.setEditable(false);
 
-        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilSwt.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {
@@ -215,7 +216,7 @@ public class ImportMapDialog
         patternsLocationText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         patternsLocationText.setEditable(false);
 
-        final Button browse = Tools.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
+        final Button browse = UtilSwt.createButton(levelRipArea, Messages.AbstractDialog_Browse, null);
         browse.setImage(AbstractDialog.ICON_BROWSE);
         browse.addSelectionListener(new SelectionAdapter()
         {

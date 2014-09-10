@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilSwt;
 
 /**
  * Abstract editor.
@@ -70,7 +70,7 @@ public abstract class AbstractEditor
         createBottom(shell);
         shell.pack(true);
         shell.layout(true, true);
-        Tools.center(shell);
+        UtilSwt.center(shell);
         shell.setVisible(true);
     }
 
@@ -85,7 +85,7 @@ public abstract class AbstractEditor
         bottom.setLayout(new GridLayout(1, false));
         bottom.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false));
 
-        final Button exit = Tools.createButton(bottom, "Exit", null);
+        final Button exit = UtilSwt.createButton(bottom, "Exit", null);
         exit.setImage(AbstractDialog.ICON_EXIT);
         exit.addSelectionListener(new SelectionAdapter()
         {

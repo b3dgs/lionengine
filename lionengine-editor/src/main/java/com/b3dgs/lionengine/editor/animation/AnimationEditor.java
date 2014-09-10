@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
-import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 
@@ -41,7 +41,7 @@ public class AnimationEditor
     /** Dialog title. */
     public static final String DIALOG_TITLE = Messages.AnimationEditor_Title;
     /** Dialog icon. */
-    public static final Image DIALOG_ICON = Tools.getIcon("animation-editor", "dialog.png");
+    public static final Image DIALOG_ICON = UtilEclipse.getIcon("animation-editor", "dialog.png");
 
     /** Configurable reference. */
     private final Configurable configurable;
