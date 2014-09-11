@@ -114,7 +114,7 @@ public enum Property
      */
     private boolean isExtension(Media file)
     {
-        final String extension = UtilFile.getExtension(file.getPath());
+        final String extension = UtilFile.getExtension(file.getFile());
         for (final String value : extensions)
         {
             if (extension.equals(value))

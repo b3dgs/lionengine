@@ -17,16 +17,6 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
@@ -37,7 +27,6 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -45,7 +34,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
@@ -62,76 +50,6 @@ public class ProjectsPart
     public static final String ID = Activator.PLUGIN_ID + ".part.projects";
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
-    /** File icon. */
-    private static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
-    /** Sound file icon. */
-    private static final Image ICON_SOUND = UtilEclipse.getIcon("resources", "sound.png");
-    /** Music file icon. */
-    private static final Image ICON_MUSIC = UtilEclipse.getIcon("resources", "music.png");
-    /** Image file icon. */
-    private static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
-    /** Data file icon. */
-    private static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
-    /** Level file icon. */
-    private static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
-    /** Map file icon. */
-    private static final Image ICON_MAP = UtilEclipse.getIcon("resources", "assign-map-impl.png");
-    /** Factory entity file icon. */
-    private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "assign-factory-entity-impl.png");
-    /** Entity file icon. */
-    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
-    /** Class file icon. */
-    private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
-
-    /**
-     * Get the file icon.
-     * 
-     * @param file The child file.
-     * @return The icon image associated to the file type.
-     */
-    private static Image getFileIcon(Media file)
-    {
-        if (Property.SOUND.is(file))
-        {
-            return ProjectsPart.ICON_SOUND;
-        }
-        else if (Property.MUSIC.is(file))
-        {
-            return ProjectsPart.ICON_MUSIC;
-        }
-        else if (Property.IMAGE.is(file))
-        {
-            return ProjectsPart.ICON_IMAGE;
-        }
-        else if (Property.LEVEL.is(file))
-        {
-            return ProjectsPart.ICON_LEVEL;
-        }
-        else if (Property.DATA.is(file))
-        {
-            if (EntitiesFolderTester.isEntityFile(file.getFile()))
-            {
-                return ProjectsPart.ICON_ENTITTY;
-            }
-            return ProjectsPart.ICON_DATA;
-        }
-        else if (Property.CLASS.is(file))
-        {
-            if (Property.MAP_IMPL.is(file))
-            {
-                return ProjectsPart.ICON_MAP;
-            }
-            else if (Property.FACTORY_ENTITY_IMPL.is(file))
-            {
-                return ProjectsPart.ICON_FACTORY_ENTITY;
-            }
-            return ProjectsPart.ICON_CLASS;
-        }
-        else
-        {
-            return ProjectsPart.ICON_FILE;
-        }
-    }
 
     /** Tree viewer. */
     Tree tree;
@@ -181,24 +99,6 @@ public class ProjectsPart
     }
 
     /**
-     * Get the project file children tree.
-     * 
-     * @param project The project reference.
-     * @return The children list.
-     * @throws IOException If error while reading project children.
-     */
-    private Map<TreeItem, List<Media>> getChildren(Project project) throws IOException
-    {
-        final File projectPath = project.getPath();
-        final Path path = FileSystems.getDefault().getPath(projectPath.getAbsolutePath());
-
-        final ProjectFileVisitor fileVisitor = new ProjectFileVisitor(tree, project);
-        Files.walkFileTree(path, fileVisitor);
-
-        return fileVisitor.getChildren();
-    }
-
-    /**
      * Set the project main folders.
      * 
      * @param project The project reference.
@@ -207,46 +107,15 @@ public class ProjectsPart
      */
     public void setInput(Project project, EPartService partService) throws LionEngineException
     {
-        try
-        {
-            tree.removeAll();
-            final Map<TreeItem, List<Media>> children = getChildren(project);
-            final List<TreeItem> quicks = new ArrayList<>();
-            for (final Entry<TreeItem, List<Media>> parent : children.entrySet())
-            {
-                for (final Media child : parent.getValue())
-                {
-                    final TreeItem item = new TreeItem(parent.getKey(), SWT.NONE);
-                    final String childName = child.getFile().getName();
-                    final Image icon = ProjectsPart.getFileIcon(child);
-                    item.setImage(icon);
-                    item.setData(child);
+        tree.removeAll();
 
-                    if (Property.CLASS.is(child))
-                    {
-                        final int beforeExtension = childName.indexOf(UtilFile.getExtension(childName)) - 1;
-                        item.setText(child.getFile().getName().substring(0, beforeExtension));
-                    }
-                    else
-                    {
-                        item.setText(child.getFile().getName());
-                    }
+        final ProjectTreeCreator projectTreeCreator = new ProjectTreeCreator(project);
+        projectTreeCreator.start(tree);
 
-                    if (icon == ProjectsPart.ICON_FACTORY_ENTITY || icon == ProjectsPart.ICON_MAP)
-                    {
-                        quicks.add(item);
-                    }
-                }
-            }
-            tree.layout();
+        tree.layout();
 
-            final QuickAccessPart part = UtilEclipse.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
-            part.setInput(quicks);
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        final QuickAccessPart part = UtilEclipse.getPart(partService, QuickAccessPart.ID, QuickAccessPart.class);
+        part.setInput(projectTreeCreator.getQuicks());
     }
 
     /**
