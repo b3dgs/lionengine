@@ -25,11 +25,14 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -52,7 +55,7 @@ public class ProjectsPart
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
 
     /** Tree viewer. */
-    Tree tree;
+    private Tree tree;
 
     /**
      * Create the composite.
@@ -70,20 +73,20 @@ public class ProjectsPart
 
         tree = new Tree(parent, SWT.NONE);
         tree.setLayoutData(new GridData(GridData.FILL_BOTH));
+        tree.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseDoubleClick(MouseEvent mouseEvent)
+            {
+                expandOnDoubleClick();
+            }
+        });
         tree.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final Object data = tree.getSelection()[0];
-                if (data instanceof TreeItem)
-                {
-                    final TreeItem item = (TreeItem) data;
-                    if (item.getData() instanceof Media)
-                    {
-                        ProjectsModel.INSTANCE.setSelection((Media) item.getData());
-                    }
-                }
+                updateSelection();
             }
         });
         tree.addMenuDetectListener(new MenuDetectListener()
@@ -91,8 +94,7 @@ public class ProjectsPart
             @Override
             public void menuDetected(MenuDetectEvent menuDetectEvent)
             {
-                tree.getMenu().setVisible(false);
-                tree.update();
+                updateMenu();
             }
         });
         menuService.registerContextMenu(tree, ProjectsPart.MENU_ID);
@@ -125,5 +127,54 @@ public class ProjectsPart
     public void setFocus()
     {
         tree.setFocus();
+    }
+
+    /**
+     * Auto expand selected item on double click.
+     */
+    void expandOnDoubleClick()
+    {
+        if (!tree.isDisposed())
+        {
+            for (final TreeItem item : tree.getSelection())
+            {
+                item.setExpanded(!item.getExpanded());
+            }
+        }
+    }
+
+    /**
+     * Update tree selection by storing it.
+     */
+    void updateSelection()
+    {
+        if (!tree.isDisposed())
+        {
+            final Object data = tree.getSelection()[0];
+            if (data instanceof TreeItem)
+            {
+                final TreeItem item = (TreeItem) data;
+                if (item.getData() instanceof Media)
+                {
+                    ProjectsModel.INSTANCE.setSelection((Media) item.getData());
+                }
+            }
+        }
+    }
+
+    /**
+     * Update the menu on detection.
+     */
+    void updateMenu()
+    {
+        if (!tree.isDisposed())
+        {
+            final Menu menu = tree.getMenu();
+            if (menu != null)
+            {
+                menu.setVisible(false);
+                tree.update();
+            }
+        }
     }
 }
