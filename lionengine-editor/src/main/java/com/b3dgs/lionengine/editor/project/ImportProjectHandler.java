@@ -33,6 +33,21 @@ import com.b3dgs.lionengine.editor.dialogs.ImportProjectDialog;
 public class ImportProjectHandler
 {
     /**
+     * Import the project and update the view.
+     * 
+     * @param project The project to import.
+     * @param partService The part service.
+     */
+    public static void importProject(Project project, EPartService partService)
+    {
+        UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
+
+        final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+        ProjectsModel.INSTANCE.setRoot(project.getPath());
+        part.setInput(project, partService);
+    }
+
+    /**
      * Execute the handler.
      * 
      * @param shell The shell reference.
@@ -47,11 +62,7 @@ public class ImportProjectHandler
         final Project project = importProjectDialog.getProject();
         if (project != null)
         {
-            UtilityMedia.setResourcesDirectory(project.getResourcesPath().getPath());
-
-            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-            ProjectsModel.INSTANCE.setRoot(project.getPath());
-            part.setInput(project, partService);
+            ImportProjectHandler.importProject(project, partService);
         }
     }
 }

@@ -236,8 +236,18 @@ public class ProjectTreeCreator
      */
     private void checkPathDirectory(File folder, TreeItem parent)
     {
-        final TreeItem folderItem = createFolder(folder, parent);
         final File[] children = folder.listFiles();
+        final TreeItem folderItem;
+        // Concatenate single folder child
+        if (folder.getParentFile().listFiles().length == 1)
+        {
+            folderItem = parent;
+            folderItem.setText(folderItem.getText() + java.io.File.separator + folder.getName());
+        }
+        else
+        {
+            folderItem = createFolder(folder, parent);
+        }
         Arrays.sort(children, new DirectoryFolderComparator());
         for (final File child : children)
         {
