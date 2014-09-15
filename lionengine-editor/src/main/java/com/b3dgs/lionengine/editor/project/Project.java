@@ -61,6 +61,8 @@ public final class Project
     private static final String VERBOSE_READ_PROJECT_PROPERTIES = "Reading project properties for: ";
     /** Extract jar classes verbose. */
     private static final String VERBOSE_EXTRACT_JAR = "Extract project classes from JAR at: ";
+    /** Bundle warning. */
+    private static final String WARNING_BUNDLE = "No bundle found, external classLoader will not be defined !";
     /** Active project. */
     private static Project activeProject;
 
@@ -228,15 +230,16 @@ public final class Project
     public void setClasses(String folder) throws MalformedURLException
     {
         classes = folder;
-        final URL url = new File(path, folder).toURI().toURL();
-        final URL[] urls = new URL[]
+
+        final Bundle bundle = Activator.getMainBundle();
+        if (bundle != null)
         {
-            url
-        };
-        final Bundle bundle = Activator.getContext().getBundle();
-        final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
-        final ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
-        classLoader = new URLClassLoader(urls, bundleClassLoader);
+            classLoader = createClassLoader(folder, bundle);
+        }
+        else
+        {
+            Verbose.warning(getClass(), "setClasses", Project.WARNING_BUNDLE);
+        }
     }
 
     /**
@@ -386,5 +389,25 @@ public final class Project
     public boolean isOpened()
     {
         return opened;
+    }
+
+    /**
+     * Create a class loader from a class folder.
+     * 
+     * @param folder The class folder.
+     * @param bundle The bundle reference.
+     * @return The class loader instance.
+     * @throws MalformedURLException If error when creating the class loader path.
+     */
+    private URLClassLoader createClassLoader(String folder, Bundle bundle) throws MalformedURLException
+    {
+        final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
+        final ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
+        final URL url = new File(path, folder).toURI().toURL();
+        final URL[] urls = new URL[]
+        {
+            url
+        };
+        return new URLClassLoader(urls, bundleClassLoader);
     }
 }

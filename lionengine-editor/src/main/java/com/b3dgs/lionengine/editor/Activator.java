@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import org.eclipse.core.runtime.IProduct;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -51,6 +54,21 @@ public class Activator
     public static BundleContext getContext()
     {
         return Activator.context;
+    }
+
+    /**
+     * Get the current main bundle.
+     * 
+     * @return The main bundle.
+     */
+    public static Bundle getMainBundle()
+    {
+        final IProduct product = Platform.getProduct();
+        if (product != null)
+        {
+            return product.getDefiningBundle();
+        }
+        return Activator.getContext().getBundle();
     }
 
     /*
