@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -94,7 +93,7 @@ public class EntityControl
      */
     public void updateDragging(int oldMx, int oldMy, int mx, int my)
     {
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         if (!dragging)
         {
             final int th = map.getTileHeight();
@@ -146,7 +145,7 @@ public class EntityControl
         final Media media = model.getSelectedEntity();
         if (media != null)
         {
-            final MapTile<? extends TileGame> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final FactoryObjectGame<?> factoryEntity = model.getFactoryEntity();
@@ -179,7 +178,7 @@ public class EntityControl
      */
     public void selectEntities(Rectangle selectionArea)
     {
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
 
         for (final EntityGame entity : handlerEntity.list())
@@ -242,7 +241,7 @@ public class EntityControl
      */
     public void setEntityLocation(EntityGame entity, int x, int y, int side)
     {
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         entity.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
@@ -258,7 +257,7 @@ public class EntityControl
      */
     public EntityGame getEntity(int mx, int my)
     {
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
@@ -363,7 +362,7 @@ public class EntityControl
      */
     private boolean hitEntity(EntityGame entity, int x1, int y1, int x2, int y2)
     {
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
         if (entity != null)
         {

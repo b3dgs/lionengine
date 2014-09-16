@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Contains the objects of the world.
@@ -36,7 +35,7 @@ public enum WorldViewModel
     /** Camera reference. */
     private final CameraGame camera;
     /** Map reference. */
-    private MapTile<? extends TileGame> map;
+    private MapTile<?> map;
     /** Factory entity reference. */
     private FactoryObjectGame<?> factoryEntity;
     /** Selected entity media. */
@@ -55,7 +54,7 @@ public enum WorldViewModel
      * 
      * @param map The map reference.
      */
-    public void setMap(MapTile<? extends TileGame> map)
+    public void setMap(MapTile<?> map)
     {
         this.map = map;
     }
@@ -95,7 +94,7 @@ public enum WorldViewModel
      * 
      * @return The map reference.
      */
-    public MapTile<? extends TileGame> getMap()
+    public MapTile<?> getMap()
     {
         return map;
     }

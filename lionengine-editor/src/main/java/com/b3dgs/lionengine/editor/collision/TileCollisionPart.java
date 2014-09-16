@@ -141,7 +141,7 @@ public class TileCollisionPart
      */
     public void removeFormula(TileCollisionComposite formula)
     {
-        final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
         map.removeCollisionFunction(formula.getCollisionFunction());
 
         formulas.remove(formula);
@@ -218,7 +218,7 @@ public class TileCollisionPart
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
-                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
             }
         });
@@ -232,7 +232,7 @@ public class TileCollisionPart
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.saveCollisions();
                 map.createCollisionDraw();
             }

@@ -251,7 +251,7 @@ public class WorldViewRenderer
     private void updateKeyboard(int vx, int vy)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         camera.moveLocation(1.0, vx * tw * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY, vy * th
@@ -333,7 +333,7 @@ public class WorldViewRenderer
     private void render(Graphic g, int width, int height)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
 
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -356,7 +356,7 @@ public class WorldViewRenderer
     private void renderOverAndSelectedEntities(Graphic g)
     {
         final CameraGame camera = model.getCamera();
-        final MapTile<? extends TileGame> map = model.getMap();
+        final MapTile<?> map = model.getMap();
         final int th = map.getTileHeight();
 
         for (final EntityGame entity : handlerEntity.list())
@@ -381,7 +381,7 @@ public class WorldViewRenderer
      * @param map The map reference.
      * @param camera The camera reference.
      */
-    private void renderSelectedCollisions(Graphic g, MapTile<? extends TileGame> map, CameraGame camera)
+    private void renderSelectedCollisions(Graphic g, MapTile<?> map, CameraGame camera)
     {
         // Render selected collision
         g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
@@ -483,7 +483,7 @@ public class WorldViewRenderer
 
         if (!selection.isSelected() && !entityControl.isDragging())
         {
-            final MapTile<? extends TileGame> map = model.getMap();
+            final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
 
             if (map.isCreated())

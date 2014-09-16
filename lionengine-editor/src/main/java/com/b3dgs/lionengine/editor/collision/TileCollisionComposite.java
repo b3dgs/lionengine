@@ -37,7 +37,6 @@ import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Represents a tile collision composite, allowing to edit the tile collision data.
@@ -257,7 +256,7 @@ public class TileCollisionComposite
                 selectedFunction.setOffset(Integer.parseInt(offset.getText()));
                 selectedFunction.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
 
-                final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.createCollisionDraw();
                 tileCollisionPart.updateWorldView();
             }
