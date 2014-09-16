@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin>
+   <extension-point id="worldViewRenderer" name="World View Renderer" schema="schema/worldViewRenderer.exsd"/>
 
    <extension
          id="product"

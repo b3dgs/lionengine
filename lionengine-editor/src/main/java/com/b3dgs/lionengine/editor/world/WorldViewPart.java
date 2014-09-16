@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.editor.world;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
@@ -56,6 +58,8 @@ public class WorldViewPart
     private static final String VERBOSE_IMPORT_LEVEL = "Importing map from level rip: ";
     /** Using tile sheet verbose. */
     private static final String VERBOSE_USING_TILESHEETS = " using the following sheets: ";
+    /** Extension point attribute renderer. */
+    private static final String EXTENSION_RENDERER = "renderer";
 
     /** Part service. */
     @Inject
@@ -85,7 +89,8 @@ public class WorldViewPart
 
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        worldViewRenderer = new WorldViewRenderer(composite, partService);
+
+        worldViewRenderer = checkRendererExtensionPoint();
         composite.addPaintListener(worldViewRenderer);
     }
 
@@ -130,6 +135,28 @@ public class WorldViewPart
     }
 
     /**
+     * Import map from its level rip and tile sheets.
+     * 
+     * @param level The level rip.
+     * @param pattern The tile sheets directory.
+     */
+    void importMap(Media level, Media pattern)
+    {
+        Verbose.info(WorldViewPart.VERBOSE_IMPORT_LEVEL, level.getPath(), WorldViewPart.VERBOSE_USING_TILESHEETS,
+                pattern.getPath());
+
+        final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
+        map.load(level, pattern);
+        map.createCollisionDraw();
+
+        final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
+        part.setSaveEnabled(true);
+
+        update();
+        focus();
+    }
+
+    /**
      * Create the tool bar.
      * 
      * @param parent The parent reference.
@@ -163,24 +190,29 @@ public class WorldViewPart
     }
 
     /**
-     * Import map from its level rip and tile sheets.
+     * Check the renderer extension point.
      * 
-     * @param level The level rip.
-     * @param pattern The tile sheets directory.
+     * @return renderer instance from extension point or default one.
      */
-    void importMap(Media level, Media pattern)
+    private WorldViewRenderer checkRendererExtensionPoint()
     {
-        Verbose.info(WorldViewPart.VERBOSE_IMPORT_LEVEL, level.getPath(), WorldViewPart.VERBOSE_USING_TILESHEETS,
-                pattern.getPath());
-
-        final MapTile<? extends TileGame> map = WorldViewModel.INSTANCE.getMap();
-        map.load(level, pattern);
-        map.createCollisionDraw();
-
-        final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
-        part.setSaveEnabled(true);
-
-        update();
-        focus();
+        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                WorldViewRenderer.EXTENSION_ID);
+        if (elements.length > 0)
+        {
+            final String renderer = elements[0].getAttribute(WorldViewPart.EXTENSION_RENDERER);
+            if (renderer != null)
+            {
+                try
+                {
+                    return UtilEclipse.createClass(renderer, WorldViewRenderer.class, composite, partService);
+                }
+                catch (final ReflectiveOperationException exception)
+                {
+                    Verbose.exception(getClass(), "checkRendererExtensionPoint", exception);
+                }
+            }
+        }
+        return new WorldViewRenderer(composite, partService);
     }
 }

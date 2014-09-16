@@ -34,6 +34,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Mouse;
+import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
@@ -48,9 +49,11 @@ import com.b3dgs.lionengine.geom.Point;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class WorldViewRenderer
+public class WorldViewRenderer
         implements PaintListener, MouseListener, MouseMoveListener, KeyListener
 {
+    /** Extension ID. */
+    public static final String EXTENSION_ID = Activator.PLUGIN_ID + ".worldViewRenderer";
     /** Color of the grid. */
     private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
     /** Color of the selection area. */
@@ -149,6 +152,81 @@ public final class WorldViewRenderer
         handlerEntity = new HandlerEntity(model.getCamera());
         selection = new Selection();
         entityControl = new EntityControl(handlerEntity);
+    }
+
+    /**
+     * Render the world and its components.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
+     * @param map The map reference.
+     * @param areaX The horizontal rendering area.
+     * @param areaY The vertical rendering area.
+     */
+    protected void render(Graphic g, CameraGame camera, MapTile<?> map, int areaX, int areaY)
+    {
+        renderMap(g, camera, map, areaX, areaY);
+        renderEntities(g);
+        renderOverAndSelectedEntities(g);
+        if (selectedTile != null)
+        {
+            renderSelectedCollisions(g, map, camera);
+        }
+        renderSelection(g);
+    }
+
+    /**
+     * Render the world background.
+     * 
+     * @param g The graphic output.
+     * @param width The renderer width.
+     * @param height The renderer height.
+     */
+    protected void renderBackground(Graphic g, int width, int height)
+    {
+        g.setColor(ColorRgba.GRAY_LIGHT);
+        g.drawRect(0, 0, width, height, true);
+    }
+
+    /**
+     * Render the map.
+     * 
+     * @param g The graphic output.
+     * @param camera The camera reference.
+     * @param map The map reference.
+     * @param areaX The horizontal rendering area.
+     * @param areaY The vertical rendering area.
+     */
+    protected void renderMap(Graphic g, CameraGame camera, MapTile<?> map, int areaX, int areaY)
+    {
+        g.setColor(ColorRgba.BLUE);
+        g.drawRect(0, 0, areaX, areaY, true);
+
+        if (map.getNumberPatterns() > 0)
+        {
+            map.render(g, camera);
+        }
+    }
+
+    /**
+     * Render the handled entities.
+     * 
+     * @param g The graphic output.
+     */
+    protected void renderEntities(Graphic g)
+    {
+        handlerEntity.update(1.0);
+        handlerEntity.render(g);
+    }
+
+    /**
+     * Render the current selection.
+     * 
+     * @param g The graphic output.
+     */
+    protected void renderSelection(Graphic g)
+    {
+        selection.render(g, WorldViewRenderer.COLOR_MOUSE_SELECTION);
     }
 
     /**
@@ -264,29 +342,8 @@ public final class WorldViewRenderer
 
         camera.setView(0, 0, areaX - tw, areaY);
 
-        // Background
-        g.setColor(ColorRgba.GRAY_LIGHT);
-        g.drawRect(0, 0, width, height, true);
-
-        // Map area
-        g.setColor(ColorRgba.BLUE);
-        g.drawRect(0, 0, areaX, areaY, true);
-
-        // Renders
-        if (map.getNumberPatterns() > 0)
-        {
-            map.render(g, camera);
-        }
-        handlerEntity.update(1.0);
-        handlerEntity.render(g);
-        renderOverAndSelectedEntities(g);
-        if (selectedTile != null)
-        {
-            renderSelectedCollisions(g, map, camera);
-        }
-
-        selection.render(g, WorldViewRenderer.COLOR_MOUSE_SELECTION);
-
+        renderBackground(g, width, height);
+        render(g, camera, map, areaX, areaY);
         renderCursor(g, tw, th, areaX, areaY);
         WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
     }

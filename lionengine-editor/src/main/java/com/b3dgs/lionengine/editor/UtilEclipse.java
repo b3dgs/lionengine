@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -38,6 +39,8 @@ public final class UtilEclipse
 {
     /** Part error. */
     private static final String ERROR_PART = "Unable to find part: ";
+    /** Create class error. */
+    private static final String ERROR_CLASS_CREATE = "Unable to create the following class: ";
 
     /**
      * Get the icon from its name.
@@ -122,6 +125,39 @@ public final class UtilEclipse
             }
         }
         throw new LionEngineException(UtilEclipse.ERROR_PART, id);
+    }
+
+    /**
+     * Create a class from its name and call its corresponding constructor.
+     * 
+     * @param name The full class name.
+     * @param type The class type.
+     * @param params The constructor parameters.
+     * @return The class instance.
+     * @throws ReflectiveOperationException If error when creating the class.
+     */
+    public static <C> C createClass(String name, Class<C> type, Object... params) throws ReflectiveOperationException
+    {
+        final Class<?> clazz = Activator.getMainBundle().loadClass(name);
+        for (final Constructor<?> constructor : clazz.getConstructors())
+        {
+            final Class<?>[] constructorParams = constructor.getParameterTypes();
+            final int required = params.length;
+            int found = 0;
+            for (final Class<?> constructorParam : constructorParams)
+            {
+                if (found >= params.length || !constructorParam.isAssignableFrom(params[found].getClass()))
+                {
+                    break;
+                }
+                found++;
+            }
+            if (found == required)
+            {
+                return type.cast(constructor.newInstance(params));
+            }
+        }
+        throw new ClassNotFoundException(UtilEclipse.ERROR_CLASS_CREATE + name);
     }
 
     /**
