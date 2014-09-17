@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -32,9 +33,6 @@ import com.b3dgs.lionengine.core.Media;
 final class SpriteParallaxedImpl
         implements SpriteParallaxed
 {
-    /** Parallax line error. */
-    private static final String ERROR_PARALLAX_LINE = "The number of parallax lines must be strictly positive !";
-
     /** Parallax surface file name. */
     private final Media media;
     /** Number of parallax line. */
@@ -65,12 +63,14 @@ final class SpriteParallaxedImpl
      * @param linesNumber The number of line.
      * @param sx The parallax width.
      * @param sy The parallax height.
+     * @throws LionEngineException If arguments are invalid.
      */
-    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy)
+    SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy) throws LionEngineException
     {
-        Check.argument(linesNumber > 0, SpriteParallaxedImpl.ERROR_PARALLAX_LINE);
-        Check.argument(sx > 0, "Width must be strict positive !");
-        Check.argument(sy > 0, "Height must be strict positive !");
+        Check.superiorStrict(linesNumber, 0);
+        Check.superiorStrict(sx, 0);
+        Check.superiorStrict(sy, 0);
+
         this.media = media;
         this.linesNumber = linesNumber;
         this.sx = sx;
@@ -98,7 +98,7 @@ final class SpriteParallaxedImpl
     }
 
     @Override
-    public void prepare(Filter filter)
+    public void prepare(Filter filter) throws LionEngineException
     {
         ImageBuffer surface = Core.GRAPHIC.getImageBuffer(media, false);
         widthOriginal = surface.getWidth();

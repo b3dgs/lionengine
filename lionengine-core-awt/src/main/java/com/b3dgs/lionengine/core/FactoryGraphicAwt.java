@@ -154,7 +154,7 @@ public final class FactoryGraphicAwt
     }
 
     @Override
-    public int[][] loadRaster(Media media)
+    public int[][] loadRaster(Media media) throws LionEngineException
     {
         return Core.GRAPHIC.loadRaster(media);
     }

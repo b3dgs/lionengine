@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -33,9 +34,6 @@ final class SpriteTiledImpl
         extends SpriteImpl
         implements SpriteTiled
 {
-    /** Sprite size error. */
-    private static final String ERROR_SPRITE_TILE_SIZE = "Sprite tile size must be strictly positive !";
-
     /** Number of horizontal tiles. */
     private final int horizontalTiles;
     /** Number of vertical tiles. */
@@ -51,14 +49,39 @@ final class SpriteTiledImpl
      * Constructor.
      * 
      * @param media The sprite media.
+     * @param tileWidth The tile width.
+     * @param tileHeight The tile height.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
+     */
+    SpriteTiledImpl(Media media, int tileWidth, int tileHeight) throws LionEngineException
+    {
+        super(media);
+
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
+
+        tileOriginalWidth = tileWidth;
+        tileOriginalHeight = tileHeight;
+        horizontalTiles = widthOriginal / tileWidth;
+        verticalTiles = heightOriginal / tileHeight;
+        tilesNumber = horizontalTiles * verticalTiles;
+    }
+
+    /**
+     * Constructor.
+     * 
      * @param surface The surface reference.
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
+     * @throws LionEngineException If arguments are invalid.
      */
-    SpriteTiledImpl(Media media, ImageBuffer surface, int tileWidth, int tileHeight)
+    SpriteTiledImpl(ImageBuffer surface, int tileWidth, int tileHeight) throws LionEngineException
     {
-        super(media, surface);
-        Check.argument(tileWidth > 0 && tileHeight > 0, SpriteTiledImpl.ERROR_SPRITE_TILE_SIZE);
+        super(surface);
+
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
+
         tileOriginalWidth = tileWidth;
         tileOriginalHeight = tileHeight;
         horizontalTiles = widthOriginal / tileWidth;

@@ -143,8 +143,9 @@ public final class ColorRgba
      * @param r The red value [0-255].
      * @param g The green value [0-255].
      * @param b The blue value [0-255].
+     * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b)
+    public ColorRgba(int r, int g, int b) throws LionEngineException
     {
         this(r, g, b, 255);
     }
@@ -156,13 +157,21 @@ public final class ColorRgba
      * @param g The green value [0-255].
      * @param b The blue value [0-255].
      * @param a The alpha value [0-255].
+     * @throws LionEngineException If color value is not in a valid range.
      */
-    public ColorRgba(int r, int g, int b, int a)
+    public ColorRgba(int r, int g, int b, int a) throws LionEngineException
     {
-        Check.argument(r >= 0 && r <= 255, "Wrong red value !");
-        Check.argument(g >= 0 && g <= 255, "Wrong green value !");
-        Check.argument(b >= 0 && b <= 255, "Wrong blue value !");
-        Check.argument(a >= 0 && a <= 255, "Wrong alpha value !");
+        Check.superiorOrEqual(r, 0);
+        Check.inferiorOrEqual(r, 255);
+
+        Check.superiorOrEqual(g, 0);
+        Check.inferiorOrEqual(g, 255);
+
+        Check.superiorOrEqual(b, 0);
+        Check.inferiorOrEqual(b, 255);
+
+        Check.superiorOrEqual(a, 0);
+        Check.inferiorOrEqual(a, 255);
 
         value = ColorRgba.mask(a) << 24 | ColorRgba.mask(r) << 16 | ColorRgba.mask(g) << 8 | ColorRgba.mask(b) << 0;
         alpha = a;

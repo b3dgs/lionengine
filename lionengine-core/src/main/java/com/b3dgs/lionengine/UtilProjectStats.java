@@ -93,7 +93,7 @@ public final class UtilProjectStats
     private static void countFileLines(String fileName)
     {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),
-                Charset.forName("UTF-8")));)
+                Charset.forName("UTF-8"))))
         {
             String s;
             boolean stop = false;

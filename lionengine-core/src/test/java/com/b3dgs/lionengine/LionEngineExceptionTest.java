@@ -79,14 +79,13 @@ public class LionEngineExceptionTest
     @Test
     public void testLionEngineExceptionWithCheckMessage()
     {
-        final String message = "Exception test";
         try
         {
-            Check.notNull(null, message);
+            Check.notNull(null);
         }
         catch (final LionEngineException exception)
         {
-            Assert.assertEquals(message, exception.getMessage());
+            Assert.assertEquals("Unexpected null argument !", exception.getMessage());
             exception.printStackTrace();
         }
     }

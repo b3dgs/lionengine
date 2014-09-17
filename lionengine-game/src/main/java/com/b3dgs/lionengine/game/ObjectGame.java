@@ -47,9 +47,6 @@ import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 public abstract class ObjectGame
         implements Handlable, Fabricable, Localizable
 {
-    /** Setup error. */
-    private static final String ERROR_SETUP = "Setup must not be null !";
-
     /** Handlable model. */
     private final Handlable handlableModel;
     /** Localizable object reference. */
@@ -59,11 +56,12 @@ public abstract class ObjectGame
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time.
      */
     public ObjectGame(SetupGame setup) throws LionEngineException
     {
-        Check.notNull(setup, ObjectGame.ERROR_SETUP);
+        Check.notNull(setup);
+
         handlableModel = new HandlableModel();
         localizable = new LocalizableModel();
     }

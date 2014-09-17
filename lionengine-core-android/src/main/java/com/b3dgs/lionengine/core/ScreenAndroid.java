@@ -38,8 +38,6 @@ import com.b3dgs.lionengine.Resolution;
 public final class ScreenAndroid
         implements Screen, SurfaceHolder.Callback
 {
-    /** Error message renderer. */
-    private static final String ERROR_RENDERER = "The renderer must not be null !";
     /** View. */
     static ViewAndroid view;
     /** Holder. */
@@ -76,7 +74,7 @@ public final class ScreenAndroid
      */
     ScreenAndroid(Renderer renderer)
     {
-        Check.notNull(renderer, ScreenAndroid.ERROR_RENDERER);
+        Check.notNull(renderer);
 
         config = renderer.getConfig();
         devices = new HashMap<Class<? extends InputDevice>, InputDevice>(1);

@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -113,8 +114,9 @@ final class SpriteFontImpl
      * @param mediaData The font data media.
      * @param tw The horizontal character number.
      * @param th The vertical character number.
+     * @throws LionEngineException If an error occurred when creating the font.
      */
-    SpriteFontImpl(Media media, Media mediaData, int tw, int th)
+    SpriteFontImpl(Media media, Media mediaData, int tw, int th) throws LionEngineException
     {
         surface = Drawable.loadSpriteTiled(media, tw, th);
         fontData = new TreeMap<>();
@@ -222,19 +224,19 @@ final class SpriteFontImpl
      */
 
     @Override
-    public void load(boolean alpha)
+    public void load(boolean alpha) throws LionEngineException
     {
         surface.load(alpha);
     }
 
     @Override
-    public void scale(int percent)
+    public void scale(int percent) throws LionEngineException
     {
         surface.scale(percent);
     }
 
     @Override
-    public void stretch(int percentWidth, int percentHeight)
+    public void stretch(int percentWidth, int percentHeight) throws LionEngineException
     {
         surface.stretch(percentWidth, percentHeight);
     }
@@ -258,7 +260,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void filter(Filter filter)
+    public void filter(Filter filter) throws LionEngineException
     {
         surface.filter(filter);
     }
@@ -270,7 +272,7 @@ final class SpriteFontImpl
     }
 
     @Override
-    public void setAlpha(int alpha)
+    public void setAlpha(int alpha) throws LionEngineException
     {
         surface.setAlpha(alpha);
     }

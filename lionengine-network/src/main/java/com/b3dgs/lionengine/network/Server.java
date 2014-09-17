@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * List of services provided by a server.
  * 
@@ -37,8 +39,9 @@ interface Server
      * 
      * @param name The server name.
      * @param port The port number.
+     * @throws LionEngineException If unable to start server.
      */
-    void start(String name, int port);
+    void start(String name, int port) throws LionEngineException;
 
     /**
      * Remove a client from its id.

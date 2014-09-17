@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Networkable world interface server side.
  * 
@@ -31,6 +33,7 @@ public interface NetworkedWorldServer
      * @param name The server name.
      * @param port The port number.
      * @param messageOfTheDay The message of the day.
+     * @throws LionEngineException If unable to start server.
      */
-    void startServer(String name, int port, String messageOfTheDay);
+    void startServer(String name, int port, String messageOfTheDay) throws LionEngineException;
 }

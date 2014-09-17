@@ -43,7 +43,7 @@ public class SetupGame
      * Constructor.
      * 
      * @param config The config media.
-     * @throws LionEngineException If there is not any corresponding class found.
+     * @throws LionEngineException If error when opening the media.
      */
     public SetupGame(Media config) throws LionEngineException
     {

@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.stream.Stream;
@@ -87,7 +88,7 @@ public final class FactoryGraphicProvider
     }
 
     @Override
-    public ImageBuffer getImageBuffer(Media media, boolean alpha)
+    public ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException
     {
         return FactoryGraphicProvider.factoryGraphic.getImageBuffer(media, alpha);
     }
@@ -135,13 +136,13 @@ public final class FactoryGraphicProvider
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer image, Filter filter)
+    public ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
     {
         return FactoryGraphicProvider.factoryGraphic.applyFilter(image, filter);
     }
 
     @Override
-    public void saveImage(ImageBuffer image, Media media)
+    public void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
         FactoryGraphicProvider.factoryGraphic.saveImage(image, media);
     }
@@ -153,7 +154,7 @@ public final class FactoryGraphicProvider
     }
 
     @Override
-    public int[][] loadRaster(Media media)
+    public int[][] loadRaster(Media media) throws LionEngineException
     {
         final XmlNode raster = Stream.loadXml(media);
         final String[] colors =

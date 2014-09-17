@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.attacker;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -34,23 +35,26 @@ public interface AttackerServices<E extends EntityStrategy, A extends AttackerUs
      * 
      * @param weapon The weapon instance.
      * @param id The weapon index number.
+     * @throws LionEngineException If invalid weapon id.
      */
-    void addWeapon(W weapon, int id);
+    void addWeapon(W weapon, int id) throws LionEngineException;
 
     /**
      * Remove a weapon.
      * 
      * @param id The weapon to remove from its index number.
+     * @throws LionEngineException If invalid weapon id.
      */
-    void removeWeapon(int id);
+    void removeWeapon(int id) throws LionEngineException;
 
     /**
      * Get a weapon from its id.
      * 
      * @param id The weapon id.
      * @return The weapon reference.
+     * @throws LionEngineException If invalid weapon id.
      */
-    W getWeapon(int id);
+    W getWeapon(int id) throws LionEngineException;
 
     /**
      * Set the current weapon to use.

@@ -47,9 +47,7 @@ import com.b3dgs.lionengine.LionEngineException;
 public final class UtilityMedia
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir");
-    /** Error message internal. */
-    private static final String ERROR_MEDIA = "The media does not exist !";
+    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
     /** System separator. */
     private static String separator = File.separator;
     /** Engine temporary directory. */
@@ -155,7 +153,7 @@ public final class UtilityMedia
      */
     public static InputStream getStream(Media media, String from, boolean logger)
     {
-        Check.notNull(media, UtilityMedia.ERROR_MEDIA);
+        Check.notNull(media);
         final String path = media.getPath();
         if (logger)
         {
@@ -181,7 +179,7 @@ public final class UtilityMedia
      */
     public static OutputStream getOutputStream(Media media, String from, boolean logger)
     {
-        Check.notNull(media, UtilityMedia.ERROR_MEDIA);
+        Check.notNull(media);
         final String path = media.getPath();
         if (logger)
         {

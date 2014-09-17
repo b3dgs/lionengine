@@ -19,9 +19,7 @@ package com.b3dgs.lionengine;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.b3dgs.lionengine.core.Media;
 
@@ -42,11 +40,11 @@ public final class LionEngineException
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
-            "anim", "core", "drawable", "file", "game", "utility", "network", "audio", "swing", "Align", "Applet",
-            "Architecture", "Check", "Checksum", "ColorRgba", "Coord", "Filter", "GradientColor", "Graphic",
-            "ImageInfo", "Keyboard", "Line", "LionEngineException", "Mouse", "OperatingSystem", "Polygon", "Ratio",
-            "Rectangle", "Resolution", "Strings", "Text", "TestStyle", "Timing", "Transparency", "UtilityConversion",
-            "UtilityFile", "UtilityProjectsStats", "UtilityRandom"
+            "audio", "anim", "core", "drawable", "geom", "game", "network", "utility", "editor", "xsd", "Align",
+            "Architecture", "Check", "Checksum", "ColorGradient", "ColorRgba", "Config", "Filter", "Hq2x", "Hq3x",
+            "ImageInfo", "LionEngineException", "OperatingSystem", "Ratio", "Resolution", "Strings", "TextStyle",
+            "Timing", "Transparency", "UtilConversion", "UtilFile", "UtilMath", "UtilProjectStats", "UtilRandom",
+            "Version"
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599463L;
@@ -157,7 +155,7 @@ public final class LionEngineException
         }
 
         Throwable current = exception;
-        final Set<StackTraceElement> traces = new HashSet<>(1);
+        final List<StackTraceElement> traces = new ArrayList<>(1);
         for (final StackTraceElement element : LionEngineException.getFilteredTraces(getStackTrace()))
         {
             traces.add(element);

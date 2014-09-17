@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -41,8 +42,9 @@ public class SetupSurfaceGame
      * Constructor.
      * 
      * @param config The config media.
+     * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceGame(Media config)
+    public SetupSurfaceGame(Media config) throws LionEngineException
     {
         this(config, false);
     }
@@ -52,8 +54,9 @@ public class SetupSurfaceGame
      * 
      * @param config The config media.
      * @param alpha The alpha use flag.
+     * @throws LionEngineException If error when opening the media.
      */
-    public SetupSurfaceGame(Media config, boolean alpha)
+    public SetupSurfaceGame(Media config, boolean alpha) throws LionEngineException
     {
         super(config);
         final String conf = config.getPath();

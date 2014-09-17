@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -35,8 +36,10 @@ public interface Sequencable
      * @param wait <code>true</code> to wait for the next sequence to be loaded, <code>false</code> else.
      * @param nextSequenceClass The next sequence class reference (must not be <code>null</code>).
      * @param arguments The arguments list.
+     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
-    void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments);
+    void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
+            throws LionEngineException;
 
     /**
      * Terminate sequence.
@@ -48,8 +51,9 @@ public interface Sequencable
      * 
      * @param nextSequenceClass The next sequence class reference.
      * @param arguments The sequence arguments list if needed by its constructor.
+     * @throws LionEngineException If sequence is <code>null</code> or cannot be created.
      */
-    void end(Class<? extends Sequence> nextSequenceClass, Object... arguments);
+    void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException;
 
     /**
      * Add a key listener.
@@ -69,8 +73,9 @@ public interface Sequencable
      * Set the new resolution used by the sequence.
      * 
      * @param newSource The new resolution used.
+     * @throws LionEngineException If the resolution is <code>null</code>.
      */
-    void setResolution(Resolution newSource);
+    void setResolution(Resolution newSource) throws LionEngineException;
 
     /**
      * Set the system cursor visibility.

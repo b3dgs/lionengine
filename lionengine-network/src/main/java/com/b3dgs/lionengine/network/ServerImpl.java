@@ -413,7 +413,7 @@ final class ServerImpl
     }
 
     @Override
-    public void start(String name, int port)
+    public void start(String name, int port) throws LionEngineException
     {
         if (!started)
         {
@@ -524,7 +524,7 @@ final class ServerImpl
             {
                 continue;
             }
-            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
+            try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
             {
                 final byte messageSystemId = buffer.readByte();
                 final byte from = buffer.readByte();
@@ -567,7 +567,7 @@ final class ServerImpl
                 {
                     continue;
                 }
-                try (ByteArrayOutputStream encode = message.encode();)
+                try (ByteArrayOutputStream encode = message.encode())
                 {
                     final byte[] encoded = encode.toByteArray();
                     // Message header

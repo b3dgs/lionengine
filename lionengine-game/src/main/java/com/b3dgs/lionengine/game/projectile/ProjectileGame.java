@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.EntityGame;
@@ -72,8 +73,9 @@ public abstract class ProjectileGame<E extends EntityGame, E2 extends Surface>
      * </pre>
      * 
      * @param setup The entity setup.
+     * @throws LionEngineException If invalid setup.
      */
-    public ProjectileGame(SetupSurfaceGame setup)
+    public ProjectileGame(SetupSurfaceGame setup) throws LionEngineException
     {
         super(setup);
         damages = new Damages();

@@ -150,10 +150,11 @@ public abstract class WorldGame
      * Save world to the specified file.
      * 
      * @param media The output media.
+     * @throws LionEngineException If error on saving to file.
      */
-    public final void saveToFile(Media media)
+    public final void saveToFile(Media media) throws LionEngineException
     {
-        try (FileWriting writing = Stream.createFileWriting(media);)
+        try (FileWriting writing = Stream.createFileWriting(media))
         {
             saving(writing);
         }
@@ -167,10 +168,11 @@ public abstract class WorldGame
      * Load world from the specified file.
      * 
      * @param media The input media.
+     * @throws LionEngineException If error on loading from file.
      */
-    public final void loadFromFile(Media media)
+    public final void loadFromFile(Media media) throws LionEngineException
     {
-        try (FileReading reading = Stream.createFileReading(media);)
+        try (FileReading reading = Stream.createFileReading(media))
         {
             loading(reading);
         }

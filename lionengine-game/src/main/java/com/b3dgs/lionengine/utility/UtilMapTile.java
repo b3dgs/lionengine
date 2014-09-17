@@ -27,6 +27,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -111,8 +112,9 @@ public class UtilMapTile
      * 
      * @param map The map reference.
      * @param media The collision file to store the collisions.
+     * @throws LionEngineException If error when saving collisions.
      */
-    public static void saveCollisions(MapTile<?> map, Media media)
+    public static void saveCollisions(MapTile<?> map, Media media) throws LionEngineException
     {
         final XmlNode root = Stream.createXmlNode(UtilMapTile.TAG_TILE_COLLISIONS);
         for (final CollisionTile collision : map.getCollisions())
@@ -150,8 +152,9 @@ public class UtilMapTile
      * @param pattern The pattern number.
      * @param numbers The numbers list.
      * @return <code>true</code> if stored, <code>false</code> else.
+     * @throws LionEngineException If error when saving tile node.
      */
-    public static boolean saveTileNode(XmlNode node, Integer pattern, List<Integer> numbers)
+    public static boolean saveTileNode(XmlNode node, Integer pattern, List<Integer> numbers) throws LionEngineException
     {
         final boolean added;
         if (numbers.size() == 1)
@@ -252,8 +255,10 @@ public class UtilMapTile
      * @param tilePattern The tile pattern number.
      * @param tileNumber The tile number.
      * @return The collision found.
+     * @throws LionEngineException If error when reading.
      */
     public static String getCollision(List<XmlNode> collisions, int tilePattern, int tileNumber)
+            throws LionEngineException
     {
         for (final XmlNode collision : collisions)
         {
@@ -280,8 +285,10 @@ public class UtilMapTile
      * @param collision The current collision enum.
      * @param functionNode The function node reference.
      * @return The created collision function from the node data.
+     * @throws LionEngineException If error when reading.
      */
     public static CollisionFunction getCollisionFunction(CollisionTile collision, XmlNode functionNode)
+            throws LionEngineException
     {
         final CollisionFunction function = new CollisionFunction();
         function.setName(functionNode.readString(UtilMapTile.ATT_FUNCTION_NAME));
@@ -391,9 +398,10 @@ public class UtilMapTile
      * @param tilePattern The tile pattern number.
      * @param tileNumber The tile number.
      * @return The collision found.
+     * @throws LionEngineException If error when reading.
      */
     private static String searchCollision(XmlNode collision, String name, String category, int tilePattern,
-            int tileNumber)
+            int tileNumber) throws LionEngineException
     {
         final List<XmlNode> tilesCollisions = collision.getChildren(category);
 
@@ -433,8 +441,10 @@ public class UtilMapTile
      * @param node The XML node.
      * @param collision The current collision.
      * @return <code>true</code> if at least on tile stored, <code>false</code> else.
+     * @throws LionEngineException If error when saving tile node.
      */
     private static boolean saveTilesCollisions(MapTile<?> map, XmlNode node, CollisionTile collision)
+            throws LionEngineException
     {
         final Map<Integer, SortedSet<Integer>> patterns = UtilMapTile.getCollisionsPattern(map, node, collision);
         boolean added = false;

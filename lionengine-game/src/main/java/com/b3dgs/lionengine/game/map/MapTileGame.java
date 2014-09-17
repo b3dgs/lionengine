@@ -324,7 +324,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void load(FileReading file) throws IOException
+    public void load(FileReading file) throws IOException, LionEngineException
     {
         patternsDirectory = Core.MEDIA.create(file.readString());
         final int width = file.readShort();
@@ -356,7 +356,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void load(Media levelrip, Media patternsDirectory)
+    public void load(Media levelrip, Media patternsDirectory) throws LionEngineException
     {
         clear();
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
@@ -365,7 +365,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void loadPatterns(Media directory)
+    public void loadPatterns(Media directory) throws LionEngineException
     {
         patternsDirectory = directory;
         patterns.clear();
@@ -403,7 +403,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void loadCollisions(Media media)
+    public void loadCollisions(Media media) throws LionEngineException
     {
         final XmlNode root = Stream.loadXml(media);
         final List<XmlNode> collisions = root.getChildren();

@@ -331,7 +331,7 @@ final class ClientImpl
             final byte[] data = new byte[size];
             if (in.read(data) != -1)
             {
-                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data));)
+                try (DataInputStream buffer = new DataInputStream(new ByteArrayInputStream(data)))
                 {
                     decodeMessage(type, from, dest, buffer);
                 }
@@ -345,7 +345,7 @@ final class ClientImpl
      */
 
     @Override
-    public void connect(String ip, int port)
+    public void connect(String ip, int port) throws LionEngineException
     {
         try
         {
@@ -472,7 +472,7 @@ final class ClientImpl
         // Send messages
         for (final NetworkMessage message : messagesOut)
         {
-            try (ByteArrayOutputStream encode = message.encode();)
+            try (ByteArrayOutputStream encode = message.encode())
             {
                 final byte[] encoded = encode.toByteArray();
                 // Message header

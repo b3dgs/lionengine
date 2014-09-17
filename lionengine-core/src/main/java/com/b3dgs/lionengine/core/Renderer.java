@@ -38,10 +38,6 @@ public abstract class Renderer
 {
     /** Screen ready timeout in milli second. */
     static final int SCREEN_READY_TIME_OUT = 5000;
-    /** Error message loader. */
-    private static final String ERROR_SEQUENCE = "Sequence must not be null !";
-    /** Error message loader. */
-    private static final String ERROR_RESOLUTION = "Resolution must not be null !";
     /** Error message already started. */
     private static final String ERROR_STARTED = "Renderer has already been started !";
     /** One nano second. */
@@ -376,8 +372,9 @@ public abstract class Renderer
 
     @Override
     public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
+            throws LionEngineException
     {
-        Check.notNull(nextSequenceClass, Renderer.ERROR_SEQUENCE);
+        Check.notNull(nextSequenceClass);
 
         nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
         if (wait)
@@ -398,9 +395,9 @@ public abstract class Renderer
     }
 
     @Override
-    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
     {
-        Check.notNull(nextSequenceClass, Renderer.ERROR_SEQUENCE);
+        Check.notNull(nextSequenceClass);
 
         nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
         isRunning = false;
@@ -419,9 +416,9 @@ public abstract class Renderer
     }
 
     @Override
-    public final void setResolution(Resolution newSource)
+    public final void setResolution(Resolution newSource) throws LionEngineException
     {
-        Check.notNull(newSource, Renderer.ERROR_RESOLUTION);
+        Check.notNull(newSource);
 
         config.setSource(newSource);
         source = config.getSource();

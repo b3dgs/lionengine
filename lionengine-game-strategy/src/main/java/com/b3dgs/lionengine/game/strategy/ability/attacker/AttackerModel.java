@@ -57,8 +57,9 @@ public class AttackerModel<E extends EntityStrategy, A extends AttackerUsedServi
      * 
      * @param id The weapon id.
      * @return The weapon instance.
+     * @throws LionEngineException If invalid weapon id.
      */
-    private W getWeapon(Integer id)
+    private W getWeapon(Integer id) throws LionEngineException
     {
         if (!weapons.containsKey(id))
         {
@@ -72,7 +73,7 @@ public class AttackerModel<E extends EntityStrategy, A extends AttackerUsedServi
      */
 
     @Override
-    public void addWeapon(W weapon, int id)
+    public void addWeapon(W weapon, int id) throws LionEngineException
     {
         final Integer key = Integer.valueOf(id);
         weapon.setUser(user);
@@ -90,7 +91,7 @@ public class AttackerModel<E extends EntityStrategy, A extends AttackerUsedServi
     }
 
     @Override
-    public W getWeapon(int id)
+    public W getWeapon(int id) throws LionEngineException
     {
         return getWeapon(Integer.valueOf(id));
     }

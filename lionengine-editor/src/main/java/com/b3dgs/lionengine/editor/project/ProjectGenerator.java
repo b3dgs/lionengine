@@ -281,7 +281,7 @@ public class ProjectGenerator
         final Properties properties = new Properties();
         properties.put(Project.PROPERTY_PROJECT_CLASSES, classes);
         properties.put(Project.PROPERTY_PROJECT_RESOURCES, resources);
-        try (FileOutputStream stream = new FileOutputStream(propertiesFile);)
+        try (FileOutputStream stream = new FileOutputStream(propertiesFile))
         {
             properties.store(stream, Project.PROPERTIES_FILE_DESCRIPTION);
         }

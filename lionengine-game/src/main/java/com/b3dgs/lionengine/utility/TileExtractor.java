@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.utility;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -53,8 +54,11 @@ public final class TileExtractor
      * @param tileh The level tile height.
      * @param destW The output image width.
      * @param destH The output image height.
+     * @throws LionEngineException If arguments are invalid or image cannot be read or an error occurred when saving the
+     *             image.
      */
     public static void start(Media levelrip, Media out, int tilew, int tileh, int destW, int destH)
+            throws LionEngineException
     {
         final TileExtractor extractor = new TileExtractor(levelrip, tilew, tileh, destW, destH);
         extractor.start(out);
@@ -99,8 +103,9 @@ public final class TileExtractor
      * @param tileh The tile height.
      * @param destW The tilesheet width.
      * @param destH The tilesheet height.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    private TileExtractor(Media media, int tilew, int tileh, int destW, int destH)
+    private TileExtractor(Media media, int tilew, int tileh, int destW, int destH) throws LionEngineException
     {
         this.tilew = tilew;
         this.tileh = tileh;
@@ -120,8 +125,9 @@ public final class TileExtractor
      * Start using specified output file.
      * 
      * @param fileout The output file.
+     * @throws LionEngineException If an error occurred when saving the image.
      */
-    private void start(Media fileout)
+    private void start(Media fileout) throws LionEngineException
     {
         // Check all image tiles
         final ImageBuffer tileRef = imageMap.getSurface();

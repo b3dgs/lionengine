@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.strategy;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
@@ -66,9 +67,10 @@ public class CursorStrategy
      * @param map The map reference.
      * @param cursor The cursor images media.
      * @param others The cursor images media.
+     * @throws LionEngineException If invalid arguments or an error occurred when reading the media.
      */
     public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, MapTile<?> map,
-            Media cursor, Media... others)
+            Media cursor, Media... others) throws LionEngineException
     {
         this(pointer, camera, source, map.getTileWidth(), map.getTileHeight(), cursor, others);
     }
@@ -83,12 +85,13 @@ public class CursorStrategy
      * @param tileHeight The tile height.
      * @param cursor The cursor images media.
      * @param others The cursor other images media.
+     * @throws LionEngineException If invalid arguments or an error occurred when reading the media.
      */
     public CursorStrategy(InputDevicePointer pointer, CameraStrategy camera, Resolution source, int tileWidth,
-            int tileHeight, Media cursor, Media... others)
+            int tileHeight, Media cursor, Media... others) throws LionEngineException
     {
         super(pointer, 0, 0, source.getWidth(), source.getHeight(), cursor, others);
-        Check.notNull(camera, "The camera must not be null !");
+        Check.notNull(camera);
         this.camera = camera;
         setLocation(source.getWidth() / 2, source.getHeight() / 2);
         gridWidth = tileWidth;

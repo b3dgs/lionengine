@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.UtilFile;
 public final class UtilityMedia
 {
     /** Engine working directory. */
-    public static final String WORKING_DIR = EngineCore.getSystemProperty("user.dir");
+    public static final String WORKING_DIR = EngineCore.getSystemProperty("user.dir", null);
     /** Resources directory. */
     private static String resourcesDir = "";
     /** From jar flag. */
@@ -119,31 +119,28 @@ public final class UtilityMedia
      * 
      * @param media The input media path, pointing to a file.
      * @param from The from function.
-     * @param logger The logger flag.
      * @return The opened input stream.
+     * @throws LionEngineException If the media is not found.
      */
-    static InputStream getInputStream(Media media, String from, boolean logger)
+    static InputStream getInputStream(Media media, String from) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
         {
             if (UtilityMedia.fromJar)
             {
-                if (logger)
+                final InputStream inputStream = UtilityMedia.loader.getResourceAsStream(path);
+                if (inputStream == null)
                 {
-                    Verbose.info("getStream from " + from, ": \"", path, "\"");
+                    throw new LionEngineException(media, "Resource in JAR not found");
                 }
-                return UtilityMedia.loader.getResourceAsStream(path);
-            }
-            if (logger)
-            {
-                Verbose.info("getStream from " + from, ": \"", path, "\"");
+                return inputStream;
             }
             return new FileInputStream(path);
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException("File not found: \"", path, "\"");
+            throw new LionEngineException(exception, media, "Cannot open the media");
         }
     }
 
@@ -152,23 +149,19 @@ public final class UtilityMedia
      * 
      * @param media The input media path, pointing to a file.
      * @param from The from function.
-     * @param logger The logger flag.
      * @return The opened input stream.
+     * @throws LionEngineException If the file can not be openened.
      */
-    static OutputStream getOutputStream(Media media, String from, boolean logger)
+    static OutputStream getOutputStream(Media media, String from) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
         {
-            if (logger)
-            {
-                Verbose.info("getOutputStream from " + from, ": \"", path, "\"");
-            }
             return new FileOutputStream(path);
         }
         catch (final FileNotFoundException exception)
         {
-            throw new LionEngineException("Cannot open the file: \"", path, "\"");
+            throw new LionEngineException(exception, media, "Cannot open the media");
         }
     }
 

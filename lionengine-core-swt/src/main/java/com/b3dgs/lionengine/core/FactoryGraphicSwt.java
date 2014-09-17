@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Transparency;
 
@@ -133,7 +134,7 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter)
+    public ImageBuffer applyFilter(ImageBuffer imageBuffer, Filter filter) throws LionEngineException
     {
         return UtilityImage.applyFilter(imageBuffer, filter);
     }
@@ -152,7 +153,7 @@ final class FactoryGraphicSwt
     }
 
     @Override
-    public int[][] loadRaster(Media media)
+    public int[][] loadRaster(Media media) throws LionEngineException
     {
         return Core.GRAPHIC.loadRaster(media);
     }

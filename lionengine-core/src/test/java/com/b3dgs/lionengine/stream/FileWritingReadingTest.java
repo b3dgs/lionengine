@@ -86,7 +86,7 @@ public class FileWritingReadingTest
      */
     private void testFileWriting()
     {
-        try (FileWriting writing = Stream.createFileWriting(fileData);)
+        try (FileWriting writing = Stream.createFileWriting(fileData))
         {
             writing.writeBoolean(XmlNodeMock.BOOL_VALUE);
             writing.writeByte(XmlNodeMock.BYTE_VALUE);
@@ -109,7 +109,7 @@ public class FileWritingReadingTest
      */
     private void testFileReading()
     {
-        try (FileReading reading = Stream.createFileReading(fileData);)
+        try (FileReading reading = Stream.createFileReading(fileData))
         {
             Assert.assertEquals(Boolean.valueOf(XmlNodeMock.BOOL_VALUE), Boolean.valueOf(reading.readBoolean()));
             Assert.assertEquals(XmlNodeMock.BYTE_VALUE, reading.readByte());

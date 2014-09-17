@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.entity;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -104,8 +105,10 @@ public abstract class EntityStrategy
      * </pre>
      * 
      * @param setup The entity setup.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time or invalid
+     *             setup.
      */
-    public EntityStrategy(SetupSurfaceGame setup)
+    public EntityStrategy(SetupSurfaceGame setup) throws LionEngineException
     {
         super(setup);
         final Configurable configurable = setup.getConfigurable();
@@ -594,7 +597,7 @@ public abstract class EntityStrategy
      */
 
     @Override
-    public final void prepare(ContextGame context)
+    public final void prepare(ContextGame context) throws LionEngineException
     {
         map = context.getService(MapTileStrategy.class);
         prepareEntity(context);
@@ -679,7 +682,7 @@ public abstract class EntityStrategy
      */
 
     @Override
-    public void play(Animation anim)
+    public void play(Animation anim) throws LionEngineException
     {
         animationCurrent = anim;
         sprite.play(anim);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
@@ -43,7 +44,7 @@ public class NetworkedWorldModelServer
      */
 
     @Override
-    public void startServer(String name, int port, String messageOfTheDay)
+    public void startServer(String name, int port, String messageOfTheDay) throws LionEngineException
     {
         for (final ClientListener listener : listeners)
         {

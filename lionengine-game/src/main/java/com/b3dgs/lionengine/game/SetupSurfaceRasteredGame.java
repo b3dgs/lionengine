@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -59,8 +60,10 @@ public class SetupSurfaceRasteredGame
      * @param alpha The alpha use flag.
      * @param rasterFile The raster media.
      * @param smoothRaster The raster smooth flag.
+     * @throws LionEngineException If error when opening the media.
      */
     public SetupSurfaceRasteredGame(Media config, boolean alpha, Media rasterFile, boolean smoothRaster)
+            throws LionEngineException
     {
         super(config, alpha);
         this.rasterFile = rasterFile;
@@ -85,8 +88,10 @@ public class SetupSurfaceRasteredGame
 
     /**
      * Load rasters.
+     *
+     * @throws LionEngineException If the raster data from the media are invalid.
      */
-    private void loadRasters()
+    private void loadRasters() throws LionEngineException
     {
         final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
         final int[] color = new int[rasters.length];
@@ -134,8 +139,9 @@ public class SetupSurfaceRasteredGame
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
+     * @throws LionEngineException If arguments are invalid.
      */
-    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb)
+    private void addRaster(int fr, int fg, int fb, int er, int eg, int eb) throws LionEngineException
     {
         final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(surface, fr, fg, fb, er, eg, eb, frameHeight);
         final SpriteAnimated raster = Drawable.loadSpriteAnimated(rasterBuf, hf, vf);

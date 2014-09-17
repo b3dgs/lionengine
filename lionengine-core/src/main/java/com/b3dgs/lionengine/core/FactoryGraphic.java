@@ -93,7 +93,7 @@ public interface FactoryGraphic
      * @param media The image media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image buffer from file.
-     * @throws LionEngineException If an error occurs when reading the image.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
     ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException;
 
@@ -174,7 +174,7 @@ public interface FactoryGraphic
      * 
      * @param image The image to save.
      * @param media The output media.
-     * @throws LionEngineException If an error occurs when saving the image.
+     * @throws LionEngineException If an error occurred when saving the image.
      */
     void saveImage(ImageBuffer image, Media media) throws LionEngineException;
 

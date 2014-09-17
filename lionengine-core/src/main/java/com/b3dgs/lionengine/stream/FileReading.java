@@ -28,7 +28,7 @@ import java.io.IOException;
  * 
  * <pre>
  * final Media file = Core.MEDIA.create(&quot;test.txt&quot;);
- * try (FileReading reading = File.createFileReading(file);)
+ * try (FileReading reading = File.createFileReading(file))
  * {
  *     reading.readBoolean();
  *     reading.readByte();

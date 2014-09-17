@@ -41,8 +41,6 @@ import com.b3dgs.lionengine.Resolution;
 abstract class ScreenAwt
         implements Screen, FocusListener
 {
-    /** Error message renderer. */
-    private static final String ERROR_RENDERER = "The renderer must not be null !";
     /** Error message display. */
     private static final String ERROR_DISPLAY = "No available display !";
     /** Error transversal keys. */
@@ -59,8 +57,9 @@ abstract class ScreenAwt
      * 
      * @param renderer The renderer reference.
      * @return The created screen.
+     * @throws LionEngineException If resolution is not supported.
      */
-    static Screen createScreen(Renderer renderer)
+    static Screen createScreen(Renderer renderer) throws LionEngineException
     {
         final Config config = renderer.getConfig();
         if (config.getApplet(AppletAwt.class) != null)
@@ -99,10 +98,11 @@ abstract class ScreenAwt
      * Constructor.
      * 
      * @param renderer The renderer reference.
+     * @throws LionEngineException If renderer is <code>null</code> or no available display.
      */
-    protected ScreenAwt(Renderer renderer)
+    protected ScreenAwt(Renderer renderer) throws LionEngineException
     {
-        Check.notNull(renderer, ScreenAwt.ERROR_RENDERER);
+        Check.notNull(renderer);
         if (GraphicsEnvironment.isHeadless())
         {
             throw new LionEngineException(ScreenAwt.ERROR_DISPLAY);
@@ -116,8 +116,9 @@ abstract class ScreenAwt
      * Set the screen config. Initialize the display.
      * 
      * @param output The output resolution
+     * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output)
+    protected void setResolution(Resolution output) throws LionEngineException
     {
         width = output.getWidth();
         height = output.getHeight();
@@ -167,8 +168,10 @@ abstract class ScreenAwt
 
     /**
      * Add a keyboard device.
+     * 
+     * @throws LionEngineException If mouse is not supported.
      */
-    private void addDeviceMouse()
+    private void addDeviceMouse() throws LionEngineException
     {
         final Mouse mouse = new Mouse();
         addMouseListener(mouse);
@@ -200,7 +203,14 @@ abstract class ScreenAwt
         setResolution(config.getOutput());
         prepareFocusListener();
         addDeviceKeyboard();
-        addDeviceMouse();
+        try
+        {
+            addDeviceMouse();
+        }
+        catch (final LionEngineException exception)
+        {
+            Verbose.exception(ScreenAwt.class, "start", exception);
+        }
         buf.show();
         graphics.setGraphic(buf.getDrawGraphics());
         final Media icon = config.getIcon();

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform.background;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
@@ -57,8 +58,10 @@ public abstract class CloudsPlatform
      * @param screenWidth The screen height.
      * @param decY The vertical offset.
      * @param alpha <code>true</code> if clouds surface uses alpha, <code>false</code> else.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public CloudsPlatform(Media media, int cloudWidth, int cloudHeight, int screenWidth, int decY, boolean alpha)
+            throws LionEngineException
     {
         this.decY = decY;
         sprite = Drawable.loadSpriteTiled(media, cloudWidth, cloudHeight);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.skill;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
@@ -71,8 +72,9 @@ public abstract class SkillStrategy
      * </pre>
      * 
      * @param setup The setup skill used.
+     * @throws LionEngineException If unable to read setup.
      */
-    public SkillStrategy(SetupGame setup)
+    public SkillStrategy(SetupGame setup) throws LionEngineException
     {
         final Configurable configurable = setup.getConfigurable();
         name = configurable.getText("name");

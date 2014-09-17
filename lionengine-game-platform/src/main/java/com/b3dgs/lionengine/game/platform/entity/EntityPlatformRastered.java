@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.platform.entity;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -43,8 +44,10 @@ public abstract class EntityPlatformRastered
      * 
      * @param setup The setup reference.
      * @param tileHeight The tile height value.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time or invalid
+     *             setup.
      */
-    public EntityPlatformRastered(SetupSurfaceRasteredGame setup, int tileHeight)
+    public EntityPlatformRastered(SetupSurfaceRasteredGame setup, int tileHeight) throws LionEngineException
     {
         super(setup);
         rasterable = new RasterableModel(setup, tileHeight);

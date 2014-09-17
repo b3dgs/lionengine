@@ -42,8 +42,9 @@ public final class AudioSc68
      * Create a sc68 player.
      * 
      * @return The sc68 player instance.
+     * @throws LionEngineException If unable to load library.
      */
-    public static Sc68 createSc68Player()
+    public static Sc68 createSc68Player() throws LionEngineException
     {
         final AudioSc68 sc68 = new AudioSc68();
         return new Sc68Player(sc68.getBinding());
@@ -59,7 +60,7 @@ public final class AudioSc68
     static File getFile(String outfile, InputStream stream)
     {
         final File file = new File(outfile);
-        try (OutputStream out = new FileOutputStream(file);)
+        try (OutputStream out = new FileOutputStream(file))
         {
             try
             {
@@ -90,8 +91,10 @@ public final class AudioSc68
 
     /**
      * Private constructor.
+     * 
+     * @throws LionEngineException If unable to load library.
      */
-    private AudioSc68()
+    private AudioSc68() throws LionEngineException
     {
         final String arch;
         final String ext;

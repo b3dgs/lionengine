@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -50,15 +51,17 @@ public interface Sc68
      * Play a music from its id, previously loaded.
      * 
      * @param media The music media.
+     * @throws LionEngineException If media is <code>null</code>
      */
-    void play(Media media);
+    void play(Media media) throws LionEngineException;
 
     /**
      * Set player volume (between 0 and 100, as a percent).
      * 
      * @param volume The music volume [0-100].
+     * @throws LionEngineException If argument is invalid.
      */
-    void setVolume(int volume);
+    void setVolume(int volume) throws LionEngineException;
 
     /**
      * Pause a playing music.

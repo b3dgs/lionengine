@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.strategy.ability.skilled;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 
 /**
@@ -41,8 +42,9 @@ public interface SkilledServices<S extends SkillStrategy>
      * 
      * @param skill The skill to add.
      * @param panel The panel id (>= 0).
+     * @throws LionEngineException If panel is invalid.
      */
-    void addSkill(S skill, int panel);
+    void addSkill(S skill, int panel) throws LionEngineException;
 
     /**
      * Get a skill from its id.
@@ -51,24 +53,27 @@ public interface SkilledServices<S extends SkillStrategy>
      * @param panel The panel (>= 0).
      * @param type The skill type.
      * @return The skill found.
+     * @throws LionEngineException If panel is invalid.
      */
-    <SI extends S> SI getSkill(int panel, Class<SI> type);
+    <SI extends S> SI getSkill(int panel, Class<SI> type) throws LionEngineException;
 
     /**
      * Remove a skill.
      * 
      * @param panel The skill panel (>= 0).
      * @param type The skill type.
+     * @throws LionEngineException If panel is invalid.
      */
-    void removeSkill(int panel, Class<? extends S> type);
+    void removeSkill(int panel, Class<? extends S> type) throws LionEngineException;
 
     /**
      * Get all skills as collection (iterable) from a panel.
      * 
      * @param panel The skill panel (>= 0).
      * @return The all skills (empty collection if no skills for this panel).
+     * @throws LionEngineException If panel is invalid.
      */
-    Collection<S> getSkills(int panel);
+    Collection<S> getSkills(int panel) throws LionEngineException;
 
     /**
      * Get all skills from all panels.
@@ -81,16 +86,18 @@ public interface SkilledServices<S extends SkillStrategy>
      * Set the current skill panel.
      * 
      * @param currentSkillPanel The current skill panel (>= 0).
+     * @throws LionEngineException If panel is invalid.
      */
-    void setSkillPanel(int currentSkillPanel);
+    void setSkillPanel(int currentSkillPanel) throws LionEngineException;
 
     /**
      * Set the next skill panel (will be applied on the next update, so differed compared to {@link #setSkillPanel(int)}
      * .
      * 
      * @param nextSkillPanel The next skill panel (>= 0).
+     * @throws LionEngineException If panel is invalid.
      */
-    void setSkillPanelNext(int nextSkillPanel);
+    void setSkillPanelNext(int nextSkillPanel) throws LionEngineException;
 
     /**
      * Get the current skill panel.

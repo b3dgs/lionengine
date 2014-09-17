@@ -107,10 +107,11 @@ public final class UtilityImage
      * @param media The image media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
+     * @throws LionEngineException If image cannot be read.
      */
-    static ImageBuffer getImage(Media media, boolean alpha)
+    static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
     {
-        try (final InputStream inputStream = media.getInputStream();)
+        try (final InputStream inputStream = media.getInputStream())
         {
             return new ImageBufferSwt(ToolsSwt.getImage(inputStream, alpha));
         }
@@ -228,8 +229,9 @@ public final class UtilityImage
      * 
      * @param image The image to save.
      * @param media The output media.
+     * @throws LionEngineException If image cannot be read.
      */
-    static void saveImage(ImageBuffer image, Media media)
+    static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
         try (final OutputStream outputStream = media.getOutputStream())
         {

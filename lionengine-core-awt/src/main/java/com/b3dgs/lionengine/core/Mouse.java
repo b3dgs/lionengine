@@ -89,8 +89,10 @@ public final class Mouse
 
     /**
      * Constructor.
+     * 
+     * @throws LionEngineException If environment is not compatible with mouse input.
      */
-    Mouse()
+    Mouse() throws LionEngineException
     {
         super();
         try

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Networkable world interface client side.
  * 
@@ -30,8 +32,9 @@ public interface NetworkedWorldClient
      * 
      * @param ip The server ip.
      * @param port The server port.
+     * @throws LionEngineException If unable to connect.
      */
-    void connect(String ip, int port);
+    void connect(String ip, int port) throws LionEngineException;
 
     /**
      * Set the client new name.

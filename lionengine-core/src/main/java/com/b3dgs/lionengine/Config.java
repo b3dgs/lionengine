@@ -49,17 +49,6 @@ import com.b3dgs.lionengine.core.Sequence;
  */
 public final class Config
 {
-    /** Error message source. */
-    private static final String ERROR_SOURCE = "The source resolution must not be null !";
-    /** Error message output. */
-    private static final String ERROR_OUTPUT = "The output resolution must not be null !";
-    /** Error message filter. */
-    private static final String ERROR_FILTER = "The filter must not be null !";
-    /** Error message depth. */
-    private static final String ERROR_DEPTH = "Depth must be strict positive !";
-    /** Error message depth. */
-    private static final String ERROR_RATIO = "Ratio must be strict positive !";
-
     /** Output resolution reference. */
     private final Resolution output;
     /** Filter reference. */
@@ -83,8 +72,9 @@ public final class Config
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
+     * @throws LionEngineException If arguments are <code>null</code> or invalid.
      */
-    public Config(Resolution output, int depth, boolean windowed)
+    public Config(Resolution output, int depth, boolean windowed) throws LionEngineException
     {
         this(output, depth, windowed, Filter.NONE);
     }
@@ -96,12 +86,13 @@ public final class Config
      * @param depth The screen color depth in bits (usually 16 or 32).
      * @param windowed The windowed mode: <code>true</code> for windowed, <code>false</code> for fullscreen.
      * @param filter The filter mode (must not be null).
+     * @throws LionEngineException If arguments are <code>null</code> or invalid.
      */
-    public Config(Resolution output, int depth, boolean windowed, Filter filter)
+    public Config(Resolution output, int depth, boolean windowed, Filter filter) throws LionEngineException
     {
-        Check.notNull(output, Config.ERROR_OUTPUT);
-        Check.notNull(filter, Config.ERROR_FILTER);
-        Check.argument(depth > 0, Config.ERROR_DEPTH);
+        Check.notNull(output);
+        Check.notNull(filter);
+        Check.superiorStrict(depth, 0);
 
         this.output = output;
         this.depth = depth;
@@ -115,10 +106,11 @@ public final class Config
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
      * @param ratio The new ratio [> 0].
+     * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRatio(double ratio)
+    public void setRatio(double ratio) throws LionEngineException
     {
-        Check.argument(ratio > 0, Config.ERROR_RATIO);
+        Check.superiorStrict(ratio, 0);
 
         this.ratio = ratio;
         output.setRatio(ratio);
@@ -224,10 +216,11 @@ public final class Config
      * Set the resolution source.
      * 
      * @param source The source resolution (native).
+     * @throws LionEngineException If source is <code>null</code>.
      */
-    public void setSource(Resolution source)
+    public void setSource(Resolution source) throws LionEngineException
     {
-        Check.notNull(source, Config.ERROR_SOURCE);
+        Check.notNull(source);
 
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
         this.source.setRatio(ratio);

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.FactoryGame;
 
@@ -31,6 +32,7 @@ public interface Fabricable
      * Prepare the fabricated object.
      * 
      * @param context The context reference.
+     * @throws LionEngineException If unavailable services.
      */
-    void prepare(ContextGame context);
+    void prepare(ContextGame context) throws LionEngineException;
 }

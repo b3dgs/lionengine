@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.projectile;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
@@ -227,8 +228,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
     protected P addProjectile(Media media, int dmg, E target, double speed, int offX, int offY)
+            throws LionEngineException
     {
         if (target != null)
         {
@@ -264,8 +267,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
     protected P addProjectile(Media media, int dmg, double vecX, double vecY, int offX, int offY)
+            throws LionEngineException
     {
         return addProjectile(media, -1, 0, dmg, vecX, vecY, offX, offY, null);
     }
@@ -281,8 +286,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
     protected P addProjectile(Media media, int id, int dmg, double vecX, double vecY, int offX, int offY)
+            throws LionEngineException
     {
         return addProjectile(media, id, 0, dmg, vecX, vecY, offX, offY, null);
     }
@@ -298,8 +305,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offX The horizontal projectile location offset.
      * @param offY The vertical projectile location offset.
      * @return The created projectile.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
     protected P addProjectile(Media media, long delay, int dmg, double vecX, double vecY, int offX, int offY)
+            throws LionEngineException
     {
         return addProjectile(media, -1, delay, dmg, vecX, vecY, offX, offY, null);
     }
@@ -317,9 +326,10 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      * @param offY The vertical projectile location offset.
      * @param target The target reference.
      * @return The created projectile.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
     private P addProjectile(Media media, int id, long delay, int dmg, double vecX, double vecY, int offX, int offY,
-            E target)
+            E target) throws LionEngineException
     {
         final P projectile = factory.create(media);
 
@@ -343,7 +353,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(ContextGame context) throws LionEngineException
     {
         factory = context.getService(FactoryObjectGame.class);
         handler = context.getService(HandlerProjectileGame.class);

@@ -275,12 +275,13 @@ public abstract class Sequence
 
     @Override
     public final void start(boolean wait, Class<? extends Sequence> nextSequenceClass, Object... arguments)
+            throws LionEngineException
     {
         renderer.start(wait, nextSequenceClass, arguments);
     }
 
     @Override
-    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments)
+    public final void end(Class<? extends Sequence> nextSequenceClass, Object... arguments) throws LionEngineException
     {
         renderer.end(nextSequenceClass, arguments);
     }
@@ -328,7 +329,7 @@ public abstract class Sequence
     }
 
     @Override
-    public final void setResolution(Resolution newSource)
+    public final void setResolution(Resolution newSource) throws LionEngineException
     {
         renderer.setResolution(newSource);
     }

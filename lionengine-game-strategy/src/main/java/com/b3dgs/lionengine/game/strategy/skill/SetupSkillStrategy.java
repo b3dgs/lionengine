@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.skill;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.SetupGame;
 
@@ -44,8 +45,9 @@ public abstract class SetupSkillStrategy
      * </pre>
      * 
      * @param config The config media.
+     * @throws LionEngineException If error when opening the media.
      */
-    public SetupSkillStrategy(Media config)
+    public SetupSkillStrategy(Media config) throws LionEngineException
     {
         super(config);
         name = configurable.getText("name");

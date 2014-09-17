@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.core.Verbose;
 public final class UtilFile
 {
     /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir");
+    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
 
     /** Engine temporary directory. */
     private static String tmpDir;
@@ -279,33 +279,6 @@ public final class UtilFile
     }
 
     /**
-     * Get all files existing in the path considering the extension.
-     * 
-     * @param filesList The files list.
-     * @param path The path to check.
-     * @param extension The extension (without dot; eg: png).
-     */
-    private static void getFilesByExtensionRecursive(List<File> filesList, String path, String extension)
-    {
-        final File file = new File(path);
-        if (file.exists())
-        {
-            final File[] files = file.listFiles();
-            for (final File content : files)
-            {
-                if (content.isDirectory())
-                {
-                    UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
-                }
-                if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
-                {
-                    filesList.add(content);
-                }
-            }
-        }
-    }
-
-    /**
      * Get all files existing in the path with the specified name.
      * 
      * @param path The path to check.
@@ -317,28 +290,6 @@ public final class UtilFile
         final List<File> filesList = new ArrayList<>(1);
         UtilFile.getFilesByNameRecursive(filesList, path, name);
         return filesList;
-    }
-
-    /**
-     * Get all files existing in the path with the specified name.
-     * 
-     * @param filesList The files list.
-     * @param path The path to check.
-     * @param name The file name.
-     */
-    private static void getFilesByNameRecursive(List<File> filesList, File path, String name)
-    {
-        for (final File file : path.listFiles())
-        {
-            if (file.isFile() && file.getName().equals(name))
-            {
-                filesList.add(file);
-            }
-            else if (file.isDirectory())
-            {
-                UtilFile.getFilesByNameRecursive(filesList, file, name);
-            }
-        }
     }
 
     /**
@@ -408,7 +359,7 @@ public final class UtilFile
      */
     public static void setTempDirectory(String programName)
     {
-        if (programName != null)
+        if (programName != null && UtilFile.SYSTEM_TEMP_DIR != null)
         {
             final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
             UtilFile.tmpDir = UtilFile.getPath(UtilFile.SYSTEM_TEMP_DIR, dir);
@@ -441,6 +392,55 @@ public final class UtilFile
                      | IOException exception)
         {
             throw new ValidationException(exception);
+        }
+    }
+
+    /**
+     * Get all files existing in the path considering the extension.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param extension The extension (without dot; eg: png).
+     */
+    private static void getFilesByExtensionRecursive(List<File> filesList, String path, String extension)
+    {
+        final File file = new File(path);
+        if (file.exists())
+        {
+            final File[] files = file.listFiles();
+            for (final File content : files)
+            {
+                if (content.isDirectory())
+                {
+                    UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                }
+                if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
+                {
+                    filesList.add(content);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get all files existing in the path with the specified name.
+     * 
+     * @param filesList The files list.
+     * @param path The path to check.
+     * @param name The file name.
+     */
+    private static void getFilesByNameRecursive(List<File> filesList, File path, String name)
+    {
+        for (final File file : path.listFiles())
+        {
+            if (file.isFile() && file.getName().equals(name))
+            {
+                filesList.add(file);
+            }
+            else if (file.isDirectory())
+            {
+                UtilFile.getFilesByNameRecursive(filesList, file, name);
+            }
         }
     }
 

@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.stream;
 
-import java.io.IOException;
-
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -43,9 +42,9 @@ public final class Stream
      * 
      * @param media The media file.
      * @return The created reader.
-     * @throws IOException If open failed.
+     * @throws LionEngineException If error when opening the media.
      */
-    public static FileReading createFileReading(Media media) throws IOException
+    public static FileReading createFileReading(Media media) throws LionEngineException
     {
         return new FileReadingImpl(media);
     }
@@ -55,9 +54,9 @@ public final class Stream
      * 
      * @param media The media file.
      * @return The created writer.
-     * @throws IOException If open failed.
+     * @throws LionEngineException If error when opening the media.
      */
-    public static FileWriting createFileWriting(Media media) throws IOException
+    public static FileWriting createFileWriting(Media media) throws LionEngineException
     {
         return new FileWritingImpl(media);
     }
@@ -67,8 +66,9 @@ public final class Stream
      * 
      * @param media The XML media path.
      * @return The XML root node.
+     * @throws LionEngineException If error when opening the media.
      */
-    public static XmlNode loadXml(Media media)
+    public static XmlNode loadXml(Media media) throws LionEngineException
     {
         return XmlFactory.load(media);
     }
@@ -78,8 +78,9 @@ public final class Stream
      * 
      * @param root The XML root node.
      * @param media The output media path.
+     * @throws LionEngineException If error when opening the media.
      */
-    public static void saveXml(XmlNode root, Media media)
+    public static void saveXml(XmlNode root, Media media) throws LionEngineException
     {
         XmlFactory.save(root, media);
     }
@@ -89,8 +90,9 @@ public final class Stream
      * 
      * @param name The node name.
      * @return The created node.
+     * @throws LionEngineException If error when creating the node.
      */
-    public static XmlNode createXmlNode(String name)
+    public static XmlNode createXmlNode(String name) throws LionEngineException
     {
         return new XmlNodeImpl(name);
     }

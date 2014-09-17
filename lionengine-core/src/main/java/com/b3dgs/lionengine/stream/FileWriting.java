@@ -28,7 +28,7 @@ import java.io.IOException;
  * 
  * <pre>
  * final Media file = Core.MEDIA.create(&quot;test.txt&quot;);
- * try (FileWriting writing = File.createFileWriting(file);)
+ * try (FileWriting writing = File.createFileWriting(file))
  * {
  *     writing.writeBoolean(true);
  *     writing.writeByte((byte) 1);

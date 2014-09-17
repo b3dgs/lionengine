@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
@@ -93,8 +94,10 @@ public class Cursor
      * @param resolution The resolution used to know the screen limits.
      * @param media The cursor media.
      * @param others The cursor medias list (containing the different cursor surfaces path).
+     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
      */
     public Cursor(InputDevicePointer pointer, Resolution resolution, Media media, Media... others)
+            throws LionEngineException
     {
         this(pointer, 0, 0, resolution.getWidth(), resolution.getHeight(), media, others);
     }
@@ -109,11 +112,13 @@ public class Cursor
      * @param maxY The maximal y location on screen.
      * @param media The cursor media.
      * @param others The cursor media list (containing the different cursor surfaces path).
+     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
      */
     public Cursor(InputDevicePointer pointer, int minX, int minY, int maxX, int maxY, Media media, Media... others)
+            throws LionEngineException
     {
-        Check.notNull(pointer, "The pointer must not be null !");
-        Check.notNull(media, "The cursor should have at least one image !");
+        Check.notNull(pointer);
+        Check.notNull(media);
 
         this.pointer = pointer;
         x = 0.0;

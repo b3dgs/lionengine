@@ -34,6 +34,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
@@ -45,13 +46,15 @@ import com.b3dgs.lionengine.core.Media;
 final class XmlFactory
 {
     /** Error when reading the file. */
-    private static final String ERROR_READING = "An error occured while reading the following file: ";
+    private static final String ERROR_READING = "An error occured while reading";
     /** Error when writing into file. */
-    private static final String ERROR_WRITING = "An error occured while writing the following file: ";
+    private static final String ERROR_WRITING = "An error occured while writing";
     /** Header attribute. */
     private static final String HEADER_ATTRIBUTE = "xmlns:lionengine";
     /** Header value. */
     private static final String HEADER_VALUE = "http://lionengine.b3dgs.com";
+    /** Property indent. */
+    private static final String PROPERTY_INDENT = "{http://xml.apache.org/xslt}indent-amount";
 
     /** Load factory. */
     private static DocumentBuilderFactory documentFactory;
@@ -63,10 +66,12 @@ final class XmlFactory
      * 
      * @param media The XML media path.
      * @return The XML root node.
+     * @throws LionEngineException If error when loading media.
      */
-    public static XmlNode load(Media media)
+    public static XmlNode load(Media media) throws LionEngineException
     {
-        final String file = media.getPath();
+        Check.notNull(media);
+
         try
         {
             final DocumentBuilder builder = XmlFactory.getDocumentFactory().newDocumentBuilder();
@@ -80,7 +85,7 @@ final class XmlFactory
                      | IllegalArgumentException
                      | ParserConfigurationException exception)
         {
-            throw new LionEngineException(exception, XmlFactory.ERROR_READING, "\"", file, "\"");
+            throw new LionEngineException(exception, media, XmlFactory.ERROR_READING);
         }
     }
 
@@ -89,11 +94,14 @@ final class XmlFactory
      * 
      * @param root The XML root node.
      * @param media The output media path.
+     * @throws LionEngineException If error when saving media.
      */
-    public static void save(XmlNode root, Media media)
+    public static void save(XmlNode root, Media media) throws LionEngineException
     {
-        final String file = media.getPath();
-        try (OutputStream outputStream = media.getOutputStream();)
+        Check.notNull(root);
+        Check.notNull(media);
+
+        try (final OutputStream outputStream = media.getOutputStream())
         {
             final Transformer transformer = XmlFactory.getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
@@ -103,15 +111,14 @@ final class XmlFactory
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+                transformer.setOutputProperty(XmlFactory.PROPERTY_INDENT, "4");
                 transformer.transform(source, result);
             }
         }
         catch (final IOException
-                     | TransformerException
-                     | LionEngineException exception)
+                     | TransformerException exception)
         {
-            throw new LionEngineException(exception, XmlFactory.ERROR_WRITING, "\"", file, "\"");
+            throw new LionEngineException(exception, media, XmlFactory.ERROR_WRITING);
         }
     }
 

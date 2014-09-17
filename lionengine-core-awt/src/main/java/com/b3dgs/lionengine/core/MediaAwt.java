@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 
 /**
@@ -61,15 +62,15 @@ final class MediaAwt
     }
 
     @Override
-    public InputStream getInputStream()
+    public InputStream getInputStream() throws LionEngineException
     {
-        return UtilityMedia.getInputStream(this, "MediaAwt", false);
+        return UtilityMedia.getInputStream(this, "MediaAwt");
     }
 
     @Override
-    public OutputStream getOutputStream()
+    public OutputStream getOutputStream() throws LionEngineException
     {
-        return UtilityMedia.getOutputStream(this, "MediaAwt", false);
+        return UtilityMedia.getOutputStream(this, "MediaAwt");
     }
 
     @Override

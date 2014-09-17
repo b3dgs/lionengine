@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -42,12 +43,14 @@ import com.b3dgs.lionengine.LionEngineException;
 final class XmlNodeImpl
         implements XmlNode
 {
-    /** Node name error. */
-    private static final String ERROR_NODE_NAME = "The node name must not be null !";
     /** Node error. */
     private static final String ERROR_NODE = "Node not found: ";
     /** Attribute error. */
     private static final String ERROR_ATTRIBUTE = "The following attribute does not exist: ";
+    /** Attribute error. */
+    private static final String ERROR_WRITE_ATTRIBUTE = "Error when setting the attribute:";
+    /** Attribute error. */
+    private static final String ERROR_WRITE_CONTENT = " with the following content: ";
     /** Document. */
     private static Document document;
 
@@ -58,10 +61,12 @@ final class XmlNodeImpl
      * Constructor.
      * 
      * @param name The node name.
+     * @throws LionEngineException If error when creating the node.
      */
-    XmlNodeImpl(String name)
+    XmlNodeImpl(String name) throws LionEngineException
     {
-        Check.notNull(name, XmlNodeImpl.ERROR_NODE_NAME);
+        Check.notNull(name);
+
         try
         {
             final DocumentBuilder constructeur = XmlFactory.getDocumentFactory().newDocumentBuilder();
@@ -121,10 +126,19 @@ final class XmlNodeImpl
      * 
      * @param attribute The attribute name.
      * @param content The content value.
+     * @throws LionEngineException If error when setting the attribute.
      */
-    private void write(String attribute, String content)
+    private void write(String attribute, String content) throws LionEngineException
     {
-        root.setAttribute(attribute, content);
+        try
+        {
+            root.setAttribute(attribute, content);
+        }
+        catch (final DOMException exception)
+        {
+            throw new LionEngineException(exception, XmlNodeImpl.ERROR_WRITE_ATTRIBUTE, attribute,
+                    XmlNodeImpl.ERROR_WRITE_CONTENT, content);
+        }
     }
 
     /*
@@ -132,61 +146,75 @@ final class XmlNodeImpl
      */
 
     @Override
-    public void add(XmlNode node)
+    public void add(XmlNode node) throws LionEngineException
     {
-        root.appendChild(XmlNodeImpl.class.cast(node).getElement());
+        try
+        {
+            root.appendChild(XmlNodeImpl.class.cast(node).getElement());
+        }
+        catch (final DOMException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     @Override
-    public void setText(String text)
+    public void setText(String text) throws LionEngineException
     {
-        root.setTextContent(text);
+        try
+        {
+            root.setTextContent(text);
+        }
+        catch (final DOMException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     @Override
-    public void writeBoolean(String attribute, boolean content)
-    {
-        write(attribute, String.valueOf(content));
-    }
-
-    @Override
-    public void writeByte(String attribute, byte content)
-    {
-        write(attribute, String.valueOf(content));
-    }
-
-    @Override
-    public void writeShort(String attribute, short content)
-    {
-        write(attribute, String.valueOf(content));
-    }
-
-    @Override
-    public void writeInteger(String attribute, int content)
+    public void writeBoolean(String attribute, boolean content) throws LionEngineException
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeLong(String attribute, long content)
+    public void writeByte(String attribute, byte content) throws LionEngineException
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeFloat(String attribute, float content)
+    public void writeShort(String attribute, short content) throws LionEngineException
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeDouble(String attribute, double content)
+    public void writeInteger(String attribute, int content) throws LionEngineException
     {
         write(attribute, String.valueOf(content));
     }
 
     @Override
-    public void writeString(String attribute, String content)
+    public void writeLong(String attribute, long content) throws LionEngineException
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeFloat(String attribute, float content) throws LionEngineException
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeDouble(String attribute, double content) throws LionEngineException
+    {
+        write(attribute, String.valueOf(content));
+    }
+
+    @Override
+    public void writeString(String attribute, String content) throws LionEngineException
     {
         if (content == null)
         {
@@ -199,49 +227,49 @@ final class XmlNodeImpl
     }
 
     @Override
-    public boolean readBoolean(String attribute)
+    public boolean readBoolean(String attribute) throws LionEngineException
     {
         return Boolean.parseBoolean(getValue(attribute));
     }
 
     @Override
-    public byte readByte(String attribute)
+    public byte readByte(String attribute) throws LionEngineException
     {
         return Byte.parseByte(getValue(attribute));
     }
 
     @Override
-    public short readShort(String attribute)
+    public short readShort(String attribute) throws LionEngineException
     {
         return Short.parseShort(getValue(attribute));
     }
 
     @Override
-    public int readInteger(String attribute)
+    public int readInteger(String attribute) throws LionEngineException
     {
         return Integer.parseInt(getValue(attribute));
     }
 
     @Override
-    public long readLong(String attribute)
+    public long readLong(String attribute) throws LionEngineException
     {
         return Long.parseLong(getValue(attribute));
     }
 
     @Override
-    public float readFloat(String attribute)
+    public float readFloat(String attribute) throws LionEngineException
     {
         return Float.parseFloat(getValue(attribute));
     }
 
     @Override
-    public double readDouble(String attribute)
+    public double readDouble(String attribute) throws LionEngineException
     {
         return Double.parseDouble(getValue(attribute));
     }
 
     @Override
-    public String readString(String attribute)
+    public String readString(String attribute) throws LionEngineException
     {
         final String value = getValue(attribute);
         if (XmlNode.NULL.equals(value))

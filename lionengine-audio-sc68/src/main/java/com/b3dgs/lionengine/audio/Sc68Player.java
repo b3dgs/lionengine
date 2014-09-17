@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.audio;
 import java.io.File;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
@@ -39,10 +40,12 @@ final class Sc68Player
      * Constructor.
      * 
      * @param binding The binding reference.
+     * @throws LionEngineException If binding is <code>null</code>
      */
-    Sc68Player(Sc68Binding binding)
+    Sc68Player(Sc68Binding binding) throws LionEngineException
     {
-        Check.notNull(binding, "SC68 binding must not be null !");
+        Check.notNull(binding);
+
         this.binding = binding;
     }
 
@@ -51,14 +54,16 @@ final class Sc68Player
      */
 
     @Override
-    public void play(Media media)
+    public void play(Media media) throws LionEngineException
     {
         Check.notNull(media);
+
         final String str = media.getPath().replace(Core.MEDIA.getSeparator().charAt(0), ';');
         final String[] slp = str.split(";");
         final String n = slp[slp.length - 1];
         final String file = UtilFile.getPath(UtilFile.getTempDir(), n);
         final File music;
+
         if (!UtilFile.exists(file))
         {
             music = AudioSc68.getFile(file, media.getInputStream());
@@ -71,9 +76,11 @@ final class Sc68Player
     }
 
     @Override
-    public void setVolume(int volume)
+    public void setVolume(int volume) throws LionEngineException
     {
-        Check.argument(volume >= 0 && volume <= 100, "Wrong volume value !");
+        Check.superiorOrEqual(volume, 0);
+        Check.inferiorOrEqual(volume, 100);
+
         binding.Sc68SetVolume(volume);
     }
 

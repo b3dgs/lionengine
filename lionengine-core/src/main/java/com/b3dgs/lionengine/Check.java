@@ -24,27 +24,138 @@ package com.b3dgs.lionengine;
  * </p>
  * 
  * <pre>
- * Check.argument(value &gt; 0, &quot;Value was not positive:&quot;, String.valueOf(value));
+ * Check.superiorStrict(value, 0);
  * final Object object = null;
- * Check.notNull(object, &quot;Object is null !&quot;);
+ * Check.notNull(object);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Check
 {
+    /** Argument error message. */
+    private static final String ERROR_ARGUMENT = "Invalid argument: ";
+    /** Null argument error message. */
+    private static final String ERROR_NULL = "Unexpected null argument !";
+    /** Superior comparison error. */
+    private static final String ERROR_SUPERIOR = " is not superior or equal to ";
+    /** Strictly superior comparison error. */
+    private static final String ERROR_SUPERIOR_STRICT = " is not strictly superior to ";
+    /** Inferior comparison error. */
+    private static final String ERROR_INFERIOR = " is not inferior or equal to ";
+    /** Strictly inferior comparison error. */
+    private static final String ERROR_INFERIOR_STRICT = " is not strictly inferior to ";
+    /** Different comparison error. */
+    private static final String ERROR_DIFFERENT = " is not different to ";
+
     /**
-     * Check if the condition if <code>true</code>.
+     * Check if <code>a</code> is superior to <code>b</code>.
      * 
-     * @param condition The condition to check.
-     * @param messages The messages to put in the exception.
-     * @throws LionEngineException If condition is <code>false</code>.
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
      */
-    public static void argument(boolean condition, String... messages) throws LionEngineException
+    public static void superiorOrEqual(int a, int b) throws LionEngineException
     {
-        if (!condition)
+        Check.superior(a, b, false);
+    }
+
+    /**
+     * Check if <code>a</code> is superior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void superiorOrEqual(double a, double b) throws LionEngineException
+    {
+        Check.superior(a, b, false);
+    }
+
+    /**
+     * Check if <code>a</code> is strictly superior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void superiorStrict(int a, int b) throws LionEngineException
+    {
+        Check.superior(a, b, true);
+    }
+
+    /**
+     * Check if <code>a</code> is strictly superior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void superiorStrict(double a, double b) throws LionEngineException
+    {
+        Check.superior(a, b, true);
+    }
+
+    /**
+     * Check if <code>a</code> is inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void inferiorOrEqual(int a, int b) throws LionEngineException
+    {
+        Check.inferior(a, b, false);
+    }
+
+    /**
+     * Check if <code>a</code> is inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void inferiorOrEqual(double a, double b) throws LionEngineException
+    {
+        Check.inferior(a, b, false);
+    }
+
+    /**
+     * Check if <code>a</code> is strictly inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void inferiorStrict(int a, int b) throws LionEngineException
+    {
+        Check.inferior(a, b, true);
+    }
+
+    /**
+     * Check if <code>a</code> is strictly inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void inferiorStrict(double a, double b) throws LionEngineException
+    {
+        Check.inferior(a, b, true);
+    }
+
+    /**
+     * Check if <code>a</code> is different to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @throws LionEngineException If check failed.
+     */
+    public static void different(int a, int b) throws LionEngineException
+    {
+        if (a == b)
         {
-            throw new LionEngineException(messages);
+            throw new LionEngineException(Check.ERROR_DIFFERENT);
         }
     }
 
@@ -52,15 +163,144 @@ public final class Check
      * Check if the object is not <code>null</code>.
      * 
      * @param object The object to check.
-     * @param messages The messages to put in the exception.
      * @throws LionEngineException If object is <code>null</code>.
      */
-    public static void notNull(Object object, String... messages) throws LionEngineException
+    public static void notNull(Object object) throws LionEngineException
     {
         if (object == null)
         {
-            throw new LionEngineException(messages);
+            throw new LionEngineException(Check.ERROR_NULL);
         }
+    }
+
+    /**
+     * Check if <code>a</code> is superior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param strict <code>true</code> for strictly superior, <code>false</code> for strict or equal superior.
+     * @throws LionEngineException If check failed.
+     */
+    private static void superior(int a, int b, boolean strict) throws LionEngineException
+    {
+        if (strict)
+        {
+            if (a <= b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR_STRICT);
+            }
+        }
+        else
+        {
+            if (a < b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR);
+            }
+        }
+    }
+
+    /**
+     * Check if <code>a</code> is superior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param strict <code>true</code> for strictly superior, <code>false</code> for strict or equal superior.
+     * @throws LionEngineException If check failed.
+     */
+    private static void superior(double a, double b, boolean strict) throws LionEngineException
+    {
+        if (strict)
+        {
+            if (a <= b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR_STRICT);
+            }
+        }
+        else
+        {
+            if (a < b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR);
+            }
+        }
+    }
+
+    /**
+     * Check if <code>a</code> is inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param strict <code>true</code> for strictly inferior, <code>false</code> for strict or equal inferior.
+     * @throws LionEngineException If check failed.
+     */
+    private static void inferior(int a, int b, boolean strict) throws LionEngineException
+    {
+        if (strict)
+        {
+            if (a >= b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_INFERIOR_STRICT);
+            }
+        }
+        else
+        {
+            if (a > b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_INFERIOR);
+            }
+        }
+    }
+
+    /**
+     * Check if <code>a</code> is inferior to <code>b</code>.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param strict <code>true</code> for strictly inferior, <code>false</code> for strict or equal inferior.
+     * @throws LionEngineException If check failed.
+     */
+    private static void inferior(double a, double b, boolean strict) throws LionEngineException
+    {
+        if (strict)
+        {
+            if (a >= b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_INFERIOR_STRICT);
+            }
+        }
+        else
+        {
+            if (a > b)
+            {
+                throw Check.argumentError(a, b, Check.ERROR_INFERIOR);
+            }
+        }
+    }
+
+    /**
+     * Create an argument exception.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param message The error message comparison.
+     * @return The exception instance.
+     */
+    private static LionEngineException argumentError(int a, int b, String message)
+    {
+        return new LionEngineException(Check.ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
+    }
+
+    /**
+     * Create an argument exception.
+     * 
+     * @param a The parameter to test.
+     * @param b The parameter to compare to.
+     * @param message The error message comparison.
+     * @return The exception instance.
+     */
+    private static LionEngineException argumentError(double a, double b, String message)
+    {
+        return new LionEngineException(Check.ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
     }
 
     /**

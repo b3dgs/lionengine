@@ -30,13 +30,6 @@ package com.b3dgs.lionengine;
  */
 public final class Resolution
 {
-    /** Error message size. */
-    private static final String ERROR_SIZE = "Size must be strict positive !";
-    /** Error message rate. */
-    private static final String ERROR_RATE = "Rate must be positive !";
-    /** Error message depth. */
-    private static final String ERROR_RATIO = "Ratio must be strict positive !";
-
     /** Resolution width. */
     private int width;
     /** Resolution height. */
@@ -52,8 +45,9 @@ public final class Resolution
      * @param width The resolution width (in pixel).
      * @param height The resolution height (in pixel).
      * @param rate The refresh rate (usually 50 or 60).
+     * @throws LionEngineException If arguments are invalid.
      */
-    public Resolution(int width, int height, int rate)
+    public Resolution(int width, int height, int rate) throws LionEngineException
     {
         set(width, height, rate);
     }
@@ -63,8 +57,9 @@ public final class Resolution
      * 
      * @param width The resolution width (in pixel).
      * @param height The resolution height (in pixel).
+     * @throws LionEngineException If arguments are invalid.
      */
-    public void set(int width, int height)
+    public void set(int width, int height) throws LionEngineException
     {
         set(width, height, rate);
     }
@@ -75,11 +70,13 @@ public final class Resolution
      * @param width The resolution width (in pixel) [> 0].
      * @param height The resolution height (in pixel) [> 0].
      * @param rate The refresh rate in hertz (usually 50 or 60) [>= 0].
+     * @throws LionEngineException If arguments are invalid.
      */
-    public void set(int width, int height, int rate)
+    public void set(int width, int height, int rate) throws LionEngineException
     {
-        Check.argument(width > 0 && height > 0, Resolution.ERROR_SIZE);
-        Check.argument(rate >= 0, Resolution.ERROR_RATE);
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+        Check.superiorOrEqual(rate, 0);
 
         this.width = width;
         this.height = height;
@@ -91,10 +88,11 @@ public final class Resolution
      * Set the ratio and adapt the resolution to the new ratio (based on the height value).
      * 
      * @param ratio The new ratio [> 0].
+     * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRatio(double ratio)
+    public void setRatio(double ratio) throws LionEngineException
     {
-        Check.argument(ratio > 0, Resolution.ERROR_RATIO);
+        Check.superiorStrict(ratio, 0);
 
         if (!Ratio.equals(this.ratio, ratio))
         {
@@ -108,10 +106,11 @@ public final class Resolution
      * Set the refresh rate value in hertz.
      * 
      * @param rate The refresh rate value [>= 0].
+     * @throws LionEngineException If ratio is not strictly positive.
      */
-    public void setRate(int rate)
+    public void setRate(int rate) throws LionEngineException
     {
-        Check.argument(rate >= 0, Resolution.ERROR_RATE);
+        Check.superiorOrEqual(rate, 0);
 
         this.rate = rate;
     }

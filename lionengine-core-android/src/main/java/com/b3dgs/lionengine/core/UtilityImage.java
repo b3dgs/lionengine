@@ -74,7 +74,7 @@ public final class UtilityImage
      * @param media The image input media.
      * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      * @return The created image from file.
-     * @throws LionEngineException If an error occurs when reading the image.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
     static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
     {
@@ -197,7 +197,7 @@ public final class UtilityImage
      * 
      * @param image The image to save.
      * @param media The output media.
-     * @throws LionEngineException If an error occurs when saving the image.
+     * @throws LionEngineException If an error occurred when saving the image.
      */
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {

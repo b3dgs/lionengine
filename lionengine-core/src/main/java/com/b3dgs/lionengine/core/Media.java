@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
  * location, such as <code>HDD</code>, <code>JAR</code>...
@@ -56,13 +58,15 @@ public interface Media
      * Get the media input stream.
      * 
      * @return The media input stream.
+     * @throws LionEngineException If error when getting the stream.
      */
-    InputStream getInputStream();
+    InputStream getInputStream() throws LionEngineException;
 
     /**
      * Get the media output stream.
      * 
      * @return The media output stream.
+     * @throws LionEngineException If error when getting the stream.
      */
-    OutputStream getOutputStream();
+    OutputStream getOutputStream() throws LionEngineException;
 }

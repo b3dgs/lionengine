@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 
@@ -65,16 +66,18 @@ public interface Sprite
      * else the surface will never be prepared.
      * 
      * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
-    void load(boolean alpha);
+    void load(boolean alpha) throws LionEngineException;
 
     /**
      * Method used for sprite scaling, in order to modify its size. Normal factor is equal to <code>100</code>, so
      * <code>200</code> will scale it twice bigger, whereas <code>50</code> will scale half its size.
      * 
      * @param percent The value for scaling in percent (> 0).
+     * @throws LionEngineException If argument is invalid.
      */
-    void scale(int percent);
+    void scale(int percent) throws LionEngineException;
 
     /**
      * Works as scale, but using different width and height factor. Using different value, the ratio won't be kept, and
@@ -82,8 +85,9 @@ public interface Sprite
      * 
      * @param percentWidth The percent value for scaling width (> 0).
      * @param percentHeight The percent value for scaling height (> 0).
+     * @throws LionEngineException If arguments are invalid.
      */
-    void stretch(int percentWidth, int percentHeight);
+    void stretch(int percentWidth, int percentHeight) throws LionEngineException;
 
     /**
      * Rotate the sprite with the specified angle in degree.
@@ -106,8 +110,9 @@ public interface Sprite
      * Apply a filter to the sprite.
      * 
      * @param filter The filter to use.
+     * @throws LionEngineException If the filter is not supported.
      */
-    void filter(Filter filter);
+    void filter(Filter filter) throws LionEngineException;
 
     /**
      * Set transparency color mask.
@@ -120,8 +125,9 @@ public interface Sprite
      * Set alpha value. The lower is the value, the higher will be the ghost effect.
      * 
      * @param alpha The alpha value <code>[0 - 255]</code>.
+     * @throws LionEngineException If argument is invalid.
      */
-    void setAlpha(int alpha);
+    void setAlpha(int alpha) throws LionEngineException;
 
     /**
      * Set fade value. The lower is the value, the blacker will be the fade effect. The higher is the value, the whiter

@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.strategy.skill.SkillStrategy;
 
 /**
@@ -65,9 +66,9 @@ public class SkilledModel<S extends SkillStrategy>
     }
 
     @Override
-    public void addSkill(S skill, int panel)
+    public void addSkill(S skill, int panel) throws LionEngineException
     {
-        Check.argument(panel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(panel, 0);
 
         final Integer key = Integer.valueOf(panel);
 
@@ -81,9 +82,9 @@ public class SkilledModel<S extends SkillStrategy>
     }
 
     @Override
-    public <SI extends S> SI getSkill(int panel, Class<SI> id)
+    public <SI extends S> SI getSkill(int panel, Class<SI> id) throws LionEngineException
     {
-        Check.argument(panel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(panel, 0);
 
         final Integer key = Integer.valueOf(panel);
         final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
@@ -97,9 +98,9 @@ public class SkilledModel<S extends SkillStrategy>
     }
 
     @Override
-    public void removeSkill(int panel, Class<? extends S> id)
+    public void removeSkill(int panel, Class<? extends S> id) throws LionEngineException
     {
-        Check.argument(panel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(panel, 0);
 
         final Integer key = Integer.valueOf(panel);
         final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
@@ -111,9 +112,9 @@ public class SkilledModel<S extends SkillStrategy>
     }
 
     @Override
-    public Collection<S> getSkills(int panel)
+    public Collection<S> getSkills(int panel) throws LionEngineException
     {
-        Check.argument(panel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(panel, 0);
 
         final Integer key = Integer.valueOf(panel);
         final Map<Class<? extends SkillStrategy>, S> list = skills.get(key);
@@ -141,17 +142,19 @@ public class SkilledModel<S extends SkillStrategy>
     }
 
     @Override
-    public void setSkillPanel(int currentSkillPanel)
+    public void setSkillPanel(int currentSkillPanel) throws LionEngineException
     {
-        Check.argument(currentSkillPanel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(currentSkillPanel, 0);
+
         this.currentSkillPanel = currentSkillPanel;
         nextSkillPanel = -1;
     }
 
     @Override
-    public void setSkillPanelNext(int nextSkillPanel)
+    public void setSkillPanelNext(int nextSkillPanel) throws LionEngineException
     {
-        Check.argument(currentSkillPanel >= 0, "The skill panel id must be positive !");
+        Check.superiorOrEqual(nextSkillPanel, 0);
+
         this.nextSkillPanel = nextSkillPanel;
     }
 

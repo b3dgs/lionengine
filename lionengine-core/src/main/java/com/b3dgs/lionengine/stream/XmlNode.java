@@ -50,79 +50,89 @@ public interface XmlNode
      * Add a child node.
      * 
      * @param node The child node.
+     * @throws LionEngineException If error when adding the node.
      */
-    void add(XmlNode node);
+    void add(XmlNode node) throws LionEngineException;
 
     /**
      * Set the text inside the node.
      * 
      * @param text The text content.
+     * @throws LionEngineException If error when setting the node text.
      */
-    void setText(String text);
+    void setText(String text) throws LionEngineException;
 
     /**
      * Write a byte.
      * 
      * @param attribute The attribute name.
      * @param content The byte value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeByte(String attribute, byte content);
+    void writeByte(String attribute, byte content) throws LionEngineException;
 
     /**
      * Write a short.
      * 
      * @param attribute The attribute name.
      * @param content The short value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeShort(String attribute, short content);
+    void writeShort(String attribute, short content) throws LionEngineException;
 
     /**
      * Write an integer.
      * 
      * @param attribute The attribute name.
      * @param content The integer value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeInteger(String attribute, int content);
+    void writeInteger(String attribute, int content) throws LionEngineException;
 
     /**
      * Write a long.
      * 
      * @param attribute The attribute name.
      * @param content The long value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeLong(String attribute, long content);
+    void writeLong(String attribute, long content) throws LionEngineException;
 
     /**
      * Write a float.
      * 
      * @param attribute The float name.
      * @param content The float value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeFloat(String attribute, float content);
+    void writeFloat(String attribute, float content) throws LionEngineException;
 
     /**
      * Write a double.
      * 
      * @param attribute The attribute name.
      * @param content The double value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeDouble(String attribute, double content);
+    void writeDouble(String attribute, double content) throws LionEngineException;
 
     /**
      * Write a string. If the content is equal to <code>null</code>, {@link XmlNode#NULL} is wrote instead.
      * 
      * @param attribute The attribute name.
      * @param content The string value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeString(String attribute, String content);
+    void writeString(String attribute, String content) throws LionEngineException;
 
     /**
      * Write a boolean.
      * 
      * @param attribute The attribute name.
      * @param content The boolean value.
+     * @throws LionEngineException If error when writing.
      */
-    void writeBoolean(String attribute, boolean content);
+    void writeBoolean(String attribute, boolean content) throws LionEngineException;
 
     /**
      * Return the text inside the node.

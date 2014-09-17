@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 
@@ -74,8 +75,6 @@ import com.b3dgs.lionengine.Version;
 public final class Engine
         extends EngineCore
 {
-    /** Error resource class. */
-    private static final String ERROR_RESOURCE_CLASS = "The resource class must not be null !";
     /** Error message temp directory. */
     private static final String ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
 
@@ -86,8 +85,10 @@ public final class Engine
      * @param version The program version (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory (must not be <code>null</code>).
+     * @throws LionEngineException If the engine has already been started.
      */
     public static void start(String name, Version version, Verbose level, String resourcesDir)
+            throws LionEngineException
     {
         Engine.start(name, version, level, resourcesDir, null);
     }
@@ -99,10 +100,13 @@ public final class Engine
      * @param version The program version (must not be <code>null</code>).
      * @param level The verbose level (must not be <code>null</code>).
      * @param classResource The class loader reference (resources entry point).
+     * @throws LionEngineException If classResource is <code>null</code>
      */
     public static void start(String name, Version version, Verbose level, Class<?> classResource)
+            throws LionEngineException
     {
-        Check.notNull(classResource, Engine.ERROR_RESOURCE_CLASS);
+        Check.notNull(classResource);
+
         Engine.start(name, version, level, null, classResource);
     }
 
@@ -114,8 +118,10 @@ public final class Engine
      * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory.
      * @param classResource The class loader reference (resources entry point).
+     * @throws LionEngineException If the engine has already been started.
      */
     private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)
+            throws LionEngineException
     {
         if (!EngineCore.isStarted())
         {
@@ -141,8 +147,10 @@ public final class Engine
     /**
      * Terminate the engine. It is necessary to call this function only if the engine need to be started again during
      * the same jvm execution.
+     * 
+     * @throws LionEngineException If the engine has not been started.
      */
-    public static void terminate()
+    public static void terminate() throws LionEngineException
     {
         EngineCore.terminate();
         UtilityMedia.setResourcesDirectory(null);
@@ -154,14 +162,15 @@ public final class Engine
      * Check version by clearing temporary directory if version is different.
      * 
      * @param versionFilename The file describing the program version.
+     * @throws LionEngineException If engine has not been started.
      */
-    private static void checkVersion(String versionFilename)
+    private static void checkVersion(String versionFilename) throws LionEngineException
     {
         final File tempDir = new File(UtilFile.getTempDir());
         if (tempDir.exists())
         {
             boolean delete = true;
-            try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename));)
+            try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename)))
             {
                 final String version = reader.readUTF();
                 if (EngineCore.getProgramVersion().toString().equals(version))
@@ -190,12 +199,13 @@ public final class Engine
      * Store version if needed for next time.
      * 
      * @param versionFilename The file describing the program version.
+     * @throws LionEngineException If engine has not been started.
      */
-    private static void storeVersion(String versionFilename)
+    private static void storeVersion(String versionFilename) throws LionEngineException
     {
         if (!UtilFile.exists(versionFilename))
         {
-            try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename));)
+            try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename)))
             {
                 writer.writeUTF(EngineCore.getProgramVersion().toString());
                 writer.flush();

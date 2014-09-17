@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.platform.background;
 
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
@@ -68,8 +69,10 @@ public class Parallax
      * @param decY The vertical offset.
      * @param sx The starting width.
      * @param sy The starting height.
+     * @throws LionEngineException If arguments are invalid.
      */
     public Parallax(Resolution source, Media media, int parallaxsNumber, int decX, int decY, int sx, int sy)
+            throws LionEngineException
     {
         this.parallaxsNumber = parallaxsNumber;
         parallax = Drawable.loadSpriteParallaxed(media, this.parallaxsNumber, sx, sy);

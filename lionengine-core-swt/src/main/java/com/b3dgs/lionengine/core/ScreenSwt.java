@@ -31,7 +31,9 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 
 /**
@@ -82,9 +84,13 @@ abstract class ScreenSwt
      * Constructor.
      * 
      * @param renderer The renderer reference.
+     * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not
+     *             supported.
      */
-    protected ScreenSwt(Renderer renderer)
+    protected ScreenSwt(Renderer renderer) throws LionEngineException
     {
+        Check.notNull(renderer);
+
         ScreenSwt.display = new Display();
         this.renderer = renderer;
         config = renderer.getConfig();
@@ -105,8 +111,9 @@ abstract class ScreenSwt
      * 
      * @param windowed <code>true</code> if windowed, <code>false</code> else.
      * @return The created main frame.
+     * @throws LionEngineException If engine has not been started.
      */
-    private Shell initMainFrame(boolean windowed)
+    private Shell initMainFrame(boolean windowed) throws LionEngineException
     {
         final Shell shell;
         if (windowed)
@@ -193,8 +200,9 @@ abstract class ScreenSwt
      * Set the screen config. Initialize the display.
      * 
      * @param output The output resolution
+     * @throws LionEngineException If resolution is not supported.
      */
-    protected void setResolution(Resolution output)
+    protected void setResolution(Resolution output) throws LionEngineException
     {
         width = output.getWidth();
         height = output.getHeight();

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.audio;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -31,8 +32,9 @@ public final class AudioWav
      * 
      * @param media The audio sound media.
      * @return The loaded sound.
+     * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media)
+    public static Wav loadWav(Media media) throws LionEngineException
     {
         return new Wav(media);
     }
@@ -43,8 +45,9 @@ public final class AudioWav
      * @param media The audio sound media.
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
      * @return The loaded Sound.
+     * @throws LionEngineException If media is <code>null</code>
      */
-    public static Wav loadWav(Media media, int maxSimultaneous)
+    public static Wav loadWav(Media media, int maxSimultaneous) throws LionEngineException
     {
         return new Wav(media, maxSimultaneous);
     }

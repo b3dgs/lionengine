@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Filter;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -67,8 +68,9 @@ public interface SpriteParallaxed
      * Update all changes. Need to be called when changes are done.
      * 
      * @param filter The filter to use.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
-    void prepare(Filter filter);
+    void prepare(Filter filter) throws LionEngineException;
 
     /**
      * Render a line of parallax to the specified coordinates.

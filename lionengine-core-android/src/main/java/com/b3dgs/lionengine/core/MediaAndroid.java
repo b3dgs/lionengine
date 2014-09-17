@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Media implementation.
  * 
@@ -59,13 +61,13 @@ final class MediaAndroid
     }
 
     @Override
-    public InputStream getInputStream()
+    public InputStream getInputStream() throws LionEngineException
     {
         return UtilityMedia.getStream(this, "MediaImpl", false);
     }
 
     @Override
-    public OutputStream getOutputStream()
+    public OutputStream getOutputStream() throws LionEngineException
     {
         return UtilityMedia.getOutputStream(this, "MediaImpl", false);
     }

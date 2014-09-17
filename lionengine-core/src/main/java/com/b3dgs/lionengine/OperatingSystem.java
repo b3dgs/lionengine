@@ -47,15 +47,17 @@ public enum OperatingSystem
     private static final OperatingSystem OS;
     /** The architecture used. */
     private static final Architecture ARCHI;
+    /** Unknown item. */
+    private static final String DEFAULT = "unknown";
 
     /**
      * Static init.
      */
     static
     {
-        SYSTEM_OS = EngineCore.getSystemProperty("os.name").toLowerCase(Locale.getDefault());
+        SYSTEM_OS = EngineCore.getSystemProperty("os.name", OperatingSystem.DEFAULT).toLowerCase(Locale.getDefault());
         OS = OperatingSystem.findOs();
-        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model");
+        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model", OperatingSystem.DEFAULT);
         ARCHI = OperatingSystem.findArchitecture();
     }
 

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
 
 /**
@@ -43,7 +44,7 @@ public class NetworkedWorldModelClient
      */
 
     @Override
-    public void connect(String ip, int port)
+    public void connect(String ip, int port) throws LionEngineException
     {
         network.connect(ip, port);
         for (final ConnectionListener listener : listeners)

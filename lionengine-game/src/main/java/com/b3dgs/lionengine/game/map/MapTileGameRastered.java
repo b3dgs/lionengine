@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -111,8 +112,9 @@ public abstract class MapTileGameRastered<T extends TileGame>
      * @param directory The current tile directory.
      * @param pattern The current pattern.
      * @param rasters The rasters data.
+     * @throws LionEngineException If arguments are invalid.
      */
-    private void loadRaster(String directory, Integer pattern, int[][] rasters)
+    private void loadRaster(String directory, Integer pattern, int[][] rasters) throws LionEngineException
     {
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
@@ -163,9 +165,10 @@ public abstract class MapTileGameRastered<T extends TileGame>
      * @param er The end red.
      * @param eg The end green.
      * @param eb The end blue.
+     * @throws LionEngineException If arguments are invalid.
      */
     private void addRasterPattern(String directory, Integer pattern, int rasterID, int fr, int fg, int fb, int er,
-            int eg, int eb)
+            int eg, int eb) throws LionEngineException
     {
         final SpriteTiled original = super.getPattern(pattern);
         final ImageBuffer buf = original.getSurface();
@@ -181,8 +184,9 @@ public abstract class MapTileGameRastered<T extends TileGame>
      * @param surface The surface reference.
      * @param tw The tile width.
      * @param th The tile height.
+     * @throws LionEngineException If arguments are invalid.
      */
-    private void addRasterPattern(Integer pattern, ImageBuffer surface, int tw, int th)
+    private void addRasterPattern(Integer pattern, ImageBuffer surface, int tw, int th) throws LionEngineException
     {
         List<SpriteTiled> rasters = rasterPatterns.get(pattern);
         if (rasters == null)
@@ -199,7 +203,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
      */
 
     @Override
-    public void loadPatterns(Media directory)
+    public void loadPatterns(Media directory) throws LionEngineException
     {
         super.loadPatterns(directory);
         final String path = directory.getPath();

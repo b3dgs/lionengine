@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.platform.background;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -132,8 +133,9 @@ public abstract class BackgroundElementRastered
      * @param fr The red color offset.
      * @param fg The green color offset.
      * @param fb The blue color offset.
+     * @throws LionEngineException If arguments are invalid.
      */
-    protected void addRaster(Sprite sprite, int fr, int fg, int fb)
+    protected void addRaster(Sprite sprite, int fr, int fg, int fb) throws LionEngineException
     {
         final ImageBuffer buf = sprite.getSurface();
         final ImageBuffer rasterBuf = Core.GRAPHIC.getImageBuffer(buf);

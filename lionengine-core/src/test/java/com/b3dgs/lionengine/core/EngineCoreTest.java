@@ -148,8 +148,8 @@ public class EngineCoreTest
     @Test
     public void testSystemProperty()
     {
-        Assert.assertEquals(null, EngineCore.getSystemProperty("null"));
+        Assert.assertEquals(null, EngineCore.getSystemProperty("null", null));
         System.setSecurityManager(new SecurityManagerMock(false));
-        Assert.assertEquals("", EngineCore.getSystemProperty("security"));
+        Assert.assertNull("", EngineCore.getSystemProperty("security", null));
     }
 }

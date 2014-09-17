@@ -227,7 +227,7 @@ public class ModuleGame
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
         rip.start(levelrip, tilesheet, map);
-        try (FileWriting file = Stream.createFileWriting(output);)
+        try (FileWriting file = Stream.createFileWriting(output))
         {
             map.save(file);
         }

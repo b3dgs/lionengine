@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -31,9 +32,6 @@ import com.b3dgs.lionengine.core.Media;
 final class ImageImpl
         implements Image
 {
-    /** Surface null error. */
-    private static final String ERROR_SURFACE = "Surface must not be null !";
-
     /** Image surface. */
     private final ImageBuffer surface;
 
@@ -41,8 +39,9 @@ final class ImageImpl
      * Constructor.
      * 
      * @param media The image media.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
-    ImageImpl(Media media)
+    ImageImpl(Media media) throws LionEngineException
     {
         this(Core.GRAPHIC.getImageBuffer(media, false));
     }
@@ -51,10 +50,12 @@ final class ImageImpl
      * Constructor.
      * 
      * @param surface The surface to share.
+     * @throws LionEngineException If the surface is <code>null</code>.
      */
-    ImageImpl(ImageBuffer surface)
+    ImageImpl(ImageBuffer surface) throws LionEngineException
     {
-        Check.notNull(surface, ImageImpl.ERROR_SURFACE);
+        Check.notNull(surface);
+
         this.surface = surface;
     }
 

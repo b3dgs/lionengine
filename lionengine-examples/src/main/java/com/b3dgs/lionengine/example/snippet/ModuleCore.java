@@ -70,9 +70,9 @@ public class ModuleCore
 
     void check()
     {
-        Check.argument(value > 0, "Value was not positive:", String.valueOf(value));
+        Check.superiorStrict(value, 0);
         final Object object = null;
-        Check.notNull(object, "Object is null !");
+        Check.notNull(object);
     }
 
     void checksum()
@@ -257,7 +257,7 @@ public class ModuleCore
     void fileReading()
     {
         final Media file = Core.MEDIA.create("test.txt");
-        try (FileReading reading = Stream.createFileReading(file);)
+        try (FileReading reading = Stream.createFileReading(file))
         {
             reading.readBoolean();
             reading.readByte();
@@ -277,7 +277,7 @@ public class ModuleCore
     void fileWriting()
     {
         final Media file = Core.MEDIA.create("test.txt");
-        try (FileWriting writing = Stream.createFileWriting(file);)
+        try (FileWriting writing = Stream.createFileWriting(file))
         {
             writing.writeBoolean(true);
             writing.writeByte((byte) 1);

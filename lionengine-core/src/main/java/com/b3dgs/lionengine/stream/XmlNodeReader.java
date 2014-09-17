@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.stream;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * The reading capability of an {@link XmlNode}.
  * 
@@ -29,62 +31,70 @@ public interface XmlNodeReader
      * 
      * @param attribute The boolean name.
      * @return The boolean value.
+     * @throws LionEngineException If error when reading.
      */
-    boolean readBoolean(String attribute);
+    boolean readBoolean(String attribute) throws LionEngineException;
 
     /**
      * Read a byte.
      * 
      * @param attribute The integer name.
      * @return The byte value.
+     * @throws LionEngineException If error when reading.
      */
-    byte readByte(String attribute);
+    byte readByte(String attribute) throws LionEngineException;
 
     /**
      * Read a short.
      * 
      * @param attribute The integer name.
      * @return The short value.
+     * @throws LionEngineException If error when reading.
      */
-    short readShort(String attribute);
+    short readShort(String attribute) throws LionEngineException;
 
     /**
      * Read an integer.
      * 
      * @param attribute The integer name.
      * @return The integer value.
+     * @throws LionEngineException If error when reading.
      */
-    int readInteger(String attribute);
+    int readInteger(String attribute) throws LionEngineException;
 
     /**
      * Read a long.
      * 
      * @param attribute The float name.
      * @return The long value.
+     * @throws LionEngineException If error when reading.
      */
-    long readLong(String attribute);
+    long readLong(String attribute) throws LionEngineException;
 
     /**
      * Read a float.
      * 
      * @param attribute The float name.
      * @return The float value.
+     * @throws LionEngineException If error when reading.
      */
-    float readFloat(String attribute);
+    float readFloat(String attribute) throws LionEngineException;
 
     /**
      * Read a double.
      * 
      * @param attribute The double name.
      * @return The double value.
+     * @throws LionEngineException If error when reading.
      */
-    double readDouble(String attribute);
+    double readDouble(String attribute) throws LionEngineException;
 
     /**
      * Read a string. If the read string is equal to {@link XmlNode#NULL}, <code>null</code> will be returned instead.
      * 
      * @param attribute The string name.
      * @return The string value.
+     * @throws LionEngineException If error when reading.
      */
-    String readString(String attribute);
+    String readString(String attribute) throws LionEngineException;
 }

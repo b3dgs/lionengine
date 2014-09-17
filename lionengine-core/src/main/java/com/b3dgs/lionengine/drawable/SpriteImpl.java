@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -36,13 +37,6 @@ import com.b3dgs.lionengine.core.Media;
 class SpriteImpl
         implements Sprite
 {
-    /** Width error. */
-    private static final String ERROR_WIDTH = "Width percent must be strictly positive !";
-    /** Height error. */
-    private static final String ERROR_HEIGHT = "Height percent must be strictly positive !";
-    /** Alpha error. */
-    private static final String ERROR_ALPHA = "Alpha must be >= 0 and <= 255 !";
-
     /** Sprite original width. */
     protected final int widthOriginal;
     /** Sprite original height. */
@@ -66,23 +60,39 @@ class SpriteImpl
      * Constructor.
      * 
      * @param media The sprite media.
-     * @param surface The surface to share.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    SpriteImpl(Media media, ImageBuffer surface)
+    SpriteImpl(Media media) throws LionEngineException
     {
+        Check.notNull(media);
+
         this.media = media;
+
+        final ImageInfo info = ImageInfo.get(media);
+        widthOriginal = info.getWidth();
+        heightOriginal = info.getHeight();
+
+        width = widthOriginal;
+        height = heightOriginal;
+        rgb = null;
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param surface The surface to share.
+     * @throws LionEngineException If surface is <code>null</code>.
+     */
+    SpriteImpl(ImageBuffer surface) throws LionEngineException
+    {
+        Check.notNull(surface);
+
         this.surface = surface;
-        if (media != null)
-        {
-            final ImageInfo info = ImageInfo.get(media);
-            widthOriginal = info.getWidth();
-            heightOriginal = info.getHeight();
-        }
-        else
-        {
-            widthOriginal = surface.getWidth();
-            heightOriginal = surface.getHeight();
-        }
+        media = null;
+
+        widthOriginal = surface.getWidth();
+        heightOriginal = surface.getHeight();
+
         width = widthOriginal;
         height = heightOriginal;
         rgb = null;
@@ -117,7 +127,7 @@ class SpriteImpl
      */
 
     @Override
-    public void load(boolean alpha)
+    public void load(boolean alpha) throws LionEngineException
     {
         if (surface == null)
         {
@@ -126,16 +136,16 @@ class SpriteImpl
     }
 
     @Override
-    public void scale(int percent)
+    public void scale(int percent) throws LionEngineException
     {
         stretch(percent, percent);
     }
 
     @Override
-    public void stretch(int widthPercent, int heightPercent)
+    public void stretch(int widthPercent, int heightPercent) throws LionEngineException
     {
-        Check.argument(widthPercent > 0, SpriteImpl.ERROR_WIDTH);
-        Check.argument(heightPercent > 0, SpriteImpl.ERROR_HEIGHT);
+        Check.superiorStrict(widthPercent, 0);
+        Check.superiorStrict(heightPercent, 0);
 
         if (widthPercent != 100 || heightPercent != 100)
         {
@@ -168,7 +178,7 @@ class SpriteImpl
     }
 
     @Override
-    public void filter(Filter filter)
+    public void filter(Filter filter) throws LionEngineException
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.applyFilter(surfaceOriginal, filter);
@@ -182,9 +192,11 @@ class SpriteImpl
     }
 
     @Override
-    public void setAlpha(int alpha)
+    public void setAlpha(int alpha) throws LionEngineException
     {
-        Check.argument(alpha >= 0 && alpha <= 255, SpriteImpl.ERROR_ALPHA);
+        Check.superiorOrEqual(alpha, 0);
+        Check.inferiorOrEqual(alpha, 255);
+
         setFade(alpha, -255);
     }
 

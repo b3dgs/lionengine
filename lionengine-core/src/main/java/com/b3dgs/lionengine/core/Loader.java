@@ -47,10 +47,6 @@ import com.b3dgs.lionengine.LionEngineException;
  */
 public final class Loader
 {
-    /** Error message config. */
-    private static final String ERROR_CONFIG = "Configuration must not be null !";
-    /** Error message sequence. */
-    private static final String ERROR_SEQUENCE = "Sequence must not be null !";
     /** Error message already started. */
     private static final String ERROR_STARTED = "Loader has already been started !";
 
@@ -142,10 +138,12 @@ public final class Loader
      * Constructor.
      * 
      * @param config The configuration used (must not be <code>null</code>).
+     * @throws LionEngineException If the configuration is <code>null</code>.
      */
-    public Loader(Config config)
+    public Loader(Config config) throws LionEngineException
     {
-        Check.notNull(config, Loader.ERROR_CONFIG);
+        Check.notNull(config);
+
         renderer = Core.GRAPHIC.createRenderer(config);
     }
 
@@ -158,7 +156,8 @@ public final class Loader
      */
     public void start(Class<? extends Sequence> sequenceClass, Object... arguments) throws LionEngineException
     {
-        Check.notNull(sequenceClass, Loader.ERROR_SEQUENCE);
+        Check.notNull(sequenceClass);
+
         if (!started)
         {
             started = true;

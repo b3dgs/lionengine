@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.network;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * List of services provided by a client.
  * 
@@ -30,8 +32,9 @@ interface Client
      * 
      * @param ip The server ip.
      * @param port The server port.
+     * @throws LionEngineException If unable to connect.
      */
-    void connect(String ip, int port);
+    void connect(String ip, int port) throws LionEngineException;
 
     /**
      * Check if the client is connected to a server.

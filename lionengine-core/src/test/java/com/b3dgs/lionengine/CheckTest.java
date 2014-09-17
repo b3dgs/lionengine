@@ -58,32 +58,6 @@ public class CheckTest
     }
 
     /**
-     * Test the check argument function.
-     */
-    @Test
-    public void testCheckArgument()
-    {
-        try
-        {
-            Check.argument(true);
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail();
-        }
-
-        try
-        {
-            Check.argument(false);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
-    }
-
-    /**
      * Test the check not null function.
      */
     @Test

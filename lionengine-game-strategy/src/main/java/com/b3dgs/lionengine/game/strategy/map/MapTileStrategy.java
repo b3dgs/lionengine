@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
@@ -188,7 +189,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
     }
 
     @Override
-    public void loadCollisions(Media media)
+    public void loadCollisions(Media media) throws LionEngineException
     {
         super.loadCollisions(media);
         for (int v = 0; v < heightInTile; v++)

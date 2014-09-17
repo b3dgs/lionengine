@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Animator implementation.
@@ -27,12 +28,6 @@ import com.b3dgs.lionengine.Check;
 final class AnimatorImpl
         implements Animator
 {
-    /** Anim error. */
-    private static final String ERROR_ANIM = "Animation does not exist !";
-    /** Speed error. */
-    private static final String ERROR_SPEED = "Speed must be >= 0.0 !";
-    /** Frame error. */
-    private static final String ERROR_FRAME = "Frame must be >= Animation.MINIMUM_FRAME !";
     /** Frame. */
     private static final double FRAME = 1.0;
     /** Half frame. */
@@ -129,9 +124,9 @@ final class AnimatorImpl
      */
 
     @Override
-    public void play(Animation anim)
+    public void play(Animation anim) throws LionEngineException
     {
-        Check.notNull(anim, AnimatorImpl.ERROR_ANIM);
+        Check.notNull(anim);
 
         final int firstFrame = anim.getFirst();
         final int lastFrame = anim.getLast();
@@ -170,7 +165,7 @@ final class AnimatorImpl
     @Override
     public void setAnimSpeed(double speed)
     {
-        Check.argument(speed >= 0.0, AnimatorImpl.ERROR_SPEED);
+        Check.superiorOrEqual(speed, 0.0);
 
         this.speed = speed;
     }
@@ -178,7 +173,7 @@ final class AnimatorImpl
     @Override
     public void setFrame(int frame)
     {
-        Check.argument(frame >= Animation.MINIMUM_FRAME, AnimatorImpl.ERROR_FRAME);
+        Check.superiorOrEqual(frame, Animation.MINIMUM_FRAME);
 
         current = frame;
     }

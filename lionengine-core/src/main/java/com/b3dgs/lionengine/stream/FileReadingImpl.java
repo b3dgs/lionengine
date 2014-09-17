@@ -21,6 +21,8 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -38,10 +40,12 @@ final class FileReadingImpl
      * Constructor.
      * 
      * @param media The media path.
-     * @throws IOException If open failed.
+     * @throws LionEngineException If error when opening the media.
      */
-    FileReadingImpl(Media media) throws IOException
+    FileReadingImpl(Media media) throws LionEngineException
     {
+        Check.notNull(media);
+
         in = new DataInputStream(new BufferedInputStream(media.getInputStream()));
     }
 

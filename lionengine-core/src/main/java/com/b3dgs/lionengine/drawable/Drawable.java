@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
@@ -40,8 +41,9 @@ public final class Drawable
      * 
      * @param media The image media.
      * @return The loaded image.
+     * @throws LionEngineException If an error occured when reading the image.
      */
-    public static Image loadImage(Media media)
+    public static Image loadImage(Media media) throws LionEngineException
     {
         return new ImageImpl(media);
     }
@@ -51,8 +53,9 @@ public final class Drawable
      * 
      * @param surface The surface reference.
      * @return The loaded image.
+     * @throws LionEngineException If the surface is <code>null</code>.
      */
-    public static Image loadImage(ImageBuffer surface)
+    public static Image loadImage(ImageBuffer surface) throws LionEngineException
     {
         return new ImageImpl(surface);
     }
@@ -62,10 +65,11 @@ public final class Drawable
      * 
      * @param media The sprite media.
      * @return The loaded sprite.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public static Sprite loadSprite(Media media)
+    public static Sprite loadSprite(Media media) throws LionEngineException
     {
-        return new SpriteImpl(media, null);
+        return new SpriteImpl(media);
     }
 
     /**
@@ -73,10 +77,11 @@ public final class Drawable
      * 
      * @param surface The surface reference.
      * @return The loaded sprite.
+     * @throws LionEngineException If surface is <code>null</code>.
      */
-    public static Sprite loadSprite(ImageBuffer surface)
+    public static Sprite loadSprite(ImageBuffer surface) throws LionEngineException
     {
-        return new SpriteImpl(null, surface);
+        return new SpriteImpl(surface);
     }
 
     /**
@@ -86,10 +91,12 @@ public final class Drawable
      * @param horizontalFrames The number of horizontal frames.
      * @param verticalFrames The number of vertical frames.
      * @return The loaded animated sprite.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
     public static SpriteAnimated loadSpriteAnimated(Media media, int horizontalFrames, int verticalFrames)
+            throws LionEngineException
     {
-        return new SpriteAnimatedImpl(media, null, horizontalFrames, verticalFrames);
+        return new SpriteAnimatedImpl(media, horizontalFrames, verticalFrames);
     }
 
     /**
@@ -100,10 +107,12 @@ public final class Drawable
      * @param horizontalFrames The number of horizontal frames.
      * @param verticalFrames The number of vertical frames.
      * @return The loaded animated sprite.
+     * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteAnimated loadSpriteAnimated(ImageBuffer surface, int horizontalFrames, int verticalFrames)
+            throws LionEngineException
     {
-        return new SpriteAnimatedImpl(null, surface, horizontalFrames, verticalFrames);
+        return new SpriteAnimatedImpl(surface, horizontalFrames, verticalFrames);
     }
 
     /**
@@ -113,10 +122,11 @@ public final class Drawable
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      * @return The loaded tiled sprite.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
      */
-    public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight)
+    public static SpriteTiled loadSpriteTiled(Media media, int tileWidth, int tileHeight) throws LionEngineException
     {
-        return new SpriteTiledImpl(media, null, tileWidth, tileHeight);
+        return new SpriteTiledImpl(media, tileWidth, tileHeight);
     }
 
     /**
@@ -127,10 +137,12 @@ public final class Drawable
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
      * @return The loaded tiled sprite.
+     * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteTiled loadSpriteTiled(ImageBuffer surface, int tileWidth, int tileHeight)
+            throws LionEngineException
     {
-        return new SpriteTiledImpl(null, surface, tileWidth, tileHeight);
+        return new SpriteTiledImpl(surface, tileWidth, tileHeight);
     }
 
     /**
@@ -141,8 +153,10 @@ public final class Drawable
      * @param startWidth The starting width percent (100 is default, 50 is twice smaller, 200 is twice larger).
      * @param startHeight The starting height percent (100 is default, 50 is twice smaller, 200 is twice larger).
      * @return The loaded parallaxed sprite.
+     * @throws LionEngineException If arguments are invalid.
      */
     public static SpriteParallaxed loadSpriteParallaxed(Media media, int linesNumber, int startWidth, int startHeight)
+            throws LionEngineException
     {
         return new SpriteParallaxedImpl(media, linesNumber, startWidth, startHeight);
     }
@@ -155,8 +169,10 @@ public final class Drawable
      * @param letterWidth The font image letter width.
      * @param letterHeight The font image letter height.
      * @return The created font sprite.
+     * @throws LionEngineException If an error occurred when creating the font.
      */
     public static SpriteFont loadSpriteFont(Media media, Media data, int letterWidth, int letterHeight)
+            throws LionEngineException
     {
         return new SpriteFontImpl(media, data, letterWidth, letterHeight);
     }

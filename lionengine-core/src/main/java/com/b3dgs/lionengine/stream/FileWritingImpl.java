@@ -21,6 +21,8 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -38,10 +40,12 @@ final class FileWritingImpl
      * Constructor.
      * 
      * @param media The media path.
-     * @throws IOException If open failed.
+     * @throws LionEngineException If error when opening the media.
      */
-    FileWritingImpl(Media media) throws IOException
+    FileWritingImpl(Media media) throws LionEngineException
     {
+        Check.notNull(media);
+
         out = new DataOutputStream(new BufferedOutputStream(media.getOutputStream()));
     }
 

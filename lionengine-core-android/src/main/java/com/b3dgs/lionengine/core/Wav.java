@@ -108,6 +108,7 @@ public final class Wav
     Wav(Media media, int maxSimultaneous)
     {
         Check.notNull(media);
+
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
@@ -233,8 +234,9 @@ public final class Wav
      */
     public void setVolume(int volume)
     {
-        Check.argument(volume >= Wav.VOLUME_MIN && volume <= Wav.VOLUME_MAX, "Wrong volume value: ",
-                String.valueOf(volume), " [" + Wav.VOLUME_MIN + "-" + Wav.VOLUME_MAX + "]");
+        Check.superiorOrEqual(volume, Wav.VOLUME_MIN);
+        Check.inferiorOrEqual(volume, Wav.VOLUME_MAX);
+
         this.volume = volume;
     }
 

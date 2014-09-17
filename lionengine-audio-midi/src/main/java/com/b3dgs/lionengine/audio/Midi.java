@@ -75,10 +75,12 @@ public final class Midi
      * 
      * @param media The media describing the sequence.
      * @return The opened sequence instance.
+     * @throws LionEngineException If media is <code>null</code> or invalid midi.
      */
-    private static Sequence openSequence(Media media)
+    private static Sequence openSequence(Media media) throws LionEngineException
     {
-        Check.notNull(media, "Midi file must exists !");
+        Check.notNull(media);
+
         try
         {
             return MidiSystem.getSequence(new BufferedInputStream(media.getInputStream()));
@@ -108,7 +110,7 @@ public final class Midi
      * Constructor.
      * 
      * @param media The media midi to play.
-     * @throws LionEngineException If midi output not available.
+     * @throws LionEngineException If media is <code>null</code> or invalid midi.
      */
     Midi(Media media) throws LionEngineException
     {
@@ -169,11 +171,12 @@ public final class Midi
      * Set starting tick (starting music position).
      * 
      * @param tick The starting tick <code>[0 - {@link #getTicks()}]</code>.
+     * @throws LionEngineException If argument is invalid.
      */
-    public void setStart(long tick)
+    public void setStart(long tick) throws LionEngineException
     {
-        Check.argument(tick >= 0 && tick <= ticks, "Wrong tick value: ", String.valueOf(tick), " (total = )",
-                String.valueOf(ticks));
+        Check.superiorOrEqual(tick, 0);
+        Check.inferiorOrEqual(tick, ticks);
 
         sequencer.setTickPosition(tick);
     }
@@ -183,12 +186,13 @@ public final class Midi
      * 
      * @param first The first tick <code>[0 - last}]</code>.
      * @param last The last tick <code>[first - {@link #getTicks()}}]</code>.
+     * @throws LionEngineException If arguments are invalid.
      */
-    public void setLoop(long first, long last)
+    public void setLoop(long first, long last) throws LionEngineException
     {
-        Check.argument(first >= 0 && first <= last, "Wrong first value: ", String.valueOf(first), " (total = )",
-                String.valueOf(ticks));
-        Check.argument(last <= ticks, "Wrong last value: ", String.valueOf(last), " (total = )", String.valueOf(ticks));
+        Check.superiorOrEqual(first, 0);
+        Check.inferiorOrEqual(first, last);
+        Check.inferiorOrEqual(last, ticks);
 
         sequencer.setLoopStartPoint(first);
         sequencer.setLoopEndPoint(last);
@@ -198,11 +202,12 @@ public final class Midi
      * Set the midi volume.
      * 
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     * @throws LionEngineException If argument is invalid.
      */
-    public void setVolume(int volume)
+    public void setVolume(int volume) throws LionEngineException
     {
-        Check.argument(volume >= Midi.VOLUME_MIN && volume <= Midi.VOLUME_MAX, "Wrong volume value: ",
-                String.valueOf(volume), " [" + Midi.VOLUME_MIN + "-" + Midi.VOLUME_MAX + "]");
+        Check.superiorOrEqual(volume, Midi.VOLUME_MIN);
+        Check.inferiorOrEqual(volume, Midi.VOLUME_MAX);
 
         final double maxChannelVolume = 127.0;
         final int vol = (int) (volume * maxChannelVolume / Midi.VOLUME_MAX);

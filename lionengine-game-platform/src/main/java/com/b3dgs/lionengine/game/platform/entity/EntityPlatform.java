@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.platform.entity;
 
 import java.util.HashMap;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
@@ -84,8 +85,10 @@ public abstract class EntityPlatform
      * </pre>
      * 
      * @param setup The entity setup.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time or invalid
+     *             setup.
      */
-    public EntityPlatform(SetupSurfaceGame setup)
+    public EntityPlatform(SetupSurfaceGame setup) throws LionEngineException
     {
         super(setup);
         tileCollisions = new HashMap<>(1);
@@ -420,7 +423,7 @@ public abstract class EntityPlatform
      */
 
     @Override
-    public void play(Animation anim)
+    public void play(Animation anim) throws LionEngineException
     {
         sprite.play(anim);
     }

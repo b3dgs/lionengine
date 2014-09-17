@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.anim;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Animator can play an {@link Animation}.
  * <p>
@@ -49,11 +51,12 @@ public interface Animator
 {
     /**
      * Play the animation. Should be called only one time, as {@link #updateAnimation(double)} does the animation
-     * update. Must not be <code>null</code>.
+     * update.
      * 
-     * @param animation The animation to play.
+     * @param animation The animation to play (must not be <code>null</code>).
+     * @throws LionEngineException If the animation is <code>null</code>.
      */
-    void play(Animation animation);
+    void play(Animation animation) throws LionEngineException;
 
     /**
      * Stop the current animation (animation state set to {@link AnimState#STOPPED}).
@@ -73,17 +76,15 @@ public interface Animator
      * <p>
      * Can be used to synchronize the player movement speed to the walking animation speed.
      * </p>
-     * Must be greater or equal to 0.
      * 
-     * @param speed The new animation speed.
+     * @param speed The new animation speed (>= 0).
      */
     void setAnimSpeed(double speed);
 
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
-     * Must be greater or equal to {@link Animation#MINIMUM_FRAME}.
      * 
-     * @param frame The frame to set.
+     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME} and <= last frame).
      */
     void setFrame(int frame);
 

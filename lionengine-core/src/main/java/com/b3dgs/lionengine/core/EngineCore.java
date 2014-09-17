@@ -41,22 +41,10 @@ public abstract class EngineCore
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
     public static final String WEBSITE = "http://lionengine.b3dgs.com";
-    /** Error message program name. */
-    private static final String ERROR_PROGRAM_NAME = "Program name must not be null !";
-    /** Error message program version. */
-    private static final String ERROR_PROGRAM_VERSION = "The version must not be null !";
-    /** Error message verbose. */
-    private static final String ERROR_VERBOSE_LEVEL = "The verbose level must not be null !";
-    /** Error message graphic factory. */
-    private static final String ERROR_FACTORY_GRAPHIC = "The graphic factory must not be null !";
-    /** Error message media factory. */
-    private static final String ERROR_FACTORY_MEDIA = "The media factory must not be null !";
     /** Error message engine already started. */
     private static final String ERROR_STARTED_ALREADY = "The engine has already been started !";
     /** Error message engine not started. */
     private static final String ERROR_STARTED_NOT = "The engine has not been started !";
-    /** Empty property. */
-    private static final String EMPTY_PROPERTY = "";
     /** Engine starting. */
     private static final String ENGINE_STARTING = "Starting \"LionEngine ";
     /** Engine terminated. */
@@ -81,35 +69,33 @@ public abstract class EngineCore
     public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
             FactoryMedia factoryMedia) throws LionEngineException
     {
-        if (!EngineCore.started)
-        {
-            Check.notNull(name, EngineCore.ERROR_PROGRAM_NAME);
-            Check.notNull(version, EngineCore.ERROR_PROGRAM_VERSION);
-            Check.notNull(level, EngineCore.ERROR_VERBOSE_LEVEL);
-            Check.notNull(factoryGraphic, EngineCore.ERROR_FACTORY_GRAPHIC);
-            Check.notNull(factoryMedia, EngineCore.ERROR_FACTORY_MEDIA);
-
-            Verbose.set(level);
-            Verbose.prepareLogger();
-
-            EngineCore.programName = name;
-            EngineCore.programVersion = version;
-
-            FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
-            FactoryMediaProvider.setFactoryMedia(factoryMedia);
-
-            final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
-            message.append(EngineCore.VERSION).append("\" for \"");
-            message.append(EngineCore.programName).append(" ");
-            message.append(EngineCore.programVersion).append("\"");
-            Verbose.info(message.toString());
-
-            EngineCore.started = true;
-        }
-        else
+        if (EngineCore.started)
         {
             throw new LionEngineException(EngineCore.ERROR_STARTED_ALREADY);
         }
+
+        Check.notNull(name);
+        Check.notNull(version);
+        Check.notNull(level);
+        Check.notNull(factoryGraphic);
+        Check.notNull(factoryMedia);
+
+        Verbose.set(level);
+        Verbose.prepareLogger();
+
+        EngineCore.programName = name;
+        EngineCore.programVersion = version;
+
+        final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
+        message.append(EngineCore.VERSION).append("\" for \"");
+        message.append(EngineCore.programName).append(" ");
+        message.append(EngineCore.programVersion).append("\"");
+        Verbose.info(message.toString());
+
+        FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
+        FactoryMediaProvider.setFactoryMedia(factoryMedia);
+
+        EngineCore.started = true;
     }
 
     /**
@@ -120,19 +106,19 @@ public abstract class EngineCore
      */
     public static void terminate() throws LionEngineException
     {
-        if (EngineCore.started)
-        {
-            EngineCore.started = false;
-            EngineCore.programName = null;
-            EngineCore.programVersion = null;
-            FactoryGraphicProvider.setFactoryGraphic(null);
-            FactoryMediaProvider.setFactoryMedia(null);
-            Verbose.info(EngineCore.ENGINE_TERMINATED);
-        }
-        else
+        if (!EngineCore.started)
         {
             throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
         }
+
+        FactoryGraphicProvider.setFactoryGraphic(null);
+        FactoryMediaProvider.setFactoryMedia(null);
+
+        EngineCore.programName = null;
+        EngineCore.programVersion = null;
+        EngineCore.started = false;
+
+        Verbose.info(EngineCore.ENGINE_TERMINATED);
     }
 
     /**
@@ -180,9 +166,10 @@ public abstract class EngineCore
      * returned.
      * 
      * @param property The system property.
+     * @param def The default value used if property is not available.
      * @return The system property value (<code>null</code> if there is not any corresponding property).
      */
-    public static String getSystemProperty(String property)
+    public static String getSystemProperty(String property, String def)
     {
         try
         {
@@ -190,7 +177,8 @@ public abstract class EngineCore
         }
         catch (final SecurityException exception)
         {
-            return EngineCore.EMPTY_PROPERTY;
+            Verbose.exception(EngineCore.class, "getSystemProperty", exception);
+            return def;
         }
     }
 }

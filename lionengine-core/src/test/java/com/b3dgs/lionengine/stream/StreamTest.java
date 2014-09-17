@@ -74,7 +74,7 @@ public class StreamTest
             Stream.createFileWriting(null);
             Assert.fail();
         }
-        catch (final NullPointerException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -84,7 +84,7 @@ public class StreamTest
             Stream.createFileReading(null);
             Assert.fail();
         }
-        catch (final NullPointerException exception)
+        catch (final LionEngineException exception)
         {
             // Success
         }
@@ -129,12 +129,12 @@ public class StreamTest
 
         StreamTest.testFailures();
         Assert.assertNotNull(Stream.createXmlNode("test"));
-        try (FileReading reading = Stream.createFileReading(Core.MEDIA.create(StreamTest.PATH, "malformed.xml"));)
+        try (FileReading reading = Stream.createFileReading(Core.MEDIA.create(StreamTest.PATH, "malformed.xml")))
         {
             Assert.assertNotNull(reading);
         }
         final Media media = Core.MEDIA.create(StreamTest.PATH, "test");
-        try (FileWriting writing = Stream.createFileWriting(media);)
+        try (FileWriting writing = Stream.createFileWriting(media))
         {
             Assert.assertNotNull(writing);
         }

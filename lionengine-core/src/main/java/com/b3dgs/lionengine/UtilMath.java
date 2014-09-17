@@ -244,10 +244,11 @@ public final class UtilMath
      * 
      * @param value The value to check (must be != 0).
      * @return -1 if negative, 1 if positive.
+     * @throws LionEngineException If argument is equal to 0.
      */
-    public static int getSign(int value)
+    public static int getSign(int value) throws LionEngineException
     {
-        Check.argument(value != 0, "Argument must not be equal to 0 !");
+        Check.different(value, 0);
 
         return Math.abs(value) / value;
     }

@@ -27,13 +27,6 @@ import com.b3dgs.lionengine.Check;
 final class AnimationImpl
         implements Animation
 {
-    /** First frame error. */
-    private static final String ERROR_FIRST_FRAME = "Animation first frame is lower than the minimum frame !";
-    /** Last frame error. */
-    private static final String ERROR_LAST_FRAME = "Animation last frame is lower than the first frame !";
-    /** Speed error. */
-    private static final String ERROR_SPEED = "Animation speed must not be negative !";
-
     /** First animation frame. */
     private final int firstFrame;
     /** Last animation frame. */
@@ -56,9 +49,9 @@ final class AnimationImpl
      */
     AnimationImpl(int firstFrame, int lastFrame, double speed, boolean reverse, boolean repeat)
     {
-        Check.argument(firstFrame >= Animation.MINIMUM_FRAME, AnimationImpl.ERROR_FIRST_FRAME);
-        Check.argument(lastFrame >= firstFrame, AnimationImpl.ERROR_LAST_FRAME);
-        Check.argument(speed >= 0.0, AnimationImpl.ERROR_SPEED);
+        Check.superiorOrEqual(firstFrame, Animation.MINIMUM_FRAME);
+        Check.superiorOrEqual(lastFrame, firstFrame);
+        Check.superiorOrEqual(speed, 0.0);
 
         this.firstFrame = firstFrame;
         this.lastFrame = lastFrame;

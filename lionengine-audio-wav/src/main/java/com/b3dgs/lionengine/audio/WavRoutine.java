@@ -194,8 +194,10 @@ final class WavRoutine
      * @throws UnsupportedAudioFileException If file is not supported.
      * @throws IOException If error when reading the audio file.
      * @throws LineUnavailableException The no audio line available.
+     * @throws LionEngineException If error when getting the stream.
      */
-    private void openStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException
+    private void openStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException,
+            LionEngineException
     {
         audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(media.getInputStream()));
         final AudioFormat audioFormat = audioInputStream.getFormat();

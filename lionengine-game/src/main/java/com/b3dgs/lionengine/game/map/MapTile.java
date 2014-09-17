@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -103,16 +104,18 @@ public interface MapTile<T extends TileGame>
      * 
      * @param file The input file.
      * @throws IOException If error on reading.
+     * @throws LionEngineException If error when reading patterns or collisions.
      */
-    void load(FileReading file) throws IOException;
+    void load(FileReading file) throws IOException, LionEngineException;
 
     /**
      * Load a map from a level rip and the associated tiles directory.
      * 
      * @param levelrip The file containing the levelrip as an image.
      * @param patternsDirectory The directory containing tiles themes.
+     * @throws LionEngineException If error when reading collisions.
      */
-    void load(Media levelrip, Media patternsDirectory);
+    void load(Media levelrip, Media patternsDirectory) throws LionEngineException;
 
     /**
      * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
@@ -125,15 +128,17 @@ public interface MapTile<T extends TileGame>
      * </p>
      * 
      * @param directory The patterns directory.
+     * @throws LionEngineException If error when reading patterns.
      */
-    void loadPatterns(Media directory);
+    void loadPatterns(Media directory) throws LionEngineException;
 
     /**
      * Load map collision from an external file.
      * 
      * @param media The collision container.
+     * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions(Media media);
+    void loadCollisions(Media media) throws LionEngineException;
 
     /**
      * Load tile. Data are loaded this way:

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.purview.Collidable;
@@ -44,8 +45,9 @@ public abstract class EntityGame
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time.
      */
-    public EntityGame(SetupGame setup)
+    public EntityGame(SetupGame setup) throws LionEngineException
     {
         super(setup);
         mirrorable = new MirrorableModel();

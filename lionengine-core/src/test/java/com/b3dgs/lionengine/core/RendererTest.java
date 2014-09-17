@@ -135,6 +135,10 @@ public class RendererTest
         };
         renderer.setUncaughtExceptionHandler(handler);
         loader.start(SequenceInterruptMock.class);
+        while (renderer.getState() != State.TIMED_WAITING)
+        {
+            Thread.sleep(50);
+        }
         renderer.interrupt();
         while (!RendererTest.uncaught)
         {

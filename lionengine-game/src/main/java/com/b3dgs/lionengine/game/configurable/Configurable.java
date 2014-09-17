@@ -52,10 +52,6 @@ public class Configurable
     public static final String ANIMATION = Configurable.PREFIX + "animation";
     /** Collision node name. */
     public static final String COLLISION = Configurable.PREFIX + "collision";
-    /** Animation not found. */
-    private static final String ERROR_ANIMATION = "Animation does not exist: ";
-    /** Collision not found. */
-    private static final String ERROR_COLLISION = "Collision does not exist: ";
     /** Animations map. */
     private final Map<String, Animation> animations;
     /** Collisions map. */
@@ -78,9 +74,12 @@ public class Configurable
      * Load data from configuration media.
      * 
      * @param media The xml media.
+     * @throws LionEngineException If error when opening the media.
      */
-    public void load(Media media)
+    public void load(Media media) throws LionEngineException
     {
+        Check.notNull(media);
+
         path = media.getFile().getParent();
         root = Stream.loadXml(media);
         loadAnimations();
@@ -122,8 +121,9 @@ public class Configurable
      * 
      * @param path The node path.
      * @return The node text value.
+     * @throws LionEngineException If unable to read node.
      */
-    public String getText(String... path)
+    public String getText(String... path) throws LionEngineException
     {
         final XmlNode node = getNode(path);
         return node.getText();
@@ -135,22 +135,11 @@ public class Configurable
      * @param attribute The attribute to get as string.
      * @param path The node path (child list)
      * @return The string value.
+     * @throws LionEngineException If unable to read node.
      */
-    public String getString(String attribute, String... path)
+    public String getString(String attribute, String... path) throws LionEngineException
     {
         return getNodeString(attribute, path);
-    }
-
-    /**
-     * Get an integer in the xml tree.
-     * 
-     * @param attribute The attribute to get as integer.
-     * @param path The node path (child list)
-     * @return The integer value.
-     */
-    public int getInteger(String attribute, String... path)
-    {
-        return Integer.parseInt(getNodeString(attribute, path));
     }
 
     /**
@@ -159,10 +148,31 @@ public class Configurable
      * @param attribute The attribute to get as boolean.
      * @param path The node path (child list)
      * @return The boolean value.
+     * @throws LionEngineException If unable to read node.
      */
-    public boolean getBoolean(String attribute, String... path)
+    public boolean getBoolean(String attribute, String... path) throws LionEngineException
     {
         return Boolean.parseBoolean(getNodeString(attribute, path));
+    }
+
+    /**
+     * Get an integer in the xml tree.
+     * 
+     * @param attribute The attribute to get as integer.
+     * @param path The node path (child list)
+     * @return The integer value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
+     */
+    public int getInteger(String attribute, String... path) throws LionEngineException
+    {
+        try
+        {
+            return Integer.parseInt(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     /**
@@ -171,18 +181,27 @@ public class Configurable
      * @param attribute The attribute to get as double.
      * @param path The node path (child list)
      * @return The double value.
+     * @throws LionEngineException If unable to read node.
      */
-    public double getDouble(String attribute, String... path)
+    public double getDouble(String attribute, String... path) throws LionEngineException
     {
-        return Double.parseDouble(getNodeString(attribute, path));
+        try
+        {
+            return Double.parseDouble(getNodeString(attribute, path));
+        }
+        catch (final NumberFormatException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     /**
      * Get the class name node value.
      * 
      * @return The class name node value.
+     * @throws LionEngineException If unable to read node.
      */
-    public String getClassName()
+    public String getClassName() throws LionEngineException
     {
         return getText(Configurable.CLASS);
     }
@@ -191,8 +210,9 @@ public class Configurable
      * Get the surface node value.
      * 
      * @return The surface node value.
+     * @throws LionEngineException If unable to read node.
      */
-    public SurfaceData getSurface()
+    public SurfaceData getSurface() throws LionEngineException
     {
         return new SurfaceData(getString("image", Configurable.SURFACE), getSurfaceIcon());
     }
@@ -201,8 +221,9 @@ public class Configurable
      * Get the frames node value.
      * 
      * @return The frames node value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public FramesData getFrames()
+    public FramesData getFrames() throws LionEngineException
     {
         return new FramesData(getInteger("horizontal", Configurable.FRAMES),
                 getInteger("vertical", Configurable.FRAMES));
@@ -212,8 +233,9 @@ public class Configurable
      * Get the size node value.
      * 
      * @return The size node value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public SizeData getSize()
+    public SizeData getSize() throws LionEngineException
     {
         return new SizeData(getInteger("width", Configurable.SIZE), getInteger("height", Configurable.SIZE));
     }
@@ -222,8 +244,9 @@ public class Configurable
      * Get the offset node value.
      * 
      * @return The offset node value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public OffsetData getOffset()
+    public OffsetData getOffset() throws LionEngineException
     {
         return new OffsetData(getInteger("x", Configurable.OFFSET), getInteger("y", Configurable.OFFSET));
     }
@@ -238,7 +261,7 @@ public class Configurable
     public Animation getAnimation(String name) throws LionEngineException
     {
         final Animation animation = animations.get(name);
-        Check.notNull(animation, Configurable.ERROR_ANIMATION, name);
+        Check.notNull(animation);
         return animation;
     }
 
@@ -262,7 +285,7 @@ public class Configurable
     public Collision getCollision(String name) throws LionEngineException
     {
         final Collision collision = collisions.get(name);
-        Check.notNull(collision, Configurable.ERROR_COLLISION, name);
+        Check.notNull(collision);
         return collision;
     }
 
@@ -278,8 +301,10 @@ public class Configurable
 
     /**
      * Load all animations.
+     * 
+     * @throws LionEngineException If unable to read animation.
      */
-    private void loadAnimations()
+    private void loadAnimations() throws LionEngineException
     {
         for (final XmlNode node : root.getChildren(Configurable.ANIMATION))
         {
@@ -292,8 +317,10 @@ public class Configurable
 
     /**
      * Load all collisions.
+     * 
+     * @throws LionEngineException If unable to read collision.
      */
-    private void loadCollisions()
+    private void loadCollisions() throws LionEngineException
     {
         for (final XmlNode node : root.getChildren(Configurable.COLLISION))
         {
@@ -309,8 +336,9 @@ public class Configurable
      * 
      * @param path The node path.
      * @return The node found.
+     * @throws LionEngineException If node not found.
      */
-    private XmlNode getNode(String... path)
+    private XmlNode getNode(String... path) throws LionEngineException
     {
         XmlNode node = root;
         for (final String element : path)
@@ -326,8 +354,9 @@ public class Configurable
      * @param attribute The attribute to get.
      * @param path The attribute node path.
      * @return The string found.
+     * @throws LionEngineException If nod not found.
      */
-    private String getNodeString(String attribute, String... path)
+    private String getNodeString(String attribute, String... path) throws LionEngineException
     {
         final XmlNode node = getNode(path);
         return node.readString(attribute);

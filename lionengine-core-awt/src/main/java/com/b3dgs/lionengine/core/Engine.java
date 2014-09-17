@@ -75,10 +75,6 @@ import com.b3dgs.lionengine.Version;
 public final class Engine
         extends EngineCore
 {
-    /** Error resource directory. */
-    private static final String ERROR_RESOURCE_DIR = "The resource directory must not be null !";
-    /** Error resource class. */
-    private static final String ERROR_RESOURCE_CLASS = "The resource class must not be null !";
     /** Error message temp directory. */
     private static final String ERROR_TEMP_DIRECTORY = "Temporary directory was not created !";
 
@@ -94,7 +90,8 @@ public final class Engine
     public static void start(String name, Version version, Verbose level, String resourcesDir)
             throws LionEngineException
     {
-        Check.notNull(resourcesDir, Engine.ERROR_RESOURCE_DIR);
+        Check.notNull(resourcesDir);
+
         Engine.start(name, version, level, resourcesDir, null);
     }
 
@@ -110,7 +107,8 @@ public final class Engine
     public static void start(String name, Version version, Verbose level, Class<?> classResource)
             throws LionEngineException
     {
-        Check.notNull(classResource, Engine.ERROR_RESOURCE_CLASS);
+        Check.notNull(classResource);
+
         Engine.start(name, version, level, null, classResource);
     }
 
@@ -136,10 +134,16 @@ public final class Engine
             UtilityMedia.setResourcesDirectory(resourcesDir);
 
             // LionEngine started
-            Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
-            Verbose.info("Resources directory = ",
-                    UtilFile.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
-            Verbose.info("Temporary directory = ", UtilFile.getTempDir() + Core.MEDIA.getSeparator());
+            if (UtilityMedia.WORKING_DIR != null)
+            {
+                Verbose.info("Execution directory = ", UtilityMedia.WORKING_DIR + Core.MEDIA.getSeparator());
+                Verbose.info("Resources directory = ",
+                        UtilFile.getPath(UtilityMedia.WORKING_DIR, UtilityMedia.getRessourcesDir()));
+            }
+            if (UtilFile.SYSTEM_TEMP_DIR != null)
+            {
+                Verbose.info("Temporary directory = ", UtilFile.getTempDir() + Core.MEDIA.getSeparator());
+            }
 
             // Check version (clear temporary directory if version is different)
             final String versionFilename = UtilFile.getPath(UtilFile.getTempDir(), "version");
@@ -166,14 +170,15 @@ public final class Engine
      * Check version by clearing temporary directory if version is different.
      * 
      * @param versionFilename The file describing the program version.
+     * @throws LionEngineException If engine has not beed started.
      */
-    private static void checkVersion(String versionFilename)
+    private static void checkVersion(String versionFilename) throws LionEngineException
     {
         final File tempDir = new File(UtilFile.getTempDir());
         if (tempDir.exists())
         {
             boolean delete = true;
-            try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename));)
+            try (DataInputStream reader = new DataInputStream(new FileInputStream(versionFilename)))
             {
                 final String version = reader.readUTF();
                 if (EngineCore.getProgramVersion().toString().equals(version))
@@ -202,12 +207,13 @@ public final class Engine
      * Store version if needed for next time.
      * 
      * @param versionFilename The file describing the program version.
+     * @throws LionEngineException If engine has not been started.
      */
-    private static void storeVersion(String versionFilename)
+    private static void storeVersion(String versionFilename) throws LionEngineException
     {
         if (!UtilFile.exists(versionFilename))
         {
-            try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename));)
+            try (DataOutputStream writer = new DataOutputStream(new FileOutputStream(versionFilename)))
             {
                 writer.writeUTF(EngineCore.getProgramVersion().toString());
                 writer.flush();

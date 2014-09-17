@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
@@ -37,9 +38,6 @@ final class SpriteAnimatedImpl
         extends SpriteImpl
         implements SpriteAnimated
 {
-    /** Sprite frames error. */
-    private static final String ERROR_SPRITE_FRAMES = "Sprite frames must be strictly positive !";
-
     /** Animator reference. */
     private final Animator animator;
     /** Number of horizontal frames. */
@@ -59,14 +57,40 @@ final class SpriteAnimatedImpl
      * Constructor.
      * 
      * @param media The sprite media.
+     * @param horizontalFrames The number of horizontal frames.
+     * @param verticalFrames The number of vertical frames.
+     * @throws LionEngineException If arguments are invalid or image cannot be read.
+     */
+    SpriteAnimatedImpl(Media media, int horizontalFrames, int verticalFrames) throws LionEngineException
+    {
+        super(media);
+
+        Check.superiorStrict(horizontalFrames, 0);
+        Check.superiorStrict(verticalFrames, 0);
+
+        this.horizontalFrames = horizontalFrames;
+        this.verticalFrames = verticalFrames;
+        frameOriginalWidth = widthOriginal / horizontalFrames;
+        frameOriginalHeight = heightOriginal / verticalFrames;
+        framesNumber = horizontalFrames * verticalFrames;
+        animator = Anim.createAnimator();
+    }
+
+    /**
+     * Constructor.
+     * 
      * @param surface The surface reference.
      * @param horizontalFrames The number of horizontal frames.
      * @param verticalFrames The number of vertical frames.
+     * @throws LionEngineException If arguments are invalid.
      */
-    SpriteAnimatedImpl(Media media, ImageBuffer surface, int horizontalFrames, int verticalFrames)
+    SpriteAnimatedImpl(ImageBuffer surface, int horizontalFrames, int verticalFrames) throws LionEngineException
     {
-        super(media, surface);
-        Check.argument(horizontalFrames > 0 && verticalFrames > 0, SpriteAnimatedImpl.ERROR_SPRITE_FRAMES);
+        super(surface);
+
+        Check.superiorStrict(horizontalFrames, 0);
+        Check.superiorStrict(verticalFrames, 0);
+
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
         frameOriginalWidth = widthOriginal / horizontalFrames;
@@ -80,7 +104,7 @@ final class SpriteAnimatedImpl
      */
 
     @Override
-    public void play(Animation animation)
+    public void play(Animation animation) throws LionEngineException
     {
         animator.play(animation);
     }

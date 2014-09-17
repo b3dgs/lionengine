@@ -25,6 +25,7 @@ import java.util.concurrent.Semaphore;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -94,8 +95,9 @@ public final class Wav
      * Constructor.
      * 
      * @param media The audio sound media.
+     * @throws LionEngineException If media is <code>null</code>
      */
-    Wav(Media media)
+    Wav(Media media) throws LionEngineException
     {
         this(media, 1);
     }
@@ -105,10 +107,12 @@ public final class Wav
      * 
      * @param media The audio sound media.
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.
+     * @throws LionEngineException If media is <code>null</code>
      */
-    Wav(Media media, int maxSimultaneous)
+    Wav(Media media, int maxSimultaneous) throws LionEngineException
     {
         Check.notNull(media);
+
         this.media = media;
         this.maxSimultaneous = maxSimultaneous;
         count = Integer.valueOf(0);
@@ -231,11 +235,13 @@ public final class Wav
      * Set the sound volume.
      * 
      * @param volume The volume in percent <code>[{@link #VOLUME_MIN} - {@link #VOLUME_MAX}]</code>.
+     * @throws LionEngineException If argument is invalid.
      */
-    public void setVolume(int volume)
+    public void setVolume(int volume) throws LionEngineException
     {
-        Check.argument(volume >= Wav.VOLUME_MIN && volume <= Wav.VOLUME_MAX, "Wrong volume value: ",
-                String.valueOf(volume), " [" + Wav.VOLUME_MIN + "-" + Wav.VOLUME_MAX + "]");
+        Check.superiorOrEqual(volume, 0);
+        Check.inferiorOrEqual(volume, 100);
+
         this.volume = volume;
     }
 

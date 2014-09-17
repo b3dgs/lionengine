@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.platform.background;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -73,8 +74,9 @@ public abstract class BackgroundPlatform
      * @param y The location y.
      * @param alpha The alpha use flag.
      * @return The created element.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public BackgroundElement createElement(String name, int x, int y, boolean alpha)
+    public BackgroundElement createElement(String name, int x, int y, boolean alpha) throws LionEngineException
     {
         return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(name), alpha));
     }
@@ -88,8 +90,10 @@ public abstract class BackgroundPlatform
      * @param y The location y.
      * @param alpha The alpha use flag.
      * @return The created element.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
     public BackgroundElement createElement(String path, String name, int x, int y, boolean alpha)
+            throws LionEngineException
     {
         return new BackgroundElement(x, y, createSprite(Core.MEDIA.create(path, name), alpha));
     }
@@ -142,8 +146,9 @@ public abstract class BackgroundPlatform
      * @param media The sprite media.
      * @param alpha The alpha use flag.
      * @return The sprite instance.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    protected Sprite createSprite(Media media, boolean alpha)
+    protected Sprite createSprite(Media media, boolean alpha) throws LionEngineException
     {
         final Sprite sprite = Drawable.loadSprite(media);
         sprite.load(alpha);

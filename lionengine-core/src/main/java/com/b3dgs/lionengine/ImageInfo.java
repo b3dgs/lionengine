@@ -65,8 +65,9 @@ public final class ImageInfo
      * 
      * @param media The media.
      * @return The image info instance.
+     * @throws LionEngineException If media is <code>null</code> or cannot be read.
      */
-    public static ImageInfo get(Media media)
+    public static ImageInfo get(Media media) throws LionEngineException
     {
         return new ImageInfo(media);
     }
@@ -135,11 +136,12 @@ public final class ImageInfo
      * Constructor.
      * 
      * @param media The image media path.
+     * @throws LionEngineException If media is <code>null</code> or cannot be read.
      */
-    private ImageInfo(Media media)
+    private ImageInfo(Media media) throws LionEngineException
     {
         Check.notNull(media);
-        try (InputStream inputStream = media.getInputStream();)
+        try (InputStream inputStream = media.getInputStream())
         {
             final int byte1 = inputStream.read();
             final int byte2 = inputStream.read();
@@ -190,9 +192,11 @@ public final class ImageInfo
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
+     * @throws LionEngineException If image has an invalid format.
      */
-    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private void checkFormat(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
+            LionEngineException
     {
         if (!checkGif(inputStream, byte1, byte2, byte3))
         {
@@ -217,7 +221,7 @@ public final class ImageInfo
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private boolean checkGif(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
     {
@@ -237,7 +241,7 @@ public final class ImageInfo
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private boolean checkJpg(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
     {
@@ -257,7 +261,7 @@ public final class ImageInfo
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private boolean checkPng(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
     {
@@ -277,7 +281,7 @@ public final class ImageInfo
      * @param byte2 The second byte.
      * @param byte3 The third byte.
      * @return <code>true</code> if read, <code>false</code> else.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private boolean checkBmp(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
     {
@@ -296,9 +300,11 @@ public final class ImageInfo
      * @param byte1 The first byte.
      * @param byte2 The second byte.
      * @param byte3 The third byte.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
+     * @throws LionEngineException If image has an invalid format.
      */
-    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException
+    private void checkTiff(InputStream inputStream, int byte1, int byte2, int byte3) throws IOException,
+            LionEngineException
     {
         final int byte4 = inputStream.read();
         final boolean tiff1 = 'M' == byte1 && 'M' == byte2 && 0 == byte3 && 42 == byte4;
@@ -319,7 +325,7 @@ public final class ImageInfo
      * Read GIF header.
      * 
      * @param inputStream The input stream.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private void readGif(InputStream inputStream) throws IOException
     {
@@ -338,7 +344,7 @@ public final class ImageInfo
      * 
      * @param inputStream The input stream.
      * @param byte3 The third byte.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private void readJpg(InputStream inputStream, int byte3) throws IOException
     {
@@ -378,7 +384,7 @@ public final class ImageInfo
      * Read PNG header.
      * 
      * @param inputStream The input stream.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private void readPng(InputStream inputStream) throws IOException
     {
@@ -402,7 +408,7 @@ public final class ImageInfo
      * Read BMP header.
      * 
      * @param inputStream The input stream.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private void readBmp(InputStream inputStream) throws IOException
     {
@@ -427,7 +433,7 @@ public final class ImageInfo
      * 
      * @param inputStream The input stream.
      * @param byte1 The firsts byte.
-     * @throws IOException If an error occurs.
+     * @throws IOException If an error occurred.
      */
     private void readTiff(InputStream inputStream, int byte1) throws IOException
     {

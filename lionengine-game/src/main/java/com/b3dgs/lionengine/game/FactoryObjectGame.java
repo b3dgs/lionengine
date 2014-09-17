@@ -59,12 +59,6 @@ public abstract class FactoryObjectGame<S extends SetupGame>
     public static final String FILE_DATA_EXTENSION = "xml";
     /** Empty context instance. */
     private static final ContextGame EMPTY_CONTEXT = new ContextGame();
-    /** Folder error. */
-    private static final String ERROR_FOLDER = "Folder must not be null !";
-    /** Type error. */
-    private static final String ERROR_MEDIA = "Media must not be null !";
-    /** Setup not found error. */
-    private static final String ERROR_SETUP = "Setup not found fhe following type: ";
     /** Constructor error. */
     private static final String ERROR_CONSTRUCTOR = "Unable to create the following type: ";
     /** Constructor not found. */
@@ -84,11 +78,13 @@ public abstract class FactoryObjectGame<S extends SetupGame>
      * Constructor.
      * 
      * @param folder The objects folder.
+     * @throws LionEngineException If folder is <code>null</code>.
      */
-    public FactoryObjectGame(String folder)
+    public FactoryObjectGame(String folder) throws LionEngineException
     {
         super();
-        Check.notNull(folder, FactoryObjectGame.ERROR_FOLDER);
+        Check.notNull(folder);
+
         this.folder = folder;
         classLoader = ClassLoader.getSystemClassLoader();
         prepare = true;
@@ -111,13 +107,14 @@ public abstract class FactoryObjectGame<S extends SetupGame>
      * 
      * @param media The object media.
      * @return The object instance.
+     * @throws LionEngineException If media is <code>null</code> or not setup found.
      */
-    public <E extends Fabricable> E create(Media media)
+    public <E extends Fabricable> E create(Media media) throws LionEngineException
     {
-        Check.notNull(media, FactoryObjectGame.ERROR_MEDIA);
+        Check.notNull(media);
 
         final S setup = getSetup(media);
-        Check.notNull(setup, FactoryObjectGame.ERROR_SETUP, media.getPath());
+        Check.notNull(setup);
 
         final E fabricable = create(setup);
         if (prepare)
@@ -169,9 +166,10 @@ public abstract class FactoryObjectGame<S extends SetupGame>
      * 
      * @param setup The setup reference.
      * @return The fabricable instance.
+     * @throws LionEngineException If the class was not found by the class loader.
      */
     @SuppressWarnings("unchecked")
-    private <E extends Fabricable> E create(S setup)
+    private <E extends Fabricable> E create(S setup) throws LionEngineException
     {
         final Class<?> type = setup.getConfigClass(classLoader);
         try

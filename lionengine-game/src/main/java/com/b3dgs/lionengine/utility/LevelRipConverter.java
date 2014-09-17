@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.utility;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
@@ -40,7 +41,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * {
  *     final LevelRipConverter&lt;Tile&gt; rip = new LevelRipConverter&lt;&gt;();
  *     rip.start(levelrip, map, tilesheet);
- *     try (FileWriting file = File.createFileWriting(output);)
+ *     try (FileWriting file = File.createFileWriting(output))
  *     {
  *         map.save(file);
  *     }
@@ -113,8 +114,9 @@ public final class LevelRipConverter<T extends TileGame>
      * @param levelrip The file containing the levelrip as an image.
      * @param patternsDirectory The directory containing tiles themes.
      * @param map The destination map reference.
+     * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public void start(Media levelrip, Media patternsDirectory, MapTile<T> map)
+    public void start(Media levelrip, Media patternsDirectory, MapTile<T> map) throws LionEngineException
     {
         final int threadsNum = Runtime.getRuntime().availableProcessors();
         final Sprite levelRip = Drawable.loadSprite(levelrip);

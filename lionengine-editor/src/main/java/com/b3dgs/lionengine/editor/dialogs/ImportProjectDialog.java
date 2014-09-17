@@ -170,8 +170,8 @@ public class ImportProjectDialog
      */
     private void fillProjectProperties() throws IOException
     {
-        try (InputStream inputStream = new FileInputStream(new File(projectLocationText.getText(),
-                Project.PROPERTIES_FILE));)
+        final File file = new File(projectLocationText.getText(), Project.PROPERTIES_FILE);
+        try (InputStream inputStream = new FileInputStream(file))
         {
             final Properties properties = new Properties();
             properties.load(inputStream);
