@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.animation;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.editor.Activator;
+
 /**
  * Messages internationalization.
  * 
@@ -28,7 +30,7 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = "com.b3dgs.lionengine.editor.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".animation.messages"; //$NON-NLS-1$
 
     /** Animation editor title. */
     public static String AnimationEditor_Title;

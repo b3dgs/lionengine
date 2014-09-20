@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.editor.collision;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.b3dgs.lionengine.editor.Activator;
+
 /**
  * Messages internationalization.
  * 
@@ -28,7 +30,7 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = "com.b3dgs.lionengine.editor.collision.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".collision.messages"; //$NON-NLS-1$
 
     /** Entity collision properties offset X. */
     public static String EntityCollisionProperties_OffsetX;
