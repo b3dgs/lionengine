@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -46,7 +44,6 @@ import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
@@ -54,15 +51,12 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
 
 /**
- * Represents the factory entity view, where the entities list is displayed.
+ * Represents the factory view, where the objects list is displayed.
  * 
  * @author Pierre-Alexandre
  */
-public class FactoryEntityPart
+public class FactoryPart
 {
-    /** ID. */
-    public static final String ID = Activator.PLUGIN_ID + ".part.factory-entity";
-
     /**
      * Fill the combo items with its folder list.
      * 
@@ -108,14 +102,14 @@ public class FactoryEntityPart
     }
 
     /**
-     * Load the entity icon if has.
+     * Load the object icon if has.
      * 
-     * @param entityLabel The entity label reference.
-     * @param file The entity data file.
-     * @param setup The entity setup reference.
+     * @param objectLabel The object label reference.
+     * @param file The object data file.
+     * @param setup The object setup reference.
      * @throws LionEngineException If an error occurred when loading the icon.
      */
-    private static void loadEntityIcon(Label entityLabel, File file, SetupGame setup) throws LionEngineException
+    private static void loadObjectIcon(Label objectLabel, File file, SetupGame setup) throws LionEngineException
     {
         try
         {
@@ -124,7 +118,7 @@ public class FactoryEntityPart
             if (iconPath.isFile())
             {
                 final ImageDescriptor descriptor = ImageDescriptor.createFromURL(iconPath.toURI().toURL());
-                entityLabel.setImage(descriptor.createImage());
+                objectLabel.setImage(descriptor.createImage());
             }
         }
         catch (final MalformedURLException exception)
@@ -141,18 +135,17 @@ public class FactoryEntityPart
     Composite middle;
     /** Bottom composite. */
     Composite bottom;
-    /** Entities composite. */
-    Composite entitiesComposite;
-    /** Last selected entity. */
-    Label lastEntity;
+    /** Objects composite. */
+    Composite objectsComposite;
+    /** Last selected object. */
+    Label lastObject;
 
     /**
      * Create the composite.
      * 
      * @param parent The parent reference.
      */
-    @PostConstruct
-    public void createComposite(Composite parent)
+    public void create(Composite parent)
     {
         parent.setLayout(new GridLayout(1, false));
 
@@ -170,41 +163,41 @@ public class FactoryEntityPart
     }
 
     /**
-     * Set the factory entity used.
+     * Set the factory object used.
      * 
-     * @param factoryEntity The factory entity reference.
+     * @param factory The factory reference.
      */
-    public void setFactoryEntity(FactoryObjectGame<?> factoryEntity)
+    public void setFactory(FactoryObjectGame<?> factory)
     {
-        final File entitiesPath = new File(Project.getActive().getResourcesPath(), factoryEntity.getFolder());
+        final File objectsPath = new File(Project.getActive().getResourcesPath(), factory.getFolder());
         try
         {
-            load(factoryEntity, entitiesPath, middle);
+            load(factory, objectsPath, middle);
         }
         catch (final LionEngineException exception)
         {
-            createObjects(entitiesPath.listFiles());
+            createObjects(objectsPath.listFiles());
         }
     }
 
     /**
      * Load elements from root folder.
      * 
-     * @param factoryEntity The factory entity reference.
+     * @param factory The factory reference.
      * @param path The folder path.
      * @param parent The composite parent.
      * @return The created child composite.
      */
-    Composite load(final FactoryObjectGame<?> factoryEntity, File path, final Composite parent)
+    Composite load(final FactoryObjectGame<?> factory, File path, final Composite parent)
     {
         final File[] folders = path.listFiles();
         if (folders != null)
         {
-            final String typeName = Tools.getEntitiesFolderTypeName(path);
+            final String typeName = Tools.getObjectsFolderTypeName(path);
             final Composite composite = new Composite(parent, SWT.NONE);
             composite.setLayout(new GridLayout(1, false));
-            final Combo typeCombo = FactoryEntityPart.createCombo(typeName, composite);
-            FactoryEntityPart.fillCombo(typeCombo, folders);
+            final Combo typeCombo = FactoryPart.createCombo(typeName, composite);
+            FactoryPart.fillCombo(typeCombo, folders);
 
             middle.getShell().layout(true, true);
 
@@ -213,14 +206,14 @@ public class FactoryEntityPart
                 @Override
                 public void widgetSelected(SelectionEvent selectionEvent)
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(null);
-                    lastEntity = null;
+                    WorldViewModel.INSTANCE.setSelectedObject(null);
+                    lastObject = null;
                     final Object data = typeCombo.getData(typeCombo.getItem(typeCombo.getSelectionIndex()));
                     if (data instanceof File)
                     {
-                        if (entitiesComposite != null)
+                        if (objectsComposite != null)
                         {
-                            entitiesComposite.dispose();
+                            objectsComposite.dispose();
                         }
                         final File typeFolder = (File) data;
                         try
@@ -230,7 +223,7 @@ public class FactoryEntityPart
                                 hierarchy.get(typeName).dispose();
                                 hierarchy.remove(typeName);
                             }
-                            final Composite child = load(factoryEntity, typeFolder, composite);
+                            final Composite child = load(factory, typeFolder, composite);
                             if (child != null)
                             {
                                 hierarchy.put(typeName, child);
@@ -249,35 +242,35 @@ public class FactoryEntityPart
     }
 
     /**
-     * Create the entities list from their file.
+     * Create the objects list from their file.
      * 
      * @param objectsFile The objects file.
      */
     void createObjects(File[] objectsFile)
     {
-        entitiesComposite = new Composite(bottom, SWT.BORDER);
-        entitiesComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        entitiesComposite.setLayout(new RowLayout());
+        objectsComposite = new Composite(bottom, SWT.BORDER);
+        objectsComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        objectsComposite.setLayout(new RowLayout());
 
-        final FactoryObjectGame<?> factoryEntity = WorldViewModel.INSTANCE.getFactoryEntity();
-        loadEntities(factoryEntity, objectsFile);
+        final FactoryObjectGame<?> factory = WorldViewModel.INSTANCE.getFactory();
+        loadObjects(factory, objectsFile);
     }
 
     /**
-     * Load all entities from their folder (filter them by extension, <code>*.xml</code> expected).
+     * Load all objects from their folder (filter them by extension, <code>*.xml</code> expected).
      * 
-     * @param factoryEntity The factory entity reference.
-     * @param entityFiles The entities path.
+     * @param factory The factory reference.
+     * @param objectFiles The objects path.
      */
-    void loadEntities(FactoryObjectGame<?> factoryEntity, File[] entityFiles)
+    void loadObjects(FactoryObjectGame<?> factory, File[] objectFiles)
     {
-        if (entityFiles != null)
+        if (objectFiles != null)
         {
-            for (final File entityFile : entityFiles)
+            for (final File objectFile : objectFiles)
             {
-                if (entityFile.isFile() && UtilFile.isType(entityFile, FactoryObjectGame.FILE_DATA_EXTENSION))
+                if (objectFile.isFile() && UtilFile.isType(objectFile, FactoryObjectGame.FILE_DATA_EXTENSION))
                 {
-                    loadEntity(factoryEntity, entityFile);
+                    loadObject(factory, objectFile);
                 }
             }
         }
@@ -288,20 +281,20 @@ public class FactoryEntityPart
     }
 
     /**
-     * Load an entity from its file data, and add it to the tab.
+     * Load an object from its file data, and add it to the tab.
      * 
-     * @param factoryEntity The factory entity reference.
-     * @param file The entity data file.
+     * @param factory The factory reference.
+     * @param file The object data file.
      */
-    private void loadEntity(FactoryObjectGame<?> factoryEntity, File file)
+    private void loadObject(FactoryObjectGame<?> factory, File file)
     {
-        final Label entityLabel = new Label(entitiesComposite, SWT.NONE);
-        entityLabel.setLayoutData(new RowData(34, 34));
-        entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+        final Label objectLabel = new Label(objectsComposite, SWT.NONE);
+        objectLabel.setLayoutData(new RowData(34, 34));
+        objectLabel.setBackground(objectLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
         final String name = UtilFile.removeExtension(file.getName());
-        entityLabel.setText(name);
+        objectLabel.setText(name);
 
-        entityLabel.addMouseTrackListener(new MouseTrackListener()
+        objectLabel.addMouseTrackListener(new MouseTrackListener()
         {
             @Override
             public void mouseHover(MouseEvent e)
@@ -312,40 +305,40 @@ public class FactoryEntityPart
             @Override
             public void mouseExit(MouseEvent e)
             {
-                if (lastEntity != entityLabel)
+                if (lastObject != objectLabel)
                 {
-                    entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+                    objectLabel.setBackground(objectLabel.getDisplay().getSystemColor(SWT.COLOR_GRAY));
                 }
             }
 
             @Override
             public void mouseEnter(MouseEvent e)
             {
-                entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+                objectLabel.setBackground(objectLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
             }
         });
-        entityLabel.addMouseListener(new MouseListener()
+        objectLabel.addMouseListener(new MouseListener()
         {
             @Override
             public void mouseUp(MouseEvent mouseEvent)
             {
-                if (lastEntity != null)
+                if (lastObject != null)
                 {
-                    lastEntity.setBackground(lastEntity.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+                    lastObject.setBackground(lastObject.getDisplay().getSystemColor(SWT.COLOR_GRAY));
                 }
-                if (lastEntity == entityLabel)
+                if (lastObject == objectLabel)
                 {
-                    WorldViewModel.INSTANCE.setSelectedEntity(null);
-                    lastEntity = null;
+                    WorldViewModel.INSTANCE.setSelectedObject(null);
+                    lastObject = null;
                 }
                 else
                 {
-                    final Object data = entityLabel.getData();
+                    final Object data = objectLabel.getData();
                     if (data instanceof Media)
                     {
-                        WorldViewModel.INSTANCE.setSelectedEntity((Media) data);
-                        entityLabel.setBackground(entityLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-                        lastEntity = entityLabel;
+                        WorldViewModel.INSTANCE.setSelectedObject((Media) data);
+                        objectLabel.setBackground(objectLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+                        lastObject = objectLabel;
                     }
                 }
             }
@@ -364,11 +357,11 @@ public class FactoryEntityPart
         });
 
         final Media media = UtilityMedia.get(file);
-        final SetupGame setup = factoryEntity.getSetup(media);
+        final SetupGame setup = factory.getSetup(media);
 
-        FactoryEntityPart.loadEntityIcon(entityLabel, file, setup);
-        entityLabel.setToolTipText(name);
-        entityLabel.setData(media);
+        FactoryPart.loadObjectIcon(objectLabel, file, setup);
+        objectLabel.setToolTipText(name);
+        objectLabel.setData(media);
     }
 
     /**
@@ -388,7 +381,7 @@ public class FactoryEntityPart
     }
 
     /**
-     * Create the middle part, dedicated to entity group selection.
+     * Create the middle part, dedicated to group group selection.
      * 
      * @param parent The composite parent.
      */
@@ -399,7 +392,7 @@ public class FactoryEntityPart
     }
 
     /**
-     * Create the bottom part, dedicated to the entity list.
+     * Create the bottom part, dedicated to the object list.
      * 
      * @param parent The composite parent.
      */

@@ -142,13 +142,13 @@ public class EntityControl
      */
     public void addEntity(int mx, int my)
     {
-        final Media media = model.getSelectedEntity();
+        final Media media = model.getSelectedObject();
         if (media != null)
         {
             final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
-            final FactoryObjectGame<?> factoryEntity = model.getFactoryEntity();
+            final FactoryObjectGame<?> factoryEntity = model.getFactory();
             final EntityGame entity = factoryEntity.create(media);
 
             setEntityLocation(entity, tile.getX(), tile.getY(), 1);

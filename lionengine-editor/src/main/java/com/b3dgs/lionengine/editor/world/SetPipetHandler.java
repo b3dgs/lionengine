@@ -18,25 +18,20 @@
 package com.b3dgs.lionengine.editor.world;
 
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.editor.palette.PaletteType;
 
 /**
- * Assign the map implementation handler.
+ * Set pipet handler.
  * 
  * @author Pierre-Alexandre
  */
-public class AssignMapImplementationHandler
+public class SetPipetHandler
 {
-    /** Map implementation assigned verbose. */
-    private static final String VERBOSE_MAP_IMPLEMENTATION = "Map implementation assigned with: ";
-
     /**
      * Execute the handler.
      * 
@@ -45,14 +40,19 @@ public class AssignMapImplementationHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?> map = Project.getActive().getInstance(MapTile.class, selection);
-        WorldViewModel.INSTANCE.setMap(map);
-        Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());
-
-        final WorldViewPart worldView = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
-        worldView.setToolBarEnabled(true);
-        worldView.addListeners();
-        worldView.update();
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "hand", "selection");
+                UtilEclipse.setToolItemSelection(toolBar, true, "pipet");
+            }
+        }
+        final PaletteType type = PaletteType.PIPET;
+        WorldViewModel.INSTANCE.setSelectedPalette(type);
+        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        view.setCursor(type.getCursor());
     }
 }

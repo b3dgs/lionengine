@@ -23,24 +23,18 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
-import com.b3dgs.lionengine.editor.dialogs.ImportMapDialog;
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * Represents the world view, where the global map is displayed.
@@ -51,12 +45,6 @@ public class WorldViewPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.world-view";
-    /** Import map icon. */
-    private static final Image ICON_IMPORT_MAP = UtilEclipse.getIcon("import-map.png");
-    /** Import level verbose. */
-    private static final String VERBOSE_IMPORT_LEVEL = "Importing map from level rip: ";
-    /** Using tile sheet verbose. */
-    private static final String VERBOSE_USING_TILESHEETS = " using the following sheets: ";
     /** Extension point attribute renderer. */
     private static final String EXTENSION_RENDERER = "renderer";
 
@@ -67,8 +55,6 @@ public class WorldViewPart
     private Composite composite;
     /** Renderer. */
     private WorldViewRenderer worldViewRenderer;
-    /** Tool bar. */
-    private ToolBar toolBar;
 
     /**
      * Create the composite.
@@ -83,14 +69,20 @@ public class WorldViewPart
         layout.verticalSpacing = 1;
         parent.setLayout(layout);
 
-        toolBar = createToolBar(parent);
-        toolBar.setEnabled(false);
-
         composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         worldViewRenderer = checkRendererExtensionPoint();
         composite.addPaintListener(worldViewRenderer);
+
+        parent.getDisplay().asyncExec(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setToolBarEnabled(false);
+            }
+        });
     }
 
     /**
@@ -121,7 +113,33 @@ public class WorldViewPart
      */
     public void setToolBarEnabled(boolean enabled)
     {
-        toolBar.setEnabled(enabled);
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilEclipse.setToolItemEnabled(toolBar, enabled);
+            }
+        }
+    }
+
+    /**
+     * Switch the grid enabled state.
+     */
+    public void switchGridEnabled()
+    {
+        worldViewRenderer.switchGridEnabled();
+    }
+
+    /**
+     * Set the current cursor.
+     * 
+     * @param cursor The cursor to set.
+     */
+    public void setCursor(Cursor cursor)
+    {
+        composite.setCursor(cursor);
     }
 
     /**
@@ -131,61 +149,6 @@ public class WorldViewPart
     public void focus()
     {
         composite.forceFocus();
-    }
-
-    /**
-     * Import map from its level rip and tile sheets.
-     * 
-     * @param level The level rip.
-     * @param pattern The tile sheets directory.
-     */
-    void importMap(Media level, Media pattern)
-    {
-        Verbose.info(WorldViewPart.VERBOSE_IMPORT_LEVEL, level.getPath(), WorldViewPart.VERBOSE_USING_TILESHEETS,
-                pattern.getPath());
-
-        final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-        map.load(level, pattern);
-        map.createCollisionDraw();
-
-        final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID, TileCollisionPart.class);
-        part.setSaveEnabled(true);
-
-        update();
-        focus();
-    }
-
-    /**
-     * Create the tool bar.
-     * 
-     * @param parent The parent reference.
-     * @return The created tool bar.
-     */
-    private ToolBar createToolBar(final Composite parent)
-    {
-        final ToolBar toolBar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
-        toolBar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-
-        final ToolItem importMap = new ToolItem(toolBar, SWT.PUSH);
-        importMap.setImage(WorldViewPart.ICON_IMPORT_MAP);
-        importMap.setText(Messages.WorldView_ImportMap);
-        importMap.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent)
-            {
-                final ImportMapDialog importMapDialog = new ImportMapDialog(parent.getShell());
-                importMapDialog.open();
-
-                if (importMapDialog.isFound())
-                {
-                    final Media level = importMapDialog.getLevelRipLocation();
-                    final Media pattern = importMapDialog.getPatternsLocation();
-                    importMap(level, pattern);
-                }
-            }
-        });
-        return toolBar;
     }
 
     /**

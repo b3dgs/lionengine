@@ -15,35 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor;
+package com.b3dgs.lionengine.editor.world;
 
-import org.eclipse.e4.core.di.annotations.CanExecute;
 import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.palette.PaletteType;
+
 /**
- * Save handler implementation.
+ * Set pointer handler.
  * 
  * @author Pierre-Alexandre
  */
-public class SaveHandler
+public class SetPointerHandler
 {
-    /**
-     * Check if handler can be executed.
-     * 
-     * @param partService The part service reference.
-     * @return <code>true</code> if can be executed, <code>false</code> else.
-     */
-    @CanExecute
-    public boolean canExecute(EPartService partService)
-    {
-        if (partService != null)
-        {
-            return !partService.getDirtyParts().isEmpty();
-        }
-        return false;
-    }
-
     /**
      * Execute the handler.
      * 
@@ -52,6 +40,19 @@ public class SaveHandler
     @Execute
     public void execute(EPartService partService)
     {
-        partService.saveAll(false);
+        final MPart part = partService.findPart(WorldViewPart.ID);
+        if (part != null)
+        {
+            final MToolBar toolBar = part.getToolbar();
+            if (toolBar != null)
+            {
+                UtilEclipse.setToolItemSelection(toolBar, false, "hand", "selection", "pipet");
+                UtilEclipse.setToolItemSelection(toolBar, true, "pointer");
+            }
+        }
+        final PaletteType type = PaletteType.POINTER;
+        WorldViewModel.INSTANCE.setSelectedPalette(type);
+        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        view.setCursor(type.getCursor());
     }
 }

@@ -81,7 +81,7 @@ public final class Tools
      */
     public static Configurable getConfigurable(Media entity)
     {
-        final FactoryObjectGame<?> factory = WorldViewModel.INSTANCE.getFactoryEntity();
+        final FactoryObjectGame<?> factory = WorldViewModel.INSTANCE.getFactory();
         final SetupGame setup = factory.getSetup(entity);
         return setup.getConfigurable();
     }
@@ -118,7 +118,7 @@ public final class Tools
      * @return The type name.
      * @throws LionEngineException If get name error, and so, this is not a type folder.
      */
-    public static String getEntitiesFolderTypeName(File path) throws LionEngineException
+    public static String getObjectsFolderTypeName(File path) throws LionEngineException
     {
         final File typeFile = new File(path, "type.xml");
         final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));

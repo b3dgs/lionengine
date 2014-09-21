@@ -38,6 +38,7 @@ import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
+import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -131,6 +132,8 @@ public class WorldViewRenderer
     private TileGame selectedTile;
     /** Last selected tile. */
     private TileGame lastSelectedTile;
+    /** Grid enabled. */
+    private boolean gridEnabled;
     /** Current horizontal mouse location. */
     private int mouseX;
     /** Current vertical mouse location. */
@@ -152,6 +155,15 @@ public class WorldViewRenderer
         handlerEntity = new HandlerEntity(model.getCamera());
         selection = new Selection();
         entityControl = new EntityControl(handlerEntity);
+        gridEnabled = true;
+    }
+
+    /**
+     * Set the grid enabled state.
+     */
+    public void switchGridEnabled()
+    {
+        gridEnabled = !gridEnabled;
     }
 
     /**
@@ -247,15 +259,22 @@ public class WorldViewRenderer
      * 
      * @param vx The keyboard horizontal movement.
      * @param vy The keyboard vertical movement.
+     * @param step The movement sensibility.
      */
-    private void updateKeyboard(int vx, int vy)
+    private void updateCamera(int vx, int vy, int step)
     {
         final CameraGame camera = model.getCamera();
         final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        camera.moveLocation(1.0, vx * tw * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY, vy * th
-                * WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY);
+        if (step > 0)
+        {
+            camera.moveLocation(1.0, UtilMath.getRounded(vx * tw * step, tw), UtilMath.getRounded(vy * th * step, th));
+        }
+        else
+        {
+            camera.moveLocation(1.0, vx, vy);
+        }
 
         final int maxX = (map.getWidthInTile() - 1) * tw - camera.getViewWidth();
         final int maxY = map.getHeightInTile() * th - camera.getViewHeight();
@@ -344,8 +363,14 @@ public class WorldViewRenderer
 
         renderBackground(g, width, height);
         render(g, camera, map, areaX, areaY);
-        renderCursor(g, tw, th, areaX, areaY);
-        WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
+        if (WorldViewModel.INSTANCE.getSelectedPalette() == PaletteType.POINTER)
+        {
+            renderCursor(g, tw, th, areaX, areaY);
+        }
+        if (gridEnabled)
+        {
+            WorldViewRenderer.drawGrid(g, tw, th, areaX, areaY, WorldViewRenderer.COLOR_GRID);
+        }
     }
 
     /**
@@ -469,7 +494,10 @@ public class WorldViewRenderer
         final int my = mouseEvent.y;
         click = mouseEvent.button;
 
-        updateSelectionBefore(mx, my);
+        if (model.getSelectedPalette() == PaletteType.SELECTION)
+        {
+            updateSelectionBefore(mx, my);
+        }
         updateMouse(mx, my);
     }
 
@@ -479,9 +507,13 @@ public class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        updateSelectionAfter(mx, my);
+        final Enum<?> palette = model.getSelectedPalette();
+        if (palette == PaletteType.SELECTION)
+        {
+            updateSelectionAfter(mx, my);
+        }
 
-        if (!selection.isSelected() && !entityControl.isDragging())
+        if (palette == PaletteType.POINTER && !selection.isSelected() && !entityControl.isDragging())
         {
             final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
@@ -509,6 +541,13 @@ public class WorldViewRenderer
                 entityControl.removeEntity(mx, my);
             }
         }
+        if (palette == PaletteType.HAND)
+        {
+            final CameraGame camera = model.getCamera();
+            final MapTile<?> map = model.getMap();
+            camera.setLocation(UtilMath.getRounded(camera.getLocationIntX(), map.getTileWidth()),
+                    UtilMath.getRounded(camera.getLocationIntY(), map.getTileHeight()));
+        }
 
         updateMouse(mx, my);
         entityControl.stopDragging();
@@ -525,8 +564,12 @@ public class WorldViewRenderer
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
 
-        entityControl.updateMouseOver(mx, my);
-        if (click == Mouse.LEFT)
+        final Enum<?> palette = model.getSelectedPalette();
+        if (palette == PaletteType.POINTER)
+        {
+            entityControl.updateMouseOver(mx, my);
+        }
+        if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
         {
             if (entityControl.getSelectedEnties().isEmpty())
             {
@@ -536,6 +579,10 @@ public class WorldViewRenderer
             {
                 entityControl.updateDragging(mouseX, mouseY, mx, my);
             }
+        }
+        if (palette == PaletteType.HAND && click > 0)
+        {
+            updateCamera(mouseX - mx, my - mouseY, 0);
         }
         updateMouse(mx, my);
     }
@@ -574,7 +621,7 @@ public class WorldViewRenderer
         {
             vy = 0;
         }
-        updateKeyboard(vx, vy);
+        updateCamera(vx, vy, WorldViewRenderer.GRID_MOVEMENT_SENSIBILITY);
     }
 
     @Override

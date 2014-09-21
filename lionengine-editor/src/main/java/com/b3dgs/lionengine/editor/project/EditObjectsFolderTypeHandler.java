@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * 
  * @author Pierre-Alexandre
  */
-public class EditEntitiesFolderTypeHandler
+public class EditObjectsFolderTypeHandler
 {
     /** The default type name. */
     private static final String DEFAULT_NAME = "category";
@@ -55,7 +55,7 @@ public class EditEntitiesFolderTypeHandler
         {
             root = Stream.createXmlNode("lionengine:type");
             final XmlNode typeName = Stream.createXmlNode("name");
-            typeName.setText(EditEntitiesFolderTypeHandler.DEFAULT_NAME);
+            typeName.setText(EditObjectsFolderTypeHandler.DEFAULT_NAME);
             root.add(typeName);
         }
         return root;
@@ -95,7 +95,7 @@ public class EditEntitiesFolderTypeHandler
         final Project project = Project.getActive();
         final File type = new File(selection.getFile(), "type.xml");
         final Media media = project.getResourceMedia(type.getPath());
-        final XmlNode root = EditEntitiesFolderTypeHandler.getRoot(media);
-        EditEntitiesFolderTypeHandler.enterName(parent, media, root);
+        final XmlNode root = EditObjectsFolderTypeHandler.getRoot(media);
+        EditObjectsFolderTypeHandler.enterName(parent, media, root);
     }
 }

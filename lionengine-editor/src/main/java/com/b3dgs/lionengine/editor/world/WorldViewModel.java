@@ -36,10 +36,12 @@ public enum WorldViewModel
     private final CameraGame camera;
     /** Map reference. */
     private MapTile<?> map;
-    /** Factory entity reference. */
-    private FactoryObjectGame<?> factoryEntity;
-    /** Selected entity media. */
-    private Media selectedEntity;
+    /** Factory reference. */
+    private FactoryObjectGame<?> factory;
+    /** Selected object media. */
+    private Media selectedObject;
+    /** Selected palette. */
+    private Enum<?> palette;
 
     /**
      * Constructor.
@@ -60,23 +62,33 @@ public enum WorldViewModel
     }
 
     /**
-     * Set the factory entity reference.
+     * Set the factory reference.
      * 
-     * @param factoryEntity The factory entity reference.
+     * @param factory The factory reference.
      */
-    public void setFactoryEntity(FactoryObjectGame<?> factoryEntity)
+    public void setFactory(FactoryObjectGame<?> factory)
     {
-        this.factoryEntity = factoryEntity;
+        this.factory = factory;
     }
 
     /**
-     * Set the selected entity media.
+     * Set the selected object media.
      * 
-     * @param selectedEntity The selected entity media.
+     * @param selectedObject The selected object media.
      */
-    public void setSelectedEntity(Media selectedEntity)
+    public void setSelectedObject(Media selectedObject)
     {
-        this.selectedEntity = selectedEntity;
+        this.selectedObject = selectedObject;
+    }
+
+    /**
+     * Set the selected palette.
+     * 
+     * @param palette The selected palette.
+     */
+    public void setSelectedPalette(Enum<?> palette)
+    {
+        this.palette = palette;
     }
 
     /**
@@ -100,22 +112,32 @@ public enum WorldViewModel
     }
 
     /**
-     * Get the factory entity reference.
+     * Get the factory object reference.
      * 
-     * @return The factory entity reference.
+     * @return The factory object reference.
      */
-    public FactoryObjectGame<?> getFactoryEntity()
+    public FactoryObjectGame<?> getFactory()
     {
-        return factoryEntity;
+        return factory;
     }
 
     /**
-     * Get the selected entity media.
+     * Get the selected object media.
      * 
-     * @return The selected entity media.
+     * @return The selected object media.
      */
-    public Media getSelectedEntity()
+    public Media getSelectedObject()
     {
-        return selectedEntity;
+        return selectedObject;
+    }
+
+    /**
+     * Get the selected palette.
+     * 
+     * @return The selected palette.
+     */
+    public Enum<?> getSelectedPalette()
+    {
+        return palette;
     }
 }

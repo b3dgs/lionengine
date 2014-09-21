@@ -15,33 +15,30 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project;
+package com.b3dgs.lionengine.editor.world;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.dialogs.EditEntityDialog;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 
 /**
- * Edit an entity in the selected folder.
+ * Set grid handler.
  * 
  * @author Pierre-Alexandre
  */
-public class EditEntityHandler
+public class SetGridHandler
 {
     /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
-     * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService, Shell parent)
+    public void execute(EPartService partService)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final EditEntityDialog entityEditDialog = new EditEntityDialog(parent, selection);
-        entityEditDialog.open();
+        final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        part.switchGridEnabled();
+        part.update();
     }
 }

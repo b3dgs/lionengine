@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * 
  * @author Pierre-Alexandre
  */
-public class AddEntityHandler
+public class AddObjectHandler
 {
     /** Default new entity name. */
     private static final String DEFAULT_NEW_ENTITY_NAME = "entity";
@@ -55,7 +55,7 @@ public class AddEntityHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddEntity_Title, Messages.AddEntity_Text,
-                AddEntityHandler.DEFAULT_NEW_ENTITY_NAME, null);
+                AddObjectHandler.DEFAULT_NEW_ENTITY_NAME, null);
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

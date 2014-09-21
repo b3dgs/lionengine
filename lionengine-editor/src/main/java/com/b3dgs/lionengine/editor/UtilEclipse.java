@@ -20,12 +20,18 @@ package com.b3dgs.lionengine.editor;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.menu.MHandledToolItem;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
+import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -158,6 +164,52 @@ public final class UtilEclipse
             }
         }
         throw new ClassNotFoundException(UtilEclipse.ERROR_CLASS_CREATE + name);
+    }
+
+    /**
+     * Set the tool item selection.
+     * 
+     * @param toolbar The tool bar reference.
+     * @param selected The selection state.
+     * @param names The elements names (relative to the tool bar ID).
+     */
+    public static void setToolItemSelection(MToolBar toolbar, boolean selected, String... names)
+    {
+        final List<String> items = Arrays.asList(names);
+        for (final MToolBarElement element : toolbar.getChildren())
+        {
+            final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
+            if (items.isEmpty() || items.contains(id))
+            {
+                if (element instanceof MHandledToolItem)
+                {
+                    ((MHandledToolItem) element).setSelected(selected);
+                }
+            }
+        }
+    }
+
+    /**
+     * Set the tool item enabled.
+     * 
+     * @param toolbar The tool bar reference.
+     * @param enabled The enabled state.
+     * @param names The elements names (relative to the tool bar ID).
+     */
+    public static void setToolItemEnabled(final MToolBar toolbar, final boolean enabled, final String... names)
+    {
+        final List<String> items = Arrays.asList(names);
+        for (final MToolBarElement element : toolbar.getChildren())
+        {
+            final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
+            if (items.isEmpty() || items.contains(id))
+            {
+                if (element.getWidget() instanceof ToolItem)
+                {
+                    ((ToolItem) element.getWidget()).setEnabled(enabled);
+                }
+            }
+        }
     }
 
     /**

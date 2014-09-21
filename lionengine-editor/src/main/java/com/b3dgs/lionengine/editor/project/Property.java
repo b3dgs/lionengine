@@ -46,8 +46,8 @@ public enum Property
     LEVEL("lrm"),
     /** Map implementation property. */
     MAP_IMPL(MapTile.class),
-    /** Factory entity implementation property. */
-    FACTORY_ENTITY_IMPL(FactoryObjectGame.class),
+    /** Factory implementation property. */
+    FACTORY_IMPL(FactoryObjectGame.class),
     /** Class file. */
     CLASS(Property.EXTENSION_CLASS);
 

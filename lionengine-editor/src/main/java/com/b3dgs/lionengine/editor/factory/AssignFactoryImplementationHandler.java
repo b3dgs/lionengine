@@ -22,18 +22,17 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
- * Assign the factory entity implementation handler.
+ * Assign the factory implementation handler.
  * 
  * @author Pierre-Alexandre
  */
-public class AssignFactoryEntityImplementationHandler
+public class AssignFactoryImplementationHandler
 {
     /** Factory implementation assigned verbose. */
     private static final String VERBOSE_FACTORY_IMPLEMENTATION = "Factory implementation assigned with: ";
@@ -47,15 +46,11 @@ public class AssignFactoryEntityImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final FactoryObjectGame<?> factoryEntity = Project.getActive().getInstance(FactoryObjectGame.class, selection);
-        factoryEntity.setClassLoader(Project.getActive().getClassLoader());
-        factoryEntity.setPrepareEnabled(false);
-        WorldViewModel.INSTANCE.setFactoryEntity(factoryEntity);
+        final FactoryObjectGame<?> factory = Project.getActive().getInstance(FactoryObjectGame.class, selection);
+        factory.setClassLoader(Project.getActive().getClassLoader());
+        factory.setPrepareEnabled(false);
+        WorldViewModel.INSTANCE.setFactory(factory);
 
-        Verbose.info(AssignFactoryEntityImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factoryEntity.getClass()
-                .getName());
-
-        final FactoryEntityPart part = UtilEclipse.getPart(partService, FactoryEntityPart.ID, FactoryEntityPart.class);
-        part.setFactoryEntity(factoryEntity);
+        Verbose.info(AssignFactoryImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factory.getClass().getName());
     }
 }

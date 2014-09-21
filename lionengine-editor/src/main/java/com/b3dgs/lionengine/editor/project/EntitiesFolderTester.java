@@ -135,7 +135,7 @@ public class EntitiesFolderTester
      */
     private static boolean canEditEntity(Media selection)
     {
-        return WorldViewModel.INSTANCE.getFactoryEntity() != null && EntitiesFolderTester.isEntity(selection);
+        return WorldViewModel.INSTANCE.getFactory() != null && EntitiesFolderTester.isEntity(selection);
     }
 
     /*

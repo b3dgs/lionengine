@@ -60,11 +60,11 @@ public class ProjectTreeCreator
     /** Level file icon. */
     private static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
     /** Map file icon. */
-    private static final Image ICON_MAP = UtilEclipse.getIcon("resources", "assign-map-impl.png");
+    private static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
     /** Factory entity file icon. */
-    private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "assign-factory-entity-impl.png");
+    private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
     /** Entity file icon. */
-    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
+    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "object.png");
     /** Class file icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
 
@@ -101,7 +101,7 @@ public class ProjectTreeCreator
         {
             return ProjectTreeCreator.ICON_MAP;
         }
-        else if (Property.FACTORY_ENTITY_IMPL.is(file))
+        else if (Property.FACTORY_IMPL.is(file))
         {
             return ProjectTreeCreator.ICON_FACTORY_ENTITY;
         }

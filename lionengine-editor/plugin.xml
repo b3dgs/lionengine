@@ -67,9 +67,9 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.resource.factory_entity_impl">
+            id="com.b3dgs.lionengine.editor.resource.factory_impl">
          <test
-               property="com.b3dgs.lionengine.editor.resourceExtensionTester.factory_entity_impl">
+               property="com.b3dgs.lionengine.editor.resourceExtensionTester.factory_impl">
          </test>
       </definition>
       <definition
@@ -115,7 +115,7 @@
             class="com.b3dgs.lionengine.editor.project.ResourceExtensionTester"
             id="com.b3dgs.lionengine.editor.resourceExtensionTester"
             namespace="com.b3dgs.lionengine.editor.resourceExtensionTester"
-            properties="music,sound,data,image,level,map_impl,factory_entity_impl"
+            properties="music,sound,data,image,level,map_impl,factory_impl"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester

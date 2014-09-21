@@ -15,44 +15,53 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.project;
+
+import java.io.File;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
-import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
- * Assign the map implementation handler.
+ * Remove an entity in the selected folder.
  * 
  * @author Pierre-Alexandre
  */
-public class AssignMapImplementationHandler
+public class RemoveObjectHandler
 {
-    /** Map implementation assigned verbose. */
-    private static final String VERBOSE_MAP_IMPLEMENTATION = "Map implementation assigned with: ";
-
     /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
+     * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService)
+    public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?> map = Project.getActive().getInstance(MapTile.class, selection);
-        WorldViewModel.INSTANCE.setMap(map);
-        Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());
-
-        final WorldViewPart worldView = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
-        worldView.setToolBarEnabled(true);
-        worldView.addListeners();
-        worldView.update();
+        final File file = selection.getFile();
+        if (file.isFile())
+        {
+            if (file.delete())
+            {
+                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_INFORMATION);
+                messageBox.setMessage(Messages.RemoveEntity_Text + file);
+                messageBox.setText(Messages.RemoveEntity_Title);
+                messageBox.open();
+                // TODO refresh project resources
+            }
+            else
+            {
+                final MessageBox messageBox = new MessageBox(parent, SWT.ICON_ERROR);
+                messageBox.setMessage(Messages.RemoveEntity_Error_Text + file);
+                messageBox.setText(Messages.RemoveEntity_Error_Title);
+                messageBox.open();
+            }
+        }
     }
 }
