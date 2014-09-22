@@ -17,9 +17,22 @@
  */
 package com.b3dgs.lionengine.editor.palette;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 
 import com.b3dgs.lionengine.editor.Activator;
 
@@ -33,14 +46,119 @@ public class PalettePart
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.palette";
 
+    /** Palette list. */
+    final Map<String, PaletteData> palettes = new HashMap<>();
+    /** Palette combo box. */
+    Combo comboPalette;
+
     /**
      * Create the composite.
      * 
      * @param parent The parent reference.
      */
     @PostConstruct
-    public void createComposite(Composite parent)
+    public void createComposite(final Composite parent)
     {
+        final Composite content = new Composite(parent, SWT.NONE);
+        content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        content.setLayout(new GridLayout(1, false));
 
+        comboPalette = new Combo(content, SWT.READ_ONLY);
+        comboPalette.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+        final Label separator = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+
+        final Composite composite = new Composite(content, SWT.NONE);
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        comboPalette.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                for (final Control child : composite.getChildren())
+                {
+                    child.dispose();
+                }
+                final String name = comboPalette.getText();
+                final String key = (String) comboPalette.getData(name);
+                final PaletteView view = palettes.get(key).getView();
+                view.create(composite);
+            }
+        });
+    }
+
+    /**
+     * Add a factory.
+     * 
+     * @param name The palette name.
+     * @param palette The palette reference.
+     * @param view The palette view reference.
+     */
+    public void addPalette(String name, Object palette, PaletteView view)
+    {
+        final PaletteData data = new PaletteData(name, view.getId(), palette, view);
+        palettes.put(data.getId(), data);
+        final List<String> names = new ArrayList<>(palettes.size());
+        for (final PaletteData paletteData : palettes.values())
+        {
+            names.add(paletteData.getName());
+        }
+        final String[] items = new String[names.size()];
+        names.toArray(items);
+        comboPalette.setItems(items);
+        comboPalette.setData(name, view.getId());
+        comboPalette.update();
+    }
+
+    /**
+     * Get the current active palette ID.
+     * 
+     * @return The current active palette ID.
+     */
+    public String getActivePaletteId()
+    {
+        final String name = comboPalette.getText();
+        return (String) comboPalette.getData(name);
+    }
+
+    /**
+     * Get the current selected palette.
+     * 
+     * @return The current selected palette (<code>null</code> if none).
+     */
+    public Object getPalette()
+    {
+        final String name = comboPalette.getText();
+        final String key = (String) comboPalette.getData(name);
+        return palettes.get(key).getObject();
+    }
+
+    /**
+     * Get the current selected palette.
+     * 
+     * @param <C> The class type.
+     * @param clazz The palette view class type.
+     * @return The current selected palette (<code>null</code> if none).
+     */
+    public <C> C getPaletteView(Class<C> clazz)
+    {
+        final String name = comboPalette.getText();
+        final String key = (String) comboPalette.getData(name);
+        return clazz.cast(palettes.get(key).getView());
+    }
+
+    /**
+     * Get a palette.
+     * 
+     * @param <C> The class type.
+     * @param id The view ID.
+     * @param clazz The palette view class type.
+     * @return The current selected palette (<code>null</code> if none).
+     */
+    public <C> C getPaletteView(String id, Class<C> clazz)
+    {
+        return clazz.cast(palettes.get(id).getView());
     }
 }

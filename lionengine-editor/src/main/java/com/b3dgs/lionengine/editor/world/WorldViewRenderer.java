@@ -37,7 +37,9 @@ import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.collision.TileCollisionPart;
+import com.b3dgs.lionengine.editor.collision.TileCollisionView;
+import com.b3dgs.lionengine.editor.factory.FactoryView;
+import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.EntityGame;
@@ -517,8 +519,9 @@ public class WorldViewRenderer
         {
             final MapTile<?> map = model.getMap();
             final CameraGame camera = model.getCamera();
+            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
 
-            if (map.isCreated())
+            if (map.isCreated() && part.getActivePaletteId() == TileCollisionView.ID)
             {
                 final Point point = Tools.getMouseTile(map, camera, mx, my);
                 lastSelectedTile = selectedTile;
@@ -526,19 +529,21 @@ public class WorldViewRenderer
 
                 if (selectedTile != lastSelectedTile)
                 {
-                    final TileCollisionPart part = UtilEclipse.getPart(partService, TileCollisionPart.ID,
-                            TileCollisionPart.class);
-                    part.setSelectedTile(selectedTile);
+                    final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
+                    view.setSelectedTile(selectedTile);
                 }
             }
 
-            if (click == Mouse.LEFT)
+            if (part.getActivePaletteId() == FactoryView.ID)
             {
-                entityControl.addEntity(mx, my);
-            }
-            else if (click == Mouse.RIGHT)
-            {
-                entityControl.removeEntity(mx, my);
+                if (click == Mouse.LEFT)
+                {
+                    entityControl.addEntity(mx, my);
+                }
+                else if (click == Mouse.RIGHT)
+                {
+                    entityControl.removeEntity(mx, my);
+                }
             }
         }
         if (palette == PaletteType.HAND)

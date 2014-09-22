@@ -23,6 +23,8 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.collision.TileCollisionView;
+import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -48,6 +50,11 @@ public class AssignMapImplementationHandler
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final MapTile<?> map = Project.getActive().getInstance(MapTile.class, selection);
         WorldViewModel.INSTANCE.setMap(map);
+
+        final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
+        final TileCollisionView tileCollisionView = new TileCollisionView();
+        part.addPalette("Tile Collision", null, tileCollisionView);
+
         Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());
 
         final WorldViewPart worldView = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);

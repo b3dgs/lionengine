@@ -51,7 +51,7 @@ public class TileCollisionComposite
     private static final String ADD = "+";
 
     /** Collision part. */
-    final TileCollisionPart tileCollisionPart;
+    final TileCollisionView tileCollisionPart;
     /** Referential. */
     private final Group referential;
     /** Minimum composite width. */
@@ -79,7 +79,7 @@ public class TileCollisionComposite
      * @param tileCollisionPart The collision part reference.
      * @param parent The composite parent.
      */
-    public TileCollisionComposite(TileCollisionPart tileCollisionPart, Composite parent)
+    public TileCollisionComposite(TileCollisionView tileCollisionPart, Composite parent)
     {
         this.tileCollisionPart = tileCollisionPart;
 

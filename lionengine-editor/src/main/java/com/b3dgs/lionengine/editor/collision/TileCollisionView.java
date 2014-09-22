@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.collision;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -34,10 +33,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
+import com.b3dgs.lionengine.editor.palette.PaletteView;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
@@ -50,10 +49,11 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * 
  * @author Pierre-Alexandre
  */
-public class TileCollisionPart
+public class TileCollisionView
+        implements PaletteView
 {
-    /** ID. */
-    public static final String ID = Activator.PLUGIN_ID + ".part.tile-collision";
+    /** View ID. */
+    public static final String ID = "tile-collision-view";
 
     /** Part services. */
     @Inject
@@ -76,38 +76,6 @@ public class TileCollisionPart
     private List<TileCollisionComposite> formulas;
     /** Parent reference. */
     private Composite parent;
-
-    /**
-     * Create the composite.
-     * 
-     * @param parent The parent reference.
-     */
-    @PostConstruct
-    public void createComposite(final Composite parent)
-    {
-        this.parent = parent;
-        formulas = new ArrayList<>(1);
-
-        final GridLayout layout = new GridLayout(1, false);
-        layout.marginHeight = 1;
-        layout.verticalSpacing = 1;
-        parent.setLayout(layout);
-
-        createToolBar(parent);
-
-        scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-        scrolledComposite.setLayout(new GridLayout(1, false));
-        scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        UtilSwt.installMouseWheelScroll(scrolledComposite);
-
-        content = new Composite(scrolledComposite, SWT.NONE);
-        content.setLayout(new GridLayout(1, false));
-
-        scrolledComposite.setContent(content);
-        scrolledComposite.setExpandHorizontal(true);
-        scrolledComposite.setExpandVertical(true);
-        scrolledComposite.setAlwaysShowScrollBars(true);
-    }
 
     /**
      * Set the selected tile.
@@ -202,7 +170,7 @@ public class TileCollisionPart
      * 
      * @param parent The composite parent.
      */
-    private void createToolBar(final Composite parent)
+    private void createToolBar(Composite parent)
     {
         toolbar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
         toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
@@ -237,5 +205,44 @@ public class TileCollisionPart
                 map.createCollisionDraw();
             }
         });
+    }
+
+    /*
+     * PaletteView
+     */
+
+    @Override
+    public void create(Composite parent)
+    {
+        this.parent = parent;
+        formulas = new ArrayList<>(1);
+
+        final GridLayout layout = new GridLayout(1, false);
+        layout.marginHeight = 1;
+        layout.verticalSpacing = 1;
+        parent.setLayout(layout);
+
+        createToolBar(parent);
+
+        scrolledComposite = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+        scrolledComposite.setLayout(new GridLayout(1, false));
+        scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        UtilSwt.installMouseWheelScroll(scrolledComposite);
+
+        content = new Composite(scrolledComposite, SWT.NONE);
+        content.setLayout(new GridLayout(1, false));
+
+        scrolledComposite.setContent(content);
+        scrolledComposite.setExpandHorizontal(true);
+        scrolledComposite.setExpandVertical(true);
+        scrolledComposite.setAlwaysShowScrollBars(true);
+
+        parent.layout(true, true);
+    }
+
+    @Override
+    public String getId()
+    {
+        return TileCollisionView.ID;
     }
 }

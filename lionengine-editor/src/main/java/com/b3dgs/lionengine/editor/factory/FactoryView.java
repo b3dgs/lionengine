@@ -45,6 +45,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.palette.PaletteView;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -55,8 +56,12 @@ import com.b3dgs.lionengine.game.SetupGame;
  * 
  * @author Pierre-Alexandre
  */
-public class FactoryPart
+public class FactoryView
+        implements PaletteView
 {
+    /** View ID. */
+    public static final String ID = "factory-view";
+
     /**
      * Fill the combo items with its folder list.
      * 
@@ -129,8 +134,8 @@ public class FactoryPart
 
     /** The combo hierarchy. */
     final Map<String, Composite> hierarchy = new HashMap<>();
-    /** Palette combo. */
-    Combo paletteCombo;
+    /** The factory reference. */
+    private FactoryObjectGame<?> factory;
     /** Middle composite. */
     Composite middle;
     /** Bottom composite. */
@@ -141,43 +146,13 @@ public class FactoryPart
     Label lastObject;
 
     /**
-     * Create the composite.
-     * 
-     * @param parent The parent reference.
-     */
-    public void create(Composite parent)
-    {
-        parent.setLayout(new GridLayout(1, false));
-
-        createTop(parent);
-
-        final Label separatorHeader = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorHeader.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        createMiddle(parent);
-
-        final Label separatorMiddle = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-        separatorMiddle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-
-        createBottom(parent);
-    }
-
-    /**
      * Set the factory object used.
      * 
      * @param factory The factory reference.
      */
     public void setFactory(FactoryObjectGame<?> factory)
     {
-        final File objectsPath = new File(Project.getActive().getResourcesPath(), factory.getFolder());
-        try
-        {
-            load(factory, objectsPath, middle);
-        }
-        catch (final LionEngineException exception)
-        {
-            createObjects(objectsPath.listFiles());
-        }
+        this.factory = factory;
     }
 
     /**
@@ -196,8 +171,8 @@ public class FactoryPart
             final String typeName = Tools.getObjectsFolderTypeName(path);
             final Composite composite = new Composite(parent, SWT.NONE);
             composite.setLayout(new GridLayout(1, false));
-            final Combo typeCombo = FactoryPart.createCombo(typeName, composite);
-            FactoryPart.fillCombo(typeCombo, folders);
+            final Combo typeCombo = FactoryView.createCombo(typeName, composite);
+            FactoryView.fillCombo(typeCombo, folders);
 
             middle.getShell().layout(true, true);
 
@@ -359,25 +334,9 @@ public class FactoryPart
         final Media media = UtilityMedia.get(file);
         final SetupGame setup = factory.getSetup(media);
 
-        FactoryPart.loadObjectIcon(objectLabel, file, setup);
+        FactoryView.loadObjectIcon(objectLabel, file, setup);
         objectLabel.setToolTipText(name);
         objectLabel.setData(media);
-    }
-
-    /**
-     * Create the top part, almost dedicated to palette selection.
-     * 
-     * @param parent The composite parent.
-     */
-    private void createTop(Composite parent)
-    {
-        final Composite top = new Composite(parent, SWT.NONE);
-        top.setLayout(new GridLayout(2, false));
-
-        final Label paletteLabel = new Label(top, SWT.NONE);
-        paletteLabel.setText("Palette");
-
-        paletteCombo = new Combo(top, SWT.READ_ONLY);
     }
 
     /**
@@ -401,5 +360,38 @@ public class FactoryPart
         bottom = new Composite(parent, SWT.NONE);
         bottom.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         bottom.setLayout(new GridLayout(1, false));
+    }
+
+    /*
+     * PaletteView
+     */
+
+    @Override
+    public void create(Composite parent)
+    {
+        parent.setLayout(new GridLayout(1, false));
+
+        createMiddle(parent);
+
+        final Label separatorMiddle = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+        separatorMiddle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
+        createBottom(parent);
+
+        final File objectsPath = new File(Project.getActive().getResourcesPath(), factory.getFolder());
+        try
+        {
+            load(factory, objectsPath, middle);
+        }
+        catch (final LionEngineException exception)
+        {
+            createObjects(objectsPath.listFiles());
+        }
+    }
+
+    @Override
+    public String getId()
+    {
+        return FactoryView.ID;
     }
 }
