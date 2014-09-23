@@ -85,6 +85,7 @@ public class PalettePart
                 final String key = (String) comboPalette.getData(name);
                 final PaletteView view = palettes.get(key).getView();
                 view.create(composite);
+                composite.layout(true, true);
             }
         });
     }
@@ -93,12 +94,11 @@ public class PalettePart
      * Add a factory.
      * 
      * @param name The palette name.
-     * @param palette The palette reference.
      * @param view The palette view reference.
      */
-    public void addPalette(String name, Object palette, PaletteView view)
+    public void addPalette(String name, PaletteView view)
     {
-        final PaletteData data = new PaletteData(name, view.getId(), palette, view);
+        final PaletteData data = new PaletteData(name, view.getId(), view);
         palettes.put(data.getId(), data);
         final List<String> names = new ArrayList<>(palettes.size());
         for (final PaletteData paletteData : palettes.values())
@@ -121,18 +121,6 @@ public class PalettePart
     {
         final String name = comboPalette.getText();
         return (String) comboPalette.getData(name);
-    }
-
-    /**
-     * Get the current selected palette.
-     * 
-     * @return The current selected palette (<code>null</code> if none).
-     */
-    public Object getPalette()
-    {
-        final String name = comboPalette.getText();
-        final String key = (String) comboPalette.getData(name);
-        return palettes.get(key).getObject();
     }
 
     /**

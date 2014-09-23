@@ -53,7 +53,7 @@ public class TileCollisionView
         implements PaletteView
 {
     /** View ID. */
-    public static final String ID = "tile-collision-view";
+    public static final String ID = "tile-collision";
 
     /** Part services. */
     @Inject
@@ -236,8 +236,6 @@ public class TileCollisionView
         scrolledComposite.setExpandHorizontal(true);
         scrolledComposite.setExpandVertical(true);
         scrolledComposite.setAlwaysShowScrollBars(true);
-
-        parent.layout(true, true);
     }
 
     @Override

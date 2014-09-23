@@ -28,8 +28,6 @@ public class PaletteData
     private final String name;
     /** Palette id. */
     private final String id;
-    /** Palette associated object. */
-    private final Object object;
     /** Palette representation view. */
     private final PaletteView view;
 
@@ -38,14 +36,12 @@ public class PaletteData
      * 
      * @param name The palette name.
      * @param id The palette unique ID.
-     * @param object The associated object.
      * @param view The associated view.
      */
-    public PaletteData(String name, String id, Object object, PaletteView view)
+    public PaletteData(String name, String id, PaletteView view)
     {
         this.name = name;
         this.id = id;
-        this.object = object;
         this.view = view;
     }
 
@@ -67,16 +63,6 @@ public class PaletteData
     public String getId()
     {
         return id;
-    }
-
-    /**
-     * Get the palette object.
-     * 
-     * @return The associated object.
-     */
-    public Object getObject()
-    {
-        return object;
     }
 
     /**

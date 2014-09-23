@@ -244,6 +244,69 @@ public class WorldViewRenderer
     }
 
     /**
+     * Update the pointer in map case.
+     * 
+     * @param part The current palette part.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    private void updatePointerMap(PalettePart part, int mx, int my)
+    {
+        final MapTile<?> map = model.getMap();
+        if (map.isCreated() && part.getActivePaletteId() == TileCollisionView.ID)
+        {
+            final CameraGame camera = model.getCamera();
+            final Point point = Tools.getMouseTile(map, camera, mx, my);
+            lastSelectedTile = selectedTile;
+            selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
+    
+            if (selectedTile != lastSelectedTile)
+            {
+                final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
+                view.setSelectedTile(selectedTile);
+            }
+        }
+        else
+        {
+            selectedTile = null;
+        }
+    }
+
+    /**
+     * Update the pointer in factory case.
+     * 
+     * @param part The current palette part.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    private void updatePointerFactory(PalettePart part, int mx, int my)
+    {
+        if (part.getActivePaletteId() == FactoryView.ID)
+        {
+            if (click == Mouse.LEFT)
+            {
+                entityControl.addEntity(mx, my);
+            }
+            else if (click == Mouse.RIGHT)
+            {
+                entityControl.removeEntity(mx, my);
+            }
+        }
+    }
+
+    /**
+     * Update the hand palette type.
+     */
+    private void updateHand()
+    {
+    
+        final CameraGame camera = model.getCamera();
+        final MapTile<?> map = model.getMap();
+        camera.setLocation(UtilMath.getRounded(camera.getLocationIntX(), map.getTileWidth()),
+                UtilMath.getRounded(camera.getLocationIntY(), map.getTileHeight()));
+    }
+
+    /**
      * Update the mouse.
      * 
      * @param mx The mouse horizontal location.
@@ -494,9 +557,10 @@ public class WorldViewRenderer
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
+        final Enum<?> palette = model.getSelectedPalette();
         click = mouseEvent.button;
 
-        if (model.getSelectedPalette() == PaletteType.SELECTION)
+        if (palette == PaletteType.SELECTION)
         {
             updateSelectionBefore(mx, my);
         }
@@ -508,56 +572,30 @@ public class WorldViewRenderer
     {
         final int mx = mouseEvent.x;
         final int my = mouseEvent.y;
-
         final Enum<?> palette = model.getSelectedPalette();
+
         if (palette == PaletteType.SELECTION)
         {
             updateSelectionAfter(mx, my);
         }
-
-        if (palette == PaletteType.POINTER && !selection.isSelected() && !entityControl.isDragging())
+        else if (palette == PaletteType.POINTER)
         {
-            final MapTile<?> map = model.getMap();
-            final CameraGame camera = model.getCamera();
             final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
 
-            if (map.isCreated() && part.getActivePaletteId() == TileCollisionView.ID)
-            {
-                final Point point = Tools.getMouseTile(map, camera, mx, my);
-                lastSelectedTile = selectedTile;
-                selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
-
-                if (selectedTile != lastSelectedTile)
-                {
-                    final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
-                    view.setSelectedTile(selectedTile);
-                }
-            }
-
-            if (part.getActivePaletteId() == FactoryView.ID)
-            {
-                if (click == Mouse.LEFT)
-                {
-                    entityControl.addEntity(mx, my);
-                }
-                else if (click == Mouse.RIGHT)
-                {
-                    entityControl.removeEntity(mx, my);
-                }
-            }
+            updatePointerMap(part, mx, my);
+            updatePointerFactory(part, mx, my);
         }
-        if (palette == PaletteType.HAND)
+        else if (palette == PaletteType.HAND)
         {
-            final CameraGame camera = model.getCamera();
-            final MapTile<?> map = model.getMap();
-            camera.setLocation(UtilMath.getRounded(camera.getLocationIntX(), map.getTileWidth()),
-                    UtilMath.getRounded(camera.getLocationIntY(), map.getTileHeight()));
+            updateHand();
         }
 
         updateMouse(mx, my);
         entityControl.stopDragging();
         click = 0;
     }
+
+    
 
     /*
      * MouseMoveListener

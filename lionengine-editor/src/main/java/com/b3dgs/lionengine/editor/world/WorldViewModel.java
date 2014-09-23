@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -41,7 +42,7 @@ public enum WorldViewModel
     /** Selected object media. */
     private Media selectedObject;
     /** Selected palette. */
-    private Enum<?> palette;
+    private Enum<?> palette = PaletteType.POINTER;
 
     /**
      * Constructor.

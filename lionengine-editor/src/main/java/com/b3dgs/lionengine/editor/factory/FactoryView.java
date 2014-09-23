@@ -60,7 +60,7 @@ public class FactoryView
         implements PaletteView
 {
     /** View ID. */
-    public static final String ID = "factory-view";
+    public static final String ID = "factory";
 
     /**
      * Fill the combo items with its folder list.

@@ -63,7 +63,7 @@ public class AssignFactoryImplementationHandler
             final String name = dialog.getValue();
             final FactoryView factoryView = new FactoryView();
             factoryView.setFactory(factory);
-            part.addPalette(name, factory, factoryView);
+            part.addPalette(name, factoryView);
 
             Verbose.info(AssignFactoryImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factory.getClass()
                     .getName());

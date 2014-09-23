@@ -51,7 +51,7 @@ public class TileCollisionComposite
     private static final String ADD = "+";
 
     /** Collision part. */
-    final TileCollisionView tileCollisionPart;
+    final TileCollisionView tileCollisionView;
     /** Referential. */
     private final Group referential;
     /** Minimum composite width. */
@@ -76,12 +76,12 @@ public class TileCollisionComposite
     /**
      * Constructor.
      * 
-     * @param tileCollisionPart The collision part reference.
+     * @param tileCollisionView The collision view reference.
      * @param parent The composite parent.
      */
-    public TileCollisionComposite(TileCollisionView tileCollisionPart, Composite parent)
+    public TileCollisionComposite(TileCollisionView tileCollisionView, Composite parent)
     {
-        this.tileCollisionPart = tileCollisionPart;
+        this.tileCollisionView = tileCollisionView;
 
         referential = new Group(parent, SWT.NONE);
         referential.setLayout(new GridLayout(1, false));
@@ -258,7 +258,7 @@ public class TileCollisionComposite
 
                 final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.createCollisionDraw();
-                tileCollisionPart.updateWorldView();
+                tileCollisionView.updateWorldView();
             }
         });
 
@@ -270,7 +270,7 @@ public class TileCollisionComposite
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                tileCollisionPart.removeFormula(TileCollisionComposite.this);
+                tileCollisionView.removeFormula(TileCollisionComposite.this);
             }
         });
     }
