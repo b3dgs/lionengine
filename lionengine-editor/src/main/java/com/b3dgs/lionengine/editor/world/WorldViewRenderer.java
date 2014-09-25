@@ -118,12 +118,12 @@ public class WorldViewRenderer
         }
     }
 
+    /** The view model. */
+    protected final WorldViewModel model;
     /** Part service. */
-    private final EPartService partService;
+    protected final EPartService partService;
     /** The parent. */
     private final Composite parent;
-    /** The view model. */
-    private final WorldViewModel model;
     /** Handler entity. */
     private final HandlerEntity handlerEntity;
     /** Selection handler. */
@@ -166,6 +166,53 @@ public class WorldViewRenderer
     public void switchGridEnabled()
     {
         gridEnabled = !gridEnabled;
+    }
+
+    /**
+     * Get the mouse click.
+     * 
+     * @return The mouse click.
+     */
+    public int getClick()
+    {
+        return click;
+    }
+
+    /**
+     * Update the palette action on click release.
+     * 
+     * @param palette The palette type.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    protected void updatePalette(Enum<?> palette, int mx, int my)
+    {
+        if (palette == PaletteType.SELECTION)
+        {
+            updateSelectionAfter(mx, my);
+        }
+        else if (palette == PaletteType.POINTER)
+        {
+            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
+            updatePalettePointer(part, mx, my);
+        }
+        else if (palette == PaletteType.HAND)
+        {
+            updateHand();
+        }
+    }
+
+    /**
+     * Update the palette pointer action on click release.
+     * 
+     * @param part The palette part reference.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    protected void updatePalettePointer(PalettePart part, int mx, int my)
+    {
+        updatePointerMap(part, mx, my);
+        updatePointerFactory(part, mx, my);
     }
 
     /**
@@ -259,7 +306,7 @@ public class WorldViewRenderer
             final Point point = Tools.getMouseTile(map, camera, mx, my);
             lastSelectedTile = selectedTile;
             selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
-    
+
             if (selectedTile != lastSelectedTile)
             {
                 final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
@@ -299,7 +346,6 @@ public class WorldViewRenderer
      */
     private void updateHand()
     {
-    
         final CameraGame camera = model.getCamera();
         final MapTile<?> map = model.getMap();
         camera.setLocation(UtilMath.getRounded(camera.getLocationIntX(), map.getTileWidth()),
@@ -574,28 +620,11 @@ public class WorldViewRenderer
         final int my = mouseEvent.y;
         final Enum<?> palette = model.getSelectedPalette();
 
-        if (palette == PaletteType.SELECTION)
-        {
-            updateSelectionAfter(mx, my);
-        }
-        else if (palette == PaletteType.POINTER)
-        {
-            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-
-            updatePointerMap(part, mx, my);
-            updatePointerFactory(part, mx, my);
-        }
-        else if (palette == PaletteType.HAND)
-        {
-            updateHand();
-        }
-
+        updatePalette(palette, mx, my);
         updateMouse(mx, my);
         entityControl.stopDragging();
         click = 0;
     }
-
-    
 
     /*
      * MouseMoveListener

@@ -196,13 +196,12 @@ public final class UtilEclipse
      * @param enabled The enabled state.
      * @param names The elements names (relative to the tool bar ID).
      */
-    public static void setToolItemEnabled(final MToolBar toolbar, final boolean enabled, final String... names)
+    public static void setToolItemEnabled(MToolBar toolbar, boolean enabled, String... names)
     {
         final List<String> items = Arrays.asList(names);
         for (final MToolBarElement element : toolbar.getChildren())
         {
-            final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
-            if (items.isEmpty() || items.contains(id))
+            if (items.isEmpty() || UtilEclipse.toolbarElementContained(element, items))
             {
                 if (element.getWidget() instanceof ToolItem)
                 {
@@ -210,6 +209,26 @@ public final class UtilEclipse
                 }
             }
         }
+    }
+
+    /**
+     * Check if tool bar element is contained in the list.
+     * 
+     * @param element The tool bar element.
+     * @param items The items list.
+     * @return <code>true</code> if contained, <code>false</code> else.
+     */
+    private static boolean toolbarElementContained(MToolBarElement element, List<String> items)
+    {
+        final String id = element.getElementId();
+        for (final String item : items)
+        {
+            if (id.contains(item))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
