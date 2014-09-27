@@ -121,14 +121,14 @@ Everything else is fully compatible and does not require any changes.
 Steps to include the __LionEngine__ in your project:
 
 1. Install at least the [Java JDK 7] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-2. Install the [Android SDK 1.5] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-android__)
+2. Install the [Android SDK 1.5] (http://developer.android.com/sdk/index.html) (only if you use __lionengine-core-android__)
 3. Choose your favourite IDE ([Eclipse] (http://www.eclipse.org/downloads/), [Netbeans] (https://netbeans.org/downloads/)...)
 4. Download the latest [LionEngine] (http://www.b3dgs.com/v6/page.php?lang=en&section=lionengine)
 5. Include all __LionEngine__ libraries you need for your project, following the tree dependency:
   * __lionengine-core__ _(minimum requirement)_
-    * __lionengine-core-awt__ _(required if you use_ __AWT__ _as graphic renderer, target for computer)_
-	* __lionengine-core-swt__ _(required if you use_ __SWT__ _as graphic renderer, target for computer)_
-    * __lionengine-core-android__ _(required if you use_ __Android 1.5__, _target for phones)_
+    * __lionengine-core-awt__ _(uses_ __AWT__ _as graphic renderer, target for computer)_
+    * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
+    * __lionengine-core-android__ _(uses_ __Android 1.5__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
     * __lionengine-game-platform__ _(specialized for platform games)_
       * __lionengine-game-pathfinding__ _(support for pathfinding)_
