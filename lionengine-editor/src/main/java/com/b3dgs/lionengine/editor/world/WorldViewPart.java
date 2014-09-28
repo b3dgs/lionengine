@@ -143,6 +143,16 @@ public class WorldViewPart
     }
 
     /**
+     * Get the world renderer.
+     * 
+     * @return The world renderer.
+     */
+    public WorldViewRenderer getRenderer()
+    {
+        return worldViewRenderer;
+    }
+
+    /**
      * Force focus.
      */
     @Focus

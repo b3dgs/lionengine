@@ -61,6 +61,7 @@
                 <children xsi:type="menu:HandledToolItem" xmi:id="_SVy28EGLEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.grid" label="%toolbar.world-view.grid" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/grid.png" tooltip="%toolbar.world-view.grid-tip" selected="true" type="Check" command="_7vhtUEGNEeSI84tyl28fQw"/>
                 <children xsi:type="menu:ToolBarSeparator" xmi:id="_nudHgEGUEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.separator1"/>
                 <children xsi:type="menu:HandledToolItem" xmi:id="_U2mm0EGLEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.import-map" label="%toolbar.world-view.import-map" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/toolbar/import-map.png" tooltip="%toolbar.world-view.import-map-tip" command="_kSEPQEGLEeSI84tyl28fQw"/>
+                <children xsi:type="menu:ToolBarSeparator" xmi:id="_8wtDQEW7EeSL6NkV2Tqd7Q" elementId="com.b3dgs.lionengine.editor.part.world-view.toolbar.separator2"/>
               </toolbar>
             </children>
           </children>

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -139,7 +140,7 @@ public enum Property
             final Class<?> clazz = Project.getActive().getClass(name);
             return parent.isAssignableFrom(clazz);
         }
-        catch (final NoClassDefFoundError exception)
+        catch (final LionEngineException exception)
         {
             return false;
         }

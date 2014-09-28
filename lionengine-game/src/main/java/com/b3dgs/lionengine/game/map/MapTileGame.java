@@ -361,6 +361,7 @@ public abstract class MapTileGame<T extends TileGame>
         clear();
         final LevelRipConverter<T> rip = new LevelRipConverter<>();
         rip.start(levelrip, patternsDirectory, this);
+        this.patternsDirectory = patternsDirectory;
         loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
     }
 

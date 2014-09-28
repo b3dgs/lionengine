@@ -335,7 +335,8 @@ public final class Project
         {
             return classLoader.loadClass(name);
         }
-        catch (final ClassNotFoundException exception)
+        catch (final ClassNotFoundException
+                     | NoClassDefFoundError exception)
         {
             throw new LionEngineException(exception, Project.ERROR_LOAD_CLASS, name);
         }

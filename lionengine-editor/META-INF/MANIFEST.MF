@@ -27,6 +27,7 @@ Import-Package: javax.annotation;version="1.0.0",
 Bundle-ActivationPolicy: lazy
 Export-Package: com.b3dgs.lionengine.editor,
  com.b3dgs.lionengine.editor.dialogs,
+ com.b3dgs.lionengine.editor.factory,
  com.b3dgs.lionengine.editor.palette,
  com.b3dgs.lionengine.editor.project,
  com.b3dgs.lionengine.editor.world

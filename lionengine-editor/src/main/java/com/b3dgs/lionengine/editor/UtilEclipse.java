@@ -29,8 +29,10 @@ import org.eclipse.e4.ui.model.application.ui.menu.MHandledToolItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -164,6 +166,17 @@ public final class UtilEclipse
             }
         }
         throw new ClassNotFoundException(UtilEclipse.ERROR_CLASS_CREATE + name);
+    }
+
+    /**
+     * Show an error dialog.
+     * 
+     * @param title The error title.
+     * @param message The error message.
+     */
+    public static void showError(String title, String message)
+    {
+        MessageDialog.openError(Display.getDefault().getActiveShell(), title, message);
     }
 
     /**

@@ -169,6 +169,16 @@ public class WorldViewRenderer
     }
 
     /**
+     * Get the handler entity.
+     * 
+     * @return The handler entity.
+     */
+    public HandlerEntity getHandler()
+    {
+        return handlerEntity;
+    }
+
+    /**
      * Get the mouse click.
      * 
      * @return The mouse click.
