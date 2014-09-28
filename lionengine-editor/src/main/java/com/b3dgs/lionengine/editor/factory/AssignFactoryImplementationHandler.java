@@ -38,8 +38,32 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  */
 public class AssignFactoryImplementationHandler
 {
+    /** Default factory name. */
+    private static final String DEFAULT_NAME = "Factory";
     /** Factory implementation assigned verbose. */
     private static final String VERBOSE_FACTORY_IMPLEMENTATION = "Factory implementation added: ";
+
+    /**
+     * Assign the factory implementation.
+     * 
+     * @param partService The part service reference.
+     * @param name The factory name.
+     */
+    private static void assignFactory(EPartService partService, String name)
+    {
+        final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final FactoryObjectGame<?> factory = Project.getActive().getInstance(FactoryObjectGame.class, selection);
+        factory.setClassLoader(Project.getActive().getClassLoader());
+        factory.setPrepareEnabled(false);
+        WorldViewModel.INSTANCE.setFactory(factory);
+
+        final FactoryView factoryView = new FactoryView();
+        factoryView.setFactory(factory);
+        part.addPalette(name, factoryView);
+
+        Verbose.info(AssignFactoryImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factory.getClass().getName());
+    }
 
     /**
      * Execute the handler.
@@ -49,24 +73,12 @@ public class AssignFactoryImplementationHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-        final InputDialog dialog = new InputDialog(null, "Factory name", "Enter the factory name", "default", null);
+        final InputDialog dialog = new InputDialog(null, "Factory name", "Enter the factory name",
+                AssignFactoryImplementationHandler.DEFAULT_NAME, null);
         dialog.create();
         if (dialog.open() == Window.OK)
         {
-            final Media selection = ProjectsModel.INSTANCE.getSelection();
-            final FactoryObjectGame<?> factory = Project.getActive().getInstance(FactoryObjectGame.class, selection);
-            factory.setClassLoader(Project.getActive().getClassLoader());
-            factory.setPrepareEnabled(false);
-            WorldViewModel.INSTANCE.setFactory(factory);
-
-            final String name = dialog.getValue();
-            final FactoryView factoryView = new FactoryView();
-            factoryView.setFactory(factory);
-            part.addPalette(name, factoryView);
-
-            Verbose.info(AssignFactoryImplementationHandler.VERBOSE_FACTORY_IMPLEMENTATION, factory.getClass()
-                    .getName());
+            AssignFactoryImplementationHandler.assignFactory(partService, dialog.getValue());
         }
     }
 }

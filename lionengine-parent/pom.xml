@@ -6,6 +6,7 @@
 		<working.dir>${project.basedir}</working.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jdk.version>1.7</jdk.version>
 		<tycho.version>0.20.0</tycho.version>
 		<tycho.osgi.version>0.11.1</tycho.osgi.version>
 		<junit.version>4.11</junit.version>
@@ -253,8 +254,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.1</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>${jdk.version}</source>
+						<target>${jdk.version}</target>
 						<encoding>UTF-8</encoding>
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>

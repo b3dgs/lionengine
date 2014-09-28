@@ -106,7 +106,7 @@ public final class UtilityImage
      */
     static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
     {
-        try (final InputStream inputStream = media.getInputStream())
+        try (InputStream inputStream = media.getInputStream())
         {
             return new ImageBufferAwt(ToolsAwt.getImage(inputStream, alpha));
         }
@@ -125,7 +125,7 @@ public final class UtilityImage
      */
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        try (final OutputStream outputStream = media.getOutputStream())
+        try (OutputStream outputStream = media.getOutputStream())
         {
             ToolsAwt.saveImage(UtilityImage.getBuffer(image), outputStream);
         }

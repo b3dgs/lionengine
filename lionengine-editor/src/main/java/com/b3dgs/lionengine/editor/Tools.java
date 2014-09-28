@@ -191,7 +191,7 @@ public final class Tools
                 throw new IOException(Tools.CREATE_DIRECTORY_ERROR + destDir.toString());
             }
         }
-        try (final ZipInputStream zip = new ZipInputStream(new FileInputStream(zipPath)))
+        try (ZipInputStream zip = new ZipInputStream(new FileInputStream(zipPath)))
         {
             ZipEntry entry = zip.getNextEntry();
             while (entry != null)
@@ -224,7 +224,7 @@ public final class Tools
      */
     private static void extractFile(ZipInputStream zip, String filePath) throws IOException
     {
-        try (final BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(filePath)))
+        try (BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(filePath)))
         {
             final byte[] bytesIn = new byte[Tools.BUFFER_SIZE];
             int read = 0;
