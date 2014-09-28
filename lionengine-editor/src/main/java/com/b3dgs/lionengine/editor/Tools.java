@@ -22,9 +22,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -142,6 +148,30 @@ public final class Tools
         final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
         final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
         return Geom.createPoint(x, y);
+    }
+
+    /**
+     * Select a file from a dialog and return its path relative to the starting path.
+     * 
+     * @param shell The shell parent.
+     * @param path The starting path.
+     * @param openSave <code>true</code> to open, <code>false</code> to save.
+     * @param extensions The filtered extensions.
+     * @return The selected file path.
+     */
+    public static String selectFile(Shell shell, String path, boolean openSave, String... extensions)
+    {
+        final FileDialog fileDialog = new FileDialog(shell, openSave ? SWT.OPEN : SWT.SAVE);
+        fileDialog.setFilterPath(path);
+        fileDialog.setFilterExtensions(extensions);
+        final String file = fileDialog.open();
+        if (file != null)
+        {
+            final Path reference = Paths.get(new File(path).toURI());
+            final Path target = Paths.get(new File(file).toURI());
+            return reference.relativize(target).toString();
+        }
+        return null;
     }
 
     /**

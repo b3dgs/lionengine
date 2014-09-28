@@ -18,8 +18,6 @@
 package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,7 +27,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -83,27 +80,6 @@ public class EditEntityDialog
     }
 
     /**
-     * Select a file from a dialog and return its path relative to the starting path.
-     * 
-     * @param shell The shell parent.
-     * @param path The starting path.
-     * @return The selected file path.
-     */
-    String selectFile(Shell shell, String path)
-    {
-        final FileDialog fileDialog = new FileDialog(shell, SWT.OPEN);
-        fileDialog.setFilterPath(path);
-        final String file = fileDialog.open();
-        if (file != null)
-        {
-            final Path reference = Paths.get(new File(path).toURI());
-            final Path target = Paths.get(new File(file).toURI());
-            return reference.relativize(target).toString();
-        }
-        return null;
-    }
-
-    /**
      * Update the element node.
      * 
      * @param parent The parent shell.
@@ -111,7 +87,7 @@ public class EditEntityDialog
      */
     void updateElement(Shell parent, String element)
     {
-        final String file = selectFile(parent, entity.getFile().getParentFile().getPath());
+        final String file = Tools.selectFile(parent, entity.getFile().getParentFile().getPath(), true);
         if (file != null)
         {
             final XmlNode root = configurable.getRoot();
