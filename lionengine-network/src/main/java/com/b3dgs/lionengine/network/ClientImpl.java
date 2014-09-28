@@ -27,6 +27,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Verbose;
@@ -347,6 +348,10 @@ final class ClientImpl
     @Override
     public void connect(String ip, int port) throws LionEngineException
     {
+        Check.notNull(ip);
+        Check.superiorOrEqual(port, 0);
+        Check.inferiorOrEqual(port, 65535);
+
         try
         {
             socket = new Socket(InetAddress.getByName(ip), port);
@@ -357,10 +362,7 @@ final class ClientImpl
             pingRequestTimer.start();
             bandwidthTimer.start();
         }
-        catch (final IOException
-                     | SecurityException
-                     | IllegalArgumentException
-                     | NullPointerException exception)
+        catch (final IOException exception)
         {
             throw new LionEngineException(exception, "Cannot connect to the server !");
         }

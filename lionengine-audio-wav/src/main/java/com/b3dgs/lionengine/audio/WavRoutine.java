@@ -313,8 +313,7 @@ final class WavRoutine
                 {
                     Thread.currentThread().interrupt();
                 }
-                catch (final UnsupportedAudioFileException
-                             | IllegalArgumentException exception)
+                catch (final UnsupportedAudioFileException exception)
                 {
                     Verbose.critical(WavRoutine.class, "run", "Unsupported audio format: \"", filename, "\"");
                 }

@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.core;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +61,9 @@ public final class Loader
     static Sequence createSequence(Class<? extends Sequence> nextSequence, Loader loader, Object... arguments)
             throws LionEngineException
     {
+        Check.notNull(nextSequence);
+        Check.notNull(loader);
+
         try
         {
             final Constructor<? extends Sequence> constructor = nextSequence.getDeclaredConstructor(Loader
@@ -80,12 +82,7 @@ public final class Loader
 
             return sequence;
         }
-        catch (InstantiationException
-               | IllegalAccessException
-               | IllegalArgumentException
-               | InvocationTargetException
-               | NoSuchMethodException
-               | SecurityException exception)
+        catch (final ReflectiveOperationException exception)
         {
             throw new LionEngineException(exception);
         }

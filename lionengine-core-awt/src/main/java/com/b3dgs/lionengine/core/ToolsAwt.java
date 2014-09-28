@@ -361,9 +361,9 @@ public final class ToolsAwt
             return toolkit.createCustomCursor(buffer, new Point(0, 0), "hiddenCursor");
         }
         catch (final AWTError
-                     | HeadlessException
-                     | IndexOutOfBoundsException exception)
+                     | HeadlessException exception)
         {
+            Verbose.exception(ToolsAwt.class, "createHiddenCursor", exception);
             return Cursor.getDefaultCursor();
         }
     }

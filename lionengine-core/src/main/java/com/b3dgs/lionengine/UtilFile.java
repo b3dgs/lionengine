@@ -310,6 +310,8 @@ public final class UtilFile
      */
     public static void deleteDirectory(File directory)
     {
+        Check.notNull(directory);
+
         if (directory.isDirectory())
         {
             final String[] children = directory.list();
@@ -336,6 +338,8 @@ public final class UtilFile
      */
     public static void deleteFile(File file)
     {
+        Check.notNull(file);
+
         if (file.isFile() && !file.delete())
         {
             Verbose.warning(UtilFile.class, "deleteDir", "File not deleted: " + file);
@@ -379,6 +383,9 @@ public final class UtilFile
      */
     public static void validateXml(URI xsd, File xml) throws ValidationException
     {
+        Check.notNull(xsd);
+        Check.notNull(xml);
+
         try
         {
             final URL schemaFile = xsd.toURL();

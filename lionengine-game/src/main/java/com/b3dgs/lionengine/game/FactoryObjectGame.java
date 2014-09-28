@@ -177,15 +177,11 @@ public abstract class FactoryObjectGame<S extends SetupGame>
             final Constructor<?> constructor = type.getConstructor(setup.getClass());
             return (E) constructor.newInstance(setup);
         }
-        catch (final InvocationTargetException
-                     | ClassCastException exception)
+        catch (final InvocationTargetException exception)
         {
             throw new LionEngineException(exception, FactoryObjectGame.ERROR_CONSTRUCTOR + type);
         }
-        catch (NoSuchMethodException
-               | InstantiationException
-               | IllegalArgumentException
-               | IllegalAccessException exception)
+        catch (final ReflectiveOperationException exception)
         {
             throw new LionEngineException(new InstantiationException(type
                     + FactoryObjectGame.ERROR_CONSTRUCTOR_NOT_FOUND), FactoryObjectGame.ERROR_CONSTRUCTOR + type);

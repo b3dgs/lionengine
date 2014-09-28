@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
@@ -53,6 +54,8 @@ public enum Theme
      */
     public static void set(Theme theme) throws LionEngineException
     {
+        Check.notNull(theme);
+
         final String lookAndFeel;
         switch (theme)
         {
@@ -77,10 +80,8 @@ public enum Theme
         {
             UIManager.setLookAndFeel(lookAndFeel);
         }
-        catch (ClassNotFoundException
-               | InstantiationException
-               | IllegalAccessException
-               | UnsupportedLookAndFeelException exception)
+        catch (final ReflectiveOperationException
+                     | UnsupportedLookAndFeelException exception)
         {
             throw new LionEngineException(exception, Theme.MESSAGE_ERROR_SET);
         }

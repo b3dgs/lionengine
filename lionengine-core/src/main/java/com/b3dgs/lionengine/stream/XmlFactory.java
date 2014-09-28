@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.stream;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -72,17 +73,18 @@ final class XmlFactory
     {
         Check.notNull(media);
 
-        try
+        try (InputStream inputStream = media.getInputStream())
         {
+            Check.notNull(inputStream);
+
             final DocumentBuilder builder = XmlFactory.getDocumentFactory().newDocumentBuilder();
             builder.setErrorHandler(null);
-            final Document document = builder.parse(media.getInputStream());
+            final Document document = builder.parse(inputStream);
             final Element root = document.getDocumentElement();
             return new XmlNodeImpl(root);
         }
         catch (final IOException
                      | SAXException
-                     | IllegalArgumentException
                      | ParserConfigurationException exception)
         {
             throw new LionEngineException(exception, media, XmlFactory.ERROR_READING);
@@ -101,7 +103,7 @@ final class XmlFactory
         Check.notNull(root);
         Check.notNull(media);
 
-        try (final OutputStream outputStream = media.getOutputStream())
+        try (OutputStream outputStream = media.getOutputStream())
         {
             final Transformer transformer = XmlFactory.getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
