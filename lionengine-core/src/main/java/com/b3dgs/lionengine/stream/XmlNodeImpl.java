@@ -79,7 +79,8 @@ final class XmlNodeImpl
             }
             root = XmlNodeImpl.document.createElement(name);
         }
-        catch (final ParserConfigurationException exception)
+        catch (final ParserConfigurationException
+                     | DOMException exception)
         {
             throw new LionEngineException(exception);
         }
@@ -148,27 +149,13 @@ final class XmlNodeImpl
     @Override
     public void add(XmlNode node) throws LionEngineException
     {
-        try
-        {
-            root.appendChild(XmlNodeImpl.class.cast(node).getElement());
-        }
-        catch (final DOMException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        root.appendChild(XmlNodeImpl.class.cast(node).getElement());
     }
 
     @Override
     public void setText(String text) throws LionEngineException
     {
-        try
-        {
-            root.setTextContent(text);
-        }
-        catch (final DOMException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        root.setTextContent(text);
     }
 
     @Override

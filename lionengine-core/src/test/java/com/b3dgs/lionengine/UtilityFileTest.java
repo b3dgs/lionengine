@@ -161,6 +161,16 @@ public class UtilityFileTest
     }
 
     /**
+     * Test the utility file path.
+     */
+    @Test
+    public void testUtilityFilePath()
+    {
+        Assert.assertEquals("", UtilFile.getPathSeparator(".", "", ""));
+        Assert.assertEquals("null", UtilFile.getPathSeparator(".", (String) null, (String) null));
+    }
+
+    /**
      * Test the utility file creation.
      * 
      * @throws IOException If error.
@@ -188,5 +198,15 @@ public class UtilityFileTest
         Assert.assertTrue(fileTest.delete());
 
         Assert.assertEquals("path" + File.separator + "test", UtilFile.getPath("path", "test"));
+    }
+
+    /**
+     * Test the utility file type.
+     */
+    @Test
+    public void testUtilityFileType()
+    {
+        Assert.assertTrue(UtilFile.isType(new File("temp"), ""));
+        Assert.assertTrue(UtilFile.isType(new File("temp.tmp"), "tmp"));
     }
 }

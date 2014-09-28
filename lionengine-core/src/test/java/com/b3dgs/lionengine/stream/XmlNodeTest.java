@@ -129,4 +129,34 @@ public class XmlNodeTest
         Assert.assertEquals(stringValue, node.readString("string"));
         Assert.assertEquals(null, node.readString("null"));
     }
+
+    /**
+     * Test the node name error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testXmlNodeNameError()
+    {
+        final XmlNode node = Stream.createXmlNode("%éàç-èyrd");
+        Assert.assertNull(node);
+    }
+
+    /**
+     * Test the node write error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testXmlNodeWriteError()
+    {
+        final XmlNode node = Stream.createXmlNode("test");
+        node.writeString("%éàç-èyrd", "error");
+    }
+
+    /**
+     * Test the node read error.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testXmlNodeReadError()
+    {
+        final XmlNode node = Stream.createXmlNode("test");
+        node.readString("%éàç-èyrd");
+    }
 }

@@ -17,9 +17,12 @@
  */
 package com.b3dgs.lionengine.mock;
 
+import org.junit.Assert;
+
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
@@ -51,6 +54,7 @@ public class SequenceArgumentsMock
         setExtrapolated(true);
         addKeyListener(null);
         setSystemCursorVisible(true);
+        Assert.assertNull(getInputDevice(InputDevice.class));
     }
 
     @Override

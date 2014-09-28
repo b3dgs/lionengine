@@ -91,6 +91,23 @@ public class LionEngineExceptionTest
     }
 
     /**
+     * Test the exception with a media as argument with null path.
+     */
+    @Test
+    public void testLionEngineExceptionWithMediaNullPath()
+    {
+        final String message = "Exception test";
+        try
+        {
+            throw new LionEngineException(Core.MEDIA.create((String) null), message);
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
      * Test the exception with a media as argument.
      */
     @Test
@@ -116,6 +133,22 @@ public class LionEngineExceptionTest
         try
         {
             throw new LionEngineException(new IOException("error"));
+        }
+        catch (final LionEngineException exception)
+        {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Test the exception with a throwable as argument without message.
+     */
+    @Test
+    public void testLionEngineExceptionWithThrowableNoMessage()
+    {
+        try
+        {
+            throw new LionEngineException(new IOException());
         }
         catch (final LionEngineException exception)
         {

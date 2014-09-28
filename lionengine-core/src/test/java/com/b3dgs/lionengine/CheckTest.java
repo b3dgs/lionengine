@@ -33,53 +33,152 @@ public class CheckTest
     /**
      * Test check constructor.
      * 
-     * @throws SecurityException If error.
-     * @throws NoSuchMethodException If error.
-     * @throws IllegalArgumentException If error.
-     * @throws IllegalAccessException If error.
-     * @throws InstantiationException If error.
+     * @throws ReflectiveOperationException If error.
      */
-    @Test
-    public void testCheckConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
-            IllegalAccessException, IllegalArgumentException
+    @Test(expected = InvocationTargetException.class)
+    public void testCheckConstructor() throws ReflectiveOperationException
     {
         final Constructor<Check> constructor = Check.class.getDeclaredConstructor();
         constructor.setAccessible(true);
-        try
-        {
-            final Check check = constructor.newInstance();
-            Assert.assertNotNull(check);
-            Assert.fail();
-        }
-        catch (final InvocationTargetException exception)
-        {
-            // Success
-        }
+        final Check check = constructor.newInstance();
+        Assert.assertNotNull(check);
     }
 
     /**
-     * Test the check not null function.
+     * Test the check with a null object.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckNotNullFail()
+    {
+        Check.notNull(null);
+    }
+
+    /**
+     * Test the check with non null object.
      */
     @Test
     public void testCheckNotNull()
     {
-        try
-        {
-            Check.notNull(null);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
+        Check.notNull(new Object());
+    }
 
-        try
-        {
-            Check.notNull(new Object());
-        }
-        catch (final LionEngineException exception)
-        {
-            Assert.fail();
-        }
+    /**
+     * Test the check superior valid case.
+     */
+    @Test
+    public void testCheckSuperior()
+    {
+        Check.superiorOrEqual(0, 0);
+        Check.superiorOrEqual(1, 0);
+        Check.superiorStrict(1, 0);
+
+        Check.superiorOrEqual(0.0, 0.0);
+        Check.superiorOrEqual(1.0, 0.0);
+        Check.superiorStrict(1.0, 0.0);
+    }
+
+    /**
+     * Test the check inferior valid case.
+     */
+    @Test
+    public void testCheckInferior()
+    {
+        Check.inferiorOrEqual(0, 0);
+        Check.inferiorOrEqual(0, 1);
+        Check.inferiorStrict(0, 1);
+
+        Check.inferiorOrEqual(0.0, 0.0);
+        Check.inferiorOrEqual(0.0, 1.0);
+        Check.inferiorStrict(0.0, 1.0);
+    }
+
+    /**
+     * Test the check superior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckSuperiorFail()
+    {
+        Check.superiorStrict(-1, 0);
+    }
+
+    /**
+     * Test the check superior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckSuperiorEqualFail()
+    {
+        Check.superiorOrEqual(-1, 0);
+    }
+
+    /**
+     * Test the check inferior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckInferiorFail()
+    {
+        Check.inferiorStrict(1, 0);
+    }
+
+    /**
+     * Test the check inferior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckInferiorEqualFail()
+    {
+        Check.inferiorOrEqual(1, 0);
+    }
+
+    /**
+     * Test the check superior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckSuperiorDoubleFail()
+    {
+        Check.superiorStrict(-1.0, 0.0);
+    }
+
+    /**
+     * Test the check superior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckSuperiorEqualDoubleFail()
+    {
+        Check.superiorOrEqual(-1.0, 0.0);
+    }
+
+    /**
+     * Test the check inferior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckInferiorDoubleFail()
+    {
+        Check.inferiorStrict(1.0, 0.0);
+    }
+
+    /**
+     * Test the check inferior invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckInferiorEqualDoubleFail()
+    {
+        Check.inferiorOrEqual(1.0, 0.0);
+    }
+
+    /**
+     * Test the check different valid case.
+     */
+    @Test
+    public void testCheckDifferent()
+    {
+        Check.different(1, 0);
+    }
+
+    /**
+     * Test the check different invalid case.
+     */
+    @Test(expected = LionEngineException.class)
+    public void testCheckDifferentFail()
+    {
+        Check.different(0, 0);
     }
 }

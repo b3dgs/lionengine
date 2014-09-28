@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Ratio;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.mock.AppletMock;
+import com.b3dgs.lionengine.mock.MediaMock;
 
 /**
  * Test the config class.
@@ -124,5 +125,16 @@ public class ConfigTest
         ConfigTest.CONFIG.setApplet(new AppletMock());
         Assert.assertNull(ConfigTest.CONFIG.getApplet(null));
         Assert.assertNotNull(ConfigTest.CONFIG.getApplet(AppletMock.class));
+    }
+
+    /**
+     * Test the config icon.
+     */
+    @Test
+    public void testIcon()
+    {
+        final Media icon = new MediaMock("icon");
+        ConfigTest.CONFIG.setIcon(icon);
+        Assert.assertEquals(icon, ConfigTest.CONFIG.getIcon());
     }
 }
