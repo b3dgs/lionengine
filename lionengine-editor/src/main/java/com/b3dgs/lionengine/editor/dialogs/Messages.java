@@ -39,6 +39,8 @@ public final class Messages
     public static String AbstractDialog_Browse;
     /** Classes. */
     public static String AbstractProjectDialog_Classes;
+    /** Libraries */
+    public static String AbstractProjectDialog_Libraries;
     /** Resources */
     public static String AbstractProjectDialog_Resources;
     /** Project name. */
@@ -57,6 +59,8 @@ public final class Messages
     public static String ImportProjectDialog_HeaderDesc;
     /** Classes folder existence. */
     public static String ImportProjectDialog_InfoClasses;
+    /** Libraries folder existence. */
+    public static String ImportProjectDialog_InfoLibraries;
     /** Resources folder existence. */
     public static String ImportProjectDialog_InfoResources;
     /** Classes and resources folder existence. */

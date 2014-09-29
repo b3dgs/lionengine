@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
+import org.osgi.framework.Bundle;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -76,13 +78,24 @@ public final class UtilEclipse
      * @param root The icon root.
      * @param icon The icon name.
      * @return The icon instance.
+     * @throws LionEngineException If error when getting icon.
      */
-    public static Image getIcon(String root, String icon)
+    public static Image getIcon(String root, String icon) throws LionEngineException
     {
         try
         {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", root, icon))));
+            final Bundle bundle = Activator.getContext().getBundle();
+            final String path = UtilFile.getPath("icons", root, icon);
+            final URL url = bundle.getEntry(path);
+            if (url == null)
+            {
+                throw new LionEngineException("Icon not found: " + path);
+            }
+            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(url));
+            if (image == null)
+            {
+                throw new LionEngineException("Icon cannot be created: " + path);
+            }
             return image.createImage();
         }
         catch (final IOException exception)

@@ -52,12 +52,16 @@ public abstract class AbstractProjectDialog
     protected Text projectLocationText;
     /** Project classes. */
     protected Text projectClassesText;
+    /** Project libraries. */
+    protected Text projectLibrariesText;
     /** Project resources. */
     protected Text projectResourcesText;
     /** Project classes browse folder. */
     protected Button projectClassesBrowseFolder;
     /** Project classes browse JAR. */
     protected Button projectClassesBrowseJar;
+    /** Project libraries browse. */
+    protected Button projectLibrariesBrowse;
     /** Project resources browse. */
     protected Button projectResourcesBrowse;
     /** Project imported. */
@@ -174,6 +178,31 @@ public abstract class AbstractProjectDialog
     }
 
     /**
+     * Create the project libraries area chooser.
+     * 
+     * @param content The content composite.
+     */
+    protected void createProjectLibrariesArea(Composite content)
+    {
+        final Composite librariesArea = new Composite(content, SWT.NONE);
+        librariesArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        librariesArea.setLayout(new GridLayout(4, false));
+
+        final Label librariesLabel = new Label(librariesArea, SWT.NONE);
+        final GridData librariesData = new GridData();
+        librariesData.widthHint = 64;
+        librariesLabel.setLayoutData(librariesData);
+        librariesLabel.setText(Messages.AbstractProjectDialog_Libraries);
+
+        projectLibrariesText = new Text(librariesArea, SWT.BORDER);
+        projectLibrariesText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        projectLibrariesText.setTextLimit(AbstractDialog.MAX_CHAR);
+
+        projectLibrariesBrowse = createBrowseButton(librariesArea, Messages.AbstractDialog_Browse,
+                projectLibrariesText, true);
+    }
+
+    /**
      * Create the project resources area chooser.
      * 
      * @param content The content composite.
@@ -266,6 +295,7 @@ public abstract class AbstractProjectDialog
         folders.setLayout(new GridLayout(1, false));
         folders.setText(Messages.AbstractProjectDialog_Folders);
         createProjectClassesArea(folders);
+        createProjectLibrariesArea(folders);
         createProjectResourcesArea(folders);
     }
 }

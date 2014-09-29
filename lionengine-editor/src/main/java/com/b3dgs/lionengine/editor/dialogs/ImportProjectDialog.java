@@ -55,6 +55,8 @@ public class ImportProjectDialog
     private boolean hasProject;
     /** Classes exist. */
     private boolean hasClasses;
+    /** Libraries exist. */
+    private boolean hasLibraries;
     /** Resources exist. */
     private boolean hasResources;
 
@@ -73,6 +75,8 @@ public class ImportProjectDialog
         projectClassesText.setEditable(false);
         projectClassesBrowseFolder.setEnabled(false);
         projectClassesBrowseJar.setEnabled(false);
+        projectLibrariesText.setEditable(false);
+        projectLibrariesBrowse.setEnabled(false);
         projectResourcesText.setEditable(false);
         projectResourcesBrowse.setEnabled(false);
 
@@ -102,6 +106,23 @@ public class ImportProjectDialog
     }
 
     /**
+     * Check if the libraries folder already exists.
+     */
+    void checkLibrariesExistence()
+    {
+        final String text = projectLibrariesText.getText();
+        if (!text.isEmpty())
+        {
+            final File librariesPath = new File(UtilFile.getPath(projectLocationText.getText(), text));
+            hasLibraries = librariesPath.exists();
+        }
+        else
+        {
+            hasLibraries = false;
+        }
+    }
+
+    /**
      * Check if the resources folder already exists.
      */
     void checkResourcesExistence()
@@ -125,7 +146,7 @@ public class ImportProjectDialog
     {
         tipsLabel.setVisible(false);
         boolean enabled = true;
-        if (!hasClasses && !hasResources)
+        if (!hasClasses && !hasResources && !hasLibraries)
         {
             setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoBoth);
             enabled = false;
@@ -133,6 +154,11 @@ public class ImportProjectDialog
         else if (!hasClasses)
         {
             setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoClasses);
+            enabled = false;
+        }
+        else if (!hasLibraries)
+        {
+            setTipsMessage(AbstractDialog.ICON_INFO, Messages.ImportProjectDialog_InfoLibraries);
             enabled = false;
         }
         else if (!hasResources)
@@ -176,9 +202,11 @@ public class ImportProjectDialog
             final Properties properties = new Properties();
             properties.load(inputStream);
 
-            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
-            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
+            final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES, "");
+            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES, "");
+            final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES, "");
             projectClassesText.setText(classes);
+            projectLibrariesText.setText(libraries);
             projectResourcesText.setText(resources);
             tipsLabel.setVisible(false);
             finish.setEnabled(true);
@@ -208,6 +236,8 @@ public class ImportProjectDialog
                 projectClassesText.setEditable(true);
                 projectClassesBrowseFolder.setEnabled(true);
                 projectClassesBrowseJar.setEnabled(true);
+                projectLibrariesText.setEditable(true);
+                projectLibrariesBrowse.setEnabled(true);
                 projectResourcesText.setEditable(true);
                 projectResourcesBrowse.setEnabled(true);
             }
@@ -238,6 +268,22 @@ public class ImportProjectDialog
     }
 
     @Override
+    protected void createProjectLibrariesArea(Composite content)
+    {
+        super.createProjectLibrariesArea(content);
+
+        projectLibrariesText.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent modifyEvent)
+            {
+                checkLibrariesExistence();
+                updateTipsLabel();
+            }
+        });
+    }
+
+    @Override
     protected void createProjectResourcesArea(Composite content)
     {
         super.createProjectResourcesArea(content);
@@ -259,13 +305,12 @@ public class ImportProjectDialog
         final String name = projectNameText.getText();
         final File location = new File(projectLocationText.getText());
         final String classes = projectClassesText.getText();
+        final String libraries = projectLibrariesText.getText();
         final String resources = projectResourcesText.getText();
 
-        if (!hasProject)
-        {
-            final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, resources);
-            createProject.createProperties(location);
-        }
+        final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, libraries, resources);
+        createProject.createProperties(location);
+
         project = Project.create(location);
         Verbose.info(ImportProjectDialog.VERBOSE_PROJECT_IMPORTED, name, ImportProjectDialog.VERBOSE_FROM,
                 location.getAbsolutePath());

@@ -24,6 +24,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.osgi.framework.Bundle;
@@ -49,6 +52,8 @@ public final class Project
     public static final String PROPERTIES_FILE_DESCRIPTION = "LionEngine project properties";
     /** Property project classes folder. */
     public static final String PROPERTY_PROJECT_CLASSES = "ClassesFolder";
+    /** Property project libraries folder. */
+    public static final String PROPERTY_PROJECT_LIBRARIES = "LibrariesFolder";
     /** Property project resources folder. */
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
     /** Create project error. */
@@ -92,11 +97,12 @@ public final class Project
             properties.load(inputStream);
 
             final String classes = properties.getProperty(Project.PROPERTY_PROJECT_CLASSES);
+            final String libraries = properties.getProperty(Project.PROPERTY_PROJECT_LIBRARIES);
             final String resources = properties.getProperty(Project.PROPERTY_PROJECT_RESOURCES);
 
             final Project project = new Project(projectPath);
             project.setName(projectPath.getName());
-            project.setClasses(classes);
+            project.setClasses(classes, libraries);
             project.setResources(resources);
 
             Project.checkClassPath(project);
@@ -134,9 +140,11 @@ public final class Project
             try
             {
                 final String classes = classPath.getAbsolutePath();
+                final File librariesPath = project.getLibrariesPath();
                 Verbose.info(Project.VERBOSE_EXTRACT_JAR, classes);
                 Tools.unzip(classes, dir.getAbsolutePath());
-                project.setClasses(dir.getAbsolutePath().substring(project.getPath().getAbsolutePath().length()));
+                project.setClasses(dir.getAbsolutePath().substring(project.getPath().getAbsolutePath().length()),
+                        librariesPath.getAbsolutePath().substring(project.getPath().getAbsolutePath().length()));
             }
             catch (final IOException exception)
             {
@@ -151,6 +159,8 @@ public final class Project
     private String name;
     /** Classes folder (represents the main classes folder, such as <code>bin/</code>). */
     private String classes;
+    /** Library folder (represents the libraries folder). */
+    private String libraries;
     /** Resources folder (represents the main resources folder, such as <code>resources/</code>. */
     private String resources;
     /** Class loader. */
@@ -225,16 +235,18 @@ public final class Project
      * Set the classes folder.
      * 
      * @param folder The classes folder.
+     * @param libraries The libraries folder.
      * @throws MalformedURLException If error on the path.
      */
-    public void setClasses(String folder) throws MalformedURLException
+    public void setClasses(String folder, String libraries) throws MalformedURLException
     {
         classes = folder;
+        this.libraries = libraries;
 
         final Bundle bundle = Activator.getMainBundle();
         if (bundle != null)
         {
-            classLoader = createClassLoader(folder, bundle);
+            classLoader = createClassLoader(bundle);
         }
         else
         {
@@ -290,6 +302,16 @@ public final class Project
     public File getClassesPath()
     {
         return new File(path, classes);
+    }
+
+    /**
+     * Get the libraries path.
+     * 
+     * @return The libraries path.
+     */
+    public File getLibrariesPath()
+    {
+        return new File(path, libraries);
     }
 
     /**
@@ -395,20 +417,29 @@ public final class Project
     /**
      * Create a class loader from a class folder.
      * 
-     * @param folder The class folder.
      * @param bundle The bundle reference.
      * @return The class loader instance.
      * @throws MalformedURLException If error when creating the class loader path.
      */
-    private URLClassLoader createClassLoader(String folder, Bundle bundle) throws MalformedURLException
+    private URLClassLoader createClassLoader(Bundle bundle) throws MalformedURLException
     {
         final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
         final ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
-        final URL url = new File(path, folder).toURI().toURL();
-        final URL[] urls = new URL[]
+
+        final List<URL> urls = new ArrayList<>();
+        urls.add(getClassesPath().toURI().toURL());
+
+        final File librariesPath = getLibrariesPath();
+        if (librariesPath.isDirectory())
         {
-            url
-        };
-        return new URLClassLoader(urls, bundleClassLoader);
+            for (final File file : librariesPath.listFiles())
+            {
+                if (file.isFile() && file.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar"))
+                {
+                    urls.add(file.toURI().toURL());
+                }
+            }
+        }
+        return new URLClassLoader(urls.toArray(new URL[urls.size()]), bundleClassLoader);
     }
 }

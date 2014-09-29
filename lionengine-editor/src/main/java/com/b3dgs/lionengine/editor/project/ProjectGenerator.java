@@ -143,6 +143,8 @@ public class ProjectGenerator
     private final File location;
     /** Classes folder. */
     private final String classes;
+    /** Libraries folder. */
+    private final String libraries;
     /** Resources folder. */
     private final String resources;
 
@@ -152,13 +154,15 @@ public class ProjectGenerator
      * @param name The project name.
      * @param location The project location.
      * @param classes The classes code folder.
+     * @param libraries The libraries folder.
      * @param resources The resources folder.
      */
-    public ProjectGenerator(String name, File location, String classes, String resources)
+    public ProjectGenerator(String name, File location, String classes, String libraries, String resources)
     {
         this.name = name;
         this.location = location;
         this.classes = classes;
+        this.libraries = libraries;
         this.resources = resources;
     }
 
@@ -280,6 +284,7 @@ public class ProjectGenerator
         final File propertiesFile = new File(projectPath, Project.PROPERTIES_FILE);
         final Properties properties = new Properties();
         properties.put(Project.PROPERTY_PROJECT_CLASSES, classes);
+        properties.put(Project.PROPERTY_PROJECT_LIBRARIES, libraries);
         properties.put(Project.PROPERTY_PROJECT_RESOURCES, resources);
         try (FileOutputStream stream = new FileOutputStream(propertiesFile))
         {
