@@ -229,7 +229,7 @@ public class WorldViewRenderer
         }
         else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
         {
-            if (entityControl.getSelectedEnties().isEmpty())
+            if (!entityControl.hasSelection())
             {
                 selection.update(mx, my);
             }
@@ -407,7 +407,7 @@ public class WorldViewRenderer
     {
         if (part.getActivePaletteId() == FactoryView.ID && !entityControl.isDragging())
         {
-            if (click == Mouse.LEFT && !entityControl.isOver() && entityControl.getSelectedEnties().isEmpty())
+            if (click == Mouse.LEFT && !entityControl.hasOver() && !entityControl.hasSelection())
             {
                 entityControl.addEntity(mx, my);
             }
@@ -480,10 +480,9 @@ public class WorldViewRenderer
     private void updateSelectionBefore(int mx, int my)
     {
         final EntityGame entity = entityControl.getEntity(mx, my);
-        final boolean empty = entityControl.getSelectedEnties().isEmpty();
         selection.reset();
 
-        if (!empty && entity == null)
+        if (entityControl.hasSelection() && entity == null)
         {
             entityControl.unSelectEntities();
             selection.start(mx, my);
@@ -622,7 +621,7 @@ public class WorldViewRenderer
      */
     private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY)
     {
-        if (!selection.isSelecting() && !entityControl.isDragging())
+        if (!selection.isSelecting() && !entityControl.isDragging() && !entityControl.hasOver())
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {

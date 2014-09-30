@@ -311,16 +311,6 @@ public class EntityControl
     }
 
     /**
-     * Check if cursor is over at least one entity.
-     * 
-     * @return <code>true</code> if over, <code>false</code> else.
-     */
-    public boolean isOver()
-    {
-        return !entitiesOver.isEmpty();
-    }
-
-    /**
      * Check the mouse over entity flag.
      * 
      * @param entity The entity to check.
@@ -358,6 +348,33 @@ public class EntityControl
     public boolean isDragging()
     {
         return dragging;
+    }
+
+    /**
+     * Check if cursor is over at least one entity.
+     * 
+     * @return <code>true</code> if over, <code>false</code> else.
+     */
+    public boolean hasOver()
+    {
+        return !entitiesOver.isEmpty();
+    }
+
+    /**
+     * Check if there it at least one entity selected.
+     * 
+     * @return <code>true</code> if there is selected entities, <code>false</code> else.
+     */
+    public boolean hasSelection()
+    {
+        for (final EntityGame entity : handlerEntity.list())
+        {
+            if (isSelected(entity))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
