@@ -25,6 +25,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -35,6 +36,10 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class EditEntitiesFolderTypeHandler
 {
+    /** Type node. */
+    private static final String NODE_TYPE = Configurable.PREFIX + "type";
+    /** Name node. */
+    private static final String NODE_NAME = Configurable.PREFIX + "name";
     /** The default type name. */
     private static final String DEFAULT_NAME = "category";
 
@@ -53,8 +58,8 @@ public class EditEntitiesFolderTypeHandler
         }
         else
         {
-            root = Stream.createXmlNode("lionengine:type");
-            final XmlNode typeName = Stream.createXmlNode("name");
+            root = Stream.createXmlNode(EditEntitiesFolderTypeHandler.NODE_TYPE);
+            final XmlNode typeName = Stream.createXmlNode(EditEntitiesFolderTypeHandler.NODE_NAME);
             typeName.setText(EditEntitiesFolderTypeHandler.DEFAULT_NAME);
             root.add(typeName);
         }
@@ -70,7 +75,7 @@ public class EditEntitiesFolderTypeHandler
      */
     private static void enterName(Shell parent, Media media, XmlNode root)
     {
-        final XmlNode typeName = root.getChild("name");
+        final XmlNode typeName = root.getChild(EditEntitiesFolderTypeHandler.NODE_NAME);
         final InputDialog inputDialog = new InputDialog(parent, Messages.EditEntitiesFolderType_Name_Title,
                 Messages.EditEntitiesFolderType_Name_Text, typeName.getText(), null);
         inputDialog.open();

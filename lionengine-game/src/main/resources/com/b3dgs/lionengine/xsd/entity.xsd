@@ -1,39 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
 	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
-	<include schemaLocation="lionengine.xsd"></include>
+
+	<include schemaLocation="lionengine.xsd" />
 
 	<complexType name="entity">
 		<sequence minOccurs="1" maxOccurs="1">
-            <element name="class" type="string" maxOccurs="1" minOccurs="1"></element>
-            <element ref="lionengine:surface" minOccurs="0"
-				maxOccurs="1">
-			</element>
-			<element ref="lionengine:frames" minOccurs="0"
-				maxOccurs="1">
-			</element>
-			<choice minOccurs="0" maxOccurs="1">
-				<element ref="lionengine:size" minOccurs="0"
-					maxOccurs="1">
-				</element>
+			<element name="class" type="string" minOccurs="1" maxOccurs="1" />
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="lionengine:surface" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:frames" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:size" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:collision" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:animation" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:offset" minOccurs="0" maxOccurs="1" />
+				<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
 			</choice>
-			<element ref="lionengine:collision" minOccurs="0"
-				maxOccurs="unbounded">
-			</element>
-			<element ref="lionengine:animation" minOccurs="0"
-				maxOccurs="unbounded">
-			</element>
-			<any namespace="##local" processContents="skip"
-				minOccurs="0" maxOccurs="unbounded">
-			</any>
 		</sequence>
-
-		<attribute name="name" type="string" use="optional"></attribute>
+		<attribute name="name" type="string" use="optional" />
 	</complexType>
 
-
-	<element name="entity" type="lionengine:entity"></element>
-
-
-
+	<element name="entity" type="lionengine:entity" />
 </schema>

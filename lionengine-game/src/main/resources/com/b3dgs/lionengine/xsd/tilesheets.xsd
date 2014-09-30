@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
 	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
-	<include schemaLocation="lionengine.xsd"></include>
 
-	<element name="tilesheets" type="lionengine:tilesheets"></element>
-	
-    <complexType name="tilesheets">
-    	<sequence>
-    		<element name="tilesheet" type="string" maxOccurs="unbounded" minOccurs="0"></element>
-    	</sequence>
-    </complexType>
+	<include schemaLocation="lionengine.xsd" />
+
+	<element name="tilesheets" type="lionengine:tilesheets" />
+
+	<complexType name="tilesheets">
+		<sequence>
+			<element name="tilesheet" type="string" maxOccurs="unbounded" minOccurs="0" />
+		</sequence>
+	</complexType>
 </schema>

@@ -1,64 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://lionengine.b3dgs.com"
-	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+<schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
 
 	<complexType name="frames">
-		<attribute name="horizontal" type="int" use="required"></attribute>
-		<attribute name="vertical" type="int" use="required"></attribute>
+		<attribute name="horizontal" type="int" use="required" />
+		<attribute name="vertical" type="int" use="required" />
 	</complexType>
 
 	<complexType name="size">
-		<attribute name="width" type="int" use="required"></attribute>
-		<attribute name="height" type="int" use="required"></attribute>
+		<attribute name="width" type="int" use="required" />
+		<attribute name="height" type="int" use="required" />
 	</complexType>
 
 	<complexType name="collision">
-        <sequence>
-        	<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
-        </sequence>
-        <attribute name="name" type="string" use="required"></attribute>
-		<attribute name="offsetX" type="int" use="required"></attribute>
-		<attribute name="offsetY" type="int" use="required"></attribute>
-		<attribute name="width" type="int" use="required"></attribute>
-		<attribute name="height" type="int" use="required"></attribute>
-		<attribute name="mirror" type="boolean" use="required"></attribute>
+		<sequence>
+			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
+		</sequence>
+		<attribute name="name" type="string" use="required" />
+		<attribute name="offsetX" type="int" use="required" />
+		<attribute name="offsetY" type="int" use="required" />
+		<attribute name="width" type="int" use="required" />
+		<attribute name="height" type="int" use="required" />
+		<attribute name="mirror" type="boolean" use="required" />
 	</complexType>
 
 	<complexType name="animation">
-        <sequence>
-        	<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
-        </sequence>
-        <attribute name="name" type="string"></attribute>
-		<attribute name="start" type="int" use="required"></attribute>
-		<attribute name="end" type="int" use="required"></attribute>
-		<attribute name="speed" type="double" use="required"></attribute>
-		<attribute name="reversed" type="boolean" use="required"></attribute>
-		<attribute name="repeat" type="boolean" use="required"></attribute>
+		<sequence>
+			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded"></any>
+		</sequence>
+		<attribute name="name" type="string" />
+		<attribute name="start" type="int" use="required" />
+		<attribute name="end" type="int" use="required" />
+		<attribute name="speed" type="double" use="required" />
+		<attribute name="reversed" type="boolean" use="required" />
+		<attribute name="repeat" type="boolean" use="required" />
 	</complexType>
 
-
-	<element name="frames" type="lionengine:frames"></element>
-
-	<element name="size" type="lionengine:size"></element>
-
-	<element name="collision" type="lionengine:collision"></element>
-
-	<element name="animation" type="lionengine:animation"></element>
-
-
-
+	<element name="frames" type="lionengine:frames" />
+	<element name="size" type="lionengine:size" />
+	<element name="collision" type="lionengine:collision" />
+	<element name="animation" type="lionengine:animation" />
 
 	<complexType name="surface">
-		<attribute name="image" type="string" use="required"></attribute>
-		<attribute name="icon" type="string" use="optional"></attribute>
+		<attribute name="image" type="string" use="required" />
+		<attribute name="icon" type="string" use="optional" />
 	</complexType>
 
-	<element name="surface" type="lionengine:surface"></element>
+	<element name="surface" type="lionengine:surface" />
 
 	<complexType name="offset">
-		<attribute name="x" type="int" use="required"></attribute>
-		<attribute name="y" type="int" use="required"></attribute>
+		<attribute name="x" type="int" use="required" />
+		<attribute name="y" type="int" use="required" />
 	</complexType>
 
-	<element name="offset" type="lionengine:offset"></element>
+	<element name="offset" type="lionengine:offset" />
 </schema>
