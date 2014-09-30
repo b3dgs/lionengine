@@ -56,6 +56,8 @@ public class Configurable
     private final Map<String, Animation> animations;
     /** Collisions map. */
     private final Map<String, Collision> collisions;
+    /** Media reference. */
+    private Media media;
     /** Root path. */
     private String path;
     /** Root node. */
@@ -80,6 +82,7 @@ public class Configurable
     {
         Check.notNull(media);
 
+        this.media = media;
         path = media.getFile().getParent();
         root = Stream.loadXml(media);
         loadAnimations();
@@ -343,7 +346,14 @@ public class Configurable
         XmlNode node = root;
         for (final String element : path)
         {
-            node = node.getChild(element);
+            try
+            {
+                node = node.getChild(element);
+            }
+            catch (final LionEngineException exception)
+            {
+                throw new LionEngineException(exception, media);
+            }
         }
         return node;
     }
