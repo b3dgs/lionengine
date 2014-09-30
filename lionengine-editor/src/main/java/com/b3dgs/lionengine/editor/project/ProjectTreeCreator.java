@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
  * Generate the project tree from the project folder.
@@ -47,6 +48,8 @@ public class ProjectTreeCreator
     private static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
     /** Folder icon. */
     private static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
+    /** Folder icon. */
+    private static final Image ICON_FOLDER_ENTITIES = UtilEclipse.getIcon("resources", "folder-entities.png");
     /** File icon. */
     private static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
     /** Sound file icon. */
@@ -64,7 +67,7 @@ public class ProjectTreeCreator
     /** Factory entity file icon. */
     private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
     /** Entity file icon. */
-    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "object.png");
+    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
     /** Class file icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
 
@@ -87,6 +90,52 @@ public class ProjectTreeCreator
             return folder;
         }
         return parent;
+    }
+
+    /**
+     * Check if the folder contains entities in depth.
+     * 
+     * @param path The folder path.
+     * @param parent The node parent.
+     */
+    private static void checkEntitiesFolder(File path, TreeItem parent)
+    {
+        final File parentFile = path.getParentFile();
+        if (parentFile.isDirectory())
+        {
+            for (final File file : parentFile.listFiles())
+            {
+                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
+                        && EntitiesFolderTester.isFolderTypeFile(file))
+                {
+                    parent.setImage(ProjectTreeCreator.ICON_FOLDER_ENTITIES);
+                    ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if the folder contains entities.
+     * 
+     * @param folder The folder to check.
+     * @return <code>true</code> if contains entities, <code>false</code> else.
+     */
+    private static boolean isEntitiesFolder(File folder)
+    {
+        if (folder.isDirectory())
+        {
+            for (final File file : folder.listFiles())
+            {
+                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
+                        && EntitiesFolderTester.isEntityFile(file))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -121,6 +170,21 @@ public class ProjectTreeCreator
             return ProjectTreeCreator.ICON_ENTITTY;
         }
         return ProjectTreeCreator.ICON_DATA;
+    }
+
+    /**
+     * Get the icon folder.
+     * 
+     * @param folder The folder.
+     * @return The folder icon.
+     */
+    private static Image getFolderIcon(File folder)
+    {
+        if (ProjectTreeCreator.isEntitiesFolder(folder))
+        {
+            return ProjectTreeCreator.ICON_FOLDER_ENTITIES;
+        }
+        return ProjectTreeCreator.ICON_FOLDER;
     }
 
     /**
@@ -280,7 +344,12 @@ public class ProjectTreeCreator
         }
         else
         {
-            return createItem(parent, path, ProjectTreeCreator.ICON_FOLDER);
+            final Image icon = ProjectTreeCreator.getFolderIcon(path);
+            if (icon == ProjectTreeCreator.ICON_FOLDER_ENTITIES)
+            {
+                ProjectTreeCreator.checkEntitiesFolder(path, parent);
+            }
+            return createItem(parent, path, icon);
         }
     }
 

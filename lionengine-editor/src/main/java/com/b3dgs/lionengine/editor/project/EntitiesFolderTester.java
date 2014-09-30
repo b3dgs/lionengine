@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
-import java.util.List;
 
 import javax.xml.bind.ValidationException;
 
@@ -26,7 +25,6 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.xsd.XsdLoader;
 
@@ -57,15 +55,18 @@ public class EntitiesFolderTester
      */
     public static boolean isEntityFile(File file)
     {
-        try
-        {
-            UtilFile.validateXml(XsdLoader.get(XsdLoader.XSD_ENTITY), file);
-            return true;
-        }
-        catch (final ValidationException exception)
-        {
-            return false;
-        }
+        return EntitiesFolderTester.is(file, XsdLoader.XSD_ENTITY);
+    }
+
+    /**
+     * Check if the file is a folder type descriptor.
+     * 
+     * @param file The file to test.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    public static boolean isFolderTypeFile(File file)
+    {
+        return EntitiesFolderTester.is(file, XsdLoader.XSD_FOLDER_TYPE);
     }
 
     /**
@@ -76,14 +77,13 @@ public class EntitiesFolderTester
      */
     private static boolean canEditProperty(Media selection)
     {
-        final boolean hasFolders = UtilFile.getDirsList(selection.getFile().getPath()).length != 0;
-        if (hasFolders)
+        final File folder = selection.getFile();
+        if (folder.isDirectory())
         {
-            final List<File> files = UtilFile.getFilesByExtension(selection.getFile().getPath(),
-                    FactoryObjectGame.FILE_DATA_EXTENSION);
-            for (final File file : files)
+            for (final File file : folder.listFiles())
             {
-                if (EntitiesFolderTester.isEntityFile(file))
+                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
+                        && EntitiesFolderTester.isFolderTypeFile(file))
                 {
                     return true;
                 }
@@ -116,6 +116,26 @@ public class EntitiesFolderTester
     }
 
     /**
+     * Check if the file is a folder type descriptor.
+     * 
+     * @param file The file to test.
+     * @param xsd The expected XSD type.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    private static boolean is(File file, String xsd)
+    {
+        try
+        {
+            UtilFile.validateXml(XsdLoader.get(xsd), file);
+            return true;
+        }
+        catch (final ValidationException exception)
+        {
+            return false;
+        }
+    }
+
+    /**
      * Check if is entity in the selected folder.
      * 
      * @param selection The selected folder.
@@ -135,7 +155,7 @@ public class EntitiesFolderTester
      */
     private static boolean canEditEntity(Media selection)
     {
-        return WorldViewModel.INSTANCE.getFactory() != null && EntitiesFolderTester.isEntity(selection);
+        return EntitiesFolderTester.isEntity(selection);
     }
 
     /*

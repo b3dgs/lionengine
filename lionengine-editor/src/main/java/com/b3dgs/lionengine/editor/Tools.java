@@ -39,10 +39,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
-import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
@@ -87,9 +84,9 @@ public final class Tools
      */
     public static Configurable getConfigurable(Media entity)
     {
-        final FactoryObjectGame<?> factory = WorldViewModel.INSTANCE.getFactory();
-        final SetupGame setup = factory.getSetup(entity);
-        return setup.getConfigurable();
+        final Configurable configurable = new Configurable();
+        configurable.load(entity);
+        return configurable;
     }
 
     /**

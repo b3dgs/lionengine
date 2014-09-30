@@ -9,9 +9,9 @@
               <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="%part.projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
                 <handlers xmi:id="_LImjcNe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
                 <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.factory.AssignFactoryImplementationHandler" command="_N5Z3INe_EeOk36N_MMz9Rw"/>
-                <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-objects-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditObjectsFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
-                <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-object" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddObjectHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
-                <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-object" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditObjectHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
+                <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-entities-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEntitiesFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
+                <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
+                <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEntityHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
                 <handlers xmi:id="_ur9w4A97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.handler.edit-tilesheets" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditTilesheetsHandler" command="_wm-FAA97EeS-BbtPUGIQSQ"/>
                 <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-map.png" command="_KK_5cNVTEeObvtSGPT134w">
@@ -20,16 +20,16 @@
                   <children xsi:type="menu:HandledMenuItem" xmi:id="_VJ2l8Ne_EeOk36N_MMz9Rw" elementId="" label="%menu.assign-factory-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-factory.png" command="_N5Z3INe_EeOk36N_MMz9Rw">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VJ2l8de_EeOk36N_MMz9Rw" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_impl"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_DGxNwN3PEeO_c9lVVTo_Qg" elementId="" label="%menu.edit-objects-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-object-type-edit.png" command="_Qh1EsN3PEeO_c9lVVTo_Qg">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_DGxNwN3PEeO_c9lVVTo_Qg" elementId="" label="%menu.edit-entities-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-object-type-edit.png" command="_Qh1EsN3PEeO_c9lVVTo_Qg">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_DGxNwd3PEeO_c9lVVTo_Qg" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.category"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_cFI5gN7EEeOqxIeqTKywZw" elementId="" label="%menu.add-object" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-add.png" command="_ifUHoN7EEeOqxIeqTKywZw">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_cFI5gN7EEeOqxIeqTKywZw" elementId="" label="%menu.add-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-add.png" command="_ifUHoN7EEeOqxIeqTKywZw">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_QtbvgN7GEeOqxIeqTKywZw" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.addEntity"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_pBAAoN9AEeOIN7-STHd0gQ" elementId="" label="%menu.edit-object" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-edit.png" command="_mRrToN9AEeOIN7-STHd0gQ">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_pBAAoN9AEeOIN7-STHd0gQ" elementId="" label="%menu.edit-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-edit.png" command="_mRrToN9AEeOIN7-STHd0gQ">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pBAAod9AEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.editEntity"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_ovJNIA97EeS-BbtPUGIQSQ" elementId="" label="%menu.edit-tilesheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-edit.png" command="_wm-FAA97EeS-BbtPUGIQSQ">
+                  <children xsi:type="menu:HandledMenuItem" xmi:id="_ovJNIA97EeS-BbtPUGIQSQ" elementId="" label="%menu.edit-tilesheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-edit.png" command="_wm-FAA97EeS-BbtPUGIQSQ">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_ovJNIQ97EeS-BbtPUGIQSQ" coreExpressionId="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets"/>
                   </children>
                 </menus>
@@ -104,9 +104,9 @@
   <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
   <commands xmi:id="_KK_5cNVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.command.assign-map-impl" commandName="assignMapImplementationCommand"/>
   <commands xmi:id="_N5Z3INe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.command.assign-factory" commandName="assignFactoryImplementationCommand"/>
-  <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-objects-folder-type" commandName="editObjectsFolderTypeCommand"/>
-  <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-object" commandName="addObjectCommand"/>
-  <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-object" commandName="editObjectCommand"/>
+  <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-entities-folder-type" commandName="editEntitiesFolderTypeCommand"/>
+  <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
+  <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-entity" commandName="editEntityCommand"/>
   <commands xmi:id="_wm-FAA97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.command.edit-tilesheets" commandName="editTilesheetsCommand"/>
   <commands xmi:id="_kSEPQEGLEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.command.import-map" commandName="importMapCommand" description=""/>
   <commands xmi:id="_wkCsUEGNEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.command.pointer" commandName="setPointerCommand" description=""/>
