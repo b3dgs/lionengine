@@ -50,6 +50,8 @@ public class PalettePart
     final Map<String, PaletteData> palettes = new HashMap<>();
     /** Palette combo box. */
     Combo comboPalette;
+    /** Palette view composite. */
+    Composite composite;
 
     /**
      * Create the composite.
@@ -69,7 +71,7 @@ public class PalettePart
         final Label separator = new Label(content, SWT.SEPARATOR | SWT.HORIZONTAL);
         separator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
 
-        final Composite composite = new Composite(content, SWT.NONE);
+        composite = new Composite(content, SWT.NONE);
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         comboPalette.addSelectionListener(new SelectionAdapter()
@@ -77,15 +79,7 @@ public class PalettePart
             @Override
             public void widgetSelected(SelectionEvent event)
             {
-                for (final Control child : composite.getChildren())
-                {
-                    child.dispose();
-                }
-                final String name = comboPalette.getText();
-                final String key = (String) comboPalette.getData(name);
-                final PaletteView view = palettes.get(key).getView();
-                view.create(composite);
-                composite.layout(true, true);
+                loadPaletteView();
             }
         });
     }
@@ -109,7 +103,9 @@ public class PalettePart
         names.toArray(items);
         comboPalette.setItems(items);
         comboPalette.setData(name, view.getId());
+        comboPalette.setText(name);
         comboPalette.update();
+        loadPaletteView();
     }
 
     /**
@@ -148,5 +144,21 @@ public class PalettePart
     public <C> C getPaletteView(String id, Class<C> clazz)
     {
         return clazz.cast(palettes.get(id).getView());
+    }
+
+    /**
+     * Load the selected palette view.
+     */
+    void loadPaletteView()
+    {
+        for (final Control child : composite.getChildren())
+        {
+            child.dispose();
+        }
+        final String name = comboPalette.getText();
+        final String key = (String) comboPalette.getData(name);
+        final PaletteView view = palettes.get(key).getView();
+        view.create(composite);
+        composite.layout(true, true);
     }
 }

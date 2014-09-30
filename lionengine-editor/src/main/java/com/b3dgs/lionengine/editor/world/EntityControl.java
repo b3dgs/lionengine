@@ -311,6 +311,16 @@ public class EntityControl
     }
 
     /**
+     * Check if cursor is over at least one entity.
+     * 
+     * @return <code>true</code> if over, <code>false</code> else.
+     */
+    public boolean isOver()
+    {
+        return !entitiesOver.isEmpty();
+    }
+
+    /**
      * Check the mouse over entity flag.
      * 
      * @param entity The entity to check.

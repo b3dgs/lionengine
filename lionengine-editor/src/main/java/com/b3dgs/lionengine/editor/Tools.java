@@ -125,7 +125,7 @@ public final class Tools
     {
         final File typeFile = new File(path, "type.xml");
         final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));
-        return typeNode.getChild("name").getText();
+        return typeNode.getChild("lionengine:name").getText();
     }
 
     /**

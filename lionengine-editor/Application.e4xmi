@@ -65,8 +65,10 @@
               </toolbar>
             </children>
           </children>
-          <children xsi:type="basic:PartStack" xmi:id="_0M0x8NfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.stack.right" containerData="25">
-            <children xsi:type="basic:Part" xmi:id="_1W28INfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.part.palette" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.palette.PalettePart" label="%part.palette" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/palette.png"/>
+          <children xsi:type="basic:PartSashContainer" xmi:id="_Pb3vMEisEeSd1bDAETqq2Q" elementId="com.b3dgs.lionengine.editor.stack.right" containerData="25">
+            <children xsi:type="basic:PartStack" xmi:id="_npOrEEisEeSd1bDAETqq2Q" elementId="com.b3dgs.lionengine.editor.stack.right.palette" containerData="50">
+              <children xsi:type="basic:Part" xmi:id="_1W28INfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.part.palette" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.palette.PalettePart" label="%part.palette" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/palette.png"/>
+            </children>
           </children>
         </children>
       </children>

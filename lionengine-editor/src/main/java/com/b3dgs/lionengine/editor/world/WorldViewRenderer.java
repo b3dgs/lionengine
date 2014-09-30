@@ -189,22 +189,73 @@ public class WorldViewRenderer
     }
 
     /**
-     * Update the palette action on click release.
+     * Update the palette action on click down.
      * 
      * @param palette The palette type.
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
-    protected void updatePalette(Enum<?> palette, int mx, int my)
+    protected void updatePaletteBefore(Enum<?> palette, int mx, int my)
+    {
+        if (palette == PaletteType.POINTER)
+        {
+            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
+            updatePalettePointer(part, mx, my);
+
+            updateSingleEntitySelection(mx, my);
+        }
+        else if (palette == PaletteType.SELECTION)
+        {
+            updateSelectionBefore(mx, my);
+        }
+    }
+
+    /**
+     * Update the palette action when moving mouse.
+     * 
+     * @param palette The palette type.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    protected void updatePaletteMoving(Enum<?> palette, int mx, int my)
+    {
+        if (palette == PaletteType.POINTER)
+        {
+            entityControl.updateMouseOver(mx, my);
+            if (getClick() == Mouse.LEFT)
+            {
+                entityControl.updateDragging(mouseX, mouseY, mx, my);
+            }
+        }
+        else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
+        {
+            if (entityControl.getSelectedEnties().isEmpty())
+            {
+                selection.update(mx, my);
+            }
+            else
+            {
+                entityControl.updateDragging(mouseX, mouseY, mx, my);
+            }
+        }
+        else if (palette == PaletteType.HAND && click > 0)
+        {
+            updateCamera(mouseX - mx, my - mouseY, 0);
+        }
+    }
+
+    /**
+     * Update the palette action on click up.
+     * 
+     * @param palette The palette type.
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    protected void updatePaletteAfter(Enum<?> palette, int mx, int my)
     {
         if (palette == PaletteType.SELECTION)
         {
             updateSelectionAfter(mx, my);
-        }
-        else if (palette == PaletteType.POINTER)
-        {
-            final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-            updatePalettePointer(part, mx, my);
         }
         else if (palette == PaletteType.HAND)
         {
@@ -223,6 +274,22 @@ public class WorldViewRenderer
     {
         updatePointerMap(part, mx, my);
         updatePointerFactory(part, mx, my);
+    }
+
+    /**
+     * Update the entity selection with pointer.
+     * 
+     * @param mx The mouse horizontal location.
+     * @param my The mouse vertical location.
+     */
+    protected void updateSingleEntitySelection(int mx, int my)
+    {
+        entityControl.unSelectEntities();
+        final EntityGame entity = entityControl.getEntity(mx, my);
+        if (entity != null)
+        {
+            entityControl.setEntitySelection(entity, true);
+        }
     }
 
     /**
@@ -338,9 +405,9 @@ public class WorldViewRenderer
      */
     private void updatePointerFactory(PalettePart part, int mx, int my)
     {
-        if (part.getActivePaletteId() == FactoryView.ID)
+        if (part.getActivePaletteId() == FactoryView.ID && !entityControl.isDragging())
         {
-            if (click == Mouse.LEFT)
+            if (click == Mouse.LEFT && !entityControl.isOver() && entityControl.getSelectedEnties().isEmpty())
             {
                 entityControl.addEntity(mx, my);
             }
@@ -421,12 +488,6 @@ public class WorldViewRenderer
             entityControl.unSelectEntities();
             selection.start(mx, my);
         }
-        else if (empty && entity != null)
-        {
-            entityControl.setEntitySelection(entity, true);
-            selection.start(mx, my);
-            selection.end(mx, my);
-        }
         else
         {
             selection.start(mx, my);
@@ -445,10 +506,6 @@ public class WorldViewRenderer
         if (selection.isSelected())
         {
             entityControl.selectEntities(selection.getArea());
-        }
-        for (final EntityGame entity : entityControl.getSelectedEnties())
-        {
-            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
         }
     }
 
@@ -616,10 +673,7 @@ public class WorldViewRenderer
         final Enum<?> palette = model.getSelectedPalette();
         click = mouseEvent.button;
 
-        if (palette == PaletteType.SELECTION)
-        {
-            updateSelectionBefore(mx, my);
-        }
+        updatePaletteBefore(palette, mx, my);
         updateMouse(mx, my);
     }
 
@@ -630,9 +684,14 @@ public class WorldViewRenderer
         final int my = mouseEvent.y;
         final Enum<?> palette = model.getSelectedPalette();
 
-        updatePalette(palette, mx, my);
+        updatePaletteAfter(palette, mx, my);
         updateMouse(mx, my);
+
         entityControl.stopDragging();
+        for (final EntityGame entity : entityControl.getSelectedEnties())
+        {
+            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
+        }
         click = 0;
     }
 
@@ -647,25 +706,7 @@ public class WorldViewRenderer
         final int my = mouseEvent.y;
 
         final Enum<?> palette = model.getSelectedPalette();
-        if (palette == PaletteType.POINTER)
-        {
-            entityControl.updateMouseOver(mx, my);
-        }
-        if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
-        {
-            if (entityControl.getSelectedEnties().isEmpty())
-            {
-                selection.update(mx, my);
-            }
-            if (!selection.isSelecting())
-            {
-                entityControl.updateDragging(mouseX, mouseY, mx, my);
-            }
-        }
-        if (palette == PaletteType.HAND && click > 0)
-        {
-            updateCamera(mouseX - mx, my - mouseY, 0);
-        }
+        updatePaletteMoving(palette, mx, my);
         updateMouse(mx, my);
     }
 

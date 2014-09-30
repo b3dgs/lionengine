@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.palette.PaletteView;
+import com.b3dgs.lionengine.editor.project.EntitiesFolderTester;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -99,9 +100,13 @@ public class FactoryView
     private static Combo createCombo(String typeName, Composite parent)
     {
         final Composite typeComposite = new Composite(parent, SWT.NONE);
-        typeComposite.setLayout(new GridLayout(2, false));
+        final GridLayout layout = new GridLayout(2, true);
+        layout.marginHeight = 0;
+        typeComposite.setLayout(layout);
+
         final Label typeLabel = new Label(typeComposite, SWT.NONE);
         typeLabel.setText(typeName);
+
         final Combo typeCombo = new Combo(typeComposite, SWT.READ_ONLY);
         return typeCombo;
     }
@@ -162,15 +167,19 @@ public class FactoryView
      * @param path The folder path.
      * @param parent The composite parent.
      * @return The created child composite.
+     * @throws LionEngineException If not a type folder.
      */
-    Composite load(final FactoryObjectGame<?> factory, File path, final Composite parent)
+    Composite load(final FactoryObjectGame<?> factory, File path, final Composite parent) throws LionEngineException
     {
         final File[] folders = path.listFiles();
         if (folders != null)
         {
             final String typeName = Tools.getObjectsFolderTypeName(path);
             final Composite composite = new Composite(parent, SWT.NONE);
-            composite.setLayout(new GridLayout(1, false));
+            final GridLayout layout = new GridLayout(1, false);
+            layout.marginHeight = 0;
+            composite.setLayout(layout);
+            composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
             final Combo typeCombo = FactoryView.createCombo(typeName, composite);
             FactoryView.fillCombo(typeCombo, folders);
 
@@ -183,37 +192,49 @@ public class FactoryView
                 {
                     WorldViewModel.INSTANCE.setSelectedObject(null);
                     lastObject = null;
-                    final Object data = typeCombo.getData(typeCombo.getItem(typeCombo.getSelectionIndex()));
-                    if (data instanceof File)
-                    {
-                        if (objectsComposite != null)
-                        {
-                            objectsComposite.dispose();
-                        }
-                        final File typeFolder = (File) data;
-                        try
-                        {
-                            if (hierarchy.containsKey(typeName))
-                            {
-                                hierarchy.get(typeName).dispose();
-                                hierarchy.remove(typeName);
-                            }
-                            final Composite child = load(factory, typeFolder, composite);
-                            if (child != null)
-                            {
-                                hierarchy.put(typeName, child);
-                            }
-                        }
-                        catch (final LionEngineException exception)
-                        {
-                            createObjects(typeFolder.listFiles());
-                        }
-                    }
+                    loadSub(typeCombo, typeName, composite);
                 }
             });
             return composite;
         }
         return null;
+    }
+
+    /**
+     * Load sub tree from current type.
+     * 
+     * @param typeCombo The type combo.
+     * @param typeName The current type name.
+     * @param composite The composite reference.
+     */
+    void loadSub(Combo typeCombo, String typeName, Composite composite)
+    {
+        final Object data = typeCombo.getData(typeCombo.getItem(typeCombo.getSelectionIndex()));
+        if (data instanceof File)
+        {
+            if (objectsComposite != null)
+            {
+                objectsComposite.dispose();
+            }
+            final File typeFolder = (File) data;
+            try
+            {
+                if (hierarchy.containsKey(typeName))
+                {
+                    hierarchy.get(typeName).dispose();
+                    hierarchy.remove(typeName);
+                }
+                final Composite child = load(factory, typeFolder, composite);
+                if (child != null)
+                {
+                    hierarchy.put(typeName, child);
+                }
+            }
+            catch (final LionEngineException exception)
+            {
+                createObjects(typeFolder.listFiles());
+            }
+        }
     }
 
     /**
@@ -243,7 +264,7 @@ public class FactoryView
         {
             for (final File objectFile : objectFiles)
             {
-                if (objectFile.isFile() && UtilFile.isType(objectFile, FactoryObjectGame.FILE_DATA_EXTENSION))
+                if (objectFile.isFile() && EntitiesFolderTester.isEntityFile(objectFile))
                 {
                     loadObject(factory, objectFile);
                 }

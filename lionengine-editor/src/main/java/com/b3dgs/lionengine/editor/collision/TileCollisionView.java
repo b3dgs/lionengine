@@ -174,7 +174,6 @@ public class TileCollisionView
     {
         toolbar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
         toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-        toolbar.setEnabled(false);
 
         addFormula = new ToolItem(toolbar, SWT.PUSH);
         addFormula.setText(Messages.TileCollision_AddFormula);
@@ -219,6 +218,7 @@ public class TileCollisionView
 
         final GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 1;
+        layout.marginWidth = 1;
         layout.verticalSpacing = 1;
         parent.setLayout(layout);
 
