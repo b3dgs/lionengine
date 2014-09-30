@@ -38,7 +38,7 @@ public class Activator
     /** Plugin name. */
     public static final String PLUGIN_NAME = "LionEngine Editor";
     /** Plugin version. */
-    public static final Version PLUGIN_VERSION = Version.create(6, 2, 0);
+    public static final Version PLUGIN_VERSION = Version.create(7, 0, 0);
     /** Plugin website. */
     public static final String PLUGIN_WEBSITE = "www.b3dgs.com";
     /** Plugin ID. */
