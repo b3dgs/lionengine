@@ -36,8 +36,8 @@ import com.b3dgs.lionengine.game.purview.Rasterable;
 /**
  * Rastered version of a map tile game.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> Tile type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class MapTileGameRastered<T extends TileGame>
         extends MapTileGame<T>

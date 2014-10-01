@@ -25,6 +25,7 @@ import java.util.Map;
  * 
  * @param <T> The primary object type used.
  * @param <E> The object enum type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectTypeConverter<T, E extends Enum<E> & ObjectType<T>>
 {

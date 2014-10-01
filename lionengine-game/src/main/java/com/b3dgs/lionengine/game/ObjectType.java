@@ -22,6 +22,7 @@ package com.b3dgs.lionengine.game;
  * them.
  * 
  * @param <T> The primary object type used.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface ObjectType<T>
 {

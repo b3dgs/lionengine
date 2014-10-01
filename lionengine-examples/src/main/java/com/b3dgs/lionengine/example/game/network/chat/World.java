@@ -38,8 +38,8 @@ import com.b3dgs.lionengine.stream.FileWriting;
 /**
  * World base implementation.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <N> The network type.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 abstract class World<N extends NetworkedWorld>
         extends WorldGame
