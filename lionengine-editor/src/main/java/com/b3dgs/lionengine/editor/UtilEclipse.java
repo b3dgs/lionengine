@@ -47,29 +47,27 @@ import com.b3dgs.lionengine.UtilFile;
  */
 public final class UtilEclipse
 {
+    /** Icon folder. */
+    private static final String ICON_FOLDER = "icons";
     /** Part error. */
     private static final String ERROR_PART = "Unable to find part: ";
     /** Create class error. */
     private static final String ERROR_CLASS_CREATE = "Unable to create the following class: ";
+    /** Icon not found error. */
+    private static final String ERROR_ICON_PATH = "Icon not found: ";
+    /** Icon not created error. */
+    private static final String ERROR_ICON_CREATE = "Icon cannot be created: ";
 
     /**
      * Get the icon from its name.
      * 
      * @param icon The icon name.
      * @return The icon instance.
+     * @throws LionEngineException If error when getting icon.
      */
-    public static Image getIcon(String icon)
+    public static Image getIcon(String icon) throws LionEngineException
     {
-        try
-        {
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(Activator.getContext()
-                    .getBundle().getEntry(UtilFile.getPath("icons", icon))));
-            return image.createImage();
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception);
-        }
+        return UtilEclipse.getIcon("", icon);
     }
 
     /**
@@ -82,21 +80,22 @@ public final class UtilEclipse
      */
     public static Image getIcon(String root, String icon) throws LionEngineException
     {
+        final Bundle bundle = Activator.getContext().getBundle();
+        final String path = UtilFile.getPath(UtilEclipse.ICON_FOLDER, root, icon);
+        final URL url = bundle.getEntry(path);
+        if (url == null)
+        {
+            throw new LionEngineException(UtilEclipse.ERROR_ICON_PATH + path);
+        }
         try
         {
-            final Bundle bundle = Activator.getContext().getBundle();
-            final String path = UtilFile.getPath("icons", root, icon);
-            final URL url = bundle.getEntry(path);
-            if (url == null)
-            {
-                throw new LionEngineException("Icon not found: " + path);
-            }
-            final ImageDescriptor image = ImageDescriptor.createFromURL(FileLocator.toFileURL(url));
+            final ImageDescriptor descriptor = ImageDescriptor.createFromURL(FileLocator.toFileURL(url));
+            final Image image = descriptor.createImage();
             if (image == null)
             {
-                throw new LionEngineException("Icon cannot be created: " + path);
+                throw new LionEngineException(UtilEclipse.ERROR_ICON_CREATE + path);
             }
-            return image.createImage();
+            return image;
         }
         catch (final IOException exception)
         {

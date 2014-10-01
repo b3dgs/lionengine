@@ -73,7 +73,7 @@ public class EditEntityDialog
         super(parent, Messages.EditEntityDialog_Title, Messages.EditEntityDialog_HeaderTitle,
                 Messages.EditEntityDialog_HeaderDesc, EditEntityDialog.ICON);
         this.entity = entity;
-        configurable = Tools.getConfigurable(entity);
+        configurable = new Configurable();
         configurable.load(entity);
         createDialog();
         finish.setEnabled(true);

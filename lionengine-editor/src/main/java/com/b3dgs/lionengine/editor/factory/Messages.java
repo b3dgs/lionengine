@@ -15,9 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor;
+package com.b3dgs.lionengine.editor.factory;
 
 import org.eclipse.osgi.util.NLS;
+
+import com.b3dgs.lionengine.editor.Activator;
 
 /**
  * Messages internationalization.
@@ -28,25 +30,11 @@ public final class Messages
         extends NLS
 {
     /** Bundle name. */
-    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".messages"; //$NON-NLS-1$
-    /** Exit handler title. */
-    public static String ExitHandler_Title;
-    /** Exit handler text. */
-    public static String ExitHandler_Text;
-    /** Object properties. */
-    public static String ObjectProperties_Properties;
-    /** Object properties confirm. */
-    public static String ObjectProperties_Confirm;
-    /** Object properties reset. */
-    public static String ObjectProperties_Reset;
-    /** Object list. */
-    public static String ObjectList_List;
-    /** Object list add title. */
-    public static String ObjectList_AddObject_Title;
-    /** Object list add text. */
-    public static String ObjectList_AddObject_Text;
-    /** Input validator name error text. */
-    public static String InputValidator_Error_Name;
+    private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".factory.messages"; //$NON-NLS-1$
+    /** Assign factory dialog title. */
+    public static String AssignFactory_Title;
+    /** Assign factory dialog name. */
+    public static String AssignFactory_Text;
 
     /**
      * Initialize.

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -128,7 +129,14 @@ public class ImportMapDialog
     {
         final Project project = Project.getActive();
         levelRipLocationText.setText(path);
-        levelRip = project.getResourceMedia(levelRipLocationText.getText());
+        try
+        {
+            levelRip = project.getResourceMedia(levelRipLocationText.getText());
+        }
+        catch (final IOException exception)
+        {
+            setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorLevelRip);
+        }
         updateTipsLabel();
         finish.setEnabled(levelRip != null && patternsDirectory != null);
     }
@@ -142,14 +150,24 @@ public class ImportMapDialog
     {
         final Project project = Project.getActive();
         patternsLocationText.setText(path);
-        patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
-        updateTipsLabel();
-        final File patterns = new File(patternsDirectory.getFile(), MapTile.TILE_SHEETS_FILE_NAME);
-        if (!patterns.isFile())
+        boolean validPattern = false;
+        try
+        {
+            patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
+            final File patterns = new File(patternsDirectory.getFile(), MapTile.TILE_SHEETS_FILE_NAME);
+            if (!patterns.isFile())
+            {
+                setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
+            }
+            validPattern = patterns.isFile();
+        }
+        catch (final IOException exception)
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
         }
-        final boolean isValid = levelRip != null && patternsDirectory != null && patterns.isFile();
+        updateTipsLabel();
+
+        final boolean isValid = levelRip != null && patternsDirectory != null && validPattern;
         finish.setEnabled(isValid);
     }
 

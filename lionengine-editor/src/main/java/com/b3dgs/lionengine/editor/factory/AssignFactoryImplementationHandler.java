@@ -24,6 +24,7 @@ import org.eclipse.jface.window.Window;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -73,8 +74,9 @@ public class AssignFactoryImplementationHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final InputDialog dialog = new InputDialog(null, "Factory name", "Enter the factory name",
-                AssignFactoryImplementationHandler.DEFAULT_NAME, null);
+        final InputDialog dialog = new InputDialog(null, Messages.AssignFactory_Title, Messages.AssignFactory_Text,
+                AssignFactoryImplementationHandler.DEFAULT_NAME, new InputValidator(InputValidator.NAME_MATCH,
+                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         dialog.create();
         if (dialog.open() == Window.OK)
         {

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.factory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,9 +168,9 @@ public class FactoryView
      * @param path The folder path.
      * @param parent The composite parent.
      * @return The created child composite.
-     * @throws LionEngineException If not a type folder.
+     * @throws FileNotFoundException If not a type folder.
      */
-    Composite load(final FactoryObjectGame<?> factory, File path, final Composite parent) throws LionEngineException
+    Composite load(final FactoryObjectGame<?> factory, File path, final Composite parent) throws FileNotFoundException
     {
         final File[] folders = path.listFiles();
         if (folders != null)
@@ -230,7 +231,7 @@ public class FactoryView
                     hierarchy.put(typeName, child);
                 }
             }
-            catch (final LionEngineException exception)
+            catch (final FileNotFoundException exception)
             {
                 createObjects(typeFolder.listFiles());
             }
@@ -404,7 +405,7 @@ public class FactoryView
         {
             load(factory, objectsPath, middle);
         }
-        catch (final LionEngineException exception)
+        catch (final FileNotFoundException exception)
         {
             createObjects(objectsPath.listFiles());
         }

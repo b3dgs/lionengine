@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,15 +33,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
+import com.b3dgs.lionengine.editor.project.EntitiesFolderTester;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -60,8 +60,12 @@ public final class Tools
     public static final String TEMPLATES_DIR = "templates";
     /** Template entity. */
     public static final String TEMPLATE_ENTITY = "entity." + Tools.TEMPLATE_EXTENSION;
+    /** Folder type name node. */
+    private static final String NODE_FOLDER_TYPE_NAME = "lionengine:name";
     /** Create directory error. */
-    private static final String CREATE_DIRECTORY_ERROR = "Unable to create the following directory: ";
+    private static final String ERROR_CREATE_DIRECTORY = "Unable to create the following directory: ";
+    /** Folder type directory error. */
+    private static final String ERROR_FOLDER_TYPE = "Path is not a folder type: ";
     /** Buffer size. */
     private static final int BUFFER_SIZE = 4096;
 
@@ -74,19 +78,6 @@ public final class Tools
     public static File getTemplate(String template)
     {
         return UtilEclipse.getFile(UtilFile.getPath(Tools.TEMPLATES_DIR, template));
-    }
-
-    /**
-     * Get the configurable from the entity descriptor.
-     * 
-     * @param entity The entity descriptor.
-     * @return The entity configurable reference.
-     */
-    public static Configurable getConfigurable(Media entity)
-    {
-        final Configurable configurable = new Configurable();
-        configurable.load(entity);
-        return configurable;
     }
 
     /**
@@ -115,27 +106,49 @@ public final class Tools
     }
 
     /**
+     * Get the folder type file.
+     * 
+     * @param path The type folder.
+     * @return The type file.
+     * @throws FileNotFoundException If not a type folder.
+     */
+    public static File getFolderTypeFile(File path) throws FileNotFoundException
+    {
+        if (path.isDirectory())
+        {
+            for (final File file : path.listFiles())
+            {
+                if (EntitiesFolderTester.isFolderTypeFile(file))
+                {
+                    return file;
+                }
+            }
+        }
+        throw new FileNotFoundException(Tools.ERROR_FOLDER_TYPE + path.getPath());
+    }
+
+    /**
      * Get the folder type name.
      * 
      * @param path The type folder.
      * @return The type name.
-     * @throws LionEngineException If get name error, and so, this is not a type folder.
+     * @throws FileNotFoundException If this is not a type folder.
      */
-    public static String getObjectsFolderTypeName(File path) throws LionEngineException
+    public static String getObjectsFolderTypeName(File path) throws FileNotFoundException
     {
-        final File typeFile = new File(path, "type.xml");
-        final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(typeFile));
-        return typeNode.getChild("lionengine:name").getText();
+        final File type = Tools.getFolderTypeFile(path);
+        final XmlNode typeNode = Stream.loadXml(UtilityMedia.get(type));
+        return typeNode.getChild(Tools.NODE_FOLDER_TYPE_NAME).getText();
     }
 
     /**
-     * Get the tile over the mouse location.
+     * Get the tile location over the mouse.
      * 
      * @param map The map reference.
      * @param camera The camera reference.
      * @param mx The mouse X.
      * @param my The mouse Y.
-     * @return The location in tile.
+     * @return The tile location in absolute location.
      */
     public static Point getMouseTile(MapTile<?> map, CameraGame camera, int mx, int my)
     {
@@ -148,7 +161,7 @@ public final class Tools
     }
 
     /**
-     * Select a file from a dialog and return its path relative to the starting path.
+     * Select a file from a dialog and returns its path relative to the starting path.
      * 
      * @param shell The shell parent.
      * @param path The starting path.
@@ -185,7 +198,7 @@ public final class Tools
         {
             if (!destDir.exists() && !destDir.mkdir())
             {
-                throw new IOException(Tools.CREATE_DIRECTORY_ERROR + destDir.toString());
+                throw new IOException(Tools.ERROR_CREATE_DIRECTORY + destDir.toString());
             }
         }
         try (ZipInputStream zip = new ZipInputStream(new FileInputStream(zipPath)))
@@ -203,7 +216,7 @@ public final class Tools
                     final File dir = new File(filePath);
                     if (!dir.exists() && !dir.mkdir())
                     {
-                        throw new IOException(Tools.CREATE_DIRECTORY_ERROR + dir.toString());
+                        throw new IOException(Tools.ERROR_CREATE_DIRECTORY + dir.toString());
                     }
                 }
                 zip.closeEntry();

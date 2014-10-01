@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -26,12 +28,9 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
- * @author Pierre-Alexandre (contact@b3dgs.com)
- */
-/**
  * Properties type list.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public enum Property
 {
@@ -44,7 +43,7 @@ public enum Property
     /** Data property. */
     DATA("xml"),
     /** Level property. */
-    LEVEL("lrm"),
+    LEVEL("lel"),
     /** Map implementation property. */
     MAP_IMPL(MapTile.class),
     /** Factory implementation property. */
@@ -56,7 +55,7 @@ public enum Property
     public static final String EXTENSION_CLASS = "class";
 
     /** Extension list. */
-    private final String[] extensions;
+    private final List<String> extensions;
     /** Class parent. */
     private final Class<?> parent;
 
@@ -89,7 +88,11 @@ public enum Property
     private Property(Class<?> parent, String... extensions)
     {
         this.parent = parent;
-        this.extensions = extensions;
+        this.extensions = new ArrayList<>(extensions.length);
+        for (final String extension : extensions)
+        {
+            this.extensions.add(extension);
+        }
     }
 
     /**
@@ -105,6 +108,26 @@ public enum Property
             return isExtension(file);
         }
         return isExtension(file) && isParent(file);
+    }
+
+    /**
+     * Register an extension used for file detection.
+     * 
+     * @param extension The extension to add.
+     */
+    public void addExtension(String extension)
+    {
+        extensions.add(extension);
+    }
+
+    /**
+     * Unregister an extension used for file detection.
+     * 
+     * @param extension The extension to remove.
+     */
+    public void removeExtension(String extension)
+    {
+        extensions.remove(extension);
     }
 
     /**

@@ -93,26 +93,17 @@ public class ProjectTreeCreator
     }
 
     /**
-     * Check if the folder contains entities in depth.
+     * Check if the folder contains entities in depth and assign icon.
      * 
      * @param path The folder path.
      * @param parent The node parent.
      */
     private static void checkEntitiesFolder(File path, TreeItem parent)
     {
-        final File parentFile = path.getParentFile();
-        if (parentFile.isDirectory())
+        if (EntitiesFolderTester.isFolderType(path.getParentFile()))
         {
-            for (final File file : parentFile.listFiles())
-            {
-                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
-                        && EntitiesFolderTester.isFolderTypeFile(file))
-                {
-                    parent.setImage(ProjectTreeCreator.ICON_FOLDER_ENTITIES);
-                    ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
-                    break;
-                }
-            }
+            parent.setImage(ProjectTreeCreator.ICON_FOLDER_ENTITIES);
+            ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
         }
     }
 

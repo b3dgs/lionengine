@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Monitor;
 public class Manager
 {
     /**
-     * Center the main trimmed windows.
+     * Center the main trimmed window.
      * 
      * @param app The application.
      * @param modelService The model service.
@@ -48,9 +48,9 @@ public class Manager
         final MTrimmedWindow window = (MTrimmedWindow) modelService.find(Activator.PLUGIN_ID + ".window", app);
         final int windowx = window.getWidth();
         final int windowy = window.getHeight();
-        final int x = monitorRect.x + (monitorRect.width - windowx) / 2;
-        final int y = monitorRect.y + (monitorRect.height - windowy) / 2;
-        window.setX(x);
-        window.setY(y);
+        final int centerX = monitorRect.x + (monitorRect.width - windowx) / 2;
+        final int centerY = monitorRect.y + (monitorRect.height - windowy) / 2;
+        window.setX(centerX);
+        window.setY(centerY);
     }
 }

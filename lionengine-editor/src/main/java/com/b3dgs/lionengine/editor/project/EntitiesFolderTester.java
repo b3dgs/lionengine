@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.xml.bind.ValidationException;
 
@@ -25,6 +26,7 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.xsd.XsdLoader;
 
@@ -59,6 +61,24 @@ public class EntitiesFolderTester
     }
 
     /**
+     * Check if the path is a folder type descriptor.
+     * 
+     * @param path The path to test.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    public static boolean isFolderType(File path)
+    {
+        try
+        {
+            return Tools.getFolderTypeFile(path).isFile();
+        }
+        catch (final FileNotFoundException exception)
+        {
+            return false;
+        }
+    }
+
+    /**
      * Check if the file is a folder type descriptor.
      * 
      * @param file The file to test.
@@ -67,29 +87,6 @@ public class EntitiesFolderTester
     public static boolean isFolderTypeFile(File file)
     {
         return EntitiesFolderTester.is(file, XsdLoader.XSD_FOLDER_TYPE);
-    }
-
-    /**
-     * Check if can edit property folder.
-     * 
-     * @param selection The selected folder.
-     * @return <code>true</code> if can edit, <code>false</code> else.
-     */
-    private static boolean canEditProperty(Media selection)
-    {
-        final File folder = selection.getFile();
-        if (folder.isDirectory())
-        {
-            for (final File file : folder.listFiles())
-            {
-                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
-                        && EntitiesFolderTester.isFolderTypeFile(file))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**
@@ -126,8 +123,12 @@ public class EntitiesFolderTester
     {
         try
         {
-            UtilFile.validateXml(XsdLoader.get(xsd), file);
-            return true;
+            if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION))
+            {
+                UtilFile.validateXml(XsdLoader.get(xsd), file);
+                return true;
+            }
+            return false;
         }
         catch (final ValidationException exception)
         {
@@ -173,7 +174,7 @@ public class EntitiesFolderTester
             {
                 if (EntitiesFolderTester.PROPERTY_CATEGORY.equals(property))
                 {
-                    return EntitiesFolderTester.canEditProperty(selection);
+                    return EntitiesFolderTester.isFolderType(selection.getFile());
                 }
                 else if (EntitiesFolderTester.PROPERTY_ADD_ENTITY.equals(property))
                 {

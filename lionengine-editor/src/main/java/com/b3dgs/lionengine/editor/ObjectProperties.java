@@ -34,8 +34,8 @@ import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 /**
  * Represents the object properties edition view.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The object type handled by the properties.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ObjectProperties<T>
 {

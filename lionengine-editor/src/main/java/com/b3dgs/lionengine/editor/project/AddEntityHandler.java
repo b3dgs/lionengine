@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
@@ -55,7 +56,8 @@ public class AddEntityHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final InputDialog inputDialog = new InputDialog(parent, Messages.AddEntity_Title, Messages.AddEntity_Text,
-                AddEntityHandler.DEFAULT_NEW_ENTITY_NAME, null);
+                AddEntityHandler.DEFAULT_NEW_ENTITY_NAME, new InputValidator(InputValidator.NAME_MATCH,
+                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {

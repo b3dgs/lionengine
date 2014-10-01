@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -25,6 +26,9 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.editor.InputValidator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.configurable.Configurable;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -77,7 +81,8 @@ public class EditEntitiesFolderTypeHandler
     {
         final XmlNode typeName = root.getChild(EditEntitiesFolderTypeHandler.NODE_NAME);
         final InputDialog inputDialog = new InputDialog(parent, Messages.EditEntitiesFolderType_Name_Title,
-                Messages.EditEntitiesFolderType_Name_Text, typeName.getText(), null);
+                Messages.EditEntitiesFolderType_Name_Text, typeName.getText(), new InputValidator(
+                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         inputDialog.open();
         final String value = inputDialog.getValue();
         if (value != null)
@@ -98,9 +103,17 @@ public class EditEntitiesFolderTypeHandler
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
         final Project project = Project.getActive();
-        final File type = new File(selection.getFile(), "type.xml");
-        final Media media = project.getResourceMedia(type.getPath());
-        final XmlNode root = EditEntitiesFolderTypeHandler.getRoot(media);
-        EditEntitiesFolderTypeHandler.enterName(parent, media, root);
+        final File folder = selection.getFile();
+        try
+        {
+            final File type = Tools.getFolderTypeFile(folder);
+            final Media media = project.getResourceMedia(type.getPath());
+            final XmlNode root = EditEntitiesFolderTypeHandler.getRoot(media);
+            EditEntitiesFolderTypeHandler.enterName(parent, media, root);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(EditEntitiesFolderTypeHandler.class, "execute", exception);
+        }
     }
 }

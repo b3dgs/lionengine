@@ -65,6 +65,12 @@ public final class Messages
     public static String ImportProjectDialog_InfoResources;
     /** Classes and resources folder existence. */
     public static String ImportProjectDialog_InfoBoth;
+    /** Import project error dialog title. */
+    public static String ImportProjectDialog_ErrorTitle;
+    /** Import project error dialog text. */
+    public static String ImportProjectDialog_ErrorText;
+    /** Import project error dialog text properties. */
+    public static String ImportProjectDialog_ErrorPropertiesText;
     /** Import map dialog title. */
     public static String ImportMapDialog_Title;
     /** Import map title header. */
@@ -77,6 +83,8 @@ public final class Messages
     public static String ImportMapDialog_PatternsLocation;
     /** Level rip file filter. */
     public static String ImportMapDialog_FileFilter;
+    /** Error level rip. */
+    public static String ImportMapDialog_ErrorLevelRip;
     /** Error patterns. */
     public static String ImportMapDialog_ErrorPatterns;
     /** Edit entity dialog title. */

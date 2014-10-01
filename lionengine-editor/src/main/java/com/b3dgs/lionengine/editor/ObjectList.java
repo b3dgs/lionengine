@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.TreeItem;
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
  * @param <T> The object type handled by the list.
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ObjectList<T>
 {
@@ -48,9 +48,10 @@ public abstract class ObjectList<T>
     public static final Image ICON_REMOVE = UtilEclipse.getIcon("remove.png");
     /** Icon save. */
     public static final Image ICON_SAVE = UtilEclipse.getIcon("save.png");
-    /** Default new animation name. */
-    private static final String DEFAULT_NEW_ANIMATION_NAME = "newAnimation";
-    /** Animation list. */
+    /** Default new object name. */
+    private static final String DEFAULT_NEW_OBJECT_NAME = "new";
+
+    /** Objects list. */
     Tree objectsTree;
     /** Selected data. */
     T selectedObject;
@@ -122,7 +123,10 @@ public abstract class ObjectList<T>
      */
     public void update(TreeItem selection, T object)
     {
-        selection.setData(object);
+        if (!selection.isDisposed())
+        {
+            selection.setData(object);
+        }
         setSelectedObject(object);
     }
 
@@ -240,16 +244,17 @@ public abstract class ObjectList<T>
      */
     private void createAddObjectToolItem(final ToolBar toolbar)
     {
-        final ToolItem addAnimation = new ToolItem(toolbar, SWT.PUSH);
-        addAnimation.setImage(ObjectList.ICON_ADD);
-        addAnimation.addSelectionListener(new SelectionAdapter()
+        final ToolItem addObject = new ToolItem(toolbar, SWT.PUSH);
+        addObject.setImage(ObjectList.ICON_ADD);
+        addObject.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final InputDialog inputDialog = new InputDialog(toolbar.getShell(),
-                        Messages.ObjectList_AddAnimation_Title, Messages.ObjectList_AddAnimation_Text,
-                        ObjectList.DEFAULT_NEW_ANIMATION_NAME, null);
+                        Messages.ObjectList_AddObject_Title, Messages.ObjectList_AddObject_Text,
+                        ObjectList.DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
+                                Messages.InputValidator_Error_Name));
                 if (inputDialog.open() == Window.OK)
                 {
                     final String name = inputDialog.getValue();
@@ -267,9 +272,9 @@ public abstract class ObjectList<T>
      */
     private void createRemoveObjectToolItem(ToolBar toolbar)
     {
-        final ToolItem removeAnimation = new ToolItem(toolbar, SWT.PUSH);
-        removeAnimation.setImage(ObjectList.ICON_REMOVE);
-        removeAnimation.addSelectionListener(new SelectionAdapter()
+        final ToolItem removeObject = new ToolItem(toolbar, SWT.PUSH);
+        removeObject.setImage(ObjectList.ICON_REMOVE);
+        removeObject.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)

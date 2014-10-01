@@ -56,12 +56,12 @@ public final class Project
     public static final String PROPERTY_PROJECT_LIBRARIES = "LibrariesFolder";
     /** Property project resources folder. */
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
-    /** Create project error. */
-    private static final String ERROR_CREATE_PROJECT = "Unable to create the project: ";
     /** Load class error. */
     private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
     /** Create class path directory error. */
     private static final String ERROR_CREATE_CLASSPATH_DIR = "Unable to create class path directory: ";
+    /** Media is not in project folder. */
+    private static final String ERROR_MEDIA_RELATIVE_TO_PROJECT = "Media is not in project folder: ";
     /** Reading project properties verbose. */
     private static final String VERBOSE_READ_PROJECT_PROPERTIES = "Reading project properties for: ";
     /** Extract jar classes verbose. */
@@ -86,9 +86,9 @@ public final class Project
      * 
      * @param projectPath The project path.
      * @return The created project.
-     * @throws LionEngineException If not able to create the project.
+     * @throws IOException If not able to create the project.
      */
-    public static Project create(File projectPath) throws LionEngineException
+    public static Project create(File projectPath) throws IOException
     {
         Verbose.info(Project.VERBOSE_READ_PROJECT_PROPERTIES, projectPath.getAbsolutePath());
         try (InputStream inputStream = new FileInputStream(new File(projectPath, Project.PROPERTIES_FILE)))
@@ -109,10 +109,6 @@ public final class Project
             Project.activeProject = project;
 
             return project;
-        }
-        catch (final IOException exception)
-        {
-            throw new LionEngineException(exception, Project.ERROR_CREATE_PROJECT, projectPath.getPath());
         }
     }
 
@@ -213,12 +209,18 @@ public final class Project
      * 
      * @param path The absolute path.
      * @return The relative media.
+     * @throws IOException If media is not relative to project folder.
      */
-    public Media getResourceMedia(String path)
+    public Media getResourceMedia(String path) throws IOException
     {
-        final int projectPrefix = getResourcesPath().getPath().length() + 1;
-        final String relativePath = path.substring(projectPrefix);
-        return Core.MEDIA.create(relativePath);
+        final String projectPath = getResourcesPath().getPath();
+        if (path.startsWith(projectPath))
+        {
+            final int projectPrefix = projectPath.length() + 1;
+            final String relativePath = path.substring(projectPrefix);
+            return Core.MEDIA.create(relativePath);
+        }
+        throw new IOException(Project.ERROR_MEDIA_RELATIVE_TO_PROJECT + path);
     }
 
     /**

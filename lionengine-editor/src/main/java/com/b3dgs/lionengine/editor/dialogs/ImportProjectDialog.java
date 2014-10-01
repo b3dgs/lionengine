@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
@@ -302,17 +303,53 @@ public class ImportProjectDialog
     @Override
     protected void onFinish()
     {
-        final String name = projectNameText.getText();
         final File location = new File(projectLocationText.getText());
+        generateProperties(location);
+        createProject(location);
+    }
+
+    /**
+     * Generate the project properties.
+     * 
+     * @param location The project location destination.
+     */
+    private void generateProperties(File location)
+    {
         final String classes = projectClassesText.getText();
         final String libraries = projectLibrariesText.getText();
         final String resources = projectResourcesText.getText();
+        final ProjectGenerator createProject = new ProjectGenerator(classes, libraries, resources);
+        try
+        {
+            createProject.createProperties(location);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(getClass(), "generateProperties", exception);
+            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
+                    Messages.ImportProjectDialog_ErrorText);
+        }
+    }
 
-        final ProjectGenerator createProject = new ProjectGenerator(name, location, classes, libraries, resources);
-        createProject.createProperties(location);
-
-        project = Project.create(location);
-        Verbose.info(ImportProjectDialog.VERBOSE_PROJECT_IMPORTED, name, ImportProjectDialog.VERBOSE_FROM,
-                location.getAbsolutePath());
+    /**
+     * Create the project at the specified location.
+     * 
+     * @param location The project location destination.
+     */
+    private void createProject(File location)
+    {
+        final String name = projectNameText.getText();
+        try
+        {
+            project = Project.create(location);
+            Verbose.info(ImportProjectDialog.VERBOSE_PROJECT_IMPORTED, name, ImportProjectDialog.VERBOSE_FROM,
+                    location.getAbsolutePath());
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(getClass(), "createProject", exception);
+            MessageDialog.openError(dialog, Messages.ImportProjectDialog_ErrorTitle,
+                    Messages.ImportProjectDialog_ErrorText);
+        }
     }
 }
