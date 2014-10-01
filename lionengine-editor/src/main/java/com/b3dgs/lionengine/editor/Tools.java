@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
-import com.b3dgs.lionengine.editor.project.EntitiesFolderTester;
+import com.b3dgs.lionengine.editor.project.FolderTypeTester;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.game.CameraGame;
@@ -118,7 +118,7 @@ public final class Tools
         {
             for (final File file : path.listFiles())
             {
-                if (EntitiesFolderTester.isFolderTypeFile(file))
+                if (FolderTypeTester.isFolderTypeFile(file))
                 {
                     return file;
                 }

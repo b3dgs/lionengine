@@ -7,44 +7,44 @@
           <children xsi:type="basic:PartSashContainer" xmi:id="_OgxkQA3lEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.stack.left" containerData="25" selectedElement="_qQohMMgCEeOw0Z9_W5LnUQ">
             <children xsi:type="basic:PartStack" xmi:id="_qQohMMgCEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.stack.left.projects" containerData="70">
               <children xsi:type="basic:Part" xmi:id="_RgxM1McnEeO6QsMPtNpkHg" elementId="com.b3dgs.lionengine.editor.part.projects" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.ProjectsPart" label="%part.projects" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/projects.png">
-                <handlers xmi:id="_LImjcNe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
-                <handlers xmi:id="_RO6BENVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.factory.AssignFactoryImplementationHandler" command="_N5Z3INe_EeOk36N_MMz9Rw"/>
-                <handlers xmi:id="_NrtzMN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.handler.edit-entities-folder-type" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEntitiesFolderTypeHandler" command="_Qh1EsN3PEeO_c9lVVTo_Qg"/>
-                <handlers xmi:id="_lLrAMN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.handler.add-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEntityHandler" command="_ifUHoN7EEeOqxIeqTKywZw"/>
-                <handlers xmi:id="_zcK_AN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.handler.edit-entity" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEntityHandler" command="_mRrToN9AEeOIN7-STHd0gQ"/>
-                <handlers xmi:id="_ur9w4A97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.handler.edit-tilesheets" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditTilesheetsHandler" command="_wm-FAA97EeS-BbtPUGIQSQ"/>
                 <menus xsi:type="menu:PopupMenu" xmi:id="_7bNmwMgWEeOw0Z9_W5LnUQ" elementId="com.b3dgs.lionengine.editor.part.projects.menu">
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_7DNeMNSSEeOOBNq8Qj0stg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-map.png" command="_KK_5cNVTEeObvtSGPT134w">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_7DNeMdSSEeOOBNq8Qj0stg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_tzkSQEmwEeSY5e88dCWRPA" elementId="" label="%menu.add-effect" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/effect-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_tzkSQUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.effects-folder.addEffect"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_VJ2l8Ne_EeOk36N_MMz9Rw" elementId="" label="%menu.assign-factory-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-factory.png" command="_N5Z3INe_EeOk36N_MMz9Rw">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_VJ2l8de_EeOk36N_MMz9Rw" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_impl"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_1MDiwEmwEeSY5e88dCWRPA" elementId="" label="%menu.edit-tilesheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/tilesheets-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_1MDiwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_DGxNwN3PEeO_c9lVVTo_Qg" elementId="" label="%menu.edit-entities-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-object-type-edit.png" command="_Qh1EsN3PEeO_c9lVVTo_Qg">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_DGxNwd3PEeO_c9lVVTo_Qg" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.category"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_658s8EmgEeSV4bmZqF0__w" elementId="" label="%menu.add-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_93658EmgEeSV4bmZqF0__w" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.addEntity"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_cFI5gN7EEeOqxIeqTKywZw" elementId="" label="%menu.add-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-add.png" command="_ifUHoN7EEeOqxIeqTKywZw">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_QtbvgN7GEeOqxIeqTKywZw" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.addEntity"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_9YagMEmwEeSY5e88dCWRPA" elementId="" label="%menu.assign-factory-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-factory.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_9YagMUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_impl"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_pBAAoN9AEeOIN7-STHd0gQ" elementId="" label="%menu.edit-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-edit.png" command="_mRrToN9AEeOIN7-STHd0gQ">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_pBAAod9AEeOIN7-STHd0gQ" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.editEntity"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_R97LoEmxEeSY5e88dCWRPA" elementId="" label="%menu.edit-folder-type" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/folder-type-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_R97LoUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.folder-type.category"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_ovJNIA97EeS-BbtPUGIQSQ" elementId="" label="%menu.edit-tilesheets" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-edit.png" command="_wm-FAA97EeS-BbtPUGIQSQ">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_ovJNIQ97EeS-BbtPUGIQSQ" coreExpressionId="com.b3dgs.lionengine.editor.tilesheets-folder.editTilesheets"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_uGaVwEmwEeSY5e88dCWRPA" elementId="" label="%menu.edit-effect" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/effect-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_uGaVwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.effects-folder.editEffect"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_BPVhsEmhEeSV4bmZqF0__w" elementId="" label="%menu.edit-entity" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/entity-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_BPVhsUmhEeSV4bmZqF0__w" coreExpressionId="com.b3dgs.lionengine.editor.entities-folder.editEntity"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_UsVSoEmxEeSY5e88dCWRPA" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-map.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_UsVSoUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
                   </children>
                 </menus>
               </children>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_UZBKAA3lEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.stack.left.quick" containerData="30">
               <children xsi:type="basic:Part" xmi:id="_WE1LkA3lEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.part.quick" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.quick.QuickAccessPart" label="%part.quick" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/quick-access.png">
-                <handlers xmi:id="_UsYtwA3sEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.AssignMapImplementationHandler" command="_KK_5cNVTEeObvtSGPT134w"/>
-                <handlers xmi:id="_bzU7QA3sEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.factory.AssignFactoryImplementationHandler" command="_N5Z3INe_EeOk36N_MMz9Rw"/>
+                <handlers xmi:id="_UsYtwA3sEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.handler.assign-map-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.world.AssignMapImplementationHandler"/>
+                <handlers xmi:id="_bzU7QA3sEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.handler.assign-factory-impl" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.factory.AssignFactoryImplementationHandler"/>
                 <menus xsi:type="menu:PopupMenu" xmi:id="_niXAIA3qEeSozK_5NXRMwg" elementId="com.b3dgs.lionengine.editor.part.quick.menu">
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_niXAIQ3qEeSozK_5NXRMwg" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-map.png" command="_KK_5cNVTEeObvtSGPT134w">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_niXAIg3qEeSozK_5NXRMwg" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_nNKwkEmxEeSY5e88dCWRPA" elementId="" label="%menu.assign-factory-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-factory.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.EditEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_nNKwkUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_impl"/>
                   </children>
-                  <children xsi:type="menu:HandledMenuItem" xmi:id="_niXAIw3qEeSozK_5NXRMwg" elementId="" label="%menu.assign-factory-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-factory.png" command="_N5Z3INe_EeOk36N_MMz9Rw">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_niXAJA3qEeSozK_5NXRMwg" coreExpressionId="com.b3dgs.lionengine.editor.resource.factory_impl"/>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_nrdPEEmxEeSY5e88dCWRPA" elementId="" label="%menu.assign-map-impl" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/assign-map.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.AddEffectHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_nrdPEUmxEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.resource.map_impl"/>
                   </children>
                 </menus>
               </children>
@@ -104,12 +104,6 @@
   <commands xmi:id="_y_FSgNHbEeOJV5_CmxbhRw" elementId="com.b3dgs.lionengine.editor.command.import-project" commandName="importProjectCommand"/>
   <commands xmi:id="_RgxMvMcnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.file.exit" commandName="quitCommand"/>
   <commands xmi:id="_RgxMxscnEeO6QsMPtNpkHg" elementId="org.eclipse.ui.help.aboutAction" commandName="aboutCommand"/>
-  <commands xmi:id="_KK_5cNVTEeObvtSGPT134w" elementId="com.b3dgs.lionengine.editor.command.assign-map-impl" commandName="assignMapImplementationCommand"/>
-  <commands xmi:id="_N5Z3INe_EeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.command.assign-factory" commandName="assignFactoryImplementationCommand"/>
-  <commands xmi:id="_Qh1EsN3PEeO_c9lVVTo_Qg" elementId="com.b3dgs.lionengine.editor.command.edit-entities-folder-type" commandName="editEntitiesFolderTypeCommand"/>
-  <commands xmi:id="_ifUHoN7EEeOqxIeqTKywZw" elementId="com.b3dgs.lionengine.editor.command.add-entity" commandName="addEntityCommand"/>
-  <commands xmi:id="_mRrToN9AEeOIN7-STHd0gQ" elementId="com.b3dgs.lionengine.editor.command.edit-entity" commandName="editEntityCommand"/>
-  <commands xmi:id="_wm-FAA97EeS-BbtPUGIQSQ" elementId="com.b3dgs.lionengine.editor.command.edit-tilesheets" commandName="editTilesheetsCommand"/>
   <commands xmi:id="_kSEPQEGLEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.command.import-map" commandName="importMapCommand" description=""/>
   <commands xmi:id="_wkCsUEGNEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.command.pointer" commandName="setPointerCommand" description=""/>
   <commands xmi:id="_yTWGwEGNEeSI84tyl28fQw" elementId="com.b3dgs.lionengine.editor.command.hand" commandName="setHandCommand" description=""/>

@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.xsd.XsdLoader;
 
 /**
  * Generate the project tree from the project folder.
@@ -48,8 +48,14 @@ public class ProjectTreeCreator
     private static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
     /** Folder icon. */
     private static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
-    /** Folder icon. */
+    /** Folder entities icon. */
     private static final Image ICON_FOLDER_ENTITIES = UtilEclipse.getIcon("resources", "folder-entities.png");
+    /** Folder effects icon. */
+    private static final Image ICON_FOLDER_EFFECTS = UtilEclipse.getIcon("resources", "folder-effects.png");
+    /** Folder levels icon. */
+    private static final Image ICON_FOLDER_LEVELS = UtilEclipse.getIcon("resources", "folder-levels.png");
+    /** Folder tiles icon. */
+    private static final Image ICON_FOLDER_TILES = UtilEclipse.getIcon("resources", "folder-tiles.png");
     /** File icon. */
     private static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
     /** Sound file icon. */
@@ -68,8 +74,12 @@ public class ProjectTreeCreator
     private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
     /** Entity file icon. */
     private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
+    /** Effect file icon. */
+    private static final Image ICON_EFFECT = UtilEclipse.getIcon("resources", "effect.png");
     /** Class file icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
+    /** Tile sheets file icon. */
+    private static final Image ICON_TILESHEETS = UtilEclipse.getIcon("resources", "tilesheets.png");
 
     /**
      * Check the path reference and create the node if necessary.
@@ -100,7 +110,7 @@ public class ProjectTreeCreator
      */
     private static void checkEntitiesFolder(File path, TreeItem parent)
     {
-        if (EntitiesFolderTester.isFolderType(path.getParentFile()))
+        if (FolderTypeTester.isFolderType(path.getParentFile()))
         {
             parent.setImage(ProjectTreeCreator.ICON_FOLDER_ENTITIES);
             ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
@@ -108,25 +118,36 @@ public class ProjectTreeCreator
     }
 
     /**
-     * Check if the folder contains entities.
+     * Check if the folder contains effects in depth and assign icon.
      * 
-     * @param folder The folder to check.
-     * @return <code>true</code> if contains entities, <code>false</code> else.
+     * @param path The folder path.
+     * @param parent The node parent.
      */
-    private static boolean isEntitiesFolder(File folder)
+    private static void checkEffectsFolder(File path, TreeItem parent)
     {
-        if (folder.isDirectory())
+        if (FolderTypeTester.isFolderType(path.getParentFile()))
         {
-            for (final File file : folder.listFiles())
+            parent.setImage(ProjectTreeCreator.ICON_FOLDER_EFFECTS);
+            ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
+        }
+    }
+
+    /**
+     * Check if the folder contains tiles in depth and assign icon.
+     * 
+     * @param path The folder path.
+     * @param parent The node parent.
+     */
+    private static void checkTilesFolder(File path, TreeItem parent)
+    {
+        for (final TreeItem item : parent.getItems())
+        {
+            if (item.getImage() != ProjectTreeCreator.ICON_FOLDER_TILES)
             {
-                if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION)
-                        && EntitiesFolderTester.isEntityFile(file))
-                {
-                    return true;
-                }
+                return;
             }
         }
-        return false;
+        parent.setImage(ProjectTreeCreator.ICON_FOLDER_TILES);
     }
 
     /**
@@ -160,6 +181,14 @@ public class ProjectTreeCreator
         {
             return ProjectTreeCreator.ICON_ENTITTY;
         }
+        else if (EffectsFolderTester.isEffectFile(file.getFile()))
+        {
+            return ProjectTreeCreator.ICON_EFFECT;
+        }
+        else if (FolderTypeTester.is(file.getFile(), XsdLoader.XSD_TILE_SHEETS))
+        {
+            return ProjectTreeCreator.ICON_TILESHEETS;
+        }
         return ProjectTreeCreator.ICON_DATA;
     }
 
@@ -171,9 +200,21 @@ public class ProjectTreeCreator
      */
     private static Image getFolderIcon(File folder)
     {
-        if (ProjectTreeCreator.isEntitiesFolder(folder))
+        if (EntitiesFolderTester.isEntitiesFolder(folder))
         {
             return ProjectTreeCreator.ICON_FOLDER_ENTITIES;
+        }
+        else if (EffectsFolderTester.isEffectsFolder(folder))
+        {
+            return ProjectTreeCreator.ICON_FOLDER_EFFECTS;
+        }
+        else if (FolderTypeTester.isLevelsFolder(folder))
+        {
+            return ProjectTreeCreator.ICON_FOLDER_LEVELS;
+        }
+        else if (FolderTypeTester.isTilesFolder(folder))
+        {
+            return ProjectTreeCreator.ICON_FOLDER_TILES;
         }
         return ProjectTreeCreator.ICON_FOLDER;
     }
@@ -339,6 +380,14 @@ public class ProjectTreeCreator
             if (icon == ProjectTreeCreator.ICON_FOLDER_ENTITIES)
             {
                 ProjectTreeCreator.checkEntitiesFolder(path, parent);
+            }
+            else if (icon == ProjectTreeCreator.ICON_FOLDER_EFFECTS)
+            {
+                ProjectTreeCreator.checkEffectsFolder(path, parent);
+            }
+            else if (icon == ProjectTreeCreator.ICON_FOLDER_TILES)
+            {
+                ProjectTreeCreator.checkTilesFolder(path, parent);
             }
             return createItem(parent, path, icon);
         }

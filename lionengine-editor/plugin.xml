@@ -73,9 +73,9 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.entities-folder.category">
+            id="com.b3dgs.lionengine.editor.folder-type.category">
          <test
-               property="com.b3dgs.lionengine.editor.entitiesFolderTester.category">
+               property="com.b3dgs.lionengine.editor.folderTypeTester.category">
          </test>
       </definition>
       <definition
@@ -94,6 +94,24 @@
             id="com.b3dgs.lionengine.editor.entities-folder.editEntity">
          <test
                property="com.b3dgs.lionengine.editor.entitiesFolderTester.editEntity">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.effects-folder.addEffect">
+         <test
+               property="com.b3dgs.lionengine.editor.effectsFolderTester.addEffect">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.effects-folder.isEffect">
+         <test
+               property="com.b3dgs.lionengine.editor.effectsFolderTester.isEffect">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.effects-folder.editEffect">
+         <test
+               property="com.b3dgs.lionengine.editor.effectsFolderTester.editEffect">
          </test>
       </definition>
       <definition
@@ -126,17 +144,31 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
-            id="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            properties="category,addEntity,isEntity,editEntity"
-            type="java.lang.Object">
-      </propertyTester>
-      <propertyTester
             class="com.b3dgs.lionengine.editor.project.TilesheetsFolderTester"
             id="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
             namespace="com.b3dgs.lionengine.editor.tilesheetsFolderTester"
             properties="editTilesheets"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.FolderTypeTester"
+            id="com.b3dgs.lionengine.editor.folderTypeTester"
+            namespace="com.b3dgs.lionengine.editor.folderTypeTester"
+            properties="category"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
+            id="com.b3dgs.lionengine.editor.entitiesFolderTester"
+            namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
+            properties="addEntity,isEntity,editEntity"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.project.EffectsFolderTester"
+            id="com.b3dgs.lionengine.editor.effectsFolderTester"
+            namespace="com.b3dgs.lionengine.editor.effectsFolderTester"
+            properties="addEffect,isEffect,editEffect"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -5,11 +5,14 @@
 	<include schemaLocation="lionengine.xsd" />
 
 	<complexType name="effect">
-		<sequence>
-			<element ref="lionengine:surface" minOccurs="1" maxOccurs="1" />
-			<element ref="lionengine:frames" minOccurs="0" maxOccurs="1" />
-			<element ref="lionengine:animation" minOccurs="0" maxOccurs="unbounded" />
-			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+		<sequence minOccurs="1" maxOccurs="1">
+			<element name="class" type="string" minOccurs="1" maxOccurs="1" />
+			<choice minOccurs="0" maxOccurs="unbounded">
+				<element ref="lionengine:surface" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:frames" minOccurs="0" maxOccurs="1" />
+				<element ref="lionengine:animation" minOccurs="0" maxOccurs="1" />
+				<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+			</choice>
 		</sequence>
 	</complexType>
 
