@@ -119,6 +119,17 @@ public class ProjectsPart
     }
 
     /**
+     * Remove an item from the project tree.
+     * 
+     * @param media The media item.
+     */
+    public void removeTreeItem(Media media)
+    {
+        final TreeItem item = (TreeItem) tree.getData(media.getPath());
+        item.dispose();
+    }
+
+    /**
      * Set the project main folders.
      * 
      * @param project The project reference.

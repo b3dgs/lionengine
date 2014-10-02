@@ -81,8 +81,6 @@ public class ImportProjectDialog
         projectResourcesText.setEditable(false);
         projectResourcesBrowse.setEnabled(false);
 
-        // FIXME to be removed after tests
-        onLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake");
         checkClassesExistence();
         checkResourcesExistence();
         updateTipsLabel();

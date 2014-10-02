@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 
 /**
  * Remove an entity in the selected folder.
@@ -50,16 +51,17 @@ public class RemoveEntityHandler
             if (file.delete())
             {
                 final MessageBox messageBox = new MessageBox(parent, SWT.ICON_INFORMATION);
-                messageBox.setMessage(Messages.RemoveEntity_Text + file);
                 messageBox.setText(Messages.RemoveEntity_Title);
+                messageBox.setMessage(Messages.RemoveEntity_Text + file);
                 messageBox.open();
-                // TODO refresh project resources
+                final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+                part.removeTreeItem(selection);
             }
             else
             {
                 final MessageBox messageBox = new MessageBox(parent, SWT.ICON_ERROR);
-                messageBox.setMessage(Messages.RemoveEntity_Error_Text + file);
                 messageBox.setText(Messages.RemoveEntity_Error_Title);
+                messageBox.setMessage(Messages.RemoveEntity_Error_Text + file);
                 messageBox.open();
             }
         }
