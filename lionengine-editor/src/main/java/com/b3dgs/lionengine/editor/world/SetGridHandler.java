@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 /**
  * Set grid handler.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SetGridHandler
 {

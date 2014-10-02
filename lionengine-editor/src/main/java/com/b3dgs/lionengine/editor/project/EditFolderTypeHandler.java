@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Edit the type folder properties.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EditFolderTypeHandler
 {

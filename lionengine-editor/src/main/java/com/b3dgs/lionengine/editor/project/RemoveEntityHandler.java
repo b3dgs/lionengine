@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.Media;
 /**
  * Remove an entity in the selected folder.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class RemoveEntityHandler
 {

@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
 /**
  * Represents the tile collision view, where the tile collision can be edited.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class TileCollisionView
         implements PaletteView

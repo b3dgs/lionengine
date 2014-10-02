@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
 /**
  * Represents the resources explorer, depending of the opened project.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ProjectsPart
 {

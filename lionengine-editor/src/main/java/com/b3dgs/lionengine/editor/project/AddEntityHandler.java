@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 /**
  * Add an entity in the selected folder.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AddEntityHandler
 {

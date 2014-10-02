@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.editor.dialogs.EditEntityDialog;
 /**
  * Edit an effect in the selected folder.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EditEffectHandler
 {

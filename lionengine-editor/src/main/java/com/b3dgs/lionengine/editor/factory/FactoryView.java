@@ -57,7 +57,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 /**
  * Represents the factory view, where the objects list is displayed.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryView
         implements PaletteView

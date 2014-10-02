@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 /**
  * Add an effect in the selected folder.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AddEffectHandler
 {

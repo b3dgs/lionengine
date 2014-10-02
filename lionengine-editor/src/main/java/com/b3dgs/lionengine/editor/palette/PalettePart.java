@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.Activator;
 /**
  * Represents the palette view, where the palette list is displayed.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PalettePart
 {

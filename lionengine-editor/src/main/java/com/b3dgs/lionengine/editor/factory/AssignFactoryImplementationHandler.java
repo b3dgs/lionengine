@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 /**
  * Assign the factory implementation handler.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class AssignFactoryImplementationHandler
 {

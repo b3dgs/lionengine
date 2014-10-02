@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.map.MapTile;
 /**
  * Import map handler.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ImportMapHandler
 {

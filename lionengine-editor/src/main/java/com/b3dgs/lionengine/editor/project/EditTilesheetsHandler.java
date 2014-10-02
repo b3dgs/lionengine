@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.editor.dialogs.EditTilesheetsDialog;
 /**
  * Edit a tile sheet in the selected folder.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class EditTilesheetsHandler
 {

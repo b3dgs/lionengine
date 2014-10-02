@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.Verbose;
 /**
  * Plugin activator.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Activator
         implements BundleActivator

@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 /**
  * Represents the world view, where the global map is displayed.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class WorldViewPart
 {

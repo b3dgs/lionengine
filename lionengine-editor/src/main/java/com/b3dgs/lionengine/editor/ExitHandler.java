@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Exit handler implementation.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ExitHandler
 {

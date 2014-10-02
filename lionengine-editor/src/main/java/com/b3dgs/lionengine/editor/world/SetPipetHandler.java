@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.editor.palette.PaletteType;
 /**
  * Set pipet handler.
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class SetPipetHandler
 {
