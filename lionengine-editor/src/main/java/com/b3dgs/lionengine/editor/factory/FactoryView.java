@@ -52,6 +52,7 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
 /**
  * Represents the factory view, where the objects list is displayed.
@@ -124,7 +125,8 @@ public class FactoryView
     {
         try
         {
-            final String icon = setup.getConfigurable().getSurface().getIcon();
+            final ConfigSurface configSurface = ConfigSurface.create(setup.getConfigurer());
+            final String icon = configSurface.getIcon();
             final File iconPath = new File(file.getParentFile(), icon);
             if (iconPath.isFile())
             {

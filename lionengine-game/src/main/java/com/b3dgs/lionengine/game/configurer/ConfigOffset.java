@@ -15,15 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurable;
+package com.b3dgs.lionengine.game.configurer;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the offset data from a configurable node.
+ * Represents the offset data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class OffsetData
+public class ConfigOffset
 {
+    /** Offset node name. */
+    public static final String OFFSET = Configurer.PREFIX + "offset";
+    /** Offset X node name. */
+    public static final String OFFSET_X = Configurer.PREFIX + "x";
+    /** Offset Y node name. */
+    public static final String OFFSET_Y = Configurer.PREFIX + "y";
+
+    /**
+     * Create the offset node.
+     * 
+     * @param configurer The configurer reference.
+     * @return The offset node value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
+     */
+    public static ConfigOffset create(Configurer configurer) throws LionEngineException
+    {
+        return new ConfigOffset(configurer.getInteger(ConfigOffset.OFFSET_X, ConfigOffset.OFFSET),
+                configurer.getInteger(ConfigOffset.OFFSET_Y, ConfigOffset.OFFSET));
+    }
+
     /** The x value. */
     private final int x;
     /** The y value. */
@@ -35,7 +57,7 @@ public class OffsetData
      * @param x The x value.
      * @param y The y value.
      */
-    public OffsetData(int x, int y)
+    public ConfigOffset(int x, int y)
     {
         this.x = x;
         this.y = y;

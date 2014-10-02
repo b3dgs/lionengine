@@ -37,8 +37,9 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Animation paint listener, rendering the current animation.
@@ -91,14 +92,15 @@ public final class AnimationFrameSelector
      * Constructor.
      * 
      * @param parent The parent container.
-     * @param configurable The configurable reference.
+     * @param configurer The configurer reference.
      */
-    public AnimationFrameSelector(Composite parent, Configurable configurable)
+    public AnimationFrameSelector(Composite parent, Configurer configurer)
     {
         this.parent = parent;
         g = Core.GRAPHIC.createGraphic();
-        final Media media = UtilityMedia.get(new File(configurable.getPath(), configurable.getSurface().getImage()));
-        final FramesData framesData = configurable.getFrames();
+        final ConfigSurface configSurface = ConfigSurface.create(configurer);
+        final Media media = UtilityMedia.get(new File(configurer.getPath(), configSurface.getImage()));
+        final ConfigFrames framesData = ConfigFrames.create(configurer);
         horizontalFrames = framesData.getHorizontal();
         verticalFrames = framesData.getVertical();
         surface = Drawable.loadSprite(media);

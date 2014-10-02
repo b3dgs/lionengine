@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProductio
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
 import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.SizeData;
+import com.b3dgs.lionengine.game.configurer.ConfigSize;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 
@@ -72,8 +72,8 @@ public final class BuildBarracksOrc
         super.prepare(context);
         cursor = context.getService(Cursor.class);
         factoryProduction = context.getService(FactoryProduction.class);
-        final Configurable configurable = factoryProduction.getSetup(BarracksOrc.MEDIA).getConfigurable();
-        final SizeData sizeData = configurable.getSize();
+        final Configurer configurer = factoryProduction.getSetup(BarracksOrc.MEDIA).getConfigurer();
+        final ConfigSize sizeData = ConfigSize.create(configurer);
         width = sizeData.getWidth();
         height = sizeData.getHeight();
     }

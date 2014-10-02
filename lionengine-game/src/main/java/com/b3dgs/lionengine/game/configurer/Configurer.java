@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurable;
+package com.b3dgs.lionengine.game.configurer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,55 +30,31 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents an object which can be externally configured. When data are loaded, the object can used theses data.
+ * Allows to retrieve
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Configurable
+public class Configurer
 {
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
     /** Class node name. */
-    public static final String CLASS = Configurable.PREFIX + "class";
-    /** Surface node name. */
-    public static final String SURFACE = Configurable.PREFIX + "surface";
-    /** Surface image node. */
-    public static final String SURFACE_IMAGE = "image";
-    /** Surface icon node. */
-    public static final String SURFACE_ICON = "icon";
-    /** Frames node name. */
-    public static final String FRAMES = Configurable.PREFIX + "frames";
-    /** Frames horizontal node name. */
-    public static final String FRAMES_HORIZONTAL = "horizontal";
-    /** Frames vertical node name. */
-    public static final String FRAMES_VERTICAL = "vertical";
-    /** Size node name. */
-    public static final String SIZE = Configurable.PREFIX + "size";
-    /** Offset node name. */
-    public static final String OFFSET = Configurable.PREFIX + "offset";
+    public static final String CLASS = Configurer.PREFIX + "class";
     /** Animation node name. */
-    public static final String ANIMATION = Configurable.PREFIX + "animation";
+    public static final String ANIMATION = Configurer.PREFIX + "animation";
     /** Collision node name. */
-    public static final String COLLISION = Configurable.PREFIX + "collision";
+    public static final String COLLISION = Configurer.PREFIX + "collision";
+
     /** Animations map. */
     private final Map<String, Animation> animations;
     /** Collisions map. */
     private final Map<String, Collision> collisions;
     /** Media reference. */
-    private Media media;
+    private final Media media;
     /** Root path. */
-    private String path;
+    private final String path;
     /** Root node. */
-    private XmlNode root;
-
-    /**
-     * Constructor.
-     */
-    public Configurable()
-    {
-        animations = new HashMap<>(0);
-        collisions = new HashMap<>(0);
-    }
+    private final XmlNode root;
 
     /**
      * Load data from configuration media.
@@ -86,11 +62,13 @@ public class Configurable
      * @param media The xml media.
      * @throws LionEngineException If error when opening the media.
      */
-    public void load(Media media) throws LionEngineException
+    public Configurer(Media media) throws LionEngineException
     {
         Check.notNull(media);
 
         this.media = media;
+        animations = new HashMap<>(0);
+        collisions = new HashMap<>(0);
         path = media.getFile().getParent();
         root = Stream.loadXml(media);
         loadAnimations();
@@ -98,11 +76,10 @@ public class Configurable
     }
 
     /**
-     * Clear the configurable data.
+     * Clear the configurer data.
      */
     public void clear()
     {
-        root = null;
         animations.clear();
         collisions.clear();
     }
@@ -214,87 +191,7 @@ public class Configurable
      */
     public String getClassName() throws LionEngineException
     {
-        return getText(Configurable.CLASS);
-    }
-
-    /**
-     * Get the surface node value.
-     * 
-     * @return The surface node value.
-     * @throws LionEngineException If unable to read node.
-     */
-    public SurfaceData getSurface() throws LionEngineException
-    {
-        return new SurfaceData(getString(Configurable.SURFACE_IMAGE, Configurable.SURFACE), getSurfaceIcon());
-    }
-
-    /**
-     * Check if a surface is defined.
-     * 
-     * @return <code>true</code> if has surface, <code>false</code> else.
-     */
-    public boolean hasSurface()
-    {
-        try
-        {
-            return getString(Configurable.SURFACE_IMAGE, Configurable.SURFACE) != null;
-        }
-        catch (final LionEngineException exception)
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Get the frames node value.
-     * 
-     * @return The frames node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
-     */
-    public FramesData getFrames() throws LionEngineException
-    {
-        return new FramesData(getInteger(Configurable.FRAMES_HORIZONTAL, Configurable.FRAMES), getInteger(
-                Configurable.FRAMES_VERTICAL, Configurable.FRAMES));
-    }
-
-    /**
-     * Check if a surface is defined.
-     * 
-     * @return <code>true</code> if has surface, <code>false</code> else.
-     */
-    public boolean hasFrames()
-    {
-        try
-        {
-            return getInteger(Configurable.FRAMES_HORIZONTAL, Configurable.FRAMES) > 0
-                    && getInteger(Configurable.FRAMES_VERTICAL, Configurable.FRAMES) > 0;
-        }
-        catch (final LionEngineException exception)
-        {
-            return false;
-        }
-    }
-
-    /**
-     * Get the size node value.
-     * 
-     * @return The size node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
-     */
-    public SizeData getSize() throws LionEngineException
-    {
-        return new SizeData(getInteger("width", Configurable.SIZE), getInteger("height", Configurable.SIZE));
-    }
-
-    /**
-     * Get the offset node value.
-     * 
-     * @return The offset node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
-     */
-    public OffsetData getOffset() throws LionEngineException
-    {
-        return new OffsetData(getInteger("x", Configurable.OFFSET), getInteger("y", Configurable.OFFSET));
+        return getText(Configurer.CLASS);
     }
 
     /**
@@ -352,7 +249,7 @@ public class Configurable
      */
     private void loadAnimations() throws LionEngineException
     {
-        for (final XmlNode node : root.getChildren(Configurable.ANIMATION))
+        for (final XmlNode node : root.getChildren(Configurer.ANIMATION))
         {
             final String anim = node.readString("name");
             final Animation animation = Anim.createAnimation(node.readInteger("start"), node.readInteger("end"),
@@ -368,7 +265,7 @@ public class Configurable
      */
     private void loadCollisions() throws LionEngineException
     {
-        for (final XmlNode node : root.getChildren(Configurable.COLLISION))
+        for (final XmlNode node : root.getChildren(Configurer.COLLISION))
         {
             final String coll = node.readString("name");
             final Collision collision = new Collision(node.readInteger("offsetX"), node.readInteger("offsetY"),
@@ -413,22 +310,5 @@ public class Configurable
     {
         final XmlNode node = getNode(path);
         return node.readString(attribute);
-    }
-
-    /**
-     * Get the surface icon if existing.
-     * 
-     * @return The surface icon, <code>null</code> if none.
-     */
-    private String getSurfaceIcon()
-    {
-        try
-        {
-            return getString("icon", Configurable.SURFACE);
-        }
-        catch (final LionEngineException exception)
-        {
-            return null;
-        }
     }
 }

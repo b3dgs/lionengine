@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -72,10 +72,10 @@ final class Mario
         this.desiredFps = desiredFps;
         movement = new Movement();
         jumpForce = new Force();
-        final Configurable configurable = Mario.SETUP.getConfigurable();
-        jumpSpeed = configurable.getDouble("jumpSpeed", "data");
-        movementSpeed = configurable.getDouble("movementSpeed", "data");
-        setMass(configurable.getDouble("mass", "data"));
+        final Configurer configurer = Mario.SETUP.getConfigurer();
+        jumpSpeed = configurer.getDouble("jumpSpeed", "data");
+        movementSpeed = configurer.getDouble("movementSpeed", "data");
+        setMass(configurer.getDouble("mass", "data"));
         setFrameOffsets(0, 1);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.LEG_LEFT, -5, 0);

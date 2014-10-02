@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Entity collision editor.
@@ -39,19 +39,19 @@ public class EntityCollisionEditor
     /** Dialog icon. */
     public static final Image DIALOG_ICON = UtilEclipse.getIcon("collision-editor", "dialog.png");
 
-    /** Configurable reference. */
-    private final Configurable configurable;
+    /** Configurer reference. */
+    private final Configurer configurer;
 
     /**
      * Constructor.
      * 
      * @param parent The parent reference.
-     * @param configurable The entity configurable reference.
+     * @param configurer The entity configurer reference.
      */
-    public EntityCollisionEditor(Composite parent, Configurable configurable)
+    public EntityCollisionEditor(Composite parent, Configurer configurer)
     {
         super(EntityCollisionEditor.DIALOG_TITLE, EntityCollisionEditor.DIALOG_ICON, parent);
-        this.configurable = configurable;
+        this.configurer = configurer;
     }
 
     /*
@@ -65,7 +65,7 @@ public class EntityCollisionEditor
         content.setLayout(new GridLayout(2, false));
 
         final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
-        final EntityCollisionList entityCollisionList = new EntityCollisionList(configurable, entityCollisionProperties);
+        final EntityCollisionList entityCollisionList = new EntityCollisionList(configurer, entityCollisionProperties);
 
         entityCollisionList.create(content);
         entityCollisionProperties.create(content);

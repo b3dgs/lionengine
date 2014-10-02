@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -91,16 +91,16 @@ abstract class Entity
     {
         super(setup);
         animations = new EnumMap<>(EntityState.class);
-        final Configurable configurable = setup.getConfigurable();
-        jumpForceValue = configurable.getDouble("jumpSpeed", "data");
-        movementSpeedValue = configurable.getDouble("movementSpeed", "data");
+        final Configurer configurer = setup.getConfigurer();
+        jumpForceValue = configurer.getDouble("jumpSpeed", "data");
+        movementSpeedValue = configurer.getDouble("movementSpeed", "data");
         movement = new Movement();
         jumpForce = new Force();
         state = EntityState.IDLE;
-        setMass(configurable.getDouble("mass", "data"));
+        setMass(configurer.getDouble("mass", "data"));
         setFrameOffsets(0, 1);
-        setCollision(configurable.getCollision("default"));
-        loadAnimations(configurable);
+        setCollision(configurer.getCollision("default"));
+        loadAnimations(configurer);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
         addCollisionTile(EntityCollisionTileCategory.KNEE_RIGHT, 5, 9);
@@ -181,15 +181,15 @@ abstract class Entity
     /**
      * Load all existing animations defined in the xml file.
      * 
-     * @param configurable The configurable reference.
+     * @param configurer The configurer reference.
      */
-    private void loadAnimations(Configurable configurable)
+    private void loadAnimations(Configurer configurer)
     {
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, configurable.getAnimation(state.getAnimationName()));
+                animations.put(state, configurer.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.purview.Handlable;
 import com.b3dgs.lionengine.game.purview.Localizable;
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a
  * {@link HandlerGame}. To remove it from the handler, a simple call to {@link #destroy()} is needed.
  * <p>
- * An object can also be externally configured by using a {@link Configurable}, filled by an XML file.
+ * An object can also be externally configured by using a {@link Configurer}, filled by an XML file.
  * </p>
  * <p>
  * Objects are also designed to be created by a {@link FactoryGame}. In that case, they must have at least a constructor
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurable
+ * @see Configurer
  * @see HandlerGame
  * @see FactoryGame
  * @see FactoryObjectGame

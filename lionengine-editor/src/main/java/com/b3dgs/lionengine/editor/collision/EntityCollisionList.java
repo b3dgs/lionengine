@@ -21,7 +21,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the collisions list, allowing to add and remove collisions.
@@ -31,29 +31,29 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
 public class EntityCollisionList
         extends ObjectList<Collision>
 {
-    /** Configurable reference. */
-    private final Configurable configurable;
+    /** Configurer reference. */
+    private final Configurer configurer;
     /** Animation properties. */
     final EntityCollisionProperties entityCollisionProperties;
 
     /**
      * Constructor.
      * 
-     * @param configurable The configurable reference.
+     * @param configurer The configurer reference.
      * @param entityCollisionProperties The collision properties reference.
      */
-    public EntityCollisionList(Configurable configurable, EntityCollisionProperties entityCollisionProperties)
+    public EntityCollisionList(Configurer configurer, EntityCollisionProperties entityCollisionProperties)
     {
-        this.configurable = configurable;
+        this.configurer = configurer;
         this.entityCollisionProperties = entityCollisionProperties;
     }
 
     /**
-     * Load the existing collisions from the entity configurable.
+     * Load the existing collisions from the entity configurer.
      */
     public void loadCollisions()
     {
-        final Map<String, Collision> collisions = configurable.getCollisions();
+        final Map<String, Collision> collisions = configurer.getCollisions();
         loadObjects(collisions);
     }
 

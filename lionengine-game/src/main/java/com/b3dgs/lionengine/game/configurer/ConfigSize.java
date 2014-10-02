@@ -15,15 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurable;
+package com.b3dgs.lionengine.game.configurer;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the size data from a configurable node.
+ * Represents the size data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SizeData
+public class ConfigSize
 {
+    /** Size node name. */
+    public static final String SIZE = Configurer.PREFIX + "size";
+    /** Size width node. */
+    public static final String SIZE_WIDTH = "width";
+    /** Size height node. */
+    public static final String SIZE_HEIGHT = "height";
+
+    /**
+     * Create the size node.
+     * 
+     * @param configurer The configurer reference.
+     * @return The config size instance.
+     * @throws LionEngineException If unable to read node or not a valid integer.
+     */
+    public static ConfigSize create(Configurer configurer) throws LionEngineException
+    {
+        return new ConfigSize(configurer.getInteger(ConfigSize.SIZE_WIDTH, ConfigSize.SIZE), configurer.getInteger(
+                ConfigSize.SIZE_HEIGHT, ConfigSize.SIZE));
+    }
+
     /** The width value. */
     private final int width;
     /** The height value. */
@@ -35,7 +57,7 @@ public class SizeData
      * @param width The width value.
      * @param height The height value.
      */
-    public SizeData(int width, int height)
+    private ConfigSize(int width, int height)
     {
         this.width = width;
         this.height = height;

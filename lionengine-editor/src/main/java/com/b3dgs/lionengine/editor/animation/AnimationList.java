@@ -22,7 +22,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.ObjectList;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the animation list, allowing to add and remove animations.
@@ -32,29 +32,29 @@ import com.b3dgs.lionengine.game.configurable.Configurable;
 public class AnimationList
         extends ObjectList<Animation>
 {
-    /** Configurable reference. */
-    private final Configurable configurable;
+    /** Configurer reference. */
+    private final Configurer configurer;
     /** Animation properties. */
     private final AnimationProperties animationProperties;
 
     /**
      * Constructor.
      * 
-     * @param configurable The configurable reference.
+     * @param configurer The configurer reference.
      * @param animationProperties The animation properties reference.
      */
-    public AnimationList(Configurable configurable, AnimationProperties animationProperties)
+    public AnimationList(Configurer configurer, AnimationProperties animationProperties)
     {
-        this.configurable = configurable;
+        this.configurer = configurer;
         this.animationProperties = animationProperties;
     }
 
     /**
-     * Load the existing animations from the entity configurable.
+     * Load the existing animations from the entity configurer.
      */
     public void loadAnimations()
     {
-        final Map<String, Animation> animations = configurable.getAnimations();
+        final Map<String, Animation> animations = configurer.getAnimations();
         loadObjects(animations);
     }
 

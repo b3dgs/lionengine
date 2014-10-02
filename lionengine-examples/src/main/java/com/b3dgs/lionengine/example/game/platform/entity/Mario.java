@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
 /**
@@ -77,14 +77,14 @@ final class Mario
         movement = new Movement();
         jumpForce = new Force();
         animations = new EnumMap<>(EntityState.class);
-        final Configurable configurable = Mario.SETUP.getConfigurable();
-        movementSpeed = configurable.getDouble("movementSpeed", "data");
-        jumpSpeed = configurable.getDouble("jumpSpeed", "data");
+        final Configurer configurer = Mario.SETUP.getConfigurer();
+        movementSpeed = configurer.getDouble("movementSpeed", "data");
+        jumpSpeed = configurer.getDouble("jumpSpeed", "data");
         state = EntityState.IDLE;
         stateOld = state;
         setLocation(100, 32);
-        setMass(configurable.getDouble("mass", "data"));
-        loadAnimations(configurable);
+        setMass(configurer.getDouble("mass", "data"));
+        loadAnimations(configurer);
     }
 
     /**
@@ -122,15 +122,15 @@ final class Mario
     /**
      * Load all existing animations defined in the xml file.
      * 
-     * @param configurable The configurable reference.
+     * @param configurer The configurer reference.
      */
-    private void loadAnimations(Configurable configurable)
+    private void loadAnimations(Configurer configurer)
     {
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, configurable.getAnimation(state.getAnimationName()));
+                animations.put(state, configurer.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.strategy.skill;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.purview.Fabricable;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
@@ -76,9 +76,9 @@ public abstract class SkillStrategy
      */
     public SkillStrategy(SetupGame setup) throws LionEngineException
     {
-        final Configurable configurable = setup.getConfigurable();
-        name = configurable.getText("name");
-        description = configurable.getText("description");
+        final Configurer configurer = setup.getConfigurer();
+        name = configurer.getText("name");
+        description = configurer.getText("description");
         level = 1;
         priority = 0;
         ignore = false;

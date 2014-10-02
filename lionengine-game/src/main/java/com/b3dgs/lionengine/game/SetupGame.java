@@ -19,21 +19,21 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
- * Define a structure used to create configurable objects.
+ * Define a structure used to create configurer objects.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurable
+ * @see Configurer
  */
 public class SetupGame
 {
     /** Class error. */
     private static final String ERROR_CLASS = "Class not found for: ";
 
-    /** Configurable reference. */
-    protected final Configurable configurable;
+    /** Configurer reference. */
+    protected final Configurer configurer;
     /** Config file name. */
     protected final Media configFile;
     /** Class reference. */
@@ -47,28 +47,27 @@ public class SetupGame
      */
     public SetupGame(Media config) throws LionEngineException
     {
-        configurable = new Configurable();
-        configurable.load(config);
+        configurer = new Configurer(config);
         configFile = config;
     }
 
     /**
-     * Clear the setup and remove configurable data.
+     * Clear the setup and remove configurer data.
      */
     public void clear()
     {
-        configurable.clear();
+        configurer.clear();
         clazz = null;
     }
 
     /**
-     * Get the configurable reference.
+     * Get the configurer reference.
      * 
-     * @return The configurable reference.
+     * @return The configurer reference.
      */
-    public Configurable getConfigurable()
+    public Configurer getConfigurer()
     {
-        return configurable;
+        return configurer;
     }
 
     /**
@@ -94,7 +93,7 @@ public class SetupGame
         {
             try
             {
-                clazz = classLoader.loadClass(configurable.getClassName());
+                clazz = classLoader.loadClass(configurer.getClassName());
             }
             catch (final ClassNotFoundException exception)
             {

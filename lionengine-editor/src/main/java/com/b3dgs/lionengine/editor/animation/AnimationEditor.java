@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.TabItem;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Animation editor dialog.
@@ -43,19 +43,19 @@ public class AnimationEditor
     /** Dialog icon. */
     public static final Image DIALOG_ICON = UtilEclipse.getIcon("animation-editor", "dialog.png");
 
-    /** Configurable reference. */
-    private final Configurable configurable;
+    /** Configurer reference. */
+    private final Configurer configurer;
 
     /**
      * Constructor.
      * 
      * @param parent The parent reference.
-     * @param configurable The entity configurable reference.
+     * @param configurer The entity configurer reference.
      */
-    public AnimationEditor(Composite parent, Configurable configurable)
+    public AnimationEditor(Composite parent, Configurer configurer)
     {
         super(AnimationEditor.DIALOG_TITLE, AnimationEditor.DIALOG_ICON, parent);
-        this.configurable = configurable;
+        this.configurer = configurer;
     }
 
     /**
@@ -75,7 +75,7 @@ public class AnimationEditor
         sheetTab.setControl(sheet);
 
         final Composite renderer = new Composite(sheet, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-        final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(renderer, configurable);
+        final AnimationFrameSelector animationFrameSelector = new AnimationFrameSelector(renderer, configurer);
         renderer.addPaintListener(animationFrameSelector);
         renderer.addMouseListener(animationFrameSelector);
         renderer.addMouseMoveListener(animationFrameSelector);
@@ -96,7 +96,7 @@ public class AnimationEditor
         content.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         final Composite renderer = new Composite(content, SWT.BORDER | SWT.DOUBLE_BUFFERED);
-        final AnimationRenderer animationRenderer = new AnimationRenderer(renderer, configurable);
+        final AnimationRenderer animationRenderer = new AnimationRenderer(renderer, configurer);
         renderer.addPaintListener(animationRenderer);
 
         final TabItem animatorTab = new TabItem(parent, SWT.NONE);
@@ -127,7 +127,7 @@ public class AnimationEditor
         final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
 
         final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
-        final AnimationList animationList = new AnimationList(configurable, animationProperties);
+        final AnimationList animationList = new AnimationList(configurer, animationProperties);
         final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
         animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
 

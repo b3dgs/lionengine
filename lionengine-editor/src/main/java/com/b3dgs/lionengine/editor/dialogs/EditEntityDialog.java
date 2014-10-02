@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.dialogs;
 import java.io.File;
 
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -45,7 +44,9 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
 import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -62,8 +63,8 @@ public class EditEntityDialog
 
     /** Entity media. */
     final Media entity;
-    /** Entity configurable. */
-    final Configurable configurable;
+    /** Entity configurer. */
+    final Configurer configurer;
     /** Entity icon. */
     Label entityIcon;
 
@@ -78,8 +79,7 @@ public class EditEntityDialog
         super(parent, Messages.EditEntityDialog_Title, Messages.EditEntityDialog_HeaderTitle,
                 Messages.EditEntityDialog_HeaderDesc, EditEntityDialog.ICON);
         this.entity = entity;
-        configurable = new Configurable();
-        configurable.load(entity);
+        configurer = new Configurer(entity);
         createDialog();
         finish.setEnabled(true);
     }
@@ -95,15 +95,15 @@ public class EditEntityDialog
         final String file = Tools.selectFile(parent, entity.getFile().getParentFile().getPath(), true);
         if (file != null)
         {
-            final XmlNode root = configurable.getRoot();
+            final XmlNode root = configurer.getRoot();
             XmlNode surfaceNode;
             try
             {
-                surfaceNode = root.getChild(Configurable.SURFACE);
+                surfaceNode = root.getChild(ConfigSurface.SURFACE);
             }
             catch (final LionEngineException exception)
             {
-                surfaceNode = Stream.createXmlNode(Configurable.SURFACE);
+                surfaceNode = Stream.createXmlNode(ConfigSurface.SURFACE);
                 root.add(surfaceNode);
             }
             surfaceNode.writeString(element, file);
@@ -121,7 +121,7 @@ public class EditEntityDialog
     {
         try
         {
-            final String iconName = configurable.getString(Configurable.SURFACE_ICON, Configurable.SURFACE);
+            final String iconName = configurer.getString(ConfigSurface.SURFACE_ICON, ConfigSurface.SURFACE);
             final File iconFile = new File(entity.getFile().getParent(), iconName);
             if (iconFile.isFile())
             {
@@ -151,10 +151,10 @@ public class EditEntityDialog
                     new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
             if (verticalFrames.open() == Window.OK)
             {
-                final XmlNode frames = Stream.createXmlNode(Configurable.FRAMES);
-                frames.writeString(Configurable.FRAMES_HORIZONTAL, horizontalFrames.getValue());
-                frames.writeString(Configurable.FRAMES_VERTICAL, verticalFrames.getValue());
-                configurable.getRoot().add(frames);
+                final XmlNode frames = Stream.createXmlNode(ConfigFrames.FRAMES);
+                frames.writeString(ConfigFrames.FRAMES_HORIZONTAL, horizontalFrames.getValue());
+                frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
+                configurer.getRoot().add(frames);
                 return true;
             }
         }
@@ -204,8 +204,8 @@ public class EditEntityDialog
         final Composite actions = new Group(parent, SWT.NONE);
         actions.setLayout(new GridLayout(4, false));
 
-        createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, Configurable.SURFACE_IMAGE);
-        createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, Configurable.SURFACE_ICON);
+        createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, ConfigSurface.SURFACE_IMAGE);
+        createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, ConfigSurface.SURFACE_ICON);
 
         final Button editAnimations = UtilSwt.createButton(actions, AnimationEditor.DIALOG_TITLE,
                 AnimationEditor.DIALOG_ICON);
@@ -215,23 +215,8 @@ public class EditEntityDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                if (configurable.hasSurface())
-                {
-                    boolean show = true;
-                    if (!configurable.hasFrames())
-                    {
-                        show = generateFrames(dialog);
-                    }
-                    if (show)
-                    {
-                        final AnimationEditor animationEditor = new AnimationEditor(parent, configurable);
-                        animationEditor.open();
-                    }
-                }
-                else
-                {
-                    MessageDialog.openWarning(dialog, "Error", "Surface not found, assign it first !");
-                }
+                final AnimationEditor animationEditor = new AnimationEditor(parent, configurer);
+                animationEditor.open();
             }
         });
 
@@ -242,7 +227,7 @@ public class EditEntityDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final EntityCollisionEditor entityCollisionEditor = new EntityCollisionEditor(parent, configurable);
+                final EntityCollisionEditor entityCollisionEditor = new EntityCollisionEditor(parent, configurer);
                 entityCollisionEditor.open();
             }
         });
@@ -264,7 +249,7 @@ public class EditEntityDialog
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 updateElement(dialog, element);
-                if (Configurable.SURFACE_ICON.equals(element))
+                if (ConfigSurface.SURFACE_ICON.equals(element))
                 {
                     final Image image = entityIcon.getImage();
                     if (image != null)
@@ -292,6 +277,6 @@ public class EditEntityDialog
     @Override
     protected void onFinish()
     {
-        Stream.saveXml(configurable.getRoot(), entity);
+        Stream.saveXml(configurer.getRoot(), entity);
     }
 }

@@ -21,14 +21,14 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.SurfaceData;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Define a structure used to create multiple entity, sharing the same data and {@link ImageBuffer}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurable
+ * @see Configurer
  */
 public class SetupSurfaceGame
         extends SetupGame
@@ -60,7 +60,7 @@ public class SetupSurfaceGame
     {
         super(config);
         final String conf = config.getPath();
-        final SurfaceData surfaceData = configurable.getSurface();
+        final ConfigSurface surfaceData = ConfigSurface.create(configurer);
         final String prefix = conf.substring(0, conf.lastIndexOf(Core.MEDIA.getSeparator()) + 1);
         surfaceFile = Core.MEDIA.create(prefix + surfaceData.getImage());
         surface = Core.GRAPHIC.getImageBuffer(surfaceFile, alpha);

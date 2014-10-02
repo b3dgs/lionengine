@@ -33,10 +33,10 @@ import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.FramesData;
-import com.b3dgs.lionengine.game.configurable.OffsetData;
-import com.b3dgs.lionengine.game.configurable.SizeData;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.ConfigOffset;
+import com.b3dgs.lionengine.game.configurer.ConfigSize;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -111,16 +111,16 @@ public abstract class EntityStrategy
     public EntityStrategy(SetupSurfaceGame setup) throws LionEngineException
     {
         super(setup);
-        final Configurable configurable = setup.getConfigurable();
+        final Configurer configurer = setup.getConfigurer();
 
-        final OffsetData offsetData = configurable.getOffset();
+        final ConfigOffset offsetData = ConfigOffset.create(configurer);
         offsetX = offsetData.getX();
         offsetY = offsetData.getY();
 
-        final FramesData framesData = configurable.getFrames();
+        final ConfigFrames framesData = ConfigFrames.create(configurer);
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
 
-        final SizeData sizeData = configurable.getSize();
+        final ConfigSize sizeData = ConfigSize.create(configurer);
         setSize(sizeData.getWidth(), sizeData.getHeight());
 
         sprite.setFrame(1);

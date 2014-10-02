@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitAttacker;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 
 /**
@@ -59,16 +59,16 @@ public abstract class Weapon
     {
         super(setup);
 
-        final Configurable configurable = setup.getConfigurable();
-        setAttackFrame(configurable.getInteger("attackFrame"));
-        setAttackTimer(configurable.getInteger("attackTimer"));
+        final Configurer configurer = setup.getConfigurer();
+        setAttackFrame(configurer.getInteger("attackFrame"));
+        setAttackTimer(configurer.getInteger("attackTimer"));
 
-        final int distMin = configurable.getInteger("min", "distance");
-        final int distMax = configurable.getInteger("max", "distance");
+        final int distMin = configurer.getInteger("min", "distance");
+        final int distMax = configurer.getInteger("max", "distance");
         setAttackDistance(distMin, distMax);
 
-        final int dmgMin = configurable.getInteger("min", "damages");
-        final int dmgMax = configurable.getInteger("max", "damages");
+        final int dmgMin = configurer.getInteger("min", "damages");
+        final int dmgMax = configurer.getInteger("max", "damages");
         setAttackDamages(dmgMin, dmgMax);
     }
 

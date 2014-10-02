@@ -15,15 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurable;
+package com.b3dgs.lionengine.game.configurer;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the surface data from a configurable node.
+ * Represents the surface data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceData
+public class ConfigSurface
 {
+    /** Surface node name. */
+    public static final String SURFACE = Configurer.PREFIX + "surface";
+    /** Surface image node. */
+    public static final String SURFACE_IMAGE = "image";
+    /** Surface icon node. */
+    public static final String SURFACE_ICON = "icon";
+
+    /**
+     * Get the surface node value.
+     * 
+     * @param configurer The configurer reference.
+     * @return The surface node value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public static ConfigSurface create(Configurer configurer) throws LionEngineException
+    {
+        return new ConfigSurface(configurer.getString(ConfigSurface.SURFACE_IMAGE, ConfigSurface.SURFACE),
+                ConfigSurface.getSurfaceIcon(configurer));
+    }
+
     /** The image descriptor. */
     private final String image;
     /** The icon descriptor (can be <code>null</code>). */
@@ -35,7 +57,7 @@ public class SurfaceData
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).
      */
-    public SurfaceData(String image, String icon)
+    public ConfigSurface(String image, String icon)
     {
         this.image = image;
         this.icon = icon;
@@ -59,5 +81,23 @@ public class SurfaceData
     public String getIcon()
     {
         return icon;
+    }
+
+    /**
+     * Get the surface icon if existing.
+     * 
+     * @param configurer The configurer reference.
+     * @return The surface icon, <code>null</code> if none.
+     */
+    private static String getSurfaceIcon(Configurer configurer)
+    {
+        try
+        {
+            return configurer.getString(ConfigSurface.SURFACE_ICON, ConfigSurface.SURFACE);
+        }
+        catch (final LionEngineException exception)
+        {
+            return null;
+        }
     }
 }

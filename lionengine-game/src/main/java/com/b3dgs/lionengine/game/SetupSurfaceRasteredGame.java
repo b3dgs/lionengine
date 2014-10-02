@@ -27,15 +27,15 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.purview.Rasterable;
 
 /**
  * Define a structure used to create multiple rastered surface, sharing the same data.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurable
+ * @see Configurer
  */
 public class SetupSurfaceRasteredGame
         extends SetupSurfaceGame
@@ -71,7 +71,7 @@ public class SetupSurfaceRasteredGame
         if (rasterFile != null)
         {
             rastersAnim = new ArrayList<>(Rasterable.MAX_RASTERS);
-            final FramesData framesData = configurable.getFrames();
+            final ConfigFrames framesData = ConfigFrames.create(configurer);
             hf = framesData.getHorizontal();
             vf = framesData.getVertical();
             frameHeight = surface.getHeight() / vf;

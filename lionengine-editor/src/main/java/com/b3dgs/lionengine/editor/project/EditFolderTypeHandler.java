@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.game.configurable.Configurable;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -41,9 +41,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class EditFolderTypeHandler
 {
     /** Type node. */
-    private static final String NODE_TYPE = Configurable.PREFIX + "type";
+    private static final String NODE_TYPE = Configurer.PREFIX + "type";
     /** Name node. */
-    private static final String NODE_NAME = Configurable.PREFIX + "name";
+    private static final String NODE_NAME = Configurer.PREFIX + "name";
     /** The default type name. */
     private static final String DEFAULT_NAME = "category";
 

@@ -30,8 +30,8 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurable.Configurable;
-import com.b3dgs.lionengine.game.configurable.FramesData;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Effect base implementation.
@@ -66,9 +66,9 @@ abstract class Effect
     {
         super(setup);
         // Data are loaded from the XML file, depending of the type
-        final Configurable configurable = setup.getConfigurable();
-        final FramesData framesData = configurable.getFrames();
-        animExplode = configurable.getAnimation("explode");
+        final Configurer configurer = setup.getConfigurer();
+        final ConfigFrames framesData = ConfigFrames.create(configurer);
+        animExplode = configurer.getAnimation("explode");
         sprite = Drawable.loadSpriteAnimated(setup.surface, framesData.getHorizontal(), framesData.getVertical());
         sprite.load(false);
         sprite.scale(UtilRandom.getRandomInteger(75) + 50);

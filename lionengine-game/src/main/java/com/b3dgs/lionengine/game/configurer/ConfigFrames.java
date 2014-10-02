@@ -15,15 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.configurable;
+package com.b3dgs.lionengine.game.configurer;
+
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the frames data from a configurable node.
+ * Represents the frames data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class FramesData
+public class ConfigFrames
 {
+    /** Frames node name. */
+    public static final String FRAMES = Configurer.PREFIX + "frames";
+    /** Frames horizontal node name. */
+    public static final String FRAMES_HORIZONTAL = "horizontal";
+    /** Frames vertical node name. */
+    public static final String FRAMES_VERTICAL = "vertical";
+
+    /**
+     * Create the frames node.
+     * 
+     * @param configurer The configurer reference.
+     * @return The frames node value.
+     * @throws LionEngineException If unable to read node or not a valid integer.
+     */
+    public static ConfigFrames create(Configurer configurer) throws LionEngineException
+    {
+        return new ConfigFrames(configurer.getInteger(ConfigFrames.FRAMES_HORIZONTAL, ConfigFrames.FRAMES),
+                configurer.getInteger(ConfigFrames.FRAMES_VERTICAL, ConfigFrames.FRAMES));
+    }
+
     /** The number of horizontal frames. */
     private final int horizontalFrames;
     /** The number of vertical frames. */
@@ -35,7 +57,7 @@ public class FramesData
      * @param horizontalFrames The horizontal frames value.
      * @param verticalFrames The vertical frames value.
      */
-    public FramesData(int horizontalFrames, int verticalFrames)
+    public ConfigFrames(int horizontalFrames, int verticalFrames)
     {
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;

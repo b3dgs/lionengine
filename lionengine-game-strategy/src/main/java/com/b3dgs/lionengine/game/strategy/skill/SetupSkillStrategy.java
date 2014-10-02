@@ -50,7 +50,7 @@ public abstract class SetupSkillStrategy
     public SetupSkillStrategy(Media config) throws LionEngineException
     {
         super(config);
-        name = configurable.getText("name");
-        description = configurable.getText("description");
+        name = configurer.getText("name");
+        description = configurer.getText("description");
     }
 }

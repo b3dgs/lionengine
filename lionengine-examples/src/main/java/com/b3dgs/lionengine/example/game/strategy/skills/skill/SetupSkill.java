@@ -42,7 +42,7 @@ final class SetupSkill
     SetupSkill(Media config)
     {
         super(config);
-        final Media media = Core.MEDIA.create(FactorySkill.SKILL_DIR, configurable.getText("icon"));
+        final Media media = Core.MEDIA.create(FactorySkill.SKILL_DIR, configurer.getText("icon"));
         icon = Drawable.loadSpriteTiled(media, 27, 19);
         icon.load(false);
     }
