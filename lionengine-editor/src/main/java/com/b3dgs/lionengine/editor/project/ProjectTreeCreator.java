@@ -40,46 +40,47 @@ import com.b3dgs.lionengine.xsd.XsdLoader;
  */
 public class ProjectTreeCreator
 {
+    /** Project icon. */
+    public static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
+    /** Folder icon. */
+    public static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
+    /** Folder entities icon. */
+    public static final Image ICON_FOLDER_ENTITIES = UtilEclipse.getIcon("resources", "folder-entities.png");
+    /** Folder effects icon. */
+    public static final Image ICON_FOLDER_EFFECTS = UtilEclipse.getIcon("resources", "folder-effects.png");
+    /** Folder levels icon. */
+    public static final Image ICON_FOLDER_LEVELS = UtilEclipse.getIcon("resources", "folder-levels.png");
+    /** Folder tiles icon. */
+    public static final Image ICON_FOLDER_TILES = UtilEclipse.getIcon("resources", "folder-tiles.png");
+    /** File icon. */
+    public static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
+    /** Sound file icon. */
+    public static final Image ICON_SOUND = UtilEclipse.getIcon("resources", "sound.png");
+    /** Music file icon. */
+    public static final Image ICON_MUSIC = UtilEclipse.getIcon("resources", "music.png");
+    /** Image file icon. */
+    public static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
+    /** Data file icon. */
+    public static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
+    /** Level file icon. */
+    public static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
+    /** Map file icon. */
+    public static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
+    /** Factory entity file icon. */
+    public static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
+    /** Entity file icon. */
+    public static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
+    /** Effect file icon. */
+    public static final Image ICON_EFFECT = UtilEclipse.getIcon("resources", "effect.png");
+    /** Class file icon. */
+    public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
+    /** Tile sheets file icon. */
+    public static final Image ICON_TILESHEETS = UtilEclipse.getIcon("resources", "tilesheets.png");
+
     /** Classes folder. */
     private static final String FOLDER_CLASSES = "classes";
     /** Resources folder. */
     private static final String FOLDER_RESOURCES = "resources";
-    /** Project icon. */
-    private static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
-    /** Folder icon. */
-    private static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
-    /** Folder entities icon. */
-    private static final Image ICON_FOLDER_ENTITIES = UtilEclipse.getIcon("resources", "folder-entities.png");
-    /** Folder effects icon. */
-    private static final Image ICON_FOLDER_EFFECTS = UtilEclipse.getIcon("resources", "folder-effects.png");
-    /** Folder levels icon. */
-    private static final Image ICON_FOLDER_LEVELS = UtilEclipse.getIcon("resources", "folder-levels.png");
-    /** Folder tiles icon. */
-    private static final Image ICON_FOLDER_TILES = UtilEclipse.getIcon("resources", "folder-tiles.png");
-    /** File icon. */
-    private static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
-    /** Sound file icon. */
-    private static final Image ICON_SOUND = UtilEclipse.getIcon("resources", "sound.png");
-    /** Music file icon. */
-    private static final Image ICON_MUSIC = UtilEclipse.getIcon("resources", "music.png");
-    /** Image file icon. */
-    private static final Image ICON_IMAGE = UtilEclipse.getIcon("resources", "image.png");
-    /** Data file icon. */
-    private static final Image ICON_DATA = UtilEclipse.getIcon("resources", "data.png");
-    /** Level file icon. */
-    private static final Image ICON_LEVEL = UtilEclipse.getIcon("resources", "level.png");
-    /** Map file icon. */
-    private static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
-    /** Factory entity file icon. */
-    private static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
-    /** Entity file icon. */
-    private static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
-    /** Effect file icon. */
-    private static final Image ICON_EFFECT = UtilEclipse.getIcon("resources", "effect.png");
-    /** Class file icon. */
-    private static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
-    /** Tile sheets file icon. */
-    private static final Image ICON_TILESHEETS = UtilEclipse.getIcon("resources", "tilesheets.png");
 
     /**
      * Check the path reference and create the node if necessary.
@@ -264,15 +265,19 @@ public class ProjectTreeCreator
     private final File classesPath;
     /** Resources path. */
     private final File resourcesPath;
+    /** Tree reference. */
+    private final Tree tree;
 
     /**
      * Constructor.
      * 
      * @param project The project reference.
+     * @param tree The tree reference.
      */
-    public ProjectTreeCreator(Project project)
+    public ProjectTreeCreator(Project project, Tree tree)
     {
         this.project = project;
+        this.tree = tree;
         quicks = new ArrayList<>();
         projectPath = project.getPath();
         classesPath = new File(projectPath, project.getClasses());
@@ -281,15 +286,32 @@ public class ProjectTreeCreator
 
     /**
      * Start the tree creation.
-     * 
-     * @param tree The tree reference.
      */
-    public void start(Tree tree)
+    public void start()
     {
         final TreeItem folder = new TreeItem(tree, SWT.NONE);
         folder.setText(project.getName());
         folder.setImage(ProjectTreeCreator.ICON_MAIN);
         checkPath(projectPath, folder);
+    }
+
+    /**
+     * Create a tree item.
+     * 
+     * @param parent The item parent.
+     * @param path The item path.
+     * @param icon The item icon.
+     * @return The created item.
+     */
+    public TreeItem createItem(TreeItem parent, File path, Image icon)
+    {
+        final Media media = getMedia(path.getPath());
+        final TreeItem item = new TreeItem(parent, SWT.NONE);
+        item.setText(path.getName());
+        item.setImage(icon);
+        item.setData(media);
+        tree.setData(media.getPath(), item);
+        return item;
     }
 
     /**
@@ -391,24 +413,6 @@ public class ProjectTreeCreator
             }
             return createItem(parent, path, icon);
         }
-    }
-
-    /**
-     * Create a tree item.
-     * 
-     * @param parent The item parent.
-     * @param path The item path.
-     * @param icon The item icon.
-     * @return The created item.
-     */
-    private TreeItem createItem(TreeItem parent, File path, Image icon)
-    {
-        final Media media = getMedia(path.getPath());
-        final TreeItem item = new TreeItem(parent, SWT.NONE);
-        item.setText(path.getName());
-        item.setImage(icon);
-        item.setData(media);
-        return item;
     }
 
     /**

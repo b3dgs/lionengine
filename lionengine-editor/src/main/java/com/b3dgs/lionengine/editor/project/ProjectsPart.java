@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
+import java.io.File;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
@@ -29,6 +31,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -56,6 +59,8 @@ public class ProjectsPart
 
     /** Tree viewer. */
     private Tree tree;
+    /** Tree creator. */
+    private ProjectTreeCreator projectTreeCreator;
 
     /**
      * Create the composite.
@@ -101,6 +106,19 @@ public class ProjectsPart
     }
 
     /**
+     * Add an item to the project tree.
+     * 
+     * @param media The media item.
+     * @param item The item file.
+     * @param icon The media icon.
+     */
+    public void addTreeItem(Media media, File item, Image icon)
+    {
+        final TreeItem parent = (TreeItem) tree.getData(media.getPath());
+        projectTreeCreator.createItem(parent, item, icon);
+    }
+
+    /**
      * Set the project main folders.
      * 
      * @param project The project reference.
@@ -111,8 +129,8 @@ public class ProjectsPart
     {
         tree.removeAll();
 
-        final ProjectTreeCreator projectTreeCreator = new ProjectTreeCreator(project);
-        projectTreeCreator.start(tree);
+        projectTreeCreator = new ProjectTreeCreator(project, tree);
+        projectTreeCreator.start();
 
         tree.layout();
 

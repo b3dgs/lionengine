@@ -149,7 +149,9 @@ final class XmlNodeImpl
     @Override
     public void add(XmlNode node) throws LionEngineException
     {
-        root.appendChild(XmlNodeImpl.class.cast(node).getElement());
+        final Element element = XmlNodeImpl.class.cast(node).getElement();
+        root.getOwnerDocument().adoptNode(element);
+        root.appendChild(element);
     }
 
     @Override

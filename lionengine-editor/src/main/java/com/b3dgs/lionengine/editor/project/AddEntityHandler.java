@@ -33,6 +33,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
@@ -67,6 +68,8 @@ public class AddEntityHandler
             try
             {
                 Files.copy(template.toPath(), entity.toPath());
+                final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+                part.addTreeItem(selection, entity, ProjectTreeCreator.ICON_ENTITTY);
             }
             catch (final FileAlreadyExistsException exception)
             {

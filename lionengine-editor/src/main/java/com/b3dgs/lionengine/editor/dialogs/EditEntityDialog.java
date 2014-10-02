@@ -19,10 +19,14 @@ package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
 
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -35,6 +39,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilConversion;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
@@ -116,7 +121,7 @@ public class EditEntityDialog
     {
         try
         {
-            final String iconName = configurable.getString("icon", Configurable.SURFACE);
+            final String iconName = configurable.getString(Configurable.SURFACE_ICON, Configurable.SURFACE);
             final File iconFile = new File(entity.getFile().getParent(), iconName);
             if (iconFile.isFile())
             {
@@ -127,6 +132,47 @@ public class EditEntityDialog
         catch (final LionEngineException exception)
         {
             return null;
+        }
+    }
+
+    /**
+     * Generate frames node from input values.
+     * 
+     * @param shell The shell parent.
+     * @return <code>true</code> if generated, <code>false</code> if cancelled.
+     */
+    boolean generateFrames(Shell shell)
+    {
+        final InputDialog horizontalFrames = new InputDialog(shell, "Frames", "Number of horizontal frames", "1",
+                new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+        if (horizontalFrames.open() == Window.OK)
+        {
+            final InputDialog verticalFrames = new InputDialog(shell, "Frames", "Number of vertical frames", "1",
+                    new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+            if (verticalFrames.open() == Window.OK)
+            {
+                final XmlNode frames = Stream.createXmlNode(Configurable.FRAMES);
+                frames.writeString(Configurable.FRAMES_HORIZONTAL, horizontalFrames.getValue());
+                frames.writeString(Configurable.FRAMES_VERTICAL, verticalFrames.getValue());
+                configurable.getRoot().add(frames);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Set the entity icon and update the size if necessary.
+     * 
+     * @param icon The entity icon.
+     */
+    void setEntityIcon(Image icon)
+    {
+        if (icon != null)
+        {
+            final ImageData data = icon.getImageData();
+            entityIcon.setLayoutData(new GridData(data.width, data.height));
+            entityIcon.setImage(icon);
         }
     }
 
@@ -142,7 +188,7 @@ public class EditEntityDialog
         entityHeader.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 
         entityIcon = new Label(entityHeader, SWT.NONE);
-        entityIcon.setImage(getEntityIcon(parent, entity));
+        setEntityIcon(getEntityIcon(parent, entity));
 
         final Label entityName = new Label(entityHeader, SWT.NONE);
         entityName.setText(UtilConversion.toTitleCase(UtilFile.removeExtension(entity.getFile().getName())));
@@ -158,18 +204,34 @@ public class EditEntityDialog
         final Composite actions = new Group(parent, SWT.NONE);
         actions.setLayout(new GridLayout(4, false));
 
-        createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, "image");
-        createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, "icon");
+        createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, Configurable.SURFACE_IMAGE);
+        createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, Configurable.SURFACE_ICON);
 
-        final Button editAnimations = UtilSwt.createButton(actions, AnimationEditor.DIALOG_TITLE, null);
+        final Button editAnimations = UtilSwt.createButton(actions, AnimationEditor.DIALOG_TITLE,
+                AnimationEditor.DIALOG_ICON);
         editAnimations.setImage(AnimationEditor.DIALOG_ICON);
         editAnimations.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final AnimationEditor animationEditor = new AnimationEditor(parent, configurable);
-                animationEditor.open();
+                if (configurable.hasSurface())
+                {
+                    boolean show = true;
+                    if (!configurable.hasFrames())
+                    {
+                        show = generateFrames(dialog);
+                    }
+                    if (show)
+                    {
+                        final AnimationEditor animationEditor = new AnimationEditor(parent, configurable);
+                        animationEditor.open();
+                    }
+                }
+                else
+                {
+                    MessageDialog.openWarning(dialog, "Error", "Surface not found, assign it first !");
+                }
             }
         });
 
@@ -201,14 +263,16 @@ public class EditEntityDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                updateElement(parent.getShell(), element);
-                if ("icon".equals(element))
+                updateElement(dialog, element);
+                if (Configurable.SURFACE_ICON.equals(element))
                 {
-                    if (entityIcon.getImage() != null)
+                    final Image image = entityIcon.getImage();
+                    if (image != null)
                     {
-                        entityIcon.getImage().dispose();
+                        image.dispose();
                     }
-                    entityIcon.setImage(getEntityIcon(parent, entity));
+                    setEntityIcon(getEntityIcon(parent, entity));
+                    parent.layout(true, true);
                 }
             }
         });

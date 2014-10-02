@@ -42,8 +42,16 @@ public class Configurable
     public static final String CLASS = Configurable.PREFIX + "class";
     /** Surface node name. */
     public static final String SURFACE = Configurable.PREFIX + "surface";
+    /** Surface image node. */
+    public static final String SURFACE_IMAGE = "image";
+    /** Surface icon node. */
+    public static final String SURFACE_ICON = "icon";
     /** Frames node name. */
     public static final String FRAMES = Configurable.PREFIX + "frames";
+    /** Frames horizontal node name. */
+    public static final String FRAMES_HORIZONTAL = "horizontal";
+    /** Frames vertical node name. */
+    public static final String FRAMES_VERTICAL = "vertical";
     /** Size node name. */
     public static final String SIZE = Configurable.PREFIX + "size";
     /** Offset node name. */
@@ -217,7 +225,24 @@ public class Configurable
      */
     public SurfaceData getSurface() throws LionEngineException
     {
-        return new SurfaceData(getString("image", Configurable.SURFACE), getSurfaceIcon());
+        return new SurfaceData(getString(Configurable.SURFACE_IMAGE, Configurable.SURFACE), getSurfaceIcon());
+    }
+
+    /**
+     * Check if a surface is defined.
+     * 
+     * @return <code>true</code> if has surface, <code>false</code> else.
+     */
+    public boolean hasSurface()
+    {
+        try
+        {
+            return getString(Configurable.SURFACE_IMAGE, Configurable.SURFACE) != null;
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
     }
 
     /**
@@ -228,8 +253,26 @@ public class Configurable
      */
     public FramesData getFrames() throws LionEngineException
     {
-        return new FramesData(getInteger("horizontal", Configurable.FRAMES),
-                getInteger("vertical", Configurable.FRAMES));
+        return new FramesData(getInteger(Configurable.FRAMES_HORIZONTAL, Configurable.FRAMES), getInteger(
+                Configurable.FRAMES_VERTICAL, Configurable.FRAMES));
+    }
+
+    /**
+     * Check if a surface is defined.
+     * 
+     * @return <code>true</code> if has surface, <code>false</code> else.
+     */
+    public boolean hasFrames()
+    {
+        try
+        {
+            return getInteger(Configurable.FRAMES_HORIZONTAL, Configurable.FRAMES) > 0
+                    && getInteger(Configurable.FRAMES_VERTICAL, Configurable.FRAMES) > 0;
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
     }
 
     /**
