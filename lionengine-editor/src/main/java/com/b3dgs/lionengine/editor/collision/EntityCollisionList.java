@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -53,7 +54,8 @@ public class EntityCollisionList
      */
     public void loadCollisions()
     {
-        final Map<String, Collision> collisions = configurer.getCollisions();
+        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
+        final Map<String, Collision> collisions = configCollisions.getCollisions();
         loadObjects(collisions);
     }
 

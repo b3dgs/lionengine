@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
@@ -50,7 +51,8 @@ public abstract class UnitAttacker
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        animAttack = configurer.getAnimation("attack");
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        animAttack = configAnimations.getAnimation("attack");
         attacker = new AttackerModel<>(this);
     }
 

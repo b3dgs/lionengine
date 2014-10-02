@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -56,7 +57,8 @@ abstract class Entity
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        setCollision(configurer.getCollision("default"));
+        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
+        setCollision(configCollisions.getCollision("default"));
     }
 
     /*

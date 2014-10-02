@@ -52,11 +52,10 @@ public class SetupGame
     }
 
     /**
-     * Clear the setup and remove configurer data.
+     * Clear the setup.
      */
     public void clear()
     {
-        configurer.clear();
         clazz = null;
     }
 

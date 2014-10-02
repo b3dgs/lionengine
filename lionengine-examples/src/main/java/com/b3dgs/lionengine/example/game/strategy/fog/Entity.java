@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -59,7 +60,8 @@ abstract class Entity
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        animIdle = configurer.getAnimation("idle");
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        animIdle = configAnimations.getAnimation("idle");
         play(animIdle);
     }
 

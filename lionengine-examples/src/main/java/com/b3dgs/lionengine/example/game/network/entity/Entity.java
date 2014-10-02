@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -110,9 +112,11 @@ abstract class Entity
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        animIdle = configurer.getAnimation("idle");
-        animWalk = configurer.getAnimation("walk");
-        animDie = configurer.getAnimation("dead");
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
+        animIdle = configAnimations.getAnimation("idle");
+        animWalk = configAnimations.getAnimation("walk");
+        animDie = configAnimations.getAnimation("dead");
         networkableModel = new NetworkableModel();
         movementForce = new Force();
         movementForceDest = new Force();
@@ -122,7 +126,7 @@ abstract class Entity
         networkLocation.start();
         state = EntityState.IDLE;
         setMass(configurer.getDouble("mass", "data"));
-        setCollision(configurer.getCollision("default"));
+        setCollision(configCollisions.getCollision("default"));
         setFrameOffsets(0, 1);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);

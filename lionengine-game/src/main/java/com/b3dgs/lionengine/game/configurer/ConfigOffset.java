@@ -57,7 +57,7 @@ public class ConfigOffset
      * @param x The x value.
      * @param y The y value.
      */
-    public ConfigOffset(int x, int y)
+    private ConfigOffset(int x, int y)
     {
         this.x = x;
         this.y = y;

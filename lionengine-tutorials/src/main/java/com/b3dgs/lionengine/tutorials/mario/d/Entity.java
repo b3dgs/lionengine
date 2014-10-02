@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -145,11 +146,12 @@ abstract class Entity
      */
     private void loadAnimations(Configurer configurer)
     {
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, configurer.getAnimation(state.getAnimationName()));
+                animations.put(state, configAnimations.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

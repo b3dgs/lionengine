@@ -57,7 +57,7 @@ public class ConfigSurface
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).
      */
-    public ConfigSurface(String image, String icon)
+    private ConfigSurface(String image, String icon)
     {
         this.image = image;
         this.icon = icon;

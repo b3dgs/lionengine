@@ -17,15 +17,9 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.anim.Anim;
-import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -40,15 +34,7 @@ public class Configurer
     public static final String PREFIX = "lionengine:";
     /** Class node name. */
     public static final String CLASS = Configurer.PREFIX + "class";
-    /** Animation node name. */
-    public static final String ANIMATION = Configurer.PREFIX + "animation";
-    /** Collision node name. */
-    public static final String COLLISION = Configurer.PREFIX + "collision";
 
-    /** Animations map. */
-    private final Map<String, Animation> animations;
-    /** Collisions map. */
-    private final Map<String, Collision> collisions;
     /** Media reference. */
     private final Media media;
     /** Root path. */
@@ -67,21 +53,8 @@ public class Configurer
         Check.notNull(media);
 
         this.media = media;
-        animations = new HashMap<>(0);
-        collisions = new HashMap<>(0);
         path = media.getFile().getParent();
         root = Stream.loadXml(media);
-        loadAnimations();
-        loadCollisions();
-    }
-
-    /**
-     * Clear the configurer data.
-     */
-    public void clear()
-    {
-        animations.clear();
-        collisions.clear();
     }
 
     /**
@@ -192,86 +165,6 @@ public class Configurer
     public String getClassName() throws LionEngineException
     {
         return getText(Configurer.CLASS);
-    }
-
-    /**
-     * Get an animation data from its name.
-     * 
-     * @param name The animation name.
-     * @return The animation reference.
-     * @throws LionEngineException If the animation with the specified name is not found.
-     */
-    public Animation getAnimation(String name) throws LionEngineException
-    {
-        final Animation animation = animations.get(name);
-        Check.notNull(animation);
-        return animation;
-    }
-
-    /**
-     * Get all animations.
-     * 
-     * @return The animations list.
-     */
-    public Map<String, Animation> getAnimations()
-    {
-        return animations;
-    }
-
-    /**
-     * Get a collision data from its name.
-     * 
-     * @param name The collision name.
-     * @return The collision reference.
-     * @throws LionEngineException If the collision with the specified name is not found.
-     */
-    public Collision getCollision(String name) throws LionEngineException
-    {
-        final Collision collision = collisions.get(name);
-        Check.notNull(collision);
-        return collision;
-    }
-
-    /**
-     * Get all collisions.
-     * 
-     * @return The collisions list.
-     */
-    public Map<String, Collision> getCollisions()
-    {
-        return collisions;
-    }
-
-    /**
-     * Load all animations.
-     * 
-     * @throws LionEngineException If unable to read animation.
-     */
-    private void loadAnimations() throws LionEngineException
-    {
-        for (final XmlNode node : root.getChildren(Configurer.ANIMATION))
-        {
-            final String anim = node.readString("name");
-            final Animation animation = Anim.createAnimation(node.readInteger("start"), node.readInteger("end"),
-                    node.readDouble("speed"), node.readBoolean("reversed"), node.readBoolean("repeat"));
-            animations.put(anim, animation);
-        }
-    }
-
-    /**
-     * Load all collisions.
-     * 
-     * @throws LionEngineException If unable to read collision.
-     */
-    private void loadCollisions() throws LionEngineException
-    {
-        for (final XmlNode node : root.getChildren(Configurer.COLLISION))
-        {
-            final String coll = node.readString("name");
-            final Collision collision = new Collision(node.readInteger("offsetX"), node.readInteger("offsetY"),
-                    node.readInteger("width"), node.readInteger("height"), node.readBoolean("mirror"));
-            collisions.put(coll, collision);
-        }
     }
 
     /**

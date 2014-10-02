@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -92,6 +94,7 @@ abstract class Entity
         super(setup);
         animations = new EnumMap<>(EntityState.class);
         final Configurer configurer = setup.getConfigurer();
+        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
         jumpForceValue = configurer.getDouble("jumpSpeed", "data");
         movementSpeedValue = configurer.getDouble("movementSpeed", "data");
         movement = new Movement();
@@ -99,7 +102,7 @@ abstract class Entity
         state = EntityState.IDLE;
         setMass(configurer.getDouble("mass", "data"));
         setFrameOffsets(0, 1);
-        setCollision(configurer.getCollision("default"));
+        setCollision(configCollisions.getCollision("default"));
         loadAnimations(configurer);
         addCollisionTile(EntityCollisionTileCategory.GROUND_CENTER, 0, 0);
         addCollisionTile(EntityCollisionTileCategory.KNEE_LEFT, -5, 9);
@@ -185,11 +188,12 @@ abstract class Entity
      */
     private void loadAnimations(Configurer configurer)
     {
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
         for (final EntityState state : EntityState.values())
         {
             try
             {
-                animations.put(state, configurer.getAnimation(state.getAnimationName()));
+                animations.put(state, configAnimations.getAnimation(state.getAnimationName()));
             }
             catch (final LionEngineException exception)
             {

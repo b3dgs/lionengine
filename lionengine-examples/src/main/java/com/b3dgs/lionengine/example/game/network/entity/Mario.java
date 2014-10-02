@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
@@ -58,8 +59,9 @@ public final class Mario
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        animTurn = configurer.getAnimation("turn");
-        animJump = configurer.getAnimation("jump");
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        animTurn = configAnimations.getAnimation("turn");
+        animJump = configAnimations.getAnimation("jump");
         timerDie = new Timing();
         jumpForceValue = 8.0;
         movementSpeedValue = 3.0;

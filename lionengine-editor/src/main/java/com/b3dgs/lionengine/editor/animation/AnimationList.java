@@ -22,6 +22,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.ObjectList;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
@@ -54,7 +55,8 @@ public class AnimationList
      */
     public void loadAnimations()
     {
-        final Map<String, Animation> animations = configurer.getAnimations();
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        final Map<String, Animation> animations = configAnimations.getAnimations();
         loadObjects(animations);
     }
 

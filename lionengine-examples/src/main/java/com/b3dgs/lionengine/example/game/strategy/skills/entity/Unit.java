@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
@@ -55,8 +56,9 @@ public abstract class Unit
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
-        animIdle = configurer.getAnimation("idle");
-        animWalk = configurer.getAnimation("walk");
+        final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
+        animIdle = configAnimations.getAnimation("idle");
+        animWalk = configAnimations.getAnimation("walk");
         play(animIdle);
     }
 
