@@ -44,14 +44,6 @@ public class ProjectTreeCreator
     public static final Image ICON_MAIN = UtilEclipse.getIcon("resources", "project.png");
     /** Folder icon. */
     public static final Image ICON_FOLDER = UtilEclipse.getIcon("resources", "folder.png");
-    /** Folder entities icon. */
-    public static final Image ICON_FOLDER_ENTITIES = UtilEclipse.getIcon("resources", "folder-entities.png");
-    /** Folder effects icon. */
-    public static final Image ICON_FOLDER_EFFECTS = UtilEclipse.getIcon("resources", "folder-effects.png");
-    /** Folder levels icon. */
-    public static final Image ICON_FOLDER_LEVELS = UtilEclipse.getIcon("resources", "folder-levels.png");
-    /** Folder tiles icon. */
-    public static final Image ICON_FOLDER_TILES = UtilEclipse.getIcon("resources", "folder-tiles.png");
     /** File icon. */
     public static final Image ICON_FILE = UtilEclipse.getIcon("resources", "file.png");
     /** Sound file icon. */
@@ -104,54 +96,6 @@ public class ProjectTreeCreator
     }
 
     /**
-     * Check if the folder contains entities in depth and assign icon.
-     * 
-     * @param path The folder path.
-     * @param parent The node parent.
-     */
-    private static void checkEntitiesFolder(File path, TreeItem parent)
-    {
-        if (FolderTypeTester.isFolderType(path.getParentFile()))
-        {
-            parent.setImage(ProjectTreeCreator.ICON_FOLDER_ENTITIES);
-            ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
-        }
-    }
-
-    /**
-     * Check if the folder contains effects in depth and assign icon.
-     * 
-     * @param path The folder path.
-     * @param parent The node parent.
-     */
-    private static void checkEffectsFolder(File path, TreeItem parent)
-    {
-        if (FolderTypeTester.isFolderType(path.getParentFile()))
-        {
-            parent.setImage(ProjectTreeCreator.ICON_FOLDER_EFFECTS);
-            ProjectTreeCreator.checkEntitiesFolder(path.getParentFile(), parent.getParentItem());
-        }
-    }
-
-    /**
-     * Check if the folder contains tiles in depth and assign icon.
-     * 
-     * @param path The folder path.
-     * @param parent The node parent.
-     */
-    private static void checkTilesFolder(File path, TreeItem parent)
-    {
-        for (final TreeItem item : parent.getItems())
-        {
-            if (item.getImage() != ProjectTreeCreator.ICON_FOLDER_TILES)
-            {
-                return;
-            }
-        }
-        parent.setImage(ProjectTreeCreator.ICON_FOLDER_TILES);
-    }
-
-    /**
      * Get the class file icon.
      * 
      * @param file The child file.
@@ -178,11 +122,11 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        if (EntitiesFolderTester.isEntityFile(file.getFile()))
+        if (ObjectsFolderTester.isObjectFile(file.getFile()))
         {
             return ProjectTreeCreator.ICON_ENTITTY;
         }
-        else if (EffectsFolderTester.isEffectFile(file.getFile()))
+        else if (ProjectilesFolderTester.isProjectileFile(file.getFile()))
         {
             return ProjectTreeCreator.ICON_EFFECT;
         }
@@ -191,33 +135,6 @@ public class ProjectTreeCreator
             return ProjectTreeCreator.ICON_TILESHEETS;
         }
         return ProjectTreeCreator.ICON_DATA;
-    }
-
-    /**
-     * Get the icon folder.
-     * 
-     * @param folder The folder.
-     * @return The folder icon.
-     */
-    private static Image getFolderIcon(File folder)
-    {
-        if (EntitiesFolderTester.isEntitiesFolder(folder))
-        {
-            return ProjectTreeCreator.ICON_FOLDER_ENTITIES;
-        }
-        else if (EffectsFolderTester.isEffectsFolder(folder))
-        {
-            return ProjectTreeCreator.ICON_FOLDER_EFFECTS;
-        }
-        else if (FolderTypeTester.isLevelsFolder(folder))
-        {
-            return ProjectTreeCreator.ICON_FOLDER_LEVELS;
-        }
-        else if (FolderTypeTester.isTilesFolder(folder))
-        {
-            return ProjectTreeCreator.ICON_FOLDER_TILES;
-        }
-        return ProjectTreeCreator.ICON_FOLDER;
     }
 
     /**
@@ -398,20 +315,7 @@ public class ProjectTreeCreator
         }
         else
         {
-            final Image icon = ProjectTreeCreator.getFolderIcon(path);
-            if (icon == ProjectTreeCreator.ICON_FOLDER_ENTITIES)
-            {
-                ProjectTreeCreator.checkEntitiesFolder(path, parent);
-            }
-            else if (icon == ProjectTreeCreator.ICON_FOLDER_EFFECTS)
-            {
-                ProjectTreeCreator.checkEffectsFolder(path, parent);
-            }
-            else if (icon == ProjectTreeCreator.ICON_FOLDER_TILES)
-            {
-                ProjectTreeCreator.checkTilesFolder(path, parent);
-            }
-            return createItem(parent, path, icon);
+            return createItem(parent, path, ProjectTreeCreator.ICON_FOLDER);
         }
     }
 

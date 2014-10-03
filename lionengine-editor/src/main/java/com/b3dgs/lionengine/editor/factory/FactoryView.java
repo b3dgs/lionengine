@@ -47,7 +47,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.palette.PaletteView;
-import com.b3dgs.lionengine.editor.project.EntitiesFolderTester;
+import com.b3dgs.lionengine.editor.project.ObjectsFolderTester;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
@@ -267,7 +267,7 @@ public class FactoryView
         {
             for (final File objectFile : objectFiles)
             {
-                if (objectFile.isFile() && EntitiesFolderTester.isEntityFile(objectFile))
+                if (objectFile.isFile() && ObjectsFolderTester.isObjectFile(objectFile))
                 {
                     loadObject(factory, objectFile);
                 }

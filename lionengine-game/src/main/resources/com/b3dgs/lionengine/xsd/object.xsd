@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema targetNamespace="http://lionengine.b3dgs.com" elementFormDefault="qualified"
 	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lionengine="http://lionengine.b3dgs.com">
+
 	<include schemaLocation="lionengine.xsd" />
 
-	<complexType name="projectile">
+	<complexType name="object">
 		<sequence minOccurs="1" maxOccurs="1">
 			<element name="class" type="string" minOccurs="1" maxOccurs="1" />
-			<element ref="lionengine:size" minOccurs="1" maxOccurs="1" />
 			<any namespace="##local" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
 		<attribute name="name" type="string" use="optional" />
 	</complexType>
 
-	<element name="projectile" type="lionengine:projectile" />
+	<element name="object" type="lionengine:object" />
 </schema>

@@ -31,16 +31,18 @@ public final class XsdLoader
 {
     /** Main XSD file. */
     public static final String XSD_LIONENGINE = "lionengine.xsd";
-    /** XSD entity. */
-    public static final String XSD_ENTITY = "entity.xsd";
-    /** XSD effect. */
-    public static final String XSD_EFFECT = "effect.xsd";
-    /** XSD projectile. */
+    /** Object XSD. */
+    public static final String XSD_OBJECT = "object.xsd";
+    /** Entity platform XSD. */
+    public static final String XSD_ENTITY_PLATFORM = "entityPlatform.xsd";
+    /** Projectile XSD. */
     public static final String XSD_PROJECTILE = "projectile.xsd";
-    /** XSD folder type. */
-    public static final String XSD_FOLDER_TYPE = "entityFolderType.xsd";
-    /** XSD tile sheets. */
-    public static final String XSD_TILE_SHEETS = "tilesheets.xsd";
+    /** Folder type XSD. */
+    public static final String XSD_FOLDER_TYPE = "folderType.xsd";
+    /** Tile collisions XSD. */
+    public static final String XSD_TILE_COLLISIONS = "tileCollisions.xsd";
+    /** Tile sheets XSD. */
+    public static final String XSD_TILE_SHEETS = "tileSheets.xsd";
 
     /**
      * Get an XSD from its name.

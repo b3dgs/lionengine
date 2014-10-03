@@ -79,39 +79,27 @@
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.entities-folder.addEntity">
+            id="com.b3dgs.lionengine.editor.objects-folder.addObject">
          <test
-               property="com.b3dgs.lionengine.editor.entitiesFolderTester.addEntity">
+               property="com.b3dgs.lionengine.editor.objectsFolderTester.addObject">
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.entities-folder.isEntity">
+            id="com.b3dgs.lionengine.editor.objects-folder.isObject">
          <test
-               property="com.b3dgs.lionengine.editor.entitiesFolderTester.isEntity">
+               property="com.b3dgs.lionengine.editor.objectsFolderTester.isObject">
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.entities-folder.editEntity">
+            id="com.b3dgs.lionengine.editor.projectiles-folder.addProjectile">
          <test
-               property="com.b3dgs.lionengine.editor.entitiesFolderTester.editEntity">
+               property="com.b3dgs.lionengine.editor.projectilesFolderTester.addProjectile">
          </test>
       </definition>
       <definition
-            id="com.b3dgs.lionengine.editor.effects-folder.addEffect">
+            id="com.b3dgs.lionengine.editor.projectiles-folder.isProjectile">
          <test
-               property="com.b3dgs.lionengine.editor.effectsFolderTester.addEffect">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.effects-folder.isEffect">
-         <test
-               property="com.b3dgs.lionengine.editor.effectsFolderTester.isEffect">
-         </test>
-      </definition>
-      <definition
-            id="com.b3dgs.lionengine.editor.effects-folder.editEffect">
-         <test
-               property="com.b3dgs.lionengine.editor.effectsFolderTester.editEffect">
+               property="com.b3dgs.lionengine.editor.projectilesFolderTester.isProjectile">
          </test>
       </definition>
       <definition
@@ -158,17 +146,17 @@
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.EntitiesFolderTester"
+            class="com.b3dgs.lionengine.editor.project.ObjectsFolderTester"
             id="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            namespace="com.b3dgs.lionengine.editor.entitiesFolderTester"
-            properties="addEntity,isEntity,editEntity"
+            namespace="com.b3dgs.lionengine.editor.objectsFolderTester"
+            properties="addObject,isObject"
             type="java.lang.Object">
       </propertyTester>
       <propertyTester
-            class="com.b3dgs.lionengine.editor.project.EffectsFolderTester"
-            id="com.b3dgs.lionengine.editor.effectsFolderTester"
-            namespace="com.b3dgs.lionengine.editor.effectsFolderTester"
-            properties="addEffect,isEffect,editEffect"
+            class="com.b3dgs.lionengine.editor.project.ProjectilesFolderTester"
+            id="com.b3dgs.lionengine.editor.projectilesFolderTester"
+            namespace="com.b3dgs.lionengine.editor.projectilesFolderTester"
+            properties="addProjectile,isProjectile"
             type="java.lang.Object">
       </propertyTester>
    </extension>

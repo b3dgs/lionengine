@@ -47,9 +47,9 @@ public interface MapTile<T extends TileGame>
     /** Number of horizontal tiles to make a bloc. */
     int BLOC_SIZE = 256;
     /** Collisions file name. */
-    String COLLISIONS_FILE_NAME = "collisions.xml";
+    String COLLISIONS_FILE_NAME = "tileCollisions.xml";
     /** Tile sheets data file name. */
-    String TILE_SHEETS_FILE_NAME = "tilesheets.xml";
+    String TILE_SHEETS_FILE_NAME = "tileSheets.xml";
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
