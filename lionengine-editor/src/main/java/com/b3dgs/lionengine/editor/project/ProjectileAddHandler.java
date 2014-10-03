@@ -55,7 +55,7 @@ public class ProjectileAddHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddEntity_Title, Messages.AddEntity_Text,
+        final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
                 ProjectileAddHandler.DEFAULT_NEW_EFFECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
@@ -63,14 +63,14 @@ public class ProjectileAddHandler
         {
             final String name = inputDialog.getValue();
             final File entity = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-            final File template = Tools.getTemplate(Tools.TEMPLATE_ENTITY);
+            final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
             try
             {
                 Files.copy(template.toPath(), entity.toPath());
             }
             catch (final FileAlreadyExistsException exception)
             {
-                MessageDialog.openError(parent, Messages.AddEntity_Error_Title, Messages.AddEntity_Error_Text);
+                MessageDialog.openError(parent, Messages.AddObject_Error_Title, Messages.AddObject_Error_Text);
                 execute(partService, parent);
             }
             catch (final IOException exception)

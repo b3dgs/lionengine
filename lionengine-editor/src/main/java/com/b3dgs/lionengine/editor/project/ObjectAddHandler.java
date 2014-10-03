@@ -19,14 +19,18 @@ package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -37,14 +41,81 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 
 /**
- * Add an entity in the selected folder.
+ * Add an object in the selected folder.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class ObjectAddHandler
 {
-    /** Default new entity name. */
-    private static final String DEFAULT_NEW_ENTITY_NAME = "entity";
+    /** Default new object name. */
+    private static final String DEFAULT_NEW_OBJECT_NAME = "object";
+
+    /**
+     * Create the object
+     * 
+     * @param object The object file destination.
+     * @param clazz The object class.
+     * @throws IOException If error when creating the object.
+     */
+    private static void createObject(File object, Class<?> clazz) throws IOException
+    {
+        final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
+        final List<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
+        final List<String> dest = new ArrayList<>();
+        for (final String line : lines)
+        {
+            if (line.contains(Tools.TEMPLATE_CLASS_AREA))
+            {
+                dest.add(line.replace(Tools.TEMPLATE_CLASS_AREA, clazz.getName()));
+            }
+            else
+            {
+                dest.add(line);
+            }
+        }
+        Files.write(object.toPath(), dest, StandardCharsets.UTF_8);
+        lines.clear();
+        dest.clear();
+    }
+
+    /**
+     * Add the object
+     * 
+     * @param partService The part service reference.
+     * @param selection The current folder selection.
+     * @param object The object file destination.
+     * @param clazz The object class.
+     */
+    private static void addObject(EPartService partService, Media selection, File object, Class<?> clazz)
+    {
+        try
+        {
+            ObjectAddHandler.createObject(object, clazz);
+            final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
+            part.addTreeItem(selection, object, ProjectTreeCreator.ICON_OBJECT);
+        }
+        catch (final IOException exception)
+        {
+            throw new LionEngineException(exception);
+        }
+    }
+
+    /**
+     * Get the class file from dialog.
+     * 
+     * @param parent The shell parent.
+     * @return The class file, <code>null</code> if none.
+     */
+    private static String getClassFile(Shell parent)
+    {
+        final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN);
+        fileDialog.setFilterPath(Project.getActive().getClassesPath().getAbsolutePath());
+        fileDialog.setFilterExtensions(new String[]
+        {
+            "*.class"
+        });
+        return fileDialog.open();
+    }
 
     /**
      * Execute the handler.
@@ -56,29 +127,28 @@ public class ObjectAddHandler
     public void execute(EPartService partService, Shell parent)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final InputDialog inputDialog = new InputDialog(parent, Messages.AddEntity_Title, Messages.AddEntity_Text,
-                ObjectAddHandler.DEFAULT_NEW_ENTITY_NAME, new InputValidator(InputValidator.NAME_MATCH,
+        final InputDialog inputDialog = new InputDialog(parent, Messages.AddObject_Title, Messages.AddObject_Text,
+                ObjectAddHandler.DEFAULT_NEW_OBJECT_NAME, new InputValidator(InputValidator.NAME_MATCH,
                         com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         final int code = inputDialog.open();
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File entity = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-            final File template = Tools.getTemplate(Tools.TEMPLATE_ENTITY);
-            try
+            final File object = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+    
+            if (object.exists())
             {
-                Files.copy(template.toPath(), entity.toPath());
-                final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
-                part.addTreeItem(selection, entity, ProjectTreeCreator.ICON_ENTITTY);
-            }
-            catch (final FileAlreadyExistsException exception)
-            {
-                MessageDialog.openError(parent, Messages.AddEntity_Error_Title, Messages.AddEntity_Error_Text);
+                MessageDialog.openError(parent, Messages.AddObject_Error_Title, Messages.AddObject_Error_Text);
                 execute(partService, parent);
             }
-            catch (final IOException exception)
+            else
             {
-                throw new LionEngineException(exception);
+                final String classFile = ObjectAddHandler.getClassFile(parent);
+                if (classFile != null)
+                {
+                    final Class<?> clazz = Tools.getClass(new File(classFile));
+                    ObjectAddHandler.addObject(partService, selection, object, clazz);
+                }
             }
         }
     }

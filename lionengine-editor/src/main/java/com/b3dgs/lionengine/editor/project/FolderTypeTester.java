@@ -20,16 +20,14 @@ package com.b3dgs.lionengine.editor.project;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.xml.bind.ValidationException;
-
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.xsd.XsdLoader;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder is a folder type.
@@ -39,6 +37,10 @@ import com.b3dgs.lionengine.xsd.XsdLoader;
 public class FolderTypeTester
         extends PropertyTester
 {
+    /** Folder type node. */
+    public static final String NODE_FOLDER_TYPE = "lionengine:folderType";
+    /** Folder type name node. */
+    public static final String NODE_NAME = "lionengine:name";
     /** Can edit category property. */
     private static final String PROPERTY_CATEGORY = "category";
 
@@ -68,28 +70,12 @@ public class FolderTypeTester
      */
     public static boolean isFolderTypeFile(File file)
     {
-        return FolderTypeTester.is(file, XsdLoader.XSD_FOLDER_TYPE);
-    }
-
-    /**
-     * Check if the file is a folder type descriptor.
-     * 
-     * @param file The file to test.
-     * @param xsd The expected XSD type.
-     * @return <code>true</code> if valid, <code>false</code> else.
-     */
-    public static boolean is(File file, String xsd)
-    {
         try
         {
-            if (file.isFile() && file.getName().endsWith(FactoryObjectGame.FILE_DATA_EXTENSION))
-            {
-                UtilFile.validateXml(XsdLoader.get(xsd), file);
-                return true;
-            }
-            return false;
+            final XmlNode root = Stream.loadXml(UtilityMedia.get(file));
+            return root.getChild(FolderTypeTester.NODE_NAME) != null;
         }
-        catch (final ValidationException exception)
+        catch (final LionEngineException exception)
         {
             return false;
         }
@@ -128,7 +114,7 @@ public class FolderTypeTester
         {
             for (final File file : folder.listFiles())
             {
-                if (FolderTypeTester.is(file, XsdLoader.XSD_TILE_SHEETS))
+                if (TilesheetsFolderTester.isTilesheetsFile(UtilityMedia.get(file)))
                 {
                     return true;
                 }

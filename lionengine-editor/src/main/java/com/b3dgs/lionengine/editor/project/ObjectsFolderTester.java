@@ -21,8 +21,11 @@ import java.io.File;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.xsd.XsdLoader;
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**
  * Test if the folder contains objects.
@@ -38,35 +41,22 @@ public class ObjectsFolderTester
     private static final String PROPERTY_IS_OBJECT = "isObject";
 
     /**
-     * Check if the folder contains objects.
-     * 
-     * @param folder The folder to check.
-     * @return <code>true</code> if contains objects, <code>false</code> else.
-     */
-    public static boolean isObjectsFolder(File folder)
-    {
-        if (folder.isDirectory())
-        {
-            for (final File file : folder.listFiles())
-            {
-                if (ObjectsFolderTester.isObjectFile(file))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
      * Check if the file is an object descriptor.
      * 
-     * @param file The file to test.
+     * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isObjectFile(File file)
+    public static boolean isObjectFile(Media media)
     {
-        return FolderTypeTester.is(file, XsdLoader.XSD_OBJECT);
+        try
+        {
+            final Class<?> clazz = Tools.getClass(media);
+            return ObjectGame.class.isAssignableFrom(clazz) && !ProjectileGame.class.isAssignableFrom(clazz);
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
     }
 
     /*
@@ -89,7 +79,7 @@ public class ObjectsFolderTester
                 }
                 else if (ObjectsFolderTester.PROPERTY_IS_OBJECT.equals(property))
                 {
-                    return ObjectsFolderTester.isObjectFile(file);
+                    return ObjectsFolderTester.isObjectFile(selection);
                 }
             }
         }

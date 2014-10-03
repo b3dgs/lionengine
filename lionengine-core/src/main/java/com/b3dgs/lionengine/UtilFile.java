@@ -18,22 +18,9 @@
 package com.b3dgs.lionengine;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import javax.xml.XMLConstants;
-import javax.xml.bind.ValidationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
-import org.xml.sax.SAXException;
 
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.EngineCore;
@@ -371,34 +358,6 @@ public final class UtilFile
         else
         {
             UtilFile.tmpDir = null;
-        }
-    }
-
-    /**
-     * Check if the XML is valid, regarding the XSD file.
-     * 
-     * @param xsd The XSD file.
-     * @param xml The XML file.
-     * @throws ValidationException If an error occurred when validating the XML.
-     */
-    public static void validateXml(URI xsd, File xml) throws ValidationException
-    {
-        Check.notNull(xsd);
-        Check.notNull(xml);
-
-        try
-        {
-            final URL schemaFile = xsd.toURL();
-            final Source xmlFile = new StreamSource(xml);
-            final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            final Schema schema = schemaFactory.newSchema(schemaFile);
-            final Validator validator = schema.newValidator();
-            validator.validate(xmlFile);
-        }
-        catch (final SAXException
-                     | IOException exception)
-        {
-            throw new ValidationException(exception);
         }
     }
 

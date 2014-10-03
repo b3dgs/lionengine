@@ -51,8 +51,8 @@ public class ObjectDeleteHandler
             if (file.delete())
             {
                 final MessageBox messageBox = new MessageBox(parent, SWT.ICON_INFORMATION);
-                messageBox.setText(Messages.RemoveEntity_Title);
-                messageBox.setMessage(Messages.RemoveEntity_Text + file);
+                messageBox.setText(Messages.RemoveObject_Title);
+                messageBox.setMessage(Messages.RemoveObject_Text + file);
                 messageBox.open();
                 final ProjectsPart part = UtilEclipse.getPart(partService, ProjectsPart.ID, ProjectsPart.class);
                 part.removeTreeItem(selection);
@@ -60,8 +60,8 @@ public class ObjectDeleteHandler
             else
             {
                 final MessageBox messageBox = new MessageBox(parent, SWT.ICON_ERROR);
-                messageBox.setText(Messages.RemoveEntity_Error_Title);
-                messageBox.setMessage(Messages.RemoveEntity_Error_Text + file);
+                messageBox.setText(Messages.RemoveObject_Error_Title);
+                messageBox.setMessage(Messages.RemoveObject_Error_Text + file);
                 messageBox.open();
             }
         }

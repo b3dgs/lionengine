@@ -57,7 +57,7 @@ public final class Project
     /** Property project resources folder. */
     public static final String PROPERTY_PROJECT_RESOURCES = "ResourcesFolder";
     /** Load class error. */
-    private static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
+    public static final String ERROR_LOAD_CLASS = "Unable to load the class: ";
     /** Create class path directory error. */
     private static final String ERROR_CREATE_CLASSPATH_DIR = "Unable to create class path directory: ";
     /** Media is not in project folder. */
@@ -371,7 +371,7 @@ public final class Project
      * 
      * @param <C> The class type.
      * @param clazz The class to cast to.
-     * @param file The class file.
+     * @param file The class file (must be in classes folder).
      * @return The class instance.
      * @throws LionEngineException If not able to create the class.
      */

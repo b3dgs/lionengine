@@ -50,6 +50,8 @@ public interface MapTile<T extends TileGame>
     String COLLISIONS_FILE_NAME = "tileCollisions.xml";
     /** Tile sheets data file name. */
     String TILE_SHEETS_FILE_NAME = "tileSheets.xml";
+    /** Tile sheet node. */
+    String NODE_TILE_SHEET = "lionengine:tileSheet";
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.

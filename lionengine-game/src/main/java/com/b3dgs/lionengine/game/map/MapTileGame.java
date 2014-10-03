@@ -375,7 +375,7 @@ public abstract class MapTileGame<T extends TileGame>
         // Retrieve patterns list
         final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.TILE_SHEETS_FILE_NAME);
         final XmlNode root = Stream.loadXml(mediaPatterns);
-        final List<XmlNode> children = root.getChildren();
+        final List<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         files = new String[children.size()];
         int i = 0;
         for (final XmlNode child : children)

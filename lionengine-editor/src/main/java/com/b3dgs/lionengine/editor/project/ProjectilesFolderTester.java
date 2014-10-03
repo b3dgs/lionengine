@@ -21,8 +21,10 @@ import java.io.File;
 
 import org.eclipse.core.expressions.PropertyTester;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.xsd.XsdLoader;
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**
  * Test if the folder contains projectiles.
@@ -38,35 +40,22 @@ public class ProjectilesFolderTester
     private static final String PROPERTY_IS_PROJECTILE = "isProjectile";
 
     /**
-     * Check if the folder contains projectiles.
+     * Check if the file is a projectile descriptor.
      * 
-     * @param folder The folder to check.
-     * @return <code>true</code> if contains projectiles, <code>false</code> else.
-     */
-    public static boolean isProjectilesFolder(File folder)
-    {
-        if (folder.isDirectory())
-        {
-            for (final File file : folder.listFiles())
-            {
-                if (ProjectilesFolderTester.isProjectileFile(file))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if the file is an projectile descriptor.
-     * 
-     * @param file The file to test.
+     * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isProjectileFile(File file)
+    public static boolean isProjectileFile(Media media)
     {
-        return FolderTypeTester.is(file, XsdLoader.XSD_PROJECTILE);
+        try
+        {
+            final Class<?> clazz = Tools.getClass(media);
+            return ProjectileGame.class.isAssignableFrom(clazz);
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
     }
 
     /*
@@ -85,12 +74,11 @@ public class ProjectilesFolderTester
                 final File file = selection.getFile();
                 if (ProjectilesFolderTester.PROPERTY_ADD_PROJECTILE.equals(property))
                 {
-                    return ProjectilesFolderTester.isProjectilesFolder(selection.getFile())
-                            && !FolderTypeTester.isFolderType(selection.getFile());
+                    return file.isDirectory() && !FolderTypeTester.isFolderType(file);
                 }
                 else if (ProjectilesFolderTester.PROPERTY_IS_PROJECTILE.equals(property))
                 {
-                    return ProjectilesFolderTester.isProjectileFile(file);
+                    return ProjectilesFolderTester.isProjectileFile(selection);
                 }
             }
         }

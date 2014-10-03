@@ -80,8 +80,8 @@ public class FolderTypeEditHandler
     private static void enterName(Shell parent, Media media, XmlNode root)
     {
         final XmlNode typeName = root.getChild(FolderTypeEditHandler.NODE_NAME);
-        final InputDialog inputDialog = new InputDialog(parent, Messages.EditEntitiesFolderType_Name_Title,
-                Messages.EditEntitiesFolderType_Name_Text, typeName.getText(), new InputValidator(
+        final InputDialog inputDialog = new InputDialog(parent, Messages.EditFolderType_Name_Title,
+                Messages.EditFolderType_Name_Text, typeName.getText(), new InputValidator(
                         InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         inputDialog.open();
         final String value = inputDialog.getValue();

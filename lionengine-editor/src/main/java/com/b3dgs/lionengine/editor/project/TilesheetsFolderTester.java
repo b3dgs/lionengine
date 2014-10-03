@@ -17,15 +17,13 @@
  */
 package com.b3dgs.lionengine.editor.project;
 
-import java.io.File;
-
-import javax.xml.bind.ValidationException;
-
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.xsd.XsdLoader;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Test if the folder contains tile sheets.
@@ -39,19 +37,19 @@ public class TilesheetsFolderTester
     private static final String PROPERTY_EDIT_TILESHEETS = "editTilesheets";
 
     /**
-     * Check if the file is a tile sheets descriptor.
+     * Check if the media is a tile sheets descriptor.
      * 
-     * @param file The file to test.
+     * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isTilesheetsFile(File file)
+    public static boolean isTilesheetsFile(Media media)
     {
         try
         {
-            UtilFile.validateXml(XsdLoader.get(XsdLoader.XSD_TILE_SHEETS), file);
-            return true;
+            final XmlNode root = Stream.loadXml(media);
+            return root.getChild(MapTile.NODE_TILE_SHEET) != null;
         }
-        catch (final ValidationException exception)
+        catch (final LionEngineException exception)
         {
             return false;
         }
@@ -72,7 +70,7 @@ public class TilesheetsFolderTester
             {
                 if (TilesheetsFolderTester.PROPERTY_EDIT_TILESHEETS.equals(property))
                 {
-                    return TilesheetsFolderTester.isTilesheetsFile(selection.getFile());
+                    return TilesheetsFolderTester.isTilesheetsFile(selection);
                 }
             }
         }

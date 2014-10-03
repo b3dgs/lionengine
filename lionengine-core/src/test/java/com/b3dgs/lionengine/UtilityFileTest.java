@@ -107,18 +107,6 @@ public class UtilityFileTest
         Assert.assertFalse(UtilFile.isDir(path));
         Assert.assertFalse(UtilFile.isDir(null));
         Assert.assertEquals("file1", UtilFile.removeExtension(file));
-        UtilFile.validateXml(new File(UtilFile.getPath(UtilityFileTest.PATH, "tilesheets.xsd")).toURI(), new File(
-                UtilFile.getPath(UtilityFileTest.PATH, "type.xml")));
-        try
-        {
-            UtilFile.validateXml(new File(UtilFile.getPath(UtilityFileTest.PATH, "tilesheets.xsd")).toURI(), new File(
-                    UtilFile.getPath(UtilityFileTest.PATH, "error.xml")));
-            Assert.fail();
-        }
-        catch (final ValidationException exception)
-        {
-            // Success
-        }
     }
 
     /**

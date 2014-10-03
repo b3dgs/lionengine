@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.xsd.XsdLoader;
 
 /**
  * Generate the project tree from the project folder.
@@ -60,10 +59,12 @@ public class ProjectTreeCreator
     public static final Image ICON_MAP = UtilEclipse.getIcon("resources", "map-tile.png");
     /** Factory entity file icon. */
     public static final Image ICON_FACTORY_ENTITY = UtilEclipse.getIcon("resources", "factory.png");
+    /** Object file icon. */
+    public static final Image ICON_OBJECT = UtilEclipse.getIcon("resources", "object.png");
     /** Entity file icon. */
-    public static final Image ICON_ENTITTY = UtilEclipse.getIcon("resources", "entity.png");
-    /** Effect file icon. */
-    public static final Image ICON_EFFECT = UtilEclipse.getIcon("resources", "effect.png");
+    public static final Image ICON_ENTITY = UtilEclipse.getIcon("resources", "entity.png");
+    /** Projectile file icon. */
+    public static final Image ICON_PROJECTILE = UtilEclipse.getIcon("resources", "projectile.png");
     /** Class file icon. */
     public static final Image ICON_CLASS = UtilEclipse.getIcon("resources", "class.png");
     /** Tile sheets file icon. */
@@ -122,15 +123,15 @@ public class ProjectTreeCreator
      */
     private static Image getDataIcon(Media file)
     {
-        if (ObjectsFolderTester.isObjectFile(file.getFile()))
+        if (ProjectilesFolderTester.isProjectileFile(file))
         {
-            return ProjectTreeCreator.ICON_ENTITTY;
+            return ProjectTreeCreator.ICON_PROJECTILE;
         }
-        else if (ProjectilesFolderTester.isProjectileFile(file.getFile()))
+        else if (ObjectsFolderTester.isObjectFile(file))
         {
-            return ProjectTreeCreator.ICON_EFFECT;
+            return ProjectTreeCreator.ICON_OBJECT;
         }
-        else if (FolderTypeTester.is(file.getFile(), XsdLoader.XSD_TILE_SHEETS))
+        else if (TilesheetsFolderTester.isTilesheetsFile(file))
         {
             return ProjectTreeCreator.ICON_TILESHEETS;
         }

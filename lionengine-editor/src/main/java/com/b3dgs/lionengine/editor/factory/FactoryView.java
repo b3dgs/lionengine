@@ -267,7 +267,7 @@ public class FactoryView
         {
             for (final File objectFile : objectFiles)
             {
-                if (objectFile.isFile() && ObjectsFolderTester.isObjectFile(objectFile))
+                if (objectFile.isFile() && ObjectsFolderTester.isObjectFile(UtilityMedia.get(objectFile)))
                 {
                     loadObject(factory, objectFile);
                 }

@@ -32,26 +32,26 @@ public final class Messages
     /** Bundle name. */
     private static final String BUNDLE_NAME = Activator.PLUGIN_ID + ".project.messages"; //$NON-NLS-1$
 
-    /** Add entity title. */
-    public static String AddEntity_Title;
-    /** Add entity title. */
-    public static String AddEntity_Text;
-    /** Add entity error title. */
-    public static String AddEntity_Error_Title;
-    /** Add entity error text. */
-    public static String AddEntity_Error_Text;
-    /** Edit entities folder type name title. */
-    public static String EditEntitiesFolderType_Name_Title;
-    /** Edit entities folder type name text. */
-    public static String EditEntitiesFolderType_Name_Text;
-    /** Remove entity title. */
-    public static String RemoveEntity_Title;
-    /** Remove entity text. */
-    public static String RemoveEntity_Text;
-    /** Remove entity error title. */
-    public static String RemoveEntity_Error_Title;
-    /** Remove entity error text. */
-    public static String RemoveEntity_Error_Text;
+    /** Add object title. */
+    public static String AddObject_Title;
+    /** Add object title. */
+    public static String AddObject_Text;
+    /** Add object error title. */
+    public static String AddObject_Error_Title;
+    /** Add object error text. */
+    public static String AddObject_Error_Text;
+    /** Edit folder type name title. */
+    public static String EditFolderType_Name_Title;
+    /** Edit folder type name text. */
+    public static String EditFolderType_Name_Text;
+    /** Remove object title. */
+    public static String RemoveObject_Title;
+    /** Remove object text. */
+    public static String RemoveObject_Text;
+    /** Remove object error title. */
+    public static String RemoveObject_Error_Title;
+    /** Remove object error text. */
+    public static String RemoveObject_Error_Text;
 
     /**
      * Initialize.
