@@ -23,6 +23,7 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -81,6 +82,25 @@ public class ConfigCollisions
         final int height = node.readInteger(ConfigCollisions.COLLISION_HEIGHT);
         final boolean mirror = node.readBoolean(ConfigCollisions.COLLISION_MIRROR);
         return new Collision(offsetX, offsetY, width, height, mirror);
+    }
+
+    /**
+     * Create an XML node from a collision.
+     * 
+     * @param name The collision name.
+     * @param collision The collision reference.
+     * @return The collision node.
+     */
+    public static XmlNode createNode(String name, Collision collision)
+    {
+        final XmlNode node = Stream.createXmlNode(ConfigCollisions.COLLISION);
+        node.writeString(ConfigCollisions.COLLISION_NAME, name);
+        node.writeInteger(ConfigCollisions.COLLISION_OFFSETX, collision.getOffsetX());
+        node.writeInteger(ConfigCollisions.COLLISION_OFFSETY, collision.getOffsetY());
+        node.writeInteger(ConfigCollisions.COLLISION_WIDTH, collision.getWidth());
+        node.writeInteger(ConfigCollisions.COLLISION_HEIGHT, collision.getHeight());
+        node.writeBoolean(ConfigCollisions.COLLISION_MIRROR, collision.hasMirror());
+        return node;
     }
 
     /** Collisions map. */

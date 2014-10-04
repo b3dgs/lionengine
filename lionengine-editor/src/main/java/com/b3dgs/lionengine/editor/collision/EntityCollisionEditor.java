@@ -21,10 +21,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
+import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Entity collision editor.
@@ -41,6 +45,8 @@ public class EntityCollisionEditor
 
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Collisions list. */
+    private EntityCollisionList entityCollisionList;
 
     /**
      * Constructor.
@@ -65,11 +71,26 @@ public class EntityCollisionEditor
         content.setLayout(new GridLayout(2, false));
 
         final EntityCollisionProperties entityCollisionProperties = new EntityCollisionProperties();
-        final EntityCollisionList entityCollisionList = new EntityCollisionList(configurer, entityCollisionProperties);
+        entityCollisionList = new EntityCollisionList(configurer, entityCollisionProperties);
 
         entityCollisionList.create(content);
         entityCollisionProperties.create(content);
 
         entityCollisionList.loadCollisions();
+    }
+
+    @Override
+    protected void onExit()
+    {
+        final XmlNode root = configurer.getRoot();
+        root.removeChildren(ConfigCollisions.COLLISION);
+        for (final TreeItem item : entityCollisionList.getTree().getItems())
+        {
+            final Collision collision = (Collision) item.getData();
+            final String coll = item.getText();
+            final XmlNode nodeAnim = ConfigCollisions.createNode(coll, collision);
+            root.add(nodeAnim);
+        }
+        configurer.save();
     }
 }
