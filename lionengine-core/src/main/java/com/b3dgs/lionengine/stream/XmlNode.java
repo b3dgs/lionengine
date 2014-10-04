@@ -135,6 +135,27 @@ public interface XmlNode
     void writeBoolean(String attribute, boolean content) throws LionEngineException;
 
     /**
+     * Remove attribute.
+     * 
+     * @param attribute The attribute to remove.
+     */
+    void removeAttribute(String attribute);
+
+    /**
+     * Remove child.
+     * 
+     * @param child The child to remove.
+     */
+    void removeChild(String child);
+
+    /**
+     * Remove all children.
+     * 
+     * @param children The children to remove.
+     */
+    void removeChildren(String children);
+
+    /**
      * Return the text inside the node.
      * 
      * @return The text.

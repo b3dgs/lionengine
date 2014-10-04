@@ -269,6 +269,34 @@ final class XmlNodeImpl
     }
 
     @Override
+    public void removeAttribute(String attribute)
+    {
+        root.removeAttribute(attribute);
+    }
+
+    @Override
+    public void removeChild(String child)
+    {
+        final XmlNode node = getChild(child);
+        if (node instanceof XmlNodeImpl)
+        {
+            root.removeChild(((XmlNodeImpl) node).getElement());
+        }
+    }
+
+    @Override
+    public void removeChildren(String children)
+    {
+        for (final XmlNode child : getChildren(children))
+        {
+            if (child instanceof XmlNodeImpl)
+            {
+                root.removeChild(((XmlNodeImpl) child).getElement());
+            }
+        }
+    }
+
+    @Override
     public String getText()
     {
         return root.getTextContent();

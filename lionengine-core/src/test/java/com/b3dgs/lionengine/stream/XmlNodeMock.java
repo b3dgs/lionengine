@@ -168,6 +168,24 @@ final class XmlNodeMock
     }
 
     @Override
+    public void removeAttribute(String attribute)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeChild(String child)
+    {
+        // Nothing to do
+    }
+
+    @Override
+    public void removeChildren(String children)
+    {
+        // Nothing to do
+    }
+
+    @Override
     public String getText()
     {
         return null;
