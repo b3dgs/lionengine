@@ -15,22 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.editor.palette.PaletteType;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
- * Set pipet handler.
+ * Set grid handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPipetHandler
+public class SetGridHandler
 {
     /**
      * Execute the handler.
@@ -40,19 +38,8 @@ public class SetPipetHandler
     @Execute
     public void execute(EPartService partService)
     {
-        final MPart part = partService.findPart(WorldViewPart.ID);
-        if (part != null)
-        {
-            final MToolBar toolBar = part.getToolbar();
-            if (toolBar != null)
-            {
-                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "hand", "selection");
-                UtilEclipse.setToolItemSelection(toolBar, true, "pipet");
-            }
-        }
-        final PaletteType type = PaletteType.PIPET;
-        WorldViewModel.INSTANCE.setSelectedPalette(type);
-        final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
-        view.setCursor(type.getCursor());
+        final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
+        part.switchGridEnabled();
+        part.update();
     }
 }

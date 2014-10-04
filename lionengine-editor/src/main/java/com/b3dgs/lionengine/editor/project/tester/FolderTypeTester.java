@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project;
+package com.b3dgs.lionengine.editor.project.tester;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +26,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.Property;
+import com.b3dgs.lionengine.editor.project.handler.TilesheetsFolderTester;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 

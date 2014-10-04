@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project;
+package com.b3dgs.lionengine.editor.project.tester;
 
 import java.io.File;
 
@@ -24,33 +24,36 @@ import org.eclipse.core.expressions.PropertyTester;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**
- * Test if the folder contains projectiles.
+ * Test if the folder contains objects.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ProjectilesFolderTester
+public class ObjectsFolderTester
         extends PropertyTester
 {
-    /** Can add projectile property. */
-    private static final String PROPERTY_ADD_PROJECTILE = "addProjectile";
-    /** Is projectile property. */
-    private static final String PROPERTY_IS_PROJECTILE = "isProjectile";
+    /** Can add object property. */
+    private static final String PROPERTY_ADD_OBJECT = "addObject";
+    /** Is object property. */
+    private static final String PROPERTY_IS_OBJECT = "isObject";
 
     /**
-     * Check if the file is a projectile descriptor.
+     * Check if the file is an object descriptor.
      * 
      * @param media The media to test.
      * @return <code>true</code> if valid, <code>false</code> else.
      */
-    public static boolean isProjectileFile(Media media)
+    public static boolean isObjectFile(Media media)
     {
         try
         {
             final Class<?> clazz = Tools.getClass(media);
-            return ProjectileGame.class.isAssignableFrom(clazz);
+            return ObjectGame.class.isAssignableFrom(clazz) && !ProjectileGame.class.isAssignableFrom(clazz);
         }
         catch (final LionEngineException exception)
         {
@@ -72,13 +75,13 @@ public class ProjectilesFolderTester
             if (selection != null)
             {
                 final File file = selection.getFile();
-                if (ProjectilesFolderTester.PROPERTY_ADD_PROJECTILE.equals(property))
+                if (ObjectsFolderTester.PROPERTY_ADD_OBJECT.equals(property))
                 {
-                    return file.isDirectory() && !FolderTypeTester.isFolderType(file);
+                    return file.isDirectory() && !FolderTypeTester.isFolderType(selection.getFile());
                 }
-                else if (ProjectilesFolderTester.PROPERTY_IS_PROJECTILE.equals(property))
+                else if (ObjectsFolderTester.PROPERTY_IS_OBJECT.equals(property))
                 {
-                    return ProjectilesFolderTester.isProjectileFile(selection);
+                    return ObjectsFolderTester.isObjectFile(selection);
                 }
             }
         }

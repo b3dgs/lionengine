@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.world.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -24,13 +24,15 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.editor.world.WorldViewPart;
 
 /**
- * Set pointer handler.
+ * Set pipet handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetPointerHandler
+public class SetPipetHandler
 {
     /**
      * Execute the handler.
@@ -46,11 +48,11 @@ public class SetPointerHandler
             final MToolBar toolBar = part.getToolbar();
             if (toolBar != null)
             {
-                UtilEclipse.setToolItemSelection(toolBar, false, "hand", "selection", "pipet");
-                UtilEclipse.setToolItemSelection(toolBar, true, "pointer");
+                UtilEclipse.setToolItemSelection(toolBar, false, "pointer", "hand", "selection");
+                UtilEclipse.setToolItemSelection(toolBar, true, "pipet");
             }
         }
-        final PaletteType type = PaletteType.POINTER;
+        final PaletteType type = PaletteType.PIPET;
         WorldViewModel.INSTANCE.setSelectedPalette(type);
         final WorldViewPart view = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
         view.setCursor(type.getCursor());

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project;
+package com.b3dgs.lionengine.editor.project.handler;
 
 import java.io.File;
 
@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
+import com.b3dgs.lionengine.editor.project.ProjectsPart;
 
 /**
  * Remove an object in the selected folder.

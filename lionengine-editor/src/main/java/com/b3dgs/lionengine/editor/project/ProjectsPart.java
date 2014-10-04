@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.editor.project;
 import java.io.File;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
@@ -43,7 +44,10 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
+import com.b3dgs.lionengine.editor.properties.PropertiesPart;
 import com.b3dgs.lionengine.editor.quick.QuickAccessPart;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Represents the resources explorer, depending of the opened project.
@@ -57,6 +61,9 @@ public class ProjectsPart
     /** Menu ID. */
     public static final String MENU_ID = ProjectsPart.ID + ".menu";
 
+    /** The part service. */
+    @Inject
+    EPartService partService;
     /** Tree viewer. */
     private Tree tree;
     /** Tree creator. */
@@ -185,9 +192,29 @@ public class ProjectsPart
                 final TreeItem item = (TreeItem) data;
                 if (item.getData() instanceof Media)
                 {
-                    ProjectsModel.INSTANCE.setSelection((Media) item.getData());
+                    final Media media = (Media) item.getData();
+                    ProjectsModel.INSTANCE.setSelection(media);
+                    updateProperties(media);
                 }
             }
+        }
+    }
+
+    /**
+     * Update the properties view with the selected media.
+     * 
+     * @param media The selected media.
+     */
+    void updateProperties(Media media)
+    {
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        if (ObjectsFolderTester.isObjectFile(media))
+        {
+            part.setInput(new Configurer(media));
+        }
+        else
+        {
+            part.setInput(null);
         }
     }
 

@@ -15,30 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.world;
+package com.b3dgs.lionengine.editor.project.handler;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Shell;
 
-import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.dialogs.EditTilesheetsDialog;
+import com.b3dgs.lionengine.editor.project.ProjectsModel;
 
 /**
- * Set grid handler.
+ * Edit a tile sheet in the selected folder.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SetGridHandler
+public class TilesheetsEditHandler
 {
     /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
+     * @param parent The shell parent.
      */
     @Execute
-    public void execute(EPartService partService)
+    public void execute(EPartService partService, Shell parent)
     {
-        final WorldViewPart part = UtilEclipse.getPart(partService, WorldViewPart.ID, WorldViewPart.class);
-        part.switchGridEnabled();
-        part.update();
+        final Media selection = ProjectsModel.INSTANCE.getSelection();
+        final EditTilesheetsDialog editTilesheetsDialog = new EditTilesheetsDialog(parent, selection);
+        editTilesheetsDialog.open();
     }
 }

@@ -15,36 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.editor.project;
-
-import java.util.Locale;
+package com.b3dgs.lionengine.editor.project.tester;
 
 import org.eclipse.core.expressions.PropertyTester;
 
-import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.world.WorldViewModel;
 
 /**
- * Test the resources extension.
+ * Test the project active existence and the map implementation defined.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ResourceExtensionTester
+public class MapImplementationTester
         extends PropertyTester
 {
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue)
     {
-        final Media selection = ProjectsModel.INSTANCE.getSelection();
-        try
-        {
-            final Property type = Property.valueOf(property.toUpperCase(Locale.ENGLISH));
-            return type.is(selection);
-        }
-        catch (final IllegalArgumentException exception)
-        {
-            Verbose.exception(ResourceExtensionTester.class, "test", exception);
-            return false;
-        }
+        return Project.getActive() != null && WorldViewModel.INSTANCE.getMap() != null;
     }
 }
