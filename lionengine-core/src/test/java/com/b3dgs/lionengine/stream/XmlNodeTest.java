@@ -159,4 +159,21 @@ public class XmlNodeTest
         final XmlNode node = Stream.createXmlNode("test");
         node.readString("%éàç-èyrd");
     }
+
+    /**
+     * Test the node has element.
+     */
+    @Test
+    public void testXmlNodeHas()
+    {
+        final XmlNode node = Stream.createXmlNode("test");
+        final XmlNode child = Stream.createXmlNode("child");
+        node.writeString("attribute", "none");
+        node.add(child);
+
+        Assert.assertTrue(node.hasAttribute("attribute"));
+        Assert.assertTrue(node.hasChild("child"));
+        Assert.assertFalse(node.hasAttribute("test"));
+        Assert.assertFalse(node.hasChild("attribute"));
+    }
 }

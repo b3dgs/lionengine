@@ -333,4 +333,25 @@ final class XmlNodeImpl
         }
         return attributes;
     }
+
+    @Override
+    public boolean hasAttribute(String attribute)
+    {
+        return root.hasAttribute(attribute);
+    }
+
+    @Override
+    public boolean hasChild(String child)
+    {
+        final NodeList list = root.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++)
+        {
+            final Node node = list.item(i);
+            if (node instanceof Element && node.getNodeName().equals(child))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

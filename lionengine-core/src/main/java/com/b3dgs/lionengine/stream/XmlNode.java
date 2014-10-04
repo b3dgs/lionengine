@@ -171,4 +171,20 @@ public interface XmlNode
      * @return The attributes map reference.
      */
     Map<String, String> getAttributes();
+
+    /**
+     * Check if node has the following attribute.
+     * 
+     * @param attribute The attribute name.
+     * @return <code>true</code> if attribute exists, <code>false</code> else.
+     */
+    boolean hasAttribute(String attribute);
+
+    /**
+     * Check if node has the following child.
+     * 
+     * @param child The child name.
+     * @return <code>true</code> if child exists, <code>false</code> else.
+     */
+    boolean hasChild(String child);
 }

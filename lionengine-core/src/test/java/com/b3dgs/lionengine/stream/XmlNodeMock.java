@@ -196,4 +196,16 @@ final class XmlNodeMock
     {
         return null;
     }
+
+    @Override
+    public boolean hasAttribute(String attribute)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasChild(String child)
+    {
+        return false;
+    }
 }
