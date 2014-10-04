@@ -83,8 +83,8 @@ public class FolderTypeEditHandler
     {
         final XmlNode typeName = root.getChild(FolderTypeEditHandler.NODE_NAME);
         final InputDialog inputDialog = new InputDialog(parent, Messages.EditFolderType_Name_Title,
-                Messages.EditFolderType_Name_Text, typeName.getText(), new InputValidator(
-                        InputValidator.NAME_MATCH, com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+                Messages.EditFolderType_Name_Text, typeName.getText(), new InputValidator(InputValidator.NAME_MATCH,
+                        com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
         inputDialog.open();
         final String value = inputDialog.getValue();
         if (value != null)
@@ -109,7 +109,7 @@ public class FolderTypeEditHandler
         try
         {
             final File type = Tools.getFolderTypeFile(folder);
-            final Media media = project.getResourceMedia(type.getPath());
+            final Media media = project.getResourceMedia(type);
             final XmlNode root = FolderTypeEditHandler.getRoot(media);
             FolderTypeEditHandler.enterName(parent, media, root);
         }

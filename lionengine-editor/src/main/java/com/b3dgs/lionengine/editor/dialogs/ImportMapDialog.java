@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -28,14 +27,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import com.b3dgs.lionengine.UtilFile;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.project.Project;
@@ -74,10 +72,6 @@ public class ImportMapDialog
                 Messages.ImportMapDialog_HeaderDesc, ImportMapDialog.ICON);
         createDialog();
 
-        // FIXME to be removed after tests
-        onLevelRipLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\level\\rip\\0.png");
-        // FIXME to be removed after tests
-        onPatternLocationSelected("C:\\Users\\DjThunder\\git\\lionheart-remake\\resources\\tile\\swamp\\");
         finish.setEnabled(true);
         finish.forceFocus();
     }
@@ -125,15 +119,15 @@ public class ImportMapDialog
      * 
      * @param path The level rip location path.
      */
-    void onLevelRipLocationSelected(String path)
+    void onLevelRipLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        levelRipLocationText.setText(path);
+        levelRipLocationText.setText(path.getAbsolutePath());
         try
         {
-            levelRip = project.getResourceMedia(levelRipLocationText.getText());
+            levelRip = project.getResourceMedia(new File(levelRipLocationText.getText()));
         }
-        catch (final IOException exception)
+        catch (final LionEngineException exception)
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorLevelRip);
         }
@@ -146,14 +140,14 @@ public class ImportMapDialog
      * 
      * @param path The selected pattern location path.
      */
-    void onPatternLocationSelected(String path)
+    void onPatternLocationSelected(File path)
     {
         final Project project = Project.getActive();
-        patternsLocationText.setText(path);
+        patternsLocationText.setText(path.getAbsolutePath());
         boolean validPattern = false;
         try
         {
-            patternsDirectory = project.getResourceMedia(patternsLocationText.getText());
+            patternsDirectory = project.getResourceMedia(new File(patternsLocationText.getText()));
             final File patterns = new File(patternsDirectory.getFile(), MapTile.TILE_SHEETS_FILE_NAME);
             if (!patterns.isFile())
             {
@@ -161,7 +155,7 @@ public class ImportMapDialog
             }
             validPattern = patterns.isFile();
         }
-        catch (final IOException exception)
+        catch (final LionEngineException exception)
         {
             setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);
         }
@@ -196,21 +190,16 @@ public class ImportMapDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final FileDialog fileDialog = new FileDialog(dialog, SWT.APPLICATION_MODAL);
-                final Project project = Project.getActive();
-                fileDialog.setFilterPath(UtilFile.getPath(project.getPath().getPath(), project.getResources()));
-                fileDialog.setFilterNames(new String[]
+                final File file = Tools.selectResourceFile(dialog, true, new String[]
                 {
                     Messages.ImportMapDialog_FileFilter
-                });
-                fileDialog.setFilterExtensions(new String[]
+                }, new String[]
                 {
                     "*.bmp;*.png"
                 });
-                final String path = fileDialog.open();
-                if (path != null)
+                if (file != null)
                 {
-                    onLevelRipLocationSelected(path);
+                    onLevelRipLocationSelected(file);
                 }
             }
         });
@@ -241,13 +230,10 @@ public class ImportMapDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final DirectoryDialog directoryDialog = new DirectoryDialog(dialog, SWT.APPLICATION_MODAL);
-                final Project project = Project.getActive();
-                directoryDialog.setFilterPath(UtilFile.getPath(project.getPath().getPath(), project.getResources()));
-                final String path = directoryDialog.open();
-                if (path != null)
+                final File folder = Tools.selectResourceFolder(dialog);
+                if (folder != null)
                 {
-                    onPatternLocationSelected(path);
+                    onPatternLocationSelected(folder);
                 }
             }
         });

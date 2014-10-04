@@ -25,11 +25,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -39,7 +39,6 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
-import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -74,7 +73,7 @@ public final class Tools
     private static final int BUFFER_SIZE = 4096;
 
     /**
-     * Get a template file from it name.
+     * Get a template file from it name. The template must be in {@link #TEMPLATES_DIR} folder.
      * 
      * @param template The template name.
      * @return The template file.
@@ -85,7 +84,7 @@ public final class Tools
     }
 
     /**
-     * Get the class from its file.
+     * Get the class from its file. The file must be in {@link Project#getClassesPath()} folder.
      * 
      * @param file The class file.
      * @return The class reference.
@@ -93,10 +92,7 @@ public final class Tools
      */
     public static Class<?> getClass(File file) throws LionEngineException
     {
-        final String prefix = Project.getActive().getClassesPath().getAbsolutePath();
-        final String suffix = file.getAbsolutePath().substring(prefix.length() + 1);
-        final String clazz = suffix.replace(File.separator, ".").replace(".class", "");
-        return Project.getActive().getClass(clazz);
+        return Tools.getClass(UtilityMedia.get(file));
     }
 
     /**
@@ -110,57 +106,7 @@ public final class Tools
     {
         final XmlNode root = Stream.loadXml(media);
         final String className = root.getChild(Configurer.CLASS).getText();
-        final String simpleName = className.substring(className.lastIndexOf('.') + 1);
-        return Tools.getClass(simpleName);
-    }
-
-    /**
-     * Get the class from its name.
-     * 
-     * @param name The class name.
-     * @return The class reference.
-     * @throws LionEngineException If not able to create the class.
-     */
-    public static Class<?> getClass(String name) throws LionEngineException
-    {
-        final Project project = Project.getActive();
-        final File classesPath = project.getClassesPath();
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + "." + Property.EXTENSION_CLASS);
-
-        // TODO handle the case when there is multiple class with the same name
-        if (classNames.size() == 1)
-        {
-            final String path = classNames.get(0).getPath();
-            final Media classPath = project.getClassMedia(path);
-            return project.getClass(Object.class, classPath);
-        }
-        throw new LionEngineException(Project.ERROR_LOAD_CLASS, name);
-    }
-
-    /**
-     * Get the object class from its name.
-     * 
-     * @param <O> The object class.
-     * @param objectType The object type.
-     * @param name The class name.
-     * @return The object class reference.
-     * @throws LionEngineException If not able to create the class.
-     */
-    public static <O> Class<? extends O> getObjectClass(Class<O> objectType, String name) throws LionEngineException
-    {
-        final Project project = Project.getActive();
-        final File classesPath = project.getClassesPath();
-        final List<File> classNames = UtilFile.getFilesByName(classesPath, name + "." + Property.EXTENSION_CLASS);
-
-        // TODO handle the case when there is multiple class with the same name
-        if (classNames.size() == 1)
-        {
-            final String path = classNames.get(0).getPath();
-            final Media classPath = project.getClassMedia(path);
-            final Class<? extends O> type = project.getClass(objectType, classPath);
-            return type;
-        }
-        throw new LionEngineException(Project.ERROR_LOAD_CLASS, name);
+        return Project.getActive().getClass(className);
     }
 
     /**
@@ -256,6 +202,47 @@ public final class Tools
         {
             "*.class"
         });
+        final String file = fileDialog.open();
+        if (file != null)
+        {
+            return new File(file);
+        }
+        return null;
+    }
+
+    /**
+     * Select a media folder from dialog.
+     * 
+     * @param parent The shell parent.
+     * @return The media folder, <code>null</code> if none.
+     */
+    public static File selectResourceFolder(Shell parent)
+    {
+        final DirectoryDialog fileDialog = new DirectoryDialog(parent, SWT.OPEN);
+        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
+        final String folder = fileDialog.open();
+        if (folder != null)
+        {
+            return new File(folder);
+        }
+        return null;
+    }
+
+    /**
+     * Select a media file from dialog.
+     * 
+     * @param parent The shell parent.
+     * @param openSave <code>true</code> to open, <code>false</code> to save.
+     * @param extensionsName The filtered extensions name.
+     * @param extensions The filtered extensions.
+     * @return The media file, <code>null</code> if none.
+     */
+    public static File selectResourceFile(Shell parent, boolean openSave, String[] extensionsName, String[] extensions)
+    {
+        final FileDialog fileDialog = new FileDialog(parent, openSave ? SWT.OPEN : SWT.SAVE);
+        fileDialog.setFilterPath(Project.getActive().getResourcesPath().getAbsolutePath());
+        fileDialog.setFilterNames(extensionsName);
+        fileDialog.setFilterExtensions(extensions);
         final String file = fileDialog.open();
         if (file != null)
         {

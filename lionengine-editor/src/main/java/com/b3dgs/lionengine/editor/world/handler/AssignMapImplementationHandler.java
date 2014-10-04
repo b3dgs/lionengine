@@ -52,7 +52,7 @@ public class AssignMapImplementationHandler
     public void execute(EPartService partService)
     {
         final Media selection = ProjectsModel.INSTANCE.getSelection();
-        final MapTile<?> map = Project.getActive().getInstance(MapTile.class, selection);
+        final MapTile<?> map = Project.getActive().getInstance(selection, MapTile.class);
         WorldViewModel.INSTANCE.setMap(map);
 
         final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
