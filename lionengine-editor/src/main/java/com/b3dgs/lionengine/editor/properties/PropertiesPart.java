@@ -32,6 +32,10 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.animation.AnimationEditor;
+import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -88,6 +92,32 @@ public class PropertiesPart
         }
     }
 
+    /**
+     * Create the animations attribute.
+     * 
+     * @param configurer The configurer reference.
+     */
+    private void createAttributeAnimations(Configurer configurer)
+    {
+        final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
+        animationsItem.setText(Messages.Properties_Animations);
+        animationsItem.setData(ConfigAnimations.ANIMATION);
+        animationsItem.setImage(AnimationEditor.DIALOG_ICON);
+    }
+
+    /**
+     * Create the collisions attribute.
+     * 
+     * @param configurer The configurer reference.
+     */
+    private void createAttributeCollisions(Configurer configurer)
+    {
+        final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
+        animationsItem.setText(Messages.Properties_Collisions);
+        animationsItem.setData(ConfigCollisions.COLLISION);
+        animationsItem.setImage(EntityCollisionEditor.DIALOG_ICON);
+    }
+
     /** Properties tree. */
     Tree properties;
 
@@ -116,21 +146,7 @@ public class PropertiesPart
                 {
                     final TreeItem item = items[0];
                     final Configurer configurer = (Configurer) properties.getData();
-                    final Object data = item.getData();
-                    final boolean updated;
-                    if (Configurer.CLASS.equals(data))
-                    {
-                        updated = updateClass(item, configurer);
-                    }
-                    else if (ConfigSurface.SURFACE_IMAGE.equals(data))
-                    {
-                        updated = updateSurface(item, configurer);
-                    }
-                    else
-                    {
-                        updated = false;
-                    }
-                    if (updated)
+                    if (updateProperties(item, configurer))
                     {
                         configurer.save();
                     }
@@ -140,13 +156,76 @@ public class PropertiesPart
     }
 
     /**
+     * Set the properties input.
+     * 
+     * @param configurer The configurer reference.
+     */
+    public void setInput(Configurer configurer)
+    {
+        for (final TreeItem item : properties.getItems())
+        {
+            clear(item);
+        }
+        properties.setData(configurer);
+        if (configurer != null)
+        {
+            createAttributeClass(configurer);
+            final XmlNode root = configurer.getRoot();
+            if (root.hasChild(ConfigSurface.SURFACE))
+            {
+                createAttributeSurface(configurer);
+            }
+            if (root.hasChild(ConfigAnimations.ANIMATION))
+            {
+                createAttributeAnimations(configurer);
+            }
+            if (root.hasChild(ConfigCollisions.COLLISION))
+            {
+                createAttributeCollisions(configurer);
+            }
+        }
+    }
+
+    /**
+     * Update the properties.
+     * 
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
+     */
+    boolean updateProperties(TreeItem item, Configurer configurer)
+    {
+        final Object data = item.getData();
+        boolean updated = false;
+        if (Configurer.CLASS.equals(data))
+        {
+            updated = updateClass(item, configurer);
+        }
+        else if (ConfigSurface.SURFACE_IMAGE.equals(data))
+        {
+            updated = updateSurface(item, configurer);
+        }
+        else if (ConfigAnimations.ANIMATION.equals(data))
+        {
+            final AnimationEditor animationEditor = new AnimationEditor(properties, configurer);
+            animationEditor.open();
+        }
+        else if (ConfigCollisions.COLLISION.equals(data))
+        {
+            final EntityCollisionEditor collisionsEditor = new EntityCollisionEditor(properties, configurer);
+            collisionsEditor.open();
+        }
+        return updated;
+    }
+
+    /**
      * Update the class.
      * 
      * @param item The item reference.
      * @param configurer The configurer reference.
      * @return <code>true</code> if updated, <code>false</code> else.
      */
-    boolean updateClass(TreeItem item, Configurer configurer)
+    private boolean updateClass(TreeItem item, Configurer configurer)
     {
         final File file = Tools.selectClassFile(properties.getShell());
         if (file != null)
@@ -168,7 +247,7 @@ public class PropertiesPart
      * @param configurer The configurer reference.
      * @return <code>true</code> if updated, <code>false</code> else.
      */
-    boolean updateSurface(TreeItem item, Configurer configurer)
+    private boolean updateSurface(TreeItem item, Configurer configurer)
     {
         final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
         if (file != null)
@@ -183,21 +262,17 @@ public class PropertiesPart
     }
 
     /**
-     * Set the properties input.
+     * Clear all sub items.
      * 
-     * @param configurer The configurer reference.
+     * @param item The item root.
      */
-    public void setInput(Configurer configurer)
+    private void clear(TreeItem item)
     {
-        properties.clearAll(true);
-        properties.setData(configurer);
-        if (configurer != null)
+        item.setData(null);
+        for (final TreeItem current : item.getItems())
         {
-            createAttributeClass(configurer);
-            if (configurer.getRoot().hasChild(ConfigSurface.SURFACE))
-            {
-                createAttributeSurface(configurer);
-            }
+            clear(current);
         }
+        item.dispose();
     }
 }

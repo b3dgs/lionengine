@@ -75,6 +75,14 @@ public abstract class AbstractEditor
     }
 
     /**
+     * Called when editor is closed. Does nothing by default.
+     */
+    protected void onExit()
+    {
+        // Nothing to do
+    }
+
+    /**
      * Create the bottom part.
      * 
      * @param parent The parent reference.
@@ -92,6 +100,7 @@ public abstract class AbstractEditor
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
+                onExit();
                 shell.dispose();
             }
         });

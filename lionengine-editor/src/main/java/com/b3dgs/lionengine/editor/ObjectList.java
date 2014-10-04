@@ -260,6 +260,7 @@ public abstract class ObjectList<T>
                     final String name = inputDialog.getValue();
                     final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
                     item.setText(name);
+                    item.setData(createDefaultObject());
                 }
             }
         });

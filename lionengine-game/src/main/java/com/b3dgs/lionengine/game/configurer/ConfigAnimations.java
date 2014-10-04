@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -82,6 +83,25 @@ public class ConfigAnimations
         final boolean reversed = node.readBoolean(ConfigAnimations.ANIMATION_REVERSED);
         final boolean repeat = node.readBoolean(ConfigAnimations.ANIMATION_REPEAT);
         return Anim.createAnimation(start, end, speed, reversed, repeat);
+    }
+
+    /**
+     * Create an XML node from an animation.
+     * 
+     * @param name The animation name.
+     * @param animation The animation reference.
+     * @return The animation node.
+     */
+    public static XmlNode createNode(String name, Animation animation)
+    {
+        final XmlNode node = Stream.createXmlNode(ConfigAnimations.ANIMATION);
+        node.writeString(ConfigAnimations.ANIMATION_NAME, name);
+        node.writeInteger(ConfigAnimations.ANIMATION_START, animation.getFirst());
+        node.writeInteger(ConfigAnimations.ANIMATION_END, animation.getLast());
+        node.writeDouble(ConfigAnimations.ANIMATION_SPEED, animation.getSpeed());
+        node.writeBoolean(ConfigAnimations.ANIMATION_REVERSED, animation.getReverse());
+        node.writeBoolean(ConfigAnimations.ANIMATION_REPEAT, animation.getRepeat());
+        return node;
     }
 
     /** Animations map. */

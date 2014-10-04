@@ -37,6 +37,10 @@ public final class Messages
     public static String Properties_Surface;
     /** Surface icon property. */
     public static String Properties_SurfaceIcon;
+    /** Animations property. */
+    public static String Properties_Animations;
+    /** Collisions property. */
+    public static String Properties_Collisions;
 
     /**
      * Initialize.

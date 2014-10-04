@@ -25,10 +25,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.dialogs.AbstractEditor;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Animation editor dialog.
@@ -45,6 +49,8 @@ public class AnimationEditor
 
     /** Configurer reference. */
     private final Configurer configurer;
+    /** Animations list. */
+    private AnimationList animationList;
 
     /**
      * Constructor.
@@ -127,7 +133,7 @@ public class AnimationEditor
         final AnimationRenderer animationRenderer = createAnimationRenderer(animationTabs);
 
         final AnimationProperties animationProperties = new AnimationProperties(animationRenderer);
-        final AnimationList animationList = new AnimationList(configurer, animationProperties);
+        animationList = new AnimationList(configurer, animationProperties);
         final AnimationPlayer animationPlayer = new AnimationPlayer(animationList, animationRenderer);
         animationPlayer.createAnimationPlayer(animationRenderer.getParent().getParent());
 
@@ -144,5 +150,20 @@ public class AnimationEditor
         animationList.create(properties);
         animationProperties.create(properties);
         animationList.loadAnimations();
+    }
+
+    @Override
+    protected void onExit()
+    {
+        final XmlNode root = configurer.getRoot();
+        root.removeChildren(ConfigAnimations.ANIMATION);
+        for (final TreeItem item : animationList.getTree().getItems())
+        {
+            final Animation animation = (Animation) item.getData();
+            final String anim = item.getText();
+            final XmlNode nodeAnim = ConfigAnimations.createNode(anim, animation);
+            root.add(nodeAnim);
+        }
+        configurer.save();
     }
 }
