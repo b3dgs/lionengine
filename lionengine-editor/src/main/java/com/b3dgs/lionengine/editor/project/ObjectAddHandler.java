@@ -29,8 +29,6 @@ import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -101,23 +99,6 @@ public class ObjectAddHandler
     }
 
     /**
-     * Get the class file from dialog.
-     * 
-     * @param parent The shell parent.
-     * @return The class file, <code>null</code> if none.
-     */
-    private static String getClassFile(Shell parent)
-    {
-        final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN);
-        fileDialog.setFilterPath(Project.getActive().getClassesPath().getAbsolutePath());
-        fileDialog.setFilterExtensions(new String[]
-        {
-            "*.class"
-        });
-        return fileDialog.open();
-    }
-
-    /**
      * Execute the handler.
      * 
      * @param partService The part service reference.
@@ -135,7 +116,7 @@ public class ObjectAddHandler
         {
             final String name = inputDialog.getValue();
             final File object = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    
+
             if (object.exists())
             {
                 MessageDialog.openError(parent, Messages.AddObject_Error_Title, Messages.AddObject_Error_Text);
@@ -143,10 +124,10 @@ public class ObjectAddHandler
             }
             else
             {
-                final String classFile = ObjectAddHandler.getClassFile(parent);
+                final File classFile = Tools.selectClassFile(parent);
                 if (classFile != null)
                 {
-                    final Class<?> clazz = Tools.getClass(new File(classFile));
+                    final Class<?> clazz = Tools.getClass(classFile);
                     ObjectAddHandler.addObject(partService, selection, object, clazz);
                 }
             }

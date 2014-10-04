@@ -93,6 +93,8 @@ public final class Messages
     public static String EditEntityDialog_HeaderTitle;
     /** Edit entity dialog description header. */
     public static String EditEntityDialog_HeaderDesc;
+    /** Edit entity dialog assign class. */
+    public static String EditEntityDialog_AssignClass;
     /** Edit entity dialog assign surface. */
     public static String EditEntityDialog_AssignSurface;
     /** Edit entity dialog assign icon. */

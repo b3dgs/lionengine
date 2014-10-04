@@ -85,12 +85,37 @@ public class EditEntityDialog
     }
 
     /**
-     * Update the element node.
+     * Update the class element node.
+     * 
+     * @param parent The parent shell.
+     */
+    void updateClassElement(Shell parent)
+    {
+        final File file = Tools.selectClassFile(parent);
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            XmlNode classeNode;
+            try
+            {
+                classeNode = root.getChild(Configurer.CLASS);
+            }
+            catch (final LionEngineException exception)
+            {
+                classeNode = Stream.createXmlNode(Configurer.CLASS);
+                root.add(classeNode);
+            }
+            classeNode.setText(Tools.getClass(file).getName());
+        }
+    }
+
+    /**
+     * Update the surface element node.
      * 
      * @param parent The parent shell.
      * @param element The element node name.
      */
-    void updateElement(Shell parent, String element)
+    void updateSurfaceElement(Shell parent, String element)
     {
         final String file = Tools.selectFile(parent, entity.getFile().getParentFile().getPath(), true);
         if (file != null)
@@ -204,6 +229,7 @@ public class EditEntityDialog
         final Composite actions = new Group(parent, SWT.NONE);
         actions.setLayout(new GridLayout(4, false));
 
+        createAssignButton(actions, Messages.EditEntityDialog_AssignClass, Configurer.CLASS);
         createAssignButton(actions, Messages.EditEntityDialog_AssignSurface, ConfigSurface.SURFACE_IMAGE);
         createAssignButton(actions, Messages.EditEntityDialog_AssignIcon, ConfigSurface.SURFACE_ICON);
 
@@ -248,9 +274,13 @@ public class EditEntityDialog
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                updateElement(dialog, element);
-                if (ConfigSurface.SURFACE_ICON.equals(element))
+                if (Configurer.CLASS.equals(element))
                 {
+                    updateClassElement(dialog);
+                }
+                else if (ConfigSurface.SURFACE_ICON.equals(element))
+                {
+                    updateSurfaceElement(dialog, element);
                     final Image image = entityIcon.getImage();
                     if (image != null)
                     {

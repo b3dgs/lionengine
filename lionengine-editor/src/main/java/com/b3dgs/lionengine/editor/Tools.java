@@ -243,6 +243,28 @@ public final class Tools
     }
 
     /**
+     * Select a class file from dialog.
+     * 
+     * @param parent The shell parent.
+     * @return The class file, <code>null</code> if none.
+     */
+    public static File selectClassFile(Shell parent)
+    {
+        final FileDialog fileDialog = new FileDialog(parent, SWT.OPEN);
+        fileDialog.setFilterPath(Project.getActive().getClassesPath().getAbsolutePath());
+        fileDialog.setFilterExtensions(new String[]
+        {
+            "*.class"
+        });
+        final String file = fileDialog.open();
+        if (file != null)
+        {
+            return new File(file);
+        }
+        return null;
+    }
+
+    /**
      * Extracts ZIP content to specified directory.
      * 
      * @param zipPath Path of the ZIP file.
