@@ -39,6 +39,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
+import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -88,11 +89,14 @@ public final class Tools
      * 
      * @param file The class file.
      * @return The class reference.
-     * @throws LionEngineException If not able to create the class.
+     * @throws LionEngineException If not able to load the class.
      */
     public static Class<?> getClass(File file) throws LionEngineException
     {
-        return Tools.getClass(UtilityMedia.get(file));
+        final Project project = Project.getActive();
+        final Media media = project.getClassMedia(file);
+        final String name = media.getPath().replace("." + Property.EXTENSION_CLASS, "").replace(File.separator, ".");
+        return project.getClass(name);
     }
 
     /**

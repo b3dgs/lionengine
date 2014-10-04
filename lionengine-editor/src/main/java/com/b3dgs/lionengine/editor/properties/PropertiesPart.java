@@ -17,19 +17,24 @@
  */
 package com.b3dgs.lionengine.editor.properties;
 
+import java.io.File;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Element properties part.
@@ -42,69 +47,49 @@ public class PropertiesPart
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
 
     /**
-     * Create the class attribute.
+     * Create the attribute class.
      * 
-     * @param parent The parent reference.
      * @param configurer The configurer reference.
-     * @return The attribute instance.
      */
-    private static Composite createAttributeClass(Composite parent, Configurer configurer)
+    private void createAttributeClass(final Configurer configurer)
     {
-        final Composite attribute = new Composite(parent, SWT.NONE);
-        attribute.setLayout(new GridLayout(2, false));
-        attribute.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+        final TreeItem classItem = new TreeItem(properties, SWT.NONE);
+        classItem.setText(Messages.Properties_Class);
 
-        final Label name = new Label(attribute, SWT.NONE);
-        name.setText("Class");
-
-        final Text clazz = new Text(attribute, SWT.SEARCH);
-        clazz.setText(configurer.getClassName());
-
-        return attribute;
+        final TreeItem className = new TreeItem(classItem, SWT.NONE);
+        className.setText(configurer.getClassName());
+        className.setData(Configurer.CLASS);
     }
 
     /**
      * Create the surface attribute.
      * 
-     * @param parent The parent reference.
      * @param configurer The configurer reference.
-     * @return The attribute instance.
      */
-    private static Composite createAttributeSurface(Composite parent, Configurer configurer)
+    private void createAttributeSurface(Configurer configurer)
     {
-        final Composite attributes = new Composite(parent, SWT.NONE);
-        attributes.setLayout(new GridLayout(1, false));
+        final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
+        surfaceItem.setText(Messages.Properties_Surface);
 
-        final Composite attributeSurface = new Composite(attributes, SWT.NONE);
-        attributeSurface.setLayout(new GridLayout(2, false));
-        attributeSurface.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-
-        final Label nameSurface = new Label(attributeSurface, SWT.NONE);
-        nameSurface.setText("Surface");
-
-        final Text textSurface = new Text(attributeSurface, SWT.SEARCH);
         final ConfigSurface surface = ConfigSurface.create(configurer);
-        textSurface.setText(surface.getImage());
+        final TreeItem surfaceName = new TreeItem(surfaceItem, SWT.NONE);
+        surfaceName.setText(surface.getImage());
+        surfaceName.setData(ConfigSurface.SURFACE_IMAGE);
 
         final String icon = surface.getIcon();
         if (icon != null)
         {
-            final Composite attributeIcon = new Composite(attributes, SWT.NONE);
-            attributeIcon.setLayout(new GridLayout(2, false));
-            attributeIcon.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
+            final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
+            iconItem.setText(Messages.Properties_SurfaceIcon);
 
-            final Label nameIcon = new Label(attributeIcon, SWT.NONE);
-            nameIcon.setText("Icon");
-
-            final Text textIcon = new Text(attributeIcon, SWT.SEARCH);
-            textIcon.setText(icon);
+            final TreeItem iconName = new TreeItem(iconItem, SWT.NONE);
+            iconName.setText(icon);
+            iconName.setData(ConfigSurface.SURFACE_ICON);
         }
-
-        return attributes;
     }
 
-    /** The attributes composite. */
-    private Composite composite;
+    /** Properties tree. */
+    Tree properties;
 
     /**
      * Create the composite.
@@ -114,8 +99,87 @@ public class PropertiesPart
     @PostConstruct
     public void createComposite(Composite parent)
     {
-        composite = new Composite(parent, SWT.NONE);
-        composite.setLayout(new GridLayout(1, false));
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayout(new GridLayout(2, false));
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        properties = new Tree(composite, SWT.BORDER);
+        properties.setLayout(new GridLayout(1, false));
+        properties.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        properties.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseDoubleClick(MouseEvent e)
+            {
+                final TreeItem[] items = properties.getSelection();
+                if (items.length > 0)
+                {
+                    final TreeItem item = items[0];
+                    final Configurer configurer = (Configurer) properties.getData();
+                    final Object data = item.getData();
+                    final boolean updated;
+                    if (Configurer.CLASS.equals(data))
+                    {
+                        updated = updateClass(item, configurer);
+                    }
+                    else if (ConfigSurface.SURFACE_IMAGE.equals(data))
+                    {
+                        updated = updateSurface(item, configurer);
+                    }
+                    else
+                    {
+                        updated = false;
+                    }
+                    if (updated)
+                    {
+                        configurer.save();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Update the class.
+     * 
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
+     */
+    boolean updateClass(TreeItem item, Configurer configurer)
+    {
+        final File file = Tools.selectClassFile(properties.getShell());
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode classeNode = root.getChild(Configurer.CLASS);
+            final String clazz = Tools.getClass(file).getName();
+            classeNode.setText(clazz);
+            item.setText(clazz);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update the surface.
+     * 
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
+     */
+    boolean updateSurface(TreeItem item, Configurer configurer)
+    {
+        final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+            item.setText(file);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -125,18 +189,15 @@ public class PropertiesPart
      */
     public void setInput(Configurer configurer)
     {
-        for (final Control control : composite.getChildren())
-        {
-            control.dispose();
-        }
+        properties.clearAll(true);
+        properties.setData(configurer);
         if (configurer != null)
         {
-            PropertiesPart.createAttributeClass(composite, configurer);
+            createAttributeClass(configurer);
             if (configurer.getRoot().hasChild(ConfigSurface.SURFACE))
             {
-                PropertiesPart.createAttributeSurface(composite, configurer);
+                createAttributeSurface(configurer);
             }
         }
-        composite.layout(true, true);
     }
 }

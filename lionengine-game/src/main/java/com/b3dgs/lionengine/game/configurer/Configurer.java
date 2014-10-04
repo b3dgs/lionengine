@@ -58,6 +58,14 @@ public class Configurer
     }
 
     /**
+     * Save the configurer.
+     */
+    public void save()
+    {
+        Stream.saveXml(root, media);
+    }
+
+    /**
      * Get the data root container for raw access.
      * 
      * @return The root node.
