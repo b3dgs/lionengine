@@ -464,8 +464,8 @@ public class WorldViewRenderer
             camera.moveLocation(1.0, vx, vy);
         }
 
-        final int maxX = (map.getWidthInTile() - 1) * tw - camera.getViewWidth();
-        final int maxY = map.getHeightInTile() * th - camera.getViewHeight();
+        final int maxX = Math.max(0, (map.getWidthInTile() - 1) * tw - camera.getViewWidth());
+        final int maxY = Math.max(0, map.getHeightInTile() * th - camera.getViewHeight());
         WorldViewRenderer.setCameraLimits(camera, maxX, maxY);
 
         updateRender();

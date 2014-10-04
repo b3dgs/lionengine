@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.model.application.ui.menu.MHandledToolItem;
+import org.eclipse.e4.ui.model.application.ui.menu.MDirectToolItem;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBar;
 import org.eclipse.e4.ui.model.application.ui.menu.MToolBarElement;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -206,9 +206,9 @@ public final class UtilEclipse
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
             if (items.isEmpty() || items.contains(id))
             {
-                if (element instanceof MHandledToolItem)
+                if (element instanceof MDirectToolItem)
                 {
-                    ((MHandledToolItem) element).setSelected(selected);
+                    ((MDirectToolItem) element).setSelected(selected);
                 }
             }
         }

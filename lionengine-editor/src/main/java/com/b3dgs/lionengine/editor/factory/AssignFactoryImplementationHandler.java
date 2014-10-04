@@ -60,7 +60,7 @@ public class AssignFactoryImplementationHandler
         factory.setPrepareEnabled(false);
         WorldViewModel.INSTANCE.setFactory(factory);
 
-        final FactoryView factoryView = new FactoryView();
+        final FactoryView factoryView = new FactoryView(partService);
         factoryView.setFactory(factory);
         part.addPalette(name, factoryView);
 

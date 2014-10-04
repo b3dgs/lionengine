@@ -259,6 +259,7 @@ public class TileCollisionComposite
                 final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.createCollisionDraw();
                 tileCollisionView.updateWorldView();
+                tileCollisionView.setSaveEnabled(true);
             }
         });
 
@@ -271,6 +272,7 @@ public class TileCollisionComposite
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 tileCollisionView.removeFormula(TileCollisionComposite.this);
+                tileCollisionView.setSaveEnabled(true);
             }
         });
     }

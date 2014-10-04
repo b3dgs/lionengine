@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.editor.collision;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -55,9 +53,8 @@ public class TileCollisionView
     /** View ID. */
     public static final String ID = "tile-collision";
 
-    /** Part services. */
-    @Inject
-    EPartService partService;
+    /** Part service. */
+    final EPartService partService;
     /** Selected tile. */
     TileGame tile;
     /** Scroll composite. */
@@ -76,6 +73,16 @@ public class TileCollisionView
     private List<TileCollisionComposite> formulas;
     /** Parent reference. */
     private Composite parent;
+
+    /**
+     * Create the collision view.
+     * 
+     * @param partService The part service reference.
+     */
+    public TileCollisionView(EPartService partService)
+    {
+        this.partService = partService;
+    }
 
     /**
      * Set the selected tile.
@@ -111,10 +118,12 @@ public class TileCollisionView
     {
         final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
         map.removeCollisionFunction(formula.getCollisionFunction());
+        map.createCollisionDraw();
 
         formulas.remove(formula);
         formula.dispose();
         parent.layout(true, true);
+        updateWorldView();
     }
 
     /**
@@ -185,6 +194,7 @@ public class TileCollisionView
             public void widgetSelected(SelectionEvent selectionEvent)
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
+                tileCollisionComposite.setSelectedFunction(new CollisionFunction());
                 final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
             }
@@ -202,6 +212,7 @@ public class TileCollisionView
                 final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
                 map.saveCollisions();
                 map.createCollisionDraw();
+                setSaveEnabled(false);
             }
         });
     }

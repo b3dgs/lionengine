@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -140,6 +141,8 @@ public class FactoryView
         }
     }
 
+    /** Part service. */
+    final EPartService partService;
     /** The combo hierarchy. */
     final Map<String, Composite> hierarchy = new HashMap<>();
     /** The factory reference. */
@@ -152,6 +155,16 @@ public class FactoryView
     Composite objectsComposite;
     /** Last selected object. */
     Label lastObject;
+
+    /**
+     * Create the factory view.
+     * 
+     * @param partService The part service reference.
+     */
+    public FactoryView(EPartService partService)
+    {
+        this.partService = partService;
+    }
 
     /**
      * Set the factory object used.

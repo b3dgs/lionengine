@@ -56,7 +56,7 @@ public class AssignMapImplementationHandler
         WorldViewModel.INSTANCE.setMap(map);
 
         final PalettePart part = UtilEclipse.getPart(partService, PalettePart.ID, PalettePart.class);
-        final TileCollisionView tileCollisionView = new TileCollisionView();
+        final TileCollisionView tileCollisionView = new TileCollisionView(partService);
         part.addPalette(AssignMapImplementationHandler.PALETTE_TILE_COLLISION, tileCollisionView);
 
         Verbose.info(AssignMapImplementationHandler.VERBOSE_MAP_IMPLEMENTATION, map.getClass().getName());

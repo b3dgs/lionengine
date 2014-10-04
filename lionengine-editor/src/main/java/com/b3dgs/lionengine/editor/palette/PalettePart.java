@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,6 +50,9 @@ public class PalettePart
 
     /** Palette list. */
     final Map<String, PaletteData> palettes = new HashMap<>();
+    /** Part service. */
+    @Inject
+    EPartService partService;
     /** Palette combo box. */
     Combo comboPalette;
     /** Palette view composite. */
