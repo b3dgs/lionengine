@@ -114,6 +114,66 @@
                property="com.b3dgs.lionengine.editor.tilesheetsFolderTester.editTilesheets">
          </test>
       </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.setSurface">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.setSurface">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeSurface">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.removeSurface">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.setIcon">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.setIcon">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.removeIcon">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.removeIcon">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.enableAnimations">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.enableAnimations">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.editAnimations">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.editAnimations">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.disableAnimations">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.disableAnimations">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.enableCollisions">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.enableCollisions">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.editCollisions">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.editCollisions">
+         </test>
+      </definition>
+      <definition
+            id="com.b3dgs.lionengine.editor.properties.disableCollisions">
+         <test
+               property="com.b3dgs.lionengine.editor.propertiesTester.disableCollisions">
+         </test>
+      </definition>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -157,6 +217,13 @@
             id="com.b3dgs.lionengine.editor.projectilesFolderTester"
             namespace="com.b3dgs.lionengine.editor.projectilesFolderTester"
             properties="addProjectile,isProjectile"
+            type="java.lang.Object">
+      </propertyTester>
+      <propertyTester
+            class="com.b3dgs.lionengine.editor.properties.PropertiesTester"
+            id="com.b3dgs.lionengine.editor.propertiesTester"
+            namespace="com.b3dgs.lionengine.editor.propertiesTester"
+            properties="setSurface,removeSurface,setIcon,removeIcon,enableAnimations,editAnimations,disableAnimations,enableCollisions,editCollisions,disableCollisions"
             type="java.lang.Object">
       </propertyTester>
    </extension>

@@ -21,7 +21,11 @@ import java.io.File;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.e4.ui.di.Focus;
+import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -49,6 +53,8 @@ public class PropertiesPart
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
+    /** Menu ID. */
+    public static final String MENU_ID = PropertiesPart.ID + ".menu";
 
     /**
      * Create the attribute class.
@@ -59,6 +65,7 @@ public class PropertiesPart
     {
         final TreeItem classItem = new TreeItem(properties, SWT.NONE);
         classItem.setText(Messages.Properties_Class);
+        classItem.setData(Configurer.CLASS);
 
         final TreeItem className = new TreeItem(classItem, SWT.NONE);
         className.setText(configurer.getClassName());
@@ -74,6 +81,7 @@ public class PropertiesPart
     {
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
         surfaceItem.setText(Messages.Properties_Surface);
+        surfaceItem.setData(ConfigSurface.SURFACE_IMAGE);
 
         final ConfigSurface surface = ConfigSurface.create(configurer);
         final TreeItem surfaceName = new TreeItem(surfaceItem, SWT.NONE);
@@ -85,6 +93,7 @@ public class PropertiesPart
         {
             final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
             iconItem.setText(Messages.Properties_SurfaceIcon);
+            iconItem.setData(ConfigSurface.SURFACE_ICON);
 
             final TreeItem iconName = new TreeItem(iconItem, SWT.NONE);
             iconName.setText(icon);
@@ -125,9 +134,10 @@ public class PropertiesPart
      * Create the composite.
      * 
      * @param parent The parent reference.
+     * @param menuService The menu service reference.
      */
     @PostConstruct
-    public void createComposite(Composite parent)
+    public void createComposite(Composite parent, EMenuService menuService)
     {
         final Composite composite = new Composite(parent, SWT.NONE);
         composite.setLayout(new GridLayout(2, false));
@@ -153,6 +163,27 @@ public class PropertiesPart
                 }
             }
         });
+
+        properties.addMenuDetectListener(new MenuDetectListener()
+        {
+            @Override
+            public void menuDetected(MenuDetectEvent menuDetectEvent)
+            {
+                properties.getMenu().setVisible(false);
+                properties.update();
+            }
+        });
+        menuService.registerContextMenu(properties, PropertiesPart.MENU_ID);
+        PropertiesModel.INSTANCE.setTree(properties);
+    }
+
+    /**
+     * Set the focus.
+     */
+    @Focus
+    public void setFocus()
+    {
+        properties.setFocus();
     }
 
     /**

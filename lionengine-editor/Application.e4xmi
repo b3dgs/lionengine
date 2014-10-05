@@ -74,7 +74,40 @@
               <children xsi:type="basic:Part" xmi:id="_1W28INfDEeOk36N_MMz9Rw" elementId="com.b3dgs.lionengine.editor.part.palette" containerData="" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.palette.PalettePart" label="%part.palette" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/palette.png"/>
             </children>
             <children xsi:type="basic:PartStack" xmi:id="_DfT1IEuiEeSKbZmaD1fJ7w" elementId="com.b3dgs.lionengine.editor.stack.right.properties" containerData="40" selectedElement="_FF4KUEuiEeSKbZmaD1fJ7w">
-              <children xsi:type="basic:Part" xmi:id="_FF4KUEuiEeSKbZmaD1fJ7w" elementId="com.b3dgs.lionengine.editor.part.properties" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.PropertiesPart" label="%part.properties"/>
+              <children xsi:type="basic:Part" xmi:id="_FF4KUEuiEeSKbZmaD1fJ7w" elementId="com.b3dgs.lionengine.editor.part.properties" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.PropertiesPart" label="%part.properties" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/part/properties.png">
+                <menus xsi:type="menu:PopupMenu" xmi:id="_-kNlUExrEeS0NfVbsnb2GQ" elementId="com.b3dgs.lionengine.editor.part.properties.menu">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_DwyX4ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.surface-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/surface-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.SurfaceSetHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_AfXtoExwEeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.setSurface"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_2R7woExsEeS0NfVbsnb2GQ" elementId="" label="%menu.surface-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/surface-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.SurfaceRemoveHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_Gcc6oExxEeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeSurface"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_5Kvw0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-set" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconSetHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_nuUxsEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.setIcon"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_7WDx0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-remove" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconRemoveHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_opCGcEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeIcon"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_8_l7cExsEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.AnimationsEnableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_qGvakEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.enableAnimations"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_HpEJoExvEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.AnimationsEditorHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_rZFMMEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.editAnimations"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="__BxOkExsEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.AnimationsDisableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_sqDr4Ex2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableAnimations"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_AdQ8MExtEeS0NfVbsnb2GQ" elementId="" label="%menu.collisions-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.CollisionsEnableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_t9fpsEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.enableCollisions"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_P1G-AExvEeS0NfVbsnb2GQ" elementId="" label="%menu.collisions-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.CollisionsEditorHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_vXEEsEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.editCollisions"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_B8tVsExtEeS0NfVbsnb2GQ" elementId="" label="%menu.collisions-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.CollisionsDisableHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_waAIYEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableCollisions"/>
+                  </children>
+                </menus>
+              </children>
             </children>
           </children>
         </children>
