@@ -4,7 +4,7 @@ Bundle-Name: LionEngine Core SWT
 Bundle-SymbolicName: lionengine-core-swt;singleton:=true
 Bundle-Version: 6.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: lionengine-core,
- org.eclipse.swt;bundle-version="3.5.1"
+Require-Bundle: org.eclipse.swt;bundle-version="3.5.1",
+ lionengine-core
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine.core

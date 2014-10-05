@@ -11,19 +11,13 @@
 
 	<artifactId>lionengine-audio-wav</artifactId>
 	<name>LionEngine Audio Wav</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
 			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

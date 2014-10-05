@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LionEngine Game Tests
+Bundle-SymbolicName: lionengine-test-game;singleton:=true
+Bundle-Version: 6.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit,
+ lionengine-core;bundle-version="6.2.0",
+ lionengine-test-core;bundle-version="6.2.0",
+ lionengine-game;bundle-version="6.2.0"
+Bundle-ClassPath: .

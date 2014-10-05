@@ -11,24 +11,13 @@
 
 	<artifactId>lionengine-audio-sc68</artifactId>
 	<name>LionEngine Audio Sc68</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
 			<version>${lionengine.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>${jna.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

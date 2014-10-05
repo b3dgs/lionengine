@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LionEngine Audio Midi Tests
+Bundle-SymbolicName: lionengine-test-audio-midi;singleton:=true
+Bundle-Version: 6.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: .
+Export-Package: com.b3dgs.lionengine.audio
+Require-Bundle: org.junit,
+ lionengine-core;bundle-version="6.2.0",
+ lionengine-test-core;bundle-version="6.2.0",
+ lionengine-audio-midi;bundle-version="6.2.0",
+ lionengine-test-audio-midi;bundle-version="6.2.0"

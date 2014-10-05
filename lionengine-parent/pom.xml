@@ -10,7 +10,6 @@
 		<tycho.version>0.20.0</tycho.version>
 		<tycho.osgi.version>0.11.1</tycho.osgi.version>
 		<junit.version>4.11</junit.version>
-		<jna.version>4.1.0</jna.version>
 		<lionengine.version>6.2.0-SNAPSHOT</lionengine.version>
 	</properties>
 	<groupId>com.b3dgs.lionengine</groupId>
@@ -95,6 +94,14 @@
 				<module>../lionengine-tutorials</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>tests</id>
+			<modules>
+				<module>../lionengine-test-core</module>
+				<module>../lionengine-test-core-awt</module>
+				<module>../lionengine-test-game</module>
+			</modules>
+		</profile>
 	</profiles>
 	<build>
 		<plugins>
@@ -162,12 +169,6 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<version>${tycho.version}</version>
-					<configuration>
-						<useUIHarness>false</useUIHarness>
-						<includes>
-							<include>**/*Test.java</include>
-						</includes>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.tycho</groupId>

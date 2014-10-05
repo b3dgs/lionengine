@@ -63,11 +63,5 @@
 			<artifactId>lionengine-game-strategy</artifactId>
 			<version>${lionengine.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
 </project>
