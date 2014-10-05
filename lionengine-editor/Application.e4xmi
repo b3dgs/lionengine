@@ -11,17 +11,11 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_UM6ZYEp6EeSPZfPFWMrR7w" elementId="" label="%menu.object-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectAddHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_UM6ZYUp6EeSPZfPFWMrR7w" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.addObject"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_BPVhsEmhEeSV4bmZqF0__w" elementId="" label="%menu.object-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectEditHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_BPVhsUmhEeSV4bmZqF0__w" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.isObject"/>
-                  </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_658s8EmgEeSV4bmZqF0__w" elementId="" label="%menu.object-delete" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/object-delete.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectDeleteHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_93658EmgEeSV4bmZqF0__w" coreExpressionId="com.b3dgs.lionengine.editor.objects-folder.isObject"/>
                   </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_tzkSQEmwEeSY5e88dCWRPA" elementId="" label="%menu.projectile-add" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/projectile-add.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ProjectileAddHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_tzkSQUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.projectiles-folder.addProjectile"/>
-                  </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_uGaVwEmwEeSY5e88dCWRPA" elementId="" label="%menu.projectile-edit" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/projectile-edit.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ProjectileEditHandler">
-                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_uGaVwUmwEeSY5e88dCWRPA" coreExpressionId="com.b3dgs.lionengine.editor.projectiles-folder.isProjectile"/>
                   </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_49GmoEsdEeS9gtv_zEGnhw" elementId="" label="%menu.projectile-delete" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/projectile-delete.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.project.handler.ObjectDeleteHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_49GmoUsdEeS9gtv_zEGnhw" coreExpressionId="com.b3dgs.lionengine.editor.projectiles-folder.isProjectile"/>
@@ -105,6 +99,12 @@
                   </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_B8tVsExtEeS0NfVbsnb2GQ" elementId="" label="%menu.collisions-disable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/collisions-disable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.CollisionsDisableHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_waAIYEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.disableCollisions"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_FVGHoEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.FramesSetHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FVGHoUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.setFrames"/>
+                  </children>
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_FtMekEyKEeSJA9sJoETiQw" elementId="" label="%menu.frames-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/frames-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.FramesRemoveHandler">
+                    <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_FtMekUyKEeSJA9sJoETiQw" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeFrames"/>
                   </children>
                 </menus>
               </children>

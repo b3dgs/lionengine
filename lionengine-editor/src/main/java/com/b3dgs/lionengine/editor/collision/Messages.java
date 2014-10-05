@@ -56,6 +56,10 @@ public final class Messages
     public static String TileCollisionComposite_Apply;
     /** Tile collision composite delete. */
     public static String TileCollisionComposite_Delete;
+    /** Tile collision formula name title. */
+    public static String TileCollision_AddFunction_Title;
+    /** Tile collision formula name text. */
+    public static String TileCollision_AddFunction_Text;
     /** Tile collision add formula. */
     public static String TileCollision_AddFormula;
     /** Tile collision save. */

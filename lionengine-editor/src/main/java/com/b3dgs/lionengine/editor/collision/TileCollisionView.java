@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.UtilSwt;
@@ -52,6 +55,8 @@ public class TileCollisionView
 {
     /** View ID. */
     public static final String ID = "tile-collision";
+    /** Default new function name. */
+    private static final String DEFAULT_FUNCTION_NAME = "function";
 
     /** Part service. */
     final EPartService partService;
@@ -179,7 +184,7 @@ public class TileCollisionView
      * 
      * @param parent The composite parent.
      */
-    private void createToolBar(Composite parent)
+    private void createToolBar(final Composite parent)
     {
         toolbar = new ToolBar(parent, SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
         toolbar.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
@@ -193,10 +198,20 @@ public class TileCollisionView
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                final TileCollisionComposite tileCollisionComposite = createFormula();
-                tileCollisionComposite.setSelectedFunction(new CollisionFunction());
-                final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-                map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
+                final InputDialog inputDialog = new InputDialog(parent.getShell(),
+                        Messages.TileCollision_AddFunction_Title, Messages.TileCollision_AddFunction_Text,
+                        TileCollisionView.DEFAULT_FUNCTION_NAME, new InputValidator(InputValidator.NAME_MATCH,
+                                com.b3dgs.lionengine.editor.Messages.InputValidator_Error_Name));
+                if (inputDialog.open() == Window.OK)
+                {
+                    final TileCollisionComposite tileCollisionComposite = createFormula();
+                    final CollisionFunction function = new CollisionFunction();
+                    function.setName(inputDialog.getValue());
+                    tileCollisionComposite.setSelectedFunction(function);
+                    final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
+                    map.assignCollisionFunction(tile.getCollision(), tileCollisionComposite.getCollisionFunction());
+                    updateWorldView();
+                }
             }
         });
 

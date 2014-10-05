@@ -21,6 +21,7 @@ import org.eclipse.core.expressions.PropertyTester;
 
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 
 /**
@@ -39,6 +40,10 @@ public class PropertiesTester
     private static final String PROPERTY_ICON_SET = "setIcon";
     /** Can remove icon. */
     private static final String PROPERTY_ICON_REMOVE = "removeIcon";
+    /** Can set frames. */
+    private static final String PROPERTY_FRAMES_SET = "setFrames";
+    /** Can remove frames. */
+    private static final String PROPERTY_FRAMES_REMOVE = "removeFrames";
     /** Can enable animations. */
     private static final String PROPERTY_ANIMATIONS_ENABLE = "enableAnimations";
     /** Can edit animations. */
@@ -78,8 +83,16 @@ public class PropertiesTester
             {
                 return model.hasProperty(ConfigSurface.SURFACE_ICON);
             }
+            else if (PropertiesTester.PROPERTY_FRAMES_SET.equals(property))
+            {
+                return !model.hasProperty(ConfigFrames.FRAMES) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
+            }
+            else if (PropertiesTester.PROPERTY_FRAMES_REMOVE.equals(property))
+            {
+                return model.hasProperty(ConfigFrames.FRAMES);
+            }
             else if (PropertiesTester.PROPERTY_ANIMATIONS_ENABLE.equals(property)
-                    && model.hasProperty(ConfigSurface.SURFACE_IMAGE))
+                    && model.hasProperty(ConfigFrames.FRAMES))
             {
                 return !model.hasProperty(ConfigAnimations.ANIMATION);
             }

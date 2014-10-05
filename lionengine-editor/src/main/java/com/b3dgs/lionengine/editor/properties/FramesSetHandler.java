@@ -19,21 +19,23 @@ package com.b3dgs.lionengine.editor.properties;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
-import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Shell;
 
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.UtilEclipse;
-import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
-import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Remove surface handler.
+ * Set icon handler.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SurfaceRemoveHandler
+public class FramesSetHandler
 {
     /**
      * Execute the handler.
@@ -45,17 +47,22 @@ public class SurfaceRemoveHandler
     {
         final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
         final Configurer configurer = (Configurer) part.properties.getData();
-        final XmlNode root = configurer.getRoot();
-        root.removeChild(ConfigSurface.SURFACE);
-        root.removeChildren(ConfigAnimations.ANIMATION);
-        configurer.save();
-        for (final TreeItem item : part.properties.getItems())
+        final Shell shell = part.properties.getShell();
+
+        final InputDialog horizontalFrames = new InputDialog(shell, "Frames", "Number of horizontal frames", "1",
+                new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+        if (horizontalFrames.open() == Window.OK)
         {
-            final Object data = item.getData();
-            if (ConfigSurface.SURFACE_IMAGE.equals(data) || ConfigSurface.SURFACE_ICON.equals(data)
-                    || ConfigFrames.FRAMES.equals(data) || ConfigAnimations.ANIMATION.equals(data))
+            final InputDialog verticalFrames = new InputDialog(shell, "Frames", "Number of vertical frames", "1",
+                    new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+            if (verticalFrames.open() == Window.OK)
             {
-                part.clear(item);
+                final XmlNode frames = Stream.createXmlNode(ConfigFrames.FRAMES);
+                frames.writeString(ConfigFrames.FRAMES_HORIZONTAL, horizontalFrames.getValue());
+                frames.writeString(ConfigFrames.FRAMES_VERTICAL, verticalFrames.getValue());
+                configurer.getRoot().add(frames);
+                configurer.save();
+                part.createAttributeFrames(configurer);
             }
         }
     }

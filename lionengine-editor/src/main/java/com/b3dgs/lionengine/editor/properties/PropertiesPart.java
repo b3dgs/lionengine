@@ -23,6 +23,8 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -36,12 +38,14 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
+import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
 import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -64,6 +68,8 @@ public class PropertiesPart
     private static final Image ICON_SURFACE = UtilEclipse.getIcon("properties", "surface.png");
     /** Icon icon. */
     private static final Image ICON_ICON = UtilEclipse.getIcon("properties", "icon.png");
+    /** Icon frames. */
+    private static final Image ICON_FRAMES = UtilEclipse.getIcon("properties", "frames.png");
     /** Animations icon. */
     private static final Image ICON_ANIMATIONS = UtilEclipse.getIcon("properties", "animations.png");
     /** Collisions icon. */
@@ -111,6 +117,29 @@ public class PropertiesPart
         final TreeItem iconName = new TreeItem(iconItem, SWT.NONE);
         iconName.setText(icon);
         iconName.setData(ConfigSurface.SURFACE_ICON);
+    }
+
+    /**
+     * Create the frames attribute.
+     * 
+     * @param configurer The configurer reference.
+     */
+    public void createAttributeFrames(Configurer configurer)
+    {
+        final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
+        iconItem.setText(Messages.Properties_Frames);
+        iconItem.setData(ConfigFrames.FRAMES);
+        iconItem.setImage(PropertiesPart.ICON_FRAMES);
+
+        final ConfigFrames configFrames = ConfigFrames.create(configurer);
+
+        final TreeItem framesHorizontal = new TreeItem(iconItem, SWT.NONE);
+        framesHorizontal.setText(String.valueOf(configFrames.getHorizontal()));
+        framesHorizontal.setData(ConfigFrames.FRAMES_HORIZONTAL);
+
+        final TreeItem framesVertical = new TreeItem(iconItem, SWT.NONE);
+        framesVertical.setText(String.valueOf(configFrames.getVertical()));
+        framesVertical.setData(ConfigFrames.FRAMES_VERTICAL);
     }
 
     /**
@@ -226,6 +255,10 @@ public class PropertiesPart
             {
                 createAttributeSurface(configurer);
             }
+            if (root.hasChild(ConfigFrames.FRAMES))
+            {
+                createAttributeFrames(configurer);
+            }
             if (root.hasChild(ConfigAnimations.ANIMATION))
             {
                 createAttributeAnimations();
@@ -259,6 +292,10 @@ public class PropertiesPart
         else if (ConfigSurface.SURFACE_ICON.equals(data))
         {
             updated = updateIcon(item, configurer);
+        }
+        else if (ConfigFrames.FRAMES_HORIZONTAL.equals(data) || ConfigFrames.FRAMES_VERTICAL.equals(data))
+        {
+            updated = updateFrames(item, configurer);
         }
         else if (ConfigAnimations.ANIMATION.equals(data))
         {
@@ -349,6 +386,28 @@ public class PropertiesPart
             final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
             surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
             item.setText(file);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Update the frames.
+     * 
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
+     */
+    private boolean updateFrames(TreeItem item, Configurer configurer)
+    {
+        final InputDialog frames = new InputDialog(properties.getShell(), "Frames", "Frames number", "1",
+                new InputValidator("[1-9][0-9]*", "Invalid frames number !"));
+        if (frames.open() == Window.OK)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
+            surfaceNode.writeString((String) item.getData(), frames.getValue());
+            item.setText(frames.getValue());
             return true;
         }
         return false;

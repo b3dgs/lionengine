@@ -72,7 +72,7 @@ public class ImportMapDialog
                 Messages.ImportMapDialog_HeaderDesc, ImportMapDialog.ICON);
         createDialog();
 
-        finish.setEnabled(true);
+        finish.setEnabled(false);
         finish.forceFocus();
     }
 

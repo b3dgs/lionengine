@@ -61,6 +61,25 @@ public class ObjectsFolderTester
         }
     }
 
+    /**
+     * Check if the file is a projectile descriptor.
+     * 
+     * @param media The media to test.
+     * @return <code>true</code> if valid, <code>false</code> else.
+     */
+    public static boolean isProjectileFile(Media media)
+    {
+        try
+        {
+            final Class<?> clazz = Tools.getClass(media);
+            return ProjectileGame.class.isAssignableFrom(clazz);
+        }
+        catch (final LionEngineException exception)
+        {
+            return false;
+        }
+    }
+
     /*
      * PropertyTester
      */
