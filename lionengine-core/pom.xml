@@ -11,6 +11,7 @@
 
 	<artifactId>lionengine-core</artifactId>
 	<name>LionEngine Core</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<build>
 		<plugins>

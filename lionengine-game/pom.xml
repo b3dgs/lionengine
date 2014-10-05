@@ -11,6 +11,7 @@
 
 	<artifactId>lionengine-game</artifactId>
 	<name>LionEngine Game</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>

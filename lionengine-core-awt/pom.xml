@@ -11,6 +11,7 @@
 
 	<artifactId>lionengine-core-awt</artifactId>
 	<name>LionEngine Core AWT</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>

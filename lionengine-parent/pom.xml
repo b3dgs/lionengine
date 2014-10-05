@@ -85,6 +85,7 @@
 				<module>../lionengine-audio-wav</module>
 				<module>../lionengine-audio-midi</module>
 				<module>../lionengine-audio-sc68</module>
+				<module>../lionengine-editor</module>
 			</modules>
 		</profile>
 		<profile>
@@ -92,8 +93,6 @@
 			<modules>
 				<module>../lionengine-examples</module>
 				<module>../lionengine-tutorials</module>
-				<module>../lionengine-tile-collision-editor</module>
-				<module>../lionengine-editor</module>
 			</modules>
 		</profile>
 	</profiles>

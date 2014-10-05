@@ -15,6 +15,7 @@
 
 	<artifactId>lionengine-core-swt</artifactId>
 	<name>LionEngine Core SWT</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<repositories>
 		<repository>

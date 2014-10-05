@@ -11,6 +11,7 @@
 
 	<artifactId>lionengine-game-strategy</artifactId>
 	<name>LionEngine Game Strategy</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>

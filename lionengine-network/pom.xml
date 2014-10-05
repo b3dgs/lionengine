@@ -11,6 +11,7 @@
 
 	<artifactId>lionengine-network</artifactId>
 	<name>LionEngine Network</name>
+	<packaging>eclipse-plugin</packaging>
 
 	<dependencies>
 		<dependency>
