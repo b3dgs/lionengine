@@ -82,10 +82,10 @@
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_2R7woExsEeS0NfVbsnb2GQ" elementId="" label="%menu.surface-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/surface-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.SurfaceRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_Gcc6oExxEeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeSurface"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_5Kvw0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-set" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconSetHandler">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_5Kvw0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-set" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/icon-set.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconSetHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_nuUxsEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.setIcon"/>
                   </children>
-                  <children xsi:type="menu:DirectMenuItem" xmi:id="_7WDx0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-remove" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconRemoveHandler">
+                  <children xsi:type="menu:DirectMenuItem" xmi:id="_7WDx0ExsEeS0NfVbsnb2GQ" elementId="" label="%menu.icon-remove" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/icon-remove.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.IconRemoveHandler">
                     <visibleWhen xsi:type="ui:CoreExpression" xmi:id="_opCGcEx2EeSv6e7RSbUQ_Q" coreExpressionId="com.b3dgs.lionengine.editor.properties.removeIcon"/>
                   </children>
                   <children xsi:type="menu:DirectMenuItem" xmi:id="_8_l7cExsEeS0NfVbsnb2GQ" elementId="" label="%menu.animations-enable" iconURI="platform:/plugin/com.b3dgs.lionengine.editor/icons/context-menu/animations-enable.png" contributionURI="bundleclass://com.b3dgs.lionengine.editor/com.b3dgs.lionengine.editor.properties.AnimationsEnableHandler">

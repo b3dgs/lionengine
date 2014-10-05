@@ -20,6 +20,13 @@ package com.b3dgs.lionengine.editor.properties;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
+import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
+
 /**
  * Set surface handler.
  * 
@@ -35,6 +42,17 @@ public class SurfaceSetHandler
     @Execute
     public void execute(EPartService partService)
     {
-
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final Configurer configurer = (Configurer) part.properties.getData();
+        final String file = Tools.selectFile(part.properties.getShell(), configurer.getPath(), true);
+        if (file != null)
+        {
+            final XmlNode root = configurer.getRoot();
+            final XmlNode surfaceNode = Stream.createXmlNode(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_IMAGE, file);
+            root.add(surfaceNode);
+            configurer.save();
+            part.createAttributeSurface(configurer);
+        }
     }
 }

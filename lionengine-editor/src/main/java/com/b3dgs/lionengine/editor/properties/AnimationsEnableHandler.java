@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.editor.properties;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 
+import com.b3dgs.lionengine.editor.UtilEclipse;
+
 /**
  * Enable animations handler.
  * 
@@ -35,6 +37,7 @@ public class AnimationsEnableHandler
     @Execute
     public void execute(EPartService partService)
     {
-
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        part.createAttributeAnimations();
     }
 }

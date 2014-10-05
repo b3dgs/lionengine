@@ -28,6 +28,7 @@ import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -36,6 +37,7 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.Tools;
+import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.animation.AnimationEditor;
 import com.b3dgs.lionengine.editor.collision.EntityCollisionEditor;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
@@ -56,32 +58,31 @@ public class PropertiesPart
     /** Menu ID. */
     public static final String MENU_ID = PropertiesPart.ID + ".menu";
 
-    /**
-     * Create the attribute class.
-     * 
-     * @param configurer The configurer reference.
-     */
-    private void createAttributeClass(final Configurer configurer)
-    {
-        final TreeItem classItem = new TreeItem(properties, SWT.NONE);
-        classItem.setText(Messages.Properties_Class);
-        classItem.setData(Configurer.CLASS);
+    /** Class icon. */
+    private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
+    /** Surface icon. */
+    private static final Image ICON_SURFACE = UtilEclipse.getIcon("properties", "surface.png");
+    /** Icon icon. */
+    private static final Image ICON_ICON = UtilEclipse.getIcon("properties", "icon.png");
+    /** Animations icon. */
+    private static final Image ICON_ANIMATIONS = UtilEclipse.getIcon("properties", "animations.png");
+    /** Collisions icon. */
+    private static final Image ICON_COLLISIONS = UtilEclipse.getIcon("properties", "collisions.png");
 
-        final TreeItem className = new TreeItem(classItem, SWT.NONE);
-        className.setText(configurer.getClassName());
-        className.setData(Configurer.CLASS);
-    }
+    /** Properties tree. */
+    Tree properties;
 
     /**
      * Create the surface attribute.
      * 
      * @param configurer The configurer reference.
      */
-    private void createAttributeSurface(Configurer configurer)
+    public void createAttributeSurface(Configurer configurer)
     {
         final TreeItem surfaceItem = new TreeItem(properties, SWT.NONE);
         surfaceItem.setText(Messages.Properties_Surface);
         surfaceItem.setData(ConfigSurface.SURFACE_IMAGE);
+        surfaceItem.setImage(PropertiesPart.ICON_SURFACE);
 
         final ConfigSurface surface = ConfigSurface.create(configurer);
         final TreeItem surfaceName = new TreeItem(surfaceItem, SWT.NONE);
@@ -91,44 +92,48 @@ public class PropertiesPart
         final String icon = surface.getIcon();
         if (icon != null)
         {
-            final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
-            iconItem.setText(Messages.Properties_SurfaceIcon);
-            iconItem.setData(ConfigSurface.SURFACE_ICON);
-
-            final TreeItem iconName = new TreeItem(iconItem, SWT.NONE);
-            iconName.setText(icon);
-            iconName.setData(ConfigSurface.SURFACE_ICON);
+            createAttributeIcon(icon);
         }
     }
 
     /**
-     * Create the animations attribute.
+     * Create the surface attribute.
      * 
-     * @param configurer The configurer reference.
+     * @param icon The icon path.
      */
-    private void createAttributeAnimations(Configurer configurer)
+    public void createAttributeIcon(String icon)
+    {
+        final TreeItem iconItem = new TreeItem(properties, SWT.NONE);
+        iconItem.setText(Messages.Properties_SurfaceIcon);
+        iconItem.setData(ConfigSurface.SURFACE_ICON);
+        iconItem.setImage(PropertiesPart.ICON_ICON);
+
+        final TreeItem iconName = new TreeItem(iconItem, SWT.NONE);
+        iconName.setText(icon);
+        iconName.setData(ConfigSurface.SURFACE_ICON);
+    }
+
+    /**
+     * Create the animations attribute.
+     */
+    public void createAttributeAnimations()
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
         animationsItem.setText(Messages.Properties_Animations);
         animationsItem.setData(ConfigAnimations.ANIMATION);
-        animationsItem.setImage(AnimationEditor.DIALOG_ICON);
+        animationsItem.setImage(PropertiesPart.ICON_ANIMATIONS);
     }
 
     /**
      * Create the collisions attribute.
-     * 
-     * @param configurer The configurer reference.
      */
-    private void createAttributeCollisions(Configurer configurer)
+    public void createAttributeCollisions()
     {
         final TreeItem animationsItem = new TreeItem(properties, SWT.NONE);
         animationsItem.setText(Messages.Properties_Collisions);
         animationsItem.setData(ConfigCollisions.COLLISION);
-        animationsItem.setImage(EntityCollisionEditor.DIALOG_ICON);
+        animationsItem.setImage(PropertiesPart.ICON_COLLISIONS);
     }
-
-    /** Properties tree. */
-    Tree properties;
 
     /**
      * Create the composite.
@@ -178,6 +183,21 @@ public class PropertiesPart
     }
 
     /**
+     * Clear all sub items.
+     * 
+     * @param item The item root.
+     */
+    public void clear(TreeItem item)
+    {
+        item.setData(null);
+        for (final TreeItem current : item.getItems())
+        {
+            clear(current);
+        }
+        item.dispose();
+    }
+
+    /**
      * Set the focus.
      */
     @Focus
@@ -208,11 +228,11 @@ public class PropertiesPart
             }
             if (root.hasChild(ConfigAnimations.ANIMATION))
             {
-                createAttributeAnimations(configurer);
+                createAttributeAnimations();
             }
             if (root.hasChild(ConfigCollisions.COLLISION))
             {
-                createAttributeCollisions(configurer);
+                createAttributeCollisions();
             }
         }
     }
@@ -236,6 +256,10 @@ public class PropertiesPart
         {
             updated = updateSurface(item, configurer);
         }
+        else if (ConfigSurface.SURFACE_ICON.equals(data))
+        {
+            updated = updateIcon(item, configurer);
+        }
         else if (ConfigAnimations.ANIMATION.equals(data))
         {
             final AnimationEditor animationEditor = new AnimationEditor(properties, configurer);
@@ -247,6 +271,23 @@ public class PropertiesPart
             collisionsEditor.open();
         }
         return updated;
+    }
+
+    /**
+     * Create the attribute class.
+     * 
+     * @param configurer The configurer reference.
+     */
+    private void createAttributeClass(final Configurer configurer)
+    {
+        final TreeItem classItem = new TreeItem(properties, SWT.NONE);
+        classItem.setText(Messages.Properties_Class);
+        classItem.setData(Configurer.CLASS);
+        classItem.setImage(PropertiesPart.ICON_CLASS);
+
+        final TreeItem className = new TreeItem(classItem, SWT.NONE);
+        className.setText(configurer.getClassName());
+        className.setData(Configurer.CLASS);
     }
 
     /**
@@ -293,17 +334,23 @@ public class PropertiesPart
     }
 
     /**
-     * Clear all sub items.
+     * Update the icon.
      * 
-     * @param item The item root.
+     * @param item The item reference.
+     * @param configurer The configurer reference.
+     * @return <code>true</code> if updated, <code>false</code> else.
      */
-    private void clear(TreeItem item)
+    private boolean updateIcon(TreeItem item, Configurer configurer)
     {
-        item.setData(null);
-        for (final TreeItem current : item.getItems())
+        final String file = Tools.selectFile(properties.getShell(), configurer.getPath(), true);
+        if (file != null)
         {
-            clear(current);
+            final XmlNode root = configurer.getRoot();
+            final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
+            surfaceNode.writeString(ConfigSurface.SURFACE_ICON, file);
+            item.setText(file);
+            return true;
         }
-        item.dispose();
+        return false;
     }
 }

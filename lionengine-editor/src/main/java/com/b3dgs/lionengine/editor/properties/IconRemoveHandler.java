@@ -19,6 +19,12 @@ package com.b3dgs.lionengine.editor.properties;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.TreeItem;
+
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Remove icon handler.
@@ -35,6 +41,18 @@ public class IconRemoveHandler
     @Execute
     public void execute(EPartService partService)
     {
-
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final Configurer configurer = (Configurer) part.properties.getData();
+        final XmlNode root = configurer.getRoot();
+        final XmlNode surfaceNode = root.getChild(ConfigSurface.SURFACE);
+        surfaceNode.removeAttribute(ConfigSurface.SURFACE_ICON);
+        configurer.save();
+        for (final TreeItem item : part.properties.getItems())
+        {
+            if (ConfigSurface.SURFACE_ICON.equals(item.getData()))
+            {
+                part.clear(item);
+            }
+        }
     }
 }

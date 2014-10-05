@@ -72,13 +72,14 @@ public class PropertiesTester
             }
             else if (PropertiesTester.PROPERTY_ICON_SET.equals(property))
             {
-                return !model.hasProperty(ConfigSurface.SURFACE_ICON);
+                return !model.hasProperty(ConfigSurface.SURFACE_ICON) && model.hasProperty(ConfigSurface.SURFACE_IMAGE);
             }
             else if (PropertiesTester.PROPERTY_ICON_REMOVE.equals(property))
             {
                 return model.hasProperty(ConfigSurface.SURFACE_ICON);
             }
-            else if (PropertiesTester.PROPERTY_ANIMATIONS_ENABLE.equals(property))
+            else if (PropertiesTester.PROPERTY_ANIMATIONS_ENABLE.equals(property)
+                    && model.hasProperty(ConfigSurface.SURFACE_IMAGE))
             {
                 return !model.hasProperty(ConfigAnimations.ANIMATION);
             }

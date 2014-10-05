@@ -19,6 +19,10 @@ package com.b3dgs.lionengine.editor.properties;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Tree;
+
+import com.b3dgs.lionengine.editor.animation.AnimationEditor;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 
 /**
  * Start animations editor handler.
@@ -35,6 +39,9 @@ public class AnimationsEditorHandler
     @Execute
     public void execute(EPartService partService)
     {
-
+        final Tree tree = PropertiesModel.INSTANCE.getTree();
+        final Configurer configurer = (Configurer) tree.getData();
+        final AnimationEditor editor = new AnimationEditor(tree, configurer);
+        editor.open();
     }
 }

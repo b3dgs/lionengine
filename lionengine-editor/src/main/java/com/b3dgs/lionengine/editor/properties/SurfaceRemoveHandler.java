@@ -19,6 +19,13 @@ package com.b3dgs.lionengine.editor.properties;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.TreeItem;
+
+import com.b3dgs.lionengine.editor.UtilEclipse;
+import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
+import com.b3dgs.lionengine.game.configurer.ConfigSurface;
+import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Remove surface handler.
@@ -35,6 +42,20 @@ public class SurfaceRemoveHandler
     @Execute
     public void execute(EPartService partService)
     {
-
+        final PropertiesPart part = UtilEclipse.getPart(partService, PropertiesPart.ID, PropertiesPart.class);
+        final Configurer configurer = (Configurer) part.properties.getData();
+        final XmlNode root = configurer.getRoot();
+        root.removeChild(ConfigSurface.SURFACE);
+        root.removeChildren(ConfigAnimations.ANIMATION);
+        configurer.save();
+        for (final TreeItem item : part.properties.getItems())
+        {
+            final Object data = item.getData();
+            if (ConfigSurface.SURFACE_IMAGE.equals(data) || ConfigSurface.SURFACE_ICON.equals(data)
+                    || ConfigAnimations.ANIMATION.equals(data))
+            {
+                part.clear(item);
+            }
+        }
     }
 }
