@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Audio Wav Tests
 Bundle-SymbolicName: lionengine-test-audio-wav;singleton:=true
-Bundle-Version: 6.2.0.qualifier
+Bundle-Version: 7.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine.audio
 Require-Bundle: org.junit;bundle-version="4.11.0",
- lionengine-core;bundle-version="6.2.0",
- lionengine-audio-wav;bundle-version="6.2.0",
+ lionengine-core;bundle-version="7.0.0",
+ lionengine-audio-wav;bundle-version="7.0.0",
  lionengine-test-core

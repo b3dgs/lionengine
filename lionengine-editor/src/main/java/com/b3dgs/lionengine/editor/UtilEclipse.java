@@ -81,7 +81,7 @@ public final class UtilEclipse
     public static Image getIcon(String root, String icon) throws LionEngineException
     {
         final Bundle bundle = Activator.getContext().getBundle();
-        final String path = UtilFile.getPath(UtilEclipse.ICON_FOLDER, root, icon);
+        final String path = UtilFile.getPathSeparator("/", UtilEclipse.ICON_FOLDER, root, icon);
         final URL url = bundle.getEntry(path);
         if (url == null)
         {

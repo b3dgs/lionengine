@@ -2,15 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Game
 Bundle-SymbolicName: lionengine-game;singleton:=true
-Bundle-Version: 6.2.0.qualifier
-Export-Package: com.b3dgs.lionengine.game,
- com.b3dgs.lionengine.game.configurer,
- com.b3dgs.lionengine.game.map,
- com.b3dgs.lionengine.game.projectile,
- com.b3dgs.lionengine.game.purview,
- com.b3dgs.lionengine.game.purview.model,
- com.b3dgs.lionengine.utility,
- com.b3dgs.lionengine.xsd
+Bundle-Version: 7.0.0.qualifier
+Export-Package: com.b3dgs.lionengine.game,com.b3dgs.lionengine.game.co
+ nfigurer,com.b3dgs.lionengine.game.map,com.b3dgs.lionengine.game.proj
+ ectile,com.b3dgs.lionengine.game.purview,com.b3dgs.lionengine.game.pu
+ rview.model,com.b3dgs.lionengine.utility,com.b3dgs.lionengine.xsd
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: lionengine-core;bundle-version="6.2.0"
 Bundle-ClassPath: .

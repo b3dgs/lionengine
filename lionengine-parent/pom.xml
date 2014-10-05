@@ -7,15 +7,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jdk.version>1.7</jdk.version>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.21.0</tycho.version>
 		<tycho.osgi.version>0.11.1</tycho.osgi.version>
 		<junit.version>4.11</junit.version>
-		<lionengine.version>6.2.0-SNAPSHOT</lionengine.version>
+		<lionengine.version>7.0.0-SNAPSHOT</lionengine.version>
 	</properties>
 	<groupId>com.b3dgs.lionengine</groupId>
 	<artifactId>lionengine</artifactId>
 	<packaging>pom</packaging>
-	<version>6.2.0-SNAPSHOT</version>
+	<version>7.0.0-SNAPSHOT</version>
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
 	<url>https://github.com/DjThunder/lionengine</url>
@@ -48,20 +48,12 @@
 		</license>
 	</licenses>
 	<repositories>
-	    <repository>
-	      <id>luna</id>
-	      <url>http://download.eclipse.org/releases/luna</url>
-	      <layout>p2</layout>
-	    </repository>
+		<repository>
+			<id>luna</id>
+			<url>http://download.eclipse.org/releases/luna</url>
+			<layout>p2</layout>
+		</repository>
 	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 	<prerequisites>
 		<maven>3.2.1</maven>
 	</prerequisites>
@@ -92,6 +84,7 @@
 			<modules>
 				<module>../lionengine-examples</module>
 				<module>../lionengine-tutorials</module>
+				<module>../lionengine-editor-product</module>
 			</modules>
 		</profile>
 		<profile>
@@ -100,6 +93,9 @@
 				<module>../lionengine-test-core</module>
 				<module>../lionengine-test-core-awt</module>
 				<module>../lionengine-test-game</module>
+				<module>../lionengine-test-audio-midi</module>
+				<module>../lionengine-test-audio-sc68</module>
+				<module>../lionengine-test-audio-wav</module>
 			</modules>
 		</profile>
 	</profiles>
@@ -169,25 +165,6 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<version>${tycho.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.tycho</groupId>
-					<artifactId>maven-osgi-packaging-plugin</artifactId>
-					<version>${tycho.osgi.version}</version>
-					<executions>
-						<execution>
-							<id>timestamp</id>
-							<phase>validate</phase>
-							<goals>
-								<goal>timestamp</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<archive>
-							<addMavenDescriptor>false</addMavenDescriptor>
-						</archive>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -288,4 +265,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-</project>            
+</project>               

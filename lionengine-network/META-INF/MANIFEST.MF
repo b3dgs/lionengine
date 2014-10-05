@@ -2,10 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Network
 Bundle-SymbolicName: lionengine-network;singleton:=true
-Bundle-Version: 6.2.0.qualifier
-Export-Package: com.b3dgs.lionengine.network,
- com.b3dgs.lionengine.network.message,
- com.b3dgs.lionengine.network.purview
+Bundle-Version: 7.0.0.qualifier
+Export-Package: com.b3dgs.lionengine.network,com.b3dgs.lionengine.netw
+ ork.message,com.b3dgs.lionengine.network.purview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: lionengine-core;bundle-version="6.2.0"
 Bundle-ClassPath: .

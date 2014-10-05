@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Audio Wav
 Bundle-SymbolicName: lionengine-audio-wav;singleton:=true
-Bundle-Version: 6.2.0.qualifier
+Bundle-Version: 7.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .
 Export-Package: com.b3dgs.lionengine.audio

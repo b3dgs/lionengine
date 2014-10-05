@@ -2,12 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Core
 Bundle-SymbolicName: lionengine-core;singleton:=true
-Bundle-Version: 6.2.0.qualifier
-Export-Package: com.b3dgs.lionengine,
- com.b3dgs.lionengine.anim,
- com.b3dgs.lionengine.core,
- com.b3dgs.lionengine.drawable,
- com.b3dgs.lionengine.geom,
- com.b3dgs.lionengine.stream
+Bundle-Version: 7.0.0.qualifier
+Export-Package: com.b3dgs.lionengine,com.b3dgs.lionengine.anim,com.b3d
+ gs.lionengine.core,com.b3dgs.lionengine.drawable,com.b3dgs.lionengine
+ .geom,com.b3dgs.lionengine.stream
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .

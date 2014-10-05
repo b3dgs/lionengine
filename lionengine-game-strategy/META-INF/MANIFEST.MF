@@ -2,17 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LionEngine Game Strategy
 Bundle-SymbolicName: lionengine-game-strategy;singleton:=true
-Bundle-Version: 6.2.0.qualifier
-Export-Package: com.b3dgs.lionengine.game.strategy,
- com.b3dgs.lionengine.game.strategy.ability,
- com.b3dgs.lionengine.game.strategy.ability.attacker,
- com.b3dgs.lionengine.game.strategy.ability.extractor,
- com.b3dgs.lionengine.game.strategy.ability.mover,
- com.b3dgs.lionengine.game.strategy.ability.producer,
- com.b3dgs.lionengine.game.strategy.ability.skilled,
- com.b3dgs.lionengine.game.strategy.entity,
- com.b3dgs.lionengine.game.strategy.map,
- com.b3dgs.lionengine.game.strategy.skill
+Bundle-Version: 7.0.0.qualifier
+Export-Package: com.b3dgs.lionengine.game.strategy,com.b3dgs.lionengin
+ e.game.strategy.ability,com.b3dgs.lionengine.game.strategy.ability.at
+ tacker,com.b3dgs.lionengine.game.strategy.ability.extractor,com.b3dgs
+ .lionengine.game.strategy.ability.mover,com.b3dgs.lionengine.game.str
+ ategy.ability.producer,com.b3dgs.lionengine.game.strategy.ability.ski
+ lled,com.b3dgs.lionengine.game.strategy.entity,com.b3dgs.lionengine.g
+ ame.strategy.map,com.b3dgs.lionengine.game.strategy.skill
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: lionengine-core;bundle-version="6.2.0",
  lionengine-game;bundle-version="6.2.0",
