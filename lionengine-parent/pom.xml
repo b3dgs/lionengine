@@ -81,11 +81,17 @@
 		</profile>
 
 		<profile>
-			<id>editor</id>
+			<id>plugins</id>
 			<modules>
 				<module>../com.b3dgs.lionengine.target</module>
 				<module>../com.b3dgs.lionengine.core.swt</module>
 				<module>../com.b3dgs.lionengine.editor</module>
+			</modules>
+		</profile>
+		
+		<profile>
+			<id>editor</id>
+			<modules>
 				<module>../com.b3dgs.lionengine.editor.product</module>
 			</modules>
 		</profile>
