@@ -63,7 +63,7 @@ import com.b3dgs.lionengine.TextStyle;
  * 
  * <pre>
  * // Create the text
- * final Text text = UtilityImage.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
+ * final Text text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
  * 
  * // Rendering type 1
  * text.setText(&quot;Hello&quot;);

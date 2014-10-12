@@ -173,6 +173,16 @@ public final class Config
     }
 
     /**
+     * Check if has applet.
+     * 
+     * @return <code>true</code> if has applet, <code>false</code> else.
+     */
+    public boolean hasApplet()
+    {
+        return applet != null;
+    }
+
+    /**
      * Get the application icon.
      * 
      * @return The application icon.

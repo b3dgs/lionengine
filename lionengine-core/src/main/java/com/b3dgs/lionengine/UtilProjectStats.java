@@ -45,15 +45,15 @@ public final class UtilProjectStats
      */
     public static void start(String sourcesDir)
     {
-        UtilProjectStats.numberOfFiles = 0;
-        UtilProjectStats.numberOfLines = 0;
+        numberOfFiles = 0;
+        numberOfLines = 0;
 
         final File mainDir = new File(sourcesDir + File.separator);
-        UtilProjectStats.exploreDir(mainDir.getAbsolutePath());
+        exploreDir(mainDir.getAbsolutePath());
 
         final StringBuilder builder = new StringBuilder("Project statistics:\n");
-        builder.append("Number of files: ").append(UtilProjectStats.numberOfFiles).append("\n");
-        builder.append("Number of lines: ").append(UtilProjectStats.numberOfLines).append("\n");
+        builder.append("Number of files: ").append(numberOfFiles).append("\n");
+        builder.append("Number of lines: ").append(numberOfLines).append("\n");
         Verbose.info(builder.toString());
     }
 
@@ -71,14 +71,14 @@ public final class UtilProjectStats
         {
             if (current.isDirectory())
             {
-                UtilProjectStats.exploreDir(current.getAbsolutePath());
+                exploreDir(current.getAbsolutePath());
             }
             else if (current.isFile())
             {
                 final String filename = current.getAbsolutePath();
-                if (UtilProjectStats.getExtension(filename).equals("java"))
+                if (getExtension(filename).equals("java"))
                 {
-                    UtilProjectStats.countFileLines(filename);
+                    countFileLines(filename);
                 }
             }
         }
@@ -102,7 +102,7 @@ public final class UtilProjectStats
                 s = in.readLine();
                 if (s != null)
                 {
-                    UtilProjectStats.numberOfLines++;
+                    numberOfLines++;
                 }
                 else
                 {
@@ -114,7 +114,7 @@ public final class UtilProjectStats
         {
             Verbose.exception(UtilProjectStats.class, "countFileLines", exception);
         }
-        UtilProjectStats.numberOfFiles++;
+        numberOfFiles++;
     }
 
     /**

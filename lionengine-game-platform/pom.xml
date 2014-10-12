@@ -11,18 +11,34 @@
 
 	<artifactId>lionengine-game-platform</artifactId>
 	<name>LionEngine Game Platform</name>
-	<packaging>eclipse-plugin</packaging>
+
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
+					<instructions>
+						<Import-Package>com.b3dgs.lionengine.stream,*</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>

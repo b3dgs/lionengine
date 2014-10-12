@@ -102,11 +102,11 @@ public abstract class WorldGame
      * Create a new world. The sequence given by reference allows to retrieve essential data such as {@link Config},
      * screen size and wide state.
      * 
-     * @param sequence The sequence reference.
+     * @param config The config reference.
      */
-    public WorldGame(Sequence sequence)
+    public WorldGame(Config config)
     {
-        config = sequence.getConfig();
+        this.config = config;
         source = config.getSource();
         output = config.getOutput();
         width = source.getWidth();

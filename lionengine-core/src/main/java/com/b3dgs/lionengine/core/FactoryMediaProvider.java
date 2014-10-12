@@ -45,24 +45,24 @@ public final class FactoryMediaProvider
     @Override
     public Media create(String path)
     {
-        return FactoryMediaProvider.factoryMedia.create(path);
+        return factoryMedia.create(path);
     }
 
     @Override
     public Media create(String... path)
     {
-        return FactoryMediaProvider.factoryMedia.create(path);
+        return factoryMedia.create(path);
     }
 
     @Override
     public String getSeparator()
     {
-        return FactoryMediaProvider.factoryMedia.getSeparator();
+        return factoryMedia.getSeparator();
     }
 
     @Override
     public void setSeparator(String separator)
     {
-        FactoryMediaProvider.factoryMedia.setSeparator(separator);
+        factoryMedia.setSeparator(separator);
     }
 }

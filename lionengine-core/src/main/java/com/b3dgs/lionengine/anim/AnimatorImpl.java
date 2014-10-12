@@ -70,10 +70,10 @@ final class AnimatorImpl
         current += speed * extrp;
 
         // Last frame reached
-        if (current >= last + AnimatorImpl.FRAME)
+        if (current >= last + FRAME)
         {
             // If not reversed, done, else, reverse
-            current = last + AnimatorImpl.HALF_FRAME;
+            current = last + HALF_FRAME;
             if (!reverse)
             {
                 if (repeat)

@@ -18,22 +18,14 @@
 package com.b3dgs.lionengine.core;
 
 /**
- * Main core creation utility.
+ * Main core factories.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Core
+public interface Core
 {
     /** Graphic factory. */
-    public static final FactoryGraphic GRAPHIC = new FactoryGraphicProvider();
+    FactoryGraphic GRAPHIC = new FactoryGraphicProvider();
     /** Media factory. */
-    public static final FactoryMedia MEDIA = new FactoryMediaProvider();
-
-    /**
-     * Private constructor.
-     */
-    private Core()
-    {
-        throw new RuntimeException();
-    }
+    FactoryMedia MEDIA = new FactoryMediaProvider();
 }

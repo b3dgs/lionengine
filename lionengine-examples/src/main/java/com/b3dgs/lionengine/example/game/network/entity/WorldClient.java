@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.TextGame;
-import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorldClient;
 import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
@@ -59,11 +58,13 @@ final class WorldClient
     private final ColorRgba backgroundColor = new ColorRgba(107, 136, 255);
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * Constructor.
+     * 
+     * @param sequence The sequence reference.
      */
     WorldClient(Sequence sequence)
     {
-        super(sequence, false);
+        super(sequence.getConfig(), false);
         textGame = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         input = new ClientInput();
         camera = new CameraPlatform(width, height);

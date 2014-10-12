@@ -44,7 +44,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class XmlFactory
+public final class XmlFactory
 {
     /** Error when reading the file. */
     private static final String ERROR_READING = "An error occured while reading";
@@ -77,7 +77,7 @@ final class XmlFactory
         {
             Check.notNull(inputStream);
 
-            final DocumentBuilder builder = XmlFactory.getDocumentFactory().newDocumentBuilder();
+            final DocumentBuilder builder = getDocumentFactory().newDocumentBuilder();
             builder.setErrorHandler(null);
             final Document document = builder.parse(inputStream);
             final Element root = document.getDocumentElement();
@@ -87,7 +87,7 @@ final class XmlFactory
                      | SAXException
                      | ParserConfigurationException exception)
         {
-            throw new LionEngineException(exception, media, XmlFactory.ERROR_READING);
+            throw new LionEngineException(exception, media, ERROR_READING);
         }
     }
 
@@ -105,22 +105,22 @@ final class XmlFactory
 
         try (OutputStream outputStream = media.getOutputStream())
         {
-            final Transformer transformer = XmlFactory.getTransformerFactory().newTransformer();
+            final Transformer transformer = getTransformerFactory().newTransformer();
             if (root instanceof XmlNodeImpl)
             {
-                root.writeString(XmlFactory.HEADER_ATTRIBUTE, XmlFactory.HEADER_VALUE);
+                root.writeString(HEADER_ATTRIBUTE, HEADER_VALUE);
                 final DOMSource source = new DOMSource(((XmlNodeImpl) root).getElement());
                 final StreamResult result = new StreamResult(outputStream);
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-                transformer.setOutputProperty(XmlFactory.PROPERTY_INDENT, "4");
+                transformer.setOutputProperty(PROPERTY_INDENT, "4");
                 transformer.transform(source, result);
             }
         }
         catch (final IOException
                      | TransformerException exception)
         {
-            throw new LionEngineException(exception, media, XmlFactory.ERROR_WRITING);
+            throw new LionEngineException(exception, media, ERROR_WRITING);
         }
     }
 
@@ -133,12 +133,12 @@ final class XmlFactory
     {
         synchronized (XmlFactory.class)
         {
-            if (XmlFactory.documentFactory == null)
+            if (documentFactory == null)
             {
-                XmlFactory.documentFactory = DocumentBuilderFactory.newInstance();
+                documentFactory = DocumentBuilderFactory.newInstance();
             }
         }
-        return XmlFactory.documentFactory;
+        return documentFactory;
     }
 
     /**
@@ -150,12 +150,12 @@ final class XmlFactory
     {
         synchronized (XmlFactory.class)
         {
-            if (XmlFactory.transformerFactory == null)
+            if (transformerFactory == null)
             {
-                XmlFactory.transformerFactory = TransformerFactory.newInstance();
+                transformerFactory = TransformerFactory.newInstance();
             }
         }
-        return XmlFactory.transformerFactory;
+        return transformerFactory;
     }
 
     /**

@@ -36,7 +36,7 @@ public final class LionEngineException
     /** The main ignored package. */
     private static final String IGNORE = "com.b3dgs.lionengine.";
     /** The number of ignored characters. */
-    private static final int IGNORE_SIZE = LionEngineException.IGNORE.length();
+    private static final int IGNORE_SIZE = IGNORE.length();
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
@@ -64,16 +64,16 @@ public final class LionEngineException
 
             // Ignored package
             boolean add = true;
-            if (LionEngineException.IGNORE_ENGINE_TRACE)
+            if (IGNORE_ENGINE_TRACE)
             {
                 if (className.startsWith("sun.reflect") || className.startsWith("java.lang.reflect"))
                 {
                     add = false;
                 }
-                if (className.startsWith(LionEngineException.IGNORE))
+                if (className.startsWith(IGNORE))
                 {
-                    final String pack = className.substring(LionEngineException.IGNORE_SIZE);
-                    for (final String ignore : LionEngineException.IGNORED)
+                    final String pack = className.substring(IGNORE_SIZE);
+                    for (final String ignore : IGNORED)
                     {
                         // Ignored sub package
                         if (pack.startsWith(ignore))
@@ -156,7 +156,7 @@ public final class LionEngineException
 
         Throwable current = exception;
         final List<StackTraceElement> traces = new ArrayList<>(1);
-        for (final StackTraceElement element : LionEngineException.getFilteredTraces(getStackTrace()))
+        for (final StackTraceElement element : getFilteredTraces(getStackTrace()))
         {
             traces.add(element);
         }
@@ -167,7 +167,7 @@ public final class LionEngineException
             {
                 buffer.append("\n\t\t").append(current.getMessage());
             }
-            final StackTraceElement[] elements = LionEngineException.getFilteredTraces(current.getStackTrace());
+            final StackTraceElement[] elements = getFilteredTraces(current.getStackTrace());
             for (final StackTraceElement element : elements)
             {
                 traces.add(element);

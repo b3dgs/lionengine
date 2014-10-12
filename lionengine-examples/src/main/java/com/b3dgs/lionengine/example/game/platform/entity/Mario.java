@@ -22,7 +22,7 @@ import java.util.EnumMap;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;

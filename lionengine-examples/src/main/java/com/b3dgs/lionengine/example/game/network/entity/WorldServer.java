@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
@@ -40,11 +40,11 @@ final class WorldServer
     private final HandlerEntity handler;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * @see WorldGame#WorldGame(Config)
      */
-    WorldServer(Sequence sequence)
+    WorldServer(Config config)
     {
-        super(sequence, true);
+        super(config, true);
         handler = new HandlerEntity(new CameraPlatform(width, height), marioClients);
         networkedWorld = new NetworkedWorldModelServer(new MessageDecoder());
         networkedWorld.addListener(this);

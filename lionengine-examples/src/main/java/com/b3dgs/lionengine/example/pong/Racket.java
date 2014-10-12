@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.ContextGame;

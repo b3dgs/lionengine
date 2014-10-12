@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
  * 
  * <pre>
  * public class FactoryObject
- *         extends FactoryObjectGame&lt;SetupGame, ObjectGame&gt;
+ *         extends FactoryObjectGame&lt;SetupGame&gt;
  * {
  *     public FactoryObject()
  *     {
@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.game.purview.Fabricable;
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(Class&lt;? extends ObjectGame&gt; type, Media config)
+ *     protected SetupGame createSetup(Media config)
  *     {
  *         return new SetupGame(config);
  *     }

@@ -11,23 +11,25 @@
 
 	<artifactId>lionengine-game-strategy</artifactId>
 	<name>LionEngine Game Strategy</name>
-	<packaging>eclipse-plugin</packaging>
+
+	<packaging>jar</packaging>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-pathfinding</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 	</dependencies>
 </project>

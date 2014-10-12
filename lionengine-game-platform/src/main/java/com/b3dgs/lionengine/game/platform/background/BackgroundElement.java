@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.drawable.Renderable;
  */
 public class BackgroundElement
 {
-    /** Sprite reference. */
-    private final Renderable sprite;
+    /** Renderable reference. */
+    private final Renderable renderable;
     /** Main location x referential. */
     private int mainX;
     /** Main location y referential. */
@@ -42,13 +42,13 @@ public class BackgroundElement
      * 
      * @param mainX The main location x.
      * @param mainY The main location y.
-     * @param sprite The element sprite.
+     * @param renderable The element renderable.
      */
-    public BackgroundElement(int mainX, int mainY, Renderable sprite)
+    public BackgroundElement(int mainX, int mainY, Renderable renderable)
     {
         this.mainX = mainX;
         this.mainY = mainY;
-        this.sprite = sprite;
+        this.renderable = renderable;
         offsetX = 0.0;
         offsetY = 0.0;
     }
@@ -94,13 +94,13 @@ public class BackgroundElement
     }
 
     /**
-     * Get sprite reference.
+     * Get renderable reference.
      * 
-     * @return The sprite reference.
+     * @return The renderable reference.
      */
-    public Renderable getSprite()
+    public Renderable getRenderable()
     {
-        return sprite;
+        return renderable;
     }
 
     /**

@@ -13,60 +13,79 @@
 	<name>LionEngine Example</name>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core-awt</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-network</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-audio-wav</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-audio-midi</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-audio-sc68</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-pathfinding</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-platform</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-strategy</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<scope>compile</scope>
 		</dependency>
+
 	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>

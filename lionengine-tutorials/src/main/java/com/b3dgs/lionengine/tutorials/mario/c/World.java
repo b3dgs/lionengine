@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.tutorials.mario.c;
 
 import java.io.IOException;
 
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -40,11 +40,11 @@ final class World
     private final Map map;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * @see WorldGame#WorldGame(Config)
      */
-    World(Sequence sequence)
+    World(Config config)
     {
-        super(sequence);
+        super(config);
         camera = new CameraPlatform(width, height);
         map = new Map();
     }

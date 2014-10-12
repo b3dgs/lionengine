@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.network.chat;
 
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorldModelServer;
 import com.b3dgs.lionengine.network.NetworkedWorldServer;
@@ -32,11 +32,11 @@ final class WorldServer
         implements NetworkedWorldServer
 {
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * @see WorldGame#WorldGame(Config)
      */
-    WorldServer(Sequence sequence)
+    WorldServer(Config config)
     {
-        super(sequence);
+        super(config);
         networkedWorld = new NetworkedWorldModelServer(new MessageDecoder());
         networkedWorld.addListener(this);
         networkedWorld.addListener(chat);

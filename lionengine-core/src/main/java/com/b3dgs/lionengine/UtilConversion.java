@@ -157,7 +157,7 @@ public final class UtilConversion
         final StringBuilder title = new StringBuilder();
         for (int i = 0; i < words.length; i++)
         {
-            title.append(UtilConversion.toTitleCase(words[i]));
+            title.append(toTitleCase(words[i]));
             if (i < words.length - 1)
             {
                 title.append(" ");

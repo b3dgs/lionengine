@@ -35,12 +35,12 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.utility.LevelRipConverter;
+import com.b3dgs.lionengine.game.utility.UtilMapTile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
-import com.b3dgs.lionengine.utility.LevelRipConverter;
-import com.b3dgs.lionengine.utility.UtilMapTile;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to

@@ -57,7 +57,7 @@ public final class Check
      */
     public static void superiorOrEqual(int a, int b) throws LionEngineException
     {
-        Check.superior(a, b, false);
+        superior(a, b, false);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class Check
      */
     public static void superiorOrEqual(double a, double b) throws LionEngineException
     {
-        Check.superior(a, b, false);
+        superior(a, b, false);
     }
 
     /**
@@ -81,7 +81,7 @@ public final class Check
      */
     public static void superiorStrict(int a, int b) throws LionEngineException
     {
-        Check.superior(a, b, true);
+        superior(a, b, true);
     }
 
     /**
@@ -93,7 +93,7 @@ public final class Check
      */
     public static void superiorStrict(double a, double b) throws LionEngineException
     {
-        Check.superior(a, b, true);
+        superior(a, b, true);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class Check
      */
     public static void inferiorOrEqual(int a, int b) throws LionEngineException
     {
-        Check.inferior(a, b, false);
+        inferior(a, b, false);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class Check
      */
     public static void inferiorOrEqual(double a, double b) throws LionEngineException
     {
-        Check.inferior(a, b, false);
+        inferior(a, b, false);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class Check
      */
     public static void inferiorStrict(int a, int b) throws LionEngineException
     {
-        Check.inferior(a, b, true);
+        inferior(a, b, true);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class Check
      */
     public static void inferiorStrict(double a, double b) throws LionEngineException
     {
-        Check.inferior(a, b, true);
+        inferior(a, b, true);
     }
 
     /**
@@ -155,7 +155,7 @@ public final class Check
     {
         if (a == b)
         {
-            throw new LionEngineException(Check.ERROR_DIFFERENT);
+            throw new LionEngineException(ERROR_DIFFERENT);
         }
     }
 
@@ -169,7 +169,7 @@ public final class Check
     {
         if (object == null)
         {
-            throw new LionEngineException(Check.ERROR_NULL);
+            throw new LionEngineException(ERROR_NULL);
         }
     }
 
@@ -187,14 +187,14 @@ public final class Check
         {
             if (a <= b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR_STRICT);
+                throw argumentError(a, b, ERROR_SUPERIOR_STRICT);
             }
         }
         else
         {
             if (a < b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR);
+                throw argumentError(a, b, ERROR_SUPERIOR);
             }
         }
     }
@@ -213,14 +213,14 @@ public final class Check
         {
             if (a <= b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR_STRICT);
+                throw argumentError(a, b, ERROR_SUPERIOR_STRICT);
             }
         }
         else
         {
             if (a < b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_SUPERIOR);
+                throw argumentError(a, b, ERROR_SUPERIOR);
             }
         }
     }
@@ -239,14 +239,14 @@ public final class Check
         {
             if (a >= b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_INFERIOR_STRICT);
+                throw argumentError(a, b, ERROR_INFERIOR_STRICT);
             }
         }
         else
         {
             if (a > b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_INFERIOR);
+                throw argumentError(a, b, ERROR_INFERIOR);
             }
         }
     }
@@ -265,14 +265,14 @@ public final class Check
         {
             if (a >= b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_INFERIOR_STRICT);
+                throw argumentError(a, b, ERROR_INFERIOR_STRICT);
             }
         }
         else
         {
             if (a > b)
             {
-                throw Check.argumentError(a, b, Check.ERROR_INFERIOR);
+                throw argumentError(a, b, ERROR_INFERIOR);
             }
         }
     }
@@ -287,7 +287,7 @@ public final class Check
      */
     private static LionEngineException argumentError(int a, int b, String message)
     {
-        return new LionEngineException(Check.ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
+        return new LionEngineException(ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
     }
 
     /**
@@ -300,7 +300,7 @@ public final class Check
      */
     private static LionEngineException argumentError(double a, double b, String message)
     {
-        return new LionEngineException(Check.ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
+        return new LionEngineException(ERROR_ARGUMENT, String.valueOf(a), message, String.valueOf(b));
     }
 
     /**

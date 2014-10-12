@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
  * Game loop designed to handle our little world.
@@ -49,7 +49,7 @@ final class Scene
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        world = new World(this);
+        world = new World(getConfig(), keyboard);
     }
 
     /*

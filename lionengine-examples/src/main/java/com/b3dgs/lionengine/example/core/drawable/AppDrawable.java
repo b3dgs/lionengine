@@ -21,9 +21,9 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
-import com.b3dgs.lionengine.core.Engine;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * Main class.

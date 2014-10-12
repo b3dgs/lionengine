@@ -59,7 +59,7 @@ public final class Timing
      */
     private static long systemTime()
     {
-        return System.nanoTime() / Timing.NANO_TO_MILLI;
+        return System.nanoTime() / NANO_TO_MILLI;
     }
 
     /** Current time. */
@@ -85,7 +85,7 @@ public final class Timing
     {
         if (!started)
         {
-            cur = Timing.systemTime();
+            cur = systemTime();
             started = true;
         }
     }
@@ -113,7 +113,7 @@ public final class Timing
      */
     public void pause()
     {
-        back = Timing.systemTime();
+        back = systemTime();
     }
 
     /**
@@ -121,7 +121,7 @@ public final class Timing
      */
     public void unpause()
     {
-        cur += Timing.systemTime() - back;
+        cur += systemTime() - back;
         back = 0L;
     }
 
@@ -135,7 +135,7 @@ public final class Timing
     {
         if (started)
         {
-            return Timing.systemTime() - cur >= time;
+            return systemTime() - cur >= time;
         }
         return false;
     }
@@ -149,7 +149,7 @@ public final class Timing
     {
         if (started)
         {
-            return Timing.systemTime() - cur;
+            return systemTime() - cur;
         }
         return 0;
     }

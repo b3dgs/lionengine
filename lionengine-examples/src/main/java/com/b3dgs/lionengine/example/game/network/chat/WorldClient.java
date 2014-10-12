@@ -23,7 +23,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorldClient;
 import com.b3dgs.lionengine.network.NetworkedWorldModelClient;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -44,11 +43,13 @@ final class WorldClient
     private final Networkable networkableModel;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * Constructor.
+     * 
+     * @param sequence The sequence reference.
      */
-    WorldClient(final Sequence sequence)
+    WorldClient(Sequence sequence)
     {
-        super(sequence);
+        super(sequence.getConfig());
         networkableModel = new NetworkableModel();
         networkedWorld = new NetworkedWorldModelClient(new MessageDecoder());
         networkedWorld.addListener(this);

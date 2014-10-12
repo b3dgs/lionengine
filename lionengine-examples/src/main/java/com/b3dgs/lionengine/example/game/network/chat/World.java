@@ -22,10 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
@@ -57,11 +57,11 @@ abstract class World<N extends NetworkedWorld>
     protected N networkedWorld;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * @see WorldGame#WorldGame(Config)
      */
-    World(Sequence sequence)
+    World(Config config)
     {
-        super(sequence);
+        super(config);
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
         networkableModel = new NetworkableModel();

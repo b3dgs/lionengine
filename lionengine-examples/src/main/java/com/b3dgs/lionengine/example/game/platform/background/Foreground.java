@@ -203,7 +203,7 @@ final class Foreground
             final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create("calc.png"));
             sprite.load(false);
             data = new BackgroundElement(0, (int) Math.ceil(water.getNominal() * scaleV), sprite);
-            top = data.getSprite().getHeight();
+            top = data.getRenderable().getHeight();
             this.water = water;
         }
 
@@ -229,7 +229,7 @@ final class Foreground
         public void render(Graphic g)
         {
             // Render calc
-            final Sprite sprite = (Sprite) data.getSprite();
+            final Sprite sprite = (Sprite) data.getRenderable();
             final int w = (int) Math.ceil(screenWidth / (double) sprite.getWidth());
             final int y = (int) (data.getOffsetY() + data.getMainY() + water.getHeight());
             if (y >= 0 && y < screenHeight)
@@ -337,7 +337,7 @@ final class Foreground
         public void render(Graphic g)
         {
             // w number of renders used to fill screen
-            final Sprite sprite = (Sprite) data.getSprite();
+            final Sprite sprite = (Sprite) data.getRenderable();
             int w = (int) Math.ceil(screenWidth / (double) sprite.getWidth());
             int y = (int) (data.getOffsetY() + data.getMainY() + water.getHeight());
 

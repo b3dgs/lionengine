@@ -173,7 +173,7 @@ public final class ColorRgba
         Check.superiorOrEqual(a, 0);
         Check.inferiorOrEqual(a, 255);
 
-        value = ColorRgba.mask(a) << 24 | ColorRgba.mask(r) << 16 | ColorRgba.mask(g) << 8 | ColorRgba.mask(b) << 0;
+        value = mask(a) << 24 | mask(r) << 16 | mask(g) << 8 | mask(b) << 0;
         alpha = a;
         red = r;
         green = g;
@@ -188,10 +188,10 @@ public final class ColorRgba
     public ColorRgba(int value)
     {
         this.value = value;
-        alpha = ColorRgba.mask(value >> 24);
-        red = ColorRgba.mask(value >> 16);
-        green = ColorRgba.mask(value >> 8);
-        blue = ColorRgba.mask(value >> 0);
+        alpha = mask(value >> 24);
+        red = mask(value >> 16);
+        green = mask(value >> 8);
+        blue = mask(value >> 0);
     }
 
     /**
@@ -208,9 +208,8 @@ public final class ColorRgba
         {
             return 0;
         }
-        return ColorRgba.mask(255) << 24 | ColorRgba.mask(UtilMath.fixBetween(red + r, 0, 255)) << 16
-                | ColorRgba.mask(UtilMath.fixBetween(green + g, 0, 255)) << 8
-                | ColorRgba.mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
+        return mask(255) << 24 | mask(UtilMath.fixBetween(red + r, 0, 255)) << 16
+                | mask(UtilMath.fixBetween(green + g, 0, 255)) << 8 | mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
     }
 
     /**

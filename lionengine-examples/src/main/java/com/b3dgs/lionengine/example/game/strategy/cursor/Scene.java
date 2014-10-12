@@ -22,16 +22,16 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Mouse;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
-import com.b3dgs.lionengine.utility.LevelRipConverter;
+import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.

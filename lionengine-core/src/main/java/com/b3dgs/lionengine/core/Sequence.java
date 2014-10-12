@@ -32,32 +32,33 @@ import com.b3dgs.lionengine.Resolution;
  * </p>
  * 
  * <pre>
- * final class Scene
+ * public class MySequence
  *         extends Sequence
  * {
  *     private static final Resolution NATIVE = new Resolution(320, 240, 60);
  * 
- *     Scene(Loader loader)
+ *     public MySequence(Loader loader)
  *     {
- *         super(loader, Scene.NATIVE);
+ *         super(loader, MySequence.NATIVE);
+ *         // Initialize variables here
  *     }
  * 
  *     &#064;Override
  *     protected void load()
  *     {
- *         // Load
+ *         // Load resources here
  *     }
  * 
  *     &#064;Override
  *     protected void update(double extrp)
  *     {
- *         // Update
+ *         // Update routine
  *     }
  * 
  *     &#064;Override
  *     protected void render(Graphic g)
  *     {
- *         // Render
+ *         // Render routine
  *     }
  * }
  * </pre>
@@ -142,7 +143,7 @@ public abstract class Sequence
         }
         else
         {
-            throw new LionEngineException(Sequence.ERROR_LOADED);
+            throw new LionEngineException(ERROR_LOADED);
         }
     }
 

@@ -11,13 +11,20 @@
 
 	<artifactId>lionengine-network</artifactId>
 	<name>LionEngine Network</name>
-	<packaging>eclipse-plugin</packaging>
+
+	<packaging>jar</packaging>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-game</artifactId>
+		</dependency>
+
 	</dependencies>
 </project>

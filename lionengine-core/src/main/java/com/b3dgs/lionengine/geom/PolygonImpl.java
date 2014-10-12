@@ -46,8 +46,8 @@ final class PolygonImpl
      */
     PolygonImpl()
     {
-        xpoints = new int[PolygonImpl.MIN];
-        ypoints = new int[PolygonImpl.MIN];
+        xpoints = new int[MIN];
+        ypoints = new int[MIN];
     }
 
     /**

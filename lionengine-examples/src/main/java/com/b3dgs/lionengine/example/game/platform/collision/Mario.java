@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.platform.collision;
 
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;

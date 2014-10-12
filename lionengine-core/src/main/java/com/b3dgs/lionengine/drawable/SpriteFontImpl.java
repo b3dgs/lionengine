@@ -177,7 +177,7 @@ final class SpriteFontImpl
     @Override
     public void draw(Graphic g, int x, int y, Align align, String text)
     {
-        draw(g, x, y, align, text.split(SpriteFontImpl.NL_STR));
+        draw(g, x, y, align, text.split(NL_STR));
     }
 
     @Override

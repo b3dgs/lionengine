@@ -11,13 +11,15 @@
 
 	<artifactId>lionengine-core-awt</artifactId>
 	<name>LionEngine Core AWT</name>
-	<packaging>eclipse-plugin</packaging>
+
+	<packaging>jar</packaging>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-core</artifactId>
-			<version>${lionengine.version}</version>
 		</dependency>
+
 	</dependencies>
 </project>

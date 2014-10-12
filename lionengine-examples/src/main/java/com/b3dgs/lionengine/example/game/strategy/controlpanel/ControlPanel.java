@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import java.util.Set;
 
-import com.b3dgs.lionengine.core.Mouse;
+import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 
 /**

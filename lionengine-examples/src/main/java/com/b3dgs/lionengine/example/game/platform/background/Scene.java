@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.example.game.platform.background;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.platform.background.BackgroundPlatform;
 

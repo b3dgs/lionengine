@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.tutorials.mario.g;
 
 import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.core.Keyboard;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;

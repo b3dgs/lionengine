@@ -72,12 +72,12 @@ final class XmlNodeImpl
             final DocumentBuilder constructeur = XmlFactory.getDocumentFactory().newDocumentBuilder();
             synchronized (XmlNodeImpl.class)
             {
-                if (XmlNodeImpl.document == null)
+                if (document == null)
                 {
-                    XmlNodeImpl.document = constructeur.newDocument();
+                    document = constructeur.newDocument();
                 }
             }
-            root = XmlNodeImpl.document.createElement(name);
+            root = document.createElement(name);
         }
         catch (final ParserConfigurationException
                      | DOMException exception)
@@ -119,7 +119,7 @@ final class XmlNodeImpl
         {
             return root.getAttribute(attribute);
         }
-        throw new LionEngineException(XmlNodeImpl.ERROR_ATTRIBUTE, attribute);
+        throw new LionEngineException(ERROR_ATTRIBUTE, attribute);
     }
 
     /**
@@ -137,8 +137,7 @@ final class XmlNodeImpl
         }
         catch (final DOMException exception)
         {
-            throw new LionEngineException(exception, XmlNodeImpl.ERROR_WRITE_ATTRIBUTE, attribute,
-                    XmlNodeImpl.ERROR_WRITE_CONTENT, content);
+            throw new LionEngineException(exception, ERROR_WRITE_ATTRIBUTE, attribute, ERROR_WRITE_CONTENT, content);
         }
     }
 
@@ -314,7 +313,7 @@ final class XmlNodeImpl
                 return new XmlNodeImpl((Element) node);
             }
         }
-        throw new LionEngineException(XmlNodeImpl.ERROR_NODE, name);
+        throw new LionEngineException(ERROR_NODE, name);
     }
 
     @Override

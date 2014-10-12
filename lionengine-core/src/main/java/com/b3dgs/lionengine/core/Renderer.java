@@ -122,7 +122,7 @@ public abstract class Renderer
         }
         else
         {
-            frameDelay = Renderer.TIME_LONG / output.getRate();
+            frameDelay = TIME_LONG / output.getRate();
         }
         graphic = Core.GRAPHIC.createGraphic();
     }
@@ -155,7 +155,7 @@ public abstract class Renderer
         }
         else
         {
-            throw new LionEngineException(Renderer.ERROR_STARTED);
+            throw new LionEngineException(ERROR_STARTED);
         }
     }
 
@@ -194,7 +194,7 @@ public abstract class Renderer
      * 
      * @return The next sequence pointer.
      */
-    final Sequence getNextSequence()
+    public final Sequence getNextSequence()
     {
         return nextSequence;
     }
@@ -242,7 +242,7 @@ public abstract class Renderer
                 final long waitTime = frameDelay - time;
                 if (waitTime > 0)
                 {
-                    Thread.sleep(waitTime / Renderer.TIME_INT, (int) (waitTime % Renderer.TIME_INT));
+                    Thread.sleep(waitTime / TIME_INT, (int) (waitTime % TIME_INT));
                 }
             }
             catch (final InterruptedException exception)
@@ -271,7 +271,7 @@ public abstract class Renderer
         setResolution(sequence.resolution);
 
         // Prepare sequence to be started
-        double extrp = Renderer.EXTRP;
+        double extrp = EXTRP;
         long updateFpsTimer = 0L;
         currentFrameRate = output.getRate();
         screen.requestFocus();
@@ -296,15 +296,15 @@ public abstract class Renderer
             final long currentTime = System.nanoTime();
             if (extrapolated)
             {
-                extrp = source.getRate() / Renderer.TIME_DOUBLE * (currentTime - lastTime);
+                extrp = source.getRate() / TIME_DOUBLE * (currentTime - lastTime);
             }
             else
             {
-                extrp = Renderer.EXTRP;
+                extrp = EXTRP;
             }
-            if (currentTime - updateFpsTimer > Renderer.TIME_LONG)
+            if (currentTime - updateFpsTimer > TIME_LONG)
             {
-                currentFrameRate = Renderer.TIME_DOUBLE / (currentTime - lastTime);
+                currentFrameRate = TIME_DOUBLE / (currentTime - lastTime);
                 updateFpsTimer = currentTime;
             }
             if (!EngineCore.isStarted())
@@ -327,7 +327,7 @@ public abstract class Renderer
             try
             {
                 Thread.sleep(100);
-                if (timeout.elapsed(Renderer.SCREEN_READY_TIME_OUT))
+                if (timeout.elapsed(SCREEN_READY_TIME_OUT))
                 {
                     Thread.currentThread().interrupt();
                 }

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine;
 
+import java.util.Random;
+
 /**
  * Random utility class implementation.
  * 
@@ -25,7 +27,7 @@ package com.b3dgs.lionengine;
 public final class UtilRandom
 {
     /** The random utility instance. */
-    private static final java.util.Random RANDOM = new java.util.Random();
+    private static final Random RANDOM = new Random();
 
     /**
      * Set the seed.
@@ -34,7 +36,7 @@ public final class UtilRandom
      */
     public static void setSeed(long seed)
     {
-        UtilRandom.RANDOM.setSeed(seed);
+        RANDOM.setSeed(seed);
     }
 
     /**
@@ -44,7 +46,7 @@ public final class UtilRandom
      */
     public static int getRandomInteger()
     {
-        return UtilRandom.RANDOM.nextInt();
+        return RANDOM.nextInt();
     }
 
     /**
@@ -55,7 +57,7 @@ public final class UtilRandom
      */
     public static int getRandomInteger(int max)
     {
-        return UtilRandom.RANDOM.nextInt(max + 1);
+        return RANDOM.nextInt(max + 1);
     }
 
     /**
@@ -67,7 +69,7 @@ public final class UtilRandom
      */
     public static int getRandomInteger(int min, int max)
     {
-        return min + UtilRandom.RANDOM.nextInt(max + 1 - min);
+        return min + RANDOM.nextInt(max + 1 - min);
     }
 
     /**
@@ -77,7 +79,7 @@ public final class UtilRandom
      */
     public static boolean getRandomBoolean()
     {
-        return UtilRandom.RANDOM.nextBoolean();
+        return RANDOM.nextBoolean();
     }
 
     /**
@@ -87,7 +89,7 @@ public final class UtilRandom
      */
     public static double getRandomDouble()
     {
-        return UtilRandom.RANDOM.nextDouble();
+        return RANDOM.nextDouble();
     }
 
     /**

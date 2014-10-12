@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.g;
 
-import com.b3dgs.lionengine.audio.AudioWav;
-import com.b3dgs.lionengine.audio.Wav;
+import com.b3dgs.lionengine.audio.wav.AudioWav;
+import com.b3dgs.lionengine.audio.wav.Wav;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 

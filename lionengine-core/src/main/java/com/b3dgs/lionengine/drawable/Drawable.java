@@ -41,7 +41,7 @@ public final class Drawable
      * 
      * @param media The image media.
      * @return The loaded image.
-     * @throws LionEngineException If an error occured when reading the image.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
     public static Image loadImage(Media media) throws LionEngineException
     {

@@ -54,103 +54,103 @@ public final class FactoryGraphicProvider
     @Override
     public Renderer createRenderer(Config config)
     {
-        return FactoryGraphicProvider.factoryGraphic.createRenderer(config);
+        return factoryGraphic.createRenderer(config);
     }
 
     @Override
     public Screen createScreen(Renderer renderer)
     {
-        return FactoryGraphicProvider.factoryGraphic.createScreen(renderer);
+        return factoryGraphic.createScreen(renderer);
     }
 
     @Override
     public Graphic createGraphic()
     {
-        return FactoryGraphicProvider.factoryGraphic.createGraphic();
+        return factoryGraphic.createGraphic();
     }
 
     @Override
     public Transform createTransform()
     {
-        return FactoryGraphicProvider.factoryGraphic.createTransform();
+        return factoryGraphic.createTransform();
     }
 
     @Override
     public Text createText(String fontName, int size, TextStyle style)
     {
-        return FactoryGraphicProvider.factoryGraphic.createText(fontName, size, style);
+        return factoryGraphic.createText(fontName, size, style);
     }
 
     @Override
     public ImageBuffer createImageBuffer(int width, int height, Transparency transparency)
     {
-        return FactoryGraphicProvider.factoryGraphic.createImageBuffer(width, height, transparency);
+        return factoryGraphic.createImageBuffer(width, height, transparency);
     }
 
     @Override
     public ImageBuffer getImageBuffer(Media media, boolean alpha) throws LionEngineException
     {
-        return FactoryGraphicProvider.factoryGraphic.getImageBuffer(media, alpha);
+        return factoryGraphic.getImageBuffer(media, alpha);
     }
 
     @Override
     public ImageBuffer getImageBuffer(ImageBuffer imageBuffer)
     {
-        return FactoryGraphicProvider.factoryGraphic.getImageBuffer(imageBuffer);
+        return factoryGraphic.getImageBuffer(imageBuffer);
     }
 
     @Override
     public ImageBuffer applyMask(ImageBuffer imageBuffer, ColorRgba maskColor)
     {
-        return FactoryGraphicProvider.factoryGraphic.applyMask(imageBuffer, maskColor);
+        return factoryGraphic.applyMask(imageBuffer, maskColor);
     }
 
     @Override
     public ImageBuffer[] splitImage(ImageBuffer image, int h, int v)
     {
-        return FactoryGraphicProvider.factoryGraphic.splitImage(image, h, v);
+        return factoryGraphic.splitImage(image, h, v);
     }
 
     @Override
     public ImageBuffer rotate(ImageBuffer image, int angle)
     {
-        return FactoryGraphicProvider.factoryGraphic.rotate(image, angle);
+        return factoryGraphic.rotate(image, angle);
     }
 
     @Override
     public ImageBuffer resize(ImageBuffer image, int width, int height)
     {
-        return FactoryGraphicProvider.factoryGraphic.resize(image, width, height);
+        return factoryGraphic.resize(image, width, height);
     }
 
     @Override
     public ImageBuffer flipHorizontal(ImageBuffer image)
     {
-        return FactoryGraphicProvider.factoryGraphic.flipHorizontal(image);
+        return factoryGraphic.flipHorizontal(image);
     }
 
     @Override
     public ImageBuffer flipVertical(ImageBuffer image)
     {
-        return FactoryGraphicProvider.factoryGraphic.flipVertical(image);
+        return factoryGraphic.flipVertical(image);
     }
 
     @Override
     public ImageBuffer applyFilter(ImageBuffer image, Filter filter) throws LionEngineException
     {
-        return FactoryGraphicProvider.factoryGraphic.applyFilter(image, filter);
+        return factoryGraphic.applyFilter(image, filter);
     }
 
     @Override
     public void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
-        FactoryGraphicProvider.factoryGraphic.saveImage(image, media);
+        factoryGraphic.saveImage(image, media);
     }
 
     @Override
     public ImageBuffer getRasterBuffer(ImageBuffer image, int fr, int fg, int fb, int er, int eg, int eb, int refSize)
     {
-        return FactoryGraphicProvider.factoryGraphic.getRasterBuffer(image, fr, fg, fb, er, eg, eb, refSize);
+        return factoryGraphic.getRasterBuffer(image, fr, fg, fb, er, eg, eb, refSize);
     }
 
     @Override

@@ -25,18 +25,18 @@ import com.b3dgs.lionengine.Version;
  * Engine base implementation. This class is intended to be inherited by an engine implementation depending of the
  * library used (as it is done for AWT, SWT and Android engine implementation).
  * 
- * @author Pierre-Alexandre
+ * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class EngineCore
 {
     /** Engine name. */
     public static final String NAME = "LionEngine";
     /** Engine version. */
-    public static final String VERSION = "7.0.0";
+    public static final String VERSION = "7.0.1";
     /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */
-    public static final String LAST_RELEASE_DATE = "4 September 2014";
+    public static final String LAST_RELEASE_DATE = "12 October 2014";
     /** Engine author. */
     public static final String AUTHOR = "Pierre-Alexandre";
     /** Engine website. */
@@ -69,9 +69,9 @@ public abstract class EngineCore
     public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
             FactoryMedia factoryMedia) throws LionEngineException
     {
-        if (EngineCore.started)
+        if (started)
         {
-            throw new LionEngineException(EngineCore.ERROR_STARTED_ALREADY);
+            throw new LionEngineException(ERROR_STARTED_ALREADY);
         }
 
         Check.notNull(name);
@@ -83,19 +83,19 @@ public abstract class EngineCore
         Verbose.set(level);
         Verbose.prepareLogger();
 
-        EngineCore.programName = name;
-        EngineCore.programVersion = version;
+        programName = name;
+        programVersion = version;
 
-        final StringBuilder message = new StringBuilder(EngineCore.ENGINE_STARTING);
-        message.append(EngineCore.VERSION).append("\" for \"");
-        message.append(EngineCore.programName).append(" ");
-        message.append(EngineCore.programVersion).append("\"");
+        final StringBuilder message = new StringBuilder(ENGINE_STARTING);
+        message.append(VERSION).append("\" for \"");
+        message.append(programName).append(" ");
+        message.append(programVersion).append("\"");
         Verbose.info(message.toString());
 
         FactoryGraphicProvider.setFactoryGraphic(factoryGraphic);
         FactoryMediaProvider.setFactoryMedia(factoryMedia);
 
-        EngineCore.started = true;
+        started = true;
     }
 
     /**
@@ -106,19 +106,19 @@ public abstract class EngineCore
      */
     public static void terminate() throws LionEngineException
     {
-        if (!EngineCore.started)
+        if (!started)
         {
-            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+            throw new LionEngineException(ERROR_STARTED_NOT);
         }
 
         FactoryGraphicProvider.setFactoryGraphic(null);
         FactoryMediaProvider.setFactoryMedia(null);
 
-        EngineCore.programName = null;
-        EngineCore.programVersion = null;
-        EngineCore.started = false;
+        programName = null;
+        programVersion = null;
+        started = false;
 
-        Verbose.info(EngineCore.ENGINE_TERMINATED);
+        Verbose.info(ENGINE_TERMINATED);
     }
 
     /**
@@ -129,11 +129,11 @@ public abstract class EngineCore
      */
     public static String getProgramName() throws LionEngineException
     {
-        if (!EngineCore.started)
+        if (!started)
         {
-            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+            throw new LionEngineException(ERROR_STARTED_NOT);
         }
-        return EngineCore.programName;
+        return programName;
     }
 
     /**
@@ -144,11 +144,11 @@ public abstract class EngineCore
      */
     public static Version getProgramVersion() throws LionEngineException
     {
-        if (!EngineCore.started)
+        if (!started)
         {
-            throw new LionEngineException(EngineCore.ERROR_STARTED_NOT);
+            throw new LionEngineException(ERROR_STARTED_NOT);
         }
-        return EngineCore.programVersion;
+        return programVersion;
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class EngineCore
      */
     public static boolean isStarted()
     {
-        return EngineCore.started;
+        return started;
     }
 
     /**

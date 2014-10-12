@@ -32,7 +32,7 @@ public enum OperatingSystem
     WINDOWS,
     /** Unix family. */
     UNIX,
-    /** Mac OperatingSystem. */
+    /** Mac */
     MAC,
     /** Sun solaris. */
     SOLARIS,
@@ -55,10 +55,10 @@ public enum OperatingSystem
      */
     static
     {
-        SYSTEM_OS = EngineCore.getSystemProperty("os.name", OperatingSystem.DEFAULT).toLowerCase(Locale.getDefault());
-        OS = OperatingSystem.findOs();
-        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model", OperatingSystem.DEFAULT);
-        ARCHI = OperatingSystem.findArchitecture();
+        SYSTEM_OS = EngineCore.getSystemProperty("os.name", DEFAULT).toLowerCase(Locale.getDefault());
+        OS = findOs();
+        SYSTEM_ARCHI = EngineCore.getSystemProperty("sun.arch.data.model", DEFAULT);
+        ARCHI = findArchitecture();
     }
 
     /**
@@ -68,26 +68,26 @@ public enum OperatingSystem
      */
     private static OperatingSystem findOs()
     {
-        if (OperatingSystem.SYSTEM_OS.indexOf("win") >= 0)
+        if (SYSTEM_OS.indexOf("win") >= 0)
         {
-            return OperatingSystem.WINDOWS;
+            return WINDOWS;
         }
-        else if (OperatingSystem.SYSTEM_OS.indexOf("mac") >= 0)
+        else if (SYSTEM_OS.indexOf("mac") >= 0)
         {
-            return OperatingSystem.MAC;
+            return MAC;
         }
-        else if (OperatingSystem.SYSTEM_OS.indexOf("nix") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("nux") >= 0
-                || OperatingSystem.SYSTEM_OS.indexOf("bsd") >= 0 || OperatingSystem.SYSTEM_OS.indexOf("aix") >= 0)
+        else if (SYSTEM_OS.indexOf("nix") >= 0 || SYSTEM_OS.indexOf("nux") >= 0 || SYSTEM_OS.indexOf("bsd") >= 0
+                || SYSTEM_OS.indexOf("aix") >= 0)
         {
-            return OperatingSystem.UNIX;
+            return UNIX;
         }
-        else if (OperatingSystem.SYSTEM_OS.indexOf("sunos") >= 0)
+        else if (SYSTEM_OS.indexOf("sunos") >= 0)
         {
-            return OperatingSystem.SOLARIS;
+            return SOLARIS;
         }
         else
         {
-            return OperatingSystem.UNKNOWN;
+            return UNKNOWN;
         }
     }
 
@@ -98,11 +98,11 @@ public enum OperatingSystem
      */
     private static Architecture findArchitecture()
     {
-        if (OperatingSystem.SYSTEM_ARCHI.contains("64"))
+        if (SYSTEM_ARCHI.contains("64"))
         {
             return Architecture.X64;
         }
-        else if (OperatingSystem.SYSTEM_ARCHI.contains("32") || OperatingSystem.SYSTEM_ARCHI.contains("86"))
+        else if (SYSTEM_ARCHI.contains("32") || SYSTEM_ARCHI.contains("86"))
         {
             return Architecture.X86;
         }
@@ -119,7 +119,7 @@ public enum OperatingSystem
      */
     public static OperatingSystem getOperatingSystem()
     {
-        return OperatingSystem.OS;
+        return OS;
     }
 
     /**
@@ -129,6 +129,6 @@ public enum OperatingSystem
      */
     public static Architecture getArchitecture()
     {
-        return OperatingSystem.ARCHI;
+        return ARCHI;
     }
 }

@@ -22,10 +22,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.b3dgs.lionengine.Align;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.WorldGame;
@@ -62,12 +62,12 @@ abstract class World<N extends NetworkedWorld>
     protected N networkedWorld;
 
     /**
-     * @param sequence The sequence reference.
+     * @param config The config reference.
      * @param server <code>true</code> if server, <code>false</code> else.
      */
-    World(final Sequence sequence, boolean server)
+    World(Config config, boolean server)
     {
-        super(sequence);
+        super(config);
         map = new Map();
         marioClients = new HashMap<>(1);
         factory = new FactoryEntity();

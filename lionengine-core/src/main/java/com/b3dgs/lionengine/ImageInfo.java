@@ -82,7 +82,7 @@ public final class ImageInfo
     {
         try
         {
-            ImageInfo.get(media);
+            get(media);
             return true;
         }
         catch (final LionEngineException exception)
@@ -122,7 +122,7 @@ public final class ImageInfo
      */
     private static String skippedError(long skipped, int instead)
     {
-        return ImageInfo.MESSAGE_SKIPPED + skipped + ImageInfo.MESSAGE_BYTES_INSTEAD_OF + instead;
+        return MESSAGE_SKIPPED + skipped + MESSAGE_BYTES_INSTEAD_OF + instead;
     }
 
     /** Image width. */
@@ -151,7 +151,7 @@ public final class ImageInfo
         }
         catch (final IOException exception)
         {
-            throw new LionEngineException(exception, ImageInfo.ERROR_READ);
+            throw new LionEngineException(exception, ERROR_READ);
         }
     }
 
@@ -317,7 +317,7 @@ public final class ImageInfo
         }
         else
         {
-            throw new LionEngineException(ImageInfo.ERROR_FORMAT);
+            throw new LionEngineException(ERROR_FORMAT);
         }
     }
 
@@ -332,11 +332,11 @@ public final class ImageInfo
         final long skipped = inputStream.skip(3);
         if (skipped != 3)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, 3));
+            throw new IOException(skippedError(skipped, 3));
         }
-        width = ImageInfo.readInt(inputStream, 2, false);
-        height = ImageInfo.readInt(inputStream, 2, false);
-        format = ImageInfo.FORMAT_GIF;
+        width = readInt(inputStream, 2, false);
+        height = readInt(inputStream, 2, false);
+        format = FORMAT_GIF;
     }
 
     /**
@@ -353,30 +353,30 @@ public final class ImageInfo
         while (255 == current)
         {
             final int marker = inputStream.read();
-            final int len = ImageInfo.readInt(inputStream, 2, true);
+            final int len = readInt(inputStream, 2, true);
             if (192 == marker || 193 == marker || 194 == marker)
             {
                 final long skipped = inputStream.skip(1);
                 if (skipped != 1)
                 {
-                    throw new IOException(ImageInfo.skippedError(skipped, 1));
+                    throw new IOException(skippedError(skipped, 1));
                 }
-                height = ImageInfo.readInt(inputStream, 2, true);
-                width = ImageInfo.readInt(inputStream, 2, true);
-                format = ImageInfo.FORMAT_JPG;
+                height = readInt(inputStream, 2, true);
+                width = readInt(inputStream, 2, true);
+                format = FORMAT_JPG;
                 success = true;
                 break;
             }
             final long skipped = inputStream.skip(len - 2);
             if (skipped != len - 2)
             {
-                throw new IOException(ImageInfo.skippedError(skipped, len - 2));
+                throw new IOException(skippedError(skipped, len - 2));
             }
             current = inputStream.read();
         }
         if (!success)
         {
-            throw new IOException(ImageInfo.ERROR_JPG);
+            throw new IOException(ERROR_JPG);
         }
     }
 
@@ -392,16 +392,16 @@ public final class ImageInfo
         long skipped = inputStream.skip(toSkip);
         if (skipped != toSkip)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, 15));
+            throw new IOException(skippedError(skipped, 15));
         }
-        width = ImageInfo.readInt(inputStream, 2, true);
+        width = readInt(inputStream, 2, true);
         skipped = inputStream.skip(2);
         if (skipped != 2)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, 2));
+            throw new IOException(skippedError(skipped, 2));
         }
-        height = ImageInfo.readInt(inputStream, 2, true);
-        format = ImageInfo.FORMAT_PNG;
+        height = readInt(inputStream, 2, true);
+        format = FORMAT_PNG;
     }
 
     /**
@@ -416,16 +416,16 @@ public final class ImageInfo
         long skipped = inputStream.skip(toSkip);
         if (skipped != toSkip)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, 15));
+            throw new IOException(skippedError(skipped, 15));
         }
-        width = ImageInfo.readInt(inputStream, 2, false);
+        width = readInt(inputStream, 2, false);
         skipped = inputStream.skip(2);
         if (skipped != 2)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, 2));
+            throw new IOException(skippedError(skipped, 2));
         }
-        height = ImageInfo.readInt(inputStream, 2, false);
-        format = ImageInfo.FORMAT_BMP;
+        height = readInt(inputStream, 2, false);
+        format = FORMAT_BMP;
     }
 
     /**
@@ -440,32 +440,32 @@ public final class ImageInfo
         final int toSkip = 8;
         final boolean bigEndian = 'M' == byte1;
         int w = -1, h = -1;
-        final int ifd = ImageInfo.readInt(inputStream, 4, bigEndian);
+        final int ifd = readInt(inputStream, 4, bigEndian);
         long skipped = inputStream.skip(ifd - toSkip);
         if (skipped != ifd - toSkip)
         {
-            throw new IOException(ImageInfo.skippedError(skipped, ifd - toSkip));
+            throw new IOException(skippedError(skipped, ifd - toSkip));
         }
-        final int entries = ImageInfo.readInt(inputStream, 2, bigEndian);
+        final int entries = readInt(inputStream, 2, bigEndian);
 
         for (int i = 1; i <= entries; i++)
         {
-            final int tag = ImageInfo.readInt(inputStream, 2, bigEndian);
-            final int fieldType = ImageInfo.readInt(inputStream, 2, bigEndian);
-            ImageInfo.readInt(inputStream, 4, bigEndian);
+            final int tag = readInt(inputStream, 2, bigEndian);
+            final int fieldType = readInt(inputStream, 2, bigEndian);
+            readInt(inputStream, 4, bigEndian);
             int valOffset;
             if (3 == fieldType || 8 == fieldType)
             {
-                valOffset = ImageInfo.readInt(inputStream, 2, bigEndian);
+                valOffset = readInt(inputStream, 2, bigEndian);
                 skipped = inputStream.skip(2);
                 if (skipped != 2)
                 {
-                    throw new IOException(ImageInfo.skippedError(skipped, 2));
+                    throw new IOException(skippedError(skipped, 2));
                 }
             }
             else
             {
-                valOffset = ImageInfo.readInt(inputStream, 4, bigEndian);
+                valOffset = readInt(inputStream, 4, bigEndian);
             }
             if (256 == tag)
             {
@@ -479,7 +479,7 @@ public final class ImageInfo
             {
                 width = w;
                 height = h;
-                format = ImageInfo.FORMAT_TIFF;
+                format = FORMAT_TIFF;
                 break;
             }
         }

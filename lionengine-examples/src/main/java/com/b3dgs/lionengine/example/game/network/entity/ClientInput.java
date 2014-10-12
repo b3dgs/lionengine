@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
-import com.b3dgs.lionengine.core.Keyboard;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.network.purview.NetworkedInput;
 
 /**

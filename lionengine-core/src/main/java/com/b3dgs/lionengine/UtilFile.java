@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -33,12 +32,6 @@ import com.b3dgs.lionengine.core.Verbose;
  */
 public final class UtilFile
 {
-    /** System temp directory. */
-    public static final String SYSTEM_TEMP_DIR = EngineCore.getSystemProperty("java.io.tmpdir", null);
-
-    /** Engine temporary directory. */
-    private static String tmpDir;
-
     /**
      * Check if the path is a directory.
      * 
@@ -93,7 +86,7 @@ public final class UtilFile
      */
     public static String getPath(String... path)
     {
-        return UtilFile.getPathSeparator(File.separator, path);
+        return getPathSeparator(File.separator, path);
     }
 
     /**
@@ -132,7 +125,7 @@ public final class UtilFile
      */
     public static String getExtension(File file)
     {
-        return UtilFile.getExtension(file.getName());
+        return getExtension(file.getName());
     }
 
     /**
@@ -144,7 +137,7 @@ public final class UtilFile
      */
     public static boolean isType(File file, String extension)
     {
-        return UtilFile.getExtension(file).equals(extension);
+        return getExtension(file).equals(extension);
     }
 
     /**
@@ -261,7 +254,7 @@ public final class UtilFile
     public static List<File> getFilesByExtension(String path, String extension)
     {
         final List<File> filesList = new ArrayList<>(1);
-        UtilFile.getFilesByExtensionRecursive(filesList, path, extension);
+        getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
 
@@ -275,7 +268,7 @@ public final class UtilFile
     public static List<File> getFilesByName(File path, String name)
     {
         final List<File> filesList = new ArrayList<>(1);
-        UtilFile.getFilesByNameRecursive(filesList, path, name);
+        getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }
 
@@ -304,7 +297,7 @@ public final class UtilFile
             final String[] children = directory.list();
             for (final String element : children)
             {
-                UtilFile.deleteDirectory(new File(directory, element));
+                deleteDirectory(new File(directory, element));
             }
             if (!directory.delete())
             {
@@ -313,7 +306,7 @@ public final class UtilFile
         }
         else if (directory.isFile())
         {
-            UtilFile.deleteFile(directory);
+            deleteFile(directory);
             Verbose.info("File deleted: " + directory);
         }
     }
@@ -334,34 +327,6 @@ public final class UtilFile
     }
 
     /**
-     * Get the program temp directory.
-     * 
-     * @return The program temp directory.
-     */
-    public static String getTempDir()
-    {
-        return UtilFile.tmpDir;
-    }
-
-    /**
-     * Set the temporary directory name from the program name.
-     * 
-     * @param programName The program name.
-     */
-    public static void setTempDirectory(String programName)
-    {
-        if (programName != null && UtilFile.SYSTEM_TEMP_DIR != null)
-        {
-            final String dir = programName.replace(' ', '_').replaceAll("[\\W]", "").toLowerCase(Locale.getDefault());
-            UtilFile.tmpDir = UtilFile.getPath(UtilFile.SYSTEM_TEMP_DIR, dir);
-        }
-        else
-        {
-            UtilFile.tmpDir = null;
-        }
-    }
-
-    /**
      * Get all files existing in the path considering the extension.
      * 
      * @param filesList The files list.
@@ -378,9 +343,9 @@ public final class UtilFile
             {
                 if (content.isDirectory())
                 {
-                    UtilFile.getFilesByExtensionRecursive(filesList, content.getPath(), extension);
+                    getFilesByExtensionRecursive(filesList, content.getPath(), extension);
                 }
-                if (content.isFile() && extension.equals(UtilFile.getExtension(content)))
+                if (content.isFile() && extension.equals(getExtension(content)))
                 {
                     filesList.add(content);
                 }
@@ -405,7 +370,7 @@ public final class UtilFile
             }
             else if (file.isDirectory())
             {
-                UtilFile.getFilesByNameRecursive(filesList, file, name);
+                getFilesByNameRecursive(filesList, file, name);
             }
         }
     }

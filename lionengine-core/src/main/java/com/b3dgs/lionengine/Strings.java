@@ -62,11 +62,11 @@ public final class Strings
      */
     public static String getStringRef(String string)
     {
-        if (!Strings.STRINGS.containsKey(string))
+        if (!STRINGS.containsKey(string))
         {
-            Strings.STRINGS.put(string, string);
+            STRINGS.put(string, string);
         }
-        return Strings.STRINGS.get(string);
+        return STRINGS.get(string);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class Strings
      */
     public static void removeStringRef(String string)
     {
-        Strings.STRINGS.remove(string);
+        STRINGS.remove(string);
     }
 
     /**
@@ -86,7 +86,7 @@ public final class Strings
      */
     public static Collection<String> getStringsRefs()
     {
-        return Strings.STRINGS.values();
+        return STRINGS.values();
     }
 
     /**
@@ -94,7 +94,7 @@ public final class Strings
      */
     public static void clearStringsRef()
     {
-        Strings.STRINGS.clear();
+        STRINGS.clear();
     }
 
     /**

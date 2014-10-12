@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="LionEngine Target Platform" sequenceNumber="12">
+<locations>
+<location path="C:\Users\DjThunder\.m2\repository\org\hamcrest\hamcrest-core\1.3" type="Directory"/>
+<location path="C:\Users\DjThunder\.m2\repository\junit\junit\4.11" type="Directory"/>
+<location path="C:\Users\DjThunder\git\lionengine\lionengine-game\target" type="Directory"/>
+<location path="C:\Users\DjThunder\git\lionengine\lionengine-core\target" type="Directory"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rcp.feature.group" version="4.4.0.v20140925-0400"/>
+<unit id="org.eclipse.jdt.feature.group" version="3.10.0.v20140925-0400"/>
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.10.0.v20140909-1633"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+</location>
+</locations>
+</target>

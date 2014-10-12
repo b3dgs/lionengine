@@ -20,9 +20,9 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 import java.io.IOException;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Keyboard;
-import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.ContextGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.platform.CameraPlatform;
@@ -54,12 +54,16 @@ final class World
     private final HandlerEntity handler;
 
     /**
-     * @see WorldGame#WorldGame(Sequence)
+     * Constructor.
+     * 
+     * @param config The config reference.
+     * @param keyboard The keyboard reference.
      */
-    World(Sequence sequence)
+    World(Config config, Keyboard keyboard)
     {
-        super(sequence);
-        keyboard = sequence.getInputDevice(Keyboard.class);
+        super(config);
+
+        this.keyboard = keyboard;
         camera = new CameraPlatform(width, height);
         map = new Map();
         factory = new FactoryEntity();

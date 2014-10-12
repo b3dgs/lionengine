@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * <pre>
  * public class Factory
- *         extends FactoryGame&lt;SetupGame, ObjectGame&gt;
+ *         extends FactoryGame&lt;SetupGame&gt;
  * {
  *     public Factory()
  *     {
@@ -40,9 +40,9 @@ import com.b3dgs.lionengine.core.Media;
  *     }
  * 
  *     &#064;Override
- *     protected SetupGame createSetup(Class&lt;? extends ObjectGame&gt; type)
+ *     protected SetupGame createSetup(Media config)
  *     {
- *         return new SetupGame(Core.MEDIA.create(type.getSimpleName() + &quot;.xml&quot;));
+ *         return new SetupGame(config);
  *     }
  * }
  * </pre>

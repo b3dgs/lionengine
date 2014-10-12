@@ -129,9 +129,9 @@ final class Swamp
             final int x = (int) (208 * scaleH);
             moonOffset = 40;
             moon = Swamp.createElementRastered("moon.png", x, moonOffset, Swamp.MOON_RASTERS);
-            mountainSprite = (Sprite) mountain.getSprite();
+            mountainSprite = (Sprite) mountain.getRenderable();
             this.screenWidth = screenWidth;
-            w = (int) Math.ceil(screenWidth / (double) ((Sprite) mountain.getSprite()).getWidthOriginal()) + 1;
+            w = (int) Math.ceil(screenWidth / (double) ((Sprite) mountain.getRenderable()).getWidthOriginal()) + 1;
         }
 
         @Override
@@ -148,7 +148,7 @@ final class Swamp
         public void render(Graphic g)
         {
             // Render back background first
-            final Sprite sprite = (Sprite) backcolor.getSprite();
+            final Sprite sprite = (Sprite) backcolor.getRenderable();
             for (int i = 0; i < Math.ceil(screenWidth / (double) sprite.getWidth()); i++)
             {
                 sprite.render(g, backcolor.getMainX() + i * sprite.getWidth(),

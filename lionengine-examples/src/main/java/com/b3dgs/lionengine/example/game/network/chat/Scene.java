@@ -50,7 +50,7 @@ final class Scene
 
         if (server)
         {
-            final WorldServer worldServer = new WorldServer(this);
+            final WorldServer worldServer = new WorldServer(getConfig());
             worldServer.startServer("Test", 7777, "Welcome !");
             world = worldServer;
         }

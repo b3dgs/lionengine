@@ -165,7 +165,7 @@ public final class UtilMath
         {
             for (int v = ty2; v < ty2 + th2; v++)
             {
-                final int dist = UtilMath.getDistance(tx1, ty1, h, v);
+                final int dist = getDistance(tx1, ty1, h, v);
                 if (dist < min)
                 {
                     min = dist;

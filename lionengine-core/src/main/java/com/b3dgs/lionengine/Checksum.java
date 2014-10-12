@@ -29,7 +29,7 @@ import java.util.Arrays;
  * </p>
  * 
  * <pre>
- * final Checksum checksum = Checksum.create();
+ * final Checksum checksum = Checksum.createSha256();
  * final int integer = 489464795;
  * final String value = &quot;keyToBeEncoded&quot;;
  * final String other = &quot;anotherKey&quot;;
@@ -60,7 +60,7 @@ public final class Checksum
      */
     public static Checksum createSha256() throws LionEngineException
     {
-        return new Checksum(Checksum.SHA);
+        return new Checksum(SHA);
     }
 
     /** Message digest instance. */
@@ -80,7 +80,7 @@ public final class Checksum
         }
         catch (final NoSuchAlgorithmException exception)
         {
-            throw new LionEngineException(exception, Checksum.ERROR_SHA_INSTANCE);
+            throw new LionEngineException(exception, ERROR_SHA_INSTANCE);
         }
     }
 
@@ -94,7 +94,7 @@ public final class Checksum
      */
     public boolean check(String value, String signature)
     {
-        return Arrays.equals(getSha256(value).getBytes(Checksum.UTF8), signature.getBytes(Checksum.UTF8));
+        return Arrays.equals(getSha256(value).getBytes(UTF8), signature.getBytes(UTF8));
     }
 
     /**
@@ -107,7 +107,7 @@ public final class Checksum
      */
     public boolean check(int value, String signature)
     {
-        return Arrays.equals(getSha256(value).getBytes(Checksum.UTF8), signature.getBytes(Checksum.UTF8));
+        return Arrays.equals(getSha256(value).getBytes(UTF8), signature.getBytes(UTF8));
     }
 
     /**
@@ -146,6 +146,6 @@ public final class Checksum
      */
     public String getSha256(String str)
     {
-        return getSha256(str.getBytes(Checksum.UTF8));
+        return getSha256(str.getBytes(UTF8));
     }
 }

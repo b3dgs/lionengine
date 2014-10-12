@@ -66,7 +66,7 @@ public enum Verbose
     /** Error formatter. */
     private static final String ERROR_FORMATTER = "Unable to set logger formatter due to security exception !";
     /** Verbose flag. */
-    private static Verbose level = Verbose.CRITICAL;
+    private static Verbose level = CRITICAL;
 
     /**
      * Display an informative verbose message to standard output.
@@ -75,9 +75,9 @@ public enum Verbose
      */
     public static void info(String... message)
     {
-        if (Verbose.NONE != Verbose.level)
+        if (NONE != level)
         {
-            Verbose.verbose(Verbose.INFORMATION, null, null, null, message);
+            verbose(INFORMATION, null, null, null, message);
         }
     }
 
@@ -90,9 +90,9 @@ public enum Verbose
      */
     public static void warning(Class<?> clazz, String function, String... message)
     {
-        if (Verbose.WARNING == Verbose.level || Verbose.CRITICAL == Verbose.level)
+        if (WARNING == level || CRITICAL == level)
         {
-            Verbose.verbose(Verbose.WARNING, clazz, function, null, message);
+            verbose(WARNING, clazz, function, null, message);
         }
     }
 
@@ -105,9 +105,9 @@ public enum Verbose
      */
     public static void critical(Class<?> clazz, String function, String... message)
     {
-        if (Verbose.CRITICAL == Verbose.level)
+        if (CRITICAL == level)
         {
-            Verbose.verbose(Verbose.CRITICAL, clazz, function, null, message);
+            verbose(CRITICAL, clazz, function, null, message);
         }
     }
 
@@ -121,9 +121,9 @@ public enum Verbose
      */
     public static void exception(Class<?> clazz, String function, Throwable thrown, String... message)
     {
-        if (Verbose.CRITICAL == Verbose.level)
+        if (CRITICAL == level)
         {
-            Verbose.verbose(Verbose.CRITICAL, clazz, function, thrown, message);
+            verbose(CRITICAL, clazz, function, thrown, message);
         }
     }
 
@@ -134,7 +134,7 @@ public enum Verbose
      */
     public static void set(Verbose verbose)
     {
-        Verbose.level = verbose;
+        level = verbose;
     }
 
     /**
@@ -152,7 +152,7 @@ public enum Verbose
         }
         catch (final SecurityException exception)
         {
-            Verbose.critical(Verbose.class, "start", Verbose.ERROR_FORMATTER);
+            critical(Verbose.class, "start", ERROR_FORMATTER);
         }
     }
 
@@ -176,16 +176,16 @@ public enum Verbose
         switch (level)
         {
             case INFORMATION:
-                Verbose.LOGGER.setLevel(Level.INFO);
-                Verbose.LOGGER.logp(Level.INFO, null, null, verbose, thrown);
+                LOGGER.setLevel(Level.INFO);
+                LOGGER.logp(Level.INFO, null, null, verbose, thrown);
                 break;
             case WARNING:
-                Verbose.LOGGER.setLevel(Level.WARNING);
-                Verbose.LOGGER.logp(Level.WARNING, clazz.getSimpleName(), function, verbose, thrown);
+                LOGGER.setLevel(Level.WARNING);
+                LOGGER.logp(Level.WARNING, clazz.getSimpleName(), function, verbose, thrown);
                 break;
             case CRITICAL:
-                Verbose.LOGGER.setLevel(Level.SEVERE);
-                Verbose.LOGGER.logp(Level.SEVERE, clazz.getSimpleName(), function, verbose, thrown);
+                LOGGER.setLevel(Level.SEVERE);
+                LOGGER.logp(Level.SEVERE, clazz.getSimpleName(), function, verbose, thrown);
                 break;
             default:
                 throw new LionEngineException("Unknown level: " + level);
@@ -195,7 +195,7 @@ public enum Verbose
     /**
      * Verbose formatter.
      * 
-     * @author Pierre-Alexandre
+     * @author Pierre-Alexandre (contact@b3dgs.com)
      */
     private static class VerboseFormatter
             extends Formatter
