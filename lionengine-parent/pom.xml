@@ -88,7 +88,7 @@
 				<module>../com.b3dgs.lionengine.editor</module>
 			</modules>
 		</profile>
-		
+
 		<profile>
 			<id>editor</id>
 			<modules>
