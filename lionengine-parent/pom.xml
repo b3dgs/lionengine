@@ -92,6 +92,9 @@
 		<profile>
 			<id>editor</id>
 			<modules>
+				<module>../com.b3dgs.lionengine.target</module>
+				<module>../com.b3dgs.lionengine.core.swt</module>
+				<module>../com.b3dgs.lionengine.editor</module>
 				<module>../com.b3dgs.lionengine.editor.product</module>
 			</modules>
 		</profile>
@@ -330,7 +333,7 @@
 				<plugin>
 					<groupId>org.sonatype.tycho</groupId>
 					<artifactId>maven-osgi-packaging-plugin</artifactId>
-					<version>${tycho.osgi.version}</version>
+					<version>0.11.1</version>
 					<configuration>
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
