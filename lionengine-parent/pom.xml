@@ -78,6 +78,15 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>repository</id>
+			<modules>
+				<module>../com.b3dgs.lionengine.target</module>
+				<module>../com.b3dgs.lionengine.core.swt</module>
+				<module>../com.b3dgs.lionengine.editor</module>
+				<module>../com.b3dgs.lionengine.repository</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>editor</id>
 			<modules>
 				<module>../com.b3dgs.lionengine.target</module>
@@ -196,7 +205,7 @@
 								<groupId>com.b3dgs.lionengine</groupId>
 								<artifactId>com.b3dgs.lionengine.platform</artifactId>
 								<version>${lionengine.version}</version>
-								<classifier>com.b3dgs.lionengine.platform</classifier>
+								<classifier>com.b3dgs.lionengine.base</classifier>
 							</artifact>
 						</target>
 						<environments>
