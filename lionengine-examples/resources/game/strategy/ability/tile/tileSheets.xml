@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lionengine:patterns xmlns:lionengine="http://lionengine.b3dgs.com">
-	<pattern>0.png</pattern>
-</lionengine:patterns>
+<lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com">
+	<lionengine:tileSheet>0.png</lionengine:tileSheet>
+</lionengine:tileSheets>
