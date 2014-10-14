@@ -29,9 +29,9 @@ public class ConfigOffset
     /** Offset node name. */
     public static final String OFFSET = Configurer.PREFIX + "offset";
     /** Offset X node name. */
-    public static final String OFFSET_X = Configurer.PREFIX + "x";
+    public static final String OFFSET_X = "x";
     /** Offset Y node name. */
-    public static final String OFFSET_Y = Configurer.PREFIX + "y";
+    public static final String OFFSET_Y = "y";
 
     /**
      * Create the offset node.
