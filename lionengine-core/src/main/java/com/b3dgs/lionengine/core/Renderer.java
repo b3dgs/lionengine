@@ -200,6 +200,15 @@ public abstract class Renderer
     }
 
     /**
+     * Terminate the renderer.
+     */
+    void terminate()
+    {
+        screen.dispose();
+        EngineCore.terminate();
+    }
+
+    /**
      * Render handler.
      * 
      * @param g The graphic output.
@@ -538,6 +547,6 @@ public abstract class Renderer
 
             Verbose.info("Ending sequence: ", sequenceName);
         }
-        screen.dispose();
+        terminate();
     }
 }

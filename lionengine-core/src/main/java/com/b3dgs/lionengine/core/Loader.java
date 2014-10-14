@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.core;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,7 +142,17 @@ public final class Loader
     {
         Check.notNull(config);
 
-        renderer = Core.GRAPHIC.createRenderer(config);
+        final Renderer renderer = Core.GRAPHIC.createRenderer(config);
+        renderer.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
+        {
+            @Override
+            public void uncaughtException(Thread t, Throwable throwable)
+            {
+                renderer.terminate();
+                Verbose.exception(Renderer.class, "run", throwable);
+            }
+        });
+        this.renderer = renderer;
     }
 
     /**
