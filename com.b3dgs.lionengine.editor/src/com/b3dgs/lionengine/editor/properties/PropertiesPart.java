@@ -18,9 +18,13 @@
 package com.b3dgs.lionengine.editor.properties;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -37,6 +41,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
@@ -56,11 +61,14 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class PropertiesPart
+        implements PropertiesListener
 {
     /** ID. */
     public static final String ID = Activator.PLUGIN_ID + ".part.properties";
     /** Menu ID. */
     public static final String MENU_ID = PropertiesPart.ID + ".menu";
+    /** Properties extension. */
+    public static final String EXTENSION_PROPERTIES = "properties";
 
     /** Class icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
@@ -77,6 +85,8 @@ public class PropertiesPart
 
     /** Properties tree. */
     Tree properties;
+    /** Extensions point. */
+    private List<PropertiesListener> extensions;
 
     /**
      * Create the surface attribute.
@@ -209,6 +219,8 @@ public class PropertiesPart
         });
         menuService.registerContextMenu(properties, PropertiesPart.MENU_ID);
         PropertiesModel.INSTANCE.setTree(properties);
+
+        extensions = checkPropertiesExtensionPoint();
     }
 
     /**
@@ -233,41 +245,6 @@ public class PropertiesPart
     public void setFocus()
     {
         properties.setFocus();
-    }
-
-    /**
-     * Set the properties input.
-     * 
-     * @param configurer The configurer reference.
-     */
-    public void setInput(Configurer configurer)
-    {
-        for (final TreeItem item : properties.getItems())
-        {
-            clear(item);
-        }
-        properties.setData(configurer);
-        if (configurer != null)
-        {
-            createAttributeClass(configurer);
-            final XmlNode root = configurer.getRoot();
-            if (root.hasChild(ConfigSurface.SURFACE))
-            {
-                createAttributeSurface(configurer);
-            }
-            if (root.hasChild(ConfigFrames.FRAMES))
-            {
-                createAttributeFrames(configurer);
-            }
-            if (root.hasChild(ConfigAnimations.ANIMATION))
-            {
-                createAttributeAnimations();
-            }
-            if (root.hasChild(ConfigCollisions.COLLISION))
-            {
-                createAttributeCollisions();
-            }
-        }
     }
 
     /**
@@ -411,5 +388,72 @@ public class PropertiesPart
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check the properties extension point.
+     * 
+     * @return The properties instance from extension point or default one.
+     */
+    private List<PropertiesListener> checkPropertiesExtensionPoint()
+    {
+        final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
+                PropertiesListener.EXTENSION_ID);
+        final List<PropertiesListener> extensions = new ArrayList<>(1);
+        if (elements.length > 0)
+        {
+            final String properties = elements[0].getAttribute(PropertiesPart.EXTENSION_PROPERTIES);
+            if (properties != null)
+            {
+                try
+                {
+                    extensions.add(UtilEclipse.createClass(properties, PropertiesListener.class));
+                }
+                catch (final ReflectiveOperationException exception)
+                {
+                    Verbose.exception(getClass(), "checkPropertiesExtensionPoint", exception);
+                }
+            }
+        }
+        return extensions;
+    }
+
+    /*
+     * PropertiesListener
+     */
+
+    @Override
+    public void setInput(Configurer configurer)
+    {
+        for (final TreeItem item : properties.getItems())
+        {
+            clear(item);
+        }
+        properties.setData(configurer);
+        if (configurer != null)
+        {
+            createAttributeClass(configurer);
+            final XmlNode root = configurer.getRoot();
+            if (root.hasChild(ConfigSurface.SURFACE))
+            {
+                createAttributeSurface(configurer);
+            }
+            if (root.hasChild(ConfigFrames.FRAMES))
+            {
+                createAttributeFrames(configurer);
+            }
+            if (root.hasChild(ConfigAnimations.ANIMATION))
+            {
+                createAttributeAnimations();
+            }
+            if (root.hasChild(ConfigCollisions.COLLISION))
+            {
+                createAttributeCollisions();
+            }
+        }
+        for (final PropertiesListener property : extensions)
+        {
+            property.setInput(configurer);
+        }
     }
 }
