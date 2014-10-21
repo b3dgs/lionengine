@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.world;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,49 +27,49 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
- * Allows to control the entity on the editor with the mouse.
+ * Allows to control the object on the editor with the mouse.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class EntityControl
+public class ObjectControl
 {
     /** World model. */
     private final WorldViewModel model = WorldViewModel.INSTANCE;
-    /** Handler entity. */
-    private final HandlerEntity handlerEntity;
-    /** Mouse over entity flag. */
-    private final Map<EntityGame, Boolean> entitiesOver;
-    /** Mouse selection entity flag. */
-    private final Map<EntityGame, Boolean> entitiesSelection;
+    /** Handler object. */
+    private final HandlerObject handlerObject;
+    /** Mouse over object flag. */
+    private final Map<ObjectGame, Boolean> objectsOver;
+    /** Mouse selection object flag. */
+    private final Map<ObjectGame, Boolean> objectsSelection;
     /** Moving offset x. */
     private int movingOffsetX;
     /** Moving offset y. */
     private int movingOffsetY;
-    /** Moving entity flag. */
+    /** Moving object flag. */
     private boolean dragging;
 
     /**
      * Constructor.
      * 
-     * @param handlerEntity The handler entity reference.
+     * @param handlerObject The handler object reference.
      */
-    public EntityControl(HandlerEntity handlerEntity)
+    public ObjectControl(HandlerObject handlerObject)
     {
-        this.handlerEntity = handlerEntity;
-        entitiesOver = new HashMap<>();
-        entitiesSelection = new HashMap<>();
+        this.handlerObject = handlerObject;
+        objectsOver = new HashMap<>();
+        objectsSelection = new HashMap<>();
     }
 
     /**
-     * Update the mouse over entity flag.
+     * Update the mouse over object flag.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
@@ -76,10 +77,10 @@ public class EntityControl
     public void updateMouseOver(int mx, int my)
     {
         resetMouseOver();
-        final EntityGame entity = getEntity(mx, my);
-        if (entity != null)
+        final ObjectGame object = getObject(mx, my);
+        if (object != null)
         {
-            setMouseOver(entity, true);
+            setMouseOver(object, true);
         }
     }
 
@@ -109,21 +110,21 @@ public class EntityControl
         final int x = mx + camera.getLocationIntX() + getMovingOffsetX();
         final int y = areaY - my + camera.getLocationIntY() - 1 + getMovingOffsetY();
 
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
-            if (isSelected(entity))
+            if (isSelected(object))
             {
-                entity.teleport(entity.getLocationIntX() + x - ox, entity.getLocationIntY() + y - oy);
+                object.teleport(object.getLocationIntX() + x - ox, object.getLocationIntY() + y - oy);
             }
         }
     }
 
     /**
-     * Reset the entities mouse over state.
+     * Reset the objects mouse over state.
      */
     public void resetMouseOver()
     {
-        entitiesOver.clear();
+        objectsOver.clear();
     }
 
     /**
@@ -135,7 +136,7 @@ public class EntityControl
     }
 
     /**
-     * Add a new entity at the mouse location.
+     * Add a new object at the mouse location.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
@@ -149,30 +150,30 @@ public class EntityControl
             final CameraGame camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
             final FactoryObjectGame<?> factoryEntity = model.getFactory();
-            final EntityGame entity = factoryEntity.create(media);
+            final ObjectGame object = factoryEntity.create(media);
 
-            setEntityLocation(entity, tile.getX(), tile.getY(), 1);
-            handlerEntity.add(entity);
+            setObjectLocation(object, tile.getX(), tile.getY(), 1);
+            handlerObject.add(object);
         }
     }
 
     /**
-     * Remove the entity at the specified location if exists.
+     * Remove the object at the specified location if exists.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
     public void removeEntity(int mx, int my)
     {
-        final EntityGame entity = getEntity(mx, my);
-        if (entity != null)
+        final ObjectGame object = getObject(mx, my);
+        if (object != null)
         {
-            entity.destroy();
+            object.destroy();
         }
     }
 
     /**
-     * Select all entities inside the selection area.
+     * Select all objects inside the selection area.
      * 
      * @param selectionArea The selection area.
      */
@@ -181,7 +182,7 @@ public class EntityControl
         final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
 
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
             final int th = map.getTileHeight();
             final int height = camera.getViewHeight();
@@ -191,81 +192,81 @@ public class EntityControl
             final int ex = UtilMath.getRounded((int) selectionArea.getMaxX(), map.getTileWidth());
             final int ey = UtilMath.getRounded(height - (int) selectionArea.getMaxY() - offy, th);
 
-            if (hitEntity(entity, sx, sy, ex, ey))
+            if (hitObject(object, sx, sy, ex, ey))
             {
-                setEntitySelection(entity, true);
+                setObjectSelection(object, true);
             }
         }
     }
 
     /**
-     * Unselect entities.
+     * Unselect objects.
      */
     public void unSelectEntities()
     {
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
-            setEntitySelection(entity, false);
+            setObjectSelection(object, false);
         }
     }
 
     /**
-     * Set the mouse over state the the specified entity.
+     * Set the mouse over state the the specified object.
      * 
-     * @param entity The entity reference.
+     * @param object The object reference.
      * @param over <code>true</code> if mouse if over, <code>false</code> else.
      */
-    public void setMouseOver(EntityGame entity, boolean over)
+    public void setMouseOver(ObjectGame object, boolean over)
     {
-        entitiesOver.put(entity, Boolean.valueOf(over));
+        objectsOver.put(object, Boolean.valueOf(over));
     }
 
     /**
-     * Set the entity selected state.
+     * Set the object selected state.
      * 
-     * @param entity The entity reference.
+     * @param object The object reference.
      * @param selected <code>true</code> if selected, <code>false</code> else.
      */
-    public void setEntitySelection(EntityGame entity, boolean selected)
+    public void setObjectSelection(ObjectGame object, boolean selected)
     {
-        entitiesSelection.put(entity, Boolean.valueOf(selected));
+        objectsSelection.put(object, Boolean.valueOf(selected));
     }
 
     /**
-     * Set the entity location.
+     * Set the object location.
      * 
-     * @param entity The entity reference.
+     * @param object The object reference.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @param side 1 for place, -1 for move.
      */
-    public void setEntityLocation(EntityGame entity, int x, int y, int side)
+    public void setObjectLocation(ObjectGame object, int x, int y, int side)
     {
         final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
-        entity.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * entity.getWidth() / 2 + tw / 2, tw) + side
-                * entity.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
+        object.teleport(UtilMath.getRounded(x + (side == 1 ? 0 : 1) * object.getWidth() / 2 + tw / 2, tw) + side
+                * object.getWidth() / 2, UtilMath.getRounded(y + th / 2, th));
     }
 
     /**
-     * Get the entity at the specified mouse location.
+     * Get the object at the specified mouse location.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
-     * @return The entity reference, <code>null</code> if none.
+     * @return The object reference, <code>null</code> if none.
      */
-    public EntityGame getEntity(int mx, int my)
+    public ObjectGame getObject(int mx, int my)
     {
         final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
-            if (hitEntity(entity, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
+            if (hitObject(object, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
-                return entity;
+                return object;
             }
         }
 
@@ -273,18 +274,18 @@ public class EntityControl
     }
 
     /**
-     * Get the list of selected entities.
+     * Get the list of selected objects.
      * 
-     * @return The selected entities.
+     * @return The selected objects.
      */
-    public List<EntityGame> getSelectedEnties()
+    public Collection<ObjectGame> getSelectedEnties()
     {
-        final List<EntityGame> list = new ArrayList<>(0);
-        for (final EntityGame entity : handlerEntity.list())
+        final List<ObjectGame> list = new ArrayList<>(0);
+        for (final ObjectGame object : handlerObject.list())
         {
-            if (isSelected(entity))
+            if (isSelected(object))
             {
-                list.add(entity);
+                list.add(object);
             }
         }
         return list;
@@ -311,31 +312,31 @@ public class EntityControl
     }
 
     /**
-     * Check the mouse over entity flag.
+     * Check the mouse over object flag.
      * 
-     * @param entity The entity to check.
+     * @param object The object to check.
      * @return <code>true</code> if over, <code>false</code> else.
      */
-    public boolean isOver(EntityGame entity)
+    public boolean isOver(ObjectGame object)
     {
-        if (entitiesOver.containsKey(entity))
+        if (objectsOver.containsKey(object))
         {
-            return entitiesOver.get(entity).booleanValue();
+            return objectsOver.get(object).booleanValue();
         }
         return false;
     }
 
     /**
-     * Check the mouse entity selection flag.
+     * Check the mouse object selection flag.
      * 
-     * @param entity The entity to check.
+     * @param object The object to check.
      * @return <code>true</code> if selected, <code>false</code> else.
      */
-    public boolean isSelected(EntityGame entity)
+    public boolean isSelected(ObjectGame object)
     {
-        if (entitiesSelection.containsKey(entity))
+        if (objectsSelection.containsKey(object))
         {
-            return entitiesSelection.get(entity).booleanValue();
+            return objectsSelection.get(object).booleanValue();
         }
         return false;
     }
@@ -351,25 +352,25 @@ public class EntityControl
     }
 
     /**
-     * Check if cursor is over at least one entity.
+     * Check if cursor is over at least one object.
      * 
      * @return <code>true</code> if over, <code>false</code> else.
      */
     public boolean hasOver()
     {
-        return !entitiesOver.isEmpty();
+        return !objectsOver.isEmpty();
     }
 
     /**
-     * Check if there it at least one entity selected.
+     * Check if there it at least one object selected.
      * 
-     * @return <code>true</code> if there is selected entities, <code>false</code> else.
+     * @return <code>true</code> if there is selected objects, <code>false</code> else.
      */
     public boolean hasSelection()
     {
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
-            if (isSelected(entity))
+            if (isSelected(object))
             {
                 return true;
             }
@@ -378,26 +379,26 @@ public class EntityControl
     }
 
     /**
-     * Check if entity is hit.
+     * Check if object is hit.
      * 
-     * @param entity The entity to check.
+     * @param object The object to check.
      * @param x1 First point x.
      * @param y1 First point y.
      * @param x2 Second point x.
      * @param y2 Second point y.
      * @return <code>true</code> if hit, <code>false</code> else.
      */
-    private boolean hitEntity(EntityGame entity, int x1, int y1, int x2, int y2)
+    private boolean hitObject(ObjectGame object, int x1, int y1, int x2, int y2)
     {
         final MapTile<?> map = model.getMap();
         final CameraGame camera = model.getCamera();
-        if (entity != null)
+        if (object != null)
         {
-            final int x = UtilMath.getRounded(entity.getLocationIntX() - entity.getWidth() / 2, map.getTileWidth())
+            final int x = UtilMath.getRounded(object.getLocationIntX() - object.getWidth() / 2, map.getTileWidth())
                     - camera.getLocationIntX();
-            final int y = UtilMath.getRounded(entity.getLocationIntY(), map.getTileHeight()) - camera.getLocationIntY();
+            final int y = UtilMath.getRounded(object.getLocationIntY(), map.getTileHeight()) - camera.getLocationIntY();
             final Rectangle r1 = Geom.createRectangle(x1, y1, x2 - x1, y2 - y1);
-            final Rectangle r2 = Geom.createRectangle(x, y, entity.getWidth(), entity.getHeight());
+            final Rectangle r2 = Geom.createRectangle(x, y, object.getWidth(), object.getHeight());
             if (r1.intersects(r2))
             {
                 return true;

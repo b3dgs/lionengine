@@ -17,45 +17,28 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.HandlerGame;
+import java.util.Collection;
+
+import com.b3dgs.lionengine.game.ObjectGame;
 
 /**
- * Handler entity implementation. Just used as a simple entity rendering.
+ * Listen to objects selection on map.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class HandlerEntity
-        extends HandlerGame<EntityGame>
+public interface ObjectSelectionListener
 {
-    /** Camera. */
-    private final CameraGame camera;
+    /**
+     * Called when an object is selected.
+     * 
+     * @param object The selected object from map.
+     */
+    void notifyObjectSelected(ObjectGame object);
 
     /**
-     * Constructor.
+     * Called when objects are selected.
      * 
-     * @param camera The camera reference.
+     * @param objects The selected objects from map.
      */
-    public HandlerEntity(CameraGame camera)
-    {
-        this.camera = camera;
-    }
-
-    /*
-     * HandlerEntityGame
-     */
-
-    @Override
-    protected void update(double extrp, EntityGame entity)
-    {
-        // Nothing to do
-    }
-
-    @Override
-    protected void render(Graphic g, EntityGame entity)
-    {
-        entity.render(g, camera);
-    }
+    void notifyObjectsSelected(Collection<ObjectGame> objects);
 }

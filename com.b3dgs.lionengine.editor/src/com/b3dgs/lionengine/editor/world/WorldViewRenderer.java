@@ -17,6 +17,9 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -42,7 +45,7 @@ import com.b3dgs.lionengine.editor.factory.FactoryView;
 import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.game.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Point;
@@ -61,7 +64,7 @@ public class WorldViewRenderer
     private static final ColorRgba COLOR_GRID = new ColorRgba(128, 128, 128, 128);
     /** Color of the selection area. */
     private static final ColorRgba COLOR_MOUSE_SELECTION = new ColorRgba(240, 240, 240, 96);
-    /** Color of the box around the selected entity. */
+    /** Color of the box around the selected object. */
     private static final ColorRgba COLOR_ENTITY_SELECTION = new ColorRgba(128, 240, 128, 192);
     /** Color of the selected tile. */
     private static final ColorRgba COLOR_TILE_SELECTED = new ColorRgba(192, 192, 192, 96);
@@ -124,12 +127,14 @@ public class WorldViewRenderer
     protected final EPartService partService;
     /** The parent. */
     private final Composite parent;
-    /** Handler entity. */
-    private final HandlerEntity handlerEntity;
+    /** Object selection listener. */
+    private final Collection<ObjectSelectionListener> objectSelectionListeners;
+    /** Handler object. */
+    private final HandlerObject handlerObject;
     /** Selection handler. */
     private final Selection selection;
-    /** Entity controller. */
-    private final EntityControl entityControl;
+    /** Object controller. */
+    private final ObjectControl objectControl;
     /** Selected tile. */
     private TileGame selectedTile;
     /** Last selected tile. */
@@ -153,11 +158,32 @@ public class WorldViewRenderer
     {
         this.parent = parent;
         this.partService = partService;
+        objectSelectionListeners = new ArrayList<>();
         model = WorldViewModel.INSTANCE;
-        handlerEntity = new HandlerEntity(model.getCamera());
+        handlerObject = new HandlerObject(model.getCamera());
         selection = new Selection();
-        entityControl = new EntityControl(handlerEntity);
+        objectControl = new ObjectControl(handlerObject);
         gridEnabled = true;
+    }
+
+    /**
+     * Add an object selection listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListener(ObjectSelectionListener listener)
+    {
+        objectSelectionListeners.add(listener);
+    }
+
+    /**
+     * Remove an object selection listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void removeListener(ObjectSelectionListener listener)
+    {
+        objectSelectionListeners.remove(listener);
     }
 
     /**
@@ -169,13 +195,13 @@ public class WorldViewRenderer
     }
 
     /**
-     * Get the handler entity.
+     * Get the handler object.
      * 
-     * @return The handler entity.
+     * @return The handler object.
      */
-    public HandlerEntity getHandler()
+    public HandlerObject getHandler()
     {
-        return handlerEntity;
+        return handlerObject;
     }
 
     /**
@@ -221,21 +247,21 @@ public class WorldViewRenderer
     {
         if (palette == PaletteType.POINTER)
         {
-            entityControl.updateMouseOver(mx, my);
+            objectControl.updateMouseOver(mx, my);
             if (getClick() == Mouse.LEFT)
             {
-                entityControl.updateDragging(mouseX, mouseY, mx, my);
+                objectControl.updateDragging(mouseX, mouseY, mx, my);
             }
         }
         else if (palette == PaletteType.SELECTION && click == Mouse.LEFT)
         {
-            if (!entityControl.hasSelection())
+            if (!objectControl.hasSelection())
             {
                 selection.update(mx, my);
             }
             else
             {
-                entityControl.updateDragging(mouseX, mouseY, mx, my);
+                objectControl.updateDragging(mouseX, mouseY, mx, my);
             }
         }
         else if (palette == PaletteType.HAND && click > 0)
@@ -277,18 +303,22 @@ public class WorldViewRenderer
     }
 
     /**
-     * Update the entity selection with pointer.
+     * Update the object selection with pointer.
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
     protected void updateSingleEntitySelection(int mx, int my)
     {
-        entityControl.unSelectEntities();
-        final EntityGame entity = entityControl.getEntity(mx, my);
-        if (entity != null)
+        objectControl.unSelectEntities();
+        final ObjectGame object = objectControl.getObject(mx, my);
+        if (object != null)
         {
-            entityControl.setEntitySelection(entity, true);
+            objectControl.setObjectSelection(object, true);
+        }
+        for (final ObjectSelectionListener listener : objectSelectionListeners)
+        {
+            listener.notifyObjectSelected(object);
         }
     }
 
@@ -347,14 +377,14 @@ public class WorldViewRenderer
     }
 
     /**
-     * Render the handled entities.
+     * Render the handled objects.
      * 
      * @param g The graphic output.
      */
     protected void renderEntities(Graphic g)
     {
-        handlerEntity.update(1.0);
-        handlerEntity.render(g);
+        handlerObject.update(1.0);
+        handlerObject.render(g);
     }
 
     /**
@@ -405,15 +435,15 @@ public class WorldViewRenderer
      */
     private void updatePointerFactory(PalettePart part, int mx, int my)
     {
-        if (part.getActivePaletteId() == FactoryView.ID && !entityControl.isDragging())
+        if (part.getActivePaletteId() == FactoryView.ID && !objectControl.isDragging())
         {
-            if (click == Mouse.LEFT && !entityControl.hasOver() && !entityControl.hasSelection())
+            if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
             {
-                entityControl.addEntity(mx, my);
+                objectControl.addEntity(mx, my);
             }
             else if (click == Mouse.RIGHT)
             {
-                entityControl.removeEntity(mx, my);
+                objectControl.removeEntity(mx, my);
             }
         }
     }
@@ -472,19 +502,19 @@ public class WorldViewRenderer
     }
 
     /**
-     * Update the selection when clicking (select single entity, or unselect all previous).
+     * Update the selection when clicking (select single object, or unselect all previous).
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
      */
     private void updateSelectionBefore(int mx, int my)
     {
-        final EntityGame entity = entityControl.getEntity(mx, my);
+        final ObjectGame object = objectControl.getObject(mx, my);
         selection.reset();
 
-        if (entityControl.hasSelection() && entity == null)
+        if (objectControl.hasSelection() && object == null)
         {
-            entityControl.unSelectEntities();
+            objectControl.unSelectEntities();
             selection.start(mx, my);
         }
         else
@@ -494,7 +524,7 @@ public class WorldViewRenderer
     }
 
     /**
-     * Update the selection when releasing click (update the entities flags).
+     * Update the selection when releasing click (update the objects flags).
      * 
      * @param mx The mouse horizontal location.
      * @param my The mouse vertical location.
@@ -504,7 +534,11 @@ public class WorldViewRenderer
         selection.end(mx, my);
         if (selection.isSelected())
         {
-            entityControl.selectEntities(selection.getArea());
+            objectControl.selectEntities(selection.getArea());
+        }
+        for (final ObjectSelectionListener listener : objectSelectionListeners)
+        {
+            listener.notifyObjectsSelected(objectControl.getSelectedEnties());
         }
     }
 
@@ -551,7 +585,7 @@ public class WorldViewRenderer
     }
 
     /**
-     * Render the entity over and selection flag.
+     * Render the object over and selection flag.
      * 
      * @param g The graphic output.
      */
@@ -561,17 +595,17 @@ public class WorldViewRenderer
         final MapTile<?> map = model.getMap();
         final int th = map.getTileHeight();
 
-        for (final EntityGame entity : handlerEntity.list())
+        for (final ObjectGame object : handlerObject.list())
         {
-            final int sx = entity.getLocationIntX();
-            final int sy = entity.getLocationIntY();
+            final int sx = object.getLocationIntX();
+            final int sy = object.getLocationIntY();
 
-            if (entityControl.isOver(entity) || entityControl.isSelected(entity))
+            if (objectControl.isOver(object) || objectControl.isSelected(object))
             {
                 g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
-                g.drawRect(sx - camera.getLocationIntX() - entity.getWidth() / 2, -sy + camera.getLocationIntY()
-                        - entity.getHeight() + UtilMath.getRounded(camera.getViewHeight(), th), entity.getWidth(),
-                        entity.getHeight(), true);
+                g.drawRect(sx - camera.getLocationIntX() - object.getWidth() / 2, -sy + camera.getLocationIntY()
+                        - object.getHeight() + UtilMath.getRounded(camera.getViewHeight(), th), object.getWidth(),
+                        object.getHeight(), true);
             }
         }
     }
@@ -621,7 +655,7 @@ public class WorldViewRenderer
      */
     private void renderCursor(Graphic g, int tw, int th, int areaX, int areaY)
     {
-        if (!selection.isSelecting() && !entityControl.isDragging() && !entityControl.hasOver())
+        if (!selection.isSelecting() && !objectControl.isDragging() && !objectControl.hasOver())
         {
             if (mouseX >= 0 && mouseY >= 0 && mouseX < areaX && mouseY < areaY)
             {
@@ -686,10 +720,10 @@ public class WorldViewRenderer
         updatePaletteAfter(palette, mx, my);
         updateMouse(mx, my);
 
-        entityControl.stopDragging();
-        for (final EntityGame entity : entityControl.getSelectedEnties())
+        objectControl.stopDragging();
+        for (final ObjectGame object : objectControl.getSelectedEnties())
         {
-            entityControl.setEntityLocation(entity, entity.getLocationIntX(), entity.getLocationIntY(), -1);
+            objectControl.setObjectLocation(object, object.getLocationIntX(), object.getLocationIntY(), -1);
         }
         click = 0;
     }
