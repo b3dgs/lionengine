@@ -49,14 +49,11 @@
 
    <element name="implementation">
       <complexType>
-         <attribute name="properties" type="string" use="required">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":com.b3dgs.lionengine.editor.properties.PropertiesListener"/>
-               </appinfo>
             </annotation>
          </attribute>
       </complexType>

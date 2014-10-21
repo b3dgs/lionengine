@@ -33,7 +33,7 @@ public interface PropertiesListener
     /**
      * Set the properties input.
      * 
-     * @param configurer The configurer reference.
+     * @param configurer The configurer reference (<code>null</code> if not a valid item).
      */
     void setInput(Configurer configurer);
 }

@@ -139,7 +139,9 @@ public final class UtilEclipse
         {
             partService.bringToTop(part);
             final Object object = part.getObject();
-            if (object != null && object.getClass().isAssignableFrom(clazz))
+            if (object != null
+                    && (object.getClass().isAssignableFrom(clazz) || clazz.isInterface()
+                            && clazz.isAssignableFrom(object.getClass())))
             {
                 return clazz.cast(part.getObject());
             }

@@ -22,11 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.EMenuService;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -41,7 +43,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.editor.Activator;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
@@ -68,7 +69,7 @@ public class PropertiesPart
     /** Menu ID. */
     public static final String MENU_ID = PropertiesPart.ID + ".menu";
     /** Properties extension. */
-    public static final String EXTENSION_PROPERTIES = "properties";
+    public static final String EXTENSION_PROPERTIES = "id";
 
     /** Class icon. */
     private static final Image ICON_CLASS = UtilEclipse.getIcon("properties", "class.png");
@@ -85,6 +86,9 @@ public class PropertiesPart
 
     /** Properties tree. */
     Tree properties;
+    /** Part services. */
+    @Inject
+    private EPartService partService;
     /** Extensions point. */
     private List<PropertiesListener> extensions;
 
@@ -405,14 +409,7 @@ public class PropertiesPart
             final String properties = elements[0].getAttribute(PropertiesPart.EXTENSION_PROPERTIES);
             if (properties != null)
             {
-                try
-                {
-                    extensions.add(UtilEclipse.createClass(properties, PropertiesListener.class));
-                }
-                catch (final ReflectiveOperationException exception)
-                {
-                    Verbose.exception(getClass(), "checkPropertiesExtensionPoint", exception);
-                }
+                extensions.add(UtilEclipse.getPart(partService, properties, PropertiesListener.class));
             }
         }
         return extensions;
