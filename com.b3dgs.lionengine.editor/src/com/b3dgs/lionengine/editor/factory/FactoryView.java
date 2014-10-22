@@ -21,8 +21,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -74,7 +74,7 @@ public class FactoryView
      */
     private static void fillCombo(Combo typeCombo, File[] folders)
     {
-        final List<File> elements = new ArrayList<>(1);
+        final Collection<File> elements = new ArrayList<>(1);
         for (final File folder : folders)
         {
             if (folder.isDirectory())

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.TextStyle;
@@ -164,7 +164,7 @@ public final class ControlPanel
     }
 
     @Override
-    public void notifyUpdatedSelection(Set<Entity> selection)
+    public void notifyUpdatedSelection(Collection<Entity> selection)
     {
         if (selection.size() == 1)
         {

@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.network.purview;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
@@ -32,7 +31,7 @@ public class NetworkableModel
         implements Networkable
 {
     /** List of messages. */
-    private final List<NetworkMessage> messages;
+    private final Collection<NetworkMessage> messages;
     /** The client id. */
     private Byte clientId;
 

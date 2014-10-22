@@ -19,10 +19,10 @@ package com.b3dgs.lionengine.game.map;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
@@ -222,7 +222,7 @@ public abstract class MapTileGame<T extends TileGame>
      *            just return the first tile hit.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    private T checkCollision(Localizable localizable, Set<CollisionTile> collisions, double h, int ty,
+    private T checkCollision(Localizable localizable, Collection<CollisionTile> collisions, double h, int ty,
             boolean applyRayCast)
     {
         final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
@@ -284,7 +284,7 @@ public abstract class MapTileGame<T extends TileGame>
 
         for (final CollisionTile collision : collisions)
         {
-            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
+            final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
                 final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
@@ -337,7 +337,7 @@ public abstract class MapTileGame<T extends TileGame>
 
         final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
         final XmlNode root = Stream.loadXml(media);
-        final List<XmlNode> nodes = root.getChildren();
+        final Collection<XmlNode> nodes = root.getChildren();
 
         final int t = file.readShort();
         for (int i = 0; i < t; i++)
@@ -375,7 +375,7 @@ public abstract class MapTileGame<T extends TileGame>
         // Retrieve patterns list
         final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.TILE_SHEETS_FILE_NAME);
         final XmlNode root = Stream.loadXml(mediaPatterns);
-        final List<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
+        final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         files = new String[children.size()];
         int i = 0;
         for (final XmlNode child : children)
@@ -407,7 +407,7 @@ public abstract class MapTileGame<T extends TileGame>
     public void loadCollisions(Media media) throws LionEngineException
     {
         final XmlNode root = Stream.loadXml(media);
-        final List<XmlNode> collisions = root.getChildren();
+        final Collection<XmlNode> collisions = root.getChildren();
         for (int i = 0; i < heightInTile; i++)
         {
             final List<T> list = tiles.get(i);
@@ -433,7 +433,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T loadTile(List<XmlNode> nodes, FileReading file, int i) throws IOException
+    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException
     {
         final int pattern = file.readInteger();
         final int number = file.readInteger();
@@ -627,7 +627,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T getFirstTileHit(Localizable localizable, Set<CollisionTile> collisions, boolean applyRayCast)
+    public T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast)
     {
         // Starting location
         final int sv = (int) Math.floor(localizable.getLocationOldY());
@@ -703,7 +703,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public Set<Integer> getPatterns()
+    public Collection<Integer> getPatterns()
     {
         return patterns.keySet();
     }

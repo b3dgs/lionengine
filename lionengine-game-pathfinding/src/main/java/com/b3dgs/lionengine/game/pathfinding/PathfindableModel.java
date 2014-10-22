@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
@@ -45,9 +45,9 @@ public class PathfindableModel
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of shared path id. */
-    private final Set<Integer> sharedPathIds;
+    private final Collection<Integer> sharedPathIds;
     /** List of ignored id. */
-    private final Set<Integer> ignoredIds;
+    private final Collection<Integer> ignoredIds;
     /** Ref id. */
     private final Integer id;
     /** Last valid path found. */
@@ -512,7 +512,7 @@ public class PathfindableModel
     }
 
     @Override
-    public void setSharedPathIds(Set<Integer> ids)
+    public void setSharedPathIds(Collection<Integer> ids)
     {
         sharedPathIds.clear();
         sharedPathIds.addAll(ids);

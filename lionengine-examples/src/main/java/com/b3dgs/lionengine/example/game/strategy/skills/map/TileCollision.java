@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.map;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
@@ -54,7 +54,7 @@ public enum TileCollision implements CollisionTile
     }
 
     @Override
-    public Set<CollisionFunction> getCollisionFunctions()
+    public Collection<CollisionFunction> getCollisionFunctions()
     {
         return model.getCollisionFunctions();
     }

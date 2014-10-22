@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Model implementation of the collision tile for fast inheritance.
@@ -31,7 +31,7 @@ public class CollisionTileModel
     /** Enum value. */
     private final Enum<?> value;
     /** Collision function X. */
-    private final Set<CollisionFunction> collisionFunctions;
+    private final Collection<CollisionFunction> collisionFunctions;
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public class CollisionTileModel
     }
 
     @Override
-    public Set<CollisionFunction> getCollisionFunctions()
+    public Collection<CollisionFunction> getCollisionFunctions()
     {
         return collisionFunctions;
     }

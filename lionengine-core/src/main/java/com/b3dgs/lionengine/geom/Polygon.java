@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.geom;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Polygon interface.
@@ -67,5 +67,5 @@ public interface Polygon
      * 
      * @return The points.
      */
-    List<Line> getPoints();
+    Collection<Line> getPoints();
 }

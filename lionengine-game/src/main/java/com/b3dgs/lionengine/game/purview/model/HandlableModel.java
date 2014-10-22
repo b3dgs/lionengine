@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.purview.Handlable;
@@ -34,7 +34,7 @@ public class HandlableModel
     /** Free id error. */
     private static final String ERROR_FREE_ID = "No more free id available !";
     /** Id used. */
-    private static final Set<Integer> IDS = new HashSet<>(16);
+    private static final Collection<Integer> IDS = new HashSet<>(16);
     /** Last id used. */
     private static int lastId = 1;
 

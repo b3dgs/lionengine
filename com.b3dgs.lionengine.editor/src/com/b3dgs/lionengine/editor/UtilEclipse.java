@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
@@ -202,7 +202,7 @@ public final class UtilEclipse
      */
     public static void setToolItemSelection(MToolBar toolbar, boolean selected, String... names)
     {
-        final List<String> items = Arrays.asList(names);
+        final Collection<String> items = Arrays.asList(names);
         for (final MToolBarElement element : toolbar.getChildren())
         {
             final String id = element.getElementId().substring(toolbar.getElementId().length() + 1);
@@ -225,7 +225,7 @@ public final class UtilEclipse
      */
     public static void setToolItemEnabled(MToolBar toolbar, boolean enabled, String... names)
     {
-        final List<String> items = Arrays.asList(names);
+        final Collection<String> items = Arrays.asList(names);
         for (final MToolBarElement element : toolbar.getChildren())
         {
             if (items.isEmpty() || UtilEclipse.toolbarElementContained(element, items))
@@ -245,7 +245,7 @@ public final class UtilEclipse
      * @param items The items list.
      * @return <code>true</code> if contained, <code>false</code> else.
      */
-    private static boolean toolbarElementContained(MToolBarElement element, List<String> items)
+    private static boolean toolbarElementContained(MToolBarElement element, Collection<String> items)
     {
         final String id = element.getElementId();
         for (final String item : items)

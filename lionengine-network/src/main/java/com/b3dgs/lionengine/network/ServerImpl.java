@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
@@ -78,7 +77,7 @@ final class ServerImpl
     /** Client list. */
     private final HashMap<Byte, ClientSocket> clientsList;
     /** Remove list. */
-    private final Set<ClientSocket> removeList;
+    private final Collection<ClientSocket> removeList;
     /** Average bandwidth. */
     private final Timing bandwidthTimer;
     /** Connection listener. */
@@ -472,7 +471,7 @@ final class ServerImpl
         clientConnectionListener.terminate();
 
         // Disconnect all clients
-        final List<ClientSocket> delete = new ArrayList<>(clientsList.size());
+        final Collection<ClientSocket> delete = new ArrayList<>(clientsList.size());
         for (final ClientSocket client : clientsList.values())
         {
             for (final ClientSocket other : clientsList.values())

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.stream;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -317,9 +317,9 @@ final class XmlNodeImpl
     }
 
     @Override
-    public List<XmlNode> getChildren(String name)
+    public Collection<XmlNode> getChildren(String name)
     {
-        final List<XmlNode> nodes = new ArrayList<>(1);
+        final Collection<XmlNode> nodes = new ArrayList<>(1);
         final NodeList list = root.getElementsByTagName(name);
         for (int i = 0; i < list.getLength(); i++)
         {
@@ -333,9 +333,9 @@ final class XmlNodeImpl
     }
 
     @Override
-    public List<XmlNode> getChildren()
+    public Collection<XmlNode> getChildren()
     {
-        final List<XmlNode> nodes = new ArrayList<>(1);
+        final Collection<XmlNode> nodes = new ArrayList<>(1);
         final NodeList list = root.getChildNodes();
         for (int i = 0; i < list.getLength(); i++)
         {

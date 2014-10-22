@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
@@ -53,7 +53,7 @@ final class Scene
     /** Camera. */
     private final CameraGame camera;
     /** Rackets. */
-    private final Set<Racket> rackets;
+    private final Collection<Racket> rackets;
     /** Ball. */
     private final Ball ball;
     /** Handler. */

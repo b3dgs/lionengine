@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.editor.world;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.UtilMath;
@@ -280,7 +279,7 @@ public class ObjectControl
      */
     public Collection<ObjectGame> getSelectedEnties()
     {
-        final List<ObjectGame> list = new ArrayList<>(0);
+        final Collection<ObjectGame> list = new ArrayList<>(0);
         for (final ObjectGame object : handlerObject.list())
         {
             if (isSelected(object))

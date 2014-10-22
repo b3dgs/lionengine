@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.quick;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
@@ -102,7 +102,7 @@ public class QuickAccessPart
      * 
      * @param items The input items.
      */
-    public void setInput(List<TreeItem> items)
+    public void setInput(Collection<TreeItem> items)
     {
         tree.removeAll();
         for (final TreeItem current : items)

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.tutorials.snippet;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
@@ -64,7 +64,7 @@ public class ModuleGame
         }
 
         @Override
-        public Set<CollisionFunction> getCollisionFunctions()
+        public Collection<CollisionFunction> getCollisionFunctions()
         {
             return null;
         }

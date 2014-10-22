@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.CollisionTileCategory;
@@ -41,14 +41,14 @@ enum EntityCollisionTileCategory implements CollisionTileCategory
     KNEE_RIGHT(TileCollision.COLLISION_HORIZONTAL);
 
     /** The collisions list. */
-    private final Set<CollisionTile> collisions;
+    private final Collection<CollisionTile> collisions;
 
     /**
      * Constructor.
      * 
      * @param collisions The collisions list.
      */
-    private EntityCollisionTileCategory(Set<CollisionTile> collisions)
+    private EntityCollisionTileCategory(Collection<CollisionTile> collisions)
     {
         this.collisions = collisions;
     }
@@ -58,7 +58,7 @@ enum EntityCollisionTileCategory implements CollisionTileCategory
      */
 
     @Override
-    public Set<CollisionTile> getCollisions()
+    public Collection<CollisionTile> getCollisions()
     {
         return collisions;
     }

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
@@ -159,7 +159,7 @@ public abstract class Unit
     }
 
     @Override
-    public void setSharedPathIds(Set<Integer> ids)
+    public void setSharedPathIds(Collection<Integer> ids)
     {
         mover.setSharedPathIds(ids);
     }

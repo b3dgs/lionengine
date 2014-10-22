@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.attacker;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
@@ -54,7 +54,7 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     }
 
     /** Listener list. */
-    private final Set<AttackerListener<E>> listeners;
+    private final Collection<AttackerListener<E>> listeners;
     /** Damages. */
     private final Damages damages;
     /** Attack distance allowed. */

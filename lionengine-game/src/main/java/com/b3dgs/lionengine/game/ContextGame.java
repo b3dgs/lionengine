@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 
@@ -34,7 +34,7 @@ public class ContextGame
     private static final String ERROR_SERVICE = "Service not found: ";
 
     /** Services list. */
-    private final List<Object> services;
+    private final Collection<Object> services;
 
     /**
      * Constructor.

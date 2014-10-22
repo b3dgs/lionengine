@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.editor.collision;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -75,7 +75,7 @@ public class TileCollisionView
     /** Save collisions item. */
     private ToolItem saveCollisions;
     /** Formula list. */
-    private List<TileCollisionComposite> formulas;
+    private Collection<TileCollisionComposite> formulas;
     /** Parent reference. */
     private Composite parent;
 

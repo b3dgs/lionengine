@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.mock;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -200,13 +200,13 @@ public final class XmlNodeMock
     }
 
     @Override
-    public List<XmlNode> getChildren(String name)
+    public Collection<XmlNode> getChildren(String name)
     {
         return null;
     }
 
     @Override
-    public List<XmlNode> getChildren()
+    public Collection<XmlNode> getChildren()
     {
         return null;
     }

@@ -18,8 +18,7 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
@@ -158,7 +157,7 @@ public interface MapTile<T extends TileGame>
      * @return The loaded tile.
      * @throws IOException If error on reading.
      */
-    T loadTile(List<XmlNode> nodes, FileReading file, int i) throws IOException;
+    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -280,7 +279,7 @@ public interface MapTile<T extends TileGame>
      *            just return the first tile hit.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    T getFirstTileHit(Localizable localizable, Set<CollisionTile> collisions, boolean applyRayCast);
+    T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast);
 
     /**
      * Get location x relative to map referential as tile.
@@ -310,7 +309,7 @@ public interface MapTile<T extends TileGame>
      * 
      * @return The set of patterns id.
      */
-    Set<Integer> getPatterns();
+    Collection<Integer> getPatterns();
 
     /**
      * Get pattern (tilesheet) from its id.

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
@@ -79,7 +79,7 @@ final class HandlerEntity
     }
 
     @Override
-    protected void notifyUpdatedSelection(Set<Entity> selection)
+    protected void notifyUpdatedSelection(Collection<Entity> selection)
     {
         // Nothing to do
     }

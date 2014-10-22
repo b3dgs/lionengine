@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.pathfinding;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Describe an object which can move on a tile path based map.
@@ -87,7 +87,7 @@ public interface Pathfindable
      * 
      * @param ids The id list to add.
      */
-    void setSharedPathIds(Set<Integer> ids);
+    void setSharedPathIds(Collection<Integer> ids);
 
     /**
      * Clear the list of id that share the same path.

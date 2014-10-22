@@ -18,9 +18,8 @@
 package com.b3dgs.lionengine.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Graphic;
@@ -35,9 +34,9 @@ import com.b3dgs.lionengine.core.Text;
 public final class TimedMessage
 {
     /** List of active messages. */
-    private final Set<MessageData> messages;
+    private final Collection<MessageData> messages;
     /** List of messages to delete. */
-    private final List<MessageData> delete;
+    private final Collection<MessageData> delete;
     /** Has to delete something. */
     private boolean deleted;
     /** Has message flag. */

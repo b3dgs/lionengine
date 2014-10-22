@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
@@ -41,7 +41,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     /** Player owning the control panel. */
     protected PlayerStrategy player;
     /** List of listeners. */
-    private final Set<ControlPanelListener> listeners;
+    private final Collection<ControlPanelListener> listeners;
     /** Selection area. */
     private final Rectangle selectionArea;
     /** Area outside panel (where the map is displayed). */
@@ -100,7 +100,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      * 
      * @param selection The selected entities.
      */
-    public abstract void notifyUpdatedSelection(Set<E> selection);
+    public abstract void notifyUpdatedSelection(Collection<E> selection);
 
     /**
      * Called when an order started.

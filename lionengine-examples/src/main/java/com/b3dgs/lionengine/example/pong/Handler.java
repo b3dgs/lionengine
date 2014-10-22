@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.pong;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilRandom;
@@ -36,7 +36,7 @@ final class Handler
     /** Screen height. */
     private final int screenHeight;
     /** Rackets. */
-    private final Set<Racket> rackets;
+    private final Collection<Racket> rackets;
     /** Ball. */
     private final Ball ball;
     /** Score left. */
@@ -52,7 +52,7 @@ final class Handler
      * @param rackets The rackets reference.
      * @param ball The ball reference.
      */
-    Handler(int screenWidth, int screenHeight, Set<Racket> rackets, Ball ball)
+    Handler(int screenWidth, int screenHeight, Collection<Racket> rackets, Ball ball)
     {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;

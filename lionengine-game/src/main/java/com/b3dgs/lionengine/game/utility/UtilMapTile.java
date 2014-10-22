@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -125,7 +124,7 @@ public class UtilMapTile
             {
                 root.add(node);
             }
-            final Set<CollisionFunction> functions = collision.getCollisionFunctions();
+            final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
             if (functions != null)
             {
                 for (final CollisionFunction function : functions)
@@ -188,11 +187,11 @@ public class UtilMapTile
      * @param pattern The current pattern.
      * @return The splited numbers list.
      */
-    public static List<List<Integer>> splitNonConsecutiveNumbers(Map<Integer, SortedSet<Integer>> patterns,
+    public static Collection<List<Integer>> splitNonConsecutiveNumbers(Map<Integer, Set<Integer>> patterns,
             Integer pattern)
     {
-        final SortedSet<Integer> numbers = patterns.get(pattern);
-        final List<List<Integer>> series = new ArrayList<>(8);
+        final Collection<Integer> numbers = patterns.get(pattern);
+        final Collection<List<Integer>> series = new ArrayList<>(8);
 
         int lastValue = -2;
         List<Integer> currentSerie = null;
@@ -257,7 +256,7 @@ public class UtilMapTile
      * @return The collision found.
      * @throws LionEngineException If error when reading.
      */
-    public static String getCollision(List<XmlNode> collisions, int tilePattern, int tileNumber)
+    public static String getCollision(Collection<XmlNode> collisions, int tilePattern, int tileNumber)
             throws LionEngineException
     {
         for (final XmlNode collision : collisions)
@@ -403,7 +402,7 @@ public class UtilMapTile
     private static String searchCollision(XmlNode collision, String name, String category, int tilePattern,
             int tileNumber) throws LionEngineException
     {
-        final List<XmlNode> tilesCollisions = collision.getChildren(category);
+        final Collection<XmlNode> tilesCollisions = collision.getChildren(category);
 
         for (final XmlNode tile : tilesCollisions)
         {
@@ -446,11 +445,11 @@ public class UtilMapTile
     private static boolean saveTilesCollisions(MapTile<?> map, XmlNode node, CollisionTile collision)
             throws LionEngineException
     {
-        final Map<Integer, SortedSet<Integer>> patterns = UtilMapTile.getCollisionsPattern(map, node, collision);
+        final Map<Integer, Set<Integer>> patterns = UtilMapTile.getCollisionsPattern(map, node, collision);
         boolean added = false;
         for (final Integer pattern : patterns.keySet())
         {
-            final List<List<Integer>> elements = UtilMapTile.splitNonConsecutiveNumbers(patterns, pattern);
+            final Collection<List<Integer>> elements = UtilMapTile.splitNonConsecutiveNumbers(patterns, pattern);
             for (final List<Integer> numbers : elements)
             {
                 added = UtilMapTile.saveTileNode(node, pattern, numbers);
@@ -467,10 +466,9 @@ public class UtilMapTile
      * @param collision The current collision.
      * @return The values.
      */
-    private static Map<Integer, SortedSet<Integer>> getCollisionsPattern(MapTile<?> map, XmlNode node,
-            CollisionTile collision)
+    private static Map<Integer, Set<Integer>> getCollisionsPattern(MapTile<?> map, XmlNode node, CollisionTile collision)
     {
-        final Map<Integer, SortedSet<Integer>> patterns = new HashMap<>(8);
+        final Map<Integer, Set<Integer>> patterns = new HashMap<>(8);
         for (int ty = 0; ty < map.getHeightInTile(); ty++)
         {
             for (int tx = 0; tx < map.getWidthInTile(); tx++)
@@ -479,7 +477,7 @@ public class UtilMapTile
                 if (tile != null && tile.getCollision() == collision)
                 {
                     final Integer pattern = tile.getPattern();
-                    final SortedSet<Integer> numbers;
+                    final Set<Integer> numbers;
 
                     if (!patterns.containsKey(pattern))
                     {

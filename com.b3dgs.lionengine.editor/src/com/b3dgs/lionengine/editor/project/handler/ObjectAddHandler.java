@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -61,8 +61,8 @@ public class ObjectAddHandler
     private static void createObject(File object, Class<?> clazz) throws IOException
     {
         final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
-        final List<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
-        final List<String> dest = new ArrayList<>();
+        final Collection<String> lines = Files.readAllLines(template.toPath(), StandardCharsets.UTF_8);
+        final Collection<String> dest = new ArrayList<>();
         for (final String line : lines)
         {
             if (line.contains(Tools.TEMPLATE_CLASS_AREA))

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.stream;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
@@ -177,14 +177,14 @@ public interface XmlNode
      * @param name The children name.
      * @return The children list.
      */
-    List<XmlNode> getChildren(String name);
+    Collection<XmlNode> getChildren(String name);
 
     /**
      * Get list of all children.
      * 
      * @return The children list.
      */
-    List<XmlNode> getChildren();
+    Collection<XmlNode> getChildren();
 
     /**
      * Get all attributes.

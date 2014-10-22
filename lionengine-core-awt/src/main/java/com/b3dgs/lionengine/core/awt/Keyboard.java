@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 
@@ -56,9 +56,9 @@ public final class Keyboard
     public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
 
     /** List of keys. */
-    private final Set<Integer> keys;
+    private final Collection<Integer> keys;
     /** Pressed states. */
-    private final Set<Integer> pressed;
+    private final Collection<Integer> pressed;
     /** Last key code. */
     private Integer lastCode;
     /** Last key name. */

@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.dialogs;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -50,7 +50,7 @@ public class EditTilesheetsDialog
     /** Tile sheets media. */
     final Media tilesheets;
     /** Buttons list. */
-    private final List<Button> buttons;
+    private final Collection<Button> buttons;
 
     /**
      * Constructor.
@@ -96,7 +96,7 @@ public class EditTilesheetsDialog
         }
 
         final XmlNode node = Stream.loadXml(tilesheets);
-        final List<XmlNode> sheets = node.getChildren();
+        final Collection<XmlNode> sheets = node.getChildren();
         for (final Button button : buttons)
         {
             for (final XmlNode sheet : sheets)

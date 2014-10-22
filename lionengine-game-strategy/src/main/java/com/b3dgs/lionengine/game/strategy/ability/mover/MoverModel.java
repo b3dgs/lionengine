@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.mover;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -211,7 +211,7 @@ public class MoverModel
     }
 
     @Override
-    public void setSharedPathIds(Set<Integer> ids)
+    public void setSharedPathIds(Collection<Integer> ids)
     {
         pathfindable.setSharedPathIds(ids);
     }

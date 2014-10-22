@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
@@ -43,9 +43,9 @@ enum TileCollision implements CollisionTile
     NONE;
 
     /** Vertical collisions list. */
-    static final Set<CollisionTile> COLLISION_VERTICAL = new HashSet<>();
+    static final Collection<CollisionTile> COLLISION_VERTICAL = new HashSet<>();
     /** Horizontal collisions list. */
-    static final Set<CollisionTile> COLLISION_HORIZONTAL = new HashSet<>();
+    static final Collection<CollisionTile> COLLISION_HORIZONTAL = new HashSet<>();
 
     /**
      * Static init.
@@ -82,7 +82,7 @@ enum TileCollision implements CollisionTile
     }
 
     @Override
-    public Set<CollisionFunction> getCollisionFunctions()
+    public Collection<CollisionFunction> getCollisionFunctions()
     {
         return model.getCollisionFunctions();
     }

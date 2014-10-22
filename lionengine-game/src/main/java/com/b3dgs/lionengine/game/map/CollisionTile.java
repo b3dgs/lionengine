@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Represents the collision tile.
@@ -46,7 +46,7 @@ public interface CollisionTile
      * 
      * @return The collision function.
      */
-    Set<CollisionFunction> getCollisionFunctions();
+    Collection<CollisionFunction> getCollisionFunctions();
 
     /**
      * Get the collision enum value.

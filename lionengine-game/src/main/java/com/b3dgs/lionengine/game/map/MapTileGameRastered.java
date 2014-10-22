@@ -18,9 +18,9 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.ColorRgba;
@@ -211,7 +211,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
         {
             if (rasterFile != null)
             {
-                final Set<Integer> patterns = getPatterns();
+                final Collection<Integer> patterns = getPatterns();
                 final Iterator<Integer> itr = patterns.iterator();
                 final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
 

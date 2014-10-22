@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.TreeMap;
 
 import com.b3dgs.lionengine.Align;
@@ -124,7 +124,7 @@ final class SpriteFontImpl
 
         // Load data for each characters
         final XmlNode letters = Stream.loadXml(mediaData);
-        final List<XmlNode> children = letters.getChildren();
+        final Collection<XmlNode> children = letters.getChildren();
         int id = 0;
 
         for (final XmlNode node : children)

@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.network;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -37,11 +35,11 @@ abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkMo
         implements NetworkedWorld
 {
     /** List of networkable objects. */
-    protected final Set<Networkable> networkables;
+    protected final Collection<Networkable> networkables;
     /** List of networkable objects. */
-    protected final List<Networkable> toAdd;
+    protected final Collection<Networkable> toAdd;
     /** The client connection listener. */
-    protected final List<L> listeners;
+    protected final Collection<L> listeners;
     /** The network. */
     protected final N network;
     /** Will add. */

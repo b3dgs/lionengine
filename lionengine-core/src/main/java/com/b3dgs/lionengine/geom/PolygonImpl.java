@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.geom;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Polygon implementation.
@@ -155,9 +155,9 @@ final class PolygonImpl
     }
 
     @Override
-    public List<Line> getPoints()
+    public Collection<Line> getPoints()
     {
-        final List<Line> list = new ArrayList<>(npoints);
+        final Collection<Line> list = new ArrayList<>(npoints);
         for (int i = 0; i < npoints / 2; i++)
         {
             list.add(Geom.createLine(xpoints[i], ypoints[i], xpoints[i + npoints / 2], ypoints[i + npoints / 2]));

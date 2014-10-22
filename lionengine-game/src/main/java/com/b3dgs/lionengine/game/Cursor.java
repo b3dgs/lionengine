@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -126,7 +126,7 @@ public class Cursor
         sensibilityHorizontal = 1.0;
         sensibilityVertical = 1.0;
 
-        final List<Media> images = new ArrayList<>(1 + others.length);
+        final Collection<Media> images = new ArrayList<>(1 + others.length);
         images.add(media);
         images.addAll(Arrays.asList(others));
         surface = new Image[images.size()];

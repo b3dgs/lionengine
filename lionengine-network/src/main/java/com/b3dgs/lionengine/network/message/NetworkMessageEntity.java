@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.network.message;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
 import com.b3dgs.lionengine.UtilConversion;
 
@@ -271,13 +271,13 @@ public abstract class NetworkMessageEntity<M extends Enum<M>>
     protected void encode(ByteArrayOutputStream buffer) throws IOException
     {
         buffer.write(UtilConversion.shortToByteArray(entityId));
-        final Set<M> keys = actions.keySet();
+        final Collection<M> keys = actions.keySet();
 
         // Fill the data
         buffer.write((byte) keys.size());
         for (final M key : keys)
         {
-            this.encode(buffer, key);
+            encode(buffer, key);
         }
     }
 

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
@@ -44,7 +44,7 @@ final class ControlPanel
      */
 
     @Override
-    public void notifyUpdatedSelection(Set<Entity> selection)
+    public void notifyUpdatedSelection(Collection<Entity> selection)
     {
         // Nothing to do
     }

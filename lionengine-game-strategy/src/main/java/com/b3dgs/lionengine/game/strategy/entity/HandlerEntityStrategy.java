@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
@@ -70,15 +69,15 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     /** Cursor reference. */
     private final CursorStrategy cursor;
     /** Entity listener. */
-    private final List<EntityStrategyListener<E>> listeners;
+    private final Collection<EntityStrategyListener<E>> listeners;
     /** Current entity selection set. */
-    private final Set<E> selectedEntity;
+    private final Collection<E> selectedEntity;
     /** Map reference. */
     private final MapTileStrategy<R, T> map;
     /** Entity area buffer for selection check. */
     private final Rectangle entityArea;
     /** List of entities id that shared the same path. */
-    private final Set<Integer> sharedPathIds;
+    private final Collection<Integer> sharedPathIds;
     /** Player (main owner) reference. */
     protected int playerId;
     /** List of rendering layers. */
@@ -144,7 +143,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * 
      * @param selection The selected entities.
      */
-    protected abstract void notifyUpdatedSelection(Set<E> selection);
+    protected abstract void notifyUpdatedSelection(Collection<E> selection);
 
     /**
      * Add an entity listener.
@@ -266,7 +265,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * 
      * @return The list of selected entity.
      */
-    public Set<E> getSelection()
+    public Collection<E> getSelection()
     {
         return selectedEntity;
     }

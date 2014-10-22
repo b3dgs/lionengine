@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Ability model implementation.
@@ -30,7 +30,7 @@ import java.util.Set;
 public abstract class AbilityModel<L, U extends L>
 {
     /** Listener list. */
-    protected final Set<L> listeners;
+    protected final Collection<L> listeners;
     /** User reference. */
     protected final U user;
 

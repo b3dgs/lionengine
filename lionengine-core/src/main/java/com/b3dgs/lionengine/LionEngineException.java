@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.core.Media;
 
@@ -57,7 +57,7 @@ public final class LionEngineException
      */
     private static StackTraceElement[] getFilteredTraces(StackTraceElement[] allTrace)
     {
-        final List<StackTraceElement> neededTrace = new ArrayList<>(4);
+        final Collection<StackTraceElement> neededTrace = new ArrayList<>(4);
         for (final StackTraceElement element : allTrace)
         {
             final String className = element.getClassName();
@@ -155,7 +155,7 @@ public final class LionEngineException
         }
 
         Throwable current = exception;
-        final List<StackTraceElement> traces = new ArrayList<>(1);
+        final Collection<StackTraceElement> traces = new ArrayList<>(1);
         for (final StackTraceElement element : getFilteredTraces(getStackTrace()))
         {
             traces.add(element);

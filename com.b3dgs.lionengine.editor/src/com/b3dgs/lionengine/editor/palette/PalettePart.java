@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.editor.palette;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -99,7 +99,7 @@ public class PalettePart
     {
         final PaletteData data = new PaletteData(name, view.getId(), view);
         palettes.put(data.getId(), data);
-        final List<String> names = new ArrayList<>(palettes.size());
+        final Collection<String> names = new ArrayList<>(palettes.size());
         for (final PaletteData paletteData : palettes.values())
         {
             names.add(paletteData.getName());

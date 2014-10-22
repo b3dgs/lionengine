@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -131,7 +130,7 @@ public class SkilledModel<S extends SkillStrategy>
     public Collection<S> getSkills()
     {
         final Collection<S> list = new ArrayList<>(4);
-        final Set<Integer> panels = skills.keySet();
+        final Collection<Integer> panels = skills.keySet();
 
         for (final Integer panel : panels)
         {

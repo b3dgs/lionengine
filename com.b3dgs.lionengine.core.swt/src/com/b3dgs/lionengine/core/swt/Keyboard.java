@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.core.swt;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -56,9 +56,9 @@ public final class Keyboard
     public static final Integer TAB = Integer.valueOf(SWT.TAB);
 
     /** List of keys. */
-    private final Set<Integer> keys;
+    private final Collection<Integer> keys;
     /** Pressed states. */
-    private final Set<Integer> pressed;
+    private final Collection<Integer> pressed;
     /** Last key code. */
     private Integer lastCode;
     /** Last key name. */

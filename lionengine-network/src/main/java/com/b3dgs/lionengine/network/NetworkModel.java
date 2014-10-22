@@ -21,7 +21,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
@@ -36,13 +35,13 @@ abstract class NetworkModel<L extends ClientListener>
         implements Networker<L>
 {
     /** Messages list. */
-    protected final List<NetworkMessage> messagesOut;
+    protected final Collection<NetworkMessage> messagesOut;
     /** Messages list. */
-    protected final List<NetworkMessage> messagesIn;
+    protected final Collection<NetworkMessage> messagesIn;
     /** Message decoder. */
     protected final NetworkMessageDecoder decoder;
     /** The client connection listener. */
-    protected final List<L> listeners;
+    protected final Collection<L> listeners;
 
     /**
      * Constructor.

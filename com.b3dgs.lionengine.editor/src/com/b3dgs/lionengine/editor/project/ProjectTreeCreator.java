@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.editor.project;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -179,7 +179,7 @@ public class ProjectTreeCreator
     /** Project reference. */
     private final Project project;
     /** Quick access list. */
-    private final List<TreeItem> quicks;
+    private final Collection<TreeItem> quicks;
     /** Project path. */
     private final File projectPath;
     /** Classes path. */
@@ -240,7 +240,7 @@ public class ProjectTreeCreator
      * 
      * @return The quick access list.
      */
-    public List<TreeItem> getQuicks()
+    public Collection<TreeItem> getQuicks()
     {
         return quicks;
     }

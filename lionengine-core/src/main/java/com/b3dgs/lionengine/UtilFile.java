@@ -19,7 +19,7 @@ package com.b3dgs.lionengine;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.core.Core;
@@ -251,9 +251,9 @@ public final class UtilFile
      * @param extension The extension (without dot; eg: png).
      * @return The files list.
      */
-    public static List<File> getFilesByExtension(String path, String extension)
+    public static Collection<File> getFilesByExtension(String path, String extension)
     {
-        final List<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<>(1);
         getFilesByExtensionRecursive(filesList, path, extension);
         return filesList;
     }
@@ -265,9 +265,9 @@ public final class UtilFile
      * @param name The file name.
      * @return The files list (empty array if none).
      */
-    public static List<File> getFilesByName(File path, String name)
+    public static Collection<File> getFilesByName(File path, String name)
     {
-        final List<File> filesList = new ArrayList<>(1);
+        final Collection<File> filesList = new ArrayList<>(1);
         getFilesByNameRecursive(filesList, path, name);
         return filesList;
     }
@@ -333,7 +333,7 @@ public final class UtilFile
      * @param path The path to check.
      * @param extension The extension (without dot; eg: png).
      */
-    private static void getFilesByExtensionRecursive(List<File> filesList, String path, String extension)
+    private static void getFilesByExtensionRecursive(Collection<File> filesList, String path, String extension)
     {
         final File file = new File(path);
         if (file.exists())
@@ -360,7 +360,7 @@ public final class UtilFile
      * @param path The path to check.
      * @param name The file name.
      */
-    private static void getFilesByNameRecursive(List<File> filesList, File path, String name)
+    private static void getFilesByNameRecursive(Collection<File> filesList, File path, String name)
     {
         for (final File file : path.listFiles())
         {

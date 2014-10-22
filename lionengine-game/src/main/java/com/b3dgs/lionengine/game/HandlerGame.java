@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.b3dgs.lionengine.core.Graphic;
@@ -38,9 +37,9 @@ public abstract class HandlerGame<E extends Handlable>
     /** List of handlables. */
     private final Map<Integer, E> handlables;
     /** To delete list. */
-    private final List<E> toDelete;
+    private final Collection<E> toDelete;
     /** To add list. */
-    private final List<E> toAdd;
+    private final Collection<E> toAdd;
     /** Will delete flag. */
     private boolean willDelete;
     /** Will add flag. */
@@ -198,7 +197,7 @@ public abstract class HandlerGame<E extends Handlable>
     {
         if (willAdd)
         {
-            List<E> toKeep = null;
+            Collection<E> toKeep = null;
             for (final E handlable : toAdd)
             {
                 if (canBeAdded(handlable))

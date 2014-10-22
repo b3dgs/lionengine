@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.properties;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -90,7 +90,7 @@ public class PropertiesPart
     @Inject
     private EPartService partService;
     /** Extensions point. */
-    private List<PropertiesListener> extensions;
+    private Collection<PropertiesListener> extensions;
 
     /**
      * Create the surface attribute.
@@ -399,11 +399,11 @@ public class PropertiesPart
      * 
      * @return The properties instance from extension point or default one.
      */
-    private List<PropertiesListener> checkPropertiesExtensionPoint()
+    private Collection<PropertiesListener> checkPropertiesExtensionPoint()
     {
         final IConfigurationElement[] elements = Platform.getExtensionRegistry().getConfigurationElementsFor(
                 PropertiesListener.EXTENSION_ID);
-        final List<PropertiesListener> extensions = new ArrayList<>(1);
+        final Collection<PropertiesListener> extensions = new ArrayList<>(1);
         if (elements.length > 0)
         {
             final String properties = elements[0].getAttribute(PropertiesPart.EXTENSION_PROPERTIES);

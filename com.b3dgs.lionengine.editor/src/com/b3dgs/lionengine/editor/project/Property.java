@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
@@ -55,7 +55,7 @@ public enum Property
     public static final String EXTENSION_CLASS = "class";
 
     /** Extension list. */
-    private final List<String> extensions;
+    private final Collection<String> extensions;
     /** Class parent. */
     private final Class<?> parent;
 

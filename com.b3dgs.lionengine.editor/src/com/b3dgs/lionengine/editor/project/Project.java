@@ -25,7 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -385,7 +385,7 @@ public final class Project
         final BundleWiring bundleWiring = bundle.adapt(BundleWiring.class);
         final ClassLoader bundleClassLoader = bundleWiring.getClassLoader();
 
-        final List<URL> urls = new ArrayList<>();
+        final Collection<URL> urls = new ArrayList<>();
         urls.add(getClassesPath().toURI().toURL());
 
         final File librariesPath = getLibrariesPath();

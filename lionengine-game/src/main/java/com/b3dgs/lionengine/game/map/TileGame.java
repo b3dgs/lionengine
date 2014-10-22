@@ -17,8 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.purview.Localizable;
@@ -103,8 +102,8 @@ public class TileGame
     }
 
     /**
-     * Set tile location x. Should be used only when overriding the {@link MapTile#loadTile(List, FileReading, int)}
-     * function.
+     * Set tile location x. Should be used only when overriding the
+     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
      * 
      * @param x The tile location x.
      */
@@ -114,8 +113,8 @@ public class TileGame
     }
 
     /**
-     * Set tile location y. Should be used only when overriding the {@link MapTile#loadTile(List, FileReading, int)}
-     * function.
+     * Set tile location y. Should be used only when overriding the
+     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
      * 
      * @param y The tile location y.
      */
@@ -133,7 +132,7 @@ public class TileGame
     public Double getCollisionX(Localizable localizable)
     {
         final CollisionTile collision = getCollision();
-        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+        final Collection<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
 
         for (final CollisionFunction function : collisionFunctions)
         {
@@ -165,7 +164,7 @@ public class TileGame
     public Double getCollisionY(Localizable localizable)
     {
         final CollisionTile collision = getCollision();
-        final Set<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
+        final Collection<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
 
         for (final CollisionFunction function : collisionFunctions)
         {

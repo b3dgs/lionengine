@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.map;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * Collision tile category.
@@ -31,5 +31,5 @@ public interface CollisionTileCategory
      * 
      * @return The collisions list.
      */
-    Set<CollisionTile> getCollisions();
+    Collection<CollisionTile> getCollisions();
 }

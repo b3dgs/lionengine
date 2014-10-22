@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.core.android;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
@@ -246,7 +246,7 @@ public final class Wav
      */
     public void stop()
     {
-        final List<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
+        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
         for (final WavRoutine routine : toStop)
         {
             if (routine != null)
@@ -270,7 +270,7 @@ public final class Wav
             {
                 while (!busySounds.isEmpty())
                 {
-                    final List<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
+                    final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(busySounds);
                     for (final WavRoutine routine : toStop)
                     {
                         if (routine != null)
@@ -294,7 +294,7 @@ public final class Wav
                 {
                     synchronized (monitor)
                     {
-                        final List<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
+                        final Collection<WavRoutine> toStop = new ArrayList<WavRoutine>(freeSounds);
                         for (final WavRoutine routine : toStop)
                         {
                             if (routine != null)

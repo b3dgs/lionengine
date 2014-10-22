@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.c;
 
-import java.util.Set;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
@@ -53,7 +53,7 @@ enum TileCollision implements CollisionTile
     }
 
     @Override
-    public Set<CollisionFunction> getCollisionFunctions()
+    public Collection<CollisionFunction> getCollisionFunctions()
     {
         return model.getCollisionFunctions();
     }

@@ -21,7 +21,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
@@ -98,7 +98,7 @@ public final class Loader
      */
     private static Class<?>[] getParamTypes(Loader loader, Object... arguments)
     {
-        final List<Object> types = new ArrayList<>(1);
+        final Collection<Object> types = new ArrayList<>(1);
         types.add(loader.getClass());
 
         for (final Object argument : arguments)
@@ -119,7 +119,7 @@ public final class Loader
      */
     private static Object[] getParams(Loader loader, Object... arguments)
     {
-        final List<Object> params = new ArrayList<>(1);
+        final Collection<Object> params = new ArrayList<>(1);
         params.add(loader);
         params.addAll(Arrays.asList(arguments));
 
