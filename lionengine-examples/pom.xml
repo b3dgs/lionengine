@@ -5,12 +5,14 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.0.0-SNAPSHOT</version>
+		<version>7.0.1-SNAPSHOT</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
-	<artifactId>lionengine-example</artifactId>
+	<artifactId>lionengine-examples</artifactId>
 	<name>LionEngine Example</name>
+	
+	<packaging>jar</packaging>
 
 	<dependencies>
 

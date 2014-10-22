@@ -95,6 +95,12 @@
 				<module>../com.b3dgs.lionengine.editor.product</module>
 			</modules>
 		</profile>
+		<profile>
+			<id>example</id>
+			<modules>
+				<module>../lionengine-examples</module>
+			</modules>
+		</profile>
 	</profiles>
 	<dependencies>
 		<dependency>
