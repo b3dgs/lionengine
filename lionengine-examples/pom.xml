@@ -11,7 +11,7 @@
 
 	<artifactId>lionengine-examples</artifactId>
 	<name>LionEngine Example</name>
-	
+
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -29,21 +29,6 @@
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-network</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-audio-wav</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-audio-midi</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-audio-sc68</artifactId>
 		</dependency>
 
 		<dependency>
@@ -66,16 +51,46 @@
 			<artifactId>lionengine-game-strategy</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>compile</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.b3dgs.lionengine.example.AppExamples</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.felix</groupId>
