@@ -64,7 +64,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * </pre>
  * 
  * @since 13 June 2010
- * @version 7.0.1
+ * @version 7.1.0
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Engine

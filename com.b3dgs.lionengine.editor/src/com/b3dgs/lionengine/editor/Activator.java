@@ -24,6 +24,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.swt.Engine;
 
@@ -38,7 +39,7 @@ public class Activator
     /** Plugin name. */
     public static final String PLUGIN_NAME = "LionEngine Editor";
     /** Plugin version. */
-    public static final Version PLUGIN_VERSION = Version.create(7, 0, 1);
+    public static final Version PLUGIN_VERSION = EngineCore.VERSION;
     /** Plugin website. */
     public static final String PLUGIN_WEBSITE = "www.b3dgs.com";
     /** Plugin ID. */
