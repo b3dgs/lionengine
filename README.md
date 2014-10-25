@@ -138,7 +138,7 @@ Steps to include the __LionEngine__ in your project:
     * __lionengine-game__ _(base for game development)_
     * __lionengine-game-platform__ _(specialized for platform games)_
       * __lionengine-game-pathfinding__ _(support for pathfinding)_
-        * __lionengine-game-rts__ _(specialized for strategy games)_
+        * __lionengine-game-strategy__ _(specialized for strategy games)_
     * __lionengine-network__ _(support for network)_
 	* __lionengine-audio-wav__ _(support for Wav sound)_
 	* __lionengine-audio-midi__ _(support for Midi music)_
