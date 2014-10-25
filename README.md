@@ -136,7 +136,7 @@ Steps to include the __LionEngine__ in your project:
     * __lionengine-core-swt__ _(uses_ __SWT__ _as graphic renderer, target for computer)_
     * __lionengine-core-android__ _(uses_ __Android 1.5__, _target for phones)_
     * __lionengine-game__ _(base for game development)_
-    * __lionengine-game-platform__ _(specialized for platform games)_
+      * __lionengine-game-platform__ _(specialized for platform games)_
       * __lionengine-game-pathfinding__ _(support for pathfinding)_
         * __lionengine-game-strategy__ _(specialized for strategy games)_
     * __lionengine-network__ _(support for network)_
