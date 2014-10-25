@@ -31,11 +31,11 @@ Windowed, full-screen and applet formats are fully supported, with a complete fr
 
 In its current version, the engine greatly simplifies the development of __Platform__, __Strategy__ and __Shoot'em Up__ games, and also __Network__ layer.
 
-Since the version __6__, it supports __Android 1.5__ *(API 3)*.
+Since the version 6, it supports __Android 1.5__ *(API 3)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
-Since the version 7, it includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
+Since the version __7__, it includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
 
 ## General Features
 
