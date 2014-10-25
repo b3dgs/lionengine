@@ -39,7 +39,7 @@ final class ScreenFullSwt
     private static final String ERROR_FULL_SCREEN = "Full screen mode initialization failed !";
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not

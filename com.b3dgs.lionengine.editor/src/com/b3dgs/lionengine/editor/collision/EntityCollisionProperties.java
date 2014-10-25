@@ -47,7 +47,7 @@ public class EntityCollisionProperties
     Button mirror;
 
     /**
-     * Constructor.
+     * Create an entity collision properties.
      */
     public EntityCollisionProperties()
     {

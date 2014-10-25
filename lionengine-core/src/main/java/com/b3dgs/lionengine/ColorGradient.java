@@ -38,7 +38,7 @@ public final class ColorGradient
     private final ColorRgba color2;
 
     /**
-     * Constructor.
+     * Create a gradient color.
      * 
      * @param x1 The first horizontal location.
      * @param y1 The first vertical location.

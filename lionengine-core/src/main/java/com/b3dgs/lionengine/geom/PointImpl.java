@@ -31,7 +31,7 @@ final class PointImpl
     private int y;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.

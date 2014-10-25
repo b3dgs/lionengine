@@ -52,7 +52,7 @@ public class TileGame
     private CollisionTile collision;
 
     /**
-     * Constructor.
+     * Create a tile.
      * 
      * @param width The tile width.
      * @param height The tile height.

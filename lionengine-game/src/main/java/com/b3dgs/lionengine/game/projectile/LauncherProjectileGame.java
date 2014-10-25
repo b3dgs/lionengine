@@ -62,7 +62,7 @@ public abstract class LauncherProjectileGame<E extends EntityGame, E2 extends Su
     private int rate;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param setup The setup reference.
      */

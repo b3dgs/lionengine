@@ -89,7 +89,7 @@ public final class AnimationFrameSelector
     private boolean clicked;
 
     /**
-     * Constructor.
+     * Create an animation frame selector and load surface from configurer.
      * 
      * @param parent The parent container.
      * @param configurer The configurer reference.

@@ -418,7 +418,7 @@ public final class ToolsAwt
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private ToolsAwt()
     {

@@ -152,7 +152,7 @@ public final class Project
     private ClassLoader classLoader;
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param path The project path.
      */

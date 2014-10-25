@@ -54,7 +54,7 @@ public class SetupSurfaceRasteredGame
     private final int frameHeight;
 
     /**
-     * Constructor.
+     * Create a setup.
      * 
      * @param config The config media.
      * @param alpha The alpha use flag.

@@ -59,7 +59,7 @@ public abstract class ObjectList<T>
     T selectedObjectBackup;
 
     /**
-     * Constructor.
+     * Create an object list.
      */
     public ObjectList()
     {

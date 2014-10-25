@@ -201,9 +201,9 @@ public enum Verbose
             extends Formatter
     {
         /**
-         * Constructor.
+         * Internal constructor.
          */
-        public VerboseFormatter()
+        VerboseFormatter()
         {
             super();
         }

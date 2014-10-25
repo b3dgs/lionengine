@@ -74,7 +74,7 @@ public class TileCollisionComposite
     CollisionFunction selectedFunction;
 
     /**
-     * Constructor.
+     * Create a tile collision composite and associate its view. It creates the formula area.
      * 
      * @param tileCollisionView The collision view reference.
      * @param parent The composite parent.

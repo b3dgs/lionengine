@@ -57,7 +57,7 @@ final class GraphicSwt
     private Color lastColor;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     GraphicSwt()
     {
@@ -65,7 +65,7 @@ final class GraphicSwt
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param g The graphics output.
      */

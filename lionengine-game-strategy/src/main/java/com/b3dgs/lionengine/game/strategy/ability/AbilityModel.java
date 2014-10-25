@@ -35,7 +35,7 @@ public abstract class AbilityModel<L, U extends L>
     protected final U user;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param user The user services reference.
      */

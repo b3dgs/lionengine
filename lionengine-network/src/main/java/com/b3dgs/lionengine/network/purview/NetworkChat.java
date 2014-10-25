@@ -52,7 +52,7 @@ public abstract class NetworkChat
     private int keyBackSpace;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param type The message type enum.
      */

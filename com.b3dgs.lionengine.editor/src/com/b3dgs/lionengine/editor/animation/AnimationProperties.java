@@ -52,7 +52,7 @@ public class AnimationProperties
     Button repeatAnim;
 
     /**
-     * Constructor.
+     * Create an animation properties and associate its renderer to retrieve the maximum frames number.
      * 
      * @param animationRenderer The animation renderer reference.
      */

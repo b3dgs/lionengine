@@ -35,7 +35,7 @@ public abstract class SetupSkillStrategy
     public final String description;
 
     /**
-     * Constructor. The minimum XML data needed.
+     * Constructor base. The minimum XML data needed.
      * 
      * <pre>
      * {@code

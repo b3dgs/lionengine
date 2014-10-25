@@ -40,7 +40,7 @@ public class CollisionFunction
     private int offset;
 
     /**
-     * Constructor.
+     * Create a collision function.
      */
     public CollisionFunction()
     {

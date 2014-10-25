@@ -40,7 +40,7 @@ public abstract class EntityPlatformRastered
     private int index;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param setup The setup reference.
      * @param tileHeight The tile height value.

@@ -60,7 +60,7 @@ public enum Property
     private final Class<?> parent;
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param extensions The extensions list associated to the property.
      */
@@ -70,7 +70,7 @@ public enum Property
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param parent The excepted parent class.
      */
@@ -80,7 +80,7 @@ public enum Property
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param extensions The extensions list associated to the property.
      * @param parent The excepted parent class.

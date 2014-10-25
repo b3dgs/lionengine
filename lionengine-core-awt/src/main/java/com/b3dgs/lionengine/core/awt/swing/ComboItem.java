@@ -47,7 +47,7 @@ public final class ComboItem
     private boolean isEnable;
 
     /**
-     * Constructor.
+     * Create a combo item.
      * 
      * @param obj The object reference.
      * @param isEnable The enabled flag.
@@ -59,7 +59,7 @@ public final class ComboItem
     }
 
     /**
-     * Constructor.
+     * Create a combo item enabled by default.
      * 
      * @param obj The object reference.
      */

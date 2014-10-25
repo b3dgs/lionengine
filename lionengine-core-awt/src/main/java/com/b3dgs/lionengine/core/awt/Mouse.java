@@ -89,7 +89,7 @@ public final class Mouse
     private boolean moved;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     Mouse()
     {

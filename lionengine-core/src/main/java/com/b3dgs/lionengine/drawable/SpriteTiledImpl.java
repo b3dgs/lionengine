@@ -46,7 +46,7 @@ final class SpriteTiledImpl
     private final int tilesNumber;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The sprite media.
      * @param tileWidth The tile width.
@@ -68,7 +68,7 @@ final class SpriteTiledImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param surface The surface reference.
      * @param tileWidth The tile width.

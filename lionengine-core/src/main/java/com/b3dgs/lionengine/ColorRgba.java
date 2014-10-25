@@ -138,7 +138,7 @@ public final class ColorRgba
     private final int alpha;
 
     /**
-     * Constructor.
+     * Create an opaque color.
      * 
      * @param r The red value [0-255].
      * @param g The green value [0-255].
@@ -151,7 +151,7 @@ public final class ColorRgba
     }
 
     /**
-     * Constructor.
+     * Create a 4 channels color.
      * 
      * @param r The red value [0-255].
      * @param g The green value [0-255].

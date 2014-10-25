@@ -50,7 +50,7 @@ final class PathFinderImpl
     private final Heuristic heuristic;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param map The map to be searched.
      * @param maxSearchDistance The maximum depth we'll search before giving up.
@@ -62,7 +62,7 @@ final class PathFinderImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param heuristic The heuristic used to determine the search order of the map.
      * @param map The map to be searched.

@@ -29,7 +29,7 @@ public class EntityNotFoundException
     private static final long serialVersionUID = -1407285329398682159L;
 
     /**
-     * Constructor.
+     * Create an exception.
      */
     public EntityNotFoundException()
     {
@@ -37,7 +37,7 @@ public class EntityNotFoundException
     }
 
     /**
-     * Constructor.
+     * Create an exception with a message.
      * 
      * @param message The message.
      */

@@ -37,7 +37,7 @@ final class TransformAwt
     private int interpolation;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     TransformAwt()
     {

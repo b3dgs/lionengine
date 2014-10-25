@@ -62,7 +62,7 @@ public abstract class SkillStrategy
     private boolean over;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * <pre>
      * {@code

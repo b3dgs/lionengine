@@ -56,7 +56,7 @@ public class ObjectControl
     private boolean dragging;
 
     /**
-     * Constructor.
+     * Create the object control from object handler.
      * 
      * @param handlerObject The handler object reference.
      */

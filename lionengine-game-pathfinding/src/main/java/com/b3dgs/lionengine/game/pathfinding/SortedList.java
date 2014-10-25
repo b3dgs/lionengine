@@ -33,11 +33,11 @@ final class SortedList<E extends Comparable<E>>
     private final List<E> list;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     SortedList()
     {
-        list = new ArrayList<>(8);
+        list = new ArrayList<>();
     }
 
     /**

@@ -49,7 +49,7 @@ public class CameraGame
     protected int height;
 
     /**
-     * Constructor.
+     * Create a camera.
      */
     public CameraGame()
     {

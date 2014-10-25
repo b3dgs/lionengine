@@ -37,11 +37,11 @@ final class MediaSwt
     private final String path;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param path The media path.
      */
-    public MediaSwt(String path)
+    MediaSwt(String path)
     {
         this.path = path;
     }

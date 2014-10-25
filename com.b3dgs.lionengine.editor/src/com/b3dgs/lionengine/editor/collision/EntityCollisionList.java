@@ -38,7 +38,7 @@ public class EntityCollisionList
     final EntityCollisionProperties entityCollisionProperties;
 
     /**
-     * Constructor.
+     * Create an entity collision list and associate its configurer and properties.
      * 
      * @param configurer The configurer reference.
      * @param entityCollisionProperties The collision properties reference.

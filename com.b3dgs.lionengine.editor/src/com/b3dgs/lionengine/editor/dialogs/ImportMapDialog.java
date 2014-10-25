@@ -62,7 +62,7 @@ public class ImportMapDialog
     private boolean found;
 
     /**
-     * Constructor.
+     * Create an import map dialog.
      * 
      * @param parent The shell parent.
      */

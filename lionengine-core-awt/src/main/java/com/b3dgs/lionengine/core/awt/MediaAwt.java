@@ -37,7 +37,7 @@ final class MediaAwt
     private final String path;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param path The media path.
      */

@@ -88,7 +88,7 @@ public abstract class MapTileGame<T extends TileGame>
     private HashMap<CollisionTile, ImageBuffer> collisionCache;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.

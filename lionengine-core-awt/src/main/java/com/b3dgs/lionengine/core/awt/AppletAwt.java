@@ -34,7 +34,7 @@ final class AppletAwt
     private static final long serialVersionUID = -7221935102778197564L;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     AppletAwt()
     {

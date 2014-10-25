@@ -30,7 +30,7 @@ final class Step
     private final int y;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param x The location x.
      * @param y The location y.

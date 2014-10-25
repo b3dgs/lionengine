@@ -49,7 +49,7 @@ final class AnimatorImpl
     private AnimState state;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     AnimatorImpl()
     {

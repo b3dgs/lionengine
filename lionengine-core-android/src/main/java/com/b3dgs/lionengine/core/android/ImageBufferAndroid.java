@@ -36,7 +36,7 @@ final class ImageBufferAndroid
     private final Bitmap bufferedImage;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param bufferedImage The buffered image.
      */

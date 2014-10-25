@@ -37,7 +37,7 @@ final class FileWritingImpl
     private final DataOutputStream out;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The media path.
      * @throws LionEngineException If error when opening the media.

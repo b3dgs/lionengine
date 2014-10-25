@@ -51,7 +51,7 @@ public class Selection
     private boolean selected;
 
     /**
-     * Constructor.
+     * Create the selection updater.
      */
     public Selection()
     {

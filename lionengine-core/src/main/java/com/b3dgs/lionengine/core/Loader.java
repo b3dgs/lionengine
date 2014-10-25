@@ -133,7 +133,7 @@ public final class Loader
     private boolean started;
 
     /**
-     * Constructor.
+     * Create a loader.
      * 
      * @param config The configuration used (must not be <code>null</code>).
      * @throws LionEngineException If the configuration is <code>null</code>.
@@ -146,7 +146,7 @@ public final class Loader
         renderer.setUncaughtExceptionHandler(new UncaughtExceptionHandler()
         {
             @Override
-            public void uncaughtException(Thread t, Throwable throwable)
+            public void uncaughtException(Thread thead, Throwable throwable)
             {
                 renderer.terminate();
                 Verbose.exception(Renderer.class, "run", throwable);

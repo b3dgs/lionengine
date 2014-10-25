@@ -73,7 +73,7 @@ final class WavRoutine
     private AudioInputStream audioInputStream;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param player The wav player reference.
      * @param title The sound title.

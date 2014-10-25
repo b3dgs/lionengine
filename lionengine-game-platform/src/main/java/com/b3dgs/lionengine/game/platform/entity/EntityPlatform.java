@@ -70,7 +70,7 @@ public abstract class EntityPlatform
     private double locationBeforeCollisionY;
 
     /**
-     * Constructor.
+     * Constructor base.
      * <p>
      * It needs in its config file the frame description:
      * </p>

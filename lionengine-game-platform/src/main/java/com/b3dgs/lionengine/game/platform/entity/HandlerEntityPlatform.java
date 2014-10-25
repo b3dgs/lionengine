@@ -35,7 +35,7 @@ public abstract class HandlerEntityPlatform<E extends EntityPlatform>
     private final CameraPlatform camera;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param camera The camera reference.
      */

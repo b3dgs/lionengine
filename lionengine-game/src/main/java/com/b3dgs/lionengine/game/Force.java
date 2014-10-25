@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.UtilMath;
  */
 public final class Force
 {
-    /** Zero force. */
+    /** Zero force. Must not be modified. */
     public static final Force ZERO = new Force(0.0, 0.0);
 
     /** Horizontal force vector. */
@@ -48,7 +48,7 @@ public final class Force
     private Force forceMin;
 
     /**
-     * Constructor.
+     * Create a zero force.
      */
     public Force()
     {
@@ -56,7 +56,7 @@ public final class Force
     }
 
     /**
-     * Constructor.
+     * Create a force with specified values.
      * 
      * @param fh The horizontal force.
      * @param fv The vertical force.

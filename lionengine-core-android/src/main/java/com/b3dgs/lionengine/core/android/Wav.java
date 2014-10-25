@@ -91,7 +91,7 @@ public final class Wav
     private int volume;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The audio sound media.
      */
@@ -101,7 +101,7 @@ public final class Wav
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The audio sound media.
      * @param maxSimultaneous The maximum number of simultaneous sounds that can be played at the same time.

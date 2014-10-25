@@ -62,7 +62,7 @@ public abstract class NetworkMessage
     private byte clientDestId;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public NetworkMessage()
     {
@@ -70,7 +70,7 @@ public abstract class NetworkMessage
     }
 
     /**
-     * Constructor.
+     * Create a network message for all clients.
      * 
      * @param type The message type.
      * @param clientId The client id.
@@ -81,7 +81,7 @@ public abstract class NetworkMessage
     }
 
     /**
-     * Constructor.
+     * Create a network message.
      * 
      * @param type The message type.
      * @param clientId The client id.

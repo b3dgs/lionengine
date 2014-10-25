@@ -33,7 +33,7 @@ public abstract class TileStrategy<R extends Enum<R>>
     private R resourceType;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param width The tile width.
      * @param height The tile height.

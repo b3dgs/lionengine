@@ -35,7 +35,7 @@ final class LineImpl
     private double y2;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param x1 The x coordinate of the start point.
      * @param y1 The y coordinate of the start point.

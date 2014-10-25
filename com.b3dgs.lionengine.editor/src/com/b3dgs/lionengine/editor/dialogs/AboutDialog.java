@@ -124,7 +124,7 @@ public class AboutDialog
     private final Shell dialog;
 
     /**
-     * Constructor.
+     * Create the about dialog.
      * 
      * @param shell The shell parent.
      */

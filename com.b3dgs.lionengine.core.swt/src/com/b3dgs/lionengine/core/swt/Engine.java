@@ -144,7 +144,7 @@ public final class Engine
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private Engine()
     {

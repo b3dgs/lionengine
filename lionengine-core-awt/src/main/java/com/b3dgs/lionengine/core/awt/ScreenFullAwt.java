@@ -61,7 +61,7 @@ final class ScreenFullAwt
     private java.awt.Window window;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.

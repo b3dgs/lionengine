@@ -75,7 +75,7 @@ public final class ScreenAndroid
     private boolean ready;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param renderer The renderer reference.
      */

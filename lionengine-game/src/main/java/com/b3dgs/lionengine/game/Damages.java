@@ -45,7 +45,7 @@ public class Damages
     private int last;
 
     /**
-     * Create new damage handler.
+     * Create a damage handler.
      */
     public Damages()
     {
@@ -54,7 +54,7 @@ public class Damages
     }
 
     /**
-     * Constructor.
+     * Create a damages handler.
      * 
      * @param min The minimum damages value.
      * @param max The maximum damages value.

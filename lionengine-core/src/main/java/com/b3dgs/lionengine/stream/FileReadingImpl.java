@@ -37,7 +37,7 @@ final class FileReadingImpl
     private final DataInputStream in;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The media path.
      * @throws LionEngineException If error when opening the media.

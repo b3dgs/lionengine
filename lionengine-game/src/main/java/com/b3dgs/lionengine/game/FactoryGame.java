@@ -59,7 +59,7 @@ public abstract class FactoryGame<S extends SetupGame>
     private final Map<Media, S> setups;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public FactoryGame()
     {

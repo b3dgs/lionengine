@@ -31,7 +31,7 @@ final class CoordImpl
     private double y;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.

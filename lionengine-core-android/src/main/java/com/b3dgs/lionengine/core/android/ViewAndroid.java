@@ -33,7 +33,7 @@ final class ViewAndroid
     private Mouse mouse;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param context The context reference.
      */

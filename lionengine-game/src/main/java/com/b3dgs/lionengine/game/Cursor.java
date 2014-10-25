@@ -88,7 +88,7 @@ public class Cursor
     private int offsetY;
 
     /**
-     * Constructor.
+     * Create a cursor fixed inside the resolution and load its images.
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param resolution The resolution used to know the screen limits.
@@ -103,7 +103,7 @@ public class Cursor
     }
 
     /**
-     * Constructor.
+     * Create a cursor and load its images.
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param minX The minimal x location on screen.

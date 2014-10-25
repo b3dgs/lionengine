@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.editor.project;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -26,8 +27,11 @@ import java.util.Comparator;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class DirectoryFolderComparator
-        implements Comparator<File>
+        implements Comparator<File>, Serializable
 {
+    /** Serial UID. */
+    private static final long serialVersionUID = 5918350780715048779L;
+
     @Override
     public int compare(File file1, File file2)
     {

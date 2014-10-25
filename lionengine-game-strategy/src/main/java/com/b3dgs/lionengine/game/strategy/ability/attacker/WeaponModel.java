@@ -79,7 +79,7 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     private boolean attacked;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param setup The setup reference.
      */

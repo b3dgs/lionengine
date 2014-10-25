@@ -45,7 +45,7 @@ public abstract class PlayerStrategy
     private String name;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public PlayerStrategy()
     {

@@ -68,7 +68,7 @@ public abstract class AbstractProjectDialog
     protected Project project;
 
     /**
-     * Constructor.
+     * Project dialog base.
      * 
      * @param parent The parent reference.
      * @param title The dialog title.

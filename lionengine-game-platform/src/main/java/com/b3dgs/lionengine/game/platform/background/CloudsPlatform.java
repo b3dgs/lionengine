@@ -50,7 +50,7 @@ public abstract class CloudsPlatform
     private final int decY;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param media The clouds image media.
      * @param cloudWidth The image width.

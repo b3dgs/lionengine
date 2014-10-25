@@ -45,7 +45,7 @@ public enum WorldViewModel
     private Enum<?> palette = PaletteType.POINTER;
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private WorldViewModel()
     {

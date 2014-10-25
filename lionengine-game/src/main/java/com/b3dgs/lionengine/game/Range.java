@@ -30,7 +30,7 @@ public class Range
     private int max;
 
     /**
-     * Constructor.
+     * Create an empty range.
      */
     public Range()
     {
@@ -39,7 +39,7 @@ public class Range
     }
 
     /**
-     * Constructor.
+     * Create a range.
      * 
      * @param min The minimum value.
      * @param max The maximum value.

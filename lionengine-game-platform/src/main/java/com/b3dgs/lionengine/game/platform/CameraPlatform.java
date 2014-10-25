@@ -47,7 +47,7 @@ public class CameraPlatform
     private int mapDownLimit;
 
     /**
-     * Constructor.
+     * Create a camera.
      * 
      * @param screenWidth The screen width.
      * @param screenHeight The screen height.

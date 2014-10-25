@@ -104,7 +104,7 @@ abstract class ScreenAwt
     private int height;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code> or no available display.

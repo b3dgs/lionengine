@@ -77,7 +77,7 @@ public final class LevelRipConverter<T extends TileGame>
     private int errors;
 
     /**
-     * Constructor.
+     * Create a level rip converter.
      */
     public LevelRipConverter()
     {
@@ -85,7 +85,7 @@ public final class LevelRipConverter<T extends TileGame>
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param map The map reference (to store read data).
      * @param imageMap The level rip image name.

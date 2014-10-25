@@ -43,7 +43,7 @@ final class ScreenWindowedSwt
     private static final String ERROR_WINDOWED = "Windowed mode initialization failed !";
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not

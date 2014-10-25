@@ -22,20 +22,12 @@ package com.b3dgs.lionengine.core.awt.swing;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ActionCombo
+public interface ActionCombo
 {
-    /**
-     * Constructor.
-     */
-    public ActionCombo()
-    {
-        // Nothing to do
-    }
-
     /**
      * Action function.
      * 
      * @param item The item reference.
      */
-    public abstract void action(Object item);
+    void action(Object item);
 }

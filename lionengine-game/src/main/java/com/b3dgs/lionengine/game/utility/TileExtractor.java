@@ -96,7 +96,7 @@ public final class TileExtractor
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param media The levelrip media path.
      * @param tilew The tile width.

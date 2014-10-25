@@ -46,7 +46,7 @@ public abstract class HandlerGame<E extends Handlable>
     private boolean willAdd;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public HandlerGame()
     {

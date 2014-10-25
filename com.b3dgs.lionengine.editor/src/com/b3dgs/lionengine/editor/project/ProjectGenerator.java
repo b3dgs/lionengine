@@ -37,7 +37,7 @@ public class ProjectGenerator
     private final String resources;
 
     /**
-     * Constructor.
+     * Create a project generator.
      * 
      * @param classes The classes code folder.
      * @param libraries The libraries folder.

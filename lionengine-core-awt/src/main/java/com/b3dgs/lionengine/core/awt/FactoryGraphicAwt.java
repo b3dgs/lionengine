@@ -42,7 +42,7 @@ public final class FactoryGraphicAwt
         implements FactoryGraphic
 {
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryGraphicAwt()
     {

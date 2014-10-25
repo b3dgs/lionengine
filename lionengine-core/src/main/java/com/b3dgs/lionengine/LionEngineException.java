@@ -103,7 +103,7 @@ public final class LionEngineException
     private final StackTraceElement[] stack;
 
     /**
-     * Constructor.
+     * Create an exception with messages if has.
      * 
      * @param messages The exception message(s).
      */
@@ -113,7 +113,7 @@ public final class LionEngineException
     }
 
     /**
-     * Constructor.
+     * Create an exception related to a media and messages if has.
      * 
      * @param messages The exception message(s).
      * @param media The media error source.
@@ -124,7 +124,7 @@ public final class LionEngineException
     }
 
     /**
-     * Constructor.
+     * Create an exception related to another exception and messages if has.
      * 
      * @param exception The exception reference.
      * @param messages The exception message(s).
@@ -135,7 +135,7 @@ public final class LionEngineException
     }
 
     /**
-     * Constructor.
+     * Create an exception related to an existing exception and a media, plus additional messages if has.
      * 
      * @param exception The exception reference.
      * @param media The media error source.

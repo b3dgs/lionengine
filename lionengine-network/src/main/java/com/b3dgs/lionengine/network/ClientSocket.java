@@ -46,7 +46,7 @@ final class ClientSocket
     private String name;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param id The client id.
      * @param socket The socket reference.

@@ -91,7 +91,7 @@ abstract class ScreenSwt
     private int height;
 
     /**
-     * Constructor.
+     * Internal base constructor.
      * 
      * @param renderer The renderer reference.
      * @throws LionEngineException If renderer is <code>null</code>, engine has not been started or resolution is not

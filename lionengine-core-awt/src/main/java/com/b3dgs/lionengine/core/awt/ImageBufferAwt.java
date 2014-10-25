@@ -56,7 +56,7 @@ final class ImageBufferAwt
     private final BufferedImage bufferedImage;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param bufferedImage The buffered image.
      */

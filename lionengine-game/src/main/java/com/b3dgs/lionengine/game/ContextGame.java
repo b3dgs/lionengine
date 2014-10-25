@@ -37,7 +37,7 @@ public class ContextGame
     private final Collection<Object> services;
 
     /**
-     * Constructor.
+     * Create a context.
      */
     public ContextGame()
     {

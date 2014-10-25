@@ -49,7 +49,7 @@ public class TextGame
     private int height;
 
     /**
-     * Constructor.
+     * Create a text game.
      * 
      * @param fontName The font name.
      * @param size The font size.

@@ -43,7 +43,7 @@ public final class TimedMessage
     private boolean hasMessage;
 
     /**
-     * Constructor.
+     * Create a timed message.
      */
     public TimedMessage()
     {
@@ -132,7 +132,7 @@ final class MessageData
     private final int time;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param message The message string.
      * @param x The horizontal location.

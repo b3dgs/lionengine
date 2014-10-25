@@ -64,7 +64,7 @@ public class AnimationPlayer
     Button nextAnim;
 
     /**
-     * Constructor.
+     * Create an animation player and associate its animation list and renderer.
      * 
      * @param animationList The animation list reference.
      * @param animationRenderer The animation renderer reference.

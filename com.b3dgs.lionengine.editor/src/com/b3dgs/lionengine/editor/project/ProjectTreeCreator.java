@@ -190,7 +190,7 @@ public class ProjectTreeCreator
     private final Tree tree;
 
     /**
-     * Constructor.
+     * Create a project tree creator from a project and its tree.
      * 
      * @param project The project reference.
      * @param tree The tree reference.

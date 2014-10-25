@@ -44,11 +44,11 @@ abstract class NetworkModel<L extends ClientListener>
     protected final Collection<L> listeners;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param decoder The message decoder.
      */
-    public NetworkModel(NetworkMessageDecoder decoder)
+    NetworkModel(NetworkMessageDecoder decoder)
     {
         this.decoder = decoder;
         messagesOut = new ArrayList<>(4);

@@ -34,7 +34,7 @@ public abstract class FactoryProductionStrategy<E extends EntityStrategy, C exte
         extends FactoryGame<SetupGame>
 {
     /**
-     * Constructor.
+     * Constructor base.
      */
     public FactoryProductionStrategy()
     {

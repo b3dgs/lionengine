@@ -59,7 +59,7 @@ public class CursorStrategy
     private int oldY;
 
     /**
-     * Constructor.
+     * Create a cursor by using map tile size as grid.
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).
@@ -76,7 +76,7 @@ public class CursorStrategy
     }
 
     /**
-     * Constructor.
+     * Create a cursor.
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
      * @param camera The camera reference (must not be <code>null</code>).

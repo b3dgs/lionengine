@@ -43,7 +43,7 @@ public class Collision
     private final boolean mirror;
 
     /**
-     * Constructor.
+     * Create a collision.
      * 
      * @param offsetX The collision horizontal offset.
      * @param offsetY The collision vertical offset.

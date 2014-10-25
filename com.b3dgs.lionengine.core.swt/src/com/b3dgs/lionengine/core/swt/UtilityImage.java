@@ -267,7 +267,7 @@ public final class UtilityImage
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private UtilityImage()
     {

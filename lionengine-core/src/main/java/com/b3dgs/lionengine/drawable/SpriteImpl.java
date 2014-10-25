@@ -57,7 +57,7 @@ class SpriteImpl
     private boolean firstAlpha;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The sprite media.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
@@ -78,7 +78,7 @@ class SpriteImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param surface The surface to share.
      * @throws LionEngineException If surface is <code>null</code>.

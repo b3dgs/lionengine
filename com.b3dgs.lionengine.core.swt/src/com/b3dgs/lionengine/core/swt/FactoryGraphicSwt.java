@@ -42,7 +42,7 @@ final class FactoryGraphicSwt
         implements FactoryGraphic
 {
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryGraphicSwt()
     {

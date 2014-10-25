@@ -96,7 +96,7 @@ public abstract class ObjectProperties<T>
     ObjectList<T> objectList;
 
     /**
-     * Constructor.
+     * Create an object properties.
      */
     public ObjectProperties()
     {

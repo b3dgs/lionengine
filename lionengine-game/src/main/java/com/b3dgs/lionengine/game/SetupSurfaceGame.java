@@ -39,7 +39,7 @@ public class SetupSurfaceGame
     public final Media surfaceFile;
 
     /**
-     * Constructor.
+     * Create a setup without alpha for the surface.
      * 
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.
@@ -50,7 +50,7 @@ public class SetupSurfaceGame
     }
 
     /**
-     * Constructor.
+     * Create a setup.
      * 
      * @param config The config media.
      * @param alpha The alpha use flag.

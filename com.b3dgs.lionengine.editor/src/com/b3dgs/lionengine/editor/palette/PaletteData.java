@@ -32,7 +32,7 @@ public class PaletteData
     private final PaletteView view;
 
     /**
-     * Constructor.
+     * Create a palette data.
      * 
      * @param name The palette name.
      * @param id The palette unique ID.

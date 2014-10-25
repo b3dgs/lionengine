@@ -40,6 +40,10 @@ public class HeuristicManhattan
         this.minimumCost = minimumCost;
     }
 
+    /*
+     * Heuristic
+     */
+
     @Override
     public double getCost(int sx, int sy, int dx, int dy)
     {

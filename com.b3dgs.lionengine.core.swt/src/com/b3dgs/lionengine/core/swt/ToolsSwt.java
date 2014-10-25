@@ -283,7 +283,7 @@ public final class ToolsSwt
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private ToolsSwt()
     {

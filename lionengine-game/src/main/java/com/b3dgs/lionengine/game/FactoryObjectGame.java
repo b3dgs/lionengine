@@ -75,7 +75,7 @@ public abstract class FactoryObjectGame<S extends SetupGame>
     private boolean prepare;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param folder The objects folder.
      * @throws LionEngineException If folder is <code>null</code>.

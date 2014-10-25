@@ -72,7 +72,7 @@ public final class Mouse
     private boolean moved;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param display The display reference.
      */

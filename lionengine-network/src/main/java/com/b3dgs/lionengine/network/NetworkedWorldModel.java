@@ -46,11 +46,11 @@ abstract class NetworkedWorldModel<L extends ClientListener, N extends NetworkMo
     private boolean willAdd;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param network The network reference.
      */
-    public NetworkedWorldModel(N network)
+    NetworkedWorldModel(N network)
     {
         this.network = network;
         networkables = new HashSet<>(1);

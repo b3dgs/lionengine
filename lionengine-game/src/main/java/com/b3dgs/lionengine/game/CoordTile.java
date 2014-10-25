@@ -30,7 +30,7 @@ public class CoordTile
     private final int ty;
 
     /**
-     * Constructor.
+     * Create a coord tile.
      * 
      * @param tx The horizontal tile location.
      * @param ty The vertical tile location.

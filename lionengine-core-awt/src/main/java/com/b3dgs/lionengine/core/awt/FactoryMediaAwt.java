@@ -34,7 +34,7 @@ final class FactoryMediaAwt
     private String separator = File.separator;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryMediaAwt()
     {

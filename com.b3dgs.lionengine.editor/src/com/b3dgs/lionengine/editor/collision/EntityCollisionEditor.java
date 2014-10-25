@@ -49,7 +49,7 @@ public class EntityCollisionEditor
     private EntityCollisionList entityCollisionList;
 
     /**
-     * Constructor.
+     * Create an entity collision editor and associate its configurer.
      * 
      * @param parent The parent reference.
      * @param configurer The entity configurer reference.

@@ -40,7 +40,7 @@ public class SetupGame
     private Class<?> clazz;
 
     /**
-     * Constructor.
+     * Create a setup.
      * 
      * @param config The config media.
      * @throws LionEngineException If error when opening the media.

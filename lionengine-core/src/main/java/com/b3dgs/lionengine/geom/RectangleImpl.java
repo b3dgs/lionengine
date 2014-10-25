@@ -35,7 +35,7 @@ final class RectangleImpl
     private double height;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.

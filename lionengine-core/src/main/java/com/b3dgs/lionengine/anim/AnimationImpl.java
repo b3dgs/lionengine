@@ -39,7 +39,7 @@ final class AnimationImpl
     private final boolean repeat;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param firstFrame The first frame (included) index to play (>= {@link Animation#MINIMUM_FRAME}).
      * @param lastFrame The last frame (included) index to play (>= firstFrame).

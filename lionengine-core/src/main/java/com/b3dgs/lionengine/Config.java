@@ -67,7 +67,7 @@ public final class Config
     private Media icon;
 
     /**
-     * Constructor.
+     * Create a configuration without filter.
      * 
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).
@@ -80,7 +80,7 @@ public final class Config
     }
 
     /**
-     * Constructor.
+     * Create a configuration.
      * 
      * @param output The output resolution (used on rendering).
      * @param depth The screen color depth in bits (usually 16 or 32).

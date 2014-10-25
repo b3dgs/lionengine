@@ -62,7 +62,7 @@ public class ImportProjectDialog
     private boolean hasResources;
 
     /**
-     * Constructor.
+     * Create an import project dialog.
      * 
      * @param parent The shell parent.
      */

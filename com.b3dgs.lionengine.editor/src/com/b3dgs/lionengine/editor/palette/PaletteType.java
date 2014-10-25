@@ -43,7 +43,7 @@ public enum PaletteType
     private final Cursor cursor;
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param cursor The cursor reference.
      */

@@ -42,7 +42,7 @@ final class ScreenAppletAwt
     private Graphic gbuf;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param renderer The renderer reference.
      */

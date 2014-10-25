@@ -35,7 +35,7 @@ final class TransformAndroid
     private int interpolation;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     TransformAndroid()
     {

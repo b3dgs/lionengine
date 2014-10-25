@@ -63,11 +63,11 @@ public final class AnimationRenderer
         private final Display display;
 
         /**
-         * Constructor.
+         * Internal constructor.
          * 
          * @param display The display reference.
          */
-        public AnimationRunner(Display display)
+        AnimationRunner(Display display)
         {
             this.display = display;
         }
@@ -117,7 +117,7 @@ public final class AnimationRenderer
     private int lastFirstFrame;
 
     /**
-     * Constructor.
+     * Create an animation renderer and associate its configurer to load the surface.
      * 
      * @param parent The parent container.
      * @param configurer The configurer reference.

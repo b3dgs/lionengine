@@ -36,11 +36,11 @@ final class MediaAndroid
     private final String path;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param path The media path.
      */
-    public MediaAndroid(String path)
+    MediaAndroid(String path)
     {
         this.path = path;
     }

@@ -42,7 +42,7 @@ final class PolygonImpl
     private Rectangle bounds;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     PolygonImpl()
     {

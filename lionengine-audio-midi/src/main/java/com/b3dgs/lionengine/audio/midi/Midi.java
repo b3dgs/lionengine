@@ -107,7 +107,7 @@ public final class Midi
     private boolean paused;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The media midi to play.
      * @throws LionEngineException If media is <code>null</code> or invalid midi.

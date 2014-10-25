@@ -149,7 +149,7 @@ public class WorldViewRenderer
     private int click;
 
     /**
-     * Constructor.
+     * Create a world view renderer with grid enabled.
      * 
      * @param partService The part service.
      * @param parent The parent container.
@@ -407,7 +407,7 @@ public class WorldViewRenderer
     private void updatePointerMap(PalettePart part, int mx, int my)
     {
         final MapTile<?> map = model.getMap();
-        if (map.isCreated() && part.getActivePaletteId() == TileCollisionView.ID)
+        if (map.isCreated() && TileCollisionView.ID.equals(part.getActivePaletteId()))
         {
             final CameraGame camera = model.getCamera();
             final Point point = Tools.getMouseTile(map, camera, mx, my);
@@ -435,7 +435,7 @@ public class WorldViewRenderer
      */
     private void updatePointerFactory(PalettePart part, int mx, int my)
     {
-        if (part.getActivePaletteId() == FactoryView.ID && !objectControl.isDragging())
+        if (FactoryView.ID.equals(part.getActivePaletteId()) && !objectControl.isDragging())
         {
             if (click == Mouse.LEFT && !objectControl.hasOver() && !objectControl.hasSelection())
             {

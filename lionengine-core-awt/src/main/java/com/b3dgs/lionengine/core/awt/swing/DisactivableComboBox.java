@@ -39,7 +39,7 @@ public final class DisactivableComboBox<E>
     private static final long serialVersionUID = -5285387364457225845L;
 
     /**
-     * Constructor.
+     * Create a disactivable combo box.
      */
     public DisactivableComboBox()
     {

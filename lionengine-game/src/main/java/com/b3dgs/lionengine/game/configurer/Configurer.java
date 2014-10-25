@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Allows to retrieve
+ * Allows to retrieve informations from an external XML configuration file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

@@ -54,7 +54,7 @@ final class SpriteAnimatedImpl
     private boolean mirror;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The sprite media.
      * @param horizontalFrames The number of horizontal frames.
@@ -77,7 +77,7 @@ final class SpriteAnimatedImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param surface The surface reference.
      * @param horizontalFrames The number of horizontal frames.

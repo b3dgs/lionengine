@@ -73,7 +73,7 @@ public final class Keyboard
     private Integer down;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     Keyboard()
     {

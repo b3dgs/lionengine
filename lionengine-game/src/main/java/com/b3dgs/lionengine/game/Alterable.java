@@ -53,7 +53,7 @@ public class Alterable
     private int max;
 
     /**
-     * Constructor.
+     * Create an alterable with a maximum value.
      * 
      * @param max The maximum reachable value.
      */
@@ -63,7 +63,7 @@ public class Alterable
     }
 
     /**
-     * Constructor.
+     * Create an alterable.
      * 
      * @param max The maximum reachable value.
      * @param overMax <code>true</code> to allow over value.

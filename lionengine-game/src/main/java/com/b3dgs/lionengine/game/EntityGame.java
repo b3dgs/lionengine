@@ -42,7 +42,7 @@ public abstract class EntityGame
     private final Mirrorable mirrorable;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param setup The setup reference.
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time.

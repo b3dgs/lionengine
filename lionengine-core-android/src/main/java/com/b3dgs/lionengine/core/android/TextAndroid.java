@@ -78,7 +78,7 @@ final class TextAndroid
     private boolean txtChanged;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param fontName The font name.
      * @param size The font size (in pixel).

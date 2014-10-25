@@ -32,7 +32,7 @@ final class FactoryMediaSwt
     private String separator;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryMediaSwt()
     {

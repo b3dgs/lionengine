@@ -133,7 +133,7 @@ public final class ImageInfo
     private String format;
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param media The image media path.
      * @throws LionEngineException If media is <code>null</code> or cannot be read.

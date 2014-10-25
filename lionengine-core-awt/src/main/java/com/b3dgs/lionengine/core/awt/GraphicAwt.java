@@ -47,7 +47,7 @@ final class GraphicAwt
     private AffineTransformOp op;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     GraphicAwt()
     {
@@ -55,7 +55,7 @@ final class GraphicAwt
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param g The graphics output.
      */

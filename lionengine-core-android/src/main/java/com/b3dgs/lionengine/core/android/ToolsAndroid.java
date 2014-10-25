@@ -265,7 +265,7 @@ public final class ToolsAndroid
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private ToolsAndroid()
     {

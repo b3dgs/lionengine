@@ -53,7 +53,7 @@ public class AnimationEditor
     private AnimationList animationList;
 
     /**
-     * Constructor.
+     * Create an animation editor and associate its configurer.
      * 
      * @param parent The parent reference.
      * @param configurer The entity configurer reference.

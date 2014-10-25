@@ -57,7 +57,7 @@ public class Bar
     private boolean upDown;
 
     /**
-     * Constructor.
+     * Create a bar.
      * 
      * @param width The maximum width.
      * @param height The maximum height.

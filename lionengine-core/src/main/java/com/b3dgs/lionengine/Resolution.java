@@ -40,7 +40,7 @@ public final class Resolution
     private int rate;
 
     /**
-     * Constructor.
+     * Create a resolution.
      * 
      * @param width The resolution width (in pixel).
      * @param height The resolution height (in pixel).

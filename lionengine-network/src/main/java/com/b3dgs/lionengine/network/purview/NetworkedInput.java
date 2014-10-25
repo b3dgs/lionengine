@@ -34,7 +34,7 @@ public abstract class NetworkedInput
     private final NetworkableModel networkable;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public NetworkedInput()
     {

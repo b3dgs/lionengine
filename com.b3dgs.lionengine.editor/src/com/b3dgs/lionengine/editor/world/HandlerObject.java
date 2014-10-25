@@ -34,7 +34,7 @@ public class HandlerObject
     private final CameraGame camera;
 
     /**
-     * Constructor.
+     * Create the default handler object.
      * 
      * @param camera The camera reference.
      */

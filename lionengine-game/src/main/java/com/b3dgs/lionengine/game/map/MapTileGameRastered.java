@@ -52,7 +52,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
     private boolean rasterLoaded;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.

@@ -58,7 +58,7 @@ final class XmlNodeImpl
     private final Element root;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param name The node name.
      * @throws LionEngineException If error when creating the node.
@@ -87,7 +87,7 @@ final class XmlNodeImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param root The root reference.
      */

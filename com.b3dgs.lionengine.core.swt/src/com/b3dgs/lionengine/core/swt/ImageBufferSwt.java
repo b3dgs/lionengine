@@ -68,7 +68,7 @@ final class ImageBufferSwt
     private GC gc;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param image The image.
      */

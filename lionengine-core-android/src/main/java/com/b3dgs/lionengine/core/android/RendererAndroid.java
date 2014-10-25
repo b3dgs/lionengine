@@ -30,7 +30,7 @@ final class RendererAndroid
         extends Renderer
 {
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param config The config reference.
      */

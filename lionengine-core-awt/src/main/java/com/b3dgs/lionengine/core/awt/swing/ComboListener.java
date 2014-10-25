@@ -39,7 +39,7 @@ public final class ComboListener<E>
     private Object currentItem;
 
     /**
-     * Constructor.
+     * Create a combo listener.
      * 
      * @param combo The combo reference.
      * @param action The action reference.

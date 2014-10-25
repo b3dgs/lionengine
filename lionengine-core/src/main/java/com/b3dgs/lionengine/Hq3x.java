@@ -164,7 +164,7 @@ public final class Hq3x
         private final int height;
 
         /**
-         * Constructor.
+         * Internal constructor.
          * 
          * @param imageData The image data array.
          * @param dataWidth The data width.
@@ -297,7 +297,7 @@ public final class Hq3x
     private final int height;
 
     /**
-     * Constructor.
+     * Create an Hq3x filter.
      * 
      * @param srcImage The buffer source.
      */

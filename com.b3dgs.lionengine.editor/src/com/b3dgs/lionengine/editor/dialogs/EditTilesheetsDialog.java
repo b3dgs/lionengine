@@ -53,7 +53,7 @@ public class EditTilesheetsDialog
     private final Collection<Button> buttons;
 
     /**
-     * Constructor.
+     * Create a tile sheets dialog.
      * 
      * @param parent The parent shell.
      * @param tilesheets The tile sheets media.

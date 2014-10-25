@@ -36,7 +36,7 @@ public class InputValidator
     private final String errorText;
 
     /**
-     * Constructor.
+     * Create an input validator.
      * 
      * @param matches The expected matches.
      * @param errorText The text error.

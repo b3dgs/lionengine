@@ -63,7 +63,7 @@ public abstract class FogOfWarStrategy<T extends TileGame>
     private int playerId;
 
     /**
-     * Constructor.
+     * Create a fog of war.
      */
     public FogOfWarStrategy()
     {
@@ -74,7 +74,7 @@ public abstract class FogOfWarStrategy<T extends TileGame>
     }
 
     /**
-     * Constructor.
+     * Create a fog of war from a map.
      * 
      * @param map The map reference.
      */

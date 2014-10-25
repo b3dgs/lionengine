@@ -39,7 +39,7 @@ public final class ComboRenderer<E>
     private static final long serialVersionUID = -3958632959558263178L;
 
     /**
-     * Constructor.
+     * Create a combo renderer.
      */
     public ComboRenderer()
     {

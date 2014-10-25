@@ -67,7 +67,7 @@ public final class Checksum
     private final MessageDigest sha;
 
     /**
-     * Constructor.
+     * Private constructor.
      * 
      * @param algorithm The algorithm name.
      * @throws LionEngineException If algorithm is invalid.

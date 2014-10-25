@@ -39,7 +39,7 @@ final class ClientConnecter
     private boolean isRunning;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param serverSocket The server socket.
      * @param server The server reference.

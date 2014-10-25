@@ -101,7 +101,7 @@ public abstract class Renderer
     private boolean isRunning;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param config The config reference.
      * @param name The renderer name.

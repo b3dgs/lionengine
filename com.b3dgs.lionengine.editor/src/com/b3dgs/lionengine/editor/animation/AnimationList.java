@@ -39,7 +39,7 @@ public class AnimationList
     private final AnimationProperties animationProperties;
 
     /**
-     * Constructor.
+     * Create animation list and associate its properties.
      * 
      * @param configurer The configurer reference.
      * @param animationProperties The animation properties reference.

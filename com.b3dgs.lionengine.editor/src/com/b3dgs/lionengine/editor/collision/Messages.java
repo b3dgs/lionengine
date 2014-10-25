@@ -74,10 +74,10 @@ public final class Messages
     }
 
     /**
-     * Constructor.
+     * Private constructor.
      */
     private Messages()
     {
-        // Private constructor
+        throw new RuntimeException();
     }
 }

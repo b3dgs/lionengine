@@ -36,7 +36,7 @@ public class Movement
     private double forceOldH;
 
     /**
-     * Constructor.
+     * Create a blank movement.
      */
     public Movement()
     {

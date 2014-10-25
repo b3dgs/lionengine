@@ -88,7 +88,7 @@ public abstract class Sequence
     private boolean loaded;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param resolution The resolution source reference.
      * @param loader The loader reference.

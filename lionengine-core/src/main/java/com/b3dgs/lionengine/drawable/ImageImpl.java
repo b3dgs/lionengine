@@ -36,7 +36,7 @@ final class ImageImpl
     private final ImageBuffer surface;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The image media.
      * @throws LionEngineException If an error occurred when reading the image.
@@ -47,7 +47,7 @@ final class ImageImpl
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param surface The surface to share.
      * @throws LionEngineException If the surface is <code>null</code>.

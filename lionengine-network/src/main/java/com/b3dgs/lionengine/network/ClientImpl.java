@@ -69,7 +69,7 @@ final class ClientImpl
     private int bandwidthPerSecond;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param decoder The message decoder.
      */

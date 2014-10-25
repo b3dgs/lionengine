@@ -32,7 +32,7 @@ final class FactoryMediaAndroid
     private String separator;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryMediaAndroid()
     {

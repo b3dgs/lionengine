@@ -33,7 +33,7 @@ final class KeyListener
     private final InputDeviceKeyListener listener;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param listener The original listener.
      */

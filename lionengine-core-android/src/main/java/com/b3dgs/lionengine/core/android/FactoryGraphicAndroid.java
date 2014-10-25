@@ -42,7 +42,7 @@ final class FactoryGraphicAndroid
         implements FactoryGraphic
 {
     /**
-     * Constructor.
+     * Internal constructor.
      */
     FactoryGraphicAndroid()
     {

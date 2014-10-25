@@ -75,7 +75,7 @@ public abstract class AbstractDialog
     private final Image headerIcon;
 
     /**
-     * Constructor.
+     * Dialog constructor base.
      * 
      * @param parent The parent reference.
      * @param title The dialog title.

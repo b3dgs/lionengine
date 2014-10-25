@@ -37,7 +37,7 @@ final class ResourceLocation
     private int th;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     ResourceLocation()
     {

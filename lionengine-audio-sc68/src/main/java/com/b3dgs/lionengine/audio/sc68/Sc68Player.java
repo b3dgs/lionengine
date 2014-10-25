@@ -38,7 +38,7 @@ final class Sc68Player
     private final Sc68Binding binding;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param binding The binding reference.
      * @throws LionEngineException If binding is <code>null</code>

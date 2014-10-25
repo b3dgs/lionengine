@@ -41,7 +41,7 @@ public class Resource
     private final Alterable ressource;
 
     /**
-     * Constructor.
+     * Create a resource without maximum value.
      */
     public Resource()
     {
@@ -49,7 +49,7 @@ public class Resource
     }
 
     /**
-     * Constructor.
+     * Create a resource.
      * 
      * @param amount The starting amount.
      */

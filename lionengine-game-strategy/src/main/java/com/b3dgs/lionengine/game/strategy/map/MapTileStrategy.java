@@ -43,7 +43,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
     private Integer[][] ref;
 
     /**
-     * Constructor.
+     * Constructor base.
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.

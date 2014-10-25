@@ -40,7 +40,7 @@ public abstract class AbstractEditor
     final Shell shell;
 
     /**
-     * Constructor.
+     * Editor constructor base.
      * 
      * @param title The editor title.
      * @param icon The editor icon.

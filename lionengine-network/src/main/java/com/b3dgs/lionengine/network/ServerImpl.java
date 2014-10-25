@@ -102,7 +102,7 @@ final class ServerImpl
     private int bandwidthPerSecond;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param decoder The message decoder.
      */
@@ -151,7 +151,8 @@ final class ServerImpl
             clientsList.put(Byte.valueOf(client.getId()), client);
             clientsNumber++;
         }
-        catch (final Exception exception)
+        catch (final IOException
+                     | LionEngineException exception)
         {
             Verbose.warning(Server.class, "addClient", "Error on adding client: ", exception.getMessage());
             if (clientsList.remove(Byte.valueOf(lastId)) != null)

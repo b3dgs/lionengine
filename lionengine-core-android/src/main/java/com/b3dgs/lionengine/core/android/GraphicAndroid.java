@@ -66,7 +66,7 @@ final class GraphicAndroid
     private LinearGradient linearGradient;
 
     /**
-     * Constructor.
+     * Internal constructor.
      */
     GraphicAndroid()
     {
@@ -74,7 +74,7 @@ final class GraphicAndroid
     }
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param g The graphics output.
      */

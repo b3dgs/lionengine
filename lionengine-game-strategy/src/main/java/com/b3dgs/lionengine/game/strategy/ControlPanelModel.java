@@ -74,7 +74,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     private ColorRgba colorSelection;
 
     /**
-     * Constructor.
+     * Constructor base.
      */
     public ControlPanelModel()
     {

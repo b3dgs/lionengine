@@ -57,7 +57,7 @@ final class SpriteParallaxedImpl
     private double factorV;
 
     /**
-     * Constructor.
+     * Internal constructor.
      * 
      * @param media The sprite media.
      * @param linesNumber The number of line.
