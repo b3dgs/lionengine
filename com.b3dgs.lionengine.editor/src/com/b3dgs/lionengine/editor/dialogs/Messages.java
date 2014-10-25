@@ -87,18 +87,6 @@ public final class Messages
     public static String ImportMapDialog_ErrorLevelRip;
     /** Error patterns. */
     public static String ImportMapDialog_ErrorPatterns;
-    /** Edit entity dialog title. */
-    public static String EditEntityDialog_Title;
-    /** Edit entity dialog title header. */
-    public static String EditEntityDialog_HeaderTitle;
-    /** Edit entity dialog description header. */
-    public static String EditEntityDialog_HeaderDesc;
-    /** Edit entity dialog assign class. */
-    public static String EditEntityDialog_AssignClass;
-    /** Edit entity dialog assign surface. */
-    public static String EditEntityDialog_AssignSurface;
-    /** Edit entity dialog assign icon. */
-    public static String EditEntityDialog_AssignIcon;
     /** Edit tile sheets dialog title. */
     public static String EditTilesheetsDialog_Title;
     /** Edit tile sheets dialog title header. */
