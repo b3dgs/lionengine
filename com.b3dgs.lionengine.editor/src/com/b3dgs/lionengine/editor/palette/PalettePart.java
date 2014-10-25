@@ -114,6 +114,17 @@ public class PalettePart
     }
 
     /**
+     * Set the current active palette.
+     * 
+     * @param id The palette ID.
+     */
+    public void setPalette(String id)
+    {
+        comboPalette.setText(palettes.get(id).getName());
+        loadPaletteView();
+    }
+
+    /**
      * Get the current active palette ID.
      * 
      * @return The current active palette ID.

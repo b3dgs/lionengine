@@ -129,6 +129,8 @@ public class WorldViewRenderer
     private final Composite parent;
     /** Object selection listener. */
     private final Collection<ObjectSelectionListener> objectSelectionListeners;
+    /** Tile selection listener. */
+    private final Collection<TileSelectionListener> tileSelectionListeners;
     /** Handler object. */
     private final HandlerObject handlerObject;
     /** Selection handler. */
@@ -159,6 +161,7 @@ public class WorldViewRenderer
         this.parent = parent;
         this.partService = partService;
         objectSelectionListeners = new ArrayList<>();
+        tileSelectionListeners = new ArrayList<>();
         model = WorldViewModel.INSTANCE;
         handlerObject = new HandlerObject(model.getCamera());
         selection = new Selection();
@@ -171,9 +174,19 @@ public class WorldViewRenderer
      * 
      * @param listener The listener reference.
      */
-    public void addListener(ObjectSelectionListener listener)
+    public void addListenerObject(ObjectSelectionListener listener)
     {
         objectSelectionListeners.add(listener);
+    }
+
+    /**
+     * Add an tile selection listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void addListenerTile(TileSelectionListener listener)
+    {
+        tileSelectionListeners.add(listener);
     }
 
     /**
@@ -181,9 +194,19 @@ public class WorldViewRenderer
      * 
      * @param listener The listener reference.
      */
-    public void removeListener(ObjectSelectionListener listener)
+    public void removeListenerObject(ObjectSelectionListener listener)
     {
         objectSelectionListeners.remove(listener);
+    }
+
+    /**
+     * Remove a tile selection listener.
+     * 
+     * @param listener The listener reference.
+     */
+    public void removeListenerTile(TileSelectionListener listener)
+    {
+        tileSelectionListeners.remove(listener);
     }
 
     /**
@@ -418,6 +441,13 @@ public class WorldViewRenderer
             {
                 final TileCollisionView view = part.getPaletteView(TileCollisionView.ID, TileCollisionView.class);
                 view.setSelectedTile(selectedTile);
+            }
+            if (selectedTile != null)
+            {
+                for (final TileSelectionListener listener : tileSelectionListeners)
+                {
+                    listener.notifyTileSelected(selectedTile);
+                }
             }
         }
         else
