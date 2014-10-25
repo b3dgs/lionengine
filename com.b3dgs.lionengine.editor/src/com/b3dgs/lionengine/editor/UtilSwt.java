@@ -17,10 +17,15 @@
  */
 package com.b3dgs.lionengine.editor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -32,6 +37,8 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+
+import com.b3dgs.lionengine.UtilConversion;
 
 /**
  * Series of tool functions around the editor related to SWT.
@@ -97,7 +104,8 @@ public final class UtilSwt
     }
 
     /**
-     * Create a combo from an enumeration.
+     * Create a combo from an enumeration. Selected item can be accessed with {@link Combo#getData()}.
+     * Combo items are enum names as title case, converted by {@link UtilConversion#toTitleCase(String)}.
      * 
      * @param parent The parent reference.
      * @param values The enumeration values.
@@ -106,12 +114,22 @@ public final class UtilSwt
     public static Combo createCombo(Composite parent, Enum<?>[] values)
     {
         final String[] items = new String[values.length];
+        final Map<String, Enum<?>> links = new HashMap<>();
         for (int i = 0; i < values.length; i++)
         {
-            items[i] = values[i].name();
+            items[i] = UtilConversion.toTitleCase(values[i].name());
+            links.put(items[i], values[i]);
         }
         final Combo combo = new Combo(parent, SWT.READ_ONLY);
         combo.setItems(items);
+        combo.addSelectionListener(new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected(SelectionEvent event)
+            {
+                combo.setData(links.get(combo.getText()));
+            }
+        });
         return combo;
     }
 

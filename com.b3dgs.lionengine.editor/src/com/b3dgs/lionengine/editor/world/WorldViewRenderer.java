@@ -536,9 +536,21 @@ public class WorldViewRenderer
         {
             objectControl.selectEntities(selection.getArea());
         }
-        for (final ObjectSelectionListener listener : objectSelectionListeners)
+        final Collection<ObjectGame> selections = objectControl.getSelectedEnties();
+        if (selections.size() == 1)
         {
-            listener.notifyObjectsSelected(objectControl.getSelectedEnties());
+            final ObjectGame object = selections.toArray(new ObjectGame[1])[0];
+            for (final ObjectSelectionListener listener : objectSelectionListeners)
+            {
+                listener.notifyObjectSelected(object);
+            }
+        }
+        else
+        {
+            for (final ObjectSelectionListener listener : objectSelectionListeners)
+            {
+                listener.notifyObjectsSelected(selections);
+            }
         }
     }
 
@@ -603,9 +615,10 @@ public class WorldViewRenderer
             if (objectControl.isOver(object) || objectControl.isSelected(object))
             {
                 g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
-                g.drawRect(sx - camera.getLocationIntX() - object.getWidth() / 2, -sy + camera.getLocationIntY()
-                        - object.getHeight() + UtilMath.getRounded(camera.getViewHeight(), th), object.getWidth(),
-                        object.getHeight(), true);
+                final int x = sx - camera.getLocationIntX() - object.getWidth() / 2;
+                final int y = -sy + camera.getLocationIntY() - object.getHeight()
+                        + UtilMath.getRounded(camera.getViewHeight(), th);
+                g.drawRect(x, y, object.getWidth(), object.getHeight(), true);
             }
         }
     }
