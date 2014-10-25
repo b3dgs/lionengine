@@ -35,6 +35,8 @@ Since the version __6__, it supports __Android 1.5__ *(API 3)*.
 The only change to perform is the gameplay part, as the '__mouse__' and '__keyboard__' concepts are different on Android.
 Everything else is fully compatible and does not require any changes.
 
+Since the version 7, it includes an abstract editor that should allow to write easily a dedicated levels editor for your game. It can also be used as default editor without any add-on, just run and import a project from your game compiled sources !
+
 ## General Features
 
 * #### __lionengine-core__
@@ -110,6 +112,10 @@ Everything else is fully compatible and does not require any changes.
 
 * #### __lionengine-audio-sc68__
 >  * Support for Sc68 Atari music
+
+* #### __lionengine-editor__
+>  * Complete standalone editor which can be used in any project for general level edition
+>  * Can be extended to perform more specific things
 
 ## Download
 
