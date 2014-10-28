@@ -29,6 +29,8 @@ public class InputValidator
 {
     /** Must match a name. */
     public static final String NAME_MATCH = "[a-zA-z0-9]+";
+    /** Must match a double. */
+    public static final String DOUBLE_MATCH = "[0-9]{1,13}(\\.[0-9]*)?";
 
     /** Expected matches. */
     private final String matches;

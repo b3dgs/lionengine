@@ -22,6 +22,8 @@ import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -126,6 +128,14 @@ public final class UtilSwt
         {
             @Override
             public void widgetSelected(SelectionEvent event)
+            {
+                combo.setData(links.get(combo.getText()));
+            }
+        });
+        combo.addModifyListener(new ModifyListener()
+        {
+            @Override
+            public void modifyText(ModifyEvent e)
             {
                 combo.setData(links.get(combo.getText()));
             }
