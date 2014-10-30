@@ -148,8 +148,8 @@ public final class Loader
             @Override
             public void uncaughtException(Thread thead, Throwable throwable)
             {
-                renderer.terminate();
                 Verbose.exception(Renderer.class, "run", throwable);
+                renderer.terminate();
             }
         });
         this.renderer = renderer;

@@ -204,7 +204,14 @@ public abstract class Renderer
      */
     void terminate()
     {
-        screen.dispose();
+        if (sequence != null)
+        {
+            sequence.onTerminate(false);
+        }
+        if (screen != null)
+        {
+            screen.dispose();
+        }
         EngineCore.terminate();
     }
 
