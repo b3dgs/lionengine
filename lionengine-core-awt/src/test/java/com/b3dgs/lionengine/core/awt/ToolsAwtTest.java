@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.core.awt;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -107,9 +108,13 @@ public class ToolsAwtTest
         Assert.assertNotNull(image);
 
         final MediaAwt save = new MediaAwt("test");
-        ToolsAwt.saveImage(image, save.getOutputStream());
+        try (OutputStream output = save.getOutputStream())
+        {
+            ToolsAwt.saveImage(image, output);
+        }
         Assert.assertTrue(save.getFile().exists());
-        save.getFile().deleteOnExit();
+        Assert.assertTrue(save.getFile().delete());
+        Assert.assertFalse(save.getFile().exists());
     }
 
     /**

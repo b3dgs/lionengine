@@ -98,6 +98,9 @@ public class MediaAwtTest
         {
             Assert.assertNotNull(output);
         }
+        Assert.assertTrue(media.getFile().exists());
+        Assert.assertTrue(media.getFile().delete());
+        Assert.assertFalse(media.getFile().exists());
     }
 
     /**

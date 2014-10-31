@@ -162,7 +162,8 @@ public class UtilityImageTest
         final MediaAwt save = new MediaAwt("test");
         UtilityImage.saveImage(image, save);
         Assert.assertTrue(save.getFile().exists());
-        save.getFile().deleteOnExit();
+        Assert.assertTrue(save.getFile().delete());
+        Assert.assertFalse(save.getFile().exists());
     }
 
     /**

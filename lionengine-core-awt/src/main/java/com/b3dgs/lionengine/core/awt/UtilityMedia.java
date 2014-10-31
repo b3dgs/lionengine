@@ -123,18 +123,18 @@ public final class UtilityMedia
      */
     static InputStream getInputStream(Media media) throws LionEngineException
     {
-        final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
         {
             if (UtilityMedia.fromJar)
             {
-                final InputStream inputStream = UtilityMedia.loader.getResourceAsStream(path);
+                final InputStream inputStream = UtilityMedia.loader.getResourceAsStream(media.getPath());
                 if (inputStream == null)
                 {
                     throw new LionEngineException(media, "Resource in JAR not found");
                 }
                 return inputStream;
             }
+            final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
             return new FileInputStream(path);
         }
         catch (final FileNotFoundException exception)

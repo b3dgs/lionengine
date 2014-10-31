@@ -212,7 +212,6 @@ public abstract class Renderer
         {
             screen.dispose();
         }
-        EngineCore.terminate();
     }
 
     /**

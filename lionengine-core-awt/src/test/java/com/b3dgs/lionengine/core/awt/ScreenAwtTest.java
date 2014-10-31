@@ -23,9 +23,9 @@ import java.lang.Thread.State;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Config;
@@ -53,8 +53,8 @@ public class ScreenAwtTest
      * 
      * @throws ReflectiveOperationException If error.
      */
-    @BeforeClass
-    public static void setUp() throws ReflectiveOperationException
+    @Before
+    public void setUp() throws ReflectiveOperationException
     {
         Engine.start("screen", Version.create(0, 0, 0), Verbose.CRITICAL, ScreenAwtTest.class);
     }
@@ -62,8 +62,8 @@ public class ScreenAwtTest
     /**
      * Clean up test.
      */
-    @AfterClass
-    public static void cleanUp()
+    @After
+    public void cleanUp()
     {
         Engine.terminate();
     }
