@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.1.1</version>
+		<version>7.1.2</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
