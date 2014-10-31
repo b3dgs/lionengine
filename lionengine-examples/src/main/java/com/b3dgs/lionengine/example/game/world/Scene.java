@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * Game loop designed to handle our world.
@@ -70,5 +71,11 @@ final class Scene
     protected void render(Graphic g)
     {
         world.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

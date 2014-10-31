@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
@@ -171,5 +172,11 @@ final class Scene
         controlPanel.renderCursorSelection(g, camera);
         controlPanel.render(g, cursor, camera);
         cursor.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

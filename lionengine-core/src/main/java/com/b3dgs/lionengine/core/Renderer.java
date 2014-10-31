@@ -327,7 +327,10 @@ public abstract class Renderer
                 isRunning = false;
             }
         }
-        sequence.onTerminate(nextSequence != null);
+        if (nextSequence != null)
+        {
+            sequence.onTerminate(true);
+        }
     }
 
     /**

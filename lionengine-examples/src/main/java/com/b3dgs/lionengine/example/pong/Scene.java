@@ -29,6 +29,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.CameraGame;
 
@@ -131,5 +132,11 @@ final class Scene
         text.setColor(ColorRgba.BLUE);
         text.draw(g, getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreLeft()));
         text.draw(g, getWidth() / 2 + getWidth() / 4, 0, Align.CENTER, String.valueOf(handler.getScoreRight()));
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

@@ -50,6 +50,8 @@ public final class AppGameEntity
             handler.update(1.0);
             handler.render(null);
         }
+
+        Engine.terminate();
     }
 
     /**

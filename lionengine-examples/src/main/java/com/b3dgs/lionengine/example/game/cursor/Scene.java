@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Cursor;
@@ -102,5 +103,11 @@ final class Scene
     {
         g.clear(0, 0, getWidth(), getHeight());
         cursor.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

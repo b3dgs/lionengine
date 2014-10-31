@@ -22,6 +22,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
@@ -100,5 +101,6 @@ final class Scene
     protected void onTerminate(boolean hasNextSequence)
     {
         world.disconnect();
+        Engine.terminate();
     }
 }

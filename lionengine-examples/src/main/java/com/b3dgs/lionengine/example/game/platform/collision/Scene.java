@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
@@ -103,5 +104,11 @@ final class Scene
 
         map.render(g, camera);
         hero.render(g, camera);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

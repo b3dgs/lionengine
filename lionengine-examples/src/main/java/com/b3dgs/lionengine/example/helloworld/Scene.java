@@ -25,6 +25,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 
 /**
@@ -85,5 +86,11 @@ final class Scene
         text.render(g);
         // Direct rendering
         text.draw(g, getWidth() / 2, getHeight() / 2 + 8, Align.CENTER, "World");
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

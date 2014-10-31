@@ -61,6 +61,8 @@ public final class AppGameFactory
         // Parameters are the same
         System.out.println(flyMachine.getParam());
         System.out.println(groundTruck.getParam());
+
+        Engine.terminate();
     }
 
     /**

@@ -26,6 +26,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.BarracksOrc;
@@ -226,5 +227,11 @@ final class Scene
         handlerProjectile.render(g);
         controlPanel.renderCursorSelection(g, camera);
         cursor.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        Engine.terminate();
     }
 }

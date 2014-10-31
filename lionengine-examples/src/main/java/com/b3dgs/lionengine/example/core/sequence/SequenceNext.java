@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * SequenceNext implementation.
@@ -60,5 +61,14 @@ public class SequenceNext
     protected void render(Graphic g)
     {
         System.out.println("I am Next !");
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        if (!hasNextSequence)
+        {
+            Engine.terminate();
+        }
     }
 }

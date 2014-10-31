@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * SequenceLinkComplex implementation.
@@ -71,5 +72,14 @@ public class SequenceLinkComplex
     protected void render(Graphic g)
     {
         System.out.println("ComplexLink rendering number " + count);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        if (!hasNextSequence)
+        {
+            Engine.terminate();
+        }
     }
 }

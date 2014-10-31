@@ -49,6 +49,8 @@ public final class AppGameHandler
             handler.update(1.0);
             handler.render(null);
         }
+
+        Engine.terminate();
     }
 
     /**

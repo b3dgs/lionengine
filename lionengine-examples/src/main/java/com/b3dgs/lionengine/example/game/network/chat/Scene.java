@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
  * Game loop designed to handle our little world.
@@ -91,5 +92,6 @@ final class Scene
     protected void onTerminate(boolean hasNextSequence)
     {
         world.disconnect();
+        Engine.terminate();
     }
 }
