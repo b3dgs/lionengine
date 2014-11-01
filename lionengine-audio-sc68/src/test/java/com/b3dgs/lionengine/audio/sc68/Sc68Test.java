@@ -42,8 +42,8 @@ public class Sc68Test
     @BeforeClass
     public static void prepareTest()
     {
-        Sc68Test.MUSIC = new MediaMock("music.sc68");
-        Sc68Test.sc68 = AudioSc68.createSc68Player();
+        MUSIC = new MediaMock("music.sc68");
+        sc68 = AudioSc68.createSc68Player();
     }
 
     /**
@@ -52,7 +52,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNullArgument()
     {
-        Sc68Test.sc68.play(null);
+        sc68.play(null);
         Assert.fail();
     }
 
@@ -62,7 +62,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testNegativeVolume()
     {
-        Sc68Test.sc68.setVolume(-1);
+        sc68.setVolume(-1);
         Assert.fail();
     }
 
@@ -72,7 +72,7 @@ public class Sc68Test
     @Test(expected = LionEngineException.class)
     public void testOutOfRangeVolume()
     {
-        Sc68Test.sc68.setVolume(101);
+        sc68.setVolume(101);
         Assert.fail();
     }
 
@@ -84,16 +84,20 @@ public class Sc68Test
     @Test
     public void testSc68() throws InterruptedException
     {
-        Sc68Test.sc68.setVolume(15);
-        Sc68Test.sc68.play(Sc68Test.MUSIC);
+        sc68.setVolume(15);
+        sc68.setConfig(true, false);
+        Sc68Test.sc68.play(MUSIC);
         Thread.sleep(500);
-        Sc68Test.sc68.pause();
+        sc68.setConfig(false, false);
+        sc68.pause();
         Thread.sleep(500);
-        Sc68Test.sc68.setVolume(30);
-        Sc68Test.sc68.resume();
+        sc68.setConfig(false, true);
+        sc68.setVolume(30);
+        sc68.resume();
         Thread.sleep(500);
-        Assert.assertTrue(Sc68Test.sc68.seek() >= 0);
-        Sc68Test.sc68.stop();
+        sc68.setConfig(true, true);
+        Assert.assertTrue(sc68.seek() >= 0);
+        sc68.stop();
     }
 
     /**
@@ -105,22 +109,22 @@ public class Sc68Test
     public void testStress() throws InterruptedException
     {
         final Sc68 sc68 = AudioSc68.createSc68Player();
-        sc68.play(Sc68Test.MUSIC);
+        sc68.play(MUSIC);
         sc68.stop();
-        sc68.play(Sc68Test.MUSIC);
+        sc68.play(MUSIC);
         Thread.sleep(100);
         sc68.stop();
-        sc68.play(Sc68Test.MUSIC);
+        sc68.play(MUSIC);
         sc68.pause();
         sc68.resume();
         for (int i = 0; i < 5; i++)
         {
-            sc68.play(Sc68Test.MUSIC);
+            sc68.play(MUSIC);
             Thread.sleep(100);
         }
         Thread.sleep(250);
         sc68.stop();
-        sc68.play(Sc68Test.MUSIC);
+        sc68.play(MUSIC);
         sc68.stop();
     }
 }
