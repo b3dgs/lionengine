@@ -42,6 +42,14 @@ interface Sc68Binding
     void Sc68SetVolume(int volume);
 
     /**
+     * Configure the audio output.
+     * 
+     * @param interpolation <code>1</code> to use interpolation, <code>0</code> else.
+     * @param stereo_join <code>1</code> to join stereo, <code>0</code> else.
+     */
+    void Sc68Config(int interpolation, int stereo_join);
+
+    /**
      * Pause track.
      */
     void Sc68Pause();

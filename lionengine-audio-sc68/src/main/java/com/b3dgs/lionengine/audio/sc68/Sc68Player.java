@@ -82,6 +82,12 @@ final class Sc68Player
     }
 
     @Override
+    public void setConfig(boolean interpolation, boolean joinStereo)
+    {
+        binding.Sc68Config(interpolation ? 1 : 0, joinStereo ? 1 : 0);
+    }
+
+    @Override
     public void pause()
     {
         binding.Sc68Pause();

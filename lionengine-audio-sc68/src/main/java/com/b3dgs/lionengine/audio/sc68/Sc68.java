@@ -63,6 +63,14 @@ public interface Sc68
     void setVolume(int volume) throws LionEngineException;
 
     /**
+     * Configure the audio output.
+     * 
+     * @param interpolation <code>true</code> to use interpolation, <code>false</code> else.
+     * @param joinStereo <code>true</code> to join stereo, <code>false</code> else.
+     */
+    void setConfig(boolean interpolation, boolean joinStereo);
+
+    /**
      * Pause a playing music.
      */
     void pause();
