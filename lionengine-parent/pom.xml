@@ -12,7 +12,7 @@
 	<groupId>com.b3dgs.lionengine</groupId>
 	<artifactId>lionengine</artifactId>
 	<packaging>pom</packaging>
-	<version>7.1.4-SNAPSHOT</version>
+	<version>7.2.0-SNAPSHOT</version>
 	<name>LionEngine</name>
 	<description>Java 2D Game Engine</description>
 	<url>https://github.com/DjThunder/lionengine</url>
