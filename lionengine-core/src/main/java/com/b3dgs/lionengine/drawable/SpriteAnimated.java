@@ -83,6 +83,13 @@ public interface SpriteAnimated
     void setMirror(boolean mirror);
 
     /**
+     * Set the mirror axis to use when performing a {@link #setMirror(boolean)}.
+     * 
+     * @param horizontal <code>true</code> for horizontal flipping, <code>false</code> for vertical flipping.
+     */
+    void setMirrorAxis(boolean horizontal);
+
+    /**
      * Get the number of horizontal frames.
      * 
      * @return The number of horizontal frames.

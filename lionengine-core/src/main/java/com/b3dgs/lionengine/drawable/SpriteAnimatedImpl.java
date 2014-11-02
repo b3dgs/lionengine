@@ -52,6 +52,8 @@ final class SpriteAnimatedImpl
     private final int framesNumber;
     /** Mirror flag. */
     private boolean mirror;
+    /** Mirror axis. */
+    private boolean mirrorHorizontal;
 
     /**
      * Internal constructor.
@@ -74,6 +76,7 @@ final class SpriteAnimatedImpl
         frameOriginalHeight = heightOriginal / verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
+        mirrorHorizontal = true;
     }
 
     /**
@@ -97,6 +100,7 @@ final class SpriteAnimatedImpl
         frameOriginalHeight = heightOriginal / verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
+        mirrorHorizontal = true;
     }
 
     /*
@@ -172,7 +176,14 @@ final class SpriteAnimatedImpl
 
         if (mirror)
         {
-            g.drawImage(surface, x, y, x + w, y + h, cx * w + w, cy * h, cx * w, cy * h + h);
+            if (mirrorHorizontal)
+            {
+                g.drawImage(surface, x, y, x + w, y + h, cx * w + w, cy * h, cx * w, cy * h + h);
+            }
+            else
+            {
+                g.drawImage(surface, x, y, x + w, y + h, cx * w, cy * h + h, cx * w + w, cy * h);
+            }
         }
         else
         {
@@ -184,6 +195,12 @@ final class SpriteAnimatedImpl
     public void setMirror(boolean mirror)
     {
         this.mirror = mirror;
+    }
+
+    @Override
+    public void setMirrorAxis(boolean horizontal)
+    {
+        mirrorHorizontal = horizontal;
     }
 
     @Override
@@ -291,6 +308,7 @@ final class SpriteAnimatedImpl
         result = prime * result + framesNumber;
         result = prime * result + horizontalFrames;
         result = prime * result + (mirror ? 1231 : 1237);
+        result = prime * result + (mirrorHorizontal ? 1231 : 1237);
         result = prime * result + verticalFrames;
         return result;
     }
