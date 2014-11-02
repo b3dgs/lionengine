@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.b3dgs.lionengine</groupId>
 		<artifactId>lionengine</artifactId>
-		<version>7.1.2</version>
+		<version>7.1.3</version>
 		<relativePath>../lionengine-parent</relativePath>
 	</parent>
 
@@ -32,7 +32,7 @@
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-audio-midi</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-audio-sc68</artifactId>
@@ -46,6 +46,11 @@
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-platform</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 		</dependency>
 
 	</dependencies>
