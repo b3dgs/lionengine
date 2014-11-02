@@ -111,6 +111,8 @@ public class SpriteAnimatedTest
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 110);
         Assert.assertTrue(hash != spriteD.hashCode());
+        spriteD.setMirrorAxis(false);
+        Assert.assertTrue(hash != spriteD.hashCode());
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteAnimated spriteF = Drawable
                 .loadSpriteAnimated(spriteD.getSurface(), frameHorizontal, frameVertical);
@@ -139,6 +141,9 @@ public class SpriteAnimatedTest
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);
         spriteC.setMirror(true);
+        spriteC.setMirrorAxis(false);
+        spriteC.render(g, 0, 0);
+        spriteC.setMirrorAxis(true);
         spriteC.render(g, 0, 0);
 
         // Error
