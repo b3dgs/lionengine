@@ -52,12 +52,4 @@ public final class AppGameHandler
 
         Engine.terminate();
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppGameHandler()
-    {
-        throw new RuntimeException();
-    }
 }

@@ -46,12 +46,4 @@ public final class AppDrawable
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppDrawable()
-    {
-        throw new RuntimeException();
-    }
 }

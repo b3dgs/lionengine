@@ -46,12 +46,4 @@ public final class AppGameCursor
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppGameCursor()
-    {
-        throw new RuntimeException();
-    }
 }

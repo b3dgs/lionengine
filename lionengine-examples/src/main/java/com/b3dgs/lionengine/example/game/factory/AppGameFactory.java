@@ -64,12 +64,4 @@ public final class AppGameFactory
 
         Engine.terminate();
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppGameFactory()
-    {
-        throw new RuntimeException();
-    }
 }

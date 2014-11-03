@@ -47,12 +47,4 @@ public final class AppPlatformBackground
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppPlatformBackground()
-    {
-        throw new RuntimeException();
-    }
 }

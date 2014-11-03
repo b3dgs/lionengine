@@ -47,12 +47,4 @@ public final class AppPlatformEntity
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppPlatformEntity()
-    {
-        throw new RuntimeException();
-    }
 }

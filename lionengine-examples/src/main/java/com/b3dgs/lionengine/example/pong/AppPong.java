@@ -45,12 +45,4 @@ public final class AppPong
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppPong()
-    {
-        throw new RuntimeException();
-    }
 }

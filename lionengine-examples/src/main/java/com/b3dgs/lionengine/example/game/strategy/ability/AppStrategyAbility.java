@@ -47,12 +47,4 @@ public final class AppStrategyAbility
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppStrategyAbility()
-    {
-        throw new RuntimeException();
-    }
 }
