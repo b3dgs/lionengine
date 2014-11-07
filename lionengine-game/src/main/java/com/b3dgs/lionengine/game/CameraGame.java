@@ -299,36 +299,36 @@ public class CameraGame
         double my = 0.0;
         // Horizontal move
         // Can scroll only on offset interval
-        if (offset.getLocationIntX() <= -intervalHorizontal || offset.getLocationIntX() >= intervalHorizontal)
+        if (offset.getLocationX() <= -intervalHorizontal || offset.getLocationX() >= intervalHorizontal)
         {
             mx = vx;
         }
         offset.moveLocation(extrp, vx, 0);
 
         // Block offset on its limits
-        if (offset.getLocationIntX() < -intervalHorizontal)
+        if (offset.getLocationX() < -intervalHorizontal)
         {
             offset.setLocationX(-intervalHorizontal);
         }
-        if (offset.getLocationIntX() > intervalHorizontal)
+        if (offset.getLocationX() > intervalHorizontal)
         {
             offset.setLocationX(intervalHorizontal);
         }
 
         // Vertical move
         // Can scroll only on offset interval
-        if (offset.getLocationIntY() <= -intervalVertical || offset.getLocationIntX() >= intervalVertical)
+        if (offset.getLocationIntY() <= -intervalVertical || offset.getLocationY() >= intervalVertical)
         {
             my = vy;
         }
         offset.moveLocation(extrp, 0, vy);
 
         // Block offset on its limits
-        if (offset.getLocationIntY() < -intervalVertical)
+        if (offset.getLocationY() < -intervalVertical)
         {
             offset.setLocationY(-intervalVertical);
         }
-        if (offset.getLocationIntY() > intervalVertical)
+        if (offset.getLocationY() > intervalVertical)
         {
             offset.setLocationY(intervalVertical);
         }

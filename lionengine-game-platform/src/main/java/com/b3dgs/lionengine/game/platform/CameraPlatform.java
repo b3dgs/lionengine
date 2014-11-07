@@ -158,7 +158,7 @@ public class CameraPlatform
     private void checkHorizontalLimit(double vx)
     {
         // Middle
-        if (offset.getLocationIntX() == -intervalHorizontal || offset.getLocationIntX() == intervalHorizontal)
+        if (offset.getLocationX() == -intervalHorizontal || offset.getLocationX() == intervalHorizontal)
         {
             location.moveLocation(1, vx, 0);
         }
@@ -210,12 +210,12 @@ public class CameraPlatform
 
         offset.moveLocation(1, vx, 0);
 
-        if (location.getLocationIntX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
+        if (location.getLocationX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
         {
             offset.setLocationX(intervalHorizontal);
             location.moveLocation(1, vx, 0);
         }
-        if (location.getLocationIntX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
+        if (location.getLocationX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
         {
             offset.setLocationX(-intervalHorizontal);
             location.moveLocation(1, vx, 0);
