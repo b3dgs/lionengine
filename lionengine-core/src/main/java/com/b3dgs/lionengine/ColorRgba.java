@@ -99,6 +99,34 @@ public final class ColorRgba
     }
 
     /**
+     * Get the increased color value. Current color not modified.
+     * 
+     * @param value The original color value.
+     * @param r The increase red value.
+     * @param g The increase green value.
+     * @param b The increase blue value.
+     * @return The increased color value.
+     */
+    public static int inc(int value, int r, int g, int b)
+    {
+        final int alpha = mask(value >> 24);
+        if (alpha == 0)
+        {
+            return 0;
+        }
+        final int red = mask(value >> 16);
+        final int green = mask(value >> 8);
+        final int blue = mask(value >> 0);
+    
+        final int alphaMask = mask(255) << 24;
+        final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << 16;
+        final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << 8;
+        final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
+    
+        return alphaMask | redMask | greenMask | blueMask;
+    }
+
+    /**
      * Get raster color.
      * 
      * @param i The color offset.
@@ -192,24 +220,6 @@ public final class ColorRgba
         red = mask(value >> 16);
         green = mask(value >> 8);
         blue = mask(value >> 0);
-    }
-
-    /**
-     * Get the increased color value. Current color not modified.
-     * 
-     * @param r The increase red value.
-     * @param g The increase green value.
-     * @param b The increase blue value.
-     * @return The increased color value.
-     */
-    public int inc(int r, int g, int b)
-    {
-        if (alpha == 0)
-        {
-            return 0;
-        }
-        return mask(255) << 24 | mask(UtilMath.fixBetween(red + r, 0, 255)) << 16
-                | mask(UtilMath.fixBetween(green + g, 0, 255)) << 8 | mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
     }
 
     /**

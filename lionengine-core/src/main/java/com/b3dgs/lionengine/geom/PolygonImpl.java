@@ -32,6 +32,33 @@ final class PolygonImpl
     /** Minimum number of points. */
     private static final int MIN = 4;
 
+    /**
+     * Calculate and create the bounds.
+     * 
+     * @param xpoints The horizontal points.
+     * @param ypoints The vertical points.
+     * @param npoints The points number.
+     * @return The calculated bounds.
+     */
+    private static Rectangle calculateBounds(int[] xpoints, int[] ypoints, int npoints)
+    {
+        int boundsMinX = Integer.MAX_VALUE;
+        int boundsMinY = Integer.MAX_VALUE;
+        int boundsMaxX = Integer.MIN_VALUE;
+        int boundsMaxY = Integer.MIN_VALUE;
+
+        for (int i = 0; i < npoints; i++)
+        {
+            final int x = xpoints[i];
+            boundsMinX = Math.min(boundsMinX, x);
+            boundsMaxX = Math.max(boundsMaxX, x);
+            final int y = ypoints[i];
+            boundsMinY = Math.min(boundsMinY, y);
+            boundsMaxY = Math.max(boundsMaxY, y);
+        }
+        return Geom.createRectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
+    }
+
     /** The array of coordinates X. */
     private int[] xpoints;
     /** The array of coordinates Y. */
@@ -80,32 +107,6 @@ final class PolygonImpl
         bounds.set(x, y, nw, nh);
     }
 
-    /**
-     * Calculate and create the bounds.
-     * 
-     * @param xpoints The horizontal points.
-     * @param ypoints The vertical points.
-     * @param npoints The points number.
-     */
-    private void calculateBounds(int[] xpoints, int[] ypoints, int npoints)
-    {
-        int boundsMinX = Integer.MAX_VALUE;
-        int boundsMinY = Integer.MAX_VALUE;
-        int boundsMaxX = Integer.MIN_VALUE;
-        int boundsMaxY = Integer.MIN_VALUE;
-
-        for (int i = 0; i < npoints; i++)
-        {
-            final int x = xpoints[i];
-            boundsMinX = Math.min(boundsMinX, x);
-            boundsMaxX = Math.max(boundsMaxX, x);
-            final int y = ypoints[i];
-            boundsMinY = Math.min(boundsMinY, y);
-            boundsMaxY = Math.max(boundsMaxY, y);
-        }
-        bounds = Geom.createRectangle(boundsMinX, boundsMinY, boundsMaxX - boundsMinX, boundsMaxY - boundsMinY);
-    }
-
     /*
      * Polygon
      */
@@ -138,7 +139,7 @@ final class PolygonImpl
     @Override
     public Rectangle getRectangle()
     {
-        calculateBounds(xpoints, ypoints, npoints);
+        bounds = calculateBounds(xpoints, ypoints, npoints);
         return bounds;
     }
 

@@ -429,7 +429,7 @@ public abstract class EntityPlatform
     }
 
     @Override
-    public void setAnimSpeed(double speed)
+    public void setAnimSpeed(double speed) throws LionEngineException
     {
         sprite.setAnimSpeed(speed);
     }
@@ -465,7 +465,7 @@ public abstract class EntityPlatform
     }
 
     @Override
-    public void setFrame(int frame)
+    public void setFrame(int frame) throws LionEngineException
     {
         sprite.setFrame(frame);
     }

@@ -38,19 +38,19 @@ class SpriteImpl
         implements Sprite
 {
     /** Sprite original width. */
-    protected final int widthOriginal;
+    private final int widthOriginal;
     /** Sprite original height. */
-    protected final int heightOriginal;
+    private final int heightOriginal;
     /** Sprite file name. */
     private final Media media;
-    /** Sprite original surface. */
-    protected ImageBuffer surfaceOriginal;
     /** Sprite current surface. */
-    protected ImageBuffer surface;
+    private ImageBuffer surface;
     /** Sprite width. */
-    protected int width;
+    private int width;
     /** Sprite height. */
-    protected int height;
+    private int height;
+    /** Sprite original surface. */
+    private ImageBuffer surfaceOriginal;
     /** Sprite raw data (used for alpha). */
     private int[][] rgb;
     /** First alpha. */
@@ -127,7 +127,7 @@ class SpriteImpl
      */
 
     @Override
-    public void load(boolean alpha) throws LionEngineException
+    public final void load(boolean alpha) throws LionEngineException
     {
         if (surface == null)
         {
@@ -136,13 +136,13 @@ class SpriteImpl
     }
 
     @Override
-    public void scale(int percent) throws LionEngineException
+    public final void scale(int percent) throws LionEngineException
     {
         stretch(percent, percent);
     }
 
     @Override
-    public void stretch(int widthPercent, int heightPercent) throws LionEngineException
+    public final void stretch(int widthPercent, int heightPercent) throws LionEngineException
     {
         Check.superiorStrict(widthPercent, 0);
         Check.superiorStrict(heightPercent, 0);
@@ -157,42 +157,42 @@ class SpriteImpl
     }
 
     @Override
-    public void rotate(int angle)
+    public final void rotate(int angle)
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.rotate(surfaceOriginal, angle);
     }
 
     @Override
-    public void flipHorizontal()
+    public final void flipHorizontal()
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.flipHorizontal(surfaceOriginal);
     }
 
     @Override
-    public void flipVertical()
+    public final void flipVertical()
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.flipVertical(surfaceOriginal);
     }
 
     @Override
-    public void filter(Filter filter) throws LionEngineException
+    public final void filter(Filter filter) throws LionEngineException
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.applyFilter(surfaceOriginal, filter);
     }
 
     @Override
-    public void setTransparency(ColorRgba mask)
+    public final void setTransparency(ColorRgba mask)
     {
         lazySurfaceBackup();
         surface = Core.GRAPHIC.applyMask(surfaceOriginal, mask);
     }
 
     @Override
-    public void setAlpha(int alpha) throws LionEngineException
+    public final void setAlpha(int alpha) throws LionEngineException
     {
         Check.superiorOrEqual(alpha, 0);
         Check.inferiorOrEqual(alpha, 255);
@@ -201,7 +201,7 @@ class SpriteImpl
     }
 
     @Override
-    public void setFade(int alpha, int fade)
+    public final void setFade(int alpha, int fade)
     {
         if (rgb == null)
         {
@@ -220,7 +220,7 @@ class SpriteImpl
                 final int alphaDec = 24;
                 final int alphaKey = 0x00ffffff;
                 final int mc = Math.abs(alpha) << alphaDec | alphaKey;
-                surface.setRgb(cx, cy, new ColorRgba(rgb[cx][cy]).inc(fade + alpha, fade + alpha, fade + alpha) & mc);
+                surface.setRgb(cx, cy, ColorRgba.inc(rgb[cx][cy], fade + alpha, fade + alpha, fade + alpha) & mc);
             }
         }
         firstAlpha = false;
@@ -233,31 +233,31 @@ class SpriteImpl
     }
 
     @Override
-    public int getWidth()
+    public final int getWidth()
     {
         return width;
     }
 
     @Override
-    public int getHeight()
+    public final int getHeight()
     {
         return height;
     }
 
     @Override
-    public int getWidthOriginal()
+    public final int getWidthOriginal()
     {
         return widthOriginal;
     }
 
     @Override
-    public int getHeightOriginal()
+    public final int getHeightOriginal()
     {
         return heightOriginal;
     }
 
     @Override
-    public ImageBuffer getSurface()
+    public final ImageBuffer getSurface()
     {
         return surface;
     }

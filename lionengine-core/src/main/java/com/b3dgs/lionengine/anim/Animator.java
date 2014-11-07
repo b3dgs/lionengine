@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.anim;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
 
 /**
  * Animator can play an {@link Animation}.
@@ -78,15 +79,17 @@ public interface Animator
      * </p>
      * 
      * @param speed The new animation speed (>= 0).
+     * @throws LionEngineException If speed is negative.
      */
-    void setAnimSpeed(double speed);
+    void setAnimSpeed(double speed) throws LionEngineException;
 
     /**
      * Set a fixed frame (it will overwrite the current animation frame).
      * 
-     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME} and <= last frame).
+     * @param frame The frame to set (>= {@link Animation#MINIMUM_FRAME}, <= {@link SpriteAnimated#getFramesNumber()}).
+     * @throws LionEngineException If frame is out of range.
      */
-    void setFrame(int frame);
+    void setFrame(int frame) throws LionEngineException;
 
     /**
      * Get current animation state.

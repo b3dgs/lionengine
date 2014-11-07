@@ -689,13 +689,13 @@ public abstract class EntityStrategy
     }
 
     @Override
-    public void setAnimSpeed(double speed)
+    public void setAnimSpeed(double speed) throws LionEngineException
     {
         sprite.setAnimSpeed(speed);
     }
 
     @Override
-    public void setFrame(int frame)
+    public void setFrame(int frame) throws LionEngineException
     {
         sprite.setFrame(frame);
     }

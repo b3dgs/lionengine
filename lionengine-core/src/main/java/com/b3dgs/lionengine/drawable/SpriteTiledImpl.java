@@ -62,8 +62,8 @@ final class SpriteTiledImpl
 
         tileOriginalWidth = tileWidth;
         tileOriginalHeight = tileHeight;
-        horizontalTiles = widthOriginal / tileWidth;
-        verticalTiles = heightOriginal / tileHeight;
+        horizontalTiles = getWidthOriginal() / tileWidth;
+        verticalTiles = getHeightOriginal() / tileHeight;
         tilesNumber = horizontalTiles * verticalTiles;
     }
 
@@ -84,8 +84,8 @@ final class SpriteTiledImpl
 
         tileOriginalWidth = tileWidth;
         tileOriginalHeight = tileHeight;
-        horizontalTiles = widthOriginal / tileWidth;
-        verticalTiles = heightOriginal / tileHeight;
+        horizontalTiles = getWidthOriginal() / tileWidth;
+        verticalTiles = getHeightOriginal() / tileHeight;
         tilesNumber = horizontalTiles * verticalTiles;
     }
 
@@ -101,7 +101,7 @@ final class SpriteTiledImpl
         final int w = getTileWidth();
         final int h = getTileHeight();
 
-        g.drawImage(surface, x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
+        g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
     }
 
     @Override
@@ -157,7 +157,7 @@ final class SpriteTiledImpl
         final int w = getTileWidth();
         final int h = getTileHeight();
 
-        g.drawImage(surface, 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
+        g.drawImage(getSurface(), 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
         g.dispose();
 
         return buffer;

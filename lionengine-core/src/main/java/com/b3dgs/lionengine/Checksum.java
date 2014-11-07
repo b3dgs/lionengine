@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public final class Checksum
     /** Instance error message. */
     private static final String ERROR_SHA_INSTANCE = "SHA-256 can not be instantiated !";
     /** UTF8. */
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
     /** SHA Mode. */
     private static final String SHA = "SHA-256";
 

@@ -67,6 +67,7 @@ final class SpriteParallaxedImpl
      */
     SpriteParallaxedImpl(Media media, int linesNumber, int sx, int sy) throws LionEngineException
     {
+        Check.notNull(media);
         Check.superiorStrict(linesNumber, 0);
         Check.superiorStrict(sx, 0);
         Check.superiorStrict(sy, 0);

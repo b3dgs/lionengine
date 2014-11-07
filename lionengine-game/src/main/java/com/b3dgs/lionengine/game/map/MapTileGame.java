@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -90,12 +91,16 @@ public abstract class MapTileGame<T extends TileGame>
     /**
      * Constructor base.
      * 
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
-     * @param collisions The collisions list.
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
+     * @param collisions The collisions list (must not be <code>null</code>).
      */
     public MapTileGame(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
+        Check.notNull(collisions);
+
         this.collisions = collisions;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -262,6 +267,9 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void create(int widthInTile, int heightInTile)
     {
+        Check.superiorStrict(widthInTile, 0);
+        Check.superiorStrict(heightInTile, 0);
+
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
         tiles = new ArrayList<>(heightInTile);

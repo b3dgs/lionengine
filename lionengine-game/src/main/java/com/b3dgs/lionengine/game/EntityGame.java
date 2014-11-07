@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.purview.Collidable;
+import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.purview.Mirrorable;
 import com.b3dgs.lionengine.game.purview.model.CollidableModel;
 import com.b3dgs.lionengine.game.purview.model.MirrorableModel;
@@ -60,7 +61,7 @@ public abstract class EntityGame
      * @param entity The entity to compare to.
      * @return The distance value.
      */
-    public double getDistance(EntityGame entity)
+    public double getDistance(Localizable entity)
     {
         return UtilMath.getDistance(getLocationX(), getLocationY(), entity.getLocationX(), entity.getLocationY());
     }
