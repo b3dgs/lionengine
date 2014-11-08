@@ -17,17 +17,22 @@
  */
 package com.b3dgs.lionengine.game.utility;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * This class allows to convert a map image to a map level format.
@@ -59,6 +64,8 @@ public final class LevelRipConverter<T extends TileGame>
 
     /** Map reference. */
     private final MapTile<T> map;
+    /** Collisions map. */
+    private final Collection<XmlNode> collisions;
     /** Level rip image. */
     private final Sprite imageMap;
     /** Level rip height in tile. */
@@ -82,7 +89,12 @@ public final class LevelRipConverter<T extends TileGame>
      */
     public LevelRipConverter(Media levelrip, Media patternsDirectory, MapTile<T> map)
     {
+        final Media collisionsFile = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        final XmlNode root = Stream.loadXml(collisionsFile);
+        final Collection<XmlNode> collisions = root.getChildren();
+
         this.map = map;
+        this.collisions = collisions;
 
         imageMap = Drawable.loadSprite(levelrip);
         imageMap.load(false);
@@ -180,7 +192,9 @@ public final class LevelRipConverter<T extends TileGame>
 
                     if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
                     {
-                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, null);
+                        final String collision = UtilMapTile.getCollision(collisions, pattern.intValue(), number);
+                        final CollisionTile coll = map.getCollisionFrom(collision);
+                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, coll);
                         return tile;
                     }
                 }
