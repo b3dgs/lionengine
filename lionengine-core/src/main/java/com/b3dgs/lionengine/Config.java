@@ -65,6 +65,7 @@ public final class Config
     private Media icon;
     /** Applet reference. */
     private Applet<?> applet;
+
     /**
      * Create a configuration without filter.
      * 
@@ -144,7 +145,7 @@ public final class Config
     public void setSource(Resolution source) throws LionEngineException
     {
         Check.notNull(source);
-    
+
         this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
         this.source.setRatio(ratio);
     }

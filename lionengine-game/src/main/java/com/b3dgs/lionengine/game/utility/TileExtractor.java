@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
- * This class allows to extract unique tiles from a level rip. The color [0-128-128] is ignored (can be used to skip
- * tile, in order to improve performance).
+ * This class allows to extract unique tiles from a level rip.
+ * The color [0-128-128] is ignored (can be used to skip tile, in order to improve performance).
  * <p>
  * Example (will scan level.png, using a 16*16 tile size, and store result in sheet.png 256*256):
  * </p>

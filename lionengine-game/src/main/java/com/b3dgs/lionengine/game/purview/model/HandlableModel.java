@@ -69,9 +69,9 @@ public class HandlableModel
      */
     public HandlableModel() throws LionEngineException
     {
-        destroy = false;
         id = HandlableModel.getFreeId();
         HandlableModel.IDS.add(id);
+        destroy = false;
     }
 
     /*
@@ -87,8 +87,8 @@ public class HandlableModel
     @Override
     public void destroy()
     {
-        destroy = true;
         HandlableModel.IDS.remove(getId());
+        destroy = true;
     }
 
     @Override

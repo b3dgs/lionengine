@@ -26,11 +26,14 @@ import com.b3dgs.lionengine.game.Force;
  */
 public interface Body
 {
+    /** Gravity of earth (in m/s). */
+    public static final double GRAVITY_EARTH = 9.80665;
+
     /**
      * Update gravity calculation.
      * 
      * @param extrp The extrapolation value.
-     * @param desiredFps The desired fps (usually 60)
+     * @param desiredFps The desired fps (usually <code>60</code>)
      * @param forces The list of forces.
      */
     void updateGravity(double extrp, int desiredFps, Force... forces);

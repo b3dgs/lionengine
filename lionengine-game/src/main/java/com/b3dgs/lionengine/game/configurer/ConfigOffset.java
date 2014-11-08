@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.LionEngineException;
  * Represents the offset data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurer
  */
 public class ConfigOffset
 {

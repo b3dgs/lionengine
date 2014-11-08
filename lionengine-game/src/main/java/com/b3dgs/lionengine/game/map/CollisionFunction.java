@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.Range;
  * Describe the collision function used.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see MapTile
  */
 public class CollisionFunction
 {

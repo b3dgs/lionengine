@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.purview.model;
 
 import java.util.List;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.SetupSurfaceRasteredGame;
@@ -45,14 +46,16 @@ public class RasterableModel
      * Constructor.
      * 
      * @param setup The setup reference.
-     * @param tileHeight The tile height value.
+     * @param tileHeight The tile height value (must be strictly positive).
      */
     public RasterableModel(SetupSurfaceRasteredGame setup, int tileHeight)
     {
+        Check.superiorOrEqual(tileHeight, 0);
+
+        this.tileHeight = tileHeight;
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
         smooth = setup.smoothRaster;
-        this.tileHeight = tileHeight;
     }
 
     /*
@@ -76,6 +79,7 @@ public class RasterableModel
     @Override
     public SpriteAnimated getRasterAnim(int rasterIndex)
     {
+        Check.superiorOrEqual(rasterIndex, 0);
         return rastersAnim.get(rasterIndex);
     }
 

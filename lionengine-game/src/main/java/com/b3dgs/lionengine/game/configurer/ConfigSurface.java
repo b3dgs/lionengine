@@ -18,11 +18,14 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
  * Represents the surface data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurer
+ * @see SetupSurfaceGame
  */
 public class ConfigSurface
 {

@@ -51,7 +51,7 @@ public abstract class EntityPlatform
         implements Animator, Body
 {
     /** Animation surface. */
-    protected final SpriteAnimated sprite;
+    private final SpriteAnimated sprite;
     /** Body object reference. */
     private final Body body;
     /** List of declared tile collision point. */
@@ -78,8 +78,8 @@ public abstract class EntityPlatform
      * <pre>
      * {@code
      * <entity>
-     *     <frames horizontal="" vertical=""/>
-     *     <size width="" height=""/>
+     *     <lionengine:frames horizontal="" vertical=""/>
+     *     <lionengine:size width="" height=""/>
      * </entity>
      * }
      * </pre>
@@ -92,7 +92,6 @@ public abstract class EntityPlatform
     {
         super(setup);
         tileCollisions = new HashMap<>(1);
-        body = new BodyModel(this);
         final Configurer configurer = setup.getConfigurer();
         final ConfigFrames framesData = ConfigFrames.create(configurer);
         final ConfigSize sizeData = ConfigSize.create(configurer);
@@ -100,6 +99,7 @@ public abstract class EntityPlatform
         frameOffsetX = 0;
         frameOffsetY = 0;
         setSize(sizeData.getWidth(), sizeData.getHeight());
+        body = new BodyModel(this);
     }
 
     /**
@@ -160,58 +160,6 @@ public abstract class EntityPlatform
      * @param extrp The extrapolation value.
      */
     protected abstract void handleAnimations(final double extrp);
-
-    /**
-     * Set frame offsets (offsets on rendering).
-     * 
-     * @param frameOffsetX The horizontal offset.
-     * @param frameOffsetY The vertical offset.
-     */
-    public void setFrameOffsets(int frameOffsetX, int frameOffsetY)
-    {
-        this.frameOffsetX = frameOffsetX;
-        this.frameOffsetY = frameOffsetY;
-    }
-
-    /**
-     * Get real horizontal speed (calculated on differential location x).
-     * 
-     * @return The real speed.
-     */
-    public double getDiffHorizontal()
-    {
-        return getLocationX() - getLocationOldX();
-    }
-
-    /**
-     * Get real vertical speed (calculated on differential location y).
-     * 
-     * @return The real speed.
-     */
-    public double getDiffVertical()
-    {
-        return getLocationY() - getLocationOldY();
-    }
-
-    /**
-     * Check if entity is going up.
-     * 
-     * @return <code>true</code> if going up, <code>false</code> else.
-     */
-    public boolean isGoingUp()
-    {
-        return locationBeforeCollisionY > locationBeforeCollisionOldY;
-    }
-
-    /**
-     * Check if entity is going down.
-     * 
-     * @return <code>true</code> if going down, <code>false</code> else.
-     */
-    public boolean isGoingDown()
-    {
-        return locationBeforeCollisionY < locationBeforeCollisionOldY;
-    }
 
     /**
      * Apply an horizontal collision using the specified blocking x value.
@@ -276,6 +224,91 @@ public abstract class EntityPlatform
     }
 
     /**
+     * Get the first tile hit for the specified collision tile category matching the collision list.
+     * 
+     * @param <T> The tile type used.
+     * @param <M> The map tile platform used.
+     * @param map The map reference.
+     * @param category The collision tile category.
+     * @return The first tile hit, <code>null</code> if none.
+     */
+    public <T extends TileGame, M extends MapTile<T>> T getCollisionTile(M map, CollisionTileCategory category)
+    {
+        final CoordTile offsets = tileCollisions.get(category);
+        if (offsets != null)
+        {
+            collOffX = offsets.getX();
+            collOffY = offsets.getY();
+
+            final T tile = map.getFirstTileHit(this, category.getCollisions(), true);
+            return tile;
+        }
+        return null;
+    }
+
+    /**
+     * Get real horizontal speed (calculated on differential location x).
+     * 
+     * @return The real speed.
+     */
+    public double getDiffHorizontal()
+    {
+        return getLocationX() - getLocationOldX();
+    }
+
+    /**
+     * Get real vertical speed (calculated on differential location y).
+     * 
+     * @return The real speed.
+     */
+    public double getDiffVertical()
+    {
+        return getLocationY() - getLocationOldY();
+    }
+
+    /**
+     * Set frame offsets (offsets on rendering).
+     * 
+     * @param frameOffsetX The horizontal offset.
+     * @param frameOffsetY The vertical offset.
+     */
+    public void setFrameOffsets(int frameOffsetX, int frameOffsetY)
+    {
+        this.frameOffsetX = frameOffsetX;
+        this.frameOffsetY = frameOffsetY;
+    }
+
+    /**
+     * Set the mirror axis to use when.
+     * 
+     * @param horizontal <code>true</code> for horizontal flipping, <code>false</code> for vertical flipping.
+     */
+    public void setMirrorAxis(boolean horizontal)
+    {
+        sprite.setMirrorAxis(horizontal);
+    }
+
+    /**
+     * Check if entity is going up.
+     * 
+     * @return <code>true</code> if going up, <code>false</code> else.
+     */
+    public boolean isGoingUp()
+    {
+        return locationBeforeCollisionY > locationBeforeCollisionOldY;
+    }
+
+    /**
+     * Check if entity is going down.
+     * 
+     * @return <code>true</code> if going down, <code>false</code> else.
+     */
+    public boolean isGoingDown()
+    {
+        return locationBeforeCollisionY < locationBeforeCollisionOldY;
+    }
+
+    /**
      * Define a tile collision at a specific offset from the entity referential.
      * 
      * @param <C> The collision type used.
@@ -299,29 +332,6 @@ public abstract class EntityPlatform
     protected <C extends Enum<C> & CollisionTile> CoordTile getCollisionTileOffset(CollisionTileCategory type)
     {
         return tileCollisions.get(type);
-    }
-
-    /**
-     * Get the first tile hit for the specified collision tile category matching the collision list.
-     * 
-     * @param <T> The tile type used.
-     * @param <M> The map tile platform used.
-     * @param map The map reference.
-     * @param category The collision tile category.
-     * @return The first tile hit, <code>null</code> if none.
-     */
-    public <T extends TileGame, M extends MapTile<T>> T getCollisionTile(M map, CollisionTileCategory category)
-    {
-        final CoordTile offsets = tileCollisions.get(category);
-        if (offsets != null)
-        {
-            collOffX = offsets.getX();
-            collOffY = offsets.getY();
-
-            final T tile = map.getFirstTileHit(this, category.getCollisions(), true);
-            return tile;
-        }
-        return null;
     }
 
     /*

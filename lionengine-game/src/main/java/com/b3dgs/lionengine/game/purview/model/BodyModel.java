@@ -29,11 +29,8 @@ import com.b3dgs.lionengine.game.purview.Localizable;
 public class BodyModel
         implements Body
 {
-    /** Gravity of earth (in m/s). */
-    private static final double GRAVITY = 9.80665;
-
     /** Body location. */
-    protected final Localizable localizable;
+    private final Localizable localizable;
     /** Body force. */
     private final Force force;
     /** Maximum gravity value. */
@@ -102,6 +99,6 @@ public class BodyModel
     @Override
     public double getWeight()
     {
-        return mass * BodyModel.GRAVITY;
+        return mass * Body.GRAVITY_EARTH;
     }
 }

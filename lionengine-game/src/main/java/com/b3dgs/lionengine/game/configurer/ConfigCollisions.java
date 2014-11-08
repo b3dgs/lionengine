@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the collisions data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurer
+ * @see Collision
+ * @see XmlNode
  */
 public class ConfigCollisions
 {
@@ -142,10 +146,10 @@ public class ConfigCollisions
     /**
      * Get all collisions.
      * 
-     * @return The collisions list.
+     * @return The unmodifiable collisions map, where key is the collision name.
      */
     public Map<String, Collision> getCollisions()
     {
-        return collisions;
+        return Collections.unmodifiableMap(collisions);
     }
 }

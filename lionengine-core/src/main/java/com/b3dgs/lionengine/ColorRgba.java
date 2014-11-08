@@ -117,12 +117,12 @@ public final class ColorRgba
         final int red = mask(value >> 16);
         final int green = mask(value >> 8);
         final int blue = mask(value >> 0);
-    
+
         final int alphaMask = mask(255) << 24;
         final int redMask = mask(UtilMath.fixBetween(red + r, 0, 255)) << 16;
         final int greenMask = mask(UtilMath.fixBetween(green + g, 0, 255)) << 8;
         final int blueMask = mask(UtilMath.fixBetween(blue + b, 0, 255)) << 0;
-    
+
         return alphaMask | redMask | greenMask | blueMask;
     }
 
