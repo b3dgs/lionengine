@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.game.strategy.skills.ControlPanel;
@@ -38,10 +36,12 @@ import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
-        extends HandlerEntityStrategy<ResourceType, Tile, Entity, ControlPanel>
+        extends HandlerEntityStrategy<ResourceType, Tile, Entity>
 {
     /** Cursor reference. */
     private final Cursor cursor;
+    /** Control panel reference. */
+    private final ControlPanel controlPanel;
 
     /**
      * Constructor.
@@ -54,8 +54,9 @@ public final class HandlerEntity
      */
     public HandlerEntity(CameraStrategy camera, Cursor cursor, ControlPanel controlPanel, Map map, TextGame text)
     {
-        super(camera, cursor, controlPanel, map);
+        super(camera, cursor, map);
         this.cursor = cursor;
+        this.controlPanel = controlPanel;
     }
 
     /*
@@ -86,16 +87,10 @@ public final class HandlerEntity
     @Override
     protected void renderingEntity(Graphic g, Entity entity, CameraStrategy camera, CursorStrategy cursor)
     {
-        if (cursor.getClick() == 0 && entity.isOver() && !panel.canClick(cursor) || entity.isSelected())
+        if (cursor.getClick() == 0 && entity.isOver() && !controlPanel.canClick(cursor) || entity.isSelected())
         {
             super.renderingEntity(g, entity, camera, cursor);
         }
-    }
-
-    @Override
-    protected void notifyUpdatedSelection(Collection<Entity> selection)
-    {
-        // Nothing to do
     }
 
     @Override

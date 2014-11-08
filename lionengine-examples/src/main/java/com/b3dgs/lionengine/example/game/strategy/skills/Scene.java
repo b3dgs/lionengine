@@ -97,6 +97,9 @@ final class Scene
         factoryEntity = new FactoryEntity();
         mouse.setConfig(getConfig());
 
+        controlPanel.addListener(handlerEntity);
+        handlerEntity.addListener(controlPanel);
+
         final ContextGame contextEntity = new ContextGame();
         contextEntity.addService(map);
         contextEntity.addService(factoryEntity);

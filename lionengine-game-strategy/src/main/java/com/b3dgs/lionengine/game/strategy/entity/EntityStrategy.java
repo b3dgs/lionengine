@@ -51,11 +51,11 @@ public abstract class EntityStrategy
         implements Animator, Tiled
 {
     /** Animation surface. */
-    protected final SpriteAnimated sprite;
+    private final SpriteAnimated sprite;
     /** Entity location offset x. */
-    protected final int offsetX;
+    private final int offsetX;
     /** Entity location offset y. */
-    protected final int offsetY;
+    private final int offsetY;
     /** Map reference. */
     private MapTileStrategy<?, ?> map;
     /** Current animation. */
@@ -639,16 +639,6 @@ public abstract class EntityStrategy
         }
     }
 
-    @Override
-    public void destroy()
-    {
-        super.destroy();
-        if (map != null)
-        {
-            removeRef();
-        }
-    }
-
     /*
      * Localizable
      */
@@ -726,14 +716,20 @@ public abstract class EntityStrategy
     }
 
     /**
-     * {@inheritDoc}
-     * 
-     * @deprecated already called in main loop. Has to be called only on specific cases.
+     * Does nothing as it is already called in {@link #update(double)}.
      */
-    @Deprecated
     @Override
     public void updateAnimation(double extrp)
     {
-        sprite.updateAnimation(extrp);
+        // Already called in update
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        if (map != null)
+        {
+            removeRef();
+        }
     }
 }

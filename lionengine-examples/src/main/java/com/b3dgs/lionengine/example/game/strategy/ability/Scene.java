@@ -119,6 +119,8 @@ final class Scene
         factoryEntity = new FactoryEntity();
         factoryProduction = new FactoryProduction();
 
+        controlPanel.addListener(handlerEntity);
+
         final ContextGame contextEntity = new ContextGame();
         contextEntity.addService(map);
         contextEntity.addService(factoryEntity);

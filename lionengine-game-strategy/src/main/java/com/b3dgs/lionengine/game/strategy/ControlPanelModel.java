@@ -36,10 +36,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class ControlPanelModel<E extends EntityStrategy>
-        implements ControlPanelListener
 {
-    /** Player owning the control panel. */
-    protected PlayerStrategy player;
     /** List of listeners. */
     private final Collection<ControlPanelListener> listeners;
     /** Selection area. */
@@ -96,13 +93,6 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     }
 
     /**
-     * Called when the selection has been updated by the handler.
-     * 
-     * @param selection The selected entities.
-     */
-    public abstract void notifyUpdatedSelection(Collection<E> selection);
-
-    /**
      * Called when an order started.
      */
     protected abstract void onStartOrder();
@@ -155,7 +145,10 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
             // Clear selection if done
             if (selected)
             {
-                notifySelectionDone(selectionArea);
+                for (final ControlPanelListener listener : listeners)
+                {
+                    listener.notifySelectionDone(selectionArea);
+                }
                 selectionArea.set(-1, -1, 0, 0);
                 selected = false;
             }
@@ -239,16 +232,6 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     }
 
     /**
-     * Set player (player owning this panel).
-     * 
-     * @param player The player reference.
-     */
-    public void setPlayer(PlayerStrategy player)
-    {
-        this.player = player;
-    }
-
-    /**
      * Set the selection color.
      * 
      * @param color The selection color.
@@ -328,7 +311,10 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
                 sx = cursor.getLocationX();
                 sy = cursor.getLocationY();
                 computeSelection(cursor, camera);
-                notifySelectionStarted(selectionArea);
+                for (final ControlPanelListener listener : listeners)
+                {
+                    listener.notifySelectionStarted(selectionArea);
+                }
             }
         }
         else
@@ -411,27 +397,5 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
             selectY = 0;
         }
         selectionArea.set(selectX, selectY, selectW, selectH);
-    }
-
-    /*
-     * Control panel listener
-     */
-
-    @Override
-    public void notifySelectionStarted(Rectangle selection)
-    {
-        for (final ControlPanelListener listener : listeners)
-        {
-            listener.notifySelectionStarted(selection);
-        }
-    }
-
-    @Override
-    public void notifySelectionDone(Rectangle selection)
-    {
-        for (final ControlPanelListener listener : listeners)
-        {
-            listener.notifySelectionDone(selection);
-        }
     }
 }

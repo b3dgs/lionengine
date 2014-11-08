@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy.entity;
 
+import java.util.Collection;
+
 /**
  * Entity activities listener.
  * 
@@ -31,4 +33,13 @@ public interface EntityStrategyListener<E extends EntityStrategy>
      * @param entity The entity reference.
      */
     void entityMoved(E entity);
+
+    /**
+     * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
+     * recommended to unselect the entity with {@link EntityStrategy#setSelection(boolean)} and remove the entity from
+     * the selection which is given as a parameter. Example: Ignore a certain type of entity.
+     * 
+     * @param selection The selected entities.
+     */
+    void notifyUpdatedSelection(Collection<E> selection);
 }

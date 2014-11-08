@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.example.game.strategy.ability.ControlPanel;
@@ -37,7 +35,7 @@ import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class HandlerEntity
-        extends HandlerEntityStrategy<ResourceType, Tile, Entity, ControlPanel>
+        extends HandlerEntityStrategy<ResourceType, Tile, Entity>
 {
     /** Entity progress bar. */
     private final Bar barProgress;
@@ -53,7 +51,7 @@ public final class HandlerEntity
      */
     public HandlerEntity(CameraStrategy camera, CursorStrategy cursor, ControlPanel controlPanel, Map map, TextGame text)
     {
-        super(camera, cursor, controlPanel, map);
+        super(camera, cursor, map);
         barProgress = new Bar(0, 0);
         barProgress.setBorderSize(1, 1);
     }
@@ -87,12 +85,6 @@ public final class HandlerEntity
             barProgress.setColorForeground(ColorRgba.RED);
             barProgress.render(g);
         }
-    }
-
-    @Override
-    protected void notifyUpdatedSelection(Collection<Entity> selection)
-    {
-        // Nothing to do
     }
 
     @Override

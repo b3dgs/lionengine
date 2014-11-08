@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelListener;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
@@ -52,18 +51,15 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @param <R> Resource enumeration type.
  * @param <T> Tile type used.
  * @param <E> Entity type used.
- * @param <C> Control panel type.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<R>, E extends EntityStrategy, C extends ControlPanelModel<E>>
+public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<R>, E extends EntityStrategy>
         extends HandlerGame<E>
         implements ControlPanelListener
 {
     /** Maximum number of layers. */
     static final int LAYERS = 4;
 
-    /** Control panel reference. */
-    protected final C panel;
     /** Camera reference. */
     private final CameraStrategy camera;
     /** Cursor reference. */
@@ -93,22 +89,19 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * 
      * @param camera The camera viewpoint.
      * @param cursor The cursor reference (used for selection).
-     * @param panel The control panel reference.
      * @param map The map reference.
      */
-    public HandlerEntityStrategy(CameraStrategy camera, CursorStrategy cursor, C panel, MapTileStrategy<R, T> map)
+    public HandlerEntityStrategy(CameraStrategy camera, CursorStrategy cursor, MapTileStrategy<R, T> map)
     {
         super();
         this.camera = camera;
         this.cursor = cursor;
-        this.panel = panel;
         this.map = map;
         listeners = new ArrayList<>(1);
         selectedEntity = new HashSet<>(8);
         entityArea = Geom.createRectangle();
         sharedPathIds = new HashSet<>(0);
         layers = null;
-        panel.addListener(this);
     }
 
     /**
@@ -135,15 +128,6 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      * @return color The representing selected entity.
      */
     protected abstract ColorRgba getEntityColorSelection(E entity);
-
-    /**
-     * Check the last selected entities. Selection filter can be done here. To apply the filter correctly, it is
-     * recommended to unselect the entity with {@link EntityStrategy#setSelection(boolean)} and remove the entity from
-     * the selection which is given as a parameter. Example: Ignore a certain type of entity.
-     * 
-     * @param selection The selected entities.
-     */
-    protected abstract void notifyUpdatedSelection(Collection<E> selection);
 
     /**
      * Add an entity listener.
@@ -346,8 +330,10 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         }
 
         // Notify the selection update
-        notifyUpdatedSelection(selectedEntity);
-        panel.notifyUpdatedSelection(selectedEntity);
+        for (final EntityStrategyListener<E> listener : listeners)
+        {
+            listener.notifyUpdatedSelection(selectedEntity);
+        }
     }
 
     /**
