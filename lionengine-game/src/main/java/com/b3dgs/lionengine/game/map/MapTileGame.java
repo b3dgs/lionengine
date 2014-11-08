@@ -367,8 +367,8 @@ public abstract class MapTileGame<T extends TileGame>
     public void load(Media levelrip, Media patternsDirectory) throws LionEngineException
     {
         clear();
-        final LevelRipConverter<T> rip = new LevelRipConverter<>();
-        rip.start(levelrip, patternsDirectory, this);
+        final LevelRipConverter<T> rip = new LevelRipConverter<>(levelrip, patternsDirectory, this);
+        rip.start();
         this.patternsDirectory = patternsDirectory;
         loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
     }
