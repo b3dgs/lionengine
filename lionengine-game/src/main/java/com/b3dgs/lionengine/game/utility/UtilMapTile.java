@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -124,21 +125,17 @@ public class UtilMapTile
             {
                 root.add(node);
             }
-            final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
-            if (functions != null)
+            for (final CollisionFunction function : collision.getCollisionFunctions())
             {
-                for (final CollisionFunction function : functions)
-                {
-                    final XmlNode functionNode = Stream.createXmlNode(UtilMapTile.TAG_FUNCTION);
-                    functionNode.writeString(UtilMapTile.ATT_FUNCTION_NAME, function.getName());
-                    functionNode.writeString(UtilMapTile.ATT_FUNCTION_AXIS, function.getAxis().name());
-                    functionNode.writeString(UtilMapTile.ATT_FUNCTION_INPUT, function.getInput().name());
-                    functionNode.writeDouble(UtilMapTile.ATT_FUNCTION_VALUE, function.getValue());
-                    functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_OFFSET, function.getOffset());
-                    functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_MIN, function.getRange().getMin());
-                    functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_MAX, function.getRange().getMax());
-                    node.add(functionNode);
-                }
+                final XmlNode functionNode = Stream.createXmlNode(UtilMapTile.TAG_FUNCTION);
+                functionNode.writeString(UtilMapTile.ATT_FUNCTION_NAME, function.getName());
+                functionNode.writeString(UtilMapTile.ATT_FUNCTION_AXIS, function.getAxis().name());
+                functionNode.writeString(UtilMapTile.ATT_FUNCTION_INPUT, function.getInput().name());
+                functionNode.writeDouble(UtilMapTile.ATT_FUNCTION_VALUE, function.getValue());
+                functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_OFFSET, function.getOffset());
+                functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_MIN, function.getRange().getMin());
+                functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_MAX, function.getRange().getMax());
+                node.add(functionNode);
             }
         }
         Stream.saveXml(root, media);
@@ -259,6 +256,7 @@ public class UtilMapTile
     public static String getCollision(Collection<XmlNode> collisions, int tilePattern, int tileNumber)
             throws LionEngineException
     {
+        Check.notNull(collisions);
         for (final XmlNode collision : collisions)
         {
             final String name = collision.readString(UtilMapTile.ATT_TILE_COLLISION_NAME);

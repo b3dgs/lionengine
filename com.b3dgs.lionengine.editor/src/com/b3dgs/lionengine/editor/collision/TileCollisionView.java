@@ -41,7 +41,6 @@ import com.b3dgs.lionengine.editor.palette.PaletteView;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -104,8 +103,7 @@ public class TileCollisionView
         formulas.clear();
         if (tile != null)
         {
-            final CollisionTile collision = tile.getCollision();
-            for (final CollisionFunction function : collision.getCollisionFunctions())
+            for (final CollisionFunction function : tile.getCollision().getCollisionFunctions())
             {
                 final TileCollisionComposite tileCollisionComposite = createFormula();
                 tileCollisionComposite.setSelectedFunction(function);
