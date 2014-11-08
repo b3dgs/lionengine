@@ -46,6 +46,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  *     ...
  * {@code </lionengine:tileSheets>}
  * </pre>
+ * 
  * </li>
  * <li>{@value #COLLISIONS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
  * 
@@ -60,6 +61,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  *     ...
  * {@code </lionengine:tileCollisions>}
  * </pre>
+ * 
  * </li>
  * </ul>
  * 
@@ -220,6 +222,11 @@ public interface MapTile<T extends TileGame>
      * @param function The function to remove.
      */
     void removeCollisionFunction(CollisionFunction function);
+
+    /**
+     * Remove all collisions.
+     */
+    void removeCollisions();
 
     /**
      * Save the current collisions to the collision file.

@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
@@ -60,6 +59,11 @@ public class ModuleGame
 
         @Override
         public void removeCollisionFunction(CollisionFunction function)
+        {
+        }
+
+        @Override
+        public void removeCollisions()
         {
         }
 
@@ -226,15 +230,15 @@ public class ModuleGame
 
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(levelrip, tilesheet, map);
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(levelrip, tilesheet, map);
+        rip.start();
         try (FileWriting file = Stream.createFileWriting(output))
         {
             map.save(file);
         }
         catch (final IOException exception)
         {
-            Verbose.exception(World.class, "constructor", exception, "Error on saving map !");
+            // Error
         }
     }
 

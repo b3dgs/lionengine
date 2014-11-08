@@ -293,11 +293,8 @@ public abstract class MapTileGame<T extends TileGame>
         for (final CollisionTile collision : collisions)
         {
             final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
-            if (functions != null)
-            {
-                final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
-                collisionCache.put(collision, buffer);
-            }
+            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
+            collisionCache.put(collision, buffer);
         }
     }
 
@@ -414,6 +411,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void loadCollisions(Media media) throws LionEngineException
     {
+        removeCollisions();
         final XmlNode root = Stream.loadXml(media);
         final Collection<XmlNode> collisions = root.getChildren();
         for (int i = 0; i < heightInTile; i++)
@@ -443,6 +441,8 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException
     {
+        Check.notNull(file);
+
         final int pattern = file.readInteger();
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
@@ -459,6 +459,8 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void append(MapTile<T> map, int offsetX, int offsetY)
     {
+        Check.notNull(map);
+
         final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
         final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
 
@@ -538,6 +540,15 @@ public abstract class MapTileGame<T extends TileGame>
         for (final CollisionTile collision : collisions)
         {
             collision.removeCollisionFunction(function);
+        }
+    }
+
+    @Override
+    public void removeCollisions()
+    {
+        for (final CollisionTile collision : collisions)
+        {
+            collision.removeCollisions();
         }
     }
 
