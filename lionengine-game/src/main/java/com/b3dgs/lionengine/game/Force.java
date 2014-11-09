@@ -26,10 +26,8 @@ import com.b3dgs.lionengine.UtilMath;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Force
+        implements Direction
 {
-    /** Zero force. Must not be modified. */
-    public static final Force ZERO = new Force(0.0, 0.0);
-
     /** Horizontal force vector. */
     private double fh;
     /** Vertical force vector. */
@@ -42,10 +40,10 @@ public final class Force
     private boolean arrivedH;
     /** Reached vertical force. */
     private boolean arrivedV;
-    /** Maximum force. */
-    private Force forceMax;
-    /** Minimum force. */
-    private Force forceMin;
+    /** Maximum direction. */
+    private Direction directionMax;
+    /** Minimum direction. */
+    private Direction directionMin;
 
     /**
      * Create a zero force.
@@ -72,42 +70,42 @@ public final class Force
      * Reach specified force at the specified speed. Has to be called in an <code>update(extrp)</code> function.
      * 
      * @param extrp The extrapolation value.
-     * @param force The force to reach.
+     * @param direction The direction to reach.
      * @param speed The reach speed.
      * @param sensibility The sensibility value (will round to destination between -sensibility and +sensibility).
      */
-    public void reachForce(double extrp, Force force, double speed, double sensibility)
+    public void reachForce(double extrp, Direction direction, double speed, double sensibility)
     {
-        updateLastForce(force);
+        updateLastForce(direction);
 
         // Not arrived
         if (!arrivedH)
         {
-            updateNotArrivedH(extrp, force, speed, sensibility);
+            updateNotArrivedH(extrp, direction, speed, sensibility);
         }
         else
         {
-            fh = force.fh;
+            fh = direction.getDirectionHorizontal();
         }
         if (!arrivedV)
         {
-            updateNotArrivedV(extrp, force, speed, sensibility);
+            updateNotArrivedV(extrp, direction, speed, sensibility);
         }
         else
         {
-            fv = force.fv;
+            fv = direction.getDirectionVertical();
         }
         fixForce();
     }
 
     /**
-     * Increase force with input value.
+     * Increase direction with input value.
      * 
-     * @param force The force to add.
+     * @param direction The direction to add.
      */
-    public void addForce(Force force)
+    public void addDirection(Direction direction)
     {
-        addForce(force.fh, force.fv);
+        addDirection(direction.getDirectionHorizontal(), direction.getDirectionVertical());
     }
 
     /**
@@ -116,7 +114,7 @@ public final class Force
      * @param fh The added horizontal force.
      * @param fv The added vertical force.
      */
-    public void addForce(double fh, double fv)
+    public void addDirection(double fh, double fv)
     {
         lastFh = fh;
         lastFv = fv;
@@ -126,22 +124,22 @@ public final class Force
     }
 
     /**
-     * Set force.
+     * Set direction.
      * 
-     * @param force The force.
+     * @param direction The direction.
      */
-    public void setForce(Force force)
+    public void setDirection(Direction direction)
     {
-        setForce(force.getForceHorizontal(), force.getForceVertical());
+        setDirection(direction.getDirectionHorizontal(), direction.getDirectionVertical());
     }
 
     /**
-     * Set forces.
+     * Set directions.
      * 
-     * @param fh The horizontal force.
-     * @param fv The vertical force.
+     * @param fh The horizontal direction.
+     * @param fv The vertical direction.
      */
-    public void setForce(double fh, double fv)
+    public void setDirection(double fh, double fv)
     {
         lastFh = fh;
         lastFv = fv;
@@ -151,60 +149,40 @@ public final class Force
     }
 
     /**
-     * Set the maximum reachable force.
+     * Set the maximum reachable direction.
      * 
-     * @param max The force max.
+     * @param max The direction max.
      */
-    public void setForceMaximum(Force max)
+    public void setDirectionMaximum(Direction max)
     {
-        forceMax = max;
+        directionMax = max;
     }
 
     /**
-     * Set the minimum reachable force.
+     * Set the minimum reachable direction.
      * 
-     * @param min The force min.
+     * @param min The direction min.
      */
-    public void setForceMinimum(Force min)
+    public void setDirectionMinimum(Direction min)
     {
-        forceMin = min;
+        directionMin = min;
     }
 
     /**
-     * Get horizontal force.
+     * Update the last direction.
      * 
-     * @return The horizontal force.
+     * @param direction The direction to reach.
      */
-    public double getForceHorizontal()
+    private void updateLastForce(Direction direction)
     {
-        return fh;
-    }
-
-    /**
-     * Get vertical force.
-     * 
-     * @return The vertical force.
-     */
-    public double getForceVertical()
-    {
-        return fv;
-    }
-
-    /**
-     * Update the last force.
-     * 
-     * @param force The force to reach.
-     */
-    private void updateLastForce(Force force)
-    {
-        if (Double.compare(lastFh, force.fh) != 0)
+        if (Double.compare(lastFh, direction.getDirectionHorizontal()) != 0)
         {
-            lastFh = force.fh;
+            lastFh = direction.getDirectionHorizontal();
             arrivedH = false;
         }
-        if (Double.compare(lastFv, force.fv) != 0)
+        if (Double.compare(lastFv, direction.getDirectionVertical()) != 0)
         {
-            lastFv = force.fv;
+            lastFv = direction.getDirectionVertical();
             arrivedV = false;
         }
     }
@@ -213,27 +191,27 @@ public final class Force
      * Update the force if still not reached on horizontal axis.
      * 
      * @param extrp The extrapolation value.
-     * @param force The force to reach.
+     * @param direction The direction to reach.
      * @param speed The reach speed.
      * @param sensibility The sensibility value.
      */
-    private void updateNotArrivedH(double extrp, Force force, double speed, double sensibility)
+    private void updateNotArrivedH(double extrp, Direction direction, double speed, double sensibility)
     {
-        if (fh < force.fh)
+        if (fh < direction.getDirectionHorizontal())
         {
             fh += speed * extrp;
-            if (fh > force.fh - sensibility)
+            if (fh > direction.getDirectionHorizontal() - sensibility)
             {
-                fh = force.fh;
+                fh = direction.getDirectionHorizontal();
                 arrivedH = true;
             }
         }
-        else if (fh > force.fh)
+        else if (fh > direction.getDirectionHorizontal())
         {
             fh -= speed * extrp;
-            if (fh < force.fh + sensibility)
+            if (fh < direction.getDirectionHorizontal() + sensibility)
             {
-                fh = force.fh;
+                fh = direction.getDirectionHorizontal();
                 arrivedH = true;
             }
         }
@@ -243,27 +221,27 @@ public final class Force
      * Update the force if still not reached on vertical axis.
      * 
      * @param extrp The extrapolation value.
-     * @param force The force to reach.
+     * @param direction The direction to reach.
      * @param speed The reach speed.
      * @param sensibility The sensibility value.
      */
-    private void updateNotArrivedV(double extrp, Force force, double speed, double sensibility)
+    private void updateNotArrivedV(double extrp, Direction direction, double speed, double sensibility)
     {
-        if (fv < force.fv)
+        if (fv < direction.getDirectionVertical())
         {
             fv += speed * extrp;
-            if (fv > force.fv - sensibility)
+            if (fv > direction.getDirectionVertical() - sensibility)
             {
-                fv = force.fv;
+                fv = direction.getDirectionVertical();
                 arrivedV = true;
             }
         }
-        else if (fv > force.fv)
+        else if (fv > direction.getDirectionVertical())
         {
             fv -= speed * extrp;
-            if (fv < force.fv + sensibility)
+            if (fv < direction.getDirectionVertical() + sensibility)
             {
-                fv = force.fv;
+                fv = direction.getDirectionVertical();
                 arrivedV = true;
             }
         }
@@ -279,27 +257,43 @@ public final class Force
         final double maxH;
         final double maxV;
 
-        if (forceMin == null)
+        if (directionMin == null)
         {
             minH = fh;
             minV = fv;
         }
         else
         {
-            minH = forceMin.getForceHorizontal();
-            minV = forceMin.getForceVertical();
+            minH = directionMin.getDirectionHorizontal();
+            minV = directionMin.getDirectionVertical();
         }
-        if (forceMax == null)
+        if (directionMax == null)
         {
             maxH = fh;
             maxV = fv;
         }
         else
         {
-            maxH = forceMax.getForceHorizontal();
-            maxV = forceMax.getForceVertical();
+            maxH = directionMax.getDirectionHorizontal();
+            maxV = directionMax.getDirectionVertical();
         }
         fh = UtilMath.fixBetween(fh, minH, maxH);
         fv = UtilMath.fixBetween(fv, minV, maxV);
+    }
+
+    /*
+     * Direction
+     */
+
+    @Override
+    public double getDirectionHorizontal()
+    {
+        return fh;
+    }
+
+    @Override
+    public double getDirectionVertical()
+    {
+        return fv;
     }
 }

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.geom.Coord;
 import com.b3dgs.lionengine.geom.Geom;
@@ -93,13 +93,13 @@ public class LocalizableModel
     }
 
     @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
+    public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
         backupLocation();
-        current.translate(force.getForceHorizontal() * extrp, force.getForceVertical() * extrp);
-        for (final Force f : forces)
+        current.translate(direction.getDirectionHorizontal() * extrp, direction.getDirectionVertical() * extrp);
+        for (final Direction d : directions)
         {
-            current.translate(f.getForceHorizontal() * extrp, f.getForceVertical() * extrp);
+            current.translate(d.getDirectionHorizontal() * extrp, d.getDirectionVertical() * extrp);
         }
     }
 

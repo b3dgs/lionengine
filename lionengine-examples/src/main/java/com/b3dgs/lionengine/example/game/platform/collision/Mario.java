@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.platform.collision;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -103,7 +104,7 @@ final class Mario
     {
         teleport(550, 32);
         movement.reset();
-        jumpForce.setForce(Force.ZERO);
+        jumpForce.setDirection(Direction.ZERO);
         mirror(false);
         resetGravity();
     }
@@ -178,7 +179,7 @@ final class Mario
             final Double y = tile.getCollisionY(this);
             if (applyVerticalCollision(y))
             {
-                jumpForce.setForce(Force.ZERO);
+                jumpForce.setDirection(Direction.ZERO);
                 resetGravity();
                 coll = EntityCollision.GROUND;
             }
@@ -202,7 +203,7 @@ final class Mario
     @Override
     protected void handleActions(double extrp)
     {
-        movement.setForceToReach(Force.ZERO);
+        movement.setDirectionToReach(Direction.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -216,11 +217,11 @@ final class Mario
         {
             speed = 0.0;
         }
-        movement.setForceToReach(speed, 0.0);
+        movement.setDirectionToReach(speed, 0.0);
 
         if (up && canJump())
         {
-            jumpForce.setForce(0.0, jumpSpeed);
+            jumpForce.setDirection(0.0, jumpSpeed);
             resetGravity();
             coll = EntityCollision.NONE;
         }
@@ -248,7 +249,7 @@ final class Mario
         movement.setVelocity(speed);
         movement.setSensibility(sensibility);
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
+        updateGravity(extrp, desiredFps, jumpForce, movement);
         updateMirror();
     }
 

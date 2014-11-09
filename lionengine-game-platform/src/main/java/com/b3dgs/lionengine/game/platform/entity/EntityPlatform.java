@@ -28,8 +28,8 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.CoordTile;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
@@ -485,9 +485,9 @@ public abstract class EntityPlatform
      */
 
     @Override
-    public void updateGravity(double extrp, int desiredFps, Force... forces)
+    public void updateGravity(double extrp, int desiredFps, Direction... directions)
     {
-        body.updateGravity(extrp, desiredFps, forces);
+        body.updateGravity(extrp, desiredFps, directions);
     }
 
     @Override

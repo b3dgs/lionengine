@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.test.game;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 
 /**
@@ -36,46 +37,46 @@ public class ForceTest
     public void testForce()
     {
         final Force forceA = new Force();
-        Assert.assertTrue(forceA.getForceHorizontal() == 0);
-        Assert.assertTrue(forceA.getForceVertical() == 0);
-        forceA.setForce(Force.ZERO);
-        Assert.assertTrue(forceA.getForceHorizontal() == 0);
-        Assert.assertTrue(forceA.getForceVertical() == 0);
-        forceA.setForce(2.0, 2.0);
-        Assert.assertTrue(forceA.getForceHorizontal() == 2);
-        Assert.assertTrue(forceA.getForceVertical() == 2);
+        Assert.assertTrue(forceA.getDirectionHorizontal() == 0);
+        Assert.assertTrue(forceA.getDirectionVertical() == 0);
+        forceA.setDirection(Direction.ZERO);
+        Assert.assertTrue(forceA.getDirectionHorizontal() == 0);
+        Assert.assertTrue(forceA.getDirectionVertical() == 0);
+        forceA.setDirection(2.0, 2.0);
+        Assert.assertTrue(forceA.getDirectionHorizontal() == 2);
+        Assert.assertTrue(forceA.getDirectionVertical() == 2);
 
         final Force forceB = new Force(1.0, 3.0);
-        Assert.assertTrue(forceB.getForceHorizontal() == 1);
-        Assert.assertTrue(forceB.getForceVertical() == 3);
-        forceB.addForce(1, 1);
-        Assert.assertTrue(forceB.getForceHorizontal() == 2);
-        Assert.assertTrue(forceB.getForceVertical() == 4);
-        forceB.addForce(forceA);
-        Assert.assertTrue(forceB.getForceHorizontal() == 4);
-        Assert.assertTrue(forceB.getForceVertical() == 6);
+        Assert.assertTrue(forceB.getDirectionHorizontal() == 1);
+        Assert.assertTrue(forceB.getDirectionVertical() == 3);
+        forceB.addDirection(1, 1);
+        Assert.assertTrue(forceB.getDirectionHorizontal() == 2);
+        Assert.assertTrue(forceB.getDirectionVertical() == 4);
+        forceB.addDirection(forceA);
+        Assert.assertTrue(forceB.getDirectionHorizontal() == 4);
+        Assert.assertTrue(forceB.getDirectionVertical() == 6);
 
-        forceB.setForceMaximum(Force.ZERO);
-        forceB.addForce(Force.ZERO);
-        Assert.assertTrue(forceB.getForceHorizontal() == 0);
-        Assert.assertTrue(forceB.getForceVertical() == 0);
+        forceB.setDirectionMaximum(Direction.ZERO);
+        forceB.addDirection(Direction.ZERO);
+        Assert.assertTrue(forceB.getDirectionHorizontal() == 0);
+        Assert.assertTrue(forceB.getDirectionVertical() == 0);
 
-        forceB.setForceMinimum(forceA);
-        forceB.setForceMaximum(forceA);
+        forceB.setDirectionMinimum(forceA);
+        forceB.setDirectionMaximum(forceA);
         forceB.reachForce(0.0, forceA, 1.0, 1.0);
         forceB.reachForce(0.0, forceA, 1.0, 1.0);
-        Assert.assertTrue(forceB.getForceHorizontal() == forceA.getForceHorizontal());
-        Assert.assertTrue(forceB.getForceVertical() == forceB.getForceVertical());
+        Assert.assertTrue(forceB.getDirectionHorizontal() == forceA.getDirectionHorizontal());
+        Assert.assertTrue(forceB.getDirectionVertical() == forceB.getDirectionVertical());
         forceB.reachForce(0.0, forceA, 1.0, 1.0);
 
         final Force forceC = new Force(100, 100);
-        forceB.setForceMaximum(forceC);
-        forceB.reachForce(1.0, Force.ZERO, 1.0, 500);
-        forceB.reachForce(1.0, Force.ZERO, 5.0, 0.1);
+        forceB.setDirectionMaximum(forceC);
+        forceB.reachForce(1.0, Direction.ZERO, 1.0, 500);
+        forceB.reachForce(1.0, Direction.ZERO, 5.0, 0.1);
         forceB.reachForce(1.0, forceC, -30.0, 500.0);
         forceB.reachForce(1.0, forceC, 5.0, 0.1);
 
-        Assert.assertTrue(forceB.getForceHorizontal() == forceC.getForceHorizontal());
-        Assert.assertTrue(forceB.getForceVertical() == forceC.getForceVertical());
+        Assert.assertTrue(forceB.getDirectionHorizontal() == forceC.getDirectionHorizontal());
+        Assert.assertTrue(forceB.getDirectionVertical() == forceC.getDirectionVertical());
     }
 }

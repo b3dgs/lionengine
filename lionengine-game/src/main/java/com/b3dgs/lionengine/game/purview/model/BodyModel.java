@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview.model;
 
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.purview.Body;
 import com.b3dgs.lionengine.game.purview.Localizable;
@@ -58,16 +59,16 @@ public class BodyModel
      */
 
     @Override
-    public void updateGravity(double extrp, int desiredFps, Force... forces)
+    public void updateGravity(double extrp, int desiredFps, Direction... directions)
     {
-        force.addForce(0.0, getWeight() * invertY / desiredFps * extrp);
-        localizable.moveLocation(extrp, force, forces);
+        force.addDirection(0.0, getWeight() * invertY / desiredFps * extrp);
+        localizable.moveLocation(extrp, force, directions);
     }
 
     @Override
     public void resetGravity()
     {
-        force.setForce(Force.ZERO);
+        force.setDirection(Direction.ZERO);
     }
 
     @Override
@@ -79,9 +80,9 @@ public class BodyModel
     @Override
     public void setGravityMax(double max)
     {
-        gravityMax.setForce(0.0, -max);
-        force.setForceMaximum(Force.ZERO);
-        force.setForceMinimum(gravityMax);
+        gravityMax.setDirection(0.0, -max);
+        force.setDirectionMaximum(Direction.ZERO);
+        force.setDirectionMinimum(gravityMax);
     }
 
     @Override

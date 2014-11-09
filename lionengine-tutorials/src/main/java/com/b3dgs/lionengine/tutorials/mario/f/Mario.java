@@ -20,8 +20,8 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -93,7 +93,7 @@ public final class Mario
         stepDie = 0;
         dead = false;
         movement.reset();
-        jumpForce.setForce(Force.ZERO);
+        jumpForce.setDirection(Direction.ZERO);
         resetGravity();
     }
 
@@ -115,7 +115,7 @@ public final class Mario
     {
         if (!isJumping())
         {
-            jumpForce.setForce(0.0, jumpForceValue / 1.5);
+            jumpForce.setDirection(0.0, jumpForceValue / 1.5);
             resetGravity();
         }
     }
@@ -151,7 +151,7 @@ public final class Mario
                 // Die effect
                 if (stepDie == 0)
                 {
-                    jumpForce.setForce(0.0, jumpForceValue);
+                    jumpForce.setDirection(0.0, jumpForceValue);
                     stepDie = 1;
                 }
                 // Respawn

@@ -135,9 +135,9 @@ public abstract class ObjectGame
     }
 
     @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
+    public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
-        localizable.moveLocation(extrp, force, forces);
+        localizable.moveLocation(extrp, direction, directions);
     }
 
     @Override

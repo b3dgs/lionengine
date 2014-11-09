@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
@@ -146,7 +147,7 @@ final class Mario
      */
     private void updateForces()
     {
-        movement.setForceToReach(Force.ZERO);
+        movement.setDirectionToReach(Direction.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -160,11 +161,11 @@ final class Mario
         {
             speed = 0.0;
         }
-        movement.setForceToReach(speed, 0.0);
+        movement.setDirectionToReach(speed, 0.0);
 
         if (up && canJump())
         {
-            jumpForce.setForce(0.0, jumpSpeed);
+            jumpForce.setDirection(0.0, jumpSpeed);
         }
     }
 
@@ -243,7 +244,7 @@ final class Mario
         movement.setVelocity(speed);
         movement.setSensibility(sensibility);
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
+        updateGravity(extrp, desiredFps, jumpForce, movement);
         updateMirror();
     }
 
@@ -253,7 +254,7 @@ final class Mario
         // Block player to avoid infinite falling
         if (getLocationY() < Mario.GROUND)
         {
-            jumpForce.setForce(Force.ZERO);
+            jumpForce.setDirection(Direction.ZERO);
             resetGravity();
             teleportY(Mario.GROUND);
         }
@@ -265,7 +266,7 @@ final class Mario
         // Assign an animation for each state
         if (state == EntityState.WALK)
         {
-            setAnimSpeed(Math.abs(movement.getForce().getForceHorizontal()) / 12.0);
+            setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)

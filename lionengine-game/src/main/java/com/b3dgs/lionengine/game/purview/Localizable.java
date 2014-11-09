@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Surface;
 
 /**
@@ -52,14 +52,14 @@ public interface Localizable
     void teleportY(double y);
 
     /**
-     * Move location using different forces. Old location is stored before moving and the movement is updated after
+     * Move location using different directions. Old location is stored before moving and the movement is updated after
      * calculation.
      * 
      * @param extrp The extrapolation value.
-     * @param force The primary force.
-     * @param forces The other forces.
+     * @param direction The primary direction.
+     * @param directions The other directions.
      */
-    void moveLocation(double extrp, Force force, Force... forces);
+    void moveLocation(double extrp, Direction direction, Direction... directions);
 
     /**
      * Move location using a simple force. Old location is stored before moving and the movement is updated after

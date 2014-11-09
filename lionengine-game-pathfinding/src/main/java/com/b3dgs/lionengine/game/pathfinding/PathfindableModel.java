@@ -164,8 +164,8 @@ public class PathfindableModel
     private void moveTo(double extrp, int dx, int dy)
     {
         final Force force = getMovementForce(localizable.getLocationX(), localizable.getLocationY(), dx, dy);
-        final double sx = force.getForceHorizontal();
-        final double sy = force.getForceVertical();
+        final double sx = force.getDirectionHorizontal();
+        final double sy = force.getDirectionVertical();
 
         // Move entity
         moveX = sx;

@@ -359,12 +359,12 @@ public class CameraGame
     }
 
     @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
+    public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
-        move(extrp, force.getForceHorizontal(), force.getForceVertical());
-        for (final Force f : forces)
+        move(extrp, direction.getDirectionHorizontal(), direction.getDirectionVertical());
+        for (final Direction d : directions)
         {
-            move(extrp, f.getForceHorizontal(), f.getForceVertical());
+            move(extrp, d.getDirectionHorizontal(), d.getDirectionVertical());
         }
     }
 

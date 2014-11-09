@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.test.game;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Movement;
 
 /**
@@ -37,15 +37,17 @@ public class MovementTest
     public void testMovement()
     {
         final Movement movement = new Movement();
-        Assert.assertNotNull(movement.getForce());
+        Assert.assertNotNull(movement);
+        Assert.assertTrue(movement.getDirectionHorizontal() > -1);
+        Assert.assertTrue(movement.getDirectionVertical() > -1);
         Assert.assertFalse(movement.isDecreasingHorizontal());
         Assert.assertFalse(movement.isIncreasingHorizontal());
         movement.setSensibility(0.0);
         movement.setVelocity(1.0);
-        movement.setForceToReach(5.0, 1.0);
+        movement.setDirectionToReach(5.0, 1.0);
         movement.update(1.0);
         Assert.assertTrue(movement.isIncreasingHorizontal());
-        movement.setForceToReach(Force.ZERO);
+        movement.setDirectionToReach(Direction.ZERO);
         movement.update(1.0);
         Assert.assertTrue(movement.isDecreasingHorizontal());
         movement.reset();

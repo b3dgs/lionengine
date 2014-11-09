@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CameraGame;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.SetupGame;
@@ -34,6 +35,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  */
 final class Ball
         extends EntityGame
+        implements Direction
 {
     /** Ball size. */
     private static final int SIZE = 6;
@@ -90,16 +92,6 @@ final class Ball
     }
 
     /**
-     * Get the current force.
-     * 
-     * @return The current force.
-     */
-    public Force getForce()
-    {
-        return force;
-    }
-
-    /**
      * Set forces.
      * 
      * @param fh The horizontal force.
@@ -107,7 +99,7 @@ final class Ball
      */
     public void setForces(double fh, double fv)
     {
-        force.setForce(fh, fv);
+        force.setDirection(fh, fv);
     }
 
     /*
@@ -134,5 +126,21 @@ final class Ball
         final int y = camera.getViewpointY(getLocationIntY() + getHeight() - Ball.SIZE / 2);
         g.setColor(ColorRgba.YELLOW);
         g.drawOval(x, y, Ball.SIZE, Ball.SIZE, true);
+    }
+
+    /*
+     * Direction
+     */
+
+    @Override
+    public double getDirectionHorizontal()
+    {
+        return force.getDirectionHorizontal();
+    }
+
+    @Override
+    public double getDirectionVertical()
+    {
+        return force.getDirectionVertical();
     }
 }

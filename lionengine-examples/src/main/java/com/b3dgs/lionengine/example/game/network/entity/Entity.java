@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
@@ -211,7 +212,7 @@ abstract class Entity
             final Double y = tile.getCollisionY(this);
             if (applyVerticalCollision(y))
             {
-                jumpForce.setForce(Force.ZERO);
+                jumpForce.setDirection(Direction.ZERO);
                 resetGravity();
                 coll = EntityCollision.GROUND;
                 // Start timer to allow entity to have an extra jump area before falling
@@ -252,8 +253,8 @@ abstract class Entity
      */
     protected void resetMovementSpeed()
     {
-        movementForce.setForce(Force.ZERO);
-        movementForceDest.setForce(Force.ZERO);
+        movementForce.setDirection(Direction.ZERO);
+        movementForceDest.setDirection(Direction.ZERO);
     }
 
     /**
@@ -288,7 +289,7 @@ abstract class Entity
      */
     private void updateForces()
     {
-        movementForceDest.setForce(Force.ZERO);
+        movementForceDest.setDirection(Direction.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -302,11 +303,11 @@ abstract class Entity
         {
             speed = 0.0;
         }
-        movementForceDest.setForce(speed, 0.0);
+        movementForceDest.setDirection(speed, 0.0);
 
         if (up && canJump())
         {
-            jumpForce.setForce(0.0, jumpForceValue);
+            jumpForce.setDirection(0.0, jumpForceValue);
             resetGravity();
             coll = EntityCollision.NONE;
             timerExtraJump.stop();

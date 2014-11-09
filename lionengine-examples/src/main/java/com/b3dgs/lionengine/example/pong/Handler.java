@@ -22,7 +22,6 @@ import java.util.Collection;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.UtilRandom;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Force;
 
 /**
  * Handle the game, count score, and reset the ball in case of goal.
@@ -115,7 +114,6 @@ final class Handler
             if (ball.collide(racket))
             {
                 // Apply collision
-                final Force force = ball.getForce();
                 int side = 1;
 
                 if (ball.getLocationX() < ball.getLocationOldX())
@@ -136,7 +134,7 @@ final class Handler
                     ball.setSpeed(ball.getSpeed() + 0.3);
                 }
 
-                force.setForce(ball.getSpeed() * UtilMath.cos(angle) * side, ball.getSpeed() * UtilMath.sin(angle));
+                ball.setForces(ball.getSpeed() * UtilMath.cos(angle) * side, ball.getSpeed() * UtilMath.sin(angle));
             }
         }
 
@@ -159,14 +157,14 @@ final class Handler
         if (ball.getLocationY() < top)
         {
             ball.setLocationY(top);
-            ball.setForces(ball.getForce().getForceHorizontal(), -ball.getForce().getForceVertical());
+            ball.setForces(ball.getDirectionHorizontal(), -ball.getDirectionVertical());
         }
 
         final int bottom = screenHeight - ball.getHeight() / 2;
         if (ball.getLocationY() > bottom)
         {
             ball.setLocationY(bottom);
-            ball.setForces(ball.getForce().getForceHorizontal(), -ball.getForce().getForceVertical());
+            ball.setForces(ball.getDirectionHorizontal(), -ball.getDirectionVertical());
         }
     }
 

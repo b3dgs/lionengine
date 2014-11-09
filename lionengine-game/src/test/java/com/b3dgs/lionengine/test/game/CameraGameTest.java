@@ -21,7 +21,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.purview.model.LocalizableModel;
 
 /**
@@ -81,7 +81,7 @@ public class CameraGameTest
         camera.moveLocation(1.0, -64, 64);
         camera.moveLocation(1.0, 96, -96);
         camera.moveLocation(1.0, -128, -128);
-        camera.moveLocation(1.0, Force.ZERO, Force.ZERO);
+        camera.moveLocation(1.0, Direction.ZERO, Direction.ZERO);
 
         camera.setIntervals(0, 0);
         camera.resetInterval(new LocalizableModel());
