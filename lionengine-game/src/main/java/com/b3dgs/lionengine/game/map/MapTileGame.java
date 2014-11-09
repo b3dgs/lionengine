@@ -66,6 +66,10 @@ public abstract class MapTileGame<T extends TileGame>
 {
     /** Error pattern number message. */
     private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
+    /** Error pattern missing message. */
+    private static final String ERROR_PATTERN_MISSING = "Pattern missing !";
+    /** Error create tile message. */
+    private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
     /** Collisions. */
     private final CollisionTile[] collisions;
@@ -351,6 +355,10 @@ public abstract class MapTileGame<T extends TileGame>
             for (int j = 0; j < n; j++)
             {
                 final T tile = loadTile(nodes, file, i);
+                if (tile.getPattern().intValue() > getNumberPatterns())
+                {
+                    throw new LionEngineException(media, ERROR_PATTERN_MISSING);
+                }
                 final int v = tile.getY() / getTileHeight();
                 final int h = tile.getX() / getTileWidth();
                 final List<T> list = tiles.get(v);
@@ -439,7 +447,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException
+    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException
     {
         Check.notNull(file);
 
@@ -450,6 +458,10 @@ public abstract class MapTileGame<T extends TileGame>
         final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
         final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
 
+        if (tile == null)
+        {
+            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
+        }
         tile.setX(x);
         tile.setY(y);
 

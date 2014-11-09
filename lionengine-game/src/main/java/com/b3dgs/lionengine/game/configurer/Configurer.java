@@ -198,7 +198,7 @@ public class Configurer
             }
             catch (final LionEngineException exception)
             {
-                throw new LionEngineException(exception, media);
+                throw new LionEngineException(exception, media, exception.getMessage());
             }
         }
         return node;

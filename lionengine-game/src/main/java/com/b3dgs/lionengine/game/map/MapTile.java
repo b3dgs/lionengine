@@ -184,8 +184,9 @@ public interface MapTile<T extends TileGame>
      * @param i The last loaded tile number.
      * @return The loaded tile.
      * @throws IOException If error on reading.
+     * @throws LionEngineException If error on creating tile.
      */
-    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException;
+    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).

@@ -18,8 +18,10 @@
 package com.b3dgs.lionengine;
 
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import com.b3dgs.lionengine.core.Media;
 
@@ -40,14 +42,32 @@ public final class LionEngineException
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
-            "audio", "anim", "core", "drawable", "geom", "game", "network", "utility", "editor", "xsd", "Align",
-            "Architecture", "Check", "Checksum", "ColorGradient", "ColorRgba", "Config", "Filter", "Hq2x", "Hq3x",
-            "ImageInfo", "LionEngineException", "OperatingSystem", "Ratio", "Resolution", "Strings", "TextStyle",
-            "Timing", "Transparency", "UtilConversion", "UtilFile", "UtilMath", "UtilProjectStats", "UtilRandom",
-            "Version"
+            "audio", "anim", "core", "drawable", "geom", "stream", "game", "network", "utility", "editor", "xsd",
+            "Align", "Architecture", "Check", "Checksum", "ColorGradient", "ColorRgba", "Config", "Filter", "Hq2x",
+            "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem", "Ratio", "Resolution", "Strings",
+            "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile", "UtilMath", "UtilProjectStats",
+            "UtilRandom", "Version"
     };
     /** Uid. */
-    private static final long serialVersionUID = 5387489108947599463L;
+    private static final long serialVersionUID = 5387489108947599464L;
+
+    /**
+     * Revert the stack trace array.
+     * 
+     * @param current The current stack trace.
+     * @return The reverted stack.
+     */
+    private static StackTraceElement[] revertStack(StackTraceElement[] current)
+    {
+        final StackTraceElement[] reverted = new StackTraceElement[current.length];
+        int i = 0;
+        for (final StackTraceElement element : current)
+        {
+            reverted[reverted.length - i - 1] = element;
+            i++;
+        }
+        return reverted;
+    }
 
     /**
      * Get the filtered stack traces.
@@ -66,7 +86,8 @@ public final class LionEngineException
             boolean add = true;
             if (IGNORE_ENGINE_TRACE)
             {
-                if (className.startsWith("sun.reflect") || className.startsWith("java.lang.reflect"))
+                if (className.startsWith("sun.") || className.startsWith("java.lang")
+                        || className.startsWith("java.net") || className.startsWith("java.security"))
                 {
                     add = false;
                 }
@@ -154,8 +175,31 @@ public final class LionEngineException
             buffer.append(m);
         }
 
+        message = buffer.toString();
+        reason = exception;
+
+        if (reason instanceof LionEngineException)
+        {
+            stack = getFilteredStackTrace(exception, buffer);
+        }
+        else
+        {
+            stack = revertStack(getFilteredStackTrace(exception, buffer));
+        }
+        setStackTrace(stack);
+    }
+
+    /**
+     * Get the filtered stack traces.
+     * 
+     * @param exception The exception reference.
+     * @param buffer The buffer builder.
+     * @return The filtered stack.
+     */
+    private StackTraceElement[] getFilteredStackTrace(Throwable exception, StringBuilder buffer)
+    {
         Throwable current = exception;
-        final Collection<StackTraceElement> traces = new ArrayList<>(1);
+        final LinkedList<StackTraceElement> traces = new LinkedList<>();
         for (final StackTraceElement element : getFilteredTraces(getStackTrace()))
         {
             traces.add(element);
@@ -170,14 +214,16 @@ public final class LionEngineException
             final StackTraceElement[] elements = getFilteredTraces(current.getStackTrace());
             for (final StackTraceElement element : elements)
             {
-                traces.add(element);
+                traces.addFirst(element);
             }
             current = current.getCause();
         }
-        message = buffer.toString();
-        reason = exception;
-        stack = new StackTraceElement[traces.size()];
-        traces.toArray(stack);
+        final StackTraceElement[] stacks = new StackTraceElement[traces.size()];
+        for (int i = 0; i < stacks.length; i++)
+        {
+            stacks[i] = traces.get(i);
+        }
+        return getFilteredTraces(stacks);
     }
 
     /*
@@ -195,26 +241,69 @@ public final class LionEngineException
             boolean first = true;
             for (final StackTraceElement element : stack)
             {
-                final boolean display = true;
-                if (display)
+                if (first)
                 {
-                    if (first)
+                    final String reasonDesc;
+                    if (reason != null)
                     {
-                        final String reasonDesc;
-                        if (reason != null)
+                        Throwable current = reason;
+                        Throwable last = current;
+                        while (current != null)
                         {
-                            reasonDesc = "\n\tReason: " + reason;
+                            last = current;
+                            current = current.getCause();
                         }
-                        else
-                        {
-                            reasonDesc = "";
-                        }
-                        stream.println(": " + message + reasonDesc + "\n\tat " + element);
+                        reasonDesc = "\n\tReason: " + last;
                     }
                     else
                     {
-                        stream.println("\tat " + element);
+                        reasonDesc = "";
                     }
+                    stream.println(": " + message + reasonDesc + "\n\tat " + element);
+                }
+                else
+                {
+                    stream.println("\tat " + element);
+                }
+                first = false;
+            }
+        }
+    }
+
+    @Override
+    public void printStackTrace(PrintWriter writer)
+    {
+        synchronized (writer)
+        {
+            writer.print(getClass().getSimpleName());
+
+            // Display traces
+            boolean first = true;
+            for (final StackTraceElement element : stack)
+            {
+                if (first)
+                {
+                    final String reasonDesc;
+                    if (reason != null)
+                    {
+                        Throwable current = reason;
+                        Throwable last = current;
+                        while (current != null)
+                        {
+                            last = current;
+                            current = current.getCause();
+                        }
+                        reasonDesc = "\n\tReason: " + last;
+                    }
+                    else
+                    {
+                        reasonDesc = "";
+                    }
+                    writer.println(": " + message + reasonDesc + "\n\tat " + element);
+                }
+                else
+                {
+                    writer.println("\tat " + element);
                 }
                 first = false;
             }
