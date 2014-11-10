@@ -47,12 +47,4 @@ public final class AppGameProjectile
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppGameProjectile()
-    {
-        throw new RuntimeException();
-    }
 }

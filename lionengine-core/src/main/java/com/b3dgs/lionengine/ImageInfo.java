@@ -82,8 +82,7 @@ public final class ImageInfo
     {
         try
         {
-            get(media);
-            return true;
+            return get(media) != null;
         }
         catch (final LionEngineException exception)
         {

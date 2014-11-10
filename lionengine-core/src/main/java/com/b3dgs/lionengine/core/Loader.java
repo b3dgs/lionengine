@@ -160,7 +160,7 @@ public final class Loader
      * 
      * @param sequenceClass The the next sequence to start (must not be <code>null</code>).
      * @param arguments The sequence arguments list if needed by its constructor.
-     * @throws LionEngineException If the loader has already been started.
+     * @throws LionEngineException If the loader has already been started or sequence is invalid.
      */
     public void start(Class<? extends Sequence> sequenceClass, Object... arguments) throws LionEngineException
     {

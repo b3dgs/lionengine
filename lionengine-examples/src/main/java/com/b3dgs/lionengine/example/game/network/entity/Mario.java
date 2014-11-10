@@ -96,7 +96,7 @@ public final class Mario
      */
     public void jump()
     {
-        jumpForce.setForce(0.0, jumpForceValue / 1.5);
+        jumpForce.setDirection(0.0, jumpForceValue / 1.5);
         resetGravity();
     }
 
@@ -189,7 +189,7 @@ public final class Mario
                 // Die effect
                 if (stepDie == 0)
                 {
-                    jumpForce.setForce(0.0, jumpForceValue * 1.5);
+                    jumpForce.setDirection(0.0, jumpForceValue * 1.5);
                     stepDie = 1;
                 }
                 // Respawn

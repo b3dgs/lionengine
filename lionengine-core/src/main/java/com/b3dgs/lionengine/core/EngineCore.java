@@ -32,7 +32,7 @@ public abstract class EngineCore
     /** Engine name. */
     public static final String NAME = "LionEngine";
     /** Engine version. */
-    public static final Version VERSION = Version.create(7, 1, 3);
+    public static final Version VERSION = Version.create(7, 1, 4);
     /** Engine begin date. */
     public static final String BEGIN_DATE = "13 June 2010";
     /** Engine last release date. */

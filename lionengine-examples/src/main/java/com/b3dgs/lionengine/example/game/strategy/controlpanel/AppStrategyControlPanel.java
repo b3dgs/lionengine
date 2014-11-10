@@ -47,12 +47,4 @@ public final class AppStrategyControlPanel
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppStrategyControlPanel()
-    {
-        throw new RuntimeException();
-    }
 }

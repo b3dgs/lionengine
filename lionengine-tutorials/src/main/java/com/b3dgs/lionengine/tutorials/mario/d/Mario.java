@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.SetupSurfaceGame;
 
 /**
@@ -63,7 +63,7 @@ public final class Mario
         mirror(false);
         teleport(80, 32);
         movement.reset();
-        jumpForce.setForce(Force.ZERO);
+        jumpForce.setDirection(Direction.ZERO);
         resetGravity();
     }
 

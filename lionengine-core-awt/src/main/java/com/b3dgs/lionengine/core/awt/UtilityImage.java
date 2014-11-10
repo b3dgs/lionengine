@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -107,6 +108,7 @@ public final class UtilityImage
      */
     static ImageBuffer getImage(Media media, boolean alpha) throws LionEngineException
     {
+        Check.notNull(media);
         try (InputStream inputStream = media.getInputStream())
         {
             return new ImageBufferAwt(ToolsAwt.getImage(inputStream, alpha));
@@ -126,6 +128,7 @@ public final class UtilityImage
      */
     static void saveImage(ImageBuffer image, Media media) throws LionEngineException
     {
+        Check.notNull(media);
         try (OutputStream outputStream = media.getOutputStream())
         {
             ToolsAwt.saveImage(UtilityImage.getBuffer(image), outputStream);

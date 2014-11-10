@@ -108,8 +108,9 @@ final class Scene
     @Override
     protected void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
+                Core.MEDIA.create("tile"), map);
+        rip.start();
         map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);

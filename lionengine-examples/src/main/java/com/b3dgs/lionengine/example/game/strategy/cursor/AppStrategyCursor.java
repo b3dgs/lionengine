@@ -47,12 +47,4 @@ public final class AppStrategyCursor
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppStrategyCursor()
-    {
-        throw new RuntimeException();
-    }
 }

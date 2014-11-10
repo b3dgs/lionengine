@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the animations data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Configurer
+ * @see Animation
+ * @see XmlNode
  */
 public class ConfigAnimations
 {
@@ -143,10 +147,10 @@ public class ConfigAnimations
     /**
      * Get all animations.
      * 
-     * @return The animations list.
+     * @return The unmodifiable animations map, where key is the animation name.
      */
     public Map<String, Animation> getAnimations()
     {
-        return animations;
+        return Collections.unmodifiableMap(animations);
     }
 }

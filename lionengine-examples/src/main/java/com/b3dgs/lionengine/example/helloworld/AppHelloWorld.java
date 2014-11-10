@@ -45,12 +45,4 @@ public final class AppHelloWorld
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppHelloWorld()
-    {
-        throw new RuntimeException();
-    }
 }

@@ -163,7 +163,7 @@ final class AnimatorImpl
     }
 
     @Override
-    public void setAnimSpeed(double speed)
+    public void setAnimSpeed(double speed) throws LionEngineException
     {
         Check.superiorOrEqual(speed, 0.0);
 
@@ -171,7 +171,7 @@ final class AnimatorImpl
     }
 
     @Override
-    public void setFrame(int frame)
+    public void setFrame(int frame) throws LionEngineException
     {
         Check.superiorOrEqual(frame, Animation.MINIMUM_FRAME);
 

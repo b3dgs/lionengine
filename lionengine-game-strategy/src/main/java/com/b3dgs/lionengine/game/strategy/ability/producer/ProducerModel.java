@@ -58,7 +58,7 @@ public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStr
     }
 
     /** Handler reference. */
-    protected final HandlerEntityStrategy<?, ?, E, ?> handler;
+    private final HandlerEntityStrategy<?, ?, E> handler;
     /** Production queue. */
     private final Queue<P> productions;
     /** Tick timer rate. */
@@ -83,7 +83,7 @@ public class ProducerModel<E extends EntityStrategy, C extends ProductionCostStr
      * @param handler The handler reference.
      * @param desiredFps The the desired frame rate.
      */
-    public ProducerModel(ProducerUsedServices<E, C, P> user, HandlerEntityStrategy<?, ?, E, ?> handler, int desiredFps)
+    public ProducerModel(ProducerUsedServices<E, C, P> user, HandlerEntityStrategy<?, ?, E> handler, int desiredFps)
     {
         super(user);
         this.handler = handler;

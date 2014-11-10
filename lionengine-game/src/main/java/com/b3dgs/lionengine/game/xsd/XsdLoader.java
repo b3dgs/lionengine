@@ -45,7 +45,16 @@ public final class XsdLoader
     public static final String XSD_TILE_SHEETS = "tileSheets.xsd";
 
     /**
-     * Get an XSD from its name.
+     * Get an XSD from its name. Can be:
+     * <ul>
+     * <li>{@link #XSD_LIONENGINE}</li>
+     * <li>{@link #XSD_OBJECT}</li>
+     * <li>{@link #XSD_ENTITY_PLATFORM}</li>
+     * <li>{@link #XSD_PROJECTILE}</li>
+     * <li>{@link #XSD_FOLDER_TYPE}</li>
+     * <li>{@link #XSD_TILE_COLLISIONS}</li>
+     * <li>{@link #XSD_TILE_SHEETS}</li>
+     * </ul>
      * 
      * @param name The XSD file name.
      * @return The XSD file instance.

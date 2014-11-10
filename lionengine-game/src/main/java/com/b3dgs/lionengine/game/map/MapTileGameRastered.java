@@ -68,7 +68,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
     /**
      * Set raster file and smoothed flag.
      * 
-     * @param raster The raster media.
+     * @param raster The raster media (may be <code>null</code>).
      * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
      */
     public void setRaster(Media raster, boolean smooth)
@@ -207,19 +207,16 @@ public abstract class MapTileGameRastered<T extends TileGame>
     {
         super.loadPatterns(directory);
         final String path = directory.getPath();
-        if (!rasterLoaded)
+        if (!rasterLoaded && rasterFile != null)
         {
-            if (rasterFile != null)
-            {
-                final Collection<Integer> patterns = getPatterns();
-                final Iterator<Integer> itr = patterns.iterator();
-                final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
+            final Collection<Integer> patterns = getPatterns();
+            final Iterator<Integer> itr = patterns.iterator();
+            final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
 
-                while (itr.hasNext())
-                {
-                    final Integer pattern = itr.next();
-                    loadRaster(path, pattern, rasters);
-                }
+            while (itr.hasNext())
+            {
+                final Integer pattern = itr.next();
+                loadRaster(path, pattern, rasters);
             }
             rasterLoaded = true;
         }
@@ -229,7 +226,7 @@ public abstract class MapTileGameRastered<T extends TileGame>
     protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
     {
         final SpriteTiled ts;
-        if (rasterFile != null)
+        if (rasterLoaded)
         {
             ts = getRasterPattern(pattern, getRasterIndex(tile.getY()));
         }

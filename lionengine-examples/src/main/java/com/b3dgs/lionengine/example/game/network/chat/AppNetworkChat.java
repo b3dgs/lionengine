@@ -46,12 +46,4 @@ public final class AppNetworkChat
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppNetworkChat()
-    {
-        throw new RuntimeException();
-    }
 }

@@ -69,8 +69,9 @@ final class Scene
      */
     private void importAndSave()
     {
-        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
+        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
+                Core.MEDIA.create("tile"), map);
+        rip.start();
         try (FileWriting file = Stream.createFileWriting(Core.MEDIA.create("level.lvl")))
         {
             map.save(file);

@@ -17,38 +17,40 @@
  */
 package com.b3dgs.lionengine.game.utility;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.stream.Stream;
+import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * This class allows to convert a map image to a map level format.
+ * The color [0-128-128] is ignored (can be used to skip tile, in order to improve performance).
  * <p>
  * Example:
  * </p>
  * 
  * <pre>
- * private void ripLevel(Media levelrip, Media tilesheet, Media output)
+ * final LevelRipConverter&lt;Tile&gt; rip = new LevelRipConverter&lt;&gt;(levelrip, tilesheet, map);
+ * rip.start();
+ * try (FileWriting file = Stream.createFileWriting(output))
  * {
- *     final LevelRipConverter&lt;Tile&gt; rip = new LevelRipConverter&lt;&gt;();
- *     rip.start(levelrip, tilesheet, map);
- *     try (FileWriting file = Stream.createFileWriting(output))
- *     {
- *         map.save(file);
- *     }
- *     catch (final IOException exception)
- *     {
- *         Verbose.exception(World.class, &quot;constructor&quot;, exception, &quot;Error on saving map !&quot;);
- *     }
+ *     map.save(file);
+ * }
+ * catch (final IOException exception)
+ * {
+ *     // Error
  * }
  * </pre>
  * 
@@ -56,57 +58,26 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class LevelRipConverter<T extends TileGame>
-        extends Thread
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /** Map reference. */
-    private MapTile<T> map;
+    private final MapTile<T> map;
+    /** Collisions map. */
+    private final Collection<XmlNode> collisions;
     /** Level rip image. */
-    private Sprite imageMap;
+    private final Sprite imageMap;
     /** Level rip height in tile. */
-    private int imageMapTilesInY;
+    private final int imageMapTilesInY;
     /** Level rip width in tile. */
-    private int imageMapTilesInX;
+    private final int imageMapTilesInX;
     /** Thread computation range start. */
-    private int startX;
+    private final int startX;
     /** Thread computation range end. */
-    private int endX;
+    private final int endX;
     /** Number of errors. */
     private int errors;
-
-    /**
-     * Create a level rip converter.
-     */
-    public LevelRipConverter()
-    {
-        // Nothing to do
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param map The map reference (to store read data).
-     * @param imageMap The level rip image name.
-     * @param numberOfThread The number of used thread.
-     * @param id The current thread id.
-     */
-    private LevelRipConverter(MapTile<T> map, Sprite imageMap, int numberOfThread, int id)
-    {
-        super("LevelRip Converter");
-        this.map = map;
-        this.imageMap = imageMap;
-        imageMapTilesInY = imageMap.getHeightOriginal() / map.getTileHeight();
-        imageMapTilesInX = imageMap.getWidthOriginal() / map.getTileWidth();
-        startX = (int) Math.floor(imageMapTilesInX / numberOfThread * id);
-        endX = (int) Math.ceil(imageMapTilesInX / (double) numberOfThread * (id + 1));
-        if (id + 1 == numberOfThread)
-        {
-            endX += imageMapTilesInX - endX;
-        }
-        errors = 0;
-    }
 
     /**
      * Must be called to start conversion.
@@ -116,33 +87,59 @@ public final class LevelRipConverter<T extends TileGame>
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public void start(Media levelrip, Media patternsDirectory, MapTile<T> map) throws LionEngineException
+    public LevelRipConverter(Media levelrip, Media patternsDirectory, MapTile<T> map)
     {
-        final int threadsNum = Runtime.getRuntime().availableProcessors();
-        final Sprite levelRip = Drawable.loadSprite(levelrip);
-        levelRip.load(false);
-        map.loadPatterns(patternsDirectory);
-        map.create(levelRip.getWidthOriginal() / map.getTileWidth(), levelRip.getHeightOriginal() / map.getTileHeight());
+        final Media collisionsFile = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        final XmlNode root = Stream.loadXml(collisionsFile);
+        final Collection<XmlNode> collisions = root.getChildren();
 
-        final LevelRipConverter<?>[] threads = new LevelRipConverter<?>[threadsNum];
+        this.map = map;
+        this.collisions = collisions;
+
+        imageMap = Drawable.loadSprite(levelrip);
+        imageMap.load(false);
+
+        map.loadPatterns(patternsDirectory);
+        map.create(imageMap.getWidthOriginal() / map.getTileWidth(), imageMap.getHeightOriginal() / map.getTileHeight());
+
+        imageMapTilesInY = imageMap.getHeightOriginal() / map.getTileHeight();
+        imageMapTilesInX = imageMap.getWidthOriginal() / map.getTileWidth();
+        startX = 0;
+        endX = imageMapTilesInX;
+
         errors = 0;
-        try
+    }
+
+    /**
+     * Run the converter.
+     */
+    public void start()
+    {
+        // Check all image tiles
+        final ImageBuffer tileRef = imageMap.getSurface();
+        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
         {
-            for (int i = 0; i < threadsNum; i++)
+            for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
             {
-                threads[i] = new LevelRipConverter<>(map, levelRip, threadsNum, i);
-                threads[i].start();
+                // Skip blank tile of image map (0, 128, 128)
+                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth() + 1,
+                        imageMapCurrentTileY * map.getTileHeight() + 1);
+                if (LevelRipConverter.IGNORED_COLOR != imageColor)
+                {
+                    // Search if tile is on sheet and get it
+                    final T tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
+
+                    // A tile has been found
+                    if (tile != null)
+                    {
+                        map.setTile(map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX, tile);
+                    }
+                    else
+                    {
+                        errors++;
+                    }
+                }
             }
-            for (int i = 0; i < threadsNum; i++)
-            {
-                threads[i].join();
-                errors += threads[i].errors;
-            }
-        }
-        catch (final InterruptedException exception)
-        {
-            Thread.currentThread().interrupt();
-            Verbose.critical(LevelRipConverter.class, "An error occured: ", levelrip.getPath());
         }
     }
 
@@ -195,7 +192,9 @@ public final class LevelRipConverter<T extends TileGame>
 
                     if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
                     {
-                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, null);
+                        final String collision = UtilMapTile.getCollision(collisions, pattern.intValue(), number);
+                        final CollisionTile coll = map.getCollisionFrom(collision);
+                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, coll);
                         return tile;
                     }
                 }
@@ -233,40 +232,5 @@ public final class LevelRipConverter<T extends TileGame>
         }
         // Tiles are equal
         return true;
-    }
-
-    /*
-     * Thread
-     */
-
-    @Override
-    public void run()
-    {
-        // Check all image tiles
-        final ImageBuffer tileRef = imageMap.getSurface();
-        for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
-        {
-            for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
-            {
-                // Skip blank tile of image map (0, 128, 128)
-                final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth() + 1,
-                        imageMapCurrentTileY * map.getTileHeight() + 1);
-                if (LevelRipConverter.IGNORED_COLOR != imageColor)
-                {
-                    // Search if tile is on sheet and get it
-                    final T tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
-
-                    // A tile has been found
-                    if (tile != null)
-                    {
-                        map.setTile(map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX, tile);
-                    }
-                    else
-                    {
-                        errors++;
-                    }
-                }
-            }
-        }
     }
 }

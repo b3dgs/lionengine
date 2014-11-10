@@ -126,7 +126,7 @@ public class ColorRgbaTest
     public void testColorRgbValueEquality()
     {
         final ColorRgba color = new ColorRgba(255, 0, 0);
-        Assert.assertTrue(color.inc(1, 1, 1) != color.getRgba());
+        Assert.assertTrue(ColorRgba.inc(color.getRgba(), 1, 1, 1) != color.getRgba());
         Assert.assertEquals(255, color.getRed());
         Assert.assertEquals(0, color.getGreen());
         Assert.assertEquals(0, color.getBlue());
@@ -150,7 +150,7 @@ public class ColorRgbaTest
         Assert.assertEquals(b, color.getBlue());
         Assert.assertEquals(a, color.getAlpha());
 
-        Assert.assertTrue(color.inc(1, 1, 1) != color.getRgba());
+        Assert.assertTrue(ColorRgba.inc(color.getRgba(), 1, 1, 1) != color.getRgba());
         Assert.assertEquals(r, color.getRed());
         Assert.assertEquals(g, color.getGreen());
         Assert.assertEquals(b, color.getBlue());

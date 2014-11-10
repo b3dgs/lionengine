@@ -97,6 +97,9 @@ final class Scene
         factoryEntity = new FactoryEntity();
         mouse.setConfig(getConfig());
 
+        controlPanel.addListener(handlerEntity);
+        handlerEntity.addListener(controlPanel);
+
         final ContextGame contextEntity = new ContextGame();
         contextEntity.addService(map);
         contextEntity.addService(factoryEntity);
@@ -120,8 +123,9 @@ final class Scene
     @Override
     protected void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>();
-        rip.start(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"), map);
+        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
+                Core.MEDIA.create("tile"), map);
+        rip.start();
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -65,6 +66,10 @@ public abstract class MapTileGame<T extends TileGame>
 {
     /** Error pattern number message. */
     private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
+    /** Error pattern missing message. */
+    private static final String ERROR_PATTERN_MISSING = "Pattern missing !";
+    /** Error create tile message. */
+    private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
     /** Collisions. */
     private final CollisionTile[] collisions;
@@ -90,12 +95,16 @@ public abstract class MapTileGame<T extends TileGame>
     /**
      * Constructor base.
      * 
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
-     * @param collisions The collisions list.
+     * @param tileWidth The tile width (must be strictly positive).
+     * @param tileHeight The tile height (must be strictly positive).
+     * @param collisions The collisions list (must not be <code>null</code>).
      */
     public MapTileGame(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
+        Check.superiorStrict(tileWidth, 0);
+        Check.superiorStrict(tileHeight, 0);
+        Check.notNull(collisions);
+
         this.collisions = collisions;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -262,6 +271,9 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void create(int widthInTile, int heightInTile)
     {
+        Check.superiorStrict(widthInTile, 0);
+        Check.superiorStrict(heightInTile, 0);
+
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
         tiles = new ArrayList<>(heightInTile);
@@ -285,11 +297,8 @@ public abstract class MapTileGame<T extends TileGame>
         for (final CollisionTile collision : collisions)
         {
             final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
-            if (functions != null)
-            {
-                final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
-                collisionCache.put(collision, buffer);
-            }
+            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
+            collisionCache.put(collision, buffer);
         }
     }
 
@@ -346,6 +355,10 @@ public abstract class MapTileGame<T extends TileGame>
             for (int j = 0; j < n; j++)
             {
                 final T tile = loadTile(nodes, file, i);
+                if (tile.getPattern().intValue() > getNumberPatterns())
+                {
+                    throw new LionEngineException(media, ERROR_PATTERN_MISSING);
+                }
                 final int v = tile.getY() / getTileHeight();
                 final int h = tile.getX() / getTileWidth();
                 final List<T> list = tiles.get(v);
@@ -359,8 +372,8 @@ public abstract class MapTileGame<T extends TileGame>
     public void load(Media levelrip, Media patternsDirectory) throws LionEngineException
     {
         clear();
-        final LevelRipConverter<T> rip = new LevelRipConverter<>();
-        rip.start(levelrip, patternsDirectory, this);
+        final LevelRipConverter<T> rip = new LevelRipConverter<>(levelrip, patternsDirectory, this);
+        rip.start();
         this.patternsDirectory = patternsDirectory;
         loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
     }
@@ -406,6 +419,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void loadCollisions(Media media) throws LionEngineException
     {
+        removeCollisions();
         final XmlNode root = Stream.loadXml(media);
         final Collection<XmlNode> collisions = root.getChildren();
         for (int i = 0; i < heightInTile; i++)
@@ -433,8 +447,10 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException
+    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException
     {
+        Check.notNull(file);
+
         final int pattern = file.readInteger();
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
@@ -442,6 +458,10 @@ public abstract class MapTileGame<T extends TileGame>
         final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
         final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
 
+        if (tile == null)
+        {
+            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
+        }
         tile.setX(x);
         tile.setY(y);
 
@@ -451,6 +471,8 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void append(MapTile<T> map, int offsetX, int offsetY)
     {
+        Check.notNull(map);
+
         final int newWidth = widthInTile - (widthInTile - offsetX) + map.getWidthInTile();
         final int newHeight = heightInTile - (heightInTile - offsetY) + map.getHeightInTile();
 
@@ -530,6 +552,15 @@ public abstract class MapTileGame<T extends TileGame>
         for (final CollisionTile collision : collisions)
         {
             collision.removeCollisionFunction(function);
+        }
+    }
+
+    @Override
+    public void removeCollisions()
+    {
+        for (final CollisionTile collision : collisions)
+        {
+            collision.removeCollisions();
         }
     }
 

@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.purview;
 
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 
 /**
  * Represents something designed to receive a gravitational force.
@@ -26,14 +26,17 @@ import com.b3dgs.lionengine.game.Force;
  */
 public interface Body
 {
+    /** Gravity of earth (in m/s). */
+    public static final double GRAVITY_EARTH = 9.80665;
+
     /**
      * Update gravity calculation.
      * 
      * @param extrp The extrapolation value.
-     * @param desiredFps The desired fps (usually 60)
-     * @param forces The list of forces.
+     * @param desiredFps The desired fps (usually <code>60</code>)
+     * @param directions The list of directions.
      */
-    void updateGravity(double extrp, int desiredFps, Force... forces);
+    void updateGravity(double extrp, int desiredFps, Direction... directions);
 
     /**
      * Reset gravity force (usually when hit the ground).

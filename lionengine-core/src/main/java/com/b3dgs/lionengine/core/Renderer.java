@@ -37,7 +37,7 @@ public abstract class Renderer
         implements Sequencable
 {
     /** Screen ready timeout in milli second. */
-    static final int SCREEN_READY_TIME_OUT = 5000;
+    static final long SCREEN_READY_TIME_OUT = 5000L;
     /** Error message already started. */
     private static final String ERROR_STARTED = "Renderer has already been started !";
     /** One nano second. */
@@ -62,11 +62,11 @@ public abstract class Renderer
     /** Output resolution reference. */
     private final Resolution output;
     /** Source resolution reference. */
-    protected Resolution source;
+    private Resolution source;
     /** Screen width. */
-    protected int width;
+    private int width;
     /** Screen height. */
-    protected int height;
+    private int height;
     /** Loader. */
     private Loader loader;
     /** Screen reference. */

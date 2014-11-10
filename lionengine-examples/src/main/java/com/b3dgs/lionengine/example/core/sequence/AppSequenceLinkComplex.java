@@ -44,12 +44,4 @@ public final class AppSequenceLinkComplex
         final Loader loader = new Loader(config);
         loader.start(SequenceLinkComplex.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppSequenceLinkComplex()
-    {
-        throw new RuntimeException();
-    }
 }

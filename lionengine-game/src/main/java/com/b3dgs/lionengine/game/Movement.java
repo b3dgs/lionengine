@@ -23,6 +23,7 @@ package com.b3dgs.lionengine.game;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Movement
+        implements Direction
 {
     /** The current force. */
     private final Force current;
@@ -51,7 +52,7 @@ public class Movement
      */
     public void update(double extrp)
     {
-        forceOldH = current.getForceHorizontal();
+        forceOldH = current.getDirectionHorizontal();
         current.reachForce(extrp, destination, velocity, sensibility);
     }
 
@@ -60,29 +61,50 @@ public class Movement
      */
     public void reset()
     {
-        destination.setForce(Force.ZERO);
-        current.setForce(Force.ZERO);
+        destination.setDirection(Direction.ZERO);
+        current.setDirection(Direction.ZERO);
     }
 
     /**
-     * Set the force to reach.
+     * Set the direction to reach.
      * 
-     * @param force The force to reach.
+     * @param direction The direction to reach.
      */
-    public void setForceToReach(Force force)
+    public void setDirectionToReach(Direction direction)
     {
-        destination.setForce(force);
+        destination.setDirection(direction);
     }
 
     /**
-     * Set the force to reach.
+     * Set the direction to reach.
+     * 
+     * @param fh The horizontal direction.
+     * @param fv The vertical direction.
+     */
+    public void setDirectionToReach(double fh, double fv)
+    {
+        destination.setDirection(fh, fv);
+    }
+
+    /**
+     * Set the current force.
+     * 
+     * @param force The current force.
+     */
+    public void setForce(Force force)
+    {
+        current.setDirection(force);
+    }
+
+    /**
+     * Set the current force.
      * 
      * @param fh The horizontal force.
      * @param fv The vertical force.
      */
-    public void setForceToReach(double fh, double fv)
+    public void setForce(double fh, double fv)
     {
-        destination.setForce(fh, fv);
+        current.setDirection(fh, fv);
     }
 
     /**
@@ -106,23 +128,13 @@ public class Movement
     }
 
     /**
-     * Get the current force (active reference, not a copy).
-     * 
-     * @return The current force.
-     */
-    public Force getForce()
-    {
-        return current;
-    }
-
-    /**
      * Check if movement is horizontally decreasing.
      * 
      * @return <code>true</code> if horizontally decreasing, <code>false</code> else.
      */
     public boolean isDecreasingHorizontal()
     {
-        return Math.abs(forceOldH) > Math.abs(current.getForceHorizontal());
+        return Math.abs(forceOldH) > Math.abs(current.getDirectionHorizontal());
     }
 
     /**
@@ -132,6 +144,22 @@ public class Movement
      */
     public boolean isIncreasingHorizontal()
     {
-        return Math.abs(forceOldH) < Math.abs(current.getForceHorizontal());
+        return Math.abs(forceOldH) < Math.abs(current.getDirectionHorizontal());
+    }
+
+    /*
+     * Direction
+     */
+
+    @Override
+    public double getDirectionHorizontal()
+    {
+        return current.getDirectionHorizontal();
+    }
+
+    @Override
+    public double getDirectionVertical()
+    {
+        return current.getDirectionVertical();
     }
 }

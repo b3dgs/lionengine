@@ -31,6 +31,7 @@ import com.b3dgs.lionengine.game.Bar;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
+import com.b3dgs.lionengine.game.strategy.entity.EntityStrategyListener;
 
 /**
  * Control panel implementation.
@@ -40,6 +41,7 @@ import com.b3dgs.lionengine.game.strategy.CursorStrategy;
  */
 public final class ControlPanel
         extends ControlPanelModel<Entity>
+        implements EntityStrategyListener<Entity>
 {
     /** Text. */
     private final Text text;
@@ -141,6 +143,29 @@ public final class ControlPanel
     }
 
     /*
+     * EntityStrategyListener
+     */
+
+    @Override
+    public void notifyUpdatedSelection(Collection<Entity> selection)
+    {
+        if (selection.size() == 1)
+        {
+            lastSingleSelection = selection.iterator().next();
+        }
+        else
+        {
+            lastSingleSelection = null;
+        }
+    }
+
+    @Override
+    public void entityMoved(Entity entity)
+    {
+        // Nothing to do
+    }
+
+    /*
      * ControlPanelModel
      */
 
@@ -160,19 +185,6 @@ public final class ControlPanel
             {
                 updateSingleEntity(lastSingleSelection, cursor, extrp);
             }
-        }
-    }
-
-    @Override
-    public void notifyUpdatedSelection(Collection<Entity> selection)
-    {
-        if (selection.size() == 1)
-        {
-            lastSingleSelection = selection.iterator().next();
-        }
-        else
-        {
-            lastSingleSelection = null;
         }
     }
 

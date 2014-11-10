@@ -57,14 +57,14 @@ public final class Config
     private final int depth;
     /** Windowed mode. */
     private final boolean windowed;
-    /** Source resolution reference. */
-    private Resolution source;
     /** Ratio desired. */
     private double ratio;
-    /** Applet reference. */
-    private Applet<?> applet;
+    /** Source resolution reference. */
+    private Resolution source;
     /** Icon media. */
     private Media icon;
+    /** Applet reference. */
+    private Applet<?> applet;
 
     /**
      * Create a configuration without filter.
@@ -137,6 +137,20 @@ public final class Config
     }
 
     /**
+     * Set the resolution source.
+     * 
+     * @param source The source resolution (native).
+     * @throws LionEngineException If source is <code>null</code>.
+     */
+    public void setSource(Resolution source) throws LionEngineException
+    {
+        Check.notNull(source);
+
+        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
+        this.source.setRatio(ratio);
+    }
+
+    /**
      * Get the resolution source.
      * 
      * @return The source resolution.
@@ -170,16 +184,6 @@ public final class Config
             return appletClass.cast(applet.getApplet());
         }
         return null;
-    }
-
-    /**
-     * Check if has applet.
-     * 
-     * @return <code>true</code> if has applet, <code>false</code> else.
-     */
-    public boolean hasApplet()
-    {
-        return applet != null;
     }
 
     /**
@@ -223,16 +227,12 @@ public final class Config
     }
 
     /**
-     * Set the resolution source.
+     * Check if has applet.
      * 
-     * @param source The source resolution (native).
-     * @throws LionEngineException If source is <code>null</code>.
+     * @return <code>true</code> if has applet, <code>false</code> else.
      */
-    public void setSource(Resolution source) throws LionEngineException
+    public boolean hasApplet()
     {
-        Check.notNull(source);
-
-        this.source = new Resolution(source.getWidth(), source.getHeight(), source.getRate());
-        this.source.setRatio(ratio);
+        return applet != null;
     }
 }

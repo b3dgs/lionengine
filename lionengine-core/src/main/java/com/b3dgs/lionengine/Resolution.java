@@ -34,10 +34,10 @@ public final class Resolution
     private int width;
     /** Resolution height. */
     private int height;
-    /** Resolution ratio. */
-    private double ratio;
     /** Display rate. */
     private int rate;
+    /** Resolution ratio. */
+    private double ratio;
 
     /**
      * Create a resolution.

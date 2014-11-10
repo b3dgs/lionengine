@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.platform;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
@@ -158,7 +158,7 @@ public class CameraPlatform
     private void checkHorizontalLimit(double vx)
     {
         // Middle
-        if (offset.getLocationIntX() == -intervalHorizontal || offset.getLocationIntX() == intervalHorizontal)
+        if (offset.getLocationX() == -intervalHorizontal || offset.getLocationX() == intervalHorizontal)
         {
             location.moveLocation(1, vx, 0);
         }
@@ -178,7 +178,7 @@ public class CameraPlatform
             }
             else
             {
-                location.moveLocation(1, Force.ZERO);
+                location.moveLocation(1, Direction.ZERO);
             }
         }
         // Case of map extremity
@@ -205,17 +205,17 @@ public class CameraPlatform
         }
         else
         {
-            location.moveLocation(1, Force.ZERO);
+            location.moveLocation(1, Direction.ZERO);
         }
 
         offset.moveLocation(1, vx, 0);
 
-        if (location.getLocationIntX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
+        if (location.getLocationX() == getLimitMapLeft() && offset.getLocationX() >= intervalHorizontal)
         {
             offset.setLocationX(intervalHorizontal);
             location.moveLocation(1, vx, 0);
         }
-        if (location.getLocationIntX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
+        if (location.getLocationX() == getLimitMapRight() && offset.getLocationX() <= -intervalHorizontal)
         {
             offset.setLocationX(-intervalHorizontal);
             location.moveLocation(1, vx, 0);

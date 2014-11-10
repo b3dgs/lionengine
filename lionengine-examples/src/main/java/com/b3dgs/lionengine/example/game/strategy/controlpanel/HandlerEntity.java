@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.TextGame;
@@ -33,7 +31,7 @@ import com.b3dgs.lionengine.game.strategy.entity.HandlerEntityStrategy;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class HandlerEntity
-        extends HandlerEntityStrategy<ResourceType, Tile, Entity, ControlPanel>
+        extends HandlerEntityStrategy<ResourceType, Tile, Entity>
 {
     /** Text reference. */
     private final TextGame text;
@@ -49,7 +47,7 @@ final class HandlerEntity
      */
     HandlerEntity(CameraStrategy camera, CursorStrategy cursor, ControlPanel controlPanel, Map map, TextGame text)
     {
-        super(camera, cursor, controlPanel, map);
+        super(camera, cursor, map);
         this.text = text;
     }
 
@@ -76,12 +74,6 @@ final class HandlerEntity
         {
             text.draw(g, entity.getLocationIntX() + 18, entity.getLocationIntY() + 8, "Life: " + entity.getLife());
         }
-    }
-
-    @Override
-    protected void notifyUpdatedSelection(Collection<Entity> selection)
-    {
-        // Nothing to do
     }
 
     @Override

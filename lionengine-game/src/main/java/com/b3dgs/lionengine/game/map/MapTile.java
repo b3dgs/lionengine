@@ -34,12 +34,42 @@ import com.b3dgs.lionengine.stream.XmlNode;
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
  * Each tiles are stored vertically and then horizontally. A pattern represents a tilesheet number (number of surface
- * containing tiles). A map can have one or more patterns.
+ * containing tiles). A map can have one or more patterns. The map picks its resources from a patterns folder, which
+ * must contains the following files (and its tiles sheets):
+ * <ul>
+ * <li>{@value #TILE_SHEETS_FILE_NAME} - describes the patterns used. Must be used like this:
+ * 
+ * <pre>
+ * {@code <lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *     {@code <lionengine:tileSheet>0.png</lionengine:tileSheet>}
+ *     {@code <lionengine:tileSheet>1.png</lionengine:tileSheet>}
+ *     ...
+ * {@code </lionengine:tileSheets>}
+ * </pre>
+ * 
+ * </li>
+ * <li>{@value #COLLISIONS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
+ * 
+ * <pre>
+ * {@code <lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *     {@code <lionengine:tileCollision name="GROUND">}
+ *         {@code <lionengine:tile number="1" pattern="0"/>}
+ *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_left" offset="0" value="0.0"/>}
+ *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_right" offset="15" value="0.0"/>}
+ *         {@code <lionengine:function axis="Y" input="X" max="15" min="0" name="vertical" offset="15" value="0.0"/>}
+ *     {@code </lionengine:tileCollision>}
+ *     ...
+ * {@code </lionengine:tileCollisions>}
+ * </pre>
+ * 
+ * </li>
+ * </ul>
  * 
  * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  * @see MapTileGame
+ * @see CollisionFunction
  */
 public interface MapTile<T extends TileGame>
 {
@@ -55,8 +85,8 @@ public interface MapTile<T extends TileGame>
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
      * 
-     * @param widthInTile The map width in tile.
-     * @param heightInTile The map height in tile.
+     * @param widthInTile The map width in tile (must be strictly positive).
+     * @param heightInTile The map height in tile (must be strictly positive).
      */
     void create(int widthInTile, int heightInTile);
 
@@ -99,8 +129,8 @@ public interface MapTile<T extends TileGame>
      *   <code>(short)</code> number of tiles in this bloc
      *   for each tile in this bloc
      *     create blank tile
-     *     call tile.load(file)
-     *     call this.setTile(...) to update map with this new tile
+     *     call load(file)
+     *     call setTile(...) to update map with this new tile
      * </pre>
      * 
      * @param file The input file.
@@ -110,7 +140,8 @@ public interface MapTile<T extends TileGame>
     void load(FileReading file) throws IOException, LionEngineException;
 
     /**
-     * Load a map from a level rip and the associated tiles directory.
+     * Load a map from a level rip and the associated tiles directory. A file called {@value #TILE_SHEETS_FILE_NAME} and
+     * {@value #COLLISIONS_FILE_NAME} has to be in the same directory.
      * 
      * @param levelrip The file containing the levelrip as an image.
      * @param patternsDirectory The directory containing tiles themes.
@@ -120,10 +151,7 @@ public interface MapTile<T extends TileGame>
 
     /**
      * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
-     * {@value #COLLISIONS_FILE_NAME} has to be in the same directory, as collisions are loaded at the same time.
-     * <p>
-     * Collisions are stored this way: #NAME# = {pattern|firstTile-lastTile}, and called with: getCollision(name).
-     * </p>
+     * {@value #TILE_SHEETS_FILE_NAME} which describes the tile sheets used.
      * <p>
      * Patterns number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
      * </p>
@@ -156,8 +184,9 @@ public interface MapTile<T extends TileGame>
      * @param i The last loaded tile number.
      * @return The loaded tile.
      * @throws IOException If error on reading.
+     * @throws LionEngineException If error on creating tile.
      */
-    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException;
+    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -194,6 +223,11 @@ public interface MapTile<T extends TileGame>
      * @param function The function to remove.
      */
     void removeCollisionFunction(CollisionFunction function);
+
+    /**
+     * Remove all collisions.
+     */
+    void removeCollisions();
 
     /**
      * Save the current collisions to the collision file.

@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -54,14 +55,20 @@ public class TileGame
     /**
      * Create a tile.
      * 
-     * @param width The tile width.
-     * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
+     * @param width The tile width (must be strictly positive).
+     * @param height The tile height (must be strictly positive).
+     * @param pattern The tile pattern (must not be <code>null</code>).
+     * @param number The tile number (must be positive).
+     * @param collision The tile collision (must not be <code>null</code>).
      */
     public TileGame(int width, int height, Integer pattern, int number, CollisionTile collision)
     {
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
+        Check.superiorOrEqual(number, 0);
+        Check.notNull(pattern);
+        Check.notNull(collision);
+
         this.width = width;
         this.height = height;
         this.pattern = pattern;
@@ -74,10 +81,11 @@ public class TileGame
     /**
      * Set pattern number.
      * 
-     * @param pattern The pattern number.
+     * @param pattern The pattern number (must not be <code>null</code>).
      */
     public void setPattern(Integer pattern)
     {
+        Check.notNull(pattern);
         this.pattern = pattern;
     }
 
@@ -88,16 +96,18 @@ public class TileGame
      */
     public void setNumber(int number)
     {
+        Check.superiorOrEqual(number, 0);
         this.number = number;
     }
 
     /**
      * Set collision.
      * 
-     * @param collision The collision.
+     * @param collision The collision (must not be <code>null</code>).
      */
     public void setCollision(CollisionTile collision)
     {
+        Check.notNull(collision);
         this.collision = collision;
     }
 
@@ -131,10 +141,7 @@ public class TileGame
      */
     public Double getCollisionX(Localizable localizable)
     {
-        final CollisionTile collision = getCollision();
-        final Collection<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
-
-        for (final CollisionFunction function : collisionFunctions)
+        for (final CollisionFunction function : getCollision().getCollisionFunctions())
         {
             if (function.getAxis() == CollisionRefential.X)
             {
@@ -163,10 +170,7 @@ public class TileGame
      */
     public Double getCollisionY(Localizable localizable)
     {
-        final CollisionTile collision = getCollision();
-        final Collection<CollisionFunction> collisionFunctions = collision.getCollisionFunctions();
-
-        for (final CollisionFunction function : collisionFunctions)
+        for (final CollisionFunction function : getCollision().getCollisionFunctions())
         {
             if (function.getAxis() == CollisionRefential.Y)
             {

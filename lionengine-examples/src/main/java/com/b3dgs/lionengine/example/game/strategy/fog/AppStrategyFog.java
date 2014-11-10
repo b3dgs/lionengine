@@ -47,12 +47,4 @@ public final class AppStrategyFog
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppStrategyFog()
-    {
-        throw new RuntimeException();
-    }
 }

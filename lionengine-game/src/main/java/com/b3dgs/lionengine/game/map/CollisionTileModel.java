@@ -57,6 +57,12 @@ public class CollisionTileModel
     }
 
     @Override
+    public void removeCollisions()
+    {
+        collisionFunctions.clear();
+    }
+
+    @Override
     public Collection<CollisionFunction> getCollisionFunctions()
     {
         return collisionFunctions;

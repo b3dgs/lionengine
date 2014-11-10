@@ -44,6 +44,8 @@ public final class AppJava
         // - The program version: "1.0.0"
         // - The main resources directory, relative to the execution directory: ./resources/
         // This mean that any resources loaded with Media.get(...) will have this directory as prefix.
+        // To load resources from JAR, this alternative is preferred if external folder is not possible:
+        // Engine.start("AppJava", Version.create(1, 0, 0), Verbose.CRITICAL, AppJava.class);
         Engine.start("AppJava", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
 
         // Resolution configuration (output = 640*480 at 60Hz). This is the output configuration.
@@ -59,13 +61,5 @@ public final class AppJava
         // Program starter, setup with our configuration. It just needs one sequence reference to start.
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private AppJava()
-    {
-        throw new RuntimeException();
     }
 }

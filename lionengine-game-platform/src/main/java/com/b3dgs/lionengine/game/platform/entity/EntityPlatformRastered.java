@@ -67,7 +67,7 @@ public abstract class EntityPlatformRastered
             final SpriteAnimated anim = getRasterAnim(index);
             if (anim != null)
             {
-                anim.setFrame(sprite.getFrame());
+                anim.setFrame(getFrame());
                 anim.setMirror(getMirror());
             }
         }

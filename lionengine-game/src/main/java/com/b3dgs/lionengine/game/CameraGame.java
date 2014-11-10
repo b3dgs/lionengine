@@ -299,36 +299,36 @@ public class CameraGame
         double my = 0.0;
         // Horizontal move
         // Can scroll only on offset interval
-        if (offset.getLocationIntX() <= -intervalHorizontal || offset.getLocationIntX() >= intervalHorizontal)
+        if (offset.getLocationX() <= -intervalHorizontal || offset.getLocationX() >= intervalHorizontal)
         {
             mx = vx;
         }
         offset.moveLocation(extrp, vx, 0);
 
         // Block offset on its limits
-        if (offset.getLocationIntX() < -intervalHorizontal)
+        if (offset.getLocationX() < -intervalHorizontal)
         {
             offset.setLocationX(-intervalHorizontal);
         }
-        if (offset.getLocationIntX() > intervalHorizontal)
+        if (offset.getLocationX() > intervalHorizontal)
         {
             offset.setLocationX(intervalHorizontal);
         }
 
         // Vertical move
         // Can scroll only on offset interval
-        if (offset.getLocationIntY() <= -intervalVertical || offset.getLocationIntX() >= intervalVertical)
+        if (offset.getLocationIntY() <= -intervalVertical || offset.getLocationY() >= intervalVertical)
         {
             my = vy;
         }
         offset.moveLocation(extrp, 0, vy);
 
         // Block offset on its limits
-        if (offset.getLocationIntY() < -intervalVertical)
+        if (offset.getLocationY() < -intervalVertical)
         {
             offset.setLocationY(-intervalVertical);
         }
-        if (offset.getLocationIntY() > intervalVertical)
+        if (offset.getLocationY() > intervalVertical)
         {
             offset.setLocationY(intervalVertical);
         }
@@ -359,12 +359,12 @@ public class CameraGame
     }
 
     @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
+    public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
-        move(extrp, force.getForceHorizontal(), force.getForceVertical());
-        for (final Force f : forces)
+        move(extrp, direction.getDirectionHorizontal(), direction.getDirectionVertical());
+        for (final Direction d : directions)
         {
-            move(extrp, f.getForceHorizontal(), f.getForceVertical());
+            move(extrp, d.getDirectionHorizontal(), d.getDirectionVertical());
         }
     }
 

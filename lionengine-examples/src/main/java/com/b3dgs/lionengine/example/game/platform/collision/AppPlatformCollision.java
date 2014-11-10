@@ -47,12 +47,4 @@ public final class AppPlatformCollision
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppPlatformCollision()
-    {
-        throw new RuntimeException();
-    }
 }

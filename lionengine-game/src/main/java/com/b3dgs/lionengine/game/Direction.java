@@ -15,42 +15,42 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.ability;
-
-import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
-import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
+package com.b3dgs.lionengine.game;
 
 /**
- * Control panel implementation.
+ * Represents something that can have a direction on two axis, such as horizontal and vertical.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class ControlPanel
-        extends ControlPanelModel<Entity>
+public interface Direction
 {
+    /** Zero direction. */
+    Direction ZERO = new Direction()
+    {
+        @Override
+        public double getDirectionVertical()
+        {
+            return 0;
+        }
+
+        @Override
+        public double getDirectionHorizontal()
+        {
+            return 0;
+        }
+    };
+
     /**
-     * Constructor.
+     * Get horizontal direction.
+     * 
+     * @return The horizontal direction.
      */
-    ControlPanel()
-    {
-        super();
-        setClickSelection(Mouse.LEFT);
-    }
+    double getDirectionHorizontal();
 
-    /*
-     * ControlPanelModel
+    /**
+     * Get vertical direction.
+     * 
+     * @return The vertical direction.
      */
-
-    @Override
-    protected void onStartOrder()
-    {
-        // Nothing to do
-    }
-
-    @Override
-    protected void onTerminateOrder()
-    {
-        // Nothing to do
-    }
+    double getDirectionVertical();
 }

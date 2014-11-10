@@ -24,6 +24,8 @@ import java.util.Collection;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionTileModel
+ * @see MapTile
+ * @see TileGame
  */
 public interface CollisionTile
 {
@@ -42,9 +44,14 @@ public interface CollisionTile
     void removeCollisionFunction(CollisionFunction function);
 
     /**
+     * Remove all collisions.
+     */
+    void removeCollisions();
+
+    /**
      * Get the collision functions.
      * 
-     * @return The collision function.
+     * @return The collision function (must not be <code>null</code>).
      */
     Collection<CollisionFunction> getCollisionFunctions();
 

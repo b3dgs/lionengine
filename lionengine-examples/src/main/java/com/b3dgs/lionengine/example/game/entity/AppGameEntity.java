@@ -53,12 +53,4 @@ public final class AppGameEntity
 
         Engine.terminate();
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppGameEntity()
-    {
-        throw new RuntimeException();
-    }
 }

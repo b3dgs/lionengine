@@ -47,12 +47,4 @@ public final class AppPlatformTile
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppPlatformTile()
-    {
-        throw new RuntimeException();
-    }
 }

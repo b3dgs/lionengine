@@ -49,7 +49,7 @@ public abstract class ObjectGame
 {
     /** Handlable model. */
     private final Handlable handlableModel;
-    /** Localizable object reference. */
+    /** Localizable model. */
     private final Localizable localizable;
 
     /**
@@ -81,24 +81,33 @@ public abstract class ObjectGame
      */
     public abstract void render(Graphic g, CameraGame camera);
 
+    /**
+     * Called when object is destroyed. Can be overridden. Does nothing by default.
+     */
+    protected void onDestroy()
+    {
+        // Nothing by default
+    }
+
     /*
      * Handlable
      */
 
     @Override
-    public Integer getId()
+    public final Integer getId()
     {
         return handlableModel.getId();
     }
 
     @Override
-    public void destroy()
+    public final void destroy()
     {
         handlableModel.destroy();
+        onDestroy();
     }
 
     @Override
-    public boolean isDestroyed()
+    public final boolean isDestroyed()
     {
         return handlableModel.isDestroyed();
     }
@@ -126,9 +135,9 @@ public abstract class ObjectGame
     }
 
     @Override
-    public void moveLocation(double extrp, Force force, Force... forces)
+    public void moveLocation(double extrp, Direction direction, Direction... directions)
     {
-        localizable.moveLocation(extrp, force, forces);
+        localizable.moveLocation(extrp, direction, directions);
     }
 
     @Override
@@ -156,7 +165,7 @@ public abstract class ObjectGame
     }
 
     @Override
-    public void setSize(int width, int height)
+    public final void setSize(int width, int height)
     {
         localizable.setSize(width, height);
     }

@@ -72,8 +72,8 @@ final class SpriteAnimatedImpl
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
-        frameOriginalWidth = widthOriginal / horizontalFrames;
-        frameOriginalHeight = heightOriginal / verticalFrames;
+        frameOriginalWidth = getWidthOriginal() / horizontalFrames;
+        frameOriginalHeight = getHeightOriginal() / verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
         mirrorHorizontal = true;
@@ -96,8 +96,8 @@ final class SpriteAnimatedImpl
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
-        frameOriginalWidth = widthOriginal / horizontalFrames;
-        frameOriginalHeight = heightOriginal / verticalFrames;
+        frameOriginalWidth = getWidthOriginal() / horizontalFrames;
+        frameOriginalHeight = getHeightOriginal() / verticalFrames;
         framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
         mirrorHorizontal = true;
@@ -114,7 +114,7 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public void setAnimSpeed(double speed)
+    public void setAnimSpeed(double speed) throws LionEngineException
     {
         animator.setAnimSpeed(speed);
     }
@@ -132,7 +132,7 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public void setFrame(int frame)
+    public void setFrame(int frame) throws LionEngineException
     {
         animator.setFrame(frame);
     }
@@ -178,16 +178,16 @@ final class SpriteAnimatedImpl
         {
             if (mirrorHorizontal)
             {
-                g.drawImage(surface, x, y, x + w, y + h, cx * w + w, cy * h, cx * w, cy * h + h);
+                g.drawImage(getSurface(), x, y, x + w, y + h, cx * w + w, cy * h, cx * w, cy * h + h);
             }
             else
             {
-                g.drawImage(surface, x, y, x + w, y + h, cx * w, cy * h + h, cx * w + w, cy * h);
+                g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h + h, cx * w + w, cy * h);
             }
         }
         else
         {
-            g.drawImage(surface, x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
+            g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
         }
     }
 
@@ -255,7 +255,7 @@ final class SpriteAnimatedImpl
         final int w = getFrameWidth();
         final int h = getFrameHeight();
 
-        g.drawImage(surface, 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
+        g.drawImage(getSurface(), 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
         g.dispose();
 
         return buf;

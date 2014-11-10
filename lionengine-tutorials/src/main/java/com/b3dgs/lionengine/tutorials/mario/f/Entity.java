@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
@@ -226,7 +227,7 @@ abstract class Entity
      */
     private void updateForces()
     {
-        movement.setForceToReach(Force.ZERO);
+        movement.setDirectionToReach(Direction.ZERO);
         final double speed;
         if (right && !left)
         {
@@ -240,11 +241,11 @@ abstract class Entity
         {
             speed = 0.0;
         }
-        movement.setForceToReach(speed, 0.0);
+        movement.setDirectionToReach(speed, 0.0);
 
         if (up && canJump())
         {
-            jumpForce.setForce(0.0, jumpForceValue);
+            jumpForce.setDirection(0.0, jumpForceValue);
             resetGravity();
             coll = EntityCollision.NONE;
         }
@@ -322,7 +323,7 @@ abstract class Entity
             final Double y = tile.getCollisionY(this);
             if (applyVerticalCollision(y))
             {
-                jumpForce.setForce(Force.ZERO);
+                jumpForce.setDirection(Direction.ZERO);
                 resetGravity();
                 coll = EntityCollision.GROUND;
             }
@@ -358,7 +359,7 @@ abstract class Entity
     protected void handleMovements(double extrp)
     {
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement.getForce());
+        updateGravity(extrp, desiredFps, jumpForce, movement);
         updateMirror();
     }
 
@@ -391,7 +392,7 @@ abstract class Entity
         // Assign an animation for each state
         if (state == EntityState.WALK)
         {
-            setAnimSpeed(Math.abs(movement.getForce().getForceHorizontal()) / 12.0);
+            setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
         }
         // Play the assigned animation
         if (stateOld != state)

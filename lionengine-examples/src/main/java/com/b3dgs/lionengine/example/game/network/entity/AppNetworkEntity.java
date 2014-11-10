@@ -47,12 +47,4 @@ public final class AppNetworkEntity
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
     }
-
-    /**
-     * Private constructor.
-     */
-    private AppNetworkEntity()
-    {
-        throw new RuntimeException();
-    }
 }
