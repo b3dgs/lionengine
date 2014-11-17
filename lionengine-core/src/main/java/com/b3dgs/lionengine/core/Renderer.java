@@ -44,8 +44,6 @@ public abstract class Renderer
     private static final long TIME_LONG = 1000000000L;
     /** One nano second. */
     private static final double TIME_DOUBLE = 1000000000.0;
-    /** One millisecond. */
-    private static final long TIME_INT = 1000000L;
     /** Extrapolation standard. */
     private static final double EXTRP = 1.0;
 
@@ -113,7 +111,7 @@ public abstract class Renderer
         filter = config.getFilter();
         output = config.getOutput();
         sync = config.isWindowed() && output.getRate() > 0;
-        extrapolated = true;
+        extrapolated = false;
 
         // Time needed for a loop to reach desired rate
         if (output.getRate() == 0)
@@ -215,35 +213,6 @@ public abstract class Renderer
     }
 
     /**
-     * Render handler.
-     * 
-     * @param g The graphic output.
-     */
-    private void preRender(final Graphic g)
-    {
-        if (directRendering)
-        {
-            sequence.render(g);
-        }
-        else
-        {
-            sequence.render(graphic);
-            switch (hqx)
-            {
-                case 2:
-                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                case 3:
-                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
-                    break;
-                default:
-                    g.drawImage(buf, op, 0, 0);
-                    break;
-            }
-        }
-    }
-
-    /**
      * Sync frame rate to desired if possible.
      * 
      * @param time The update tile.
@@ -252,18 +221,14 @@ public abstract class Renderer
     {
         if (sync)
         {
-            try
+            final double waitTime = frameDelay - time;
+            if (waitTime > 0.0)
             {
-                final long waitTime = frameDelay - time;
-                if (waitTime > 0)
+                final long prevTime = System.nanoTime();
+                while (System.nanoTime() - prevTime < waitTime)
                 {
-                    Thread.sleep(waitTime / TIME_INT, (int) (waitTime % TIME_INT));
+                    Thread.yield();
                 }
-            }
-            catch (final InterruptedException exception)
-            {
-                Verbose.critical(Renderer.class, "sync", "Renderer interrupted !");
-                isRunning = false;
             }
         }
     }
@@ -300,9 +265,9 @@ public abstract class Renderer
             final long lastTime = System.nanoTime();
             if (screen.isReady())
             {
-                sequence.update(extrp);
+                update(extrp);
                 screen.preUpdate();
-                preRender(screen.getGraphic());
+                render(screen.getGraphic());
                 screen.update();
             }
             sync(System.nanoTime() - lastTime);
@@ -419,6 +384,37 @@ public abstract class Renderer
 
         nextSequence = Loader.createSequence(nextSequenceClass, loader, arguments);
         isRunning = false;
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        sequence.update(extrp);
+    }
+
+    @Override
+    public void render(final Graphic g)
+    {
+        if (directRendering)
+        {
+            sequence.render(g);
+        }
+        else
+        {
+            sequence.render(graphic);
+            switch (hqx)
+            {
+                case 2:
+                    g.drawImage(new Hq2x(buf).getScaledImage(), op, 0, 0);
+                    break;
+                case 3:
+                    g.drawImage(new Hq3x(buf).getScaledImage(), op, 0, 0);
+                    break;
+                default:
+                    g.drawImage(buf, op, 0, 0);
+                    break;
+            }
+        }
     }
 
     @Override

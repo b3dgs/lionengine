@@ -103,29 +103,10 @@ public abstract class Sequence
         height = resolution.getHeight();
     }
 
-    /*
-     * Sequencable
-     */
-
     /**
      * Loading sequence data.
      */
-    protected abstract void load();
-
-    /**
-     * Update sequence.
-     * 
-     * @param extrp The extrapolation value. Can be used to have an non dependent machine speed calculation.
-     *            Example: <code>x += 5.0 * extrp</code>
-     */
-    protected abstract void update(double extrp);
-
-    /**
-     * Render sequence.
-     * 
-     * @param g The graphic output.
-     */
-    protected abstract void render(Graphic g);
+    public abstract void load();
 
     /**
      * Load the sequence internally. Must only be called by {@link Renderer#asyncLoad(Sequence)} implementation in order

@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.Resolution;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Sequencable
+        extends Updatable, Renderable
 {
     /**
      * Start the next sequence and wait for current sequence to end before next sequence continues. This function should
