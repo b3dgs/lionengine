@@ -58,7 +58,7 @@ public class AnimationProperties
      */
     public AnimationProperties(AnimationRenderer animationRenderer)
     {
-        maxFrame = animationRenderer.surface.getFramesNumber();
+        maxFrame = animationRenderer.surface.getFramesHorizontal() * animationRenderer.surface.getFramesVertical();
     }
 
     /**

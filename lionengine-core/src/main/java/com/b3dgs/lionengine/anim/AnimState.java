@@ -28,7 +28,7 @@ package com.b3dgs.lionengine.anim;
  * final Animation animation = Anim.createAnimation(1, 2, 1.0, false, false);
  * animator.getAnimState(); // returns STOPPED
  * animator.play(animation);
- * animator.updateAnimation(extrp);
+ * animator.update(extrp);
  * animator.getAnimState(); // returns PLAYING
  * </pre>
  * 

@@ -164,28 +164,6 @@ public class RendererTest
     }
 
     /**
-     * Test the sync interrupt.
-     * 
-     * @throws InterruptedException If error.
-     */
-    @Test(timeout = 500)
-    public void testSyncInterrupt() throws InterruptedException
-    {
-        final Resolution resolution = new Resolution(320, 240, 1);
-        final Config config = new Config(resolution, 32, true);
-        final Loader loader = new Loader(config);
-        final Renderer renderer = loader.getRenderer();
-        loader.start(SequenceSingleMock.class);
-
-        while (renderer.getState() != State.TIMED_WAITING)
-        {
-            // Wait
-        }
-        renderer.interrupt();
-        renderer.join();
-    }
-
-    /**
      * Test the wait screen timeout.
      * 
      * @throws InterruptedException If error.

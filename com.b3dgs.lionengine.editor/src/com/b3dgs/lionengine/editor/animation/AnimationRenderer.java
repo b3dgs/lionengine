@@ -84,7 +84,7 @@ public final class AnimationRenderer
                 if (!paused)
                 {
                     lastPlayedFrame = surface.getFrame();
-                    surface.updateAnimation(1.0);
+                    surface.update(1.0);
                 }
                 final AnimState state = surface.getAnimState();
                 if (lastPlayedFrame != surface.getFrame())
@@ -146,7 +146,7 @@ public final class AnimationRenderer
      */
     public void stopAnimation()
     {
-        surface.stopAnimation();
+        surface.stop();
         surface.setFrame(lastFirstFrame);
         parent.redraw();
         paused = false;
@@ -171,8 +171,8 @@ public final class AnimationRenderer
     {
         if (!paused)
         {
-            surface.stopAnimation();
-            surface.updateAnimation(1.0);
+            surface.stop();
+            surface.update(1.0);
             surface.play(animation);
             lastFirstFrame = animation.getFirst();
             parent.redraw();
@@ -209,7 +209,8 @@ public final class AnimationRenderer
      */
     private void render(Graphic g, int width, int height)
     {
-        surface.render(g, width / 2 - surface.getFrameWidth() / 2, height / 2 - surface.getFrameHeight() / 2);
+        surface.setLocation(width / 2 - surface.getFrameWidth() / 2, height / 2 - surface.getFrameHeight() / 2);
+        surface.render(g);
     }
 
     /*

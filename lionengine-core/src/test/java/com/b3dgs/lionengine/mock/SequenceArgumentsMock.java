@@ -58,7 +58,7 @@ public class SequenceArgumentsMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         width = getWidth();
         height = getHeight();
@@ -67,13 +67,13 @@ public class SequenceArgumentsMock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end();
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         Verbose.info("Sequence single mock info");
         Verbose.info(String.valueOf(width));

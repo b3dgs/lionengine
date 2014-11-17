@@ -44,7 +44,7 @@ public class SequenceMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         setSystemCursorVisible(true);
         try
@@ -60,7 +60,7 @@ public class SequenceMock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         getX();
         getY();
@@ -68,7 +68,7 @@ public class SequenceMock
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Mock
     }

@@ -22,7 +22,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
@@ -75,38 +74,17 @@ public class SpriteParallaxedTest
         final ImageInfo info = ImageInfo.get(MEDIA);
         final SpriteParallaxed spriteA = Drawable.loadSpriteParallaxed(MEDIA, LINES, 60, 100);
 
-        Assert.assertEquals(0, spriteA.getWidthOriginal());
-        Assert.assertEquals(0, spriteA.getHeightOriginal());
-
-        spriteA.prepare(Filter.NONE);
+        spriteA.load(false);
         Assert.assertTrue(spriteA.equals(spriteA));
-        Assert.assertEquals((int) (spriteA.getWidthOriginal() * 0.6), spriteA.getWidth());
-        Assert.assertEquals(info.getWidth(), spriteA.getWidthOriginal());
         Assert.assertEquals(info.getHeight() / LINES, spriteA.getHeight());
 
-        for (int i = 0; i < LINES; i++)
-        {
-            Assert.assertNotNull(spriteA.getLine(i));
-            spriteA.render(g, i, 0, 0);
-        }
-
         // Test render
-        try
-        {
-            spriteA.render(null, 0, 0);
-            Assert.fail();
-        }
-        catch (final NullPointerException exception)
-        {
-            // Success
-        }
-        spriteA.render(g, 0, 0);
+        spriteA.render(g, 0, 0, 0);
 
         // Resize
         final SpriteParallaxed spriteB = Drawable.loadSpriteParallaxed(MEDIA, LINES, 60, 100);
-        spriteB.scale(200);
-        spriteB.prepare(Filter.BILINEAR);
-        Assert.assertEquals(info.getWidth(), spriteB.getWidthOriginal());
+        spriteB.stretch(200, 200);
+        spriteB.load(true);
         Assert.assertFalse(spriteB.equals(spriteA));
         Assert.assertTrue(spriteA.hashCode() != spriteB.hashCode());
         Assert.assertFalse(spriteA.equals(MEDIA));

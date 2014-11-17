@@ -122,6 +122,7 @@ public class ImageTest
 
         // Load from file
         final Image imageC = Drawable.loadImage(MEDIA);
+        imageC.load(false);
         DrawableTestTool.assertImageInfoCorrect(MEDIA, imageC);
         Assert.assertNotNull(imageC.getSurface());
         DrawableTestTool.testImageRender(g, imageC);

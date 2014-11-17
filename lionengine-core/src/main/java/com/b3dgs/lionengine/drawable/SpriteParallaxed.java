@@ -17,10 +17,8 @@
  */
 package com.b3dgs.lionengine.drawable;
 
-import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -36,8 +34,8 @@ import com.b3dgs.lionengine.core.Media;
  * Usage should be as following:
  * <ul>
  * <li>Create the instance with {@link Drawable#loadSpriteParallaxed(Media, int, int, int)}</li>
- * <li>Scale if necessary with {@link #scale(int)} or {@link #stretch(int, int)}</li>
- * <li>Call {@link #prepare(Filter)}</li>
+ * <li>Scale if necessary with {@link #stretch(int, int)}</li>
+ * <li>Call {@link #load(boolean)}</li>
  * <li>Then other functions can be used.</li>
  * </ul>
  * </p>
@@ -45,15 +43,15 @@ import com.b3dgs.lionengine.core.Media;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface SpriteParallaxed
-        extends Renderable
 {
     /**
-     * Method used for sprite scaling, in order to modify its size. Normal factor is equal to 100, so 200 will scale it
-     * twice bigger, whereas 50 will scale half its size.
+     * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
+     * else the surface will never be prepared.
      * 
-     * @param percent value for scaling (> 0).
+     * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
+     * @throws LionEngineException If an error occurred when reading the image.
      */
-    void scale(int percent);
+    void load(boolean alpha) throws LionEngineException;
 
     /**
      * Works as scale, but using different width and height factor. Using different values, the ratio won't be kept, and
@@ -63,14 +61,6 @@ public interface SpriteParallaxed
      * @param percentHeight The percent value for scaling height (> 0).
      */
     void stretch(int percentWidth, int percentHeight);
-
-    /**
-     * Update all changes. Need to be called when changes are done.
-     * 
-     * @param filter The filter to use.
-     * @throws LionEngineException If an error occurred when reading the image.
-     */
-    void prepare(Filter filter) throws LionEngineException;
 
     /**
      * Render a line of parallax to the specified coordinates.
@@ -83,24 +73,24 @@ public interface SpriteParallaxed
     void render(Graphic g, int line, int x, int y);
 
     /**
-     * Get the current sprite width (its current size, after scaling operation).
-     * 
-     * @return The sprite width size as integer.
-     */
-    int getWidthOriginal();
-
-    /**
-     * Get the current sprite height (its current size, after scaling operation).
-     * 
-     * @return The sprite height size as integer.
-     */
-    int getHeightOriginal();
-
-    /**
-     * Get a parallax line (store it on a new buffered image, no reference, can be slow).
+     * Get a parallax line width.
      * 
      * @param line The desired line (>= 0).
-     * @return The line's surface.
+     * @return The line width.
      */
-    ImageBuffer getLine(int line);
+    int getLineWidth(int line);
+
+    /**
+     * Get the element width.
+     * 
+     * @return The element width.
+     */
+    int getWidth();
+
+    /**
+     * Get the element height.
+     * 
+     * @return The element height.
+     */
+    int getHeight();
 }

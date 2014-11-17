@@ -42,7 +42,7 @@ public class SequenceAsyncInterruptMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         try
         {
@@ -55,13 +55,13 @@ public class SequenceAsyncInterruptMock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end(SequenceSingleMock.class);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Mock
     }

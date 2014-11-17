@@ -15,38 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.drawable;
-
-import com.b3dgs.lionengine.core.Graphic;
+package com.b3dgs.lionengine;
 
 /**
- * Represents an element that can be rendered on screen.
+ * Represents something that can be located, using a coordinate and its size.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Graphic
  */
-public interface Renderable
+public interface Localizable
 {
     /**
-     * Render element on current graphic output, at specified coordinates.
+     * Get the current horizontal location.
      * 
-     * @param g The graphic output.
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @return The current horizontal location.
      */
-    void render(Graphic g, int x, int y);
+    double getX();
 
     /**
-     * Get the element width.
+     * Get the current vertical location.
      * 
-     * @return The element width.
+     * @return The current vertical location.
+     */
+    double getY();
+
+    /**
+     * Get the current width.
+     * 
+     * @return The current width.
      */
     int getWidth();
 
     /**
-     * Get the element height.
+     * Get the current height.
      * 
-     * @return The element height.
+     * @return The current height.
      */
     int getHeight();
 }

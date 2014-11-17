@@ -61,16 +61,16 @@ public class AnimatorTest
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, last, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, last, AnimState.FINISHED);
 
-        animator.stopAnimation();
+        animator.stop();
         testAnimatorState(animator, first, last, AnimState.STOPPED);
     }
 
@@ -89,19 +89,19 @@ public class AnimatorTest
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 2, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.FINISHED);
     }
 
@@ -120,13 +120,13 @@ public class AnimatorTest
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
     }
 
@@ -145,16 +145,16 @@ public class AnimatorTest
 
         testAnimatorState(animator, first, first, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first, AnimState.REVERSING);
     }
 
@@ -174,16 +174,16 @@ public class AnimatorTest
 
         animator.setAnimSpeed(speed - 1.0);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
         testAnimatorState(animator, first, first + 1, AnimState.PLAYING);
 
-        animator.updateAnimation(1.0);
+        animator.update(1.0);
 
         animator.setFrame(1);
 
         testAnimatorState(animator, first, 1, AnimState.PLAYING);
 
-        animator.stopAnimation();
+        animator.stop();
         testAnimatorState(animator, first, 1, AnimState.STOPPED);
     }
 

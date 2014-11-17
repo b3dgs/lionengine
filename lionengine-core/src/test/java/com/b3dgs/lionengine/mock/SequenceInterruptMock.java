@@ -42,19 +42,19 @@ public class SequenceInterruptMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Mock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         // Mock
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         try
         {

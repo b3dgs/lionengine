@@ -32,7 +32,7 @@ public interface Polygon
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    void addPoint(int x, int y);
+    void addPoint(double x, double y);
 
     /**
      * Reset the polygon.

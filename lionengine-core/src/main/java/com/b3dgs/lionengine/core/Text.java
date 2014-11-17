@@ -79,6 +79,7 @@ import com.b3dgs.lionengine.TextStyle;
  * @see Align
  */
 public interface Text
+        extends Renderable
 {
     /** Standard text font sans serif. */
     String SANS_SERIF = "SansSerif";
@@ -107,13 +108,6 @@ public interface Text
      * @param text The text string.
      */
     void draw(Graphic g, int x, int y, Align alignment, String text);
-
-    /**
-     * Render configured text.
-     * 
-     * @param g The graphic output.
-     */
-    void render(Graphic g);
 
     /**
      * Set text location.

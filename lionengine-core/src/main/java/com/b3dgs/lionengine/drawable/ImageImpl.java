@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -29,21 +30,40 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class ImageImpl
+class ImageImpl
         implements Image
 {
+    /** Error already loaded. */
+    private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
+
+    /** Media file name. */
+    private final Media media;
+    /** Image horizontal position. */
+    private double x;
+    /** Image vertical position. */
+    private double y;
+    /** Sprite width. */
+    private final int width;
+    /** Sprite height. */
+    private final int height;
     /** Image surface. */
-    private final ImageBuffer surface;
+    private ImageBuffer surface;
 
     /**
      * Internal constructor.
      * 
      * @param media The image media.
-     * @throws LionEngineException If an error occurred when reading the image.
+     * @throws LionEngineException If the media is <code>null</code>.
      */
     ImageImpl(Media media) throws LionEngineException
     {
-        this(Core.GRAPHIC.getImageBuffer(media, false));
+        Check.notNull(media);
+
+        this.media = media;
+
+        final ImageInfo info = ImageInfo.get(media);
+        width = info.getWidth();
+        height = info.getHeight();
     }
 
     /**
@@ -57,33 +77,61 @@ final class ImageImpl
         Check.notNull(surface);
 
         this.surface = surface;
-    }
-
-    /*
-     * Renderable
-     */
-
-    @Override
-    public void render(Graphic g, int x, int y)
-    {
-        g.drawImage(surface, x, y);
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return surface.getWidth();
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return surface.getHeight();
+        width = surface.getWidth();
+        height = surface.getHeight();
+        media = null;
     }
 
     /*
      * Image
      */
+
+    @Override
+    public void load(boolean alpha) throws LionEngineException
+    {
+        if (surface != null)
+        {
+            throw new LionEngineException(media, ERROR_ALREADY_LOADED);
+        }
+        surface = Core.GRAPHIC.getImageBuffer(media, alpha);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        g.drawImage(surface, (int) x, (int) y);
+    }
+
+    @Override
+    public void setLocation(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public double getX()
+    {
+        return x;
+    }
+
+    @Override
+    public double getY()
+    {
+        return y;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return width;
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return height;
+    }
 
     @Override
     public ImageBuffer getSurface()

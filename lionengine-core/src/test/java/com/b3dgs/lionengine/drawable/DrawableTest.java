@@ -256,8 +256,6 @@ public class DrawableTest
     @Test
     public void testDrawableFail()
     {
-        testImage(true);
-
         testSprite(true);
 
         testSpriteAnimated(true, 0, 0);

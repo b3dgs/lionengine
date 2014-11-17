@@ -107,6 +107,7 @@ public final class AnimationFrameSelector
         frameWidth = surface.getWidth() / horizontalFrames;
         frameHeight = surface.getHeight() / verticalFrames;
         surface.load(false);
+        surface.setLocation(0, 0);
 
         final GridData data = new GridData(surface.getWidth(), surface.getHeight());
         data.horizontalAlignment = SWT.CENTER;
@@ -218,7 +219,7 @@ public final class AnimationFrameSelector
         renderFramesBackground(g);
         renderFramesSelected(g);
         renderOverFrame(g);
-        surface.render(g, 0, 0);
+        surface.render(g);
     }
 
     /**

@@ -76,10 +76,8 @@ public class SpriteTiledTest
         Assert.assertNotNull(spriteA.getSurface());
         Assert.assertEquals(tileSize, spriteA.getTileWidth());
         Assert.assertEquals(tileSize, spriteA.getTileHeight());
-        Assert.assertNotNull(spriteA.getTile(0));
         Assert.assertEquals(width, spriteA.getTilesHorizontal());
         Assert.assertEquals(height, spriteA.getTilesVertical());
-        Assert.assertEquals(width * height, spriteA.getTilesNumber());
 
         // Load from file
         final int tileWidth = 16;
@@ -87,16 +85,14 @@ public class SpriteTiledTest
         final SpriteTiled spriteB = Drawable.loadSpriteTiled(MEDIA, tileWidth, tileHeight);
         DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteB);
 
-        Assert.assertEquals(tileWidth, spriteB.getTileWidthOriginal());
         Assert.assertEquals(tileWidth, spriteB.getTileWidth());
-        Assert.assertEquals(tileHeight, spriteB.getTileHeightOriginal());
         Assert.assertEquals(tileHeight, spriteB.getTileHeight());
 
         DrawableTestTool.testSpriteLoading(spriteB);
 
         DrawableTestTool.testSpriteModification(2, spriteB);
         DrawableTestTool.testImageRender(g, spriteB);
-        spriteB.render(g, 0, 0, 0);
+        spriteB.render(g);
 
         Assert.assertFalse(spriteA.equals(spriteB));
 
@@ -114,11 +110,6 @@ public class SpriteTiledTest
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteTiled spriteF = Drawable.loadSpriteTiled(spriteD.getSurface(), tileWidth, tileHeight);
         Assert.assertTrue(spriteD.equals(spriteF));
-
-        // Get tile
-        Assert.assertNotNull(spriteB.getTile(0));
-        Assert.assertNotNull(spriteB.getTile(99));
-        Assert.assertNotNull(spriteB.getTile(-1));
 
         // Error
         DrawableTestTool.testSpriteTiledLoadError(0, 0);

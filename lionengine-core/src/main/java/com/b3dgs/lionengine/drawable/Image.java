@@ -17,7 +17,10 @@
  */
 package com.b3dgs.lionengine.drawable;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.core.Renderable;
 
 /**
  * It allows images loading and rendering. Images can't be resized and can't use any filters.
@@ -28,20 +31,38 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * <pre>
  * // Load
  * final Image image = Drawable.loadImage(Core.MEDIA.create(&quot;image.png&quot;));
+ * image.setPosition(10, 50);
  * 
  * // Render
- * image.render(g, 0, 0);
+ * image.render(g);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Image
-        extends Renderable
+        extends Localizable, Renderable
 {
+    /**
+     * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
+     * else the surface will never be prepared.
+     * 
+     * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
+     * @throws LionEngineException If an error occurred when reading the image.
+     */
+    void load(boolean alpha) throws LionEngineException;
+
+    /**
+     * Set the location on screen.
+     * 
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    void setLocation(double x, double y);
+
     /**
      * Get the surface which represents the image.
      * 
-     * @return The java image reference.
+     * @return The image descriptor reference.
      */
     ImageBuffer getSurface();
 }

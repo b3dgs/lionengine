@@ -15,47 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.mock;
-
-import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Sequence;
+package com.b3dgs.lionengine;
 
 /**
- * Wait sequence mock.
+ * Describes the different mirror types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class SequenceWaitMock
-        extends Sequence
+public enum Mirror
 {
-    /**
-     * Constructor.
-     * 
-     * @param loader The loader reference.
-     */
-    public SequenceWaitMock(Loader loader)
-    {
-        super(loader, new Resolution(320, 240, 60));
-    }
-
-    @Override
-    public void load()
-    {
-        // Mock
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        start(true, SequenceSingleMock.class);
-        end();
-    }
-
-    @Override
-    public void render(Graphic g)
-    {
-        // Mock
-    }
+    /** Horizontal mirror. */
+    HORIZONTAL,
+    /** Vertical mirror. */
+    VERTICAL,
+    /** No mirror. */
+    NONE;
 }

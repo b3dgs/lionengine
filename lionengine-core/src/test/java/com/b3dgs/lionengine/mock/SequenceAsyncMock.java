@@ -41,19 +41,19 @@ public class SequenceAsyncMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Mock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end(SequenceSingleMock.class);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Mock
     }

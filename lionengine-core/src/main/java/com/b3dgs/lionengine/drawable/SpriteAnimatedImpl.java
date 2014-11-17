@@ -19,12 +19,10 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -44,16 +42,10 @@ final class SpriteAnimatedImpl
     private final int horizontalFrames;
     /** Number of vertical frames. */
     private final int verticalFrames;
-    /** Frames original width. */
-    private final int frameOriginalWidth;
-    /** Frames original height. */
-    private final int frameOriginalHeight;
-    /** Total number of frame. */
-    private final int framesNumber;
-    /** Mirror flag. */
-    private boolean mirror;
-    /** Mirror axis. */
-    private boolean mirrorHorizontal;
+    /** Frame offsets x. */
+    private int frameOffsetX;
+    /** Frame offsets y. */
+    private int frameOffsetY;
 
     /**
      * Internal constructor.
@@ -72,11 +64,9 @@ final class SpriteAnimatedImpl
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
-        frameOriginalWidth = getWidthOriginal() / horizontalFrames;
-        frameOriginalHeight = getHeightOriginal() / verticalFrames;
-        framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
-        mirrorHorizontal = true;
+        frameOffsetX = 0;
+        frameOffsetY = 0;
     }
 
     /**
@@ -96,15 +86,11 @@ final class SpriteAnimatedImpl
 
         this.horizontalFrames = horizontalFrames;
         this.verticalFrames = verticalFrames;
-        frameOriginalWidth = getWidthOriginal() / horizontalFrames;
-        frameOriginalHeight = getHeightOriginal() / verticalFrames;
-        framesNumber = horizontalFrames * verticalFrames;
         animator = Anim.createAnimator();
-        mirrorHorizontal = true;
     }
 
     /*
-     * Animator
+     * SpriteAnimated
      */
 
     @Override
@@ -114,21 +100,33 @@ final class SpriteAnimatedImpl
     }
 
     @Override
+    public void stop()
+    {
+        animator.stop();
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        animator.update(extrp);
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        final int frame = animator.getFrame() - 1;
+        final int fx = (int) getX() - frameOffsetX;
+        final int fy = (int) getY() + frameOffsetY;
+        final int ox = frame % horizontalFrames;
+        final int oy = (int) Math.floor(frame / (double) horizontalFrames);
+
+        render(g, fx, fy, getFrameWidth(), getFrameHeight(), ox, oy);
+    }
+
+    @Override
     public void setAnimSpeed(double speed) throws LionEngineException
     {
         animator.setAnimSpeed(speed);
-    }
-
-    @Override
-    public void stopAnimation()
-    {
-        animator.stopAnimation();
-    }
-
-    @Override
-    public void updateAnimation(double extrp)
-    {
-        animator.updateAnimation(extrp);
     }
 
     @Override
@@ -155,52 +153,11 @@ final class SpriteAnimatedImpl
         return animator.getFrameAnim();
     }
 
-    /*
-     * SpriteAnimated
-     */
-
     @Override
-    public void render(Graphic g, int x, int y)
+    public void setFrameOffsets(int offsetX, int offsetY)
     {
-        render(g, animator.getFrame(), x, y);
-    }
-
-    @Override
-    public void render(Graphic g, int frame, int x, int y)
-    {
-        final int cFrame = frame - 1;
-        final int cx = cFrame % horizontalFrames;
-        final int cy = (int) Math.floor(cFrame / (double) horizontalFrames);
-        final int w = getFrameWidth();
-        final int h = getFrameHeight();
-
-        if (mirror)
-        {
-            if (mirrorHorizontal)
-            {
-                g.drawImage(getSurface(), x, y, x + w, y + h, cx * w + w, cy * h, cx * w, cy * h + h);
-            }
-            else
-            {
-                g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h + h, cx * w + w, cy * h);
-            }
-        }
-        else
-        {
-            g.drawImage(getSurface(), x, y, x + w, y + h, cx * w, cy * h, cx * w + w, cy * h + h);
-        }
-    }
-
-    @Override
-    public void setMirror(boolean mirror)
-    {
-        this.mirror = mirror;
-    }
-
-    @Override
-    public void setMirrorAxis(boolean horizontal)
-    {
-        mirrorHorizontal = horizontal;
+        frameOffsetX = offsetX;
+        frameOffsetY = offsetY;
     }
 
     @Override
@@ -216,57 +173,23 @@ final class SpriteAnimatedImpl
     }
 
     @Override
-    public int getFramesNumber()
-    {
-        return framesNumber;
-    }
-
-    @Override
     public int getFrameWidth()
     {
-        return getWidth() / getFramesHorizontal();
+        return getWidth() / horizontalFrames;
     }
 
     @Override
     public int getFrameHeight()
     {
-        return getHeight() / getFramesVertical();
+        return getHeight() / verticalFrames;
     }
 
     @Override
-    public int getFrameWidthOriginal()
-    {
-        return frameOriginalWidth;
-    }
-
-    @Override
-    public int getFrameHeightOriginal()
-    {
-        return frameOriginalHeight;
-    }
-
-    @Override
-    public ImageBuffer getFrame(int frame)
-    {
-        final ImageBuffer buf = Core.GRAPHIC.createImageBuffer(getWidth(), getHeight(), Transparency.BITMASK);
-        final Graphic g = buf.createGraphic();
-        final int cx = frame % getFramesHorizontal();
-        final int cy = (int) Math.floor(frame / (double) getFramesHorizontal());
-        final int w = getFrameWidth();
-        final int h = getFrameHeight();
-
-        g.drawImage(getSurface(), 0, 0, w, h, cx * w, cy * h, cx * w + w, cy * h + h);
-        g.dispose();
-
-        return buf;
-    }
-
-    @Override
-    protected void stretchSurface(int newWidth, int newHeight)
+    protected void stretch(int newWidth, int newHeight)
     {
         final int w = (int) Math.round(newWidth / (double) getFramesHorizontal()) * getFramesHorizontal();
         final int h = (int) Math.round(newHeight / (double) getFramesVertical()) * getFramesVertical();
-        super.stretchSurface(w, h);
+        super.stretch(w, h);
     }
 
     /*
@@ -289,10 +212,8 @@ final class SpriteAnimatedImpl
             final boolean sameFrameHeight = sprite.getFrameHeight() == getFrameHeight();
             final boolean sameHorizontalFrames = sprite.getFramesHorizontal() == getFramesHorizontal();
             final boolean sameVerticalFrames = sprite.getFramesVertical() == getFramesVertical();
-            final boolean sameFramesNumber = sprite.getFramesNumber() == getFramesNumber();
 
-            return sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames && sameFramesNumber
-                    && sameSprite;
+            return sameFrameWidth && sameFrameHeight && sameHorizontalFrames && sameVerticalFrames && sameSprite;
         }
         return false;
     }
@@ -303,12 +224,7 @@ final class SpriteAnimatedImpl
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + animator.hashCode();
-        result = prime * result + frameOriginalHeight;
-        result = prime * result + frameOriginalWidth;
-        result = prime * result + framesNumber;
         result = prime * result + horizontalFrames;
-        result = prime * result + (mirror ? 1231 : 1237);
-        result = prime * result + (mirrorHorizontal ? 1231 : 1237);
         result = prime * result + verticalFrames;
         return result;
     }

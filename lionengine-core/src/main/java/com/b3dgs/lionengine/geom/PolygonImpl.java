@@ -40,19 +40,19 @@ final class PolygonImpl
      * @param npoints The points number.
      * @return The calculated bounds.
      */
-    private static Rectangle calculateBounds(int[] xpoints, int[] ypoints, int npoints)
+    private static Rectangle calculateBounds(double[] xpoints, double[] ypoints, int npoints)
     {
-        int boundsMinX = Integer.MAX_VALUE;
-        int boundsMinY = Integer.MAX_VALUE;
-        int boundsMaxX = Integer.MIN_VALUE;
-        int boundsMaxY = Integer.MIN_VALUE;
+        double boundsMinX = Double.MAX_VALUE;
+        double boundsMinY = Double.MAX_VALUE;
+        double boundsMaxX = Double.MIN_VALUE;
+        double boundsMaxY = Double.MIN_VALUE;
 
         for (int i = 0; i < npoints; i++)
         {
-            final int x = xpoints[i];
+            final double x = xpoints[i];
             boundsMinX = Math.min(boundsMinX, x);
             boundsMaxX = Math.max(boundsMaxX, x);
-            final int y = ypoints[i];
+            final double y = ypoints[i];
             boundsMinY = Math.min(boundsMinY, y);
             boundsMaxY = Math.max(boundsMaxY, y);
         }
@@ -60,9 +60,9 @@ final class PolygonImpl
     }
 
     /** The array of coordinates X. */
-    private int[] xpoints;
+    private double[] xpoints;
     /** The array of coordinates Y. */
-    private int[] ypoints;
+    private double[] ypoints;
     /** The total number of points. */
     private int npoints;
     /** The bounds. */
@@ -73,8 +73,8 @@ final class PolygonImpl
      */
     PolygonImpl()
     {
-        xpoints = new int[MIN];
-        ypoints = new int[MIN];
+        xpoints = new double[MIN];
+        ypoints = new double[MIN];
     }
 
     /**
@@ -83,7 +83,7 @@ final class PolygonImpl
      * @param x The horizontal location.
      * @param y The vertical location.
      */
-    private void updateBounds(int x, int y)
+    private void updateBounds(double x, double y)
     {
         final double nw;
         final double nh;
@@ -112,7 +112,7 @@ final class PolygonImpl
      */
 
     @Override
-    public void addPoint(int x, int y)
+    public void addPoint(double x, double y)
     {
         if (npoints >= xpoints.length || npoints >= ypoints.length)
         {

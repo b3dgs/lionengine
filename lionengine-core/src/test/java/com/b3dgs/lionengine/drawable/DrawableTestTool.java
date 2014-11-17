@@ -68,12 +68,12 @@ public class DrawableTestTool
     {
         try
         {
-            image.render(null, 0, 0);
+            image.render(null);
             Assert.fail();
         }
         catch (final NullPointerException exception)
         {
-            image.render(g, 0, 0);
+            image.render(g);
         }
     }
 
@@ -90,32 +90,12 @@ public class DrawableTestTool
 
         ImageBuffer surface = sprite.getSurface();
 
-        if (!(sprite instanceof SpriteFont))
-        {
-            sprite.scale(100 * scale);
-            Assert.assertNotSame(spriteOriginal, sprite);
-            Assert.assertNotSame(surface, sprite.getSurface());
-            Assert.assertEquals(surface.getWidth(), sprite.getWidthOriginal());
-            Assert.assertEquals(surface.getWidth() * scale, sprite.getWidth());
-            Assert.assertEquals(surface.getHeight(), sprite.getHeightOriginal());
-            Assert.assertEquals(surface.getHeight() * scale, sprite.getHeight());
-            Assert.assertTrue(sprite.equals(sprite));
-        }
-
         surface = sprite.getSurface();
         sprite.stretch(50, 50);
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
         sprite.filter(Filter.BILINEAR);
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipHorizontal();
-        Assert.assertNotSame(surface, sprite.getSurface());
-
-        surface = sprite.getSurface();
-        sprite.flipVertical();
         Assert.assertNotSame(surface, sprite.getSurface());
 
         surface = sprite.getSurface();
@@ -130,15 +110,6 @@ public class DrawableTestTool
         sprite.rotate(361);
         Assert.assertNotSame(surface, sprite.getSurface());
 
-        try
-        {
-            sprite.scale(0);
-            Assert.fail();
-        }
-        catch (final LionEngineException exception)
-        {
-            // Success
-        }
         try
         {
             sprite.stretch(1, -1);

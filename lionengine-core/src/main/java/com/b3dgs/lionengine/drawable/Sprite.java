@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.drawable;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
+import com.b3dgs.lionengine.Mirror;
 
 /**
  * <p>
@@ -51,9 +50,10 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * // Load
  * final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create(&quot;sprite.png&quot;));
  * sprite.load(false);
+ * sprite.setPosition(64, 280);
  * 
  * // Render
- * sprite.render(g, 64, 280);
+ * sprite.render(g);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -62,49 +62,21 @@ public interface Sprite
         extends Image
 {
     /**
-     * Load surface and prepare it to be displayed. This function must be called if the surface is loaded from a file,
-     * else the surface will never be prepared.
-     * 
-     * @param alpha Set <code>true</code> to enable alpha, <code>false</code> else.
-     * @throws LionEngineException If an error occurred when reading the image.
-     */
-    void load(boolean alpha) throws LionEngineException;
-
-    /**
-     * Method used for sprite scaling, in order to modify its size. Normal factor is equal to <code>100</code>, so
-     * <code>200</code> will scale it twice bigger, whereas <code>50</code> will scale half its size.
-     * 
-     * @param percent The value for scaling in percent (> 0).
-     * @throws LionEngineException If argument is invalid.
-     */
-    void scale(int percent) throws LionEngineException;
-
-    /**
-     * Works as scale, but using different width and height factor. Using different value, the ratio won't be kept, and
-     * the sprite will be different.
+     * Stretch and resize the image to a different percent. Using different value, the ratio won't be kept,
+     * and the sprite will be different.
      * 
      * @param percentWidth The percent value for scaling width (> 0).
      * @param percentHeight The percent value for scaling height (> 0).
      * @throws LionEngineException If arguments are invalid.
      */
-    void stretch(int percentWidth, int percentHeight) throws LionEngineException;
+    void stretch(double percentWidth, double percentHeight) throws LionEngineException;
 
     /**
      * Rotate the sprite with the specified angle in degree.
      * 
-     * @param angle The rotation angle in degree <code>[0 - 360]</code>.
+     * @param angle The rotation angle in degree <code>[0 - 359][</code>.
      */
     void rotate(int angle);
-
-    /**
-     * Flip the sprite horizontally (horizontal mirror).
-     */
-    void flipHorizontal();
-
-    /**
-     * Flip the sprite vertically (vertical mirror).
-     */
-    void flipVertical();
 
     /**
      * Apply a filter to the sprite.
@@ -139,42 +111,17 @@ public interface Sprite
     void setFade(int alpha, int fade);
 
     /**
-     * Get the current sprite width (its current size, after scaling operation).
+     * Set the mirror state. The surface will not be modified, as flipping is directly done during rendering process.
      * 
-     * @return sprite The sprite width.
+     * @param mirror Set the mirror type to use (must not be <code>null</code>).
+     * @throws LionEngineException If invalid mirror type.
      */
-    int getWidthOriginal();
+    void setMirror(Mirror mirror) throws LionEngineException;
 
     /**
-     * Get the current sprite height (its current size, after scaling operation).
+     * Return the current mirror state used.
      * 
-     * @return sprite The sprite height.
+     * @return The current mirror state.
      */
-    int getHeightOriginal();
-
-    /*
-     * Renderable
-     */
-
-    /**
-     * Render the sprite on graphic output at specified coordinates.
-     * 
-     * @param g The graphic output.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     */
-    @Override
-    void render(Graphic g, int x, int y);
-
-    /*
-     * Image
-     */
-
-    /**
-     * Get the sprite surface.
-     * 
-     * @return The buffer reference representing the sprite.
-     */
-    @Override
-    ImageBuffer getSurface();
+    Mirror getMirror();
 }

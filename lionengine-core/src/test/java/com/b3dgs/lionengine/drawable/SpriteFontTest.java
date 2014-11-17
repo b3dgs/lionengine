@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
@@ -75,15 +74,11 @@ public class SpriteFontTest
         final SpriteFont sprite = Drawable.loadSpriteFont(MEDIA, FONT, 6, 7);
         Assert.assertTrue(sprite.equals(Drawable.loadSpriteFont(MEDIA, FONT, 6, 7)));
 
-        final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(MEDIA, sprite);
-        Assert.assertEquals(info.getWidth(), sprite.getWidthOriginal());
-        Assert.assertEquals(info.getHeight(), sprite.getHeightOriginal());
-
         DrawableTestTool.testSpriteLoading(sprite);
         DrawableTestTool.testImageRender(g, sprite);
         DrawableTestTool.testSpriteModification(2, sprite);
         sprite.setFade(0, -255);
-        sprite.scale(200);
+        sprite.stretch(200, 200);
 
         sprite.draw(g, 0, 0, Align.LEFT, text);
         sprite.draw(g, 0, 0, Align.CENTER, text);

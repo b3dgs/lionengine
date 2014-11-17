@@ -144,13 +144,13 @@ final class AnimatorImpl
     }
 
     @Override
-    public void stopAnimation()
+    public void stop()
     {
         state = AnimState.STOPPED;
     }
 
     @Override
-    public void updateAnimation(double extrp)
+    public void update(double extrp)
     {
         if (state == AnimState.PLAYING)
         {
@@ -179,12 +179,6 @@ final class AnimatorImpl
     }
 
     @Override
-    public AnimState getAnimState()
-    {
-        return state;
-    }
-
-    @Override
     public int getFrame()
     {
         return (int) Math.floor(current);
@@ -194,5 +188,11 @@ final class AnimatorImpl
     public int getFrameAnim()
     {
         return getFrame() - first + 1;
+    }
+
+    @Override
+    public AnimState getAnimState()
+    {
+        return state;
     }
 }

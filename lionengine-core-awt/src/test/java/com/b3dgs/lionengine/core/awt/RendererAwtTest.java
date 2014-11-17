@@ -69,19 +69,19 @@ public class RendererAwtTest
         renderer.asyncLoad(new Sequence(loader, resolution)
         {
             @Override
-            protected void load()
+            public void load()
             {
                 // Nothing to do
             }
 
             @Override
-            protected void update(double extrp)
+            public void update(double extrp)
             {
                 // Nothing to do
             }
 
             @Override
-            protected void render(Graphic g)
+            public void render(Graphic g)
             {
                 end();
             }

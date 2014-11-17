@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.drawable;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.ImageBuffer;
 
 /**
  * <p>
@@ -45,15 +43,13 @@ import com.b3dgs.lionengine.core.ImageBuffer;
  * animation.load(false);
  * final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
  * animation.play(anim);
+ * animation.setPosition(160, 300);
  * 
  * // Update
- * animation.updateAnimation(extrp);
+ * animation.update(extrp);
  * 
  * // Render
- * animation.setMirror(false);
- * animation.render(g, 160, 300);
- * animation.setMirror(true);
- * animation.render(g, 200, 300);
+ * animation.render(g);
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -65,29 +61,12 @@ public interface SpriteAnimated
         extends Sprite, Animator
 {
     /**
-     * Render a specific frame on graphic output at specified coordinates.
+     * Set frame offsets (offsets on rendering).
      * 
-     * @param g The graphic output.
-     * @param frame The frame to render (>= {@link Animation#MINIMUM_FRAME}).
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param offsetX The horizontal offset.
+     * @param offsetY The vertical offset.
      */
-    void render(Graphic g, int frame, int x, int y);
-
-    /**
-     * Set the mirror state. The surface will not be modified, as flipping is directly done during rendering process.
-     * 
-     * @param mirror Set <code>true</code> if it is a mirror rendering (rendering is flipped), <code>false</code> if
-     *            normal.
-     */
-    void setMirror(boolean mirror);
-
-    /**
-     * Set the mirror axis to use when performing a {@link #setMirror(boolean)}.
-     * 
-     * @param horizontal <code>true</code> for horizontal flipping, <code>false</code> for vertical flipping.
-     */
-    void setMirrorAxis(boolean horizontal);
+    void setFrameOffsets(int offsetX, int offsetY);
 
     /**
      * Get the number of horizontal frames.
@@ -104,13 +83,6 @@ public interface SpriteAnimated
     int getFramesVertical();
 
     /**
-     * Get the number of frames.
-     * 
-     * @return The number of frames.
-     */
-    int getFramesNumber();
-
-    /**
      * Get current frame width.
      * 
      * @return The tile width.
@@ -123,26 +95,4 @@ public interface SpriteAnimated
      * @return The tile height.
      */
     int getFrameHeight();
-
-    /**
-     * Get original frame width.
-     * 
-     * @return The tile width.
-     */
-    int getFrameWidthOriginal();
-
-    /**
-     * Get original frame height.
-     * 
-     * @return The tile height.
-     */
-    int getFrameHeightOriginal();
-
-    /**
-     * Get the representative surface of a frame.
-     * 
-     * @param frame The frame to get (>= {@link Animation#MINIMUM_FRAME}).
-     * @return The frame's surface.
-     */
-    ImageBuffer getFrame(int frame);
 }

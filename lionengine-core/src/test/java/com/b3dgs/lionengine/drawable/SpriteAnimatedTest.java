@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Transparency;
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.AnimState;
@@ -87,10 +88,7 @@ public class SpriteAnimatedTest
         final SpriteAnimated spriteC = Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical);
         final ImageInfo info = DrawableTestTool.assertImageInfoCorrect(MEDIA, spriteC);
 
-        Assert.assertEquals(frameHorizontal * frameVertical, spriteC.getFramesNumber());
-        Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidthOriginal());
         Assert.assertEquals(info.getWidth() / frameHorizontal, spriteC.getFrameWidth());
-        Assert.assertEquals(info.getHeight() / frameVertical, spriteC.getFrameHeightOriginal());
         Assert.assertEquals(info.getHeight() / frameVertical, spriteC.getFrameHeight());
 
         DrawableTestTool.testSpriteLoading(spriteC);
@@ -103,15 +101,15 @@ public class SpriteAnimatedTest
         spriteE.load(false);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 100);
-        spriteD.setMirror(true);
+        spriteD.setMirror(Mirror.HORIZONTAL);
         final int hash = spriteD.hashCode();
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(100, 110);
-        spriteD.setMirror(false);
+        spriteD.setMirror(Mirror.NONE);
         Assert.assertFalse(spriteD.equals(spriteE));
         spriteE.stretch(110, 110);
         Assert.assertTrue(hash != spriteD.hashCode());
-        spriteD.setMirrorAxis(false);
+        spriteD.setMirror(Mirror.VERTICAL);
         Assert.assertTrue(hash != spriteD.hashCode());
         Assert.assertFalse(spriteD.equals(spriteE));
         final SpriteAnimated spriteF = Drawable
@@ -121,7 +119,7 @@ public class SpriteAnimatedTest
         try
         {
             animator.play(null);
-            animator.updateAnimation(1.0);
+            animator.update(1.0);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -131,7 +129,7 @@ public class SpriteAnimatedTest
         try
         {
             animator.play(animation);
-            animator.updateAnimation(1.0);
+            animator.update(1.0);
         }
         catch (final LionEngineException exception)
         {
@@ -140,11 +138,10 @@ public class SpriteAnimatedTest
 
         // Test render
         DrawableTestTool.testImageRender(g, spriteC);
-        spriteC.setMirror(true);
-        spriteC.setMirrorAxis(false);
-        spriteC.render(g, 0, 0);
-        spriteC.setMirrorAxis(true);
-        spriteC.render(g, 0, 0);
+        spriteC.setMirror(Mirror.HORIZONTAL);
+        spriteC.render(g);
+        spriteC.setMirror(Mirror.VERTICAL);
+        spriteC.render(g);
 
         // Error
         DrawableTestTool.testSpriteAnimatedLoadError(0, 0);
@@ -154,16 +151,13 @@ public class SpriteAnimatedTest
         // Animations
         spriteA.play(animation);
         spriteA.setAnimSpeed(1.0);
-        spriteA.updateAnimation(1.0);
-        spriteA.stopAnimation();
+        spriteA.update(1.0);
+        spriteA.stop();
         spriteA.setFrame(1);
         Assert.assertEquals(1, spriteA.getFrame());
         Assert.assertEquals(1, spriteA.getFrameAnim());
         Assert.assertEquals(AnimState.STOPPED, spriteA.getAnimState());
 
-        Assert.assertNotNull(spriteA.getFrame(1));
-        Assert.assertNotNull(spriteA.getFrame(-1));
-        Assert.assertNotNull(spriteA.getFrame(0));
         Assert.assertFalse(spriteC.equals(Drawable.loadSpriteAnimated(MEDIA, frameHorizontal, frameVertical)));
     }
 }

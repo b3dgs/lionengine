@@ -41,13 +41,13 @@ public class SequenceSingleMock
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Mock
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         getX();
         getY();
@@ -55,7 +55,7 @@ public class SequenceSingleMock
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Mock
     }
