@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -33,7 +34,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Mouse
-        implements InputDevicePointer, MouseListener, MouseMoveListener, MouseWheelListener
+        implements InputDevicePointer, MouseListener, MouseMoveListener, MouseWheelListener, Updatable
 {
     /** Left click. */
     public static final int LEFT = 1;
@@ -108,17 +109,6 @@ public final class Mouse
         wy = event.y;
         mx = x - oldX;
         my = y - oldY;
-    }
-
-    /**
-     * Update the mouse.
-     */
-    public void update()
-    {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
     }
 
     /**
@@ -265,5 +255,18 @@ public final class Mouse
     {
         moved = true;
         updateCoord(event);
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        mx = x - oldX;
+        my = y - oldY;
+        oldX = x;
+        oldY = y;
     }
 }

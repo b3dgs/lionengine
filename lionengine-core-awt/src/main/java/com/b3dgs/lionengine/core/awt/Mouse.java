@@ -32,6 +32,7 @@ import java.awt.event.MouseWheelListener;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.Verbose;
 
 /**
@@ -40,7 +41,7 @@ import com.b3dgs.lionengine.core.Verbose;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Mouse
-        implements InputDevicePointer, MouseListener, MouseMotionListener, MouseWheelListener
+        implements InputDevicePointer, MouseListener, MouseMotionListener, MouseWheelListener, Updatable
 {
     /** Left click. */
     public static final int LEFT = MouseEvent.BUTTON1;
@@ -115,17 +116,6 @@ public final class Mouse
             Verbose.critical(Mouse.class, "constructor", Mouse.ERROR_ROBOT);
         }
         robot = r;
-    }
-
-    /**
-     * Update the mouse.
-     */
-    public void update()
-    {
-        mx = x - oldX;
-        my = y - oldY;
-        oldX = x;
-        oldY = y;
     }
 
     /**
@@ -408,5 +398,18 @@ public final class Mouse
     public void mouseExited(MouseEvent event)
     {
         // Nothing to do
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        mx = x - oldX;
+        my = y - oldY;
+        oldX = x;
+        oldY = y;
     }
 }

@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.InputDevicePointer;
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Mouse input implementation.
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.core.InputDevicePointer;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class Mouse
-        implements InputDevicePointer
+        implements InputDevicePointer, Updatable
 {
     /** Clicked flags. */
     private boolean click;
@@ -63,17 +64,6 @@ public final class Mouse
         y = 0;
         mx = 0;
         my = 0;
-        oldX = x;
-        oldY = y;
-    }
-
-    /**
-     * Update the mouse.
-     */
-    public void update()
-    {
-        mx = x - oldX;
-        my = y - oldY;
         oldX = x;
         oldY = y;
     }
@@ -223,5 +213,18 @@ public final class Mouse
             return true;
         }
         return false;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        mx = x - oldX;
+        my = y - oldY;
+        oldX = x;
+        oldY = y;
     }
 }

@@ -143,7 +143,7 @@ public class MouseTest
     public void testMouse()
     {
         MOUSE.mouseDragged(createEvent(0, 0, 0));
-        MOUSE.update();
+        MOUSE.update(1.0);
         Assert.assertEquals(0, MOUSE.getMoveX());
         Assert.assertEquals(0, MOUSE.getMoveY());
         Assert.assertTrue(MOUSE.hasMoved());
