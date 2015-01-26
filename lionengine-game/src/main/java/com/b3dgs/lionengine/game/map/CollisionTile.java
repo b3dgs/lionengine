@@ -18,47 +18,76 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
- * Represents the collision tile.
+ * Model implementation of the collision tile.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see CollisionTileModel
- * @see MapTile
- * @see TileGame
  */
-public interface CollisionTile
+public class CollisionTile
 {
+    /** Collision name. */
+    private final String name;
+    /** Collision function. */
+    private final Collection<CollisionFunction> collisionFunctions;
+
+    /**
+     * Constructor.
+     * 
+     * @param name The collision name.
+     */
+    public CollisionTile(String name)
+    {
+        this.name = name;
+        collisionFunctions = new HashSet<>();
+    }
+
     /**
      * Add a collision function.
      * 
      * @param function The collision function.
      */
-    void addCollisionFunction(CollisionFunction function);
+    public void addCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.add(function);
+    }
 
     /**
      * Remove a collision function.
      * 
      * @param function The collision function to remove.
      */
-    void removeCollisionFunction(CollisionFunction function);
+    public void removeCollisionFunction(CollisionFunction function)
+    {
+        collisionFunctions.remove(function);
+    }
 
     /**
      * Remove all collisions.
      */
-    void removeCollisions();
+    public void removeCollisions()
+    {
+        collisionFunctions.clear();
+    }
 
     /**
      * Get the collision functions.
      * 
      * @return The collision function (must not be <code>null</code>).
      */
-    Collection<CollisionFunction> getCollisionFunctions();
+    public Collection<CollisionFunction> getCollisionFunctions()
+    {
+        return collisionFunctions;
+    }
 
     /**
-     * Get the collision enum value.
+     * Get the collision name.
      * 
-     * @return The collision enum value.
+     * @return The collision name.
      */
-    Enum<?> getValue();
+    public String getName()
+    {
+        return name;
+    }
 }

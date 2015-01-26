@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.game.utility.UtilMapTile;
@@ -72,10 +73,10 @@ public abstract class MapTileGame<T extends TileGame>
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
-    /** Collisions. */
-    private final CollisionTile[] collisions;
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
+    /** Collisions list. */
+    private final Map<String, CollisionTile> collisions;
     /** Tiles directory. */
     private Media patternsDirectory;
     /** Tile width. */
@@ -98,18 +99,16 @@ public abstract class MapTileGame<T extends TileGame>
      * 
      * @param tileWidth The tile width (must be strictly positive).
      * @param tileHeight The tile height (must be strictly positive).
-     * @param collisions The collisions list (must not be <code>null</code>).
      */
-    public MapTileGame(int tileWidth, int tileHeight, CollisionTile[] collisions)
+    public MapTileGame(int tileWidth, int tileHeight)
     {
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
-        Check.notNull(collisions);
 
-        this.collisions = collisions;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         patterns = new HashMap<>();
+        collisions = new HashMap<>();
         patternsDirectory = null;
     }
 
@@ -237,13 +236,16 @@ public abstract class MapTileGame<T extends TileGame>
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
-        final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
-        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
+        final CollisionTile collision = new CollisionTile(UtilMapTile.getCollision(nodes, pattern, number));
+        final T tile = createTile();
 
         if (tile == null)
         {
             throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
         }
+        tile.setPattern(Integer.valueOf(pattern));
+        tile.setNumber(number);
+        tile.setCollision(collision);
         tile.setX(x);
         tile.setY(y);
 
@@ -272,7 +274,8 @@ public abstract class MapTileGame<T extends TileGame>
      * @param y The current vertical location.
      * @return The computed collision result.
      */
-    private CollisionResult<T> computeCollision(CollisionTileCategory category, double ox, double oy, double x, double y)
+    private CollisionResult<T> computeCollision(ConfigCollisionTileCategory category, double ox, double oy, double x,
+            double y)
     {
         final T tile = getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
         if (tile != null && category.getCollisions().contains(tile.getCollision()))
@@ -340,9 +343,9 @@ public abstract class MapTileGame<T extends TileGame>
     public void createCollisionDraw()
     {
         clearCollisionDraw();
-        collisionCache = new HashMap<>(collisions.length);
+        collisionCache = new HashMap<>(collisions.size());
 
-        for (final CollisionTile collision : collisions)
+        for (final CollisionTile collision : collisions.values())
         {
             final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
             final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
@@ -478,19 +481,26 @@ public abstract class MapTileGame<T extends TileGame>
                 final T tile = list.get(j);
                 if (tile != null)
                 {
-                    tile.setCollision(getCollisionFrom(UtilMapTile.getCollision(collisions, tile.getPattern()
-                            .intValue(), tile.getNumber())));
+                    final String name = UtilMapTile.getCollision(collisions, tile.getPattern().intValue(),
+                            tile.getNumber());
+                    if (!this.collisions.containsKey(name))
+                    {
+                        final CollisionTile collision = new CollisionTile(name);
+                        this.collisions.put(collision.getName(), collision);
+                    }
+                    tile.setCollision(this.collisions.get(name));
                 }
             }
         }
         for (final XmlNode node : collisions)
         {
-            final CollisionTile collision = getCollisionFrom(node.readString(UtilMapTile.ATT_TILE_COLLISION_NAME));
+            final CollisionTile collision = this.collisions.get(node.readString(UtilMapTile.ATT_TILE_COLLISION_NAME));
             for (final XmlNode functionNode : node.getChildren(UtilMapTile.TAG_FUNCTION))
             {
                 final CollisionFunction function = UtilMapTile.getCollisionFunction(collision, functionNode);
                 assignCollisionFunction(collision, function);
             }
+
         }
     }
 
@@ -575,7 +585,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void removeCollisionFunction(CollisionFunction function)
     {
-        for (final CollisionTile collision : collisions)
+        for (final CollisionTile collision : collisions.values())
         {
             collision.removeCollisionFunction(function);
         }
@@ -584,7 +594,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void removeCollisions()
     {
-        for (final CollisionTile collision : collisions)
+        for (final CollisionTile collision : collisions.values())
         {
             collision.removeCollisions();
         }
@@ -684,7 +694,7 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public CollisionResult<T> computeCollision(Transformable transformable, CollisionTileCategory category)
+    public CollisionResult<T> computeCollision(Transformable transformable, ConfigCollisionTileCategory category)
     {
         // Distance calculation
         final double sh = transformable.getOldX() + category.getOffsetX();
@@ -801,9 +811,15 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public CollisionTile[] getCollisions()
+    public CollisionTile getCollision(String name)
     {
-        return collisions;
+        return collisions.get(name);
+    }
+
+    @Override
+    public Collection<CollisionTile> getCollisions()
+    {
+        return collisions.values();
     }
 
     @Override

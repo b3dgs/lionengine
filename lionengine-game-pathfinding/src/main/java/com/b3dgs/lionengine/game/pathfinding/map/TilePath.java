@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.pathfinding.map;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -36,13 +35,10 @@ public abstract class TilePath
      * 
      * @param width The tile width.
      * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
      */
-    public TilePath(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TilePath(int width, int height)
     {
-        super(width, height, pattern, number, collision);
+        super(width, height);
     }
 
     /**

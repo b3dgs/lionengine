@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.CollisionResult;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
@@ -44,6 +44,9 @@ class Entity
         extends ObjectGame
         implements Updatable, Renderable
 {
+    /** Setup reference. */
+    private static final Setup SETUP = new Setup(Core.MEDIA.create("object.xml"));
+
     /** Transformable model. */
     private final Transformable transformable;
     /** Tile collidable model. */
@@ -66,12 +69,11 @@ class Entity
      */
     public Entity(Services services)
     {
-        super(new SetupSurface(Core.MEDIA.create("mario.xml")), services);
+        super(SETUP, services);
         transformable = new TransformableModel(this);
         addTrait(transformable);
-        tileCollidable = new TileCollidableModel(this, services);
+        tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
         addTrait(tileCollidable);
-        tileCollidable.addCategory(EntityCollisionTileCategory.DEFAULT);
 
         map = services.get(Map.class);
         camera = services.get(Camera.class);
@@ -129,7 +131,7 @@ class Entity
     public void update(double extrp)
     {
         transformable.setLocation(mouseX, mouseY);
-        result = map.computeCollision(transformable, EntityCollisionTileCategory.DEFAULT);
+        result = map.computeCollision(transformable, tileCollidable.getCategories().iterator().next());
     }
 
     @Override

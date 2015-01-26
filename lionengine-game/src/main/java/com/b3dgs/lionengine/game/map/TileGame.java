@@ -55,23 +55,15 @@ public class TileGame
      * 
      * @param width The tile width (must be strictly positive).
      * @param height The tile height (must be strictly positive).
-     * @param pattern The tile pattern (must not be <code>null</code>).
-     * @param number The tile number (must be positive).
-     * @param collision The tile collision (must not be <code>null</code>).
      */
-    public TileGame(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileGame(int width, int height)
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
-        Check.superiorOrEqual(number, 0);
-        Check.notNull(pattern);
-        Check.notNull(collision);
 
         this.width = width;
         this.height = height;
-        this.pattern = pattern;
-        this.number = number;
-        this.collision = collision;
+        pattern = Integer.valueOf(0);
         x = 0;
         y = 0;
     }

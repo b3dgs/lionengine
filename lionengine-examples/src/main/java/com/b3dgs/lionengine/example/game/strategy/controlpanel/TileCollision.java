@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.CollisionTileModel;
+import com.b3dgs.lionengine.game.map.CollisionTile;
 
 /**
  * List of collision types.
@@ -34,7 +34,7 @@ enum TileCollision implements CollisionTile
     NONE;
 
     /** Model. */
-    private final CollisionTileModel model = new CollisionTileModel(this);
+    private final CollisionTile model = new CollisionTile(this);
 
     /*
      * CollisionTile

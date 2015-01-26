@@ -120,7 +120,7 @@ public class UtilMapTile
         for (final CollisionTile collision : map.getCollisions())
         {
             final XmlNode node = Stream.createXmlNode(UtilMapTile.TAG_TILE_COLLISION);
-            node.writeString(UtilMapTile.ATT_TILE_COLLISION_NAME, collision.getValue().name());
+            node.writeString(UtilMapTile.ATT_TILE_COLLISION_NAME, collision.getName());
             if (UtilMapTile.saveTilesCollisions(map, node, collision))
             {
                 root.add(node);

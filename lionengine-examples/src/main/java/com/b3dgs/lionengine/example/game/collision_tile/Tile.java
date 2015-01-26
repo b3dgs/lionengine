@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.example.game.collision_tile;
 
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -31,11 +30,11 @@ class Tile
         extends TileGame
 {
     /**
-     * @see TileGame#TileGame(int, int, Integer, int, CollisionTile)
+     * @see TileGame#TileGame(int, int)
      */
-    public Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public Tile(int width, int height)
     {
-        super(width, height, pattern, number, collision);
+        super(width, height);
     }
 
     /**

@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class ConfigForce
 {
-    /** Frames node name. */
+    /** Force node name. */
     public static final String FORCE = Configurer.PREFIX + "force";
     /** Force horizontal node name. */
     public static final String FORCE_VX = "vx";
@@ -51,8 +51,8 @@ public class ConfigForce
     public static ConfigForce create(XmlNode root) throws LionEngineException
     {
         final XmlNode node = root.getChild(FORCE);
-        return new ConfigForce(node.readDouble(ConfigForce.FORCE_VX), node.readDouble(ConfigForce.FORCE_VY),
-                node.readDouble(ConfigForce.FORCE_VELOCITY), node.readDouble(ConfigForce.FORCE_SENSIBILITY));
+        return new ConfigForce(node.readDouble(FORCE_VX), node.readDouble(FORCE_VY), node.readDouble(FORCE_VELOCITY),
+                node.readDouble(FORCE_SENSIBILITY));
     }
 
     /** The horizontal force. */

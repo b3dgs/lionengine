@@ -59,7 +59,7 @@ public class ConfigCollisions
      * @return The config collisions instance.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public static ConfigCollisions create(Configurer configurer)
+    public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
         final Map<String, Collision> collisions = new HashMap<>(0);
         for (final XmlNode node : configurer.getRoot().getChildren(ConfigCollisions.COLLISION))

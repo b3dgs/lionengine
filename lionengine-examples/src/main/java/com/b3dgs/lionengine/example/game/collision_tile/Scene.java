@@ -51,9 +51,9 @@ final class Scene
     /** Map. */
     private final Map map;
     /** Entity. */
-    private final Entity entityRef;
+    private Entity entityRef;
     /** Entity. */
-    private final Entity entity;
+    private Entity entity;
 
     /**
      * Constructor.
@@ -69,11 +69,6 @@ final class Scene
         camera = new Camera();
         map = new Map();
 
-        final Services services = new Services();
-        services.add(map);
-        services.add(camera);
-        entityRef = new Entity(services);
-        entity = new Entity(services);
         setExtrapolated(false);
     }
 
@@ -93,6 +88,12 @@ final class Scene
         map.createBlock(7, 7);
         map.createBlock(6, 8);
         map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
+
+        final Services services = new Services();
+        services.add(map);
+        services.add(camera);
+        entityRef = new Entity(services);
+        entity = new Entity(services);
 
         camera.setLimits(map);
         camera.setView(0, 0, getWidth(), getHeight());

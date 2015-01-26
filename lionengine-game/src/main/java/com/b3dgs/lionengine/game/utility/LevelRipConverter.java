@@ -193,8 +193,12 @@ public final class LevelRipConverter<T extends TileGame>
                     if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
                     {
                         final String collision = UtilMapTile.getCollision(collisions, pattern.intValue(), number);
-                        final CollisionTile coll = map.getCollisionFrom(collision);
-                        final T tile = map.createTile(map.getTileWidth(), map.getTileHeight(), pattern, number, coll);
+                        final CollisionTile coll = new CollisionTile(collision);
+                        final T tile = map.createTile();
+                        tile.setPattern(pattern);
+                        tile.setNumber(number);
+                        tile.setCollision(coll);
+
                         return tile;
                     }
                 }

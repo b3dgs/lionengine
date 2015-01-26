@@ -19,15 +19,15 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
 import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.CollisionTileCategory;
 
 /**
  * List of entity collision categories on tile.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityCollisionTileCategory implements CollisionTileCategory
+enum EntityCollisionTileCategory implements ConfigCollisionTileCategory
 {
     /** Default ground center collision. */
     GROUND_CENTER(TileCollision.COLLISION_VERTICAL),

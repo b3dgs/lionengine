@@ -17,16 +17,16 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.CollisionResult;
-import com.b3dgs.lionengine.game.map.CollisionTileCategory;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -44,7 +44,7 @@ public class TileCollidableModel
     /** Transformable owning this model. */
     private final Transformable transformable;
     /** The collisions used. */
-    private final Collection<CollisionTileCategory> categories;
+    private final Collection<ConfigCollisionTileCategory> categories;
     /** Map tile reference. */
     private final MapTile<?> map;
 
@@ -63,16 +63,17 @@ public class TileCollidableModel
      * </ul>
      * 
      * @param owner The owner reference.
+     * @param configurer The configurer reference.
      * @param services The services reference.
      * @throws LionEngineException If missing {@link Trait}.
      */
-    public TileCollidableModel(ObjectGame owner, Services services) throws LionEngineException
+    public TileCollidableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
     {
         super(owner);
         listeners = new HashSet<>();
-        categories = new ArrayList<>();
         transformable = getTrait(Transformable.class);
         map = services.get(MapTile.class);
+        categories = ConfigCollisionTileCategory.create(configurer, map);
     }
 
     /**
@@ -80,7 +81,7 @@ public class TileCollidableModel
      * 
      * @param category The category reference.
      */
-    private void update(CollisionTileCategory category)
+    private void update(ConfigCollisionTileCategory category)
     {
         final CollisionResult<?> result = map.computeCollision(transformable, category);
         if (result != null)
@@ -113,17 +114,17 @@ public class TileCollidableModel
     }
 
     @Override
-    public void addCategory(CollisionTileCategory collision)
-    {
-        categories.add(collision);
-    }
-
-    @Override
     public void update(double extrp)
     {
-        for (final CollisionTileCategory category : categories)
+        for (final ConfigCollisionTileCategory category : categories)
         {
             update(category);
         }
+    }
+
+    @Override
+    public Collection<ConfigCollisionTileCategory> getCategories()
+    {
+        return categories;
     }
 }

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.collision_tile;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
@@ -34,7 +33,7 @@ final class Map
      */
     Map()
     {
-        super(16, 16, TileCollision.values());
+        super(16, 16);
     }
 
     /**
@@ -45,7 +44,7 @@ final class Map
      */
     public void createBlock(int v, int h)
     {
-        final Tile tile = createTile(getTileWidth(), getTileHeight(), Integer.valueOf(0), 0, TileCollision.GROUND);
+        final Tile tile = createTile();
         setTile(v, h, tile);
     }
 
@@ -54,14 +53,8 @@ final class Map
      */
 
     @Override
-    public Tile createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public Tile createTile()
     {
-        return new Tile(width, height, pattern, number, collision);
-    }
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        return TileCollision.valueOf(collision);
+        return new Tile(getTileWidth(), getTileHeight());
     }
 }

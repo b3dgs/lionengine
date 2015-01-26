@@ -56,11 +56,10 @@ public abstract class MapTileGameRastered<T extends TileGame>
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
-     * @param collisions The collisions list.
      */
-    public MapTileGameRastered(int tileWidth, int tileHeight, CollisionTile[] collisions)
+    public MapTileGameRastered(int tileWidth, int tileHeight)
     {
-        super(tileWidth, tileHeight, collisions);
+        super(tileWidth, tileHeight);
         rasterPatterns = new TreeMap<>();
         rasterLoaded = false;
     }

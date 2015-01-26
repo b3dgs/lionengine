@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -93,14 +94,9 @@ public interface MapTile<T extends TileGame>
     /**
      * Create a tile.
      * 
-     * @param width The tile width.
-     * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
      * @return The created tile.
      */
-    T createTile(int width, int height, Integer pattern, int number, CollisionTile collision);
+    T createTile();
 
     /**
      * Create the collision draw surface. Must be called after map creation to enable collision rendering.
@@ -292,7 +288,7 @@ public interface MapTile<T extends TileGame>
      * @param category The collisions list to search for.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    CollisionResult<T> computeCollision(Transformable transformable, CollisionTileCategory category);
+    CollisionResult<T> computeCollision(Transformable transformable, ConfigCollisionTileCategory category);
 
     /**
      * Get location x relative to map referential as tile.
@@ -375,20 +371,19 @@ public interface MapTile<T extends TileGame>
     int getHeightInTile();
 
     /**
-     * Get collision type from its name as string. The parameter value is read from the file describing the map
-     * collisions. The best way to store map collisions name is to use an enum with the same names.
+     * Get the supported collision from its name.
      * 
-     * @param collision The collision name.
-     * @return The collision type.
+     * @param name The collision name.
+     * @return The supported collision from its name.
      */
-    CollisionTile getCollisionFrom(String collision);
+    CollisionTile getCollision(String name);
 
     /**
      * Get the supported collisions list.
      * 
      * @return The supported collisions list.
      */
-    CollisionTile[] getCollisions();
+    Collection<CollisionTile> getCollisions();
 
     /**
      * Get minimap surface reference.

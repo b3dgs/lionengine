@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
+	<lionengine:collisionTileCategory name="default" x="0" y="0">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+</lionengine:entity>
