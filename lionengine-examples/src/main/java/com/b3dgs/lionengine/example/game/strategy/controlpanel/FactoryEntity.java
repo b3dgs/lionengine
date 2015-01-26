@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Factory entity implementation.
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class FactoryEntity
-        extends FactoryObjectGame<SetupSurfaceGame>
+        extends Factory<SetupSurface>
 {
     /**
      * Constructor.
@@ -43,8 +43,8 @@ final class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Media config)
+    protected SetupSurface createSetup(Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurface(config);
     }
 }

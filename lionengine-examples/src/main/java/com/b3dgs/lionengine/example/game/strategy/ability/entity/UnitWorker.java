@@ -24,12 +24,12 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
 import com.b3dgs.lionengine.game.Bar;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorModel;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.ExtractorServices;
@@ -75,7 +75,7 @@ public abstract class UnitWorker
      * 
      * @param setup The setup reference.
      */
-    protected UnitWorker(SetupSurfaceGame setup)
+    protected UnitWorker(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -92,13 +92,13 @@ public abstract class UnitWorker
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
         super.prepareEntity(context);
-        factory = context.getService(FactoryEntity.class);
-        handler = context.getService(HandlerEntity.class);
+        factory = context.get(FactoryEntity.class);
+        handler = context.get(HandlerEntity.class);
 
-        final int desiredFps = context.getService(Integer.class).intValue();
+        final int desiredFps = context.get(Integer.class).intValue();
         producer = new ProducerModel<>(this, handler, desiredFps);
         extractor = new ExtractorModel(this, desiredFps);
     }
@@ -112,7 +112,7 @@ public abstract class UnitWorker
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g, Camera camera)
     {
         super.render(g, camera);
         if (isProducing() && getProductionProgress() > 0)

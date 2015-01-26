@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.factory.Setup;
 
 /**
  * Minimum skill requirement definition, used to create skills.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class SetupSkillStrategy
-        extends SetupGame
+        extends Setup
 {
     /** Displayed name. */
     public final String name;

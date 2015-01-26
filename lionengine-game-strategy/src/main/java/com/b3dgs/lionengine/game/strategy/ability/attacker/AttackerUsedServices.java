@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.strategy.ability.attacker;
 
 import com.b3dgs.lionengine.anim.AnimState;
-import com.b3dgs.lionengine.game.Surface;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface AttackerUsedServices<E extends EntityStrategy>
-        extends AttackerListener<E>, Surface
+        extends AttackerListener<E>
 {
     /**
      * Check if the attacker can attack (called when attack is possible).

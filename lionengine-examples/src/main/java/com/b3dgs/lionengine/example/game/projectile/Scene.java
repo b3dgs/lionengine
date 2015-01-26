@@ -18,116 +18,87 @@
 package com.b3dgs.lionengine.example.game.projectile;
 
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentCollision;
+import com.b3dgs.lionengine.game.component.ComponentRenderer;
+import com.b3dgs.lionengine.game.component.ComponentUpdater;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
+    /** Handler. */
+    private final Handler handler;
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Camera. */
-    private final CameraGame camera;
-    /** Factory launcher. */
-    private final FactoryLauncher factoryLauncher;
-    /** Factory projectile. */
-    private final FactoryProjectile factoryProjectile;
-    /** Handler entity. */
-    private final HandlerEntity handlerEntity;
-    /** Handler projectile. */
-    private final HandlerProjectile handlerProjectile;
-    /** Launcher. */
-    private final Launcher canon1;
-    /** Launcher. */
-    private final Launcher canon2;
-    /** Entity 1. */
-    private final Entity entity1;
-    /** Entity 2. */
-    private final Entity entity2;
-    /** Location entity 1. */
-    private double location;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
+        handler = new Handler();
         keyboard = getInputDevice(Keyboard.class);
-        camera = new CameraGame();
-        factoryProjectile = new FactoryProjectile();
-        handlerEntity = new HandlerEntity(camera);
-        handlerProjectile = new HandlerProjectile(camera, handlerEntity);
-        factoryLauncher = new FactoryLauncher();
-
-        final ContextGame contextLauncher = new ContextGame();
-        contextLauncher.addService(factoryProjectile);
-        contextLauncher.addService(handlerProjectile);
-        factoryLauncher.setContext(contextLauncher);
-
-        canon1 = factoryLauncher.create(PulseCannon.MEDIA);
-        canon2 = factoryLauncher.create(PulseCannon.MEDIA);
-        entity1 = new Entity();
-        entity2 = new Entity();
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
+        final Services context = new Services();
+        final Factory factory = new Factory();
+        final Camera camera = new Camera();
+        context.add(factory);
+        context.add(handler);
+        context.add(camera);
+        factory.setServices(context);
+
+        final Ship ship1 = factory.create(Ship.MEDIA);
+        final Ship ship2 = factory.create(Ship.MEDIA);
+        handler.add(ship1);
+        handler.add(ship2);
+
+        ship1.mirror();
+        ship1.setTarget(ship2);
+        ship2.setTarget(ship1);
+
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addUpdatable(new ComponentCollision());
+        handler.addRenderable(new ComponentRenderer());
+
         camera.setView(0, 0, getWidth(), getHeight());
-        canon1.setOwner(entity1);
-        canon1.setAdaptative(true);
-        canon2.setOwner(entity2);
-        handlerEntity.add(entity1);
-        handlerEntity.add(entity2);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
-
-        location += 1.0;
-
-        entity1.setLocation(100 + UtilMath.cos(location * 1.5) * 70, 180 + UtilMath.sin(location * 2) * 40);
-        entity2.setLocation(100 + UtilMath.cos(location) * 90, 60 + UtilMath.sin(location * 1.3) * 30);
-
-        canon1.launch(entity2);
-        canon2.launch(entity1);
-
-        entity1.update(extrp);
-        entity2.update(extrp);
-        handlerEntity.update(extrp);
-        handlerProjectile.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        handlerEntity.render(g);
-        handlerProjectile.render(g);
+        handler.render(g);
     }
 
     @Override

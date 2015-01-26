@@ -21,12 +21,12 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -46,7 +46,7 @@ abstract class Entity
      */
     protected static Media getConfig(Class<? extends Entity> type)
     {
-        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+        return Core.MEDIA.create(type.getSimpleName() + "." + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Entity life. */
@@ -59,7 +59,7 @@ abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    Entity(SetupSurfaceGame setup)
+    Entity(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -84,7 +84,7 @@ abstract class Entity
      */
 
     @Override
-    protected void prepareEntity(ContextGame context)
+    protected void prepareEntity(Services context)
     {
         // Nothing to do
     }

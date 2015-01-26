@@ -23,7 +23,9 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Text;
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * Class representing a timed message handler. This allows to prepare a set of timed message that will disappear at the
@@ -32,11 +34,14 @@ import com.b3dgs.lionengine.core.Text;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class TimedMessage
+        implements Updatable, Renderable
 {
     /** List of active messages. */
     private final Collection<MessageData> messages;
     /** List of messages to delete. */
     private final Collection<MessageData> delete;
+    /** Text reference. */
+    private final Text text;
     /** Has to delete something. */
     private boolean deleted;
     /** Has message flag. */
@@ -44,9 +49,12 @@ public final class TimedMessage
 
     /**
      * Create a timed message.
+     * 
+     * @param text The text renderer to use.
      */
-    public TimedMessage()
+    public TimedMessage(Text text)
     {
+        this.text = text;
         messages = new HashSet<>(1);
         delete = new ArrayList<>(1);
         deleted = false;
@@ -67,9 +75,21 @@ public final class TimedMessage
     }
 
     /**
-     * Update the message list.
+     * Check if there are existing message.
+     * 
+     * @return <code>true</code> if there are messages, <code>false</code> else.
      */
-    public void update()
+    public boolean hasMessage()
+    {
+        return hasMessage;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
     {
         for (final MessageData messageData : messages)
         {
@@ -90,28 +110,17 @@ public final class TimedMessage
         }
     }
 
-    /**
-     * Render the list of active messages.
-     * 
-     * @param g The graphics output.
-     * @param text The text renderer.
+    /*
+     * Renderable
      */
-    public void render(Graphic g, Text text)
+
+    @Override
+    public void render(Graphic g)
     {
         for (final MessageData messageData : messages)
         {
             text.draw(g, messageData.x, messageData.y, messageData.message);
         }
-    }
-
-    /**
-     * Check if there are existing message.
-     * 
-     * @return <code>true</code> if there are messages, <code>false</code> else.
-     */
-    public boolean hasMessage()
-    {
-        return hasMessage;
     }
 }
 

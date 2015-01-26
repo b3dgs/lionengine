@@ -74,13 +74,13 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         world.loadFromFile(Core.MEDIA.create("level.lvl"));
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -92,7 +92,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         world.render(g);
     }

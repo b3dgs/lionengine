@@ -18,193 +18,114 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
-import com.b3dgs.lionengine.Timing;
-import com.b3dgs.lionengine.UtilRandom;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
+import com.b3dgs.lionengine.game.trait.Transformable;
+import com.b3dgs.lionengine.game.trait.TransformableModel;
 
 /**
- * Racket implementation using EntityGame base.
+ * Racket implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Racket
-        extends EntityGame
+class Racket
+        extends ObjectGame
+        implements Updatable, Renderable, ComponentCollisionListener
 {
-    /** Racket width. */
-    private static final int WIDTH = 4;
-    /** Racket height. */
-    private static final int HEIGHT = 24;
-    /** Screen width. */
-    private final int screenWidth;
-    /** Screen height. */
-    private final int screenHeight;
-    /** Movement handler. */
-    private final boolean automatic;
-    /** Increase key. */
-    private final Integer decrease;
-    /** Decrease key. */
-    private final Integer increase;
-    /** Random movement tiler. */
-    private final Timing timerRandomMovement;
-    /** Racket speed. */
-    private double speed;
-    /** Racket last random speed. */
-    private double speedLastRandom;
+    /** Racket media. */
+    public static final Media MEDIA = Core.MEDIA.create("Racket.xml");
+    /** Racket color. */
+    private static final ColorRgba COLOR = ColorRgba.YELLOW;
+
+    /** Transformable model. */
+    private final Transformable transformable;
+    /** Collidable model. */
+    private final Collidable collidable;
+    /** Current force. */
+    private final Force force;
+    /** Ball reference. */
+    private Ball ball;
 
     /**
-     * Constructor.
-     * 
-     * @param screenWidth The screen width.
-     * @param screenHeight The screen height.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @param automatic <code>true</code> for an automatic movement, <code>false</code> for a manual movement.
+     * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    Racket(int screenWidth, int screenHeight, int x, int y, boolean automatic)
+    public Racket(Setup setup, Services context) throws LionEngineException
     {
-        super(new SetupGame(Core.MEDIA.create("sample.xml")));
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        this.automatic = automatic;
-        timerRandomMovement = new Timing();
-        decrease = Keyboard.UP;
-        increase = Keyboard.DOWN;
-        setSize(Racket.WIDTH, Racket.HEIGHT);
-        teleport(x, y);
-        setCollision(new Collision(0, -getHeight() / 2, getWidth(), getHeight(), false));
-        timerRandomMovement.start();
+        super(setup, context);
+        transformable = new TransformableModel(this, setup.getConfigurer());
+        addTrait(transformable);
+
+        collidable = new CollidableModel(this, context);
+        addTrait(collidable);
+
+        force = new Force();
+
+        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
+        collidable.setCollisionVisibility(true);
+        transformable.teleportY(240 / 2 - transformable.getHeight() / 2);
     }
 
     /**
-     * Update and control the racket.
+     * Set the racket side on screen.
      * 
-     * @param extrp The extrapolation value.
-     * @param keyboard The keyboard reference.
-     * @param ball The ball reference.
+     * @param left <code>true</code> for left side, <code>false</code> for right side.
      */
-    public void update(double extrp, Keyboard keyboard, Ball ball)
+    public void setSide(boolean left)
     {
-        // Update the movement
-        if (automatic)
+        if (left)
         {
-            updateAutomatic(extrp, ball);
+            transformable.teleportX(0);
         }
         else
         {
-            updateManual(extrp, keyboard);
+            transformable.teleportX(320 - transformable.getWidth());
         }
-        update(extrp);
     }
 
     /**
-     * Set the racket movement speed.
+     * Set the ball reference.
      * 
-     * @param speed The movement speed.
-     */
-    public void setSpeed(double speed)
-    {
-        this.speed = speed;
-    }
-
-    /**
-     * Update automatic movement.
-     * 
-     * @param extrp The extrapolation value.
      * @param ball The ball reference.
      */
-    private void updateAutomatic(double extrp, Ball ball)
+    public void setBall(Ball ball)
     {
-        double speed = 0.0;
-        // Do random movement if ball is to far
-        final double distance = getLocationX() - ball.getLocationX();
-        if (distance > screenWidth / 1.7)
-        {
-            if (timerRandomMovement.elapsed(200))
-            {
-                speedLastRandom = (0.5 - UtilRandom.getRandomDouble()) * 1.5 * this.speed;
-                timerRandomMovement.start();
-            }
-            speed = speedLastRandom;
-        }
-        // Try to be in front of the ball
-        else
-        {
-            if (ball.getLocationY() > getLocationY() + getHeight() / 3.0 - 1)
-            {
-                speed = this.speed;
-            }
-            if (ball.getLocationY() < getLocationY() - getHeight() / 3.0 + 1)
-            {
-                speed = -this.speed;
-            }
-        }
-        moveLocation(extrp, 0.0, speed);
-        updateCollision();
-    }
-
-    /**
-     * Update the manual movement.
-     * 
-     * @param extrp The extrapolation value.
-     * @param keyboard The keyboard reference.
-     */
-    private void updateManual(double extrp, Keyboard keyboard)
-    {
-        // Get the speed
-        double speed = 0.0;
-        if (keyboard.isPressed(increase))
-        {
-            speed = this.speed;
-        }
-        if (keyboard.isPressed(decrease))
-        {
-            speed = -this.speed;
-        }
-
-        // Apply movement
-        moveLocation(extrp, 0.0, speed);
-    }
-
-    /*
-     * EntityGame
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        // Nothing to do
+        this.ball = ball;
     }
 
     @Override
     public void update(double extrp)
     {
-        // Block on border
-        if (getLocationY() < 0.0 + getHeight() / 2.0)
-        {
-            setLocationY(0.0 + getHeight() / 2.0);
-        }
-        if (getLocationY() > screenHeight - getHeight() / 2.0)
-        {
-            setLocationY(screenHeight - getHeight() / 2.0);
-        }
+        force.update(extrp);
+        transformable.moveLocation(extrp, force);
 
-        // Update collisions
-        updateCollision();
+        final Transformable object = ball.getTrait(Transformable.class);
+        transformable.moveLocation(extrp, 0.0, object.getY() - transformable.getY() < 0 ? -1.0 : 1.0);
+        collidable.update(extrp);
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g)
     {
-        final int x = camera.getViewpointX(getLocationIntX() - getWidth() / 2);
-        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - getHeight() / 2);
-        g.setColor(ColorRgba.CYAN);
-        g.drawRect(x, y, getWidth(), getHeight(), true);
+        g.setColor(COLOR);
+        g.drawRect((int) transformable.getX(), (int) transformable.getY(), transformable.getWidth(),
+                transformable.getHeight(), true);
+    }
+
+    @Override
+    public void notifyCollided(Collidable collidable)
+    {
+        // Nothing to do
     }
 }

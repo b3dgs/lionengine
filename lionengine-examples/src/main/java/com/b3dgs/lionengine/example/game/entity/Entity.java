@@ -20,55 +20,33 @@ package com.b3dgs.lionengine.example.game.entity;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
-import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
  * Entity implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Entity
-        extends EntityGame
+class Entity
+        extends ObjectGame
+        implements Updatable, Renderable
 {
-    /**
-     * Get an entity configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Entity> type)
-    {
-        return Core.MEDIA
-                .create(Factory.ENTITY_DIR, type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Goomba config. */
+    public static final Media GOOMBA = Core.MEDIA.create("Goomba.xml");
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param context The context reference.
      */
-    protected Entity(SetupSurfaceGame setup)
+    public Entity(Setup setup, Services context)
     {
-        super(setup);
-        final Configurer configurer = setup.getConfigurer();
-        final ConfigCollisions configCollisions = ConfigCollisions.create(configurer);
-        setCollision(configCollisions.getCollision("default"));
-    }
-
-    /*
-     * EntityGame
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        // Nothing to do
+        super(setup, context);
     }
 
     @Override
@@ -78,7 +56,7 @@ abstract class Entity
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g)
     {
         System.out.println("I am rendering: " + this);
     }

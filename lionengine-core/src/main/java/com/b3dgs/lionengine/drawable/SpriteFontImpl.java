@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -210,9 +212,21 @@ final class SpriteFontImpl
     }
 
     @Override
+    public void setOrigin(Origin origin)
+    {
+        surface.setOrigin(origin);
+    }
+
+    @Override
     public void setLocation(double x, double y)
     {
         surface.setLocation(x, y);
+    }
+
+    @Override
+    public void setLocation(Viewer viewer, double x, double y)
+    {
+        surface.setLocation(viewer, x, y);
     }
 
     @Override

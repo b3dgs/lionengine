@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppMario
+public class AppMario
 {
     /** Application name. */
     public static final String NAME = "Mario";
@@ -51,13 +51,5 @@ public final class AppMario
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
         loader.start(Scene.class);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private AppMario()
-    {
-        throw new RuntimeException();
     }
 }

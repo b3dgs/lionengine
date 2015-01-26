@@ -19,16 +19,22 @@ package com.b3dgs.lionengine.example.game.entity;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.game.component.ComponentRenderer;
+import com.b3dgs.lionengine.game.component.ComponentUpdater;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppGameEntity
+public class AppGameEntity
 {
     /**
      * Main.
@@ -37,18 +43,21 @@ public final class AppGameEntity
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Entity", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "game"));
+        Engine.start("Entity", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "entity"));
 
+        final Graphic g = Core.GRAPHIC.createGraphic();
         final Factory factory = new Factory();
         final Handler handler = new Handler();
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
 
-        final Entity entity = factory.create(Goomba.MEDIA);
+        final Entity entity = factory.create(Entity.GOOMBA);
         handler.add(entity);
 
         for (int i = 0; i < 2; i++)
         {
             handler.update(1.0);
-            handler.render(null);
+            handler.render(g);
         }
 
         Engine.terminate();

@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.launcher;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.Setup;
 
 /**
  * Factory launcher projectile.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactoryLauncher
-        extends FactoryObjectGame<SetupGame>
+        extends Factory<Setup>
 {
     /** Directory name from our resources directory containing our launchers. */
     public static final String LAUNCHER_DIR = "launcher";
@@ -45,8 +45,8 @@ public final class FactoryLauncher
      */
 
     @Override
-    protected SetupGame createSetup(Media config)
+    protected Setup createSetup(Media config)
     {
-        return new SetupGame(config);
+        return new Setup(config);
     }
 }

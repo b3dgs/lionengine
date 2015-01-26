@@ -49,7 +49,7 @@ import com.b3dgs.lionengine.example.game.strategy.ability.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
@@ -121,22 +121,22 @@ final class Scene
 
         controlPanel.addListener(handlerEntity);
 
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        contextEntity.addService(factoryEntity);
-        contextEntity.addService(factoryWeapon);
-        contextEntity.addService(handlerEntity);
-        contextEntity.addService(Integer.valueOf(getConfig().getSource().getRate()));
-        factoryEntity.setContext(contextEntity);
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        contextEntity.add(factoryEntity);
+        contextEntity.add(factoryWeapon);
+        contextEntity.add(handlerEntity);
+        contextEntity.add(Integer.valueOf(getConfig().getSource().getRate()));
+        factoryEntity.setServices(contextEntity);
 
-        final ContextGame contextLauncher = new ContextGame();
-        contextLauncher.addService(factoryProjectile);
-        contextLauncher.addService(handlerProjectile);
-        factoryLauncher.setContext(contextLauncher);
+        final Services contextLauncher = new Services();
+        contextLauncher.add(factoryProjectile);
+        contextLauncher.add(handlerProjectile);
+        factoryLauncher.setServices(contextLauncher);
 
-        final ContextGame contextWeapon = new ContextGame();
-        contextWeapon.addService(factoryLauncher);
-        factoryWeapon.setContext(contextWeapon);
+        final Services contextWeapon = new Services();
+        contextWeapon.add(factoryLauncher);
+        factoryWeapon.setServices(contextWeapon);
 
         setSystemCursorVisible(false);
     }
@@ -163,7 +163,7 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
@@ -208,7 +208,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -223,7 +223,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
         handlerEntity.render(g);

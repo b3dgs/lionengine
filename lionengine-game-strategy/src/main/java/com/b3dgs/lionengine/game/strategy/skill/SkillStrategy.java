@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.game.strategy.skill;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.factory.Fabricable;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -74,7 +74,7 @@ public abstract class SkillStrategy
      * @param setup The setup skill used.
      * @throws LionEngineException If unable to read setup.
      */
-    public SkillStrategy(SetupGame setup) throws LionEngineException
+    public SkillStrategy(Setup setup) throws LionEngineException
     {
         final Configurer configurer = setup.getConfigurer();
         name = configurer.getText("name");

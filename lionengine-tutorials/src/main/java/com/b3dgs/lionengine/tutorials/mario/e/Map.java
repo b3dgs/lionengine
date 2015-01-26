@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Map
+class Map
         extends MapTileGame<TileGame>
 {
     /**
      * Constructor.
      */
-    Map()
+    public Map()
     {
         super(16, 16, TileCollision.values());
     }
@@ -56,10 +56,6 @@ final class Map
             }
         }
     }
-
-    /*
-     * MapTileGame
-     */
 
     @Override
     public TileGame createTile(int width, int height, Integer pattern, int number, CollisionTile collision)

@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -42,24 +42,20 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
         // Load
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
@@ -68,7 +64,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // render
     }

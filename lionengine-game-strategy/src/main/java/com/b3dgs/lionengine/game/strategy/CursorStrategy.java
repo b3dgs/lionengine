@@ -230,8 +230,8 @@ public class CursorStrategy
         oldY = super.getLocationY() - camera.getViewY();
         super.update(extrp);
         setArea(0, 0, width, height);
-        offX = camera.getLocationIntX();
-        offY = camera.getLocationIntY() - camera.getViewY() * 2;
+        offX = (int) camera.getX();
+        offY = (int) camera.getY() - camera.getViewY() * 2;
     }
 
     /**

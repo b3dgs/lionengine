@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
@@ -67,11 +67,11 @@ public final class BuildBarracksOrc
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
         super.prepare(context);
-        cursor = context.getService(Cursor.class);
-        factoryProduction = context.getService(FactoryProduction.class);
+        cursor = context.get(Cursor.class);
+        factoryProduction = context.get(FactoryProduction.class);
         final Configurer configurer = factoryProduction.getSetup(BarracksOrc.MEDIA).getConfigurer();
         final ConfigSize sizeData = ConfigSize.create(configurer);
         width = sizeData.getWidth();

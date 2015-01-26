@@ -24,8 +24,8 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Range;
-import com.b3dgs.lionengine.game.SetupGame;
-import com.b3dgs.lionengine.game.purview.Fabricable;
+import com.b3dgs.lionengine.game.factory.Fabricable;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -83,7 +83,7 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
      * 
      * @param setup The setup reference.
      */
-    public WeaponModel(SetupGame setup)
+    public WeaponModel(Setup setup)
     {
         listeners = new HashSet<>(1);
         damages = new Damages();
@@ -275,34 +275,6 @@ public abstract class WeaponModel<E extends EntityStrategy, A extends AttackerUs
     public E getTarget()
     {
         return target;
-    }
-
-    /*
-     * Surface
-     */
-
-    @Override
-    public int getLocationIntX()
-    {
-        return user.getLocationIntX();
-    }
-
-    @Override
-    public int getLocationIntY()
-    {
-        return user.getLocationIntY();
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return user.getWidth();
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return user.getHeight();
     }
 
     /*

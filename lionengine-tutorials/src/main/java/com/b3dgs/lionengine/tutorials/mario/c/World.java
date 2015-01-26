@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -31,27 +31,23 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera;
     /** Map reference. */
     private final Map map;
 
     /**
      * @see WorldGame#WorldGame(Config)
      */
-    World(Config config)
+    public World(Config config)
     {
         super(config);
-        camera = new CameraPlatform(width, height);
+        camera = new Camera();
         map = new Map();
     }
-
-    /*
-     * WorldGame
-     */
 
     @Override
     public void update(double extrp)
@@ -76,6 +72,7 @@ final class World
     {
         map.load(file);
         camera.setLimits(map);
+        camera.setView(0, 0, width, height);
         camera.setIntervals(16, 0);
     }
 }

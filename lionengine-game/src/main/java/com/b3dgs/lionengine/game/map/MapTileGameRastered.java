@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.purview.Rasterable;
+import com.b3dgs.lionengine.game.trait.Rasterable;
 
 /**
  * Rastered version of a map tile game.
@@ -225,15 +225,17 @@ public abstract class MapTileGameRastered<T extends TileGame>
     @Override
     protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
     {
-        final SpriteTiled ts;
+        final SpriteTiled raster;
         if (rasterLoaded)
         {
-            ts = getRasterPattern(pattern, getRasterIndex(tile.getY()));
+            raster = getRasterPattern(pattern, getRasterIndex(tile.getY()));
         }
         else
         {
-            ts = super.getPattern(pattern);
+            raster = super.getPattern(pattern);
         }
-        ts.render(g, number, x, y);
+        raster.setLocation(x, y);
+        raster.setTile(number);
+        raster.render(g);
     }
 }

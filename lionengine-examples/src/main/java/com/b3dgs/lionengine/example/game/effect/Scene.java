@@ -24,78 +24,83 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentRenderer;
+import com.b3dgs.lionengine.game.component.ComponentUpdater;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
+    /** Camera reference. */
+    private final Camera camera;
+    /** Factory effect. */
+    private final Factory factory;
+    /** Handler effect. */
+    private final Handler handler;
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
-    /** Camera. */
-    private final CameraGame camera;
-    /** Factory effect. */
-    private final FactoryEffect factoryEffect;
-    /** Handler effect. */
-    private final HandlerEffect handlerEffect;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
+        camera = new Camera();
+        factory = new Factory();
+        handler = new Handler();
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        camera = new CameraGame();
-        factoryEffect = new FactoryEffect();
-        handlerEffect = new HandlerEffect(camera);
-        camera.setView(0, 0, getWidth(), getHeight());
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
+        final Services context = new Services();
+        context.add(camera);
+        factory.setServices(context);
+
         mouse.setConfig(getConfig());
+        camera.setView(0, 0, getWidth(), getHeight());
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
-        mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
-
+        mouse.update(extrp);
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            final Effect effect = factoryEffect.create(Explode.MEDIA);
-            effect.start(mouse.getX(), getHeight() - mouse.getY());
-            handlerEffect.add(effect);
+            final Effect effect = factory.create(Effect.EXPLODE);
+            effect.start(camera.getViewpointX(mouse.getX()), camera.getViewpointY(mouse.getY()));
+            handler.add(effect);
         }
-
-        handlerEffect.update(extrp);
+        handler.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        handlerEffect.render(g);
+        handler.render(g);
     }
 
     @Override

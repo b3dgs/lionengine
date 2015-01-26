@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.core.Media;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum Sfx
+enum Sfx
 {
     /** Jump. */
     JUMP("jump"),

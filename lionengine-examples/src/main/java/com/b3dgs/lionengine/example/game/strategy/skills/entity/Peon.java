@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildingStandardO
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.CancelOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.MoveOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.StopOrc;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Peon implementation.
@@ -42,7 +42,7 @@ public final class Peon
      * 
      * @param setup The setup reference.
      */
-    public Peon(SetupSurfaceGame setup)
+    public Peon(SetupSurface setup)
     {
         super(setup);
     }
@@ -52,10 +52,10 @@ public final class Peon
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
         super.prepareEntity(context);
-        final FactoryEntity factoryEntity = context.getService(FactoryEntity.class);
+        final FactoryEntity factoryEntity = context.get(FactoryEntity.class);
         addSkill(factoryEntity, 0, MoveOrc.MEDIA, 0);
         addSkill(factoryEntity, 0, StopOrc.MEDIA, 1);
         addSkill(factoryEntity, 0, BuildingStandardOrc.MEDIA, 2);

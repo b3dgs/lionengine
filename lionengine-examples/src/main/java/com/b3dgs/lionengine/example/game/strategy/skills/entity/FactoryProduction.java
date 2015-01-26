@@ -19,9 +19,9 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 
 /**
@@ -71,8 +71,8 @@ public final class FactoryProduction
     }
 
     @Override
-    protected SetupGame createSetup(Media config)
+    protected Setup createSetup(Media config)
     {
-        return new SetupGame(config);
+        return new Setup(config);
     }
 }

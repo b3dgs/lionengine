@@ -44,6 +44,10 @@ public class CollisionTileModel
         collisionFunctions = new HashSet<>();
     }
 
+    /*
+     * CollisionTile
+     */
+
     @Override
     public void addCollisionFunction(CollisionFunction function)
     {

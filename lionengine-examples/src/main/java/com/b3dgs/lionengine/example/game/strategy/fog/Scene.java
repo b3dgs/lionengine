@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.utility.LevelRipConverter;
  * Game loop designed to handle our little world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
 final class Scene
         extends Sequence
@@ -75,9 +75,9 @@ final class Scene
         handlerEntity = new HandlerEntity(camera);
         timer = new Timing();
 
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        factoryEntity.setContext(contextEntity);
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        factoryEntity.setServices(contextEntity);
     }
 
     /*
@@ -85,7 +85,7 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
@@ -102,7 +102,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -113,13 +113,13 @@ final class Scene
         if (timer.elapsed(500))
         {
             peon.teleport(UtilRandom.getRandomInteger(250), UtilRandom.getRandomInteger(200));
-            fogOfWar.update(handlerEntity.list());
+            fogOfWar.update(handlerEntity.getObjects());
             timer.restart();
         }
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
         handlerEntity.render(g);

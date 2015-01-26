@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Entity;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
@@ -46,7 +46,7 @@ public abstract class Skill
     protected static Media getConfig(Class<? extends Skill> type)
     {
         return Core.MEDIA.create(FactorySkill.SKILL_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Sprite. */
@@ -94,7 +94,7 @@ public abstract class Skill
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
         // Nothing to do
     }

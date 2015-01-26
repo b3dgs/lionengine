@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
@@ -100,18 +100,18 @@ final class Scene
         controlPanel.addListener(handlerEntity);
         handlerEntity.addListener(controlPanel);
 
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        contextEntity.addService(factoryEntity);
-        contextEntity.addService(factorySkill);
-        contextEntity.addService(handlerEntity);
-        contextEntity.addService(Integer.valueOf(getConfig().getSource().getRate()));
-        factoryEntity.setContext(contextEntity);
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        contextEntity.add(factoryEntity);
+        contextEntity.add(factorySkill);
+        contextEntity.add(handlerEntity);
+        contextEntity.add(Integer.valueOf(getConfig().getSource().getRate()));
+        factoryEntity.setServices(contextEntity);
 
-        final ContextGame contextSkill = new ContextGame();
-        contextSkill.addService(factoryProduction);
-        contextSkill.addService(cursor);
-        factorySkill.setContext(contextSkill);
+        final Services contextSkill = new Services();
+        contextSkill.add(factoryProduction);
+        contextSkill.add(cursor);
+        factorySkill.setServices(contextSkill);
 
         setSystemCursorVisible(false);
     }
@@ -121,7 +121,7 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
@@ -151,7 +151,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
@@ -166,7 +166,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
         handlerEntity.render(g);

@@ -115,8 +115,8 @@ final class SpriteAnimatedImpl
     public void render(Graphic g)
     {
         final int frame = animator.getFrame() - 1;
-        final int fx = (int) getX() - frameOffsetX;
-        final int fy = (int) getY() + frameOffsetY;
+        final int fx = getRenderX() - frameOffsetX;
+        final int fy = getRenderY() + frameOffsetY;
         final int ox = frame % horizontalFrames;
         final int oy = (int) Math.floor(frame / (double) horizontalFrames);
 
@@ -190,6 +190,12 @@ final class SpriteAnimatedImpl
         final int w = (int) Math.round(newWidth / (double) getFramesHorizontal()) * getFramesHorizontal();
         final int h = (int) Math.round(newHeight / (double) getFramesVertical()) * getFramesVertical();
         super.stretch(w, h);
+    }
+
+    @Override
+    protected void computeRenderingPoint(int width, int height)
+    {
+        super.computeRenderingPoint(width / horizontalFrames, height / verticalFrames);
     }
 
     /*

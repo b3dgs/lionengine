@@ -19,16 +19,23 @@ package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentRenderer;
+import com.b3dgs.lionengine.game.component.ComponentUpdater;
+import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.handler.Handler;
 
 /**
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppGameHandler
+public class AppGameHandler
 {
     /**
      * Main.
@@ -37,17 +44,20 @@ public final class AppGameHandler
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Handler", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilFile.getPath("resources", "game", "handler"));
+        Engine.start("Handler", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "handler"));
 
+        final Graphic g = Core.GRAPHIC.createGraphic();
+        final Services context = new Services();
         final Handler handler = new Handler();
-        handler.add(new MyObject());
-        handler.add(new MyObject());
+        handler.addUpdatable(new ComponentUpdater());
+        handler.addRenderable(new ComponentRenderer());
+        handler.add(new MyObject(new Setup(Core.MEDIA.create("MyObject.xml")), context));
+        handler.add(new MyObject(new Setup(Core.MEDIA.create("MyObject.xml")), context));
 
         for (int i = 0; i < 2; i++)
         {
             handler.update(1.0);
-            handler.render(null);
+            handler.render(g);
         }
 
         Engine.terminate();

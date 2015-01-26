@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.network.NetworkedWorld;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -75,12 +75,12 @@ abstract class World<N extends NetworkedWorld>
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         chat = new Chat(this);
 
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        contextEntity.addService(Integer.valueOf(source.getRate()));
-        contextEntity.addService(Boolean.valueOf(server));
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        contextEntity.add(Integer.valueOf(source.getRate()));
+        contextEntity.add(Boolean.valueOf(server));
 
-        factory.setContext(contextEntity);
+        factory.setServices(contextEntity);
     }
 
     /**

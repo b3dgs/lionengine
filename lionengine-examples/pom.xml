@@ -43,11 +43,6 @@
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-platform</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-strategy</artifactId>
 		</dependency>
 

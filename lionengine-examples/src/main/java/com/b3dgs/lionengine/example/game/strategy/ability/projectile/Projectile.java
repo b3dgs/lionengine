@@ -24,10 +24,10 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**
@@ -48,7 +48,7 @@ public abstract class Projectile
     protected static Media getConfig(Class<? extends Projectile> type)
     {
         return Core.MEDIA.create(FactoryProjectile.PROJECTILE_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Surface. */
@@ -61,7 +61,7 @@ public abstract class Projectile
      * 
      * @param setup The entity setup.
      */
-    protected Projectile(SetupSurfaceGame setup)
+    protected Projectile(SetupSurface setup)
     {
         super(setup);
         sprite = Drawable.loadSpriteTiled(setup.surface, getWidth(), getHeight());
@@ -83,13 +83,13 @@ public abstract class Projectile
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
         // Nothing to do
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g, Camera camera)
     {
         sprite.render(g, frame, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
     }

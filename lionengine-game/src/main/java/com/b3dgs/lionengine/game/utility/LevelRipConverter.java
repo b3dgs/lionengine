@@ -100,10 +100,10 @@ public final class LevelRipConverter<T extends TileGame>
         imageMap.load(false);
 
         map.loadPatterns(patternsDirectory);
-        map.create(imageMap.getWidthOriginal() / map.getTileWidth(), imageMap.getHeightOriginal() / map.getTileHeight());
+        map.create(imageMap.getWidth() / map.getTileWidth(), imageMap.getHeight() / map.getTileHeight());
 
-        imageMapTilesInY = imageMap.getHeightOriginal() / map.getTileHeight();
-        imageMapTilesInX = imageMap.getWidthOriginal() / map.getTileWidth();
+        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
+        imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
         startX = 0;
         endX = imageMapTilesInX;
 
@@ -173,8 +173,8 @@ public final class LevelRipConverter<T extends TileGame>
             final Integer pattern = itr.next();
             final SpriteTiled tileSheet = map.getPattern(pattern);
             final ImageBuffer sheet = tileSheet.getSurface();
-            final int tilesInX = tileSheet.getWidthOriginal() / tw;
-            final int tilesInY = tileSheet.getHeightOriginal() / th;
+            final int tilesInX = tileSheet.getWidth() / tw;
+            final int tilesInY = tileSheet.getHeight() / th;
 
             // Check each tile of the tile sheet
             for (int surfaceCurrentTileY = 0; surfaceCurrentTileY < tilesInY; surfaceCurrentTileY++)

@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * TownHall building implementation. This building allows to create new peon and store resources.
@@ -37,7 +37,7 @@ public final class TownhallOrc
      * 
      * @param setup The setup reference.
      */
-    public TownhallOrc(SetupSurfaceGame setup)
+    public TownhallOrc(SetupSurface setup)
     {
         super(setup);
     }

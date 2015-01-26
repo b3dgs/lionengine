@@ -273,7 +273,7 @@ public abstract class Renderer
             sync(System.nanoTime() - lastTime);
 
             // Perform extrapolation and frame rate calculation
-            final long currentTime = System.nanoTime();
+            final long currentTime = Math.max(lastTime + 1, System.nanoTime());
             if (extrapolated)
             {
                 extrp = source.getRate() / TIME_DOUBLE * (currentTime - lastTime);

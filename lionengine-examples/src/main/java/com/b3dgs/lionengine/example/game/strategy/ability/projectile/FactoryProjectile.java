@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Factory projectile implementation.
@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @see com.b3dgs.lionengine.example.game.projectile
  */
 public final class FactoryProjectile
-        extends FactoryObjectGame<SetupSurfaceGame>
+        extends Factory<SetupSurface>
 {
     /** Directory name from our resources directory containing our entities. */
     public static final String PROJECTILE_DIR = "projectile";
@@ -46,8 +46,8 @@ public final class FactoryProjectile
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Media config)
+    protected SetupSurface createSetup(Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurface(config);
     }
 }

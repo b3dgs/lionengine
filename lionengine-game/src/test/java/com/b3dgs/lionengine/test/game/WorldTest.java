@@ -74,7 +74,6 @@ public class WorldTest
             Assert.assertTrue(media.getFile().delete());
         }
 
-        world.loadFromFile(TestObject.MEDIA);
         world.update(0);
         world.render(null);
     }

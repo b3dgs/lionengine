@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Verbose;
@@ -28,9 +29,9 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppPong
+public class AppPong
 {
     /**
      * Main function called by the jvm.
@@ -39,7 +40,7 @@ public final class AppPong
      */
     public static void main(String[] args)
     {
-        Engine.start("Pong", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        Engine.start("Pong", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "pong"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

@@ -30,10 +30,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.game.Alterable;
 import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
-import com.b3dgs.lionengine.game.FactoryGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Resource;
-import com.b3dgs.lionengine.game.SetupGame;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.CollisionTile;
@@ -158,36 +155,6 @@ public class ModuleGame
         dmg.getRandom(); // returns a value between 5 and 10 included
     }
 
-    public class Factory
-            extends FactoryGame<SetupGame>
-    {
-        public Factory()
-        {
-            super();
-        }
-
-        @Override
-        protected SetupGame createSetup(Media config)
-        {
-            return new SetupGame(config);
-        }
-    }
-
-    public class FactoryObject
-            extends FactoryObjectGame<SetupGame>
-    {
-        public FactoryObject()
-        {
-            super("objects");
-        }
-
-        @Override
-        protected SetupGame createSetup(Media config)
-        {
-            return new SetupGame(config);
-        }
-    }
-
     void resource()
     {
         final Resource gold = new Resource();
@@ -210,19 +177,19 @@ public class ModuleGame
         }
 
         @Override
-        protected void load()
+        public void load()
         {
             // Load resources here
         }
 
         @Override
-        protected void update(double extrp)
+        public void update(double extrp)
         {
             // Update routine
         }
 
         @Override
-        protected void render(Graphic g)
+        public void render(Graphic g)
         {
             // Render routine
         }

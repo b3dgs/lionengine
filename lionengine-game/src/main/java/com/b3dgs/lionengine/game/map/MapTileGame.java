@@ -27,15 +27,16 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.game.utility.UtilMapTile;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -76,17 +77,17 @@ public abstract class MapTileGame<T extends TileGame>
     /** Patterns list. */
     private final Map<Integer, SpriteTiled> patterns;
     /** Tiles directory. */
-    protected Media patternsDirectory;
+    private Media patternsDirectory;
     /** Tile width. */
-    protected int tileWidth;
+    private int tileWidth;
     /** Tile height. */
-    protected int tileHeight;
+    private int tileHeight;
     /** Number of horizontal tiles. */
-    protected int widthInTile;
+    private int widthInTile;
     /** Number of vertical tiles. */
-    protected int heightInTile;
+    private int heightInTile;
     /** Minimap reference. */
-    protected ImageBuffer minimap;
+    private ImageBuffer minimap;
     /** Tiles map. */
     private List<List<T>> tiles;
     /** Collision draw cache. */
@@ -183,7 +184,10 @@ public abstract class MapTileGame<T extends TileGame>
      */
     protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
     {
-        getPattern(pattern).render(g, number, x, y);
+        final SpriteTiled sprite = getPattern(pattern);
+        sprite.setLocation(x, y);
+        sprite.setTile(number);
+        sprite.render(g);
     }
 
     /**
@@ -209,6 +213,44 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
+     * Load tile. Data are loaded this way:
+     * 
+     * <pre>
+     * (integer) pattern number
+     * (integer) index number inside pattern
+     * (integer) tile location x
+     * (integer tile location y
+     * </pre>
+     * 
+     * @param nodes The collision nodes.
+     * @param file The file reader reference.
+     * @param i The last loaded tile number.
+     * @return The loaded tile.
+     * @throws IOException If error on reading.
+     * @throws LionEngineException If error on creating tile.
+     */
+    protected T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException
+    {
+        Check.notNull(file);
+
+        final int pattern = file.readInteger();
+        final int number = file.readInteger();
+        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
+        final int y = file.readInteger() * tileHeight;
+        final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
+        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
+
+        if (tile == null)
+        {
+            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
+        }
+        tile.setX(x);
+        tile.setY(y);
+
+        return tile;
+    }
+
+    /**
      * Get color corresponding to the specified tile. Override it to return a specific color for each type of tile.
      * This function is used when generating the minimap.
      * 
@@ -221,28 +263,34 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
-     * Check the collision at the specified location.
+     * Compute the collision from current location.
      * 
-     * @param localizable The localizable reference.
-     * @param collisions Collisions list to search for.
-     * @param h The horizontal index.
-     * @param ty The vertical tile.
-     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
-     *            just return the first tile hit.
-     * @return The first tile hit, <code>null</code> if none found.
+     * @param category The collision tile category.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     * @return The computed collision result.
      */
-    private T checkCollision(Localizable localizable, Collection<CollisionTile> collisions, double h, int ty,
-            boolean applyRayCast)
+    private CollisionResult<T> computeCollision(CollisionTileCategory category, double ox, double oy, double x, double y)
     {
-        final T tile = getTile((int) Math.floor(h / getTileWidth()), ty);
-        if (tile != null && collisions.contains(tile.getCollision()))
+        final T tile = getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
+        if (tile != null && category.getCollisions().contains(tile.getCollision()))
         {
-            final Double coll = tile.getCollisionY(localizable);
-            if (applyRayCast && coll != null)
+            Double cx = tile.getCollisionX(x, y);
+            Double cy = tile.getCollisionY(x, y);
+            if (cx == null && cy != null && category.getSlide() != CollisionRefential.Y)
             {
-                localizable.teleportY(coll.doubleValue());
+                cx = Double.valueOf(x);
             }
-            return tile;
+            if (cy == null && cx != null && category.getSlide() != CollisionRefential.X)
+            {
+                cy = Double.valueOf(y);
+            }
+            if (cx != null && cy != null)
+            {
+                return new CollisionResult<>(ox - category.getOffsetX(), oy - category.getOffsetY(), tile);
+            }
         }
         return null;
     }
@@ -447,28 +495,6 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException
-    {
-        Check.notNull(file);
-
-        final int pattern = file.readInteger();
-        final int number = file.readInteger();
-        final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
-        final int y = file.readInteger() * tileHeight;
-        final CollisionTile collision = getCollisionFrom(UtilMapTile.getCollision(nodes, pattern, number));
-        final T tile = createTile(tileWidth, tileHeight, Integer.valueOf(pattern), number, collision);
-
-        if (tile == null)
-        {
-            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
-        }
-        tile.setX(x);
-        tile.setY(y);
-
-        return tile;
-    }
-
-    @Override
     public void append(MapTile<T> map, int offsetX, int offsetY)
     {
         Check.notNull(map);
@@ -615,11 +641,11 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g, Viewer viewer)
     {
-        render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
-                (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+        render(g, viewer.getHeight(), (int) viewer.getX(), (int) viewer.getY(),
+                (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
+                (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
     }
 
     @Override
@@ -650,81 +676,62 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public T getTile(Localizable entity, int offsetX, int offsetY)
+    public T getTile(Localizable localizable, int offsetX, int offsetY)
     {
-        final int tx = (entity.getLocationIntX() + offsetX) / getTileWidth();
-        final int ty = (entity.getLocationIntY() + offsetY) / getTileHeight();
+        final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
+        final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());
         return getTile(tx, ty);
     }
 
     @Override
-    public T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast)
+    public CollisionResult<T> computeCollision(Transformable transformable, CollisionTileCategory category)
     {
-        // Starting location
-        final int sv = (int) Math.floor(localizable.getLocationOldY());
-        final int sh = (int) Math.floor(localizable.getLocationOldX());
-
-        // Ending location
-        final int ev = (int) Math.floor(localizable.getLocationY());
-        final int eh = (int) Math.floor(localizable.getLocationX());
-
         // Distance calculation
-        final int dv = ev - sv;
-        final int dh = eh - sh;
+        final double sh = transformable.getOldX() + category.getOffsetX();
+        final double sv = transformable.getOldY() + category.getOffsetY();
+
+        final double dh = transformable.getX() + category.getOffsetX() - sh;
+        final double dv = transformable.getY() + category.getOffsetY() - sv;
 
         // Search vector and number of search steps
-        final double sx, sy;
-        final int stepMax;
-        if (Math.abs(dv) >= Math.abs(dh))
-        {
-            sy = UtilMapTile.getTileSearchSpeed(dv);
-            sx = UtilMapTile.getTileSearchSpeed(Math.abs(dv), dh);
-            stepMax = Math.abs(dv);
-        }
-        else
-        {
-            sx = UtilMapTile.getTileSearchSpeed(dh);
-            sy = UtilMapTile.getTileSearchSpeed(Math.abs(dh), dv);
-            stepMax = Math.abs(dh);
-        }
+        final double norm = Math.sqrt(dh * dh + dv * dv);
+        final double sx = dh / norm;
+        final double sy = dv / norm;
 
-        T t = null;
-        int step = 0;
-        for (double v = sv, h = sh; step <= stepMax;)
+        double oh;
+        double ov;
+        int count = 0;
+        for (double h = sh, v = sv; count < norm; count++)
         {
-            T tile = checkCollision(localizable, collisions, h, (int) Math.floor(v / getTileHeight()), applyRayCast);
-            if (t == null)
+            oh = Math.floor(h);
+            ov = Math.ceil(v);
+            CollisionResult<T> result = computeCollision(category, oh, ov, h, v);
+            if (result != null)
             {
-                t = tile;
+                return result;
             }
-            h += sx;
 
-            tile = checkCollision(localizable, collisions, h, (int) Math.ceil(v / getTileHeight()), applyRayCast);
-            if (t == null)
+            h += sx;
+            result = computeCollision(category, oh, ov, h, v);
+            if (result != null)
             {
-                t = tile;
+                return result;
             }
             v += sy;
-
-            step++;
-            if (!applyRayCast && t != null)
-            {
-                return t;
-            }
         }
-        return t;
+        return null;
     }
 
     @Override
     public int getInTileX(Localizable localizable)
     {
-        return (int) Math.floor(localizable.getLocationX() / getTileWidth());
+        return (int) Math.floor(localizable.getX() / getTileWidth());
     }
 
     @Override
     public int getInTileY(Localizable localizable)
     {
-        return (int) Math.floor(localizable.getLocationY() / getTileHeight());
+        return (int) Math.floor(localizable.getY() / getTileHeight());
     }
 
     @Override

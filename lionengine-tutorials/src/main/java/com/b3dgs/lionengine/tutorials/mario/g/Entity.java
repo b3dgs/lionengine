@@ -23,16 +23,16 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Movement;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 
@@ -53,7 +53,7 @@ abstract class Entity
     protected static Media getConfig(Class<? extends Entity> type)
     {
         return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Movement force. */
@@ -90,7 +90,7 @@ abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupSurfaceGame setup)
+    protected Entity(SetupSurface setup)
     {
         super(setup);
         animations = new EnumMap<>(EntityState.class);
@@ -340,10 +340,10 @@ abstract class Entity
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
-        map = context.getService(Map.class);
-        desiredFps = context.getService(Integer.class).intValue();
+        map = context.get(Map.class);
+        desiredFps = context.get(Integer.class).intValue();
     }
 
     @Override
@@ -360,7 +360,7 @@ abstract class Entity
     protected void handleMovements(double extrp)
     {
         movement.update(extrp);
-        updateGravity(extrp, desiredFps, jumpForce, movement);
+        updateGravity(extrp, jumpForce, movement);
         updateMirror();
     }
 

@@ -17,8 +17,8 @@
  */
 package com.b3dgs.lionengine.game.strategy.ability.mover;
 
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Used services interface.

@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.editor.world;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -34,11 +34,11 @@ public enum WorldViewModel
     INSTANCE;
 
     /** Camera reference. */
-    private final CameraGame camera;
+    private final Camera camera;
     /** Map reference. */
     private MapTile<?> map;
     /** Factory reference. */
-    private FactoryObjectGame<?> factory;
+    private Factory<?> factory;
     /** Selected object media. */
     private Media selectedObject;
     /** Selected palette. */
@@ -49,7 +49,7 @@ public enum WorldViewModel
      */
     private WorldViewModel()
     {
-        camera = new CameraGame();
+        camera = new Camera();
     }
 
     /**
@@ -67,7 +67,7 @@ public enum WorldViewModel
      * 
      * @param factory The factory reference.
      */
-    public void setFactory(FactoryObjectGame<?> factory)
+    public void setFactory(Factory<?> factory)
     {
         this.factory = factory;
     }
@@ -97,7 +97,7 @@ public enum WorldViewModel
      * 
      * @return The camera reference.
      */
-    public CameraGame getCamera()
+    public Camera getCamera()
     {
         return camera;
     }
@@ -117,7 +117,7 @@ public enum WorldViewModel
      * 
      * @return The factory object reference.
      */
-    public FactoryObjectGame<?> getFactory()
+    public Factory<?> getFactory()
     {
         return factory;
     }

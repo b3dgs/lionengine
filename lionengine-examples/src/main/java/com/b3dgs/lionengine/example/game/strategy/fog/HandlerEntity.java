@@ -17,8 +17,9 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.HandlerGame;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
 /**
@@ -28,7 +29,7 @@ import com.b3dgs.lionengine.game.strategy.CameraStrategy;
  * @see com.b3dgs.lionengine.example.game.factory
  */
 final class HandlerEntity
-        extends HandlerGame<Entity>
+        extends Handler<Entity>
 {
     /** Camera reference. */
     private final CameraStrategy camera;
@@ -55,7 +56,7 @@ final class HandlerEntity
     }
 
     @Override
-    protected void render(Graphic g, Entity entity)
+    protected void render(Graphic g, Viewer viewer, Entity entity)
     {
         entity.render(g, camera);
     }

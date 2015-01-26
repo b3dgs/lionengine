@@ -25,10 +25,10 @@ import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.Skill;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledModel;
 import com.b3dgs.lionengine.game.strategy.ability.skilled.SkilledServices;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
@@ -51,7 +51,7 @@ public abstract class Entity
     protected static Media getConfig(Class<? extends Entity> type)
     {
         return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Entity life. */
@@ -70,7 +70,7 @@ public abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    protected Entity(SetupSurfaceGame setup)
+    protected Entity(SetupSurface setup)
     {
         super(setup);
         skilled = new SkilledModel<>();
@@ -121,10 +121,10 @@ public abstract class Entity
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
-        map = context.getService(Map.class);
-        factorySkill = context.getService(FactorySkill.class);
+        map = context.get(Map.class);
+        factorySkill = context.get(FactorySkill.class);
     }
 
     /*

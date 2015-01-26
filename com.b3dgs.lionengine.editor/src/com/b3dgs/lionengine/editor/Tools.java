@@ -41,7 +41,7 @@ import com.b3dgs.lionengine.core.swt.UtilityMedia;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.Property;
 import com.b3dgs.lionengine.editor.project.tester.FolderTypeTester;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
@@ -158,13 +158,13 @@ public final class Tools
      * @param my The mouse Y.
      * @return The tile location in absolute location.
      */
-    public static Point getMouseTile(MapTile<?> map, CameraGame camera, int mx, int my)
+    public static Point getMouseTile(MapTile<?> map, Camera camera, int mx, int my)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
         final int h = UtilMath.getRounded(camera.getViewHeight(), th) - map.getTileHeight();
-        final int x = camera.getLocationIntX() + UtilMath.getRounded(mx, tw);
-        final int y = camera.getLocationIntY() - UtilMath.getRounded(my, th) + h;
+        final int x = (int) camera.getX() + UtilMath.getRounded(mx, tw);
+        final int y = (int) camera.getY() - UtilMath.getRounded(my, th) + h;
         return Geom.createPoint(x, y);
     }
 

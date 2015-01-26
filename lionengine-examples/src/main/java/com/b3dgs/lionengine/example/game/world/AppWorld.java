@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppWorld
+public class AppWorld
 {
     /**
      * The main method.

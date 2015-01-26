@@ -31,14 +31,13 @@ import com.b3dgs.lionengine.game.Cursor;
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Cursor. */
     private final Cursor cursor;
-
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Mouse reference. */
@@ -49,29 +48,26 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, new Resolution(320, 240, 60));
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        mouse.setConfig(getConfig());
         cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor", "cursor1.png"),
                 Core.MEDIA.create("cursor", "cursor2.png"));
+    }
+
+    @Override
+    public void load()
+    {
+        cursor.load(false);
+        mouse.setConfig(getConfig());
+        cursor.setSensibility(0.5, 0.5);
         setSystemCursorVisible(false);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
-    {
-        cursor.setSensibility(0.5, 0.5);
-    }
-
-    @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -99,7 +95,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
         cursor.render(g);

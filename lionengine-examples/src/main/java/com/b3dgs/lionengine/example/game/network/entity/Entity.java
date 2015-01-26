@@ -23,15 +23,15 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
@@ -56,7 +56,7 @@ abstract class Entity
     protected static Media getConfig(Class<? extends Entity> type)
     {
         return Core.MEDIA.create(FactoryEntity.ENTITY_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Movement force force. */
@@ -109,7 +109,7 @@ abstract class Entity
      * 
      * @param setup The setup reference.
      */
-    Entity(SetupSurfaceGame setup)
+    Entity(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -378,11 +378,11 @@ abstract class Entity
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
-        map = context.getService(Map.class);
-        desiredFps = context.getService(Integer.class).intValue();
-        server = context.getService(Boolean.class).booleanValue();
+        map = context.get(Map.class);
+        desiredFps = context.get(Integer.class).intValue();
+        server = context.get(Boolean.class).booleanValue();
     }
 
     @Override
@@ -395,7 +395,7 @@ abstract class Entity
     @Override
     protected void handleMovements(double extrp)
     {
-        updateGravity(extrp, desiredFps, movementForce, jumpForce);
+        updateGravity(extrp, movementForce, jumpForce);
         updateMirror();
     }
 

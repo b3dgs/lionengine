@@ -18,129 +18,103 @@
 package com.b3dgs.lionengine.example.pong;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.EntityGame;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
+import com.b3dgs.lionengine.game.trait.Transformable;
+import com.b3dgs.lionengine.game.trait.TransformableModel;
 
 /**
- * Ball implementation using EntityGame base.
+ * Ball implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Ball
-        extends EntityGame
-        implements Direction
+class Ball
+        extends ObjectGame
+        implements Updatable, Renderable, ComponentCollisionListener
 {
-    /** Ball size. */
-    private static final int SIZE = 6;
-    /** Initial speed. */
-    private final double speedInit;
-    /** Ball force. */
+    /** Racket media. */
+    public static final Media MEDIA = Core.MEDIA.create("Ball.xml");
+    /** Ball color. */
+    private static final ColorRgba COLOR = ColorRgba.GRAY;
+
+    /** Transformable model. */
+    private final Transformable transformable;
+    /** Collidable model. */
+    private final Collidable collidable;
+    /** Current force. */
     private final Force force;
     /** Speed. */
-    private double speed;
+    private final double speed;
 
     /**
-     * Constructor.
-     * 
-     * @param screenWidth The screen width.
-     * @param screenHeight The screen height.
+     * {@link ObjectGame#ObjectGame(Setup, Services)}
      */
-    Ball(int screenWidth, int screenHeight)
+    public Ball(Setup setup, Services context) throws LionEngineException
     {
-        super(new SetupGame(Core.MEDIA.create("sample.xml")));
-        force = new Force();
-        speedInit = 2.5;
-        setSize(Ball.SIZE, Ball.SIZE);
-        setCollision(new Collision(0, -getHeight() / 2, getWidth() / 2, getHeight() / 2, false));
-    }
+        super(setup, context);
+        transformable = new TransformableModel(this, setup.getConfigurer());
+        addTrait(transformable);
 
-    /**
-     * Set the ball speed.
-     * 
-     * @param speed The ball speed.
-     */
-    public void setSpeed(double speed)
-    {
-        this.speed = speed;
-    }
+        collidable = new CollidableModel(this, context);
+        addTrait(collidable);
 
-    /**
-     * Get the ball speed.
-     * 
-     * @return The ball speed.
-     */
-    public double getSpeed()
-    {
-        return speed;
-    }
+        speed = 2.0;
+        force = new Force(-speed, 0.0);
+        force.setDestination(-speed, 0.0);
+        force.setVelocity(speed);
 
-    /**
-     * Get the initial speed.
-     * 
-     * @return The initial speed.
-     */
-    public double getSpeedInit()
-    {
-        return speedInit;
-    }
-
-    /**
-     * Set forces.
-     * 
-     * @param fh The horizontal force.
-     * @param fv The vertical force.
-     */
-    public void setForces(double fh, double fv)
-    {
-        force.setDirection(fh, fv);
-    }
-
-    /*
-     * EntityGame
-     */
-
-    @Override
-    public void prepare(ContextGame context)
-    {
-        // Nothing to do
+        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
+        collidable.setCollisionVisibility(true);
+        transformable.teleport(320 / 2 - transformable.getWidth() / 2, 230 / 2 - transformable.getHeight() / 2);
     }
 
     @Override
     public void update(double extrp)
     {
-        moveLocation(extrp, force);
-        updateCollision();
+        force.update(extrp);
+        transformable.moveLocation(extrp, force);
+        collidable.update(extrp);
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g)
     {
-        final int x = camera.getViewpointX(getLocationIntX() - Ball.SIZE / 2);
-        final int y = camera.getViewpointY(getLocationIntY() + getHeight() - Ball.SIZE / 2);
-        g.setColor(ColorRgba.YELLOW);
-        g.drawOval(x, y, Ball.SIZE, Ball.SIZE, true);
-    }
-
-    /*
-     * Direction
-     */
-
-    @Override
-    public double getDirectionHorizontal()
-    {
-        return force.getDirectionHorizontal();
+        g.setColor(COLOR);
+        g.drawOval((int) transformable.getX(), (int) transformable.getY(), transformable.getWidth(),
+                transformable.getHeight(), true);
     }
 
     @Override
-    public double getDirectionVertical()
+    public void notifyCollided(Collidable collidable)
     {
-        return force.getDirectionVertical();
+        final Transformable object = collidable.getOwner().getTrait(Transformable.class);
+        int side = 0;
+        if (transformable.getX() < transformable.getOldX())
+        {
+            transformable.teleportX(object.getX() + object.getWidth() + 1);
+            side = 1;
+        }
+        if (transformable.getX() > transformable.getOldX())
+        {
+            transformable.teleportX(object.getX() - object.getWidth() * 2 - 1);
+            side = -1;
+        }
+
+        final double diff = (object.getY() - transformable.getY()) / object.getHeight() / 2;
+        final int angle = (int) Math.round(diff * 180);
+        force.setDestination(speed * UtilMath.cos(angle) * side, speed * UtilMath.sin(angle));
     }
 }

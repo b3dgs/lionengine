@@ -101,7 +101,7 @@ public class UtilMapTile
 
         for (final CollisionFunction function : functions)
         {
-            UtilMapTile.createFunctionDraw(g, function, map.getTileHeight());
+            UtilMapTile.createFunctionDraw(g, map, function, map.getTileHeight());
         }
         g.dispose();
         return buffer;
@@ -302,20 +302,21 @@ public class UtilMapTile
      * Create the function draw to buffer.
      * 
      * @param g The graphic buffer.
+     * @param map The map reference.
      * @param function The function to draw.
      * @param tileHeight The tile height value.
      */
-    private static void createFunctionDraw(Graphic g, CollisionFunction function, int tileHeight)
+    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionFunction function, int tileHeight)
     {
         final int min = function.getRange().getMin();
         final int max = function.getRange().getMax();
         switch (function.getAxis())
         {
             case X:
-                UtilMapTile.createFunctionDrawX(g, function, min, max, tileHeight);
+                UtilMapTile.createFunctionDrawX(g, map, function, min, max, tileHeight);
                 break;
             case Y:
-                UtilMapTile.createFunctionDrawY(g, function, min, max, tileHeight);
+                UtilMapTile.createFunctionDrawY(g, map, function, min, max, tileHeight);
                 break;
             default:
                 throw new RuntimeException("Unknown type: " + function.getAxis());
@@ -326,12 +327,14 @@ public class UtilMapTile
      * Create the function draw to buffer for the horizontal axis.
      * 
      * @param g The graphic buffer.
+     * @param map The map reference.
      * @param function The function to draw.
      * @param min The minimum value.
      * @param max The maximum value.
      * @param tileHeight The tile height value.
      */
-    private static void createFunctionDrawX(Graphic g, CollisionFunction function, int min, int max, int tileHeight)
+    private static void createFunctionDrawX(Graphic g, MapTile<?> map, CollisionFunction function, int min, int max,
+            int tileHeight)
     {
         switch (function.getInput())
         {
@@ -341,12 +344,22 @@ public class UtilMapTile
                     final int fx = (int) function.computeCollision(x);
                     g.drawRect(fx, tileHeight - x, 0, 0, false);
                 }
+                for (int y = 0; y <= map.getTileHeight(); y++)
+                {
+                    final int fy = (int) function.computeCollision(y);
+                    g.drawRect(fy, y, 0, 0, false);
+                }
                 break;
             case Y:
                 for (int y = min; y <= max; y++)
                 {
                     final int fy = (int) function.computeCollision(y);
                     g.drawRect(fy, y, 0, 0, false);
+                }
+                for (int x = 0; x <= map.getTileWidth(); x++)
+                {
+                    final int fx = (int) function.computeCollision(x);
+                    g.drawRect(fx, tileHeight - x, 0, 0, false);
                 }
                 break;
             default:
@@ -358,12 +371,14 @@ public class UtilMapTile
      * Create the function draw to buffer for the vertical axis.
      * 
      * @param g The graphic buffer.
+     * @param map The map reference.
      * @param function The function to draw.
      * @param min The minimum value.
      * @param max The maximum value.
      * @param tileHeight The tile height value.
      */
-    private static void createFunctionDrawY(Graphic g, CollisionFunction function, int min, int max, int tileHeight)
+    private static void createFunctionDrawY(Graphic g, MapTile<?> map, CollisionFunction function, int min, int max,
+            int tileHeight)
     {
         switch (function.getInput())
         {
@@ -373,12 +388,22 @@ public class UtilMapTile
                     final int fx = (int) function.computeCollision(x);
                     g.drawRect(x, tileHeight - 1 - fx, 0, 0, false);
                 }
+                for (int y = 0; y <= map.getTileHeight(); y++)
+                {
+                    final int fy = (int) function.computeCollision(y);
+                    g.drawRect(fy, y, 0, 0, false);
+                }
                 break;
             case Y:
                 for (int y = min; y <= max; y++)
                 {
                     final int fy = (int) function.computeCollision(y);
                     g.drawRect(fy, y, 0, 0, false);
+                }
+                for (int x = 0; x <= map.getTileWidth(); x++)
+                {
+                    final int fx = (int) function.computeCollision(x);
+                    g.drawRect(x, tileHeight - 1 - fx, 0, 0, false);
                 }
                 break;
             default:

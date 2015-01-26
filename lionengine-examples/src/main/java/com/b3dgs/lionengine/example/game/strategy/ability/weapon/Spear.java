@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.LauncherProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Setup;
 
 /**
  * Spear weapon implementation.
@@ -44,7 +44,7 @@ public final class Spear
      * 
      * @param setup The setup reference.
      */
-    public Spear(SetupGame setup)
+    public Spear(Setup setup)
     {
         super(setup);
     }
@@ -54,10 +54,10 @@ public final class Spear
      */
 
     @Override
-    public void prepare(ContextGame context)
+    public void prepare(Services context)
     {
         super.prepare(context);
-        launcher = context.getService(FactoryLauncher.class).create(SpearLauncher.MEDIA);
+        launcher = context.get(FactoryLauncher.class).create(SpearLauncher.MEDIA);
         launcher.setOwner(this);
         launcher.setCanHitTargetOnly(true);
     }

@@ -28,7 +28,7 @@ import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
@@ -87,9 +87,9 @@ final class Scene
 
         controlPanel.addListener(handlerEntity);
 
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        factoryEntity.setContext(contextEntity);
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        factoryEntity.setServices(contextEntity);
 
         setSystemCursorVisible(false);
     }
@@ -99,7 +99,7 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
@@ -133,7 +133,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
@@ -148,7 +148,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
         handlerEntity.render(g);

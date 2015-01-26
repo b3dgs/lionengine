@@ -42,11 +42,11 @@ public final class LionEngineException
     /** The list of ignored sub packages and main class. */
     private static final String[] IGNORED =
     {
-            "audio", "anim", "core", "drawable", "geom", "stream", "game", "network", "utility", "editor", "xsd",
-            "Align", "Architecture", "Check", "Checksum", "ColorGradient", "ColorRgba", "Config", "Filter", "Hq2x",
-            "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem", "Ratio", "Resolution", "Strings",
-            "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile", "UtilMath", "UtilProjectStats",
-            "UtilRandom", "Version"
+            "audio", "anim", "core", "drawable", "geom", "stream", "game", "trait", "component", "handler", "factory",
+            "network", "utility", "editor", "xsd", "Align", "Architecture", "Check", "Checksum", "ColorGradient",
+            "ColorRgba", "Config", "Filter", "Hq2x", "Hq3x", "ImageInfo", "LionEngineException", "OperatingSystem",
+            "Ratio", "Resolution", "Strings", "TextStyle", "Timing", "Transparency", "UtilConversion", "UtilFile",
+            "UtilMath", "UtilProjectStats", "UtilRandom", "Version"
     };
     /** Uid. */
     private static final long serialVersionUID = 5387489108947599464L;

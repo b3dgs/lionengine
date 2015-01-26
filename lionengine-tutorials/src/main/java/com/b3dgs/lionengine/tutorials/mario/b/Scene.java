@@ -26,8 +26,8 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.stream.Stream;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -47,7 +47,7 @@ final class Scene
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera;
     /** Map reference. */
     private final Map map;
 
@@ -56,11 +56,11 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        camera = new CameraPlatform(getWidth(), getHeight());
+        camera = new Camera();
         map = new Map();
     }
 
@@ -82,12 +82,8 @@ final class Scene
         }
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
         importAndSave();
         try (FileReading reading = Stream.createFileReading(Core.MEDIA.create("level.lvl")))
@@ -98,11 +94,12 @@ final class Scene
         {
             Verbose.exception(Scene.class, "constructor", exception, "Error on loading map !");
         }
+        camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
@@ -111,7 +108,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
     }

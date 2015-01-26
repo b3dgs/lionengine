@@ -25,9 +25,10 @@ import java.util.Map;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Point;
@@ -43,7 +44,7 @@ public class ObjectControl
     /** World model. */
     private final WorldViewModel model = WorldViewModel.INSTANCE;
     /** Handler object. */
-    private final HandlerObject handlerObject;
+    private final Handler<ObjectGame> handlerObject;
     /** Mouse over object flag. */
     private final Map<ObjectGame, Boolean> objectsOver;
     /** Mouse selection object flag. */
@@ -60,7 +61,7 @@ public class ObjectControl
      * 
      * @param handlerObject The handler object reference.
      */
-    public ObjectControl(HandlerObject handlerObject)
+    public ObjectControl(Handler<ObjectGame> handlerObject)
     {
         this.handlerObject = handlerObject;
         objectsOver = new HashMap<>();
@@ -101,19 +102,19 @@ public class ObjectControl
             movingOffsetY = my - UtilMath.getRounded(my, th) - th;
             dragging = true;
         }
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final int th = map.getTileHeight();
         final int areaY = UtilMath.getRounded(camera.getViewHeight(), th);
-        final int ox = oldMx + camera.getLocationIntX() + getMovingOffsetX();
-        final int oy = areaY - oldMy + camera.getLocationIntY() - 1 + getMovingOffsetY();
-        final int x = mx + camera.getLocationIntX() + getMovingOffsetX();
-        final int y = areaY - my + camera.getLocationIntY() - 1 + getMovingOffsetY();
+        final double ox = oldMx + camera.getX() + getMovingOffsetX();
+        final double oy = areaY - oldMy + camera.getY() - 1 + getMovingOffsetY();
+        final double x = mx + camera.getX() + getMovingOffsetX();
+        final double y = areaY - my + camera.getY() - 1 + getMovingOffsetY();
 
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             if (isSelected(object))
             {
-                object.teleport(object.getLocationIntX() + x - ox, object.getLocationIntY() + y - oy);
+                object.teleport(object.getX() + x - ox, object.getY() + y - oy);
             }
         }
     }
@@ -146,9 +147,9 @@ public class ObjectControl
         if (media != null)
         {
             final MapTile<?> map = model.getMap();
-            final CameraGame camera = model.getCamera();
+            final Camera camera = model.getCamera();
             final Point tile = Tools.getMouseTile(map, camera, mx, my);
-            final FactoryObjectGame<?> factoryEntity = model.getFactory();
+            final Factory<?> factoryEntity = model.getFactory();
             final ObjectGame object = factoryEntity.create(media);
 
             setObjectLocation(object, tile.getX(), tile.getY(), 1);
@@ -179,9 +180,9 @@ public class ObjectControl
     public void selectEntities(Rectangle selectionArea)
     {
         final MapTile<?> map = model.getMap();
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
 
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             final int th = map.getTileHeight();
             final int height = camera.getViewHeight();
@@ -203,7 +204,7 @@ public class ObjectControl
      */
     public void unSelectEntities()
     {
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             setObjectSelection(object, false);
         }
@@ -258,10 +259,10 @@ public class ObjectControl
     public ObjectGame getObject(int mx, int my)
     {
         final MapTile<?> map = model.getMap();
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final int x = UtilMath.getRounded(mx, map.getTileWidth());
         final int y = UtilMath.getRounded(camera.getViewHeight() - my - 1, map.getTileHeight());
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             if (hitObject(object, x, y, x + map.getTileWidth(), y + map.getTileHeight()))
             {
@@ -280,7 +281,7 @@ public class ObjectControl
     public Collection<ObjectGame> getSelectedEnties()
     {
         final Collection<ObjectGame> list = new ArrayList<>(0);
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             if (isSelected(object))
             {
@@ -367,7 +368,7 @@ public class ObjectControl
      */
     public boolean hasSelection()
     {
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
             if (isSelected(object))
             {
@@ -390,12 +391,12 @@ public class ObjectControl
     private boolean hitObject(ObjectGame object, int x1, int y1, int x2, int y2)
     {
         final MapTile<?> map = model.getMap();
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         if (object != null)
         {
-            final int x = UtilMath.getRounded(object.getLocationIntX() - object.getWidth() / 2, map.getTileWidth())
-                    - camera.getLocationIntX();
-            final int y = UtilMath.getRounded(object.getLocationIntY(), map.getTileHeight()) - camera.getLocationIntY();
+            final int x = UtilMath.getRounded((int) object.getX() - object.getWidth() / 2, map.getTileWidth())
+                    - (int) camera.getX();
+            final int y = UtilMath.getRounded((int) object.getY(), map.getTileHeight()) - (int) camera.getY();
             final Rectangle r1 = Geom.createRectangle(x1, y1, x2 - x1, y2 - y1);
             final Rectangle r2 = Geom.createRectangle(x, y, object.getWidth(), object.getHeight());
             if (r1.intersects(r2))

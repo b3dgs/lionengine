@@ -38,7 +38,7 @@ import com.b3dgs.lionengine.game.utility.LevelRipConverter;
  * Game loop designed to handle our little world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
 final class Scene
         extends Sequence
@@ -106,7 +106,7 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
@@ -124,7 +124,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         mouse.update();
         if (keyboard.isPressed(Keyboard.ESCAPE))
@@ -137,7 +137,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         map.render(g, camera);
         renderTileInfo(g, cursor.getLocationInTileX(), cursor.getLocationInTileY());

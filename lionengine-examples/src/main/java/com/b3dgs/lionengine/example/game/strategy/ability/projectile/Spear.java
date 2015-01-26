@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Spear projectile implementation.
@@ -39,7 +39,7 @@ public final class Spear
      * 
      * @param setup The entity setup.
      */
-    public Spear(SetupSurfaceGame setup)
+    public Spear(SetupSurface setup)
     {
         super(setup);
         setCollision(new Collision(0, 1, 0, 1, false));

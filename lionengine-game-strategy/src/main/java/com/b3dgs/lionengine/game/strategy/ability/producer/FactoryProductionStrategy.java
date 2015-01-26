@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class FactoryProductionStrategy<E extends EntityStrategy, C extends ProductionCostStrategy, P extends Producible<E, C>>
-        extends FactoryGame<SetupGame>
+        extends Factory<Setup>
 {
     /**
      * Constructor base.

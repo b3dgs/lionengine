@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.skill;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.factory.Factory;
 
 /**
  * Skill factory implementation.
@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.game.FactoryObjectGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public final class FactorySkill
-        extends FactoryObjectGame<SetupSkill>
+        extends Factory<SetupSkill>
 {
     /** Directory name from our resources directory containing our skills. */
     public static final String SKILL_DIR = "skill";

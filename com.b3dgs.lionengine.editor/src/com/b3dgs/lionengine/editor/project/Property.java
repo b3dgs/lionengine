@@ -24,7 +24,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -47,7 +47,7 @@ public enum Property
     /** Map implementation property. */
     MAP_IMPL(MapTile.class),
     /** Factory implementation property. */
-    FACTORY_IMPL(FactoryObjectGame.class),
+    FACTORY_IMPL(Factory.class),
     /** Class file. */
     CLASS(Property.EXTENSION_CLASS);
 

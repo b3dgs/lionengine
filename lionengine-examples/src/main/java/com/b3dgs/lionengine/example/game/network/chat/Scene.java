@@ -69,13 +69,13 @@ final class Scene
      */
 
     @Override
-    protected void load()
+    public void load()
     {
         // Nothing to do
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         world.receiveMessages();
         world.update(extrp);
@@ -83,7 +83,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         world.render(g);
     }

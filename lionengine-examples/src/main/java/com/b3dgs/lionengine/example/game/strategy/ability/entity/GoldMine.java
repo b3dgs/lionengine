@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.ResourceType;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.extractor.Extractible;
 
 /**
@@ -45,7 +45,7 @@ public final class GoldMine
      * 
      * @param setup The setup reference.
      */
-    public GoldMine(SetupSurfaceGame setup)
+    public GoldMine(SetupSurface setup)
     {
         super(setup);
         typeResource = ResourceType.GOLD;

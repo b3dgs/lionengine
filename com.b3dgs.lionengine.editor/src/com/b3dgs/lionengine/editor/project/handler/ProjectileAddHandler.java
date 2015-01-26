@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.InputValidator;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.factory.Factory;
 
 /**
  * Add an effect in the selected folder.
@@ -63,7 +63,7 @@ public class ProjectileAddHandler
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File entity = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+            final File entity = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
             final File template = Tools.getTemplate(Tools.TEMPLATE_OBJECT);
             try
             {

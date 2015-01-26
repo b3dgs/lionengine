@@ -41,19 +41,19 @@ final class Scene
     }
 
     @Override
-    protected void load()
+    public void load()
     {
         // Load
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         end();
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         // Render
     }

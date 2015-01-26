@@ -23,9 +23,11 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -34,7 +36,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
     /** Background color. */
@@ -43,15 +45,15 @@ final class World
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera;
     /** Map reference. */
     private final Map map;
     /** Factory reference. */
-    private final FactoryEntity factory;
-    /** Mario reference. */
-    private final Mario mario;
+    private final Factory factory;
     /** Handler reference. */
-    private final HandlerEntity handler;
+    private final Handler handler;
+    /** Mario reference. */
+    private Mario mario;
 
     /**
      * Constructor.
@@ -59,27 +61,16 @@ final class World
      * @param config The config reference.
      * @param keyboard The keyboard reference.
      */
-    World(Config config, Keyboard keyboard)
+    public World(Config config, Keyboard keyboard)
     {
         super(config);
 
         this.keyboard = keyboard;
-        camera = new CameraPlatform(width, height);
+        camera = new Camera();
         map = new Map();
-        factory = new FactoryEntity();
-
-        final ContextGame contextEntity = new ContextGame();
-        contextEntity.addService(map);
-        contextEntity.addService(Integer.valueOf(source.getRate()));
-        factory.setContext(contextEntity);
-
-        mario = factory.create(Mario.MEDIA);
-        handler = new HandlerEntity(camera, mario);
+        factory = new Factory();
+        handler = new Handler();
     }
-
-    /*
-     * WorldGame
-     */
 
     @Override
     public void update(double extrp)
@@ -113,8 +104,16 @@ final class World
     {
         map.load(file);
         camera.setLimits(map);
+        camera.setView(0, 0, width, height);
         camera.setIntervals(16, 0);
         map.adjustCollisions();
+
+        final Services contextEntity = new Services();
+        contextEntity.add(map);
+        contextEntity.add(Integer.valueOf(source.getRate()));
+        factory.setServices(contextEntity);
+
+        mario = factory.create(Mario.MEDIA);
         mario.respawn();
 
         // Create two goombas

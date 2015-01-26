@@ -112,7 +112,7 @@ final class WorldServer
     public void notifyClientConnected(Byte id, String name)
     {
         super.notifyClientConnected(id, name);
-        for (final Entity entity : handler.list())
+        for (final Entity entity : handler.getObjects())
         {
             final MessageFactory messageFactory = new MessageFactory(entity.getId().shortValue(), id.byteValue());
             messageFactory.addAction(EntityType.fromClass(entity.getClass()), true);

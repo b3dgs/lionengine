@@ -21,12 +21,12 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverModel;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverServices;
 import com.b3dgs.lionengine.game.strategy.ability.mover.MoverUsedServices;
@@ -52,7 +52,7 @@ public abstract class Unit
      * 
      * @param setup The setup reference.
      */
-    protected Unit(SetupSurfaceGame setup)
+    protected Unit(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -67,10 +67,10 @@ public abstract class Unit
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
         super.prepareEntity(context);
-        mover = new MoverModel(this, context.getService(Map.class));
+        mover = new MoverModel(this, context.get(Map.class));
     }
 
     @Override

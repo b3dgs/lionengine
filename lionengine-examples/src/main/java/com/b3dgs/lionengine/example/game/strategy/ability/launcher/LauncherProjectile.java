@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Projectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**
@@ -44,7 +44,7 @@ public class LauncherProjectile
     protected static Media getConfig(Class<? extends LauncherProjectile> type)
     {
         return Core.MEDIA.create(FactoryLauncher.LAUNCHER_DIR, type.getSimpleName() + "."
-                + FactoryObjectGame.FILE_DATA_EXTENSION);
+                + Factory.FILE_DATA_EXTENSION);
     }
 
     /** Type projectile. */
@@ -56,7 +56,7 @@ public class LauncherProjectile
      * @param setup The setup reference.
      * @param projectileType The projectile type used.
      */
-    public LauncherProjectile(SetupGame setup, Media projectileType)
+    public LauncherProjectile(Setup setup, Media projectileType)
     {
         super(setup);
         type = projectileType;
@@ -67,7 +67,7 @@ public class LauncherProjectile
      */
 
     @Override
-    protected void prepareProjectile(ContextGame context)
+    protected void prepareProjectile(Services context)
     {
         // Nothing to do
     }

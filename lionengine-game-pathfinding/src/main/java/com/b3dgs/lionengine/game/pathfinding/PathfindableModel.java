@@ -23,7 +23,7 @@ import java.util.HashSet;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
 import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
-import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
  * Pathfindable implementation.
@@ -38,10 +38,8 @@ public class PathfindableModel
 
     /** Map reference. */
     protected final MapTilePath<? extends TilePath> map;
-    /** User reference. */
-    private final Localizable user;
     /** Localizable model. */
-    private final Localizable localizable;
+    private final Transformable transformable;
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
     /** List of shared path id. */
@@ -85,20 +83,19 @@ public class PathfindableModel
      * Constructor.
      * 
      * @param map The map reference.
-     * @param user The pathfindable user.
+     * @param transformable The pathfindable user.
      * @param id The id used.
      */
-    public PathfindableModel(MapTilePath<? extends TilePath> map, Localizable user, Integer id)
+    public PathfindableModel(MapTilePath<? extends TilePath> map, Transformable transformable, Integer id)
     {
-        this.id = id;
         this.map = map;
-        this.user = user;
+        this.transformable = transformable;
+        this.id = id;
         final int range = (int) Math.sqrt(map.getWidthInTile() * map.getWidthInTile() + map.getHeightInTile()
                 * map.getHeightInTile());
         pathfinder = new PathFinderImpl(map, range, true);
         ignoredIds = new HashSet<>(0);
         sharedPathIds = new HashSet<>(0);
-        localizable = user;
         pathStopped = false;
         pathStoppedRequested = false;
         pathFoundChanged = false;
@@ -163,14 +160,14 @@ public class PathfindableModel
      */
     private void moveTo(double extrp, int dx, int dy)
     {
-        final Force force = getMovementForce(localizable.getLocationX(), localizable.getLocationY(), dx, dy);
+        final Force force = getMovementForce(transformable.getX(), transformable.getY(), dx, dy);
         final double sx = force.getDirectionHorizontal();
         final double sy = force.getDirectionVertical();
 
         // Move entity
         moveX = sx;
         moveY = sy;
-        localizable.moveLocation(extrp, force);
+        transformable.moveLocation(extrp, force);
         moving = true;
 
         // Entity arrived, next step
@@ -213,10 +210,10 @@ public class PathfindableModel
      */
     private boolean checkArrivedX(double extrp, double sx, double dx)
     {
-        final double x = localizable.getLocationX();
+        final double x = transformable.getX();
         if (sx < 0 && x <= dx || sx >= 0 && x >= dx)
         {
-            localizable.moveLocation(extrp, dx - x, 0);
+            transformable.moveLocation(extrp, dx - x, 0);
             return true;
         }
         return false;
@@ -232,10 +229,10 @@ public class PathfindableModel
      */
     private boolean checkArrivedY(double extrp, double sy, double dy)
     {
-        final double y = localizable.getLocationY();
+        final double y = transformable.getY();
         if (sy < 0 && y <= dy || sy >= 0 && y >= dy)
         {
-            localizable.moveLocation(extrp, 0, dy - y);
+            transformable.moveLocation(extrp, 0, dy - y);
             return true;
         }
         return false;
@@ -367,8 +364,8 @@ public class PathfindableModel
      */
     private void assignRef(int dtx, int dty)
     {
-        final int tw = user.getWidth() / map.getTileWidth();
-        final int th = user.getHeight() / map.getTileHeight();
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
         if (map.isAreaAvailable(dtx, dty, tw, th, id.intValue()))
         {
             for (int tx = dtx; tx < dtx + tw; tx++)
@@ -389,8 +386,8 @@ public class PathfindableModel
      */
     private void removeRef(int dtx, int dty)
     {
-        final int tw = user.getWidth() / map.getTileWidth();
-        final int th = user.getHeight() / map.getTileHeight();
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
             for (int ty = dty; ty < dty + th; ty++)
@@ -412,8 +409,8 @@ public class PathfindableModel
      */
     private boolean checkRef(int dtx, int dty)
     {
-        final int tw = user.getWidth() / map.getTileWidth();
-        final int th = user.getHeight() / map.getTileHeight();
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
         final boolean areaFree = map.isAreaAvailable(dtx, dty, tw, th, id.intValue());
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
@@ -436,8 +433,8 @@ public class PathfindableModel
     @Override
     public void setDestination(double extrp, double dx, double dy)
     {
-        final Force force = getMovementForce(localizable.getLocationX(), localizable.getLocationY(), dx, dy);
-        localizable.moveLocation(extrp, force);
+        final Force force = getMovementForce(transformable.getX(), transformable.getY(), dx, dy);
+        transformable.moveLocation(extrp, force);
     }
 
     @Override
@@ -481,7 +478,7 @@ public class PathfindableModel
         if (checkRef(dtx, dty))
         {
             removeRef(getLocationInTileX(), getLocationInTileY());
-            localizable.setLocation(dtx * map.getTileWidth(), dty * map.getTileHeight());
+            transformable.setLocation(dtx * map.getTileWidth(), dty * map.getTileHeight());
             assignRef(getLocationInTileX(), getLocationInTileY());
         }
     }
@@ -611,12 +608,12 @@ public class PathfindableModel
     @Override
     public int getLocationInTileX()
     {
-        return localizable.getLocationIntX() / map.getTileWidth();
+        return (int) transformable.getX() / map.getTileWidth();
     }
 
     @Override
     public int getLocationInTileY()
     {
-        return localizable.getLocationIntY() / map.getTileHeight();
+        return (int) transformable.getY() / map.getTileHeight();
     }
 }

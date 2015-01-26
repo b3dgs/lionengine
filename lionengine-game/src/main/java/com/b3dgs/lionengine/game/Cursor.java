@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Image;
 
@@ -55,6 +57,7 @@ import com.b3dgs.lionengine.drawable.Image;
  * @see Image
  */
 public class Cursor
+        implements Updatable, Renderable
 {
     /** Pointer reference. */
     private final InputDevicePointer pointer;
@@ -149,36 +152,16 @@ public class Cursor
     }
 
     /**
-     * Update cursor position depending of pointer movement.
+     * Load the cursor images.
      * 
-     * @param extrp The extrapolation value.
+     * @param alpha <code>true</code> to enable alpha, <code>false</code> else.
      */
-    public void update(double extrp)
+    public void load(boolean alpha)
     {
-        if (sync)
+        for (final Image current : surface)
         {
-            x = pointer.getX();
-            y = pointer.getY();
+            current.load(alpha);
         }
-        else
-        {
-            x += pointer.getMoveX() * sensibilityHorizontal * extrp;
-            y += pointer.getMoveY() * sensibilityVertical * extrp;
-        }
-
-        x = UtilMath.fixBetween(x, minX, maxX);
-        y = UtilMath.fixBetween(y, minY, maxY);
-        click = pointer.getClick();
-    }
-
-    /**
-     * Render cursor on screen at its current location.
-     * 
-     * @param g The graphic output.
-     */
-    public void render(Graphic g)
-    {
-        surface[surfaceId].render(g, (int) x + offsetX, (int) y + offsetY);
     }
 
     /**
@@ -321,5 +304,39 @@ public class Cursor
     public boolean isSynchronized()
     {
         return sync;
+    }
+
+    /*
+     * Updatable
+     */
+
+    @Override
+    public void update(double extrp)
+    {
+        if (sync)
+        {
+            x = pointer.getX();
+            y = pointer.getY();
+        }
+        else
+        {
+            x += pointer.getMoveX() * sensibilityHorizontal * extrp;
+            y += pointer.getMoveY() * sensibilityVertical * extrp;
+        }
+
+        x = UtilMath.fixBetween(x, minX, maxX);
+        y = UtilMath.fixBetween(y, minY, maxY);
+        click = pointer.getClick();
+        surface[surfaceId].setLocation(x + offsetX, y + offsetY);
+    }
+
+    /*
+     * Renderable
+     */
+
+    @Override
+    public void render(Graphic g)
+    {
+        surface[surfaceId].render(g);
     }
 }

@@ -23,11 +23,11 @@ import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Bar;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerModel;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerServices;
 import com.b3dgs.lionengine.game.strategy.ability.producer.ProducerUsedServices;
@@ -58,7 +58,7 @@ public abstract class BuildingProducer
      * 
      * @param setup The setup reference.
      */
-    protected BuildingProducer(SetupSurfaceGame setup)
+    protected BuildingProducer(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -72,11 +72,11 @@ public abstract class BuildingProducer
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
         super.prepareEntity(context);
-        factory = context.getService(FactoryEntity.class);
-        producer = new ProducerModel<>(this, context.getService(HandlerEntity.class), context.getService(Integer.class)
+        factory = context.get(FactoryEntity.class);
+        producer = new ProducerModel<>(this, context.get(HandlerEntity.class), context.get(Integer.class)
                 .intValue());
     }
 
@@ -95,7 +95,7 @@ public abstract class BuildingProducer
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g, Camera camera)
     {
         super.render(g, camera);
         if (getProductionProgress() > 0)

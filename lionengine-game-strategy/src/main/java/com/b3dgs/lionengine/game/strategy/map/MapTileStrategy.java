@@ -52,7 +52,6 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
     public MapTileStrategy(int tileWidth, int tileHeight, CollisionTile[] collisions)
     {
         super(tileWidth, tileHeight, collisions);
-        minimap = null;
         ref = null;
     }
 

@@ -84,7 +84,7 @@ final class SpriteTiledImpl
     {
         final int ox = tile % horizontalTiles;
         final int oy = (int) Math.floor(tile / (double) horizontalTiles);
-        render(g, (int) getX(), (int) getY(), getTileWidth(), getTileHeight(), ox, oy);
+        render(g, getRenderX(), getRenderY(), getTileWidth(), getTileHeight(), ox, oy);
     }
 
     @Override
@@ -123,6 +123,12 @@ final class SpriteTiledImpl
         final int w = Math.round(newWidth / (float) getTilesHorizontal()) * getTilesHorizontal();
         final int h = Math.round(newHeight / (float) getTilesVertical()) * getTilesVertical();
         super.stretch(w, h);
+    }
+
+    @Override
+    protected void computeRenderingPoint(int width, int height)
+    {
+        super.computeRenderingPoint(width / horizontalTiles, height / verticalTiles);
     }
 
     /*

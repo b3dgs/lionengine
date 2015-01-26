@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
@@ -32,77 +32,72 @@ import com.b3dgs.lionengine.game.utility.LevelRipConverter;
  * Game loop designed to handle our world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Keyboard reference. */
-    private final Keyboard keyboard;
-    /** Camera. */
-    private final CameraGame camera;
     /** Map. */
     private final Map map;
-    /** Offset x. */
-    private double x;
-    /** Side. */
-    private double side;
+    /** Camera. */
+    private final Camera camera;
+    /** Keyboard reference. */
+    private final Keyboard keyboard;
+    /** Speed. */
+    private double speed;
+    /** Map size. */
+    private int size;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        keyboard = getInputDevice(Keyboard.class);
-        camera = new CameraGame();
         map = new Map();
+        camera = new Camera();
+        keyboard = getInputDevice(Keyboard.class);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
         final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
         rip.start();
         camera.setView(0, 0, getWidth(), getHeight());
-        side = 3;
+        camera.setLimits(map);
+        size = map.getWidthInTile() * map.getTileWidth() - camera.getWidth();
+        speed = 3;
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
-
-        x += side * extrp;
-        final int size = map.getWidthInTile() * map.getTileWidth() - camera.getViewWidth();
-        if (x > size)
+        if (camera.getX() > size)
         {
-            x = size;
-            side *= -1;
+            camera.setLocation(size, 0);
+            speed *= -1;
         }
-        if (x < 0)
+        if (camera.getX() < 0)
         {
-            x = 0;
-            side *= -1;
+            camera.setLocation(0, 0);
+            speed *= -1;
         }
-        camera.setLocationX(x);
+        camera.moveLocation(extrp, speed, 0.0);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
         map.render(g, camera);

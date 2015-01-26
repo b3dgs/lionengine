@@ -32,4 +32,25 @@ public interface CollisionTileCategory
      * @return The collisions list.
      */
     Collection<CollisionTile> getCollisions();
+
+    /**
+     * Get the axis where slide should be performed.
+     * 
+     * @return The slide axis (<code>null</code> if none).
+     */
+    CollisionRefential getSlide();
+
+    /**
+     * Get the horizontal tile collision check offset.
+     * 
+     * @return The horizontal tile collision check offset.
+     */
+    int getOffsetX();
+
+    /**
+     * Get the vertical tile collision check offset.
+     * 
+     * @return The vertical tile collision check offset.
+     */
+    int getOffsetY();
 }

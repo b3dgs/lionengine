@@ -21,6 +21,14 @@ import com.b3dgs.lionengine.game.Range;
 
 /**
  * Describe the collision function used.
+ * <ul>
+ * <li>Range: This is the range used for collision checking, relative to the object position [0 - max]</li>
+ * <li>Name: Collision function name</li>
+ * <li>Axis: It represents the designated referential where the collision applies to.</li>
+ * <li>Input: This is the value type used for collision checking (usually the horizontal axis).</li>
+ * <li>Value: Coefficient used to represent a slope (0 = flat, 1 = equal slope between two axis, and so on).</li>
+ * <li>Offset: Additional offset for collision computation, depending of the input value used.</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see MapTile
@@ -58,7 +66,7 @@ public class CollisionFunction
      * @param current The current value to use as input.
      * @return The collision function result.
      */
-    public double computeCollision(int current)
+    public double computeCollision(double current)
     {
         return current * value + offset;
     }

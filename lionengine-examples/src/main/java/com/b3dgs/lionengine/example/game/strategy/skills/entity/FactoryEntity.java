@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Factory entity implementation.
@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.game.SetupSurfaceGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class FactoryEntity
-        extends FactoryObjectGame<SetupSurfaceGame>
+        extends Factory<SetupSurface>
 {
     /** Entities directory. */
     public static final String ENTITY_DIR = "entity";
@@ -45,8 +45,8 @@ public class FactoryEntity
      */
 
     @Override
-    protected SetupSurfaceGame createSetup(Media config)
+    protected SetupSurface createSetup(Media config)
     {
-        return new SetupSurfaceGame(config);
+        return new SetupSurface(config);
     }
 }

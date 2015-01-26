@@ -17,82 +17,98 @@
  */
 package com.b3dgs.lionengine.example.game.projectile;
 
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
-import com.b3dgs.lionengine.game.configurer.ConfigSize;
-import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.projectile.ProjectileGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
+import com.b3dgs.lionengine.game.trait.Launchable;
+import com.b3dgs.lionengine.game.trait.LaunchableModel;
+import com.b3dgs.lionengine.game.trait.Transformable;
+import com.b3dgs.lionengine.game.trait.TransformableModel;
 
 /**
- * Projectile base implementation.
+ * Projectile implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-abstract class Projectile
-        extends ProjectileGame<Entity, Entity>
+class Projectile
+        extends ObjectGame
+        implements Updatable, Renderable, ComponentCollisionListener
 {
-    /**
-     * Get a projectile configuration file.
-     * 
-     * @param type The config associated class.
-     * @return The media config.
-     */
-    protected static Media getConfig(Class<? extends Projectile> type)
-    {
-        return Core.MEDIA.create(type.getSimpleName() + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
-    }
+    /** Media. */
+    public static final Media PULSE = Core.MEDIA.create("Pulse.xml");
 
     /** Projectile surface. */
     private final Sprite sprite;
+    /** Transformable model. */
+    private final Transformable transformable;
+    /** Collidable model. */
+    private final Collidable collidable;
+    /** Launchable model. */
+    private final Launchable launchable;
+    /** Viewer reference. */
+    private final Viewer viewer;
 
     /**
      * Constructor.
      * 
      * @param setup The setup reference.
+     * @param context The context reference.
      */
-    Projectile(SetupSurfaceGame setup)
+    public Projectile(SetupSurface setup, Services context)
     {
-        super(setup);
-        final Configurer configurer = setup.getConfigurer();
-        final ConfigSize sizeData = ConfigSize.create(configurer);
+        super(setup, context);
+        viewer = context.get(Viewer.class);
         sprite = Drawable.loadSprite(setup.surface);
-        setSize(sizeData.getWidth(), sizeData.getHeight());
-        setCollision(new Collision(getWidth(), -getHeight() / 2, 1, 1, false));
+        sprite.setOrigin(Origin.MIDDLE);
+
+        transformable = new TransformableModel(this, setup.getConfigurer());
+        addTrait(transformable);
+
+        collidable = new CollidableModel(this, context);
+        collidable.setOrigin(Origin.MIDDLE);
+        addTrait(collidable);
+
+        launchable = new LaunchableModel(this);
+        addTrait(launchable);
+
+        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
     }
 
-    /*
-     * ProjectileGame
-     */
+    @Override
+    public void update(double extrp)
+    {
+        launchable.update(extrp);
+        collidable.update(extrp);
+        sprite.setLocation(viewer.getViewpointX(transformable.getX()), viewer.getViewpointY(transformable.getY()));
+        if (!viewer.isViewable(transformable, 0, 0))
+        {
+            destroy();
+        }
+    }
 
     @Override
-    public void prepare(ContextGame context)
+    public void render(Graphic g)
+    {
+        sprite.render(g);
+        collidable.render(g);
+    }
+
+    @Override
+    public void notifyCollided(Collidable collidable)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void render(Graphic g, CameraGame camera)
-    {
-        sprite.render(g, camera.getViewpointX(getLocationIntX()), camera.getViewpointY(getLocationIntY()));
-    }
-
-    @Override
-    public void onHit(Entity entity, int damages)
-    {
-        destroy();
-    }
-
-    @Override
-    protected void updateMovement(double extrp, double vecX, double vecY)
-    {
-        moveLocation(extrp, vecX, vecY);
     }
 }

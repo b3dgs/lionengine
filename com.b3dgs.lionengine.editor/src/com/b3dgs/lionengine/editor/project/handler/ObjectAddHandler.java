@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.factory.Factory;
 
 /**
  * Add an object in the selected folder.
@@ -118,7 +118,7 @@ public class ObjectAddHandler
         if (code == Window.OK)
         {
             final String name = inputDialog.getValue();
-            final File object = new File(selection.getFile(), name + "." + FactoryObjectGame.FILE_DATA_EXTENSION);
+            final File object = new File(selection.getFile(), name + "." + Factory.FILE_DATA_EXTENSION);
 
             if (object.exists())
             {

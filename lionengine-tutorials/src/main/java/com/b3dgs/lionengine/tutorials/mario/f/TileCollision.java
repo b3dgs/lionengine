@@ -65,10 +65,6 @@ enum TileCollision implements CollisionTile
     /** Model. */
     private final CollisionTileModel model = new CollisionTileModel(this);
 
-    /*
-     * CollisionTile
-     */
-
     @Override
     public void addCollisionFunction(CollisionFunction function)
     {

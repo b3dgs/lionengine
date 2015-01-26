@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:tileCollision name="GROUND">
+        <lionengine:tiles end="2" pattern="0" start="1"/>
+        <lionengine:function axis="X" input="X" max="0" min="0" name="horizontal_left" offset="0" value="0.0"/>
+		<lionengine:function axis="X" input="X" max="15" min="15" name="horizontal_right" offset="15" value="0.0"/>
+        <lionengine:function axis="Y" input="Y" max="15" min="15" name="vertical_top" offset="15" value="0.0"/>
+        <lionengine:function axis="Y" input="Y" max="0" min="0" name="vertical_bottom" offset="0" value="0.0"/>
+    </lionengine:tileCollision>
+    <lionengine:tileCollision name="WALL">
+        <lionengine:tiles end="6" pattern="0" start="5"/>
+        <lionengine:function axis="X" input="X" max="0" min="0" name="horizontal_left" offset="0" value="0.0"/>
+		<lionengine:function axis="X" input="X" max="15" min="15" name="horizontal_right" offset="15" value="0.0"/>
+    </lionengine:tileCollision>
+    <lionengine:tileCollision name="TUBE">
+        <lionengine:tiles end="4" pattern="0" start="3"/>
+       	<lionengine:function axis="X" input="X" max="0" min="0" name="horizontal_left" offset="0" value="0.0"/>
+		<lionengine:function axis="X" input="X" max="15" min="15" name="horizontal_right" offset="15" value="0.0"/>
+        <lionengine:function axis="Y" input="Y" max="15" min="15" name="vertical_top" offset="15" value="0.0"/>
+    </lionengine:tileCollision>
+    <lionengine:tileCollision name="NONE">
+        <lionengine:tiles end="32" pattern="0" start="9"/>
+    </lionengine:tileCollision>
+</lionengine:tileCollisions>

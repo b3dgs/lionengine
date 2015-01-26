@@ -155,7 +155,7 @@ public final class Check
     {
         if (a == b)
         {
-            throw new LionEngineException(ERROR_DIFFERENT);
+            throw argumentError(a, b, ERROR_DIFFERENT);
         }
     }
 

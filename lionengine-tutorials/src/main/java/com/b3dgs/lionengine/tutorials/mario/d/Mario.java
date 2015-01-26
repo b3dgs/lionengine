@@ -20,14 +20,14 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Implementation of our controllable entity.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Mario
+class Mario
         extends Entity
 {
     /** Class media. */
@@ -38,7 +38,7 @@ public final class Mario
      * 
      * @param setup setup reference.
      */
-    public Mario(SetupSurfaceGame setup)
+    public Mario(SetupSurface setup)
     {
         super(setup);
     }

@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.game.strategy.entity;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
@@ -26,17 +27,17 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigOffset;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -108,7 +109,7 @@ public abstract class EntityStrategy
      * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time or invalid
      *             setup.
      */
-    public EntityStrategy(SetupSurfaceGame setup) throws LionEngineException
+    public EntityStrategy(SetupSurface setup) throws LionEngineException
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();
@@ -148,7 +149,7 @@ public abstract class EntityStrategy
      * 
      * @param context The context reference.
      */
-    protected abstract void prepareEntity(ContextGame context);
+    protected abstract void prepareEntity(Services context);
 
     /**
      * Set location in tile.
@@ -482,10 +483,10 @@ public abstract class EntityStrategy
      * @param offsetX The horizontal offset.
      * @param offsetY The vertical offset.
      */
-    protected void render(Graphic g, Sprite sprite, CameraGame camera, int offsetX, int offsetY)
+    protected void render(Graphic g, Sprite sprite, Camera camera, int offsetX, int offsetY)
     {
-        final int x = camera.getViewpointX(getLocationIntX() - offsetX);
-        final int y = camera.getViewpointY(getLocationIntY() + offsetY + getHeight());
+        final int x = (int) camera.getViewpointX(getX() - offsetX);
+        final int y = (int) camera.getViewpointY(getY() + offsetY + getHeight());
         sprite.render(g, x, y);
     }
 
@@ -597,9 +598,9 @@ public abstract class EntityStrategy
      */
 
     @Override
-    public final void prepare(ContextGame context) throws LionEngineException
+    public final void prepare(Services context) throws LionEngineException
     {
-        map = context.getService(MapTileStrategy.class);
+        map = context.get(MapTileStrategy.class);
         prepareEntity(context);
     }
 
@@ -613,7 +614,7 @@ public abstract class EntityStrategy
     }
 
     @Override
-    public void render(Graphic g, CameraGame camera)
+    public void render(Graphic g, Camera camera)
     {
         if (visible)
         {
@@ -621,7 +622,7 @@ public abstract class EntityStrategy
             final int frame;
             if (animationCurrent != null)
             {
-                if (getMirror())
+                if (getMirror() == Mirror.HORIZONTAL)
                 {
                     offset = getOrientation().ordinal() - Orientation.ORIENTATIONS_NUMBER_HALF;
                 }
@@ -633,8 +634,8 @@ public abstract class EntityStrategy
                 frame = getFrame();
             }
 
-            final int x = camera.getViewpointX(getLocationIntX() - getOffsetX());
-            final int y = camera.getViewpointY(getLocationIntY() + getOffsetY() + getHeight());
+            final int x = (int) camera.getViewpointX(getX() - getOffsetX());
+            final int y = (int) camera.getViewpointY(getY() + getOffsetY() + getHeight());
             sprite.render(g, frame, x, y);
         }
     }
@@ -646,13 +647,13 @@ public abstract class EntityStrategy
     @Override
     public int getLocationInTileX()
     {
-        return (int) Math.round(getLocationX() / map.getTileWidth());
+        return (int) (getX() / map.getTileWidth());
     }
 
     @Override
     public int getLocationInTileY()
     {
-        return (int) Math.round(getLocationY() / map.getTileHeight());
+        return (int) (getY() / map.getTileHeight());
     }
 
     @Override

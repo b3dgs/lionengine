@@ -18,39 +18,39 @@
 package com.b3dgs.lionengine.example.game.handler;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.purview.model.HandlableModel;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
  * My object implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MyObject
-        extends HandlableModel
+class MyObject
+        extends ObjectGame
+        implements Updatable, Renderable
 {
     /**
      * Constructor.
+     * 
+     * @param setup The setup reference.
+     * @param context The context reference.
      */
-    MyObject()
+    public MyObject(Setup setup, Services context)
     {
-        super();
+        super(setup, context);
     }
 
-    /**
-     * Update the object.
-     * 
-     * @param extrp The extrapolation value.
-     */
+    @Override
     public void update(double extrp)
     {
         System.out.println("I am updating: " + this);
     }
 
-    /**
-     * Render the object.
-     * 
-     * @param g The graphic output.
-     */
+    @Override
     public void render(Graphic g)
     {
         System.out.println("I am rendering: " + this);

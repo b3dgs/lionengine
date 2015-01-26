@@ -19,15 +19,14 @@ package com.b3dgs.lionengine.tutorials.mario.f;
 
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Goomba implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Goomba
+class Goomba
         extends Entity
 {
     /** Class media. */
@@ -41,7 +40,7 @@ public final class Goomba
      * 
      * @param setup setup reference.
      */
-    public Goomba(SetupSurfaceGame setup)
+    public Goomba(SetupSurface setup)
     {
         super(setup);
         timerDie = new Timing();
@@ -49,10 +48,6 @@ public final class Goomba
         movement.setSensibility(0.1);
         right = true;
     }
-
-    /*
-     * Entity
-     */
 
     @Override
     public void onHurtBy(EntityGame entity)

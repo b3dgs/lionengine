@@ -29,9 +29,9 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppGameCursor
+public class AppGameCursor
 {
     /**
      * Main.
@@ -40,7 +40,7 @@ public final class AppGameCursor
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Cursor", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "game"));
+        Engine.start("Cursor", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "game"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

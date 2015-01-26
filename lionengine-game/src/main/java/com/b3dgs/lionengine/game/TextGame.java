@@ -19,11 +19,12 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.Align;
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.TextStyle;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.game.purview.Localizable;
 
 /**
  * Game text implementation. This class enhance the text in order to use it in a game referential. It is perfect to
@@ -31,7 +32,7 @@ import com.b3dgs.lionengine.game.purview.Localizable;
  * screen.
  * <p>
  * The use is strictly the same as {@link Text}, just including an additional function which is
- * {@link TextGame#update(CameraGame)}, needed to update the text location.
+ * {@link TextGame#update(Viewer)}, needed to update the text location.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -63,13 +64,13 @@ public class TextGame
     /**
      * Update game text to store current location view.
      * 
-     * @param camera The camera reference.
+     * @param viewer The viewer reference.
      */
-    public void update(CameraGame camera)
+    public void update(Viewer viewer)
     {
-        x = camera.getLocationIntX();
-        y = camera.getLocationIntY();
-        height = camera.getViewHeight();
+        x = (int) viewer.getX();
+        y = (int) viewer.getY();
+        height = viewer.getHeight();
     }
 
     /**
@@ -84,7 +85,7 @@ public class TextGame
      */
     public void draw(Graphic g, Localizable localizable, int offsetX, int offsetY, Align align, String text)
     {
-        draw(g, localizable.getLocationIntX() + offsetX, localizable.getLocationIntY() + offsetY, align, text);
+        draw(g, (int) localizable.getX() + offsetX, (int) localizable.getY() + offsetY, align, text);
     }
 
     /**

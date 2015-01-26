@@ -17,17 +17,18 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.game.component.ComponentCollision;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.purview.Collidable;
+import com.b3dgs.lionengine.game.trait.Collidable;
 
 /**
  * Represents the collision data, offsets and size. Should be used in combination with
- * {@link ConfigCollisions#getCollision(String)} and {@link Collidable#setCollision(Collision)}.
+ * {@link ConfigCollisions#getCollision(String)} and {@link Collidable#addCollision(Collision)}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
- * @see Collidable
+ * @see ComponentCollision
  */
 public class Collision
 {

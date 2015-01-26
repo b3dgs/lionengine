@@ -24,10 +24,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.b3dgs.lionengine.ColorRgba;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.HandlerGame;
 import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelListener;
@@ -54,7 +55,7 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStrategy<R>, E extends EntityStrategy>
-        extends HandlerGame<E>
+        extends Handler<E>
         implements ControlPanelListener
 {
     /** Maximum number of layers. */
@@ -225,7 +226,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     {
         int dist = Integer.MAX_VALUE;
         E closest = null;
-        for (final E entity : list())
+        for (final E entity : getObjects())
         {
             if ((samePlayer && entity.getPlayerId() == from.getPlayerId() || !samePlayer) && type.isInstance(entity))
             {
@@ -310,13 +311,13 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
                 Math.max(1, selection.getHeight()));
 
         // Update the selection list
-        for (final E entity : list())
+        for (final E entity : getObjects())
         {
             if (!entity.isActive() || !entity.isSelectable())
             {
                 continue;
             }
-            entityArea.set(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(), entity.getHeight());
+            entityArea.set(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
 
             if (selection.contains(entityArea) || selection.intersects(entityArea))
             {
@@ -610,7 +611,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     {
         if (entity.isActive())
         {
-            entityArea.set(entity.getLocationIntX(), entity.getLocationIntY(), entity.getWidth(), entity.getHeight());
+            entityArea.set(entity.getX(), entity.getY(), entity.getWidth(), entity.getHeight());
             if (entity.isSelectable() && camera.canSee(entity)
                     && entityArea.contains(cursor.getLocationX(), cursor.getLocationY() - 1))
             {
@@ -685,8 +686,8 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     private void drawRect(Graphic g, E entity, CameraStrategy camera, ColorRgba color)
     {
         g.setColor(color);
-        final int x = camera.getViewpointX(entity.getLocationIntX());
-        final int y = camera.getViewpointY(entity.getLocationIntY() + entity.getHeight());
+        final int x = (int) camera.getViewpointX(entity.getX());
+        final int y = (int) camera.getViewpointY(entity.getY() + entity.getHeight());
         g.drawRect(x, y, entity.getWidth() - 1, entity.getHeight() - 1, false);
     }
 
@@ -726,7 +727,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
             {
                 for (final E entity : l)
                 {
-                    render(g, entity);
+                    render(g, null, entity);
                 }
             }
         }
@@ -739,7 +740,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
     }
 
     @Override
-    protected void render(Graphic g, E entity)
+    protected void render(Graphic g, Viewer viewer, E entity)
     {
         if (camera.canSee(entity))
         {

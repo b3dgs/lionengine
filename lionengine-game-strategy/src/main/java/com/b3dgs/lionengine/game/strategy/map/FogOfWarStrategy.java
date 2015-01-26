@@ -156,7 +156,7 @@ public abstract class FogOfWarStrategy<T extends TileGame>
      */
     public void render(Graphic g, CameraStrategy camera)
     {
-        render(g, camera.getViewHeight(), camera.getLocationIntX(), camera.getLocationIntY(),
+        render(g, camera.getViewHeight(), (int) camera.getX(), (int) camera.getY(),
                 (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
                 (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }

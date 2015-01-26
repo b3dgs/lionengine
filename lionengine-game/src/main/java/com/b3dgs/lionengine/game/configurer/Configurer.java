@@ -20,8 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.ObjectGame;
-import com.b3dgs.lionengine.game.SetupGame;
+import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -29,14 +28,15 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Allows to retrieve informations from an external XML configuration file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see SetupGame
- * @see ObjectGame
+ * @see Setup
  * @see XmlNode
  */
 public class Configurer
 {
     /** Prefix XML node. */
     public static final String PREFIX = "lionengine:";
+    /** Setup node name. */
+    public static final String SETUP = Configurer.PREFIX + "setup";
     /** Class node name. */
     public static final String CLASS = Configurer.PREFIX + "class";
 
@@ -167,6 +167,17 @@ public class Configurer
         {
             throw new LionEngineException(exception);
         }
+    }
+
+    /**
+     * Get the setup class name node value.
+     * 
+     * @return The setup class name node value.
+     * @throws LionEngineException If unable to read node.
+     */
+    public String getSetupName() throws LionEngineException
+    {
+        return getText(Configurer.SETUP);
     }
 
     /**

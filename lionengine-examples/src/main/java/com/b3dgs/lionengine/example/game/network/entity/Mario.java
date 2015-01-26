@@ -21,9 +21,9 @@ import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**
@@ -55,7 +55,7 @@ public final class Mario
      * 
      * @param setup setup reference.
      */
-    public Mario(SetupSurfaceGame setup)
+    public Mario(SetupSurface setup)
     {
         super(setup);
         final Configurer configurer = setup.getConfigurer();

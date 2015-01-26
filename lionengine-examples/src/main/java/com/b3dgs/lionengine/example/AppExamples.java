@@ -32,13 +32,13 @@ import javax.swing.SwingUtilities;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
-import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
+import com.b3dgs.lionengine.example.core._3_drawable.AppDrawable;
+import com.b3dgs.lionengine.example.game.background.AppBackground;
+import com.b3dgs.lionengine.example.game.collision.AppCollision;
+import com.b3dgs.lionengine.example.game.collision_tile.AppCollisionTile;
 import com.b3dgs.lionengine.example.game.effect.AppGameEffect;
+import com.b3dgs.lionengine.example.game.gameplay.AppPlatformEntity;
 import com.b3dgs.lionengine.example.game.map.AppGameMap;
-import com.b3dgs.lionengine.example.game.platform.background.AppPlatformBackground;
-import com.b3dgs.lionengine.example.game.platform.collision.AppPlatformCollision;
-import com.b3dgs.lionengine.example.game.platform.entity.AppPlatformEntity;
-import com.b3dgs.lionengine.example.game.platform.tile.AppPlatformTile;
 import com.b3dgs.lionengine.example.game.projectile.AppGameProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.AppStrategyAbility;
 import com.b3dgs.lionengine.example.game.strategy.controlpanel.AppStrategyControlPanel;
@@ -53,7 +53,7 @@ import com.b3dgs.lionengine.example.pong.AppPong;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class AppExamples
+public class AppExamples
 {
     /** Application name. */
     public static final String NAME = "LionEngine Examples";
@@ -78,10 +78,10 @@ public final class AppExamples
         addExample(panel, "Effect", AppGameEffect.class);
         addExample(panel, "Projectile", AppGameProjectile.class);
         addExample(panel, "Map", AppGameMap.class);
-        addExample(panel, "Background", AppPlatformBackground.class);
-        addExample(panel, "Collision", AppPlatformCollision.class);
+        addExample(panel, "Background", AppBackground.class);
+        addExample(panel, "Collision", AppCollision.class);
         addExample(panel, "Entity", AppPlatformEntity.class);
-        addExample(panel, "Tile", AppPlatformTile.class);
+        addExample(panel, "Tile", AppCollisionTile.class);
         addExample(panel, "Ability", AppStrategyAbility.class);
         addExample(panel, "Control Panel", AppStrategyControlPanel.class);
         addExample(panel, "Cursor", AppStrategyCursor.class);
@@ -177,13 +177,5 @@ public final class AppExamples
             }
         });
         panel.add(drawable);
-    }
-
-    /**
-     * Private constructor.
-     */
-    private AppExamples()
-    {
-        throw new RuntimeException();
     }
 }

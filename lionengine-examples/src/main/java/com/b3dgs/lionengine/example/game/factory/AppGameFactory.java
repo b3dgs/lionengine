@@ -19,17 +19,19 @@ package com.b3dgs.lionengine.example.game.factory;
 
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
-import com.b3dgs.lionengine.game.ContextGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.Factory;
 
 /**
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppGameFactory
+public class AppGameFactory
 {
     /**
      * Main.
@@ -38,23 +40,21 @@ public final class AppGameFactory
      */
     public static void main(String[] args)
     {
-        Engine.start("Game Factory", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "game"));
+        Engine.start("Factory", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "factory"));
 
         final Factory factory = new Factory();
 
         final Object param = new Object();
 
         // Define the context and add the parameter as a service
-        final ContextGame context = new ContextGame();
-        context.addService(param);
-        factory.setContext(context);
+        final Services context = new Services();
+        context.add(param);
+        factory.setServices(context);
 
         // Create types
-        final TypeBase base = factory.create(FlyMachine.MEDIA);
-        final FlyMachine flyMachine = factory.create(FlyMachine.MEDIA);
-        final GroundTruck groundTruck = factory.create(GroundTruck.MEDIA);
+        final BaseType flyMachine = factory.create(Core.MEDIA.create("FlyMachine.xml"));
+        final BaseType groundTruck = factory.create(Core.MEDIA.create("GroundTruck.xml"));
 
-        System.out.println(base);
         System.out.println(flyMachine);
         System.out.println(groundTruck);
 

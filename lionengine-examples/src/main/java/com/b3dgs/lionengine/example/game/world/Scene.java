@@ -28,9 +28,9 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * Game loop designed to handle our world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -44,31 +44,27 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         world = new World(getConfig());
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
         world.saveToFile(Core.MEDIA.create("world.lvl"));
         world.loadFromFile(Core.MEDIA.create("world.lvl"));
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         world.update(extrp);
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         world.render(g);
     }

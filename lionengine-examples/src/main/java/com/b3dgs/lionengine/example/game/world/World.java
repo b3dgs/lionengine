@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class World
+class World
         extends WorldGame
 {
     /** The text. */
@@ -44,20 +44,16 @@ final class World
     /**
      * @see WorldGame#WorldGame(Config)
      */
-    World(Config config)
+    public World(Config config)
     {
         super(config);
         text = Core.GRAPHIC.createText(Text.SERIF, 12, TextStyle.NORMAL);
     }
 
-    /*
-     * WorldGame
-     */
-
     @Override
     public void update(double extrp)
     {
-        // Nothing do update
+        // Nothing to update
     }
 
     @Override

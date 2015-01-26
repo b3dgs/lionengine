@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.FactoryObjectGame;
+import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -64,7 +64,7 @@ public interface ProducerUsedServices<E extends EntityStrategy, C extends Produc
 
     /**
      * Get entity to produce from its media. The common usage is to return a new entity instance by using the factory (
-     * {@link FactoryObjectGame#create(Media)}.
+     * {@link Factory#create(Media)}.
      * 
      * @param media The entity media.
      * @return The entity reference.

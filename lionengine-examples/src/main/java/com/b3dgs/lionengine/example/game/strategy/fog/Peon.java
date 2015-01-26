@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Peon implementation.
@@ -36,7 +36,7 @@ public final class Peon
      * 
      * @param setup The setup reference.
      */
-    public Peon(SetupSurfaceGame setup)
+    public Peon(SetupSurface setup)
     {
         super(setup);
         setFov(3);

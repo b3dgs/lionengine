@@ -44,8 +44,9 @@ import com.b3dgs.lionengine.editor.collision.TileCollisionView;
 import com.b3dgs.lionengine.editor.factory.FactoryView;
 import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.geom.Point;
@@ -101,21 +102,21 @@ public class WorldViewRenderer
      * @param maxX The maximum horizontal location.
      * @param maxY The maximum vertical location.
      */
-    private static void setCameraLimits(CameraGame camera, int maxX, int maxY)
+    private static void setCameraLimits(Camera camera, int maxX, int maxY)
     {
-        if (camera.getLocationX() < 0.0)
+        if (camera.getX() < 0.0)
         {
             camera.teleportX(0.0);
         }
-        else if (camera.getLocationX() > maxX)
+        else if (camera.getX() > maxX)
         {
             camera.teleportX(maxX);
         }
-        if (camera.getLocationY() < 0.0)
+        if (camera.getY() < 0.0)
         {
             camera.teleportY(0.0);
         }
-        else if (camera.getLocationY() > maxY)
+        else if (camera.getY() > maxY)
         {
             camera.teleportY(maxY);
         }
@@ -132,7 +133,7 @@ public class WorldViewRenderer
     /** Tile selection listener. */
     private final Collection<TileSelectionListener> tileSelectionListeners;
     /** Handler object. */
-    private final HandlerObject handlerObject;
+    private final Handler<ObjectGame> handlerObject;
     /** Selection handler. */
     private final Selection selection;
     /** Object controller. */
@@ -163,7 +164,7 @@ public class WorldViewRenderer
         objectSelectionListeners = new ArrayList<>();
         tileSelectionListeners = new ArrayList<>();
         model = WorldViewModel.INSTANCE;
-        handlerObject = new HandlerObject(model.getCamera());
+        handlerObject = new Handler<>();
         selection = new Selection();
         objectControl = new ObjectControl(handlerObject);
         gridEnabled = true;
@@ -222,7 +223,7 @@ public class WorldViewRenderer
      * 
      * @return The handler object.
      */
-    public HandlerObject getHandler()
+    public Handler<ObjectGame> getHandler()
     {
         return handlerObject;
     }
@@ -354,7 +355,7 @@ public class WorldViewRenderer
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void render(Graphic g, CameraGame camera, MapTile<?> map, int areaX, int areaY)
+    protected void render(Graphic g, Camera camera, MapTile<?> map, int areaX, int areaY)
     {
         renderMap(g, camera, map, areaX, areaY);
         renderEntities(g);
@@ -388,7 +389,7 @@ public class WorldViewRenderer
      * @param areaX The horizontal rendering area.
      * @param areaY The vertical rendering area.
      */
-    protected void renderMap(Graphic g, CameraGame camera, MapTile<?> map, int areaX, int areaY)
+    protected void renderMap(Graphic g, Camera camera, MapTile<?> map, int areaX, int areaY)
     {
         g.setColor(ColorRgba.BLUE);
         g.drawRect(0, 0, areaX, areaY, true);
@@ -407,7 +408,7 @@ public class WorldViewRenderer
     protected void renderEntities(Graphic g)
     {
         handlerObject.update(1.0);
-        handlerObject.render(g);
+        handlerObject.render(g, model.getCamera());
     }
 
     /**
@@ -432,7 +433,7 @@ public class WorldViewRenderer
         final MapTile<?> map = model.getMap();
         if (map.isCreated() && TileCollisionView.ID.equals(part.getActivePaletteId()))
         {
-            final CameraGame camera = model.getCamera();
+            final Camera camera = model.getCamera();
             final Point point = Tools.getMouseTile(map, camera, mx, my);
             lastSelectedTile = selectedTile;
             selectedTile = map.getTile(point.getX() / map.getTileWidth(), point.getY() / map.getTileHeight());
@@ -483,10 +484,10 @@ public class WorldViewRenderer
      */
     private void updateHand()
     {
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final MapTile<?> map = model.getMap();
-        camera.setLocation(UtilMath.getRounded(camera.getLocationIntX(), map.getTileWidth()),
-                UtilMath.getRounded(camera.getLocationIntY(), map.getTileHeight()));
+        camera.setLocation(UtilMath.getRounded((int) camera.getX(), map.getTileWidth()),
+                UtilMath.getRounded((int) camera.getY(), map.getTileHeight()));
     }
 
     /**
@@ -511,7 +512,7 @@ public class WorldViewRenderer
      */
     private void updateCamera(int vx, int vy, int step)
     {
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final MapTile<?> map = model.getMap();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -604,7 +605,7 @@ public class WorldViewRenderer
      */
     private void render(Graphic g, int width, int height)
     {
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final MapTile<?> map = model.getMap();
 
         final int tw = map.getTileWidth();
@@ -633,20 +634,20 @@ public class WorldViewRenderer
      */
     private void renderOverAndSelectedEntities(Graphic g)
     {
-        final CameraGame camera = model.getCamera();
+        final Camera camera = model.getCamera();
         final MapTile<?> map = model.getMap();
         final int th = map.getTileHeight();
 
-        for (final ObjectGame object : handlerObject.list())
+        for (final ObjectGame object : handlerObject.getObjects())
         {
-            final int sx = object.getLocationIntX();
-            final int sy = object.getLocationIntY();
+            final int sx = (int) object.getX();
+            final int sy = (int) object.getY();
 
             if (objectControl.isOver(object) || objectControl.isSelected(object))
             {
                 g.setColor(WorldViewRenderer.COLOR_ENTITY_SELECTION);
-                final int x = sx - camera.getLocationIntX() - object.getWidth() / 2;
-                final int y = -sy + camera.getLocationIntY() - object.getHeight()
+                final int x = sx - (int) camera.getX() - object.getWidth() / 2;
+                final int y = -sy + (int) camera.getY() - object.getHeight()
                         + UtilMath.getRounded(camera.getViewHeight(), th);
                 g.drawRect(x, y, object.getWidth(), object.getHeight(), true);
             }
@@ -660,7 +661,7 @@ public class WorldViewRenderer
      * @param map The map reference.
      * @param camera The camera reference.
      */
-    private void renderSelectedCollisions(Graphic g, MapTile<?> map, CameraGame camera)
+    private void renderSelectedCollisions(Graphic g, MapTile<?> map, Camera camera)
     {
         // Render selected collision
         g.setColor(WorldViewRenderer.COLOR_MOUSE_SELECTION);
@@ -674,8 +675,8 @@ public class WorldViewRenderer
                 {
                     if (tile.getCollision() == selectedTile.getCollision())
                     {
-                        g.drawRect(camera.getViewpointX(tile.getX()), camera.getViewpointY(tile.getY()) - th,
-                                tile.getWidth(), tile.getHeight(), true);
+                        g.drawRect((int) camera.getViewpointX(tile.getX()), (int) camera.getViewpointY(tile.getY())
+                                - th, tile.getWidth(), tile.getHeight(), true);
                     }
                 }
             }
@@ -683,8 +684,8 @@ public class WorldViewRenderer
 
         // Render selected tile
         g.setColor(WorldViewRenderer.COLOR_TILE_SELECTED);
-        g.drawRect(camera.getViewpointX(selectedTile.getX()), camera.getViewpointY(selectedTile.getY()) - th,
-                selectedTile.getWidth(), selectedTile.getHeight(), true);
+        g.drawRect((int) camera.getViewpointX(selectedTile.getX()), (int) camera.getViewpointY(selectedTile.getY())
+                - th, selectedTile.getWidth(), selectedTile.getHeight(), true);
     }
 
     /**
@@ -766,7 +767,7 @@ public class WorldViewRenderer
         objectControl.stopDragging();
         for (final ObjectGame object : objectControl.getSelectedEnties())
         {
-            objectControl.setObjectLocation(object, object.getLocationIntX(), object.getLocationIntY(), -1);
+            objectControl.setObjectLocation(object, (int) object.getX(), (int) object.getY(), -1);
         }
         click = 0;
     }

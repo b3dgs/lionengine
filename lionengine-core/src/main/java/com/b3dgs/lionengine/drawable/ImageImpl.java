@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.drawable;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -33,21 +35,29 @@ import com.b3dgs.lionengine.core.Media;
 class ImageImpl
         implements Image
 {
+    /** Unsupported enum. */
+    static final String ERROR_ENUM = "Unknown enum type: ";
     /** Error already loaded. */
     private static final String ERROR_ALREADY_LOADED = "Image has already been loaded: ";
 
     /** Media file name. */
     private final Media media;
-    /** Image horizontal position. */
-    private double x;
-    /** Image vertical position. */
-    private double y;
     /** Sprite width. */
     private final int width;
     /** Sprite height. */
     private final int height;
+    /** Image horizontal position. */
+    private double x;
+    /** Image vertical position. */
+    private double y;
+    /** Render horizontal position. */
+    private int rx;
+    /** Render vertical position. */
+    private int ry;
     /** Image surface. */
     private ImageBuffer surface;
+    /** Origin point. */
+    private Origin origin;
 
     /**
      * Internal constructor.
@@ -64,6 +74,7 @@ class ImageImpl
         final ImageInfo info = ImageInfo.get(media);
         width = info.getWidth();
         height = info.getHeight();
+        origin = Origin.TOP_LEFT;
     }
 
     /**
@@ -99,7 +110,13 @@ class ImageImpl
     @Override
     public void render(Graphic g)
     {
-        g.drawImage(surface, (int) x, (int) y);
+        g.drawImage(surface, rx, ry);
+    }
+
+    @Override
+    public void setOrigin(Origin origin)
+    {
+        this.origin = origin;
     }
 
     @Override
@@ -107,6 +124,14 @@ class ImageImpl
     {
         this.x = x;
         this.y = y;
+        rx = (int) origin.getX(x, width);
+        ry = (int) origin.getY(y, height);
+    }
+
+    @Override
+    public void setLocation(Viewer viewer, double x, double y)
+    {
+        setLocation(viewer.getViewpointX(x), viewer.getViewpointY(y));
     }
 
     @Override

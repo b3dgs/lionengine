@@ -111,8 +111,8 @@ public final class TileExtractor
         this.tileh = tileh;
         imageMap = Drawable.loadSpriteTiled(media, tilew, tileh);
         imageMap.load(false);
-        imageMapTilesInY = imageMap.getHeightOriginal() / this.tileh;
-        imageMapTilesInX = imageMap.getWidthOriginal() / this.tilew;
+        imageMapTilesInY = imageMap.getHeight() / this.tileh;
+        imageMapTilesInX = imageMap.getWidth() / this.tilew;
         startX = 0;
         endX = imageMapTilesInX;
         pattern = Core.GRAPHIC.createImageBuffer(destW, destH, Transparency.BITMASK);
@@ -148,7 +148,9 @@ public final class TileExtractor
 
                     if (!found)
                     {
-                        g.drawImage(imageMap.getTile(n), cx, cy);
+                        imageMap.setLocation(cx, cy);
+                        imageMap.setTile(n);
+                        imageMap.render(g);
                         cx += tilew;
                         if (cx > pattern.getWidth())
                         {

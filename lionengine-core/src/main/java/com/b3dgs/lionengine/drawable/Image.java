@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.drawable;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Renderable;
 
@@ -52,12 +54,29 @@ public interface Image
     void load(boolean alpha) throws LionEngineException;
 
     /**
+     * Set the origin location type, related to surface area. The type will affect the defined location and the
+     * rendering point.
+     * 
+     * @param origin The origin type
+     */
+    void setOrigin(Origin origin);
+
+    /**
      * Set the location on screen.
      * 
      * @param x The horizontal location.
      * @param y The vertical location.
      */
     void setLocation(double x, double y);
+
+    /**
+     * Set the location on screen from a viewer viewpoint.
+     * 
+     * @param viewer The viewer reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     */
+    void setLocation(Viewer viewer, double x, double y);
 
     /**
      * Get the surface which represents the image.

@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
+ * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -50,19 +50,15 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 12, TextStyle.NORMAL);
     }
 
-    /*
-     * Sequence
-     */
-
     @Override
-    protected void load()
+    public void load()
     {
         text.setText("Hello");
         text.setLocation(getWidth() / 2, getHeight() / 2 - 8);
@@ -70,7 +66,7 @@ final class Scene
     }
 
     @Override
-    protected void update(double extrp)
+    public void update(double extrp)
     {
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
@@ -79,7 +75,7 @@ final class Scene
     }
 
     @Override
-    protected void render(Graphic g)
+    public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
         // Simple rendering

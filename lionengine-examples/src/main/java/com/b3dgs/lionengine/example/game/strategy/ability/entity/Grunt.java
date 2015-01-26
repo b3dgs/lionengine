@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Axe;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.ContextGame;
-import com.b3dgs.lionengine.game.SetupSurfaceGame;
+import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
  * Grunt implementation.
@@ -40,7 +40,7 @@ public final class Grunt
      * 
      * @param setup The setup reference.
      */
-    public Grunt(SetupSurfaceGame setup)
+    public Grunt(SetupSurface setup)
     {
         super(setup);
     }
@@ -50,10 +50,10 @@ public final class Grunt
      */
 
     @Override
-    public void prepareEntity(ContextGame context)
+    public void prepareEntity(Services context)
     {
         super.prepareEntity(context);
-        final Weapon weapon = context.getService(FactoryWeapon.class).create(Axe.MEDIA);
+        final Weapon weapon = context.get(FactoryWeapon.class).create(Axe.MEDIA);
         addWeapon(weapon, 0);
     }
 }

@@ -25,6 +25,8 @@ import com.b3dgs.lionengine.Filter;
 import com.b3dgs.lionengine.ImageInfo;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.Origin;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
@@ -47,6 +49,8 @@ class SpriteImpl
     private ImageBuffer surface;
     /** Sprite original surface. */
     private ImageBuffer surfaceOriginal;
+    /** Origin point. */
+    private Origin origin;
     /** Sprite horizontal position. */
     private double x;
     /** Sprite vertical position. */
@@ -55,6 +59,10 @@ class SpriteImpl
     private int width;
     /** Sprite height. */
     private int height;
+    /** Render horizontal position. */
+    private int rx;
+    /** Render vertical position. */
+    private int ry;
     /** Mirror flag. */
     private Mirror mirror;
     /** Sprite raw data (used for alpha). */
@@ -79,6 +87,7 @@ class SpriteImpl
         height = info.getHeight();
 
         mirror = Mirror.NONE;
+        origin = Origin.TOP_LEFT;
         rgb = null;
     }
 
@@ -99,6 +108,7 @@ class SpriteImpl
         height = surface.getHeight();
 
         mirror = Mirror.NONE;
+        origin = Origin.TOP_LEFT;
         rgb = null;
     }
 
@@ -143,6 +153,38 @@ class SpriteImpl
         width = newWidth;
         height = newHeight;
         surface = Core.GRAPHIC.resize(surfaceOriginal, newWidth, newHeight);
+    }
+
+    /**
+     * Compute the rendering point.
+     * 
+     * @param width The width to use.
+     * @param height The height to use.
+     */
+    protected void computeRenderingPoint(int width, int height)
+    {
+        rx = (int) origin.getX(x, width);
+        ry = (int) origin.getY(y, height);
+    }
+
+    /**
+     * Get the horizontal rendering point.
+     * 
+     * @return The horizontal rendering point.
+     */
+    protected int getRenderX()
+    {
+        return rx;
+    }
+
+    /**
+     * Get the vertical rendering point.
+     * 
+     * @return The vertical rendering point.
+     */
+    protected int getRenderY()
+    {
+        return ry;
     }
 
     /**
@@ -201,7 +243,13 @@ class SpriteImpl
     @Override
     public void render(Graphic g)
     {
-        render(g, (int) x, (int) y, width, height, 0, 0);
+        render(g, rx, ry, width, height, 0, 0);
+    }
+
+    @Override
+    public void setOrigin(Origin origin)
+    {
+        this.origin = origin;
     }
 
     @Override
@@ -209,6 +257,13 @@ class SpriteImpl
     {
         this.x = x;
         this.y = y;
+        computeRenderingPoint(width, height);
+    }
+
+    @Override
+    public final void setLocation(Viewer viewer, double x, double y)
+    {
+        setLocation(viewer.getViewpointX(x), viewer.getViewpointY(y));
     }
 
     @Override

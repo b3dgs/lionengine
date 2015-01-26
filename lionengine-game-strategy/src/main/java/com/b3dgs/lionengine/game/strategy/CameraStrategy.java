@@ -17,11 +17,11 @@
  */
 package com.b3dgs.lionengine.game.strategy;
 
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class CameraStrategy
-        extends CameraGame
+        extends Camera
 {
     /** Movement steps horizontal. */
     private final int hStep;
@@ -107,8 +107,8 @@ public class CameraStrategy
             vTime = time;
             moveLocation(1.0, 0, vStep * y);
         }
-        location.setLocationX(UtilMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
-        location.setLocationY(UtilMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
+        movable.setLocationX(UtilMath.fixBetween(movable.getX(), borderLeft, borderRight));
+        movable.setLocationY(UtilMath.fixBetween(movable.getY(), borderTop, borderBottom));
     }
 
     /**
@@ -157,7 +157,7 @@ public class CameraStrategy
      */
     public int getLocationInTileX(MapTile<?> map)
     {
-        return getLocationIntX() / map.getTileWidth();
+        return (int) getX() / map.getTileWidth();
     }
 
     /**
@@ -168,7 +168,7 @@ public class CameraStrategy
      */
     public int getLocationInTileY(MapTile<?> map)
     {
-        return getLocationIntY() / map.getTileHeight();
+        return (int) getY() / map.getTileHeight();
     }
 
     /**
@@ -192,10 +192,10 @@ public class CameraStrategy
     public boolean canSee(EntityStrategy entity)
     {
         final double border = 0.1;
-        return entity.getLocationX() + entity.getWidth() >= getLocationRealX() + border
-                && entity.getLocationX() <= getLocationRealX() + getViewWidth() - border
-                && entity.getLocationY() + entity.getHeight() >= getLocationRealY() + border
-                && entity.getLocationY() <= getLocationRealY() + getViewHeight() - border;
+        return entity.getX() + entity.getWidth() >= getLocationRealX() + border
+                && entity.getX() <= getLocationRealX() + getViewWidth() - border
+                && entity.getY() + entity.getHeight() >= getLocationRealY() + border
+                && entity.getY() <= getLocationRealY() + getViewHeight() - border;
     }
 
     /*
@@ -206,13 +206,13 @@ public class CameraStrategy
     public void moveLocation(double extrp, double vx, double vy)
     {
         super.moveLocation(extrp, vx, vy);
-        location.setLocationX(UtilMath.fixBetween(location.getLocationX(), borderLeft, borderRight));
-        location.setLocationY(UtilMath.fixBetween(location.getLocationY(), borderTop, borderBottom));
+        movable.setLocationX(UtilMath.fixBetween(movable.getX(), borderLeft, borderRight));
+        movable.setLocationY(UtilMath.fixBetween(movable.getY(), borderTop, borderBottom));
     }
 
     @Override
     public void follow(Localizable entity)
     {
-        setLocation(entity.getLocationX() - getViewWidth() / 2.0, entity.getLocationY() - getViewHeight() / 2.0);
+        setLocation(entity.getX() - getViewWidth() / 2.0, entity.getY() - getViewHeight() / 2.0);
     }
 }

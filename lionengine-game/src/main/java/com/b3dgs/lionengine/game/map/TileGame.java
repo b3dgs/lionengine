@@ -20,8 +20,6 @@ package com.b3dgs.lionengine.game.map;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.UtilMath;
-import com.b3dgs.lionengine.game.purview.Localizable;
 import com.b3dgs.lionengine.stream.FileReading;
 
 /**
@@ -113,7 +111,7 @@ public class TileGame
 
     /**
      * Set tile location x. Should be used only when overriding the
-     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
+     * {@link MapTileGame#loadTile(Collection, FileReading, int)} function.
      * 
      * @param x The tile location x.
      */
@@ -124,7 +122,7 @@ public class TileGame
 
     /**
      * Set tile location y. Should be used only when overriding the
-     * {@link MapTile#loadTile(Collection, FileReading, int)} function.
+     * {@link MapTileGame#loadTile(Collection, FileReading, int)} function.
      * 
      * @param y The tile location y.
      */
@@ -134,12 +132,13 @@ public class TileGame
     }
 
     /**
-     * Get the horizontal collision location between the tile and the localizable.
+     * Get the horizontal collision location between the tile and the transformable.
      * 
-     * @param localizable The localizable object searching the collision.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      * @return The collision x (<code>null</code> if none).
      */
-    public Double getCollisionX(Localizable localizable)
+    public Double getCollisionX(double x, double y)
     {
         for (final CollisionFunction function : getCollision().getCollisionFunctions())
         {
@@ -147,15 +146,11 @@ public class TileGame
             {
                 final int min = function.getRange().getMin();
                 final int max = function.getRange().getMax();
-                final int x = getInputValue(function, localizable);
-                if (x >= min && x <= max)
+                final int input = getInputValue(function, x, y);
+                if (input >= min && input <= max)
                 {
-                    final double value = getX() + function.computeCollision(x);
-                    if (localizable.getLocationOldX() >= value && localizable.getLocationX() <= value
-                            || localizable.getLocationX() >= value && localizable.getLocationOldX() <= value)
-                    {
-                        return Double.valueOf(value);
-                    }
+                    final double value = getX() + function.computeCollision(input);
+                    return Double.valueOf(value);
                 }
             }
         }
@@ -163,12 +158,13 @@ public class TileGame
     }
 
     /**
-     * Get the vertical collision location between the tile and the localizable.
+     * Get the vertical collision location between the tile and the transformable.
      * 
-     * @param localizable The localizable object searching the collision.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      * @return The collision y (<code>null</code> if none).
      */
-    public Double getCollisionY(Localizable localizable)
+    public Double getCollisionY(double x, double y)
     {
         for (final CollisionFunction function : getCollision().getCollisionFunctions())
         {
@@ -176,16 +172,11 @@ public class TileGame
             {
                 final int min = function.getRange().getMin();
                 final int max = function.getRange().getMax();
-                final int x = getInputValue(function, localizable);
-                if (x >= min && x <= max)
+                final int input = getInputValue(function, x, y);
+                if (input >= min && input <= max)
                 {
-                    final double margin = Math.ceil(Math.abs((localizable.getLocationOldX() - localizable
-                            .getLocationX()) * function.getValue())) + 1;
-                    final double value = getY() + function.computeCollision(x);
-                    if (localizable.getLocationOldY() >= value - margin && localizable.getLocationY() <= value + margin)
-                    {
-                        return Double.valueOf(value);
-                    }
+                    final double value = getY() + function.computeCollision(input);
+                    return Double.valueOf(value);
                 }
             }
         }
@@ -303,32 +294,22 @@ public class TileGame
     }
 
     /**
-     * Check if there is a collision between the localizable and the tile.
-     * 
-     * @param localizable The localizable.
-     * @return <code>true</code> if collide, <code>false</code> else.
-     */
-    public boolean hasCollision(Localizable localizable)
-    {
-        return getCollision() != null && (getCollisionX(localizable) != null || getCollisionY(localizable) != null);
-    }
-
-    /**
      * Get the input value from the function.
      * 
      * @param function The function used.
-     * @param localizable The localizable reference.
+     * @param x The horizontal location.
+     * @param y The vertical location.
      * @return The input value.
      */
-    private int getInputValue(CollisionFunction function, Localizable localizable)
+    private int getInputValue(CollisionFunction function, double x, double y)
     {
         final CollisionRefential input = function.getInput();
         switch (input)
         {
             case X:
-                return UtilMath.fixBetween(localizable.getLocationIntX() - getX(), 0, getWidth() - 1);
+                return (int) Math.floor(x - getX());
             case Y:
-                return UtilMath.fixBetween(localizable.getLocationIntY() - getY(), 0, getHeight() - 1);
+                return (int) Math.floor(y - getY());
             default:
                 throw new RuntimeException("Unknow type: " + input);
         }

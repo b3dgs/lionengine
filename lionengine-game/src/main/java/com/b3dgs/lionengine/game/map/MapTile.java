@@ -21,15 +21,15 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.CameraGame;
-import com.b3dgs.lionengine.game.purview.Localizable;
+import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
@@ -170,25 +170,6 @@ public interface MapTile<T extends TileGame>
     void loadCollisions(Media media) throws LionEngineException;
 
     /**
-     * Load tile. Data are loaded this way:
-     * 
-     * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
-     * (integer) tile location x
-     * (integer tile location y
-     * </pre>
-     * 
-     * @param nodes The collision nodes.
-     * @param file The file reader reference.
-     * @param i The last loaded tile number.
-     * @return The loaded tile.
-     * @throws IOException If error on reading.
-     * @throws LionEngineException If error on creating tile.
-     */
-    T loadTile(Collection<XmlNode> nodes, FileReading file, int i) throws IOException, LionEngineException;
-
-    /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
      * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
      * the new map at the top-right.
@@ -261,9 +242,9 @@ public interface MapTile<T extends TileGame>
      * Render map from camera viewpoint, showing a specified area.
      * 
      * @param g The graphic output.
-     * @param camera The camera viewpoint.
+     * @param viewer The camera viewpoint.
      */
-    void render(Graphic g, CameraGame camera);
+    void render(Graphic g, Viewer viewer);
 
     /**
      * Render minimap on graphic output at specified location.
@@ -296,24 +277,22 @@ public interface MapTile<T extends TileGame>
     /**
      * Get the tile at the localizable.
      * 
-     * @param entity The entity.
+     * @param localizable The localizable reference.
      * @param offsetX The horizontal offset search.
      * @param offsetY The vertical offset search.
-     * @return The tile found at the entity.
+     * @return The tile found at the localizable.
      */
-    T getTile(Localizable entity, int offsetX, int offsetY);
+    T getTile(Localizable localizable, int offsetX, int offsetY);
 
     /**
      * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
      * to its current. This way, the localizable can not pass through a collidable tile.
      * 
-     * @param localizable The localizable reference.
-     * @param collisions Collisions list to search for.
-     * @param applyRayCast <code>true</code> to apply collision to each tile crossed, <code>false</code> to ignore and
-     *            just return the first tile hit.
+     * @param transformable The transformable reference.
+     * @param category The collisions list to search for.
      * @return The first tile hit, <code>null</code> if none found.
      */
-    T getFirstTileHit(Localizable localizable, Collection<CollisionTile> collisions, boolean applyRayCast);
+    CollisionResult<T> computeCollision(Transformable transformable, CollisionTileCategory category);
 
     /**
      * Get location x relative to map referential as tile.

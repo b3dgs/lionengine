@@ -26,7 +26,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.editor.Tools;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
-import com.b3dgs.lionengine.game.ObjectGame;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.projectile.ProjectileGame;
 
 /**

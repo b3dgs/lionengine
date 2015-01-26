@@ -23,7 +23,7 @@ import java.util.HashSet;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.CameraGame;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Rectangle;
@@ -182,8 +182,8 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     {
         if (selecting)
         {
-            final int x = camera.getViewpointX((int) selectionArea.getX());
-            final int y = camera.getViewpointY((int) (selectionArea.getY() + selectionArea.getHeight()));
+            final int x = (int) camera.getViewpointX(selectionArea.getX());
+            final int y = (int) camera.getViewpointY(selectionArea.getY() + selectionArea.getHeight());
             final int w = (int) selectionArea.getWidth();
             final int h = (int) selectionArea.getHeight();
             g.setColor(colorSelection);
@@ -225,10 +225,10 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
      * 
      * @param camera The camera reference.
      */
-    public void setClickableArea(CameraGame camera)
+    public void setClickableArea(Camera camera)
     {
         outsidePanel = Geom.createRectangle();
-        outsidePanel.set(camera.getViewX(), camera.getViewY(), camera.getViewWidth(), camera.getViewHeight());
+        outsidePanel.set(camera.getViewX(), camera.getViewY(), camera.getWidth(), camera.getHeight());
     }
 
     /**
@@ -345,7 +345,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     protected int computeSelectionWidth(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
         return UtilMath.fixBetween(cursor.getLocationX() - sx, Integer.MIN_VALUE,
-                camera.getViewX() + camera.getLocationIntX() - sx + camera.getViewWidth());
+                camera.getViewX() + (int) camera.getX() - sx + camera.getWidth());
     }
 
     /**
@@ -360,7 +360,7 @@ public abstract class ControlPanelModel<E extends EntityStrategy>
     protected int computeSelectionHeight(CursorStrategy cursor, CameraStrategy camera, int sx, int sy)
     {
         return UtilMath.fixBetween(cursor.getLocationY() - sy, Integer.MIN_VALUE,
-                camera.getViewY() + camera.getLocationIntY() + camera.getViewHeight() + sy);
+                camera.getViewY() + (int) camera.getY() + camera.getHeight() + sy);
     }
 
     /**

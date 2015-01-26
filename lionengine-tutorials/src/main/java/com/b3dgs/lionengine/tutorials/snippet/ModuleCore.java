@@ -128,17 +128,17 @@ public class ModuleCore
         }
 
         @Override
-        protected void load()
+        public void load()
         {
         }
 
         @Override
-        protected void update(double extrp)
+        public void update(double extrp)
         {
         }
 
         @Override
-        protected void render(Graphic g)
+        public void render(Graphic g)
         {
         }
     }
@@ -239,7 +239,7 @@ public class ModuleCore
         animator.play(animation);
 
         // ... (loop)
-        animator.updateAnimation(extrp);
+        animator.update(extrp);
         // (loop) ...
     }
 
@@ -249,7 +249,7 @@ public class ModuleCore
         final Animation animation = Anim.createAnimation(1, 2, 1.0, false, false);
         animator.getAnimState(); // returns STOPPED
         animator.play(animation);
-        animator.updateAnimation(extrp);
+        animator.update(extrp);
         animator.getAnimState(); // returns PLAYING
     }
 
@@ -303,9 +303,10 @@ public class ModuleCore
     {
         // Load
         final Image image = Drawable.loadImage(Core.MEDIA.create("image.png"));
+        image.setLocation(10, 50);
 
         // Render
-        image.render(g, 0, 0);
+        image.render(g);
     }
 
     void sprite()
@@ -313,9 +314,10 @@ public class ModuleCore
         // Load
         final Sprite sprite = Drawable.loadSprite(Core.MEDIA.create("sprite.png"));
         sprite.load(false);
+        sprite.setLocation(64, 280);
 
         // Render
-        sprite.render(g, 64, 280);
+        sprite.render(g);
     }
 
     void spriteTiled()
@@ -323,10 +325,11 @@ public class ModuleCore
         // Load
         final SpriteTiled tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
         tilesheet.load(false);
+        tilesheet.setLocation(300, 300);
+        tilesheet.setTile(1);
 
         // Render
-        tilesheet.render(g, 1, 300, 300);
-        tilesheet.render(g, 350, 300);
+        tilesheet.render(g);
     }
 
     void spriteAnimated()
@@ -336,14 +339,12 @@ public class ModuleCore
         animation.load(false);
         final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
         animation.play(anim);
+        animation.setLocation(160, 300);
 
         // Update
-        animation.updateAnimation(extrp);
+        animation.update(extrp);
 
         // Render
-        animation.setMirror(false);
-        animation.render(g, 160, 300);
-        animation.setMirror(true);
-        animation.render(g, 200, 300);
+        animation.render(g);
     }
 }

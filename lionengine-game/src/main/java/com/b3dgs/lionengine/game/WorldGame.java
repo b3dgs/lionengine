@@ -22,18 +22,20 @@ import java.io.IOException;
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 
 /**
- * Default world model, designed to contain game elements ({@link MapTile}, {@link HandlerGame},
- * {@link FactoryObjectGame}...).
+ * Default world model, designed to contain game elements ({@link MapTile}, {@link Handler}, {@link Factory}...).
  * <p>
  * It contains different elements, such as:
  * <ul>
@@ -61,21 +63,21 @@ import com.b3dgs.lionengine.stream.Stream;
  *     }
  * 
  *     &#064;Override
- *     protected void load()
+ *     public void load()
  *     {
  *         // Load resources here
  *         world.loadFromFile(Media.get(&quot;level.lvl&quot;));
  *     }
  * 
  *     &#064;Override
- *     protected void update(double extrp)
+ *     public void update(double extrp)
  *     {
  *         // Update routine
  *         world.update(extrp);
  *     }
  * 
  *     &#064;Override
- *     protected void render(Graphic g)
+ *     public void render(Graphic g)
  *     {
  *         // Render routine
  *         world.render(g);
@@ -86,6 +88,7 @@ import com.b3dgs.lionengine.stream.Stream;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class WorldGame
+        implements Updatable, Renderable
 {
     /** Config reference. */
     protected final Config config;
@@ -112,20 +115,6 @@ public abstract class WorldGame
         width = source.getWidth();
         height = source.getHeight();
     }
-
-    /**
-     * Internal world updates.
-     * 
-     * @param extrp The extrapolation value.
-     */
-    public abstract void update(double extrp);
-
-    /**
-     * Internal world rendering.
-     * 
-     * @param g The graphic output.
-     */
-    public abstract void render(Graphic g);
 
     /**
      * Internal world saves; called from {@link WorldGame#saveToFile(Media)} function. The world will be saved in a file
