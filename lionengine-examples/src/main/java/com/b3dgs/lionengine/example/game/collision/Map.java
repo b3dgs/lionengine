@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.collision;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -27,15 +26,15 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.map
  */
-final class Map
+class Map
         extends MapTileGame<TileGame>
 {
     /**
      * Constructor.
      */
-    Map()
+    public Map()
     {
-        super(16, 16, TileCollision.values());
+        super(16, 16);
     }
 
     /**
@@ -50,15 +49,15 @@ final class Map
                 final TileGame tile = getTile(tx, ty);
                 final TileGame top = getTile(tx, ty + 1);
                 final TileGame bottom = getTile(tx, ty - 1);
-                if (top != null && tile != null && top.getCollision() != TileCollision.NONE
-                        && tile.getCollision() != TileCollision.NONE)
+                if (top != null && tile != null && top.getCollision().getName() != null
+                        && tile.getCollision().getName() != null)
                 {
-                    tile.setCollision(TileCollision.WALL);
+                    tile.setCollision(getCollision("WALL"));
                 }
-                if ((top == null || top.getCollision() == TileCollision.NONE) && bottom != null && tile != null
-                        && bottom.getCollision() != TileCollision.NONE && tile.getCollision() != TileCollision.NONE)
+                if ((top == null || top.getCollision().getName() == null) && bottom != null && tile != null
+                        && bottom.getCollision().getName() != null && tile.getCollision().getName() != null)
                 {
-                    tile.setCollision(TileCollision.TUBE);
+                    tile.setCollision(getCollision("TUBE"));
                 }
             }
         }
@@ -69,21 +68,8 @@ final class Map
      */
 
     @Override
-    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileGame createTile()
     {
-        return new TileGame(width, height, pattern, number, collision);
-    }
-
-    @Override
-    public TileCollision getCollisionFrom(String collision)
-    {
-        try
-        {
-            return TileCollision.valueOf(collision);
-        }
-        catch (final NullPointerException exception)
-        {
-            return TileCollision.NONE;
-        }
+        return new TileGame(getTileWidth(), getTileHeight());
     }
 }

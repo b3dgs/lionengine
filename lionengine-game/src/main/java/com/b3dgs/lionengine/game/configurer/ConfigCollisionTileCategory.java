@@ -47,6 +47,10 @@ public class ConfigCollisionTileCategory
     public static final String COLLISION_TILE_CATEGORY_Y = "y";
     /** Slide value. */
     public static final String COLLISION_TILE_CATEGORY_SLIDE = "slide";
+    /** Collision not found. */
+    private static final String ERROR_COLLISION_NOT_FOUND = "Collision where not found: ";
+    /** Collision not found tip. */
+    private static final String ERROR_MAP_NOT_LOADED_TIP = " (map may not have been loaded)";
 
     /**
      * Create the categories nodes.
@@ -82,7 +86,14 @@ public class ConfigCollisionTileCategory
         {
             final String name = current.getText();
             final CollisionTile collisionTile = map.getCollision(name);
-            collisions.add(collisionTile);
+            if (collisionTile != null)
+            {
+                collisions.add(collisionTile);
+            }
+            else
+            {
+                throw new LionEngineException(ERROR_COLLISION_NOT_FOUND, name, ERROR_MAP_NOT_LOADED_TIP);
+            }
         }
         return new ConfigCollisionTileCategory(root.readString(COLLISION_TILE_CATEGORY_NAME),
                 root.readInteger(COLLISION_TILE_CATEGORY_X), root.readInteger(COLLISION_TILE_CATEGORY_Y),

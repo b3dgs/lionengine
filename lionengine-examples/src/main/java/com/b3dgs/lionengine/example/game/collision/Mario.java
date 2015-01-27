@@ -82,7 +82,7 @@ class Mario
 
         transformable = new TransformableModel(this, SETUP.getConfigurer());
         addTrait(transformable);
-        tileCollidable = new TileCollidableModel(this, services);
+        tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
         tileCollidable.addListener(this);
         body = new BodyModel(this);
         jump = new Force();
@@ -100,13 +100,6 @@ class Mario
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
         transformable.teleport(2220, 80);
-
-        tileCollidable.addCategory(EntityCollisionTileCategory.LEG_LEFT);
-        tileCollidable.addCategory(EntityCollisionTileCategory.GROUND_CENTER);
-        tileCollidable.addCategory(EntityCollisionTileCategory.LEG_RIGHT);
-        tileCollidable.addCategory(EntityCollisionTileCategory.KNEE_LEFT);
-        tileCollidable.addCategory(EntityCollisionTileCategory.KNEE_CENTER);
-        tileCollidable.addCategory(EntityCollisionTileCategory.KNEE_RIGHT);
     }
 
     @Override

@@ -52,7 +52,7 @@ class Scene
     /** Map reference. */
     private final Map map;
     /** Mario reference. */
-    private final Mario hero;
+    private Mario hero;
 
     /**
      * Constructor.
@@ -65,13 +65,6 @@ class Scene
         keyboard = getInputDevice(Keyboard.class);
         camera = new Camera();
         map = new Map();
-
-        final Services services = new Services();
-        services.add(map);
-        services.add(Integer.valueOf(getConfig().getSource().getRate()));
-        services.add(keyboard);
-        services.add(camera);
-        hero = new Mario(services);
     }
 
     /*
@@ -86,6 +79,13 @@ class Scene
         rip.start();
         map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
         map.adjustCollisions();
+
+        final Services services = new Services();
+        services.add(map);
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
+        services.add(keyboard);
+        services.add(camera);
+        hero = new Mario(services);
 
         camera.setLimits(map);
         camera.setView(0, 0, getWidth(), getHeight());

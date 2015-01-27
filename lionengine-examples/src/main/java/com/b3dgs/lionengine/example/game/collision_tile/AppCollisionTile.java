@@ -31,7 +31,7 @@ import com.b3dgs.lionengine.core.awt.Engine;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core._1_minimal
  */
-public final class AppCollisionTile
+public class AppCollisionTile
 {
     /**
      * Main.

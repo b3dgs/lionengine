@@ -3,5 +3,31 @@
     <lionengine:surface image="Mario.png"/>
 	<lionengine:frames horizontal="7" vertical="1"/>
 	<lionengine:size width="16" height="16"/>
-	<data movementSpeed="3.0" jumpSpeed="8.0" mass="2.5"/>
+	<lionengine:collisionTileCategory name="leg_center" x="0" y="0" slide="X">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+	<lionengine:collisionTileCategory name="leg_left" x="-4" y="0" slide="X">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+	<lionengine:collisionTileCategory name="leg_right" x="4" y="0" slide="X">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+	<lionengine:collisionTileCategory name="knee_center" x="0" y="1" slide="Y">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	    <lionengine:collisionTile>WALL</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+	<lionengine:collisionTileCategory name="knee_left" x="-6" y="1" slide="Y">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	    <lionengine:collisionTile>WALL</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
+	<lionengine:collisionTileCategory name="knee_right" x="6" y="1" slide="Y">
+	    <lionengine:collisionTile>GROUND</lionengine:collisionTile>
+	    <lionengine:collisionTile>TUBE</lionengine:collisionTile>
+	    <lionengine:collisionTile>WALL</lionengine:collisionTile>
+	</lionengine:collisionTileCategory>
 </lionengine:entity>

@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.game.map.MapTileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.map
  */
-final class Map
+class Map
         extends MapTileGame<Tile>
 {
     /**
      * Constructor.
      */
-    Map()
+    public Map()
     {
         super(16, 16);
     }
