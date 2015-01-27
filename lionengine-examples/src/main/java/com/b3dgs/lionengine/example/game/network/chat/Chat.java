@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.network.purview.NetworkChat;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Chat
+class Chat
         extends NetworkChat
         implements ConnectionListener
 {
@@ -57,7 +57,7 @@ final class Chat
      * 
      * @param world The world reference.
      */
-    Chat(World<?> world)
+    public Chat(World<?> world)
     {
         super(TypeMessage.MESSAGE_CHAT.getId());
         this.world = world;

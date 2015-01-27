@@ -59,7 +59,7 @@ abstract class World<N extends NetworkedWorld>
     /**
      * @see WorldGame#WorldGame(Config)
      */
-    World(Config config)
+    public World(Config config)
     {
         super(config);
         text = Core.GRAPHIC.createText(Text.SANS_SERIF, 10, TextStyle.NORMAL);

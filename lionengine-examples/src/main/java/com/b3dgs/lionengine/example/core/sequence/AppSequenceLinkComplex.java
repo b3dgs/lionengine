@@ -15,36 +15,33 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay;
+package com.b3dgs.lionengine.example.core.sequence;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * Main class.
+ * Program starts here.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core.minimal
  */
-public class AppPlatformEntity
+public class AppSequenceLinkComplex
 {
     /**
-     * Main.
+     * Main function called by the jvm.
      * 
      * @param args The arguments.
      */
     public static void main(String[] args)
     {
-        Engine.start("Platform Entity", Version.create(1, 0, 0), Verbose.CRITICAL,
-                UtilFile.getPath("resources", "game", "platform", "entity"));
+        Engine.start("AppSequenceLinkComplex", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
-        loader.start(Scene.class);
+        loader.start(SequenceLinkComplex.class);
     }
 }

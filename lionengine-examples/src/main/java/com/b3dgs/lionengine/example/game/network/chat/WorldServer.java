@@ -27,14 +27,14 @@ import com.b3dgs.lionengine.network.NetworkedWorldServer;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class WorldServer
+class WorldServer
         extends World<NetworkedWorldModelServer>
         implements NetworkedWorldServer
 {
     /**
      * @see WorldGame#WorldGame(Config)
      */
-    WorldServer(Config config)
+    public WorldServer(Config config)
     {
         super(config);
         networkedWorld = new NetworkedWorldModelServer(new MessageDecoder());

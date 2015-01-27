@@ -30,21 +30,18 @@ import com.b3dgs.lionengine.example.game.gameplay.state.StateIdle;
 import com.b3dgs.lionengine.example.game.gameplay.state.StateJump;
 import com.b3dgs.lionengine.example.game.gameplay.state.StateTurn;
 import com.b3dgs.lionengine.example.game.gameplay.state.StateWalk;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
-import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
-import com.b3dgs.lionengine.game.purview.model.MovableModel;
-import com.b3dgs.lionengine.game.trait.Movable;
 
 /**
  * Implementation of our controllable entity.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class Mario
+class Mario
         extends EntityPlatform
         implements Movable
 {
@@ -69,7 +66,7 @@ public final class Mario
      * 
      * @param desiredFps The desired fps.
      */
-    Mario(int desiredFps)
+    public Mario(int desiredFps)
     {
         super(Mario.SETUP);
         this.desiredFps = desiredFps;

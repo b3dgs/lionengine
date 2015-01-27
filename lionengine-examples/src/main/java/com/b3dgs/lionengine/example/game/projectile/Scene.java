@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.handler.Handler;
  * Scene implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core._1_minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 class Scene
         extends Sequence

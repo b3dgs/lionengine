@@ -26,13 +26,13 @@ import com.b3dgs.lionengine.network.message.NetworkMessageDecoder;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class MessageDecoder
+class MessageDecoder
         implements NetworkMessageDecoder
 {
     /**
      * Constructor.
      */
-    MessageDecoder()
+    public MessageDecoder()
     {
         // Nothing to do
     }

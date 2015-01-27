@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.stream.FileReading;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class WorldClient
+class WorldClient
         extends World<NetworkedWorldModelClient>
         implements NetworkedWorldClient, Networkable
 {
@@ -47,7 +47,7 @@ final class WorldClient
      * 
      * @param sequence The sequence reference.
      */
-    WorldClient(Sequence sequence)
+    public WorldClient(Sequence sequence)
     {
         super(sequence.getConfig());
         networkableModel = new NetworkableModel();

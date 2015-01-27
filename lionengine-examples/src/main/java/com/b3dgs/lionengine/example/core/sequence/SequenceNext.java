@@ -15,33 +15,56 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.core._2_sequence;
+package com.b3dgs.lionengine.example.core.sequence;
 
-import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
-import com.b3dgs.lionengine.Version;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Verbose;
+import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * Program starts here.
+ * SequenceNext implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class AppSequenceLinkComplex
+class SequenceNext
+        extends Sequence
 {
     /**
-     * Main function called by the jvm.
+     * Constructor.
      * 
-     * @param args The arguments.
+     * @param loader The loader reference.
      */
-    public static void main(String[] args)
+    public SequenceNext(Loader loader)
     {
-        Engine.start("AppSequenceLinkComplex", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
-        final Resolution output = new Resolution(640, 480, 60);
-        final Config config = new Config(output, 16, true);
-        final Loader loader = new Loader(config);
-        loader.start(SequenceLinkComplex.class);
+        super(loader, new Resolution(320, 100, 32));
+    }
+
+    @Override
+    public void load()
+    {
+        System.out.println("SequenceNext loaded !");
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        end();
+    }
+
+    @Override
+    public void render(Graphic g)
+    {
+        System.out.println("I am Next !");
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        if (!hasNextSequence)
+        {
+            Engine.terminate();
+        }
     }
 }

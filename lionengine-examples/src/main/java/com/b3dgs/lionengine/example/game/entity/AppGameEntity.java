@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.handler.Handler;
  * Main class.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core._1_minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
 public class AppGameEntity
 {

@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.awt.Theme;
 import com.b3dgs.lionengine.core.awt.swing.UtilitySwing;
-import com.b3dgs.lionengine.example.core._3_drawable.AppDrawable;
+import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.collision_tile.AppCollisionTile;

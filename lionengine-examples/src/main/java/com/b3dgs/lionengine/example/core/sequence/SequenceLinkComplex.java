@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.core._2_sequence;
+package com.b3dgs.lionengine.example.core.sequence;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
@@ -24,19 +24,22 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
- * SequenceNext implementation.
+ * SequenceLinkComplex implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class SequenceNext
+class SequenceLinkComplex
         extends Sequence
 {
+    /** Count value. */
+    private int count;
+
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    public SequenceNext(Loader loader)
+    public SequenceLinkComplex(Loader loader)
     {
         super(loader, new Resolution(320, 100, 32));
     }
@@ -44,19 +47,27 @@ class SequenceNext
     @Override
     public void load()
     {
-        System.out.println("SequenceNext loaded !");
+        count = 0;
     }
 
     @Override
     public void update(double extrp)
     {
-        end();
+        count++;
+        if (count == 1)
+        {
+            start(false, SequenceNext.class);
+        }
+        if (count > 2)
+        {
+            end();
+        }
     }
 
     @Override
     public void render(Graphic g)
     {
-        System.out.println("I am Next !");
+        System.out.println("ComplexLink rendering number " + count);
     }
 
     @Override

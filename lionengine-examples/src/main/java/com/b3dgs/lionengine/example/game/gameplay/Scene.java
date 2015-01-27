@@ -23,15 +23,15 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.game.platform.CameraPlatform;
+import com.b3dgs.lionengine.game.Camera;
 
 /**
  * Game loop designed to handle our little world.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see com.b3dgs.lionengine.example.core._1_minimal
+ * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -40,7 +40,7 @@ final class Scene
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
-    private final CameraPlatform camera;
+    private final Camera camera;
     /** Mario reference. */
     private final Mario mario;
 
@@ -49,11 +49,11 @@ final class Scene
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
-        camera = new CameraPlatform(getWidth(), getHeight());
+        camera = new Camera();
         mario = new Mario(getConfig().getSource().getRate());
     }
 
