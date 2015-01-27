@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.core;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * Representation of the screen device, supporting different screen rendering type and input devices.
@@ -105,7 +106,8 @@ public interface Screen
      * 
      * @param <T> The input device.
      * @param type The input device type.
-     * @return The input instance reference, <code>null</code> if not found.
+     * @return The input instance reference.
+     * @throws LionEngineException If device not found.
      */
     <T extends InputDevice> T getInputDevice(Class<T> type);
 

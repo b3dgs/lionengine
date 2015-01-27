@@ -517,7 +517,7 @@ public abstract class Renderer
     }
 
     @Override
-    public final <T extends InputDevice> T getInputDevice(Class<T> type)
+    public final <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return screen.getInputDevice(type);
     }

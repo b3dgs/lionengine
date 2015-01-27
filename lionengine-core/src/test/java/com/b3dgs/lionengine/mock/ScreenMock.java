@@ -18,6 +18,7 @@
 package com.b3dgs.lionengine.mock;
 
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceKeyListener;
@@ -126,7 +127,7 @@ public class ScreenMock
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return null;
     }

@@ -332,7 +332,7 @@ abstract class ScreenSwt
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return type.cast(devices.get(type));
     }

@@ -26,6 +26,7 @@ import android.view.SurfaceHolder;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.Config;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -207,7 +208,7 @@ public final class ScreenAndroid
     }
 
     @Override
-    public <T extends InputDevice> T getInputDevice(Class<T> type)
+    public <T extends InputDevice> T getInputDevice(Class<T> type) throws LionEngineException
     {
         return null;
     }

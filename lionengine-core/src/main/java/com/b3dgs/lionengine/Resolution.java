@@ -42,9 +42,9 @@ public final class Resolution
     /**
      * Create a resolution.
      * 
-     * @param width The resolution width (in pixel).
-     * @param height The resolution height (in pixel).
-     * @param rate The refresh rate (usually 50 or 60).
+     * @param width The resolution width (in pixel) [> 0].
+     * @param height The resolution height (in pixel) [> 0].
+     * @param rate The refresh rate (usually 50 or 60) [>= 0].
      * @throws LionEngineException If arguments are invalid.
      */
     public Resolution(int width, int height, int rate) throws LionEngineException
