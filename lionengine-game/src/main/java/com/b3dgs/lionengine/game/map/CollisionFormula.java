@@ -18,14 +18,17 @@
 package com.b3dgs.lionengine.game.map;
 
 /**
- * List of collision referential.
+ * Describe the collision formula.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum CollisionRefential
+public interface CollisionFormula
 {
-    /** Horizontal. */
-    X,
-    /** Vertical. */
-    Y;
+    /**
+     * Compute the collision from input value.
+     * 
+     * @param input The input value.
+     * @return The output value.
+     */
+    double compute(double input);
 }

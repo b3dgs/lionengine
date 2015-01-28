@@ -36,7 +36,9 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTile;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileFormulas;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.game.utility.UtilMapTile;
@@ -236,7 +238,6 @@ public abstract class MapTileGame<T extends TileGame>
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
-        final CollisionTile collision = new CollisionTile(UtilMapTile.getCollision(nodes, pattern, number));
         final T tile = createTile();
 
         if (tile == null)
@@ -245,7 +246,6 @@ public abstract class MapTileGame<T extends TileGame>
         }
         tile.setPattern(Integer.valueOf(pattern));
         tile.setNumber(number);
-        tile.setCollision(collision);
         tile.setX(x);
         tile.setY(y);
 
@@ -265,6 +265,29 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
+     * Add the tile collisions from loaded configuration.
+     * 
+     * @param tile The tile reference.
+     * @param collisionTile The configuration reference.
+     */
+    private void addTileCollisions(T tile, Collection<ConfigCollisionTile> collisionTile)
+    {
+        final int pattern = tile.getPattern().intValue();
+        final int number = tile.getNumber();
+        for (final ConfigCollisionTile config : collisionTile)
+        {
+            if (config.getPattern() == pattern && number >= config.getStart() && number <= config.getEnd())
+            {
+                for (final String ref : config.getRef())
+                {
+                    final CollisionTile collision = getCollision(ref);
+                    tile.addCollision(collision);
+                }
+            }
+        }
+    }
+
+    /**
      * Compute the collision from current location.
      * 
      * @param category The collision tile category.
@@ -278,22 +301,12 @@ public abstract class MapTileGame<T extends TileGame>
             double y)
     {
         final T tile = getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
-        if (tile != null && category.getCollisions().contains(tile.getCollision()))
+        if (tile != null && category.getCollisions().contains(tile.getCollisions()))
         {
-            Double cx = tile.getCollisionX(x, y);
-            Double cy = tile.getCollisionY(x, y);
-            if (cx == null && cy != null && category.getSlide() != CollisionRefential.Y)
-            {
-                cx = Double.valueOf(x);
-            }
-            if (cy == null && cx != null && category.getSlide() != CollisionRefential.X)
-            {
-                cy = Double.valueOf(y);
-            }
-            if (cx != null && cy != null)
-            {
-                return new CollisionResult<>(ox - category.getOffsetX(), oy - category.getOffsetY(), tile);
-            }
+            final Double cx = tile.getCollisionX(x, y);
+            final Double cy = tile.getCollisionY(x, y);
+            return new CollisionResult<>(cx != null ? Double.valueOf(cx.doubleValue() - category.getOffsetX()) : null,
+                    cy != null ? Double.valueOf(cy.doubleValue() - category.getOffsetY()) : null, tile);
         }
         return null;
     }
@@ -308,10 +321,13 @@ public abstract class MapTileGame<T extends TileGame>
      */
     private void renderCollision(Graphic g, T tile, int x, int y)
     {
-        final ImageBuffer buffer = collisionCache.get(tile.getCollision());
-        if (buffer != null)
+        for (final CollisionTile collision : tile.getCollisions())
         {
-            g.drawImage(buffer, x, y);
+            final ImageBuffer buffer = collisionCache.get(collision);
+            if (buffer != null)
+            {
+                g.drawImage(buffer, x, y);
+            }
         }
     }
 
@@ -347,8 +363,7 @@ public abstract class MapTileGame<T extends TileGame>
 
         for (final CollisionTile collision : collisions.values())
         {
-            final Collection<CollisionFunction> functions = collision.getCollisionFunctions();
-            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(functions, this);
+            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(collision, this);
             collisionCache.put(collision, buffer);
         }
     }
@@ -395,8 +410,9 @@ public abstract class MapTileGame<T extends TileGame>
         create(width, height);
         loadPatterns(patternsDirectory);
 
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(media);
+        final Media tileCollisionformulas = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.FORMULAS_FILE_NAME);
+        final Media tileCollisions = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        final XmlNode root = Stream.loadXml(tileCollisions);
         final Collection<XmlNode> nodes = root.getChildren();
 
         final int t = file.readShort();
@@ -408,7 +424,7 @@ public abstract class MapTileGame<T extends TileGame>
                 final T tile = loadTile(nodes, file, i);
                 if (tile.getPattern().intValue() > getNumberPatterns())
                 {
-                    throw new LionEngineException(media, ERROR_PATTERN_MISSING);
+                    throw new LionEngineException(tileCollisions, ERROR_PATTERN_MISSING);
                 }
                 final int v = tile.getY() / getTileHeight();
                 final int h = tile.getX() / getTileWidth();
@@ -416,7 +432,7 @@ public abstract class MapTileGame<T extends TileGame>
                 list.set(h, tile);
             }
         }
-        loadCollisions(media);
+        loadCollisions(tileCollisionformulas, tileCollisions);
     }
 
     @Override
@@ -426,7 +442,10 @@ public abstract class MapTileGame<T extends TileGame>
         final LevelRipConverter<T> rip = new LevelRipConverter<>(levelrip, patternsDirectory, this);
         rip.start();
         this.patternsDirectory = patternsDirectory;
-        loadCollisions(Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME));
+
+        final Media tileCollisionformulas = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.FORMULAS_FILE_NAME);
+        final Media tileCollisions = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.COLLISIONS_FILE_NAME);
+        loadCollisions(tileCollisionformulas, tileCollisions);
     }
 
     @Override
@@ -468,11 +487,20 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void loadCollisions(Media media) throws LionEngineException
+    public void loadCollisions(Media tileCollisionformulas, Media tileCollisions) throws LionEngineException
     {
         removeCollisions();
-        final XmlNode root = Stream.loadXml(media);
-        final Collection<XmlNode> collisions = root.getChildren();
+
+        final XmlNode rootFormulas = Stream.loadXml(tileCollisionformulas);
+        final ConfigCollisionTileFormulas formulas = ConfigCollisionTileFormulas.create(rootFormulas);
+        for (final CollisionTile collision : formulas.getCollisions().values())
+        {
+            addCollision(collision);
+        }
+
+        final XmlNode rootCollisions = Stream.loadXml(tileCollisions);
+        final Collection<ConfigCollisionTile> collisionTile = ConfigCollisionTile.create(rootCollisions);
+
         for (int i = 0; i < heightInTile; i++)
         {
             final List<T> list = tiles.get(i);
@@ -481,26 +509,9 @@ public abstract class MapTileGame<T extends TileGame>
                 final T tile = list.get(j);
                 if (tile != null)
                 {
-                    final String name = UtilMapTile.getCollision(collisions, tile.getPattern().intValue(),
-                            tile.getNumber());
-                    if (!this.collisions.containsKey(name))
-                    {
-                        final CollisionTile collision = new CollisionTile(name);
-                        this.collisions.put(collision.getName(), collision);
-                    }
-                    tile.setCollision(this.collisions.get(name));
+                    addTileCollisions(tile, collisionTile);
                 }
             }
-        }
-        for (final XmlNode node : collisions)
-        {
-            final CollisionTile collision = this.collisions.get(node.readString(UtilMapTile.ATT_TILE_COLLISION_NAME));
-            for (final XmlNode functionNode : node.getChildren(UtilMapTile.TAG_FUNCTION))
-            {
-                final CollisionFunction function = UtilMapTile.getCollisionFunction(collision, functionNode);
-                assignCollisionFunction(collision, function);
-            }
-
         }
     }
 
@@ -577,27 +588,21 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void assignCollisionFunction(CollisionTile collision, CollisionFunction function)
+    public void addCollision(CollisionTile collision)
     {
-        collision.addCollisionFunction(function);
+        collisions.put(collision.getName(), collision);
     }
 
     @Override
-    public void removeCollisionFunction(CollisionFunction function)
+    public void removeCollision(CollisionTile collision)
     {
-        for (final CollisionTile collision : collisions.values())
-        {
-            collision.removeCollisionFunction(function);
-        }
+        collisions.remove(collision.getName());
     }
 
     @Override
     public void removeCollisions()
     {
-        for (final CollisionTile collision : collisions.values())
-        {
-            collision.removeCollisions();
-        }
+        collisions.clear();
     }
 
     @Override

@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.CollisionResult;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
@@ -87,18 +86,17 @@ public class TileCollidableModel
         if (result != null)
         {
             final TileGame tile = result.getTile();
-            if (CollisionRefential.X != category.getSlide())
+            if (result.getX() != null)
             {
-                transformable.teleportX(result.getX());
+                transformable.teleportX(result.getX().doubleValue());
             }
-            if (CollisionRefential.Y != category.getSlide())
+            if (result.getY() != null)
             {
-                transformable.teleportY(result.getY());
+                transformable.teleportY(result.getY().doubleValue());
             }
-
             for (final TileCollidableListener listener : listeners)
             {
-                listener.notifyTileCollided(tile, category.getSlide());
+                listener.notifyTileCollided(tile);
             }
         }
     }

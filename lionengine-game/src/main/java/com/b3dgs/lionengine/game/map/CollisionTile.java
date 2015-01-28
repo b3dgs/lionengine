@@ -18,10 +18,9 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 /**
- * Model implementation of the collision tile.
+ * Collision tile representation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -29,56 +28,32 @@ public class CollisionTile
 {
     /** Collision name. */
     private final String name;
-    /** Collision function. */
-    private final Collection<CollisionFunction> collisionFunctions;
+    /** Input representation. */
+    private final CollisionRange input;
+    /** Output representation. */
+    private final CollisionRange output;
+    /** Formula used. */
+    private final CollisionFormula formula;
+    /** Constraints list. */
+    private final Collection<String> constraints;
 
     /**
      * Constructor.
      * 
      * @param name The collision name.
+     * @param input The input reference.
+     * @param output The output reference.
+     * @param formula The formula used.
+     * @param constraints The constraints used.
      */
-    public CollisionTile(String name)
+    public CollisionTile(String name, CollisionRange input, CollisionRange output, CollisionFormula formula,
+            Collection<String> constraints)
     {
         this.name = name;
-        collisionFunctions = new HashSet<>();
-    }
-
-    /**
-     * Add a collision function.
-     * 
-     * @param function The collision function.
-     */
-    public void addCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.add(function);
-    }
-
-    /**
-     * Remove a collision function.
-     * 
-     * @param function The collision function to remove.
-     */
-    public void removeCollisionFunction(CollisionFunction function)
-    {
-        collisionFunctions.remove(function);
-    }
-
-    /**
-     * Remove all collisions.
-     */
-    public void removeCollisions()
-    {
-        collisionFunctions.clear();
-    }
-
-    /**
-     * Get the collision functions.
-     * 
-     * @return The collision function (must not be <code>null</code>).
-     */
-    public Collection<CollisionFunction> getCollisionFunctions()
-    {
-        return collisionFunctions;
+        this.input = input;
+        this.output = output;
+        this.formula = formula;
+        this.constraints = constraints;
     }
 
     /**
@@ -89,5 +64,45 @@ public class CollisionTile
     public String getName()
     {
         return name;
+    }
+
+    /**
+     * Get the input used.
+     * 
+     * @return The input used.
+     */
+    public CollisionRange getInput()
+    {
+        return input;
+    }
+
+    /**
+     * Get the input used.
+     * 
+     * @return The input used.
+     */
+    public CollisionRange getOutput()
+    {
+        return output;
+    }
+
+    /**
+     * Get the formula used.
+     * 
+     * @return The formula used.
+     */
+    public CollisionFormula getFormula()
+    {
+        return formula;
+    }
+
+    /**
+     * Get the constraints list.
+     * 
+     * @return The constraints list.
+     */
+    public Collection<String> getConstraints()
+    {
+        return constraints;
     }
 }

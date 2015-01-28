@@ -29,12 +29,14 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Transparency;
+import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionRefential;
+import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.map.CollisionFormula;
+import com.b3dgs.lionengine.game.map.CollisionRange;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
@@ -88,21 +90,19 @@ public class UtilMapTile
     /**
      * Create the function draw to buffer.
      * 
-     * @param functions The functions list.
+     * @param collision The collision reference.
      * @param map The map reference.
      * @return The created collision representation buffer.
      */
-    public static ImageBuffer createFunctionDraw(Collection<CollisionFunction> functions, MapTile<?> map)
+    public static ImageBuffer createFunctionDraw(CollisionTile collision, MapTile<?> map)
     {
         final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(map.getTileWidth(), map.getTileHeight(),
                 Transparency.TRANSLUCENT);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.PURPLE);
 
-        for (final CollisionFunction function : functions)
-        {
-            UtilMapTile.createFunctionDraw(g, map, function, map.getTileHeight());
-        }
+        UtilMapTile.createFunctionDraw(g, map, collision, map.getTileHeight());
+
         g.dispose();
         return buffer;
     }
@@ -289,8 +289,8 @@ public class UtilMapTile
     {
         final CollisionFunction function = new CollisionFunction();
         function.setName(functionNode.readString(UtilMapTile.ATT_FUNCTION_NAME));
-        function.setAxis(CollisionRefential.valueOf(functionNode.readString(UtilMapTile.ATT_FUNCTION_AXIS)));
-        function.setInput(CollisionRefential.valueOf(functionNode.readString(UtilMapTile.ATT_FUNCTION_INPUT)));
+        function.setAxis(Axis.valueOf(functionNode.readString(UtilMapTile.ATT_FUNCTION_AXIS)));
+        function.setInput(Axis.valueOf(functionNode.readString(UtilMapTile.ATT_FUNCTION_INPUT)));
         function.setValue(functionNode.readDouble(UtilMapTile.ATT_FUNCTION_VALUE));
         function.setOffset(functionNode.readInteger(UtilMapTile.ATT_FUNCTION_OFFSET));
         function.setRange(functionNode.readInteger(UtilMapTile.ATT_FUNCTION_MIN),
@@ -303,23 +303,30 @@ public class UtilMapTile
      * 
      * @param g The graphic buffer.
      * @param map The map reference.
-     * @param function The function to draw.
+     * @param collision The collision to draw.
      * @param tileHeight The tile height value.
      */
-    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionFunction function, int tileHeight)
+    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionTile collision, int tileHeight)
     {
-        final int min = function.getRange().getMin();
-        final int max = function.getRange().getMax();
-        switch (function.getAxis())
+        final CollisionRange range = collision.getInput();
+        final int inputMin = range.getMin();
+        final int inputMax = range.getMax();
+        switch (range.getAxis())
         {
             case X:
-                UtilMapTile.createFunctionDrawX(g, map, function, min, max, tileHeight);
+                for (int x = inputMin; x <= inputMax; x++)
+                {
+                    UtilMapTile.createFunctionDraw(g, map, collision, tileHeight, x);
+                }
                 break;
             case Y:
-                UtilMapTile.createFunctionDrawY(g, map, function, min, max, tileHeight);
+                for (int y = inputMin; y <= inputMax; y++)
+                {
+                    UtilMapTile.createFunctionDraw(g, map, collision, tileHeight, y);
+                }
                 break;
             default:
-                throw new RuntimeException("Unknown type: " + function.getAxis());
+                throw new RuntimeException("Unknown type: " + range.getAxis());
         }
     }
 
@@ -328,86 +335,34 @@ public class UtilMapTile
      * 
      * @param g The graphic buffer.
      * @param map The map reference.
-     * @param function The function to draw.
-     * @param min The minimum value.
-     * @param max The maximum value.
+     * @param collision The collision to draw.
      * @param tileHeight The tile height value.
+     * @param value The current value.
      */
-    private static void createFunctionDrawX(Graphic g, MapTile<?> map, CollisionFunction function, int min, int max,
-            int tileHeight)
+    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionTile collision, int tileHeight, int value)
     {
-        switch (function.getInput())
+        final CollisionRange range = collision.getOutput();
+        final int min = range.getMin();
+        final int max = range.getMax();
+        final CollisionFormula formula = collision.getFormula();
+        switch (range.getAxis())
         {
             case X:
-                for (int x = min; x <= max; x++)
+                final double fx = formula.compute(value);
+                if (UtilMath.isBetween(fx, min, max))
                 {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(fx, tileHeight - x, 0, 0, false);
-                }
-                for (int y = 0; y <= map.getTileHeight(); y++)
-                {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
+                    g.drawRect((int) fx, tileHeight - value, 0, 0, false);
                 }
                 break;
             case Y:
-                for (int y = min; y <= max; y++)
+                final double fy = formula.compute(value);
+                if (UtilMath.isBetween(fy, min, max))
                 {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
-                }
-                for (int x = 0; x <= map.getTileWidth(); x++)
-                {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(fx, tileHeight - x, 0, 0, false);
+                    g.drawRect((int) fy, value, 0, 0, false);
                 }
                 break;
             default:
-                throw new RuntimeException("Unknown type: " + function.getInput());
-        }
-    }
-
-    /**
-     * Create the function draw to buffer for the vertical axis.
-     * 
-     * @param g The graphic buffer.
-     * @param map The map reference.
-     * @param function The function to draw.
-     * @param min The minimum value.
-     * @param max The maximum value.
-     * @param tileHeight The tile height value.
-     */
-    private static void createFunctionDrawY(Graphic g, MapTile<?> map, CollisionFunction function, int min, int max,
-            int tileHeight)
-    {
-        switch (function.getInput())
-        {
-            case X:
-                for (int x = min; x <= max; x++)
-                {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(x, tileHeight - 1 - fx, 0, 0, false);
-                }
-                for (int y = 0; y <= map.getTileHeight(); y++)
-                {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
-                }
-                break;
-            case Y:
-                for (int y = min; y <= max; y++)
-                {
-                    final int fy = (int) function.computeCollision(y);
-                    g.drawRect(fy, y, 0, 0, false);
-                }
-                for (int x = 0; x <= map.getTileWidth(); x++)
-                {
-                    final int fx = (int) function.computeCollision(x);
-                    g.drawRect(x, tileHeight - 1 - fx, 0, 0, false);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + function.getInput());
+                throw new RuntimeException("Unknown type: " + range.getAxis());
         }
     }
 

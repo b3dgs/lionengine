@@ -17,62 +17,63 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import com.b3dgs.lionengine.game.Axis;
+
 /**
- * Represents the map collision results.
+ * Represents the range of the collision for a specified axis.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <T> The tile type used.
  */
-public class CollisionResult<T extends TileGame>
+public class CollisionRange
 {
-    /** Horizontal collision location. */
-    private final Double x;
-    /** Vertical collision location. */
-    private final Double y;
-    /** Collided tile. */
-    private final T tile;
+    /** Axis used. */
+    private final Axis axis;
+    /** Minimum value relative to tile. */
+    private final int min;
+    /** Maximum value relative to tile. */
+    private final int max;
 
     /**
-     * Create a collision result.
+     * Create a collision range.
      * 
-     * @param x The horizontal collision location (<code>null</code> if none).
-     * @param y The vertical collision location (<code>null</code> if none).
-     * @param tile The collided tile.
+     * @param axis The axis used.
+     * @param min The minimum accepted value.
+     * @param max The maximum accepted value.
      */
-    public CollisionResult(Double x, Double y, T tile)
+    public CollisionRange(Axis axis, int min, int max)
     {
-        this.x = x;
-        this.y = y;
-        this.tile = tile;
+        this.axis = axis;
+        this.min = min;
+        this.max = max;
     }
 
     /**
-     * Get the horizontal collision location.
+     * Get the axis used.
      * 
-     * @return The horizontal collision location (<code>null</code> if none).
+     * @return The axis used.
      */
-    public Double getX()
+    public Axis getAxis()
     {
-        return x;
+        return axis;
     }
 
     /**
-     * Get the vertical collision location.
+     * Get the minimum accepted value.
      * 
-     * @return The vertical collision location (<code>null</code> if none).
+     * @return The minimum accepted value.
      */
-    public Double getY()
+    public int getMin()
     {
-        return y;
+        return min;
     }
 
     /**
-     * Get the collided tile.
+     * Get the minimum accepted value.
      * 
-     * @return The collided tile.
+     * @return The minimum accepted value.
      */
-    public T getTile()
+    public int getMax()
     {
-        return tile;
+        return max;
     }
 }

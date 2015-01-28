@@ -87,7 +87,8 @@ class Scene
         map.createBlock(6, 7);
         map.createBlock(7, 7);
         map.createBlock(6, 8);
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.FORMULAS_FILE_NAME),
+                Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
 
         final Services services = new Services();
         services.add(map);

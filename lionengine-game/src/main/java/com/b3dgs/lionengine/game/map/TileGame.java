@@ -18,8 +18,11 @@
 package com.b3dgs.lionengine.game.map;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.stream.FileReading;
 
 /**
@@ -47,8 +50,8 @@ public class TileGame
     private int x;
     /** Tile y on map. */
     private int y;
-    /** Tile collision. */
-    private CollisionTile collision;
+    /** Tile collisions. */
+    private final Collection<CollisionTile> collisions;
 
     /**
      * Create a tile.
@@ -64,6 +67,7 @@ public class TileGame
         this.width = width;
         this.height = height;
         pattern = Integer.valueOf(0);
+        collisions = new HashSet<>();
         x = 0;
         y = 0;
     }
@@ -95,10 +99,10 @@ public class TileGame
      * 
      * @param collision The collision (must not be <code>null</code>).
      */
-    public void setCollision(CollisionTile collision)
+    public void addCollision(CollisionTile collision)
     {
         Check.notNull(collision);
-        this.collision = collision;
+        collisions.add(collision);
     }
 
     /**
@@ -132,17 +136,21 @@ public class TileGame
      */
     public Double getCollisionX(double x, double y)
     {
-        for (final CollisionFunction function : getCollision().getCollisionFunctions())
+        for (final CollisionTile collision : collisions)
         {
-            if (function.getAxis() == CollisionRefential.X)
+            final CollisionRange range = collision.getOutput();
+            if (range.getAxis() == Axis.X)
             {
-                final int min = function.getRange().getMin();
-                final int max = function.getRange().getMax();
-                final int input = getInputValue(function, x, y);
+                final int min = range.getMin();
+                final int max = range.getMax();
+                final int input = getInputValue(collision, x, y);
                 if (input >= min && input <= max)
                 {
-                    final double value = getX() + function.computeCollision(input);
-                    return Double.valueOf(value);
+                    final double value = getX() + collision.getFormula().compute(input);
+                    if (UtilMath.isBetween(value, min, max))
+                    {
+                        return Double.valueOf(value);
+                    }
                 }
             }
         }
@@ -158,17 +166,21 @@ public class TileGame
      */
     public Double getCollisionY(double x, double y)
     {
-        for (final CollisionFunction function : getCollision().getCollisionFunctions())
+        for (final CollisionTile collision : collisions)
         {
-            if (function.getAxis() == CollisionRefential.Y)
+            final CollisionRange range = collision.getOutput();
+            if (range.getAxis() == Axis.Y)
             {
-                final int min = function.getRange().getMin();
-                final int max = function.getRange().getMax();
-                final int input = getInputValue(function, x, y);
-                if (input >= min && input <= max)
+                final int min = range.getMin();
+                final int max = range.getMax();
+                final int input = getInputValue(collision, x, y);
+                if (UtilMath.isBetween(input, min, max))
                 {
-                    final double value = getY() + function.computeCollision(input);
-                    return Double.valueOf(value);
+                    final double value = getY() + collision.getFormula().compute(input);
+                    if (UtilMath.isBetween(value, min, max))
+                    {
+                        return Double.valueOf(value);
+                    }
                 }
             }
         }
@@ -276,26 +288,26 @@ public class TileGame
     }
 
     /**
-     * Get tile collision.
+     * Get tile collisions.
      * 
-     * @return The tile collision.
+     * @return The tile collisions.
      */
-    public CollisionTile getCollision()
+    public Collection<CollisionTile> getCollisions()
     {
-        return collision;
+        return collisions;
     }
 
     /**
      * Get the input value from the function.
      * 
-     * @param function The function used.
+     * @param collision The collision used.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The input value.
      */
-    private int getInputValue(CollisionFunction function, double x, double y)
+    private int getInputValue(CollisionTile collision, double x, double y)
     {
-        final CollisionRefential input = function.getInput();
+        final Axis input = collision.getInput().getAxis();
         switch (input)
         {
             case X:

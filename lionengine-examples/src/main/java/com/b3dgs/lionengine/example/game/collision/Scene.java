@@ -78,7 +78,7 @@ class Scene
                 Core.MEDIA.create("tile"), map);
         rip.start();
         map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
-        map.adjustCollisions();
+        map.createCollisionDraw();
 
         final Services services = new Services();
         services.add(map);

@@ -34,8 +34,8 @@ import com.b3dgs.lionengine.editor.ObjectList;
 import com.b3dgs.lionengine.editor.UtilSwt;
 import com.b3dgs.lionengine.editor.dialogs.AbstractDialog;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
@@ -169,7 +169,7 @@ public class TileCollisionComposite
         final Label axisLabel = new Label(axisComposite, SWT.NONE);
         axisLabel.setText(Messages.TileCollisionComposite_Axis);
 
-        axis = UtilSwt.createCombo(axisComposite, CollisionRefential.values());
+        axis = UtilSwt.createCombo(axisComposite, Axis.values());
         axis.setLayoutData(new GridData(16, 16));
         axis.setTextLimit(2);
     }
@@ -184,7 +184,7 @@ public class TileCollisionComposite
         final Composite formula = new Composite(parent, SWT.NONE);
         formula.setLayout(new GridLayout(5, false));
 
-        input = UtilSwt.createCombo(formula, CollisionRefential.values());
+        input = UtilSwt.createCombo(formula, Axis.values());
         input.setLayoutData(new GridData(16, 16));
         input.setTextLimit(2);
 
@@ -250,8 +250,8 @@ public class TileCollisionComposite
             @Override
             public void widgetSelected(SelectionEvent selectionEvent)
             {
-                selectedFunction.setAxis(CollisionRefential.valueOf(axis.getText()));
-                selectedFunction.setInput(CollisionRefential.valueOf(input.getText()));
+                selectedFunction.setAxis(Axis.valueOf(axis.getText()));
+                selectedFunction.setInput(Axis.valueOf(input.getText()));
                 selectedFunction.setValue(Double.parseDouble(value.getText()));
                 selectedFunction.setOffset(Integer.parseInt(offset.getText()));
                 selectedFunction.setRange(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));

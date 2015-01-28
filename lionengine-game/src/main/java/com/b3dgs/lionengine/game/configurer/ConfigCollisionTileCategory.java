@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -96,9 +95,7 @@ public class ConfigCollisionTileCategory
             }
         }
         return new ConfigCollisionTileCategory(root.readString(COLLISION_TILE_CATEGORY_NAME),
-                root.readInteger(COLLISION_TILE_CATEGORY_X), root.readInteger(COLLISION_TILE_CATEGORY_Y),
-                root.hasAttribute(COLLISION_TILE_CATEGORY_SLIDE) ? root.readString(COLLISION_TILE_CATEGORY_SLIDE)
-                        : null, collisions);
+                root.readInteger(COLLISION_TILE_CATEGORY_X), root.readInteger(COLLISION_TILE_CATEGORY_Y), collisions);
     }
 
     /** Category name. */
@@ -107,8 +104,6 @@ public class ConfigCollisionTileCategory
     private final int x;
     /** Vertical offset. */
     private final int y;
-    /** Slide used. */
-    private final CollisionRefential slide;
     /** Collision tile used list. */
     private final Collection<CollisionTile> collisions;
 
@@ -118,15 +113,13 @@ public class ConfigCollisionTileCategory
      * @param name The category name.
      * @param x The horizontal offset.
      * @param y The vertical offset.
-     * @param slide The slide referential used.
      * @param collisions The collisions used list.
      */
-    public ConfigCollisionTileCategory(String name, int x, int y, String slide, Collection<CollisionTile> collisions)
+    public ConfigCollisionTileCategory(String name, int x, int y, Collection<CollisionTile> collisions)
     {
         this.name = name;
         this.x = x;
         this.y = y;
-        this.slide = slide != null ? CollisionRefential.valueOf(slide) : null;
         this.collisions = collisions;
     }
 
@@ -148,16 +141,6 @@ public class ConfigCollisionTileCategory
     public Collection<CollisionTile> getCollisions()
     {
         return collisions;
-    }
-
-    /**
-     * Get the axis where slide should be performed.
-     * 
-     * @return The slide axis (<code>null</code> if none).
-     */
-    public CollisionRefential getSlide()
-    {
-        return slide;
     }
 
     /**

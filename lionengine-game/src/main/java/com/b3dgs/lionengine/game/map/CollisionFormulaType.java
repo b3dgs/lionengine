@@ -15,21 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
-
-import com.b3dgs.lionengine.game.map.TileGame;
+package com.b3dgs.lionengine.game.map;
 
 /**
- * Notify events from the {@link TileCollidable}.
+ * List of supported collision formula types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface TileCollidableListener
+public enum CollisionFormulaType
 {
-    /**
-     * Notify when a tile collision occurred.
-     * 
-     * @param tile The collided tile.
-     */
-    void notifyTileCollided(TileGame tile);
+    /** Linear computation. */
+    LINEAR;
 }

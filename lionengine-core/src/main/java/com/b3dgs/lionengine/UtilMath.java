@@ -29,6 +29,32 @@ import com.b3dgs.lionengine.geom.Line;
 public final class UtilMath
 {
     /**
+     * Check if value is between an interval.
+     * 
+     * @param value The value to check.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return <code>true</code> if between, <code>false</code> else.
+     */
+    public static boolean isBetween(int value, int min, int max)
+    {
+        return value >= min && value <= max;
+    }
+
+    /**
+     * Check if value is between an interval.
+     * 
+     * @param value The value to check.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return <code>true</code> if between, <code>false</code> else.
+     */
+    public static boolean isBetween(double value, int min, int max)
+    {
+        return value >= min && value <= max;
+    }
+
+    /**
      * Fix a value between an interval.
      * 
      * @param value The value to fix.

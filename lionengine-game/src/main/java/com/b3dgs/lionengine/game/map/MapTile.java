@@ -70,12 +70,14 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  * @see MapTileGame
- * @see CollisionFunction
+ * @see CollisionTile
  */
 public interface MapTile<T extends TileGame>
 {
     /** Number of horizontal tiles to make a bloc. */
     int BLOC_SIZE = 256;
+    /** Formulas file name. */
+    String FORMULAS_FILE_NAME = "tileCollisionFormulas.xml";
     /** Collisions file name. */
     String COLLISIONS_FILE_NAME = "tileCollisions.xml";
     /** Tile sheets data file name. */
@@ -160,10 +162,11 @@ public interface MapTile<T extends TileGame>
     /**
      * Load map collision from an external file.
      * 
-     * @param media The collision container.
+     * @param tileCollisionformulas The formulas descriptor.
+     * @param tileCollisions The tile collision descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions(Media media) throws LionEngineException;
+    void loadCollisions(Media tileCollisionformulas, Media tileCollisions) throws LionEngineException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -187,19 +190,18 @@ public interface MapTile<T extends TileGame>
     void clearCollisionDraw();
 
     /**
-     * Assign the collision function to all tiles with the same collision.
+     * Add a collision tile.
      * 
-     * @param collision The current collision enum.
-     * @param function The function reference.
+     * @param collision The current collision.
      */
-    void assignCollisionFunction(CollisionTile collision, CollisionFunction function);
+    void addCollision(CollisionTile collision);
 
     /**
-     * Remove a collision function.
+     * Remove a collision tile.
      * 
-     * @param function The function to remove.
+     * @param collision The collision to remove.
      */
-    void removeCollisionFunction(CollisionFunction function);
+    void removeCollision(CollisionTile collision);
 
     /**
      * Remove all collisions.

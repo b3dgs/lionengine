@@ -15,21 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.trait;
-
-import com.b3dgs.lionengine.game.map.TileGame;
+package com.b3dgs.lionengine.game.map;
 
 /**
- * Notify events from the {@link TileCollidable}.
+ * Linear collision formula implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface TileCollidableListener
+public class CollisionFormulaLinear
+        implements CollisionFormula
 {
+    /** Multiplication factor. */
+    private final double a;
+    /** Offset value. */
+    private final double b;
+
     /**
-     * Notify when a tile collision occurred.
+     * Create a linear formula.
      * 
-     * @param tile The collided tile.
+     * @param a The multiplication factor.
+     * @param b The offset value.
      */
-    void notifyTileCollided(TileGame tile);
+    public CollisionFormulaLinear(double a, double b)
+    {
+        this.a = a;
+        this.b = b;
+    }
+
+    /*
+     * CollisionFormula
+     */
+
+    @Override
+    public double compute(double input)
+    {
+        return a * input + b;
+    }
 }

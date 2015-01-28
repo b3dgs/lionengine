@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.map.CollisionRefential;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
@@ -139,9 +139,9 @@ class Mario
     }
 
     @Override
-    public void notifyTileCollided(TileGame tile, CollisionRefential slide)
+    public void notifyTileCollided(TileGame tile, Axis slide)
     {
-        if (CollisionRefential.Y != slide)
+        if (Axis.Y != slide)
         {
             body.resetGravity();
         }

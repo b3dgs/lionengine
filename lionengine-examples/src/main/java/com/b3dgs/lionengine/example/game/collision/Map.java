@@ -37,32 +37,6 @@ class Map
         super(16, 16);
     }
 
-    /**
-     * Adjust the collision.
-     */
-    public void adjustCollisions()
-    {
-        for (int tx = 0; tx < getWidthInTile(); tx++)
-        {
-            for (int ty = 0; ty < getHeightInTile(); ty++)
-            {
-                final TileGame tile = getTile(tx, ty);
-                final TileGame top = getTile(tx, ty + 1);
-                final TileGame bottom = getTile(tx, ty - 1);
-                if (top != null && tile != null && top.getCollision().getName() != null
-                        && tile.getCollision().getName() != null)
-                {
-                    tile.setCollision(getCollision("WALL"));
-                }
-                if ((top == null || top.getCollision().getName() == null) && bottom != null && tile != null
-                        && bottom.getCollision().getName() != null && tile.getCollision().getName() != null)
-                {
-                    tile.setCollision(getCollision("TUBE"));
-                }
-            }
-        }
-    }
-
     /*
      * MapTileGame
      */
