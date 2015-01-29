@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.b;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -38,13 +38,13 @@ class Map
     }
 
     @Override
-    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         return new TileGame(width, height, pattern, number, collision);
     }
 
     @Override
-    public CollisionTile getCollisionFrom(String collision)
+    public CollisionFormula getCollisionFrom(String collision)
     {
         try
         {

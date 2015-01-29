@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
 
 /**
@@ -41,7 +41,7 @@ public abstract class TileStrategy<R extends Enum<R>>
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    public TileStrategy(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileStrategy(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         super(width, height, pattern, number, collision);
     }

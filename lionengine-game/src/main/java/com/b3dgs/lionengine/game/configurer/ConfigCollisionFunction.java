@@ -18,59 +18,62 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.collision.CollisionSource;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
+import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collision range from a configurer node.
+ * Represents the collision function from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  */
-public class ConfigCollisionRange
+public final class ConfigCollisionFunction
 {
-    /** Output axis attribute. */
-    public static final String AXIS = "output";
-    /** Input min X attribute. */
-    public static final String MIN_X = "minX";
-    /** Input max X attribute. */
-    public static final String MAX_X = "maxX";
-    /** Input min Y attribute. */
-    public static final String MIN_Y = "minY";
-    /** Input max Y attribute. */
-    public static final String MAX_Y = "maxY";
-    /** Input source attribute. */
-    public static final String SOURCE = "source";
-    /** Axis type error. */
+    /** Function node. */
+    public static final String FUNCTION = Configurer.PREFIX + "function";
+    /** Type attribute. */
+    public static final String TYPE = "type";
+    /** A attribute. */
+    public static final String A = "a";
+    /** B attribute. */
+    public static final String B = "b";
+    /** Type error. */
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /**
-     * Create the collision range from its configuration.
+     * Create the collision formula.
      * 
-     * @param node The node reference.
-     * @return The collision range instance.
+     * @param parent The parent reference.
+     * @return The collision formula instance.
      * @throws LionEngineException If error when reading node.
      */
-    public static CollisionRange create(XmlNode node) throws LionEngineException
+    public static CollisionFunction create(XmlNode parent) throws LionEngineException
     {
-        final String axisName = node.readString(AXIS);
+        final XmlNode node = parent.getChild(FUNCTION);
+        final String name = node.readString(TYPE);
         try
         {
-            return new CollisionRange(Axis.valueOf(axisName), node.readInteger(MIN_X), node.readInteger(MAX_X),
-                    node.readInteger(MIN_Y), node.readInteger(MAX_Y), CollisionSource.valueOf(node.readString(SOURCE)));
+            final CollisionFunctionType type = CollisionFunctionType.valueOf(name);
+            switch (type)
+            {
+                case LINEAR:
+                    return new CollisionFunctionLinear(node.readDouble(A), node.readDouble(B));
+                default:
+                    throw new LionEngineException(ERROR_TYPE, name);
+            }
         }
         catch (final IllegalArgumentException exception)
         {
-            throw new LionEngineException(ERROR_TYPE, axisName);
+            throw new LionEngineException(ERROR_TYPE, name);
         }
     }
 
     /**
      * Constructor.
      */
-    private ConfigCollisionRange()
+    private ConfigCollisionFunction()
     {
         // Private constructor
     }

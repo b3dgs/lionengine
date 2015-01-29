@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.map;
 
 import com.b3dgs.lionengine.example.game.strategy.skills.ResourceType;
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 
 /**
@@ -31,9 +31,9 @@ public final class Tile
         extends TileStrategy<ResourceType>
 {
     /**
-     * {@link TileStrategy#TileStrategy(int, int, Integer, int, CollisionTile)}
+     * {@link TileStrategy#TileStrategy(int, int, Integer, int, CollisionFormula)}
      */
-    public Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         super(width, height, pattern, number, collision);
     }

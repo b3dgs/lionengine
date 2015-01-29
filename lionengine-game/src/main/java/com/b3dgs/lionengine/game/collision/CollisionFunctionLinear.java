@@ -15,15 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.collision;
 
 /**
- * Linear collision formula implementation.
+ * Linear collision function implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionFormulaLinear
-        implements CollisionFormula
+public class CollisionFunctionLinear
+        implements CollisionFunction
 {
     /** Multiplication factor. */
     private final double a;
@@ -36,14 +36,14 @@ public class CollisionFormulaLinear
      * @param a The multiplication factor.
      * @param b The offset value.
      */
-    public CollisionFormulaLinear(double a, double b)
+    public CollisionFunctionLinear(double a, double b)
     {
         this.a = a;
         this.b = b;
     }
 
     /*
-     * CollisionFormula
+     * CollisionFunction
      */
 
     @Override

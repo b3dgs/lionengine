@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.network.entity;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -62,7 +62,7 @@ final class Map
      */
 
     @Override
-    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         return new TileGame(width, height, pattern, number, collision);
     }

@@ -26,9 +26,9 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.map.CollisionResult;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
@@ -56,9 +56,9 @@ class Entity
     /** Camera reference. */
     private final Camera camera;
     /** Mouse click x. */
-    private int mouseX;
+    private double mouseX;
     /** Mouse click y. */
-    private int mouseY;
+    private double mouseY;
     /** Collision result. */
     private CollisionResult<Tile> result;
 
@@ -91,8 +91,8 @@ class Entity
     {
         if (mouse.hasClicked(Mouse.LEFT))
         {
-            mouseX = mouse.getX();
-            mouseY = -mouse.getY() + 240;
+            mouseX = camera.getX() + mouse.getX();
+            mouseY = camera.getY() - mouse.getY() + 240;
         }
     }
 
@@ -143,8 +143,8 @@ class Entity
             result.getTile().renderCollision(g, camera);
 
             g.setColor(ColorRgba.GREEN);
-            g.drawOval(camera, Origin.MIDDLE, result.getX(), result.getY(), transformable.getWidth() / 2,
-                    transformable.getHeight() / 2, false);
+            g.drawOval(camera, Origin.MIDDLE, result.getX().doubleValue(), result.getY().doubleValue(),
+                    transformable.getWidth() / 2, transformable.getHeight() / 2, false);
         }
         g.setColor(ColorRgba.BLUE);
         g.drawOval(camera, Origin.MIDDLE, transformable.getX(), transformable.getY(), transformable.getWidth(),

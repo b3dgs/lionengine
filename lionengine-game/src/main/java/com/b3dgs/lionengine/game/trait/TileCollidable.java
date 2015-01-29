@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.trait;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
+import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
@@ -43,5 +43,5 @@ public interface TileCollidable
      * 
      * @return The category used.
      */
-    Collection<ConfigCollisionTileCategory> getCategories();
+    Collection<CollisionCategory> getCategories();
 }

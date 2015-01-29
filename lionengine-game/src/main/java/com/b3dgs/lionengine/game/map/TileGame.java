@@ -21,17 +21,22 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.Check;
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.collision.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.game.collision.CollisionSource;
 import com.b3dgs.lionengine.stream.FileReading;
 
 /**
  * Default class tile; containing following data:
  * <ul>
  * <li><code>pattern</code> : tilesheet number</li>
- * <li><code>number</code> : tile number inside current tilesheet</li>
- * <li><code>x & y</code> : real location</li>
- * <li><code>collision</code> : collision type</li>
+ * <li><code>number</code> : tile number inside tilesheet</li>
+ * <li><code>x & y</code> : real location on map</li>
+ * <li><code>formulas</code> : collision formulas used</li>
  * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -42,16 +47,18 @@ public class TileGame
     private final int width;
     /** Tile height. */
     private final int height;
-    /** Tilesheet number where this tile is contained. */
+    /** Tilesheet number where tile is contained. */
     private Integer pattern;
-    /** Location number in the tilesheet. */
+    /** Position number in the tilesheet. */
     private int number;
-    /** Tile x on map. */
+    /** Horizontal location on map. */
     private int x;
-    /** Tile y on map. */
+    /** Vertical location on map. */
     private int y;
-    /** Tile collisions. */
-    private final Collection<CollisionTile> collisions;
+    /** The collision formulas used. */
+    private final Collection<CollisionFormula> formulas;
+    /** Error type. */
+    private static final String ERROR_TYPE = "Unknown type: ";
 
     /**
      * Create a tile.
@@ -67,7 +74,7 @@ public class TileGame
         this.width = width;
         this.height = height;
         pattern = Integer.valueOf(0);
-        collisions = new HashSet<>();
+        formulas = new HashSet<>();
         x = 0;
         y = 0;
     }
@@ -95,14 +102,31 @@ public class TileGame
     }
 
     /**
-     * Set collision.
+     * Add a formula.
      * 
-     * @param collision The collision (must not be <code>null</code>).
+     * @param formula The formula to add.
      */
-    public void addCollision(CollisionTile collision)
+    public void addCollisionFormula(CollisionFormula formula)
     {
-        Check.notNull(collision);
-        collisions.add(collision);
+        formulas.add(formula);
+    }
+
+    /**
+     * Remove a collision formula.
+     * 
+     * @param formula The formula reference.
+     */
+    public void removeCollisionFormula(CollisionFormula formula)
+    {
+        formulas.remove(formula);
+    }
+
+    /**
+     * Remove all supported collision formulas.
+     */
+    public void removeCollisionFormulas()
+    {
+        formulas.clear();
     }
 
     /**
@@ -130,26 +154,31 @@ public class TileGame
     /**
      * Get the horizontal collision location between the tile and the transformable.
      * 
+     * @param category The collision category.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The collision x (<code>null</code> if none).
      */
-    public Double getCollisionX(double x, double y)
+    public Double getCollisionX(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        for (final CollisionTile collision : collisions)
+        final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
+        for (final CollisionFormula formula : formulas)
         {
-            final CollisionRange range = collision.getOutput();
-            if (range.getAxis() == Axis.X)
+            if (formulas.contains(formula) && checkSide(formula, Axis.X, ox, oy, x, y))
             {
-                final int min = range.getMin();
-                final int max = range.getMax();
-                final int input = getInputValue(collision, x, y);
-                if (input >= min && input <= max)
+                final CollisionRange range = formula.getRange();
+                if (range.getOutput() == Axis.X)
                 {
-                    final double value = getX() + collision.getFormula().compute(input);
-                    if (UtilMath.isBetween(value, min, max))
+                    final int value = getInputValue(Axis.Y, formula, x, y);
+                    if (UtilMath.isBetween(value, range.getMinY(), range.getMaxY()))
                     {
-                        return Double.valueOf(value);
+                        final double result = formula.getFunction().compute(value);
+                        if (UtilMath.isBetween(result, range.getMinX(), range.getMaxX()))
+                        {
+                            return Double.valueOf(getX() + result);
+                        }
                     }
                 }
             }
@@ -160,26 +189,31 @@ public class TileGame
     /**
      * Get the vertical collision location between the tile and the transformable.
      * 
+     * @param category The collision category.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The collision y (<code>null</code> if none).
      */
-    public Double getCollisionY(double x, double y)
+    public Double getCollisionY(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        for (final CollisionTile collision : collisions)
+        final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
+        for (final CollisionFormula formula : formulas)
         {
-            final CollisionRange range = collision.getOutput();
-            if (range.getAxis() == Axis.Y)
+            if (formulas.contains(formula) && checkSide(formula, Axis.Y, ox, oy, x, y))
             {
-                final int min = range.getMin();
-                final int max = range.getMax();
-                final int input = getInputValue(collision, x, y);
-                if (UtilMath.isBetween(input, min, max))
+                final CollisionRange range = formula.getRange();
+                if (range.getOutput() == Axis.Y)
                 {
-                    final double value = getY() + collision.getFormula().compute(input);
-                    if (UtilMath.isBetween(value, min, max))
+                    final int value = getInputValue(Axis.X, formula, x, y);
+                    if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
                     {
-                        return Double.valueOf(value);
+                        final double result = formula.getFunction().compute(value);
+                        if (UtilMath.isBetween(result, range.getMinY(), range.getMaxY()))
+                        {
+                            return Double.valueOf(getY() + result);
+                        }
                     }
                 }
             }
@@ -288,26 +322,57 @@ public class TileGame
     }
 
     /**
-     * Get tile collisions.
+     * Get tile collision formulas.
      * 
-     * @return The tile collisions.
+     * @return The tile collision formulas.
      */
-    public Collection<CollisionTile> getCollisions()
+    public Collection<CollisionFormula> getCollisionFormulas()
     {
-        return collisions;
+        return formulas;
+    }
+
+    /**
+     * Check the collision source.
+     * 
+     * @param formula The formula reference.
+     * @param axis The axis to check.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The horizontal location.
+     * @param y The vertical location.
+     * @return <code>true</code> if arriving from right side, <code>false</code> else.
+     */
+    private boolean checkSide(CollisionFormula formula, Axis axis, double ox, double oy, double x, double y)
+    {
+        final int old = getInputValue(axis, formula, ox, oy);
+        final int value = getInputValue(axis, formula, ox, oy);
+        final CollisionSource source = formula.getRange().getSource();
+        switch (source)
+        {
+            case FROM_TOP:
+                return old > value;
+            case FROM_BOTTOM:
+                return old < value;
+            case FROM_LEFT:
+                return old < value;
+            case FROM_RIGHT:
+                return old > value;
+            default:
+                throw new LionEngineException(ERROR_TYPE, source.name());
+        }
     }
 
     /**
      * Get the input value from the function.
      * 
-     * @param collision The collision used.
+     * @param input The input used.
+     * @param formula The collision formula used.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The input value.
      */
-    private int getInputValue(CollisionTile collision, double x, double y)
+    private int getInputValue(Axis input, CollisionFormula formula, double x, double y)
     {
-        final Axis input = collision.getInput().getAxis();
         switch (input)
         {
             case X:
@@ -315,7 +380,7 @@ public class TileGame
             case Y:
                 return (int) Math.floor(y - getY());
             default:
-                throw new RuntimeException("Unknow type: " + input);
+                throw new LionEngineException(ERROR_TYPE, input.name());
         }
     }
 }

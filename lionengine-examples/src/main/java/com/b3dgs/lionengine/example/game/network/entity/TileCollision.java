@@ -20,16 +20,15 @@ package com.b3dgs.lionengine.example.game.network.entity;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 
 /**
  * List of tile collision.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TileCollision implements CollisionTile
+enum TileCollision implements CollisionFormula
 {
     /** Ground collision. */
     GROUND,
@@ -43,9 +42,9 @@ enum TileCollision implements CollisionTile
     NONE;
 
     /** Vertical collisions list. */
-    static final Collection<CollisionTile> COLLISION_VERTICAL = new HashSet<>();
+    static final Collection<CollisionFormula> COLLISION_VERTICAL = new HashSet<>();
     /** Horizontal collisions list. */
-    static final Collection<CollisionTile> COLLISION_HORIZONTAL = new HashSet<>();
+    static final Collection<CollisionFormula> COLLISION_HORIZONTAL = new HashSet<>();
 
     /**
      * Static init.
@@ -63,7 +62,7 @@ enum TileCollision implements CollisionTile
     }
 
     /** Model. */
-    private final CollisionTile model = new CollisionTile(this);
+    private final CollisionFormula model = new CollisionFormula(this);
 
     /*
      * CollisionTile
@@ -84,7 +83,7 @@ enum TileCollision implements CollisionTile
     @Override
     public void removeCollisions()
     {
-        model.removeCollisions();
+        model.removeCollisionFormulas();
     }
 
     @Override

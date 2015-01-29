@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * This is where the game loop is running.
@@ -79,26 +78,18 @@ class Scene
     @Override
     public void load()
     {
-        map.create(20, 15);
-        map.loadPatterns(Core.MEDIA.create("tile"));
-        map.createBlock(5, 7);
-        map.createBlock(5, 8);
-        map.createBlock(5, 9);
-        map.createBlock(6, 7);
-        map.createBlock(7, 7);
-        map.createBlock(6, 8);
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.FORMULAS_FILE_NAME),
-                Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
+        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        map.createCollisionDraw();
+
+        camera.setLimits(map);
+        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setLocation(2300, 0);
 
         final Services services = new Services();
         services.add(map);
         services.add(camera);
         entityRef = new Entity(services);
         entity = new Entity(services);
-
-        camera.setLimits(map);
-        camera.setView(0, 0, getWidth(), getHeight());
-        map.createCollisionDraw();
     }
 
     @Override
@@ -110,7 +101,7 @@ class Scene
         entity.update(extrp);
         if (mouse.hasClicked(Mouse.RIGHT))
         {
-            entityRef.teleport(camera.getViewpointX(mouse.getX()), camera.getViewpointY(mouse.getY()));
+            entityRef.teleport(camera.getX() + mouse.getX(), camera.getY() - mouse.getY() + 240);
         }
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {

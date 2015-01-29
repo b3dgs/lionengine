@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.cursor;
 
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 
 /**
@@ -38,7 +38,7 @@ final class Tile
      * @param number The tile number.
      * @param collision The tile collision.
      */
-    Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         super(width, height, pattern, number, collision);
     }

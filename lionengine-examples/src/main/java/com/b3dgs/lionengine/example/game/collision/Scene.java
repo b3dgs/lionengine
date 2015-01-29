@@ -77,7 +77,7 @@ class Scene
         final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
         rip.start();
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.GROUPS_FILE_NAME));
         map.createCollisionDraw();
 
         final Services services = new Services();

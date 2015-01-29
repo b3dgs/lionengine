@@ -111,7 +111,7 @@ final class Scene
         final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
                 Core.MEDIA.create("tile"), map);
         rip.start();
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.COLLISIONS_FILE_NAME));
+        map.loadCollisions(Core.MEDIA.create("tile", MapTile.GROUPS_FILE_NAME));
 
         keyboard.setHorizontalControlNegative(Keyboard.LEFT);
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);

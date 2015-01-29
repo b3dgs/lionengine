@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
 
@@ -24,42 +24,38 @@ import java.util.Collection;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionTile
+public class CollisionFormula
 {
-    /** Collision name. */
+    /** Formula name. */
     private final String name;
-    /** Input representation. */
-    private final CollisionRange input;
-    /** Output representation. */
-    private final CollisionRange output;
-    /** Formula used. */
-    private final CollisionFormula formula;
+    /** Range representation. */
+    private final CollisionRange range;
+    /** Function used. */
+    private final CollisionFunction function;
     /** Constraints list. */
-    private final Collection<String> constraints;
+    private final Collection<CollisionConstraint> constraints;
 
     /**
-     * Constructor.
+     * Create a collision formula.
      * 
-     * @param name The collision name.
-     * @param input The input reference.
-     * @param output The output reference.
-     * @param formula The formula used.
+     * @param name The formula name.
+     * @param range The range reference.
+     * @param function The function used.
      * @param constraints The constraints used.
      */
-    public CollisionTile(String name, CollisionRange input, CollisionRange output, CollisionFormula formula,
-            Collection<String> constraints)
+    public CollisionFormula(String name, CollisionRange range, CollisionFunction function,
+            Collection<CollisionConstraint> constraints)
     {
         this.name = name;
-        this.input = input;
-        this.output = output;
-        this.formula = formula;
+        this.range = range;
+        this.function = function;
         this.constraints = constraints;
     }
 
     /**
-     * Get the collision name.
+     * Get the formula name.
      * 
-     * @return The collision name.
+     * @return The formula name.
      */
     public String getName()
     {
@@ -67,33 +63,23 @@ public class CollisionTile
     }
 
     /**
-     * Get the input used.
+     * Get the range used.
      * 
-     * @return The input used.
+     * @return The range used.
      */
-    public CollisionRange getInput()
+    public CollisionRange getRange()
     {
-        return input;
+        return range;
     }
 
     /**
-     * Get the input used.
+     * Get the function used.
      * 
-     * @return The input used.
+     * @return The function used.
      */
-    public CollisionRange getOutput()
+    public CollisionFunction getFunction()
     {
-        return output;
-    }
-
-    /**
-     * Get the formula used.
-     * 
-     * @return The formula used.
-     */
-    public CollisionFormula getFormula()
-    {
-        return formula;
+        return function;
     }
 
     /**
@@ -101,7 +87,7 @@ public class CollisionTile
      * 
      * @return The constraints list.
      */
-    public Collection<String> getConstraints()
+    public Collection<CollisionConstraint> getConstraints()
     {
         return constraints;
     }

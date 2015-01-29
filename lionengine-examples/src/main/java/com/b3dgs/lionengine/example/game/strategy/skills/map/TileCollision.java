@@ -19,9 +19,8 @@ package com.b3dgs.lionengine.example.game.strategy.skills.map;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 
 /**
  * List of collision types.
@@ -29,13 +28,13 @@ import com.b3dgs.lionengine.game.map.CollisionTile;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.map
  */
-public enum TileCollision implements CollisionTile
+public enum TileCollision implements CollisionFormula
 {
     /** No collision. */
     NONE;
 
     /** Model. */
-    private final CollisionTile model = new CollisionTile(this);
+    private final CollisionFormula model = new CollisionFormula(this);
 
     /*
      * CollisionTile
@@ -56,7 +55,7 @@ public enum TileCollision implements CollisionTile
     @Override
     public void removeCollisions()
     {
-        model.removeCollisions();
+        model.removeCollisionFormulas();
     }
 
     @Override

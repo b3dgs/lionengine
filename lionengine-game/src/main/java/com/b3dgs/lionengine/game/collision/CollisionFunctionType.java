@@ -15,46 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.strategy.controlpanel;
-
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
+package com.b3dgs.lionengine.game.collision;
 
 /**
- * Tile implementation.
+ * List of supported collision function types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Tile
-        extends TileStrategy<ResourceType>
+public enum CollisionFunctionType
 {
-    /**
-     * {@link TileStrategy#TileStrategy(int, int, Integer, int, CollisionFormula)}
-     */
-    public Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
-    {
-        super(width, height, pattern, number, collision);
-    }
-
-    /*
-     * TileStrategy
-     */
-
-    @Override
-    public ResourceType checkResourceType()
-    {
-        return ResourceType.NONE;
-    }
-
-    @Override
-    public boolean checkBlocking()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean hasResources()
-    {
-        return getResourceType() != ResourceType.NONE;
-    }
+    /** Linear computation. */
+    LINEAR;
 }

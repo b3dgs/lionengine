@@ -17,56 +17,126 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.map.CollisionFormula;
-import com.b3dgs.lionengine.game.map.CollisionFormulaLinear;
-import com.b3dgs.lionengine.game.map.CollisionFormulaType;
+import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.collision.CollisionConstraint;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collision formula from a configurer node.
+ * Represents the collisions formula from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
+ * @see Collision
+ * @see XmlNode
  */
-public class ConfigCollisionFormula
+public final class ConfigCollisionFormula
 {
-    /** Formula node. */
+    /** Collision formula node. */
     public static final String FORMULA = Configurer.PREFIX + "formula";
-    /** Type attribute. */
-    public static final String TYPE = "type";
-    /** A attribute. */
-    public static final String A = "a";
-    /** B attribute. */
-    public static final String B = "b";
-    /** Type error. */
-    private static final String ERROR_TYPE = "Unknown type: ";
+    /** The formula name attribute. */
+    public static final String NAME = "name";
+    /** The formula range node. */
+    public static final String RANGE = Configurer.PREFIX + "range";
+    /** Constraint node. */
+    public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
+    /** Constraint top attribute. */
+    public static final String CONSTRAINT_TOP = "top";
+    /** Constraint bottom attribute. */
+    public static final String CONSTRAINT_BOTTOM = "bottom";
+    /** Constraint left attribute. */
+    public static final String CONSTRAINT_LEFT = "left";
+    /** Constraint right attribute. */
+    public static final String CONSTRAINT_RIGHT = "right";
 
     /**
-     * Create the collision formula.
+     * Create the formula config.
      * 
-     * @param parent The parent reference.
-     * @return The collision input instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @param root The root reference.
+     * @return The config formula instance.
+     * @throws LionEngineException If error when reading data.
      */
-    public static CollisionFormula create(XmlNode parent) throws LionEngineException
+    public static ConfigCollisionFormula create(XmlNode root) throws LionEngineException
     {
-        final XmlNode node = parent.getChild(FORMULA);
-        final String name = node.readString(TYPE);
-        try
+        final Map<String, CollisionFormula> collisions = new HashMap<>(0);
+        for (final XmlNode node : root.getChildren(FORMULA))
         {
-            final CollisionFormulaType type = CollisionFormulaType.valueOf(name);
-            switch (type)
-            {
-                case LINEAR:
-                    return new CollisionFormulaLinear(node.readDouble(A), node.readDouble(B));
-                default:
-                    throw new LionEngineException(ERROR_TYPE, name);
-            }
+            final String name = node.readString(NAME);
+            final CollisionFormula collision = createCollision(node);
+            collisions.put(name, collision);
         }
-        catch (final IllegalArgumentException exception)
+        return new ConfigCollisionFormula(collisions);
+    }
+
+    /**
+     * Create a collision formula from its node.
+     * 
+     * @param node The collision formula node.
+     * @return The tile collision formula instance.
+     * @throws LionEngineException If error when reading data.
+     */
+    private static CollisionFormula createCollision(XmlNode node) throws LionEngineException
+    {
+        final Collection<CollisionConstraint> constraints = new ArrayList<>();
+        for (final XmlNode current : node.getChildren(CONSTRAINT))
         {
-            throw new LionEngineException(ERROR_TYPE, name);
+            constraints.add(ConfigCollisionConstraint.create(current));
         }
+        return new CollisionFormula(node.readString(NAME), ConfigCollisionRange.create(node.getChild(RANGE)),
+                ConfigCollisionFunction.create(node), constraints);
+    }
+
+    /** Collision formulas list. */
+    private final Map<String, CollisionFormula> formulas;
+
+    /**
+     * Create a collision formula config map.
+     * 
+     * @param formulas The collisions formula mapping.
+     * @throws LionEngineException If error when opening the media.
+     */
+    private ConfigCollisionFormula(Map<String, CollisionFormula> formulas) throws LionEngineException
+    {
+        this.formulas = formulas;
+    }
+
+    /**
+     * Clear the formulas data.
+     */
+    public void clear()
+    {
+        formulas.clear();
+    }
+
+    /**
+     * Get a collision formula data from its name.
+     * 
+     * @param name The formula name.
+     * @return The formula reference.
+     * @throws LionEngineException If the formula with the specified name is not found.
+     */
+    public CollisionFormula getFormula(String name) throws LionEngineException
+    {
+        final CollisionFormula collision = formulas.get(name);
+        Check.notNull(collision);
+        return collision;
+    }
+
+    /**
+     * Get all formulas.
+     * 
+     * @return The unmodifiable formulas map, where key is the formula name.
+     */
+    public Map<String, CollisionFormula> getFormulas()
+    {
+        return Collections.unmodifiableMap(formulas);
     }
 }

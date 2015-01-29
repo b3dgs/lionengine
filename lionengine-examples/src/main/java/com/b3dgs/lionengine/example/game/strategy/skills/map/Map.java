@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.skills.map;
 
 import com.b3dgs.lionengine.example.game.strategy.skills.ResourceType;
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**
@@ -48,13 +48,13 @@ public final class Map
      */
 
     @Override
-    public Tile createTile(int width, int height, Integer pattern, int number, CollisionTile collision)
+    public Tile createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
         return new Tile(width, height, pattern, number, collision);
     }
 
     @Override
-    public CollisionTile getCollisionFrom(String collision)
+    public CollisionFormula getCollisionFrom(String collision)
     {
         return TileCollision.NONE;
     }

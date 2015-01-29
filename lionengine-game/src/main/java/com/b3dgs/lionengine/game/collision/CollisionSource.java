@@ -15,20 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.collision;
 
 /**
- * Describe the collision formula.
+ * Represents the list of collision source (from where the object is arriving).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface CollisionFormula
+public enum CollisionSource
 {
-    /**
-     * Compute the collision from input value.
-     * 
-     * @param input The input value.
-     * @return The output value.
-     */
-    double compute(double input);
+    /** From top. */
+    FROM_TOP,
+    /** From bottom. */
+    FROM_BOTTOM,
+    /** From left. */
+    FROM_LEFT,
+    /** From right. */
+    FROM_RIGHT;
 }

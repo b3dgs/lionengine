@@ -32,8 +32,8 @@ import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
@@ -45,7 +45,7 @@ import com.b3dgs.lionengine.stream.Stream;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum TileCollision implements CollisionTile
+    enum TileCollision implements CollisionFormula
     {
         ;
 
@@ -80,7 +80,7 @@ public class ModuleGame
     class Tile
             extends TileGame
     {
-        public Tile(int width, int height, Integer pattern, int number, CollisionTile collision)
+        public Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
         {
             super(width, height, pattern, number, collision);
         }

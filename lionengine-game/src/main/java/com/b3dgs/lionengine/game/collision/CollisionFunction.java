@@ -15,15 +15,20 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.map;
+package com.b3dgs.lionengine.game.collision;
 
 /**
- * List of supported collision formula types.
+ * Describe the collision function.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum CollisionFormulaType
+public interface CollisionFunction
 {
-    /** Linear computation. */
-    LINEAR;
+    /**
+     * Compute the collision from input value.
+     * 
+     * @param input The input value.
+     * @return The output value.
+     */
+    double compute(double input);
 }

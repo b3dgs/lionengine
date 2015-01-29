@@ -22,10 +22,11 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
+import com.b3dgs.lionengine.game.collision.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.CollisionResult;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.map.CollisionResult;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -43,7 +44,7 @@ public class TileCollidableModel
     /** Transformable owning this model. */
     private final Transformable transformable;
     /** The collisions used. */
-    private final Collection<ConfigCollisionTileCategory> categories;
+    private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
     private final MapTile<?> map;
 
@@ -72,7 +73,7 @@ public class TileCollidableModel
         listeners = new HashSet<>();
         transformable = getTrait(Transformable.class);
         map = services.get(MapTile.class);
-        categories = ConfigCollisionTileCategory.create(configurer, map);
+        categories = ConfigCollisionCategory.create(configurer, map);
     }
 
     /**
@@ -80,7 +81,7 @@ public class TileCollidableModel
      * 
      * @param category The category reference.
      */
-    private void update(ConfigCollisionTileCategory category)
+    private void update(CollisionCategory category)
     {
         final CollisionResult<?> result = map.computeCollision(transformable, category);
         if (result != null)
@@ -114,14 +115,14 @@ public class TileCollidableModel
     @Override
     public void update(double extrp)
     {
-        for (final ConfigCollisionTileCategory category : categories)
+        for (final CollisionCategory category : categories)
         {
             update(category);
         }
     }
 
     @Override
-    public Collection<ConfigCollisionTileCategory> getCategories()
+    public Collection<CollisionCategory> getCategories()
     {
         return categories;
     }

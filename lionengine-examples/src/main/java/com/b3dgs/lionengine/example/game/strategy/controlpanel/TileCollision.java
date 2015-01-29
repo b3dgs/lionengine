@@ -19,22 +19,21 @@ package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
-import com.b3dgs.lionengine.game.map.CollisionTile;
-import com.b3dgs.lionengine.game.map.CollisionTile;
 
 /**
  * List of collision types.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum TileCollision implements CollisionTile
+enum TileCollision implements CollisionFormula
 {
     /** No collision. */
     NONE;
 
     /** Model. */
-    private final CollisionTile model = new CollisionTile(this);
+    private final CollisionFormula model = new CollisionFormula(this);
 
     /*
      * CollisionTile
@@ -55,7 +54,7 @@ enum TileCollision implements CollisionTile
     @Override
     public void removeCollisions()
     {
-        model.removeCollisions();
+        model.removeCollisionFormulas();
     }
 
     @Override

@@ -27,7 +27,10 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.configurer.ConfigCollisionTileCategory;
+import com.b3dgs.lionengine.game.collision.CollisionCategory;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
@@ -49,7 +52,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * </pre>
  * 
  * </li>
- * <li>{@value #COLLISIONS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
+ * <li>{@value #GROUPS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
  * 
  * <pre>
  * {@code <lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">}
@@ -70,20 +73,20 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  * @see MapTileGame
- * @see CollisionTile
+ * @see CollisionFormula
  */
 public interface MapTile<T extends TileGame>
 {
     /** Number of horizontal tiles to make a bloc. */
     int BLOC_SIZE = 256;
-    /** Formulas file name. */
-    String FORMULAS_FILE_NAME = "tileCollisionFormulas.xml";
-    /** Collisions file name. */
-    String COLLISIONS_FILE_NAME = "tileCollisions.xml";
+    /** Collision formulas file name. */
+    String FORMULAS_FILE_NAME = "formulas.xml";
+    /** Collision groups file name. */
+    String GROUPS_FILE_NAME = "groups.xml";
     /** Tile sheets data file name. */
-    String TILE_SHEETS_FILE_NAME = "tileSheets.xml";
+    String TILE_SHEETS_FILE_NAME = "sheets.xml";
     /** Tile sheet node. */
-    String NODE_TILE_SHEET = "lionengine:tileSheet";
+    String NODE_TILE_SHEET = "lionengine:sheet";
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
@@ -139,7 +142,7 @@ public interface MapTile<T extends TileGame>
 
     /**
      * Load a map from a level rip and the associated tiles directory. A file called {@value #TILE_SHEETS_FILE_NAME} and
-     * {@value #COLLISIONS_FILE_NAME} has to be in the same directory.
+     * {@value #GROUPS_FILE_NAME} has to be in the same directory.
      * 
      * @param levelrip The file containing the levelrip as an image.
      * @param patternsDirectory The directory containing tiles themes.
@@ -162,11 +165,11 @@ public interface MapTile<T extends TileGame>
     /**
      * Load map collision from an external file.
      * 
-     * @param tileCollisionformulas The formulas descriptor.
-     * @param tileCollisions The tile collision descriptor.
+     * @param collisionFormulas The collision formulas descriptor.
+     * @param collisionGroups The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions(Media tileCollisionformulas, Media tileCollisions) throws LionEngineException;
+    void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -190,23 +193,52 @@ public interface MapTile<T extends TileGame>
     void clearCollisionDraw();
 
     /**
-     * Add a collision tile.
+     * Add a collision formula.
      * 
-     * @param collision The current collision.
+     * @param formula The collision formula reference.
      */
-    void addCollision(CollisionTile collision);
+    void addCollisionFormula(CollisionFormula formula);
 
     /**
-     * Remove a collision tile.
+     * Add a collision group.
      * 
-     * @param collision The collision to remove.
+     * @param group The collision group reference.
      */
-    void removeCollision(CollisionTile collision);
+    void addCollisionGroup(CollisionGroup group);
 
     /**
-     * Remove all collisions.
+     * Remove a collision formula.
+     * 
+     * @param formula The collision formula to remove.
      */
-    void removeCollisions();
+    void removeCollisionFormula(CollisionFormula formula);
+
+    /**
+     * Remove a collision group.
+     * 
+     * @param group The collision group to remove.
+     */
+    void removeCollisionGroup(CollisionGroup group);
+
+    /**
+     * Remove all collision formulas.
+     */
+    void removeCollisionFormulas();
+
+    /**
+     * Remove all collision groups.
+     */
+    void removeCollisionGroups();
+
+    /**
+     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
+     * to its current. This way, the localizable can not pass through a collidable tile.
+     * 
+     * @param transformable The transformable reference.
+     * @param category The collisions category to search in.
+     * @return The first tile hit, <code>null</code> if none found.
+     */
+    CollisionResult<T> computeCollision(Transformable transformable, CollisionCategory category);
 
     /**
      * Save the current collisions to the collision file.
@@ -229,7 +261,7 @@ public interface MapTile<T extends TileGame>
      *     call tile.save(file)
      * </pre>
      * 
-     * Collisions are not saved, because it is possible to retrieve them from {@value #COLLISIONS_FILE_NAME}.
+     * Collisions are not saved, because it is possible to retrieve them from {@value #GROUPS_FILE_NAME}.
      * 
      * @param file The output file.
      * @throws IOException If error on writing.
@@ -281,16 +313,6 @@ public interface MapTile<T extends TileGame>
      * @return The tile found at the localizable.
      */
     T getTile(Localizable localizable, int offsetX, int offsetY);
-
-    /**
-     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
-     * to its current. This way, the localizable can not pass through a collidable tile.
-     * 
-     * @param transformable The transformable reference.
-     * @param category The collisions list to search for.
-     * @return The first tile hit, <code>null</code> if none found.
-     */
-    CollisionResult<T> computeCollision(Transformable transformable, ConfigCollisionTileCategory category);
 
     /**
      * Get location x relative to map referential as tile.
@@ -373,19 +395,36 @@ public interface MapTile<T extends TileGame>
     int getHeightInTile();
 
     /**
-     * Get the supported collision from its name.
+     * Get the collision formula from its name.
      * 
-     * @param name The collision name.
-     * @return The supported collision from its name.
+     * @param name The collision formula name.
+     * @return The collision formula from reference.
+     * @throws LionEngineException If formula not found.
      */
-    CollisionTile getCollision(String name);
+    CollisionFormula getCollisionFormula(String name) throws LionEngineException;
 
     /**
-     * Get the supported collisions list.
+     * Get the collision group from its name.
      * 
-     * @return The supported collisions list.
+     * @param name The collision group name.
+     * @return The supported collision group reference.
+     * @throws LionEngineException If group not found.
      */
-    Collection<CollisionTile> getCollisions();
+    CollisionGroup getCollisionGroup(String name) throws LionEngineException;
+
+    /**
+     * Get the collision formulas list.
+     * 
+     * @return The collision formulas list.
+     */
+    Collection<CollisionFormula> getCollisionFormulas();
+
+    /**
+     * Get the collision groups list.
+     * 
+     * @return The collision groups list.
+     */
+    Collection<CollisionGroup> getCollisionGroups();
 
     /**
      * Get minimap surface reference.

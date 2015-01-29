@@ -35,9 +35,9 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.map.CollisionFormula;
-import com.b3dgs.lionengine.game.map.CollisionRange;
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
+import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.stream.Stream;
@@ -94,7 +94,7 @@ public class UtilMapTile
      * @param map The map reference.
      * @return The created collision representation buffer.
      */
-    public static ImageBuffer createFunctionDraw(CollisionTile collision, MapTile<?> map)
+    public static ImageBuffer createFunctionDraw(CollisionFormula collision, MapTile<?> map)
     {
         final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(map.getTileWidth(), map.getTileHeight(),
                 Transparency.TRANSLUCENT);
@@ -117,7 +117,7 @@ public class UtilMapTile
     public static void saveCollisions(MapTile<?> map, Media media) throws LionEngineException
     {
         final XmlNode root = Stream.createXmlNode(UtilMapTile.TAG_TILE_COLLISIONS);
-        for (final CollisionTile collision : map.getCollisions())
+        for (final CollisionFormula collision : map.getCollisionFormulas())
         {
             final XmlNode node = Stream.createXmlNode(UtilMapTile.TAG_TILE_COLLISION);
             node.writeString(UtilMapTile.ATT_TILE_COLLISION_NAME, collision.getName());
@@ -129,7 +129,7 @@ public class UtilMapTile
             {
                 final XmlNode functionNode = Stream.createXmlNode(UtilMapTile.TAG_FUNCTION);
                 functionNode.writeString(UtilMapTile.ATT_FUNCTION_NAME, function.getName());
-                functionNode.writeString(UtilMapTile.ATT_FUNCTION_AXIS, function.getAxis().name());
+                functionNode.writeString(UtilMapTile.ATT_FUNCTION_AXIS, function.getRange().name());
                 functionNode.writeString(UtilMapTile.ATT_FUNCTION_INPUT, function.getInput().name());
                 functionNode.writeDouble(UtilMapTile.ATT_FUNCTION_VALUE, function.getValue());
                 functionNode.writeInteger(UtilMapTile.ATT_FUNCTION_OFFSET, function.getOffset());
@@ -284,7 +284,7 @@ public class UtilMapTile
      * @return The created collision function from the node data.
      * @throws LionEngineException If error when reading.
      */
-    public static CollisionFunction getCollisionFunction(CollisionTile collision, XmlNode functionNode)
+    public static CollisionFunction getCollisionFunction(CollisionFormula collision, XmlNode functionNode)
             throws LionEngineException
     {
         final CollisionFunction function = new CollisionFunction();
@@ -303,66 +303,38 @@ public class UtilMapTile
      * 
      * @param g The graphic buffer.
      * @param map The map reference.
-     * @param collision The collision to draw.
+     * @param formula The collision formula to draw.
      * @param tileHeight The tile height value.
      */
-    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionTile collision, int tileHeight)
+    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionFormula formula, int tileHeight)
     {
-        final CollisionRange range = collision.getInput();
-        final int inputMin = range.getMin();
-        final int inputMax = range.getMax();
-        switch (range.getAxis())
-        {
-            case X:
-                for (int x = inputMin; x <= inputMax; x++)
-                {
-                    UtilMapTile.createFunctionDraw(g, map, collision, tileHeight, x);
-                }
-                break;
-            case Y:
-                for (int y = inputMin; y <= inputMax; y++)
-                {
-                    UtilMapTile.createFunctionDraw(g, map, collision, tileHeight, y);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + range.getAxis());
-        }
-    }
+        final CollisionFunction function = formula.getFunction();
+        final CollisionRange range = formula.getRange();
 
-    /**
-     * Create the function draw to buffer for the horizontal axis.
-     * 
-     * @param g The graphic buffer.
-     * @param map The map reference.
-     * @param collision The collision to draw.
-     * @param tileHeight The tile height value.
-     * @param value The current value.
-     */
-    private static void createFunctionDraw(Graphic g, MapTile<?> map, CollisionTile collision, int tileHeight, int value)
-    {
-        final CollisionRange range = collision.getOutput();
-        final int min = range.getMin();
-        final int max = range.getMax();
-        final CollisionFormula formula = collision.getFormula();
-        switch (range.getAxis())
+        for (int x = 0; x <= map.getTileWidth(); x++)
         {
-            case X:
-                final double fx = formula.compute(value);
-                if (UtilMath.isBetween(fx, min, max))
+            for (int y = 0; y <= map.getTileHeight(); y++)
+            {
+                switch (range.getOutput())
                 {
-                    g.drawRect((int) fx, tileHeight - value, 0, 0, false);
+                    case X:
+                        final double fx = function.compute(x);
+                        if (UtilMath.isBetween(fx, range.getMinX(), range.getMaxX()))
+                        {
+                            g.drawRect((int) fx, tileHeight - y - 1, 0, 0, false);
+                        }
+                        break;
+                    case Y:
+                        final double fy = function.compute(y);
+                        if (UtilMath.isBetween(fy, range.getMinY(), range.getMaxY()))
+                        {
+                            g.drawRect(x, tileHeight - (int) fy - 1, 0, 0, false);
+                        }
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown type: " + range.getOutput());
                 }
-                break;
-            case Y:
-                final double fy = formula.compute(value);
-                if (UtilMath.isBetween(fy, min, max))
-                {
-                    g.drawRect((int) fy, value, 0, 0, false);
-                }
-                break;
-            default:
-                throw new RuntimeException("Unknown type: " + range.getAxis());
+            }
         }
     }
 
@@ -420,7 +392,7 @@ public class UtilMapTile
      * @return <code>true</code> if at least on tile stored, <code>false</code> else.
      * @throws LionEngineException If error when saving tile node.
      */
-    private static boolean saveTilesCollisions(MapTile<?> map, XmlNode node, CollisionTile collision)
+    private static boolean saveTilesCollisions(MapTile<?> map, XmlNode node, CollisionFormula collision)
             throws LionEngineException
     {
         final Map<Integer, Set<Integer>> patterns = UtilMapTile.getCollisionsPattern(map, node, collision);
@@ -444,7 +416,8 @@ public class UtilMapTile
      * @param collision The current collision.
      * @return The values.
      */
-    private static Map<Integer, Set<Integer>> getCollisionsPattern(MapTile<?> map, XmlNode node, CollisionTile collision)
+    private static Map<Integer, Set<Integer>> getCollisionsPattern(MapTile<?> map, XmlNode node,
+            CollisionFormula collision)
     {
         final Map<Integer, Set<Integer>> patterns = new HashMap<>(8);
         for (int ty = 0; ty < map.getHeightInTile(); ty++)

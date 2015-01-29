@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.map.CollisionTile;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
 import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
@@ -49,7 +49,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
      * @param tileHeight The tile height.
      * @param collisions The collisions list.
      */
-    public MapTileStrategy(int tileWidth, int tileHeight, CollisionTile[] collisions)
+    public MapTileStrategy(int tileWidth, int tileHeight, CollisionFormula[] collisions)
     {
         super(tileWidth, tileHeight, collisions);
         ref = null;
@@ -76,7 +76,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
      * @param radius The search size.
      * @return The closest location found.
      */
-    public CoordTile getClosestTile(Tiled from, Tiled to, CollisionTile collision, int radius)
+    public CoordTile getClosestTile(Tiled from, Tiled to, CollisionFormula collision, int radius)
     {
         final int sx = to.getLocationInTileX();
         final int sy = to.getLocationInTileY();
@@ -198,7 +198,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
                 final T tile = getTile(h, v);
                 if (tile != null)
                 {
-                    final CollisionTile collision = tile.getCollision();
+                    final CollisionFormula collision = tile.getCollision();
                     if (collision != null)
                     {
                         tile.setResourceType(tile.checkResourceType());
