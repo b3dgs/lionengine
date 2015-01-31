@@ -27,9 +27,6 @@ import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.
@@ -74,10 +71,7 @@ class Scene
     @Override
     public void load()
     {
-        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
-                Core.MEDIA.create("tile"), map);
-        rip.start();
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.GROUPS_FILE_NAME));
+        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
         map.createCollisionDraw();
 
         final Services services = new Services();

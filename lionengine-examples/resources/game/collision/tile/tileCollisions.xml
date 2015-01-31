@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:tileCollision name="block" pattern="0" start="1" end="6">
-        <lionengine:tileCollisionRef>top</lionengine:tileCollisionRef>
-        <lionengine:tileCollisionRef>bottom</lionengine:tileCollisionRef>
-        <lionengine:tileCollisionRef>left</lionengine:tileCollisionRef>
-        <lionengine:tileCollisionRef>right</lionengine:tileCollisionRef>
-    </lionengine:tileCollision>
-</lionengine:tileCollisions>

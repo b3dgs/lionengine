@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
-	<lionengine:category name="default" x="0" y="0">
+	<lionengine:category name="horizontal" axis="X" x="0" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category name="vertical" axis="Y" x="0" y="0">
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
 </lionengine:entity>

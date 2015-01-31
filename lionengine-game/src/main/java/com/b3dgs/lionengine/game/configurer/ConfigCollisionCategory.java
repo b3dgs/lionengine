@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
@@ -40,6 +41,8 @@ public final class ConfigCollisionCategory
     public static final String CATEGORY = Configurer.PREFIX + "category";
     /** The category name attribute. */
     public static final String NAME = "name";
+    /** The category axis attribute. */
+    public static final String AXIS = "axis";
     /** The horizontal offset attribute. */
     public static final String X = "x";
     /** The vertical offset attribute. */
@@ -85,7 +88,8 @@ public final class ConfigCollisionCategory
                 formulas.add(map.getCollisionFormula(name));
             }
         }
-        return new CollisionCategory(root.readString(NAME), root.readInteger(X), root.readInteger(Y), formulas);
+        return new CollisionCategory(root.readString(NAME), Axis.valueOf(root.readString(AXIS)), root.readInteger(X),
+                root.readInteger(Y), formulas);
     }
 
     /**

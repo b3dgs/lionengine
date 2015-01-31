@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.ColorRgba;
@@ -37,6 +38,7 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
@@ -311,12 +313,12 @@ public abstract class MapTileGame<T extends TileGame>
      */
     private void loadTilesCollisions()
     {
-        for (int i = 0; i < heightInTile; i++)
+        for (int v = 0; v < heightInTile; v++)
         {
-            final List<T> list = tiles.get(i);
-            for (int j = 0; j < widthInTile; j++)
+            final List<T> list = tiles.get(v);
+            for (int h = 0; h < widthInTile; h++)
             {
-                final T tile = list.get(j);
+                final T tile = list.get(h);
                 if (tile != null)
                 {
                     tile.removeCollisionFormulas();
@@ -349,6 +351,38 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
+     * Check the tile constraints and get the removable formulas.
+     * 
+     * @param tile The current tile to check.
+     * @param h The horizontal location.
+     * @param v The vertical location.
+     * @return The formula to remove.
+     */
+    private Collection<CollisionFormula> checkConstraints(T tile, int h, int v)
+    {
+        final T top = getTile(h, v + 1);
+        final T bottom = getTile(h, v - 1);
+        final T left = getTile(h - 1, v);
+        final T right = getTile(h + 1, v);
+
+        final Collection<CollisionFormula> toRemove = new ArrayList<>();
+        for (final CollisionFormula formula : tile.getCollisionFormulas())
+        {
+            for (final CollisionConstraint constraint : formula.getConstraints())
+            {
+                if (constraint.getTop() != null && top != null && !top.getCollisionFormulas().isEmpty()
+                        || constraint.getBottom() != null && bottom != null && !bottom.getCollisionFormulas().isEmpty()
+                        || constraint.getLeft() != null && left != null && !left.getCollisionFormulas().isEmpty()
+                        || constraint.getRight() != null && right != null && !right.getCollisionFormulas().isEmpty())
+                {
+                    toRemove.add(formula);
+                }
+            }
+        }
+        return toRemove;
+    }
+
+    /**
      * Compute the collision from current location.
      * 
      * @param category The collision category.
@@ -363,11 +397,10 @@ public abstract class MapTileGame<T extends TileGame>
         final T tile = getTile((int) Math.floor(x / getTileWidth()), (int) Math.floor(y / getTileHeight()));
         if (tile != null && containsCollisionFormula(tile, category))
         {
-            final Double cx = tile.getCollisionX(category, ox, oy, x, y);
-            final Double cy = tile.getCollisionY(category, ox, oy, x, y);
-            return new CollisionResult<>(cx != null ? Double.valueOf(cx.doubleValue() - category.getOffsetX())
-                    : Double.valueOf(ox), cy != null ? Double.valueOf(cy.doubleValue() - category.getOffsetY())
-                    : Double.valueOf(oy), tile);
+            final Double cx = category.getAxis() == Axis.X ? tile.getCollisionX(category, ox, oy, x, y) : null;
+            final Double cy = category.getAxis() == Axis.Y ? tile.getCollisionY(category, ox, oy, x, y) : null;
+
+            return new CollisionResult<>(cx, cy, tile);
         }
         return null;
     }
@@ -497,23 +530,66 @@ public abstract class MapTileGame<T extends TileGame>
         final Collection<XmlNode> nodes = root.getChildren();
 
         final int t = file.readShort();
-        for (int i = 0; i < t; i++)
+        for (int v = 0; v < t; v++)
         {
             final int n = file.readShort();
-            for (int j = 0; j < n; j++)
+            for (int h = 0; h < n; h++)
             {
-                final T tile = loadTile(nodes, file, i);
+                final T tile = loadTile(nodes, file, v);
                 if (tile.getPattern().intValue() > getNumberPatterns())
                 {
                     throw new LionEngineException(tileCollisions, ERROR_PATTERN_MISSING);
                 }
-                final int v = tile.getY() / getTileHeight();
-                final int h = tile.getX() / getTileWidth();
-                final List<T> list = tiles.get(v);
-                list.set(h, tile);
+                final int th = tile.getX() / getTileWidth();
+                final int tv = tile.getY() / getTileHeight();
+                final List<T> list = tiles.get(tv);
+                list.set(th, tile);
             }
         }
         loadCollisions(tileCollisionformulas, tileCollisions);
+    }
+
+    @Override
+    public void save(FileWriting file) throws IOException
+    {
+        // Header
+        file.writeString(patternsDirectory.getPath());
+        file.writeShort((short) widthInTile);
+        file.writeShort((short) heightInTile);
+        file.writeByte((byte) tileWidth);
+        file.writeByte((byte) tileHeight);
+
+        final int step = MapTile.BLOC_SIZE;
+        final int x = Math.min(step, widthInTile);
+        final int t = (int) Math.ceil(widthInTile / (double) step);
+
+        file.writeShort((short) t);
+        for (int s = 0; s < t; s++)
+        {
+            int count = 0;
+            for (int h = 0; h < x; h++)
+            {
+                for (int v = 0; v < heightInTile; v++)
+                {
+                    if (getTile(h + s * step, v) != null)
+                    {
+                        count++;
+                    }
+                }
+            }
+            file.writeShort((short) count);
+            for (int h = 0; h < x; h++)
+            {
+                for (int v = 0; v < heightInTile; v++)
+                {
+                    final T tile = getTile(h + s * step, v);
+                    if (tile != null)
+                    {
+                        saveTile(file, tile);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -574,43 +650,34 @@ public abstract class MapTileGame<T extends TileGame>
         loadCollisionGroups(collisionGroups);
         loadTilesCollisions();
 
-        for (int i = 0; i < heightInTile; i++)
+        final Map<T, Collection<CollisionFormula>> toRemove = new HashMap<>();
+        for (int v = 0; v < heightInTile; v++)
         {
-            final List<T> list = tiles.get(i);
-            for (int j = 0; j < widthInTile; j++)
+            final List<T> list = tiles.get(v);
+            for (int h = 0; h < widthInTile; h++)
             {
-                final T tile = list.get(j);
+                final T tile = list.get(h);
                 if (tile != null)
                 {
-                    final T top = getTile(j, i + 1);
-                    final T bottom = getTile(j, i - 1);
-                    final T left = getTile(j - 1, i);
-                    final T right = getTile(j + 1, i);
-
-                    final Collection<CollisionFormula> toRemove = new ArrayList<>();
-                    for (final CollisionFormula formula : tile.getCollisionFormulas())
-                    {
-                        for (final CollisionConstraint constraint : formula.getConstraints())
-                        {
-                            if (constraint.getTop() != null && top != null && !top.getCollisionFormulas().isEmpty()
-                                    || constraint.getBottom() != null && bottom != null
-                                    && !bottom.getCollisionFormulas().isEmpty() || constraint.getLeft() != null
-                                    && left != null && !left.getCollisionFormulas().isEmpty()
-                                    || constraint.getRight() != null && right != null
-                                    && !right.getCollisionFormulas().isEmpty())
-                            {
-                                toRemove.add(formula);
-                            }
-                        }
-                    }
-                    for (final CollisionFormula formula : toRemove)
-                    {
-                        tile.removeCollisionFormula(formula);
-                    }
-                    toRemove.clear();
+                    toRemove.put(tile, checkConstraints(tile, h, v));
                 }
             }
         }
+        for (final Entry<T, Collection<CollisionFormula>> current : toRemove.entrySet())
+        {
+            final T tile = current.getKey();
+            for (final CollisionFormula formula : current.getValue())
+            {
+                tile.removeCollisionFormula(formula);
+            }
+        }
+    }
+
+    @Override
+    public void saveCollisions()
+    {
+        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.GROUPS_FILE_NAME);
+        UtilMapTile.saveCollisions(this, media);
     }
 
     @Override
@@ -623,7 +690,7 @@ public abstract class MapTileGame<T extends TileGame>
 
         // Adjust height
         final int sizeV = tiles.size();
-        for (int i = 0; i < newHeight - sizeV; i++)
+        for (int v = 0; v < newHeight - sizeV; v++)
         {
             tiles.add(new ArrayList<T>(newWidth));
         }
@@ -634,7 +701,7 @@ public abstract class MapTileGame<T extends TileGame>
 
             // Adjust width
             final int sizeH = tiles.get(y).size();
-            for (int i = 0; i < newWidth - sizeH; i++)
+            for (int h = 0; h < newWidth - sizeH; h++)
             {
                 tiles.get(y).add(null);
             }
@@ -743,71 +810,22 @@ public abstract class MapTileGame<T extends TileGame>
         {
             oh = Math.floor(h);
             ov = Math.ceil(v);
+
+            h += sx;
             CollisionResult<T> result = computeCollision(category, oh, ov, h, v);
             if (result != null)
             {
                 return result;
             }
 
-            h += sx;
+            v += sy;
             result = computeCollision(category, oh, ov, h, v);
             if (result != null)
             {
                 return result;
             }
-            v += sy;
         }
         return null;
-    }
-
-    @Override
-    public void saveCollisions()
-    {
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.GROUPS_FILE_NAME);
-        UtilMapTile.saveCollisions(this, media);
-    }
-
-    @Override
-    public void save(FileWriting file) throws IOException
-    {
-        // Header
-        file.writeString(patternsDirectory.getPath());
-        file.writeShort((short) widthInTile);
-        file.writeShort((short) heightInTile);
-        file.writeByte((byte) tileWidth);
-        file.writeByte((byte) tileHeight);
-
-        final int step = MapTile.BLOC_SIZE;
-        final int x = Math.min(step, widthInTile);
-        final int t = (int) Math.ceil(widthInTile / (double) step);
-
-        file.writeShort((short) t);
-        for (int s = 0; s < t; s++)
-        {
-            int count = 0;
-            for (int h = 0; h < x; h++)
-            {
-                for (int v = 0; v < heightInTile; v++)
-                {
-                    if (getTile(h + s * step, v) != null)
-                    {
-                        count++;
-                    }
-                }
-            }
-            file.writeShort((short) count);
-            for (int h = 0; h < x; h++)
-            {
-                for (int v = 0; v < heightInTile; v++)
-                {
-                    final T tile = getTile(h + s * step, v);
-                    if (tile != null)
-                    {
-                        saveTile(file, tile);
-                    }
-                }
-            }
-        }
     }
 
     @Override

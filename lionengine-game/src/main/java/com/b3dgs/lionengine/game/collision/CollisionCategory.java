@@ -19,6 +19,8 @@ package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.Axis;
+
 /**
  * Collision tile category.
  * 
@@ -28,6 +30,8 @@ public class CollisionCategory
 {
     /** Category name. */
     private final String name;
+    /** Working for axis. */
+    private final Axis axis;
     /** Horizontal offset. */
     private final int x;
     /** Vertical offset. */
@@ -39,13 +43,15 @@ public class CollisionCategory
      * Constructor.
      * 
      * @param name The category name.
+     * @param axis The designated axis.
      * @param x The horizontal offset.
      * @param y The vertical offset.
      * @param formulas The collision formulas used list.
      */
-    public CollisionCategory(String name, int x, int y, Collection<CollisionFormula> formulas)
+    public CollisionCategory(String name, Axis axis, int x, int y, Collection<CollisionFormula> formulas)
     {
         this.name = name;
+        this.axis = axis;
         this.x = x;
         this.y = y;
         this.formulas = formulas;
@@ -69,6 +75,16 @@ public class CollisionCategory
     public Collection<CollisionFormula> getCollisionFormulas()
     {
         return formulas;
+    }
+
+    /**
+     * Get the designated axis to use.
+     * 
+     * @return The axis used.
+     */
+    public Axis getAxis()
+    {
+        return axis;
     }
 
     /**

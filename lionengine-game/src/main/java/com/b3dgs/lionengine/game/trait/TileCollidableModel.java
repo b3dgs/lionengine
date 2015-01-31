@@ -28,7 +28,6 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Tile collidable model implementation.
@@ -86,7 +85,6 @@ public class TileCollidableModel
         final CollisionResult<?> result = map.computeCollision(transformable, category);
         if (result != null)
         {
-            final TileGame tile = result.getTile();
             if (result.getX() != null)
             {
                 transformable.teleportX(result.getX().doubleValue());
@@ -97,7 +95,7 @@ public class TileCollidableModel
             }
             for (final TileCollidableListener listener : listeners)
             {
-                listener.notifyTileCollided(tile);
+                listener.notifyTileCollided(result.getTile(), category.getAxis());
             }
         }
     }

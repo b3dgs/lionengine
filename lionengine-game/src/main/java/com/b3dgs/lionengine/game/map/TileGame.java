@@ -164,9 +164,10 @@ public class TileGame
     public Double getCollisionX(CollisionCategory category, double ox, double oy, double x, double y)
     {
         final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
+        final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
         for (final CollisionFormula formula : formulas)
         {
-            if (formulas.contains(formula) && checkSide(formula, Axis.X, ox, oy, x, y))
+            if (checkSide(formula, Axis.X, ox, oy, x, y) && tileFormulas.contains(formula))
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.X)
@@ -177,7 +178,7 @@ public class TileGame
                         final double result = formula.getFunction().compute(value);
                         if (UtilMath.isBetween(result, range.getMinX(), range.getMaxX()))
                         {
-                            return Double.valueOf(getX() + result);
+                            return Double.valueOf(getX() + result - category.getOffsetX());
                         }
                     }
                 }
@@ -199,9 +200,10 @@ public class TileGame
     public Double getCollisionY(CollisionCategory category, double ox, double oy, double x, double y)
     {
         final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
+        final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
         for (final CollisionFormula formula : formulas)
         {
-            if (formulas.contains(formula) && checkSide(formula, Axis.Y, ox, oy, x, y))
+            if (checkSide(formula, Axis.Y, ox, oy, x, y) && tileFormulas.contains(formula))
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.Y)
@@ -212,7 +214,7 @@ public class TileGame
                         final double result = formula.getFunction().compute(value);
                         if (UtilMath.isBetween(result, range.getMinY(), range.getMaxY()))
                         {
-                            return Double.valueOf(getY() + result);
+                            return Double.valueOf(getY() + result - category.getOffsetY());
                         }
                     }
                 }
@@ -345,7 +347,7 @@ public class TileGame
     private boolean checkSide(CollisionFormula formula, Axis axis, double ox, double oy, double x, double y)
     {
         final int old = getInputValue(axis, formula, ox, oy);
-        final int value = getInputValue(axis, formula, ox, oy);
+        final int value = getInputValue(axis, formula, x, y);
         final CollisionSource source = formula.getRange().getSource();
         switch (source)
         {

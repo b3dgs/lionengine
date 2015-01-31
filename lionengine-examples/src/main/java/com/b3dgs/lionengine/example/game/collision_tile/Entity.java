@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.example.game.collision_tile;
 
+import java.util.Iterator;
+
 import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Core;
@@ -26,6 +28,7 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
@@ -60,7 +63,9 @@ class Entity
     /** Mouse click y. */
     private double mouseY;
     /** Collision result. */
-    private CollisionResult<Tile> result;
+    private CollisionResult<Tile> resultX;
+    /** Collision result. */
+    private CollisionResult<Tile> resultY;
 
     /**
      * Constructor.
@@ -131,20 +136,33 @@ class Entity
     public void update(double extrp)
     {
         transformable.setLocation(mouseX, mouseY);
-        result = map.computeCollision(transformable, tileCollidable.getCategories().iterator().next());
+        final Iterator<CollisionCategory> iterator = tileCollidable.getCategories().iterator();
+        resultX = map.computeCollision(transformable, iterator.next());
+        resultY = map.computeCollision(transformable, iterator.next());
     }
 
     @Override
     public void render(Graphic g)
     {
-        if (result != null)
+        if (resultX != null)
         {
             g.setColor(ColorRgba.RED);
-            result.getTile().renderCollision(g, camera);
+            resultX.getTile().renderCollision(g, camera);
 
             g.setColor(ColorRgba.GREEN);
-            g.drawOval(camera, Origin.MIDDLE, result.getX().doubleValue(), result.getY().doubleValue(),
-                    transformable.getWidth() / 2, transformable.getHeight() / 2, false);
+            g.drawOval(camera, Origin.MIDDLE, resultX.getX() != null ? resultX.getX().doubleValue() : getX(),
+                    resultX.getY() != null ? resultX.getY().doubleValue() : getY(), transformable.getWidth() / 2,
+                    transformable.getHeight() / 2, false);
+        }
+        if (resultY != null)
+        {
+            g.setColor(ColorRgba.RED);
+            resultY.getTile().renderCollision(g, camera);
+
+            g.setColor(ColorRgba.GREEN);
+            g.drawOval(camera, Origin.MIDDLE, resultY.getX() != null ? resultY.getX().doubleValue() : getX(),
+                    resultY.getY() != null ? resultY.getY().doubleValue() : getY(), transformable.getWidth() / 2,
+                    transformable.getHeight() / 2, false);
         }
         g.setColor(ColorRgba.BLUE);
         g.drawOval(camera, Origin.MIDDLE, transformable.getX(), transformable.getY(), transformable.getWidth(),

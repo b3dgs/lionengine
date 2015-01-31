@@ -88,7 +88,7 @@ class Mario
         jump = new Force();
         movement = new Force();
         body.setVectors(movement, jump);
-        jump.setVelocity(0.2);
+        jump.setVelocity(1);
         jump.setDestination(0.0, 0.0);
 
         body.setDesiredFps(services.get(Integer.class).intValue());
@@ -116,11 +116,12 @@ class Mario
         }
         if (keyboard.isPressedOnce(Keyboard.UP))
         {
-            jump.setDirection(0.0, 8.0);
+            jump.setDirection(0.0, 16.0);
         }
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
+
         tileCollidable.update(extrp);
 
         if (transformable.getY() < 0)
@@ -139,9 +140,9 @@ class Mario
     }
 
     @Override
-    public void notifyTileCollided(TileGame tile, Axis slide)
+    public void notifyTileCollided(TileGame tile, Axis axis)
     {
-        if (Axis.Y != slide)
+        if (Axis.Y == axis)
         {
             body.resetGravity();
         }
