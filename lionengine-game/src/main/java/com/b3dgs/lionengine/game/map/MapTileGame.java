@@ -440,7 +440,8 @@ public abstract class MapTileGame<T extends TileGame>
             final ImageBuffer buffer = collisionCache.get(collision);
             if (buffer != null)
             {
-                g.drawImage(buffer, x, y);
+                // x - 1 because collision result is outside tile area
+                g.drawImage(buffer, x - 1, y);
             }
         }
     }
@@ -809,8 +810,7 @@ public abstract class MapTileGame<T extends TileGame>
         for (double h = sh, v = sv; count < norm; count++)
         {
             oh = Math.floor(h);
-            ov = Math.ceil(v);
-
+            ov = Math.floor(v);
             h += sx;
             CollisionResult<T> result = computeCollision(category, oh, ov, h, v);
             if (result != null)

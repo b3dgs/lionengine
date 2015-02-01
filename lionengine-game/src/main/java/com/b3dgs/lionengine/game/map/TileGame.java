@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.collision.CollisionSource;
 import com.b3dgs.lionengine.stream.FileReading;
 
 /**
@@ -167,7 +166,7 @@ public class TileGame
         final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
         for (final CollisionFormula formula : formulas)
         {
-            if (checkSide(formula, Axis.X, ox, oy, x, y) && tileFormulas.contains(formula))
+            if (tileFormulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.X)
@@ -175,8 +174,10 @@ public class TileGame
                     final int value = getInputValue(Axis.Y, formula, x, y);
                     if (UtilMath.isBetween(value, range.getMinY(), range.getMaxY()))
                     {
-                        final double result = formula.getFunction().compute(value);
-                        if (UtilMath.isBetween(result, range.getMinX(), range.getMaxX()))
+                        final int current = getInputValue(Axis.X, formula, x, y);
+                        final int previous = getInputValue(Axis.X, formula, ox, oy);
+                        final double result = formula.getFunction().compute(previous);
+                        if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                         {
                             return Double.valueOf(getX() + result - category.getOffsetX());
                         }
@@ -203,7 +204,7 @@ public class TileGame
         final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
         for (final CollisionFormula formula : formulas)
         {
-            if (checkSide(formula, Axis.Y, ox, oy, x, y) && tileFormulas.contains(formula))
+            if (tileFormulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.Y)
@@ -211,8 +212,10 @@ public class TileGame
                     final int value = getInputValue(Axis.X, formula, x, y);
                     if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
                     {
-                        final double result = formula.getFunction().compute(value);
-                        if (UtilMath.isBetween(result, range.getMinY(), range.getMaxY()))
+                        final int current = getInputValue(Axis.Y, formula, x, y);
+                        final int previous = getInputValue(Axis.Y, formula, ox, oy);
+                        final double result = formula.getFunction().compute(previous);
+                        if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                         {
                             return Double.valueOf(getY() + result - category.getOffsetY());
                         }
@@ -331,37 +334,6 @@ public class TileGame
     public Collection<CollisionFormula> getCollisionFormulas()
     {
         return formulas;
-    }
-
-    /**
-     * Check the collision source.
-     * 
-     * @param formula The formula reference.
-     * @param axis The axis to check.
-     * @param ox The old horizontal location.
-     * @param oy The old vertical location.
-     * @param x The horizontal location.
-     * @param y The vertical location.
-     * @return <code>true</code> if arriving from right side, <code>false</code> else.
-     */
-    private boolean checkSide(CollisionFormula formula, Axis axis, double ox, double oy, double x, double y)
-    {
-        final int old = getInputValue(axis, formula, ox, oy);
-        final int value = getInputValue(axis, formula, x, y);
-        final CollisionSource source = formula.getRange().getSource();
-        switch (source)
-        {
-            case FROM_TOP:
-                return old > value;
-            case FROM_BOTTOM:
-                return old < value;
-            case FROM_LEFT:
-                return old < value;
-            case FROM_RIGHT:
-                return old > value;
-            default:
-                throw new LionEngineException(ERROR_TYPE, source.name());
-        }
     }
 
     /**

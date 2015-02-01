@@ -88,14 +88,18 @@ public class TileCollidableModel
             if (result.getX() != null)
             {
                 transformable.teleportX(result.getX().doubleValue());
+                for (final TileCollidableListener listener : listeners)
+                {
+                    listener.notifyTileCollided(result.getTile(), category.getAxis());
+                }
             }
             if (result.getY() != null)
             {
                 transformable.teleportY(result.getY().doubleValue());
-            }
-            for (final TileCollidableListener listener : listeners)
-            {
-                listener.notifyTileCollided(result.getTile(), category.getAxis());
+                for (final TileCollidableListener listener : listeners)
+                {
+                    listener.notifyTileCollided(result.getTile(), category.getAxis());
+                }
             }
         }
     }

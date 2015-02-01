@@ -83,7 +83,7 @@ class Scene
 
         camera.setLimits(map);
         camera.setView(0, 0, getWidth(), getHeight());
-        camera.setLocation(2300, 0);
+        camera.setLocation(2400, 0);
 
         final Services services = new Services();
         services.add(map);

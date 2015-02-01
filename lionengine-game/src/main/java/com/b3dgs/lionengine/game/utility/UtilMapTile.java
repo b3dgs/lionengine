@@ -96,7 +96,7 @@ public class UtilMapTile
      */
     public static ImageBuffer createFunctionDraw(CollisionFormula collision, MapTile<?> map)
     {
-        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(map.getTileWidth(), map.getTileHeight(),
+        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(map.getTileWidth() + 2, map.getTileHeight() + 2,
                 Transparency.TRANSLUCENT);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.PURPLE);
@@ -311,24 +311,24 @@ public class UtilMapTile
         final CollisionFunction function = formula.getFunction();
         final CollisionRange range = formula.getRange();
 
-        for (int x = 0; x <= map.getTileWidth(); x++)
+        for (int x = 0; x < map.getTileWidth(); x++)
         {
-            for (int y = 0; y <= map.getTileHeight(); y++)
+            for (int y = 0; y < map.getTileHeight(); y++)
             {
                 switch (range.getOutput())
                 {
                     case X:
                         final double fx = function.compute(x);
-                        if (UtilMath.isBetween(fx, range.getMinX(), range.getMaxX()))
+                        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
                         {
-                            g.drawRect((int) fx, tileHeight - y - 1, 0, 0, false);
+                            g.drawRect((int) fx + 1, tileHeight - y, 0, 0, false);
                         }
                         break;
                     case Y:
                         final double fy = function.compute(y);
-                        if (UtilMath.isBetween(fy, range.getMinY(), range.getMaxY()))
+                        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
                         {
-                            g.drawRect(x, tileHeight - (int) fy - 1, 0, 0, false);
+                            g.drawRect(x + 1, tileHeight - (int) fy, 0, 0, false);
                         }
                         break;
                     default:

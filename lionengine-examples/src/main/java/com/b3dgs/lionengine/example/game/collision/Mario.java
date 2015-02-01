@@ -88,7 +88,7 @@ class Mario
         jump = new Force();
         movement = new Force();
         body.setVectors(movement, jump);
-        jump.setVelocity(1);
+        jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);
 
         body.setDesiredFps(services.get(Integer.class).intValue());
@@ -99,7 +99,7 @@ class Mario
         surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
-        transformable.teleport(2220, 80);
+        transformable.teleport(2500, 80);
     }
 
     @Override
@@ -108,15 +108,15 @@ class Mario
         movement.setDirection(Direction.ZERO);
         if (keyboard.isPressed(Keyboard.LEFT))
         {
-            movement.setDirection(-2, 0);
+            movement.setDirection(-1, 0);
         }
         if (keyboard.isPressed(Keyboard.RIGHT))
         {
-            movement.setDirection(2, 0);
+            movement.setDirection(1, 0);
         }
         if (keyboard.isPressedOnce(Keyboard.UP))
         {
-            jump.setDirection(0.0, 16.0);
+            jump.setDirection(0.0, 8.0);
         }
         movement.update(extrp);
         jump.update(extrp);

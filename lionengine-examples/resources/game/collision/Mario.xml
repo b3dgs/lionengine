@@ -3,7 +3,10 @@
     <lionengine:surface image="Mario.png"/>
 	<lionengine:frames horizontal="7" vertical="1"/>
 	<lionengine:size width="16" height="16"/>
-	<lionengine:category name="leg_center" axis="Y" x="0" y="-1">
+	<lionengine:category name="leg_right" axis="Y" x="6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category name="leg_left" axis="Y" x="-6" y="0">
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
 	<lionengine:category name="knee_right" axis="X" x="6" y="0">
