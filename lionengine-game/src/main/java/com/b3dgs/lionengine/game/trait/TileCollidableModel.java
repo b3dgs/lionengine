@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
@@ -28,6 +29,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
 
 /**
  * Tile collidable model implementation.
@@ -42,6 +44,8 @@ public class TileCollidableModel
     private final Collection<TileCollidableListener> listeners;
     /** Transformable owning this model. */
     private final Transformable transformable;
+    /** Body optional reference (<code>null</code> if none). */
+    private final Body body;
     /** The collisions used. */
     private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
@@ -54,6 +58,7 @@ public class TileCollidableModel
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
+     * <li>{@link Body} (optional)</li>
      * </ul>
      * The {@link Services} must provide the following services:
      * </p>
@@ -71,6 +76,7 @@ public class TileCollidableModel
         super(owner);
         listeners = new HashSet<>();
         transformable = getTrait(Transformable.class);
+        body = owner.getTrait(Body.class);
         map = services.get(MapTile.class);
         categories = ConfigCollisionCategory.create(configurer, map);
     }
@@ -88,19 +94,31 @@ public class TileCollidableModel
             if (result.getX() != null)
             {
                 transformable.teleportX(result.getX().doubleValue());
-                for (final TileCollidableListener listener : listeners)
-                {
-                    listener.notifyTileCollided(result.getTile(), category.getAxis());
-                }
+                onCollided(result.getTile(), category.getAxis());
             }
             if (result.getY() != null)
             {
                 transformable.teleportY(result.getY().doubleValue());
-                for (final TileCollidableListener listener : listeners)
+                if (body != null && Axis.Y == category.getAxis())
                 {
-                    listener.notifyTileCollided(result.getTile(), category.getAxis());
+                    body.resetGravity();
                 }
+                onCollided(result.getTile(), category.getAxis());
             }
+        }
+    }
+
+    /**
+     * Called when a collision occurred on a specified axis.
+     * 
+     * @param tile The tile reference.
+     * @param axis The axis reference.
+     */
+    private void onCollided(TileGame tile, Axis axis)
+    {
+        for (final TileCollidableListener listener : listeners)
+        {
+            listener.notifyTileCollided(tile, axis);
         }
     }
 

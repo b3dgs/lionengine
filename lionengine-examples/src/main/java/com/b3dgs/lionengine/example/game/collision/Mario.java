@@ -25,18 +25,15 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -49,7 +46,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Mario
         extends ObjectGame
-        implements Updatable, Renderable, TileCollidableListener
+        implements Updatable, Renderable
 {
     /** Setup. */
     private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("mario.xml"));
@@ -80,26 +77,31 @@ class Mario
     {
         super(SETUP, services);
 
-        transformable = new TransformableModel(this, SETUP.getConfigurer());
-        addTrait(transformable);
-        tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
-        tileCollidable.addListener(this);
-        body = new BodyModel(this);
         jump = new Force();
         movement = new Force();
+
+        transformable = new TransformableModel(this, SETUP.getConfigurer());
+        addTrait(transformable);
+
+        body = new BodyModel(this);
+        addTrait(body);
+
+        tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
+
         body.setVectors(movement, jump);
+        body.setDesiredFps(services.get(Integer.class).intValue());
+        body.setMass(2.0);
+
         jump.setVelocity(0.1);
         jump.setDestination(0.0, 0.0);
 
-        body.setDesiredFps(services.get(Integer.class).intValue());
-        body.setMass(2.0);
         keyboard = services.get(Keyboard.class);
         camera = services.get(Camera.class);
 
         surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
-        transformable.teleport(2500, 80);
+        transformable.teleport(80, 32);
     }
 
     @Override
@@ -108,11 +110,11 @@ class Mario
         movement.setDirection(Direction.ZERO);
         if (keyboard.isPressed(Keyboard.LEFT))
         {
-            movement.setDirection(-1, 0);
+            movement.setDirection(-2, 0);
         }
         if (keyboard.isPressed(Keyboard.RIGHT))
         {
-            movement.setDirection(1, 0);
+            movement.setDirection(2, 0);
         }
         if (keyboard.isPressedOnce(Keyboard.UP))
         {
@@ -137,14 +139,5 @@ class Mario
     public void render(Graphic g)
     {
         surface.render(g);
-    }
-
-    @Override
-    public void notifyTileCollided(TileGame tile, Axis axis)
-    {
-        if (Axis.Y == axis)
-        {
-            body.resetGravity();
-        }
     }
 }
