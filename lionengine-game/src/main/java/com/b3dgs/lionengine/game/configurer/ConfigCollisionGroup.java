@@ -21,16 +21,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the collision group data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Collision
- * @see XmlNode
  */
 public final class ConfigCollisionGroup
 {
@@ -49,18 +48,20 @@ public final class ConfigCollisionGroup
      * Create the size node.
      * 
      * @param root The root reference.
+     * @param map The map reference.
      * @return The config collisions instance.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public static Collection<CollisionGroup> create(XmlNode root) throws LionEngineException
+    public static Collection<CollisionGroup> create(XmlNode root, MapTile<?> map) throws LionEngineException
     {
         final Collection<CollisionGroup> collisions = new ArrayList<>();
         for (final XmlNode node : root.getChildren(GROUP))
         {
-            final Collection<String> formulas = new ArrayList<>();
+            final Collection<CollisionFormula> formulas = new ArrayList<>();
             for (final XmlNode formula : node.getChildren(ConfigCollisionFormula.FORMULA))
             {
-                formulas.add(formula.getText());
+                final String name = formula.getText();
+                formulas.add(map.getCollisionFormula(name));
             }
             final CollisionGroup collision = new CollisionGroup(node.readString(NAME), node.readInteger(PATTERN),
                     node.readInteger(START), node.readInteger(END), formulas);

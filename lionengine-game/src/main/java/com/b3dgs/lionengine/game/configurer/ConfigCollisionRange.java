@@ -20,14 +20,12 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
-import com.b3dgs.lionengine.game.collision.CollisionSource;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the collision range from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  */
 public class ConfigCollisionRange
 {
@@ -41,8 +39,6 @@ public class ConfigCollisionRange
     public static final String MIN_Y = "minY";
     /** Input max Y attribute. */
     public static final String MAX_Y = "maxY";
-    /** Input source attribute. */
-    public static final String SOURCE = "source";
     /** Axis type error. */
     private static final String ERROR_TYPE = "Unknown type: ";
 
@@ -59,7 +55,7 @@ public class ConfigCollisionRange
         try
         {
             return new CollisionRange(Axis.valueOf(axisName), node.readInteger(MIN_X), node.readInteger(MAX_X),
-                    node.readInteger(MIN_Y), node.readInteger(MAX_Y), CollisionSource.valueOf(node.readString(SOURCE)));
+                    node.readInteger(MIN_Y), node.readInteger(MAX_Y));
         }
         catch (final IllegalArgumentException exception)
         {

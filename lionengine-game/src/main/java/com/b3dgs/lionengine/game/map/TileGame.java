@@ -158,24 +158,22 @@ public class TileGame
      * @param oy The old vertical location.
      * @param x The horizontal location.
      * @param y The vertical location.
-     * @return The collision x (<code>null</code> if none).
+     * @return The horizontal collision (<code>null</code> if none).
      */
     public Double getCollisionX(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
-        final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
-        for (final CollisionFormula formula : formulas)
+        for (final CollisionFormula formula : category.getFormulas())
         {
-            if (tileFormulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
+            if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.X)
                 {
-                    final int value = getInputValue(Axis.Y, formula, x, y);
+                    final int value = getInputValue(Axis.Y, x, y);
                     if (UtilMath.isBetween(value, range.getMinY(), range.getMaxY()))
                     {
-                        final int current = getInputValue(Axis.X, formula, x, y);
-                        final int previous = getInputValue(Axis.X, formula, ox, oy);
+                        final int current = getInputValue(Axis.X, x, y);
+                        final int previous = getInputValue(Axis.X, ox, oy);
                         final double result = formula.getFunction().compute(previous);
                         if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                         {
@@ -196,24 +194,22 @@ public class TileGame
      * @param oy The old vertical location.
      * @param x The horizontal location.
      * @param y The vertical location.
-     * @return The collision y (<code>null</code> if none).
+     * @return The vertical collision (<code>null</code> if none).
      */
     public Double getCollisionY(CollisionCategory category, double ox, double oy, double x, double y)
     {
-        final Collection<CollisionFormula> formulas = category.getCollisionFormulas();
-        final Collection<CollisionFormula> tileFormulas = getCollisionFormulas();
-        for (final CollisionFormula formula : formulas)
+        for (final CollisionFormula formula : category.getFormulas())
         {
-            if (tileFormulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
+            if (formulas.contains(formula) && category.getAxis() == formula.getRange().getOutput())
             {
                 final CollisionRange range = formula.getRange();
                 if (range.getOutput() == Axis.Y)
                 {
-                    final int value = getInputValue(Axis.X, formula, x, y);
+                    final int value = getInputValue(Axis.X, x, y);
                     if (UtilMath.isBetween(value, range.getMinX(), range.getMaxX()))
                     {
-                        final int current = getInputValue(Axis.Y, formula, x, y);
-                        final int previous = getInputValue(Axis.Y, formula, ox, oy);
+                        final int current = getInputValue(Axis.Y, x, y);
+                        final int previous = getInputValue(Axis.Y, ox, oy);
                         final double result = formula.getFunction().compute(previous);
                         if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                         {
@@ -337,15 +333,14 @@ public class TileGame
     }
 
     /**
-     * Get the input value from the function.
+     * Get the input value relative to tile.
      * 
      * @param input The input used.
-     * @param formula The collision formula used.
      * @param x The horizontal location.
      * @param y The vertical location.
      * @return The input value.
      */
-    private int getInputValue(Axis input, CollisionFormula formula, double x, double y)
+    private int getInputValue(Axis input, double x, double y)
     {
         switch (input)
         {

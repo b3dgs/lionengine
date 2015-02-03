@@ -17,10 +17,13 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionConstraint;
+
 /**
  * Represents the collision constraints around a collision.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionConstraint
  */
 public class CollisionConstraint
 {

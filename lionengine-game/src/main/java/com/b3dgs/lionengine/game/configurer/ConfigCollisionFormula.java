@@ -19,13 +19,11 @@ package com.b3dgs.lionengine.game.configurer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.stream.XmlNode;
@@ -34,9 +32,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the collisions formula from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see Collision
- * @see XmlNode
  */
 public final class ConfigCollisionFormula
 {
@@ -48,14 +43,6 @@ public final class ConfigCollisionFormula
     public static final String RANGE = Configurer.PREFIX + "range";
     /** Constraint node. */
     public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
-    /** Constraint top attribute. */
-    public static final String CONSTRAINT_TOP = "top";
-    /** Constraint bottom attribute. */
-    public static final String CONSTRAINT_BOTTOM = "bottom";
-    /** Constraint left attribute. */
-    public static final String CONSTRAINT_LEFT = "left";
-    /** Constraint right attribute. */
-    public static final String CONSTRAINT_RIGHT = "right";
 
     /**
      * Create the formula config.
@@ -133,10 +120,10 @@ public final class ConfigCollisionFormula
     /**
      * Get all formulas.
      * 
-     * @return The unmodifiable formulas map, where key is the formula name.
+     * @return The formulas map, where key is the formula name.
      */
     public Map<String, CollisionFormula> getFormulas()
     {
-        return Collections.unmodifiableMap(formulas);
+        return formulas;
     }
 }

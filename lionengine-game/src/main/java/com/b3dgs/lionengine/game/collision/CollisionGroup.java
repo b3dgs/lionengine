@@ -19,34 +19,55 @@ package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.TileGame;
+
 /**
- * Represents the collision group.
+ * Represents the collision group, which can be applied to a {@link TileGame}. It allows to reference easily a set of
+ * {@link CollisionFormula} previously defined on the {@link MapTile}.
+ * Here a definition example:
+ * 
+ * <pre>
+ * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *    {@code<lionengine:group name="block" pattern="0" start="0" end="5">}
+ *       {@code<lionengine:formula>top</lionengine:formula>}
+ *       {@code<lionengine:formula>bottom</lionengine:formula>}
+ *       {@code<lionengine:formula>left</lionengine:formula>}
+ *       {@code<lionengine:formula>right</lionengine:formula>}
+ *    {@code</lionengine:group>}
+ * {@code</lionengine:groups>}
+ * 
+ * This will define 4 references to existing collisions from their name.
+ * It will be applied for each tile of pattern 0, with an index between 0 and 5.
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionGroup
  */
 public class CollisionGroup
 {
-    /** Name. */
+    /** The group Name. */
     private final String name;
-    /** Tile pattern. */
+    /** Pattern number of the accepted tile. */
     private final int pattern;
-    /** Starting tile. */
+    /** Starting tile number. */
     private final int start;
-    /** Ending tile. */
+    /** Ending tile number. */
     private final int end;
-    /** The collision formulas name. */
-    private final Collection<String> formulas;
+    /** The collision formulas used. */
+    private final Collection<CollisionFormula> formulas;
 
     /**
-     * Load collisions from configuration media.
+     * Create a collision group.
      * 
-     * @param name The tile collision name.
-     * @param pattern The tile pattern.
+     * @param name The collision group name.
+     * @param pattern The accepted pattern.
      * @param start The starting tile number.
      * @param end The ending tile number.
-     * @param formulas The collision formulas names.
+     * @param formulas The collision formulas reference.
      */
-    public CollisionGroup(String name, int pattern, int start, int end, Collection<String> formulas)
+    public CollisionGroup(String name, int pattern, int start, int end, Collection<CollisionFormula> formulas)
     {
         this.name = name;
         this.pattern = pattern;
@@ -100,7 +121,7 @@ public class CollisionGroup
      * 
      * @return The collision formulas reference.
      */
-    public Collection<String> getFormulas()
+    public Collection<CollisionFormula> getFormulas()
     {
         return formulas;
     }

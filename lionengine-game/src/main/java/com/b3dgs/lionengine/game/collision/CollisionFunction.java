@@ -17,10 +17,14 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFunction;
+
 /**
- * Describe the collision function.
+ * Describe the collision function to apply from an input value.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionFunction
+ * @see CollisionFormula
  */
 public interface CollisionFunction
 {

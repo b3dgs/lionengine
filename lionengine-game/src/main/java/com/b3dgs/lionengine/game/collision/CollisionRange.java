@@ -18,15 +18,18 @@
 package com.b3dgs.lionengine.game.collision;
 
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionRange;
 
 /**
- * Represents the range of the collision for a specified axis.
+ * Represents the range of the collision for a specified axis. It allows to restrict the computation area of the
+ * collision, depending of the input value.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionRange
  */
 public class CollisionRange
 {
-    /** Output target. */
+    /** Output target (where should be stored computation result). */
     private final Axis output;
     /** Minimum horizontal value relative to tile. */
     private final int minX;
@@ -36,8 +39,6 @@ public class CollisionRange
     private final int minY;
     /** Maximum vertical value relative to tile. */
     private final int maxY;
-    /** Source used. */
-    private final CollisionSource source;
 
     /**
      * Create a collision range.
@@ -47,16 +48,14 @@ public class CollisionRange
      * @param maxX The maximum accepted value.
      * @param minY The minimum accepted value.
      * @param maxY The maximum accepted value.
-     * @param source The soruce used.
      */
-    public CollisionRange(Axis output, int minX, int maxX, int minY, int maxY, CollisionSource source)
+    public CollisionRange(Axis output, int minX, int maxX, int minY, int maxY)
     {
         this.output = output;
         this.minX = minX;
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
-        this.source = source;
     }
 
     /**
@@ -107,15 +106,5 @@ public class CollisionRange
     public int getMaxY()
     {
         return maxY;
-    }
-
-    /**
-     * Get the collision source used.
-     * 
-     * @return The collision source used.
-     */
-    public CollisionSource getSource()
-    {
-        return source;
     }
 }

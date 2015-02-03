@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -26,9 +25,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the collisions constraint from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see Collision
- * @see XmlNode
  */
 public final class ConfigCollisionConstraint
 {
@@ -52,8 +48,11 @@ public final class ConfigCollisionConstraint
      */
     public static CollisionConstraint create(XmlNode node) throws LionEngineException
     {
-        return new CollisionConstraint(node.hasAttribute(TOP) ? node.readString(TOP) : null, node.hasAttribute(BOTTOM)
-                ? node.readString(BOTTOM) : null, node.hasAttribute(LEFT) ? node.readString(LEFT) : null,
-                node.hasAttribute(RIGHT) ? node.readString(RIGHT) : null);
+        final String top = node.hasAttribute(TOP) ? node.readString(TOP) : null;
+        final String bottom = node.hasAttribute(BOTTOM) ? node.readString(BOTTOM) : null;
+        final String left = node.hasAttribute(LEFT) ? node.readString(LEFT) : null;
+        final String right = node.hasAttribute(RIGHT) ? node.readString(RIGHT) : null;
+
+        return new CollisionConstraint(top, bottom, left, right);
     }
 }

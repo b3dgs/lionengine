@@ -148,7 +148,7 @@ public class ImportMapDialog
         try
         {
             patternsDirectory = project.getResourceMedia(new File(patternsLocationText.getText()));
-            final File patterns = new File(patternsDirectory.getFile(), MapTile.TILE_SHEETS_FILE_NAME);
+            final File patterns = new File(patternsDirectory.getFile(), MapTile.SHEETS_FILE_NAME);
             if (!patterns.isFile())
             {
                 setTipsMessage(AbstractDialog.ICON_ERROR, Messages.ImportMapDialog_ErrorPatterns);

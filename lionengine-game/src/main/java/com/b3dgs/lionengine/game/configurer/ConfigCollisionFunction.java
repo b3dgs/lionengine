@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the collision function from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  */
 public final class ConfigCollisionFunction
 {
@@ -43,7 +42,7 @@ public final class ConfigCollisionFunction
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /**
-     * Create the collision formula.
+     * Create the collision function.
      * 
      * @param parent The parent reference.
      * @return The collision formula instance.

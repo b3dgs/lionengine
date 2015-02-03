@@ -39,37 +39,24 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
  * Each tiles are stored vertically and then horizontally. A pattern represents a tilesheet number (number of surface
  * containing tiles). A map can have one or more patterns. The map picks its resources from a patterns folder, which
- * must contains the following files (and its tiles sheets):
+ * must contains the following files (and its tiles sheets image):
  * <ul>
- * <li>{@value #TILE_SHEETS_FILE_NAME} - describes the patterns used. Must be used like this:
+ * <li>{@value #SHEETS_FILE_NAME} - describes the patterns used. Must be used like this:
  * 
  * <pre>
- * {@code <lionengine:tileSheets xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code <lionengine:tileSheet>0.png</lionengine:tileSheet>}
- *     {@code <lionengine:tileSheet>1.png</lionengine:tileSheet>}
+ * {@code <lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *     {@code <lionengine:sheet>0.png</lionengine:sheet>}
+ *     {@code <lionengine:sheet>1.png</lionengine:sheet>}
  *     ...
- * {@code </lionengine:tileSheets>}
+ * {@code </lionengine:sheets>}
  * </pre>
  * 
  * </li>
- * <li>{@value #GROUPS_FILE_NAME} - defines the collision for each tiles. Must be used like this:
- * 
- * <pre>
- * {@code <lionengine:tileCollisions xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code <lionengine:tileCollision name="GROUND">}
- *         {@code <lionengine:tile number="1" pattern="0"/>}
- *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_left" offset="0" value="0.0"/>}
- *         {@code <lionengine:function axis="X" input="X" max="15" min="0" name="horizontal_right" offset="15" value="0.0"/>}
- *         {@code <lionengine:function axis="Y" input="X" max="15" min="0" name="vertical" offset="15" value="0.0"/>}
- *     {@code </lionengine:tileCollision>}
- *     ...
- * {@code </lionengine:tileCollisions>}
- * </pre>
- * 
- * </li>
+ * <li>{@value #FORMULAS_FILE_NAME} - defines the {@link CollisionFormula} which can be used.</li>
+ * <li>{@value #GROUPS_FILE_NAME} - defines the {@link CollisionGroup} for each tiles.</li>
  * </ul>
  * 
- * @param <T> Tile type used.
+ * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see TileGame
  * @see MapTileGame
@@ -77,16 +64,16 @@ import com.b3dgs.lionengine.stream.FileWriting;
  */
 public interface MapTile<T extends TileGame>
 {
-    /** Number of horizontal tiles to make a bloc. */
-    int BLOC_SIZE = 256;
+    /** Tile sheets data file name. */
+    String SHEETS_FILE_NAME = "sheets.xml";
     /** Collision formulas file name. */
     String FORMULAS_FILE_NAME = "formulas.xml";
     /** Collision groups file name. */
     String GROUPS_FILE_NAME = "groups.xml";
-    /** Tile sheets data file name. */
-    String TILE_SHEETS_FILE_NAME = "sheets.xml";
     /** Tile sheet node. */
     String NODE_TILE_SHEET = "lionengine:sheet";
+    /** Number of horizontal tiles to make a bloc. */
+    int BLOC_SIZE = 256;
 
     /**
      * Create and prepare map memory area. Must be called before assigning tiles.
@@ -141,7 +128,7 @@ public interface MapTile<T extends TileGame>
     void load(FileReading file) throws IOException, LionEngineException;
 
     /**
-     * Load a map from a level rip and the associated tiles directory. A file called {@value #TILE_SHEETS_FILE_NAME} and
+     * Load a map from a level rip and the associated tiles directory. A file called {@value #SHEETS_FILE_NAME} and
      * {@value #GROUPS_FILE_NAME} has to be in the same directory.
      * 
      * @param levelrip The file containing the levelrip as an image.
@@ -152,7 +139,7 @@ public interface MapTile<T extends TileGame>
 
     /**
      * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
-     * {@value #TILE_SHEETS_FILE_NAME} which describes the tile sheets used.
+     * {@value #SHEETS_FILE_NAME} which describes the tile sheets used.
      * <p>
      * Patterns number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
      * </p>
@@ -231,12 +218,12 @@ public interface MapTile<T extends TileGame>
     void removeCollisionGroups();
 
     /**
-     * Get the first tile hit by the localizable that contains collision, applying a ray tracing from its old location
-     * to its current. This way, the localizable can not pass through a collidable tile.
+     * Search first tile hit by the transformable that contains collision, applying a ray tracing from its old location
+     * to its current. This way, the transformable can not pass through a collidable tile.
      * 
      * @param transformable The transformable reference.
      * @param category The collisions category to search in.
-     * @return The first tile hit, <code>null</code> if none found.
+     * @return The collision result, <code>null</code> if nothing found.
      */
     CollisionResult<T> computeCollision(Transformable transformable, CollisionCategory category);
 
@@ -398,7 +385,7 @@ public interface MapTile<T extends TileGame>
      * Get the collision formula from its name.
      * 
      * @param name The collision formula name.
-     * @return The collision formula from reference.
+     * @return The collision formula from name reference.
      * @throws LionEngineException If formula not found.
      */
     CollisionFormula getCollisionFormula(String name) throws LionEngineException;

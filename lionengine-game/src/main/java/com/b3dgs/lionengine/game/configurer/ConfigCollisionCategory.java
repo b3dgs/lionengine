@@ -23,17 +23,14 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Collision tile category.
+ * Represents the collision category configuration from a configurer file.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
  */
 public final class ConfigCollisionCategory
 {
@@ -78,18 +75,15 @@ public final class ConfigCollisionCategory
      */
     public static CollisionCategory create(XmlNode root, MapTile<?> map) throws LionEngineException
     {
-        final Collection<CollisionFormula> formulas = new ArrayList<>();
+        final Collection<CollisionGroup> groups = new ArrayList<>();
         for (final XmlNode groupNode : root.getChildren(ConfigCollisionGroup.GROUP))
         {
             final String groupName = groupNode.getText();
             final CollisionGroup group = map.getCollisionGroup(groupName);
-            for (final String name : group.getFormulas())
-            {
-                formulas.add(map.getCollisionFormula(name));
-            }
+            groups.add(group);
         }
         return new CollisionCategory(root.readString(NAME), Axis.valueOf(root.readString(AXIS)), root.readInteger(X),
-                root.readInteger(Y), formulas);
+                root.readInteger(Y), groups);
     }
 
     /**

@@ -18,49 +18,81 @@
 package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
- * Collision tile category.
+ * Collision category, representing a collision point at a specified offset relative to the owner position. Computation
+ * is performed depending of the defined {@link CollisionGroup} (and their associated {@link CollisionFormula}).
+ * Here a definition example:
+ * 
+ * <pre>
+ *  {@code<lionengine:category name="leg_right" axis="Y" x="6" y="0">}
+ *     {@code<lionengine:group>block</lionengine:group>}
+ *  {@code</lionengine:category>}
+ *  
+ *  {@code<lionengine:category name="leg_left" axis="Y" x="-6" y="0">}
+ *     {@code<lionengine:group>block</lionengine:group>}
+ *  {@code</lionengine:category>}
+ *  
+ *  {@code<lionengine:category name="knee_right" axis="X" x="6" y="0">}
+ *     {@code<lionengine:group>block</lionengine:group>}
+ *  {@code</lionengine:category>}
+ *  
+ *  {@code<lionengine:category name="knee_left" axis="X" x="-6" y="0">}
+ *     {@code<lionengine:group>block</lionengine:group>}
+ *  {@code</lionengine:category>}
+ *  
+ *  This will define 4 collision points (for ground collision and their borders, plus vertical elements for horizontal
+ * collision).
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionCategory
+ * @see CollisionFormula
  */
 public class CollisionCategory
 {
     /** Category name. */
     private final String name;
-    /** Working for axis. */
+    /** Working for this axis. */
     private final Axis axis;
-    /** Horizontal offset. */
+    /** Horizontal offset relative to collision owner. */
     private final int x;
-    /** Vertical offset. */
+    /** Vertical offset relative to collision owner. */
     private final int y;
-    /** Collision tile used list. */
+    /** Collision formula used list (each must be available in {@link MapTile#getCollisionFormula(String)}. */
     private final Collection<CollisionFormula> formulas;
 
     /**
      * Constructor.
      * 
      * @param name The category name.
-     * @param axis The designated axis.
+     * @param axis The designated axis to apply collision.
      * @param x The horizontal offset.
      * @param y The vertical offset.
-     * @param formulas The collision formulas used list.
+     * @param groups The collision groups used.
      */
-    public CollisionCategory(String name, Axis axis, int x, int y, Collection<CollisionFormula> formulas)
+    public CollisionCategory(String name, Axis axis, int x, int y, Collection<CollisionGroup> groups)
     {
         this.name = name;
         this.axis = axis;
         this.x = x;
         this.y = y;
-        this.formulas = formulas;
+        formulas = new HashSet<>();
+        for (final CollisionGroup group : groups)
+        {
+            formulas.addAll(group.getFormulas());
+        }
     }
 
     /**
-     * Get the category name.
+     * Get the collision category name.
      * 
-     * @return The category name.
+     * @return The collision category name.
      */
     public String getName()
     {
@@ -72,7 +104,7 @@ public class CollisionCategory
      * 
      * @return The collision formulas list.
      */
-    public Collection<CollisionFormula> getCollisionFormulas()
+    public Collection<CollisionFormula> getFormulas()
     {
         return formulas;
     }
@@ -88,9 +120,9 @@ public class CollisionCategory
     }
 
     /**
-     * Get the horizontal tile collision check offset.
+     * Get the horizontal offset relative to owner for collision checking.
      * 
-     * @return The horizontal tile collision check offset.
+     * @return The horizontal offset relative to owner for collision checking.
      */
     public int getOffsetX()
     {
@@ -98,9 +130,9 @@ public class CollisionCategory
     }
 
     /**
-     * Get the vertical tile collision check offset.
+     * Get the vertical offset relative to owner for collision checking.
      * 
-     * @return The vertical tile collision check offset.
+     * @return The vertical offset relative to owner for collision checking.
      */
     public int getOffsetY()
     {

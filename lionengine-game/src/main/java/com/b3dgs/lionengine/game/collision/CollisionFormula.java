@@ -19,10 +19,44 @@ package com.b3dgs.lionengine.game.collision;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
+
 /**
- * Collision tile representation.
+ * Collision formula representation. It define the way of collision is computed, and its constraints compared to
+ * adjacent tiles.
+ * 
+ * <pre>
+ * {@code<lionengine:formulas xmlns:lionengine="http://lionengine.b3dgs.com">}
+ *     {@code<lionengine:formula name="top">}
+ *         {@code<lionengine:range output="Y" minX="0" maxX="15" minY="15" maxY="15"/>}
+ *         {@code<lionengine:function type="LINEAR" a="0" b="16"/>}
+ *         {@code<lionengine:constraint top="none"/>}
+ *     {@code</lionengine:formula>}
+ *     {@code<lionengine:formula name="bottom">}
+ *         {@code<lionengine:range output="Y" minX="0" maxX="15" minY="0" maxY="0"/>}
+ *         {@code<lionengine:function type="LINEAR" a="0" b="-1"/>}
+ *         {@code<lionengine:constraint bottom="none"/>}
+ *     {@code</lionengine:formula>}
+ *     {@code<lionengine:formula name="left">}
+ *         {@code<lionengine:range output="X" minX="0" maxX="0" minY="0" maxY="15"/>}
+ *         {@code<lionengine:function type="LINEAR" a="0" b="-1"/>}
+ *         {@code<lionengine:constraint left="none"/>}
+ *     {@code</lionengine:formula>}
+ *     {@code<lionengine:formula name="right">}
+ *         {@code<lionengine:range output="X" minX="15" maxX="15" minY="0" maxY="15"/>}
+ *         {@code<lionengine:function type="LINEAR" a="0" b="16"/>}
+ *         {@code<lionengine:constraint right="none"/>}
+ *     {@code</lionengine:formula>}
+ * {@code</lionengine:formulas>}
+ * 
+ * This will create 4 formulas, defining a collision for each side.
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ConfigCollisionFormula
+ * @see CollisionRange
+ * @see CollisionFunction
+ * @see CollisionConstraint
  */
 public class CollisionFormula
 {

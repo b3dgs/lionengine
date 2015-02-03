@@ -285,15 +285,16 @@ public abstract class MapTileGame<T extends TileGame>
     {
         removeCollisionFormulas();
         final XmlNode nodeFormulas = Stream.loadXml(collisionFormulas);
-        final ConfigCollisionFormula configFormulas = ConfigCollisionFormula.create(nodeFormulas);
-        for (final CollisionFormula formula : configFormulas.getFormulas().values())
+        final ConfigCollisionFormula config = ConfigCollisionFormula.create(nodeFormulas);
+        for (final CollisionFormula formula : config.getFormulas().values())
         {
             addCollisionFormula(formula);
         }
+        config.clear();
     }
 
     /**
-     * Load the collision groups.
+     * Load the collision groups. All previous groups will be cleared.
      * 
      * @param collisionGroups The configuration file.
      */
@@ -301,15 +302,16 @@ public abstract class MapTileGame<T extends TileGame>
     {
         removeCollisionGroups();
         final XmlNode nodeGroups = Stream.loadXml(collisionGroups);
-        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups);
+        final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
             addCollisionGroup(group);
         }
+        groups.clear();
     }
 
     /**
-     * Load collisions for each tile.
+     * Load collisions for each tile. Previous collisions will be removed.
      */
     private void loadTilesCollisions()
     {
@@ -341,9 +343,8 @@ public abstract class MapTileGame<T extends TileGame>
         {
             if (group.getPattern() == pattern && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
             {
-                for (final String name : group.getFormulas())
+                for (final CollisionFormula formula : group.getFormulas())
                 {
-                    final CollisionFormula formula = getCollisionFormula(name);
                     tile.addCollisionFormula(formula);
                 }
             }
@@ -415,7 +416,7 @@ public abstract class MapTileGame<T extends TileGame>
     private boolean containsCollisionFormula(T tile, CollisionCategory category)
     {
         final Collection<CollisionFormula> formulas = tile.getCollisionFormulas();
-        for (final CollisionFormula formula : category.getCollisionFormulas())
+        for (final CollisionFormula formula : category.getFormulas())
         {
             if (formulas.contains(formula))
             {
@@ -614,7 +615,7 @@ public abstract class MapTileGame<T extends TileGame>
         String[] files;
 
         // Retrieve patterns list
-        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.TILE_SHEETS_FILE_NAME);
+        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.SHEETS_FILE_NAME);
         final XmlNode root = Stream.loadXml(mediaPatterns);
         final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         files = new String[children.size()];

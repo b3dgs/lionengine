@@ -18,7 +18,10 @@
 package com.b3dgs.lionengine.game.collision;
 
 /**
- * Linear collision function implementation.
+ * Linear collision function implementation. It simply represents the following function:
+ * <p>
+ * <code>a * input + b</code>
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -31,7 +34,7 @@ public class CollisionFunctionLinear
     private final double b;
 
     /**
-     * Create a linear formula.
+     * Create a linear function.
      * 
      * @param a The multiplication factor.
      * @param b The offset value.
