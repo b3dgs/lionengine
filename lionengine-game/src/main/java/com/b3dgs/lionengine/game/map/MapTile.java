@@ -336,8 +336,9 @@ public interface MapTile<T extends TileGame>
      * 
      * @param pattern The pattern id.
      * @return The pattern found.
+     * @throws LionEngineException If pattern not found.
      */
-    SpriteTiled getPattern(Integer pattern);
+    SpriteTiled getPattern(Integer pattern) throws LionEngineException;
 
     /**
      * Get the number of used pattern.

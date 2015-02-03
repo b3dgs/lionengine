@@ -78,7 +78,7 @@ public abstract class MapTileGame<T extends TileGame>
     /** Error pattern number message. */
     private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
     /** Error pattern missing message. */
-    private static final String ERROR_PATTERN_MISSING = "Pattern missing !";
+    private static final String ERROR_PATTERN_MISSING = "Pattern missing: ";
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
     /** Error formula not found. */
@@ -540,7 +540,7 @@ public abstract class MapTileGame<T extends TileGame>
                 final T tile = loadTile(nodes, file, v);
                 if (tile.getPattern().intValue() > getNumberPatterns())
                 {
-                    throw new LionEngineException(tileCollisions, ERROR_PATTERN_MISSING);
+                    throw new LionEngineException(tileCollisions, ERROR_PATTERN_MISSING, tile.getPattern().toString());
                 }
                 final int th = tile.getX() / getTileWidth();
                 final int tv = tile.getY() / getTileHeight();
@@ -897,8 +897,12 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public SpriteTiled getPattern(Integer pattern)
+    public SpriteTiled getPattern(Integer pattern) throws LionEngineException
     {
+        if (patterns.containsKey(pattern))
+        {
+            throw new LionEngineException(ERROR_PATTERN_MISSING, pattern.toString());
+        }
         return patterns.get(pattern);
     }
 
