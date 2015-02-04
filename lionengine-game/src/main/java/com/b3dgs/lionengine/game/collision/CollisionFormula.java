@@ -17,8 +17,6 @@
  */
 package com.b3dgs.lionengine.game.collision;
 
-import java.util.Collection;
-
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 
 /**
@@ -66,8 +64,8 @@ public class CollisionFormula
     private final CollisionRange range;
     /** Function used. */
     private final CollisionFunction function;
-    /** Constraints list. */
-    private final Collection<CollisionConstraint> constraints;
+    /** Constraint defined. */
+    private final CollisionConstraint constraint;
 
     /**
      * Create a collision formula.
@@ -75,15 +73,15 @@ public class CollisionFormula
      * @param name The formula name.
      * @param range The range reference.
      * @param function The function used.
-     * @param constraints The constraints used.
+     * @param constraint The constraint used.
      */
     public CollisionFormula(String name, CollisionRange range, CollisionFunction function,
-            Collection<CollisionConstraint> constraints)
+            CollisionConstraint constraint)
     {
         this.name = name;
         this.range = range;
         this.function = function;
-        this.constraints = constraints;
+        this.constraint = constraint;
     }
 
     /**
@@ -117,12 +115,12 @@ public class CollisionFormula
     }
 
     /**
-     * Get the constraints list.
+     * Get the constraint defined.
      * 
-     * @return The constraints list.
+     * @return The constraint defined.
      */
-    public Collection<CollisionConstraint> getConstraints()
+    public CollisionConstraint getConstraint()
     {
-        return constraints;
+        return constraint;
     }
 }

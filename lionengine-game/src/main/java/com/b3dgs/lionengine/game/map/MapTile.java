@@ -229,8 +229,10 @@ public interface MapTile<T extends TileGame>
 
     /**
      * Save the current collisions to the collision file.
+     * 
+     * @throws LionEngineException If error when saving collisions.
      */
-    void saveCollisions();
+    void saveCollisions() throws LionEngineException;
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):

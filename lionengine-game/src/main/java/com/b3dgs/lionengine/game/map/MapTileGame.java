@@ -43,13 +43,14 @@ import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
+import com.b3dgs.lionengine.game.collision.CollisionRange;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
-import com.b3dgs.lionengine.game.utility.UtilMapTile;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -283,6 +284,63 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
+     * Create the function draw to buffer.
+     * 
+     * @param collision The collision reference.
+     * @return The created collision representation buffer.
+     */
+    private ImageBuffer createFunctionDraw(CollisionFormula collision)
+    {
+        final ImageBuffer buffer = Core.GRAPHIC.createImageBuffer(tileWidth + 2, tileHeight + 2,
+                Transparency.TRANSLUCENT);
+        final Graphic g = buffer.createGraphic();
+        g.setColor(ColorRgba.PURPLE);
+    
+        createFunctionDraw(g, collision);
+    
+        g.dispose();
+        return buffer;
+    }
+
+    /**
+     * Create the function draw to buffer.
+     * 
+     * @param g The graphic buffer.
+     * @param formula The collision formula to draw.
+     */
+    private void createFunctionDraw(Graphic g, CollisionFormula formula)
+    {
+        final CollisionFunction function = formula.getFunction();
+        final CollisionRange range = formula.getRange();
+    
+        for (int x = 0; x < tileWidth; x++)
+        {
+            for (int y = 0; y < tileHeight; y++)
+            {
+                switch (range.getOutput())
+                {
+                    case X:
+                        final double fx = function.compute(x);
+                        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+                        {
+                            g.drawRect((int) fx + 1, tileHeight - y, 0, 0, false);
+                        }
+                        break;
+                    case Y:
+                        final double fy = function.compute(y);
+                        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+                        {
+                            g.drawRect(x + 1, tileHeight - (int) fy, 0, 0, false);
+                        }
+                        break;
+                    default:
+                        throw new RuntimeException("Unknown type: " + range.getOutput());
+                }
+            }
+        }
+    }
+
+    /**
      * Load the collision formula. All previous collisions will be cleared.
      * 
      * @param collisionFormulas The configuration collision formulas file.
@@ -405,15 +463,13 @@ public abstract class MapTileGame<T extends TileGame>
         final Collection<CollisionFormula> toRemove = new ArrayList<>();
         for (final CollisionFormula formula : tile.getCollisionFormulas())
         {
-            for (final CollisionConstraint constraint : formula.getConstraints())
+            final CollisionConstraint constraint = formula.getConstraint();
+            if (constraint.getTop() != null && top != null && !top.getCollisionFormulas().isEmpty()
+                    || constraint.getBottom() != null && bottom != null && !bottom.getCollisionFormulas().isEmpty()
+                    || constraint.getLeft() != null && left != null && !left.getCollisionFormulas().isEmpty()
+                    || constraint.getRight() != null && right != null && !right.getCollisionFormulas().isEmpty())
             {
-                if (constraint.getTop() != null && top != null && !top.getCollisionFormulas().isEmpty()
-                        || constraint.getBottom() != null && bottom != null && !bottom.getCollisionFormulas().isEmpty()
-                        || constraint.getLeft() != null && left != null && !left.getCollisionFormulas().isEmpty()
-                        || constraint.getRight() != null && right != null && !right.getCollisionFormulas().isEmpty())
-                {
-                    toRemove.add(formula);
-                }
+                toRemove.add(formula);
             }
         }
         return toRemove;
@@ -515,7 +571,7 @@ public abstract class MapTileGame<T extends TileGame>
 
         for (final CollisionFormula collision : formulas.values())
         {
-            final ImageBuffer buffer = UtilMapTile.createFunctionDraw(collision, this);
+            final ImageBuffer buffer = createFunctionDraw(collision);
             collisionCache.put(collision, buffer);
         }
     }
@@ -689,10 +745,23 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     @Override
-    public void saveCollisions()
+    public void saveCollisions() throws LionEngineException
     {
-        final Media media = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.GROUPS_FILE_NAME);
-        UtilMapTile.saveCollisions(this, media);
+        final Media formulas = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.FORMULAS_FILE_NAME);
+        final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
+        for (final CollisionFormula formula : getCollisionFormulas())
+        {
+            formulasRoot.add(ConfigCollisionFormula.export(formula));
+        }
+        Stream.saveXml(formulasRoot, formulas);
+
+        final Media groups = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.GROUPS_FILE_NAME);
+        final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
+        for (final CollisionGroup group : getCollisionGroups())
+        {
+            groupsNode.add(ConfigCollisionGroup.export(group));
+        }
+        Stream.saveXml(groupsNode, groups);
     }
 
     @Override

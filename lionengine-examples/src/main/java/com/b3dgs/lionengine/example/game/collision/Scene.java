@@ -72,6 +72,7 @@ class Scene
     public void load()
     {
         map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        map.createCollisionDraw();
 
         final Services services = new Services();
         services.add(map);

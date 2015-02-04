@@ -45,6 +45,26 @@ public class CollisionFunctionLinear
         this.b = b;
     }
 
+    /**
+     * Get the factor value.
+     * 
+     * @return The factor value.
+     */
+    public double getA()
+    {
+        return a;
+    }
+
+    /**
+     * Get the offset value.
+     * 
+     * @return The offset value.
+     */
+    public double getB()
+    {
+        return b;
+    }
+
     /*
      * CollisionFunction
      */

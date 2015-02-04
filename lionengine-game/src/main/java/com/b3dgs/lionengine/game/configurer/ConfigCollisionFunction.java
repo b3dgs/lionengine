@@ -21,6 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionFunction;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionLinear;
 import com.b3dgs.lionengine.game.collision.CollisionFunctionType;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -67,6 +68,25 @@ public final class ConfigCollisionFunction
         {
             throw new LionEngineException(ERROR_TYPE, name);
         }
+    }
+
+    /**
+     * Export the collision function as a node.
+     * 
+     * @param function The collision function to export.
+     * @return The node reference.
+     */
+    public static XmlNode export(CollisionFunction function)
+    {
+        final XmlNode node = Stream.createXmlNode(FUNCTION);
+        if (function instanceof CollisionFunctionLinear)
+        {
+            final CollisionFunctionLinear linear = (CollisionFunctionLinear) function;
+            node.writeString(TYPE, CollisionFunctionType.LINEAR.name());
+            node.writeDouble(A, linear.getA());
+            node.writeDouble(B, linear.getB());
+        }
+        return node;
     }
 
     /**

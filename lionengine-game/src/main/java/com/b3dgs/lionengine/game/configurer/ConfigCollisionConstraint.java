@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionConstraint;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -54,5 +55,36 @@ public final class ConfigCollisionConstraint
         final String right = node.hasAttribute(RIGHT) ? node.readString(RIGHT) : null;
 
         return new CollisionConstraint(top, bottom, left, right);
+    }
+
+    /**
+     * Export the collision constraint as a node.
+     * 
+     * @param constraint The collision constraint to export.
+     * @return The node reference.
+     */
+    public static XmlNode export(CollisionConstraint constraint)
+    {
+        final XmlNode node = Stream.createXmlNode(CONSTRAINT);
+        writeNodeIfExists(node, TOP, constraint.getTop());
+        writeNodeIfExists(node, BOTTOM, constraint.getBottom());
+        writeNodeIfExists(node, LEFT, constraint.getLeft());
+        writeNodeIfExists(node, RIGHT, constraint.getRight());
+        return node;
+    }
+
+    /**
+     * Write node attribute value if not <code>null</code>.
+     * 
+     * @param node The node reference.
+     * @param attribute The attribute name.
+     * @param value The attribute value.
+     */
+    private static void writeNodeIfExists(XmlNode node, String attribute, String value)
+    {
+        if (value != null)
+        {
+            node.writeString(attribute, value);
+        }
     }
 }

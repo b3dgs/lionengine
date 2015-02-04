@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionRange;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -29,6 +30,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public class ConfigCollisionRange
 {
+    /** The range node. */
+    public static final String RANGE = Configurer.PREFIX + "range";
     /** Output axis attribute. */
     public static final String AXIS = "output";
     /** Input min X attribute. */
@@ -61,6 +64,23 @@ public class ConfigCollisionRange
         {
             throw new LionEngineException(ERROR_TYPE, axisName);
         }
+    }
+
+    /**
+     * Export the collision range as a node.
+     * 
+     * @param range The collision range to export.
+     * @return The node reference.
+     */
+    public static XmlNode export(CollisionRange range)
+    {
+        final XmlNode node = Stream.createXmlNode(RANGE);
+        node.writeString(AXIS, range.getOutput().name());
+        node.writeInteger(MIN_X, range.getMinX());
+        node.writeInteger(MIN_Y, range.getMinY());
+        node.writeInteger(MAX_X, range.getMaxX());
+        node.writeInteger(MAX_Y, range.getMaxY());
+        return node;
     }
 
     /**

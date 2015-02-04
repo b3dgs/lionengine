@@ -17,15 +17,13 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.collision.CollisionConstraint;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -35,14 +33,12 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigCollisionFormula
 {
+    /** Collision formula root node. */
+    public static final String FORMULAS = Configurer.PREFIX + "formulas";
     /** Collision formula node. */
     public static final String FORMULA = Configurer.PREFIX + "formula";
     /** The formula name attribute. */
     public static final String NAME = "name";
-    /** The formula range node. */
-    public static final String RANGE = Configurer.PREFIX + "range";
-    /** Constraint node. */
-    public static final String CONSTRAINT = Configurer.PREFIX + "constraint";
 
     /**
      * Create the formula config.
@@ -64,6 +60,22 @@ public final class ConfigCollisionFormula
     }
 
     /**
+     * Save the current map collisions to the collision formula file.
+     * 
+     * @param formula The formula reference.
+     * @return The exported node.
+     */
+    public static XmlNode export(CollisionFormula formula)
+    {
+        final XmlNode node = Stream.createXmlNode(FORMULA);
+        node.writeString(NAME, formula.getName());
+        node.add(ConfigCollisionRange.export(formula.getRange()));
+        node.add(ConfigCollisionFunction.export(formula.getFunction()));
+        node.add(ConfigCollisionConstraint.export(formula.getConstraint()));
+        return node;
+    }
+
+    /**
      * Create a collision formula from its node.
      * 
      * @param node The collision formula node.
@@ -72,13 +84,9 @@ public final class ConfigCollisionFormula
      */
     private static CollisionFormula createCollision(XmlNode node) throws LionEngineException
     {
-        final Collection<CollisionConstraint> constraints = new ArrayList<>();
-        for (final XmlNode current : node.getChildren(CONSTRAINT))
-        {
-            constraints.add(ConfigCollisionConstraint.create(current));
-        }
-        return new CollisionFormula(node.readString(NAME), ConfigCollisionRange.create(node.getChild(RANGE)),
-                ConfigCollisionFunction.create(node), constraints);
+        return new CollisionFormula(node.readString(NAME), ConfigCollisionRange.create(node
+                .getChild(ConfigCollisionRange.RANGE)), ConfigCollisionFunction.create(node),
+                ConfigCollisionConstraint.create(node.getChild(ConfigCollisionConstraint.CONSTRAINT)));
     }
 
     /** Collision formulas list. */

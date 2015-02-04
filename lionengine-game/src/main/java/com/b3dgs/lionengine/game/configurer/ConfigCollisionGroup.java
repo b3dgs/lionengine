@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -33,6 +34,8 @@ import com.b3dgs.lionengine.stream.XmlNode;
  */
 public final class ConfigCollisionGroup
 {
+    /** Collision group root node. */
+    public static final String GROUPS = Configurer.PREFIX + "groups";
     /** Collision group node. */
     public static final String GROUP = Configurer.PREFIX + "group";
     /** Group name attribute. */
@@ -68,6 +71,26 @@ public final class ConfigCollisionGroup
             collisions.add(collision);
         }
         return collisions;
+    }
+
+    /**
+     * Export the collision group as a node.
+     * 
+     * @param group The collision group to export.
+     * @return The node reference.
+     */
+    public static XmlNode export(CollisionGroup group)
+    {
+        final XmlNode node = Stream.createXmlNode(GROUPS);
+        node.writeString(NAME, group.getName());
+        node.writeInteger(PATTERN, group.getPattern());
+        node.writeInteger(START, group.getStart());
+        node.writeInteger(END, group.getEnd());
+        for (final CollisionFormula formula : group.getFormulas())
+        {
+            node.add(ConfigCollisionFormula.export(formula));
+        }
+        return node;
     }
 
     /**
