@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * </p>
  * 
  * <pre>
- * final LevelRipConverter&lt;Tile&gt; rip = new LevelRipConverter&lt;&gt;(levelrip, tilesheet, map);
+ * final LevelRipConverter&lt;TileGame&gt; rip = new LevelRipConverter&lt;&gt;(levelrip, tilesheet, map);
  * rip.start();
  * try (FileWriting file = Stream.createFileWriting(output))
  * {

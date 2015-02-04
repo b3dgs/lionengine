@@ -18,7 +18,6 @@
 package com.b3dgs.lionengine.tutorials.snippet;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
@@ -32,8 +31,6 @@ import com.b3dgs.lionengine.game.Attribute;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
-import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.TileGame;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
@@ -45,47 +42,6 @@ import com.b3dgs.lionengine.stream.Stream;
 @SuppressWarnings("all")
 public class ModuleGame
 {
-    enum TileCollision implements CollisionFormula
-    {
-        ;
-
-        @Override
-        public void addCollisionFunction(CollisionFunction function)
-        {
-        }
-
-        @Override
-        public void removeCollisionFunction(CollisionFunction function)
-        {
-        }
-
-        @Override
-        public void removeCollisions()
-        {
-        }
-
-        @Override
-        public Collection<CollisionFunction> getCollisionFunctions()
-        {
-            return null;
-        }
-
-        @Override
-        public Enum<?> getValue()
-        {
-            return null;
-        }
-    }
-
-    class Tile
-            extends TileGame
-    {
-        public Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
-        {
-            super(width, height, pattern, number, collision);
-        }
-    }
-
     class World
             extends WorldGame
     {
@@ -115,7 +71,7 @@ public class ModuleGame
         }
     }
 
-    MapTile<Tile> map;
+    MapTile<TileGame> map;
 
     /*
      * Snippet code
@@ -197,7 +153,7 @@ public class ModuleGame
 
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(levelrip, tilesheet, map);
+        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(levelrip, tilesheet, map);
         rip.start();
         try (FileWriting file = Stream.createFileWriting(output))
         {
