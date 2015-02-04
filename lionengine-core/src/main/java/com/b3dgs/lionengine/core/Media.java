@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.LionEngineException;
 
 /**
  * A media represents a path to a resources located outside. This abstraction allows to load a resource from any kind of
- * location, such as <code>HDD</code>, <code>JAR</code>...
+ * location, such as <code>HDD</code>, <code>JAR</code>... It could point to a file or a directory.
  * <p>
  * Example:
  * </p>
@@ -69,4 +69,11 @@ public interface Media
      * @throws LionEngineException If error when getting the stream.
      */
     OutputStream getOutputStream() throws LionEngineException;
+
+    /**
+     * Check if the following media point to an existing target (could be file of directory).
+     * 
+     * @return <code>true</code> if media is an existing file or directory, <code>false</code> else.
+     */
+    boolean exists();
 }

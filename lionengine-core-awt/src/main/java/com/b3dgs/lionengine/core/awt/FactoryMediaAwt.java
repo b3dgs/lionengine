@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.core.awt;
 
 import java.io.File;
 
+import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.FactoryMedia;
 import com.b3dgs.lionengine.core.Media;
 
@@ -46,13 +47,13 @@ final class FactoryMediaAwt
      */
 
     @Override
-    public Media create(String path)
+    public Media create(String path) throws LionEngineException
     {
         return new MediaAwt(path);
     }
 
     @Override
-    public Media create(String... path)
+    public Media create(String... path) throws LionEngineException
     {
         final StringBuilder fullPath = new StringBuilder();
         for (int i = 0; i < path.length; i++)

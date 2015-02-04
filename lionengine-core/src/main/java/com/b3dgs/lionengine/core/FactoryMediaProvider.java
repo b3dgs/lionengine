@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.core;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Implementation provider for the {@link FactoryMedia}.
  * 
@@ -43,13 +45,13 @@ public final class FactoryMediaProvider
      */
 
     @Override
-    public Media create(String path)
+    public Media create(String path) throws LionEngineException
     {
         return factoryMedia.create(path);
     }
 
     @Override
-    public Media create(String... path)
+    public Media create(String... path) throws LionEngineException
     {
         return factoryMedia.create(path);
     }

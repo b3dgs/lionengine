@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
 
 /**
@@ -99,5 +100,11 @@ public final class MediaMock
         {
             throw new LionEngineException(exception);
         }
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return UtilFile.exists(path);
     }
 }

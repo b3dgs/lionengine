@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
 
@@ -34,15 +35,20 @@ final class MediaAndroid
 {
     /** Media path. */
     private final String path;
+    /** File reference. */
+    private final File file;
 
     /**
      * Internal constructor.
      * 
      * @param path The media path.
+     * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaAndroid(String path)
+    MediaAndroid(String path) throws LionEngineException
     {
+        Check.notNull(path);
         this.path = path;
+        file = new File(path);
     }
 
     /*
@@ -58,7 +64,7 @@ final class MediaAndroid
     @Override
     public File getFile()
     {
-        return new File(path);
+        return file;
     }
 
     @Override
@@ -71,6 +77,12 @@ final class MediaAndroid
     public OutputStream getOutputStream() throws LionEngineException
     {
         return UtilityMedia.getOutputStream(this, "MediaImpl", false);
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return file.exists();
     }
 
     @Override

@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
@@ -35,15 +36,20 @@ final class MediaSwt
 {
     /** Media path. */
     private final String path;
+    /** File reference. */
+    private final File file;
 
     /**
      * Internal constructor.
      * 
      * @param path The media path.
+     * @throws LionEngineException If path in <code>null</code>.
      */
-    MediaSwt(String path)
+    MediaSwt(String path) throws LionEngineException
     {
+        Check.notNull(path);
         this.path = path;
+        file = new File(UtilFile.getPath(UtilityMedia.getRessourcesDir(), path));
     }
 
     /*
@@ -59,7 +65,7 @@ final class MediaSwt
     @Override
     public File getFile()
     {
-        return new File(UtilFile.getPath(UtilityMedia.getRessourcesDir(), path));
+        return file;
     }
 
     @Override
@@ -72,6 +78,12 @@ final class MediaSwt
     public OutputStream getOutputStream() throws LionEngineException
     {
         return UtilityMedia.getOutputStream(this, MediaSwt.class.getSimpleName());
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return file.exists();
     }
 
     @Override
