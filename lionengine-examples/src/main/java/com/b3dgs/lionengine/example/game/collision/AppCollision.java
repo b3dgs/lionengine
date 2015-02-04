@@ -40,7 +40,7 @@ public class AppCollision
      */
     public static void main(String[] args)
     {
-        Engine.start("Platform Collision", Version.create(1, 0, 0), Verbose.CRITICAL,
+        Engine.start("Collision", Version.create(1, 0, 0), Verbose.CRITICAL,
                 UtilFile.getPath("resources", "game", "collision"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);

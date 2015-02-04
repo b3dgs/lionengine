@@ -36,6 +36,7 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Axis;
@@ -75,8 +76,12 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public abstract class MapTileGame<T extends TileGame>
         implements MapTile<T>
 {
-    /** Error pattern number message. */
-    private static final String ERROR_PATTERN_NUMBER = "Error on getting pattern number (should be a name with a number only) !";
+    /** Info loading patterns. */
+    private static final String INFO_LOAD_PATTERNS = "Loading patterns from: ";
+    /** Info loading formulas. */
+    private static final String INFO_LOAD_FORMULAS = "Loading collision formulas from: ";
+    /** Info loading groups. */
+    private static final String INFO_LOAD_GROUPS = "Loading collision groups from: ";
     /** Error pattern missing message. */
     private static final String ERROR_PATTERN_MISSING = "Pattern missing: ";
     /** Error create tile message. */
@@ -270,6 +275,7 @@ public abstract class MapTileGame<T extends TileGame>
      * 
      * @param tile The input tile.
      * @return The color representing the tile on minimap.
+     * @see #createMiniMap()
      */
     protected ColorRgba getTilePixelColor(T tile)
     {
@@ -277,12 +283,13 @@ public abstract class MapTileGame<T extends TileGame>
     }
 
     /**
-     * Load the collision formula.
+     * Load the collision formula. All previous collisions will be cleared.
      * 
-     * @param collisionFormulas The configuration file.
+     * @param collisionFormulas The configuration collision formulas file.
      */
     private void loadCollisionFormulas(Media collisionFormulas)
     {
+        Verbose.info(INFO_LOAD_FORMULAS, collisionFormulas.getFile().getPath());
         removeCollisionFormulas();
         final XmlNode nodeFormulas = Stream.loadXml(collisionFormulas);
         final ConfigCollisionFormula config = ConfigCollisionFormula.create(nodeFormulas);
@@ -296,10 +303,11 @@ public abstract class MapTileGame<T extends TileGame>
     /**
      * Load the collision groups. All previous groups will be cleared.
      * 
-     * @param collisionGroups The configuration file.
+     * @param collisionGroups The configuration collision groups file.
      */
     private void loadCollisionGroups(Media collisionGroups)
     {
+        Verbose.info(INFO_LOAD_GROUPS, collisionGroups.getFile().getPath());
         removeCollisionGroups();
         final XmlNode nodeGroups = Stream.loadXml(collisionGroups);
         final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
@@ -347,6 +355,34 @@ public abstract class MapTileGame<T extends TileGame>
                 {
                     tile.addCollisionFormula(formula);
                 }
+            }
+        }
+    }
+
+    /**
+     * Apply tile constraints depending of their adjacent collisions.
+     */
+    private void applyConstraints()
+    {
+        final Map<T, Collection<CollisionFormula>> toRemove = new HashMap<>();
+        for (int v = 0; v < heightInTile; v++)
+        {
+            final List<T> list = tiles.get(v);
+            for (int h = 0; h < widthInTile; h++)
+            {
+                final T tile = list.get(h);
+                if (tile != null)
+                {
+                    toRemove.put(tile, checkConstraints(tile, h, v));
+                }
+            }
+        }
+        for (final Entry<T, Collection<CollisionFormula>> current : toRemove.entrySet())
+        {
+            final T tile = current.getKey();
+            for (final CollisionFormula formula : current.getValue())
+            {
+                tile.removeCollisionFormula(formula);
             }
         }
     }
@@ -610,6 +646,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public void loadPatterns(Media directory) throws LionEngineException
     {
+        Verbose.info(INFO_LOAD_PATTERNS, directory.getFile().getPath());
         patternsDirectory = directory;
         patterns.clear();
         String[] files;
@@ -627,52 +664,28 @@ public abstract class MapTileGame<T extends TileGame>
         }
 
         // Load patterns from list
-        for (final String file : files)
+        for (int pattern = 0; pattern < files.length; pattern++)
         {
-            final Media media = Core.MEDIA.create(patternsDirectory.getPath(), file);
-            try
-            {
-                final Integer pattern = Integer.valueOf(file.substring(0, file.length() - 4));
-                final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
-
-                sprite.load(false);
-                patterns.put(pattern, sprite);
-            }
-            catch (final NumberFormatException exception)
-            {
-                throw new LionEngineException(exception, media, MapTileGame.ERROR_PATTERN_NUMBER);
-            }
+            final Media media = Core.MEDIA.create(patternsDirectory.getPath(), files[pattern]);
+            final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
+            sprite.load(false);
+            patterns.put(Integer.valueOf(pattern), sprite);
         }
     }
 
     @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException
     {
-        loadCollisionFormulas(collisionFormulas);
-        loadCollisionGroups(collisionGroups);
+        if (collisionFormulas.exists())
+        {
+            loadCollisionFormulas(collisionFormulas);
+        }
+        if (collisionGroups.exists())
+        {
+            loadCollisionGroups(collisionGroups);
+        }
         loadTilesCollisions();
-
-        final Map<T, Collection<CollisionFormula>> toRemove = new HashMap<>();
-        for (int v = 0; v < heightInTile; v++)
-        {
-            final List<T> list = tiles.get(v);
-            for (int h = 0; h < widthInTile; h++)
-            {
-                final T tile = list.get(h);
-                if (tile != null)
-                {
-                    toRemove.put(tile, checkConstraints(tile, h, v));
-                }
-            }
-        }
-        for (final Entry<T, Collection<CollisionFormula>> current : toRemove.entrySet())
-        {
-            final T tile = current.getKey();
-            for (final CollisionFormula formula : current.getValue())
-            {
-                tile.removeCollisionFormula(formula);
-            }
-        }
+        applyConstraints();
     }
 
     @Override
@@ -899,7 +912,7 @@ public abstract class MapTileGame<T extends TileGame>
     @Override
     public SpriteTiled getPattern(Integer pattern) throws LionEngineException
     {
-        if (patterns.containsKey(pattern))
+        if (!patterns.containsKey(pattern))
         {
             throw new LionEngineException(ERROR_PATTERN_MISSING, pattern.toString());
         }
