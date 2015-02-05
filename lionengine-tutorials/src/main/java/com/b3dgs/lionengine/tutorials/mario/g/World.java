@@ -106,7 +106,6 @@ class World
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
         camera.setIntervals(16, 0);
-        map.adjustCollisions();
 
         final Services contextEntity = new Services();
         contextEntity.add(map);

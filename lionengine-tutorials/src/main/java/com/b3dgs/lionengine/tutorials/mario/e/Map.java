@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.TileGame;
 
@@ -34,45 +33,12 @@ class Map
      */
     public Map()
     {
-        super(16, 16, TileCollision.values());
-    }
-
-    /**
-     * Adjust the collision.
-     */
-    void adjustCollisions()
-    {
-        for (int tx = 0; tx < getWidthInTile(); tx++)
-        {
-            for (int ty = 0; ty < getHeightInTile(); ty++)
-            {
-                final TileGame tile = getTile(tx, ty);
-                final TileGame top = getTile(tx, ty + 1);
-                if (top != null && tile != null && tile.getCollision() != TileCollision.NONE
-                        && top.getCollision() == tile.getCollision())
-                {
-                    tile.setCollision(TileCollision.WALL);
-                }
-            }
-        }
+        super(16, 16);
     }
 
     @Override
-    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
+    public TileGame createTile()
     {
-        return new TileGame(width, height, pattern, number, collision);
-    }
-
-    @Override
-    public CollisionFormula getCollisionFrom(String collision)
-    {
-        try
-        {
-            return TileCollision.valueOf(collision);
-        }
-        catch (final NullPointerException exception)
-        {
-            return TileCollision.NONE;
-        }
+        return new TileGame(getTileWidth(), getTileHeight());
     }
 }
