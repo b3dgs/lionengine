@@ -54,23 +54,29 @@ public final class Keyboard
     public static final Integer DOWN = Integer.valueOf(KeyEvent.VK_DOWN);
     /** Arrow up key. */
     public static final Integer UP = Integer.valueOf(KeyEvent.VK_UP);
+    /** No key code. */
+    private static final int NO_KEY_CODE = -1;
+    /** No key code value. */
+    private static final Integer NO_KEY_CODE_VALUE = Integer.valueOf(NO_KEY_CODE);
+    /** Empty key name. */
+    private static final char EMPTY_KEY_NAME = ' ';
 
     /** List of keys. */
     private final Collection<Integer> keys;
     /** Pressed states. */
     private final Collection<Integer> pressed;
     /** Last key code. */
-    private Integer lastCode;
+    private Integer lastCode = NO_KEY_CODE_VALUE;
     /** Last key name. */
-    private char lastKeyName;
+    private char lastKeyName = EMPTY_KEY_NAME;
     /** Left key. */
-    private Integer left;
+    private Integer left = LEFT;
     /** Right key. */
-    private Integer right;
+    private Integer right = RIGHT;
     /** Up key. */
-    private Integer up;
+    private Integer up = UP;
     /** Down key. */
-    private Integer down;
+    private Integer down = DOWN;
 
     /**
      * Internal constructor.
@@ -116,7 +122,7 @@ public final class Keyboard
     /**
      * Get the current pressed key code.
      * 
-     * @return The pressed key code.
+     * @return The pressed key code (<code>{@value #NO_KEY_CODE}</code> if key never pressed).
      */
     public Integer getKeyCode()
     {
@@ -214,8 +220,8 @@ public final class Keyboard
     @Override
     public void keyReleased(KeyEvent event)
     {
-        lastCode = Integer.valueOf(-1);
-        lastKeyName = ' ';
+        lastCode = NO_KEY_CODE_VALUE;
+        lastKeyName = EMPTY_KEY_NAME;
         keys.remove(Integer.valueOf(event.getKeyCode()));
         pressed.remove(Integer.valueOf(event.getKeyCode()));
     }
