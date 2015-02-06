@@ -21,18 +21,24 @@ import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.example.game.gameplay.MarioState;
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.Movable;
 
 /**
  * Walk state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <E> The entity type used.
  */
-public class StateWalk<E extends Movable & Mirrorable & Animator>
-        extends EntityState<E>
+public class StateWalk
+        extends State
 {
+    /** Mirrorable reference. */
+    private final Mirrorable mirrorable;
+    /** Animator reference. */
+    private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
     /** Movement side. */
@@ -41,16 +47,15 @@ public class StateWalk<E extends Movable & Mirrorable & Animator>
     /**
      * Create the walk state.
      * 
+     * @param object The object reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Animation animation)
+    public StateWalk(ObjectGame object, Animation animation)
     {
         this.animation = animation;
+        mirrorable = object.getTrait(Mirrorable.class);
+        animator = object.getTrait(Animator.class);
     }
-
-    /*
-     * EntityState
-     */
 
     @Override
     public void clear()
@@ -59,49 +64,49 @@ public class StateWalk<E extends Movable & Mirrorable & Animator>
     }
 
     @Override
-    public void updateState(E entity)
+    public void updateState()
     {
-        entity.setMoveToReach(side * entity.getMoveSpeedMax(), 0);
-        entity.setAnimSpeed(Math.abs(entity.getDirectionHorizontal()) / 12.0);
+        object.setMoveToReach(side * object.getMoveSpeedMax(), 0);
+        animator.setAnimSpeed(Math.abs(object.getDirectionHorizontal()) / 12.0);
         if (side < 0)
         {
-            if (entity.getDirectionHorizontal() < 0)
+            if (object.getDirectionHorizontal() < 0)
             {
-                entity.mirror(Mirror.HORIZONTAL);
+                mirrorable.mirror(Mirror.HORIZONTAL);
             }
         }
         else if (side > 0)
         {
-            if (entity.getDirectionHorizontal() > 0)
+            if (object.getDirectionHorizontal() > 0)
             {
-                entity.mirror(Mirror.NONE);
+                mirrorable.mirror(Mirror.NONE);
             }
         }
     }
 
     @Override
-    public void enter(E entity)
+    public void enter()
     {
-        entity.play(animation);
-        entity.setMoveVelocity(0.5);
-        entity.setMoveSensibility(0.1);
+        animator.play(animation);
+        object.setMoveVelocity(0.5);
+        object.setMoveSensibility(0.1);
     }
 
     @Override
-    protected EntityState<E> handleInput(E entity, EntityStateFactory<E> factory, InputDeviceDirectional input)
+    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
         if (input.getVerticalDirection() > 0)
         {
-            return factory.getState(EntityStateType.JUMP);
+            return factory.getState(MarioState.JUMP);
         }
         side = input.getHorizontalDirection();
         if (side == 0 && input.getVerticalDirection() == 0)
         {
-            return factory.getState(EntityStateType.IDLE);
+            return factory.getState(MarioState.IDLE);
         }
-        else if (side < 0 && entity.getDirectionHorizontal() > 0 || side > 0 && entity.getDirectionHorizontal() < 0)
+        else if (side < 0 && object.getDirectionHorizontal() > 0 || side > 0 && object.getDirectionHorizontal() < 0)
         {
-            return factory.getState(EntityStateType.TURN);
+            return factory.getState(MarioState.TURN);
         }
         return null;
     }

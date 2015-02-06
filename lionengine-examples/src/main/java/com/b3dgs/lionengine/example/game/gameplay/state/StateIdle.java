@@ -20,34 +20,35 @@ package com.b3dgs.lionengine.example.game.gameplay.state;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.Movable;
+import com.b3dgs.lionengine.example.game.gameplay.MarioState;
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
  * Idle state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <E> The entity type used.
  */
-public class StateIdle<E extends Movable & Mirrorable & Animator>
-        extends EntityState<E>
+public class StateIdle
+        extends State
 {
+    /** Animator reference. */
+    private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
 
     /**
      * Create the walk state.
      * 
+     * @param object The object reference.
      * @param animation The associated animation.
      */
-    public StateIdle(Animation animation)
+    public StateIdle(ObjectGame object, Animation animation)
     {
         this.animation = animation;
+        animator = object.getTrait(Animator.class);
     }
-
-    /*
-     * EntityState
-     */
 
     @Override
     public void clear()
@@ -56,36 +57,36 @@ public class StateIdle<E extends Movable & Mirrorable & Animator>
     }
 
     @Override
-    public void updateState(E entity)
+    public void updateState()
     {
-        if (entity.getDirectionHorizontal() != 0.0)
+        if (object.getDirectionHorizontal() != 0.0)
         {
-            entity.setAnimSpeed(Math.abs(entity.getDirectionHorizontal()) / 12.0);
+            animator.setAnimSpeed(Math.abs(object.getDirectionHorizontal()) / 12.0);
         }
         else
         {
-            entity.play(animation);
+            animator.play(animation);
         }
     }
 
     @Override
-    public void enter(E entity)
+    public void enter()
     {
-        entity.setMoveToReach(0.0, 0.0);
-        entity.setMoveVelocity(0.3);
-        entity.setMoveSensibility(0.01);
+        object.setMoveToReach(0.0, 0.0);
+        object.setMoveVelocity(0.3);
+        object.setMoveSensibility(0.01);
     }
 
     @Override
-    protected EntityState<E> handleInput(E entity, EntityStateFactory<E> factory, InputDeviceDirectional input)
+    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
         if (input.getVerticalDirection() > 0)
         {
-            return factory.getState(EntityStateType.JUMP);
+            return factory.getState(MarioState.JUMP);
         }
         if (input.getHorizontalDirection() != 0)
         {
-            return factory.getState(EntityStateType.WALK);
+            return factory.getState(MarioState.WALK);
         }
         return null;
     }

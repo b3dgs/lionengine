@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.example.core.drawable.AppDrawable;
 import com.b3dgs.lionengine.example.game.background.AppBackground;
 import com.b3dgs.lionengine.example.game.collision.AppCollision;
 import com.b3dgs.lionengine.example.game.effect.AppGameEffect;
-import com.b3dgs.lionengine.example.game.gameplay.AppPlatformEntity;
+import com.b3dgs.lionengine.example.game.gameplay.AppGameplay;
 import com.b3dgs.lionengine.example.game.map.AppGameMap;
 import com.b3dgs.lionengine.example.game.projectile.AppGameProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.AppStrategyAbility;
@@ -79,7 +79,7 @@ public class AppExamples
         addExample(panel, "Map", AppGameMap.class);
         addExample(panel, "Background", AppBackground.class);
         addExample(panel, "Collision", AppCollision.class);
-        addExample(panel, "Entity", AppPlatformEntity.class);
+        addExample(panel, "Entity", AppGameplay.class);
         addExample(panel, "Ability", AppStrategyAbility.class);
         addExample(panel, "Control Panel", AppStrategyControlPanel.class);
         addExample(panel, "Cursor", AppStrategyCursor.class);

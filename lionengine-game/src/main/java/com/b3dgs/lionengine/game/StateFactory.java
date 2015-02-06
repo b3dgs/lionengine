@@ -15,44 +15,50 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay;
+package com.b3dgs.lionengine.game;
 
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * List of entity states.
+ * State type factory.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-enum EntityState
+public class StateFactory
 {
-    /** Idle state. */
-    IDLE,
-    /** Walk state. */
-    WALK,
-    /** turn state. */
-    TURN,
-    /** Jump state. */
-    JUMP;
-
-    /** Animation name. */
-    private final String animationName;
+    /** List of available states. */
+    private final Map<Enum<?>, State> states;
 
     /**
-     * Constructor.
+     * Create the factory.
      */
-    private EntityState()
+    public StateFactory()
     {
-        animationName = name().toLowerCase(Locale.ENGLISH);
+        states = new HashMap<>();
     }
 
     /**
-     * Get the animation name.
+     * Add a supported state.
      * 
-     * @return The animation name.
+     * @param type The state type.
+     * @param state The state instance.
      */
-    public String getAnimationName()
+    public void addState(Enum<?> type, State state)
     {
-        return animationName;
+        states.put(type, state);
+    }
+
+    /**
+     * Get the state instance from its type.
+     * 
+     * @param type The state type.
+     * @return The state instance.
+     */
+    public State getState(Enum<?> type)
+    {
+        final State state = states.get(type);
+        state.clear();
+        return state;
     }
 }

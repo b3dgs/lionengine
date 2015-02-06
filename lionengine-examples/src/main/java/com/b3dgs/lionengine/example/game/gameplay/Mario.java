@@ -17,24 +17,26 @@
  */
 package com.b3dgs.lionengine.example.game.gameplay;
 
-import java.util.EnumMap;
-
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
+import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
-import com.b3dgs.lionengine.example.game.gameplay.state.EntityState;
-import com.b3dgs.lionengine.example.game.gameplay.state.EntityStateFactory;
-import com.b3dgs.lionengine.example.game.gameplay.state.EntityStateType;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateIdle;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateJump;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateTurn;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateWalk;
-import com.b3dgs.lionengine.game.Direction;
+import com.b3dgs.lionengine.drawable.Drawable;
+import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Transformable;
+import com.b3dgs.lionengine.game.trait.TransformableModel;
 
 /**
  * Implementation of our controllable entity.
@@ -42,49 +44,55 @@ import com.b3dgs.lionengine.game.factory.SetupSurface;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class Mario
-        extends EntityPlatform
-        implements Movable
+        extends ObjectGame
+        implements Updatable, Renderable
 {
     /** Setup. */
     private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("mario.xml"));
     /** Ground location y. */
     private static final int GROUND = 32;
 
+    /** Surface. */
+    private final SpriteAnimated surface;
+    /** Transformable model. */
+    private final Transformable transformable;
+    /** Camera reference. */
+    private final Camera camera;
     /** Desired fps value. */
     private final int desiredFps;
-    /** Movable model. */
-    private final MovableModel movable;
-    /** Animations list. */
-    private final EnumMap<EntityStateType, Animation> animations;
     /** State factory. */
-    private final EntityStateFactory<Mario> statesFactory;
+    private final StateFactory factory;
     /** Entity state. */
-    private EntityState<Mario> state;
+    private State state;
 
     /**
      * Constructor.
      * 
-     * @param desiredFps The desired fps.
+     * @param services The services reference.
      */
-    public Mario(int desiredFps)
+    public Mario(Services services)
     {
-        super(Mario.SETUP);
-        this.desiredFps = desiredFps;
-        movable = new MovableModel();
-        animations = new EnumMap<>(EntityStateType.class);
-        statesFactory = new EntityStateFactory<>();
+        super(SETUP, services);
+
+        transformable = new TransformableModel(this, SETUP.getConfigurer());
+        addTrait(transformable);
+
+        desiredFps = services.get(Integer.class).intValue();
+        factory = new StateFactory();
+
         final Configurer configurer = Mario.SETUP.getConfigurer();
         setMoveSpeedMax(configurer.getDouble("movementSpeed", "data"));
         setJumpHeightMax(configurer.getDouble("jumpSpeed", "data"));
         teleport(100, 32);
         setMass(configurer.getDouble("mass", "data"));
-        loadAnimations(configurer);
 
-        statesFactory.addState(EntityStateType.IDLE, new StateIdle<Mario>(getAnimation(EntityStateType.IDLE)));
-        statesFactory.addState(EntityStateType.WALK, new StateWalk<Mario>(getAnimation(EntityStateType.WALK)));
-        statesFactory.addState(EntityStateType.TURN, new StateTurn<Mario>(getAnimation(EntityStateType.TURN)));
-        statesFactory.addState(EntityStateType.JUMP, new StateJump<Mario>(getAnimation(EntityStateType.JUMP)));
-        state = statesFactory.getState(EntityStateType.IDLE);
+        surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
+        surface.setOrigin(Origin.CENTER_BOTTOM);
+        surface.setFrameOffsets(-1, 0);
+        addTrait(surface);
+
+        loadStates(configurer, factory);
+        state = factory.getState(MarioState.IDLE);
     }
 
     /**
@@ -94,11 +102,11 @@ class Mario
      */
     public void updateControl(Keyboard keyboard)
     {
-        final EntityState<Mario> state = this.state.handleInput(this, statesFactory, keyboard);
-        if (state != null)
+        final State current = state.handleInput(factory, keyboard);
+        if (current != null)
         {
-            this.state = state;
-            state.enter(this);
+            state = current;
+            current.enter();
         }
     }
 
@@ -106,15 +114,17 @@ class Mario
      * Load all existing animations defined in the xml file.
      * 
      * @param configurer The configurer reference.
+     * @param factory The state factory reference.
      */
-    private void loadAnimations(Configurer configurer)
+    private void loadStates(Configurer configurer, StateFactory factory)
     {
         final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        for (final EntityStateType state : EntityStateType.values())
+        for (final MarioState state : MarioState.values())
         {
             try
             {
-                animations.put(state, configAnimations.getAnimation(state.getAnimationName()));
+                final Animation animation = configAnimations.getAnimation(state.getAnimationName());
+                factory.addState(state, state.create(this, animation));
             }
             catch (final LionEngineException exception)
             {
@@ -123,151 +133,15 @@ class Mario
         }
     }
 
-    /**
-     * Get an animation from its state.
-     * 
-     * @param state The state reference.
-     * @return The animation reference.
-     */
-    private Animation getAnimation(EntityStateType state)
-    {
-        return animations.get(state);
-    }
-
-    /*
-     * EntityPlatform
-     */
-
     @Override
-    public void prepare(Services context)
+    public void update(double extrp)
     {
-        // Nothing to do
+        surface.setLocation(camera, transformable.getX(), transformable.getY());
     }
 
     @Override
-    protected void handleActions(double extrp)
+    public void render(Graphic g)
     {
-        // Nothing to do
-    }
-
-    @Override
-    protected void handleMovements(double extrp)
-    {
-        state.updateState(this);
-        updateMove(extrp);
-        updateGravity(extrp, movable, getJumpDirection());
-        updateMirror();
-    }
-
-    @Override
-    protected void handleCollisions(double extrp)
-    {
-        // Block player to avoid infinite falling
-        if (getLocationY() < Mario.GROUND)
-        {
-            setJumpDirection(0.0, 0.0);
-            resetGravity();
-            teleportY(Mario.GROUND);
-        }
-    }
-
-    @Override
-    protected void handleAnimations(double extrp)
-    {
-        updateAnimation(extrp);
-    }
-
-    /*
-     * Movable
-     */
-
-    @Override
-    public void updateMove(double extrp)
-    {
-        movable.updateMove(extrp);
-    }
-
-    @Override
-    public void resetMove()
-    {
-        movable.resetMove();
-    }
-
-    @Override
-    public void setMoveToReach(double fh, double fv)
-    {
-        movable.setMoveToReach(fh, fv);
-    }
-
-    @Override
-    public void setJumpDirection(double fh, double fv)
-    {
-        movable.setJumpDirection(fh, fv);
-    }
-
-    @Override
-    public void setMoveVelocity(double velocity)
-    {
-        movable.setMoveVelocity(velocity);
-    }
-
-    @Override
-    public void setMoveSensibility(double sensibility)
-    {
-        movable.setMoveSensibility(sensibility);
-    }
-
-    @Override
-    public void setMoveSpeedMax(double max)
-    {
-        movable.setMoveSpeedMax(max);
-    }
-
-    @Override
-    public void setJumpHeightMax(double max)
-    {
-        movable.setJumpHeightMax(max);
-    }
-
-    @Override
-    public double getJumpHeightMax()
-    {
-        return movable.getJumpHeightMax();
-    }
-
-    @Override
-    public Direction getJumpDirection()
-    {
-        return movable.getJumpDirection();
-    }
-
-    @Override
-    public double getMoveSpeedMax()
-    {
-        return movable.getMoveSpeedMax();
-    }
-
-    @Override
-    public boolean isMoveDecreasingX()
-    {
-        return movable.isMoveDecreasingX();
-    }
-
-    @Override
-    public boolean isMoveIncreasingX()
-    {
-        return movable.isMoveIncreasingX();
-    }
-
-    @Override
-    public double getDirectionHorizontal()
-    {
-        return movable.getDirectionHorizontal();
-    }
-
-    @Override
-    public double getDirectionVertical()
-    {
-        return movable.getDirectionVertical();
+        surface.render(g);
     }
 }

@@ -17,22 +17,27 @@
  */
 package com.b3dgs.lionengine.example.game.gameplay.state;
 
-import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.example.game.gameplay.MarioState;
+import com.b3dgs.lionengine.game.State;
+import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.Movable;
 
 /**
  * Turn state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @param <E> The entity type used.
  */
-public class StateJump<E extends Movable & Localizable & Mirrorable & Animator>
-        extends EntityState<E>
+public class StateJump
+        extends State
 {
+    /** Mirrorable reference. */
+    private final Mirrorable mirrorable;
+    /** Animator reference. */
+    private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
     /** Movement side. */
@@ -43,16 +48,15 @@ public class StateJump<E extends Movable & Localizable & Mirrorable & Animator>
     /**
      * Create the walk state.
      * 
+     * @param object The object reference.
      * @param animation The associated animation.
      */
-    public StateJump(Animation animation)
+    public StateJump(ObjectGame object, Animation animation)
     {
         this.animation = animation;
+        mirrorable = object.getTrait(Mirrorable.class);
+        animator = object.getTrait(Animator.class);
     }
-
-    /*
-     * EntityState
-     */
 
     @Override
     public void clear()
@@ -62,33 +66,33 @@ public class StateJump<E extends Movable & Localizable & Mirrorable & Animator>
     }
 
     @Override
-    public void updateState(E entity)
+    public void updateState()
     {
-        entity.setMoveToReach(side * entity.getMoveSpeedMax(), 0);
-        if (entity.getDirectionHorizontal() != 0.0)
+        object.setMoveToReach(side * object.getMoveSpeedMax(), 0);
+        if (object.getDirectionHorizontal() != 0.0)
         {
-            entity.mirror(entity.getDirectionHorizontal() < 0);
+            mirrorable.mirror(object.getDirectionHorizontal() < 0);
         }
         if (!fall)
         {
-            fall = entity.getLocationY() < entity.getLocationOldY();
+            fall = object.getLocationY() < object.getLocationOldY();
         }
     }
 
     @Override
-    public void enter(E entity)
+    public void enter()
     {
-        entity.play(animation);
-        entity.setJumpDirection(0.0, entity.getJumpHeightMax());
+        animator.play(animation);
+        object.setJumpDirection(0.0, object.getJumpHeightMax());
     }
 
     @Override
-    protected EntityState<E> handleInput(E entity, EntityStateFactory<E> factory, InputDeviceDirectional input)
+    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
         side = input.getHorizontalDirection();
-        if (fall && entity.getJumpDirection().getDirectionVertical() == 0.0)
+        if (fall && object.getJumpDirection().getDirectionVertical() == 0.0)
         {
-            return factory.getState(EntityStateType.IDLE);
+            return factory.getState(MarioState.IDLE);
         }
         return null;
     }

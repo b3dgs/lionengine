@@ -24,6 +24,7 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Services;
 
 /**
  * Game loop designed to handle our little world.
@@ -42,7 +43,7 @@ class Scene
     /** Camera reference. */
     private final Camera camera;
     /** Mario reference. */
-    private final Mario mario;
+    private Mario mario;
 
     /**
      * Constructor.
@@ -54,7 +55,6 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         camera = new Camera();
-        mario = new Mario(getConfig().getSource().getRate());
     }
 
     /*
@@ -69,6 +69,12 @@ class Scene
         keyboard.setHorizontalControlPositive(Keyboard.RIGHT);
         keyboard.setVerticalControlPositive(Keyboard.UP);
         keyboard.setVerticalControlNegative(Keyboard.DOWN);
+
+        final Services services = new Services();
+        services.add(Integer.valueOf(getConfig().getSource().getRate()));
+        services.add(keyboard);
+        services.add(camera);
+        mario = new Mario(services);
     }
 
     @Override
@@ -92,7 +98,7 @@ class Scene
         g.drawLine(0, 208, getWidth(), 208);
 
         // Draw the mario
-        mario.render(g, camera);
+        mario.render(g);
     }
 
     @Override
