@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
  * State representation interface.
@@ -26,12 +27,13 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public abstract class State
+        implements Updatable
 {
     /**
      * Handle the input by retrieving its state.
+     * 
      * @param factory The state factory reference.
      * @param input The input reference.
-     * 
      * @return The new state (<code>null</code> if unchanged).
      */
     public State handleInput(StateFactory factory, InputDevice input)
@@ -44,19 +46,14 @@ public abstract class State
     }
 
     /**
-     * Clear the state to its default.
-     */
-    public abstract void clear();
-
-    /**
-     * Update the object state.
-     */
-    public abstract void updateState();
-
-    /**
      * Called when entering in the state.
      */
     public abstract void enter();
+
+    /**
+     * Clear the state to its default.
+     */
+    public abstract void clear();
 
     /**
      * Handle the input by retrieving its direction.

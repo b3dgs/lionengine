@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * State type factory.
  * 
@@ -27,6 +29,9 @@ import java.util.Map;
  */
 public class StateFactory
 {
+    /** Unknown state. */
+    private static final String ERROR_STATE = "State not found: ";
+
     /** List of available states. */
     private final Map<Enum<?>, State> states;
 
@@ -54,10 +59,15 @@ public class StateFactory
      * 
      * @param type The state type.
      * @return The state instance.
+     * @throws LionEngineException If state does not exist.
      */
-    public State getState(Enum<?> type)
+    public State getState(Enum<?> type) throws LionEngineException
     {
         final State state = states.get(type);
+        if (state == null)
+        {
+            throw new LionEngineException(ERROR_STATE, type.name());
+        }
         state.clear();
         return state;
     }
