@@ -15,53 +15,57 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay.state;
+package com.b3dgs.lionengine.example.game.state;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.example.game.gameplay.MarioState;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
  * Idle state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class StateIdle
+class StateIdle
         extends State
 {
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Movement force. */
+    private final Force movement;
 
     /**
      * Create the walk state.
      * 
-     * @param object The object reference.
+     * @param mario The mario reference.
      * @param animation The associated animation.
      */
-    public StateIdle(ObjectGame object, Animation animation)
+    public StateIdle(Mario mario, Animation animation)
     {
         this.animation = animation;
-        animator = object.getTrait(Animator.class);
+        animator = mario.getTrait(Animator.class);
+        movement = mario.getMovement();
     }
 
     @Override
-    public void clear()
+    public void enter()
     {
-        // Nothing to do
+        movement.setDestination(0.0, 0.0);
+        movement.setVelocity(0.3);
+        movement.setSensibility(0.01);
     }
 
     @Override
-    public void updateState()
+    public void update(double extrp)
     {
-        if (object.getDirectionHorizontal() != 0.0)
+        if (movement.getDirectionHorizontal() != 0.0)
         {
-            animator.setAnimSpeed(Math.abs(object.getDirectionHorizontal()) / 12.0);
+            animator.setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
         }
         else
         {
@@ -70,11 +74,9 @@ public class StateIdle
     }
 
     @Override
-    public void enter()
+    public void clear()
     {
-        object.setMoveToReach(0.0, 0.0);
-        object.setMoveVelocity(0.3);
-        object.setMoveSensibility(0.01);
+        // Nothing to do
     }
 
     @Override

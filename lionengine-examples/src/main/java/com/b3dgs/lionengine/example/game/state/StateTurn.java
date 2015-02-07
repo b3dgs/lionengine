@@ -15,81 +15,63 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay.state;
+package com.b3dgs.lionengine.example.game.state;
 
-import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.example.game.gameplay.MarioState;
+import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
 
 /**
- * Walk state implementation.
+ * Turn state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class StateWalk
+class StateTurn
         extends State
 {
-    /** Mirrorable reference. */
-    private final Mirrorable mirrorable;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Movement force. */
+    private final Force movement;
     /** Movement side. */
     private int side;
 
     /**
      * Create the walk state.
      * 
-     * @param object The object reference.
+     * @param mario The mario reference.
      * @param animation The associated animation.
      */
-    public StateWalk(ObjectGame object, Animation animation)
+    public StateTurn(Mario mario, Animation animation)
     {
         this.animation = animation;
-        mirrorable = object.getTrait(Mirrorable.class);
-        animator = object.getTrait(Animator.class);
-    }
-
-    @Override
-    public void clear()
-    {
-        side = 0;
-    }
-
-    @Override
-    public void updateState()
-    {
-        object.setMoveToReach(side * object.getMoveSpeedMax(), 0);
-        animator.setAnimSpeed(Math.abs(object.getDirectionHorizontal()) / 12.0);
-        if (side < 0)
-        {
-            if (object.getDirectionHorizontal() < 0)
-            {
-                mirrorable.mirror(Mirror.HORIZONTAL);
-            }
-        }
-        else if (side > 0)
-        {
-            if (object.getDirectionHorizontal() > 0)
-            {
-                mirrorable.mirror(Mirror.NONE);
-            }
-        }
+        animator = mario.getTrait(Animator.class);
+        movement = mario.getMovement();
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        object.setMoveVelocity(0.5);
-        object.setMoveSensibility(0.1);
+        movement.setVelocity(0.28);
+        movement.setSensibility(0.005);
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        movement.setDestination(side * 2, 0);
+    }
+
+    @Override
+    public void clear()
+    {
+        side = 0;
     }
 
     @Override
@@ -100,13 +82,11 @@ public class StateWalk
             return factory.getState(MarioState.JUMP);
         }
         side = input.getHorizontalDirection();
-        if (side == 0 && input.getVerticalDirection() == 0)
+        if ((input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || input
+                .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
+                && input.getVerticalDirection() == 0)
         {
-            return factory.getState(MarioState.IDLE);
-        }
-        else if (side < 0 && object.getDirectionHorizontal() > 0 || side > 0 && object.getDirectionHorizontal() < 0)
-        {
-            return factory.getState(MarioState.TURN);
+            return factory.getState(MarioState.WALK);
         }
         return null;
     }

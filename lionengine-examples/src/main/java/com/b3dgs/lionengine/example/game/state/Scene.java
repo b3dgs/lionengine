@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay;
+package com.b3dgs.lionengine.example.game.state;
 
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Graphic;
@@ -65,10 +65,6 @@ class Scene
     public void load()
     {
         camera.setView(0, 0, getWidth(), getHeight());
-        keyboard.setHorizontalControlNegative(Keyboard.LEFT);
-        keyboard.setHorizontalControlPositive(Keyboard.RIGHT);
-        keyboard.setVerticalControlPositive(Keyboard.UP);
-        keyboard.setVerticalControlNegative(Keyboard.DOWN);
 
         final Services services = new Services();
         services.add(Integer.valueOf(getConfig().getSource().getRate()));
@@ -91,13 +87,8 @@ class Scene
     @Override
     public void render(Graphic g)
     {
-        // Clean screen (as we don't have any background)
         g.clear(0, 0, getWidth(), getHeight());
-
-        // Draw the floor
-        g.drawLine(0, 208, getWidth(), 208);
-
-        // Draw the mario
+        g.drawLine(camera, 0, Mario.GROUND, getWidth(), Mario.GROUND);
         mario.render(g);
     }
 

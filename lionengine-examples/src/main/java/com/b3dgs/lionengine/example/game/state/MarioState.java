@@ -15,26 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.gameplay;
+package com.b3dgs.lionengine.example.game.state;
 
 import java.lang.reflect.Constructor;
 import java.util.Locale;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateIdle;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateJump;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateTurn;
-import com.b3dgs.lionengine.example.game.gameplay.state.StateWalk;
 import com.b3dgs.lionengine.game.State;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
- * List of object states.
+ * List of mario states.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public enum MarioState
+enum MarioState
 {
     /** Idle state. */
     IDLE(StateIdle.class),
@@ -64,16 +59,16 @@ public enum MarioState
     /**
      * Create the state from its parameters.
      * 
-     * @param object The object reference.
+     * @param mario The mario reference.
      * @param animation The associated animation reference.
      * @return The state instance.
      */
-    public State create(ObjectGame object, Animation animation)
+    public State create(Mario mario, Animation animation)
     {
         try
         {
-            final Constructor<?> constructor = clazz.getConstructor(ObjectGame.class, Animation.class);
-            return State.class.cast(constructor.newInstance(object, animation));
+            final Constructor<?> constructor = clazz.getConstructor(Mario.class, Animation.class);
+            return State.class.cast(constructor.newInstance(mario, animation));
         }
         catch (final ReflectiveOperationException exception)
         {
