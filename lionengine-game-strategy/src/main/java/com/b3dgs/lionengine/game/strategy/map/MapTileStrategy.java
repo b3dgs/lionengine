@@ -47,11 +47,10 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
      * 
      * @param tileWidth The tile width.
      * @param tileHeight The tile height.
-     * @param collisions The collisions list.
      */
-    public MapTileStrategy(int tileWidth, int tileHeight, CollisionFormula[] collisions)
+    public MapTileStrategy(int tileWidth, int tileHeight)
     {
-        super(tileWidth, tileHeight, collisions);
+        super(tileWidth, tileHeight);
         ref = null;
     }
 
@@ -96,7 +95,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
             {
                 for (int y = sy - size; y <= sy + size; y++)
                 {
-                    if (collision == getTile(x, y).getCollision())
+                    if (getTile(x, y).getCollisionFormulas().contains(collision))
                     {
                         final int d = UtilMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
                         if (d < dist)
@@ -188,22 +187,18 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
     }
 
     @Override
-    public void loadCollisions(Media media) throws LionEngineException
+    public void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException
     {
-        super.loadCollisions(media);
-        for (int v = 0; v < heightInTile; v++)
+        super.loadCollisions(collisionFormulas, collisionGroups);
+        for (int v = 0; v < getHeightInTile(); v++)
         {
-            for (int h = 0; h < widthInTile; h++)
+            for (int h = 0; h < getWidthInTile(); h++)
             {
                 final T tile = getTile(h, v);
                 if (tile != null)
                 {
-                    final CollisionFormula collision = tile.getCollision();
-                    if (collision != null)
-                    {
-                        tile.setResourceType(tile.checkResourceType());
-                        tile.setBlocking(tile.checkBlocking());
-                    }
+                    tile.setResourceType(tile.checkResourceType());
+                    tile.setBlocking(tile.checkBlocking());
                 }
             }
         }
@@ -222,7 +217,7 @@ public abstract class MapTileStrategy<R extends Enum<R>, T extends TileStrategy<
     @Override
     public boolean isBlocked(Pathfindable mover, int dx, int dy, boolean ignoreRef)
     {
-        if (dy < 0 || dx < 0 || dy >= heightInTile || dx >= widthInTile)
+        if (dy < 0 || dx < 0 || dy >= getHeightInTile() || dx >= getWidthInTile())
         {
             return true;
         }

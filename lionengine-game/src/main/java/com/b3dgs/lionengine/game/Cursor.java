@@ -23,8 +23,8 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilMath;
+import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDevicePointer;
 import com.b3dgs.lionengine.core.Media;
@@ -63,6 +63,8 @@ public class Cursor
     private final InputDevicePointer pointer;
     /** Surface reference. */
     private final Image[] surface;
+    /** Viewer reference. */
+    private Viewer viewer;
     /** Cursor location x. */
     private double x;
     /** Cursor location y. */
@@ -73,6 +75,10 @@ public class Cursor
     private double sensibilityHorizontal;
     /** Vertical sensibility. */
     private double sensibilityVertical;
+    /** Grid width. */
+    private int gridWidth;
+    /** Grid height. */
+    private int gridHeight;
     /** Minimum location x. */
     private int minX;
     /** Minimum location y. */
@@ -89,36 +95,20 @@ public class Cursor
     private int offsetX;
     /** Rendering vertical offset. */
     private int offsetY;
+    /** Location offset x. */
+    private int offX;
+    /** Location offset y. */
+    private int offY;
 
     /**
      * Create a cursor fixed inside the resolution and load its images.
      * 
      * @param pointer The pointer reference (must not be <code>null</code>).
-     * @param resolution The resolution used to know the screen limits.
      * @param media The cursor media.
      * @param others The cursor medias list (containing the different cursor surfaces path).
      * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
      */
-    public Cursor(InputDevicePointer pointer, Resolution resolution, Media media, Media... others)
-            throws LionEngineException
-    {
-        this(pointer, 0, 0, resolution.getWidth(), resolution.getHeight(), media, others);
-    }
-
-    /**
-     * Create a cursor and load its images.
-     * 
-     * @param pointer The pointer reference (must not be <code>null</code>).
-     * @param minX The minimal x location on screen.
-     * @param minY The minimal y location on screen.
-     * @param maxX The maximal x location on screen.
-     * @param maxY The maximal y location on screen.
-     * @param media The cursor media.
-     * @param others The cursor media list (containing the different cursor surfaces path).
-     * @throws LionEngineException If invalid arguments or an error occurred when reading the image.
-     */
-    public Cursor(InputDevicePointer pointer, int minX, int minY, int maxX, int maxY, Media media, Media... others)
-            throws LionEngineException
+    public Cursor(InputDevicePointer pointer, Media media, Media... others) throws LionEngineException
     {
         Check.notNull(pointer);
         Check.notNull(media);
@@ -141,11 +131,9 @@ public class Cursor
             i++;
         }
 
-        this.minX = Math.min(minX, maxX);
-        this.minY = Math.min(minY, maxY);
-        this.maxX = Math.max(maxX, minX);
-        this.maxY = Math.max(maxY, minY);
         sync = true;
+        gridWidth = 1;
+        gridHeight = 1;
         surfaceId = 0;
         offsetX = 0;
         offsetY = 0;
@@ -162,6 +150,16 @@ public class Cursor
         {
             current.load(alpha);
         }
+    }
+
+    /**
+     * Set the viewer reference.
+     * 
+     * @param viewer The viewer reference.
+     */
+    public void setViewer(Viewer viewer)
+    {
+        this.viewer = viewer;
     }
 
     /**
@@ -237,6 +235,18 @@ public class Cursor
     }
 
     /**
+     * Set the grid size.
+     * 
+     * @param width The horizontal grid.
+     * @param height The vertical grid.
+     */
+    public void setGrid(int width, int height)
+    {
+        gridWidth = width;
+        gridHeight = height;
+    }
+
+    /**
      * Return pointer click number.
      * 
      * @return The pointer click number.
@@ -277,6 +287,26 @@ public class Cursor
     }
 
     /**
+     * Get the horizontal tile pointed by the cursor.
+     * 
+     * @return The horizontal tile pointed by the cursor.
+     */
+    public int getLocationInTileX()
+    {
+        return (getLocationX() + offX) / gridWidth;
+    }
+
+    /**
+     * Get the vertical tile pointed by the cursor.
+     * 
+     * @return The vertical tile pointed by the cursor.
+     */
+    public int getLocationInTileY()
+    {
+        return ((viewer != null ? viewer.getHeight() : 0) - getLocationY() + offY) / gridHeight;
+    }
+
+    /**
      * Get horizontal sensibility.
      * 
      * @return The horizontal sensibility.
@@ -306,6 +336,26 @@ public class Cursor
         return sync;
     }
 
+    /**
+     * Get the grid width.
+     * 
+     * @return The grid width.
+     */
+    public int getGridWidth()
+    {
+        return gridWidth;
+    }
+
+    /**
+     * Get the grid height.
+     * 
+     * @return The grid height.
+     */
+    public int getGridHeight()
+    {
+        return gridHeight;
+    }
+
     /*
      * Updatable
      */
@@ -322,6 +372,11 @@ public class Cursor
         {
             x += pointer.getMoveX() * sensibilityHorizontal * extrp;
             y += pointer.getMoveY() * sensibilityVertical * extrp;
+        }
+        if (viewer != null)
+        {
+            offX = (int) viewer.getX();
+            offY = (int) viewer.getY() - viewer.getViewY() * 2;
         }
 
         x = UtilMath.fixBetween(x, minX, maxX);

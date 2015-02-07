@@ -42,10 +42,15 @@ import com.b3dgs.lionengine.stream.FileReading;
  */
 public class TileGame
 {
+    /** Error type. */
+    private static final String ERROR_TYPE = "Unknown type: ";
+
     /** Tile width. */
     private final int width;
     /** Tile height. */
     private final int height;
+    /** The collision formulas used. */
+    private final Collection<CollisionFormula> formulas;
     /** Tilesheet number where tile is contained. */
     private Integer pattern;
     /** Position number in the tilesheet. */
@@ -54,10 +59,8 @@ public class TileGame
     private int x;
     /** Vertical location on map. */
     private int y;
-    /** The collision formulas used. */
-    private final Collection<CollisionFormula> formulas;
-    /** Error type. */
-    private static final String ERROR_TYPE = "Unknown type: ";
+    /** Group name. */
+    private String group;
 
     /**
      * Create a tile.
@@ -148,6 +151,16 @@ public class TileGame
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    /**
+     * Set the collision group name.
+     * 
+     * @param name The collision group name.
+     */
+    public void setGroup(String name)
+    {
+        group = name;
     }
 
     /**
@@ -320,6 +333,16 @@ public class TileGame
     public int getY()
     {
         return y;
+    }
+
+    /**
+     * Get the collision group name.
+     * 
+     * @return The collision group name.
+     */
+    public String getGroup()
+    {
+        return group;
     }
 
     /**

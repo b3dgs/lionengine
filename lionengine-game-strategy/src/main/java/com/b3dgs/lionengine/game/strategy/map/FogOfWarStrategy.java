@@ -156,9 +156,9 @@ public abstract class FogOfWarStrategy<T extends TileGame>
      */
     public void render(Graphic g, CameraStrategy camera)
     {
-        render(g, camera.getViewHeight(), (int) camera.getX(), (int) camera.getY(),
-                (int) Math.ceil(camera.getViewWidth() / (double) tileWidth),
-                (int) Math.ceil(camera.getViewHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
+        render(g, camera.getHeight(), (int) camera.getX(), (int) camera.getY(),
+                (int) Math.ceil(camera.getWidth() / (double) tileWidth),
+                (int) Math.ceil(camera.getHeight() / (double) tileHeight), -camera.getViewX(), camera.getViewY());
     }
 
     /**
@@ -331,12 +331,16 @@ public abstract class FogOfWarStrategy<T extends TileGame>
 
             if (fogMap && Border20.NONE != vid)
             {
-                fogTiles.render(g, fid.ordinal(), x, y);
+                fogTiles.setLocation(x, y);
+                fogTiles.setTile(fid.ordinal());
+                fogTiles.render(g);
             }
 
             if (hideMap)
             {
-                hideTiles.render(g, vid.ordinal(), x, y);
+                hideTiles.setLocation(x, y);
+                hideTiles.setTile(vid.ordinal());
+                hideTiles.render(g);
             }
         }
     }

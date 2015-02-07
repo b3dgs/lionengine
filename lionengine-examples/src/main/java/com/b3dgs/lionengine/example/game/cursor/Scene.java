@@ -53,15 +53,16 @@ class Scene
         super(loader, new Resolution(320, 240, 60));
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
-        cursor = new Cursor(mouse, getConfig().getSource(), Core.MEDIA.create("cursor", "cursor1.png"),
-                Core.MEDIA.create("cursor", "cursor2.png"));
+        cursor = new Cursor(mouse, Core.MEDIA.create("cursor", "cursor1.png"), Core.MEDIA.create("cursor",
+                "cursor2.png"));
     }
 
     @Override
     public void load()
     {
-        cursor.load(false);
         mouse.setConfig(getConfig());
+        cursor.load(false);
+        cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setSensibility(0.5, 0.5);
         setSystemCursorVisible(false);
     }

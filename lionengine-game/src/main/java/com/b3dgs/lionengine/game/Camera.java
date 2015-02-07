@@ -306,6 +306,28 @@ public class Camera
     }
 
     /**
+     * Get the horizontal location in tile.
+     * 
+     * @param map The map reference.
+     * @return The horizontal location in tile.
+     */
+    public int getLocationInTileX(MapTile<?> map)
+    {
+        return (int) getX() / map.getTileWidth();
+    }
+
+    /**
+     * Get the vertical location in tile.
+     * 
+     * @param map The map reference.
+     * @return The vertical location in tile.
+     */
+    public int getLocationInTileY(MapTile<?> map)
+    {
+        return (int) getY() / map.getTileHeight();
+    }
+
+    /**
      * Check horizontal limit on move.
      * 
      * @param vx The horizontal movement.

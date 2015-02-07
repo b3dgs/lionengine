@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
+    <lionengine:group name="ground0" pattern="0" start="0" end="1"/>
+    <lionengine:group name="ground1" pattern="0" start="2" end="17"/>
+    <lionengine:group name="ground2" pattern="0" start="18" end="32"/>
+    <lionengine:group name="ground3" pattern="0" start="33" end="48"/>
+    <lionengine:group name="ground4" pattern="0" start="49" end="50"/>
+    <lionengine:group name="ground5" pattern="0" start="51" end="66"/>
+    <lionengine:group name="ground6" pattern="0" start="67" end="67"/>
+    <lionengine:group name="ground7" pattern="0" start="96" end="123"/>
+    <lionengine:group name="ground8" pattern="0" start="124" end="123"/>
+    <lionengine:group name="ground9" pattern="0" start="124" end="124"/>
+    <lionengine:group name="treeBorder" pattern="0" start="125" end="140"/>
+    <lionengine:group name="tree" pattern="0" start="141" end="145"/>
+    <lionengine:group name="border" pattern="0" start="146" end="184"/>
+    <lionengine:group name="water" pattern="0" start="185" end="207"/>
+</lionengine:groups>

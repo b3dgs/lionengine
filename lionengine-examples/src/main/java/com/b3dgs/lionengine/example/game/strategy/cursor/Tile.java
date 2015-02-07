@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.cursor;
 
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
 
 /**
@@ -26,7 +25,7 @@ import com.b3dgs.lionengine.game.strategy.map.TileStrategy;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.game.map
  */
-final class Tile
+class Tile
         extends TileStrategy<ResourceType>
 {
     /**
@@ -34,18 +33,11 @@ final class Tile
      * 
      * @param width The tile width.
      * @param height The tile height.
-     * @param pattern The tile pattern.
-     * @param number The tile number.
-     * @param collision The tile collision.
      */
-    Tile(int width, int height, Integer pattern, int number, CollisionFormula collision)
+    public Tile(int width, int height)
     {
-        super(width, height, pattern, number, collision);
+        super(width, height);
     }
-
-    /*
-     * TileStrategy
-     */
 
     @Override
     public ResourceType checkResourceType()
@@ -63,11 +55,5 @@ final class Tile
     public boolean hasResources()
     {
         return getResourceType() != ResourceType.NONE;
-    }
-
-    @Override
-    public TileCollision getCollision()
-    {
-        return (TileCollision) super.getCollision();
     }
 }

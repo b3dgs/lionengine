@@ -28,11 +28,9 @@ import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
+import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.Cursor;
 import com.b3dgs.lionengine.game.TextGame;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.strategy.CursorStrategy;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.
@@ -40,7 +38,7 @@ import com.b3dgs.lionengine.game.utility.LevelRipConverter;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see com.b3dgs.lionengine.example.core.minimal
  */
-final class Scene
+class Scene
         extends Sequence
 {
     /** Native resolution. */
@@ -55,24 +53,24 @@ final class Scene
     /** Map reference. */
     private final Map map;
     /** Camera reference. */
-    private final CameraStrategy camera;
+    private final Camera camera;
     /** Cursor reference. */
-    private final CursorStrategy cursor;
+    private final Cursor cursor;
 
     /**
      * Constructor.
      * 
      * @param loader The loader reference.
      */
-    Scene(Loader loader)
+    public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
         text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         map = new Map();
-        camera = new CameraStrategy(map);
-        cursor = new CursorStrategy(mouse, camera, getConfig().getSource(), map, Core.MEDIA.create("cursor.png"));
+        camera = new Camera();
+        cursor = new Cursor(mouse, Core.MEDIA.create("cursor.png"));
         mouse.setConfig(getConfig());
         setSystemCursorVisible(false);
     }
@@ -94,46 +92,34 @@ final class Scene
 
             text.drawRect(g, ColorRgba.GREEN, x, y, map.getTileWidth(), map.getTileHeight());
             text.setColor(ColorRgba.YELLOW);
-            text.draw(g, x + 18, y + 25, "Group: " + tile.getCollision().getGroup());
-            text.draw(g, x + 18, y + 16, "Coll: " + tile.getCollision());
-            text.draw(g, x + 18, y + 7, "Tile number: " + tile.getNumber());
-            text.draw(g, x + 21, y - 2, "tx = " + tx + " | ty = " + ty);
+            text.draw(g, x + 20, y + 20, "Group: " + tile.getGroup());
+            text.draw(g, x + 20, y + 11, "Tile number: " + tile.getNumber());
+            text.draw(g, x + 21, y + 2, "tx = " + tx + " | ty = " + ty);
         }
     }
-
-    /*
-     * Sequence
-     */
 
     @Override
     public void load()
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
-                Core.MEDIA.create("tile"), map);
-        rip.start();
-        map.loadCollisions(Core.MEDIA.create("tile", MapTile.GROUPS_FILE_NAME));
-
-        keyboard.setHorizontalControlNegative(Keyboard.LEFT);
-        keyboard.setHorizontalControlPositive(Keyboard.RIGHT);
-        keyboard.setVerticalControlNegative(Keyboard.DOWN);
-        keyboard.setVerticalControlPositive(Keyboard.UP);
-
+        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        cursor.load(false);
+        cursor.setArea(0, 0, getWidth(), getHeight());
+        cursor.setGrid(map.getTileWidth(), map.getTileHeight());
+        cursor.setViewer(camera);
         camera.setView(0, 0, getWidth(), getHeight());
-        camera.setSensibility(30, 30);
-        camera.setBorders(map);
+        camera.setLimits(map);
     }
 
     @Override
     public void update(double extrp)
     {
-        mouse.update();
+        mouse.update(extrp);
+        text.update(camera);
+        cursor.update(extrp);
         if (keyboard.isPressed(Keyboard.ESCAPE))
         {
             end();
         }
-        camera.update(keyboard);
-        text.update(camera);
-        cursor.update(extrp);
     }
 
     @Override

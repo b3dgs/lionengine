@@ -295,9 +295,9 @@ public abstract class MapTileGame<T extends TileGame>
                 Transparency.TRANSLUCENT);
         final Graphic g = buffer.createGraphic();
         g.setColor(ColorRgba.PURPLE);
-    
+
         createFunctionDraw(g, collision);
-    
+
         g.dispose();
         return buffer;
     }
@@ -312,7 +312,7 @@ public abstract class MapTileGame<T extends TileGame>
     {
         final CollisionFunction function = formula.getFunction();
         final CollisionRange range = formula.getRange();
-    
+
         for (int x = 0; x < tileWidth; x++)
         {
             for (int y = 0; y < tileHeight; y++)
@@ -409,6 +409,7 @@ public abstract class MapTileGame<T extends TileGame>
         {
             if (group.getPattern() == pattern && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
             {
+                tile.setGroup(group.getName());
                 for (final CollisionFormula formula : group.getFormulas())
                 {
                     tile.addCollisionFormula(formula);
