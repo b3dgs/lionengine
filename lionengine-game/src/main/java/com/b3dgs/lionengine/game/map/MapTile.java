@@ -31,11 +31,11 @@ import com.b3dgs.lionengine.stream.FileWriting;
 
 /**
  * Describe a map using tile for its representation. This is the lower level interface to describe a 2D map using tiles.
- * Each tiles are stored vertically and then horizontally. A pattern represents a tilesheet number (number of surface
- * containing tiles). A map can have one or more patterns. The map picks its resources from a patterns folder, which
+ * Each tiles are stored vertically and then horizontally. A sheet id represents a tilesheet number (surface number
+ * containing tiles). A map can have one or more sheets. The map picks its resources from a sheets folder, which
  * must contains the following files (and its tiles sheets image):
  * <ul>
- * <li>{@value #SHEETS_FILE_NAME} - describes the patterns used.
+ * <li>{@value #SHEETS_FILE_NAME} - describes the sheets used.
  * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -90,7 +90,7 @@ public interface MapTile
      * 
      * @param file The input file.
      * @throws IOException If error on reading.
-     * @throws LionEngineException If error when reading patterns or collisions.
+     * @throws LionEngineException If error when reading map file.
      */
     void load(FileReading file) throws IOException, LionEngineException;
 
@@ -99,22 +99,22 @@ public interface MapTile
      * A file called {@value #SHEETS_FILE_NAME} has to be in the same directory.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param patternsDirectory The directory containing tiles themes.
+     * @param sheetsDir The directory containing tiles sheets.
      * @throws LionEngineException If error when reading collisions.
      */
-    void load(Media levelrip, Media patternsDirectory) throws LionEngineException;
+    void load(Media levelrip, Media sheetsDir) throws LionEngineException;
 
     /**
-     * Load map patterns (tiles surfaces) from theme name. Must be called after map creation. A file called
+     * Load map sheets (tiles surfaces) from theme name. Must be called after map creation. A file called
      * {@value #SHEETS_FILE_NAME} which describes the tile sheets used.
      * <p>
-     * Patterns number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
+     * Sheets number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
      * </p>
      * 
-     * @param directory The patterns directory.
-     * @throws LionEngineException If error when reading patterns.
+     * @param directory The sheets directory.
+     * @throws LionEngineException If error when reading sheets.
      */
-    void loadPatterns(Media directory) throws LionEngineException;
+    void loadSheets(Media directory) throws LionEngineException;
 
     /**
      * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
@@ -199,41 +199,41 @@ public interface MapTile
     int getInTileY(Localizable localizable);
 
     /**
-     * Get map theme.
+     * Get the sheets directory media.
      * 
-     * @return The map tiles directory.
+     * @return The directory containing tile sheets.
      */
-    Media getPatternsDirectory();
+    Media getSheetsDirectory();
 
     /**
-     * Get list of patterns id.
+     * Get list of sheets id.
      * 
-     * @return The set of patterns id.
+     * @return The set of sheets id.
      */
-    Collection<Integer> getPatterns();
+    Collection<Integer> getSheets();
 
     /**
-     * Get pattern (tilesheet) from its id.
+     * Get sheet from its id.
      * 
-     * @param pattern The pattern id.
-     * @return The pattern found.
-     * @throws LionEngineException If pattern not found.
+     * @param sheet The sheet id.
+     * @return The sheet found.
+     * @throws LionEngineException If sheet not found.
      */
-    SpriteTiled getPattern(Integer pattern) throws LionEngineException;
+    SpriteTiled getSheet(Integer sheet) throws LionEngineException;
 
     /**
-     * Get the number of used pattern.
+     * Get the number of used sheets.
      * 
-     * @return The number of used pattern.
+     * @return The number of used sheets.
      */
-    int getNumberPatterns();
+    int getSheetsNumber();
 
     /**
      * Get number of active tiles (which are not <code>null</code>).
      * 
      * @return The number of non <code>null</code> tile.
      */
-    int getNumberTiles();
+    int getTilesNumber();
 
     /**
      * Get width of a tile.

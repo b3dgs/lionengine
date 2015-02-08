@@ -23,7 +23,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
@@ -33,7 +33,7 @@ import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
  * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class FogOfWarStrategy<T extends TileGame>
+public abstract class FogOfWarStrategy<T extends Tile>
 {
     /** Fog map. */
     private final Border20Map border20Map;

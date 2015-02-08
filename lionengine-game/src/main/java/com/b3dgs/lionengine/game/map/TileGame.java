@@ -38,8 +38,8 @@ public class TileGame
     private final int height;
     /** Features list. */
     private final Features<TileFeature> features;
-    /** Tilesheet number where tile is contained. */
-    private Integer pattern;
+    /** Tile sheet number where tile is contained. */
+    private Integer sheet;
     /** Position number in the tilesheet. */
     private int number;
     /** Horizontal location on map. */
@@ -61,7 +61,7 @@ public class TileGame
         this.width = width;
         this.height = height;
         features = new Features<>(TileFeature.class);
-        pattern = Integer.valueOf(0);
+        sheet = Integer.valueOf(0);
         x = 0;
         y = 0;
     }
@@ -77,10 +77,10 @@ public class TileGame
     }
 
     @Override
-    public void setPattern(Integer pattern)
+    public void setSheet(Integer sheet)
     {
-        Check.notNull(pattern);
-        this.pattern = pattern;
+        Check.notNull(sheet);
+        this.sheet = sheet;
     }
 
     @Override
@@ -139,9 +139,9 @@ public class TileGame
     }
 
     @Override
-    public Integer getPattern()
+    public Integer getSheet()
     {
-        return pattern;
+        return sheet;
     }
 
     @Override

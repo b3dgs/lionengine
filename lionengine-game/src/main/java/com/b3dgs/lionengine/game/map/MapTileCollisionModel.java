@@ -228,7 +228,7 @@ public class MapTileCollisionModel
                     final TileCollision tileCollision = new TileCollisionModel(tile);
                     tile.addFeature(tileCollision);
                     tileCollision.removeCollisionFormulas();
-                    addTileCollisions(tileCollision, tile.getPattern().intValue(), tile.getNumber());
+                    addTileCollisions(tileCollision, tile.getSheet().intValue(), tile.getNumber());
                 }
             }
         }
@@ -238,14 +238,14 @@ public class MapTileCollisionModel
      * Add the tile collisions from loaded configuration.
      * 
      * @param tile The tile reference.
-     * @param pattern The tile pattern value.
+     * @param sheet The tile sheet value.
      * @param number The tile number value.
      */
-    private void addTileCollisions(TileCollision tile, int pattern, int number)
+    private void addTileCollisions(TileCollision tile, int sheet, int number)
     {
         for (final CollisionGroup group : getCollisionGroups())
         {
-            if (group.getPattern() == pattern && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
+            if (group.getSheet() == sheet && UtilMath.isBetween(number, group.getStart(), group.getEnd()))
             {
                 tile.setGroup(group.getName());
                 for (final CollisionFormula formula : group.getFormulas())
@@ -399,7 +399,7 @@ public class MapTileCollisionModel
     @Override
     public void saveCollisions() throws LionEngineException
     {
-        final Media formulas = Core.MEDIA.create(map.getPatternsDirectory().getPath(), FORMULAS_FILE_NAME);
+        final Media formulas = Core.MEDIA.create(map.getSheetsDirectory().getPath(), FORMULAS_FILE_NAME);
         final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
         for (final CollisionFormula formula : getCollisionFormulas())
         {
@@ -407,7 +407,7 @@ public class MapTileCollisionModel
         }
         Stream.saveXml(formulasRoot, formulas);
 
-        final Media groups = Core.MEDIA.create(map.getPatternsDirectory().getPath(), GROUPS_FILE_NAME);
+        final Media groups = Core.MEDIA.create(map.getSheetsDirectory().getPath(), GROUPS_FILE_NAME);
         final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
         for (final CollisionGroup group : getCollisionGroups())
         {

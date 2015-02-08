@@ -394,7 +394,7 @@ public class WorldViewRenderer
         g.setColor(ColorRgba.BLUE);
         g.drawRect(0, 0, areaX, areaY, true);
 
-        if (map.getNumberPatterns() > 0)
+        if (map.getSheetsNumber() > 0)
         {
             map.render(g, camera);
         }

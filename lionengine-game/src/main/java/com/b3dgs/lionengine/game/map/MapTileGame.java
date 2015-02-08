@@ -43,14 +43,14 @@ import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Abstract representation of a standard tile based map. This class uses a List of List to store tiles, a TreeMap to
- * store patterns references (SpriteTiled), and collisions.
+ * store sheets references (SpriteTiled), and collisions.
  * <p>
  * The way to prepare a map is the following:
  * </p>
  * 
  * <pre>
  * {@link #create(int, int)} // prepare memory to store tiles
- * {@link #loadPatterns(Media)} // load tilesheet
+ * {@link #loadSheets(Media)} // load tile sheets
  * </pre>
  * 
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
@@ -61,23 +61,23 @@ import com.b3dgs.lionengine.stream.XmlNode;
 public class MapTileGame
         implements MapTile
 {
-    /** Info loading patterns. */
-    private static final String INFO_LOAD_PATTERNS = "Loading patterns from: ";
-    /** Error pattern missing message. */
-    private static final String ERROR_PATTERN_MISSING = "Pattern missing: ";
+    /** Info loading sheets. */
+    private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
+    /** Error sheet missing message. */
+    private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
     /** Error feature missing message. */
     private static final String ERROR_FEATURE_MISSING = "Feature missing: ";
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
-    /** Patterns list. */
-    private final Map<Integer, SpriteTiled> patterns;
+    /** Sheets list. */
+    private final Map<Integer, SpriteTiled> sheets;
     /** Viewer reference. */
     private final Viewer viewer;
     /** Features list. */
     private final Features<MapTileFeature> features;
     /** Tiles directory. */
-    private Media patternsDirectory;
+    private Media sheetsDir;
     /** Tile width. */
     private int tileWidth;
     /** Tile height. */
@@ -104,9 +104,9 @@ public class MapTileGame
         this.viewer = viewer;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        patterns = new HashMap<>();
+        sheets = new HashMap<>();
         features = new Features<>(MapTileFeature.class);
-        patternsDirectory = null;
+        sheetsDir = null;
     }
 
     /**
@@ -161,7 +161,7 @@ public class MapTileGame
      */
     protected void renderTile(Graphic g, Tile tile, int x, int y)
     {
-        renderingTile(g, tile, tile.getPattern(), tile.getNumber(), x, y);
+        renderingTile(g, tile, tile.getSheet(), tile.getNumber(), x, y);
     }
 
     /**
@@ -169,14 +169,14 @@ public class MapTileGame
      * 
      * @param g The graphic output.
      * @param tile The tile to render.
-     * @param pattern The tile pattern.
+     * @param sheet The tile sheet.
      * @param number The tile number.
      * @param x The location x.
      * @param y The location y.
      */
-    protected void renderingTile(Graphic g, Tile tile, Integer pattern, int number, int x, int y)
+    protected void renderingTile(Graphic g, Tile tile, Integer sheet, int number, int x, int y)
     {
-        final SpriteTiled sprite = getPattern(pattern);
+        final SpriteTiled sprite = getSheet(sheet);
         sprite.setLocation(x, y);
         sprite.setTile(number);
         sprite.render(g);
@@ -186,8 +186,8 @@ public class MapTileGame
      * Save tile. Data are saved this way:
      * 
      * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
+     * (integer) sheet number
+     * (integer) index number inside sheet
      * (integer) tile location x % AbstractMapTile.BLOC_SIZE
      * (integer tile location y
      * </pre>
@@ -198,7 +198,7 @@ public class MapTileGame
      */
     protected void saveTile(FileWriting file, Tile tile) throws IOException
     {
-        file.writeInteger(tile.getPattern().intValue());
+        file.writeInteger(tile.getSheet().intValue());
         file.writeInteger(tile.getNumber());
         file.writeInteger(tile.getX() / tileWidth % MapTile.BLOC_SIZE);
         file.writeInteger(tile.getY() / tileHeight);
@@ -208,8 +208,8 @@ public class MapTileGame
      * Load tile. Data are loaded this way:
      * 
      * <pre>
-     * (integer) pattern number
-     * (integer) index number inside pattern
+     * (integer) sheet number
+     * (integer) index number inside sheet
      * (integer) tile location x
      * (integer tile location y
      * </pre>
@@ -224,7 +224,7 @@ public class MapTileGame
     {
         Check.notNull(file);
 
-        final int pattern = file.readInteger();
+        final int sheet = file.readInteger();
         final int number = file.readInteger();
         final int x = file.readInteger() * tileWidth + i * MapTile.BLOC_SIZE * getTileWidth();
         final int y = file.readInteger() * tileHeight;
@@ -232,9 +232,9 @@ public class MapTileGame
 
         if (tile == null)
         {
-            throw new LionEngineException(ERROR_CREATE_TILE, "pattern=" + pattern, " | number=" + number);
+            throw new LionEngineException(ERROR_CREATE_TILE, "sheet=" + sheet, " | number=" + number);
         }
-        tile.setPattern(Integer.valueOf(pattern));
+        tile.setSheet(Integer.valueOf(sheet));
         tile.setNumber(number);
         tile.setX(x);
         tile.setY(y);
@@ -275,14 +275,14 @@ public class MapTileGame
     @Override
     public void load(FileReading file) throws IOException, LionEngineException
     {
-        patternsDirectory = Core.MEDIA.create(file.readString());
+        sheetsDir = Core.MEDIA.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
         tileHeight = file.readByte();
 
         create(width, height);
-        loadPatterns(patternsDirectory);
+        loadSheets(sheetsDir);
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -291,9 +291,9 @@ public class MapTileGame
             for (int h = 0; h < n; h++)
             {
                 final Tile tile = loadTile(file, v);
-                if (tile.getPattern().intValue() > getNumberPatterns())
+                if (tile.getSheet().intValue() > getSheetsNumber())
                 {
-                    throw new LionEngineException(ERROR_PATTERN_MISSING, tile.getPattern().toString());
+                    throw new LionEngineException(ERROR_SHEET_MISSING, tile.getSheet().toString());
                 }
                 final int th = tile.getX() / getTileWidth();
                 final int tv = tile.getY() / getTileHeight();
@@ -307,7 +307,7 @@ public class MapTileGame
     public void save(FileWriting file) throws IOException
     {
         // Header
-        file.writeString(patternsDirectory.getPath());
+        file.writeString(sheetsDir.getPath());
         file.writeShort((short) widthInTile);
         file.writeShort((short) heightInTile);
         file.writeByte((byte) tileWidth);
@@ -347,25 +347,25 @@ public class MapTileGame
     }
 
     @Override
-    public void load(Media levelrip, Media patternsDirectory) throws LionEngineException
+    public void load(Media levelrip, Media sheetsDir) throws LionEngineException
     {
         clear();
-        final LevelRipConverter rip = new LevelRipConverter(levelrip, patternsDirectory, this);
+        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsDir, this);
         rip.start();
-        this.patternsDirectory = patternsDirectory;
+        this.sheetsDir = sheetsDir;
     }
 
     @Override
-    public void loadPatterns(Media directory) throws LionEngineException
+    public void loadSheets(Media directory) throws LionEngineException
     {
-        Verbose.info(INFO_LOAD_PATTERNS, directory.getFile().getPath());
-        patternsDirectory = directory;
-        patterns.clear();
+        Verbose.info(INFO_LOAD_SHEETS, directory.getFile().getPath());
+        sheetsDir = directory;
+        sheets.clear();
         String[] files;
 
-        // Retrieve patterns list
-        final Media mediaPatterns = Core.MEDIA.create(patternsDirectory.getPath(), MapTile.SHEETS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(mediaPatterns);
+        // Retrieve sheets list
+        final Media mediaSheets = Core.MEDIA.create(sheetsDir.getPath(), MapTile.SHEETS_FILE_NAME);
+        final XmlNode root = Stream.loadXml(mediaSheets);
         final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
         files = new String[children.size()];
         int i = 0;
@@ -375,13 +375,13 @@ public class MapTileGame
             i++;
         }
 
-        // Load patterns from list
-        for (int pattern = 0; pattern < files.length; pattern++)
+        // Load sheets from list
+        for (int sheet = 0; sheet < files.length; sheet++)
         {
-            final Media media = Core.MEDIA.create(patternsDirectory.getPath(), files[pattern]);
+            final Media media = Core.MEDIA.create(sheetsDir.getPath(), files[sheet]);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load(false);
-            patterns.put(Integer.valueOf(pattern), sprite);
+            sheets.put(Integer.valueOf(sheet), sprite);
         }
     }
 
@@ -499,25 +499,25 @@ public class MapTileGame
     }
 
     @Override
-    public Media getPatternsDirectory()
+    public Media getSheetsDirectory()
     {
-        return patternsDirectory;
+        return sheetsDir;
     }
 
     @Override
-    public Collection<Integer> getPatterns()
+    public Collection<Integer> getSheets()
     {
-        return patterns.keySet();
+        return sheets.keySet();
     }
 
     @Override
-    public SpriteTiled getPattern(Integer pattern) throws LionEngineException
+    public SpriteTiled getSheet(Integer sheet) throws LionEngineException
     {
-        if (!patterns.containsKey(pattern))
+        if (!sheets.containsKey(sheet))
         {
-            throw new LionEngineException(ERROR_PATTERN_MISSING, pattern.toString());
+            throw new LionEngineException(ERROR_SHEET_MISSING, sheet.toString());
         }
-        return patterns.get(pattern);
+        return sheets.get(sheet);
     }
 
     @Override
@@ -532,13 +532,13 @@ public class MapTileGame
     }
 
     @Override
-    public int getNumberPatterns()
+    public int getSheetsNumber()
     {
-        return patterns.size();
+        return sheets.size();
     }
 
     @Override
-    public int getNumberTiles()
+    public int getTilesNumber()
     {
         int n = 0;
         for (int v = 0; v < heightInTile; v++)

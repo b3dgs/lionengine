@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * <pre>
  * {@code<lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">}
- *    {@code<lionengine:group name="block" pattern="0" start="0" end="5">}
+ *    {@code<lionengine:group name="block" sheet="0" start="0" end="5">}
  *       {@code<lionengine:formula>top</lionengine:formula>}
  *       {@code<lionengine:formula>bottom</lionengine:formula>}
  *       {@code<lionengine:formula>left</lionengine:formula>}
@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * {@code</lionengine:groups>}
  * 
  * This will define 4 references to existing collisions from their name.
- * It will be applied for each tile of pattern 0, with an index between 0 and 5.
+ * It will be applied for each tile of sheet 0, with an index between 0 and 5.
  * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -49,8 +49,8 @@ public class CollisionGroup
 {
     /** The group Name. */
     private final String name;
-    /** Pattern number of the accepted tile. */
-    private final int pattern;
+    /** Sheet number of the accepted tile. */
+    private final int sheet;
     /** Starting tile number. */
     private final int start;
     /** Ending tile number. */
@@ -62,15 +62,15 @@ public class CollisionGroup
      * Create a collision group.
      * 
      * @param name The collision group name.
-     * @param pattern The accepted pattern.
+     * @param sheet The accepted sheet.
      * @param start The starting tile number.
      * @param end The ending tile number.
      * @param formulas The collision formulas reference.
      */
-    public CollisionGroup(String name, int pattern, int start, int end, Collection<CollisionFormula> formulas)
+    public CollisionGroup(String name, int sheet, int start, int end, Collection<CollisionFormula> formulas)
     {
         this.name = name;
-        this.pattern = pattern;
+        this.sheet = sheet;
         this.start = start;
         this.end = end;
         this.formulas = formulas;
@@ -87,13 +87,13 @@ public class CollisionGroup
     }
 
     /**
-     * Get the pattern value.
+     * Get the sheet value.
      * 
-     * @return The pattern value.
+     * @return The sheet value.
      */
-    public int getPattern()
+    public int getSheet()
     {
-        return pattern;
+        return sheet;
     }
 
     /**

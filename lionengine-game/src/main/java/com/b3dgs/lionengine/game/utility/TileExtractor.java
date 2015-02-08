@@ -66,8 +66,8 @@ public final class TileExtractor
 
     /** Image map reference. */
     private SpriteTiled imageMap;
-    /** Built pattern from map. */
-    private ImageBuffer pattern;
+    /** Built sheet from map. */
+    private ImageBuffer sheet;
     /** Graphics. */
     private Graphic g;
     /** Image map height. */
@@ -115,8 +115,8 @@ public final class TileExtractor
         imageMapTilesInX = imageMap.getWidth() / this.tilew;
         startX = 0;
         endX = imageMapTilesInX;
-        pattern = Core.GRAPHIC.createImageBuffer(destW, destH, Transparency.BITMASK);
-        g = pattern.createGraphic();
+        sheet = Core.GRAPHIC.createImageBuffer(destW, destH, Transparency.BITMASK);
+        g = sheet.createGraphic();
         cx = 0;
         cy = 0;
     }
@@ -152,7 +152,7 @@ public final class TileExtractor
                         imageMap.setTile(n);
                         imageMap.render(g);
                         cx += tilew;
-                        if (cx > pattern.getWidth())
+                        if (cx > sheet.getWidth())
                         {
                             cx = 0;
                             cy += tileh;
@@ -162,7 +162,7 @@ public final class TileExtractor
             }
         }
         g.dispose();
-        Core.GRAPHIC.saveImage(pattern, fileout);
+        Core.GRAPHIC.saveImage(sheet, fileout);
     }
 
     /**
@@ -175,9 +175,8 @@ public final class TileExtractor
      */
     private boolean searchForTile(ImageBuffer tileSprite, int x, int y)
     {
-        final ImageBuffer sheet = pattern;
-        final int tilesInX = pattern.getWidth() / tilew;
-        final int tilesInY = pattern.getHeight() / tileh;
+        final int tilesInX = sheet.getWidth() / tilew;
+        final int tilesInY = sheet.getHeight() / tileh;
 
         // Check each tile of the tile sheet
         for (int surfaceCurrentTileY = 0; surfaceCurrentTileY < tilesInY; surfaceCurrentTileY++)

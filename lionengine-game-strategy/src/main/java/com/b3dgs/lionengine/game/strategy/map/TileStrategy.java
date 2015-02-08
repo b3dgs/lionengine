@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.strategy.map;
 
-import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
+import com.b3dgs.lionengine.game.pathfinding.TilePath;
 
 /**
  * Representation of a default tile, used for pathfinding.

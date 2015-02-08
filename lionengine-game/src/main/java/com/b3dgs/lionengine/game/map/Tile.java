@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.game.Featurable;
 /**
  * Tile representation with the following data:
  * <ul>
- * <li><code>pattern</code> : tilesheet number</li>
+ * <li><code>sheet</code> : tile sheet number</li>
  * <li><code>number</code> : tile number inside tilesheet</li>
  * <li><code>x & y</code> : real location on map</li>
  * </ul>
@@ -33,14 +33,14 @@ public interface Tile
         extends Featurable<TileFeature>
 {
     /**
-     * Set pattern number.
+     * Set sheet number.
      * 
-     * @param pattern The pattern number (must not be <code>null</code>).
+     * @param sheet The sheet number (must not be <code>null</code>).
      */
-    void setPattern(Integer pattern);
+    void setSheet(Integer sheet);
 
     /**
-     * Set tile index inside pattern.
+     * Set tile index inside sheet.
      * 
      * @param number The tile index.
      */
@@ -103,11 +103,11 @@ public interface Tile
     int getHeight();
 
     /**
-     * Get pattern number.
+     * Get sheet number.
      * 
-     * @return The pattern number.
+     * @return The sheet number.
      */
-    Integer getPattern();
+    Integer getSheet();
 
     /**
      * Get tile index number.

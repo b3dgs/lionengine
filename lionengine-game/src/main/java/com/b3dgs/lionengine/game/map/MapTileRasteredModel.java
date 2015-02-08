@@ -43,8 +43,8 @@ public class MapTileRasteredModel
 {
     /** Map tile reference. */
     private final MapTile map;
-    /** List of rastered patterns. */
-    private final TreeMap<Integer, List<SpriteTiled>> rasterPatterns;
+    /** List of rastered sheets. */
+    private final TreeMap<Integer, List<SpriteTiled>> rasterSheets;
     /** File describing the raster. */
     private Media rasterFile;
     /** Rasters smooth flag. */
@@ -60,7 +60,7 @@ public class MapTileRasteredModel
     public MapTileRasteredModel(MapTile map)
     {
         this.map = map;
-        rasterPatterns = new TreeMap<>();
+        rasterSheets = new TreeMap<>();
         rasterLoaded = false;
     }
 
@@ -69,21 +69,21 @@ public class MapTileRasteredModel
      * 
      * @param g The graphic output.
      * @param tile The tile to render.
-     * @param pattern The tile pattern.
+     * @param sheet The tile sheet.
      * @param number The tile number.
      * @param x The location x.
      * @param y The location y.
      */
-    protected void renderingTile(Graphic g, Tile tile, Integer pattern, int number, int x, int y)
+    protected void renderingTile(Graphic g, Tile tile, Integer sheet, int number, int x, int y)
     {
         final SpriteTiled raster;
         if (rasterLoaded)
         {
-            raster = getRasterPattern(pattern, getRasterIndex(tile.getY()));
+            raster = getRasterSheet(sheet, getRasterIndex(tile.getY()));
         }
         else
         {
-            raster = map.getPattern(pattern);
+            raster = map.getSheet(sheet);
         }
         raster.setLocation(x, y);
         raster.setTile(number);
@@ -94,11 +94,11 @@ public class MapTileRasteredModel
      * Load raster from data.
      * 
      * @param directory The current tile directory.
-     * @param pattern The current pattern.
+     * @param sheet The current sheet.
      * @param rasters The rasters data.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void loadRaster(String directory, Integer pattern, int[][] rasters) throws LionEngineException
+    private void loadRaster(String directory, Integer sheet, int[][] rasters) throws LionEngineException
     {
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
@@ -131,17 +131,17 @@ public class MapTileRasteredModel
                         colorNext[c] = color[c];
                     }
                 }
-                addRasterPattern(directory, pattern, i, color[0], color[1], color[2], colorNext[0], colorNext[1],
+                addRasterSheet(directory, sheet, i, color[0], color[1], color[2], colorNext[0], colorNext[1],
                         colorNext[2]);
             }
         }
     }
 
     /**
-     * Add a raster pattern.
+     * Add a raster sheet.
      * 
      * @param directory The current tiles directory.
-     * @param pattern The current pattern.
+     * @param sheet The current sheet.
      * @param rasterID The raster id.
      * @param fr The first red.
      * @param fg The first green.
@@ -151,34 +151,20 @@ public class MapTileRasteredModel
      * @param eb The end blue.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRasterPattern(String directory, Integer pattern, int rasterID, int fr, int fg, int fb, int er,
-            int eg, int eb) throws LionEngineException
+    private void addRasterSheet(String directory, Integer sheet, int rasterID, int fr, int fg, int fb, int er, int eg,
+            int eb) throws LionEngineException
     {
-        final SpriteTiled original = map.getPattern(pattern);
+        final SpriteTiled original = map.getSheet(sheet);
         final ImageBuffer buf = original.getSurface();
         final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, map.getTileHeight());
 
-        addRasterPattern(pattern, rasterBuf, map.getTileWidth(), map.getTileHeight());
-    }
-
-    /**
-     * Add a raster pattern.
-     * 
-     * @param pattern The current pattern.
-     * @param surface The surface reference.
-     * @param tw The tile width.
-     * @param th The tile height.
-     * @throws LionEngineException If arguments are invalid.
-     */
-    private void addRasterPattern(Integer pattern, ImageBuffer surface, int tw, int th) throws LionEngineException
-    {
-        List<SpriteTiled> rasters = rasterPatterns.get(pattern);
+        List<SpriteTiled> rasters = rasterSheets.get(sheet);
         if (rasters == null)
         {
             rasters = new ArrayList<>(Rasterable.MAX_RASTERS);
-            rasterPatterns.put(pattern, rasters);
+            rasterSheets.put(sheet, rasters);
         }
-        final SpriteTiled raster = Drawable.loadSpriteTiled(surface, tw, th);
+        final SpriteTiled raster = Drawable.loadSpriteTiled(rasterBuf, map.getTileWidth(), map.getTileHeight());
         rasters.add(raster);
     }
 
@@ -187,19 +173,19 @@ public class MapTileRasteredModel
      */
 
     @Override
-    public void loadPatterns(Media directory) throws LionEngineException
+    public void loadSheets(Media directory) throws LionEngineException
     {
         final String path = directory.getPath();
         if (!rasterLoaded && rasterFile != null)
         {
-            final Collection<Integer> patterns = map.getPatterns();
-            final Iterator<Integer> itr = patterns.iterator();
+            final Collection<Integer> sheets = map.getSheets();
+            final Iterator<Integer> itr = sheets.iterator();
             final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
 
             while (itr.hasNext())
             {
-                final Integer pattern = itr.next();
-                loadRaster(path, pattern, rasters);
+                final Integer sheet = itr.next();
+                loadRaster(path, sheet, rasters);
             }
             rasterLoaded = true;
         }
@@ -225,9 +211,9 @@ public class MapTileRasteredModel
     }
 
     @Override
-    public SpriteTiled getRasterPattern(Integer pattern, int rasterID)
+    public SpriteTiled getRasterSheet(Integer sheet, int rasterID)
     {
-        return rasterPatterns.get(pattern).get(rasterID);
+        return rasterSheets.get(sheet).get(rasterID);
     }
 
     @Override

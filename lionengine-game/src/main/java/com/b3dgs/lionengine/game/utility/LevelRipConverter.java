@@ -75,18 +75,18 @@ public final class LevelRipConverter
      * Must be called to start conversion.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param patternsDirectory The directory containing tiles themes.
+     * @param sheetsDir The directory containing tiles sheets.
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media patternsDirectory, MapTile map)
+    public LevelRipConverter(Media levelrip, Media sheetsDir, MapTile map)
     {
         this.map = map;
 
         imageMap = Drawable.loadSprite(levelrip);
         imageMap.load(false);
 
-        map.loadPatterns(patternsDirectory);
+        map.loadSheets(sheetsDir);
         map.create(imageMap.getWidth() / map.getTileWidth(), imageMap.getHeight() / map.getTileHeight());
 
         imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
@@ -150,16 +150,16 @@ public final class LevelRipConverter
      */
     private Tile searchForTile(ImageBuffer tileSprite, int x, int y)
     {
-        // Check each tile on each pattern
-        final Iterator<Integer> itr = map.getPatterns().iterator();
+        // Check each tile on each sheet
+        final Iterator<Integer> itr = map.getSheets().iterator();
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
 
         while (itr.hasNext())
         {
-            final Integer pattern = itr.next();
-            final SpriteTiled tileSheet = map.getPattern(pattern);
-            final ImageBuffer sheet = tileSheet.getSurface();
+            final Integer sheet = itr.next();
+            final SpriteTiled tileSheet = map.getSheet(sheet);
+            final ImageBuffer sheetImage = tileSheet.getSurface();
             final int tilesInX = tileSheet.getWidth() / tw;
             final int tilesInY = tileSheet.getHeight() / th;
 
@@ -177,10 +177,10 @@ public final class LevelRipConverter
                     final int xb = surfaceCurrentTileX * tw;
                     final int yb = surfaceCurrentTileY * th;
 
-                    if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
+                    if (compareTile(tileSprite, xa, ya, sheetImage, xb, yb))
                     {
                         final Tile tile = map.createTile();
-                        tile.setPattern(pattern);
+                        tile.setSheet(sheet);
                         tile.setNumber(number);
 
                         return tile;

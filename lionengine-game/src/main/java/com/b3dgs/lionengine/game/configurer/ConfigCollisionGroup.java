@@ -40,8 +40,8 @@ public final class ConfigCollisionGroup
     public static final String GROUP = Configurer.PREFIX + "group";
     /** Group name attribute. */
     public static final String NAME = "name";
-    /** Tile pattern attribute. */
-    public static final String PATTERN = "pattern";
+    /** Tile sheet attribute. */
+    public static final String SHEET = "sheet";
     /** Starting tile number attribute. */
     public static final String START = "start";
     /** Ending tile number attribute. */
@@ -66,7 +66,7 @@ public final class ConfigCollisionGroup
                 final String name = formula.getText();
                 formulas.add(map.getCollisionFormula(name));
             }
-            final CollisionGroup collision = new CollisionGroup(node.readString(NAME), node.readInteger(PATTERN),
+            final CollisionGroup collision = new CollisionGroup(node.readString(NAME), node.readInteger(SHEET),
                     node.readInteger(START), node.readInteger(END), formulas);
             collisions.add(collision);
         }
@@ -83,7 +83,7 @@ public final class ConfigCollisionGroup
     {
         final XmlNode node = Stream.createXmlNode(GROUPS);
         node.writeString(NAME, group.getName());
-        node.writeInteger(PATTERN, group.getPattern());
+        node.writeInteger(SHEET, group.getSheet());
         node.writeInteger(START, group.getStart());
         node.writeInteger(END, group.getEnd());
         for (final CollisionFormula formula : group.getFormulas())

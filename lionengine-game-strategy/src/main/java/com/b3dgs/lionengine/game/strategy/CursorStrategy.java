@@ -140,6 +140,7 @@ public class CursorStrategy
      * 
      * @return The horizontal tile pointed by the cursor.
      */
+    @Override
     public int getLocationInTileX()
     {
         return (super.getLocationX() + offX) / gridWidth;
@@ -150,6 +151,7 @@ public class CursorStrategy
      * 
      * @return The vertical tile pointed by the cursor.
      */
+    @Override
     public int getLocationInTileY()
     {
         return (height - super.getLocationY() + offY) / gridHeight;
@@ -180,6 +182,7 @@ public class CursorStrategy
      * 
      * @return The grid width.
      */
+    @Override
     public int getGridWidth()
     {
         return gridWidth;
@@ -190,6 +193,7 @@ public class CursorStrategy
      * 
      * @return The grid height.
      */
+    @Override
     public int getGridHeight()
     {
         return gridHeight;

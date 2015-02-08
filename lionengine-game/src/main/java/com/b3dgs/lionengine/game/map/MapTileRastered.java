@@ -30,12 +30,12 @@ public interface MapTileRastered
         extends MapTileFeature
 {
     /**
-     * Load map patterns as rastered.
+     * Load map sheets as rastered.
      * 
-     * @param directory The patterns directory.
-     * @throws LionEngineException If error when reading patterns.
+     * @param directory The sheets directory.
+     * @throws LionEngineException If error when reading sheets.
      */
-    void loadPatterns(Media directory) throws LionEngineException;
+    void loadSheets(Media directory) throws LionEngineException;
 
     /**
      * Set raster file and smoothed flag.
@@ -54,11 +54,11 @@ public interface MapTileRastered
     int getRasterIndex(int ty);
 
     /**
-     * Get a tilesheet from its pattern and raster id.
+     * Get a tilesheet from its sheet and raster id.
      * 
-     * @param pattern The pattern number
-     * @param rasterID The raster id.
+     * @param sheet The sheet number
+     * @param rasterId The raster id.
      * @return The tilesheet reference.
      */
-    SpriteTiled getRasterPattern(Integer pattern, int rasterID);
+    SpriteTiled getRasterSheet(Integer sheet, int rasterId);
 }
