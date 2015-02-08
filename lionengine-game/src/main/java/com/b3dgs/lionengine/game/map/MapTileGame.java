@@ -417,7 +417,7 @@ public class MapTileGame
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    setTile(y, x, tile);
+                    setTile(x, y, tile);
                 }
             }
         }
@@ -458,7 +458,7 @@ public class MapTileGame
     }
 
     @Override
-    public void setTile(int v, int h, Tile tile)
+    public void setTile(int h, int v, Tile tile)
     {
         tile.setX(h * tileWidth);
         tile.setY(v * tileHeight);
@@ -466,8 +466,12 @@ public class MapTileGame
     }
 
     @Override
-    public Tile getTile(int tx, int ty)
+    public Tile getTile(int tx, int ty) throws LionEngineException
     {
+        Check.superiorOrEqual(tx, 0);
+        Check.superiorOrEqual(ty, 0);
+        Check.inferiorStrict(tx, widthInTile);
+        Check.inferiorStrict(ty, heightInTile);
         try
         {
             return tiles.get(ty).get(tx);
@@ -479,7 +483,7 @@ public class MapTileGame
     }
 
     @Override
-    public Tile getTile(Localizable localizable, int offsetX, int offsetY)
+    public Tile getTile(Localizable localizable, int offsetX, int offsetY) throws LionEngineException
     {
         final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
         final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());

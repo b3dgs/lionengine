@@ -119,7 +119,7 @@ public final class LevelRipConverter
                     // A tile has been found
                     if (tile != null)
                     {
-                        map.setTile(map.getHeightInTile() - 1 - imageMapCurrentTileY, imageMapCurrentTileX, tile);
+                        map.setTile(imageMapCurrentTileX, map.getHeightInTile() - 1 - imageMapCurrentTileY, tile);
                     }
                     else
                     {

@@ -29,7 +29,7 @@ import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
- * Represents the collision layer of a map tile.
+ * Represents the collision feature of a map tile.
  * <ul>
  * 
  * <pre>

@@ -41,6 +41,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile
  * @see MapTileGame
+ * @see MapTileFeature
  */
 public interface MapTile
         extends Renderable, Featurable<MapTileFeature>
@@ -68,13 +69,30 @@ public interface MapTile
     Tile createTile();
 
     /**
+     * Load a map from a level rip and the associated tiles directory.
+     * 
+     * @param levelrip The file describing the levelrip as a single image.
+     * @param sheetsDir The directory containing tiles sheets.
+     * @throws LionEngineException If error when importing map.
+     */
+    void load(Media levelrip, Media sheetsDir) throws LionEngineException;
+
+    /**
+     * Load map sheets (tiles surfaces) from directory. Must be called after map creation.
+     * 
+     * @param directory The sheets directory.
+     * @throws LionEngineException If error when reading sheets.
+     */
+    void loadSheets(Media directory) throws LionEngineException;
+
+    /**
      * Load a map from a specified file as binary data.
      * <p>
-     * Data are loaded this way (see save(file) order):
+     * Data are loaded this way (see {@link #save(FileWriting)} order):
      * </p>
      * 
      * <pre>
-     * <code>(String)</code> theme
+     * <code>(String)</code> sheets directory
      * <code>(short)</code> width in tiles
      * <code>(short)</code> height in tiles
      * <code>(byte)</code> tile width
@@ -93,44 +111,6 @@ public interface MapTile
      * @throws LionEngineException If error when reading map file.
      */
     void load(FileReading file) throws IOException, LionEngineException;
-
-    /**
-     * Load a map from a level rip and the associated tiles directory.
-     * A file called {@value #SHEETS_FILE_NAME} has to be in the same directory.
-     * 
-     * @param levelrip The file containing the levelrip as an image.
-     * @param sheetsDir The directory containing tiles sheets.
-     * @throws LionEngineException If error when reading collisions.
-     */
-    void load(Media levelrip, Media sheetsDir) throws LionEngineException;
-
-    /**
-     * Load map sheets (tiles surfaces) from theme name. Must be called after map creation. A file called
-     * {@value #SHEETS_FILE_NAME} which describes the tile sheets used.
-     * <p>
-     * Sheets number and name have to be written inside a file named 'count', else, all files as .png will be loaded.
-     * </p>
-     * 
-     * @param directory The sheets directory.
-     * @throws LionEngineException If error when reading sheets.
-     */
-    void loadSheets(Media directory) throws LionEngineException;
-
-    /**
-     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
-     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
-     * the new map at the top-right.
-     * 
-     * @param map The map to append.
-     * @param offsetX The horizontal offset in tile (>= 0).
-     * @param offsetY The vertical offset in tile (>= 0).
-     */
-    void append(MapTile map, int offsetX, int offsetY);
-
-    /**
-     * Remove all tiles from map.
-     */
-    void clear();
 
     /**
      * Save map to specified file as binary data. Data are saved this way (using specific types to save space):
@@ -154,13 +134,29 @@ public interface MapTile
     void save(FileWriting file) throws IOException;
 
     /**
-     * Set a tile at specified map indexes.
+     * Append an existing map, starting at the specified offsets. Offsets start at the beginning of the map (0, 0).
+     * A call to {@link #append(MapTile, int, int)} at ({@link #getWidthInTile()}, {@link #getHeightInTile()}) will add
+     * the new map at the top-right.
      * 
-     * @param v The vertical index.
-     * @param h The horizontal index.
+     * @param map The map to append.
+     * @param offsetX The horizontal offset in tile (>= 0).
+     * @param offsetY The vertical offset in tile (>= 0).
+     */
+    void append(MapTile map, int offsetX, int offsetY);
+
+    /**
+     * Remove all tiles from map.
+     */
+    void clear();
+
+    /**
+     * Set a tile at specified map location.
+     * 
+     * @param tx The horizontal tile index location.
+     * @param ty The vertical tile index location.
      * @param tile The tile reference.
      */
-    void setTile(int v, int h, Tile tile);
+    void setTile(int tx, int ty, Tile tile);
 
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
@@ -168,9 +164,10 @@ public interface MapTile
      * 
      * @param tx The horizontal tile index location.
      * @param ty The vertical tile index location.
-     * @return The tile reference.
+     * @return The tile found at this location, <code>null</code> if none.
+     * @throws LionEngineException If outside map range.
      */
-    Tile getTile(int tx, int ty);
+    Tile getTile(int tx, int ty) throws LionEngineException;
 
     /**
      * Get the tile at the localizable.
@@ -178,9 +175,10 @@ public interface MapTile
      * @param localizable The localizable reference.
      * @param offsetX The horizontal offset search.
      * @param offsetY The vertical offset search.
-     * @return The tile found at the localizable.
+     * @return The tile found at the localizable, <code>null</code> if none.
+     * @throws LionEngineException If outside map range.
      */
-    Tile getTile(Localizable localizable, int offsetX, int offsetY);
+    Tile getTile(Localizable localizable, int offsetX, int offsetY) throws LionEngineException;
 
     /**
      * Get location x relative to map referential as tile.
