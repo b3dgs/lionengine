@@ -48,7 +48,7 @@ class StateIdle
     public StateIdle(Mario mario, Animation animation)
     {
         this.animation = animation;
-        animator = mario.getTrait(Animator.class);
+        animator = mario.getSurface();
         movement = mario.getMovement();
     }
 

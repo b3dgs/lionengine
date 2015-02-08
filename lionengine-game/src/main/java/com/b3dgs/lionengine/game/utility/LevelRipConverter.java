@@ -27,7 +27,7 @@ import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * This class allows to convert a map image to a map level format.
@@ -37,7 +37,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * </p>
  * 
  * <pre>
- * final LevelRipConverter&lt;TileGame&gt; rip = new LevelRipConverter&lt;&gt;(levelrip, tilesheet, map);
+ * final LevelRipConverter rip = new LevelRipConverter(levelrip, tilesheet, map);
  * rip.start();
  * try (FileWriting file = Stream.createFileWriting(output))
  * {
@@ -49,16 +49,15 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * }
  * </pre>
  * 
- * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public final class LevelRipConverter<T extends TileGame>
+public final class LevelRipConverter
 {
     /** Ignored color. */
     private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /** Map reference. */
-    private final MapTile<T> map;
+    private final MapTile map;
     /** Level rip image. */
     private final Sprite imageMap;
     /** Level rip height in tile. */
@@ -80,7 +79,7 @@ public final class LevelRipConverter<T extends TileGame>
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media patternsDirectory, MapTile<T> map)
+    public LevelRipConverter(Media levelrip, Media patternsDirectory, MapTile map)
     {
         this.map = map;
 
@@ -115,7 +114,7 @@ public final class LevelRipConverter<T extends TileGame>
                 if (LevelRipConverter.IGNORED_COLOR != imageColor)
                 {
                     // Search if tile is on sheet and get it
-                    final T tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
+                    final Tile tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
 
                     // A tile has been found
                     if (tile != null)
@@ -149,7 +148,7 @@ public final class LevelRipConverter<T extends TileGame>
      * @param y The location y.
      * @return The tile found.
      */
-    private T searchForTile(ImageBuffer tileSprite, int x, int y)
+    private Tile searchForTile(ImageBuffer tileSprite, int x, int y)
     {
         // Check each tile on each pattern
         final Iterator<Integer> itr = map.getPatterns().iterator();
@@ -180,7 +179,7 @@ public final class LevelRipConverter<T extends TileGame>
 
                     if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
                     {
-                        final T tile = map.createTile();
+                        final Tile tile = map.createTile();
                         tile.setPattern(pattern);
                         tile.setNumber(number);
 

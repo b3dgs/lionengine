@@ -15,23 +15,47 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.pathfinding.heuristic;
-
-import com.b3dgs.lionengine.game.pathfinding.Heuristic;
+package com.b3dgs.lionengine.game.pathfinding;
 
 /**
- * A heuristic that uses the tile that is closest to the target as the next best tile.
+ * Representation of a default tile, used for pathfinding.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class HeuristicClosest
-        implements Heuristic
+public abstract class TilePathModel
+        implements TilePath
 {
-    @Override
-    public double getCost(int sx, int sy, int dx, int dy)
+    /** Blocked flag. */
+    private boolean blocking;
+
+    /**
+     * Create a tile path.
+     */
+    public TilePathModel()
     {
-        final double x = dx - sx;
-        final double y = dy - sy;
-        return Math.sqrt(x * x + y * y);
+        blocking = false;
+    }
+
+    /**
+     * Check if this collision is blocking.
+     * 
+     * @return <code>true</code> if blocking, <code>false</code> else.
+     */
+    public abstract boolean checkBlocking();
+
+    /*
+     * TilePath
+     */
+
+    @Override
+    public void setBlocking(boolean blocking)
+    {
+        this.blocking = blocking;
+    }
+
+    @Override
+    public boolean isBlocking()
+    {
+        return blocking;
     }
 }

@@ -15,30 +15,39 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.b;
+package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Map implementation.
+ * Represents something that can support features
  * 
+ * @param <F> The feature type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Features
  */
-class Map
-        extends MapTileGame<TileGame>
+public interface Featurable<F>
 {
     /**
-     * Constructor.
+     * Add a tile feature for external processing.
+     * 
+     * @param feature The feature to add.
      */
-    public Map()
-    {
-        super(16, 16);
-    }
+    void addFeature(F feature);
 
-    @Override
-    public TileGame createTile()
-    {
-        return new TileGame(getTileWidth(), getTileHeight());
-    }
+    /**
+     * Get a feature instance from its type.
+     * 
+     * @param feature The feature type.
+     * @return The feature instance.
+     * @throws LionEngineException If feature not found.
+     */
+    <C extends F> C getFeature(Class<C> feature) throws LionEngineException;
+
+    /**
+     * Get the supported features.
+     * 
+     * @return The supported features.
+     */
+    Iterable<?> getFeatures();
 }

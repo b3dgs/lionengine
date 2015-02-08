@@ -24,7 +24,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
@@ -53,7 +53,7 @@ public final class ConfigCollisionCategory
      * @return The category collisions instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static Collection<CollisionCategory> create(Configurer configurer, MapTile<?> map)
+    public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
             throws LionEngineException
     {
         final Collection<CollisionCategory> categories = new ArrayList<>();
@@ -73,7 +73,7 @@ public final class ConfigCollisionCategory
      * @return The category node instance.
      * @throws LionEngineException If unable to read node.
      */
-    public static CollisionCategory create(XmlNode root, MapTile<?> map) throws LionEngineException
+    public static CollisionCategory create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
         final Collection<CollisionGroup> groups = new ArrayList<>();
         for (final XmlNode groupNode : root.getChildren(ConfigCollisionGroup.GROUP))

@@ -15,56 +15,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.pathfinding.map;
+package com.b3dgs.lionengine.game.pathfinding;
 
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.TileFeature;
 
 /**
- * Representation of a default tile, used for pathfinding.
+ * Representation of a tile used for pathfinding.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class TilePath
-        extends TileGame
+public interface TilePath
+        extends TileFeature
 {
-    /** Blocked flag. */
-    private boolean blocking;
-
     /**
-     * Constructor.
+     * Set blocking state.
      * 
-     * @param width The tile width.
-     * @param height The tile height.
+     * @param blocking The blocking state.
      */
-    public TilePath(int width, int height)
-    {
-        super(width, height);
-    }
-
-    /**
-     * Check if this collision is blocking.
-     * 
-     * @return <code>true</code> if blocking, <code>false</code> else.
-     */
-    public abstract boolean checkBlocking();
+    void setBlocking(boolean blocking);
 
     /**
      * Check if current tile is blocking or not.
      * 
      * @return <code>true</code> if blocking, <code>false</code> else.
      */
-    public boolean isBlocking()
-    {
-        return blocking;
-    }
-
-    /**
-     * Set blocking state.
-     * 
-     * @param blocking The blocking state.
-     */
-    public void setBlocking(boolean blocking)
-    {
-        this.blocking = blocking;
-    }
+    boolean isBlocking();
 }

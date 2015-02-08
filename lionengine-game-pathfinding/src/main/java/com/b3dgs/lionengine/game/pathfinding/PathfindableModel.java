@@ -21,8 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
-import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
+import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
@@ -37,7 +36,9 @@ public class PathfindableModel
     private static final double DIAGONAL_SPEED = 0.8;
 
     /** Map reference. */
-    protected final MapTilePath<? extends TilePath> map;
+    protected final MapTile map;
+    /** Map path reference. */
+    private final MapTilePath mapPath;
     /** Localizable model. */
     private final Transformable transformable;
     /** Pathfinder reference. */
@@ -86,7 +87,7 @@ public class PathfindableModel
      * @param transformable The pathfindable user.
      * @param id The id used.
      */
-    public PathfindableModel(MapTilePath<? extends TilePath> map, Transformable transformable, Integer id)
+    public PathfindableModel(MapTile map, Transformable transformable, Integer id)
     {
         this.map = map;
         this.transformable = transformable;
@@ -96,6 +97,7 @@ public class PathfindableModel
         pathfinder = new PathFinderImpl(map, range, true);
         ignoredIds = new HashSet<>(0);
         sharedPathIds = new HashSet<>(0);
+        mapPath = map.getFeature(MapTilePath.class);
         pathStopped = false;
         pathStoppedRequested = false;
         pathFoundChanged = false;
@@ -134,7 +136,7 @@ public class PathfindableModel
                 {
                     pathStoppedRequested = true;
                 }
-                final Integer cid = map.getRef(path.getX(nextStep), path.getY(nextStep));
+                final Integer cid = mapPath.getRef(path.getX(nextStep), path.getY(nextStep));
                 if (sharedPathIds.contains(cid))
                 {
                     // skip = true;
@@ -366,13 +368,13 @@ public class PathfindableModel
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        if (map.isAreaAvailable(dtx, dty, tw, th, id.intValue()))
+        if (mapPath.isAreaAvailable(dtx, dty, tw, th, id.intValue()))
         {
             for (int tx = dtx; tx < dtx + tw; tx++)
             {
                 for (int ty = dty; ty < dty + th; ty++)
                 {
-                    map.setRef(tx, ty, id);
+                    mapPath.setRef(tx, ty, id);
                 }
             }
         }
@@ -392,9 +394,9 @@ public class PathfindableModel
         {
             for (int ty = dty; ty < dty + th; ty++)
             {
-                if (map.getRef(tx, ty).equals(id))
+                if (mapPath.getRef(tx, ty).equals(id))
                 {
-                    map.setRef(tx, ty, Integer.valueOf(0));
+                    mapPath.setRef(tx, ty, Integer.valueOf(0));
                 }
             }
         }
@@ -411,12 +413,12 @@ public class PathfindableModel
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        final boolean areaFree = map.isAreaAvailable(dtx, dty, tw, th, id.intValue());
+        final boolean areaFree = mapPath.isAreaAvailable(dtx, dty, tw, th, id.intValue());
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
             for (int ty = dty; ty < dty + th; ty++)
             {
-                final Integer id = map.getRef(tx, ty);
+                final Integer id = mapPath.getRef(tx, ty);
                 if (id.intValue() > 0 && !isIgnoredId(id) && !id.equals(this.id))
                 {
                     return false;

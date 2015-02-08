@@ -48,7 +48,7 @@ import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.geom.Point;
 
 /**
@@ -139,9 +139,9 @@ public class WorldViewRenderer
     /** Object controller. */
     private final ObjectControl objectControl;
     /** Selected tile. */
-    private TileGame selectedTile;
+    private Tile selectedTile;
     /** Last selected tile. */
-    private TileGame lastSelectedTile;
+    private Tile lastSelectedTile;
     /** Grid enabled. */
     private boolean gridEnabled;
     /** Current horizontal mouse location. */
@@ -670,7 +670,7 @@ public class WorldViewRenderer
         {
             for (int tx = 0; tx < map.getWidthInTile(); tx++)
             {
-                final TileGame tile = map.getTile(tx, ty);
+                final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
                     if (tile.getCollision() == selectedTile.getCollision())

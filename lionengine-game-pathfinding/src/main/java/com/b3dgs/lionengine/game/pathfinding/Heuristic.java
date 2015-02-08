@@ -22,7 +22,7 @@ package com.b3dgs.lionengine.game.pathfinding;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface Heuristic
+interface Heuristic
 {
     /**
      * This controls the order in which tiles are searched while attempting to find a path to the target location. The

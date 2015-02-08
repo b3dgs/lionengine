@@ -15,38 +15,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.pathfinding.heuristic;
-
-import com.b3dgs.lionengine.game.pathfinding.Heuristic;
+package com.b3dgs.lionengine.game.pathfinding;
 
 /**
- * A heuristic that drives the search based on the Manhattan distance between the current location and the target.
+ * A heuristic that uses the tile that is closest to the target as the next best tile. In this case the square root is
+ * removed and the distance squared is used instead.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class HeuristicManhattan
+final class HeuristicClosestSquared
         implements Heuristic
 {
-    /** Minimum cost value. */
-    private final int minimumCost;
-
-    /**
-     * Constructor.
-     * 
-     * @param minimumCost The minimum cost value.
-     */
-    public HeuristicManhattan(int minimumCost)
-    {
-        this.minimumCost = minimumCost;
-    }
-
-    /*
-     * Heuristic
-     */
-
     @Override
     public double getCost(int sx, int sy, int dx, int dy)
     {
-        return minimumCost * (Math.abs(sx - dx) + Math.abs(sy - dy));
+        final double x = dx - sx;
+        final double y = dy - sy;
+        return x * x + y * y;
     }
 }

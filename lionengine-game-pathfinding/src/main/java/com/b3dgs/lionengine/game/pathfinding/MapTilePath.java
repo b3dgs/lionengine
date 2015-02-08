@@ -15,24 +15,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.pathfinding.map;
+package com.b3dgs.lionengine.game.pathfinding;
 
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
+import com.b3dgs.lionengine.game.map.MapTileFeature;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Describe a tile based map which supports pathfinding. The setRef/getRef functions allows to store special id. Theses
  * id can represent an entity which is over the map. This way, it is really easy and fast to search an entity at
  * specified location.
  * 
- * @param <T> The type of tile used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MapTilePath<T extends TilePath>
-        extends MapTile<T>
+public interface MapTilePath
+        extends MapTileFeature
 {
+    /**
+     * Create and prepare map memory area. Must be called before assigning tiles.
+     * 
+     * @param widthInTile The map width in tile (must be strictly positive).
+     * @param heightInTile The map height in tile (must be strictly positive).
+     */
+    void create(int widthInTile, int heightInTile);
+
     /**
      * Get tile from specified map location (in tile index). If the returned tile is equal to <code>null</code>, this
      * means that there is not tile at this location. It is not an error, just a way to avoid useless tile storage.
@@ -40,7 +47,7 @@ public interface MapTilePath<T extends TilePath>
      * @param tiled The location.
      * @return The tile reference.
      */
-    T getTile(Tiled tiled);
+    Tile getTile(Tiled tiled);
 
     /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.

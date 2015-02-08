@@ -252,7 +252,7 @@ public class Camera
      * 
      * @param map The map reference.
      */
-    public void setLimits(MapTile<?> map)
+    public void setLimits(MapTile map)
     {
         final int tw = map.getTileWidth();
         final int th = map.getTileHeight();
@@ -311,7 +311,7 @@ public class Camera
      * @param map The map reference.
      * @return The horizontal location in tile.
      */
-    public int getLocationInTileX(MapTile<?> map)
+    public int getLocationInTileX(MapTile map)
     {
         return (int) getX() / map.getTileWidth();
     }
@@ -322,7 +322,7 @@ public class Camera
      * @param map The map reference.
      * @return The vertical location in tile.
      */
-    public int getLocationInTileY(MapTile<?> map)
+    public int getLocationInTileY(MapTile map)
     {
         return (int) getY() / map.getTileHeight();
     }

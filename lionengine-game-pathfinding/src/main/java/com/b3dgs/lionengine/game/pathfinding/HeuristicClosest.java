@@ -18,63 +18,18 @@
 package com.b3dgs.lionengine.game.pathfinding;
 
 /**
- * Path step.
+ * A heuristic that uses the tile that is closest to the target as the next best tile.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-final class Step
+final class HeuristicClosest
+        implements Heuristic
 {
-    /** Step location x. */
-    private final int x;
-    /** Step location y. */
-    private final int y;
-
-    /**
-     * Internal constructor.
-     * 
-     * @param x The location x.
-     * @param y The location y.
-     */
-    public Step(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-
-    /**
-     * Get location x.
-     * 
-     * @return The location x.
-     */
-    public int getX()
-    {
-        return x;
-    }
-
-    /**
-     * Get location y.
-     * 
-     * @return The location y.
-     */
-    public int getY()
-    {
-        return y;
-    }
-
     @Override
-    public int hashCode()
+    public double getCost(int sx, int sy, int dx, int dy)
     {
-        return x * y;
-    }
-
-    @Override
-    public boolean equals(Object other)
-    {
-        if (other instanceof Step)
-        {
-            final Step o = (Step) other;
-            return o.getX() == x && o.getY() == y;
-        }
-        return false;
+        final double x = dx - sx;
+        final double y = dy - sy;
+        return Math.sqrt(x * x + y * y);
     }
 }

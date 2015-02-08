@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.map;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -25,8 +26,9 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.map.TileGame;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.map.Minimap;
 
 /**
  * Game loop designed to handle our world.
@@ -40,13 +42,15 @@ class Scene
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
 
-    /** Map. */
-    private final Map map;
-    /** Camera. */
+    /** Camera reference. */
     private final Camera camera;
+    /** Map reference. */
+    private final MapTile map;
+    /** Minimap reference. */
+    private final Minimap minimap;
     /** Keyboard reference. */
     private final Keyboard keyboard;
-    /** Speed. */
+    /** Scrolling speed. */
     private double speed;
     /** Map size. */
     private int size;
@@ -59,17 +63,17 @@ class Scene
     public Scene(Loader loader)
     {
         super(loader, Scene.NATIVE);
-        map = new Map();
         camera = new Camera();
+        map = new MapTileGame(camera, 16, 16);
+        minimap = new Minimap(map);
         keyboard = getInputDevice(Keyboard.class);
     }
 
     @Override
     public void load()
     {
-        final LevelRipConverter<TileGame> rip = new LevelRipConverter<>(Core.MEDIA.create("level.png"),
-                Core.MEDIA.create("tile"), map);
-        rip.start();
+        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        minimap.load(false);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);
         size = map.getWidthInTile() * map.getTileWidth() - camera.getWidth();
@@ -100,7 +104,11 @@ class Scene
     public void render(Graphic g)
     {
         g.clear(0, 0, getWidth(), getHeight());
-        map.render(g, camera);
+        map.render(g);
+        minimap.render(g);
+        g.setColor(ColorRgba.RED);
+        g.drawRect((int) (camera.getX() / map.getTileWidth()), (int) (camera.getY() / map.getTileHeight()),
+                camera.getWidth() / map.getTileWidth(), camera.getHeight() / map.getTileWidth(), false);
     }
 
     @Override

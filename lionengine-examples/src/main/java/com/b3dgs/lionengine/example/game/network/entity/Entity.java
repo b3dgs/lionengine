@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.platform.entity.EntityPlatform;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 import com.b3dgs.lionengine.network.purview.Networkable;
@@ -206,7 +206,7 @@ abstract class Entity
      */
     protected void checkVertical(EntityCollisionTileCategory category)
     {
-        final TileGame tile = getCollisionTile(map, category);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double y = tile.getCollisionY(this);
@@ -361,7 +361,7 @@ abstract class Entity
      */
     private void checkHorizontal(EntityCollisionTileCategory category)
     {
-        final TileGame tile = getCollisionTile(map, category);
+        final Tile tile = getCollisionTile(map, category);
         if (tile != null)
         {
             final Double x = tile.getCollisionX(this);

@@ -22,9 +22,7 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.game.CoordTile;
-import com.b3dgs.lionengine.game.pathfinding.heuristic.HeuristicClosest;
-import com.b3dgs.lionengine.game.pathfinding.map.MapTilePath;
-import com.b3dgs.lionengine.game.pathfinding.map.TilePath;
+import com.b3dgs.lionengine.game.map.MapTile;
 
 /**
  * A path finder implementation that uses the AStar heuristic based algorithm to determine a path.
@@ -39,7 +37,9 @@ final class PathFinderImpl
     /** Open list. */
     private final SortedList<Node> open = new SortedList<>();
     /** Map reference. */
-    private final MapTilePath<? extends TilePath> map;
+    private final MapTile map;
+    /** Map path reference. */
+    private final MapTilePath mapPath;
     /** Max distance to search. */
     private final int maxSearchDistance;
     /** Nodes array. */
@@ -56,7 +56,7 @@ final class PathFinderImpl
      * @param maxSearchDistance The maximum depth we'll search before giving up.
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      */
-    PathFinderImpl(MapTilePath<? extends TilePath> map, int maxSearchDistance, boolean allowDiagMovement)
+    public PathFinderImpl(MapTile map, int maxSearchDistance, boolean allowDiagMovement)
     {
         this(map, maxSearchDistance, allowDiagMovement, new HeuristicClosest());
     }
@@ -69,13 +69,13 @@ final class PathFinderImpl
      * @param maxSearchDistance The maximum depth we'll search before giving up.
      * @param allowDiagMovement <code>true</code> if the search should try diagonal movement, <code>false</code> else.
      */
-    PathFinderImpl(MapTilePath<? extends TilePath> map, int maxSearchDistance, boolean allowDiagMovement,
-            Heuristic heuristic)
+    public PathFinderImpl(MapTile map, int maxSearchDistance, boolean allowDiagMovement, Heuristic heuristic)
     {
         this.heuristic = heuristic;
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
+        mapPath = map.getFeature(MapTilePath.class);
         nodes = new Node[map.getHeightInTile()][map.getWidthInTile()];
 
         for (int y = 0; y < map.getHeightInTile(); y++)
@@ -99,7 +99,7 @@ final class PathFinderImpl
      */
     public double getMovementCost(Pathfindable mover, int sx, int sy, int dx, int dy)
     {
-        return map.getCost(mover, sx, sy, dx, dy);
+        return mapPath.getCost(mover, sx, sy, dx, dy);
     }
 
     /**
@@ -133,7 +133,7 @@ final class PathFinderImpl
 
         if (!invalid && (sx != x || sy != y))
         {
-            invalid = map.isBlocked(mover, x, y, ignoreRef);
+            invalid = mapPath.isBlocked(mover, x, y, ignoreRef);
         }
 
         return !invalid;
@@ -301,13 +301,13 @@ final class PathFinderImpl
     @Override
     public Path findPath(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef)
     {
-        if (map.isBlocked(mover, dx, dy, false) && UtilMath.getDistance(sx, sy, dx, dy) <= 1)
+        if (mapPath.isBlocked(mover, dx, dy, false) && UtilMath.getDistance(sx, sy, dx, dy) <= 1)
         {
             return null;
         }
-        if (map.isBlocked(mover, dx, dy, ignoreRef))
+        if (mapPath.isBlocked(mover, dx, dy, ignoreRef))
         {
-            final CoordTile tile = map.getClosestAvailableTile(dx, dy, map.getHeightInTile(), sx, sy);
+            final CoordTile tile = mapPath.getClosestAvailableTile(dx, dy, map.getHeightInTile(), sx, sy);
             if (tile == null)
             {
                 return null;

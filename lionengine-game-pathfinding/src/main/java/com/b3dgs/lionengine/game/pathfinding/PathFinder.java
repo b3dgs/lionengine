@@ -23,7 +23,7 @@ package com.b3dgs.lionengine.game.pathfinding;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface PathFinder
+interface PathFinder
 {
     /**
      * Find a path from the starting location provided to the destination location avoiding blockages and attempting to

@@ -44,7 +44,7 @@ final class Node
      * @param x The location x.
      * @param y The location y.
      */
-    Node(int x, int y)
+    public Node(int x, int y)
     {
         this.x = x;
         this.y = y;

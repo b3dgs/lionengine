@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.world;
 
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Listen to tiles selection on map.
@@ -31,5 +31,5 @@ public interface TileSelectionListener
      * 
      * @param tile The selected tile from map.
      */
-    void notifyTileSelected(TileGame tile);
+    void notifyTileSelected(Tile tile);
 }

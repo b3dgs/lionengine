@@ -18,22 +18,21 @@
 package com.b3dgs.lionengine.game.collision;
 
 import com.b3dgs.lionengine.Check;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the map collision results.
  * 
- * @param <T> The tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class CollisionResult<T extends TileGame>
+public class CollisionResult
 {
     /** Horizontal collision location (<code>null</code> if none). */
     private final Double x;
     /** Vertical collision location (<code>null</code> if none). */
     private final Double y;
     /** Collided tile. */
-    private final T tile;
+    private final Tile tile;
 
     /**
      * Create a collision result.
@@ -42,7 +41,7 @@ public class CollisionResult<T extends TileGame>
      * @param y The vertical collision location (<code>null</code> if none).
      * @param tile The collided tile.
      */
-    public CollisionResult(Double x, Double y, T tile)
+    public CollisionResult(Double x, Double y, Tile tile)
     {
         Check.notNull(tile);
         this.x = x;
@@ -75,7 +74,7 @@ public class CollisionResult<T extends TileGame>
      * 
      * @return The collided tile.
      */
-    public T getTile()
+    public Tile getTile()
     {
         return tile;
     }

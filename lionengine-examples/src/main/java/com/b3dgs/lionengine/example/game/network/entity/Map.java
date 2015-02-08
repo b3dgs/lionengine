@@ -19,7 +19,8 @@ package com.b3dgs.lionengine.example.game.network.entity;
 
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Map implementation.
@@ -27,7 +28,7 @@ import com.b3dgs.lionengine.game.map.TileGame;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 final class Map
-        extends MapTileGame<TileGame>
+        extends MapTileGame<Tile>
 {
     /**
      * Map constructor.
@@ -46,8 +47,8 @@ final class Map
         {
             for (int ty = 0; ty < getHeightInTile(); ty++)
             {
-                final TileGame tile = getTile(tx, ty);
-                final TileGame top = getTile(tx, ty + 1);
+                final Tile tile = getTile(tx, ty);
+                final Tile top = getTile(tx, ty + 1);
                 if (top != null && tile != null && tile.getCollision() != TileCollision.NONE
                         && top.getCollision() == tile.getCollision())
                 {
@@ -62,9 +63,9 @@ final class Map
      */
 
     @Override
-    public TileGame createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
+    public Tile createTile(int width, int height, Integer pattern, int number, CollisionFormula collision)
     {
-        return new TileGame(width, height, pattern, number, collision);
+        return new Tile(width, height, pattern, number, collision);
     }
 
     @Override

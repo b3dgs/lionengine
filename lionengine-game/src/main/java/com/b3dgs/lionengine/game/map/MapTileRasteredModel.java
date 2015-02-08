@@ -36,12 +36,13 @@ import com.b3dgs.lionengine.game.trait.Rasterable;
 /**
  * Rastered version of a map tile game.
  * 
- * @param <T> Tile type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class MapTileGameRastered<T extends TileGame>
-        extends MapTileGame<T>
+public class MapTileRasteredModel
+        implements MapTileRastered
 {
+    /** Map tile reference. */
+    private final MapTile map;
     /** List of rastered patterns. */
     private final TreeMap<Integer, List<SpriteTiled>> rasterPatterns;
     /** File describing the raster. */
@@ -52,57 +53,41 @@ public abstract class MapTileGameRastered<T extends TileGame>
     private boolean rasterLoaded;
 
     /**
-     * Constructor base.
+     * Create a map tile rastered.
      * 
-     * @param tileWidth The tile width.
-     * @param tileHeight The tile height.
+     * @param map The map reference.
      */
-    public MapTileGameRastered(int tileWidth, int tileHeight)
+    public MapTileRasteredModel(MapTile map)
     {
-        super(tileWidth, tileHeight);
+        this.map = map;
         rasterPatterns = new TreeMap<>();
         rasterLoaded = false;
     }
 
     /**
-     * Set raster file and smoothed flag.
+     * Render a specific tile to specified location.
      * 
-     * @param raster The raster media (may be <code>null</code>).
-     * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
+     * @param g The graphic output.
+     * @param tile The tile to render.
+     * @param pattern The tile pattern.
+     * @param number The tile number.
+     * @param x The location x.
+     * @param y The location y.
      */
-    public void setRaster(Media raster, boolean smooth)
+    protected void renderingTile(Graphic g, Tile tile, Integer pattern, int number, int x, int y)
     {
-        this.rasterFile = raster;
-        this.smooth = smooth;
-    }
-
-    /**
-     * Get raster index from input tile (depending of its height).
-     * 
-     * @param ty The vertical tile location.
-     * @return The raster index.
-     */
-    public int getRasterIndex(int ty)
-    {
-        final int value = ty / getTileHeight();
-        int index = value % Rasterable.MAX_RASTERS_R;
-        if (!smooth && index > Rasterable.MAX_RASTERS_M)
+        final SpriteTiled raster;
+        if (rasterLoaded)
         {
-            index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);
+            raster = getRasterPattern(pattern, getRasterIndex(tile.getY()));
         }
-        return index;
-    }
-
-    /**
-     * Get a tilesheet from its pattern and raster id.
-     * 
-     * @param pattern The pattern number
-     * @param rasterID The raster id.
-     * @return The tilesheet reference.
-     */
-    public SpriteTiled getRasterPattern(Integer pattern, int rasterID)
-    {
-        return rasterPatterns.get(pattern).get(rasterID);
+        else
+        {
+            raster = map.getPattern(pattern);
+        }
+        raster.setLocation(x, y);
+        raster.setTile(number);
+        raster.render(g);
     }
 
     /**
@@ -169,11 +154,11 @@ public abstract class MapTileGameRastered<T extends TileGame>
     private void addRasterPattern(String directory, Integer pattern, int rasterID, int fr, int fg, int fb, int er,
             int eg, int eb) throws LionEngineException
     {
-        final SpriteTiled original = super.getPattern(pattern);
+        final SpriteTiled original = map.getPattern(pattern);
         final ImageBuffer buf = original.getSurface();
-        final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, getTileHeight());
+        final ImageBuffer rasterBuf = Core.GRAPHIC.getRasterBuffer(buf, fr, fg, fb, er, eg, eb, map.getTileHeight());
 
-        addRasterPattern(pattern, rasterBuf, getTileWidth(), getTileHeight());
+        addRasterPattern(pattern, rasterBuf, map.getTileWidth(), map.getTileHeight());
     }
 
     /**
@@ -198,17 +183,16 @@ public abstract class MapTileGameRastered<T extends TileGame>
     }
 
     /*
-     * MapTileGame
+     * MapTileRastered
      */
 
     @Override
     public void loadPatterns(Media directory) throws LionEngineException
     {
-        super.loadPatterns(directory);
         final String path = directory.getPath();
         if (!rasterLoaded && rasterFile != null)
         {
-            final Collection<Integer> patterns = getPatterns();
+            final Collection<Integer> patterns = map.getPatterns();
             final Iterator<Integer> itr = patterns.iterator();
             final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
 
@@ -222,19 +206,33 @@ public abstract class MapTileGameRastered<T extends TileGame>
     }
 
     @Override
-    protected void renderingTile(Graphic g, T tile, Integer pattern, int number, int x, int y)
+    public void setRaster(Media raster, boolean smooth)
     {
-        final SpriteTiled raster;
-        if (rasterLoaded)
+        rasterFile = raster;
+        this.smooth = smooth;
+    }
+
+    @Override
+    public int getRasterIndex(int ty)
+    {
+        final int value = ty / map.getTileHeight();
+        int index = value % Rasterable.MAX_RASTERS_R;
+        if (!smooth && index > Rasterable.MAX_RASTERS_M)
         {
-            raster = getRasterPattern(pattern, getRasterIndex(tile.getY()));
+            index = Rasterable.MAX_RASTERS_M - (index - Rasterable.MAX_RASTERS);
         }
-        else
-        {
-            raster = super.getPattern(pattern);
-        }
-        raster.setLocation(x, y);
-        raster.setTile(number);
-        raster.render(g);
+        return index;
+    }
+
+    @Override
+    public SpriteTiled getRasterPattern(Integer pattern, int rasterID)
+    {
+        return rasterPatterns.get(pattern).get(rasterID);
+    }
+
+    @Override
+    public MapTile getMap()
+    {
+        return map;
     }
 }

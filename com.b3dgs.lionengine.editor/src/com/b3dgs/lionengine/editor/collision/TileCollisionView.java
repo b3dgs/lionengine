@@ -42,7 +42,7 @@ import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.editor.world.WorldViewPart;
 import com.b3dgs.lionengine.game.map.CollisionFunction;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Represents the tile collision view, where the tile collision can be edited.
@@ -60,7 +60,7 @@ public class TileCollisionView
     /** Part service. */
     final EPartService partService;
     /** Selected tile. */
-    TileGame tile;
+    Tile tile;
     /** Scroll composite. */
     private ScrolledComposite scrolledComposite;
     /** Formulas content. */
@@ -93,7 +93,7 @@ public class TileCollisionView
      * 
      * @param tile The selected tile.
      */
-    public void setSelectedTile(TileGame tile)
+    public void setSelectedTile(Tile tile)
     {
         this.tile = tile;
         for (final TileCollisionComposite formula : formulas)

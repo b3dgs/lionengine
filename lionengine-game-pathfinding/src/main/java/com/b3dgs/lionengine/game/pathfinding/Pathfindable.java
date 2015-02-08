@@ -56,10 +56,10 @@ public interface Pathfindable
     /**
      * Set specified location in tile.
      * 
-     * @param dtx The location x in tile.
-     * @param dty The location y in tile.
+     * @param tx The location x in tile.
+     * @param ty The location y in tile.
      */
-    void setLocation(int dtx, int dty);
+    void setLocation(int tx, int ty);
 
     /**
      * Ignore an id while searching pathfinding. It allows to not be blocked by this id.

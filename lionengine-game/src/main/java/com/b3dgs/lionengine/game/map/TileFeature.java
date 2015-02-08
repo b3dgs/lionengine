@@ -15,30 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.map;
-
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+package com.b3dgs.lionengine.game.map;
 
 /**
- * Map implementation.
+ * Tile feature base interface.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Map
-        extends MapTileGame<TileGame>
+public interface TileFeature
 {
     /**
-     * Constructor.
+     * Get the tile owned by the feature.
+     * 
+     * @return The tile reference.
      */
-    public Map()
-    {
-        super(16, 16);
-    }
-
-    @Override
-    public TileGame createTile()
-    {
-        return new TileGame(getTileWidth(), getTileHeight());
-    }
+    Tile getTile();
 }

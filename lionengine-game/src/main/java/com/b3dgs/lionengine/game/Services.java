@@ -55,6 +55,13 @@ public class Services
     public void add(Object service)
     {
         services.add(service);
+        if (service instanceof Featurable)
+        {
+            for (final Object feature : ((Featurable<?>) service).getFeatures())
+            {
+                add(feature);
+            }
+        }
     }
 
     /**

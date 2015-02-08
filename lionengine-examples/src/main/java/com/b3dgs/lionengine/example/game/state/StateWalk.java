@@ -55,7 +55,7 @@ class StateWalk
     {
         this.animation = animation;
         mirrorable = mario.getTrait(Mirrorable.class);
-        animator = mario.getTrait(Animator.class);
+        animator = mario.getSurface();
         movement = mario.getMovement();
     }
 

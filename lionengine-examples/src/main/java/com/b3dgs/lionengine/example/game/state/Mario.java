@@ -109,7 +109,6 @@ class Mario
         surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
-        addTrait(surface);
 
         loadStates(configurer, factory);
         state = factory.getState(MarioState.IDLE);
@@ -149,6 +148,16 @@ class Mario
     public Force getJump()
     {
         return jump;
+    }
+
+    /**
+     * Get the surface.
+     * 
+     * @return The surface reference.
+     */
+    public SpriteAnimated getSurface()
+    {
+        return surface;
     }
 
     /**

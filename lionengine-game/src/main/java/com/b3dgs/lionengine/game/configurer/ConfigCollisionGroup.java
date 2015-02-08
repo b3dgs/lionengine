@@ -23,7 +23,7 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.collision.CollisionGroup;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
@@ -55,7 +55,7 @@ public final class ConfigCollisionGroup
      * @return The config collisions instance.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
-    public static Collection<CollisionGroup> create(XmlNode root, MapTile<?> map) throws LionEngineException
+    public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
         final Collection<CollisionGroup> collisions = new ArrayList<>();
         for (final XmlNode node : root.getChildren(GROUP))

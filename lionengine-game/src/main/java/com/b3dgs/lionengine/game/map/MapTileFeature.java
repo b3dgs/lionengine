@@ -15,30 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.f;
-
-import com.b3dgs.lionengine.game.map.MapTileGame;
-import com.b3dgs.lionengine.game.map.TileGame;
+package com.b3dgs.lionengine.game.map;
 
 /**
- * Map implementation.
+ * Map tile feature interface.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Map
-        extends MapTileGame<TileGame>
+public interface MapTileFeature
 {
     /**
-     * Constructor.
+     * Get the original map tile reference owned by the feature.
+     * 
+     * @return The map tile reference.
      */
-    public Map()
-    {
-        super(16, 16);
-    }
-
-    @Override
-    public TileGame createTile()
-    {
-        return new TileGame(getTileWidth(), getTileHeight());
-    }
+    MapTile getMap();
 }

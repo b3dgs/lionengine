@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.trait;
 
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Notify events from the {@link TileCollidable}.
@@ -33,5 +33,5 @@ public interface TileCollidableListener
      * @param tile The collided tile.
      * @param axis The collided axis.
      */
-    void notifyTileCollided(TileGame tile, Axis axis);
+    void notifyTileCollided(Tile tile, Axis axis);
 }

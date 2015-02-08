@@ -21,10 +21,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
- * Represents something which can enter in collision with {@link TileGame}.
+ * Represents something which can enter in collision with {@link Tile}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

@@ -18,18 +18,18 @@
 package com.b3dgs.lionengine.game.handler;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.Features;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler}
@@ -58,8 +58,8 @@ public class ObjectGame
     /** Last id used. */
     private static int lastId = 0;
 
-    /** Traits provided. */
-    private final Map<Class<?>, Object> traits;
+    /** Features provider. */
+    private final Features<Trait> features;
     /** Listeners. */
     private final Collection<HandlableListener> listeners;
     /** Unique id. */
@@ -103,7 +103,7 @@ public class ObjectGame
         Check.notNull(services);
 
         id = getFreeId();
-        traits = new HashMap<>();
+        features = new Features<>(Trait.class);
         listeners = new HashSet<>(1);
         IDS.add(id);
         destroyed = false;
@@ -114,10 +114,9 @@ public class ObjectGame
      * 
      * @param trait The trait to add.
      */
-    public final void addTrait(Object trait)
+    public final void addTrait(Trait trait)
     {
-        final Class<?> key = trait.getClass().getInterfaces()[0];
-        traits.put(key, trait);
+        features.add(trait);
     }
 
     /**
@@ -128,22 +127,7 @@ public class ObjectGame
      */
     public final <C> C getTrait(Class<C> trait)
     {
-        if (traits.containsKey(trait))
-        {
-            return trait.cast(traits.get(trait));
-        }
-        for (final Object current : traits.values())
-        {
-            if (trait.isAssignableFrom(current.getClass()))
-            {
-                return trait.cast(current);
-            }
-        }
-        if (trait.isAssignableFrom(getClass()))
-        {
-            return trait.cast(this);
-        }
-        return null;
+        return features.get(trait);
     }
 
     /**
@@ -151,9 +135,9 @@ public class ObjectGame
      * 
      * @return The traits list.
      */
-    public final Iterable<Object> getTraits()
+    public final Iterable<Trait> getTraits()
     {
-        return traits.values();
+        return features.getAll();
     }
 
     /**
@@ -161,9 +145,9 @@ public class ObjectGame
      * 
      * @return The traits types.
      */
-    public final Iterable<Class<?>> getTraitsType()
+    public final Iterable<Class<? extends Trait>> getTraitsType()
     {
-        return traits.keySet();
+        return features.getFeatures();
     }
 
     /**

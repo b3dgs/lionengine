@@ -29,7 +29,8 @@ import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * Tile collidable model implementation.
@@ -49,7 +50,7 @@ public class TileCollidableModel
     /** The collisions used. */
     private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
-    private final MapTile<?> map;
+    private final MapTileCollision map;
 
     /**
      * Create a tile collidable model.
@@ -77,7 +78,7 @@ public class TileCollidableModel
         listeners = new HashSet<>();
         transformable = getTrait(Transformable.class);
         body = owner.getTrait(Body.class);
-        map = services.get(MapTile.class);
+        map = services.get(MapTileCollision.class);
         categories = ConfigCollisionCategory.create(configurer, map);
     }
 
@@ -88,7 +89,7 @@ public class TileCollidableModel
      */
     private void update(CollisionCategory category)
     {
-        final CollisionResult<?> result = map.computeCollision(transformable, category);
+        final CollisionResult result = map.computeCollision(transformable, category);
         if (result != null)
         {
             if (result.getX() != null)
@@ -114,7 +115,7 @@ public class TileCollidableModel
      * @param tile The tile reference.
      * @param axis The axis reference.
      */
-    private void onCollided(TileGame tile, Axis axis)
+    private void onCollided(Tile tile, Axis axis)
     {
         for (final TileCollidableListener listener : listeners)
         {

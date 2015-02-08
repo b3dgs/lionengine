@@ -22,7 +22,7 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
-import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileCollision;
 
 /**
  * Collision category, representing a collision point at a specified offset relative to the owner position. Computation
@@ -64,7 +64,7 @@ public class CollisionCategory
     private final int x;
     /** Vertical offset relative to collision owner. */
     private final int y;
-    /** Collision formula used list (each must be available in {@link MapTile#getCollisionFormula(String)}. */
+    /** Collision formula used list (each must be available in {@link MapTileCollision#getCollisionFormula(String)}. */
     private final Collection<CollisionFormula> formulas;
 
     /**

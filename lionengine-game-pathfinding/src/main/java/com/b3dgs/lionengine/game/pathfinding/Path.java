@@ -26,7 +26,7 @@ import java.util.List;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class Path
+final class Path
 {
     /** List of steps. */
     private final List<Step> steps;

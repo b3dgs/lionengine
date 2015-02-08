@@ -21,10 +21,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionGroup;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.TileGame;
+import com.b3dgs.lionengine.game.map.Tile;
 
 /**
- * Represents the collision group, which can be applied to a {@link TileGame}. It allows to reference easily a set of
+ * Represents the collision group, which can be applied to a {@link Tile}. It allows to reference easily a set of
  * {@link CollisionFormula} previously defined on the {@link MapTile}.
  * Here a definition example:
  * 
