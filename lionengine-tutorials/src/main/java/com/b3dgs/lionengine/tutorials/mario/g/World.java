@@ -28,6 +28,8 @@ import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -47,7 +49,7 @@ class World
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
-    private final Map map;
+    private final MapTile map;
     /** Factory reference. */
     private final Factory factory;
     /** Handler reference. */
@@ -67,7 +69,7 @@ class World
 
         this.keyboard = keyboard;
         camera = new Camera();
-        map = new Map();
+        map = new MapTileGame(camera, 16, 16);
         factory = new Factory();
         handler = new Handler();
     }
@@ -87,7 +89,7 @@ class World
         g.setColor(World.BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
         // Draw the map
-        map.render(g, camera);
+        map.render(g);
         // Draw the mario
         mario.render(g, camera);
         handler.render(g);

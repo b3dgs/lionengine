@@ -32,7 +32,6 @@ import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Resource;
 import com.b3dgs.lionengine.game.WorldGame;
 import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.game.utility.TileExtractor;
 import com.b3dgs.lionengine.stream.FileReading;
@@ -71,7 +70,7 @@ public class ModuleGame
         }
     }
 
-    MapTile<Tile> map;
+    MapTile map;
 
     /*
      * Snippet code
@@ -153,7 +152,7 @@ public class ModuleGame
 
     private void ripLevel(Media levelrip, Media tilesheet, Media output)
     {
-        final LevelRipConverter<Tile> rip = new LevelRipConverter<>(levelrip, tilesheet, map);
+        final LevelRipConverter rip = new LevelRipConverter(levelrip, tilesheet, map);
         rip.start();
         try (FileWriting file = Stream.createFileWriting(output))
         {

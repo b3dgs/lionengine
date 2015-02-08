@@ -92,6 +92,7 @@ class Ship
 
         collidable = new CollidableModel(this, context);
         collidable.setOrigin(Origin.MIDDLE);
+        collidable.addListener(this);
         addTrait(collidable);
 
         final ConfigFrames config = ConfigFrames.create(setup.getConfigurer());

@@ -23,6 +23,8 @@ import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.WorldGame;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 
@@ -37,7 +39,7 @@ class World
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
-    private final Map map;
+    private final MapTile map;
 
     /**
      * @see WorldGame#WorldGame(Config)
@@ -46,7 +48,7 @@ class World
     {
         super(config);
         camera = new Camera();
-        map = new Map();
+        map = new MapTileGame(camera, 16, 16);
     }
 
     @Override
@@ -58,7 +60,7 @@ class World
     @Override
     public void render(Graphic g)
     {
-        map.render(g, camera);
+        map.render(g);
     }
 
     @Override

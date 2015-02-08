@@ -39,7 +39,8 @@ public class AppStrategyCursor
      */
     public static void main(String[] args)
     {
-        Engine.start("Strategy Cursor", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "strategy", "cursor"));
+        Engine.start("Strategy Cursor", Version.create(1, 0, 0),
+                UtilFile.getPath("resources", "game", "strategy", "cursor"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

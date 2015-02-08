@@ -24,6 +24,8 @@ import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 
 /**
  * Game loop designed to handle our little world.
@@ -41,7 +43,7 @@ class Scene
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
-    private final Map map;
+    private final MapTile map;
 
     /**
      * Constructor.
@@ -53,7 +55,7 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         camera = new Camera();
-        map = new Map();
+        map = new MapTileGame(camera, 16, 16);
     }
 
     @Override
@@ -76,6 +78,6 @@ class Scene
     @Override
     public void render(Graphic g)
     {
-        map.render(g, camera);
+        map.render(g);
     }
 }

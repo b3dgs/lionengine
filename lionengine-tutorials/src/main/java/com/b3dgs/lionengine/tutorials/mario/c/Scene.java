@@ -27,6 +27,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
 
@@ -65,7 +67,7 @@ class Scene
      */
     private static void importAndSave()
     {
-        final Map map = new Map();
+        final MapTile map = new MapTileGame(null, 16, 16);
         map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
         try (FileWriting file = Stream.createFileWriting(LEVEL))
         {

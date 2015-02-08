@@ -33,6 +33,13 @@ public interface Collidable
         extends Trait, Updatable, Renderable, ComponentCollisionListener
 {
     /**
+     * Add a collision listener.
+     * 
+     * @param listener The listener reference.
+     */
+    void addListener(ComponentCollisionListener listener);
+
+    /**
      * Add a collision to use.
      * 
      * @param collision The collision to add.

@@ -50,7 +50,7 @@ public class CollidableModel
     /** The viewer reference. */
     private final Viewer viewer;
     /** The collision listener reference. */
-    private final ComponentCollisionListener listener;
+    private final Collection<ComponentCollisionListener> listeners;
     /** The collisions used. */
     private final Collection<Collision> collisions;
     /** The ignored collidables. */
@@ -71,7 +71,6 @@ public class CollidableModel
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
-     * <li>{@link ComponentCollisionListener}</li>
      * </ul>
      * The {@link Services} must provide the following services:
      * </p>
@@ -86,13 +85,13 @@ public class CollidableModel
     public CollidableModel(ObjectGame owner, Services services) throws LionEngineException
     {
         super(owner);
-        transformable = getTrait(Transformable.class);
-        listener = getTrait(ComponentCollisionListener.class);
-        viewer = services.get(Viewer.class);
+        listeners = new ArrayList<>();
         collisions = new ArrayList<>();
         ignored = new HashSet<>();
         polygons = new HashMap<>();
         boxs = new HashMap<>();
+        transformable = getTrait(Transformable.class);
+        viewer = services.get(Viewer.class);
         origin = Origin.TOP_LEFT;
         showCollision = false;
     }
@@ -100,6 +99,12 @@ public class CollidableModel
     /*
      * Collidable
      */
+
+    @Override
+    public void addListener(ComponentCollisionListener listener)
+    {
+        listeners.add(listener);
+    }
 
     @Override
     public void addCollision(Collision collision)
@@ -212,6 +217,9 @@ public class CollidableModel
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        listener.notifyCollided(collidable);
+        for (final ComponentCollisionListener listener : listeners)
+        {
+            listener.notifyCollided(collidable);
+        }
     }
 }
