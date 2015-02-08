@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.core.FactoryGraphicProvider;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Cursor;
@@ -62,10 +61,9 @@ public class CursorTest
         final Graphic g = new GraphicMock();
         final MouseMock mouse = new MouseMock();
 
-        final Resolution output0 = new Resolution(320, 240, 60);
         try
         {
-            final Cursor cursor = new Cursor(mouse, output0, null);
+            final Cursor cursor = new Cursor(mouse, null);
             Assert.assertNotNull(cursor);
             Assert.fail();
         }
@@ -74,7 +72,7 @@ public class CursorTest
             // Success
         }
 
-        final Cursor cursor = new Cursor(mouse, output0, new MediaMock("cursor.png"));
+        final Cursor cursor = new Cursor(mouse, new MediaMock("cursor.png"));
         cursor.setArea(0, 0, 320, 240);
         cursor.setSensibility(1.0, 2.0);
         cursor.setSurfaceId(0);
