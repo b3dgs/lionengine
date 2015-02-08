@@ -21,7 +21,6 @@ import android.app.Activity;
 
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * <b>LionEngine</b>.
@@ -69,14 +68,13 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param activity The activity reference (must not be <code>null</code>).
      */
-    public static void start(String name, Version version, Verbose level, Activity activity)
+    public static void start(String name, Version version, Activity activity)
     {
         if (!EngineCore.isStarted())
         {
-            EngineCore.start(name, version, level, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
+            EngineCore.start(name, version, new FactoryGraphicAndroid(), new FactoryMediaAndroid());
 
             final ViewAndroid view = new ViewAndroid(activity);
             view.setWillNotDraw(false);

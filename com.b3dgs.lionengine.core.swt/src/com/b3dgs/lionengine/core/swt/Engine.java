@@ -75,14 +75,12 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, Verbose level, String resourcesDir)
-            throws LionEngineException
+    public static void start(String name, Version version, String resourcesDir) throws LionEngineException
     {
-        Engine.start(name, version, level, resourcesDir, null);
+        Engine.start(name, version, resourcesDir, null);
     }
 
     /**
@@ -90,16 +88,13 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param classResource The class loader reference (resources entry point).
      * @throws LionEngineException If classResource is <code>null</code>
      */
-    public static void start(String name, Version version, Verbose level, Class<?> classResource)
-            throws LionEngineException
+    public static void start(String name, Version version, Class<?> classResource) throws LionEngineException
     {
         Check.notNull(classResource);
-
-        Engine.start(name, version, level, null, classResource);
+        Engine.start(name, version, null, classResource);
     }
 
     /**
@@ -107,17 +102,16 @@ public final class Engine
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param resourcesDir The main resources directory.
      * @param classResource The class loader reference (resources entry point).
      * @throws LionEngineException If the engine has already been started.
      */
-    private static void start(String name, Version version, Verbose level, String resourcesDir, Class<?> classResource)
+    private static void start(String name, Version version, String resourcesDir, Class<?> classResource)
             throws LionEngineException
     {
         if (!EngineCore.isStarted())
         {
-            EngineCore.start(name, version, level, new FactoryGraphicSwt(), new FactoryMediaSwt());
+            EngineCore.start(name, version, new FactoryGraphicSwt(), new FactoryMediaSwt());
 
             UtilityMedia.setLoadFromJar(classResource);
             UtilityMedia.setResourcesDirectory(resourcesDir);

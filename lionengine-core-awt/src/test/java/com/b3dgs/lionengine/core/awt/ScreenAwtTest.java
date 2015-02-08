@@ -36,7 +36,6 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Screen;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the screen class.
@@ -56,7 +55,7 @@ public class ScreenAwtTest
     @Before
     public void setUp() throws ReflectiveOperationException
     {
-        Engine.start("screen", Version.create(0, 0, 0), Verbose.CRITICAL, ScreenAwtTest.class);
+        Engine.start("screen", Version.create(0, 0, 0), ScreenAwtTest.class);
     }
 
     /**

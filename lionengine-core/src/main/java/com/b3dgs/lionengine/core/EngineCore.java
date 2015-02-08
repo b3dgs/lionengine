@@ -61,13 +61,12 @@ public abstract class EngineCore
      * 
      * @param name The program name (must not be <code>null</code>).
      * @param version The program version (must not be <code>null</code>).
-     * @param level The verbose level (must not be <code>null</code>).
      * @param factoryGraphic The graphic factory (must not be <code>null</code>).
      * @param factoryMedia The media factory (must not be <code>null</code>).
      * @throws LionEngineException If the engine has already been started.
      */
-    public static void start(String name, Version version, Verbose level, FactoryGraphic factoryGraphic,
-            FactoryMedia factoryMedia) throws LionEngineException
+    public static void start(String name, Version version, FactoryGraphic factoryGraphic, FactoryMedia factoryMedia)
+            throws LionEngineException
     {
         if (started)
         {
@@ -76,11 +75,9 @@ public abstract class EngineCore
 
         Check.notNull(name);
         Check.notNull(version);
-        Check.notNull(level);
         Check.notNull(factoryGraphic);
         Check.notNull(factoryMedia);
 
-        Verbose.set(level);
         Verbose.prepareLogger();
 
         programName = name;

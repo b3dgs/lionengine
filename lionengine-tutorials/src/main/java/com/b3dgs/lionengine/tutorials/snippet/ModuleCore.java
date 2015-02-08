@@ -105,7 +105,7 @@ public class ModuleCore
 
     void loader()
     {
-        Engine.start("First Code", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);
@@ -114,7 +114,7 @@ public class ModuleCore
 
     void media()
     {
-        Engine.start("First Code", Version.create(1, 0, 0), Verbose.CRITICAL, "resources");
+        Engine.start("First Code", Version.create(1, 0, 0), "resources");
         Core.MEDIA.create("img", "image.png");
         System.out.println(Core.MEDIA.create()); // print: resources/img/image.png
     }

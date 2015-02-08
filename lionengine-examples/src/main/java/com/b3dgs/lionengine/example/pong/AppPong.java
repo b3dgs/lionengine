@@ -22,7 +22,6 @@ import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Loader;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 
 /**
@@ -40,7 +39,7 @@ public class AppPong
      */
     public static void main(String[] args)
     {
-        Engine.start("Pong", Version.create(1, 0, 0), Verbose.CRITICAL, UtilFile.getPath("resources", "pong"));
+        Engine.start("Pong", Version.create(1, 0, 0), UtilFile.getPath("resources", "pong"));
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

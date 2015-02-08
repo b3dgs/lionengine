@@ -34,7 +34,6 @@ import com.b3dgs.lionengine.core.EngineCore;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Renderer;
 import com.b3dgs.lionengine.core.Text;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the factory graphic provider class.
@@ -49,8 +48,7 @@ public class FactoryGraphicAwtTest
     @BeforeClass
     public static void setUp()
     {
-        EngineCore.start("test", Version.create(0, 0, 0), Verbose.CRITICAL, new FactoryGraphicAwt(),
-                new FactoryMediaAwt());
+        EngineCore.start("test", Version.create(0, 0, 0), new FactoryGraphicAwt(), new FactoryMediaAwt());
     }
 
     /**

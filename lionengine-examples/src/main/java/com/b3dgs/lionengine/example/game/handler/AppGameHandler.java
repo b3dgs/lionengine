@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.component.ComponentRenderer;
@@ -44,7 +43,7 @@ public class AppGameHandler
      */
     public static void main(String[] args)
     {
-        Engine.start("Handler", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "handler"));
+        Engine.start("Handler", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "handler"));
 
         final Graphic g = Core.GRAPHIC.createGraphic();
         final Services context = new Services();

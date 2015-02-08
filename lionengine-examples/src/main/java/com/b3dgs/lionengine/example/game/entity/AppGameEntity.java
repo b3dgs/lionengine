@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.component.ComponentRenderer;
 import com.b3dgs.lionengine.game.component.ComponentUpdater;
@@ -43,7 +42,7 @@ public class AppGameEntity
      */
     public static void main(String[] args)
     {
-        Engine.start("Entity", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "entity"));
+        Engine.start("Entity", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "entity"));
 
         final Graphic g = Core.GRAPHIC.createGraphic();
         final Factory factory = new Factory();

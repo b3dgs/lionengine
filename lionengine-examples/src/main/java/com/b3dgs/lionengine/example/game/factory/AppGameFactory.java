@@ -20,7 +20,6 @@ package com.b3dgs.lionengine.example.game.factory;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.Core;
-import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.factory.Factory;
@@ -40,7 +39,7 @@ public class AppGameFactory
      */
     public static void main(String[] args)
     {
-        Engine.start("Factory", Version.create(1, 0, 0), Verbose.NONE, UtilFile.getPath("resources", "game", "factory"));
+        Engine.start("Factory", Version.create(1, 0, 0), UtilFile.getPath("resources", "game", "factory"));
 
         final Factory factory = new Factory();
 

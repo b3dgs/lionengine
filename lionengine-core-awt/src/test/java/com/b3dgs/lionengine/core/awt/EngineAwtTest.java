@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import com.b3dgs.lionengine.Version;
 import com.b3dgs.lionengine.core.EngineCore;
-import com.b3dgs.lionengine.core.Verbose;
 
 /**
  * Test the engine class.
@@ -65,14 +64,14 @@ public class EngineAwtTest
     @Test
     public void testEngine()
     {
-        Engine.start("EngineTest", Version.create(0, 0, 0), Verbose.CRITICAL, (String) null);
+        Engine.start("EngineTest", Version.create(0, 0, 0), (String) null);
         Assert.assertTrue(EngineCore.isStarted());
-        Engine.start("EngineTest", Version.create(0, 1, 0), Verbose.CRITICAL, (String) null);
-        Engine.start("EngineTest", Version.create(0, 0, 0), Verbose.CRITICAL, EngineAwtTest.class);
+        Engine.start("EngineTest", Version.create(0, 1, 0), (String) null);
+        Engine.start("EngineTest", Version.create(0, 0, 0), EngineAwtTest.class);
         Assert.assertEquals("EngineTest", EngineCore.getProgramName());
         Assert.assertEquals("0.0.0", EngineCore.getProgramVersion().toString());
 
         Engine.terminate();
-        Engine.start("EngineTest", Version.create(0, 0, 0), Verbose.CRITICAL, "test");
+        Engine.start("EngineTest", Version.create(0, 0, 0), "test");
     }
 }

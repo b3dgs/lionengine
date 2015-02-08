@@ -84,8 +84,8 @@ public class EngineCoreTest
     @Test(expected = LionEngineException.class)
     public void testAlreadyStarted()
     {
-        EngineCore.start(NAME, Version.create(0, 0, 0), Verbose.NONE, new FactoryGraphicMock(), new FactoryMediaMock());
-        EngineCore.start(NAME, Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.create(0, 0, 0), new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.create(0, 1, 0), new FactoryGraphicMock(), new FactoryMediaMock());
         EngineCore.terminate();
     }
 
@@ -104,7 +104,7 @@ public class EngineCoreTest
     @Test(expected = LionEngineException.class)
     public void testFactoryGraphicError()
     {
-        EngineCore.start(NAME, Version.create(0, 1, 0), Verbose.NONE, null, new FactoryMediaMock());
+        EngineCore.start(NAME, Version.create(0, 1, 0), null, new FactoryMediaMock());
     }
 
     /**
@@ -113,7 +113,7 @@ public class EngineCoreTest
     @Test(expected = LionEngineException.class)
     public void testFactoryMediaError()
     {
-        EngineCore.start(NAME, Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(), null);
+        EngineCore.start(NAME, Version.create(0, 1, 0), new FactoryGraphicMock(), null);
     }
 
     /**
@@ -123,7 +123,7 @@ public class EngineCoreTest
     public void testStarted()
     {
         Assert.assertFalse(EngineCore.isStarted());
-        EngineCore.start(NAME, Version.create(0, 1, 0), Verbose.NONE, new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.create(0, 1, 0), new FactoryGraphicMock(), new FactoryMediaMock());
         Assert.assertTrue(EngineCore.isStarted());
         EngineCore.terminate();
         Assert.assertFalse(EngineCore.isStarted());
@@ -135,7 +135,7 @@ public class EngineCoreTest
     @Test
     public void testGetter()
     {
-        EngineCore.start(NAME, Version.create(1, 2, 3), Verbose.NONE, new FactoryGraphicMock(), new FactoryMediaMock());
+        EngineCore.start(NAME, Version.create(1, 2, 3), new FactoryGraphicMock(), new FactoryMediaMock());
         Assert.assertEquals(NAME, EngineCore.getProgramName());
         Assert.assertEquals("1.2.3", EngineCore.getProgramVersion().toString());
         EngineCore.terminate();
