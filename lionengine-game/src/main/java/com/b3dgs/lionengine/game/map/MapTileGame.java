@@ -468,10 +468,6 @@ public class MapTileGame
     @Override
     public Tile getTile(int tx, int ty) throws LionEngineException
     {
-        Check.superiorOrEqual(tx, 0);
-        Check.superiorOrEqual(ty, 0);
-        Check.inferiorStrict(tx, widthInTile);
-        Check.inferiorStrict(ty, heightInTile);
         try
         {
             return tiles.get(ty).get(tx);
