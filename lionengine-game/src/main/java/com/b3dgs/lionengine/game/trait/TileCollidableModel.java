@@ -134,6 +134,12 @@ public class TileCollidableModel
     }
 
     @Override
+    public void removeListener(TileCollidableListener listener)
+    {
+        listeners.remove(listener);
+    }
+
+    @Override
     public void update(double extrp)
     {
         for (final CollisionCategory category : categories)

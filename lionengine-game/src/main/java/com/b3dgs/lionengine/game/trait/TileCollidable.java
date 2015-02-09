@@ -39,6 +39,13 @@ public interface TileCollidable
     void addListener(TileCollidableListener listener);
 
     /**
+     * Remove a tile collision listener.
+     * 
+     * @param listener The tile collision listener to remove.
+     */
+    void removeListener(TileCollidableListener listener);
+
+    /**
      * Get the collision tile category used.
      * 
      * @return The category used.
