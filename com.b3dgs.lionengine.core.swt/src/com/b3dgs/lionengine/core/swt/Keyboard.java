@@ -178,7 +178,7 @@ public final class Keyboard
     }
 
     @Override
-    public int getHorizontalDirection()
+    public double getHorizontalDirection()
     {
         if (isPressed(left))
         {
@@ -192,7 +192,7 @@ public final class Keyboard
     }
 
     @Override
-    public int getVerticalDirection()
+    public double getVerticalDirection()
     {
         if (isPressed(down))
         {
