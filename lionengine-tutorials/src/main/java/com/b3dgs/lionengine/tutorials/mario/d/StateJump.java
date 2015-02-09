@@ -53,7 +53,7 @@ class StateJump
     /** Jump force. */
     private final Force jump;
     /** Movement side. */
-    private int side;
+    private double side;
 
     /**
      * Create the walk state.

@@ -51,7 +51,7 @@ class StateWalk
     /** Movement force. */
     private final Force movement;
     /** Movement side. */
-    private int side;
+    private double side;
     /** Played flag. */
     private boolean played;
     /** Horizontal collision. */

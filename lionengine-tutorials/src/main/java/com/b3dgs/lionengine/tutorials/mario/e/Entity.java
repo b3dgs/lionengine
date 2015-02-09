@@ -15,16 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.state;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
@@ -33,14 +35,22 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
 import com.b3dgs.lionengine.game.trait.MirrorableModel;
+import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
 
@@ -49,14 +59,16 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class Mario
+class Entity
         extends ObjectGame
         implements Updatable, Renderable
 {
+    /** Mario media. */
+    public static final Media MARIO = Core.MEDIA.create("entity", "Mario.xml");
+    /** Goomba media. */
+    public static final Media GOOMBA = Core.MEDIA.create("entity", "Goomba.xml");
     /** Ground location y. */
-    static final int GROUND = 32;
-    /** Setup. */
-    private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("mario.xml"));
+    private static final int GROUND = 32;
 
     /** Surface. */
     private final SpriteAnimated surface;
@@ -66,6 +78,10 @@ class Mario
     private final Transformable transformable;
     /** Body model. */
     private final Body body;
+    /** Tile collidable. */
+    private final TileCollidable tileCollidable;
+    /** Collidable reference. */
+    private final Collidable collidable;
     /** Camera reference. */
     private final Camera camera;
     /** State factory. */
@@ -74,23 +90,26 @@ class Mario
     private final Force movement;
     /** Jump force. */
     private final Force jump;
+    /** Controller reference. */
+    private InputDeviceDirectional device;
     /** Entity state. */
     private State state;
 
     /**
      * Constructor.
      * 
+     * @param setup The setup reference.
      * @param services The services reference.
      */
-    public Mario(Services services)
+    public Entity(SetupSurface setup, Services services)
     {
-        super(SETUP, services);
+        super(setup, services);
 
         jump = new Force();
         movement = new Force();
         factory = new StateFactory();
 
-        final Configurer configurer = SETUP.getConfigurer();
+        final Configurer configurer = setup.getConfigurer();
         transformable = new TransformableModel(this, configurer);
         addTrait(transformable);
 
@@ -100,29 +119,87 @@ class Mario
         body = new BodyModel(this);
         addTrait(body);
 
+        tileCollidable = new TileCollidableModel(this, setup.getConfigurer(), services);
+        addTrait(tileCollidable);
+
+        collidable = new CollidableModel(this, services);
+        collidable.setOrigin(Origin.CENTER_BOTTOM);
+        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
+        addTrait(collidable);
+
         camera = services.get(Camera.class);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(services.get(Integer.class).intValue());
         body.setMass(2.0);
 
-        surface = Drawable.loadSpriteAnimated(SETUP.surface, 7, 1);
+        final ConfigFrames frames = ConfigFrames.create(configurer);
+        surface = Drawable.loadSpriteAnimated(setup.surface, frames.getHorizontal(), frames.getVertical());
         surface.setOrigin(Origin.CENTER_BOTTOM);
         surface.setFrameOffsets(-1, 0);
 
         loadStates(configurer, factory);
-        state = factory.getState(MarioState.IDLE);
-        transformable.teleport(160, GROUND);
+        state = factory.getState(EntityState.IDLE);
     }
 
     /**
-     * Update the mario controls.
+     * Respawn the entity.
      * 
-     * @param keyboard The keyboard reference.
+     * @param x The horizontal location.
      */
-    public void updateControl(Keyboard keyboard)
+    public void respawn(int x)
     {
-        final State current = state.handleInput(factory, keyboard);
+        transformable.teleport(x, GROUND);
+        jump.setDirection(Direction.ZERO);
+        body.resetGravity();
+    }
+
+    /**
+     * Set the device that will control the entity.
+     * 
+     * @param device The device controller.
+     */
+    public void setControl(InputDeviceDirectional device)
+    {
+        this.device = device;
+    }
+
+    /**
+     * Add a tile collidable listener.
+     * 
+     * @param listener The tile collidable listener.
+     */
+    public void addTileCollidableListener(TileCollidableListener listener)
+    {
+        tileCollidable.addListener(listener);
+    }
+
+    /**
+     * Add a collidable listener.
+     * 
+     * @param listener The collidable listener.
+     */
+    public void addCollidableListener(ComponentCollisionListener listener)
+    {
+        collidable.addListener(listener);
+    }
+
+    /**
+     * Get the localizable reference.
+     * 
+     * @return The localizable reference.
+     */
+    public Localizable getLocalizable()
+    {
+        return transformable;
+    }
+
+    /**
+     * Update the entity controls.
+     */
+    private void updateControl()
+    {
+        final State current = state.handleInput(factory, device);
         if (current != null)
         {
             state = current;
@@ -169,12 +246,13 @@ class Mario
     private void loadStates(Configurer configurer, StateFactory factory)
     {
         final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        for (final MarioState state : MarioState.values())
+        for (final EntityState type : EntityState.values())
         {
             try
             {
-                final Animation animation = configAnimations.getAnimation(state.getAnimationName());
-                factory.addState(state, state.create(this, animation));
+                final Animation animation = configAnimations.getAnimation(type.getAnimationName());
+                final State state = type.create(this, animation);
+                factory.addState(type, state);
             }
             catch (final LionEngineException exception)
             {
@@ -186,16 +264,17 @@ class Mario
     @Override
     public void update(double extrp)
     {
+        updateControl();
         state.update(extrp);
         mirrorable.update(extrp);
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
-        if (transformable.getY() < GROUND)
+        tileCollidable.update(extrp);
+        collidable.update(extrp);
+        if (transformable.getY() < 0)
         {
-            transformable.teleportY(GROUND);
-            jump.setDirection(Direction.ZERO);
-            body.resetGravity();
+            respawn(160);
         }
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);

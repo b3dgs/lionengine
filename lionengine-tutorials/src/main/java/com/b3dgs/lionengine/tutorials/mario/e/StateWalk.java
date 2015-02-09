@@ -15,16 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.state;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
+import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 
 /**
  * Walk state implementation.
@@ -33,6 +38,7 @@ import com.b3dgs.lionengine.game.trait.Mirrorable;
  */
 class StateWalk
         extends State
+        implements TileCollidableListener
 {
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
@@ -40,36 +46,50 @@ class StateWalk
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Tile collidable reference. */
+    private final TileCollidable tileCollidable;
     /** Movement force. */
     private final Force movement;
     /** Movement side. */
     private double side;
+    /** Played flag. */
+    private boolean played;
+    /** Horizontal collision. */
+    private boolean collide;
 
     /**
      * Create the walk state.
      * 
-     * @param mario The mario reference.
+     * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateWalk(Mario mario, Animation animation)
+    public StateWalk(Entity entity, Animation animation)
     {
         this.animation = animation;
-        mirrorable = mario.getTrait(Mirrorable.class);
-        animator = mario.getSurface();
-        movement = mario.getMovement();
+        mirrorable = entity.getTrait(Mirrorable.class);
+        tileCollidable = entity.getTrait(TileCollidable.class);
+        animator = entity.getSurface();
+        movement = entity.getMovement();
     }
 
     @Override
     public void enter()
     {
-        animator.play(animation);
         movement.setVelocity(0.5);
         movement.setSensibility(0.1);
+        tileCollidable.addListener(this);
+        played = false;
+        collide = false;
     }
 
     @Override
     public void update(double extrp)
     {
+        if (!played && movement.getDirectionHorizontal() != 0)
+        {
+            animator.play(animation);
+            played = true;
+        }
         movement.setDestination(side * 3, 0);
         animator.setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
         if (side < 0)
@@ -99,17 +119,27 @@ class StateWalk
     {
         if (input.getVerticalDirection() > 0)
         {
-            return factory.getState(MarioState.JUMP);
+            return factory.getState(EntityState.JUMP);
         }
         side = input.getHorizontalDirection();
-        if (side == 0 && input.getVerticalDirection() == 0)
+        if (collide || side == 0 && input.getVerticalDirection() == 0)
         {
-            return factory.getState(MarioState.IDLE);
+            return factory.getState(EntityState.IDLE);
         }
         else if (side < 0 && movement.getDirectionHorizontal() > 0 || side > 0 && movement.getDirectionHorizontal() < 0)
         {
-            return factory.getState(MarioState.TURN);
+            return factory.getState(EntityState.TURN);
         }
         return null;
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.X == axis)
+        {
+            movement.setDirection(Direction.ZERO);
+            collide = true;
+        }
     }
 }

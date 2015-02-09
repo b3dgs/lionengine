@@ -15,37 +15,42 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.handler.HandledObjects;
+import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
+import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
- * Updater component implementation which update {@link Updatable} through an extrapolation value.
+ * Mario controller implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentUpdater
-        implements ComponentUpdatable
+public class MarioController
+        implements ComponentCollisionListener
 {
+    /** Transformable reference. */
+    private final Transformable transformable;
+
     /**
-     * Create an updater component.
+     * Create a mario controller.
+     * 
+     * @param mario The mario reference.
      */
-    public ComponentUpdater()
+    public MarioController(Entity mario)
     {
-        // Nothing to do
+        transformable = mario.getTrait(Transformable.class);
     }
 
-    /*
-     * ComponentUpdatable
-     */
-
     @Override
-    public void update(double extrp, HandledObjects objects)
+    public void notifyCollided(Collidable collidable)
     {
-        for (final Updatable updatable : objects.get(Updatable.class))
+        final ObjectGame target = collidable.getOwner();
+        final Transformable collider = target.getTrait(Transformable.class);
+        if (transformable.getY() < transformable.getOldY() && transformable.getY() > collider.getY())
         {
-            updatable.update(extrp);
+            target.destroy();
         }
     }
 }

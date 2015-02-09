@@ -59,7 +59,7 @@ class Mario
     /** Object media. */
     public static final Media MEDIA = Core.MEDIA.create("entity", "Mario.xml");
     /** Ground location y. */
-    static final int GROUND = 32;
+    private static final int GROUND = 32;
 
     /** Surface. */
     private final SpriteAnimated surface;
@@ -200,7 +200,6 @@ class Mario
             }
             catch (final LionEngineException exception)
             {
-                exception.printStackTrace();
                 continue;
             }
         }

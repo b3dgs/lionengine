@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.f;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.Config;
 import com.b3dgs.lionengine.Resolution;
@@ -36,7 +36,7 @@ public class AppMario
     /** Application version. */
     public static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
-    private static final String RESOURCES = UtilFile.getPath("resources", "mario", "f");
+    private static final String RESOURCES = UtilFile.getPath("resources", "mario", "e");
 
     /**
      * Main function.

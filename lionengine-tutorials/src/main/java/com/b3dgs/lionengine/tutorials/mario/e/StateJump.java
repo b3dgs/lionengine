@@ -15,16 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.example.game.state;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
+import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 
 /**
  * Turn state implementation.
@@ -33,6 +38,7 @@ import com.b3dgs.lionengine.game.trait.Mirrorable;
  */
 class StateJump
         extends State
+        implements TileCollidableListener
 {
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
@@ -40,6 +46,8 @@ class StateJump
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Tile collidable reference. */
+    private final TileCollidable tileCollidable;
     /** Movement force. */
     private final Force movement;
     /** Jump force. */
@@ -50,16 +58,17 @@ class StateJump
     /**
      * Create the walk state.
      * 
-     * @param mario The mario reference.
+     * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateJump(Mario mario, Animation animation)
+    public StateJump(Entity entity, Animation animation)
     {
         this.animation = animation;
-        mirrorable = mario.getTrait(Mirrorable.class);
-        animator = mario.getSurface();
-        movement = mario.getMovement();
-        jump = mario.getJump();
+        mirrorable = entity.getTrait(Mirrorable.class);
+        tileCollidable = entity.getTrait(TileCollidable.class);
+        animator = entity.getSurface();
+        movement = entity.getMovement();
+        jump = entity.getJump();
     }
 
     @Override
@@ -67,6 +76,7 @@ class StateJump
     {
         animator.play(animation);
         jump.setDirection(0.0, 8.0);
+        tileCollidable.addListener(this);
     }
 
     @Override
@@ -91,8 +101,18 @@ class StateJump
         side = input.getHorizontalDirection();
         if (jump.getDirectionVertical() == 0)
         {
-            return factory.getState(MarioState.IDLE);
+            tileCollidable.removeListener(this);
+            return factory.getState(EntityState.IDLE);
         }
         return null;
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.Y == axis)
+        {
+            jump.setDirection(Direction.ZERO);
+        }
     }
 }

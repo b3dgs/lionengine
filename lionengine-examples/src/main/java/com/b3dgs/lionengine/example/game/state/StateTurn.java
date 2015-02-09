@@ -39,7 +39,7 @@ class StateTurn
     /** Movement force. */
     private final Force movement;
     /** Movement side. */
-    private int side;
+    private double side;
 
     /**
      * Create the walk state.

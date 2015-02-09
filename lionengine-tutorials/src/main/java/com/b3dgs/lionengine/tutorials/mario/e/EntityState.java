@@ -15,9 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.d;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
+import java.lang.reflect.Constructor;
 import java.util.Locale;
+
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.anim.Animation;
+import com.b3dgs.lionengine.game.State;
 
 /**
  * List of entity states.
@@ -27,25 +32,48 @@ import java.util.Locale;
 enum EntityState
 {
     /** Idle state. */
-    IDLE,
+    IDLE(StateIdle.class),
     /** Walk state. */
-    WALK,
+    WALK(StateWalk.class),
     /** turn state. */
-    TURN,
+    TURN(StateTurn.class),
     /** Jump state. */
-    JUMP,
-    /** Dead state. */
-    DEAD;
+    JUMP(StateJump.class);
 
+    /** Class reference. */
+    private final Class<?> clazz;
     /** Animation name. */
     private final String animationName;
 
     /**
      * Constructor.
+     * 
+     * @param clazz The associated class reference.
      */
-    private EntityState()
+    private EntityState(Class<?> clazz)
     {
+        this.clazz = clazz;
         animationName = name().toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Create the state from its parameters.
+     * 
+     * @param entity The entity reference.
+     * @param animation The associated animation reference.
+     * @return The state instance.
+     */
+    public State create(Entity entity, Animation animation)
+    {
+        try
+        {
+            final Constructor<?> constructor = clazz.getConstructor(Entity.class, Animation.class);
+            return State.class.cast(constructor.newInstance(entity, animation));
+        }
+        catch (final ReflectiveOperationException exception)
+        {
+            throw new LionEngineException(exception);
+        }
     }
 
     /**
