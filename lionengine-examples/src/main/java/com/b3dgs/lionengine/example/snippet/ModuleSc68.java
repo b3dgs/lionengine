@@ -15,37 +15,35 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.snippet;
+package com.b3dgs.lionengine.example.snippet;
 
-import com.b3dgs.lionengine.Align;
-import com.b3dgs.lionengine.audio.wav.AudioWav;
-import com.b3dgs.lionengine.audio.wav.Wav;
+import org.junit.Assert;
+
+import com.b3dgs.lionengine.audio.sc68.AudioSc68;
+import com.b3dgs.lionengine.audio.sc68.Sc68;
 import com.b3dgs.lionengine.core.Core;
 
 @SuppressWarnings("all")
-public class ModuleWav
+public class ModuleSc68
 {
     /*
      * Snippet code
      */
 
-    void vav() throws InterruptedException
+    void sc68() throws InterruptedException
     {
-        final Wav sound = AudioWav.loadWav(Core.MEDIA.create("sound.wav"));
-        sound.setVolume(100);
+        final Sc68 sc68 = AudioSc68.createSc68Player();
+        sc68.setVolume(25);
+        sc68.play(Core.MEDIA.create("music.sc68"));
 
-        sound.setAlignment(Align.LEFT);
-        sound.play();
-        Thread.sleep(200);
+        Thread.sleep(1000);
+        sc68.pause();
+        Thread.sleep(500);
+        sc68.setVolume(75);
+        sc68.resume();
+        Thread.sleep(1000);
+        Assert.assertTrue(sc68.seek() >= 0);
 
-        sound.setAlignment(Align.CENTER);
-        sound.play();
-        Thread.sleep(200);
-
-        sound.setAlignment(Align.RIGHT);
-        sound.play();
-        Thread.sleep(200);
-
-        sound.stop();
+        sc68.stop();
     }
 }

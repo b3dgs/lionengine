@@ -46,6 +46,21 @@
 			<artifactId>lionengine-game-strategy</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-audio-sc68</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-audio-wav</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.b3dgs.lionengine</groupId>
+			<artifactId>lionengine-audio-midi</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
