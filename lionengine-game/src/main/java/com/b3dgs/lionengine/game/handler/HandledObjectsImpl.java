@@ -60,10 +60,7 @@ final class HandledObjectsImpl
         {
             addType(trait, object.getTrait(trait));
         }
-        for (final Class<?> types : object.getClass().getInterfaces())
-        {
-            addType(types, object);
-        }
+        addSuperClass(object, object.getClass());
     }
 
     /**
@@ -78,13 +75,7 @@ final class HandledObjectsImpl
         {
             remove(trait, object.getTrait(trait));
         }
-        for (final Class<?> types : object.getClass().getInterfaces())
-        {
-            if (items.containsKey(types))
-            {
-                remove(types, object);
-            }
-        }
+        removeSuperClass(object, object.getClass());
         object.onRemoved();
     }
 
@@ -113,9 +104,46 @@ final class HandledObjectsImpl
         items.get(type).add(object);
     }
 
-    /*
-     * HandlerItems
+    /**
+     * Add object parent super type.
+     * 
+     * @param object The current object to check.
+     * @param type The current class level to check.
      */
+    private void addSuperClass(Object object, Class<?> type)
+    {
+        for (final Class<?> types : type.getInterfaces())
+        {
+            addType(types, object);
+        }
+        final Class<?> parent = type.getSuperclass();
+        if (parent != null)
+        {
+            addSuperClass(object, parent);
+        }
+    }
+
+    /**
+     * Remove object parent super type.
+     * 
+     * @param object The current object to check.
+     * @param type The current class level to check.
+     */
+    private void removeSuperClass(Object object, Class<?> type)
+    {
+        for (final Class<?> types : type.getInterfaces())
+        {
+            if (items.containsKey(types))
+            {
+                remove(types, object);
+            }
+        }
+        final Class<?> parent = type.getSuperclass();
+        if (parent != null)
+        {
+            removeSuperClass(object, parent);
+        }
+    }
 
     /**
      * Remove the object from its type list.
@@ -130,6 +158,10 @@ final class HandledObjectsImpl
             items.get(type).remove(object);
         }
     }
+
+    /*
+     * HandlerItems
+     */
 
     @Override
     public ObjectGame get(Integer id)

@@ -18,6 +18,8 @@
 package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.audio.midi.AudioMidi;
+import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
@@ -39,6 +41,8 @@ class Scene
     private final Keyboard keyboard;
     /** World reference. */
     private final World world;
+    /** Music. */
+    private final Midi music;
 
     /**
      * Constructor.
@@ -50,12 +54,19 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         world = new World(getConfig(), keyboard);
+        music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
+        music.setVolume(60);
     }
+
+    /*
+     * Sequence
+     */
 
     @Override
     public void load()
     {
         world.loadFromFile(Core.MEDIA.create("level.lvl"));
+        music.play(true);
     }
 
     @Override
@@ -72,5 +83,12 @@ class Scene
     public void render(Graphic g)
     {
         world.render(g);
+    }
+
+    @Override
+    protected void onTerminate(boolean hasNextSequence)
+    {
+        music.stop();
+        Sfx.terminateAll();
     }
 }

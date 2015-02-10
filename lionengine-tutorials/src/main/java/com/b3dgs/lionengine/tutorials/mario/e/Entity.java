@@ -21,10 +21,8 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
-import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
@@ -35,7 +33,6 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
@@ -49,7 +46,6 @@ import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
 import com.b3dgs.lionengine.game.trait.MirrorableModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -63,29 +59,25 @@ class Entity
         extends ObjectGame
         implements Updatable, Renderable
 {
-    /** Mario media. */
-    public static final Media MARIO = Core.MEDIA.create("entity", "Mario.xml");
-    /** Goomba media. */
-    public static final Media GOOMBA = Core.MEDIA.create("entity", "Goomba.xml");
     /** Ground location y. */
     private static final int GROUND = 32;
 
+    /** Transformable model. */
+    protected final Transformable transformable;
+    /** Tile collidable. */
+    protected final TileCollidable tileCollidable;
+    /** Collidable reference. */
+    protected final Collidable collidable;
+    /** State factory. */
+    protected final StateFactory factory;
     /** Surface. */
     private final SpriteAnimated surface;
     /** Mirrorable model. */
     private final Mirrorable mirrorable;
-    /** Transformable model. */
-    private final Transformable transformable;
     /** Body model. */
     private final Body body;
-    /** Tile collidable. */
-    private final TileCollidable tileCollidable;
-    /** Collidable reference. */
-    private final Collidable collidable;
     /** Camera reference. */
     private final Camera camera;
-    /** State factory. */
-    private final StateFactory factory;
     /** Movement force. */
     private final Force movement;
     /** Jump force. */
@@ -123,7 +115,7 @@ class Entity
         addTrait(tileCollidable);
 
         collidable = new CollidableModel(this, services);
-        collidable.setOrigin(Origin.CENTER_BOTTOM);
+        collidable.setOrigin(Origin.CENTER_TOP);
         collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
         addTrait(collidable);
 
@@ -147,7 +139,7 @@ class Entity
      * 
      * @param x The horizontal location.
      */
-    public void respawn(int x)
+    protected void respawn(int x)
     {
         transformable.teleport(x, GROUND);
         jump.setDirection(Direction.ZERO);
@@ -155,33 +147,22 @@ class Entity
     }
 
     /**
+     * Make the entity jump.
+     */
+    public void jump()
+    {
+        body.resetGravity();
+        changeState(factory.getState(EntityState.JUMP));
+    }
+
+    /**
      * Set the device that will control the entity.
      * 
      * @param device The device controller.
      */
-    public void setControl(InputDeviceDirectional device)
+    protected void setControl(InputDeviceDirectional device)
     {
         this.device = device;
-    }
-
-    /**
-     * Add a tile collidable listener.
-     * 
-     * @param listener The tile collidable listener.
-     */
-    public void addTileCollidableListener(TileCollidableListener listener)
-    {
-        tileCollidable.addListener(listener);
-    }
-
-    /**
-     * Add a collidable listener.
-     * 
-     * @param listener The collidable listener.
-     */
-    public void addCollidableListener(ComponentCollisionListener listener)
-    {
-        collidable.addListener(listener);
     }
 
     /**
@@ -205,6 +186,17 @@ class Entity
             state = current;
             current.enter();
         }
+    }
+
+    /**
+     * Change the current state.
+     * 
+     * @param next The next state.
+     */
+    protected void changeState(State next)
+    {
+        state = next;
+        state.enter();
     }
 
     /**
@@ -272,10 +264,6 @@ class Entity
         body.update(extrp);
         tileCollidable.update(extrp);
         collidable.update(extrp);
-        if (transformable.getY() < 0)
-        {
-            respawn(160);
-        }
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
         surface.setLocation(camera, transformable.getX(), transformable.getY());

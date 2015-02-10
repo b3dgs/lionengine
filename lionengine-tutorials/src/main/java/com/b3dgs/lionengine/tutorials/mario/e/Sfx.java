@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.tutorials.mario.g;
+package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.audio.wav.AudioWav;
 import com.b3dgs.lionengine.audio.wav.Wav;
@@ -71,6 +71,7 @@ enum Sfx
     {
         final Media media = Core.MEDIA.create("sfx", sound + Sfx.AUDIO_FILE_EXTENSION);
         this.sound = AudioWav.loadWav(media, count);
+        this.sound.setVolume(20);
     }
 
     /**

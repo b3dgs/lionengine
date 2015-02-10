@@ -120,7 +120,7 @@ public class Factory
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
      */
-    public <E> E create(Media media) throws LionEngineException
+    public <E extends ObjectGame> E create(Media media) throws LionEngineException
     {
         Check.notNull(media);
 

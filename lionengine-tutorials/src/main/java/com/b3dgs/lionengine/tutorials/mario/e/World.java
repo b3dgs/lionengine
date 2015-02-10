@@ -63,7 +63,7 @@ class World
     /** Handler reference. */
     private final Handler handler;
     /** Mario reference. */
-    private Entity mario;
+    private Mario mario;
 
     /**
      * Constructor.
@@ -94,8 +94,8 @@ class World
     @Override
     public void update(double extrp)
     {
-        handler.update(extrp);
         camera.follow(mario.getLocalizable());
+        handler.update(extrp);
     }
 
     @Override
@@ -130,18 +130,14 @@ class World
         services.add(keyboard);
         factory.setServices(services);
 
-        mario = factory.create(Entity.MARIO);
+        mario = factory.create(Mario.CONFIG);
         mario.respawn(300);
-        mario.setControl(keyboard);
-        mario.addCollidableListener(new MarioController(mario));
         handler.add(mario);
-
-        final Entity goomba = factory.create(Entity.GOOMBA);
-        goomba.respawn(600);
-        final GoombaController goombaController = new GoombaController();
-        goomba.setControl(goombaController);
-        goomba.addTileCollidableListener(goombaController);
-        goomba.addCollidableListener(goombaController);
-        handler.add(goomba);
+        for (int i = 0; i < 3; i++)
+        {
+            final Goomba goomba = factory.create(Goomba.CONFIG);
+            goomba.respawn(500 + i * 100);
+            handler.add(goomba);
+        }
     }
 }

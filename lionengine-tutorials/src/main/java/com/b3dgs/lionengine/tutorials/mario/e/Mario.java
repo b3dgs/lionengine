@@ -17,40 +17,52 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
+import com.b3dgs.lionengine.core.Core;
+import com.b3dgs.lionengine.core.Media;
+import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
- * Mario controller implementation.
+ * Mario specific implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class MarioController
+class Mario
+        extends Entity
         implements ComponentCollisionListener
 {
-    /** Transformable reference. */
-    private final Transformable transformable;
+    /** Mario media. */
+    public static final Media CONFIG = Core.MEDIA.create("entity", "Mario.xml");
 
     /**
-     * Create a mario controller.
-     * 
-     * @param mario The mario reference.
+     * {@link Entity#Entity(SetupSurface, Services)}
      */
-    public MarioController(Entity mario)
+    public Mario(SetupSurface setup, Services services)
     {
-        transformable = mario.getTrait(Transformable.class);
+        super(setup, services);
+        setControl(services.get(Keyboard.class));
+        collidable.addListener(this);
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        if (transformable.getY() < 0)
+        {
+            respawn(160);
+        }
+        super.update(extrp);
     }
 
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        final ObjectGame target = collidable.getOwner();
-        final Transformable collider = target.getTrait(Transformable.class);
-        if (transformable.getY() < transformable.getOldY() && transformable.getY() > collider.getY())
+        if (transformable.getY() >= transformable.getOldY())
         {
-            target.destroy();
+            respawn(160);
         }
     }
 }

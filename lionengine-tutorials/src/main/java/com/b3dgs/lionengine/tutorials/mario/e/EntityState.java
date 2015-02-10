@@ -38,7 +38,9 @@ enum EntityState
     /** turn state. */
     TURN(StateTurn.class),
     /** Jump state. */
-    JUMP(StateJump.class);
+    JUMP(StateJump.class),
+    /** Death goomba state. */
+    DEATH_GOOMBA(StateDieGoomba.class);
 
     /** Class reference. */
     private final Class<?> clazz;

@@ -17,9 +17,13 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Axis;
+import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
+import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Collidable;
@@ -27,21 +31,29 @@ import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
- * Goomba controller implementation.
+ * Goomba specific implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class GoombaController
+class Goomba
+        extends Entity
         implements InputDeviceDirectional, TileCollidableListener, ComponentCollisionListener
 {
+    /** Goomba media. */
+    public static final Media CONFIG = Core.MEDIA.create("entity", "Goomba.xml");
+
     /** Side movement. */
     private double side;
 
     /**
-     * Create the controller.
+     * {@link Entity#Entity(SetupSurface, Services)}
      */
-    public GoombaController()
+    public Goomba(SetupSurface setup, Services services)
     {
+        super(setup, services);
+        setControl(this);
+        tileCollidable.addListener(this);
+        collidable.addListener(this);
         side = 0.25;
     }
 
@@ -72,7 +84,7 @@ class GoombaController
     @Override
     public double getHorizontalDirection()
     {
-        return side;
+        return 0;
     }
 
     @Override
@@ -95,9 +107,12 @@ class GoombaController
     {
         final ObjectGame target = collidable.getOwner();
         final Transformable collider = target.getTrait(Transformable.class);
-        if (collider.getY() >= collider.getOldY())
+        if (collider.getY() < collider.getOldY() && collider.getY() > transformable.getY())
         {
-            target.destroy();
+            collider.teleportY(transformable.getY() + transformable.getHeight());
+            ((Entity) target).jump();
+            changeState(factory.getState(EntityState.DEATH_GOOMBA));
+            Sfx.CRUSH.play();
         }
     }
 }

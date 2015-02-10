@@ -17,43 +17,27 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
-import com.b3dgs.lionengine.Mirror;
+import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
-import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Direction;
-import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
-import com.b3dgs.lionengine.game.map.Tile;
-import com.b3dgs.lionengine.game.trait.Mirrorable;
-import com.b3dgs.lionengine.game.trait.TileCollidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 
 /**
- * Turn state implementation.
+ * Walk state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-class StateJump
+class StateDieGoomba
         extends State
-        implements TileCollidableListener
 {
-    /** Mirrorable reference. */
-    private final Mirrorable mirrorable;
+    /** Entity reference. */
+    private final Entity entity;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
-    /** Tile collidable reference. */
-    private final TileCollidable tileCollidable;
-    /** Movement force. */
-    private final Force movement;
-    /** Jump force. */
-    private final Force jump;
-    /** Movement side. */
-    private double side;
 
     /**
      * Create the walk state.
@@ -61,59 +45,37 @@ class StateJump
      * @param entity The entity reference.
      * @param animation The associated animation.
      */
-    public StateJump(Entity entity, Animation animation)
+    public StateDieGoomba(Entity entity, Animation animation)
     {
+        this.entity = entity;
         this.animation = animation;
-        mirrorable = entity.getTrait(Mirrorable.class);
-        tileCollidable = entity.getTrait(TileCollidable.class);
         animator = entity.getSurface();
-        movement = entity.getMovement();
-        jump = entity.getJump();
     }
 
     @Override
     public void enter()
     {
         animator.play(animation);
-        jump.setDirection(0.0, 8.0);
-        tileCollidable.addListener(this);
-        Sfx.JUMP.play();
     }
 
     @Override
     public void update(double extrp)
     {
-        movement.setDestination(side * 3, 0);
-        if (movement.getDirectionHorizontal() != 0)
+        if (AnimState.FINISHED == animator.getAnimState())
         {
-            mirrorable.mirror(movement.getDirectionHorizontal() < 0 ? Mirror.HORIZONTAL : Mirror.NONE);
+            entity.destroy();
         }
     }
 
     @Override
     public void clear()
     {
-        side = 0;
+        // Nothing to do
     }
 
     @Override
     protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
-        side = input.getHorizontalDirection();
-        if (jump.getDirectionVertical() == 0)
-        {
-            tileCollidable.removeListener(this);
-            return factory.getState(EntityState.IDLE);
-        }
         return null;
-    }
-
-    @Override
-    public void notifyTileCollided(Tile tile, Axis axis)
-    {
-        if (Axis.Y == axis)
-        {
-            jump.setDirection(Direction.ZERO);
-        }
     }
 }
