@@ -452,7 +452,7 @@ public class MapTileGame
     @Override
     public void render(Graphic g)
     {
-        render(g, viewer.getHeight(), (int) viewer.getX(), (int) viewer.getY(),
+        render(g, viewer.getHeight(), (int) Math.ceil(viewer.getX()), (int) Math.ceil(viewer.getY()),
                 (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
                 (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
     }

@@ -163,8 +163,8 @@ class SpriteImpl
      */
     protected void computeRenderingPoint(int width, int height)
     {
-        rx = (int) origin.getX(x, width);
-        ry = (int) origin.getY(y, height);
+        rx = (int) Math.floor(origin.getX(x, width));
+        ry = (int) Math.floor(origin.getY(y, height));
     }
 
     /**

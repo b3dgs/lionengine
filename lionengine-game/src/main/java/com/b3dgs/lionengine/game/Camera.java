@@ -313,7 +313,7 @@ public class Camera
      */
     public int getLocationInTileX(MapTile map)
     {
-        return (int) getX() / map.getTileWidth();
+        return (int) Math.floor(getX() / map.getTileWidth());
     }
 
     /**
@@ -324,7 +324,7 @@ public class Camera
      */
     public int getLocationInTileY(MapTile map)
     {
-        return (int) getY() / map.getTileHeight();
+        return (int) Math.floor(getY() / map.getTileHeight());
     }
 
     /**
@@ -334,12 +334,6 @@ public class Camera
      */
     private void checkHorizontalLimit(double vx)
     {
-        // Middle
-        if (offset.getX() == -intervalHorizontal || offset.getX() == intervalHorizontal)
-        {
-            transformable.moveLocation(1, vx, 0);
-        }
-
         if (transformable.getX() > getLimitMapLeft() && transformable.getX() < getLimitMapRight()
                 && getLimitMapLeft() != Integer.MIN_VALUE && getLimitMapRight() != Integer.MAX_VALUE)
         {
@@ -348,21 +342,22 @@ public class Camera
             // Block offset on its limits
             if (offset.getX() < -intervalHorizontal)
             {
-                offset.setLocationX(-intervalHorizontal);
+                offset.teleportX(-intervalHorizontal);
             }
             else if (offset.getX() > intervalHorizontal)
             {
-                offset.setLocationX(intervalHorizontal);
-            }
-            else
-            {
-                transformable.moveLocation(1, Direction.ZERO);
+                offset.teleportX(intervalHorizontal);
             }
         }
         // Case of map extremity
         else
         {
             checkHorizontalExtremity(vx);
+        }
+        // Middle
+        if (offset.getX() == -intervalHorizontal || offset.getX() == intervalHorizontal)
+        {
+            transformable.moveLocation(1, vx, 0);
         }
     }
 

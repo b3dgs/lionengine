@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine;
 
-
 /**
  * List of origin point types.
  * 
@@ -51,11 +50,11 @@ public enum Origin
             case TOP_LEFT:
                 return x;
             case MIDDLE:
-                return width > 0 ? x - width / 2 : x;
+                return width > 0 ? x - width / 2.0 : x;
             case CENTER_TOP:
-                return width > 0 ? x - width / 2 : x;
+                return width > 0 ? x - width / 2.0 : x;
             case CENTER_BOTTOM:
-                return width > 0 ? x - width / 2 : x;
+                return width > 0 ? x - width / 2.0 : x;
             default:
                 throw new LionEngineException(ERROR_ENUM, name());
         }
@@ -75,7 +74,7 @@ public enum Origin
             case TOP_LEFT:
                 return y;
             case MIDDLE:
-                return height > 0 ? y - height / 2 : y;
+                return height > 0 ? y - height / 2.0 : y;
             case CENTER_TOP:
                 return y;
             case CENTER_BOTTOM:
