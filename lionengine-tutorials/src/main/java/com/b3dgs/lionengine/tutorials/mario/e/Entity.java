@@ -135,34 +135,12 @@ class Entity
     }
 
     /**
-     * Respawn the entity.
-     * 
-     * @param x The horizontal location.
-     */
-    protected void respawn(int x)
-    {
-        transformable.teleport(x, GROUND);
-        jump.setDirection(Direction.ZERO);
-        body.resetGravity();
-    }
-
-    /**
      * Make the entity jump.
      */
     public void jump()
     {
         body.resetGravity();
         changeState(factory.getState(EntityState.JUMP));
-    }
-
-    /**
-     * Set the device that will control the entity.
-     * 
-     * @param device The device controller.
-     */
-    protected void setControl(InputDeviceDirectional device)
-    {
-        this.device = device;
     }
 
     /**
@@ -173,30 +151,6 @@ class Entity
     public Localizable getLocalizable()
     {
         return transformable;
-    }
-
-    /**
-     * Update the entity controls.
-     */
-    private void updateControl()
-    {
-        final State current = state.handleInput(factory, device);
-        if (current != null)
-        {
-            state = current;
-            current.enter();
-        }
-    }
-
-    /**
-     * Change the current state.
-     * 
-     * @param next The next state.
-     */
-    protected void changeState(State next)
-    {
-        state = next;
-        state.enter();
     }
 
     /**
@@ -227,6 +181,52 @@ class Entity
     public SpriteAnimated getSurface()
     {
         return surface;
+    }
+
+    /**
+     * Respawn the entity.
+     * 
+     * @param x The horizontal location.
+     */
+    protected void respawn(int x)
+    {
+        transformable.teleport(x, GROUND);
+        jump.setDirection(Direction.ZERO);
+        body.resetGravity();
+    }
+
+    /**
+     * Change the current state.
+     * 
+     * @param next The next state.
+     */
+    protected void changeState(State next)
+    {
+        state = next;
+        state.enter();
+    }
+
+    /**
+     * Set the device that will control the entity.
+     * 
+     * @param device The device controller.
+     */
+    protected void setControl(InputDeviceDirectional device)
+    {
+        this.device = device;
+    }
+
+    /**
+     * Update the entity controls.
+     */
+    private void updateControl()
+    {
+        final State current = state.handleInput(factory, device);
+        if (current != null)
+        {
+            state = current;
+            current.enter();
+        }
     }
 
     /**
@@ -266,12 +266,12 @@ class Entity
         collidable.update(extrp);
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
-        surface.setLocation(camera, transformable.getX(), transformable.getY());
     }
 
     @Override
     public void render(Graphic g)
     {
+        surface.setLocation(camera, transformable.getX(), transformable.getY());
         surface.render(g);
     }
 }

@@ -122,7 +122,7 @@ class StateWalk
             return factory.getState(MarioState.JUMP);
         }
         side = input.getHorizontalDirection();
-        if (collide || side == 0 && input.getVerticalDirection() == 0)
+        if (collide || side == 0 && movement.getDirectionHorizontal() == 0)
         {
             return factory.getState(MarioState.IDLE);
         }

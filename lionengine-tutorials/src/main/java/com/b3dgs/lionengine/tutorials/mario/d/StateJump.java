@@ -74,6 +74,8 @@ class StateJump
     @Override
     public void enter()
     {
+        movement.setVelocity(0.5);
+        movement.setSensibility(0.1);
         animator.play(animation);
         jump.setDirection(0.0, 8.0);
         tileCollidable.addListener(this);

@@ -131,24 +131,10 @@ class Mario
      */
     public void respawn()
     {
-        transformable.teleport(160, GROUND);
+        transformable.teleport(400, GROUND);
+        camera.resetInterval(transformable);
         jump.setDirection(Direction.ZERO);
         body.resetGravity();
-    }
-
-    /**
-     * Update the mario controls.
-     * 
-     * @param keyboard The keyboard reference.
-     */
-    private void updateControl(Keyboard keyboard)
-    {
-        final State current = state.handleInput(factory, keyboard);
-        if (current != null)
-        {
-            state = current;
-            current.enter();
-        }
     }
 
     /**
@@ -179,6 +165,21 @@ class Mario
     public SpriteAnimated getSurface()
     {
         return surface;
+    }
+
+    /**
+     * Update the mario controls.
+     * 
+     * @param keyboard The keyboard reference.
+     */
+    private void updateControl(Keyboard keyboard)
+    {
+        final State current = state.handleInput(factory, keyboard);
+        if (current != null)
+        {
+            state = current;
+            current.enter();
+        }
     }
 
     /**
@@ -219,10 +220,10 @@ class Mario
         {
             respawn();
         }
+        camera.follow(transformable);
         surface.setMirror(mirrorable.getMirror());
         surface.update(extrp);
         surface.setLocation(camera, transformable.getX(), transformable.getY());
-        camera.follow(transformable);
     }
 
     @Override

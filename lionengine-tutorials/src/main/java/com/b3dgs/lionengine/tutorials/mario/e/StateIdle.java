@@ -58,19 +58,13 @@ class StateIdle
         movement.setDestination(0.0, 0.0);
         movement.setVelocity(0.3);
         movement.setSensibility(0.01);
+        animator.play(animation);
     }
 
     @Override
     public void update(double extrp)
     {
-        if (movement.getDirectionHorizontal() != 0.0)
-        {
-            animator.setAnimSpeed(Math.abs(movement.getDirectionHorizontal()) / 12.0);
-        }
-        else
-        {
-            animator.play(animation);
-        }
+        // Nothing to do
     }
 
     @Override

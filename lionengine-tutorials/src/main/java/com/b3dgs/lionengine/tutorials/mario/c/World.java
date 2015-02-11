@@ -75,6 +75,5 @@ class World
         map.load(file);
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
-        camera.setIntervals(16, 0);
     }
 }

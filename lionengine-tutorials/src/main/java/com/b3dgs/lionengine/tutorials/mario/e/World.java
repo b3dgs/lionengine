@@ -94,8 +94,8 @@ class World
     @Override
     public void update(double extrp)
     {
-        camera.follow(mario.getLocalizable());
         handler.update(extrp);
+        camera.follow(mario.getLocalizable());
     }
 
     @Override
@@ -121,7 +121,7 @@ class World
                 Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
-        camera.setIntervals(16, 0);
+        camera.setIntervals(0, 0);
 
         final Services services = new Services();
         services.add(Integer.valueOf(source.getRate()));
@@ -131,7 +131,8 @@ class World
         factory.setServices(services);
 
         mario = factory.create(Mario.CONFIG);
-        mario.respawn(300);
+        mario.respawn(350);
+        camera.resetInterval(mario.getLocalizable());
         handler.add(mario);
         for (int i = 0; i < 3; i++)
         {
