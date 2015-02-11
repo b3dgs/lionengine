@@ -515,8 +515,8 @@ public class MapTileCollisionModel
                 final Tile tile = map.getTile(h, v);
                 if (tile != null)
                 {
-                    final int x = (int) viewer.getViewpointX(tile.getX());
-                    final int y = (int) viewer.getViewpointY(tile.getY() + tile.getHeight());
+                    final int x = (int) Math.floor(viewer.getViewpointX(tile.getX()));
+                    final int y = (int) Math.floor(viewer.getViewpointY(tile.getY() + tile.getHeight()));
                     renderCollision(g, tile.getFeature(TileCollision.class), x, y);
                 }
             }
