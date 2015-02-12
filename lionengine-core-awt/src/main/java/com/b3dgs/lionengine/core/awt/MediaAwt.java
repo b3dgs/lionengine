@@ -83,7 +83,7 @@ final class MediaAwt
     @Override
     public boolean exists()
     {
-        return file.exists();
+        return UtilityMedia.exists(this);
     }
 
     @Override

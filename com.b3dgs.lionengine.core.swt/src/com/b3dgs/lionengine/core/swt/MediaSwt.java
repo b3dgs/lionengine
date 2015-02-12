@@ -71,19 +71,19 @@ final class MediaSwt
     @Override
     public InputStream getInputStream() throws LionEngineException
     {
-        return UtilityMedia.getInputStream(this, MediaSwt.class.getSimpleName());
+        return UtilityMedia.getInputStream(this);
     }
 
     @Override
     public OutputStream getOutputStream() throws LionEngineException
     {
-        return UtilityMedia.getOutputStream(this, MediaSwt.class.getSimpleName());
+        return UtilityMedia.getOutputStream(this);
     }
 
     @Override
     public boolean exists()
     {
-        return file.exists();
+        return UtilityMedia.exists(this);
     }
 
     @Override

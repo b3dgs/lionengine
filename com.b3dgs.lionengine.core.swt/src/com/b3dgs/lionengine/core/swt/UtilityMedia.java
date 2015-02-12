@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -118,11 +119,10 @@ public final class UtilityMedia
      * Get input stream of specified path.
      * 
      * @param media The input media path, pointing to a file.
-     * @param from The from function.
      * @return The opened input stream.
      * @throws LionEngineException If the media is not found.
      */
-    static InputStream getInputStream(Media media, String from) throws LionEngineException
+    static InputStream getInputStream(Media media) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
@@ -148,11 +148,10 @@ public final class UtilityMedia
      * Get output stream of specified path.
      * 
      * @param media The input media path, pointing to a file.
-     * @param from The from function.
      * @return The opened input stream.
      * @throws LionEngineException If the file can not be openened.
      */
-    static OutputStream getOutputStream(Media media, String from) throws LionEngineException
+    static OutputStream getOutputStream(Media media) throws LionEngineException
     {
         final String path = UtilFile.getPath(UtilityMedia.resourcesDir, media.getPath());
         try
@@ -163,6 +162,29 @@ public final class UtilityMedia
         {
             throw new LionEngineException(exception, media, "Cannot open the media");
         }
+    }
+
+    /**
+     * Check if media exists.
+     * 
+     * @param media The media to check.
+     * @return <code>true</code> if exists, <code>false</code> else.
+     */
+    static boolean exists(Media media)
+    {
+        if (fromJar)
+        {
+            try (InputStream stream = getInputStream(media))
+            {
+                return true;
+            }
+            catch (final NullPointerException
+                         | IOException exception)
+            {
+                return false;
+            }
+        }
+        return media.getFile().exists();
     }
 
     /**
