@@ -97,19 +97,19 @@ public class KeyboardTest
         KEYBOARD.setVerticalControlPositive(Keyboard.UP);
 
         KEYBOARD.keyPressed(createEvent(Keyboard.RIGHT));
-        Assert.assertEquals(1, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(1.0, KEYBOARD.getHorizontalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.RIGHT));
         KEYBOARD.keyPressed(createEvent(Keyboard.LEFT));
-        Assert.assertEquals(-1, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(-1.0, KEYBOARD.getHorizontalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.LEFT));
-        Assert.assertEquals(0, KEYBOARD.getHorizontalDirection());
+        Assert.assertEquals(0.0, KEYBOARD.getHorizontalDirection(), 0.0001);
 
         KEYBOARD.keyPressed(createEvent(Keyboard.UP));
-        Assert.assertEquals(1, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(1.0, KEYBOARD.getVerticalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.UP));
         KEYBOARD.keyPressed(createEvent(Keyboard.DOWN));
-        Assert.assertEquals(-1, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(-1.0, KEYBOARD.getVerticalDirection(), 0.0001);
         KEYBOARD.keyReleased(createEvent(Keyboard.DOWN));
-        Assert.assertEquals(0, KEYBOARD.getVerticalDirection());
+        Assert.assertEquals(0.0, KEYBOARD.getVerticalDirection(), 0.0001);
     }
 }
