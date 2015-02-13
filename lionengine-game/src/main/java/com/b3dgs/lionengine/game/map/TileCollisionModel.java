@@ -123,7 +123,12 @@ public class TileCollisionModel
                         final double result = formula.getFunction().compute(previous);
                         if (UtilMath.isBetween(current, range.getMinX(), range.getMaxX()))
                         {
-                            return Double.valueOf(tile.getX() + result - category.getOffsetX());
+                            final double coll = tile.getX() + result - category.getOffsetX();
+                            if (x > ox)
+                            {
+                                return Double.valueOf(coll + range.getMinX() - 1);
+                            }
+                            return Double.valueOf(coll + range.getMaxX() + 1);
                         }
                     }
                 }
@@ -150,7 +155,12 @@ public class TileCollisionModel
                         final double result = formula.getFunction().compute(previous);
                         if (UtilMath.isBetween(current, range.getMinY(), range.getMaxY()))
                         {
-                            return Double.valueOf(tile.getY() + result - category.getOffsetY());
+                            final double coll = tile.getY() + result - category.getOffsetY();
+                            if (y > oy)
+                            {
+                                return Double.valueOf(coll + range.getMinY() - 1);
+                            }
+                            return Double.valueOf(coll + range.getMaxY() + 1);
                         }
                     }
                 }
