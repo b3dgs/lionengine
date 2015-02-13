@@ -52,8 +52,9 @@ public class TileGame
      * 
      * @param width The tile width (must be strictly positive).
      * @param height The tile height (must be strictly positive).
+     * @throws LionEngineException If tile size is not correct.
      */
-    public TileGame(int width, int height)
+    public TileGame(int width, int height) throws LionEngineException
     {
         Check.superiorStrict(width, 0);
         Check.superiorStrict(height, 0);
