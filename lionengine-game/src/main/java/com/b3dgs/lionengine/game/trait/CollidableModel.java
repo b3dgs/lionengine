@@ -61,6 +61,8 @@ public class CollidableModel
     private final Map<Collision, Rectangle> boxs;
     /** Origin used. */
     private Origin origin;
+    /** Enabled flag. */
+    private boolean enabled;
     /** Show collision flag. */
     private boolean showCollision;
 
@@ -93,6 +95,7 @@ public class CollidableModel
         transformable = getTrait(Transformable.class);
         viewer = services.get(Viewer.class);
         origin = Origin.TOP_LEFT;
+        enabled = true;
         showCollision = false;
     }
 
@@ -122,44 +125,47 @@ public class CollidableModel
     @Override
     public void update(double extrp)
     {
-        for (final Collision collision : collisions)
+        if (enabled)
         {
-            final double xCur = transformable.getX();
-            final double yCur = transformable.getY();
-            final double xOld = transformable.getOldX();
-            final double yOld = transformable.getOldY();
-
-            Mirror mirror = Mirror.NONE;
-            if (collision.hasMirror() && transformable instanceof Mirrorable)
+            for (final Collision collision : collisions)
             {
-                mirror = ((Mirrorable) transformable).getMirror();
+                final double xCur = transformable.getX();
+                final double yCur = transformable.getY();
+                final double xOld = transformable.getOldX();
+                final double yOld = transformable.getOldY();
+
+                Mirror mirror = Mirror.NONE;
+                if (collision.hasMirror() && transformable instanceof Mirrorable)
+                {
+                    mirror = ((Mirrorable) transformable).getMirror();
+                }
+                final int offsetX = mirror == Mirror.HORIZONTAL ? -collision.getOffsetX() : collision.getOffsetX();
+                final int offsetY = collision.getOffsetY();
+                final int width = collision.getWidth();
+                final int height = collision.getHeight();
+
+                final Polygon coll = polygons.get(collision);
+                coll.reset();
+
+                coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY, height));
+                coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY + height, height));
+                coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY + height, height));
+                coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY, height));
+
+                coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY, height));
+                coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY + height, height));
+                coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY + height, height));
+                coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY, height));
+
+                boxs.put(collision, coll.getRectangle());
             }
-            final int offsetX = mirror == Mirror.HORIZONTAL ? -collision.getOffsetX() : collision.getOffsetX();
-            final int offsetY = collision.getOffsetY();
-            final int width = collision.getWidth();
-            final int height = collision.getHeight();
-
-            final Polygon coll = polygons.get(collision);
-            coll.reset();
-
-            coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY, height));
-            coll.addPoint(origin.getX(xCur + offsetX, width), origin.getY(yCur + offsetY + height, height));
-            coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY + height, height));
-            coll.addPoint(origin.getX(xCur + offsetX + width, width), origin.getY(yCur + offsetY, height));
-
-            coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY, height));
-            coll.addPoint(origin.getX(xOld + offsetX, width), origin.getY(yOld + offsetY + height, height));
-            coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY + height, height));
-            coll.addPoint(origin.getX(xOld + offsetX + width, width), origin.getY(yOld + offsetY, height));
-
-            boxs.put(collision, coll.getRectangle());
         }
     }
 
     @Override
     public Collision collide(Collidable collidable)
     {
-        if (!ignored.contains(collidable))
+        if (enabled && !ignored.contains(collidable))
         {
             for (final Map.Entry<Collision, Rectangle> current : boxs.entrySet())
             {
@@ -194,6 +200,12 @@ public class CollidableModel
     public void setOrigin(Origin origin)
     {
         this.origin = origin;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 
     @Override

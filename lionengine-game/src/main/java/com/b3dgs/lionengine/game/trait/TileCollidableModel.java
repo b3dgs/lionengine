@@ -51,6 +51,8 @@ public class TileCollidableModel
     private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
     private final MapTileCollision map;
+    /** Collision enabled. */
+    private boolean enabled;
 
     /**
      * Create a tile collidable model.
@@ -80,6 +82,7 @@ public class TileCollidableModel
         body = owner.getTrait(Body.class);
         map = services.get(MapTileCollision.class);
         categories = ConfigCollisionCategory.create(configurer, map);
+        enabled = true;
     }
 
     /**
@@ -142,10 +145,19 @@ public class TileCollidableModel
     @Override
     public void update(double extrp)
     {
-        for (final CollisionCategory category : categories)
+        if (enabled)
         {
-            update(category);
+            for (final CollisionCategory category : categories)
+            {
+                update(category);
+            }
         }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 
     @Override

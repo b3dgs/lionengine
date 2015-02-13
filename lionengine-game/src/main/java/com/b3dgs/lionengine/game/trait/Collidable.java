@@ -69,6 +69,13 @@ public interface Collidable
     void setOrigin(Origin origin);
 
     /**
+     * Set the collision enabled flag.
+     * 
+     * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
+     */
+    void setEnabled(boolean enabled);
+
+    /**
      * Set the collision visibility.
      * 
      * @param visible <code>true</code> if visible, <code>false</code> else.

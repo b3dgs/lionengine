@@ -46,6 +46,13 @@ public interface TileCollidable
     void removeListener(TileCollidableListener listener);
 
     /**
+     * Set the collision tile enabled flag.
+     * 
+     * @param enabled <code>true</code> to enable collision checking, <code>false</code> else.
+     */
+    void setEnabled(boolean enabled);
+
+    /**
      * Get the collision tile category used.
      * 
      * @return The category used.
