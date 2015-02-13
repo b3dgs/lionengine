@@ -84,7 +84,7 @@ class Goomba
     @Override
     public double getHorizontalDirection()
     {
-        return 0;
+        return side;
     }
 
     @Override
@@ -111,6 +111,7 @@ class Goomba
         {
             collider.teleportY(transformable.getY() + transformable.getHeight());
             ((Entity) target).jump();
+            this.collidable.setEnabled(false);
             changeState(factory.getState(EntityState.DEATH_GOOMBA));
             Sfx.CRUSH.play();
         }

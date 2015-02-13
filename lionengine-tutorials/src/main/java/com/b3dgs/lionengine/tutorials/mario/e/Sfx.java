@@ -79,7 +79,7 @@ enum Sfx
      */
     public void play()
     {
-        sound.play();
+        // sound.play();
     }
 
     /**

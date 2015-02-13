@@ -39,6 +39,8 @@ enum EntityState
     TURN(StateTurn.class),
     /** Jump state. */
     JUMP(StateJump.class),
+    /** Death mario state. */
+    DEATH_MARIO(StateDieMario.class),
     /** Death goomba state. */
     DEATH_GOOMBA(StateDieGoomba.class);
 

@@ -66,7 +66,7 @@ class Scene
     public void load()
     {
         world.loadFromFile(Core.MEDIA.create("level.lvl"));
-        music.play(true);
+        // music.play(true);
     }
 
     @Override

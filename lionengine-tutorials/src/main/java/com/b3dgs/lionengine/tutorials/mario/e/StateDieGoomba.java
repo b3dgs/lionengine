@@ -56,6 +56,7 @@ class StateDieGoomba
     public void enter()
     {
         animator.play(animation);
+        entity.getMovement().setDestination(0.0, 0.0);
     }
 
     @Override

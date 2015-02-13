@@ -131,13 +131,13 @@ class World
         factory.setServices(services);
 
         mario = factory.create(Mario.CONFIG);
-        mario.respawn(350);
+        mario.respawn(160);
         camera.resetInterval(mario.getLocalizable());
         handler.add(mario);
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 8; i++)
         {
             final Goomba goomba = factory.create(Goomba.CONFIG);
-            goomba.respawn(500 + i * 100);
+            goomba.respawn(500 + i * 50);
             handler.add(goomba);
         }
     }

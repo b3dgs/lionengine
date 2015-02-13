@@ -50,6 +50,8 @@ class StateWalk
     private final TileCollidable tileCollidable;
     /** Movement force. */
     private final Force movement;
+    /** Jump force. */
+    private final Force jump;
     /** Movement side. */
     private double side;
     /** Played flag. */
@@ -70,6 +72,7 @@ class StateWalk
         tileCollidable = entity.getTrait(TileCollidable.class);
         animator = entity.getSurface();
         movement = entity.getMovement();
+        jump = entity.getJump();
     }
 
     @Override
@@ -119,6 +122,8 @@ class StateWalk
     {
         if (input.getVerticalDirection() > 0)
         {
+            Sfx.JUMP.play();
+            jump.setDirection(0.0, 8.0);
             return factory.getState(EntityState.JUMP);
         }
         side = input.getHorizontalDirection();

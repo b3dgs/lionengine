@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Localizable;
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Graphic;
@@ -141,6 +142,7 @@ class Entity
     {
         body.resetGravity();
         changeState(factory.getState(EntityState.JUMP));
+        jump.setDirection(0.0, 6.0);
     }
 
     /**
@@ -184,15 +186,32 @@ class Entity
     }
 
     /**
+     * Check the current entity state.
+     * 
+     * @param state The state to check.
+     * @return <code>true</code> if it is this state, <code>false</code> else.
+     */
+    public boolean isState(EntityState state)
+    {
+        return factory.getState(state) == this.state;
+    }
+
+    /**
      * Respawn the entity.
      * 
      * @param x The horizontal location.
      */
     protected void respawn(int x)
     {
+        mirrorable.mirror(Mirror.NONE);
         transformable.teleport(x, GROUND);
         jump.setDirection(Direction.ZERO);
         body.resetGravity();
+        collidable.setEnabled(true);
+        tileCollidable.setEnabled(true);
+        state = factory.getState(EntityState.IDLE);
+        state.clear();
+        state.enter();
     }
 
     /**

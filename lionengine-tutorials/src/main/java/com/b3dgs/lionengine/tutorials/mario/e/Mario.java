@@ -60,9 +60,12 @@ class Mario
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        if (transformable.getY() >= transformable.getOldY())
+        if (transformable.getY() >= transformable.getOldY()
+                && !((Entity) collidable.getOwner()).isState(EntityState.DEATH_GOOMBA))
         {
-            respawn(160);
+            this.collidable.setEnabled(false);
+            tileCollidable.setEnabled(false);
+            changeState(factory.getState(EntityState.DEATH_MARIO));
         }
     }
 }

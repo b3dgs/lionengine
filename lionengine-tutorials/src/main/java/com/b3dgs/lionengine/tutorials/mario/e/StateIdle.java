@@ -38,6 +38,8 @@ class StateIdle
     private final Animation animation;
     /** Movement force. */
     private final Force movement;
+    /** Jump force. */
+    private final Force jump;
 
     /**
      * Create the walk state.
@@ -50,6 +52,7 @@ class StateIdle
         this.animation = animation;
         animator = entity.getSurface();
         movement = entity.getMovement();
+        jump = entity.getJump();
     }
 
     @Override
@@ -78,6 +81,8 @@ class StateIdle
     {
         if (input.getVerticalDirection() > 0)
         {
+            Sfx.JUMP.play();
+            jump.setDirection(0.0, 8.0);
             return factory.getState(EntityState.JUMP);
         }
         if (input.getHorizontalDirection() != 0)

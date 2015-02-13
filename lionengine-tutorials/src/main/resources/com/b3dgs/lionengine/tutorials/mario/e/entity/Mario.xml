@@ -9,6 +9,7 @@
 	<lionengine:animation name="walk" start="4" end="6" step="1" speed="0.25" reversed="false" repeat="true"/>
 	<lionengine:animation name="turn" start="7" end="7" step="1" speed="0.125" reversed="false" repeat="false"/>
 	<lionengine:animation name="jump" start="3" end="3" step="1" speed="0.25" reversed="false" repeat="false"/>
+	<lionengine:animation name="death_mario" start="2" end="2" step="1" speed="0.25" reversed="false" repeat="false"/>
 	<lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="15" mirror="false"/>
 	<lionengine:category name="leg_right" axis="Y" x="6" y="0">
 	    <lionengine:group>block</lionengine:group>
@@ -20,6 +21,12 @@
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
 	<lionengine:category name="knee_left" axis="X" x="-6" y="0">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category name="head_right" axis="Y" x="6" y="15">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category name="head_left" axis="Y" x="-6" y="15">
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
 </lionengine:entity>
