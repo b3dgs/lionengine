@@ -95,6 +95,22 @@ public class MapTileCollisionModel
         return false;
     }
 
+    /**
+     * Get the rounded floor or ceil value depending of the speed.
+     * 
+     * @param speed The speed value.
+     * @param value The value to round.
+     * @return The rounded value.
+     */
+    private static double getRound(double speed, double value)
+    {
+        if (speed < 0)
+        {
+            return Math.floor(value);
+        }
+        return Math.ceil(value);
+    }
+
     /** Map reference. */
     private final MapTile map;
     /** Viewer reference. */
@@ -486,17 +502,18 @@ public class MapTileCollisionModel
         int count = 0;
         for (double h = sh, v = sv; count < norm; count++)
         {
-            oh = Math.floor(h);
-            ov = Math.floor(v);
+            oh = getRound(sx, h);
+            ov = getRound(sy, v);
+
+            v += sy;
             h += sx;
-            CollisionResult result = computeCollision(category, oh, ov, h, v);
+            CollisionResult result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
                 return result;
             }
 
-            v += sy;
-            result = computeCollision(category, oh, ov, h, v);
+            result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
                 return result;

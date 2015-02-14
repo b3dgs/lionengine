@@ -69,9 +69,9 @@ public class TileCollisionModel
         switch (input)
         {
             case X:
-                return (int) Math.floor(x - tile.getX());
+                return (int) (x - tile.getX());
             case Y:
-                return (int) Math.floor(y - tile.getY());
+                return (int) (y - tile.getY());
             default:
                 throw new LionEngineException(ERROR_TYPE, input.name());
         }
