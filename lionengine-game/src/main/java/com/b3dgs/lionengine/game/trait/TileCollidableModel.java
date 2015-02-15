@@ -45,8 +45,6 @@ public class TileCollidableModel
     private final Collection<TileCollidableListener> listeners;
     /** Transformable owning this model. */
     private final Transformable transformable;
-    /** Body optional reference (<code>null</code> if none). */
-    private final Body body;
     /** The collisions used. */
     private final Collection<CollisionCategory> categories;
     /** Map tile reference. */
@@ -61,7 +59,6 @@ public class TileCollidableModel
      * </p>
      * <ul>
      * <li>{@link Transformable}</li>
-     * <li>{@link Body} (optional)</li>
      * </ul>
      * The {@link Services} must provide the following services:
      * </p>
@@ -79,7 +76,6 @@ public class TileCollidableModel
         super(owner);
         listeners = new HashSet<>();
         transformable = getTrait(Transformable.class);
-        body = owner.getTrait(Body.class);
         map = services.get(MapTileCollision.class);
         categories = ConfigCollisionCategory.create(configurer, map);
         enabled = true;
@@ -97,17 +93,13 @@ public class TileCollidableModel
         {
             if (result.getX() != null)
             {
-                transformable.teleportX(result.getX().doubleValue());
                 onCollided(result.getTile(), category.getAxis());
+                transformable.teleportX(result.getX().doubleValue());
             }
             if (result.getY() != null)
             {
-                transformable.teleportY(result.getY().doubleValue());
-                if (body != null && Axis.Y == category.getAxis())
-                {
-                    body.resetGravity();
-                }
                 onCollided(result.getTile(), category.getAxis());
+                transformable.teleportY(result.getY().doubleValue());
             }
         }
     }

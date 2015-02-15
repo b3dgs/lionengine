@@ -166,30 +166,67 @@ public class MapTileCollisionModel
         final CollisionFunction function = formula.getFunction();
         final CollisionRange range = formula.getRange();
 
-        for (int x = 0; x < map.getTileWidth(); x++)
+        for (int ox = 0; ox < map.getTileWidth(); ox++)
         {
-            for (int y = 0; y < map.getTileHeight(); y++)
+            for (int oy = 0; oy < map.getTileHeight(); oy++)
             {
-                switch (range.getOutput())
+                for (int x = 0; x < map.getTileWidth(); x++)
                 {
-                    case X:
-                        final double fx = function.compute(x);
-                        if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
-                        {
-                            g.drawRect((int) fx + 1, map.getTileHeight() - y, 0, 0, false);
-                        }
-                        break;
-                    case Y:
-                        final double fy = function.compute(y);
-                        if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
-                        {
-                            g.drawRect(x + 1, map.getTileHeight() - (int) fy, 0, 0, false);
-                        }
-                        break;
-                    default:
-                        throw new RuntimeException("Unknown type: " + range.getOutput());
+                    for (int y = 0; y < map.getTileHeight(); y++)
+                    {
+                        renderCollision(g, range, function, ox, oy, x, y);
+                    }
                 }
             }
+        }
+    }
+
+    /**
+     * Render collision from current vector.
+     * 
+     * @param g The graphic buffer.
+     * @param range The collision range reference.
+     * @param function The collision function reference.
+     * @param ox The old horizontal location.
+     * @param oy The old vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
+     */
+    private void renderCollision(Graphic g, CollisionRange range, CollisionFunction function, int ox, int oy, int x,
+            int y)
+    {
+        switch (range.getOutput())
+        {
+            case X:
+                final double fx = function.compute(ox);
+                if (UtilMath.isBetween(x, range.getMinX(), range.getMaxX()))
+                {
+                    if (x > ox)
+                    {
+                        g.drawRect((int) fx + 1 + range.getMinX(), map.getTileHeight() - y - 1, 0, 0, false);
+                    }
+                    else
+                    {
+                        g.drawRect((int) fx + 1 + range.getMaxX(), map.getTileHeight() - y - 1, 0, 0, false);
+                    }
+                }
+                break;
+            case Y:
+                final double fy = function.compute(oy);
+                if (UtilMath.isBetween(y, range.getMinY(), range.getMaxY()))
+                {
+                    if (y > oy)
+                    {
+                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMinY() - 1, 0, 0, false);
+                    }
+                    else
+                    {
+                        g.drawRect(x + 1, map.getTileHeight() - (int) fy - range.getMaxY() - 1, 0, 0, false);
+                    }
+                }
+                break;
+            default:
+                throw new RuntimeException("Unknown type: " + range.getOutput());
         }
     }
 
@@ -500,19 +537,20 @@ public class MapTileCollisionModel
         double oh;
         double ov;
         int count = 0;
+
         for (double h = sh, v = sv; count < norm; count++)
         {
             oh = getRound(sx, h);
             ov = getRound(sy, v);
 
             v += sy;
-            h += sx;
             CollisionResult result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
                 return result;
             }
 
+            h += sx;
             result = computeCollision(category, oh, ov, getRound(sx, h), getRound(sy, v));
             if (result != null)
             {
