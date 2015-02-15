@@ -25,15 +25,18 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -46,7 +49,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Mario
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, TileCollidableListener
 {
     /** Setup. */
     private static final SetupSurface SETUP = new SetupSurface(Core.MEDIA.create("mario.xml"));
@@ -87,6 +90,7 @@ class Mario
         addTrait(body);
 
         tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
+        tileCollidable.addListener(this);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(services.get(Integer.class).intValue());
@@ -123,7 +127,6 @@ class Mario
         movement.update(extrp);
         jump.update(extrp);
         body.update(extrp);
-
         tileCollidable.update(extrp);
 
         if (transformable.getY() < 0)
@@ -139,5 +142,14 @@ class Mario
     public void render(Graphic g)
     {
         surface.render(g);
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.Y == axis)
+        {
+            body.resetGravity();
+        }
     }
 }
