@@ -27,7 +27,6 @@ import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Collidable;
-import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
@@ -37,7 +36,7 @@ import com.b3dgs.lionengine.game.trait.Transformable;
  */
 class Goomba
         extends Entity
-        implements InputDeviceDirectional, TileCollidableListener, ComponentCollisionListener
+        implements InputDeviceDirectional, ComponentCollisionListener
 {
     /** Goomba media. */
     public static final Media CONFIG = Core.MEDIA.create("entity", "Goomba.xml");
@@ -96,6 +95,7 @@ class Goomba
     @Override
     public void notifyTileCollided(Tile tile, Axis axis)
     {
+        super.notifyTileCollided(tile, axis);
         if (Axis.X == axis)
         {
             side = -side;

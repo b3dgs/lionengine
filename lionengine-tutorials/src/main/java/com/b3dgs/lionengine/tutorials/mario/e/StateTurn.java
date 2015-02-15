@@ -17,12 +17,14 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
+import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.trait.Mirrorable;
 
 /**
  * Turn state implementation.
@@ -32,6 +34,8 @@ import com.b3dgs.lionengine.game.StateFactory;
 class StateTurn
         extends State
 {
+    /** Mirrorable reference. */
+    private final Mirrorable mirrorable;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
@@ -50,6 +54,7 @@ class StateTurn
     public StateTurn(Entity entity, Animation animation)
     {
         this.animation = animation;
+        mirrorable = entity.getTrait(Mirrorable.class);
         animator = entity.getSurface();
         movement = entity.getMovement();
     }
@@ -87,6 +92,11 @@ class StateTurn
                 && input.getVerticalDirection() == 0)
         {
             return factory.getState(EntityState.WALK);
+        }
+        else if (side == 0 && movement.getDirectionHorizontal() == 0.0)
+        {
+            mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
+            return factory.getState(EntityState.IDLE);
         }
         return null;
     }

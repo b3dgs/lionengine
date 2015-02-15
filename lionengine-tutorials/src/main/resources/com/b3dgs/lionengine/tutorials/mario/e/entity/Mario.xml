@@ -29,4 +29,10 @@
 	<lionengine:category name="head_left" axis="Y" x="-6" y="15">
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
+	<lionengine:category name="face_right" axis="X" x="6" y="15">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
+	<lionengine:category name="face_left" axis="X" x="-6" y="15">
+	    <lionengine:group>block</lionengine:group>
+	</lionengine:category>
 </lionengine:entity>

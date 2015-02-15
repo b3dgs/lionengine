@@ -55,7 +55,7 @@ class Scene
         keyboard = getInputDevice(Keyboard.class);
         world = new World(getConfig(), keyboard);
         music = AudioMidi.loadMidi(Core.MEDIA.create("music", "music.mid"));
-        music.setVolume(60);
+        music.setVolume(20);
     }
 
     /*
@@ -66,7 +66,7 @@ class Scene
     public void load()
     {
         world.loadFromFile(Core.MEDIA.create("level.lvl"));
-        // music.play(true);
+        music.play(true);
     }
 
     @Override

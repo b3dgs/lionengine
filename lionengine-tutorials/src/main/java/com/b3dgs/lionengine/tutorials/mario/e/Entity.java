@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
@@ -40,6 +41,7 @@ import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
 import com.b3dgs.lionengine.game.trait.Collidable;
@@ -47,6 +49,7 @@ import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
 import com.b3dgs.lionengine.game.trait.MirrorableModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -58,7 +61,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Entity
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, TileCollidableListener
 {
     /** Ground location y. */
     private static final int GROUND = 32;
@@ -114,6 +117,7 @@ class Entity
 
         tileCollidable = new TileCollidableModel(this, setup.getConfigurer(), services);
         addTrait(tileCollidable);
+        tileCollidable.addListener(this);
 
         collidable = new CollidableModel(this, services);
         collidable.setOrigin(Origin.CENTER_TOP);
@@ -292,5 +296,14 @@ class Entity
     {
         surface.setLocation(camera, transformable.getX(), transformable.getY());
         surface.render(g);
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
+        {
+            body.resetGravity();
+        }
     }
 }

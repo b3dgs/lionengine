@@ -27,9 +27,11 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
 import com.b3dgs.lionengine.game.trait.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
  * Turn state implementation.
@@ -40,6 +42,10 @@ class StateJump
         extends State
         implements TileCollidableListener
 {
+    /** Transformable reference. */
+    private final Transformable transformable;
+    /** The body reference. */
+    private final Body body;
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
     /** Animator reference. */
@@ -54,6 +60,8 @@ class StateJump
     private final Force jump;
     /** Movement side. */
     private double side;
+    /** On ground. */
+    private boolean ground;
 
     /**
      * Create the walk state.
@@ -64,6 +72,8 @@ class StateJump
     public StateJump(Entity entity, Animation animation)
     {
         this.animation = animation;
+        transformable = entity.getTrait(Transformable.class);
+        body = entity.getTrait(Body.class);
         mirrorable = entity.getTrait(Mirrorable.class);
         tileCollidable = entity.getTrait(TileCollidable.class);
         animator = entity.getSurface();
@@ -78,6 +88,7 @@ class StateJump
         movement.setSensibility(0.1);
         animator.play(animation);
         tileCollidable.addListener(this);
+        ground = false;
     }
 
     @Override
@@ -100,7 +111,7 @@ class StateJump
     protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
         side = input.getHorizontalDirection();
-        if (jump.getDirectionVertical() == 0)
+        if (ground)
         {
             tileCollidable.removeListener(this);
             return factory.getState(EntityState.IDLE);
@@ -114,6 +125,11 @@ class StateJump
         if (Axis.Y == axis)
         {
             jump.setDirection(Direction.ZERO);
+            body.resetGravity();
+            if (transformable.getY() < transformable.getOldY())
+            {
+                ground = true;
+            }
         }
     }
 }

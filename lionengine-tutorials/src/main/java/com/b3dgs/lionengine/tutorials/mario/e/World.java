@@ -104,6 +104,7 @@ class World
         g.setColor(BACKGROUND_COLOR);
         g.drawRect(0, 0, width, height, true);
         map.render(g);
+        mapCollision.render(g);
         handler.render(g);
     }
 
@@ -119,6 +120,7 @@ class World
         map.load(file);
         mapCollision.loadCollisions(Core.MEDIA.create("tile", MapTileCollision.FORMULAS_FILE_NAME),
                 Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
+        mapCollision.createCollisionDraw();
         camera.setLimits(map);
         camera.setView(0, 0, width, height);
         camera.setIntervals(0, 0);
@@ -134,7 +136,7 @@ class World
         mario.respawn(160);
         camera.resetInterval(mario.getLocalizable());
         handler.add(mario);
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 20; i++)
         {
             final Goomba goomba = factory.create(Goomba.CONFIG);
             goomba.respawn(500 + i * 50);

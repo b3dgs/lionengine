@@ -20,9 +20,14 @@ package com.b3dgs.lionengine.tutorials.mario.e;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
+import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
  * Idle state implementation.
@@ -31,15 +36,22 @@ import com.b3dgs.lionengine.game.StateFactory;
  */
 class StateIdle
         extends State
+        implements TileCollidableListener
 {
+    /** Transformable reference. */
+    private final Transformable transformable;
     /** Animator reference. */
     private final Animator animator;
     /** Animation reference. */
     private final Animation animation;
+    /** Tile collidable reference. */
+    private final TileCollidable tileCollidable;
     /** Movement force. */
     private final Force movement;
     /** Jump force. */
     private final Force jump;
+    /** Can jump flag. */
+    private boolean canJump;
 
     /**
      * Create the walk state.
@@ -50,6 +62,8 @@ class StateIdle
     public StateIdle(Entity entity, Animation animation)
     {
         this.animation = animation;
+        transformable = entity.getTrait(Transformable.class);
+        tileCollidable = entity.getTrait(TileCollidable.class);
         animator = entity.getSurface();
         movement = entity.getMovement();
         jump = entity.getJump();
@@ -58,6 +72,7 @@ class StateIdle
     @Override
     public void enter()
     {
+        tileCollidable.addListener(this);
         movement.setDestination(0.0, 0.0);
         movement.setVelocity(0.3);
         movement.setSensibility(0.01);
@@ -79,16 +94,28 @@ class StateIdle
     @Override
     protected State handleInput(StateFactory factory, InputDeviceDirectional input)
     {
-        if (input.getVerticalDirection() > 0)
+        if (input.getVerticalDirection() > 0 && canJump)
         {
             Sfx.JUMP.play();
             jump.setDirection(0.0, 8.0);
+            canJump = false;
+            tileCollidable.removeListener(this);
             return factory.getState(EntityState.JUMP);
         }
         if (input.getHorizontalDirection() != 0)
         {
+            tileCollidable.removeListener(this);
             return factory.getState(EntityState.WALK);
         }
         return null;
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
+        {
+            canJump = true;
+        }
     }
 }
