@@ -75,7 +75,7 @@ public class TileCollidableModel
     {
         super(owner);
         listeners = new HashSet<>();
-        transformable = getTrait(Transformable.class);
+        transformable = owner.getTrait(Transformable.class);
         map = services.get(MapTileCollision.class);
         categories = ConfigCollisionCategory.create(configurer, map);
         enabled = true;

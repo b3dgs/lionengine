@@ -55,7 +55,7 @@ public class LaunchableModel
     public LaunchableModel(ObjectGame owner) throws LionEngineException
     {
         super(owner);
-        transformable = getTrait(Transformable.class);
+        transformable = owner.getTrait(Transformable.class);
         timer = new Timing();
     }
 

@@ -17,7 +17,6 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
@@ -28,9 +27,6 @@ import com.b3dgs.lionengine.game.handler.ObjectGame;
 public class TraitModel
         implements Trait
 {
-    /** Error trait. */
-    private static final String ERROR_TRAIT = "Trait is missing: ";
-
     /** The owner reference. */
     private final ObjectGame owner;
 
@@ -42,23 +38,6 @@ public class TraitModel
     public TraitModel(ObjectGame owner)
     {
         this.owner = owner;
-    }
-
-    /**
-     * Get the trait if available.
-     * 
-     * @param trait The trait to check.
-     * @return The trait type.
-     * @throws LionEngineException If trait is missing.
-     */
-    protected final <T> T getTrait(Class<T> trait) throws LionEngineException
-    {
-        final T instance = owner.getTrait(trait);
-        if (instance == null)
-        {
-            throw new LionEngineException(ERROR_TRAIT, trait.getName());
-        }
-        return instance;
     }
 
     /*

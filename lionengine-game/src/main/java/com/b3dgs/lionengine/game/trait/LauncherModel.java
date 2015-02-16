@@ -44,9 +44,6 @@ public class LauncherModel
         extends TraitModel
         implements Launcher
 {
-    /** Media error. */
-    private static final String ERROR_MEDIA = "Fired object is not a " + Launchable.class + ": ";
-
     /** Launcher listeners. */
     private final Collection<LauncherListener> listeners;
     /** Launchable configuration. */
@@ -95,7 +92,7 @@ public class LauncherModel
     public LauncherModel(ObjectGame owner, Configurer configurer, Services context) throws LionEngineException
     {
         super(owner);
-        localizable = getTrait(Localizable.class);
+        localizable = owner.getTrait(Localizable.class);
         listeners = new HashSet<>();
         fire = new Timing();
 
@@ -119,16 +116,18 @@ public class LauncherModel
         {
             final Media media = Core.MEDIA.create(launchable.getMedia());
             final ObjectGame object = factory.create(media);
-            final Launchable projectile = object.getTrait(Launchable.class);
-            if (projectile == null)
+            try
+            {
+                final Launchable projectile = object.getTrait(Launchable.class);
+                projectile.setDelay(launchable.getDelay());
+                projectile.setVector(computeVector(launchable.getVector()));
+                projectile.launch(localizable.getX() + offsetX, localizable.getY() + offsetY);
+            }
+            catch (final LionEngineException exception)
             {
                 object.destroy();
-                throw new LionEngineException(media, ERROR_MEDIA);
+                throw exception;
             }
-            projectile.setDelay(launchable.getDelay());
-            projectile.setVector(computeVector(launchable.getVector()));
-            projectile.launch(localizable.getX() + offsetX, localizable.getY() + offsetY);
-
             for (final LauncherListener listener : listeners)
             {
                 listener.notifyFired(object);

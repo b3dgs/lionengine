@@ -21,8 +21,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
  * Handler items implementation.
@@ -32,6 +37,38 @@ import java.util.Set;
 final class HandledObjectsImpl
         implements HandledObjects
 {
+    /** Free id error. */
+    private static final String ERROR_FREE_ID = "No more free id available !";
+    /** Id used (list of active id used). */
+    private static final Collection<Integer> IDS = new HashSet<>(16);
+    /** Recycle id (reuse previous removed object id). */
+    private static final Queue<Integer> RECYCLE = new LinkedList<>();
+    /** Last id used (last maximum id value). */
+    private static int lastId = 0;
+
+    /**
+     * Get the next unused id.
+     * 
+     * @return The next unused id.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
+     */
+    private static Integer getFreeId() throws LionEngineException
+    {
+        if (!RECYCLE.isEmpty())
+        {
+            return RECYCLE.poll();
+        }
+        if (IDS.size() >= Integer.MAX_VALUE)
+        {
+            throw new LionEngineException(ERROR_FREE_ID);
+        }
+        while (IDS.contains(Integer.valueOf(lastId)))
+        {
+            lastId++;
+        }
+        return Integer.valueOf(lastId);
+    }
+
     /** List of objects (key id the object id). */
     private final Map<Integer, ObjectGame> objects;
     /** List of typed items (key is the object id). */
@@ -47,16 +84,19 @@ final class HandledObjectsImpl
     }
 
     /**
-     * Add a object.
+     * Add an object.
      * 
      * @param object The object to add.
+     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
      */
-    public void add(ObjectGame object)
+    public void add(ObjectGame object) throws LionEngineException
     {
-        final Integer id = object.getId();
+        final Integer id = getFreeId();
+        IDS.add(id);
+        object.setId(id);
         objects.put(id, object);
 
-        for (final Class<?> trait : object.getTraitsType())
+        for (final Class<? extends Trait> trait : object.getTraitsType())
         {
             addType(trait, object.getTrait(trait));
         }
@@ -71,12 +111,13 @@ final class HandledObjectsImpl
     public void remove(Integer id)
     {
         final ObjectGame object = objects.get(id);
-        for (final Class<?> trait : object.getTraitsType())
+        for (final Class<? extends Trait> trait : object.getTraitsType())
         {
             remove(trait, object.getTrait(trait));
         }
         removeSuperClass(object, object.getClass());
-        object.onRemoved();
+        IDS.remove(object.getId());
+        RECYCLE.add(object.getId());
     }
 
     /**
@@ -160,7 +201,7 @@ final class HandledObjectsImpl
     }
 
     /*
-     * HandlerItems
+     * HandledObjects
      */
 
     @Override

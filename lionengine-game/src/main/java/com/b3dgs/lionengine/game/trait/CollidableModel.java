@@ -92,7 +92,7 @@ public class CollidableModel
         ignored = new HashSet<>();
         polygons = new HashMap<>();
         boxs = new HashMap<>();
-        transformable = getTrait(Transformable.class);
+        transformable = owner.getTrait(Transformable.class);
         viewer = services.get(Viewer.class);
         origin = Origin.TOP_LEFT;
         enabled = true;

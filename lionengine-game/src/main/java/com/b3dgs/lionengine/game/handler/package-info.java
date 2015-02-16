@@ -15,19 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
 
 /**
- * Describes the object events.
+ * Object representation and manipulation by handler, providing quick object access from their types.
  * 
- * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @author DjThunder
  */
-interface HandlableListener
-{
-    /**
-     * Called when object is destroyed.
-     * 
-     * @param object The destroyed object.
-     */
-    void notifyDestroyed(ObjectGame object);
-}
+package com.b3dgs.lionengine.game.handler;

@@ -29,9 +29,6 @@ import com.b3dgs.lionengine.game.Features;
 public class TileGame
         implements Tile
 {
-    /** Error feature missing message. */
-    private static final String ERROR_FEATURE_MISSING = "Feature missing: ";
-
     /** Tile width. */
     private final int width;
     /** Tile height. */
@@ -166,12 +163,7 @@ public class TileGame
     @Override
     public <C extends TileFeature> C getFeature(Class<C> feature) throws LionEngineException
     {
-        final C object = features.get(feature);
-        if (object == null)
-        {
-            throw new LionEngineException(ERROR_FEATURE_MISSING, feature.getName());
-        }
-        return object;
+        return features.get(feature);
     }
 
     @Override

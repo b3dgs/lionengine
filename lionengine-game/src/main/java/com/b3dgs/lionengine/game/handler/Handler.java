@@ -35,7 +35,7 @@ import com.b3dgs.lionengine.game.component.ComponentUpdatable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public class Handler
-        implements Updatable, Renderable, HandlableListener
+        implements Updatable, Renderable, ObjectGameListener
 {
     /** List of components. */
     private final Set<ComponentUpdatable> updatables;

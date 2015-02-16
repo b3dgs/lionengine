@@ -18,32 +18,16 @@
 package com.b3dgs.lionengine.game.handler;
 
 /**
- * Represents the objects handled by the handler, providing quick access to them from their type.
+ * Describes the object events.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface HandledObjects
+interface ObjectGameListener
 {
     /**
-     * Get the handlable from its id.
+     * Called when object is destroyed (after a call to {@link ObjectGame#destroy()}.
      * 
-     * @param id The handlable id.
-     * @return The handlable instance.
+     * @param object The destroyed object.
      */
-    ObjectGame get(Integer id);
-
-    /**
-     * Get all objects of this type.
-     * 
-     * @param type The expected type.
-     * @return The objects list of this type.
-     */
-    <I> Iterable<I> get(Class<I> type);
-
-    /**
-     * Get all handlables.
-     * 
-     * @return The handlables list.
-     */
-    Iterable<ObjectGame> values();
+    void notifyDestroyed(ObjectGame object);
 }

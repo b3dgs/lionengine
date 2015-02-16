@@ -20,6 +20,8 @@ package com.b3dgs.lionengine.game;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.b3dgs.lionengine.LionEngineException;
+
 /**
  * Feature representation.
  * 
@@ -28,6 +30,9 @@ import java.util.Map;
  */
 public class Features<F>
 {
+    /** Feature not found error. */
+    private static final String ERROR_FEATURE_NOT_FOUND = "Feature not found: ";
+
     /** Features provided. */
     private final Map<Class<? extends F>, F> features;
     /** Feature interface base. */
@@ -64,26 +69,28 @@ public class Features<F>
      * Get a feature from its class.
      * 
      * @param feature The feature class.
-     * @return The feature instance (<code>null</code> if none).
+     * @return The feature instance.
+     * @throws LionEngineException If the feature was not found.
      */
-    public final <C> C get(Class<C> feature)
+    public final <C> C get(Class<C> feature) throws LionEngineException
     {
-        if (features.containsKey(feature))
+        final C found = getFeature(feature);
+        if (found == null)
         {
-            return feature.cast(features.get(feature));
+            throw new LionEngineException(ERROR_FEATURE_NOT_FOUND, feature.getName());
         }
-        for (final Object current : features.values())
-        {
-            if (feature.isAssignableFrom(current.getClass()))
-            {
-                return feature.cast(current);
-            }
-        }
-        if (feature.isAssignableFrom(getClass()))
-        {
-            return feature.cast(this);
-        }
-        return null;
+        return found;
+    }
+
+    /**
+     * Check if contains the following feature.
+     * 
+     * @param feature The feature to check.
+     * @return <code>true</code> if contains, <code>false</code> else.
+     */
+    public final <C> boolean contains(Class<C> feature)
+    {
+        return getFeature(feature) != null;
     }
 
     /**
@@ -104,5 +111,31 @@ public class Features<F>
     public final Iterable<Class<? extends F>> getFeatures()
     {
         return features.keySet();
+    }
+
+    /**
+     * Get a feature from its class.
+     * 
+     * @param feature The feature class.
+     * @return The feature instance, <code>null</code> if not found.
+     */
+    private <C> C getFeature(Class<C> feature)
+    {
+        if (features.containsKey(feature))
+        {
+            return feature.cast(features.get(feature));
+        }
+        for (final Object current : features.values())
+        {
+            if (feature.isAssignableFrom(current.getClass()))
+            {
+                return feature.cast(current);
+            }
+        }
+        if (feature.isAssignableFrom(getClass()))
+        {
+            return feature.cast(this);
+        }
+        return null;
     }
 }

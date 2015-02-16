@@ -19,8 +19,6 @@ package com.b3dgs.lionengine.game.handler;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
@@ -49,63 +47,28 @@ import com.b3dgs.lionengine.game.trait.Trait;
  */
 public class ObjectGame
 {
-    /** Free id error. */
-    private static final String ERROR_FREE_ID = "No more free id available !";
-    /** Id used. */
-    private static final Collection<Integer> IDS = new HashSet<>(16);
-    /** Recycle id. */
-    private static final Queue<Integer> RECYCLE = new LinkedList<>();
-    /** Last id used. */
-    private static int lastId = 0;
-
     /** Features provider. */
     private final Features<Trait> features;
     /** Listeners. */
-    private final Collection<HandlableListener> listeners;
+    private final Collection<ObjectGameListener> listeners;
     /** Unique id. */
     private Integer id;
     /** Destroyed flag. */
     private boolean destroyed;
 
     /**
-     * Get the next unused id.
-     * 
-     * @return The next unused id.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} at the same time.
-     */
-    private static Integer getFreeId() throws LionEngineException
-    {
-        if (!RECYCLE.isEmpty())
-        {
-            return RECYCLE.poll();
-        }
-        if (IDS.size() >= Integer.MAX_VALUE)
-        {
-            throw new LionEngineException(ERROR_FREE_ID);
-        }
-        while (IDS.contains(Integer.valueOf(lastId)))
-        {
-            lastId++;
-        }
-        return Integer.valueOf(lastId);
-    }
-
-    /**
      * Constructor.
      * 
      * @param setup The setup reference.
      * @param services The services reference.
-     * @throws LionEngineException If there is more than {@link Integer#MAX_VALUE} objects at the same time.
      */
-    public ObjectGame(Setup setup, Services services) throws LionEngineException
+    public ObjectGame(Setup setup, Services services)
     {
         Check.notNull(setup);
         Check.notNull(services);
 
-        id = getFreeId();
         features = new Features<>(Trait.class);
         listeners = new HashSet<>(1);
-        IDS.add(id);
         destroyed = false;
     }
 
@@ -120,12 +83,24 @@ public class ObjectGame
     }
 
     /**
+     * Check if object has the following trait.
+     * 
+     * @param trait The trait to check.
+     * @return <code>true</code> if has trait, <code>false</code> else.
+     */
+    public final boolean hasTrait(Class<?> trait)
+    {
+        return features.contains(trait);
+    }
+
+    /**
      * Get a trait from its class.
      * 
      * @param trait The trait class.
-     * @return The trait instance (<code>null</code> if none).
+     * @return The trait instance.
+     * @throws LionEngineException If feature was not found.
      */
-    public final <C> C getTrait(Class<C> trait)
+    public final <C> C getTrait(Class<C> trait) throws LionEngineException
     {
         return features.get(trait);
     }
@@ -152,7 +127,7 @@ public class ObjectGame
 
     /**
      * Get the id (<code>null</code> will be returned once removed from {@link Handler} after a call to
-     * {@link #destroy()}).
+     * {@link #destroy()}, or if has never been added by {@link Handler#add(ObjectGame)}).
      * 
      * @return The id.
      */
@@ -169,7 +144,7 @@ public class ObjectGame
         if (!destroyed)
         {
             destroyed = true;
-            for (final HandlableListener listener : listeners)
+            for (final ObjectGameListener listener : listeners)
             {
                 listener.notifyDestroyed(this);
             }
@@ -181,21 +156,18 @@ public class ObjectGame
      * 
      * @param listener The listener reference.
      */
-    final void addListener(HandlableListener listener)
+    final void addListener(ObjectGameListener listener)
     {
         listeners.add(listener);
     }
 
     /**
-     * Called when has been removed from handler.
+     * Set the object id. Should only be set when adding to handled list by {@link HandledObjects}.
+     * 
+     * @param id The id to set.
      */
-    final void onRemoved()
+    final void setId(Integer id)
     {
-        if (destroyed)
-        {
-            IDS.remove(id);
-            RECYCLE.add(id);
-            id = null;
-        }
+        this.id = id;
     }
 }

@@ -65,8 +65,6 @@ public class MapTileGame
     private static final String INFO_LOAD_SHEETS = "Loading sheets from: ";
     /** Error sheet missing message. */
     private static final String ERROR_SHEET_MISSING = "Sheet missing: ";
-    /** Error feature missing message. */
-    private static final String ERROR_FEATURE_MISSING = "Feature missing: ";
     /** Error create tile message. */
     private static final String ERROR_CREATE_TILE = "Invalid tile creation: ";
 
@@ -523,12 +521,7 @@ public class MapTileGame
     @Override
     public <C extends MapTileFeature> C getFeature(Class<C> feature) throws LionEngineException
     {
-        final C object = features.get(feature);
-        if (object == null)
-        {
-            throw new LionEngineException(ERROR_FEATURE_MISSING, feature.getName());
-        }
-        return object;
+        return features.get(feature);
     }
 
     @Override

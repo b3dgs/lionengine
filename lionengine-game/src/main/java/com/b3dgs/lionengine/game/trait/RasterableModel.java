@@ -82,9 +82,9 @@ public class RasterableModel
 
         Check.superiorStrict(tileHeight, 0);
         this.tileHeight = tileHeight;
-        localizable = getTrait(Localizable.class);
-        mirrorable = getTrait(Mirrorable.class);
-        animator = getTrait(Animator.class);
+        localizable = owner.getTrait(Localizable.class);
+        mirrorable = owner.getTrait(Mirrorable.class);
+        animator = owner.getTrait(Animator.class);
         viewer = context.get(Viewer.class);
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
