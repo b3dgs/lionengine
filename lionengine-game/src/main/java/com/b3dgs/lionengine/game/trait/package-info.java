@@ -17,9 +17,12 @@
  */
 
 /**
- * Object creation by using a resources sharing system that allows to reduce significantly memory usage.
+ * Trait system that allow to provide additional implementation dynamically to an
+ * {@link com.b3dgs.lionengine.game.handler.ObjectGame} without changing its interface.
+ * It is important to specify which traits are required in the javadoc when using this system, because of the low
+ * typing.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-package com.b3dgs.lionengine.game.factory;
+package com.b3dgs.lionengine.game.trait;
 
