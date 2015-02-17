@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
- * Turn state implementation.
+ * Jump state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -64,7 +64,7 @@ class StateJump
     private boolean ground;
 
     /**
-     * Create the walk state.
+     * Create the jump state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.

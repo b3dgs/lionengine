@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.game.State;
 import com.b3dgs.lionengine.game.StateFactory;
 
 /**
- * Walk state implementation.
+ * Goomba die state implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -40,7 +40,7 @@ class StateDieGoomba
     private final Animation animation;
 
     /**
-     * Create the walk state.
+     * Create the die state.
      * 
      * @param entity The entity reference.
      * @param animation The associated animation.
