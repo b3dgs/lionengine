@@ -35,7 +35,6 @@ import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.Features;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 import com.b3dgs.lionengine.stream.Stream;
@@ -74,8 +73,8 @@ public class MapTileGame
     private final Viewer viewer;
     /** Features list. */
     private final Features<MapTileFeature> features;
-    /** Tiles directory. */
-    private Media sheetsDir;
+    /** Sheet configuration file. */
+    private Media sheetsConfig;
     /** Tile width. */
     private int tileWidth;
     /** Tile height. */
@@ -104,7 +103,7 @@ public class MapTileGame
         this.tileHeight = tileHeight;
         sheets = new HashMap<>();
         features = new Features<>(MapTileFeature.class);
-        sheetsDir = null;
+        sheetsConfig = null;
     }
 
     /**
@@ -245,7 +244,7 @@ public class MapTileGame
      */
 
     @Override
-    public void create(int widthInTile, int heightInTile)
+    public void create(int widthInTile, int heightInTile) throws LionEngineException
     {
         Check.superiorStrict(widthInTile, 0);
         Check.superiorStrict(heightInTile, 0);
@@ -273,14 +272,14 @@ public class MapTileGame
     @Override
     public void load(FileReading file) throws IOException, LionEngineException
     {
-        sheetsDir = Core.MEDIA.create(file.readString());
+        final Media sheetsConfig = Core.MEDIA.create(file.readString());
         final int width = file.readShort();
         final int height = file.readShort();
         tileWidth = file.readByte();
         tileHeight = file.readByte();
 
         create(width, height);
-        loadSheets(sheetsDir);
+        loadSheets(sheetsConfig);
 
         final int t = file.readShort();
         for (int v = 0; v < t; v++)
@@ -305,7 +304,7 @@ public class MapTileGame
     public void save(FileWriting file) throws IOException
     {
         // Header
-        file.writeString(sheetsDir.getPath());
+        file.writeString(sheetsConfig.getPath());
         file.writeShort((short) widthInTile);
         file.writeShort((short) heightInTile);
         file.writeByte((byte) tileWidth);
@@ -345,27 +344,25 @@ public class MapTileGame
     }
 
     @Override
-    public void load(Media levelrip, Media sheetsDir) throws LionEngineException
+    public void create(Media levelrip, Media sheetsConfig) throws LionEngineException
     {
         clear();
-        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsDir, this);
+        final LevelRipConverter rip = new LevelRipConverter(levelrip, sheetsConfig, this);
         rip.start();
-        this.sheetsDir = sheetsDir;
+        this.sheetsConfig = sheetsConfig;
     }
 
     @Override
-    public void loadSheets(Media directory) throws LionEngineException
+    public void loadSheets(Media sheetsConfig) throws LionEngineException
     {
-        Verbose.info(INFO_LOAD_SHEETS, directory.getFile().getPath());
-        sheetsDir = directory;
+        Verbose.info(INFO_LOAD_SHEETS, sheetsConfig.getFile().getPath());
+        this.sheetsConfig = sheetsConfig;
         sheets.clear();
-        String[] files;
 
         // Retrieve sheets list
-        final Media mediaSheets = Core.MEDIA.create(sheetsDir.getPath(), MapTile.SHEETS_FILE_NAME);
-        final XmlNode root = Stream.loadXml(mediaSheets);
+        final XmlNode root = Stream.loadXml(sheetsConfig);
         final Collection<XmlNode> children = root.getChildren(MapTile.NODE_TILE_SHEET);
-        files = new String[children.size()];
+        final String[] files = new String[children.size()];
         int i = 0;
         for (final XmlNode child : children)
         {
@@ -374,9 +371,11 @@ public class MapTileGame
         }
 
         // Load sheets from list
+        final String path = sheetsConfig.getPath();
+        final String folder = path.substring(0, path.length() - sheetsConfig.getFile().getName().length());
         for (int sheet = 0; sheet < files.length; sheet++)
         {
-            final Media media = Core.MEDIA.create(sheetsDir.getPath(), files[sheet]);
+            final Media media = Core.MEDIA.create(folder, files[sheet]);
             final SpriteTiled sprite = Drawable.loadSpriteTiled(media, tileWidth, tileHeight);
             sprite.load(false);
             sheets.put(Integer.valueOf(sheet), sprite);
@@ -456,15 +455,18 @@ public class MapTileGame
     }
 
     @Override
-    public void setTile(int h, int v, Tile tile)
+    public void setTile(int h, int v, Tile tile) throws LionEngineException
     {
+        Check.inferiorStrict(h, getWidthInTile());
+        Check.inferiorStrict(v, getHeightInTile());
+
         tile.setX(h * tileWidth);
         tile.setY(v * tileHeight);
         tiles.get(v).set(h, tile);
     }
 
     @Override
-    public Tile getTile(int tx, int ty) throws LionEngineException
+    public Tile getTile(int tx, int ty)
     {
         try
         {
@@ -477,7 +479,7 @@ public class MapTileGame
     }
 
     @Override
-    public Tile getTile(Localizable localizable, int offsetX, int offsetY) throws LionEngineException
+    public Tile getTile(Localizable localizable, int offsetX, int offsetY)
     {
         final int tx = (int) Math.floor((localizable.getX() + offsetX) / getTileWidth());
         final int ty = (int) Math.floor((localizable.getY() + offsetY) / getTileHeight());
@@ -497,9 +499,9 @@ public class MapTileGame
     }
 
     @Override
-    public Media getSheetsDirectory()
+    public Media getSheetsConfig()
     {
-        return sheetsDir;
+        return sheetsConfig;
     }
 
     @Override

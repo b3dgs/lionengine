@@ -28,6 +28,7 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
+import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.Force;
@@ -38,11 +39,13 @@ import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
 import com.b3dgs.lionengine.game.trait.Mirrorable;
 import com.b3dgs.lionengine.game.trait.MirrorableModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
+import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -54,7 +57,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Mario
         extends ObjectGame
-        implements Updatable, Renderable
+        implements Updatable, Renderable, TileCollidableListener
 {
     /** Object media. */
     public static final Media MEDIA = Core.MEDIA.create("entity", "Mario.xml");
@@ -110,6 +113,7 @@ class Mario
 
         tileCollidable = new TileCollidableModel(this, setup.getConfigurer(), services);
         addTrait(tileCollidable);
+        tileCollidable.addListener(this);
 
         camera = services.get(Camera.class);
         keyboard = services.get(Keyboard.class);
@@ -230,5 +234,14 @@ class Mario
     public void render(Graphic g)
     {
         surface.render(g);
+    }
+
+    @Override
+    public void notifyTileCollided(Tile tile, Axis axis)
+    {
+        if (Axis.Y == axis && transformable.getY() < transformable.getOldY())
+        {
+            body.resetGravity();
+        }
     }
 }

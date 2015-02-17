@@ -51,10 +51,10 @@ import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProj
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.

@@ -452,7 +452,7 @@ public class MapTileCollisionModel
     @Override
     public void saveCollisions() throws LionEngineException
     {
-        final Media formulas = Core.MEDIA.create(map.getSheetsDirectory().getPath(), FORMULAS_FILE_NAME);
+        final Media formulas = Core.MEDIA.create(map.getSheetsConfig().getPath(), FORMULAS_FILE_NAME);
         final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
         for (final CollisionFormula formula : getCollisionFormulas())
         {
@@ -460,7 +460,7 @@ public class MapTileCollisionModel
         }
         Stream.saveXml(formulasRoot, formulas);
 
-        final Media groups = Core.MEDIA.create(map.getSheetsDirectory().getPath(), GROUPS_FILE_NAME);
+        final Media groups = Core.MEDIA.create(map.getSheetsConfig().getPath(), GROUPS_FILE_NAME);
         final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
         for (final CollisionGroup group : getCollisionGroups())
         {

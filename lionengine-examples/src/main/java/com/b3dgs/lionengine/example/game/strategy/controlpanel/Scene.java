@@ -31,10 +31,10 @@ import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.

@@ -15,39 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
-
-import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents something that can support features.
+ * Tile based map handling with feature layer that will allow to customize the services provided by the map dynamically.
  * 
- * @param <F> The feature type used.
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Features
  */
-public interface Featurable<F>
-{
-    /**
-     * Add a tile feature for external processing.
-     * 
-     * @param feature The feature to add.
-     */
-    void addFeature(F feature);
+package com.b3dgs.lionengine.game.map;
 
-    /**
-     * Get a feature instance from its type.
-     * 
-     * @param feature The feature type.
-     * @return The feature instance.
-     * @throws LionEngineException If feature not found.
-     */
-    <C extends F> C getFeature(Class<C> feature) throws LionEngineException;
-
-    /**
-     * Get the supported features.
-     * 
-     * @return The supported features.
-     */
-    Iterable<?> getFeatures();
-}

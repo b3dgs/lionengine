@@ -38,8 +38,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.FactorySkill;
 import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
+import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
-import com.b3dgs.lionengine.game.utility.LevelRipConverter;
 
 /**
  * Game loop designed to handle our little world.

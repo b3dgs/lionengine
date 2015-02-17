@@ -79,9 +79,9 @@ class Scene
     @Override
     public void load()
     {
-        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
-        mapCollision.loadCollisions(Core.MEDIA.create("tile", MapTileCollision.FORMULAS_FILE_NAME),
-                Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
+        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"));
+        mapCollision.loadCollisions(Core.MEDIA.create("map", MapTileCollision.FORMULAS_FILE_NAME),
+                Core.MEDIA.create("map", MapTileCollision.GROUPS_FILE_NAME));
         mapCollision.createCollisionDraw();
 
         final Services services = new Services();

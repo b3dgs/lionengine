@@ -111,7 +111,7 @@ class Scene
     @Override
     public void load()
     {
-        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
         mapCollision.loadCollisions(Core.MEDIA.create("tile", MapTileCollision.FORMULAS_FILE_NAME),
                 Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
         cursor.load(false);

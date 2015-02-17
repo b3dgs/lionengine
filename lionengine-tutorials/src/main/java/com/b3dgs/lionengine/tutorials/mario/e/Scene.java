@@ -17,14 +17,22 @@
  */
 package com.b3dgs.lionengine.tutorials.mario.e;
 
+import java.io.IOException;
+
 import com.b3dgs.lionengine.Resolution;
 import com.b3dgs.lionengine.audio.midi.AudioMidi;
 import com.b3dgs.lionengine.audio.midi.Midi;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
+import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Verbose;
 import com.b3dgs.lionengine.core.awt.Keyboard;
+import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.stream.FileWriting;
+import com.b3dgs.lionengine.stream.Stream;
 
 /**
  * Game loop designed to handle our little world.
@@ -36,6 +44,8 @@ class Scene
 {
     /** Native resolution. */
     private static final Resolution NATIVE = new Resolution(320, 240, 60);
+    /** Level file. */
+    private static final Media LEVEL = Core.MEDIA.create("map", "level.lvl");
 
     /** Keyboard reference. */
     private final Keyboard keyboard;
@@ -58,6 +68,23 @@ class Scene
         music.setVolume(20);
     }
 
+    /**
+     * Import and save the level.
+     */
+    private static void importAndSave()
+    {
+        final MapTile map = new MapTileGame(null, 16, 16);
+        map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"));
+        try (FileWriting file = Stream.createFileWriting(LEVEL))
+        {
+            map.save(file);
+        }
+        catch (final IOException exception)
+        {
+            Verbose.exception(Scene.class, "importAndSave", exception, "Error on saving map !");
+        }
+    }
+
     /*
      * Sequence
      */
@@ -65,7 +92,11 @@ class Scene
     @Override
     public void load()
     {
-        world.loadFromFile(Core.MEDIA.create("level.lvl"));
+        if (!LEVEL.exists())
+        {
+            importAndSave();
+        }
+        world.loadFromFile(LEVEL);
         music.play(true);
     }
 

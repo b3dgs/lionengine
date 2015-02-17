@@ -118,8 +118,8 @@ class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        mapCollision.loadCollisions(Core.MEDIA.create("tile", MapTileCollision.FORMULAS_FILE_NAME),
-                Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
+        mapCollision.loadCollisions(Core.MEDIA.create("map", MapTileCollision.FORMULAS_FILE_NAME),
+                Core.MEDIA.create("map", MapTileCollision.GROUPS_FILE_NAME));
         mapCollision.createCollisionDraw();
         camera.setLimits(map);
         camera.setView(0, 0, width, height);

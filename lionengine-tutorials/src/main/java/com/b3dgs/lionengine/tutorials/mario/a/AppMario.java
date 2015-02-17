@@ -32,9 +32,9 @@ import com.b3dgs.lionengine.core.awt.Engine;
 public class AppMario
 {
     /** Application name. */
-    public static final String NAME = "Mario";
+    private static final String NAME = "Mario";
     /** Application version. */
-    public static final Version VERSION = Version.create(1, 0, 0);
+    private static final Version VERSION = Version.create(1, 0, 0);
     /** Resources directory. */
     private static final String RESOURCES = UtilFile.getPath("resources", "mario", "a");
 
@@ -45,7 +45,7 @@ public class AppMario
      */
     public static void main(String[] args)
     {
-        Engine.start(AppMario.NAME, AppMario.VERSION, AppMario.RESOURCES);
+        Engine.start(NAME, VERSION, RESOURCES);
         final Resolution output = new Resolution(640, 480, 60);
         final Config config = new Config(output, 16, true);
         final Loader loader = new Loader(config);

@@ -72,7 +72,7 @@ class Scene
     @Override
     public void load()
     {
-        map.load(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("sheets.xml"));
         minimap.load(false);
         camera.setView(0, 0, getWidth(), getHeight());
         camera.setLimits(map);

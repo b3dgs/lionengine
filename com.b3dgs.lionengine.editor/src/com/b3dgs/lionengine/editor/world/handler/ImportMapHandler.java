@@ -54,7 +54,7 @@ public class ImportMapHandler
                 pattern.getPath());
 
         final MapTile<?> map = WorldViewModel.INSTANCE.getMap();
-        map.load(level, pattern);
+        map.create(level, pattern);
         map.createCollisionDraw();
     }
 

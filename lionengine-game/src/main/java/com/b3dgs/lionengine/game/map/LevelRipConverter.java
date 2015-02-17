@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.utility;
+package com.b3dgs.lionengine.game.map;
 
 import java.util.Iterator;
 
@@ -26,8 +26,6 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
-import com.b3dgs.lionengine.game.map.MapTile;
-import com.b3dgs.lionengine.game.map.Tile;
 
 /**
  * This class allows to convert a map image to a map level format.
@@ -75,18 +73,18 @@ public final class LevelRipConverter
      * Must be called to start conversion.
      * 
      * @param levelrip The file containing the levelrip as an image.
-     * @param sheetsDir The directory containing tiles sheets.
+     * @param sheetsConfig The file that define the sheets configuration.
      * @param map The destination map reference.
      * @throws LionEngineException If media is <code>null</code> or image cannot be read.
      */
-    public LevelRipConverter(Media levelrip, Media sheetsDir, MapTile map)
+    public LevelRipConverter(Media levelrip, Media sheetsConfig, MapTile map)
     {
         this.map = map;
 
         imageMap = Drawable.loadSprite(levelrip);
         imageMap.load(false);
 
-        map.loadSheets(sheetsDir);
+        map.loadSheets(sheetsConfig);
         map.create(imageMap.getWidth() / map.getTileWidth(), imageMap.getHeight() / map.getTileHeight());
 
         imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
