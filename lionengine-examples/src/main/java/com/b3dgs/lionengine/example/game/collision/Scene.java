@@ -80,8 +80,7 @@ class Scene
     public void load()
     {
         map.create(Core.MEDIA.create("map", "level.png"), Core.MEDIA.create("map", "sheets.xml"));
-        mapCollision.loadCollisions(Core.MEDIA.create("map", MapTileCollision.FORMULAS_FILE_NAME),
-                Core.MEDIA.create("map", MapTileCollision.GROUPS_FILE_NAME));
+        mapCollision.loadCollisions(Core.MEDIA.create("map", "formulas.xml"), Core.MEDIA.create("map", "groups.xml"));
         mapCollision.createCollisionDraw();
 
         final Services services = new Services();

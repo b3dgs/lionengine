@@ -17,7 +17,8 @@
  */
 
 /**
- * Tile based map handling with feature layer that will allow to customize the services provided by the map dynamically.
+ * Tile based map handling with {@link com.b3dgs.lionengine.game.Features} layer that will allow to customize the
+ * services provided by the map dynamically.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */

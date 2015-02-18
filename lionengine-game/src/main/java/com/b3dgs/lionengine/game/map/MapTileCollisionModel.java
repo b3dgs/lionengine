@@ -121,6 +121,10 @@ public class MapTileCollisionModel
     private final Map<String, CollisionGroup> groups;
     /** Collision draw cache. */
     private HashMap<CollisionFormula, ImageBuffer> collisionCache;
+    /** Formulas configuration media. */
+    private Media formulasConfig;
+    /** Groups configuration media. */
+    private Media groupsConfig;
 
     /**
      * Create the map tile collision.
@@ -233,13 +237,14 @@ public class MapTileCollisionModel
     /**
      * Load the collision formula. All previous collisions will be cleared.
      * 
-     * @param collisionFormulas The configuration collision formulas file.
+     * @param formulasConfig The configuration collision formulas file.
      */
-    private void loadCollisionFormulas(Media collisionFormulas)
+    private void loadCollisionFormulas(Media formulasConfig)
     {
-        Verbose.info(INFO_LOAD_FORMULAS, collisionFormulas.getFile().getPath());
+        Verbose.info(INFO_LOAD_FORMULAS, formulasConfig.getFile().getPath());
         removeCollisionFormulas();
-        final XmlNode nodeFormulas = Stream.loadXml(collisionFormulas);
+        this.formulasConfig = formulasConfig;
+        final XmlNode nodeFormulas = Stream.loadXml(formulasConfig);
         final ConfigCollisionFormula config = ConfigCollisionFormula.create(nodeFormulas);
         for (final CollisionFormula formula : config.getFormulas().values())
         {
@@ -251,13 +256,14 @@ public class MapTileCollisionModel
     /**
      * Load the collision groups. All previous groups will be cleared.
      * 
-     * @param collisionGroups The configuration collision groups file.
+     * @param groupsConfig The configuration collision groups file.
      */
-    private void loadCollisionGroups(Media collisionGroups)
+    private void loadCollisionGroups(Media groupsConfig)
     {
-        Verbose.info(INFO_LOAD_GROUPS, collisionGroups.getFile().getPath());
+        Verbose.info(INFO_LOAD_GROUPS, groupsConfig.getFile().getPath());
         removeCollisionGroups();
-        final XmlNode nodeGroups = Stream.loadXml(collisionGroups);
+        this.groupsConfig = groupsConfig;
+        final XmlNode nodeGroups = Stream.loadXml(groupsConfig);
         final Collection<CollisionGroup> groups = ConfigCollisionGroup.create(nodeGroups, this);
         for (final CollisionGroup group : groups)
         {
@@ -422,19 +428,6 @@ public class MapTileCollisionModel
      */
 
     @Override
-    public void createCollisionDraw()
-    {
-        clearCollisionDraw();
-        collisionCache = new HashMap<>(formulas.size());
-
-        for (final CollisionFormula collision : formulas.values())
-        {
-            final ImageBuffer buffer = createFunctionDraw(collision);
-            collisionCache.put(collision, buffer);
-        }
-    }
-
-    @Override
     public void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException
     {
         if (collisionFormulas.exists())
@@ -452,21 +445,41 @@ public class MapTileCollisionModel
     @Override
     public void saveCollisions() throws LionEngineException
     {
-        final Media formulas = Core.MEDIA.create(map.getSheetsConfig().getPath(), FORMULAS_FILE_NAME);
-        final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
-        for (final CollisionFormula formula : getCollisionFormulas())
+        if (formulasConfig != null)
         {
-            formulasRoot.add(ConfigCollisionFormula.export(formula));
+            final XmlNode formulasRoot = Stream.createXmlNode(ConfigCollisionFormula.FORMULAS);
+            for (final CollisionFormula formula : getCollisionFormulas())
+            {
+                formulasRoot.add(ConfigCollisionFormula.export(formula));
+            }
+            Stream.saveXml(formulasRoot, formulasConfig);
         }
-        Stream.saveXml(formulasRoot, formulas);
+        if (groupsConfig != null)
+        {
+            final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
+            for (final CollisionGroup group : getCollisionGroups())
+            {
+                groupsNode.add(ConfigCollisionGroup.export(group));
+            }
+            Stream.saveXml(groupsNode, groupsConfig);
+        }
+    }
 
-        final Media groups = Core.MEDIA.create(map.getSheetsConfig().getPath(), GROUPS_FILE_NAME);
-        final XmlNode groupsNode = Stream.createXmlNode(ConfigCollisionGroup.GROUPS);
-        for (final CollisionGroup group : getCollisionGroups())
+    /*
+     * MapTileCollision
+     */
+    
+    @Override
+    public void createCollisionDraw()
+    {
+        clearCollisionDraw();
+        collisionCache = new HashMap<>(formulas.size());
+    
+        for (final CollisionFormula collision : formulas.values())
         {
-            groupsNode.add(ConfigCollisionGroup.export(group));
+            final ImageBuffer buffer = createFunctionDraw(collision);
+            collisionCache.put(collision, buffer);
         }
-        Stream.saveXml(groupsNode, groups);
     }
 
     @Override

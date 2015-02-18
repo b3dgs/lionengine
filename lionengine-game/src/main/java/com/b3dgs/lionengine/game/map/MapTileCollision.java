@@ -30,45 +30,35 @@ import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
  * Represents the collision feature of a map tile.
- * <ul>
- * 
- * <pre>
- * {@code <lionengine:sheets xmlns:lionengine="http://lionengine.b3dgs.com">}
- *     {@code <lionengine:sheet>0.png</lionengine:sheet>}
- *     {@code <lionengine:sheet>1.png</lionengine:sheet>}
- *     ...
- * {@code </lionengine:sheets>}
- * </pre>
- * 
- * </li>
- * <li>{@value #FORMULAS_FILE_NAME} - defines the {@link CollisionFormula} which can be used.</li>
- * <li>{@value #GROUPS_FILE_NAME} - defines the {@link CollisionGroup} for each tiles.</li>
- * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see CollisionFormula
+ * @see CollisionGroup
  */
 public interface MapTileCollision
         extends MapTileFeature, Renderable
 {
-    /** Collision formulas file name. */
-    String FORMULAS_FILE_NAME = "formulas.xml";
-    /** Collision groups file name. */
-    String GROUPS_FILE_NAME = "groups.xml";
-
-    /**
-     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
-     */
-    void createCollisionDraw();
-
     /**
      * Load map collision from an external file.
      * 
-     * @param collisionFormulas The collision formulas descriptor.
-     * @param collisionGroups The tile collision groups descriptor.
+     * @param formulasConfig The collision formulas descriptor.
+     * @param groupsConfig The tile collision groups descriptor.
      * @throws LionEngineException If error when reading collisions.
      */
-    void loadCollisions(Media collisionFormulas, Media collisionGroups) throws LionEngineException;
+    void loadCollisions(Media formulasConfig, Media groupsConfig) throws LionEngineException;
+
+    /**
+     * Save the current collisions to the collision file.
+     * 
+     * @throws LionEngineException If error when saving collisions.
+     */
+    void saveCollisions() throws LionEngineException;
+
+    /**
+     * Create the collision draw surface. Must be called after map creation to enable collision rendering.
+     * Previous cache is cleared is exists.
+     */
+    void createCollisionDraw();
 
     /**
      * Clear the cached collision image created with {@link #createCollisionDraw()}.
@@ -122,13 +112,6 @@ public interface MapTileCollision
      * @return The collision result, <code>null</code> if nothing found.
      */
     CollisionResult computeCollision(Transformable transformable, CollisionCategory category);
-
-    /**
-     * Save the current collisions to the collision file.
-     * 
-     * @throws LionEngineException If error when saving collisions.
-     */
-    void saveCollisions() throws LionEngineException;
 
     /**
      * Get the collision formula from its name.

@@ -44,6 +44,7 @@ import com.b3dgs.lionengine.game.map.Tile;
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see ConfigCollisionGroup
+ * @see CollisionFormula
  */
 public class CollisionGroup
 {
