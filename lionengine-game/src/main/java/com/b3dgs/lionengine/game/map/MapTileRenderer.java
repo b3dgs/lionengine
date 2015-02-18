@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
+ * Copyright (C) 2013-2014 Byron 3D Games Studio (www.b3dgs.com) Pierre-Alexandre (contact@b3dgs.com)
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,17 +17,22 @@
  */
 package com.b3dgs.lionengine.game.map;
 
+import com.b3dgs.lionengine.core.Graphic;
+
 /**
- * Map tile feature interface. A feature is designed to extend the map tile services dynamically.
+ * Describe how the map tile rendering is performed. This will allow to customize map rendering.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MapTileFeature
+public interface MapTileRenderer
 {
     /**
-     * Get the original map tile reference owned by the feature.
+     * Render tile on its designed location.
      * 
-     * @return The map tile reference.
+     * @param g The graphic output.
+     * @param x The location x.
+     * @param y The location y.
+     * @param tile The tile to render.
      */
-    MapTile getMap();
+    void renderTile(Graphic g, Tile tile, int x, int y);
 }

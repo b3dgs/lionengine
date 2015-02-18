@@ -52,7 +52,7 @@ import com.b3dgs.lionengine.stream.FileWriting;
  * @see Tile
  */
 public interface MapTile
-        extends Renderable, Featurable<MapTileFeature>
+        extends MapTileRenderer, Renderable, Featurable<MapTileFeature>
 {
     /** Tile sheet node. */
     String NODE_TILE_SHEET = "lionengine:sheet";
@@ -164,6 +164,14 @@ public interface MapTile
      * Remove all tiles from map and clear internal data. Keep existing loaded tile sheets ({@link #loadSheets(Media)}).
      */
     void clear();
+
+    /**
+     * Set an external map tile renderer, defining how tiles are rendered.
+     * 
+     * @param renderer The renderer reference.
+     * @throws LionEngineException If renderer is <code>null</code>.
+     */
+    void setTileRenderer(MapTileRenderer renderer) throws LionEngineException;
 
     /**
      * Set a tile at specified map location.

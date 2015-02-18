@@ -22,28 +22,31 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
- * Map tile rastered representation.
+ * Map tile rastered representation. This will allow to apply a raster effect to map rendering, improving the number of
+ * color variation depending of the height.
+ * <p>
+ * Here the usage:
+ * </p>
+ * 
+ * <pre>
+ * {@link #loadSheets(Media, Media, boolean)}
+ * {@link MapTile#setTileRenderer(MapTileRenderer)} // Give reference to the MapTileRastered instance
+ * </pre>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface MapTileRastered
-        extends MapTileFeature
+        extends MapTileFeature, MapTileRenderer
 {
     /**
-     * Load map sheets as rastered.
+     * Load tile sheets as rastered.
      * 
-     * @param directory The sheets directory.
+     * @param sheetsConfig The file that define the sheets configuration.
+     * @param rasterConfig The raster file that define the colors.
+     * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
      * @throws LionEngineException If error when reading sheets.
      */
-    void loadSheets(Media directory) throws LionEngineException;
-
-    /**
-     * Set raster file and smoothed flag.
-     * 
-     * @param raster The raster media (may be <code>null</code>).
-     * @param smooth <code>true</code> for a smoothed raster (may be slower), <code>false</code> else.
-     */
-    void setRaster(Media raster, boolean smooth);
+    void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth) throws LionEngineException;
 
     /**
      * Get raster index from input tile (depending of its height).
@@ -54,11 +57,11 @@ public interface MapTileRastered
     int getRasterIndex(int ty);
 
     /**
-     * Get a tilesheet from its sheet and raster id.
+     * Get a tilesheet from its sheet and raster index.
      * 
      * @param sheet The sheet number
-     * @param rasterId The raster id.
+     * @param rasterIndex The raster index.
      * @return The tilesheet reference.
      */
-    SpriteTiled getRasterSheet(Integer sheet, int rasterId);
+    SpriteTiled getRasterSheet(Integer sheet, int rasterIndex);
 }

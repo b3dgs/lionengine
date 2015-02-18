@@ -51,7 +51,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * {@link #create(int, int)} // prepare memory to store tiles
  * {@link #loadSheets(Media)} // load tile sheets
  * </pre>
- * 
+ * <p>
+ * Or import a map from a level rip with {@link #create(Media, Media)}.
+ * </p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -85,15 +87,18 @@ public class MapTileGame
     private int heightInTile;
     /** Tiles map. */
     private List<List<Tile>> tiles;
+    /** Tile renderer. */
+    private MapTileRenderer renderer;
 
     /**
-     * Constructor base.
+     * Create a map tile.
      * 
      * @param viewer The viewer reference.
      * @param tileWidth The tile width (must be strictly positive).
      * @param tileHeight The tile height (must be strictly positive).
+     * @throws LionEngineException If invalid tile size.
      */
-    public MapTileGame(Viewer viewer, int tileWidth, int tileHeight)
+    public MapTileGame(Viewer viewer, int tileWidth, int tileHeight) throws LionEngineException
     {
         Check.superiorStrict(tileWidth, 0);
         Check.superiorStrict(tileHeight, 0);
@@ -103,6 +108,7 @@ public class MapTileGame
         this.tileHeight = tileHeight;
         sheets = new HashMap<>();
         features = new Features<>(MapTileFeature.class);
+        renderer = this;
         sheetsConfig = null;
     }
 
@@ -139,44 +145,12 @@ public class MapTileGame
                         {
                             final int x = tile.getX() - sx;
                             final int y = -tile.getY() - tile.getHeight() + sy + screenHeight;
-                            renderTile(g, tile, x, y);
+                            renderer.renderTile(g, tile, x, y);
                         }
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Render tile on its designed location (automatically called by
-     * {@link #render(Graphic, int, int, int, int, int, int, int)}).
-     * 
-     * @param g The graphic output.
-     * @param x The location x.
-     * @param y The location y.
-     * @param tile The tile to render.
-     */
-    protected void renderTile(Graphic g, Tile tile, int x, int y)
-    {
-        renderingTile(g, tile, tile.getSheet(), tile.getNumber(), x, y);
-    }
-
-    /**
-     * Render a specific tile to specified location.
-     * 
-     * @param g The graphic output.
-     * @param tile The tile to render.
-     * @param sheet The tile sheet.
-     * @param number The tile number.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    protected void renderingTile(Graphic g, Tile tile, Integer sheet, int number, int x, int y)
-    {
-        final SpriteTiled sprite = getSheet(sheet);
-        sprite.setLocation(x, y);
-        sprite.setTile(number);
-        sprite.render(g);
     }
 
     /**
@@ -452,6 +426,22 @@ public class MapTileGame
         render(g, viewer.getHeight(), (int) Math.ceil(viewer.getX()), (int) Math.ceil(viewer.getY()),
                 (int) Math.ceil(viewer.getWidth() / (double) tileWidth),
                 (int) Math.ceil(viewer.getHeight() / (double) tileHeight), -viewer.getViewX(), viewer.getViewY());
+    }
+
+    @Override
+    public void renderTile(Graphic g, Tile tile, int x, int y)
+    {
+        final SpriteTiled sprite = getSheet(tile.getSheet());
+        sprite.setLocation(x, y);
+        sprite.setTile(tile.getNumber());
+        sprite.render(g);
+    }
+
+    @Override
+    public void setTileRenderer(MapTileRenderer renderer) throws LionEngineException
+    {
+        Check.notNull(renderer);
+        this.renderer = renderer;
     }
 
     @Override

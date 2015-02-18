@@ -34,7 +34,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 import com.b3dgs.lionengine.game.trait.Rasterable;
 
 /**
- * Rastered version of a map tile game.
+ * Rastered map tile implementation.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -45,12 +45,8 @@ public class MapTileRasteredModel
     private final MapTile map;
     /** List of rastered sheets. */
     private final TreeMap<Integer, List<SpriteTiled>> rasterSheets;
-    /** File describing the raster. */
-    private Media rasterFile;
     /** Rasters smooth flag. */
     private boolean smooth;
-    /** Loaded state. */
-    private boolean rasterLoaded;
 
     /**
      * Create a map tile rastered.
@@ -61,44 +57,16 @@ public class MapTileRasteredModel
     {
         this.map = map;
         rasterSheets = new TreeMap<>();
-        rasterLoaded = false;
-    }
-
-    /**
-     * Render a specific tile to specified location.
-     * 
-     * @param g The graphic output.
-     * @param tile The tile to render.
-     * @param sheet The tile sheet.
-     * @param number The tile number.
-     * @param x The location x.
-     * @param y The location y.
-     */
-    protected void renderingTile(Graphic g, Tile tile, Integer sheet, int number, int x, int y)
-    {
-        final SpriteTiled raster;
-        if (rasterLoaded)
-        {
-            raster = getRasterSheet(sheet, getRasterIndex(tile.getY()));
-        }
-        else
-        {
-            raster = map.getSheet(sheet);
-        }
-        raster.setLocation(x, y);
-        raster.setTile(number);
-        raster.render(g);
     }
 
     /**
      * Load raster from data.
      * 
-     * @param directory The current tile directory.
      * @param sheet The current sheet.
      * @param rasters The rasters data.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void loadRaster(String directory, Integer sheet, int[][] rasters) throws LionEngineException
+    private void loadRaster(Integer sheet, int[][] rasters) throws LionEngineException
     {
         final int[] color = new int[rasters.length];
         final int[] colorNext = new int[rasters.length];
@@ -131,8 +99,7 @@ public class MapTileRasteredModel
                         colorNext[c] = color[c];
                     }
                 }
-                addRasterSheet(directory, sheet, i, color[0], color[1], color[2], colorNext[0], colorNext[1],
-                        colorNext[2]);
+                addRasterSheet(sheet, color[0], color[1], color[2], colorNext[0], colorNext[1], colorNext[2]);
             }
         }
     }
@@ -140,9 +107,7 @@ public class MapTileRasteredModel
     /**
      * Add a raster sheet.
      * 
-     * @param directory The current tiles directory.
      * @param sheet The current sheet.
-     * @param rasterID The raster id.
      * @param fr The first red.
      * @param fg The first green.
      * @param fb The first blue.
@@ -151,8 +116,8 @@ public class MapTileRasteredModel
      * @param eb The end blue.
      * @throws LionEngineException If arguments are invalid.
      */
-    private void addRasterSheet(String directory, Integer sheet, int rasterID, int fr, int fg, int fb, int er, int eg,
-            int eb) throws LionEngineException
+    private void addRasterSheet(Integer sheet, int fr, int fg, int fb, int er, int eg, int eb)
+            throws LionEngineException
     {
         final SpriteTiled original = map.getSheet(sheet);
         final ImageBuffer buf = original.getSurface();
@@ -173,29 +138,30 @@ public class MapTileRasteredModel
      */
 
     @Override
-    public void loadSheets(Media directory) throws LionEngineException
+    public void loadSheets(Media sheetsConfig, Media rasterConfig, boolean smooth) throws LionEngineException
     {
-        final String path = directory.getPath();
-        if (!rasterLoaded && rasterFile != null)
-        {
-            final Collection<Integer> sheets = map.getSheets();
-            final Iterator<Integer> itr = sheets.iterator();
-            final int[][] rasters = Core.GRAPHIC.loadRaster(rasterFile);
+        this.smooth = smooth;
 
-            while (itr.hasNext())
-            {
-                final Integer sheet = itr.next();
-                loadRaster(path, sheet, rasters);
-            }
-            rasterLoaded = true;
+        final int[][] rasters = Core.GRAPHIC.loadRaster(rasterConfig);
+        final Collection<Integer> sheets = map.getSheets();
+        final Iterator<Integer> itr = sheets.iterator();
+
+        while (itr.hasNext())
+        {
+            final Integer sheet = itr.next();
+            loadRaster(sheet, rasters);
         }
     }
 
     @Override
-    public void setRaster(Media raster, boolean smooth)
+    public void renderTile(Graphic g, Tile tile, int x, int y) throws LionEngineException
     {
-        rasterFile = raster;
-        this.smooth = smooth;
+        final Integer sheet = tile.getSheet();
+        final int number = tile.getNumber();
+        final SpriteTiled raster = getRasterSheet(sheet, getRasterIndex(tile.getY()));
+        raster.setLocation(x, y);
+        raster.setTile(number);
+        raster.render(g);
     }
 
     @Override
@@ -211,9 +177,9 @@ public class MapTileRasteredModel
     }
 
     @Override
-    public SpriteTiled getRasterSheet(Integer sheet, int rasterID)
+    public SpriteTiled getRasterSheet(Integer sheet, int rasterIndex)
     {
-        return rasterSheets.get(sheet).get(rasterID);
+        return rasterSheets.get(sheet).get(rasterIndex);
     }
 
     @Override
