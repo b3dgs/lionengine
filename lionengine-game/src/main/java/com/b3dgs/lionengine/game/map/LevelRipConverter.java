@@ -29,7 +29,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to convert a map image to a map level format.
- * The color [0-128-128] is ignored (can be used to skip tile, in order to improve performance).
+ * The color [0-128-128] ({@link #IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
+ * performance).
  * <p>
  * Example:
  * </p>
@@ -52,7 +53,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class LevelRipConverter
 {
     /** Ignored color. */
-    private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
+    public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /** Map reference. */
     private final MapTile map;

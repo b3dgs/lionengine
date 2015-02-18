@@ -54,7 +54,9 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * <p>
  * Or import a map from a level rip with {@link #create(Media, Media)}.
  * </p>
+ * <p>
  * A simple call to {@link #load(FileReading)} will automatically perform theses operations.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Tile

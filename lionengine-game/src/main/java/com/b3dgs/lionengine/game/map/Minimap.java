@@ -28,16 +28,25 @@ import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.drawable.Image;
 
 /**
- * Minimap layer representation of a map tile.
+ * Minimap representation of a map tile. This can be used to represent strategic view of a map.
+ * <p>
+ * A call to {@link #load(boolean)} is needed once the {@link MapTile} as been created / loaded, and also each time
+ * modification occurs on the map.
+ * </p>
+ * <p>
+ * Minimap can be customized by overriding {@link #getTilePixelColor(Tile)} to change the tile color representation for
+ * each tile depending of its type.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see MapTile
  */
 public class Minimap
         implements Image
 {
     /** Map reference. */
     private final MapTile map;
-    /** Minimap reference. */
+    /** Minimap image reference. */
     private ImageBuffer minimap;
     /** Origin reference. */
     private Origin origin;
