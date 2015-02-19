@@ -101,30 +101,6 @@ public class TileGame
     }
 
     @Override
-    public int getLeft()
-    {
-        return getX();
-    }
-
-    @Override
-    public int getRight()
-    {
-        return getX() + getWidth() - 1;
-    }
-
-    @Override
-    public int getTop()
-    {
-        return getY() + getHeight() - 1;
-    }
-
-    @Override
-    public int getBottom()
-    {
-        return getY();
-    }
-
-    @Override
     public int getWidth()
     {
         return width;
@@ -167,7 +143,7 @@ public class TileGame
     }
 
     @Override
-    public Iterable<?> getFeatures()
+    public Iterable<? extends TileFeature> getFeatures()
     {
         return features.getAll();
     }

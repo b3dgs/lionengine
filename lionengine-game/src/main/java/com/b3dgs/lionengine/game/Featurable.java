@@ -49,5 +49,5 @@ public interface Featurable<F>
      * 
      * @return The supported features.
      */
-    Iterable<?> getFeatures();
+    Iterable<? extends F> getFeatures();
 }

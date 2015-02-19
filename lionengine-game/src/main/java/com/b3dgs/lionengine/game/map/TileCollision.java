@@ -27,8 +27,13 @@ import com.b3dgs.lionengine.game.collision.CollisionFormula;
  * <ul>
  * <li><code>formulas</code> : collision formulas used</li>
  * </ul>
+ * <p>
+ * This allows to compute collision from existing {@link CollisionFormula}, with a {@link CollisionCategory} as input
+ * (which represents the object entering in collision).
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionFormula
  */
 public interface TileCollision
         extends TileFeature
@@ -60,25 +65,25 @@ public interface TileCollision
     void setGroup(String name);
 
     /**
-     * Get the horizontal collision location between the tile and the transformable.
+     * Get the horizontal collision location between the tile and the movement vector.
      * 
      * @param category The collision category.
      * @param ox The old horizontal location.
      * @param oy The old vertical location.
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
      * @return The horizontal collision (<code>null</code> if none).
      */
     Double getCollisionX(CollisionCategory category, double ox, double oy, double x, double y);
 
     /**
-     * Get the vertical collision location between the tile and the transformable.
+     * Get the vertical collision location between the tile and the movement vector.
      * 
      * @param category The collision category.
      * @param ox The old horizontal location.
      * @param oy The old vertical location.
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * @param x The current horizontal location.
+     * @param y The current vertical location.
      * @return The vertical collision (<code>null</code> if none).
      */
     Double getCollisionY(CollisionCategory category, double ox, double oy, double x, double y);

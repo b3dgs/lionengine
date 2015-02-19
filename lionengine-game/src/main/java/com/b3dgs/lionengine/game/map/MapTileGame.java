@@ -567,7 +567,7 @@ public class MapTileGame
     }
 
     @Override
-    public Iterable<?> getFeatures()
+    public Iterable<? extends MapTileFeature> getFeatures()
     {
         return features.getAll();
     }

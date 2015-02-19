@@ -26,8 +26,15 @@ import com.b3dgs.lionengine.game.Featurable;
  * <li><code>number</code> : tile number inside tilesheet</li>
  * <li><code>x & y</code> : real location on map</li>
  * </ul>
+ * <p>
+ * A tile represents a surface reference, localized on a {@link MapTile}.
+ * </p>
+ * <p>
+ * Services can be extended by using the {@link TileFeature} layer.
+ * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see MapTile
  */
 public interface Tile
         extends Featurable<TileFeature>
@@ -59,34 +66,6 @@ public interface Tile
      * @param y The tile location y.
      */
     void setY(int y);
-
-    /**
-     * Get the left position of the tile.
-     * 
-     * @return The left position of the tile.
-     */
-    int getLeft();
-
-    /**
-     * Get the right position of the tile.
-     * 
-     * @return The right position of the tile.
-     */
-    int getRight();
-
-    /**
-     * Get the top position of the tile.
-     * 
-     * @return The top position of the tile.
-     */
-    int getTop();
-
-    /**
-     * Get the bottom position of the tile.
-     * 
-     * @return The bottom position of the tile.
-     */
-    int getBottom();
 
     /**
      * Get the width.
