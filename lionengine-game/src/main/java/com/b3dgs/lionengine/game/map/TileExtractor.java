@@ -29,7 +29,8 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to extract unique tiles from a level rip.
- * The color [0-128-128] is ignored (can be used to skip tile, in order to improve performance).
+ * The color [0-128-128] ({@link #IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
+ * performance).
  * <p>
  * Example (will scan level.png, using a 16*16 tile size, and store result in sheet.png 256*256):
  * </p>
@@ -43,7 +44,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 public final class TileExtractor
 {
     /** Ignored color. */
-    private static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
+    public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
 
     /**
      * Start tiles extraction.
@@ -62,6 +63,37 @@ public final class TileExtractor
     {
         final TileExtractor extractor = new TileExtractor(levelrip, tilew, tileh, destW, destH);
         extractor.start(out);
+    }
+
+    /**
+     * Compare two tiles by checking all pixels.
+     * 
+     * @param tw The tile width.
+     * @param th The tile height.
+     * @param a The first tile image.
+     * @param xa The location x.
+     * @param ya The location y.
+     * @param b The second tile image.
+     * @param xb The location x.
+     * @param yb The location y.
+     * @return <code>true</code> if equals, <code>false</code> else.
+     */
+    static boolean compareTile(int tw, int th, ImageBuffer a, int xa, int ya, ImageBuffer b, int xb, int yb)
+    {
+        // Check tiles pixels
+        for (int x = 0; x < tw; x++)
+        {
+            for (int y = 0; y < th; y++)
+            {
+                // Compare color
+                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
+                {
+                    return false;
+                }
+            }
+        }
+        // Tiles are equal
+        return true;
     }
 
     /** Image map reference. */
@@ -188,7 +220,7 @@ public final class TileExtractor
                 final int ya = y * tileh;
                 final int xb = surfaceCurrentTileX * tilew;
                 final int yb = surfaceCurrentTileY * tileh;
-                if (compareTile(tileSprite, xa, ya, sheet, xb, yb))
+                if (compareTile(tilew, tileh, tileSprite, xa, ya, sheet, xb, yb))
                 {
                     return true;
                 }
@@ -196,34 +228,5 @@ public final class TileExtractor
         }
         // No tile found
         return false;
-    }
-
-    /**
-     * Compare two tiles by checking all pixels.
-     * 
-     * @param a The first tile image.
-     * @param xa The location x.
-     * @param ya The location y.
-     * @param b The second tile image.
-     * @param xb The location x.
-     * @param yb The location y.
-     * @return <code>true</code> if equals, <code>false</code> else.
-     */
-    private boolean compareTile(ImageBuffer a, int xa, int ya, ImageBuffer b, int xb, int yb)
-    {
-        // Check tiles pixels
-        for (int x = 0; x < tilew; x++)
-        {
-            for (int y = 0; y < tileh; y++)
-            {
-                // Compare color
-                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
-                {
-                    return false;
-                }
-            }
-        }
-        // Tiles are equal
-        return true;
     }
 }
