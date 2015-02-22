@@ -37,7 +37,7 @@ public class MirrorableModel
     private boolean requested;
 
     /**
-     * Constructor.
+     * Create a mirrorable model.
      * 
      * @param owner The owner reference.
      */

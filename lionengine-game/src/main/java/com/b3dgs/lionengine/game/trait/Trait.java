@@ -23,6 +23,7 @@ import com.b3dgs.lionengine.game.handler.ObjectGame;
  * Represents something that can be delegated to perform specialized computing and reduce owner visible complexity.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ObjectGame
  */
 public interface Trait
 {

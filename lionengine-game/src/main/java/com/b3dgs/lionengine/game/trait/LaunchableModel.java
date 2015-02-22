@@ -64,9 +64,8 @@ public class LaunchableModel
      */
 
     @Override
-    public void launch(double x, double y)
+    public void launch()
     {
-        transformable.teleport(x, y);
         timer.start();
     }
 
@@ -78,6 +77,12 @@ public class LaunchableModel
             vector.update(extrp);
             transformable.moveLocation(extrp, vector);
         }
+    }
+
+    @Override
+    public void setLocation(double x, double y)
+    {
+        transformable.teleport(x, y);
     }
 
     @Override

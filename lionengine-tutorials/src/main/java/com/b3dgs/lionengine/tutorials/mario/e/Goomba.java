@@ -22,11 +22,11 @@ import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableListener;
 import com.b3dgs.lionengine.game.trait.Transformable;
 
 /**
@@ -36,7 +36,7 @@ import com.b3dgs.lionengine.game.trait.Transformable;
  */
 class Goomba
         extends Entity
-        implements InputDeviceDirectional, ComponentCollisionListener
+        implements InputDeviceDirectional, CollidableListener
 {
     /** Goomba media. */
     public static final Media CONFIG = Core.MEDIA.create("entity", "Goomba.xml");

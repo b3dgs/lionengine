@@ -15,19 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
-
-import com.b3dgs.lionengine.game.trait.Collidable;
+package com.b3dgs.lionengine.game.trait;
 
 /**
- * Notify collision events from the {@link ComponentCollision}.
+ * Notify collision events between two {@link Collidable}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ComponentCollisionListener
+public interface CollidableListener
 {
     /**
-     * Notify when a collision occurred with another collidable.
+     * Notify when a collision occurred with another {@link Collidable}.
      * 
      * @param collidable The collidable reference.
      */

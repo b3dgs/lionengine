@@ -58,8 +58,6 @@ public class RasterableModel
     private final int tileHeight;
     /** Last raster. */
     private SpriteAnimated raster;
-    /** Index. */
-    private int index;
 
     /**
      * Create a rasterable model. The owner must have the following traits:
@@ -70,12 +68,12 @@ public class RasterableModel
      * </ul>
      * 
      * @param owner The owner reference.
-     * @param context The context reference.
+     * @param services The services reference.
      * @param setup The setup reference.
      * @param tileHeight The tile height value (must be strictly positive).
      * @throws LionEngineException If missing {@link Trait}.
      */
-    public RasterableModel(ObjectGame owner, Services context, SetupSurfaceRastered setup, int tileHeight)
+    public RasterableModel(ObjectGame owner, Services services, SetupSurfaceRastered setup, int tileHeight)
             throws LionEngineException
     {
         super(owner);
@@ -85,7 +83,7 @@ public class RasterableModel
         localizable = owner.getTrait(Localizable.class);
         mirrorable = owner.getTrait(Mirrorable.class);
         animator = owner.getTrait(Animator.class);
-        viewer = context.get(Viewer.class);
+        viewer = services.get(Viewer.class);
         rastersAnim = setup.rastersAnim;
         rastered = setup.rasterFile != null;
         smooth = setup.smoothRaster;
@@ -98,7 +96,7 @@ public class RasterableModel
     @Override
     public void update(double extrp)
     {
-        index = getRasterIndex(localizable.getY());
+        final int index = getRasterIndex(localizable.getY());
         raster = getRasterAnim(index);
         if (raster != null)
         {

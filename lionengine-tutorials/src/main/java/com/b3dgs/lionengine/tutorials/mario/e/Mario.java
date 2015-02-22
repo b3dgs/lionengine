@@ -21,9 +21,9 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableListener;
 
 /**
  * Mario specific implementation.
@@ -32,7 +32,7 @@ import com.b3dgs.lionengine.game.trait.Collidable;
  */
 class Mario
         extends Entity
-        implements ComponentCollisionListener
+        implements CollidableListener
 {
     /** Mario media. */
     public static final Media CONFIG = Core.MEDIA.create("entity", "Mario.xml");

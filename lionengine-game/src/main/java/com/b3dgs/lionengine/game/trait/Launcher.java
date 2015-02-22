@@ -22,9 +22,11 @@ import com.b3dgs.lionengine.Localizable;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
- * Represents something that can throw {@link Launchable} at a defined rate.
+ * Represents something that can throw a {@link Launchable} at a defined rate from a defined location using a specified
+ * vector.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Launchable
  */
 public interface Launcher
         extends Trait

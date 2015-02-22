@@ -60,6 +60,9 @@ public class TileCollidableModel
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigCollisionCategory}.
+     * </p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
@@ -69,7 +72,7 @@ public class TileCollidableModel
      * @param owner The owner reference.
      * @param configurer The configurer reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait}.
+     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
      */
     public TileCollidableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
     {
@@ -82,9 +85,9 @@ public class TileCollidableModel
     }
 
     /**
-     * Update the collision tile category.
+     * Update the tile collision computation.
      * 
-     * @param category The category reference.
+     * @param category The collision category reference.
      */
     private void update(CollisionCategory category)
     {

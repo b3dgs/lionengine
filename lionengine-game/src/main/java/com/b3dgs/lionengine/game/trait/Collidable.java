@@ -21,7 +21,6 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.geom.Rectangle;
 
 /**
@@ -30,14 +29,14 @@ import com.b3dgs.lionengine.geom.Rectangle;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 public interface Collidable
-        extends Trait, Updatable, Renderable, ComponentCollisionListener
+        extends Trait, Updatable, Renderable, CollidableListener
 {
     /**
      * Add a collision listener.
      * 
      * @param listener The listener reference.
      */
-    void addListener(ComponentCollisionListener listener);
+    void addListener(CollidableListener listener);
 
     /**
      * Add a collision to use.

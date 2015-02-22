@@ -30,7 +30,6 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.geom.Geom;
 import com.b3dgs.lionengine.geom.Polygon;
@@ -50,7 +49,7 @@ public class CollidableModel
     /** The viewer reference. */
     private final Viewer viewer;
     /** The collision listener reference. */
-    private final Collection<ComponentCollisionListener> listeners;
+    private final Collection<CollidableListener> listeners;
     /** The collisions used. */
     private final Collection<Collision> collisions;
     /** The ignored collidables. */
@@ -82,7 +81,7 @@ public class CollidableModel
      * 
      * @param owner The owner reference.
      * @param services The services reference.
-     * @throws LionEngineException If missing {@link Trait}.
+     * @throws LionEngineException If missing {@link Trait} or {@link Services}.
      */
     public CollidableModel(ObjectGame owner, Services services) throws LionEngineException
     {
@@ -104,7 +103,7 @@ public class CollidableModel
      */
 
     @Override
-    public void addListener(ComponentCollisionListener listener)
+    public void addListener(CollidableListener listener)
     {
         listeners.add(listener);
     }
@@ -229,7 +228,7 @@ public class CollidableModel
     @Override
     public void notifyCollided(Collidable collidable)
     {
-        for (final ComponentCollisionListener listener : listeners)
+        for (final CollidableListener listener : listeners)
         {
             listener.notifyCollided(collidable);
         }

@@ -24,27 +24,35 @@ import com.b3dgs.lionengine.game.Force;
  * Represents something which can be launched with a specified vector.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Launcher
  */
 public interface Launchable
         extends Trait, Updatable
 {
     /**
-     * Initiate launch by using the defined vector with {@link #setVector(Force)} starting at this location.
-     * 
-     * @param x The horizontal location.
-     * @param y The vertical location.
+     * Initiate launch by using the defined vector with {@link #setVector(Force)} starting at the location defined by
+     * {@link #setLocation(double, double)}.
      */
-    void launch(double x, double y);
+    void launch();
 
     /**
-     * Set the vector to use when launched.
+     * Set the launch starting location. Must be called before {@link #launch()}.
+     * 
+     * @param x The starting horizontal location.
+     * @param y The starting vertical location.
+     */
+    void setLocation(double x, double y);
+
+    /**
+     * Set the vector to use when launched. Must be called before {@link #launch()}.
      * 
      * @param force The force to use.
      */
     void setVector(Force force);
 
     /**
-     * Set the delay time before being effectively launched after a call to {@link #launch(double, double)}.
+     * Set the delay time before being effectively launched after a call to {@link #launch()}. Must be called before
+     * {@link #launch()}.
      * 
      * @param time The delay time in millisecond.
      */

@@ -53,7 +53,7 @@ public interface Rasterable
     SpriteAnimated getRasterAnim(int rasterIndex);
 
     /**
-     * Check if raster if activated.
+     * Check if raster is activated.
      * 
      * @return <code>true</code> if rastered, <code>false</code> else.
      */

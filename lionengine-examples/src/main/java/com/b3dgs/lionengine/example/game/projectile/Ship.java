@@ -31,7 +31,6 @@ import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.component.ComponentCollisionListener;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.factory.Factory;
@@ -39,6 +38,7 @@ import com.b3dgs.lionengine.game.factory.SetupSurface;
 import com.b3dgs.lionengine.game.handler.Handler;
 import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableListener;
 import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
@@ -50,7 +50,7 @@ import com.b3dgs.lionengine.game.trait.TransformableModel;
  */
 class Ship
         extends ObjectGame
-        implements Updatable, Renderable, ComponentCollisionListener
+        implements Updatable, Renderable, CollidableListener
 {
     /** Media. */
     public static final Media MEDIA = Core.MEDIA.create("Ship.xml");

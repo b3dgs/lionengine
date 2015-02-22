@@ -60,7 +60,10 @@ public class TransformableModel
     }
 
     /**
-     * Create a transformable and load its configuration. Configuration must be compatible with {@link ConfigSize}.
+     * Create a transformable and load its configuration.
+     * <p>
+     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigSize}.
+     * </p>
      * 
      * @param owner The owner reference.
      * @param configurer The configurer reference.

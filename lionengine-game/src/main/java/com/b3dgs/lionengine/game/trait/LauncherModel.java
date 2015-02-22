@@ -86,18 +86,18 @@ public class LauncherModel
      * 
      * @param owner The owner reference.
      * @param configurer The configuration reference.
-     * @param context The context reference.
+     * @param services The services reference.
      * @throws LionEngineException If missing {@link Trait}, bad {@link Configurer} or {@link Services} services.
      */
-    public LauncherModel(ObjectGame owner, Configurer configurer, Services context) throws LionEngineException
+    public LauncherModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
     {
         super(owner);
         localizable = owner.getTrait(Localizable.class);
         listeners = new HashSet<>();
         fire = new Timing();
 
-        factory = context.get(Factory.class);
-        handler = context.get(Handler.class);
+        factory = services.get(Factory.class);
+        handler = services.get(Handler.class);
 
         final ConfigLauncher config = ConfigLauncher.create(configurer);
         launchables = config.getLaunchables();
@@ -120,8 +120,9 @@ public class LauncherModel
             {
                 final Launchable projectile = object.getTrait(Launchable.class);
                 projectile.setDelay(launchable.getDelay());
+                projectile.setLocation(localizable.getX() + offsetX, localizable.getY() + offsetY);
                 projectile.setVector(computeVector(launchable.getVector()));
-                projectile.launch(localizable.getX() + offsetX, localizable.getY() + offsetY);
+                projectile.launch();
             }
             catch (final LionEngineException exception)
             {
