@@ -37,6 +37,8 @@ public class BodyModel
     private final Force force;
     /** Maximum gravity value. */
     private final Force gravityMax;
+    /** Gravity used. */
+    private double gravity;
     /** Vector used. */
     private Direction[] vectors;
     /** Body mass. */
@@ -63,6 +65,7 @@ public class BodyModel
         force = new Force();
         gravityMax = new Force();
         vectors = new Direction[0];
+        gravity = Body.GRAVITY_EARTH;
     }
 
     /*
@@ -96,6 +99,12 @@ public class BodyModel
     }
 
     @Override
+    public void setGravity(double gravity)
+    {
+        this.gravity = gravity;
+    }
+
+    @Override
     public void setGravityMax(double max)
     {
         gravityMax.setDirection(0.0, -max);
@@ -118,6 +127,6 @@ public class BodyModel
     @Override
     public double getWeight()
     {
-        return mass * Body.GRAVITY_EARTH;
+        return mass * gravity;
     }
 }

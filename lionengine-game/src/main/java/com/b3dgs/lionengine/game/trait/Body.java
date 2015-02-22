@@ -28,11 +28,15 @@ import com.b3dgs.lionengine.game.Direction;
 public interface Body
         extends Trait, Updatable
 {
-    /** Gravity of earth (in m/s). */
+    /** Gravity of Earth (in m/s²). */
     public static final double GRAVITY_EARTH = 9.80665;
+    /** Gravity of Mars (in m/s²). */
+    public static final double GRAVITY_MARS = 3.71;
+    /** Gravity of the Moon (in m/s²). */
+    public static final double GRAVITY_MOON = 1.624;
 
     /**
-     * Reset gravity force (usually when hit the ground).
+     * Reset current gravity force (usually when hit the ground).
      */
     void resetGravity();
 
@@ -49,6 +53,13 @@ public interface Body
      * @param desiredFps The desired fps.
      */
     void setDesiredFps(int desiredFps);
+
+    /**
+     * Set the gravity to use. {@link #GRAVITY_EARTH} is used by default.
+     * 
+     * @param gravity The gravity to use (in m/s²).
+     */
+    void setGravity(double gravity);
 
     /**
      * Set the maximum gravity value.
@@ -72,7 +83,7 @@ public interface Body
     double getMass();
 
     /**
-     * Get body weight.
+     * Get body weight (mass * gravity).
      * 
      * @return The body weight.
      */
