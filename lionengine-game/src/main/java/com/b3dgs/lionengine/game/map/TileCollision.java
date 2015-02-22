@@ -39,7 +39,7 @@ public interface TileCollision
         extends TileFeature
 {
     /**
-     * Add a formula.
+     * Add a collision formula.
      * 
      * @param formula The formula to add.
      */

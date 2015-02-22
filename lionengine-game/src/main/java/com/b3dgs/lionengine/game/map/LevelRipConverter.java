@@ -19,7 +19,6 @@ package com.b3dgs.lionengine.game.map;
 
 import java.util.Iterator;
 
-import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.ImageBuffer;
 import com.b3dgs.lionengine.core.Media;
@@ -29,7 +28,7 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
 
 /**
  * This class allows to convert a map image to a map level format.
- * The color [0-128-128] ({@link #IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
+ * The color [0-128-128] ({@link TileExtractor#IGNORED_COLOR}) is ignored (can be used to skip tile, in order to improve
  * performance).
  * <p>
  * Example:
@@ -52,21 +51,14 @@ import com.b3dgs.lionengine.drawable.SpriteTiled;
  */
 public final class LevelRipConverter
 {
-    /** Ignored color. */
-    public static final int IGNORED_COLOR = new ColorRgba(0, 128, 128).getRgba();
-
     /** Map reference. */
     private final MapTile map;
     /** Level rip image. */
     private final Sprite imageMap;
-    /** Level rip height in tile. */
-    private final int imageMapTilesInY;
     /** Level rip width in tile. */
     private final int imageMapTilesInX;
-    /** Thread computation range start. */
-    private final int startX;
-    /** Thread computation range end. */
-    private final int endX;
+    /** Level rip height in tile. */
+    private final int imageMapTilesInY;
     /** Number of errors. */
     private int errors;
 
@@ -85,13 +77,11 @@ public final class LevelRipConverter
         imageMap = Drawable.loadSprite(levelrip);
         imageMap.load(false);
 
-        map.loadSheets(sheetsConfig);
-        map.create(imageMap.getWidth() / map.getTileWidth(), imageMap.getHeight() / map.getTileHeight());
-
-        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
         imageMapTilesInX = imageMap.getWidth() / map.getTileWidth();
-        startX = 0;
-        endX = imageMapTilesInX;
+        imageMapTilesInY = imageMap.getHeight() / map.getTileHeight();
+
+        map.loadSheets(sheetsConfig);
+        map.create(imageMapTilesInX, imageMapTilesInY);
 
         errors = 0;
     }
@@ -105,17 +95,15 @@ public final class LevelRipConverter
         final ImageBuffer tileRef = imageMap.getSurface();
         for (int imageMapCurrentTileY = 0; imageMapCurrentTileY < imageMapTilesInY; imageMapCurrentTileY++)
         {
-            for (int imageMapCurrentTileX = startX; imageMapCurrentTileX < endX; imageMapCurrentTileX++)
+            for (int imageMapCurrentTileX = 0; imageMapCurrentTileX < imageMapTilesInX; imageMapCurrentTileX++)
             {
-                // Skip blank tile of image map (0, 128, 128)
                 final int imageColor = tileRef.getRgb(imageMapCurrentTileX * map.getTileWidth() + 1,
                         imageMapCurrentTileY * map.getTileHeight() + 1);
-                if (LevelRipConverter.IGNORED_COLOR != imageColor)
+                // Skip blank tile of image map
+                if (TileExtractor.IGNORED_COLOR != imageColor)
                 {
                     // Search if tile is on sheet and get it
                     final Tile tile = searchForTile(tileRef, imageMapCurrentTileX, imageMapCurrentTileY);
-
-                    // A tile has been found
                     if (tile != null)
                     {
                         map.setTile(imageMapCurrentTileX, map.getHeightInTile() - 1 - imageMapCurrentTileY, tile);
@@ -176,7 +164,7 @@ public final class LevelRipConverter
                     final int xb = surfaceCurrentTileX * tw;
                     final int yb = surfaceCurrentTileY * th;
 
-                    if (compareTile(tileSprite, xa, ya, sheetImage, xb, yb))
+                    if (TileExtractor.compareTile(tw, th, tileSprite, xa, ya, sheetImage, xb, yb))
                     {
                         final Tile tile = map.createTile();
                         tile.setSheet(sheet);
@@ -190,34 +178,5 @@ public final class LevelRipConverter
 
         // No tile found
         return null;
-    }
-
-    /**
-     * Compare two tiles by checking all pixels.
-     * 
-     * @param a The first tile image.
-     * @param xa The location x.
-     * @param ya The location y.
-     * @param b The second tile image.
-     * @param xb The location x.
-     * @param yb The location y.
-     * @return <code>true</code> if equals, <code>false</code> else.
-     */
-    private boolean compareTile(ImageBuffer a, int xa, int ya, ImageBuffer b, int xb, int yb)
-    {
-        // Check tiles pixels
-        for (int x = 0; x < map.getTileWidth(); x++)
-        {
-            for (int y = 0; y < map.getTileHeight(); y++)
-            {
-                // Compare color
-                if (a.getRgb(x + xa, y + ya) != b.getRgb(x + xb, y + yb))
-                {
-                    return false;
-                }
-            }
-        }
-        // Tiles are equal
-        return true;
     }
 }
