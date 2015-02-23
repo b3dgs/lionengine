@@ -28,29 +28,32 @@ import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collision category configuration from a configurer file.
+ * Represents the collision category configuration from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionCategory
  */
 public final class ConfigCollisionCategory
 {
-    /** The category node name. */
+    /** Category node name. */
     public static final String CATEGORY = Configurer.PREFIX + "category";
-    /** The category name attribute. */
+    /** Category attribute name. */
     public static final String NAME = "name";
-    /** The category axis attribute. */
+    /** Category axis attribute. */
     public static final String AXIS = "axis";
-    /** The horizontal offset attribute. */
+    /** Category attribute horizontal offset. */
     public static final String X = "x";
-    /** The vertical offset attribute. */
+    /** Category attribute vertical offset. */
     public static final String Y = "y";
+    /** Unknown axis error. */
+    private static final String ERROR_AXIS = "Unknown axis: ";
 
     /**
-     * Create the categories nodes.
+     * Create the categories data from nodes.
      * 
      * @param configurer The configurer reference.
      * @param map The map reference.
-     * @return The category collisions instance.
+     * @return The category collisions data.
      * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionCategory> create(Configurer configurer, MapTileCollision map)
@@ -66,7 +69,7 @@ public final class ConfigCollisionCategory
     }
 
     /**
-     * Create the categories node.
+     * Create the category data from node.
      * 
      * @param root The root reference.
      * @param map The map reference.
@@ -82,8 +85,16 @@ public final class ConfigCollisionCategory
             final CollisionGroup group = map.getCollisionGroup(groupName);
             groups.add(group);
         }
-        return new CollisionCategory(root.readString(NAME), Axis.valueOf(root.readString(AXIS)), root.readInteger(X),
-                root.readInteger(Y), groups);
+        final String axis = root.readString(AXIS);
+        try
+        {
+            return new CollisionCategory(root.readString(NAME), Axis.valueOf(axis), root.readInteger(X),
+                    root.readInteger(Y), groups);
+        }
+        catch (final IllegalArgumentException exception)
+        {
+            throw new LionEngineException(ERROR_AXIS, axis);
+        }
     }
 
     /**

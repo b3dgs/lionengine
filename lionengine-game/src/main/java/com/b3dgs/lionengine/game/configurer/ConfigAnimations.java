@@ -32,9 +32,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the animations data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  * @see Animation
- * @see XmlNode
  */
 public class ConfigAnimations
 {
@@ -54,11 +52,11 @@ public class ConfigAnimations
     public static final String ANIMATION_REPEAT = "repeat";
 
     /**
-     * Create the size node.
+     * Create the animation data from configurer.
      * 
      * @param configurer The configurer reference.
-     * @return The config animations instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The animations configuration instance.
+     * @throws LionEngineException If unable to read data.
      */
     public static ConfigAnimations create(Configurer configurer)
     {
@@ -73,7 +71,13 @@ public class ConfigAnimations
     }
 
     /**
-     * Create an animation from its node.
+     * Create animation data from node.
+     * Example:
+     * 
+     * <pre>
+     * {@code<lionengine:animation name="walk" start="1" end="2" step="1" speed="0.25" reversed="false"
+     * repeat="true"/>}
+     * </pre>
      * 
      * @param node The animation node.
      * @return The animation instance.

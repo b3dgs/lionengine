@@ -27,9 +27,10 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collisions formula from a configurer node.
+ * Represents the collisions formula from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionFormula
  */
 public final class ConfigCollisionFormula
 {
@@ -41,10 +42,10 @@ public final class ConfigCollisionFormula
     public static final String NAME = "name";
 
     /**
-     * Create the formula config.
+     * Create the formula data from node.
      * 
      * @param root The root reference.
-     * @return The config formula instance.
+     * @return The collision formula data.
      * @throws LionEngineException If error when reading data.
      */
     public static ConfigCollisionFormula create(XmlNode root) throws LionEngineException
@@ -60,7 +61,7 @@ public final class ConfigCollisionFormula
     }
 
     /**
-     * Save the current map collisions to the collision formula file.
+     * Export the current formula data to the formula node.
      * 
      * @param formula The formula reference.
      * @return The exported node.

@@ -23,9 +23,10 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collisions constraint from a configurer node.
+ * Represents the collisions constraint from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionConstraint
  */
 public final class ConfigCollisionConstraint
 {
@@ -41,11 +42,11 @@ public final class ConfigCollisionConstraint
     public static final String RIGHT = "right";
 
     /**
-     * Create the formula config.
+     * Create the collision constraint data from node.
      * 
      * @param node The node reference.
-     * @return The collision constraint instance.
-     * @throws LionEngineException If error when reading data.
+     * @return The collision constraint data.
+     * @throws LionEngineException If error when reading node.
      */
     public static CollisionConstraint create(XmlNode node) throws LionEngineException
     {

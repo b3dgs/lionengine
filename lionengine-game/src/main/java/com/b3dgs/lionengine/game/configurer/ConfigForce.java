@@ -22,11 +22,10 @@ import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the force data from a configurer node.
+ * Represents the force data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
+ * @see Force
  */
 public class ConfigForce
 {
@@ -42,54 +41,26 @@ public class ConfigForce
     public static final String FORCE_SENSIBILITY = "sensibility";
 
     /**
-     * Create the frames node.
+     * Create the force data from node.
      * 
      * @param root The root reference.
-     * @return The frames node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The force data.
+     * @throws LionEngineException If unable to read node.
      */
-    public static ConfigForce create(XmlNode root) throws LionEngineException
+    public static Force create(XmlNode root) throws LionEngineException
     {
         final XmlNode node = root.getChild(FORCE);
-        return new ConfigForce(node.readDouble(FORCE_VX), node.readDouble(FORCE_VY), node.readDouble(FORCE_VELOCITY),
-                node.readDouble(FORCE_SENSIBILITY));
+        final Force force = new Force(node.readDouble(FORCE_VX), node.readDouble(FORCE_VY));
+        force.setVelocity(node.readDouble(FORCE_VELOCITY));
+        force.setSensibility(node.readDouble(FORCE_SENSIBILITY));
+        return force;
     }
-
-    /** The horizontal force. */
-    private final double vx;
-    /** The vertical force. */
-    private final double vy;
-    /** The velocity. */
-    private final double velocity;
-    /** The sensibility. */
-    private final double sensibility;
 
     /**
      * Constructor.
-     * 
-     * @param vx The horizontal force.
-     * @param vy The vertical force.
-     * @param velocity The velocity value.
-     * @param sensibility The sensibility value.
      */
-    public ConfigForce(double vx, double vy, double velocity, double sensibility)
+    private ConfigForce()
     {
-        this.vx = vx;
-        this.vy = vy;
-        this.velocity = velocity;
-        this.sensibility = sensibility;
-    }
-
-    /**
-     * Get the configured force.
-     * 
-     * @return The configured force.
-     */
-    public Force getForce()
-    {
-        final Force force = new Force(vx, vy);
-        force.setVelocity(velocity);
-        force.setSensibility(sensibility);
-        return force;
+        // Private constructor.
     }
 }

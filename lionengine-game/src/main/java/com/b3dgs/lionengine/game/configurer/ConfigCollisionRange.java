@@ -27,6 +27,7 @@ import com.b3dgs.lionengine.stream.XmlNode;
  * Represents the collision range from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionRange
  */
 public class ConfigCollisionRange
 {
@@ -46,10 +47,10 @@ public class ConfigCollisionRange
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /**
-     * Create the collision range from its configuration.
+     * Create the collision range data from a node.
      * 
      * @param node The node reference.
-     * @return The collision range instance.
+     * @return The collision range data.
      * @throws LionEngineException If error when reading node.
      */
     public static CollisionRange create(XmlNode node) throws LionEngineException

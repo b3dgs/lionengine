@@ -25,9 +25,10 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collision function from a configurer node.
+ * Represents the collision function from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionFunction
  */
 public final class ConfigCollisionFunction
 {
@@ -43,10 +44,10 @@ public final class ConfigCollisionFunction
     private static final String ERROR_TYPE = "Unknown type: ";
 
     /**
-     * Create the collision function.
+     * Create the collision function from node.
      * 
      * @param parent The parent reference.
-     * @return The collision formula instance.
+     * @return The collision function data.
      * @throws LionEngineException If error when reading node.
      */
     public static CollisionFunction create(XmlNode parent) throws LionEngineException
@@ -71,7 +72,7 @@ public final class ConfigCollisionFunction
     }
 
     /**
-     * Export the collision function as a node.
+     * Export the collision function data as a node.
      * 
      * @param function The collision function to export.
      * @return The node reference.

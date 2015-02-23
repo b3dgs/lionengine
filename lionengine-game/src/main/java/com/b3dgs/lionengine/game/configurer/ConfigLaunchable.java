@@ -19,14 +19,14 @@ package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Force;
+import com.b3dgs.lionengine.game.trait.Launchable;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the launchable data from a configurer node.
+ * Represents the launchable data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
+ * @see Launchable
  */
 public class ConfigLaunchable
 {
@@ -38,16 +38,16 @@ public class ConfigLaunchable
     public static final String DELAY = "delay";
 
     /**
-     * Create the frames node.
+     * Create the launchable data from node.
      * 
      * @param node The node reference.
-     * @return The frames node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The launchable data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigLaunchable create(XmlNode node) throws LionEngineException
     {
-        return new ConfigLaunchable(node.readString(MEDIA), node.readInteger(ConfigLaunchable.DELAY), ConfigForce
-                .create(node).getForce());
+        return new ConfigLaunchable(node.readString(MEDIA), node.readInteger(ConfigLaunchable.DELAY),
+                ConfigForce.create(node));
     }
 
     /** The media value. */

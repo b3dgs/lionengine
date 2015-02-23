@@ -21,10 +21,9 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.factory.SetupSurface;
 
 /**
- * Represents the surface data from a configurer node.
+ * Represents the surface data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  * @see SetupSurface
  */
 public class ConfigSurface
@@ -37,10 +36,10 @@ public class ConfigSurface
     public static final String SURFACE_ICON = "icon";
 
     /**
-     * Get the surface node value.
+     * Create the surface data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The surface node value.
+     * @return The surface data.
      * @throws LionEngineException If unable to read node.
      */
     public static ConfigSurface create(Configurer configurer) throws LionEngineException
@@ -55,7 +54,7 @@ public class ConfigSurface
     private final String icon;
 
     /**
-     * Constructor.
+     * Create the surface configuration.
      * 
      * @param image The image file path.
      * @param icon The icon file path (can be <code>null</code>).

@@ -28,9 +28,10 @@ import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collision group data from a configurer node.
+ * Represents the collision group data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see CollisionGroup
  */
 public final class ConfigCollisionGroup
 {
@@ -48,12 +49,12 @@ public final class ConfigCollisionGroup
     public static final String END = "end";
 
     /**
-     * Create the size node.
+     * Create the collision group data from node.
      * 
-     * @param root The root reference.
+     * @param root The node root reference.
      * @param map The map reference.
-     * @return The config collisions instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The collisions group data.
+     * @throws LionEngineException If unable to read node.
      */
     public static Collection<CollisionGroup> create(XmlNode root, MapTileCollision map) throws LionEngineException
     {
@@ -74,7 +75,7 @@ public final class ConfigCollisionGroup
     }
 
     /**
-     * Export the collision group as a node.
+     * Export the collision group data as a node.
      * 
      * @param group The collision group to export.
      * @return The node reference.

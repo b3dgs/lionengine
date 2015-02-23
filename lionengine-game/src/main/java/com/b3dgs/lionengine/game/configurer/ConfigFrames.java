@@ -18,14 +18,11 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the frames data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
  */
 public class ConfigFrames
 {
@@ -40,7 +37,7 @@ public class ConfigFrames
      * Create the frames node.
      * 
      * @param configurer The configurer reference.
-     * @return The frames node value.
+     * @return The frames data.
      * @throws LionEngineException If unable to read node or not a valid integer.
      */
     public static ConfigFrames create(Configurer configurer) throws LionEngineException

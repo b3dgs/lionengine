@@ -21,19 +21,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Collision;
 import com.b3dgs.lionengine.stream.Stream;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
- * Represents the collisions data from a configurer node.
+ * Represents the collisions data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
  * @see Collision
- * @see XmlNode
  */
 public class ConfigCollisions
 {
@@ -51,13 +48,15 @@ public class ConfigCollisions
     public static final String COLLISION_HEIGHT = "height";
     /** Collision attribute mirror. */
     public static final String COLLISION_MIRROR = "mirror";
+    /** Error collision not found. */
+    private static final String ERROR_COLLISION_NOT_FOUND = "Collision not found: ";
 
     /**
-     * Create the size node.
+     * Create the collision data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The config collisions instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The collisions data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
@@ -134,13 +133,15 @@ public class ConfigCollisions
      * 
      * @param name The collision name.
      * @return The collision reference.
-     * @throws LionEngineException If the collision with the specified name is not found.
+     * @throws LionEngineException If the collision with the specified name was not found.
      */
     public Collision getCollision(String name) throws LionEngineException
     {
-        final Collision collision = collisions.get(name);
-        Check.notNull(collision);
-        return collision;
+        if (collisions.containsKey(name))
+        {
+            return collisions.get(name);
+        }
+        throw new LionEngineException(ERROR_COLLISION_NOT_FOUND, name);
     }
 
     /**

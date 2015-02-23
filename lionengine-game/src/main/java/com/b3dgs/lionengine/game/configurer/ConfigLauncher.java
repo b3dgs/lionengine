@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.game.trait.Launcher;
 import com.b3dgs.lionengine.stream.XmlNode;
 
 /**
  * Represents the launcher data from a configurer node.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
- * @see Configurer
- * @see XmlNode
+ * @see Launcher
  */
 public class ConfigLauncher
 {
@@ -38,11 +38,11 @@ public class ConfigLauncher
     public static final String RATE = "rate";
 
     /**
-     * Create the frames node.
+     * Create the launcher data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The frames node value.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The launcher data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigLauncher create(Configurer configurer) throws LionEngineException
     {
@@ -61,7 +61,7 @@ public class ConfigLauncher
     private final Collection<ConfigLaunchable> launchables;
 
     /**
-     * Constructor.
+     * Create a launcher configuration.
      * 
      * @param rate The rate value.
      * @param launchables The launchables reference.
@@ -73,9 +73,9 @@ public class ConfigLauncher
     }
 
     /**
-     * Get the number of horizontal frames.
+     * Get the launch rate value.
      * 
-     * @return The number of horizontal frames.
+     * @return The launch rate value.
      */
     public int getRate()
     {

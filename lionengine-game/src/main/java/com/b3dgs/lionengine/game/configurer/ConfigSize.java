@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.configurer;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * Represents the size data from a configurer node.
+ * Represents the size data from a configurer.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
@@ -35,11 +35,11 @@ public class ConfigSize
     public static final String SIZE_HEIGHT = "height";
 
     /**
-     * Create the size node.
+     * Create the size data from node.
      * 
      * @param configurer The configurer reference.
-     * @return The config size instance.
-     * @throws LionEngineException If unable to read node or not a valid integer.
+     * @return The size data.
+     * @throws LionEngineException If unable to read node.
      */
     public static ConfigSize create(Configurer configurer) throws LionEngineException
     {
@@ -53,7 +53,7 @@ public class ConfigSize
     private final int height;
 
     /**
-     * Constructor.
+     * Create a size configuration.
      * 
      * @param width The width value.
      * @param height The height value.
