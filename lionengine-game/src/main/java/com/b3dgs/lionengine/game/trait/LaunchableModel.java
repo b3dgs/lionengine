@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.game.trait;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Default launchable model implementation.

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.factory.Fabricable;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;

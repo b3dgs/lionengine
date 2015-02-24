@@ -18,8 +18,8 @@
 package com.b3dgs.lionengine.example.game.strategy.controlpanel;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Factory entity implementation.

@@ -52,8 +52,8 @@ import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.tester.ObjectsFolderTester;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
 import com.b3dgs.lionengine.game.configurer.ConfigSurface;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Represents the factory view, where the objects list is displayed.

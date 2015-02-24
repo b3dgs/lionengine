@@ -21,8 +21,8 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Spear;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Spearman implementation.

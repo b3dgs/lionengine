@@ -29,12 +29,12 @@ import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
 import com.b3dgs.lionengine.drawable.Drawable;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
 

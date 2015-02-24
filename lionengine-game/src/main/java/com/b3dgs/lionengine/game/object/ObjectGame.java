@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,27 +23,34 @@ import java.util.HashSet;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Features;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.Setup;
 import com.b3dgs.lionengine.game.trait.Trait;
 
 /**
- * Game object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler}
- * . To remove it from the handler, a simple call to {@link #destroy()} is needed.
+ * Object minimal representation. Defined by a unique ID, the object is designed to be handled by a {@link Handler} . To
+ * remove it from the handler, a simple call to {@link #destroy()} is needed.
  * <p>
- * An object can also be externally configured by using a {@link Configurer}, filled by an XML file.
+ * An object can also be externally configured by using a {@link Configurer}, filled from an XML file.
  * </p>
  * <p>
- * Objects are also designed to be created by a {@link Factory}. In that case, they must have at least a constructor
- * with a single argument, which must be type of {@link Setup}.
+ * They are also designed to be created by a {@link Factory}. In that case, they must have at least a constructor with a
+ * single argument, which must be a type of {@link Setup}.
+ * </p>
+ * <p>
+ * It is possible to retrieve external {@link Services} when object is being constructed.
+ * </p>
+ * <p>
+ * Instead of using traditional interface implementation, it is possible to use {@link com.b3dgs.lionengine.game.trait}
+ * system, in order to reduce class complexity. The {@link Handler} is designed to work well with that system.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  * @see Configurer
  * @see Factory
  * @see Handler
+ * @see Trait
+ * @see Setup
+ * @see Services
  */
 public class ObjectGame
 {
@@ -57,10 +64,10 @@ public class ObjectGame
     private boolean destroyed;
 
     /**
-     * Constructor.
+     * Create an object.
      * 
-     * @param setup The setup reference.
-     * @param services The services reference.
+     * @param setup The setup reference (resources sharing entry point).
+     * @param services The services reference (external services provider).
      */
     public ObjectGame(Setup setup, Services services)
     {
@@ -85,7 +92,7 @@ public class ObjectGame
     /**
      * Check if object has the following trait.
      * 
-     * @param trait The trait to check.
+     * @param trait The trait to check (could be a {@link Trait} or a classic interface.
      * @return <code>true</code> if has trait, <code>false</code> else.
      */
     public final boolean hasTrait(Class<?> trait)
@@ -96,11 +103,12 @@ public class ObjectGame
     /**
      * Get a trait from its class.
      * 
+     * @param <T> The trait class type used.
      * @param trait The trait class.
      * @return The trait instance.
      * @throws LionEngineException If feature was not found.
      */
-    public final <C> C getTrait(Class<C> trait) throws LionEngineException
+    public final <T> T getTrait(Class<T> trait) throws LionEngineException
     {
         return features.get(trait);
     }
@@ -129,7 +137,7 @@ public class ObjectGame
      * Get the id (<code>null</code> will be returned once removed from {@link Handler} after a call to
      * {@link #destroy()}, or if has never been added by {@link Handler#add(ObjectGame)}).
      * 
-     * @return The id.
+     * @return The object unique id.
      */
     public final Integer getId()
     {
@@ -138,6 +146,7 @@ public class ObjectGame
 
     /**
      * Declare as removable from handler. Will be removed on next {@link Handler#update(double)} call.
+     * Can be destroyed only one time.
      */
     public final void destroy()
     {
@@ -152,7 +161,7 @@ public class ObjectGame
     }
 
     /**
-     * Add a handlable listener.
+     * Add an object listener.
      * 
      * @param listener The listener reference.
      */

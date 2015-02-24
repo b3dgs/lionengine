@@ -29,7 +29,6 @@ import com.b3dgs.lionengine.drawable.Sprite;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
@@ -37,7 +36,8 @@ import com.b3dgs.lionengine.game.configurer.ConfigFrames;
 import com.b3dgs.lionengine.game.configurer.ConfigOffset;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
 
 /**

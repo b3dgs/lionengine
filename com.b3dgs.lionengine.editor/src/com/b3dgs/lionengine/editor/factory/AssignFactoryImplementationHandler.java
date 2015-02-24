@@ -30,7 +30,7 @@ import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.project.Project;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.world.WorldViewModel;
-import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Assign the factory implementation handler.

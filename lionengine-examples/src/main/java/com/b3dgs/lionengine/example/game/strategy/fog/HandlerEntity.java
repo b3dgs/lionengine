@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 
 /**

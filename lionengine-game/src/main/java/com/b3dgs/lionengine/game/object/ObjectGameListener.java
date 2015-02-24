@@ -15,37 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
-
-import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.handler.HandledObjects;
+package com.b3dgs.lionengine.game.object;
 
 /**
- * Updater component implementation which update {@link Updatable} through an extrapolation value.
+ * Describes the object events.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentUpdater
-        implements ComponentUpdatable
+interface ObjectGameListener
 {
     /**
-     * Create an updater component.
+     * Called when object is destroyed (after a call to {@link ObjectGame#destroy()}.
+     * 
+     * @param object The destroyed object.
      */
-    public ComponentUpdater()
-    {
-        // Nothing to do
-    }
-
-    /*
-     * ComponentUpdatable
-     */
-
-    @Override
-    public void update(double extrp, HandledObjects objects)
-    {
-        for (final Updatable updatable : objects.get(Updatable.class))
-        {
-            updatable.update(extrp);
-        }
-    }
+    void notifyDestroyed(ObjectGame object);
 }

@@ -49,10 +49,10 @@ import com.b3dgs.lionengine.example.game.strategy.ability.map.Tile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.FactoryProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.HandlerProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.FactoryWeapon;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 

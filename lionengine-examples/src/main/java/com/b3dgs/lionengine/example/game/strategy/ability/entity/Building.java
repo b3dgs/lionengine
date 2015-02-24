@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.strategy.ability.entity;
 
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Abstract building entity implementation.

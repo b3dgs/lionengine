@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.map.Map;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.strategy.ability.producer.FactoryProductionStrategy;
 
 /**

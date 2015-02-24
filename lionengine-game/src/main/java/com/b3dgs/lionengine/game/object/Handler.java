@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,14 +25,15 @@ import java.util.Set;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.component.ComponentRenderable;
-import com.b3dgs.lionengine.game.component.ComponentUpdatable;
 
 /**
  * Designed to handle {@link ObjectGame}. Maintain an objects list by updating and rendering them. Modifications on the
  * list can be done at any time because their are applied at the beginning of the next update.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ObjectGame
+ * @see ComponentUpdatable
+ * @see ComponentRenderable
  */
 public class Handler
         implements Updatable, Renderable, ObjectGameListener
@@ -67,7 +68,7 @@ public class Handler
     }
 
     /**
-     * Add a component.
+     * Add an updatable component.
      * 
      * @param component The component to add.
      */
@@ -77,7 +78,7 @@ public class Handler
     }
 
     /**
-     * Add a component.
+     * Add a renderable component.
      * 
      * @param component The component to add.
      */
@@ -100,14 +101,14 @@ public class Handler
     }
 
     /**
-     * Get the object from its key.
+     * Get the object from its id.
      * 
-     * @param key The object key.
+     * @param id The object id.
      * @return The object reference.
      */
-    public final ObjectGame get(Integer key)
+    public final ObjectGame get(Integer id)
     {
-        return objects.get(key);
+        return objects.get(id);
     }
 
     /**
@@ -133,9 +134,9 @@ public class Handler
     }
 
     /**
-     * Get the number of objects.
+     * Get the number of handled objects.
      * 
-     * @return The number of objects.
+     * @return The number of handled objects.
      */
     public final int size()
     {
@@ -143,9 +144,9 @@ public class Handler
     }
 
     /**
-     * Get the list reference of objects.
+     * Get the objects list reference.
      * 
-     * @return The list reference of objects.
+     * @return The objects list reference.
      */
     public final Iterable<ObjectGame> getObjects()
     {
@@ -213,7 +214,7 @@ public class Handler
     }
 
     /*
-     * HandlableListener
+     * ObjectGameListener
      */
 
     @Override

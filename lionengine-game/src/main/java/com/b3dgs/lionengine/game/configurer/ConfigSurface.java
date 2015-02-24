@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.configurer;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Represents the surface data from a configurer.

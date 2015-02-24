@@ -15,23 +15,37 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.game.handler.HandledObjects;
+import com.b3dgs.lionengine.core.Renderable;
 
 /**
- * Describe the main component requirement, which is aimed to provide renderable feature for an object.
+ * Renderer component implementation which render {@link Renderable} objects.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface ComponentRenderable
+public class ComponentRenderer
+        implements ComponentRenderable
 {
     /**
-     * Render the current object.
-     * 
-     * @param g The graphic output.
-     * @param objects The objects reference.
+     * Create a renderer component.
      */
-    void render(Graphic g, HandledObjects objects);
+    public ComponentRenderer()
+    {
+        // Nothing to do
+    }
+
+    /*
+     * ComponentRenderable
+     */
+
+    @Override
+    public void render(Graphic g, HandledObjects objects)
+    {
+        for (final Renderable renderable : objects.get(Renderable.class))
+        {
+            renderable.render(g);
+        }
+    }
 }

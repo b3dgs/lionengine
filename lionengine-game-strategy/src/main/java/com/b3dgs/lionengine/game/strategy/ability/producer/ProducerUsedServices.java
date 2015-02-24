@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.game.strategy.ability.producer;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.object.Factory;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**

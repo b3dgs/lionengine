@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -75,7 +75,7 @@ final class HandledObjectsImpl
     private final Map<Class<?>, Set<Object>> items;
 
     /**
-     * Create the handler items.
+     * Create the objects handler.
      */
     public HandledObjectsImpl()
     {
@@ -123,7 +123,7 @@ final class HandledObjectsImpl
     /**
      * Get all objects id.
      * 
-     * @return The id list.
+     * @return The ids list.
      */
     public Collection<Integer> getIds()
     {
@@ -210,8 +210,8 @@ final class HandledObjectsImpl
         return objects.get(id);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public <I> Iterable<I> get(Class<I> type)
     {
         if (!items.containsKey(type))

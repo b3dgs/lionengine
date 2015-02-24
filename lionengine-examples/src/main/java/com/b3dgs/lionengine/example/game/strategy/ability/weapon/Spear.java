@@ -22,8 +22,8 @@ import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.FactoryLauncher;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.LauncherProjectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.launcher.SpearLauncher;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Spear weapon implementation.

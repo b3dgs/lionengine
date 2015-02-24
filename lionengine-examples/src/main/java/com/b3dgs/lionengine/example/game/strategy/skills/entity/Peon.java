@@ -23,8 +23,8 @@ import com.b3dgs.lionengine.example.game.strategy.skills.skill.BuildingStandardO
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.CancelOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.MoveOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.StopOrc;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Peon implementation.

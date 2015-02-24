@@ -18,7 +18,7 @@
 package com.b3dgs.lionengine.example.game.strategy.fog;
 
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Peon implementation.

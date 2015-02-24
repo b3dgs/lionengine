@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.network.entity;
 import com.b3dgs.lionengine.Timing;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**

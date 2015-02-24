@@ -26,11 +26,11 @@ import com.b3dgs.lionengine.core.Sequence;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Game loop designed to handle our little world.

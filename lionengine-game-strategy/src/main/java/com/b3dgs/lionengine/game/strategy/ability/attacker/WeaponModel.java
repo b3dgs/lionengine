@@ -25,7 +25,7 @@ import com.b3dgs.lionengine.anim.AnimState;
 import com.b3dgs.lionengine.game.Damages;
 import com.b3dgs.lionengine.game.Range;
 import com.b3dgs.lionengine.game.factory.Fabricable;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**

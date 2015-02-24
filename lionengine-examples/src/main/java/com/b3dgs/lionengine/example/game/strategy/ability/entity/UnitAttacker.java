@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerModel;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerServices;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.AttackerUsedServices;

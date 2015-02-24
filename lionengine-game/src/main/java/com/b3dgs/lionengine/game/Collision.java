@@ -17,9 +17,9 @@
  */
 package com.b3dgs.lionengine.game;
 
-import com.b3dgs.lionengine.game.component.ComponentCollision;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.ComponentCollision;
 import com.b3dgs.lionengine.game.trait.Collidable;
 
 /**

@@ -21,7 +21,7 @@ import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.game.Direction;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Transformable model implementation.

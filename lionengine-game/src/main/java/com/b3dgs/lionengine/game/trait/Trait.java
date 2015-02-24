@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Represents something that can be delegated to perform specialized computing and reduce owner visible complexity.

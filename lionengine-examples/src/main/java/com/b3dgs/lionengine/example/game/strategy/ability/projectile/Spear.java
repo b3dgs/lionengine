@@ -20,7 +20,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.projectile;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Spear projectile implementation.

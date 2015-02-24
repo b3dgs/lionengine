@@ -28,11 +28,11 @@ import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.LevelRipConverter;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.strategy.CameraStrategy;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 

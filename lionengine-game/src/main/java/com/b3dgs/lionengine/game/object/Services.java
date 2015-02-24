@@ -15,21 +15,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game;
+package com.b3dgs.lionengine.game.object;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import com.b3dgs.lionengine.LionEngineException;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.Setup;
-import com.b3dgs.lionengine.game.handler.Handler;
+import com.b3dgs.lionengine.game.Featurable;
 
 /**
- * Represents an object designed to keep references on main game types, such as {@link Factory}, {@link Handler} ... in
+ * Represents something designed to keep references on main game types, such as {@link Factory}, {@link Handler} ... in
  * order to access to them from the object instance (created by a {@link Factory} with a {@link Setup}).
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Factory
+ * @see ObjectGame
  */
 public class Services
 {

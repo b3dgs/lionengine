@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.example.game.strategy.ability.weapon;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Axe weapon implementation.

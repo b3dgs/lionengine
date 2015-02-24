@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.trait;
 
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Notify events from the {@link Launcher}.

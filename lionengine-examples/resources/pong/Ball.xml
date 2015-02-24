@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <lionengine:entity xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:setup>com.b3dgs.lionengine.game.factory.Setup</lionengine:setup>
+    <lionengine:setup>com.b3dgs.lionengine.game.object.Setup</lionengine:setup>
     <lionengine:class>com.b3dgs.lionengine.example.pong.Ball</lionengine:class>
     <lionengine:size width="8" height="8"/>
     <lionengine:collision name="default" offsetX="0" offsetY="0" width="8" height="8" mirror="false"/>

@@ -23,7 +23,7 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.EntityGame;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.network.message.NetworkMessage;
 
 /**

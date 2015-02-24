@@ -15,35 +15,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object;
 
 /**
  * Represents the objects handled by the handler, providing quick access to them from their type.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see ObjectGame
  */
 public interface HandledObjects
 {
     /**
-     * Get the handlable from its id.
+     * Get the object from its id.
      * 
-     * @param id The handlable id.
+     * @param id The object id.
      * @return The handlable instance.
+     * @see ObjectGame#getId()
      */
     ObjectGame get(Integer id);
 
     /**
      * Get all objects of this type.
      * 
+     * @param <I> The object interface type.
      * @param type The expected type.
      * @return The objects list of this type.
      */
     <I> Iterable<I> get(Class<I> type);
 
     /**
-     * Get all handlables.
+     * Get all objects.
      * 
-     * @return The handlables list.
+     * @return The objects list.
      */
     Iterable<ObjectGame> values();
 }

@@ -22,7 +22,7 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.BuildingProducer
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.Peon;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
-import com.b3dgs.lionengine.game.Services;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 

@@ -27,13 +27,13 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Force;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigLaunchable;
 import com.b3dgs.lionengine.game.configurer.ConfigLauncher;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Default launcher model implementation.

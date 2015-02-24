@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.factory;
+package com.b3dgs.lionengine.game.object;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -24,13 +24,11 @@ import java.util.Map;
 import com.b3dgs.lionengine.Check;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
 
 /**
- * Performs a list of {@link Setup} considering their corresponding media. This way it is possible to create new
- * object instances related to their {@link Media} by sharing the same resources.
+ * Performs a list of {@link Setup} considering their corresponding {@link Media} pointing to an XML file. This way it
+ * is possible to create new object instances related to their {@link Setup} by sharing the same resources.
  * <p>
  * Any object created by the factory from a {@link Media} must have the following public constructor:
  * </p>
@@ -39,11 +37,11 @@ import com.b3dgs.lionengine.game.handler.ObjectGame;
  * </ul>
  * <p>
  * The {@link Services} must be set with {@link #setServices(Services)} as its reference is given as parameter to the
- * object constructor.
+ * object constructor. This will let the created object to access to external services.
  * </p>
  * <p>
  * The factory uses the {@link ClassLoader#getSystemClassLoader()}, but it is possible to set a custom one with
- * {@link #setClassLoader(ClassLoader)}. Should be used on an OSGI environment for example.
+ * {@link #setClassLoader(ClassLoader)}. Should be used in an OSGI environment for example.
  * </p>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
@@ -64,6 +62,7 @@ public class Factory
     /**
      * Create a class instance with its parameters.
      * 
+     * @param <T> The element type used.
      * @param type The class type to instantiate.
      * @param paramTypes The class base type for each parameter.
      * @param params The constructor parameters.
@@ -119,14 +118,11 @@ public class Factory
      * @return The object instance.
      * @throws LionEngineException If {@link Media} is <code>null</code>, {@link Setup} not found, or {@link Services}
      *             missing service.
+     * @see ObjectGame#ObjectGame(Setup, Services)
      */
     public <E extends ObjectGame> E create(Media media) throws LionEngineException
     {
-        Check.notNull(media);
-
         final Setup setup = getSetup(media);
-        Check.notNull(setup);
-
         final Class<?> type = setup.getConfigClass(classLoader);
         final Services services = this.services == null ? Factory.EMPTY_SERVICES : this.services;
         return create(type, new Class<?>[]
@@ -176,6 +172,7 @@ public class Factory
      */
     public Setup getSetup(Media media) throws LionEngineException
     {
+        Check.notNull(media);
         if (!setups.containsKey(media))
         {
             setups.put(media, createSetup(media));

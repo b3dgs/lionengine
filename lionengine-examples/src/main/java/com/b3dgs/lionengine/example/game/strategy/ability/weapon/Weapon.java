@@ -21,10 +21,10 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.UnitAttacker;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.strategy.ability.attacker.WeaponModel;
 
 /**

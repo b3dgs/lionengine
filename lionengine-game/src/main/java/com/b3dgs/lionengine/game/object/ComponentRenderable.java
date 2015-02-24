@@ -15,19 +15,24 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.handler;
+package com.b3dgs.lionengine.game.object;
+
+import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Renderable;
 
 /**
- * Describes the object events.
+ * Describe the main component requirement, which is aimed to provide renderable feature for an object.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Renderable
  */
-interface ObjectGameListener
+public interface ComponentRenderable
 {
     /**
-     * Called when object is destroyed (after a call to {@link ObjectGame#destroy()}.
+     * Render the current objects.
      * 
-     * @param object The destroyed object.
+     * @param g The graphic output.
+     * @param objects The objects reference.
      */
-    void notifyDestroyed(ObjectGame object);
+    void render(Graphic g, HandledObjects objects);
 }

@@ -22,15 +22,15 @@ import java.util.HashSet;
 
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.game.Axis;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.collision.CollisionCategory;
 import com.b3dgs.lionengine.game.collision.CollisionResult;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisionCategory;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
 
 /**
  * Tile collidable model implementation.

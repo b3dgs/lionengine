@@ -25,9 +25,9 @@ import com.b3dgs.lionengine.example.game.strategy.skills.entity.BarracksOrc;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.FactoryProduction;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.ProducibleEntity;
 import com.b3dgs.lionengine.example.game.strategy.skills.entity.UnitWorker;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.configurer.ConfigSize;
 import com.b3dgs.lionengine.game.configurer.Configurer;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.strategy.ControlPanelModel;
 import com.b3dgs.lionengine.game.strategy.CursorStrategy;
 

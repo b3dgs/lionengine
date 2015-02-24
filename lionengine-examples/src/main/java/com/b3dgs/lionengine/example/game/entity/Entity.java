@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.Setup;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 
 /**
  * Entity implementation.

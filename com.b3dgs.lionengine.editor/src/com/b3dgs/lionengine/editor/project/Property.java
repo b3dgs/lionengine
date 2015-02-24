@@ -24,8 +24,8 @@ import java.util.Collection;
 import com.b3dgs.lionengine.LionEngineException;
 import com.b3dgs.lionengine.UtilFile;
 import com.b3dgs.lionengine.core.Media;
-import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.map.MapTile;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Properties type list.

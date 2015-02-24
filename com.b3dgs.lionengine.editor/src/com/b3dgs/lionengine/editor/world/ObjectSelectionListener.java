@@ -19,7 +19,7 @@ package com.b3dgs.lionengine.editor.world;
 
 import java.util.Collection;
 
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 
 /**
  * Listen to objects selection on map.

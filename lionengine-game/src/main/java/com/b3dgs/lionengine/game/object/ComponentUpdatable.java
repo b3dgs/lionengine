@@ -15,11 +15,23 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+package com.b3dgs.lionengine.game.object;
+
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
- * Object creation by using a resources sharing system that allows to reduce significantly memory usage.
+ * Describe the main component requirement, which is aimed to provide updatable feature for an object.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Updatable
  */
-package com.b3dgs.lionengine.game.factory;
-
+public interface ComponentUpdatable
+{
+    /**
+     * Update the current objects.
+     * 
+     * @param extrp The extrapolation value.
+     * @param objects The objects reference.
+     */
+    void update(double extrp, HandledObjects objects);
+}

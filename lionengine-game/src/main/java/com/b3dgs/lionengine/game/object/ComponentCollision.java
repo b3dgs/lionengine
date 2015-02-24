@@ -15,10 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
+package com.b3dgs.lionengine.game.object;
 
 import com.b3dgs.lionengine.game.Collision;
-import com.b3dgs.lionengine.game.handler.HandledObjects;
 import com.b3dgs.lionengine.game.trait.Collidable;
 import com.b3dgs.lionengine.game.trait.CollidableListener;
 
@@ -27,6 +26,8 @@ import com.b3dgs.lionengine.game.trait.CollidableListener;
  * Collision events are notified to {@link CollidableListener}.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see Collidable
+ * @see CollidableListener
  */
 public class ComponentCollision
         implements ComponentUpdatable
@@ -40,7 +41,7 @@ public class ComponentCollision
     }
 
     /*
-     * Component
+     * ComponentUpdatable
      */
 
     @Override

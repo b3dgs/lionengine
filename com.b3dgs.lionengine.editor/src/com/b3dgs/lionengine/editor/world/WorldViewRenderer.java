@@ -45,10 +45,10 @@ import com.b3dgs.lionengine.editor.factory.FactoryView;
 import com.b3dgs.lionengine.editor.palette.PalettePart;
 import com.b3dgs.lionengine.editor.palette.PaletteType;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.handler.Handler;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.object.Handler;
+import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.geom.Point;
 
 /**

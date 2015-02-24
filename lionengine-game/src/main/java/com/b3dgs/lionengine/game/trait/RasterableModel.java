@@ -27,9 +27,9 @@ import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.anim.Animator;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.drawable.SpriteAnimated;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.SetupSurfaceRastered;
-import com.b3dgs.lionengine.game.handler.ObjectGame;
+import com.b3dgs.lionengine.game.object.ObjectGame;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurfaceRastered;
 
 /**
  * Default rasterable implementation.

@@ -22,9 +22,9 @@ import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.ability.entity.Entity;
 import com.b3dgs.lionengine.example.game.strategy.ability.projectile.Projectile;
 import com.b3dgs.lionengine.example.game.strategy.ability.weapon.Weapon;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.Setup;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.Setup;
 import com.b3dgs.lionengine.game.projectile.LauncherProjectileGame;
 
 /**

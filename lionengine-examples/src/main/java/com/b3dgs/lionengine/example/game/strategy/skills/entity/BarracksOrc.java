@@ -19,8 +19,8 @@ package com.b3dgs.lionengine.example.game.strategy.skills.entity;
 
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.example.game.strategy.skills.skill.ProducePeon;
-import com.b3dgs.lionengine.game.Services;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 
 /**
  * Barracks building implementation. This building allows to create new grunt.

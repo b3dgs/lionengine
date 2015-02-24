@@ -39,7 +39,7 @@ import com.b3dgs.lionengine.editor.UtilEclipse;
 import com.b3dgs.lionengine.editor.project.ProjectTreeCreator;
 import com.b3dgs.lionengine.editor.project.ProjectsModel;
 import com.b3dgs.lionengine.editor.project.ProjectsPart;
-import com.b3dgs.lionengine.game.factory.Factory;
+import com.b3dgs.lionengine.game.object.Factory;
 
 /**
  * Add an object in the selected folder.

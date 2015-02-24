@@ -25,13 +25,13 @@ import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.game.Camera;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.WorldGame;
-import com.b3dgs.lionengine.game.factory.Factory;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.stream.FileReading;
 import com.b3dgs.lionengine.stream.FileWriting;
 

@@ -15,39 +15,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.component;
+package com.b3dgs.lionengine.game.object;
 
-import com.b3dgs.lionengine.Viewer;
-import com.b3dgs.lionengine.core.Graphic;
-import com.b3dgs.lionengine.core.Renderable;
-import com.b3dgs.lionengine.game.handler.HandledObjects;
+import com.b3dgs.lionengine.core.Updatable;
 
 /**
- * Viewer component implementation which render {@link Renderable} through a {@link Viewer} point of view.
+ * Updater component implementation which update {@link Updatable} objects with an extrapolation value.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public class ComponentRenderer
-        implements ComponentRenderable
+public class ComponentUpdater
+        implements ComponentUpdatable
 {
     /**
-     * Create a viewer component.
+     * Create an updater component.
      */
-    public ComponentRenderer()
+    public ComponentUpdater()
     {
         // Nothing to do
     }
 
     /*
-     * ComponentViewer
+     * ComponentUpdatable
      */
 
     @Override
-    public void render(Graphic g, HandledObjects objects)
+    public void update(double extrp, HandledObjects objects)
     {
-        for (final Renderable renderable : objects.get(Renderable.class))
+        for (final Updatable updatable : objects.get(Updatable.class))
         {
-            renderable.render(g);
+            updatable.update(extrp);
         }
     }
 }

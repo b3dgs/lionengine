@@ -21,12 +21,12 @@ import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.Alterable;
-import com.b3dgs.lionengine.game.Services;
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.configurer.ConfigAnimations;
 import com.b3dgs.lionengine.game.configurer.Configurer;
-import com.b3dgs.lionengine.game.factory.Factory;
-import com.b3dgs.lionengine.game.factory.SetupSurface;
+import com.b3dgs.lionengine.game.object.Factory;
+import com.b3dgs.lionengine.game.object.Services;
+import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.strategy.entity.EntityStrategy;
 
 /**
