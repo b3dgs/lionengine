@@ -41,7 +41,7 @@ public class AnimationTest
         final boolean reverse = true;
         final boolean repeat = false;
 
-        final Animation animation = Anim.createAnimation(first, last, speed, reverse, repeat);
+        final Animation animation = Anim.createAnimation(null, first, last, speed, reverse, repeat);
 
         Assert.assertEquals(first, animation.getFirst());
         Assert.assertEquals(last, animation.getLast());
@@ -56,7 +56,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMinimumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME - 1, 0, 0.0, false, false));
     }
 
     /**
@@ -65,8 +65,8 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureMaximumFrame()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0, false,
-                false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME - 1, 0.0,
+                false, false));
     }
 
     /**
@@ -75,7 +75,7 @@ public class AnimationTest
     @Test(expected = LionEngineException.class)
     public void testFailureSpeed()
     {
-        Assert.assertNotNull(Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0, false,
-                false));
+        Assert.assertNotNull(Anim.createAnimation(null, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, -1.0,
+                false, false));
     }
 }

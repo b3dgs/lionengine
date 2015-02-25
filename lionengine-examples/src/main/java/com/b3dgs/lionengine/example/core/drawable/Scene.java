@@ -94,7 +94,7 @@ class Scene
         tilesheet = Drawable.loadSpriteTiled(Core.MEDIA.create("tilesheet.png"), 16, 16);
 
         // Set animation data (frames between 4-6, at a speed of 0.125, looped)
-        anim = Anim.createAnimation(4, 6, 0.125, false, true);
+        anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
     }
 
     @Override

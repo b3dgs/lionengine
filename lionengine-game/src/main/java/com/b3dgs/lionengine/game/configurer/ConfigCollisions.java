@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,10 +61,10 @@ public class ConfigCollisions
     public static ConfigCollisions create(Configurer configurer) throws LionEngineException
     {
         final Map<String, Collision> collisions = new HashMap<>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(ConfigCollisions.COLLISION))
+        for (final XmlNode node : configurer.getRoot().getChildren(COLLISION))
         {
-            final String coll = node.readString(ConfigCollisions.COLLISION_NAME);
-            final Collision collision = ConfigCollisions.createCollision(node);
+            final String coll = node.readString(COLLISION_NAME);
+            final Collision collision = createCollision(node);
             collisions.put(coll, collision);
         }
         return new ConfigCollisions(collisions);
@@ -79,12 +79,13 @@ public class ConfigCollisions
      */
     public static Collision createCollision(XmlNode node) throws LionEngineException
     {
-        final int offsetX = node.readInteger(ConfigCollisions.COLLISION_OFFSETX);
-        final int offsetY = node.readInteger(ConfigCollisions.COLLISION_OFFSETY);
-        final int width = node.readInteger(ConfigCollisions.COLLISION_WIDTH);
-        final int height = node.readInteger(ConfigCollisions.COLLISION_HEIGHT);
-        final boolean mirror = node.readBoolean(ConfigCollisions.COLLISION_MIRROR);
-        return new Collision(offsetX, offsetY, width, height, mirror);
+        final String name = node.readString(COLLISION_NAME);
+        final int offsetX = node.readInteger(COLLISION_OFFSETX);
+        final int offsetY = node.readInteger(COLLISION_OFFSETY);
+        final int width = node.readInteger(COLLISION_WIDTH);
+        final int height = node.readInteger(COLLISION_HEIGHT);
+        final boolean mirror = node.readBoolean(COLLISION_MIRROR);
+        return new Collision(name, offsetX, offsetY, width, height, mirror);
     }
 
     /**
@@ -96,13 +97,13 @@ public class ConfigCollisions
      */
     public static XmlNode createNode(String name, Collision collision)
     {
-        final XmlNode node = Stream.createXmlNode(ConfigCollisions.COLLISION);
-        node.writeString(ConfigCollisions.COLLISION_NAME, name);
-        node.writeInteger(ConfigCollisions.COLLISION_OFFSETX, collision.getOffsetX());
-        node.writeInteger(ConfigCollisions.COLLISION_OFFSETY, collision.getOffsetY());
-        node.writeInteger(ConfigCollisions.COLLISION_WIDTH, collision.getWidth());
-        node.writeInteger(ConfigCollisions.COLLISION_HEIGHT, collision.getHeight());
-        node.writeBoolean(ConfigCollisions.COLLISION_MIRROR, collision.hasMirror());
+        final XmlNode node = Stream.createXmlNode(COLLISION);
+        node.writeString(COLLISION_NAME, name);
+        node.writeInteger(COLLISION_OFFSETX, collision.getOffsetX());
+        node.writeInteger(COLLISION_OFFSETY, collision.getOffsetY());
+        node.writeInteger(COLLISION_WIDTH, collision.getWidth());
+        node.writeInteger(COLLISION_HEIGHT, collision.getHeight());
+        node.writeBoolean(COLLISION_MIRROR, collision.hasMirror());
         return node;
     }
 
@@ -147,10 +148,10 @@ public class ConfigCollisions
     /**
      * Get all collisions.
      * 
-     * @return The unmodifiable collisions map, where key is the collision name.
+     * @return The collisions list.
      */
-    public Map<String, Collision> getCollisions()
+    public Collection<Collision> getCollisions()
     {
-        return Collections.unmodifiableMap(collisions);
+        return collisions.values();
     }
 }

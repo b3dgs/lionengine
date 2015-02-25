@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.game.configurer;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,10 +61,10 @@ public class ConfigAnimations
     public static ConfigAnimations create(Configurer configurer)
     {
         final Map<String, Animation> animations = new HashMap<>(0);
-        for (final XmlNode node : configurer.getRoot().getChildren(ConfigAnimations.ANIMATION))
+        for (final XmlNode node : configurer.getRoot().getChildren(ANIMATION))
         {
-            final String anim = node.readString(ConfigAnimations.ANIMATION_NAME);
-            final Animation animation = ConfigAnimations.createAnimation(node);
+            final String anim = node.readString(ANIMATION_NAME);
+            final Animation animation = createAnimation(node);
             animations.put(anim, animation);
         }
         return new ConfigAnimations(animations);
@@ -85,12 +85,13 @@ public class ConfigAnimations
      */
     public static Animation createAnimation(XmlNode node) throws LionEngineException
     {
-        final int start = node.readInteger(ConfigAnimations.ANIMATION_START);
-        final int end = node.readInteger(ConfigAnimations.ANIMATION_END);
-        final double speed = node.readDouble(ConfigAnimations.ANIMATION_SPEED);
-        final boolean reversed = node.readBoolean(ConfigAnimations.ANIMATION_REVERSED);
-        final boolean repeat = node.readBoolean(ConfigAnimations.ANIMATION_REPEAT);
-        return Anim.createAnimation(start, end, speed, reversed, repeat);
+        final String name = node.readString(ANIMATION_NAME);
+        final int start = node.readInteger(ANIMATION_START);
+        final int end = node.readInteger(ANIMATION_END);
+        final double speed = node.readDouble(ANIMATION_SPEED);
+        final boolean reversed = node.readBoolean(ANIMATION_REVERSED);
+        final boolean repeat = node.readBoolean(ANIMATION_REPEAT);
+        return Anim.createAnimation(name, start, end, speed, reversed, repeat);
     }
 
     /**
@@ -102,13 +103,13 @@ public class ConfigAnimations
      */
     public static XmlNode createNode(String name, Animation animation)
     {
-        final XmlNode node = Stream.createXmlNode(ConfigAnimations.ANIMATION);
-        node.writeString(ConfigAnimations.ANIMATION_NAME, name);
-        node.writeInteger(ConfigAnimations.ANIMATION_START, animation.getFirst());
-        node.writeInteger(ConfigAnimations.ANIMATION_END, animation.getLast());
-        node.writeDouble(ConfigAnimations.ANIMATION_SPEED, animation.getSpeed());
-        node.writeBoolean(ConfigAnimations.ANIMATION_REVERSED, animation.getReverse());
-        node.writeBoolean(ConfigAnimations.ANIMATION_REPEAT, animation.getRepeat());
+        final XmlNode node = Stream.createXmlNode(ANIMATION);
+        node.writeString(ANIMATION_NAME, name);
+        node.writeInteger(ANIMATION_START, animation.getFirst());
+        node.writeInteger(ANIMATION_END, animation.getLast());
+        node.writeDouble(ANIMATION_SPEED, animation.getSpeed());
+        node.writeBoolean(ANIMATION_REVERSED, animation.getReverse());
+        node.writeBoolean(ANIMATION_REPEAT, animation.getRepeat());
         return node;
     }
 
@@ -151,10 +152,10 @@ public class ConfigAnimations
     /**
      * Get all animations.
      * 
-     * @return The unmodifiable animations map, where key is the animation name.
+     * @return The animations list.
      */
-    public Map<String, Animation> getAnimations()
+    public Collection<Animation> getAnimations()
     {
-        return Collections.unmodifiableMap(animations);
+        return animations.values();
     }
 }

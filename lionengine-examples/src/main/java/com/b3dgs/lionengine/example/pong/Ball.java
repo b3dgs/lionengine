@@ -68,7 +68,7 @@ class Ball
         transformable = new TransformableModel(this, setup.getConfigurer());
         addTrait(transformable);
 
-        collidable = new CollidableModel(this, context);
+        collidable = new CollidableModel(this, setup.getConfigurer(), context);
         addTrait(collidable);
 
         speed = 2.0;

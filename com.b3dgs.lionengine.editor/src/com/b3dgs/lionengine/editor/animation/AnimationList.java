@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor.animation;
 
-import java.util.Map;
+import java.util.Collection;
 
 import com.b3dgs.lionengine.anim.Anim;
 import com.b3dgs.lionengine.anim.Animation;
@@ -56,7 +56,7 @@ public class AnimationList
     public void loadAnimations()
     {
         final ConfigAnimations configAnimations = ConfigAnimations.create(configurer);
-        final Map<String, Animation> animations = configAnimations.getAnimations();
+        final Collection<Animation> animations = configAnimations.getAnimations();
         loadObjects(animations);
     }
 
@@ -79,14 +79,15 @@ public class AnimationList
     @Override
     protected Animation copyObject(Animation animation)
     {
-        return Anim.createAnimation(animation.getFirst(), animation.getLast(), animation.getSpeed(),
-                animation.getReverse(), animation.getRepeat());
+        return Anim.createAnimation(animation.getName(), animation.getFirst(), animation.getLast(),
+                animation.getSpeed(), animation.getReverse(), animation.getRepeat());
     }
 
     @Override
     protected Animation createDefaultObject()
     {
-        return Anim.createAnimation(Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1, false, false);
+        return Anim.createAnimation(Animation.DEFAULT_NAME, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME + 1, 0.1,
+                false, false);
     }
 
     @Override

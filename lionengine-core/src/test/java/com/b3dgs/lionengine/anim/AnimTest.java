@@ -43,7 +43,7 @@ public class AnimTest
     {
         try
         {
-            Anim.createAnimation(first, last, speed, false, false);
+            Anim.createAnimation(null, first, last, speed, false, false);
             Assert.fail();
         }
         catch (final LionEngineException exception)
@@ -65,7 +65,7 @@ public class AnimTest
     {
         try
         {
-            Anim.createAnimation(first, last, speed, false, false);
+            Anim.createAnimation(null, first, last, speed, false, false);
         }
         catch (final LionEngineException exception)
         {

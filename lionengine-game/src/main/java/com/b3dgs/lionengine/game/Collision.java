@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.game;
 
+import com.b3dgs.lionengine.Nameable;
 import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ComponentCollision;
@@ -31,7 +32,10 @@ import com.b3dgs.lionengine.game.trait.Collidable;
  * @see ComponentCollision
  */
 public class Collision
+        implements Nameable
 {
+    /** Name. */
+    private final String name;
     /** Horizontal offset. */
     private final int offsetX;
     /** Vertical offset. */
@@ -46,14 +50,16 @@ public class Collision
     /**
      * Create a collision.
      * 
+     * @param name The collision name.
      * @param offsetX The collision horizontal offset.
      * @param offsetY The collision vertical offset.
      * @param width The collision width.
      * @param height The collision height.
      * @param mirror The mirror flag.
      */
-    public Collision(int offsetX, int offsetY, int width, int height, boolean mirror)
+    public Collision(String name, int offsetX, int offsetY, int width, int height, boolean mirror)
     {
+        this.name = name;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.width = width;
@@ -109,5 +115,15 @@ public class Collision
     public boolean hasMirror()
     {
         return mirror;
+    }
+
+    /*
+     * Nameable
+     */
+
+    @Override
+    public String getName()
+    {
+        return name;
     }
 }

@@ -17,6 +17,8 @@
  */
 package com.b3dgs.lionengine.anim;
 
+import com.b3dgs.lionengine.Nameable;
+
 /**
  * Animation data container for animation routine.
  * <p>
@@ -55,7 +57,10 @@ package com.b3dgs.lionengine.anim;
  * @see AnimState
  */
 public interface Animation
+        extends Nameable
 {
+    /** Animation default name; */
+    String DEFAULT_NAME = "default_anim";
     /** The minimum frame number. */
     int MINIMUM_FRAME = 1;
 

@@ -52,7 +52,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, false, false);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, false);
         final Animator animator = Anim.createAnimator();
 
         testAnimatorState(animator, Animation.MINIMUM_FRAME, Animation.MINIMUM_FRAME, AnimState.STOPPED);
@@ -82,7 +82,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 4;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, true, false);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, false);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
@@ -113,7 +113,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, false, true);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, false, true);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
@@ -138,7 +138,7 @@ public class AnimatorTest
     {
         final int first = 2;
         final int last = 3;
-        final Animation animation = Anim.createAnimation(first, last, 1.0, true, true);
+        final Animation animation = Anim.createAnimation(null, first, last, 1.0, true, true);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);
@@ -167,7 +167,7 @@ public class AnimatorTest
         final int first = 2;
         final int last = 5;
         final double speed = 2.0;
-        final Animation animation = Anim.createAnimation(first, last, speed, false, false);
+        final Animation animation = Anim.createAnimation(null, first, last, speed, false, false);
         final Animator animator = Anim.createAnimator();
 
         animator.play(animation);

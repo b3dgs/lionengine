@@ -17,7 +17,7 @@
  */
 package com.b3dgs.lionengine.editor;
 
-import java.util.Map;
+import java.util.Collection;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -34,13 +34,15 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import com.b3dgs.lionengine.Nameable;
+
 /**
  * Represents the object list, allowing to add and remove objects.
  * 
  * @param <T> The object type handled by the list.
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public abstract class ObjectList<T>
+public abstract class ObjectList<T extends Nameable>
 {
     /** Icon add. */
     public static final Image ICON_ADD = UtilEclipse.getIcon("add.png");
@@ -191,16 +193,15 @@ public abstract class ObjectList<T>
     /**
      * Load a map of object, and store them by using their name.
      * 
-     * @param objects The object map.
+     * @param objects The object collection.
      */
-    protected void loadObjects(Map<String, T> objects)
+    protected void loadObjects(Collection<T> objects)
     {
         boolean selected = false;
-        for (final Map.Entry<String, T> name : objects.entrySet())
+        for (final T object : objects)
         {
-            final T object = name.getValue();
             final TreeItem item = new TreeItem(objectsTree, SWT.NONE);
-            item.setText(name.getKey());
+            item.setText(object.getName());
             item.setData(object);
             if (!selected)
             {

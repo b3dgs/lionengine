@@ -115,13 +115,13 @@ class Entity
         body = new BodyModel(this);
         addTrait(body);
 
-        tileCollidable = new TileCollidableModel(this, setup.getConfigurer(), services);
+        tileCollidable = new TileCollidableModel(this, configurer, services);
         addTrait(tileCollidable);
         tileCollidable.addListener(this);
 
-        collidable = new CollidableModel(this, services);
+        collidable = new CollidableModel(this, configurer, services);
         collidable.setOrigin(Origin.CENTER_TOP);
-        collidable.addCollision(ConfigCollisions.create(setup.getConfigurer()).getCollision("default"));
+        collidable.addCollision(ConfigCollisions.create(configurer).getCollision("default"));
         addTrait(collidable);
 
         camera = services.get(Camera.class);

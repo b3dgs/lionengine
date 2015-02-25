@@ -15,4 +15,5 @@
 	<lionengine:category name="knee_left" axis="X" x="-6" y="0">
 	    <lionengine:group>block</lionengine:group>
 	</lionengine:category>
+	<lionengine:collision name="default" offsetX="0" offsetY="0" width="12" height="16" mirror="false"/>
 </lionengine:entity>

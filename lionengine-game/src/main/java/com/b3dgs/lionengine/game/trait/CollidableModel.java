@@ -29,6 +29,8 @@ import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.Viewer;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Collision;
+import com.b3dgs.lionengine.game.configurer.ConfigCollisions;
+import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.object.ObjectGame;
 import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.geom.Geom;
@@ -73,6 +75,10 @@ public class CollidableModel
      * <ul>
      * <li>{@link Transformable}</li>
      * </ul>
+     * <p>
+     * The {@link Configurer} must provide a valid configuration compatible with {@link ConfigCollisions}.
+     * </p>
+     * <p>
      * The {@link Services} must provide the following services:
      * </p>
      * <ul>
@@ -80,10 +86,11 @@ public class CollidableModel
      * </ul>
      * 
      * @param owner The owner reference.
+     * @param configurer The configurer reference.
      * @param services The services reference.
      * @throws LionEngineException If missing {@link Trait} or {@link Services}.
      */
-    public CollidableModel(ObjectGame owner, Services services) throws LionEngineException
+    public CollidableModel(ObjectGame owner, Configurer configurer, Services services) throws LionEngineException
     {
         super(owner);
         listeners = new ArrayList<>();
@@ -96,6 +103,10 @@ public class CollidableModel
         origin = Origin.TOP_LEFT;
         enabled = true;
         showCollision = false;
+        for (final Collision collision : ConfigCollisions.create(configurer).getCollisions())
+        {
+            addCollision(collision);
+        }
     }
 
     /*

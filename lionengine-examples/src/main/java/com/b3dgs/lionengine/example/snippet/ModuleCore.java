@@ -224,7 +224,7 @@ public class ModuleCore
 
     void animation()
     {
-        final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+        final Animation animation = Anim.createAnimation(null, 4, 6, 0.125, false, true);
         System.out.println(animation.getFirst()); // 4
         System.out.println(animation.getLast()); // 6
         System.out.println(animation.getSpeed()); // 0.125
@@ -235,7 +235,7 @@ public class ModuleCore
     void animator()
     {
         final Animator animator = Anim.createAnimator();
-        final Animation animation = Anim.createAnimation(4, 6, 0.125, false, true);
+        final Animation animation = Anim.createAnimation(null, 4, 6, 0.125, false, true);
         animator.play(animation);
 
         // ... (loop)
@@ -246,7 +246,7 @@ public class ModuleCore
     void animState()
     {
         final Animator animator = Anim.createAnimator();
-        final Animation animation = Anim.createAnimation(1, 2, 1.0, false, false);
+        final Animation animation = Anim.createAnimation(null, 1, 2, 1.0, false, false);
         animator.getAnimState(); // returns STOPPED
         animator.play(animation);
         animator.update(extrp);
@@ -337,7 +337,7 @@ public class ModuleCore
         // Load
         final SpriteAnimated animation = Drawable.loadSpriteAnimated(Core.MEDIA.create("animation.png"), 7, 1);
         animation.load(false);
-        final Animation anim = Anim.createAnimation(4, 6, 0.125, false, true);
+        final Animation anim = Anim.createAnimation(null, 4, 6, 0.125, false, true);
         animation.play(anim);
         animation.setLocation(160, 300);
 

@@ -17,6 +17,7 @@
  */
 package com.b3dgs.lionengine.example.game.collision;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Origin;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
@@ -35,6 +36,8 @@ import com.b3dgs.lionengine.game.object.Services;
 import com.b3dgs.lionengine.game.object.SetupSurface;
 import com.b3dgs.lionengine.game.trait.Body;
 import com.b3dgs.lionengine.game.trait.BodyModel;
+import com.b3dgs.lionengine.game.trait.Collidable;
+import com.b3dgs.lionengine.game.trait.CollidableModel;
 import com.b3dgs.lionengine.game.trait.TileCollidable;
 import com.b3dgs.lionengine.game.trait.TileCollidableListener;
 import com.b3dgs.lionengine.game.trait.TileCollidableModel;
@@ -62,6 +65,8 @@ class Mario
     private final Body body;
     /** Tile collidable. */
     private final TileCollidable tileCollidable;
+    /** Object collidable. */
+    private final Collidable collidable;
     /** Keyboard reference. */
     private final Keyboard keyboard;
     /** Camera reference. */
@@ -91,6 +96,11 @@ class Mario
 
         tileCollidable = new TileCollidableModel(this, SETUP.getConfigurer(), services);
         tileCollidable.addListener(this);
+
+        collidable = new CollidableModel(this, SETUP.getConfigurer(), services);
+        addTrait(collidable);
+        collidable.setCollisionVisibility(true);
+        collidable.setOrigin(Origin.CENTER_TOP);
 
         body.setVectors(movement, jump);
         body.setDesiredFps(services.get(Integer.class).intValue());
@@ -128,6 +138,7 @@ class Mario
         jump.update(extrp);
         body.update(extrp);
         tileCollidable.update(extrp);
+        collidable.update(extrp);
 
         if (transformable.getY() < 0)
         {
@@ -142,6 +153,8 @@ class Mario
     public void render(Graphic g)
     {
         surface.render(g);
+        g.setColor(ColorRgba.GREEN);
+        collidable.render(g);
     }
 
     @Override
