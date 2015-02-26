@@ -90,9 +90,9 @@ class Scene
         services.add(camera);
         hero = new Mario(services);
 
-        camera.setLimits(map);
-        camera.setView(0, 0, getWidth(), getHeight());
         camera.setIntervals(16, 0);
+        camera.setView(0, 0, getWidth(), getHeight());
+        camera.setLimits(map);
     }
 
     @Override

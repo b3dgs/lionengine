@@ -120,9 +120,9 @@ class World
         map.load(file);
         mapCollision.loadCollisions(Core.MEDIA.create("map", "formulas.xml"), Core.MEDIA.create("map", "groups.xml"));
         mapCollision.createCollisionDraw();
-        camera.setLimits(map);
+        camera.setIntervals(16, 0);
         camera.setView(0, 0, width, height);
-        camera.setIntervals(0, 0);
+        camera.setLimits(map);
 
         final Services services = new Services();
         services.add(Integer.valueOf(source.getRate()));

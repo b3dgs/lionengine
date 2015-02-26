@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <lionengine:groups xmlns:lionengine="http://lionengine.b3dgs.com">
-    <lionengine:group name="ground0" sheet="0" start="0" end="1"/>
-    <lionengine:group name="ground1" sheet="0" start="2" end="17"/>
-    <lionengine:group name="ground2" sheet="0" start="18" end="32"/>
-    <lionengine:group name="ground3" sheet="0" start="33" end="48"/>
-    <lionengine:group name="ground4" sheet="0" start="49" end="50"/>
-    <lionengine:group name="ground5" sheet="0" start="51" end="66"/>
-    <lionengine:group name="ground6" sheet="0" start="67" end="67"/>
-    <lionengine:group name="ground7" sheet="0" start="96" end="123"/>
-    <lionengine:group name="ground8" sheet="0" start="124" end="123"/>
-    <lionengine:group name="ground9" sheet="0" start="124" end="124"/>
-    <lionengine:group name="treeBorder" sheet="0" start="125" end="140"/>
-    <lionengine:group name="tree" sheet="0" start="141" end="145"/>
-    <lionengine:group name="border" sheet="0" start="146" end="184"/>
-    <lionengine:group name="water" sheet="0" start="185" end="207"/>
+	<lionengine:group name="grassDark" sheet="0" start="0" end="1"/>
+	<lionengine:group name="grassDarkBorder" sheet="0" start="2" end="17"/>
+	<lionengine:group name="grass" sheet="0" start="18" end="32"/>
+	<lionengine:group name="grassLightBorder" sheet="0" start="33" end="48"/>
+	<lionengine:group name="grassLight" sheet="0" start="49" end="50"/>
+	<lionengine:group name="grassBrightBorder" sheet="0" start="51" end="66"/>
+	<lionengine:group name="grassBright" sheet="0" start="67" end="67"/>
+	<lionengine:group name="road" sheet="0" start="68" end="95"/>
+	<lionengine:group name="bridge" sheet="0" start="96" end="123"/>
+	<lionengine:group name="treeCut" sheet="0" start="124" end="124"/>
+	<lionengine:group name="treeBorder" sheet="0" start="125" end="140"/>
+	<lionengine:group name="tree" sheet="0" start="141" end="145"/>
+	<lionengine:group name="border" sheet="0" start="146" end="184"/>
+	<lionengine:group name="water" sheet="0" start="185" end="207"/>
 </lionengine:groups>

@@ -43,12 +43,13 @@ import com.b3dgs.lionengine.drawable.Image;
  * <li><code>area</code>: Represents the area where the cursor can move on. Its location can not exit this area (
  * {@link #setArea(int, int, int, int)}).</li>
  * <li><code>sync</code>: <code>true</code> if cursor is synchronized on the system pointer, <code>false</code> not (
- * {@link Cursor#setSyncMode(boolean)}).</li>
+ * {@link #setSyncMode(boolean)}).</li>
  * <li><code>sensibility</code>: If the cursor is not synchronized on the system pointer, it can be defined (
- * {@link Cursor#setSensibility(double, double)}).</li>
+ * {@link #setSensibility(double, double)}).</li>
+ * <li><code>grid</code>: Represents the map grid, affecting {@link #getLocationInTileX()} and
+ * {@link #getLocationInTileY()}.</li>
  * <li><code>location</code>: The internal cursor position ({@link #setLocation(int, int)}).</li>
- * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed (
- * {@link Cursor#setSurfaceId(int)}).</li>
+ * <li><code>surfaceId</code>: This is the current cursor surface that can be displayed ({@link #setSurfaceId(int)}).</li>
  * </ul>
  * </p>
  * 
@@ -235,21 +236,24 @@ public class Cursor
     }
 
     /**
-     * Set the grid size.
+     * Set the grid size. Will affect {@link #getLocationInTileX()} and {@link #getLocationInTileY()}.
      * 
-     * @param width The horizontal grid.
-     * @param height The vertical grid.
+     * @param width The horizontal grid (> 0).
+     * @param height The vertical grid (> 0).
+     * @throws LionEngineException If grid is not strictly positive.
      */
-    public void setGrid(int width, int height)
+    public void setGrid(int width, int height) throws LionEngineException
     {
+        Check.superiorStrict(width, 0);
+        Check.superiorStrict(height, 0);
         gridWidth = width;
         gridHeight = height;
     }
 
     /**
-     * Return pointer click number.
+     * Return cursor click number.
      * 
-     * @return The pointer click number.
+     * @return The cursor click number.
      */
     public int getClick()
     {
@@ -273,7 +277,7 @@ public class Cursor
      */
     public int getLocationX()
     {
-        return (int) Math.floor(x);
+        return (int) Math.round(x);
     }
 
     /**
@@ -283,11 +287,12 @@ public class Cursor
      */
     public int getLocationY()
     {
-        return (int) Math.floor(y);
+        return (int) Math.round(y);
     }
 
     /**
-     * Get the horizontal tile pointed by the cursor.
+     * Get the horizontal tile pointed by the cursor (depending of the {@link #getLocationX()} and
+     * {@link #setGrid(int, int)}.
      * 
      * @return The horizontal tile pointed by the cursor.
      */
@@ -297,7 +302,8 @@ public class Cursor
     }
 
     /**
-     * Get the vertical tile pointed by the cursor.
+     * Get the vertical tile pointed by the cursor (depending of the {@link #getLocationY()} and
+     * {@link #setGrid(int, int)}.
      * 
      * @return The vertical tile pointed by the cursor.
      */

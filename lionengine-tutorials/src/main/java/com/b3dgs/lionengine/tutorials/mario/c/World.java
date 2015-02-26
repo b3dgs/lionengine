@@ -73,7 +73,7 @@ class World
     protected void loading(FileReading file) throws IOException
     {
         map.load(file);
-        camera.setLimits(map);
         camera.setView(0, 0, width, height);
+        camera.setLimits(map);
     }
 }

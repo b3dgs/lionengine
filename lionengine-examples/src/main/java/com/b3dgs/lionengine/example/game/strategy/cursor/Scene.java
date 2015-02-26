@@ -111,9 +111,8 @@ class Scene
     @Override
     public void load()
     {
-        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile"));
-        mapCollision.loadCollisions(Core.MEDIA.create("tile", MapTileCollision.FORMULAS_FILE_NAME),
-                Core.MEDIA.create("tile", MapTileCollision.GROUPS_FILE_NAME));
+        map.create(Core.MEDIA.create("level.png"), Core.MEDIA.create("tile", "sheets.xml"));
+        mapCollision.loadCollisions(Core.MEDIA.create("tile", "formulas.xml"), Core.MEDIA.create("tile", "groups.xml"));
         cursor.load(false);
         cursor.setArea(0, 0, getWidth(), getHeight());
         cursor.setGrid(map.getTileWidth(), map.getTileHeight());
@@ -128,7 +127,23 @@ class Scene
         mouse.update(extrp);
         text.update(camera);
         cursor.update(extrp);
-        if (keyboard.isPressed(Keyboard.ESCAPE))
+        if (keyboard.isPressedOnce(Keyboard.UP))
+        {
+            camera.moveLocation(extrp, 0, 16);
+        }
+        if (keyboard.isPressedOnce(Keyboard.DOWN))
+        {
+            camera.moveLocation(extrp, 0, -16);
+        }
+        if (keyboard.isPressedOnce(Keyboard.LEFT))
+        {
+            camera.moveLocation(extrp, -16, 0);
+        }
+        if (keyboard.isPressedOnce(Keyboard.RIGHT))
+        {
+            camera.moveLocation(extrp, 16, 0);
+        }
+        if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
         }

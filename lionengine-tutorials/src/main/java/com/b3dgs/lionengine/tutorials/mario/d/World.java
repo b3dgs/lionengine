@@ -107,9 +107,9 @@ class World
     {
         map.load(file);
         mapCollision.loadCollisions(Core.MEDIA.create("formulas.xml"), Core.MEDIA.create("groups.xml"));
-        camera.setLimits(map);
-        camera.setView(0, 0, width, height);
         camera.setIntervals(16, 0);
+        camera.setView(0, 0, width, height);
+        camera.setLimits(map);
 
         final Services services = new Services();
         services.add(Integer.valueOf(source.getRate()));

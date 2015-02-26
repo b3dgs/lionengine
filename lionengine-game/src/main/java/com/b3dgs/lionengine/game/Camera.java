@@ -24,12 +24,20 @@ import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.object.Handler;
 import com.b3dgs.lionengine.game.trait.Transformable;
 import com.b3dgs.lionengine.game.trait.TransformableModel;
-import com.b3dgs.lionengine.stream.FileReading;
 
 /**
- * Standard camera, able to handle movement, and both vertical/horizontal real interval. Camera can be used to move
+ * Standard camera, able to handle movement, and both vertical/horizontal interval. Camera can be used to move
  * easily, or just follow a specific {@link Localizable}. Also, a view can be set to avoid useless rendering when
  * objects are outside of the camera view.
+ * <p>
+ * Camera construction order example:
+ * </p>
+ * <ul>
+ * <li>{@link #Camera()}</li>
+ * <li>{@link #setIntervals(int, int)}</li>
+ * <li>{@link #setView(int, int, int, int)}</li>
+ * <li>{@link #setLimits(MapTile)}</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
@@ -107,7 +115,7 @@ public class Camera
     }
 
     /**
-     * Move camera.
+     * Move camera by using specified vector.
      * 
      * @param extrp The extrapolation value.
      * @param vx The horizontal vector.
@@ -115,64 +123,8 @@ public class Camera
      */
     public void moveLocation(double extrp, double vx, double vy)
     {
-        // Horizontal move
-        // Can scroll only on offset interval
         checkHorizontalLimit(vx);
-
-        // Middle
-        if (y >= getLimitMapDown() && y < getLimitMapUp())
-        {
-            transformable.setLocationY(y);
-            offset.setLocationY(0.0);
-        }
-        else
-        {
-            // Vertical move
-            if (offset.getY() == 0)
-            {
-                transformable.moveLocation(extrp, 0, vy);
-            }
-            if (transformable.getY() > getLimitMapDown() && transformable.getY() < getLimitMapUp())
-            {
-                offset.setLocationY(0.0);
-            }
-            else
-            {
-                if (transformable.getY() < getLimitMapDown())
-                {
-                    transformable.setLocationY(getLimitMapDown());
-                }
-                if (transformable.getY() > getLimitMapUp())
-                {
-                    transformable.setLocationY(getLimitMapUp());
-                }
-
-                offset.moveLocation(extrp, 0, vy);
-
-                if (transformable.getY() == getLimitMapDown() && offset.getY() >= 0)
-                {
-                    transformable.moveLocation(extrp, 0, vy);
-                    offset.setLocationY(0.0);
-                }
-                if (transformable.getY() == getLimitMapUp() && offset.getY() <= 0)
-                {
-                    transformable.moveLocation(extrp, 0, vy);
-                    offset.setLocationY(0.0);
-                }
-            }
-            // Down limit
-            if (y < getLimitMapDown())
-            {
-                transformable.setLocationY(getLimitMapDown());
-                offset.setLocationY(y - transformable.getY());
-            }
-            // Top limit
-            if (y >= getLimitMapUp())
-            {
-                transformable.setLocationY(getLimitMapUp());
-                offset.setLocationY(y - transformable.getY());
-            }
-        }
+        checkVerticalLimit(vy);
     }
 
     /**
@@ -247,7 +199,7 @@ public class Camera
      * Define the map borders. This function will allow to let the camera know the map size, and so, know which part of
      * the map can be viewed without being outside the map extremity.
      * <p>
-     * Note: Must be called after map loading (usually in {@link WorldGame#loading(FileReading)}).
+     * Note: Must be called after set view ({@link #setView(int, int, int, int)}).
      * </p>
      * 
      * @param map The map reference.
@@ -334,7 +286,8 @@ public class Camera
      */
     private void checkHorizontalLimit(double vx)
     {
-        if (transformable.getX() > getLimitMapLeft() && transformable.getX() < getLimitMapRight()
+        // Inside interval
+        if (transformable.getX() >= getLimitMapLeft() && transformable.getX() <= getLimitMapRight()
                 && getLimitMapLeft() != Integer.MIN_VALUE && getLimitMapRight() != Integer.MAX_VALUE)
         {
             offset.moveLocation(1, vx, 0);
@@ -349,51 +302,66 @@ public class Camera
                 offset.teleportX(intervalHorizontal);
             }
         }
-        // Case of map extremity
-        else
-        {
-            checkHorizontalExtremity(vx);
-        }
-        // Middle
+        // Outside interval
         if (offset.getX() == -intervalHorizontal || offset.getX() == intervalHorizontal)
         {
             transformable.moveLocation(1, vx, 0);
         }
-    }
-
-    /**
-     * Check horizontal extremity on move.
-     * 
-     * @param vx The horizontal movement.
-     */
-    private void checkHorizontalExtremity(double vx)
-    {
+        // Apply limit
         if (transformable.getX() < getLimitMapLeft() && getLimitMapLeft() != Integer.MIN_VALUE)
         {
-            transformable.setLocationX(getLimitMapLeft());
+            transformable.teleportX(getLimitMapLeft());
         }
         else if (transformable.getX() > getLimitMapRight() && getLimitMapRight() != Integer.MAX_VALUE)
         {
-            transformable.setLocationX(getLimitMapRight());
+            transformable.teleportX(getLimitMapRight());
         }
         else
         {
             transformable.moveLocation(1, Direction.ZERO);
         }
+    }
 
-        offset.moveLocation(1, vx, 0);
-
-        if (transformable.getX() == getLimitMapLeft() && offset.getX() >= intervalHorizontal
-                && getLimitMapLeft() != Integer.MIN_VALUE)
+    /**
+     * Check vertical limit on move.
+     * 
+     * @param vy The vertical movement.
+     */
+    private void checkVerticalLimit(double vy)
+    {
+        // Inside interval
+        if (transformable.getY() >= getLimitMapDown() && transformable.getY() <= getLimitMapUp()
+                && getLimitMapDown() != Integer.MIN_VALUE && getLimitMapUp() != Integer.MAX_VALUE)
         {
-            offset.setLocationX(intervalHorizontal);
-            transformable.moveLocation(1, vx, 0);
+            offset.moveLocation(1, 0, vy);
+
+            // Block offset on its limits
+            if (offset.getY() < -intervalVertical)
+            {
+                offset.teleportY(-intervalVertical);
+            }
+            else if (offset.getY() > intervalVertical)
+            {
+                offset.teleportY(intervalVertical);
+            }
         }
-        if (transformable.getX() == getLimitMapRight() && offset.getX() <= -intervalHorizontal
-                && getLimitMapRight() != Integer.MAX_VALUE)
+        // Outside interval
+        if (offset.getY() == -intervalVertical || offset.getY() == intervalVertical)
         {
-            offset.setLocationX(-intervalHorizontal);
-            transformable.moveLocation(1, vx, 0);
+            transformable.moveLocation(1, 0, vy);
+        }
+        // Apply limit
+        if (transformable.getY() < getLimitMapDown() && getLimitMapDown() != Integer.MIN_VALUE)
+        {
+            transformable.teleportY(getLimitMapDown());
+        }
+        else if (transformable.getY() > getLimitMapUp() && getLimitMapUp() != Integer.MAX_VALUE)
+        {
+            transformable.teleportY(getLimitMapUp());
+        }
+        else
+        {
+            transformable.moveLocation(1, Direction.ZERO);
         }
     }
 
@@ -404,7 +372,7 @@ public class Camera
     @Override
     public void follow(Localizable localizable)
     {
-        setLocation(localizable.getX(), localizable.getY() + (int) Math.floor(localizable.getHeight() / 2.0));
+        setLocation(localizable.getX(), localizable.getY());
     }
 
     @Override
