@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.e;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.game.trait.Mirrorable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateTurn
-        extends State
+        implements State
 {
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
@@ -60,44 +61,43 @@ class StateTurn
     }
 
     @Override
+    public State handleInput(StateFactory factory, InputDevice input)
+    {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            if (device.getVerticalDirection() > 0)
+            {
+                return factory.getState(EntityState.JUMP);
+            }
+            side = device.getHorizontalDirection();
+            if ((device.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || device
+                    .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
+                    && device.getVerticalDirection() == 0)
+            {
+                return factory.getState(EntityState.WALK);
+            }
+            else if (side == 0 && movement.getDirectionHorizontal() == 0.0)
+            {
+                mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
+                return factory.getState(EntityState.IDLE);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void enter()
     {
         animator.play(animation);
         movement.setVelocity(0.28);
         movement.setSensibility(0.005);
+        side = 0;
     }
 
     @Override
     public void update(double extrp)
     {
         movement.setDestination(side * 2, 0);
-    }
-
-    @Override
-    public void clear()
-    {
-        side = 0;
-    }
-
-    @Override
-    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
-    {
-        if (input.getVerticalDirection() > 0)
-        {
-            return factory.getState(EntityState.JUMP);
-        }
-        side = input.getHorizontalDirection();
-        if ((input.getHorizontalDirection() < 0 && movement.getDirectionHorizontal() < 0 || input
-                .getHorizontalDirection() > 0 && movement.getDirectionHorizontal() > 0)
-                && input.getVerticalDirection() == 0)
-        {
-            return factory.getState(EntityState.WALK);
-        }
-        else if (side == 0 && movement.getDirectionHorizontal() == 0.0)
-        {
-            mirrorable.mirror(mirrorable.getMirror() == Mirror.HORIZONTAL ? Mirror.NONE : Mirror.HORIZONTAL);
-            return factory.getState(EntityState.IDLE);
-        }
-        return null;
     }
 }

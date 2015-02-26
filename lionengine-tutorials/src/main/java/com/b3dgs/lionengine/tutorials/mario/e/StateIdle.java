@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.e;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Force;
@@ -35,8 +36,7 @@ import com.b3dgs.lionengine.game.trait.Transformable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle
-        extends State
-        implements TileCollidableListener
+        implements State, TileCollidableListener
 {
     /** Transformable reference. */
     private final Transformable transformable;
@@ -70,6 +70,29 @@ class StateIdle
     }
 
     @Override
+    public State handleInput(StateFactory factory, InputDevice input)
+    {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            if (device.getVerticalDirection() > 0 && canJump)
+            {
+                Sfx.JUMP.play();
+                jump.setDirection(0.0, 8.0);
+                canJump = false;
+                tileCollidable.removeListener(this);
+                return factory.getState(EntityState.JUMP);
+            }
+            if (device.getHorizontalDirection() != 0)
+            {
+                tileCollidable.removeListener(this);
+                return factory.getState(EntityState.WALK);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void enter()
     {
         tileCollidable.addListener(this);
@@ -83,31 +106,6 @@ class StateIdle
     public void update(double extrp)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void clear()
-    {
-        // Nothing to do
-    }
-
-    @Override
-    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
-    {
-        if (input.getVerticalDirection() > 0 && canJump)
-        {
-            Sfx.JUMP.play();
-            jump.setDirection(0.0, 8.0);
-            canJump = false;
-            tileCollidable.removeListener(this);
-            return factory.getState(EntityState.JUMP);
-        }
-        if (input.getHorizontalDirection() != 0)
-        {
-            tileCollidable.removeListener(this);
-            return factory.getState(EntityState.WALK);
-        }
-        return null;
     }
 
     @Override

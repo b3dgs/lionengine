@@ -19,6 +19,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
@@ -30,7 +31,7 @@ import com.b3dgs.lionengine.game.StateFactory;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateIdle
-        extends State
+        implements State
 {
     /** Animator reference. */
     private final Animator animator;
@@ -53,6 +54,24 @@ class StateIdle
     }
 
     @Override
+    public State handleInput(StateFactory factory, InputDevice input)
+    {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            if (device.getVerticalDirection() > 0)
+            {
+                return factory.getState(MarioState.JUMP);
+            }
+            if (device.getHorizontalDirection() != 0)
+            {
+                return factory.getState(MarioState.WALK);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void enter()
     {
         movement.setDestination(0.0, 0.0);
@@ -65,25 +84,5 @@ class StateIdle
     public void update(double extrp)
     {
         // Nothing to do
-    }
-
-    @Override
-    public void clear()
-    {
-        // Nothing to do
-    }
-
-    @Override
-    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
-    {
-        if (input.getVerticalDirection() > 0)
-        {
-            return factory.getState(MarioState.JUMP);
-        }
-        if (input.getHorizontalDirection() != 0)
-        {
-            return factory.getState(MarioState.WALK);
-        }
-        return null;
     }
 }

@@ -182,7 +182,6 @@ class Mario
         if (current != null)
         {
             state = current;
-            current.enter();
         }
     }
 

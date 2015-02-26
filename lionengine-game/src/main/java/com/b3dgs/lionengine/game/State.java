@@ -18,16 +18,35 @@
 package com.b3dgs.lionengine.game;
 
 import com.b3dgs.lionengine.core.InputDevice;
-import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.core.Updatable;
 
 /**
- * State representation interface.
+ * States are designed to implement easily a gameplay by reducing implementation complexity.
+ * <p>
+ * In other word, gameplay can be represented as a finite state machine. This will ensure gameplay state validity,
+ * instead of checking tons of boolean to catch the right state.
+ * </p>
+ * <p>
+ * The only counter part is the number of class, which is usually one class per state. So typically, for a simple
+ * gameplay (<code>Idle, Walk, Jump</code>), it will need 3 state classes, plus the {@link StateFactory}.
+ * </p>
+ * <p>
+ * Usage is quite simple:
+ * </p>
+ * <ul>
+ * <li>{@link #enter()} one time on the state (reset default state and prepare for update)</li>
+ * <li>{@link #update(double)} the state for each game loop</li>
+ * <li>{@link #handleInput(StateFactory, InputDevice)} will allow to return the next state, depending of the user
+ * {@link InputDevice} usage. The state needs to implement {@link #handleInput(StateFactory, InputDevice)}</li>
+ * <li>The {@link StateFactory} will allow to choose which state should be then returned if needed, and {@link #enter()}
+ * will be called, and so on</li>
+ * </ul>
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see StateFactory
  */
-public abstract class State
-        implements Updatable
+public interface State
+        extends Updatable
 {
     /**
      * Handle the input by retrieving its state.
@@ -36,31 +55,10 @@ public abstract class State
      * @param input The input reference.
      * @return The new state (<code>null</code> if unchanged).
      */
-    public State handleInput(StateFactory factory, InputDevice input)
-    {
-        if (input instanceof InputDeviceDirectional)
-        {
-            return handleInput(factory, (InputDeviceDirectional) input);
-        }
-        return null;
-    }
+    State handleInput(StateFactory factory, InputDevice input);
 
     /**
-     * Called when entering in the state.
+     * Called by the {@link StateFactory} when entering in the state.
      */
-    public abstract void enter();
-
-    /**
-     * Clear the state to its default.
-     */
-    public abstract void clear();
-
-    /**
-     * Handle the input by retrieving its direction.
-     * 
-     * @param factory The state factory reference.
-     * @param input The input reference.
-     * @return The new state (<code>null</code> if unchanged).
-     */
-    protected abstract State handleInput(StateFactory factory, InputDeviceDirectional input);
+    void enter();
 }

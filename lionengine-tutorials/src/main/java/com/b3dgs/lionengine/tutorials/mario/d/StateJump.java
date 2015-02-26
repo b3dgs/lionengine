@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.tutorials.mario.d;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Axis;
 import com.b3dgs.lionengine.game.Direction;
@@ -37,8 +38,7 @@ import com.b3dgs.lionengine.game.trait.TileCollidableListener;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateJump
-        extends State
-        implements TileCollidableListener
+        implements State, TileCollidableListener
 {
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
@@ -72,6 +72,22 @@ class StateJump
     }
 
     @Override
+    public State handleInput(StateFactory factory, InputDevice input)
+    {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            side = device.getHorizontalDirection();
+            if (jump.getDirectionVertical() == 0)
+            {
+                tileCollidable.removeListener(this);
+                return factory.getState(MarioState.IDLE);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void enter()
     {
         movement.setVelocity(0.5);
@@ -79,6 +95,7 @@ class StateJump
         animator.play(animation);
         jump.setDirection(0.0, 8.0);
         tileCollidable.addListener(this);
+        side = 0;
     }
 
     @Override
@@ -89,24 +106,6 @@ class StateJump
         {
             mirrorable.mirror(movement.getDirectionHorizontal() < 0 ? Mirror.HORIZONTAL : Mirror.NONE);
         }
-    }
-
-    @Override
-    public void clear()
-    {
-        side = 0;
-    }
-
-    @Override
-    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
-    {
-        side = input.getHorizontalDirection();
-        if (jump.getDirectionVertical() == 0)
-        {
-            tileCollidable.removeListener(this);
-            return factory.getState(MarioState.IDLE);
-        }
-        return null;
     }
 
     @Override

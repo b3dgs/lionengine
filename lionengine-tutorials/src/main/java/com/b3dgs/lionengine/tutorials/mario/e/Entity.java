@@ -214,8 +214,6 @@ class Entity
         collidable.setEnabled(true);
         tileCollidable.setEnabled(true);
         state = factory.getState(EntityState.IDLE);
-        state.clear();
-        state.enter();
     }
 
     /**

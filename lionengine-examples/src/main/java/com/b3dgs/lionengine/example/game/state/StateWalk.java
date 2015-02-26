@@ -20,6 +20,7 @@ package com.b3dgs.lionengine.example.game.state;
 import com.b3dgs.lionengine.Mirror;
 import com.b3dgs.lionengine.anim.Animation;
 import com.b3dgs.lionengine.anim.Animator;
+import com.b3dgs.lionengine.core.InputDevice;
 import com.b3dgs.lionengine.core.InputDeviceDirectional;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.State;
@@ -32,7 +33,7 @@ import com.b3dgs.lionengine.game.trait.Mirrorable;
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
 class StateWalk
-        extends State
+        implements State
 {
     /** Mirrorable reference. */
     private final Mirrorable mirrorable;
@@ -60,11 +61,36 @@ class StateWalk
     }
 
     @Override
+    public State handleInput(StateFactory factory, InputDevice input)
+    {
+        if (input instanceof InputDeviceDirectional)
+        {
+            final InputDeviceDirectional device = (InputDeviceDirectional) input;
+            if (device.getVerticalDirection() > 0)
+            {
+                return factory.getState(MarioState.JUMP);
+            }
+            side = device.getHorizontalDirection();
+            if (side == 0 && device.getVerticalDirection() == 0)
+            {
+                return factory.getState(MarioState.IDLE);
+            }
+            else if (side < 0 && movement.getDirectionHorizontal() > 0 || side > 0
+                    && movement.getDirectionHorizontal() < 0)
+            {
+                return factory.getState(MarioState.TURN);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void enter()
     {
         animator.play(animation);
         movement.setVelocity(0.5);
         movement.setSensibility(0.1);
+        side = 0;
     }
 
     @Override
@@ -86,30 +112,5 @@ class StateWalk
                 mirrorable.mirror(Mirror.NONE);
             }
         }
-    }
-
-    @Override
-    public void clear()
-    {
-        side = 0;
-    }
-
-    @Override
-    protected State handleInput(StateFactory factory, InputDeviceDirectional input)
-    {
-        if (input.getVerticalDirection() > 0)
-        {
-            return factory.getState(MarioState.JUMP);
-        }
-        side = input.getHorizontalDirection();
-        if (side == 0 && input.getVerticalDirection() == 0)
-        {
-            return factory.getState(MarioState.IDLE);
-        }
-        else if (side < 0 && movement.getDirectionHorizontal() > 0 || side > 0 && movement.getDirectionHorizontal() < 0)
-        {
-            return factory.getState(MarioState.TURN);
-        }
-        return null;
     }
 }

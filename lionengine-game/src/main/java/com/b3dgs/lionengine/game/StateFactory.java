@@ -23,9 +23,10 @@ import java.util.Map;
 import com.b3dgs.lionengine.LionEngineException;
 
 /**
- * State type factory.
+ * State object factory. Provide {@link State} instance from its enum value.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see State
  */
 public class StateFactory
 {
@@ -44,9 +45,9 @@ public class StateFactory
     }
 
     /**
-     * Add a supported state.
+     * Add a supported state with its corresponding enum value.
      * 
-     * @param type The state type.
+     * @param type The state enum value.
      * @param state The state instance.
      */
     public void addState(Enum<?> type, State state)
@@ -55,7 +56,15 @@ public class StateFactory
     }
 
     /**
-     * Get the state instance from its type.
+     * Clear the handled states.
+     */
+    public void clear()
+    {
+        states.clear();
+    }
+
+    /**
+     * Get the state instance from its type. If found, {@link State#enter()} is called.
      * 
      * @param type The state type.
      * @return The state instance.
@@ -68,7 +77,7 @@ public class StateFactory
         {
             throw new LionEngineException(ERROR_STATE, type.name());
         }
-        state.clear();
+        state.enter();
         return state;
     }
 }
