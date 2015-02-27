@@ -163,9 +163,9 @@ public abstract class EntityStrategy
         {
             for (int h = 0; h < getWidthInTile(); h++)
             {
-                if (map.getRef(getLocationInTileX() + h, getLocationInTileY() + v).equals(getId()))
+                if (map.getObjectsId(getLocationInTileX() + h, getLocationInTileY() + v).equals(getId()))
                 {
-                    map.setRef(getLocationInTileX() + h, getLocationInTileY() + v, Integer.valueOf(0));
+                    map.addObjectId(getLocationInTileX() + h, getLocationInTileY() + v, Integer.valueOf(0));
                 }
             }
         }
@@ -174,7 +174,7 @@ public abstract class EntityStrategy
         {
             for (int h = 0; h < getWidthInTile(); h++)
             {
-                map.setRef(getLocationInTileX() + h, getLocationInTileY() + v, getId());
+                map.addObjectId(getLocationInTileX() + h, getLocationInTileY() + v, getId());
             }
         }
     }
@@ -501,9 +501,9 @@ public abstract class EntityStrategy
             {
                 try
                 {
-                    if (map.getRef(h, v).equals(getId()))
+                    if (map.getObjectsId(h, v).equals(getId()))
                     {
-                        map.setRef(h, v, Integer.valueOf(0));
+                        map.addObjectId(h, v, Integer.valueOf(0));
                     }
                 }
                 catch (final ArrayIndexOutOfBoundsException exception)

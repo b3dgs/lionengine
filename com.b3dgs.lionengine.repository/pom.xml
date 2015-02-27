@@ -28,11 +28,6 @@
 
 		<dependency>
 			<groupId>com.b3dgs.lionengine</groupId>
-			<artifactId>lionengine-game-pathfinding</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.b3dgs.lionengine</groupId>
 			<artifactId>lionengine-game-strategy</artifactId>
 		</dependency>
 

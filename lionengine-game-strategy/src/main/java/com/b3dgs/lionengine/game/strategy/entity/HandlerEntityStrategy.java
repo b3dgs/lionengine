@@ -202,7 +202,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
      */
     public E getEntityAt(int tx, int ty) throws EntityNotFoundException
     {
-        final Integer id = map.getRef(tx, ty);
+        final Integer id = map.getObjectsId(tx, ty);
         if (id.intValue() > 0)
         {
             return get(id);
@@ -570,7 +570,7 @@ public abstract class HandlerEntityStrategy<R extends Enum<R>, T extends TileStr
         {
             // Resource location is a tile
             final T tile = map.getTile(tx, ty);
-            if (map.getRef(tx, ty).intValue() == 0 && tile.hasResources())
+            if (map.getObjectsId(tx, ty).intValue() == 0 && tile.hasResources())
             {
                 final R type = tile.getResourceType();
                 final ExtractorServices extractor = (ExtractorServices) entity;

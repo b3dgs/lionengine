@@ -15,46 +15,49 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-package com.b3dgs.lionengine.game.strategy.ability.mover;
-
-import com.b3dgs.lionengine.game.Orientation;
-import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.trait.Pathfindable;
+package com.b3dgs.lionengine.game.map.astar;
 
 /**
- * Represents the ability of moving on a PathBasedMap. It includes pathfinding handling.
+ * Represents the data associated to a path.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
  */
-public interface MoverServices
-        extends Pathfindable
+public class PathData
 {
-    /**
-     * Get the current orientation when moving.
-     * 
-     * @return The orientation movement.
-     */
-    Orientation getMovementOrientation();
+    /** Path cost. */
+    private final int cost;
+    /** Blocking flag. */
+    private final boolean blocking;
 
     /**
-     * Assign a specified location; will move automatically until reach it.
+     * Create a path data.
      * 
-     * @param tiled The tiled to reach
+     * @param cost The cost value.
+     * @param blocking The blocking flag.
      */
-    void setDestination(Tiled tiled);
+    public PathData(int cost, boolean blocking)
+    {
+        this.cost = cost;
+        this.blocking = blocking;
+    }
 
     /**
-     * Adjust orientation to face to specified tile.
+     * Get the cost value.
      * 
-     * @param tx The horizontal tile to face.
-     * @param ty The vertical tile to face.
+     * @return The cost value.
      */
-    void pointTo(int tx, int ty);
+    public int getCost()
+    {
+        return cost;
+    }
 
     /**
-     * Adjust orientation to face to specified entity.
+     * Get the blocking state.
      * 
-     * @param tiled The tiled to face to.
+     * @return <code>true</code> if blocking, <code>false</code> else.
      */
-    void pointTo(Tiled tiled);
+    public boolean isBlocking()
+    {
+        return blocking;
+    }
 }

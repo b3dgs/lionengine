@@ -58,7 +58,6 @@
 				<module>../lionengine-core-android</module>
 				<module>../lionengine-core-awt</module>
 				<module>../lionengine-game</module>
-				<module>../lionengine-game-pathfinding</module>
 				<module>../lionengine-game-strategy</module>
 				<module>../lionengine-network</module>
 				<module>../lionengine-audio-wav</module>
@@ -142,11 +141,6 @@
 			<dependency>
 				<groupId>com.b3dgs.lionengine</groupId>
 				<artifactId>lionengine-game</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.b3dgs.lionengine</groupId>
-				<artifactId>lionengine-game-pathfinding</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

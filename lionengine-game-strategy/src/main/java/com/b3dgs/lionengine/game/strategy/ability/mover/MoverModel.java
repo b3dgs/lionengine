@@ -21,10 +21,10 @@ import java.util.Collection;
 
 import com.b3dgs.lionengine.game.Orientation;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.pathfinding.Pathfindable;
-import com.b3dgs.lionengine.game.pathfinding.PathfindableModel;
 import com.b3dgs.lionengine.game.strategy.ability.AbilityModel;
 import com.b3dgs.lionengine.game.strategy.map.MapTileStrategy;
+import com.b3dgs.lionengine.game.trait.Pathfindable;
+import com.b3dgs.lionengine.game.trait.PathfindableModel;
 
 /**
  * Default and abstract mover model implementation.

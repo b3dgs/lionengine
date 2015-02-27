@@ -88,8 +88,6 @@ public class Cursor
     private int maxX;
     /** Maximum location y. */
     private int maxY;
-    /** Click number. */
-    private int click;
     /** Surface id. */
     private int surfaceId;
     /** Rendering horizontal offset. */
@@ -251,13 +249,35 @@ public class Cursor
     }
 
     /**
-     * Return cursor click number.
+     * Get the click number.
      * 
-     * @return The cursor click number.
+     * @return The click number.
      */
     public int getClick()
     {
-        return click;
+        return pointer.getClick();
+    }
+
+    /**
+     * Check if click is pressed.
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    public boolean hasClicked(int click)
+    {
+        return pointer.hasClicked(click);
+    }
+
+    /**
+     * Check if click is pressed once only (ignore 'still clicked').
+     * 
+     * @param click The click to check.
+     * @return The pressed state.
+     */
+    public boolean hasClickedOnce(int click)
+    {
+        return pointer.hasClickedOnce(click);
     }
 
     /**
@@ -387,7 +407,6 @@ public class Cursor
 
         x = UtilMath.fixBetween(x, minX, maxX);
         y = UtilMath.fixBetween(y, minY, maxY);
-        click = pointer.getClick();
         surface[surfaceId].setLocation(x + offsetX, y + offsetY);
     }
 
