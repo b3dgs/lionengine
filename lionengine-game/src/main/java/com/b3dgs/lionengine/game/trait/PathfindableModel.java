@@ -21,15 +21,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.Tiled;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfindable;
 import com.b3dgs.lionengine.game.configurer.Configurer;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTilePath;
+import com.b3dgs.lionengine.game.map.Tile;
+import com.b3dgs.lionengine.game.map.TilePath;
 import com.b3dgs.lionengine.game.map.astar.Astar;
 import com.b3dgs.lionengine.game.map.astar.Path;
 import com.b3dgs.lionengine.game.map.astar.PathData;
@@ -71,6 +77,8 @@ public class PathfindableModel
     private final Viewer viewer;
     /** Last valid path found. */
     private Path path;
+    /** Text debug rendering. */
+    private Text text;
     /** Current step index on path. */
     private int currentStep;
     /** Destination location x. */
@@ -99,6 +107,8 @@ public class PathfindableModel
     private boolean skip;
     /** Rechecks ref flag. */
     private boolean reCheckRef;
+    /** Render debug (draw additional path information). */
+    private boolean renderDebug;
 
     /**
      * Create a pathfindable model.
@@ -153,7 +163,7 @@ public class PathfindableModel
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        if (mapPath.isAreaAvailable(dtx, dty, tw, th, id))
+        if (mapPath.isAreaAvailable(this, dtx, dty, tw, th, id))
         {
             for (int tx = dtx; tx < dtx + tw; tx++)
             {
@@ -342,7 +352,7 @@ public class PathfindableModel
             {
                 removeObjectId(path.getX(currentStep), path.getY(currentStep));
             }
-            path = pathfinder.findPath(this, getInTileX(), getInTileY(), destX, destY, false);
+            path = pathfinder.findPath(this, destX, destY, false);
             pathFoundChanged = false;
             currentStep = 0;
             skip = false;
@@ -372,7 +382,7 @@ public class PathfindableModel
     {
         final int tw = transformable.getWidth() / map.getTileWidth();
         final int th = transformable.getHeight() / map.getTileHeight();
-        final boolean areaFree = mapPath.isAreaAvailable(dtx, dty, tw, th, id);
+        final boolean areaFree = mapPath.isAreaAvailable(this, dtx, dty, tw, th, id);
         for (int tx = dtx; tx < dtx + tw; tx++)
         {
             for (int ty = dty; ty < dty + th; ty++)
@@ -528,6 +538,8 @@ public class PathfindableModel
     {
         if (path != null)
         {
+            final ColorRgba oldColor = g.getColor();
+            g.setColor(ColorRgba.GREEN);
             final int tw = map.getTileWidth();
             final int th = map.getTileHeight();
             for (int i = 0; i < path.getLength(); i++)
@@ -535,7 +547,17 @@ public class PathfindableModel
                 final int x = (int) viewer.getViewpointX(path.getX(i) * tw);
                 final int y = (int) viewer.getViewpointY(path.getY(i) * th);
                 g.drawRect(x, y - th, tw, th, true);
+                if (renderDebug)
+                {
+                    final Tile tile = map.getTile(path.getX(i), path.getY(i));
+                    if (tile != null)
+                    {
+                        final TilePath tilePath = tile.getFeature(TilePath.class);
+                        text.draw(g, x + 2, y - th + 2, String.valueOf(getCost(tilePath.getCategory())));
+                    }
+                }
             }
+            g.setColor(oldColor);
         }
     }
 
@@ -560,6 +582,14 @@ public class PathfindableModel
     }
 
     @Override
+    public void setSharedPathIds(Collection<Integer> ids)
+    {
+        sharedPathIds.clear();
+        sharedPathIds.addAll(ids);
+        sharedPathIds.remove(id);
+    }
+
+    @Override
     public boolean setDestination(Tiled tiled)
     {
         return setDestination(tiled.getInTileX(), tiled.getInTileY());
@@ -574,7 +604,7 @@ public class PathfindableModel
             if (path == null)
             {
                 currentStep = 0;
-                path = pathfinder.findPath(this, getInTileX(), getInTileY(), tx, ty, true);
+                path = pathfinder.findPath(this, tx, ty, true);
                 pathFoundChanged = false;
                 prepareDestination(tx, ty);
                 return true;
@@ -598,11 +628,14 @@ public class PathfindableModel
     }
 
     @Override
-    public void setSharedPathIds(Collection<Integer> ids)
+    public void setRenderDebug(boolean debug)
     {
-        sharedPathIds.clear();
-        sharedPathIds.addAll(ids);
-        sharedPathIds.remove(id);
+        renderDebug = debug;
+        if (text == null)
+        {
+            text = Core.GRAPHIC.createText(Text.SANS_SERIF, 8, TextStyle.NORMAL);
+            text.setColor(ColorRgba.BLACK);
+        }
     }
 
     @Override
@@ -666,7 +699,7 @@ public class PathfindableModel
     @Override
     public boolean isPathAvailable(int tx, int ty)
     {
-        return pathfinder.findPath(this, getInTileX(), getInTileY(), tx, ty, false) != null;
+        return pathfinder.findPath(this, tx, ty, false) != null;
     }
 
     @Override

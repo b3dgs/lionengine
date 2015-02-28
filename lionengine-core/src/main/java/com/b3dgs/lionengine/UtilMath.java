@@ -152,9 +152,9 @@ public final class UtilMath
      * @param y2 The point 2 y.
      * @return The distance between point 1 and 2.
      */
-    public static int getDistance(int x1, int y1, int x2, int y2)
+    public static double getDistance(int x1, int y1, int x2, int y2)
     {
-        return (int) StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        return StrictMath.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     }
 
     /**
@@ -184,14 +184,14 @@ public final class UtilMath
      * @param th2 The second height in tile.
      * @return The number of tiles between them.
      */
-    public static int getDistance(int tx1, int ty1, int tw1, int th1, int tx2, int ty2, int tw2, int th2)
+    public static double getDistance(int tx1, int ty1, int tw1, int th1, int tx2, int ty2, int tw2, int th2)
     {
-        int min = Integer.MAX_VALUE;
+        double min = Double.MAX_VALUE;
         for (int h = tx2; h < tx2 + tw2; h++)
         {
             for (int v = ty2; v < ty2 + th2; v++)
             {
-                final int dist = getDistance(tx1, ty1, h, v);
+                final double dist = getDistance(tx1, ty1, h, v);
                 if (dist < min)
                 {
                     min = dist;

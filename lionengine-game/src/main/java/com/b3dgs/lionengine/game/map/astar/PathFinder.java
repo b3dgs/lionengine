@@ -32,12 +32,10 @@ public interface PathFinder
      * honor costs provided by the tile map.
      * 
      * @param mover The entity that will be moving along the path.
-     * @param sx The x coordinate of the start location.
-     * @param sy The y coordinate of the start location.
-     * @param dx The x coordinate of the destination location.
-     * @param dy The y coordinate of the destination location.
+     * @param dtx The x coordinate of the destination location.
+     * @param dty The y coordinate of the destination location.
      * @param ignoreRef The ignore map array reference checking (<code>true</code> to ignore references).
      * @return The path found from start to end, or null if no path can be found.
      */
-    Path findPath(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef);
+    Path findPath(Pathfindable mover, int dtx, int dty, boolean ignoreRef);
 }

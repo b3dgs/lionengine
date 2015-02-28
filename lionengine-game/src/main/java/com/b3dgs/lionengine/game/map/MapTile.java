@@ -285,6 +285,13 @@ public interface MapTile
     int getInTileHeight();
 
     /**
+     * Get the radius in tile.
+     * 
+     * @return The radius in tile.
+     */
+    int getInTileRadius();
+
+    /**
      * Check if map has been created.
      * 
      * @return <code>true</code> if created, <code>false</code> else.

@@ -83,16 +83,17 @@ public interface MapTilePath
     /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
-     * @param from The tiled from.
+     * @param mover The object moving on map.
      * @param to The tiled destination.
      * @param radius The search radius.
      * @return The closest tile found.
      */
-    CoordTile getClosestAvailableTile(Tiled from, Tiled to, int radius);
+    CoordTile getClosestAvailableTile(Pathfindable mover, Tiled to, int radius);
 
     /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
+     * @param mover The object moving on map.
      * @param stx The horizontal starting tile index.
      * @param sty The vertical starting tile index.
      * @param dtx The horizontal destination tile index.
@@ -100,26 +101,28 @@ public interface MapTilePath
      * @param radius The search radius.
      * @return The closest tile found.
      */
-    CoordTile getClosestAvailableTile(int stx, int sty, int dtx, int dty, int radius);
+    CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int dtx, int dty, int radius);
 
     /**
      * Search a free area from this location.
      * 
+     * @param mover The object moving on map.
      * @param tiled The object to search around.
      * @param radius The search radius.
      * @return The free tile found.
      */
-    CoordTile getFreeTileAround(Tiled tiled, int radius);
+    CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius);
 
     /**
      * Search a free area from this location.
      * 
+     * @param mover The object moving on map.
      * @param tx The horizontal tile index.
      * @param ty The vertical tile index.
      * @param radius The search radius.
      * @return The free tile found.
      */
-    CoordTile getFreeTileAround(int tx, int ty, int radius);
+    CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int radius);
 
     /**
      * Get the cost of the complete path, from start to end.
@@ -134,6 +137,7 @@ public interface MapTilePath
     /**
      * Check if area if unused.
      * 
+     * @param mover The object moving on map.
      * @param tx The horizontal tile index.
      * @param ty The vertical tile index.
      * @param tw The width in tile.
@@ -141,7 +145,7 @@ public interface MapTilePath
      * @param ignoreObjectId The object ID to ignore.
      * @return <code>true</code> if area is free, <code>false</code> else.
      */
-    boolean isAreaAvailable(int tx, int ty, int tw, int th, Integer ignoreObjectId);
+    boolean isAreaAvailable(Pathfindable mover, int tx, int ty, int tw, int th, Integer ignoreObjectId);
 
     /**
      * Check if current location is blocking or not.

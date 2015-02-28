@@ -17,22 +17,27 @@
  */
 package com.b3dgs.lionengine.example.game.pathfinding;
 
+import com.b3dgs.lionengine.ColorRgba;
 import com.b3dgs.lionengine.Resolution;
+import com.b3dgs.lionengine.TextStyle;
 import com.b3dgs.lionengine.core.Core;
 import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.core.Loader;
 import com.b3dgs.lionengine.core.Sequence;
+import com.b3dgs.lionengine.core.Text;
 import com.b3dgs.lionengine.core.awt.Engine;
 import com.b3dgs.lionengine.core.awt.Keyboard;
 import com.b3dgs.lionengine.core.awt.Mouse;
 import com.b3dgs.lionengine.game.Camera;
 import com.b3dgs.lionengine.game.Cursor;
+import com.b3dgs.lionengine.game.TextGame;
 import com.b3dgs.lionengine.game.map.MapTile;
 import com.b3dgs.lionengine.game.map.MapTileCollision;
 import com.b3dgs.lionengine.game.map.MapTileCollisionModel;
 import com.b3dgs.lionengine.game.map.MapTileGame;
 import com.b3dgs.lionengine.game.map.MapTilePath;
 import com.b3dgs.lionengine.game.map.MapTilePathModel;
+import com.b3dgs.lionengine.game.map.Tile;
 import com.b3dgs.lionengine.game.object.Services;
 
 /**
@@ -51,6 +56,8 @@ class Scene
     private final Keyboard keyboard;
     /** Mouse reference. */
     private final Mouse mouse;
+    /** Text reference. */
+    private final TextGame text;
     /** Camera reference. */
     private final Camera camera;
     /** Map reference. */
@@ -74,6 +81,7 @@ class Scene
         super(loader, Scene.NATIVE);
         keyboard = getInputDevice(Keyboard.class);
         mouse = getInputDevice(Mouse.class);
+        text = new TextGame(Text.SANS_SERIF, 10, TextStyle.NORMAL);
         camera = new Camera();
         map = new MapTileGame(camera, 16, 16);
         mapCollision = new MapTileCollisionModel(map, camera);
@@ -114,6 +122,7 @@ class Scene
         mouse.update(extrp);
         cursor.update(extrp);
         peon.update(extrp);
+        text.update(camera);
         if (keyboard.isPressedOnce(Keyboard.ESCAPE))
         {
             end();
@@ -126,6 +135,12 @@ class Scene
         map.render(g);
         peon.render(g);
         cursor.render(g);
+        final Tile tile = map.getTile(cursor.getInTileX(), cursor.getInTileY());
+        if (tile != null)
+        {
+            text.drawRect(g, ColorRgba.GREEN, tile.getX(), tile.getY(), map.getTileWidth(), map.getTileHeight());
+            text.setColor(ColorRgba.YELLOW);
+        }
     }
 
     @Override

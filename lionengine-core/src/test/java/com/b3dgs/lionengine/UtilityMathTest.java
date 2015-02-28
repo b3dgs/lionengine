@@ -93,9 +93,9 @@ public class UtilityMathTest
     @Test
     public void testDistance()
     {
-        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 6, 6));
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 6, 6), PRECISION);
         Assert.assertEquals(2.0, UtilMath.getDistance(4.0, 6.0, 6.0, 6.0), PRECISION);
-        Assert.assertEquals(2, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2));
+        Assert.assertEquals(2.0, UtilMath.getDistance(4, 6, 2, 2, 6, 6, 2, 2), PRECISION);
     }
 
     /**

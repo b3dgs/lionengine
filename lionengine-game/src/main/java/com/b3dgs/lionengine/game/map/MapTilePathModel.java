@@ -54,6 +54,7 @@ public class MapTilePathModel
     /**
      * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
+     * @param mover The object moving on map.
      * @param stx The starting horizontal tile index.
      * @param sty The starting vertical tile index.
      * @param stw The source location width in tile.
@@ -65,12 +66,12 @@ public class MapTilePathModel
      * @param radius The search radius.
      * @return The closest tile found.
      */
-    private CoordTile getClosestAvailableTile(int stx, int sty, int stw, int sth, int dtx, int dty, int dtw, int dth,
-            int radius)
+    private CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int stw, int sth, int dtx, int dty,
+            int dtw, int dth, int radius)
     {
         int closestX = 0;
         int closestY = 0;
-        int dist = Integer.MAX_VALUE;
+        double dist = Double.MAX_VALUE;
         int size = 1;
         boolean found = false;
         while (!found)
@@ -79,12 +80,12 @@ public class MapTilePathModel
             {
                 for (int ty = sty - size; ty <= sty + size; ty++)
                 {
-                    if (isAreaAvailable(tx, ty, stw, sth, null))
+                    if (isAreaAvailable(mover, tx, ty, stw, sth, null))
                     {
-                        final int td = UtilMath.getDistance(tx, ty, stw, sth, dtx, dty, dtw, dth);
-                        if (td < dist)
+                        final double d = UtilMath.getDistance(tx, ty, stw, sth, dtx, dty, dtw, dth);
+                        if (d < dist)
                         {
-                            dist = td;
+                            dist = d;
                             closestX = tx;
                             closestY = ty;
                             found = true;
@@ -190,9 +191,9 @@ public class MapTilePathModel
                         ignoredCount++;
                     }
                 }
-                if (ignoredCount == ids.size())
+                if (ignoredCount < ids.size())
                 {
-                    return false;
+                    return true;
                 }
             }
             // Check if tile is blocking
@@ -200,14 +201,7 @@ public class MapTilePathModel
             if (tile != null)
             {
                 final TilePath tilePath = tile.getFeature(TilePath.class);
-                try
-                {
-                    return mover.isBlocking(tilePath.getCategory());
-                }
-                catch (final LionEngineException e)
-                {
-                    throw e;
-                }
+                return mover.isBlocking(tilePath.getCategory());
             }
         }
         return true;
@@ -226,13 +220,13 @@ public class MapTilePathModel
     }
 
     @Override
-    public CoordTile getFreeTileAround(Tiled tiled, int radius)
+    public CoordTile getFreeTileAround(Pathfindable mover, Tiled tiled, int radius)
     {
-        return getFreeTileAround(tiled.getInTileX(), tiled.getInTileY(), radius);
+        return getFreeTileAround(mover, tiled.getInTileX(), tiled.getInTileY(), radius);
     }
 
     @Override
-    public CoordTile getFreeTileAround(int tx, int ty, int radius)
+    public CoordTile getFreeTileAround(Pathfindable mover, int tx, int ty, int radius)
     {
         int size = 0;
         boolean search = true;
@@ -242,7 +236,7 @@ public class MapTilePathModel
             {
                 for (int cty = ty - size; cty <= ty + size; cty++)
                 {
-                    if (isAreaAvailable(ctx, cty, 1, 1, null))
+                    if (isAreaAvailable(mover, ctx, cty, 1, 1, null))
                     {
                         return new CoordTile(ctx, cty);
                     }
@@ -258,21 +252,21 @@ public class MapTilePathModel
     }
 
     @Override
-    public CoordTile getClosestAvailableTile(Tiled from, Tiled to, int radius)
+    public CoordTile getClosestAvailableTile(Pathfindable mover, Tiled to, int radius)
     {
-        return getClosestAvailableTile(from.getInTileX(), from.getInTileY(), from.getInTileWidth(),
-                from.getInTileHeight(), to.getInTileX(), to.getInTileY(), to.getInTileWidth(),
-                to.getInTileHeight(), radius);
+        return getClosestAvailableTile(mover, mover.getInTileX(), mover.getInTileY(), mover.getInTileWidth(),
+                mover.getInTileHeight(), to.getInTileX(), to.getInTileY(), to.getInTileWidth(), to.getInTileHeight(),
+                radius);
     }
 
     @Override
-    public CoordTile getClosestAvailableTile(int stx, int sty, int dtx, int dty, int radius)
+    public CoordTile getClosestAvailableTile(Pathfindable mover, int stx, int sty, int dtx, int dty, int radius)
     {
-        return getClosestAvailableTile(stx, sty, 1, 1, dtx, dty, 1, 1, radius);
+        return getClosestAvailableTile(mover, stx, sty, 1, 1, dtx, dty, 1, 1, radius);
     }
 
     @Override
-    public boolean isAreaAvailable(int tx, int ty, int tw, int th, Integer ignoreObjectId)
+    public boolean isAreaAvailable(Pathfindable mover, int tx, int ty, int tw, int th, Integer ignoreObjectId)
     {
         for (int cty = ty; cty < ty + th; cty++)
         {
@@ -282,7 +276,9 @@ public class MapTilePathModel
                 final Tile tile = map.getTile(ctx, cty);
                 if (tile != null)
                 {
-                    if (ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))
+                    final TilePath tilePath = tile.getFeature(TilePath.class);
+                    if (mover.isBlocking(tilePath.getCategory()) || ignoreObjectId != null && ids.size() > 0
+                            && !ids.contains(ignoreObjectId))
                     {
                         return false;
                     }

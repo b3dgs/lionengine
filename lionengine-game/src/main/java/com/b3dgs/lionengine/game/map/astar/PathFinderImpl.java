@@ -287,21 +287,25 @@ final class PathFinderImpl
      */
 
     @Override
-    public Path findPath(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
+    public Path findPath(Pathfindable mover, int dtx, int dty, boolean ignoreRef)
     {
+        final int stx = mover.getInTileX();
+        final int sty = mover.getInTileY();
+
         if (mapPath.isBlocked(mover, dtx, dty, false) && UtilMath.getDistance(stx, sty, dtx, dty) <= 1)
         {
             return null;
         }
         if (mapPath.isBlocked(mover, dtx, dty, ignoreRef))
         {
-            final CoordTile tile = mapPath.getClosestAvailableTile(dtx, dty, stx, sty, map.getInTileHeight());
+            final CoordTile tile = mapPath.getClosestAvailableTile(mover, dtx, dty, stx, sty, map.getInTileRadius());
             if (tile == null)
             {
                 return null;
             }
-            return findPath(mover, stx, sty, tile.getX(), tile.getY(), ignoreRef);
+            return findPath(mover, tile.getX(), tile.getY(), ignoreRef);
         }
+
         nodes[sty][stx].setCost(0);
         nodes[sty][stx].setDepth(0);
         closed.clear();

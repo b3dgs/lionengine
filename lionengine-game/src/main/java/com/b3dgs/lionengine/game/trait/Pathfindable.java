@@ -107,6 +107,13 @@ public interface Pathfindable
     void setLocation(int tx, int ty);
 
     /**
+     * Render additional information on path rendering with {@link #render(com.b3dgs.lionengine.core.Graphic)}.
+     * 
+     * @param debug <code>true</code> to show debug information relative to path, <code>false</code> else.
+     */
+    void setRenderDebug(boolean debug);
+
+    /**
      * Get horizontal movement speed.
      * 
      * @return The horizontal movement speed.

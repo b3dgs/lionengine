@@ -87,6 +87,8 @@ public class MapTileGame
     private int widthInTile;
     /** Number of vertical tiles. */
     private int heightInTile;
+    /** Map radius. */
+    private int radius;
     /** Tiles map. */
     private List<List<Tile>> tiles;
     /** Tile renderer. */
@@ -227,6 +229,7 @@ public class MapTileGame
 
         this.widthInTile = widthInTile;
         this.heightInTile = heightInTile;
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
         tiles = new ArrayList<>(heightInTile);
 
         for (int v = 0; v < heightInTile; v++)
@@ -397,6 +400,7 @@ public class MapTileGame
 
         widthInTile = newWidth;
         heightInTile = newHeight;
+        radius = (int) Math.ceil(StrictMath.sqrt(widthInTile * widthInTile + heightInTile * heightInTile));
     }
 
     @Override
@@ -564,6 +568,12 @@ public class MapTileGame
     public int getInTileHeight()
     {
         return heightInTile;
+    }
+
+    @Override
+    public int getInTileRadius()
+    {
+        return radius;
     }
 
     @Override
