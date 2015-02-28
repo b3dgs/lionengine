@@ -25,7 +25,7 @@ package com.b3dgs.lionengine.game.map.astar;
 public class PathData
 {
     /** Path cost. */
-    private final int cost;
+    private final double cost;
     /** Blocking flag. */
     private final boolean blocking;
 
@@ -35,7 +35,7 @@ public class PathData
      * @param cost The cost value.
      * @param blocking The blocking flag.
      */
-    public PathData(int cost, boolean blocking)
+    public PathData(double cost, boolean blocking)
     {
         this.cost = cost;
         this.blocking = blocking;
@@ -46,7 +46,7 @@ public class PathData
      * 
      * @return The cost value.
      */
-    public int getCost()
+    public double getCost()
     {
         return cost;
     }

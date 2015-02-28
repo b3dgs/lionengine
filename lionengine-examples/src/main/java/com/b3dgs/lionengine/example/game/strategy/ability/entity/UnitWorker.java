@@ -423,7 +423,7 @@ public abstract class UnitWorker
         try
         {
             townHall = handler.getClosestEntity(this, Warehouse.class, true);
-            final CoordTile out = map.getClosestAvailableTile(this, 16, townHall);
+            final CoordTile out = map.getClosestAvailableTile(this, townHall, 16);
             if (out != null)
             {
                 setLocation(out.getX(), out.getY());
@@ -446,7 +446,7 @@ public abstract class UnitWorker
     @Override
     public void notifyDroppedOff(Enum<?> type, int droppedQuantity)
     {
-        final CoordTile out = map.getClosestAvailableTile(this, 16, getResourceLocation());
+        final CoordTile out = map.getClosestAvailableTile(this, getResourceLocation(), 16);
         if (out != null)
         {
             setLocation(out.getX(), out.getY());

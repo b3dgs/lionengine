@@ -161,9 +161,9 @@ public class MoverModel
     }
 
     @Override
-    public void setDestination(double extrp, double dx, double dy)
+    public void moveTo(double extrp, double dx, double dy)
     {
-        pathfindable.setDestination(extrp, dx, dy);
+        pathfindable.moveTo(extrp, dx, dy);
     }
 
     @Override

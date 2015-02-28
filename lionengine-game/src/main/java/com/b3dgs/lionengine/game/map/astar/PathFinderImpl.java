@@ -68,11 +68,11 @@ final class PathFinderImpl
         mapPath = map.getFeature(MapTilePath.class);
         nodes = new Node[map.getHeightInTile()][map.getWidthInTile()];
 
-        for (int y = 0; y < map.getHeightInTile(); y++)
+        for (int ty = 0; ty < map.getHeightInTile(); ty++)
         {
-            for (int x = 0; x < map.getWidthInTile(); x++)
+            for (int tx = 0; tx < map.getWidthInTile(); tx++)
             {
-                nodes[y][x] = new Node(x, y);
+                nodes[ty][tx] = new Node(tx, ty);
             }
         }
     }
@@ -80,50 +80,48 @@ final class PathFinderImpl
     /**
      * Get the cost to move through a given location.
      * 
-     * @param mover The entity that is being moved.
-     * @param sx The x coordinate of the tile whose cost is being determined.
-     * @param sy The y coordinate of the tile whose cost is being determined.
-     * @param dx The x coordinate of the target location.
-     * @param dy The y coordinate of the target location.
+     * @param pathfindable The object that is being moved.
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
      * @return The cost of movement through the given tile.
      */
-    public double getMovementCost(Pathfindable mover, int sx, int sy, int dx, int dy)
+    public double getMovementCost(Pathfindable pathfindable, int tx, int ty)
     {
-        return mapPath.getCost(mover, sx, sy, dx, dy);
+        return mapPath.getCost(pathfindable, tx, ty);
     }
 
     /**
      * Get the heuristic cost for the given location. This determines in which order the locations are processed.
      * 
-     * @param x The x coordinate of the tile whose cost is being determined
-     * @param y The y coordinate of the tile whose cost is being determined
-     * @param dx The x coordinate of the target location
-     * @param dy The y coordinate of the target location
+     * @param stx The x coordinate of the tile whose cost is being determined
+     * @param sty The y coordinate of the tile whose cost is being determined
+     * @param dtx The x coordinate of the target location
+     * @param dty The y coordinate of the target location
      * @return The heuristic cost assigned to the tile
      */
-    public double getHeuristicCost(int x, int y, int dx, int dy)
+    public double getHeuristicCost(int stx, int sty, int dtx, int dty)
     {
-        return heuristic.getCost(x, y, dx, dy);
+        return heuristic.getCost(stx, sty, dtx, dty);
     }
 
     /**
      * Check if a given location is valid for the supplied mover.
      * 
      * @param mover The mover that would hold a given location.
-     * @param sx The starting x coordinate.
-     * @param sy The starting y coordinate.
-     * @param x The x coordinate of the location to check.
-     * @param y The y coordinate of the location to check.
+     * @param stx The starting x coordinate.
+     * @param sty The starting y coordinate.
+     * @param dtx The x coordinate of the location to check.
+     * @param dty The y coordinate of the location to check.
      * @param ignoreRef The ignore map reference array checking.
      * @return <code>true</code> if the location is valid for the given mover, <code>false</code> else.
      */
-    protected boolean isValidLocation(Pathfindable mover, int sx, int sy, int x, int y, boolean ignoreRef)
+    protected boolean isValidLocation(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
     {
-        boolean invalid = x < 0 || y < 0 || x >= map.getWidthInTile() || y >= map.getHeightInTile();
+        boolean invalid = dtx < 0 || dty < 0 || dtx >= map.getWidthInTile() || dty >= map.getHeightInTile();
 
-        if (!invalid && (sx != x || sy != y))
+        if (!invalid && (stx != dtx || sty != dty))
         {
-            invalid = mapPath.isBlocked(mover, x, y, ignoreRef);
+            invalid = mapPath.isBlocked(mover, dtx, dty, ignoreRef);
         }
 
         return !invalid;
@@ -205,16 +203,16 @@ final class PathFinderImpl
      * Update the open and closed list to find the path.
      * 
      * @param mover The entity that will be moving along the path.
-     * @param sx The x coordinate of the start location.
-     * @param sy The y coordinate of the start location.
-     * @param dx The x coordinate of the destination location.
-     * @param dy The y coordinate of the destination location.
+     * @param stx The x coordinate of the start location.
+     * @param sty The y coordinate of the start location.
+     * @param dtx The x coordinate of the destination location.
+     * @param dty The y coordinate of the destination location.
      * @param ignoreRef The ignore map array reference checking (<code>true</code> to ignore references).
      * @param current The current node.
      * @param maxDepth The last max depth.
      * @return The next max depth.
      */
-    private int updateList(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef, Node current,
+    private int updateList(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef, Node current,
             int maxDepth)
     {
         int nextDepth = maxDepth;
@@ -236,9 +234,9 @@ final class PathFinderImpl
                 final int xp = x + current.getX();
                 final int yp = y + current.getY();
 
-                if (isValidLocation(mover, sx, sy, xp, yp, ignoreRef))
+                if (isValidLocation(mover, stx, sty, xp, yp, ignoreRef))
                 {
-                    nextDepth = updateNeighbour(mover, dx, dy, current, xp, yp, maxDepth);
+                    nextDepth = updateNeighbour(mover, dtx, dty, current, xp, yp, maxDepth);
                 }
             }
         }
@@ -249,18 +247,18 @@ final class PathFinderImpl
      * Update the current neighbor on search.
      * 
      * @param mover The entity that will be moving along the path.
-     * @param dx The x coordinate of the destination location.
-     * @param dy The y coordinate of the destination location.
+     * @param dtx The x coordinate of the destination location.
+     * @param dty The y coordinate of the destination location.
      * @param current The current node.
      * @param xp The x coordinate of the destination location.
      * @param yp The y coordinate of the destination location.
      * @param maxDepth The last max depth.
      * @return The next max depth.
      */
-    private int updateNeighbour(Pathfindable mover, int dx, int dy, Node current, int xp, int yp, int maxDepth)
+    private int updateNeighbour(Pathfindable mover, int dtx, int dty, Node current, int xp, int yp, int maxDepth)
     {
         int nextDepth = maxDepth;
-        final double nextStepCost = current.getCost() + getMovementCost(mover, current.getX(), current.getY(), xp, yp);
+        final double nextStepCost = current.getCost() + getMovementCost(mover, current.getX(), current.getY());
         final Node neighbour = nodes[yp][xp];
 
         if (nextStepCost < neighbour.getCost())
@@ -277,7 +275,7 @@ final class PathFinderImpl
         if (!inOpenList(neighbour) && !inClosedList(neighbour))
         {
             neighbour.setCost(nextStepCost);
-            neighbour.setHeuristic(getHeuristicCost(xp, yp, dx, dy));
+            neighbour.setHeuristic(getHeuristicCost(xp, yp, dtx, dty));
             nextDepth = Math.max(maxDepth, neighbour.setParent(current));
             addToOpen(neighbour);
         }
@@ -289,53 +287,53 @@ final class PathFinderImpl
      */
 
     @Override
-    public Path findPath(Pathfindable mover, int sx, int sy, int dx, int dy, boolean ignoreRef)
+    public Path findPath(Pathfindable mover, int stx, int sty, int dtx, int dty, boolean ignoreRef)
     {
-        if (mapPath.isBlocked(mover, dx, dy, false) && UtilMath.getDistance(sx, sy, dx, dy) <= 1)
+        if (mapPath.isBlocked(mover, dtx, dty, false) && UtilMath.getDistance(stx, sty, dtx, dty) <= 1)
         {
             return null;
         }
-        if (mapPath.isBlocked(mover, dx, dy, ignoreRef))
+        if (mapPath.isBlocked(mover, dtx, dty, ignoreRef))
         {
-            final CoordTile tile = mapPath.getClosestAvailableTile(dx, dy, map.getHeightInTile(), sx, sy);
+            final CoordTile tile = mapPath.getClosestAvailableTile(dtx, dty, stx, sty, map.getHeightInTile());
             if (tile == null)
             {
                 return null;
             }
-            return findPath(mover, sx, sy, tile.getX(), tile.getY(), ignoreRef);
+            return findPath(mover, stx, sty, tile.getX(), tile.getY(), ignoreRef);
         }
-        nodes[sy][sx].setCost(0);
-        nodes[sy][sx].setDepth(0);
+        nodes[sty][stx].setCost(0);
+        nodes[sty][stx].setDepth(0);
         closed.clear();
         open.clear();
-        open.add(nodes[sy][sx]);
-        nodes[dy][dx].setParent(null);
+        open.add(nodes[sty][stx]);
+        nodes[dty][dtx].setParent(null);
 
         int maxDepth = 0;
         while (maxDepth < maxSearchDistance && open.size() != 0)
         {
             final Node current = getFirstInOpen();
-            if (current == nodes[dy][dx])
+            if (current == nodes[dty][dtx])
             {
                 break;
             }
             removeFromOpen(current);
             addToClosed(current);
-            maxDepth = updateList(mover, sx, sy, dx, dy, ignoreRef, current, maxDepth);
+            maxDepth = updateList(mover, stx, sty, dtx, dty, ignoreRef, current, maxDepth);
         }
-        if (nodes[dy][dx].getParent() == null)
+        if (nodes[dty][dtx].getParent() == null)
         {
             return null;
         }
         final Path path = new Path();
-        Node target = nodes[dy][dx];
+        Node target = nodes[dty][dtx];
 
-        while (target != nodes[sy][sx])
+        while (target != nodes[sty][stx])
         {
             path.prependStep(target.getX(), target.getY());
             target = target.getParent();
         }
-        path.prependStep(sx, sy);
+        path.prependStep(stx, sty);
 
         return path;
     }

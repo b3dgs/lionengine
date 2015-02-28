@@ -25,7 +25,6 @@ import com.b3dgs.lionengine.UtilMath;
 import com.b3dgs.lionengine.core.Media;
 import com.b3dgs.lionengine.game.CoordTile;
 import com.b3dgs.lionengine.game.Tiled;
-import com.b3dgs.lionengine.game.collision.CollisionFormula;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfinding;
 import com.b3dgs.lionengine.game.trait.Pathfindable;
 import com.b3dgs.lionengine.stream.Stream;
@@ -53,85 +52,21 @@ public class MapTilePathModel
     }
 
     /**
-     * Search a free area from this area.
+     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
-     * @param entity The entity to search around.
-     * @param radius The search size.
-     * @return The free place found.
+     * @param stx The starting horizontal tile index.
+     * @param sty The starting vertical tile index.
+     * @param stw The source location width in tile.
+     * @param sth The source location height in tile.
+     * @param dtx The ending horizontal tile index.
+     * @param dty The ending vertical tile index.
+     * @param dtw The destination location width in tile.
+     * @param dth The destination location height in tile.
+     * @param radius The search radius.
+     * @return The closest tile found.
      */
-    public CoordTile getFreeTileAround(Tiled entity, int radius)
-    {
-        return getFreeTileAround(entity.getLocationInTileX(), entity.getLocationInTileY(), radius);
-    }
-
-    /**
-     * Get the closest tile location around the area. The returned tile is corresponding to the required collision.
-     * 
-     * @param from The tiled reference.
-     * @param to The tiled reference.
-     * @param collision The collision to search
-     * @param radius The search size.
-     * @return The closest location found.
-     */
-    public CoordTile getClosestTile(Tiled from, Tiled to, CollisionFormula collision, int radius)
-    {
-        final int sx = to.getLocationInTileX();
-        final int sy = to.getLocationInTileY();
-
-        final int fx = to.getLocationInTileX();
-        final int fy = to.getLocationInTileY();
-        final int fw = from.getWidthInTile();
-        final int fh = from.getHeightInTile();
-        int closestX = 0;
-        int closestY = 0;
-        int dist = Integer.MAX_VALUE;
-        int size = 1;
-        boolean found = false;
-        while (!found)
-        {
-            for (int x = sx - size; x <= sx + size; x++)
-            {
-                for (int y = sy - size; y <= sy + size; y++)
-                {
-                    final Tile tile = map.getTile(x, y);
-                    final TileCollision tileCollision = tile.getFeature(TileCollision.class);
-                    if (tileCollision.getCollisionFormulas().contains(collision))
-                    {
-                        final int d = UtilMath.getDistance(fx, fy, fw, fh, x, y, 1, 1);
-                        if (d < dist)
-                        {
-                            dist = d;
-                            closestX = x;
-                            closestY = y;
-                            found = true;
-                        }
-                    }
-                }
-            }
-            size++;
-            if (size >= radius)
-            {
-                return null;
-            }
-        }
-        return new CoordTile(closestX, closestY);
-    }
-
-    /**
-     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.
-     * 
-     * @param sx The horizontal location.
-     * @param sy The vertical location.
-     * @param sw The source location width.
-     * @param sh The source location height.
-     * @param radius The search size.
-     * @param dx The horizontal destination location.
-     * @param dy The vertical destination location.
-     * @param dw The destination location width.
-     * @param dh The destination location height.
-     * @return The closest location found.
-     */
-    private CoordTile getClosestAvailableTile(int sx, int sy, int sw, int sh, int radius, int dx, int dy, int dw, int dh)
+    private CoordTile getClosestAvailableTile(int stx, int sty, int stw, int sth, int dtx, int dty, int dtw, int dth,
+            int radius)
     {
         int closestX = 0;
         int closestY = 0;
@@ -140,18 +75,18 @@ public class MapTilePathModel
         boolean found = false;
         while (!found)
         {
-            for (int x = sx - size; x <= sx + size; x++)
+            for (int tx = stx - size; tx <= stx + size; tx++)
             {
-                for (int y = sy - size; y <= sy + size; y++)
+                for (int ty = sty - size; ty <= sty + size; ty++)
                 {
-                    if (isAreaAvailable(x, y, sw, sh, null))
+                    if (isAreaAvailable(tx, ty, stw, sth, null))
                     {
-                        final int d = UtilMath.getDistance(x, y, sw, sh, dx, dy, dw, dh);
-                        if (d < dist)
+                        final int td = UtilMath.getDistance(tx, ty, stw, sth, dtx, dty, dtw, dth);
+                        if (td < dist)
                         {
-                            dist = d;
-                            closestX = x;
-                            closestY = y;
+                            dist = td;
+                            closestX = tx;
+                            closestY = ty;
                             found = true;
                         }
                     }
@@ -175,11 +110,11 @@ public class MapTilePathModel
     {
         final XmlNode nodePathfinding = Stream.loadXml(pathfindingConfig);
         final ConfigPathfinding config = ConfigPathfinding.create(nodePathfinding);
-        for (int v = 0; v < map.getHeightInTile(); v++)
+        for (int ty = 0; ty < map.getHeightInTile(); ty++)
         {
-            for (int h = 0; h < map.getWidthInTile(); h++)
+            for (int tx = 0; tx < map.getWidthInTile(); tx++)
             {
-                final Tile tile = map.getTile(h, v);
+                final Tile tile = map.getTile(tx, ty);
                 if (tile != null)
                 {
                     final TilePath tilePath = new TilePathModel(tile);
@@ -205,6 +140,17 @@ public class MapTilePathModel
         {
             final TilePath tilePath = tile.getFeature(TilePath.class);
             tilePath.addObjectId(id);
+        }
+    }
+
+    @Override
+    public void removeObjectId(int tx, int ty, Integer id)
+    {
+        final Tile tile = map.getTile(tx, ty);
+        if (tile != null)
+        {
+            final TilePath tilePath = tile.getFeature(TilePath.class);
+            tilePath.removeObjectId(id);
         }
     }
 
@@ -254,16 +200,35 @@ public class MapTilePathModel
             if (tile != null)
             {
                 final TilePath tilePath = tile.getFeature(TilePath.class);
-                return mover.isBlocking(tilePath.getCategory());
+                try
+                {
+                    return mover.isBlocking(tilePath.getCategory());
+                }
+                catch (final LionEngineException e)
+                {
+                    throw e;
+                }
             }
         }
         return true;
     }
 
     @Override
-    public double getCost(Pathfindable mover, int sx, int sy, int tx, int ty)
+    public double getCost(Pathfindable mover, int tx, int ty)
     {
-        return 1;
+        final Tile tile = map.getTile(tx, ty);
+        if (tile != null)
+        {
+            final TilePath tilePath = tile.getFeature(TilePath.class);
+            return mover.getCost(tilePath.getCategory());
+        }
+        return 0.0;
+    }
+
+    @Override
+    public CoordTile getFreeTileAround(Tiled tiled, int radius)
+    {
+        return getFreeTileAround(tiled.getLocationInTileX(), tiled.getLocationInTileY(), radius);
     }
 
     @Override
@@ -273,13 +238,13 @@ public class MapTilePathModel
         boolean search = true;
         while (search)
         {
-            for (int x = tx - size; x <= tx + size; x++)
+            for (int ctx = tx - size; ctx <= tx + size; ctx++)
             {
-                for (int y = ty - size; y <= ty + size; y++)
+                for (int cty = ty - size; cty <= ty + size; cty++)
                 {
-                    if (isAreaAvailable(x, y, 1, 1, null))
+                    if (isAreaAvailable(ctx, cty, 1, 1, null))
                     {
-                        return new CoordTile(x, y);
+                        return new CoordTile(ctx, cty);
                     }
                 }
             }
@@ -293,28 +258,28 @@ public class MapTilePathModel
     }
 
     @Override
-    public CoordTile getClosestAvailableTile(Tiled from, int radius, Tiled to)
+    public CoordTile getClosestAvailableTile(Tiled from, Tiled to, int radius)
     {
         return getClosestAvailableTile(from.getLocationInTileX(), from.getLocationInTileY(), from.getWidthInTile(),
-                from.getHeightInTile(), radius, to.getLocationInTileX(), to.getLocationInTileY(), to.getWidthInTile(),
-                to.getHeightInTile());
+                from.getHeightInTile(), to.getLocationInTileX(), to.getLocationInTileY(), to.getWidthInTile(),
+                to.getHeightInTile(), radius);
     }
 
     @Override
-    public CoordTile getClosestAvailableTile(int sx, int sy, int radius, int dx, int dy)
+    public CoordTile getClosestAvailableTile(int stx, int sty, int dtx, int dty, int radius)
     {
-        return getClosestAvailableTile(sx, sy, 1, 1, radius, dx, dy, 1, 1);
+        return getClosestAvailableTile(stx, sty, 1, 1, dtx, dty, 1, 1, radius);
     }
 
     @Override
-    public boolean isAreaAvailable(int tx, int ty, int w, int h, Integer ignoreObjectId)
+    public boolean isAreaAvailable(int tx, int ty, int tw, int th, Integer ignoreObjectId)
     {
-        for (int y = ty; y < ty + h; y++)
+        for (int cty = ty; cty < ty + th; cty++)
         {
-            for (int x = tx; x < tx + w; x++)
+            for (int ctx = tx; ctx < tx + tw; ctx++)
             {
-                final Collection<Integer> ids = getObjectsId(x, y);
-                final Tile tile = map.getTile(x, y);
+                final Collection<Integer> ids = getObjectsId(ctx, cty);
+                final Tile tile = map.getTile(ctx, cty);
                 if (tile != null)
                 {
                     if (ignoreObjectId != null && ids.size() > 0 && !ids.contains(ignoreObjectId))

@@ -116,9 +116,9 @@ public abstract class Unit
     }
 
     @Override
-    public void setDestination(double extrp, double dx, double dy)
+    public void moveTo(double extrp, double dx, double dy)
     {
-        mover.setDestination(extrp, dx, dy);
+        mover.moveTo(extrp, dx, dy);
     }
 
     @Override

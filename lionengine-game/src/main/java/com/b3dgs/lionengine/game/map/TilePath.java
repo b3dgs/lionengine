@@ -22,7 +22,7 @@ import java.util.Collection;
 /**
  * Tile representation with the following data:
  * <ul>
- * <li><code>objects id</code> : current objects id located over the tile</li>
+ * <li><code>objects ID</code> : current objects ID located over the tile</li>
  * <li><code>blocking</code> : flag to know if tile can block path</li>
  * </ul>
  * <p>
@@ -35,16 +35,16 @@ public interface TilePath
         extends TileFeature
 {
     /**
-     * Add an object id over this tile.
+     * Add an object ID over this tile.
      * 
-     * @param id The object id reference to add.
+     * @param id The object ID reference to add.
      */
     void addObjectId(Integer id);
 
     /**
-     * Remove an object id from this tile.
+     * Remove an object ID from this tile.
      * 
-     * @param id The object id reference to remove.
+     * @param id The object ID reference to remove.
      */
     void removeObjectId(Integer id);
 
@@ -56,9 +56,9 @@ public interface TilePath
     void setCategory(String category);
 
     /**
-     * Get the objects id over this tile.
+     * Get the objects ID over this tile.
      * 
-     * @return The objects id over this tile.
+     * @return The objects ID over this tile.
      */
     Collection<Integer> getObjectsId();
 

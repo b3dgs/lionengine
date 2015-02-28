@@ -81,11 +81,11 @@ public final class ConfigPathfinding
      */
     public String getCategory(String group)
     {
-        for (final String category : categories.keySet())
+        for (final Map.Entry<String, Collection<String>> category : categories.entrySet())
         {
-            if (category.contains(group))
+            if (category.getValue().contains(group))
             {
-                return category;
+                return category.getKey();
             }
         }
         return null;

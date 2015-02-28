@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.Viewer;
+import com.b3dgs.lionengine.core.Graphic;
 import com.b3dgs.lionengine.game.Force;
 import com.b3dgs.lionengine.game.configurer.ConfigPathfindable;
 import com.b3dgs.lionengine.game.configurer.Configurer;
@@ -43,6 +45,8 @@ public class PathfindableModel
         extends TraitModel
         implements Pathfindable
 {
+    /** Category not found error. */
+    private static final String ERROR_CATEGORY = "Category not found: ";
     /** Diagonal speed factor. */
     private static final double DIAGONAL_SPEED = 0.8;
 
@@ -54,18 +58,20 @@ public class PathfindableModel
     private final Transformable transformable;
     /** Pathfinder reference. */
     private final PathFinder pathfinder;
+    /** List of categories. */
+    private final Map<String, PathData> categories;
     /** List of shared path id. */
     private final Collection<Integer> sharedPathIds;
     /** List of ignored id. */
     private final Collection<Integer> ignoredIds;
-    /** List of categories. */
-    private final Map<String, PathData> categories;
-    /** Ref id. */
+    /** Object id. */
     private final Integer id;
+    /** Viewer reference. */
+    private final Viewer viewer;
     /** Last valid path found. */
     private Path path;
-    /** Steps last. */
-    private int lastStep;
+    /** Current step index on path. */
+    private int currentStep;
     /** Destination location x. */
     private int destX;
     /** Destination location y. */
@@ -109,6 +115,7 @@ public class PathfindableModel
      * </p>
      * <ul>
      * <li>{@link MapTile}</li>
+     * <li>{@link Viewer}</li>
      * </ul>
      * 
      * @param owner The owner reference.
@@ -119,34 +126,73 @@ public class PathfindableModel
     public PathfindableModel(ObjectGame owner, Configurer configurer, Services services)
     {
         super(owner);
+        ignoredIds = new HashSet<>(0);
+        sharedPathIds = new HashSet<>(0);
         map = services.get(MapTile.class);
+        viewer = services.get(Viewer.class);
         transformable = owner.getTrait(Transformable.class);
+        mapPath = map.getFeature(MapTilePath.class);
         id = owner.getId();
         final int range = (int) Math.sqrt(map.getWidthInTile() * map.getWidthInTile() + map.getHeightInTile()
                 * map.getHeightInTile());
         pathfinder = Astar.createPathFinder(map, range, true, Astar.createHeuristicClosest());
         categories = ConfigPathfindable.create(configurer);
-        ignoredIds = new HashSet<>(0);
-        sharedPathIds = new HashSet<>(0);
-        mapPath = map.getFeature(MapTilePath.class);
-        pathStopped = false;
-        pathStoppedRequested = false;
-        pathFoundChanged = false;
         destinationReached = true;
         speedX = 1.0;
         speedY = 1.0;
-        moving = false;
-        skip = false;
-        reCheckRef = false;
     }
 
     /**
-     * Update reference by updating map id.
+     * Assign the map object id of the pathfindable.
+     * 
+     * @param dtx The tile horizontal destination.
+     * @param dty The tile vertical destination.
+     */
+    private void assignObjectId(int dtx, int dty)
+    {
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
+        if (mapPath.isAreaAvailable(dtx, dty, tw, th, id))
+        {
+            for (int tx = dtx; tx < dtx + tw; tx++)
+            {
+                for (int ty = dty; ty < dty + th; ty++)
+                {
+                    mapPath.addObjectId(tx, ty, id);
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove the map object id of the pathfindable.
+     * 
+     * @param dtx The tile horizontal destination.
+     * @param dty The tile vertical destination.
+     */
+    private void removeObjectId(int dtx, int dty)
+    {
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
+        for (int tx = dtx; tx < dtx + tw; tx++)
+        {
+            for (int ty = dty; ty < dty + th; ty++)
+            {
+                if (mapPath.getObjectsId(tx, ty).equals(id))
+                {
+                    mapPath.addObjectId(tx, ty, Integer.valueOf(0));
+                }
+            }
+        }
+    }
+
+    /**
+     * Update reference by updating map object ID.
      * 
      * @param lastStep The last step.
      * @param nextStep The next step.
      */
-    private void updateRef(int lastStep, int nextStep)
+    private void updateObjectId(int lastStep, int nextStep)
     {
         final int max = getMaxStep();
         if (nextStep < max)
@@ -185,11 +231,26 @@ public class PathfindableModel
     }
 
     /**
+     * Prepare the destination, store its location, and reset states.
+     * 
+     * @param dtx The destination horizontal tile.
+     * @param dty The destination vertical tile.
+     */
+    private void prepareDestination(int dtx, int dty)
+    {
+        pathStopped = false;
+        pathStoppedRequested = false;
+        destX = dtx;
+        destY = dty;
+        destinationReached = false;
+    }
+
+    /**
      * Move to destination.
      * 
      * @param extrp The extrapolation value.
-     * @param dx The destination x.
-     * @param dy The destination y.
+     * @param dx The destination horizontal location.
+     * @param dy The destination vertical location.
      */
     private void moveTo(double extrp, int dx, int dy)
     {
@@ -197,36 +258,34 @@ public class PathfindableModel
         final double sx = force.getDirectionHorizontal();
         final double sy = force.getDirectionVertical();
 
-        // Move entity
+        // Move object
         moveX = sx;
         moveY = sy;
         transformable.moveLocation(extrp, force);
         moving = true;
 
-        // Entity arrived, next step
+        // Object arrived, next step
         final boolean arrivedX = checkArrivedX(extrp, sx, dx);
         final boolean arrivedY = checkArrivedY(extrp, sy, dy);
 
         if (arrivedX && arrivedY)
         {
-            // When entity arrived on next step, we place it on step location, in order to avoid bug
-            // (to be sure entity location is correct)
-            setLocation(path.getX(lastStep), path.getY(lastStep));
+            // When object arrived on next step, we place it on step location, in order to avoid bug
+            // (to be sure object location is correct)
+            setLocation(path.getX(currentStep), path.getY(currentStep));
 
             // Go to next step
-            final int next = lastStep + 1;
-
-            if (lastStep < getMaxStep() - 1)
+            final int next = currentStep + 1;
+            if (currentStep < getMaxStep() - 1)
             {
-                updateRef(lastStep, next);
+                updateObjectId(currentStep, next);
             }
             if (!pathStoppedRequested && !skip)
             {
-                lastStep = next;
+                currentStep = next;
             }
-
-            // Check if a new path has been assigned (this allow the entity to change its path before finishing it)
-            if (lastStep > 0 && !skip)
+            // Check if a new path has been assigned (this allow the object to change its path before finishing it)
+            if (currentStep > 0 && !skip)
             {
                 checkPathfinderChanges();
             }
@@ -256,8 +315,8 @@ public class PathfindableModel
      * Check if the pathfindable is vertically arrived.
      * 
      * @param extrp The extrapolation value.
-     * @param sy The horizontal speed.
-     * @param dy The horizontal tile destination.
+     * @param sy The vertical speed.
+     * @param dy The vertical tile destination.
      * @return <code>true</code> if arrived, <code>false</code> else.
      */
     private boolean checkArrivedY(double extrp, double sy, double dy)
@@ -278,13 +337,13 @@ public class PathfindableModel
     {
         if (pathFoundChanged)
         {
-            if (lastStep < getMaxStep())
+            if (currentStep < getMaxStep())
             {
-                removeObjectId(path.getX(lastStep), path.getY(lastStep));
+                removeObjectId(path.getX(currentStep), path.getY(currentStep));
             }
             path = pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), destX, destY, false);
             pathFoundChanged = false;
-            lastStep = 0;
+            currentStep = 0;
             skip = false;
             reCheckRef = false;
 
@@ -297,32 +356,40 @@ public class PathfindableModel
         {
             pathStopped = true;
             pathStoppedRequested = false;
-            arrived();
+            onArrived();
         }
     }
 
     /**
-     * Get total number of steps.
+     * Check if the object id location is available for the pathfindable.
      * 
-     * @return The total number of steps.
+     * @param dtx The tile horizontal destination.
+     * @param dty The tile vertical destination.
+     * @return <code>true</code> if available, <code>false</code> else.
      */
-    private int getMaxStep()
+    private boolean checkObjectId(int dtx, int dty)
     {
-        if (path != null)
+        final int tw = transformable.getWidth() / map.getTileWidth();
+        final int th = transformable.getHeight() / map.getTileHeight();
+        final boolean areaFree = mapPath.isAreaAvailable(dtx, dty, tw, th, id);
+        for (int tx = dtx; tx < dtx + tw; tx++)
         {
-            if (pathStopped)
+            for (int ty = dty; ty < dty + th; ty++)
             {
-                return lastStep;
+                final Collection<Integer> ids = mapPath.getObjectsId(tx, ty);
+                if (!ids.isEmpty() && !ids.contains(id))
+                {
+                    return false;
+                }
             }
-            return path.getLength();
         }
-        return 0;
+        return areaFree;
     }
 
     /**
      * Called when destination has been reached and any movement are done.
      */
-    private void arrived()
+    private void onArrived()
     {
         destinationReached = true;
         moving = false;
@@ -375,88 +442,21 @@ public class PathfindableModel
     }
 
     /**
-     * Prepare the destination, store its location, and reset states.
+     * Get total number of steps.
      * 
-     * @param dtx The destination horizontal tile.
-     * @param dty The destination vertical tile.
+     * @return The total number of steps.
      */
-    private void prepareDestination(int dtx, int dty)
+    private int getMaxStep()
     {
-        pathStopped = false;
-        pathStoppedRequested = false;
-        destX = dtx;
-        destY = dty;
-        destinationReached = false;
-    }
-
-    /**
-     * Assign the map object id of the pathfindable.
-     * 
-     * @param dtx The tile horizontal destination.
-     * @param dty The tile vertical destination.
-     */
-    private void assignObjectId(int dtx, int dty)
-    {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
-        if (mapPath.isAreaAvailable(dtx, dty, tw, th, id))
+        if (path != null)
         {
-            for (int tx = dtx; tx < dtx + tw; tx++)
+            if (pathStopped)
             {
-                for (int ty = dty; ty < dty + th; ty++)
-                {
-                    mapPath.addObjectId(tx, ty, id);
-                }
+                return currentStep;
             }
+            return path.getLength();
         }
-    }
-
-    /**
-     * Remove the map object id of the pathfindable.
-     * 
-     * @param dtx The tile horizontal destination.
-     * @param dty The tile vertical destination.
-     */
-    private void removeObjectId(int dtx, int dty)
-    {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
-        for (int tx = dtx; tx < dtx + tw; tx++)
-        {
-            for (int ty = dty; ty < dty + th; ty++)
-            {
-                if (mapPath.getObjectsId(tx, ty).equals(id))
-                {
-                    mapPath.addObjectId(tx, ty, Integer.valueOf(0));
-                }
-            }
-        }
-    }
-
-    /**
-     * Check if the object id location is available for the pathfindable.
-     * 
-     * @param dtx The tile horizontal destination.
-     * @param dty The tile vertical destination.
-     * @return <code>true</code> if available, <code>false</code> else.
-     */
-    private boolean checkObjectId(int dtx, int dty)
-    {
-        final int tw = transformable.getWidth() / map.getTileWidth();
-        final int th = transformable.getHeight() / map.getTileHeight();
-        final boolean areaFree = mapPath.isAreaAvailable(dtx, dty, tw, th, id);
-        for (int tx = dtx; tx < dtx + tw; tx++)
-        {
-            for (int ty = dty; ty < dty + th; ty++)
-            {
-                final Collection<Integer> ids = mapPath.getObjectsId(tx, ty);
-                if (!ids.isEmpty() && !ids.contains(id))
-                {
-                    return false;
-                }
-            }
-        }
-        return areaFree;
+        return 0;
     }
 
     /*
@@ -464,56 +464,85 @@ public class PathfindableModel
      */
 
     @Override
-    public void setDestination(double extrp, double dx, double dy)
+    public void clearSharedPathIds()
     {
-        final Force force = getMovementForce(transformable.getX(), transformable.getY(), dx, dy);
+        sharedPathIds.clear();
+    }
+
+    @Override
+    public void clearIgnoredId()
+    {
+        ignoredIds.clear();
+    }
+
+    @Override
+    public void stopMoves()
+    {
+        pathStoppedRequested = true;
+    }
+
+    @Override
+    public void update(double extrp)
+    {
+        if (reCheckRef)
+        {
+            updateObjectId(currentStep, currentStep + 1);
+            reCheckRef = false;
+        }
+        if (skip)
+        {
+            skip = false;
+            reCheckRef = true;
+            return;
+        }
+        if (path != null)
+        {
+            // Continue until max step
+            if (currentStep < getMaxStep())
+            {
+                final int dx = path.getX(currentStep) * map.getTileWidth();
+                final int dy = path.getY(currentStep) * map.getTileHeight();
+                moving = false;
+                moveX = 0.0;
+                moveY = 0.0;
+                moveTo(extrp, dx, dy);
+            }
+            // Max step is reached, stop moves and animation
+            else
+            {
+                onArrived();
+            }
+        }
+    }
+
+    @Override
+    public void moveTo(double extrp, double x, double y)
+    {
+        final Force force = getMovementForce(transformable.getX(), transformable.getY(), x, y);
         transformable.moveLocation(extrp, force);
     }
 
     @Override
-    public boolean setDestination(int dtx, int dty)
+    public void render(Graphic g)
     {
-        final int tx = getLocationInTileX();
-        final int ty = getLocationInTileY();
-
-        // No need to move
-        if (tx == dtx && ty == dty)
+        if (path != null)
         {
-            return false;
+            final int tw = map.getTileWidth();
+            final int th = map.getTileHeight();
+            for (int i = 0; i < path.getLength(); i++)
+            {
+                final int x = (int) viewer.getViewpointX(path.getX(i) * tw);
+                final int y = (int) viewer.getViewpointY(path.getY(i) * th);
+                g.drawRect(x, y - th, tw, th, true);
+            }
         }
-        // New first path, when entity is not moving
-        if (path == null)
-        {
-            lastStep = 0;
-            path = pathfinder.findPath(this, tx, ty, dtx, dty, true);
-            pathFoundChanged = false;
-            prepareDestination(dtx, dty);
-        }
-        // Next path, while entity is moving, change takes effect when the entity reached a step point
-        else
-        {
-            prepareDestination(dtx, dty);
-            pathFoundChanged = true;
-            return false;
-        }
-        return true;
     }
 
     @Override
-    public boolean isPathAvailable(int dtx, int dty)
+    public void setSpeed(double speedX, double speedY)
     {
-        return pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), dtx, dty, false) != null;
-    }
-
-    @Override
-    public void setLocation(int dtx, int dty)
-    {
-        if (checkObjectId(dtx, dty))
-        {
-            removeObjectId(getLocationInTileX(), getLocationInTileY());
-            transformable.setLocation(dtx * map.getTileWidth(), dty * map.getTileHeight());
-            assignObjectId(getLocationInTileX(), getLocationInTileY());
-        }
+        this.speedX = speedX;
+        this.speedY = speedY;
     }
 
     @Override
@@ -530,15 +559,35 @@ public class PathfindableModel
     }
 
     @Override
-    public boolean isIgnoredId(Integer id)
+    public boolean setDestination(int tx, int ty)
     {
-        return ignoredIds.contains(id);
+        if (getLocationInTileX() != tx || getLocationInTileY() != ty)
+        {
+            // New first path, when object is not moving
+            if (path == null)
+            {
+                currentStep = 0;
+                path = pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), tx, ty, true);
+                pathFoundChanged = false;
+                prepareDestination(tx, ty);
+                return true;
+            }
+            // Next path, while object is moving, change takes effect when the object reached a step point
+            prepareDestination(tx, ty);
+            pathFoundChanged = true;
+        }
+        return false;
     }
 
     @Override
-    public void clearIgnoredId()
+    public void setLocation(int tx, int ty)
     {
-        ignoredIds.clear();
+        if (checkObjectId(tx, ty))
+        {
+            removeObjectId(getLocationInTileX(), getLocationInTileY());
+            transformable.setLocation(tx * map.getTileWidth(), ty * map.getTileHeight());
+            assignObjectId(getLocationInTileX(), getLocationInTileY());
+        }
     }
 
     @Override
@@ -547,71 +596,6 @@ public class PathfindableModel
         sharedPathIds.clear();
         sharedPathIds.addAll(ids);
         sharedPathIds.remove(id);
-    }
-
-    @Override
-    public void clearSharedPathIds()
-    {
-        sharedPathIds.clear();
-    }
-
-    @Override
-    public void update(double extrp)
-    {
-        if (reCheckRef)
-        {
-            updateRef(lastStep, lastStep + 1);
-            reCheckRef = false;
-        }
-        if (skip)
-        {
-            skip = false;
-            reCheckRef = true;
-            return;
-        }
-        if (path != null)
-        {
-            // Continue until max step
-            if (lastStep < getMaxStep())
-            {
-                final int dx = path.getX(lastStep) * map.getTileWidth();
-                final int dy = path.getY(lastStep) * map.getTileHeight();
-                moving = false;
-                moveX = 0.0;
-                moveY = 0.0;
-                moveTo(extrp, dx, dy);
-            }
-            // Max step is reached, stop moves and animation
-            else
-            {
-                arrived();
-            }
-        }
-    }
-
-    @Override
-    public void stopMoves()
-    {
-        pathStoppedRequested = true;
-    }
-
-    @Override
-    public void setSpeed(double speedX, double speedY)
-    {
-        this.speedX = speedX;
-        this.speedY = speedY;
-    }
-
-    @Override
-    public boolean isMoving()
-    {
-        return moving;
-    }
-
-    @Override
-    public boolean isDestinationReached()
-    {
-        return destinationReached;
     }
 
     @Override
@@ -651,12 +635,58 @@ public class PathfindableModel
     }
 
     @Override
-    public boolean isBlocking(String category)
+    public int getWidthInTile()
+    {
+        return transformable.getWidth() / map.getTileWidth();
+    }
+
+    @Override
+    public int getHeightInTile()
+    {
+        return transformable.getHeight() / map.getTileHeight();
+    }
+
+    @Override
+    public double getCost(String category) throws LionEngineException
+    {
+        if (categories.containsKey(category))
+        {
+            return categories.get(category).getCost();
+        }
+        throw new LionEngineException(ERROR_CATEGORY, category);
+    }
+
+    @Override
+    public boolean isPathAvailable(int tx, int ty)
+    {
+        return pathfinder.findPath(this, getLocationInTileX(), getLocationInTileY(), tx, ty, false) != null;
+    }
+
+    @Override
+    public boolean isBlocking(String category) throws LionEngineException
     {
         if (categories.containsKey(category))
         {
             return categories.get(category).isBlocking();
         }
-        return false;
+        throw new LionEngineException(ERROR_CATEGORY, category);
+    }
+
+    @Override
+    public boolean isDestinationReached()
+    {
+        return destinationReached;
+    }
+
+    @Override
+    public boolean isIgnoredId(Integer id)
+    {
+        return ignoredIds.contains(id);
+    }
+
+    @Override
+    public boolean isMoving()
+    {
+        return moving;
     }
 }

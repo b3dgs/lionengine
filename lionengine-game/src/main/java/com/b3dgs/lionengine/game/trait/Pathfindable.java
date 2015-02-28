@@ -19,83 +19,39 @@ package com.b3dgs.lionengine.game.trait;
 
 import java.util.Collection;
 
+import com.b3dgs.lionengine.LionEngineException;
+import com.b3dgs.lionengine.core.Renderable;
 import com.b3dgs.lionengine.core.Updatable;
+import com.b3dgs.lionengine.game.Tiled;
+import com.b3dgs.lionengine.game.map.MapTilePath;
 
 /**
- * Describe an object which can move on a tile path based map.
+ * Describe an object which can move on a {@link MapTilePath} by using A-Star algorithm.
  * 
  * @author Pierre-Alexandre (contact@b3dgs.com)
+ * @see com.b3dgs.lionengine.game.map.astar
  */
 public interface Pathfindable
-        extends Trait, Updatable
+        extends Trait, Tiled, Updatable, Renderable
 {
     /**
-     * Move to specified destination only on call.
-     * 
-     * @param extrp The extrapolation value.
-     * @param x The destination x.
-     * @param y The destination y.
-     */
-    void setDestination(double extrp, double x, double y);
-
-    /**
-     * Assign a specified location; will move automatically until reach it. Location is as tile (not in real value).
-     * 
-     * @param dtx The destination x (in tile map).
-     * @param dty The destination y (in tile map).
-     * @return <code>true</code> if target found and valid, <code>false</code> else.
-     */
-    boolean setDestination(int dtx, int dty);
-
-    /**
-     * Check if a path exists between entity and destination.
-     * 
-     * @param dtx The destination x (in tile map).
-     * @param dty The destination y (in tile map).
-     * @return <code>true</code> if path exists, <code>false</code> else.
-     */
-    boolean isPathAvailable(int dtx, int dty);
-
-    /**
-     * Set specified location in tile.
-     * 
-     * @param tx The location x in tile.
-     * @param ty The location y in tile.
-     */
-    void setLocation(int tx, int ty);
-
-    /**
-     * Ignore an id while searching pathfinding. It allows to not be blocked by this id.
-     * 
-     * @param id The id to ignore.
-     * @param state <code>true</code> to ignore, <code>false</code> else.
-     */
-    void setIgnoreId(Integer id, boolean state);
-
-    /**
-     * Check if id is ignored.
-     * 
-     * @param id The id to check.
-     * @return <code>true</code> if ignored, <code>false</code> else.
-     */
-    boolean isIgnoredId(Integer id);
-
-    /**
-     * Clear all ignored id.
+     * Clear all ignored objects ID.
      */
     void clearIgnoredId();
 
     /**
-     * Set the id list that shares the same path (this is used in grouped movement).
-     * 
-     * @param ids The id list to add.
-     */
-    void setSharedPathIds(Collection<Integer> ids);
-
-    /**
-     * Clear the list of id that share the same path.
+     * Clear the list of objects ID that share the same path.
      */
     void clearSharedPathIds();
+
+    /**
+     * Move to specified destination only when calling this function.
+     * 
+     * @param extrp The extrapolation value.
+     * @param x The destination horizontal location.
+     * @param y The destination vertical location.
+     */
+    void moveTo(double extrp, double x, double y);
 
     /**
      * Stop any pathfinding movements.
@@ -103,7 +59,7 @@ public interface Pathfindable
     void stopMoves();
 
     /**
-     * Set move speed.
+     * Set movement speed.
      * 
      * @param speedX The horizontal speed.
      * @param speedY The vertical speed.
@@ -111,30 +67,48 @@ public interface Pathfindable
     void setSpeed(double speedX, double speedY);
 
     /**
-     * Check is its moving.
+     * Ignore an object ID while searching pathfinding. It allows to not be blocked by this ID.
      * 
-     * @return <code>true</code> if moving, <code>false</code> else.
+     * @param id The object ID to ignore.
+     * @param state <code>true</code> to ignore, <code>false</code> else.
      */
-    boolean isMoving();
+    void setIgnoreId(Integer id, boolean state);
 
     /**
-     * Check if has reached destination.
+     * Set the object ID list that shares the same path (this can be used in grouped movement).
      * 
-     * @return <code>true</code> if destination has been reached, <code>false</code> else.
+     * @param ids The object ID list to add.
      */
-    boolean isDestinationReached();
+    void setSharedPathIds(Collection<Integer> ids);
 
     /**
-     * Get horizontal speed.
+     * Assign a specified location. Will move automatically until reach it after this call.
      * 
-     * @return The horizontal speed.
+     * @param tx The horizontal location in tile.
+     * @param ty The vertical location in tile.
+     * @return <code>true</code> if destination reachable, <code>false</code> else.
+     */
+    boolean setDestination(int tx, int ty);
+
+    /**
+     * Set specified location in tile.
+     * 
+     * @param tx The horizontal location in tile.
+     * @param ty The vertical location in tile.
+     */
+    void setLocation(int tx, int ty);
+
+    /**
+     * Get horizontal movement speed.
+     * 
+     * @return The horizontal movement speed.
      */
     double getSpeedX();
 
     /**
-     * Get vertical speed.
+     * Get vertical movement speed.
      * 
-     * @return The vertical speed.
+     * @return The vertical movement speed.
      */
     double getSpeedY();
 
@@ -153,24 +127,51 @@ public interface Pathfindable
     double getMoveY();
 
     /**
-     * Get horizontal location in tile (location on map).
+     * Get the cost movement depending of the category.
      * 
-     * @return The horizontal location in tile (location on map).
+     * @param category The category the check.
+     * @return The category movement cost.
+     * @throws LionEngineException If category has not been found.
      */
-    int getLocationInTileX();
+    double getCost(String category) throws LionEngineException;
 
     /**
-     * Get vertical location in tile (location on map).
+     * Check if a path exists between object and destination.
      * 
-     * @return The vertical location in tile (location on map).
+     * @param tx The horizontal location in tile.
+     * @param ty The vertical location in tile.
+     * @return <code>true</code> if path exists, <code>false</code> else.
      */
-    int getLocationInTileY();
+    boolean isPathAvailable(int tx, int ty);
 
     /**
      * Check if the category is considered as blocking.
      * 
      * @param category The category the check.
      * @return <code>true</code> if blocking, <code>false</code> else.
+     * @throws LionEngineException If category has not been found.
      */
-    boolean isBlocking(String category);
+    boolean isBlocking(String category) throws LionEngineException;
+
+    /**
+     * Check if has reached destination.
+     * 
+     * @return <code>true</code> if destination has been reached, <code>false</code> else.
+     */
+    boolean isDestinationReached();
+
+    /**
+     * Check if object ID is ignored.
+     * 
+     * @param id The object ID to check.
+     * @return <code>true</code> if ignored, <code>false</code> else.
+     */
+    boolean isIgnoredId(Integer id);
+
+    /**
+     * Check if currently moving.
+     * 
+     * @return <code>true</code> if moving, <code>false</code> else.
+     */
+    boolean isMoving();
 }

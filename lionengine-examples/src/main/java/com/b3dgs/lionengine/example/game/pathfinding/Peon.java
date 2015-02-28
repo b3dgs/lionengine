@@ -97,6 +97,7 @@ class Peon
     @Override
     public void render(Graphic g)
     {
+        pathfindable.render(g);
         surface.render(g);
     }
 }

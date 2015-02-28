@@ -45,20 +45,29 @@ public interface MapTilePath
     void loadPathfinding(Media pathfindingConfig) throws LionEngineException;
 
     /**
-     * Add object id at this location.
+     * Add object ID at this location.
      * 
      * @param tx The horizontal tile index.
      * @param ty The vertical tile index.
-     * @param id The id to store.
+     * @param id The ID to store.
      */
     void addObjectId(int tx, int ty, Integer id);
 
     /**
-     * Get objects id at this location.
+     * Remove object ID from this location.
      * 
      * @param tx The horizontal tile index.
      * @param ty The vertical tile index.
-     * @return The objects id found.
+     * @param id The ID to remove.
+     */
+    void removeObjectId(int tx, int ty, Integer id);
+
+    /**
+     * Get objects ID at this location.
+     * 
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @return The objects ID found.
      */
     Collection<Integer> getObjectsId(int tx, int ty);
 
@@ -72,68 +81,75 @@ public interface MapTilePath
     Tile getTile(Tiled tiled);
 
     /**
-     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.
+     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
      * @param from The tiled from.
-     * @param radius The search size.
      * @param to The tiled destination.
-     * @return The closest location found.
+     * @param radius The search radius.
+     * @return The closest tile found.
      */
-    CoordTile getClosestAvailableTile(Tiled from, int radius, Tiled to);
+    CoordTile getClosestAvailableTile(Tiled from, Tiled to, int radius);
 
     /**
-     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an entity.
+     * Get the closest unused location around the area. The returned tile is not blocking, nor used by an object.
      * 
-     * @param sx The horizontal location.
-     * @param sy The vertical location.
-     * @param radius The search size.
-     * @param dx The horizontal destination location.
-     * @param dy The vertical destination location.
-     * @return The closest location found.
+     * @param stx The horizontal starting tile index.
+     * @param sty The vertical starting tile index.
+     * @param dtx The horizontal destination tile index.
+     * @param dty The vertical destination tile index.
+     * @param radius The search radius.
+     * @return The closest tile found.
      */
-    CoordTile getClosestAvailableTile(int sx, int sy, int radius, int dx, int dy);
+    CoordTile getClosestAvailableTile(int stx, int sty, int dtx, int dty, int radius);
 
     /**
-     * Search a free area from this area.
+     * Search a free area from this location.
      * 
-     * @param tx The horizontal tile.
-     * @param ty The vertical tile.
-     * @param radius The search size.
-     * @return The free place found.
+     * @param tiled The object to search around.
+     * @param radius The search radius.
+     * @return The free tile found.
+     */
+    CoordTile getFreeTileAround(Tiled tiled, int radius);
+
+    /**
+     * Search a free area from this location.
+     * 
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @param radius The search radius.
+     * @return The free tile found.
      */
     CoordTile getFreeTileAround(int tx, int ty, int radius);
 
     /**
-     * Get the cost of the complete path, from start till end.
+     * Get the cost of the complete path, from start to end.
      * 
      * @param mover The object moving on map.
-     * @param sx The starting location x.
-     * @param sy The starting location y.
-     * @param dx The ending location x.
-     * @param dy The ending location y.
-     * @return The total cost.
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @return The total path cost.
      */
-    double getCost(Pathfindable mover, int sx, int sy, int dx, int dy);
+    double getCost(Pathfindable mover, int tx, int ty);
 
     /**
      * Check if area if unused.
      * 
-     * @param tx The horizontal location.
-     * @param ty The vertical location.
-     * @param w The width in tile.
-     * @param h The height in tile.
-     * @param ignoreObjectId The object id to ignore.
-     * @return <code>true</code> if area is free (area id = 0), <code>false</code> else.
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @param tw The width in tile.
+     * @param th The height in tile.
+     * @param ignoreObjectId The object ID to ignore.
+     * @return <code>true</code> if area is free, <code>false</code> else.
      */
-    boolean isAreaAvailable(int tx, int ty, int w, int h, Integer ignoreObjectId);
+    boolean isAreaAvailable(int tx, int ty, int tw, int th, Integer ignoreObjectId);
 
     /**
      * Check if current location is blocking or not.
      * 
      * @param mover The object moving on map.
-     * @param tx The horizontal tile location.
-     * @param ty The vertical tile location.
-     * @param ignoreObjectsId The ignore map objects id checking (objects id on tile).
+     * @param tx The horizontal tile index.
+     * @param ty The vertical tile index.
+     * @param ignoreObjectsId The ignore map objects ID checking (objects ID on tile).
      * @return <code>true</code> if blocking, <code>false</code> else.
      */
     boolean isBlocked(Pathfindable mover, int tx, int ty, boolean ignoreObjectsId);

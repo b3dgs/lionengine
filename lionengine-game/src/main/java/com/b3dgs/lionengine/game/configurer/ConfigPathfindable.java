@@ -69,7 +69,7 @@ public class ConfigPathfindable
      */
     public static PathData createPathData(XmlNode node) throws LionEngineException
     {
-        final int cost = node.readInteger(COST);
+        final double cost = node.readDouble(COST);
         final boolean blocking = node.readBoolean(BLOCK);
         return new PathData(cost, blocking);
     }
